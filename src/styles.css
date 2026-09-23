@@ -708,6 +708,14 @@ body {
 }
 
 .transit-date-picker input,
+.transit-date-picker select,
+.transit-date-picker > button {
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 20px;
+}
+
+.transit-date-picker input,
 .transit-date-picker select {
   padding: 8px 12px;
   border: 1px solid var(--border);
