@@ -132,15 +132,19 @@
         <h2 class="view-title">Transits</h2>
         <p class="view-subtitle">How the current planetary weather interacts with your chart</p>
         <div class="transit-date-picker">
-          <label for="transit-date">Date</label>
-          <input type="date" id="transit-date">
-          <button id="transit-today" class="btn-secondary">Today</button>
+          <label>Date<input type="date" id="transit-date"></label>
+          <label>Time<input type="time" id="transit-time"></label>
+          <label>Timezone<input id="transit-timezone" list="transit-timezones" autocomplete="off" spellcheck="false" aria-describedby="transit-status"></label>
+          <datalist id="transit-timezones"></datalist>
+          <button id="transit-now" class="btn-secondary">Now</button>
         </div>
+        <label id="transit-choice-label" hidden>Choose UTC offset <select id="transit-choice"></select></label>
+        <p id="transit-status" class="panel-intro" aria-live="polite"></p>
         <div class="transit-layout">
           <div id="transit-bodygraph" class="bodygraph-container transit-graph"></div>
           <div id="transit-content" class="transit-content"></div>
         </div>
-        <p class="panel-intro" style="margin-top:8px">Dashed rings mark gates activated by the transiting planets on the chosen date.</p>
+        <p class="panel-intro" style="margin-top:8px">Dashed rings mark gates activated by the transiting planets at the chosen time.</p>
       </div>
     </section>
 

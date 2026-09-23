@@ -6,31 +6,65 @@
 import { calculateHDTransits, calculateTransitGates } from 'natalengine';
 import { renderBodygraph } from '../bodygraph.js';
 import { esc } from '../lib/format.js';
+import { formatOffset } from '../lib/location.js';
+import { transitInstants, engineTransitArguments } from '../lib/transit-time.js';
 
 const plural2 = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 import { getCurrentChart, showGateDetail } from './chart.js';
 
 export function setupTransitView() {
   const dateInput = document.getElementById('transit-date');
-  const todayBtn = document.getElementById('transit-today');
+  const timeInput = document.getElementById('transit-time');
+  const zoneInput = document.getElementById('transit-timezone');
+  const zones = Intl.supportedValuesOf?.('timeZone') || [];
+  document.getElementById('transit-timezones').innerHTML = zones.map(zone => `<option value="${esc(zone)}">`).join('');
 
-  dateInput.value = new Date().toISOString().split('T')[0];
+  const setNow = () => {
+    const now = new Date();
+    dateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    zoneInput.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    renderTransits();
+  };
+  setNow();
 
   dateInput.addEventListener('change', renderTransits);
-  todayBtn.addEventListener('click', () => {
-    dateInput.value = new Date().toISOString().split('T')[0];
-    renderTransits();
-  });
+  timeInput.addEventListener('change', renderTransits);
+  zoneInput.addEventListener('change', renderTransits);
+  document.getElementById('transit-choice').addEventListener('change', renderTransits);
+  document.getElementById('transit-now').addEventListener('click', setNow);
 }
 
 export function renderTransits() {
   const current = getCurrentChart();
   if (!current) return;
-  const dateInput = document.getElementById('transit-date');
-  const date = dateInput.value || new Date().toISOString().split('T')[0];
+  const date = document.getElementById('transit-date').value;
+  const time = document.getElementById('transit-time').value;
+  const zone = document.getElementById('transit-timezone').value.trim();
+  const status = document.getElementById('transit-status');
+  const choiceLabel = document.getElementById('transit-choice-label');
+  const choice = document.getElementById('transit-choice');
+  let matches;
+  try {
+    matches = transitInstants(date, time, zone);
+    if (!matches.length) throw new Error('This local time does not exist in that timezone. Choose another time.');
+  } catch (error) {
+    status.textContent = error instanceof RangeError ? 'Enter a valid IANA timezone.' : error.message;
+    choiceLabel.hidden = true;
+    document.getElementById('transit-bodygraph').replaceChildren();
+    document.getElementById('transit-content').replaceChildren();
+    return;
+  }
 
-  const overlay = calculateHDTransits(current.chart, date);
-  const transitGates = Object.values(calculateTransitGates(date)?.gates || {})
+  const selected = matches.find(m => String(m.instant) === choice.value) || matches[0];
+  choiceLabel.hidden = matches.length < 2;
+  choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
+  choice.value = String(selected.instant);
+  status.textContent = `${date} · ${time} · ${zone} (${formatOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
+  const [transitDate, browserOffset] = engineTransitArguments(selected.instant);
+
+  const overlay = calculateHDTransits(current.chart, transitDate, browserOffset);
+  const transitGates = Object.values(calculateTransitGates(transitDate, browserOffset)?.gates || {})
     .filter(Boolean)
     .map(g => g.gate);
 
@@ -45,18 +79,16 @@ export function renderTransits() {
     });
   }
 
-  renderTransitContent(overlay, date);
+  renderTransitContent(overlay, date, time);
 }
 
-export function renderTransitContent(overlay, date = null) {
+export function renderTransitContent(overlay, date = null, time = null) {
   const container = document.getElementById('transit-content');
   const sunGate = overlay.highlights.sun;
   const moonGate = overlay.highlights.moon;
 
-  const todayStr = new Date().toISOString().split('T')[0];
-  const isToday = !date || date === todayStr;
-  const when = isToday ? 'today' : `on ${date}`;
-  const whenCap = isToday ? 'Today' : `On ${date}`;
+  const when = date ? `on ${date} at ${time}` : 'today';
+  const whenCap = date ? `On ${date} at ${time}` : 'Today';
 
   // One-line synthesis: lead with the strongest signal instead of data soup
   const strongest = overlay.channelCompletions[0];
