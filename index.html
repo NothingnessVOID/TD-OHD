@@ -134,8 +134,7 @@
         <div class="transit-date-picker">
           <label>Date<input type="date" id="transit-date"></label>
           <label>Time<input type="time" id="transit-time"></label>
-          <label>Timezone<input id="transit-timezone" list="transit-timezones" autocomplete="off" spellcheck="false" aria-describedby="transit-status"></label>
-          <datalist id="transit-timezones"></datalist>
+          <label>Timezone<select id="transit-timezone" aria-describedby="transit-status"></select></label>
           <button id="transit-now" class="btn-secondary">Now</button>
         </div>
         <label id="transit-choice-label" hidden>Choose UTC offset <select id="transit-choice"></select></label>
