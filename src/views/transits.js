@@ -6,8 +6,7 @@
 import { calculateHDTransits, calculateTransitGates } from 'natalengine';
 import { renderBodygraph } from '../bodygraph.js';
 import { esc } from '../lib/format.js';
-import { formatOffset } from '../lib/location.js';
-import { transitInstants, engineTransitArguments } from '../lib/transit-time.js';
+import { transitInstants, engineTransitArguments, formatTransitOffset } from '../lib/transit-time.js';
 
 const plural2 = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 import { getCurrentChart, showGateDetail } from './chart.js';
@@ -15,6 +14,7 @@ import { getCurrentChart, showGateDetail } from './chart.js';
 export function setupTransitView() {
   const dateInput = document.getElementById('transit-date');
   const timeInput = document.getElementById('transit-time');
+  const secondsInput = document.getElementById('transit-seconds');
   let zoneInput = document.getElementById('transit-timezone');
   const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   if (Intl.supportedValuesOf) {
@@ -34,6 +34,7 @@ export function setupTransitView() {
     const now = new Date();
     dateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    if (secondsInput.checked) timeInput.value += `:${String(now.getSeconds()).padStart(2, '0')}`;
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (zoneInput.tagName === 'SELECT' && ![...zoneInput.options].some(option => option.value === zone)) {
       zoneInput.add(new Option(zone, zone));
@@ -45,6 +46,12 @@ export function setupTransitView() {
 
   dateInput.addEventListener('change', renderTransits);
   timeInput.addEventListener('change', renderTransits);
+  secondsInput.addEventListener('change', () => {
+    const minute = timeInput.value.slice(0, 5);
+    timeInput.step = secondsInput.checked ? '1' : '60';
+    timeInput.value = minute ? minute + (secondsInput.checked ? ':00' : '') : '';
+    renderTransits();
+  });
   zoneInput.addEventListener('change', renderTransits);
   document.getElementById('transit-choice').addEventListener('change', renderTransits);
   document.getElementById('transit-now').addEventListener('click', setNow);
@@ -54,7 +61,8 @@ export function renderTransits() {
   const current = getCurrentChart();
   if (!current) return;
   const date = document.getElementById('transit-date').value;
-  const time = document.getElementById('transit-time').value;
+  let time = document.getElementById('transit-time').value;
+  if (time.length === 5 && document.getElementById('transit-seconds').checked) time += ':00';
   const zone = document.getElementById('transit-timezone').value.trim();
   const status = document.getElementById('transit-status');
   const choiceLabel = document.getElementById('transit-choice-label');
@@ -73,13 +81,13 @@ export function renderTransits() {
 
   const selected = matches.find(m => String(m.instant) === choice.value) || matches[0];
   choiceLabel.hidden = matches.length < 2;
-  choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
+  choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatTransitOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
   choice.value = String(selected.instant);
-  status.textContent = `${date} · ${time} · ${zone} (${formatOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
-  const [transitDate, browserOffset] = engineTransitArguments(selected.instant);
+  status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
+  const [transitDate, engineOffset] = engineTransitArguments(selected.instant);
 
-  const overlay = calculateHDTransits(current.chart, transitDate, browserOffset);
-  const transitGates = Object.values(calculateTransitGates(transitDate, browserOffset)?.gates || {})
+  const overlay = calculateHDTransits(current.chart, transitDate, engineOffset);
+  const transitGates = Object.values(calculateTransitGates(transitDate, engineOffset)?.gates || {})
     .filter(Boolean)
     .map(g => g.gate);
 
