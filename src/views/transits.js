@@ -15,15 +15,30 @@ import { getCurrentChart, showGateDetail } from './chart.js';
 export function setupTransitView() {
   const dateInput = document.getElementById('transit-date');
   const timeInput = document.getElementById('transit-time');
-  const zoneInput = document.getElementById('transit-timezone');
-  const zones = Intl.supportedValuesOf?.('timeZone') || [];
-  document.getElementById('transit-timezones').innerHTML = zones.map(zone => `<option value="${esc(zone)}">`).join('');
+  let zoneInput = document.getElementById('transit-timezone');
+  const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (Intl.supportedValuesOf) {
+    const zones = [...new Set(['UTC', localZone, ...Intl.supportedValuesOf('timeZone')])].sort();
+    zoneInput.innerHTML = zones.map(zone => `<option value="${esc(zone)}">${esc(zone)}</option>`).join('');
+  } else {
+    // Older browsers can still resolve a typed IANA zone, even without a zone list.
+    const input = document.createElement('input');
+    input.id = zoneInput.id;
+    input.placeholder = 'e.g. Europe/London';
+    input.setAttribute('aria-describedby', 'transit-status');
+    zoneInput.replaceWith(input);
+    zoneInput = input;
+  }
 
   const setNow = () => {
     const now = new Date();
     dateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    zoneInput.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (zoneInput.tagName === 'SELECT' && ![...zoneInput.options].some(option => option.value === zone)) {
+      zoneInput.add(new Option(zone, zone));
+    }
+    zoneInput.value = zone;
     renderTransits();
   };
   setNow();
