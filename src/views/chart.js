@@ -327,6 +327,7 @@ function resetDetail() {
   detailGraph()?.setPinned?.(null);
   detailHistory = [];
   currentDetail = null;
+  detailContext?.onDetailClose?.();
   detailContext = null;
 }
 
@@ -357,6 +358,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
       </button>`).join('')}</div>
       <p class="lens-note">Transit additions do not change your birth chart.</p>
     </div></div>`;
+  detailContext?.decorateDetail?.(detail, currentDetail);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'));
   detailGraph()?.setPinned?.({ kind: 'channel', id });
@@ -453,6 +455,7 @@ export function showGateDetail(gateNum, pushHistory = true) {
       </div>
     </div>
   `;
+  detailContext?.decorateDetail?.(detail, currentDetail);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: gateNum });
@@ -542,6 +545,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
       </div>
     </div>
   `;
+  detailContext?.decorateDetail?.(detail, currentDetail);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'center', id: centerKey });
