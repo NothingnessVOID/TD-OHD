@@ -12,6 +12,15 @@ import { computeChart, sensitivityCheck } from '../src/lib/chartdata.js';
 const directory = new URL('../src/locales/zh-CN/', import.meta.url);
 const uiCatalogs = readdirSync(directory).filter(name => /^ui-.*\.json$/.test(name));
 
+test('localized navigation keeps Timeline after Transits with stable translation keys', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const nav = html.match(/<nav class="nav">([\s\S]*?)<\/nav>/)[1];
+  const items = [...nav.matchAll(/data-view="([^"]+)" data-i18n="([^"]+)"/g)]
+    .map(match => [match[1], match[2]]);
+  assert.deepEqual(items, [['chart', 'My Chart'], ['transits', 'Transits'],
+    ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'Team']]);
+});
+
 test('locale preference, supported browser languages and unsupported-language fallback', () => {
   assert.deepEqual(LOCALES.map(l => l.code), ['en', 'zh-CN', 'zh-Hant']);
   assert.equal(resolveLocale('zh-CN', ['en-US']), 'zh-CN');
