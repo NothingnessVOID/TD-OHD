@@ -1,5 +1,7 @@
 // One active graph detail sheet across views, with consistent dismissal and
 // keyboard focus. Reopening the same sheet preserves its original trigger.
+import { t } from './i18n.js';
+
 let active = null;
 
 export function closeDetailDialog() {
@@ -39,7 +41,7 @@ export function openDetailDialog(element, onClose) {
   element.classList.remove('hidden');
   element.setAttribute('role', 'dialog');
   element.setAttribute('aria-modal', 'true');
-  element.setAttribute('aria-label', 'Bodygraph details');
+  element.setAttribute('aria-label', t('Bodygraph details'));
   document.body.classList.add('modal-open');
   element.querySelector('.gate-detail-close')?.addEventListener('click', closeDetailDialog);
   element.querySelector('.gate-detail-close')?.focus({ preventScroll: true });

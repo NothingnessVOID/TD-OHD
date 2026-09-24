@@ -57,9 +57,9 @@ The app entry is `src/views/timeline.js`. It supplies chart access, source model
 | `line-fixing.js`, `line-fixing-data.js` | Pure fixing calculation and attributed rule data |
 | `view.js`, `timeline.css`, `messages.js` | UI, theme styles, and English messages |
 
-The view exposes `activate()`, `deactivate()`, `refresh()`, and `destroy()`. Deactivation cancels current work; destruction releases workers and listeners. The existing detail renderer accepts optional `decorateDetail` and `onDetailClose` callbacks so timeline navigation can update the same dialog without introducing another modal.
+The view exposes `activate()`, `deactivate()`, `refresh()`, `setLanguage({ messages, locale, label })`, and `destroy()`. Deactivation cancels current work; destruction releases workers and listeners. Language updates preserve the calculation lifecycle, current selection, viewport and form/filter state. The existing detail renderer accepts optional `decorateDetail` and `onDetailClose` callbacks so timeline navigation can update the same dialog without introducing another modal. An optional `host.refreshDetail(context)` refreshes an open detail after its display language changes.
 
-The feature accepts message, locale, and row-label overrides. This contribution contains English UI only. It uses the app's palette and transit CSS properties; it introduces no localization framework, skin editor, or renderer replacement.
+The feature accepts message, locale, and row-label overrides and retains its standalone English fallback. The app bridge supplies English, Simplified Chinese or Traditional Chinese from independent [locale resources](localization.md). The feature itself imports no app localization framework or language pack. It uses the app's palette and transit CSS properties; this display integration introduces no skin editor or renderer replacement.
 
 ## Development and validation
 
