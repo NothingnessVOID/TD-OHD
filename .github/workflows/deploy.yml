@@ -1,13 +1,12 @@
 name: Deploy to GitHub Pages
 
-# GitHub Pages mirror of the static app (primary hosting is the Cloudflare
-# Worker — openhumandesign.com — deployed via `npx wrangler deploy`).
-# natalengine now comes from npm; no sibling checkout needed.
+# Publish only from the dedicated pages branch. Work on main does not change
+# the live site until it is deliberately promoted to pages.
+# The build is static and omits account/sync API configuration.
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [pages]
 
 permissions:
   contents: read
