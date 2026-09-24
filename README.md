@@ -102,7 +102,7 @@ MCP server for AI integrations.
 
 ## Localization
 
-Switch between English and Simplified Chinese in the header. The preference changes display text only; chart calculations and saved birth data stay unchanged. See [localization architecture and contribution notes](docs/localization.md) for adding another language and [the Chinese terminology glossary](docs/术语对照表.zh-CN.md) for translation sources.
+Switch between English, Simplified Chinese and Traditional Chinese in the header. A saved manual choice takes priority; otherwise the app follows a supported browser language and falls back to English. The preference changes display text only; chart calculations and saved birth data stay unchanged. See [localization architecture and contribution notes](docs/localization.md) for adding another language and [the Chinese terminology glossary](docs/术语对照表.zh-CN.md) for translation sources.
 
 ## License
 
