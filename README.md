@@ -41,6 +41,10 @@ Transit time uses minutes by default. Enable **Seconds** for `HH:mm:ss`; turning
 
 The transit palette lives in [`src/styles.css`](src/styles.css), in `:root` and `[data-theme="dark"]`. `--transit-source`, `--transit-source-soft`, `--transit-source-contrast`, and `--transit-source-text` control transit paths, backgrounds, gate numbers, and labels in both SVG and HTML. Override all four for a new skin and check contrast in both themes. The default accent is `#1aadb7` in light mode and `#66c7cc` in dark mode; circuit badges retain their category colors.
 
+## Publishing the website
+
+The `main` branch holds ongoing source development. GitHub Pages is built only when the dedicated `pages` branch is pushed; merging into `main` does not publish a new website. Promote reviewed commits to `pages` when they are ready to go live. The [Pages workflow](.github/workflows/deploy.yml) runs tests and a static build, then deploys it without the account/sync backend. GitHub Pages remains configured for **GitHub Actions** because Vite must build the source; `pages` is the workflow's sole publishing branch.
+
 ## Project relationship
 
 This repository is a fork of **[Unforced-Dev/open-human-design](https://github.com/Unforced-Dev/open-human-design)**. The original authors created the core application and chart experience; the changes listed above were developed on top of it. This personal fork keeps its own deployment and documentation. For upstream contributions, review changes against the original repository and submit focused pull requests.

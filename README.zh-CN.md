@@ -41,6 +41,10 @@ npm run build -- --mode static
 
 行运配色集中在 [`src/styles.css`](src/styles.css) 的 `:root` 与 `[data-theme="dark"]` 中。`--transit-source`、`--transit-source-soft`、`--transit-source-contrast` 和 `--transit-source-text` 分别控制行运路径、背景、闸门数字及文字；换皮肤时应同时检查明暗两种主题的对比度。默认行运强调色在浅色模式下为 `#1aadb7`，深色模式下为 `#66c7cc`；回路徽标仍使用自身的分类颜色。
 
+## 网页发布
+
+`main` 分支继续用于源码开发。只有推送专用的 `pages` 分支才会构建并发布 GitHub Pages；合并到 `main` 不会自动改动线上网页。准备上线时，再把审查完成的提交送入 `pages`。[Pages 工作流](.github/workflows/deploy.yml)会运行测试、构建纯静态网页并发布，不启用账号同步后端。由于 Vite 需要构建，GitHub Pages 设置仍使用 **GitHub Actions**；真正触发发布的源码分支只有 `pages`。
+
 ## 项目来源与后续贡献
 
 本仓库从 **[Unforced-Dev/open-human-design](https://github.com/Unforced-Dev/open-human-design)** 分叉而来。核心应用与原有图表体验由原项目作者开发；上面列出的调整建立在其工作之上。这个个人版本有独立的部署和说明文档。若要向原项目贡献功能，会单独比对原仓库，并提交范围清晰的 PR。
