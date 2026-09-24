@@ -60,8 +60,7 @@ For new timeline copy, add a stable key to `src/features/transit-timeline/messag
 ## Verification
 
 ```sh
-node --test tests/i18n.test.js tests/localization.test.js tests/traditional-chinese.test.js
-node --test tests/timeline-language-contract.test.js
+npm run test:localization
 node --test --test-skip-pattern='geocodes place|helpful errors' tests/*.test.js
 npm run build
 ```
@@ -69,3 +68,5 @@ npm run build
 `npm test` also runs two existing external geocoding checks. Offline-focused runs above exclude them without changing network security or application behavior.
 
 Tests check unique UI ownership, placeholders, locale-provider contracts, English source equivalence, complete Chinese gate/line/channel/Gene Keys coverage, computed summaries and source-data immutability. Browser checks remain necessary for state preservation and layout.
+
+The `Localization validation` pull-request workflow runs the offline localization suite and production build with Node 20 and locked dependencies. It is independent of the timeline's browser workflow and does not require geocoding or account services.
