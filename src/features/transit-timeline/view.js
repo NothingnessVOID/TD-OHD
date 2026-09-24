@@ -49,8 +49,9 @@ function reconcile(parent, markup) {
  * No language pack, skin, storage or application router is imported here.
  */
 export function createTransitTimeline({ root, host, messages, locale = 'en-GB', label }) {
-  const t = translator(messages);
-  const name = label || (row => row.kind === 'center' ? row.name
+  let t = translator(messages);
+  let labeler = label;
+  let name = labeler || (row => row.kind === 'center' ? row.name
     : row.kind === 'channel' ? `${row.id} · ${row.name}` : `${t('gate')} ${row.id} · ${row.name}`);
   const client = createTimelineClient();
   const events = new AbortController();
@@ -69,6 +70,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let context = null;
   let graphChart = null;
   let graphKey = '';
+  let snapshotInstant;
+  let snapshotActivations;
   let hoverSelection = null;
   let generation = 0;
   let frame = 0;
@@ -199,7 +202,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   function renderMoment() {
     frame = 0;
     if (!active || !chart) return;
-    const activations = host.snapshot(selected);
+    const activations = snapshotInstant === selected && snapshotActivations
+      ? snapshotActivations : host.snapshot(selected);
+    snapshotInstant = selected;
+    snapshotActivations = activations;
     const model = host.buildModel(chart.chart, activations, mode);
     context ||= {};
     Object.assign(context, { transitGates: activations, mode, model, decorateDetail, onDetailClose: clearTimingState });
@@ -290,7 +296,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     return `<svg class="tl-center-symbol tl-center-${row.id}" viewBox="0 0 28 28" aria-hidden="true">${shapes[row.id] || ''}</svg>`;
   }
 
-  function renderRows() {
+  function renderRows({ sync = true } = {}) {
     const scroll = $('.tl-table').scrollTop;
     const ruler = calendarRuler(windowRange, zone, locale, $('.tl-ticks').clientWidth);
     const dayPosition = cell => `left:${ratioAt(windowRange, cell.dayStart) * 100}%;width:${(cell.dayEnd - cell.dayStart) / span * 100}%`;
@@ -316,7 +322,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(name(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
     $('.tl-table').scrollTop = scroll;
-    syncClock();
+    if (sync) syncClock();
   }
 
   const coversTimeline = range => range && range.start === timelineRange.start && range.end === timelineRange.end;
@@ -735,7 +741,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const width = $('.tl-ticks').clientWidth;
     if (width === rulerWidth) return;
     rulerWidth = width;
-    if (active && !viewFrame) viewFrame = requestAnimationFrame(() => { viewFrame = 0; renderRows(); });
+    // Layout changes (including translated labels) must not commit form drafts.
+    if (active && width > 0 && !viewFrame) viewFrame = requestAnimationFrame(() => { viewFrame = 0; renderRows({ sync: false }); });
   });
   sizing.observe($('.tl-table'));
 
@@ -754,6 +761,101 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     clearTimeout(clickReset);
     suppressClick = false;
     calculating = false;
+  }
+
+  function setLanguage({ messages: nextMessages, locale: nextLocale, label: nextLabel } = {}) {
+    const previous = t;
+    const timeError = $('.tl-time-error').textContent;
+    const loadStatus = $('.tl-load-status').textContent;
+    t = translator(nextMessages);
+    if (nextLocale) locale = nextLocale;
+    if (nextLabel !== undefined) labeler = nextLabel;
+    name = labeler || (row => row.kind === 'center' ? row.name
+      : row.kind === 'channel' ? `${row.id} · ${row.name}` : `${t('gate')} ${row.id} · ${row.name}`);
+
+    const put = (selector, key) => setText($(selector), t(key));
+    const attr = (selector, attribute, key) => $(selector).setAttribute(attribute, t(key));
+    const fieldLabel = (field, key) => {
+      const node = $(`[data-field="${field}"]`).parentElement.firstChild;
+      if (node.nodeType === Node.TEXT_NODE) node.textContent = t(key);
+    };
+    put('.tl-empty-state', 'empty');
+    put('.tl-heading h2', 'title');
+    if (chart) setText($('.tl-person'), chart.birth.name || t('person'));
+    for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['mode','mode']]) fieldLabel(field, key);
+    for (const [action, key] of [['now','now'], ['retry','retry']]) {
+      const button = $(`[data-action="${action}"]`);
+      setText(button, t(key));
+      button.title = t(key);
+      button.setAttribute('aria-label', t(key));
+    }
+    for (const [value, key] of [['overlay','overlay'], ['transit-only','sky']])
+      setText($(`[data-field="mode"] option[value="${value}"]`), t(key));
+    const foldLabel = $('.tl-fold').firstChild;
+    if (foldLabel.nodeType === Node.TEXT_NODE) foldLabel.textContent = t('chooseOffset');
+    const foldPlaceholder = $('[data-field="fold"] option[value=""]');
+    if (foldPlaceholder) setText(foldPlaceholder, t('chooseOffset'));
+    if (timeError) {
+      const key = ['fold','gap','invalid'].find(candidate => timeError === previous(candidate));
+      if (key) put('.tl-time-error', key);
+    }
+    attr('.tl-moment', 'aria-label', 'selected');
+    put('.tl-legend-disclosure summary', 'legend');
+    for (const source of ['natal','transit','completed','both']) {
+      const item = $(`.tl-legend [data-source="${source}"]`);
+      item.lastChild.textContent = t(source);
+    }
+    put('.tl-transit-column .bg-planets-head', 'transit');
+    put('.tl-birth-head .bg-planets-design .bg-planets-head', 'design');
+    put('.tl-birth-head .bg-planets-personality .bg-planets-head', 'personality');
+    $('.tl-birth-head').classList.toggle('tl-birth-head-en', locale.startsWith('en'));
+    attr('.tl-tracks-panel', 'aria-label', 'tracks');
+    attr('.tl-table', 'aria-label', 'scrub');
+    attr('.tl-table', 'title', 'timelineHelp');
+    put('.tl-kind .tl-sr-only', 'filter');
+    for (const attribute of ['aria-label','title']) {
+      attr('[data-field="kind"]', attribute, 'filter');
+      attr('[data-field="search"]', attribute, 'search');
+      attr('[data-field="span"]', attribute, 'zoom');
+      attr('[data-field="changes"]', attribute, 'onlyChanges');
+    }
+    attr('[data-field="search"]', 'placeholder', 'searchShort');
+    for (const [value, key] of [['all','all'], ['center','centersShort'], ['channel','channels'], ['gate','gates']])
+      setText($(`[data-field="kind"] option[value="${value}"]`), t(key));
+    for (const [value, key] of rangeOptions)
+      setText($(`[data-field="span"] option[value="${value}"]`), t(key));
+    put('.tl-changes span', 'changesShort');
+    put('#tl-gesture-help', 'gestures');
+    attr('.tl-calculation progress', 'aria-label', 'loadingTitle');
+    put('.tl-loading-note', 'loadingHint');
+    if (loadStatus) put('.tl-load-status', $('.tl-calculation').dataset.state === 'error' ? 'error' : 'loadingTitle');
+
+    // Only display data is rebuilt. Keep the form drafts, fold choice, worker
+    // result, viewport, filters, selection, and calculation lifecycle intact.
+    const wall = wallTime(selected, zone);
+    setText($('.tl-moment-date'), wall.date);
+    const offset = new Intl.DateTimeFormat(locale, { timeZone: zone, timeZoneName: 'shortOffset' })
+      .formatToParts(selected).find(part => part.type === 'timeZoneName')?.value || zone;
+    setText($('.tl-moment-time'), `${wall.time} ${offset}`);
+    $('.tl-moment').title = format(selected);
+    if (viewFrame) { cancelAnimationFrame(viewFrame); viewFrame = 0; }
+    // A hidden timeline has no ruler width; activate() will draw it on entry.
+    if ($('.tl-ticks').clientWidth > 0) renderRows({ sync: false });
+    graphKey = '';
+    if (active && chart) {
+      const focusedGraphItem = $('.tl-graph').contains(document.activeElement)
+        ? document.activeElement.closest('.bg-gate[data-gate], .bg-center[data-center]') : null;
+      const focusedKey = focusedGraphItem?.dataset.gate != null ? ['gate', focusedGraphItem.dataset.gate]
+        : focusedGraphItem?.dataset.center != null ? ['center', focusedGraphItem.dataset.center] : null;
+      if (frame) { cancelAnimationFrame(frame); frame = 0; }
+      renderMoment();
+      if (focusedKey) {
+        const [kind, id] = focusedKey;
+        [...$('.tl-graph').querySelectorAll(kind === 'gate' ? '.bg-gate[data-gate]' : '.bg-center[data-center]')]
+          .find(node => node.dataset[kind] === id)?.focus({ preventScroll: true });
+      }
+      host.refreshDetail?.(context);
+    }
   }
 
   return {
@@ -781,6 +883,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     },
     deactivate,
     refresh() { if (active) renderMoment(); },
+    setLanguage,
     destroy() { deactivate(); client.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
   };
 }

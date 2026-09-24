@@ -18,6 +18,9 @@ import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
 
 let graphSequence = 0;
+import { t, formatDisplay } from './lib/i18n.js';
+import { typeName, authorityName, centerName, gateName, channelName, planetName, hexagramName, graphCenter } from './lib/vocabulary.js';
+
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -75,11 +78,13 @@ const SHAPE_KEY_MAP = {
   Spleen: 'spleen', SolarPlexus: 'solar', Root: 'root'
 };
 
-const CENTER_DISPLAY = {
-  head: 'Head', ajna: 'Ajna', throat: 'Throat', g: 'G',
-  heart: 'Ego', spleen: 'Spleen', solar: 'Solar Plexus',
-  sacral: 'Sacral', root: 'Root'
-};
+const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+})[char]);
+const displayCenter = graphCenter;
+const displayGate = gateName;
+const displayChannel = channel => channelName(channel.gates);
+const displayPlanet = planetName;
 
 // gate -> [channels containing it]
 const GATE_CHANNELS = {};
@@ -200,18 +205,24 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   // ---------- SVG ----------
   const pad = 16;
-  const chartSummary = transit ? `${transit.mode === 'transit-only' ? 'Transit only' : 'Birth chart plus transits'} bodygraph. Transit activations are marked separately. Channels: ${renderedChannels.map(ch => ch.gates.join('-')).join(', ')}.` : composite
-    ? `Combined Human Design bodygraph for ${composite.labelA} and ${composite.labelB}, colored by who carries each gate and channel.`
+  const chartSummary = transit ? t(transit.mode === 'transit-only'
+    ? 'Transit only bodygraph. Transit activations are marked separately. Channels: {channels}.'
+    : 'Birth chart plus transits bodygraph. Transit activations are marked separately. Channels: {channels}.', {
+      channels: renderedChannels.map(ch => ch.gates.join('-')).join(', ')
+    }) : composite
+    ? t('Combined Human Design bodygraph for {labelA} and {labelB}, colored by who carries each gate and channel.', {
+      labelA: composite.labelA, labelB: composite.labelB
+    })
     : [
-    `Human Design bodygraph.`,
-    chart.type?.name ? `Type: ${chart.type.name}.` : '',
-    chart.profile?.numbers ? `Profile ${chart.profile.numbers}.` : '',
-    chart.authority?.name ? `${chart.authority.name}.` : '',
+    t('Human Design bodygraph.'),
+    chart.type?.name ? t('Type: {type}.', { type: typeName(chart.type.name) }) : '',
+    chart.profile?.numbers ? t('Profile {profile}.', { profile: chart.profile.numbers }) : '',
+    chart.authority?.name ? t('{authority}.', { authority: authorityName(chart.authority.name) }) : '',
     definedCenters.size
-      ? `Defined centers: ${[...definedCenters].join(', ')}.`
-      : 'No defined centers (Reflector).',
+      ? t('Defined centers: {centers}.', { centers: formatDisplay('separated', [...definedCenters].map(displayCenter), 'centers') })
+      : t('No defined centers (Reflector).'),
     chart.channels?.length
-      ? `Active channels: ${chart.channels.map(c => `${c.gates.join('-')} ${c.name}`).join('; ')}.`
+      ? t('Active channels: {channels}.', { channels: formatDisplay('separated', chart.channels.map(c => `${c.gates.join('-')} ${displayChannel(c)}`), 'channels') })
       : ''
   ].filter(Boolean).join(' ');
 
@@ -387,7 +398,13 @@ export function renderBodygraph(container, chart, opts = {}) {
       path.setAttribute('tabindex', '0');
       path.setAttribute('role', 'button');
       path.setAttribute('cursor', 'pointer');
-      path.setAttribute('aria-label', `${CENTER_DISPLAY[centerKey] || centerKey} center, ${defined ? 'defined' : 'undefined'}${transit ? ', ' + (transit.mode === 'overlay' && transit.natalCenters.has(centerKey) ? 'birth chart' : defined ? 'with transits' : 'selected view') : ''}`);
+      path.setAttribute('aria-label', t(`{center} center, ${defined ? 'defined' : 'undefined'}`, {
+        center: displayCenter(centerKey)
+      }));
+      if (transit) path.setAttribute('aria-label', t('{label}, {source}', {
+        label: path.getAttribute('aria-label'),
+        source: t(transit.mode === 'overlay' && transit.natalCenters.has(centerKey) ? 'birth chart' : defined ? 'with transits' : 'selected view')
+      }));
     }
     centerPathEls[centerKey] = path;
     centerGroup.appendChild(path);
@@ -406,7 +423,12 @@ export function renderBodygraph(container, chart, opts = {}) {
     if (interactive) {
       g.setAttribute('tabindex', '0');
       g.setAttribute('role', 'button');
-      g.setAttribute('aria-label', `Gate ${gateNum}${GATES[gateNum]?.name ? ' — ' + GATES[gateNum].name : ''}${isActive ? ', active' : ', inactive'}${transit ? ', ' + TRANSIT_SOURCE_LABELS[transit.gateSource(gateNum)] : ''}`);
+      g.setAttribute('aria-label', t(`Gate {gate} — {name}, ${isActive ? 'active' : 'inactive'}`, {
+        gate: gateNum, name: displayGate(gateNum)
+      }));
+      if (transit) g.setAttribute('aria-label', t('{label}, {source}', {
+        label: g.getAttribute('aria-label'), source: t(TRANSIT_SOURCE_LABELS[transit.gateSource(gateNum)])
+      }));
       // Invisible enlarged hit area (~44px-equivalent) so fingers can
       // actually tap a gate; the visible circle stays delicate.
       g.appendChild(svgEl('circle', {
@@ -528,13 +550,12 @@ export function renderBodygraph(container, chart, opts = {}) {
 
     function tooltipText(gateNum) {
       if (composite) return compositeGateTooltip(gateNum);
-      const gate = GATES[gateNum];
       const acts = [];
       if (transit) {
         const source = transit.gateSource(gateNum);
         const label = source === 'both'
-          ? '<span class="bg-tt-source-birth">Birth chart</span><span class="bg-tt-source-plus"> + </span><span class="bg-tt-source-transit">transit</span>'
-          : TRANSIT_SOURCE_LABELS[source];
+          ? `<span class="bg-tt-source-birth">${escapeHTML(t('Birth chart'))}</span><span class="bg-tt-source-plus"> + </span><span class="bg-tt-source-transit">${escapeHTML(t('transit'))}</span>`
+          : escapeHTML(t(TRANSIT_SOURCE_LABELS[source]));
         acts.push(`<span class="bg-tt-source ${source}">${label}</span>`);
       }
       for (const { planet, line } of (transit?.mode === 'transit-only' ? [] : designGates.get(gateNum) || [])) {
@@ -545,42 +566,51 @@ export function renderBodygraph(container, chart, opts = {}) {
       }
       const channelNote = (GATE_CHANNELS[gateNum] || [])
         .filter(ch => definedChannelKeys.has(ch.gates.join('-')))
-        .map(ch => `Channel of ${ch.name} (${ch.gates.join('-')})`)
+        .map(ch => escapeHTML(t('Channel of {name} ({gates})', {
+          name: displayChannel(ch), gates: ch.gates.join('-')
+        })))
         .join(' · ');
-      return `<strong>Gate ${gateNum} — ${gate?.name || ''}</strong>` +
+      const gateTitle = t('Gate {gate} — {name}', { gate: gateNum, name: formatDisplay('gateTooltip', displayGate(gateNum), hexagramName(gateNum)) });
+      return `<strong>${escapeHTML(gateTitle)}</strong>` +
         (acts.length ? `<div class="bg-tt-acts">${acts.join(' ')}</div>` : '') +
         (channelNote ? `<div class="bg-tt-channel">${channelNote}</div>` : '');
     }
 
     function centerTooltipText(centerKey) {
-      const dn = CENTER_DISPLAY[centerKey] || centerKey;
+      const dn = displayCenter(centerKey);
+      const centerTitle = escapeHTML(t('{center} Center', { center: dn }));
       if (composite) {
         const o = centerOwner(centerKey);
-        const txt = o === 'both' ? 'Both of you define this'
-          : o === 'a' ? `${composite.labelA} defines this`
-          : o === 'b' ? `${composite.labelB} defines this`
-          : o === 'bridged' ? 'Defined together — neither of you has it alone'
-          : 'Open between you';
-        return `<strong>${dn} Center</strong><div class="bg-tt-channel">${txt}</div>`;
+        const txt = o === 'both' ? t('Both of you define this')
+          : o === 'a' ? t('{label} defines this', { label: composite.labelA })
+          : o === 'b' ? t('{label} defines this', { label: composite.labelB })
+          : o === 'bridged' ? t('Defined together — neither of you has it alone')
+          : t('Open between you');
+        return `<strong>${centerTitle}</strong><div class="bg-tt-channel">${escapeHTML(txt)}</div>`;
       }
       const defined = definedCenters.has(centerKey);
-      if (transit) return `<strong>${dn} Center</strong><div class="bg-tt-channel">${transit.mode === 'overlay' && transit.natalCenters.has(centerKey) ? 'Defined in birth chart' : defined ? 'Defined by the selected transit combination' : 'Not defined in the selected view'}</div>`;
+      if (transit) return `<strong>${centerTitle}</strong><div class="bg-tt-channel">${escapeHTML(t(transit.mode === 'overlay' && transit.natalCenters.has(centerKey) ? 'Defined in birth chart' : defined ? 'Defined by the selected transit combination' : 'Not defined in the selected view'))}</div>`;
       const count = [...activeGates].filter(g => GATES[g]?.center === centerKey).length;
-      return `<strong>${dn} Center</strong>` +
-        `<div class="bg-tt-channel">${defined ? 'Defined — consistent energy you radiate' : 'Open — you take this energy in'}` +
-        (count ? ` · ${count} active gate${count === 1 ? '' : 's'}` : '') + `</div>`;
+      const description = t(defined ? 'Defined — consistent energy you radiate' : 'Open — you take this energy in') +
+        (count ? t(count === 1 ? ' · {count} active gate' : ' · {count} active gates', { count }) : '');
+      return `<strong>${centerTitle}</strong><div class="bg-tt-channel">${escapeHTML(description)}</div>`;
     }
 
     function compositeGateTooltip(g) {
-      const gate = GATES[g];
       const o = gateOwner(g);
       const who = o === 'both' ? `${composite.labelA} + ${composite.labelB}`
-        : o === 'a' ? composite.labelA : o === 'b' ? composite.labelB : 'Neither of you';
+        : o === 'a' ? composite.labelA : o === 'b' ? composite.labelB : t('Neither of you');
       const dyn = (GATE_CHANNELS[g] || [])
-        .map(ch => { const d = channelDynamic(ch); return d ? `${d} · ${ch.name} (${ch.gates.join('-')})` : null; })
+        .map(ch => {
+          const d = channelDynamic(ch);
+          if (!d) return null;
+          const name = formatDisplay('channelTooltip', displayChannel(ch), ch.gates.join('-'));
+          return escapeHTML(`${t(d)} · ${name}`);
+        })
         .filter(Boolean);
-      return `<strong>Gate ${g} — ${gate?.name || ''}</strong>` +
-        `<div class="bg-tt-acts">${who}</div>` +
+      const gateTitle = t('Gate {gate} — {name}', { gate: g, name: formatDisplay('gateTooltip', displayGate(g), hexagramName(g)) });
+      return `<strong>${escapeHTML(gateTitle)}</strong>` +
+        `<div class="bg-tt-acts">${escapeHTML(who)}</div>` +
         (dyn.length ? `<div class="bg-tt-channel">${dyn.join('<br>')}</div>` : '');
     }
 
@@ -651,7 +681,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   // ---------- Planet columns ----------
   function planetColumn(side, gates, dateLabel) {
     const col = el('div', { class: `bg-planets bg-planets-${side}` });
-    const title = side === 'design' ? 'Design' : 'Personality';
+    const title = t(side === 'design' ? 'Design' : 'Personality');
     col.appendChild(el('div', {
       class: 'bg-planets-head',
       text: title
@@ -663,8 +693,12 @@ export function renderBodygraph(container, chart, opts = {}) {
         class: 'bg-planet-row',
         type: 'button',
         'data-gate': g ? g.gate : '',
-        title: PLANET_NAMES[planet],
-        'aria-label': g ? `${title} ${PLANET_NAMES[planet]}: gate ${g.gate} line ${g.line}` : `${PLANET_NAMES[planet]}: no activation`
+        title: displayPlanet(planet),
+        'aria-label': g
+          ? t('{title} {planet}: gate {gate} line {line}', {
+            title, planet: displayPlanet(planet), gate: g.gate, line: g.line
+          })
+          : t('{planet}: no activation', { planet: displayPlanet(planet) })
       });
       row.appendChild(el('span', { class: 'bg-planet-glyph', text: PLANET_GLYPHS[planet] }));
       row.appendChild(el('span', { class: 'bg-planet-act', text: g ? `${g.gate}.${g.line}` : '—' }));
