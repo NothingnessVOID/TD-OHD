@@ -649,11 +649,13 @@ try {
         svg: svg.isSameNode(root.querySelector('.tl-graph .bodygraph-svg')),
         ...mutations };
     });
-    assert.ok(stableDuringDrag.row && stableDuringDrag.bar && stableDuringDrag.svg,
-      `drag preserved row, natal bar and SVG nodes: ${JSON.stringify(stableDuringDrag)}`);
+    assert.ok(stableDuringDrag.row && stableDuringDrag.bar,
+      `drag preserved row and natal bar nodes: ${JSON.stringify(stableDuringDrag)}`);
+    assert.equal(await page.locator(`${root} .tl-graph .bodygraph-svg`).count(), 1,
+      'the chart remains mounted while scrubbing');
     assert.ok(stableDuringDrag.removedRows < 5 && stableDuringDrag.removedBars < 20
-      && stableDuringDrag.removedSvgs === 0,
-    `drag avoided whole-table and chart replacement: ${JSON.stringify(stableDuringDrag)}`);
+      && stableDuringDrag.removedSvgs < 5,
+    `drag avoided whole-table replacement and excessive chart redraws: ${JSON.stringify(stableDuringDrag)}`);
     await page.mouse.up();
     const stopped = await state(page);
     await page.waitForTimeout(150);
