@@ -342,6 +342,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
   const model = detailContext?.model;
   const channel = CHANNELS.find(ch => ch.gates.join('-') === id);
   if (!model || !channel) return;
+  const description = CHANNEL_DESCRIPTIONS[id]?.description;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   currentDetail = { kind: 'channel', id };
   const active = model.channels.some(ch => ch.gates.join('-') === id);
@@ -351,6 +352,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
       <div class="detail-label">Channel ${id}</div><div class="detail-name">${esc(channel.name)}</div>
       <span class="circuit-badge transit-source-badge ${active ? model.channelSource(channel) : 'inactive'}">${active ? TRANSIT_SOURCE_LABELS[model.channelSource(channel)] : 'No complete channel in this view'}</span>
       <p class="gate-detail-desc">${active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.'}</p>
+      ${description ? `<p class="gate-detail-desc transit-channel-description">${esc(description)}</p>` : ''}
       <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="Gate ${g} · ${TRANSIT_SOURCE_LABELS[model.gateSource(g)]}">
         <span class="transit-detail-gate"><strong>Gate ${g}</strong>${model.transitGates.has(g) ? '<span class="circuit-badge transit-source-badge">Transit</span>' : model.gateSource(g) === 'inactive' ? '<span class="circuit-badge transit-source-badge inactive">Inactive</span>' : ''}</span>
         <span class="transit-detail-action">View gate details</span>
