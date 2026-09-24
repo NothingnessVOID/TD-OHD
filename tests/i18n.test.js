@@ -12,14 +12,14 @@ import { computeChart, sensitivityCheck } from '../src/lib/chartdata.js';
 const directory = new URL('../src/locales/zh-CN/', import.meta.url);
 const uiCatalogs = readdirSync(directory).filter(name => /^ui-.*\.json$/.test(name));
 
-test('TD branding keeps the personal fork, Pages URL and upstream attribution distinct', () => {
+test('TD-OHD branding keeps the personal fork, Pages URL and upstream attribution distinct', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  assert.match(html, /<span class="logo-text">TD<\/span>/);
-  assert.match(html, /<meta property="og:url" content="https:\/\/nothingnessvoid\.github\.io\/open-human-design\/">/);
-  assert.match(html, /href="https:\/\/github\.com\/NothingnessVOID\/open-human-design"/);
+  assert.match(html, /<span class="logo-text">TD-OHD<\/span>/);
+  assert.match(html, /<meta property="og:url" content="https:\/\/nothingnessvoid\.github\.io\/TD-OHD\/">/);
+  assert.match(html, /href="https:\/\/github\.com\/NothingnessVOID\/TD-OHD"/);
   assert.match(html, /href="https:\/\/github\.com\/Unforced-Dev\/open-human-design"/);
   for (const locale of ['zh-CN', 'zh-Hant']) {
-    assert.match(localeResources[locale].messages['TD — Interactive Human Design Charts'], /^TD/);
+    assert.match(localeResources[locale].messages['TD Open Human Design — Interactive Charts'], /^TD/);
     assert.ok(localeResources[locale].messages['Based on']);
   }
 });

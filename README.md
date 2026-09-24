@@ -1,10 +1,10 @@
-# TD
+# TD Open Human Design (TD-OHD)
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-**A personal fork of [Open Human Design](https://github.com/Unforced-Dev/open-human-design), with more precise transit controls, an interactive timeline, and English, Simplified Chinese, and Traditional Chinese interfaces.** TD is a working name; it does not stand for a finalized product name.
+**A personal fork of [Open Human Design](https://github.com/Unforced-Dev/open-human-design), with more precise transit controls, an interactive timeline, and English, Simplified Chinese, and Traditional Chinese interfaces.** TD Open Human Design (TD-OHD) is the current working name.
 
-**[Open the GitHub Pages app](https://nothingnessvoid.github.io/open-human-design/)**
+**[Open the GitHub Pages app](https://nothingnessvoid.github.io/TD-OHD/)**
 
 The original project provides interactive Human Design charts, including the bodygraph, planetary activations, Type, Strategy, Authority, Profile, Variable/PHS, Incarnation Cross, transits, relationship charts, and team analysis. This fork builds on that foundation rather than claiming those features as new work.
 
@@ -17,15 +17,15 @@ The original project provides interactive Human Design charts, including the bod
 
 ## Privacy and hosting
 
-The [GitHub Pages version](https://nothingnessvoid.github.io/open-human-design/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
+The [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
 
 ## Run locally
 
 Requires Node.js 20 or newer.
 
 ```bash
-git clone https://github.com/NothingnessVOID/open-human-design.git
-cd open-human-design
+git clone https://github.com/NothingnessVOID/TD-OHD.git
+cd TD-OHD
 npm install
 npm run dev
 ```
@@ -45,4 +45,4 @@ The transit palette lives in [`src/styles.css`](src/styles.css), in `:root` and 
 
 This repository is a fork of **[Unforced-Dev/open-human-design](https://github.com/Unforced-Dev/open-human-design)**. The original authors created the core application and chart experience; the changes listed above were developed on top of it. This personal fork keeps its own deployment and documentation. For upstream contributions, review changes against the original repository and submit focused pull requests.
 
-The `open-human-design` repository name is retained for fork and Pages-link continuity. **TD** is only the current display name and can be changed later.
+The repository is named **TD-OHD**. The original project remains credited and linked above; this working name can be revised later without changing the project's provenance.

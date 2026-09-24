@@ -1,10 +1,10 @@
-# TD
+# TD Open Human Design（TD-OHD）
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-**这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了更精细的行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** TD 目前只是暂用名称，不代表已经确定的产品全称。
+**这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了更精细的行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** 当前暂用英文名称 TD Open Human Design，缩写 TD-OHD；暂不展开 TD 的中文含义。
 
-**[打开 GitHub Pages 网页](https://nothingnessvoid.github.io/open-human-design/)**
+**[打开 GitHub Pages 网页](https://nothingnessvoid.github.io/TD-OHD/)**
 
 原项目提供交互式人类图，包括人体图、行星激活、类型、策略、内在权威、人生角色、四箭头／PHS、化身十字、行运、关系合图与团队分析。本仓库在这些已有功能上继续开发，不把原项目的成果写成新增功能。
 
@@ -17,15 +17,15 @@
 
 ## 隐私与部署
 
-[GitHub Pages 版本](https://nothingnessvoid.github.io/open-human-design/)是纯静态网页。图表在浏览器中计算，保存的人物资料留在该浏览器的本地存储中；这个部署没有登录或跨浏览器同步服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这个 Pages 部署。
+[GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)是纯静态网页。图表在浏览器中计算，保存的人物资料留在该浏览器的本地存储中；这个部署没有登录或跨浏览器同步服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这个 Pages 部署。
 
 ## 本地运行
 
 需要 Node.js 20 或更新版本。
 
 ```bash
-git clone https://github.com/NothingnessVOID/open-human-design.git
-cd open-human-design
+git clone https://github.com/NothingnessVOID/TD-OHD.git
+cd TD-OHD
 npm install
 npm run dev
 ```
@@ -45,4 +45,4 @@ npm run build -- --mode static
 
 本仓库从 **[Unforced-Dev/open-human-design](https://github.com/Unforced-Dev/open-human-design)** 分叉而来。核心应用与原有图表体验由原项目作者开发；上面列出的调整建立在其工作之上。这个个人版本有独立的部署和说明文档。若要向原项目贡献功能，会单独比对原仓库，并提交范围清晰的 PR。
 
-仓库仍保留 `open-human-design` 这个名字，以免改变分叉关系和现有 Pages 链接。**TD** 只是目前的网页展示名称，之后可以再调整。
+仓库名现为 **TD-OHD**。上方保留原项目的署名和链接；将来调整暂用名称，也不会改变项目来源。
