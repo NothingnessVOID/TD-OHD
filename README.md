@@ -1,111 +1,48 @@
-# Open Human Design
+# TD
 
-**Free, open-source, interactive Human Design charts — all the depth, none of the paywall.**
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-**[→ openhumandesign.com](https://openhumandesign.com)**
+**A personal fork of [Open Human Design](https://github.com/Unforced-Dev/open-human-design), with more precise transit controls, an interactive timeline, and English, Simplified Chinese, and Traditional Chinese interfaces.** TD is a working name; it does not stand for a finalized product name.
 
-Every other Human Design tool charges for the deep layers. Open HD gives you the complete chart
-for free, calculated precisely, in an interface designed to be calm rather than overwhelming:
+**[Open the GitHub Pages app](https://nothingnessvoid.github.io/open-human-design/)**
 
-- **Full bodygraph** — canonical layout with Design (red) and Personality (black) planet columns,
-  traditional center colors, candy-striped dual activations, tap any gate for detail
-- **Type, Strategy, Authority, Profile, Definition** — with plain-language explanations first,
-  jargon second
-- **Variable / PHS** (the four arrows) — determination, environment, motivation, perspective with
-  color, tone and cognition
-- **Planetary activations** — all 26, with line/color/tone/base substructure
-- **Incarnation Cross** — canonical naming with the gates quartet, plus the Gene Keys
-  activation sequence
-- **Transits** — any date overlaid on your chart, with channel completions
-- **Transit timeline** — explore gate, channel and center activation intervals, with calendar ranges and an interactive bodygraph; see [the timeline guide](docs/transit-timeline.md)
-- **Connection charts** — electromagnetic / companionship / compromise / dominance between two people
-- **Team analysis** — Penta roles and group dynamics
-- **Birth-time reliability check** — see honestly whether a ±15 minute error would change your chart
+The original project provides interactive Human Design charts, including the bodygraph, planetary activations, Type, Strategy, Authority, Profile, Variable/PHS, Incarnation Cross, transits, relationship charts, and team analysis. This fork builds on that foundation rather than claiming those features as new work.
 
-## Accuracy
+## What this fork adds
 
-- Planetary positions from [astronomy-engine](https://github.com/cosinekitty/astronomy)
-  (VSOP87, ±1 arcminute — a gate spans 5.625°, so far beyond chart-flipping precision)
-- Design calculated at **exactly 88° of solar arc** before birth (root-found, not "88 days")
-- Birth place → IANA timezone → **historical UTC offset at the birth moment** (wartime DST,
-  half-hour zones, the works) — never longitude guessing
-- Calculation engine validated against five fully-documented reference charts (Ra Uru Hu,
-  Einstein, Marilyn Monroe, Madonna, Amy Winehouse) and the canonical gate wheel (all 64 exact)
+- **Precise transits:** choose a date, time down to seconds, and timezone; handle historical offsets and daylight-saving transitions.
+- **More ways to explore transits:** natal-plus-transit and transit-only views, channel and center interactions, and an interactive [transit timeline](docs/transit-timeline.md).
+- **Bodygraph interaction fixes:** improved connection paths, hover behavior, tooltip clipping, and gate/channel detail navigation.
+- **Localization:** switch between English, Simplified Chinese, and Traditional Chinese. A saved language choice takes priority; otherwise the app follows a supported browser language and falls back to English. See the [localization guide](docs/localization.md) and [Chinese terminology glossary](docs/术语对照表.zh-CN.md).
 
-## Privacy
+## Privacy and hosting
 
-No account. No tracking. Charts are computed in your browser and saved to your device only.
-Shareable links encode birth data in the URL — share deliberately.
+The [GitHub Pages version](https://nothingnessvoid.github.io/open-human-design/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
 
-## Connect your AI
+## Run locally
 
-Open HD ships a remote MCP server — point Claude (Settings → Connectors → add
-`https://openhumandesign.com/mcp`), ChatGPT (developer mode), or Cursor at it and your
-AI can compute charts, compare two people, and check transits in conversation:
-
-> *"What's the Human Design chart for someone born June 15th 1990, 2:30pm in Boulder?"*
-
-Tools: `compute_chart` (Human Design / Gene Keys / astrology), `compare_charts`,
-`get_transits`, `analyze_team`, `get_descriptions`. No account needed — saved-people
-tools arrive with optional accounts (see `docs/PLATFORM.md`).
-
-## Development
+Requires Node.js 20 or newer.
 
 ```bash
-git clone https://github.com/Unforced-Dev/open-human-design
+git clone https://github.com/NothingnessVOID/open-human-design.git
 cd open-human-design
-npm install        # natalengine comes from npm
+npm install
 npm run dev
 ```
 
-Transit time defaults to minute precision. Enable **Seconds** beside the time to enter
-`HH:mm:ss`; disabling it resets seconds to `00`. **Now** uses the selected precision.
-
-NatalEngine 1.6.0 drops seconds in two calculation steps. The install script
-applies a small, version-checked patch in `scripts/patch-natalengine-seconds.mjs`
-so Transit calculations retain seconds; other calculators keep their existing
-behavior. The dependency is pinned until this is supported upstream. If you
-install with `--ignore-scripts`, run the patch script manually before building.
-After changing the patch, restart Vite with `npm run dev -- --force` to refresh
-its cached dependency bundle.
-
 ```bash
-npm test       # unit tests
-npm run e2e    # browser smoke test (dev server must be running)
-npm run build  # production build
+npm test
+npm run build -- --mode static
 ```
 
-### Transit colors
+`npm install` applies a version-checked patch to NatalEngine 1.6.0 so transit calculations preserve seconds. If install scripts are disabled, run `node scripts/patch-natalengine-seconds.mjs` before building. The chart engine is [NatalEngine](https://github.com/Unforced-Dev/natalengine).
 
-The transit palette lives alongside the app palette at the top of
-[`src/styles.css`](src/styles.css), in `:root` and `[data-theme="dark"]`.
-The SVG and HTML UI share these CSS custom properties:
+Transit time uses minutes by default. Enable **Seconds** for `HH:mm:ss`; turning it off resets seconds to `00`. The **Now** button respects the selected precision. After changing the NatalEngine patch, restart Vite with `npm run dev -- --force` to refresh its dependency cache. Browser smoke tests can be run with `npm run e2e` while the dev server is running.
 
-| Property | Used for |
-| --- | --- |
-| `--transit-source` | Transit paths, gate fills and rings, center outlines and hatching |
-| `--transit-source-soft` | Hatched center and source badge backgrounds |
-| `--transit-source-contrast` | Numbers on filled transit gates |
-| `--transit-source-text` | Readable transit labels, badge text and detail text |
+The transit palette lives in [`src/styles.css`](src/styles.css), in `:root` and `[data-theme="dark"]`. `--transit-source`, `--transit-source-soft`, `--transit-source-contrast`, and `--transit-source-text` control transit paths, backgrounds, gate numbers, and labels in both SVG and HTML. Override all four for a new skin and check contrast in both themes. The default accent is `#1aadb7` in light mode and `#66c7cc` in dark mode; circuit badges retain their category colors.
 
-To adapt a skin, override these properties after the base stylesheet for both
-light and dark themes. No renderer changes are needed. Keep gate numbers readable
-against `--transit-source`, and source text readable against `--transit-source-soft`
-and the page surfaces. The default cyan accent is `#1aadb7` in light mode and
-`#66c7cc` in dark mode, with a darker light-mode text color for readability.
-Controls and selection highlights continue to use the app's `--accent` palette;
-circuit badges keep their existing category colors. This adds no theme-switching UI.
+## Project relationship
 
-Powered by [NatalEngine](https://github.com/Unforced-Dev/natalengine) — an open, MIT-licensed
-birth chart engine for Human Design, Western astrology, Vedic astrology, and Gene Keys, with an
-MCP server for AI integrations.
+This repository is a fork of **[Unforced-Dev/open-human-design](https://github.com/Unforced-Dev/open-human-design)**. The original authors created the core application and chart experience; the changes listed above were developed on top of it. This personal fork keeps its own deployment and documentation. For upstream contributions, review changes against the original repository and submit focused pull requests.
 
-## Localization
-
-Switch between English, Simplified Chinese and Traditional Chinese in the header. A saved manual choice takes priority; otherwise the app follows a supported browser language and falls back to English. The preference changes display text only; chart calculations and saved birth data stay unchanged. See [localization architecture and contribution notes](docs/localization.md) for adding another language and [the Chinese terminology glossary](docs/术语对照表.zh-CN.md) for translation sources.
-
-## License
-
-MIT. Interpretive text is original phrasing. The Human Design system's structure (gates, channels,
-centers, mechanics) is uncopyrightable fact; Ra Uru Hu's original prose remains Jovian Archive's,
-and none is used here.
+The `open-human-design` repository name is retained for fork and Pages-link continuity. **TD** is only the current display name and can be changed later.
