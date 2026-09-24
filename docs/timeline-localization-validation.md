@@ -15,6 +15,8 @@ See [resource ownership and extension guide](localization.md) and [researched te
 - Unfiltered `npm test`: 137 passed, 2 failed in existing MCP geocoding checks. The first failed with `fetch failed`; the unknown-place assertion consequently did not receive the expected “no match” response. No network or security settings were changed.
 - `git diff --check`: passed.
 
+After moving the tested commit into the requested development checkout, its production build and 81 localization/timeline/line-fixing tests passed again. The broader repeat there was stopped when the unrelated MCP test process stalled while loading a dependency; the 138-test result above is from the isolated checkout with a fresh locked dependency install. The development checkout's existing dependencies were not replaced.
+
 Browser checks used a separate local dev server and a synthetic shared chart:
 
 - Simplified → Traditional → English switching translated controls, row names, planet/fixing descriptions, calendar labels, accessibility labels and shared channel descriptions.
