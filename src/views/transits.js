@@ -6,13 +6,15 @@
 import { calculateHDTransits, calculateTransitGates } from 'natalengine';
 import { renderBodygraph } from '../bodygraph.js';
 import { esc } from '../lib/format.js';
+import { t, setMessage } from '../lib/i18n.js';
 import { transitInstants, engineTransitArguments, formatTransitOffset } from '../lib/transit-time.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { renderTransitLegend, renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
 
-import { getCurrentChart, showTransitDetail } from './chart.js';
+import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './chart.js';
 
 let transitDetailContext = null;
+let lastTransitResult = null;
 
 export function setupTransitView() {
   document.getElementById('transits-view').addEventListener('click', event => {
@@ -52,7 +54,8 @@ export function setupTransitView() {
     // Older browsers can still resolve a typed IANA zone, even without a zone list.
     const input = document.createElement('input');
     input.id = zoneInput.id;
-    input.placeholder = 'e.g. Europe/London';
+    input.dataset.i18nPlaceholder = 'e.g. Europe/London';
+    input.placeholder = t(input.dataset.i18nPlaceholder);
     input.setAttribute('aria-describedby', 'transit-status');
     zoneInput.replaceWith(input);
     zoneInput = input;
@@ -89,6 +92,7 @@ export function renderTransits() {
   const current = getCurrentChart();
   if (!current) return;
   transitDetailContext = null;
+  lastTransitResult = null;
   const date = document.getElementById('transit-date').value;
   let time = document.getElementById('transit-time').value;
   if (time.length === 5 && document.getElementById('transit-seconds').checked) time += ':00';
@@ -101,7 +105,7 @@ export function renderTransits() {
     matches = transitInstants(date, time, zone);
     if (!matches.length) throw new Error('This local time does not exist in that timezone. Choose another time.');
   } catch (error) {
-    status.textContent = error instanceof RangeError ? 'Enter a valid IANA timezone.' : error.message;
+    setMessage(status, error instanceof RangeError ? 'Enter a valid IANA timezone.' : error.message);
     choiceLabel.hidden = true;
     document.getElementById('transit-bodygraph').replaceChildren();
     document.getElementById('transit-content').replaceChildren();
@@ -113,6 +117,7 @@ export function renderTransits() {
   choiceLabel.hidden = matches.length < 2;
   choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatTransitOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
   choice.value = String(selected.instant);
+  delete status.dataset.i18n;
   status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
   const [transitDate, engineOffset] = engineTransitArguments(selected.instant);
 
@@ -123,14 +128,27 @@ export function renderTransits() {
 
   const mode = document.querySelector('input[name="transit-mode"]:checked').value;
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
+  lastTransitResult = { chart: current.chart, overlay, transitGates, model, mode };
+  drawTransitResult(lastTransitResult);
+}
+
+// A language change redraws cached results, without resolving the selected
+// wall-clock time again or changing the user's DST-fold choice.
+export function refreshTransitLanguage() {
+  if (lastTransitResult?.chart !== getCurrentChart()?.chart) return;
+  if (lastTransitResult) drawTransitResult(lastTransitResult, true);
+}
+
+function drawTransitResult({ chart, overlay, transitGates, model, mode }, preserveDetail = false) {
   renderTransitLegend(mode);
 
   // Bodygraph colored by activation source
   const graphContainer = document.getElementById('transit-bodygraph');
   if (graphContainer) {
-    const context = { transitGates: overlay.transitGates, mode, model };
+    const context = preserveDetail && transitDetailContext
+      ? transitDetailContext : { transitGates: overlay.transitGates, mode, model };
     transitDetailContext = context;
-    context.api = renderBodygraph(graphContainer, current.chart, {
+    context.api = renderBodygraph(graphContainer, chart, {
       planetColumns: false,
       animate: false,
       transitGates,
@@ -141,7 +159,8 @@ export function renderTransits() {
     });
   }
 
-  renderTransitContent(overlay, date, time);
+  renderTransitSummary(overlay, model);
+  if (preserveDetail && transitDetailContext) refreshTransitDetail(transitDetailContext);
 }
 
 export function renderTransitContent(overlay, date = null) {
