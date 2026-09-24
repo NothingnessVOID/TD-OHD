@@ -35,12 +35,13 @@ export function setupTimelineView(options = {}) {
       resolveTime: transitInstants,
       formatOffset: formatTransitOffset,
       closeDetail: closeDetailDialog,
+      onExit: () => document.querySelector('.nav-link[data-view="chart"]')?.click(),
       showDetail: showTransitDetail,
       refreshDetail: refreshTransitDetail,
       planets: PLANET_ORDER.map(id => ({ id, get name() { return planetName(id); }, glyph: PLANET_GLYPHS[id] })),
       renderGraph(container, chart, context, onHighlight) {
         return renderBodygraph(container, chart, {
-          planetColumns: false, animate: false,
+          planetColumns: false, animate: false, touchPreview: true,
           transitGates: context.model.transitGates, transitModel: context.model,
           onGateClick: gate => showTransitDetail('gate', gate, context),
           onCenterClick: center => showTransitDetail('center', center, context),
