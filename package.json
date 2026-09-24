@@ -1,7 +1,7 @@
 {
   "name": "open-human-design",
   "version": "0.3.0",
-  "description": "Open Human Design — an open-source, interactive Human Design chart app",
+  "description": "TD Open Human Design (TD-OHD) — a fork with precise transits, an interactive timeline and three interface languages",
   "type": "module",
   "scripts": {
     "postinstall": "node scripts/patch-natalengine-seconds.mjs",
