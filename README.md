@@ -100,6 +100,10 @@ Powered by [NatalEngine](https://github.com/Unforced-Dev/natalengine) — an ope
 birth chart engine for Human Design, Western astrology, Vedic astrology, and Gene Keys, with an
 MCP server for AI integrations.
 
+## Localization
+
+Switch between English and Simplified Chinese in the header. The preference changes display text only; chart calculations and saved birth data stay unchanged. See [localization architecture and contribution notes](docs/localization.md) for adding another language and [the Chinese terminology glossary](docs/术语对照表.zh-CN.md) for translation sources.
+
 ## License
 
 MIT. Interpretive text is original phrasing. The Human Design system's structure (gates, channels,
