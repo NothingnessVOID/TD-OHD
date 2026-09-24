@@ -15,6 +15,18 @@ The original project provides interactive Human Design charts, including the bod
 - **Bodygraph interaction fixes:** improved connection paths, hover behavior, tooltip clipping, and gate/channel detail navigation.
 - **Localization:** switch between English, Simplified Chinese, and Traditional Chinese. A saved language choice takes priority; otherwise the app follows a supported browser language and falls back to English. See the [localization guide](docs/localization.md) and [Chinese terminology glossary](docs/术语对照表.zh-CN.md).
 
+## See it in action
+
+These short recordings use an isolated browser and a synthetic chart named **Demo Chart**; they contain no saved personal profiles.
+
+**Transit timeline:** drag across the activation tracks to change the selected instant, switch to a 24-hour range, and open an activation detail.
+
+![Transit timeline demo showing scrubbing, range selection, and an activation detail](docs/assets/timeline-demo.gif)
+
+**Transit modes:** switch between the birth-chart overlay and transits alone.
+
+![Transit mode demo switching between birth-chart overlay and transit-only bodygraphs](docs/assets/transit-modes-demo.gif)
+
 ## Privacy and hosting
 
 The [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
