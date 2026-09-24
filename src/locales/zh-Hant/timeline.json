@@ -106,5 +106,7 @@
   "hours6": "6 小時",
   "customRange": "自訂",
   "gestures": "左右滑動以移動時間 · 雙指捏合以縮放 · 拖曳軌道以選擇時刻",
+  "mobileControls": "時間軸設定",
+  "backToChart": "返回我的圖",
   "timelineHelp": "方向鍵：1 分鐘 · Shift＋方向鍵：1 小時 · ＋／－：縮放"
 }
