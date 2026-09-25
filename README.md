@@ -31,6 +31,8 @@ These short recordings use an isolated browser and a synthetic chart named **Dem
 
 The [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
 
+The same source tree also has an **optional local desktop mode** with a password-protected SQLite library. It is included in the repository for maintainability but excluded from the Pages bundle. The database and credentials live outside the checkout on the user's computer. See [local desktop mode](docs/LOCAL_DESKTOP_OVERLAY.md) for the build boundary and update procedure.
+
 ## Run locally
 
 Requires Node.js 20 or newer.
@@ -44,7 +46,8 @@ npm run dev
 
 ```bash
 npm test
-npm run build -- --mode static
+npm run build:pages
+npm run check:pages-bundle
 ```
 
 `npm install` applies a version-checked patch to NatalEngine 1.6.0 so transit calculations preserve seconds. If install scripts are disabled, run `node scripts/patch-natalengine-seconds.mjs` before building. The chart engine is [NatalEngine](https://github.com/Unforced-Dev/natalengine).

@@ -7,7 +7,8 @@ import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { compareHumanDesign, GATES, CHANNELS } from 'natalengine';
 import { renderBodygraph } from '../bodygraph.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
+import { listPeople, birthFromPerson, getSharedGuest, savePerson } from '../lib/people.js';
+import { localMode, reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
 import { typeName, authorityName, centerName, graphCenter, gateName, channelName, circuitName, profileName } from '../lib/vocabulary.js';
@@ -102,6 +103,9 @@ function runComparison() {
 
   const b = computeChart(birthB);
   b.defaultDisplayName = defaultName;
+  if (localMode && !select.value) {
+    try { savePerson(birthB); } catch (e) { reportSaveFailure(e); }
+  }
   const comparison = compareHumanDesign(current.chart, b.chart);
   renderConnectionContent(comparison, current, b);
 }

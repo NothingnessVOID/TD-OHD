@@ -31,6 +31,8 @@
 
 [GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)是纯静态网页。图表在浏览器中计算，保存的人物资料留在该浏览器的本地存储中；这个部署没有登录或跨浏览器同步服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这个 Pages 部署。
 
+同一套源码还包含**可选的本机桌面模式**，使用密码保护的 SQLite 资料库。这部分代码放在仓库中便于与前端一起维护，但不会进入 Pages 构建包；数据库与密码资料只留在使用者电脑的代码目录之外。构建边界与更新方法见[本机桌面模式说明](docs/LOCAL_DESKTOP_OVERLAY.md)。
+
 ## 本地运行
 
 需要 Node.js 20 或更新版本。
@@ -44,7 +46,8 @@ npm run dev
 
 ```bash
 npm test
-npm run build -- --mode static
+npm run build:pages
+npm run check:pages-bundle
 ```
 
 安装时会对 NatalEngine 1.6.0 应用带版本检查的补丁，让行运计算保留秒数。如果安装时禁用了脚本，构建前请手动运行 `node scripts/patch-natalengine-seconds.mjs`。图表计算基于 [NatalEngine](https://github.com/Unforced-Dev/natalengine)。
