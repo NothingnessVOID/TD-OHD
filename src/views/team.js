@@ -5,7 +5,8 @@
 
 import { analyzePenta } from 'natalengine';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson } from '../lib/people.js';
+import { listPeople, birthFromPerson, savePerson } from '../lib/people.js';
+import { localMode, reportSaveFailure } from '../lib/local-store.js';
 import { contentText } from '../lib/content.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
@@ -100,6 +101,10 @@ function runTeamAnalysis() {
     const name = enteredName || t('Person {number}', { number });
     if (!enteredName) generatedNames.set(name, number);
     const data = computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
+    if (localMode) {
+      try { savePerson({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null }); }
+      catch (e) { reportSaveFailure(e); }
+    }
     charts.push(data.chart);
     names.push(name);
   });

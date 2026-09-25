@@ -15,6 +15,7 @@
  */
 
 import { getProfiles, getProfile, saveProfile, deleteProfile } from 'natalengine';
+import { localMode, localList, localGet, localSave, localDelete } from './local-store.js';
 
 const LAST_KEY = 'ohd-last-person-id';
 
@@ -66,7 +67,7 @@ const SyncStore = {
   }
 };
 
-const store = SyncStore;
+const store = localMode ? { list: localList, get: localGet, save: localSave, delete: localDelete } : SyncStore;
 
 // ---------------------------------------------------------------------------
 // Public API (stable — main.js and views depend on these names)

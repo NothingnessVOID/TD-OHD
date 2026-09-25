@@ -17,6 +17,7 @@ import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguag
 import { setupTransitView, renderTransits, refreshTransitLanguage } from './views/transits.js';
 import { setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
+import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import './lib/language-switcher.css';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
@@ -28,6 +29,7 @@ let currentData = null; // { birth, chart, geneKeys, sensitivity }
 let pendingCompare = false; // a connection invite is waiting for the visitor's own chart
 let entryApi = null;
 let timelineView = null;
+let localAccountUi = null;
 let initialized = false;
 
 // Language is a display preference, independent of chart storage and accounts.
@@ -50,6 +52,7 @@ function setupLanguageSwitcher() {
     refreshTeamLanguage();
     refreshTransitLanguage();
     timelineView?.setLanguage(timelineLanguageOptions());
+    localAccountUi?.refreshLocalLanguage();
   });
 }
 
@@ -139,7 +142,7 @@ function renderPeopleSwitcher() {
     ${unsaved}
     ${people.map(p => `<option value="${esc(p.id)}" ${p.id === currentId ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}
     <option value="__new">${t('+ New chart…')}</option>
-    ${currentId ? `<option value="__edit">${esc(t('Edit name & AI access…'))}</option>` : ''}
+    ${currentId ? `<option value="__edit">${esc(t(localMode ? 'Edit name…' : 'Edit name & AI access…'))}</option>` : ''}
     ${currentId ? `<option value="__delete">${t('Remove this person…')}</option>` : ''}
   `;
 }
@@ -198,7 +201,7 @@ function openEditPerson(birth) {
       <label class="modal-field"><span data-i18n="Name">${t('Name')}</span>
         <input type="text" id="edit-name" value="${esc(birth.name || '')}" autocomplete="off">
       </label>
-      <label class="modal-check">
+      <label class="modal-check" ${localMode ? 'hidden' : ''}>
         <input type="checkbox" id="edit-ai" ${getAiAccess(id) ? 'checked' : ''}>
         <span data-i18n="Let my AI read this chart through the connector">${t('Let my AI read this chart through the connector')}</span>
       </label>
@@ -234,16 +237,21 @@ function openEditPerson(birth) {
 // Chart loading
 // ==========================================
 function loadBirth(birth, { save = false } = {}) {
+  if (localMode && !birth.id && !save) {
+    const existing = listPeople().find(p => p.name === birth.name && p.birthDate === birth.birthDate && p.birthTime === birth.birthTime && p.location?.timezone === birth.timezone);
+    if (existing) birth = birthFromPerson(existing);
+  }
   let resolved = birth;
-  if (save && birth.name) {
+  if (save && (birth.name || localMode)) {
     // Storage can fail (private mode, quota, 50-profile cap) — the chart
     // must render regardless.
     try {
       const saved = savePerson(birth);
-      resolved = { ...birth, id: saved.id };
+      resolved = { ...birth, id: saved.id, name: saved.name };
       if (birth.aiAccess) setAiAccess(saved.id, true);
     } catch (e) {
       console.warn('Could not save person:', e);
+      if (localMode) reportSaveFailure(e);
     }
   }
 
@@ -380,11 +388,30 @@ function init() {
   setupPeopleSwitcher();
 
   document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-  setupSync();
+  if (localMode) {
+    localAccountUi.setupLocalAccount();
+    window.addEventListener('ohd-people-changed', () => {
+      if (currentData?.birth?.id) {
+        const refreshed = getPerson(currentData.birth.id);
+        if (!refreshed) {
+          timelineView?.deactivate();
+          currentData = null; setLastPersonId(null);
+          history.replaceState(null, '', window.location.pathname); showView('chart');
+        } else {
+          const fields = b => JSON.stringify([b.id, b.name, b.birthDate, b.birthTime, !!b.timeUnknown, b.timezone, b.location?.lat ?? null, b.location?.lon ?? null, b.location?.iana ?? null, b.location?.name ?? null]);
+          if (fields(birthFromPerson(refreshed)) !== fields(currentData.birth)) {
+            const view = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
+            loadBirth(birthFromPerson(refreshed)); showView(view);
+          }
+        }
+      }
+      renderPeopleSwitcher(); entryApi?.renderQuickPick();
+    });
+  } else setupSync();
 
   entryApi = setupEntryView({
     onSubmit: (birth, { savedPerson = false } = {}) => {
-      loadBirth(birth, { save: !savedPerson && !!birth.name });
+      loadBirth(birth, { save: !savedPerson && (localMode || !!birth.name) });
       if (pendingCompare) {
         pendingCompare = false;
         document.getElementById('entry-invite')?.classList.add('hidden');
@@ -461,5 +488,18 @@ function init() {
   renderPeopleSwitcher();
 }
 
-setupLanguageSwitcher();
-init();
+async function boot() {
+  initTheme();
+  setupLanguageSwitcher();
+  if (localMode) {
+    document.getElementById('app').hidden = true;
+    localAccountUi = await import('./lib/local-account.js');
+    if (!(await localAccountUi.unlockLocal())) return;
+  }
+  document.getElementById('app').hidden = false;
+  init();
+}
+boot().catch(error => {
+  console.error('Could not open local library:', error.message);
+  setMessage(document.getElementById('local-auth-status'), 'The library could not be opened. Refresh to try again.');
+});

@@ -35,7 +35,10 @@ jobs:
 
       - name: Build
         # Pages has no account/sync API; omit .env.production's same-origin API setting.
-        run: npm run build -- --mode static
+        run: npm run build:pages
+
+      - name: Check static bundle
+        run: npm run check:pages-bundle
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
