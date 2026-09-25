@@ -4,7 +4,7 @@
 
 **A personal fork of [Open Human Design](https://github.com/Unforced-Dev/open-human-design), with more precise transit controls, an interactive timeline, and English, Simplified Chinese, and Traditional Chinese interfaces.** TD Open Human Design (TD-OHD) is the current working name.
 
-**[Open the GitHub Pages app](https://nothingnessvoid.github.io/TD-OHD/)**
+**[Open the app](https://td-ohd.netlify.app/)** · [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/)
 
 The original project provides interactive Human Design charts, including the bodygraph, planetary activations, Type, Strategy, Authority, Profile, Variable/PHS, Incarnation Cross, transits, relationship charts, and team analysis. This fork builds on that foundation rather than claiming those features as new work.
 
@@ -29,7 +29,7 @@ These short recordings use an isolated browser and a synthetic chart named **Dem
 
 ## Privacy and hosting
 
-The [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) is a static build. Chart calculations run in the browser, saved people stay in that browser's local storage, and this deployment has no sign-in or cross-browser sync service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from this deployment.
+The [Netlify app](https://td-ohd.netlify.app/) and [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) are static deployments. Chart calculations run in the browser, saved people stay in that browser's local storage, and neither deployment has the local desktop password/SQLite service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from these deployments.
 
 The same source tree also has an **optional local desktop mode** with a password-protected SQLite library. It is included in the repository for maintainability but excluded from the Pages bundle. The database and credentials live outside the checkout on the user's computer. See [local desktop mode](docs/LOCAL_DESKTOP_OVERLAY.md) for the build boundary and update procedure.
 

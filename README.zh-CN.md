@@ -4,7 +4,7 @@
 
 **这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了更精细的行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** 当前暂用英文名称 TD Open Human Design，缩写 TD-OHD；暂不展开 TD 的中文含义。
 
-**[打开 GitHub Pages 网页](https://nothingnessvoid.github.io/TD-OHD/)**
+**[打开网页版](https://td-ohd.netlify.app/)** · [GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)
 
 原项目提供交互式人类图，包括人体图、行星激活、类型、策略、内在权威、人生角色、四箭头／PHS、化身十字、行运、关系合图与团队分析。本仓库在这些已有功能上继续开发，不把原项目的成果写成新增功能。
 
@@ -29,7 +29,7 @@
 
 ## 隐私与部署
 
-[GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)是纯静态网页。图表在浏览器中计算，保存的人物资料留在该浏览器的本地存储中；这个部署没有登录或跨浏览器同步服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这个 Pages 部署。
+[Netlify 网页版](https://td-ohd.netlify.app/)和 [GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)都是纯静态部署。图表在浏览器中计算，保存的人物资料留在各自网址对应的浏览器本地存储中；两者都不提供本机桌面版的密码／SQLite 服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这些静态部署。
 
 同一套源码还包含**可选的本机桌面模式**，使用密码保护的 SQLite 资料库。这部分代码放在仓库中便于与前端一起维护，但不会进入 Pages 构建包；数据库与密码资料只留在使用者电脑的代码目录之外。构建边界与更新方法见[本机桌面模式说明](docs/LOCAL_DESKTOP_OVERLAY.md)。
 
