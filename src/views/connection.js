@@ -15,6 +15,8 @@ import { typeName, authorityName, centerName, graphCenter, gateName, channelName
 import { contentText } from '../lib/content.js';
 import { t } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
+import { openKnowledge } from './knowledge.js';
+import { normaliseBirth } from '../lib/birth-input.js';
 
 
 let placeB = null;
@@ -73,6 +75,9 @@ export function compareWithGuest() {
 function runComparison() {
   const current = getCurrentChart();
   if (!current) return;
+  const showError = source => {
+    document.getElementById('connection-content').innerHTML = `<p class="field-error" role="alert">${esc(t(source))}</p>`;
+  };
 
   const select = document.getElementById('conn-person');
   let birthB = null;
@@ -85,10 +90,11 @@ function runComparison() {
     if (person) birthB = birthFromPerson(person);
   } else {
     const date = document.getElementById('conn-date').value;
-    if (!date) return;
-    const time = document.getElementById('conn-time').value || '12:00';
+    if (!date) { showError('Enter a valid birth date.'); document.getElementById('conn-date').focus(); return; }
+    const time = document.getElementById('conn-time').value;
+    if (!time) { showError('Enter a birth time or mark it unknown.'); document.getElementById('conn-time').focus(); return; }
     const loc = placeB?.getBirthLocation(date, time);
-    if (!loc) { placeB?.flagMissing(); return; } // no silent UTC=0
+    if (!loc) { placeB?.flagMissing(); showError('Enter a valid birth UTC offset.'); return; }
     const enteredName = document.getElementById('conn-name').value.trim();
     defaultName = !enteredName;
     birthB = {
@@ -99,9 +105,11 @@ function runComparison() {
       location: loc.lat != null ? loc : null
     };
   }
-  if (!birthB) return;
+  if (!birthB) { showError('A selected team member is unavailable.'); return; }
 
-  const b = computeChart(birthB);
+  let b;
+  try { b = computeChart(normaliseBirth(birthB)); }
+  catch (error) { showError(error.code || error.message); return; }
   b.defaultDisplayName = defaultName;
   if (localMode && !select.value) {
     try { savePerson(birthB); } catch (e) { reportSaveFailure(e); }
@@ -271,6 +279,11 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
 
   function openDetail() {
     openDetailDialog(detail, () => api?.setPinned?.(null));
+    detail.querySelectorAll('[data-library-kind]').forEach(link => link.addEventListener('click', event => {
+      const button = event.currentTarget;
+      closeDetailDialog();
+      openKnowledge(button.dataset.libraryKind, button.dataset.libraryId);
+    }));
   }
 
   function showCompositeGate(g, scroll = true) {
@@ -286,7 +299,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
       return `
         <div class="conn-detail-channel ${dyn}">
           <div class="cdc-dyn">${t(DYN_LABEL[dyn])}</div>
-          <div class="cdc-name">${esc(channelName(ch.gates))} <span class="conn-gates">(${ch.gates.join('–')})</span></div>
+          <button type="button" class="cdc-name knowledge-context-link" data-library-kind="channel" data-library-id="${ch.gates.join('-')}">${esc(channelName(ch.gates))} <span class="conn-gates">(${ch.gates.join('–')})</span> ↗</button>
           <div class="cdc-bring">${bring(g, owner)} · ${bring(other, api.gateOwner(other))}</div>
           <div class="cdc-blurb">${t(DYN_BLURB[dyn])}</div>
         </div>`;
@@ -297,6 +310,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
         <div class="panel-title">${t('Gate {gate}', { gate: g })}${gate?.name ? ' — ' + esc(gateName(g)) : ''}</div>
         <div class="conn-detail-who">${t('Carried by')} <strong>${esc(whoName(owner))}</strong></div>
         ${rows || `<p class="gate-detail-inactive">${t('This gate doesn’t complete a channel between you.')}</p>`}
+        <button type="button" class="knowledge-context-link" data-library-kind="gate" data-library-id="${g}">${t('Open in Knowledge Library')} ↗</button>
       </div>`;
     detail.classList.remove('hidden');
     api.setPinned?.({ kind: 'gate', id: g });
@@ -319,6 +333,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
         <div class="panel-title">${esc(t('{center} Center', { center: dn }))}</div>
         <div class="center-detail-head"><span class="conn-center-tag ${owner || 'open'}">${esc(tag)}</span></div>
         <p class="gate-detail-desc">${esc(txt)}</p>
+        <button type="button" class="knowledge-context-link" data-library-kind="center" data-library-id="${esc(key)}">${t('Open in Knowledge Library')} ↗</button>
       </div>`;
     detail.classList.remove('hidden');
     api.setPinned?.({ kind: 'center', id: key });

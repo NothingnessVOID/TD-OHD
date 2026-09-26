@@ -1438,6 +1438,73 @@ body {
 
 body.modal-open { overflow: hidden; }
 
+.share-preview-dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-height: min(80vh, 680px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  color: var(--text);
+  background: var(--bg-elevated);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+}
+.share-preview-dialog::backdrop { background: rgba(0, 0, 0, .56); }
+.share-preview-dialog h2 { margin: 0 0 8px; font-size: 22px; }
+.share-preview-dialog p { line-height: 1.55; color: var(--text-secondary); }
+.share-preview-dialog .share-close {
+  float: right; width: 30px; height: 30px; border: 0; border-radius: 50%;
+  background: var(--bg-sunken); color: var(--text); cursor: pointer;
+}
+.share-preview-dialog label { display: flex; gap: 8px; align-items: center; margin: 14px 0; }
+.share-fields { border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px; }
+.share-field { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; }
+.share-field + .share-field { border-top: 1px solid var(--border); }
+.share-field span { color: var(--text-secondary); }
+.share-field strong { text-align: right; overflow-wrap: anywhere; }
+.share-preview-dialog #share-copy { width: 100%; }
+
+/* Reference workspace shares the existing card, type and accent tokens. */
+.knowledge-heading, .knowledge-layout { max-width: var(--max-width); margin: 0 auto; }
+.knowledge-heading { padding: 36px 24px 22px; }
+.knowledge-heading h1 { font-family: var(--font-serif); font-size: clamp(30px, 4vw, 44px); font-weight: 400; margin: 0 0 6px; }
+.knowledge-heading p { color: var(--text-secondary); margin: 0; }
+.knowledge-layout { display: grid; grid-template-columns: minmax(270px, 335px) minmax(0, 1fr); gap: 20px; padding: 0 24px 55px; align-items: start; }
+.knowledge-sidebar, .knowledge-detail { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.knowledge-sidebar { padding: 16px; position: sticky; top: calc(var(--header-height) + 12px); max-height: calc(100vh - var(--header-height) - 28px); display: flex; flex-direction: column; }
+.knowledge-sidebar label { font-size: 13px; font-weight: 600; margin-bottom: 7px; }
+.knowledge-sidebar input { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); padding: 10px 12px; }
+.knowledge-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 5px; }
+.knowledge-filters button, .knowledge-tabs button { border: 1px solid var(--border); background: var(--bg); color: var(--text-secondary); border-radius: 20px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
+.knowledge-filters button.active, .knowledge-tabs button.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+.knowledge-count { font-size: 12px; color: var(--text-secondary); margin: 8px 0; }
+.knowledge-results { overflow: auto; min-height: 120px; }
+.knowledge-result { display: grid; width: 100%; text-align: left; padding: 10px; margin: 3px 0; border: 1px solid transparent; border-radius: var(--radius); background: transparent; color: var(--text); cursor: pointer; }
+.knowledge-result:hover, .knowledge-result:focus-visible { background: var(--bg-sunken); border-color: var(--border); }
+.knowledge-more { width: 100%; padding: 9px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--accent-strong); cursor: pointer; }
+.knowledge-result strong { font-size: 14px; font-weight: 600; }
+.knowledge-result small, .knowledge-kind { color: var(--text-secondary); font-size: 11px; }
+.knowledge-kind { text-transform: uppercase; letter-spacing: .04em; }
+.knowledge-detail { min-height: 450px; padding: clamp(20px, 3vw, 34px); line-height: 1.65; }
+.knowledge-detail-header { margin-bottom: 22px; }
+.knowledge-detail-header h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(27px, 3vw, 36px); margin: 3px 0; }
+.knowledge-detail p { color: var(--text-secondary); }
+.knowledge-detail h3 { font-size: 16px; margin: 25px 0 9px; }
+.knowledge-detail h4 { font-size: 14px; margin: 0 0 5px; }
+.knowledge-chip-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.knowledge-link { border: 1px solid var(--border); background: var(--bg); color: var(--accent-strong); border-radius: var(--radius); padding: 6px 9px; cursor: pointer; font: inherit; font-size: 13px; }
+.knowledge-link:hover, .knowledge-link:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
+.knowledge-line { border-left: 2px solid var(--accent); padding: 10px 14px; margin: 10px 0; background: var(--bg); border-radius: 0 var(--radius) var(--radius) 0; }
+.knowledge-line p { margin: 0; }
+.knowledge-source { font-size: 12px; color: var(--text-tertiary); }
+.knowledge-empty { display: grid; place-content: center; min-height: 360px; text-align: center; }
+@media (max-width: 760px) {
+  .knowledge-heading { padding: 22px 16px 16px; }
+  .knowledge-layout { display: flex; flex-direction: column; padding: 0 12px 45px; }
+  .knowledge-sidebar, .knowledge-detail { width: 100%; position: static; max-height: none; }
+  .knowledge-results { max-height: 33vh; }
+}
+
 /* Transit details use the same warm accent as the graph rings. */
 .gate-detail-transits {
   border-left: 2px solid var(--accent);
@@ -2255,3 +2322,21 @@ button.cd-channel:hover { background:var(--accent-soft); }
 .transit-summary-button:where(.transit-completion, .center-card, .gate-item) { background:transparent; }
 .transit-completion-heading { display:flex !important; align-items:center; flex-wrap:wrap; gap:4px 10px; }
 .transit-channel-natal { border-left-color:var(--border); }
+.knowledge-context-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 12px 0;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+}
+.selected-activation {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gate-detail-line.selected-line { border-left: 3px solid var(--accent); padding-left: 12px; }

@@ -22,7 +22,11 @@ import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { esc, formatBirth } from '../lib/format.js';
-import { birthToParams, connectionUrl } from '../lib/share.js';
+import { connectionUrl } from '../lib/share.js';
+import { chartPng, downloadBlob } from '../lib/chart-export.js';
+import { openSharePreview } from './share-preview.js';
+import { openKnowledge } from './knowledge.js';
+import { hangingGatePartners } from '../lib/knowledge-topology.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -31,6 +35,16 @@ let currentDetail = null;
 let detailContext = null;
 const detailGraph = () => detailContext?.api || bodygraphApi;
 let currentOnShare = null;
+
+const libraryButton = (kind, id) => `<button type="button" class="knowledge-context-link" data-knowledge-kind="${esc(kind)}" data-knowledge-id="${esc(String(id))}">${t('Open in Knowledge Library')} ↗</button>`;
+function wireKnowledgeButton(detail) {
+  detail.querySelectorAll('[data-knowledge-kind]').forEach(button => button.addEventListener('click', () => {
+    const kind = button.dataset.knowledgeKind;
+    const id = button.dataset.knowledgeId;
+    closeDetailDialog();
+    openKnowledge(kind, id);
+  }));
+}
 
 const TYPE_COLORS = {
   'Generator': 'var(--generator)',
@@ -57,7 +71,7 @@ export function refreshChartLanguage() {
     detailHistory = history;
     currentLens = lens;
     detailContext = context;
-    if (selected.kind === 'gate') showGateDetail(selected.id, false);
+    if (selected.kind === 'gate') showGateDetail(selected.id, false, selected.focus);
     else if (selected.kind === 'channel') showTransitChannelDetail(selected.id, false);
     else showCenterDetail(selected.id, false);
   }
@@ -93,38 +107,21 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
       <button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>
     </div>
   `;
-  document.getElementById('share-chart').addEventListener('click', async (e) => {
+  document.getElementById('share-chart').addEventListener('click', () => {
     if (!onShare) return;
-    try {
-      await onShare();
-      e.target.textContent = t('Link copied ✓');
-    } catch {
-      e.target.textContent = t('Copy blocked — use the address bar URL');
-    }
-    setTimeout(() => { e.target.textContent = t('Copy chart link'); }, 2500);
+    openSharePreview(birth, onShare);
   });
 
-  // Download a 9:16 share card (Reels / Stories / TikTok), rendered by the
-  // Worker's /og endpoint. (No-op offline / on the static mirror.)
+  // Export the graph currently displayed, including the active theme.
   document.getElementById('save-image').addEventListener('click', async (e) => {
     const btn = e.target;
     btn.textContent = t('Preparing…');
     try {
-      const params = birthToParams(birth);
-      params.set('format', 'story');
-      if (document.documentElement.getAttribute('data-theme') === 'dark') params.set('theme', 'dark');
-      const res = await fetch(`/og/card.png?${params}`);
-      if (!res.ok) throw new Error('render failed');
-      const blob = await res.blob();
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${(birth.name || 'human-design').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-chart.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(a.href);
+      const blob = await chartPng(document.querySelector('#bodygraph-container svg'));
+      downloadBlob(blob, `${(birth.name || 'human-design').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-chart.png`);
       btn.textContent = t('Saved ✓');
-    } catch {
+    } catch (error) {
+      console.warn('Could not export the bodygraph PNG:', error);
       btn.textContent = t('Image unavailable here');
     }
     setTimeout(() => { btn.textContent = t('Save image'); }, 2500);
@@ -209,18 +206,16 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
   }
   if (sensitivity && !birth?.timeUnknown) {
     const solid = sensitivity.shifts.length === 0;
-    // Lead with reassurance and what to do — never alarm. (A founder-flagged
-    // copy fix: the old wording read as a warning about the chart itself.)
     reliabilityHtml = solid
       ? `
       <div class="reliability reliability-solid">
         <span class="reliability-dot"></span>
-        <span>${t('Solid chart — even if your birth time were off by 15 minutes, nothing here would change.')}</span>
+        <span>${t('At 15 minutes before and after the entered time, the seven checked chart factors match. This does not verify other details or times between those points.')}</span>
       </div>`
       : `
       <div class="reliability reliability-soft">
         <span class="reliability-dot"></span>
-        <span>${t("Your chart is solid. One fine detail — your <strong>{detail}</strong> — sits right on a line, so it's the only thing a birth time off by 15+ minutes could nudge. Everything else holds no matter what. If your time came from a birth certificate, even that is settled.", { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
+        <span>${t('One or both times 15 minutes from the entered birth time change these checked factors: {detail}. Other chart details and times between the checked points were not tested.', { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
       </div>`;
   }
   const crossDisplay = chart.incarnationCross
@@ -295,16 +290,20 @@ function gateActiveLines(gateNum, chart) {
 /** The interpretive body of the gate card, in the currently selected tradition. */
 function renderLens(gateNum) {
   const chart = current.chart;
-  const lines = [...new Set([
+  const activeLines = [...new Set([
     ...(detailContext?.mode === 'transit-only' ? [] : gateActiveLines(gateNum, chart)),
     ...Object.values(detailContext?.transitGates || {}).filter(g => g?.gate === gateNum).map(g => g.line)
   ])].sort((a, b) => a - b);
+  const focused = currentDetail?.focus;
+  const focusedLine = focused && chart.gates[focused.side]?.[focused.planet]?.gate === gateNum
+    ? chart.gates[focused.side][focused.planet].line : null;
+  const lines = focusedLine ? [focusedLine, ...activeLines.filter(line => line !== focusedLine)] : activeLines;
 
   if (currentLens === 'iching') {
     const hx = HEXAGRAM_DESCRIPTIONS[gateNum];
     if (!hx) return `<p class="gate-detail-desc">${t('No I Ching reading available.')}</p>`;
     const lineHtml = lines.map(l => hx.lines?.[l]
-      ? `<div class="gate-detail-line"><strong>${t('Line {line}', { line: l })}</strong><p>${esc(hx.lines[l])}</p></div>` : '').join('');
+      ? `<div class="gate-detail-line ${l === focusedLine ? 'selected-line' : ''}"><strong>${t('Line {line}', { line: l })}</strong><p>${esc(hx.lines[l])}</p></div>` : '').join('');
     return `
       <div class="gate-detail-keynote">${t('Hexagram {gate}', { gate: gateNum })} · ${esc(hexagramName(gateNum))}</div>
       <p class="gate-detail-desc">${esc(hx.meaning)}</p>
@@ -325,12 +324,13 @@ function renderLens(gateNum) {
   const desc = GATE_DESCRIPTIONS[gateNum];
   const lineHtml = lines.map(l => {
     const ld = LINE_DESCRIPTIONS[gateNum]?.[l];
-    return ld ? `<div class="gate-detail-line"><strong>${t('Line {line}', { line: l })} · ${esc(ld.keynote)}</strong><p>${esc(ld.description)}</p></div>` : '';
+    return ld ? `<div class="gate-detail-line ${l === focusedLine ? 'selected-line' : ''}"><strong>${t('Line {line}', { line: l })} · ${esc(ld.keynote)}</strong><p>${esc(ld.description)}</p></div>` : '';
   }).join('');
   return `
     ${desc ? `<div class="gate-detail-keynote">${esc(desc.keynote)}</div>` : ''}
     ${desc ? `<p class="gate-detail-desc">${esc(desc.description)}</p>` : ''}
-    ${lineHtml ? `<div class="gate-detail-lines">${lineHtml}</div>` : ''}`;
+    ${lineHtml ? `<div class="gate-detail-lines">${lineHtml}</div>` : ''}
+    <a class="knowledge-source" href="https://github.com/Unforced-Dev/natalengine/blob/main/src/data/${lineHtml ? 'gate-lines.js' : 'gate-descriptions.js'}" target="_blank" rel="noopener noreferrer">${t('Upstream synthesized reading')} ↗</a>`;
 }
 
 function resetDetail() {
@@ -342,6 +342,7 @@ function resetDetail() {
 }
 
 export function showTransitDetail(kind, id, context) {
+  if (!current) { openKnowledge(kind, id); return; }
   closeDetailDialog();
   detailContext = context;
   if (kind === 'gate') showGateDetail(id);
@@ -374,6 +375,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
       <span class="circuit-badge transit-source-badge ${active ? model.channelSource(channel) : 'inactive'}">${t(active ? TRANSIT_SOURCE_LABELS[model.channelSource(channel)] : 'No complete channel in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${description ? `<p class="gate-detail-desc transit-channel-description">${esc(contentText(description))}</p>` : ''}
+      ${libraryButton('channel', id)}
       <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="${esc(t('Gate {gate} · {source}', { gate: g, source: t(TRANSIT_SOURCE_LABELS[model.gateSource(g)]) }))}">
         <span class="transit-detail-gate"><strong>${t('Gate {gate}', { gate: g })}</strong>${model.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
         <span class="transit-detail-action">${t('View gate details')}</span>
@@ -386,12 +388,13 @@ function showTransitChannelDetail(id, pushHistory = true) {
   detailGraph()?.setPinned?.({ kind: 'channel', id });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   detail.querySelectorAll('[data-channel-gate]').forEach(button => button.addEventListener('click', () => showGateDetail(Number(button.dataset.channelGate))));
+  wireKnowledgeButton(detail);
 }
 
 function goBack() {
   const prev = detailHistory.pop();
   if (!prev) return closeDetailDialog();
-  if (prev.kind === 'gate') showGateDetail(prev.id, false);
+  if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.focus);
   else if (prev.kind === 'channel') showTransitChannelDetail(prev.id, false);
   else showCenterDetail(prev.id, false);
 }
@@ -424,10 +427,10 @@ function fitSheetHeight(card, prevH = null) {
   card.style.height = targetH + 'px';
 }
 
-export function showGateDetail(gateNum, pushHistory = true) {
+export function showGateDetail(gateNum, pushHistory = true, focus = null) {
   if (!current) return;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
-  currentDetail = { kind: 'gate', id: gateNum };
+  currentDetail = { kind: 'gate', id: gateNum, focus };
   const { chart } = current;
   const detail = document.getElementById('gate-detail');
   const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
@@ -439,10 +442,10 @@ export function showGateDetail(gateNum, pushHistory = true) {
     ? formatDisplay('lineTag', line, lineName(line))
     : '';
   for (const [planet, g] of Object.entries(chart.gates.design)) {
-    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-design">${PLANET_GLYPHS[planet]} ${t('Design')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
+    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-design ${focus?.side === 'design' && focus.planet === planet ? 'selected-activation' : ''}">${PLANET_GLYPHS[planet]} ${t('Design')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
   }
   for (const [planet, g] of Object.entries(chart.gates.personality)) {
-    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-personality">${PLANET_GLYPHS[planet]} ${t('Personality')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
+    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-personality ${focus?.side === 'personality' && focus.planet === planet ? 'selected-activation' : ''}">${PLANET_GLYPHS[planet]} ${t('Personality')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
   }
 
   const transitActs = Object.entries(detailContext?.transitGates || {})
@@ -473,6 +476,7 @@ export function showGateDetail(gateNum, pushHistory = true) {
         ${detailContext ? `<div class="gate-detail-transits"><div class="detail-label">${t('Transit activations')}</div>${transitActs.length ? transitActs.join('<br>') : t('Not activated by the selected transit.')}</div>` : ''}
         <div class="lens-switch">${lenses().map(([k, label]) => `<button type="button" data-lens="${k}" class="${k === currentLens ? 'active' : ''}">${label}</button>`).join('')}</div>
         <div id="lens-content">${renderLens(gateNum)}</div>
+        ${libraryButton('gate', gateNum)}
         ${(isActive || detailContext?.model) && channelHtml ? channelHtml : ''}
         ${desc?.harmonic ? `<p class="gate-detail-harmonic">${t('Harmonic gate:')} <button class="gate-link" data-gate="${desc.harmonic}">${t('Gate {gate}', { gate: desc.harmonic })}</button>${t(detailContext?.model ? (detailContext.model.channels.some(ch => ch.gates.includes(gateNum) && ch.gates.includes(desc.harmonic)) ? ' (channel active in this view)' : ' (no complete channel in this view)') : chart.gates.all.includes(desc.harmonic) ? ' (active — channel formed)' : ' (open — you meet this energy in others)')}</p>` : ''}
       </div>
@@ -491,6 +495,7 @@ export function showGateDetail(gateNum, pushHistory = true) {
   detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
   detail.querySelectorAll('.gate-link[data-gate]').forEach(btn =>
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate))));
+  wireKnowledgeButton(detail);
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
@@ -565,6 +570,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
           <div class="gate-chip-row">${gateChips}</div>
         </div>
         ${channelHtml}
+        ${libraryButton('center', centerKey)}
       </div>
     </div>
   `;
@@ -578,6 +584,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
     wireRowHover(btn, parseInt(btn.dataset.gate));
   });
+  wireKnowledgeButton(detail);
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
@@ -637,27 +644,10 @@ function renderCentersPanel(container) {
 
 function renderChannelsPanel(container) {
   const { chart } = current;
-  if (chart.channels.length === 0) {
-    container.innerHTML = `
-      <div class="panel-title">${t('Channels')}</div>
-      <p>${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>
-    `;
-    return;
-  }
-
   // Hanging gates: for every channel where exactly one gate is active,
   // the active gate "hangs", seeking its partner. Gates in multiple
   // channels (10, 20, 34, 57) can hang toward several partners at once.
-  const activeSet = new Set(chart.gates.all);
-  const hangingMap = new Map(); // gate -> [partners]
-  for (const ch of CHANNELS) {
-    const [a, b] = ch.gates;
-    if (activeSet.has(a) && !activeSet.has(b)) (hangingMap.get(a) || hangingMap.set(a, []).get(a)).push(b);
-    if (activeSet.has(b) && !activeSet.has(a)) (hangingMap.get(b) || hangingMap.set(b, []).get(b)).push(a);
-  }
-  const hanging = [...hangingMap.entries()]
-    .map(([gate, partners]) => ({ gate, partners: partners.sort((x, y) => x - y) }))
-    .sort((x, y) => x.gate - y.gate);
+  const hanging = hangingGatePartners(chart.gates.all);
 
   const channelsHtml = chart.channels.map(ch => {
     const key = `${ch.gates[0]}-${ch.gates[1]}`;
@@ -676,6 +666,7 @@ function renderChannelsPanel(container) {
 
   container.innerHTML = `
     <div class="panel-title">${t('Channels ({count} defined)', { count: chart.channels.length })}</div>
+    ${chart.channels.length === 0 ? `<p class="panel-intro">${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>` : ''}
     ${channelsHtml}
     ${hanging.length ? `
       <div class="panel-title" style="margin-top:20px">${t('Hanging Gates ({count})', { count: hanging.length })}</div>
@@ -737,12 +728,12 @@ function renderPlanetsPanel(container) {
     const p = chart.gates.personality[planet];
     return `
       <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
+        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
         <span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span>
         <span class="planet-cell-name">${esc(planetName(planet))}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
+        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
       </div>
     `;
   }).join('');
@@ -766,7 +757,7 @@ function renderPlanetsPanel(container) {
     const g = parseInt(cell.dataset.gate);
     if (g) {
       cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showGateDetail(g));
+      cell.addEventListener('click', () => showGateDetail(g, true, { side: cell.dataset.side, planet: cell.dataset.planet }));
       wireRowHover(cell, g);
     }
   });

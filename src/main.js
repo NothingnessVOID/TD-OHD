@@ -20,7 +20,10 @@ import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import './lib/language-switcher.css';
+import './lib/knowledge-messages.js';
+import { normaliseBirth } from './lib/birth-input.js';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
+import { setupKnowledgeView, renderKnowledgeView, openKnowledge } from './views/knowledge.js';
 
 // ==========================================
 // State
@@ -52,6 +55,7 @@ function setupLanguageSwitcher() {
     refreshTeamLanguage();
     refreshTransitLanguage();
     timelineView?.setLanguage(timelineLanguageOptions());
+    if (!document.getElementById('library-view').classList.contains('hidden')) renderKnowledgeView();
     localAccountUi?.refreshLocalLanguage();
   });
 }
@@ -82,12 +86,12 @@ function toggleTheme() {
 // ==========================================
 // Navigation
 // ==========================================
-const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline'];
+const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'library'];
 
 function showView(view) {
   closeDetailDialog();
   if (view !== 'timeline') timelineView?.deactivate();
-  if (!currentData && view !== 'chart') return;
+  if (!currentData && !['chart', 'library', 'transits'].includes(view)) return;
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
 
   document.querySelectorAll('.nav-link').forEach(l =>
@@ -101,9 +105,9 @@ function showView(view) {
   for (const v of VIEWS) {
     document.getElementById(`${v}-view`).classList.add('hidden');
   }
-  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData);
+  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view === 'library' || view === 'transits');
 
-  if (!currentData) return;
+  if (!currentData && !['library', 'transits'].includes(view)) return;
   document.getElementById(`${view}-view`).classList.remove('hidden');
 
   // Per-view refresh on open
@@ -111,12 +115,23 @@ function showView(view) {
   if (view === 'connection') renderConnectionView();
   if (view === 'team') renderTeamView();
   if (view === 'timeline') timelineView?.activate();
+  if (view === 'library') renderKnowledgeView();
 }
 
 function setupNavigation() {
   document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => showView(link.dataset.view));
+    link.addEventListener('click', () => {
+      if (link.dataset.view === 'library') { openKnowledge(); return; }
+      if (location.hash.startsWith('#library')) history.pushState(null, '',
+        `${location.pathname}${currentData ? '?' + birthToParams(currentData.birth) : ''}`);
+      showView(link.dataset.view);
+    });
   });
+  const route = () => location.hash.startsWith('#library') ? showView('library') : showView('chart');
+  window.addEventListener('ohd-knowledge-navigation', route);
+  window.addEventListener('popstate', route);
+  window.addEventListener('hashchange', route);
+  window.addEventListener('ohd-open-knowledge', event => openKnowledge(event.detail.type, event.detail.id));
 }
 
 // ==========================================
@@ -184,7 +199,10 @@ function setupPeopleSwitcher() {
     }
     if (value === '__current') return;
     const person = getPerson(value);
-    if (person) loadBirth(birthFromPerson(person), { save: false });
+    if (person) {
+      try { loadBirth(birthFromPerson(person), { save: false }); }
+      catch { entryApi?.showError('A saved chart contains invalid birth data. Re-enter its birth details before calculating.'); renderPeopleSwitcher(); }
+    }
   });
 }
 
@@ -237,6 +255,7 @@ function openEditPerson(birth) {
 // Chart loading
 // ==========================================
 function loadBirth(birth, { save = false } = {}) {
+  birth = normaliseBirth(birth);
   if (localMode && !birth.id && !save) {
     const existing = listPeople().find(p => p.name === birth.name && p.birthDate === birth.birthDate && p.birthTime === birth.birthTime && p.location?.timezone === birth.timezone);
     if (existing) birth = birthFromPerson(existing);
@@ -259,12 +278,12 @@ function loadBirth(birth, { save = false } = {}) {
   currentData.sensitivity = resolved.timeUnknown ? null : sensitivityCheck(resolved, currentData.chart);
 
   if (resolved.id) setLastPersonId(resolved.id);
-  history.replaceState(null, '', `${window.location.pathname}?${birthToParams(resolved)}`);
+  history.replaceState(null, '', `${window.location.pathname}?${birthToParams(resolved)}${location.hash}`);
 
   renderChartView(currentData, {
     // No optional chaining — a missing clipboard API must reject so the
     // button reports failure honestly instead of "copied".
-    onShare: () => navigator.clipboard.writeText(shareUrl(resolved))
+    onShare: options => navigator.clipboard.writeText(shareUrl(resolved, options))
   });
   renderPeopleSwitcher();
   showView('chart');
@@ -384,6 +403,7 @@ function init() {
   setupTransitView();
   setupConnectionView();
   setupTeamView();
+  setupKnowledgeView();
   timelineView = setupTimelineView();
   setupPeopleSwitcher();
 
@@ -411,7 +431,8 @@ function init() {
 
   entryApi = setupEntryView({
     onSubmit: (birth, { savedPerson = false } = {}) => {
-      loadBirth(birth, { save: !savedPerson && (localMode || !!birth.name) });
+      try { loadBirth(birth, { save: !savedPerson && (localMode || !!birth.name) }); }
+      catch (error) { entryApi?.showError(error.code || error.message); return; }
       if (pendingCompare) {
         pendingCompare = false;
         document.getElementById('entry-invite')?.classList.add('hidden');
@@ -425,8 +446,11 @@ function init() {
   // Boot order: connection invite → shared URL → last person → entry form
   // (read the deep-link view before loadBirth rewrites the URL)
   const deepLinkView = new URLSearchParams(window.location.search).get('view');
+  const libraryLink = location.hash.startsWith('#library');
   const connectInvite = new URLSearchParams(window.location.search).get('connect') === '1';
-  const fromUrl = paramsToBirth(window.location.search.slice(1));
+  let fromUrl = null;
+  try { fromUrl = paramsToBirth(window.location.search.slice(1)); }
+  catch (error) { entryApi?.showError('This shared link contains invalid birth data. Correct the link or enter the details below.'); }
 
   if (fromUrl && connectInvite) {
     // "Compare designs with me" invite: the sender is the OTHER person.
@@ -452,8 +476,10 @@ function init() {
   }
 
   if (fromUrl) {
-    loadBirth(fromUrl, { save: false });
-    if (deepLinkView && VIEWS.includes(deepLinkView)) showView(deepLinkView);
+    try { loadBirth(fromUrl, { save: false }); }
+    catch { entryApi?.showError('This shared link contains invalid birth data. Correct the link or enter the details below.'); return; }
+    if (libraryLink) showView('library');
+    else if (deepLinkView && VIEWS.includes(deepLinkView)) showView(deepLinkView);
     // Shared-chart landing: someone opened a link to a chart that isn't
     // theirs — invite them to make their own (the viral loop).
     if (!getLastPersonId() && fromUrl.name) {
@@ -481,11 +507,13 @@ function init() {
   if (lastId) {
     const person = getPerson(lastId);
     if (person) {
-      loadBirth(birthFromPerson(person), { save: false });
-      return;
+      try { loadBirth(birthFromPerson(person), { save: false }); if (libraryLink) showView('library'); }
+      catch { entryApi?.showError('A saved chart contains invalid birth data. Re-enter its birth details before calculating.'); }
+      if (currentData) return;
     }
   }
   renderPeopleSwitcher();
+  if (libraryLink) showView('library');
 }
 
 async function boot() {

@@ -15,6 +15,10 @@ import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './char
 
 let transitDetailContext = null;
 let lastTransitResult = null;
+const EMPTY_NATAL = {
+  gates: { all: [], design: {}, personality: {} }, channels: [],
+  centers: { definedNames: [] }, positions: {}
+};
 
 export function setupTransitView() {
   document.getElementById('transits-view').addEventListener('click', event => {
@@ -90,7 +94,9 @@ export function setupTransitView() {
 
 export function renderTransits() {
   const current = getCurrentChart();
-  if (!current) return;
+  const overlayChoice = document.querySelector('input[name="transit-mode"][value="overlay"]');
+  if (overlayChoice) overlayChoice.disabled = !current;
+  if (!current) document.querySelector('input[name="transit-mode"][value="transit-only"]').checked = true;
   transitDetailContext = null;
   lastTransitResult = null;
   const date = document.getElementById('transit-date').value;
@@ -121,21 +127,28 @@ export function renderTransits() {
   status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
   const [transitDate, engineOffset] = engineTransitArguments(selected.instant);
 
-  const overlay = calculateHDTransits(current.chart, transitDate, engineOffset);
-  const transitGates = Object.values(calculateTransitGates(transitDate, engineOffset)?.gates || {})
+  const transitRaw = calculateTransitGates(transitDate, engineOffset);
+  const overlay = current ? calculateHDTransits(current.chart, transitDate, engineOffset) : {
+    transitGates: transitRaw.gates,
+    highlights: { sun: transitRaw.gates.sun, moon: transitRaw.gates.moon },
+    channelCompletions: [], temporarilyDefinedCenters: [], reinforcedGates: [],
+    stats: { channelCompletions: 0 }
+  };
+  const transitGates = Object.values(transitRaw?.gates || {})
     .filter(Boolean)
     .map(g => g.gate);
 
   const mode = document.querySelector('input[name="transit-mode"]:checked').value;
-  const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
-  lastTransitResult = { chart: current.chart, overlay, transitGates, model, mode };
+  const chart = current?.chart || EMPTY_NATAL;
+  const model = buildTransitGraph(chart, overlay.transitGates, mode);
+  lastTransitResult = { chart, overlay, transitGates, model, mode };
   drawTransitResult(lastTransitResult);
 }
 
 // A language change redraws cached results, without resolving the selected
 // wall-clock time again or changing the user's DST-fold choice.
 export function refreshTransitLanguage() {
-  if (lastTransitResult?.chart !== getCurrentChart()?.chart) return;
+  if (lastTransitResult?.chart !== (getCurrentChart()?.chart || EMPTY_NATAL)) return;
   if (lastTransitResult) drawTransitResult(lastTransitResult, true);
 }
 
@@ -166,7 +179,7 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
 export function renderTransitContent(overlay, date = null) {
   const current = getCurrentChart();
   const mode = document.querySelector('input[name="transit-mode"]:checked').value;
-  renderTransitSummary(overlay, buildTransitGraph(current.chart, overlay.transitGates, mode),
+  renderTransitSummary(overlay, buildTransitGraph(current?.chart || EMPTY_NATAL, overlay.transitGates, mode),
     document.getElementById('transit-status')?.textContent || `${date} · 12:00 UTC`);
 
 }
