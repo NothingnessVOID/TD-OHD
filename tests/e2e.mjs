@@ -23,7 +23,7 @@ async function check(name, fn) {
 }
 
 const browser = await chromium.launch({ executablePath: CHROME, headless: true });
-const page = await browser.newPage({ viewport: { width: 1380, height: 1000 } });
+const page = await browser.newPage({ viewport: { width: 1380, height: 1000 }, locale: 'en-US' });
 page.on('pageerror', err => fail('page JS error', err.message));
 
 // --- Entry flow with live geocoding ---
@@ -296,7 +296,7 @@ await check('edit person renames in place (P1-7)', async () => {
 
 // --- P1-11: a shared chart stays comparable after "make your own" ---
 await check('shared person retained for comparison (P1-11)', async () => {
-  const ctx = await browser.newContext();
+  const ctx = await browser.newContext({ locale: 'en-US' });
   const p2 = await ctx.newPage();
   p2.on('pageerror', err => fail('P1-11 page JS error', err.message));
   await p2.goto(`${BASE}?d=1980-05-10&t=09:00&tz=2&n=GuestPal`);
@@ -317,7 +317,7 @@ await check('shared person retained for comparison (P1-11)', async () => {
 
 // --- Dyad: a "compare with me" invite walks the recipient to the comparison ---
 await check('connection invite auto-runs the comparison (dyad loop)', async () => {
-  const ctx = await browser.newContext();
+  const ctx = await browser.newContext({ locale: 'en-US' });
   const p3 = await ctx.newPage();
   p3.on('pageerror', err => fail('dyad page JS error', err.message));
   await p3.goto(`${BASE}?d=1975-12-01&t=06:30&tz=-5&n=Inviter&connect=1`);

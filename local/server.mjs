@@ -6,6 +6,7 @@ import { mkdirSync, chmodSync, readFileSync, writeFileSync, renameSync, existsSy
 import { resolve, dirname, extname, join, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
+import { normaliseBirth } from '../src/lib/birth-input.js';
 
 const derive = promisify(scrypt);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,9 +19,8 @@ function checkPasswordShape(password) {
 function cleanPerson(p) {
   if (!p || typeof p.id !== 'string' || !/^[\w-]{1,100}$/.test(p.id)) throw fail(400, '人物编号无效。');
   if (typeof p.name !== 'string' || !p.name.trim() || p.name.length > 200) throw fail(400, '请填写有效姓名。');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(p.birthDate || '') || !/^([01]\d|2[0-3]):[0-5]\d$/.test(p.birthTime || '')) throw fail(400, '出生日期或时间无效。');
-  const date = new Date(p.birthDate + 'T12:00:00Z');
-  if (Number.isNaN(date.valueOf()) || date.toISOString().slice(0, 10) !== p.birthDate) throw fail(400, '出生日期无效。');
+  try { p = normaliseBirth({ ...p, timezone: p.location?.timezone }); }
+  catch (error) { throw fail(400, error.code || error.message); }
   const loc = p.location || {};
   if (typeof loc.timezone !== 'number' || !Number.isFinite(loc.timezone) || loc.timezone < -12 || loc.timezone > 14) throw fail(400, '出生时区无效。');
   for (const [key, max] of [['lat', 90], ['lon', 180]]) {

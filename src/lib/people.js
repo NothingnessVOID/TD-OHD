@@ -16,6 +16,7 @@
 
 import { getProfiles, getProfile, saveProfile, deleteProfile } from 'natalengine';
 import { localMode, localList, localGet, localSave, localDelete } from './local-store.js';
+import { normaliseBirth } from './birth-input.js';
 
 const LAST_KEY = 'ohd-last-person-id';
 
@@ -75,7 +76,7 @@ const store = localMode ? { list: localList, get: localGet, save: localSave, del
 export const listPeople = (...args) => store.list(...args);
 export const getPerson = (...args) => store.get(...args);
 export const deletePerson = (...args) => store.delete(...args);
-export const savePerson = (...args) => store.save(...args);
+export const savePerson = birth => store.save(normaliseBirth(birth));
 
 /** Profile (storage shape) → birth data (app shape). */
 export function birthFromPerson(p) {
@@ -84,8 +85,9 @@ export function birthFromPerson(p) {
     name: p.name,
     birthDate: p.birthDate,
     birthTime: p.birthTime || '12:00',
-    timeUnknown: !!p.timeUnknown,
-    timezone: p.location?.timezone ?? 0,
+    timeUnknown: !!p.timeUnknown || !p.birthTime,
+    // A missing legacy offset is invalid; UTC is not a safe guess.
+    timezone: p.location?.timezone,
     location: p.location && (p.location.lat != null || p.location.name || p.location.iana) ? {
       lat: p.location.lat,
       lon: p.location.lon,

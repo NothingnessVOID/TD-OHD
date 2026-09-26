@@ -10,6 +10,7 @@ import { searchPlaces, offsetForZone, formatOffset } from '../lib/location.js';
 import { listPeople, birthFromPerson } from '../lib/people.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
+import { normaliseBirth } from '../lib/birth-input.js';
 
 
 export function setupEntryView({ onSubmit }) {
@@ -24,6 +25,16 @@ export function setupEntryView({ onSubmit }) {
   const manualToggle = document.getElementById('manual-tz-toggle');
   const manualWrap = document.getElementById('manual-tz-wrap');
   const manualOffset = document.getElementById('manual-tz');
+  const errorNode = document.createElement('p');
+  errorNode.className = 'field-error hidden';
+  errorNode.setAttribute('role', 'alert');
+  form.prepend(errorNode);
+  let errorSource = null;
+  function showError(source) {
+    errorSource = source;
+    errorNode.textContent = t(source);
+    errorNode.classList.remove('hidden');
+  }
 
   let selectedPlace = null;
   let manualMode = false;
@@ -161,9 +172,10 @@ export function setupEntryView({ onSubmit }) {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    errorNode.classList.add('hidden');
     const birthDate = dateInput.value;
     if (!birthDate) return;
-    const birthTime = timeUnknown.checked ? '12:00' : (timeInput.value || '12:00');
+    const birthTime = timeUnknown.checked ? '12:00' : timeInput.value;
 
     let timezone = 0;
     let location = null;
@@ -171,10 +183,11 @@ export function setupEntryView({ onSubmit }) {
       // Require an explicit offset — silently defaulting to UTC produces
       // confidently wrong charts.
       const raw = manualOffset.value.trim();
-      const parsed = parseFloat(raw);
-      if (raw === '' || Number.isNaN(parsed)) {
+      const parsed = Number(raw);
+      if (raw === '' || !Number.isFinite(parsed) || parsed < -12 || parsed > 14) {
         manualOffset.focus();
         manualOffset.setAttribute('aria-invalid', 'true');
+        showError('Enter a valid birth UTC offset.');
         return;
       }
       manualOffset.removeAttribute('aria-invalid');
@@ -183,7 +196,8 @@ export function setupEntryView({ onSubmit }) {
       try {
         timezone = offsetForZone(birthDate, birthTime, selectedPlace.timezone);
       } catch {
-        timezone = 0;
+        showError('Enter a valid birth UTC offset.');
+        return;
       }
       location = {
         lat: selectedPlace.latitude,
@@ -200,7 +214,8 @@ export function setupEntryView({ onSubmit }) {
       return;
     }
 
-    onSubmit({
+    let birth;
+    try { birth = normaliseBirth({
       name: nameInput.value.trim() || null,
       birthDate,
       birthTime,
@@ -208,15 +223,18 @@ export function setupEntryView({ onSubmit }) {
       timezone,
       location,
       aiAccess: document.getElementById('ai-access')?.checked || false
-    });
+    }); }
+    catch (error) { showError(error.code || error.message); return; }
+    onSubmit(birth);
   });
 
   function refreshLanguage() {
     renderQuickPick();
     manualToggle.textContent = manualMode ? t('Search birth place instead') : t('Enter UTC offset manually');
     updateTzChip();
+    if (errorSource) errorNode.textContent = t(errorSource);
   }
 
   refreshLanguage();
-  return { renderQuickPick, refreshLanguage };
+  return { renderQuickPick, refreshLanguage, showError };
 }

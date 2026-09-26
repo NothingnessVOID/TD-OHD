@@ -22,25 +22,28 @@ test('round-trips full birth data', () => {
   assert.deepEqual(out, full);
 });
 
-test('minimal: date only', () => {
-  const out = paramsToBirth('d=1990-06-15');
+test('minimal unknown-time link needs an explicit UTC offset', () => {
+  const out = paramsToBirth('d=1990-06-15&tz=0');
   assert.equal(out.birthDate, '1990-06-15');
   assert.equal(out.birthTime, '12:00');
   assert.equal(out.timezone, 0);
   assert.equal(out.location, null);
   assert.equal(out.name, null);
+  assert.equal(out.timeUnknown, true);
 });
 
 test('rejects malformed dates', () => {
-  assert.equal(paramsToBirth('d=junk'), null);
+  assert.throws(() => paramsToBirth('d=junk'), /valid birth date/);
   assert.equal(paramsToBirth('t=14:30'), null);
   assert.equal(paramsToBirth(''), null);
 });
 
-test('ignores malformed time/tz, keeps date', () => {
-  const out = paramsToBirth('d=1990-06-15&t=banana&tz=soup');
-  assert.equal(out.birthTime, '12:00');
-  assert.equal(out.timezone, 0);
+test('bad date, time and timezone never become a plausible noon UTC chart', () => {
+  assert.throws(() => paramsToBirth('d=1990-02-30&t=12:00&tz=8'), /valid birth date/);
+  assert.throws(() => paramsToBirth('d=1990-06-15&t=banana&tz=8'), /valid birth time/);
+  assert.throws(() => paramsToBirth('d=1990-06-15&t=14:30&tz=soup'), /UTC offset/);
+  assert.throws(() => paramsToBirth('d=1990-06-15&t=14:30'), /UTC offset/);
+  assert.throws(() => paramsToBirth('d=1990-06-15&t=14:30&tz=8junk'), /UTC offset/);
 });
 
 test('fractional timezone offsets survive', () => {
@@ -51,5 +54,10 @@ test('fractional timezone offsets survive', () => {
 test('timeUnknown round-trips', () => {
   const out = paramsToBirth(birthToParams({ ...full, timeUnknown: true }).toString());
   assert.equal(out.timeUnknown, true);
-  assert.equal(paramsToBirth('d=1990-06-15').timeUnknown, false);
+  assert.equal(paramsToBirth('d=1990-06-15&tz=8').timeUnknown, true);
+});
+
+test('zero birth seconds normalize, nonzero seconds demand explicit confirmation', () => {
+  assert.equal(paramsToBirth('d=2000-02-29&t=01:45:00&tz=8').birthTime, '01:45');
+  assert.throws(() => paramsToBirth('d=2000-02-29&t=01:45:30&tz=8'), /Confirm the birth minute/);
 });

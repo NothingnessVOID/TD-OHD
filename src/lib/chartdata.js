@@ -3,6 +3,7 @@
  */
 
 import { calculateHumanDesign, calculateGeneKeys } from 'natalengine';
+import { normaliseBirth } from './birth-input.js';
 
 function toDecimalHour(birthTime) {
   const [hours, minutes] = (birthTime || '12:00').split(':').map(Number);
@@ -14,7 +15,8 @@ function toDecimalHour(birthTime) {
  * @returns {{ birth, chart, geneKeys }}
  */
 export function computeChart(birth) {
-  const chart = calculateHumanDesign(birth.birthDate, toDecimalHour(birth.birthTime), birth.timezone ?? 0);
+  birth = normaliseBirth(birth);
+  const chart = calculateHumanDesign(birth.birthDate, toDecimalHour(birth.birthTime), birth.timezone);
   const geneKeys = calculateGeneKeys(chart);
   return { birth, chart, geneKeys };
 }
@@ -46,8 +48,13 @@ export function sensitivityCheck(birth, chart, windowMinutes = 15) {
 
   const decimal = toDecimalHour(birth.birthTime);
   const shifted = new Set();
-  for (const delta of [-windowMinutes / 60, windowMinutes / 60]) {
-    const c = calculateHumanDesign(birth.birthDate, decimal + delta, birth.timezone ?? 0);
+  for (const delta of [-windowMinutes, windowMinutes]) {
+    // Move the local civil date with the clock; a 00:05 birth's earlier probe
+    // belongs to the previous day, not a negative hour on the same date.
+    const probeInstant = new Date(Date.parse(`${birth.birthDate}T00:00:00Z`) + (decimal * 60 + delta) * 60_000);
+    const probeDate = probeInstant.toISOString().slice(0, 10);
+    const probeHour = probeInstant.getUTCHours() + probeInstant.getUTCMinutes() / 60;
+    const c = calculateHumanDesign(probeDate, probeHour, birth.timezone);
     const probe = {
       type: c.type.name,
       authority: c.authority.name,

@@ -52,7 +52,10 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     if (manualMode) {
       const v = manual.value.trim();
       if (v === '') { chip.classList.add('hidden'); return; }
-      chip.textContent = `${t('Manual offset')} · ${formatOffset(parseFloat(v) || 0)}`;
+      if (!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(v) || Number(v) < -12 || Number(v) > 14) {
+        chip.classList.add('hidden'); return;
+      }
+      chip.textContent = `${t('Manual offset')} · ${formatOffset(Number(v))}`;
       chip.classList.remove('hidden');
       return;
     }
@@ -161,13 +164,13 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     getBirthLocation(date, time) {
       if (manualMode) {
         const v = manual.value.trim();
-        const parsed = parseFloat(v);
-        if (v === '' || Number.isNaN(parsed)) return null;
+        const parsed = Number(v);
+        if (!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(v) || !Number.isFinite(parsed) || parsed < -12 || parsed > 14) return null;
         return { timezone: parsed };
       }
       if (!selected) return null;
-      let timezone = 0;
-      try { timezone = offsetForZone(date, time, selected.timezone); } catch { timezone = 0; }
+      let timezone;
+      try { timezone = offsetForZone(date, time, selected.timezone); } catch { return null; }
       return { timezone, lat: selected.latitude, lon: selected.longitude, iana: selected.timezone, name: selected.label };
     },
     destroy() {

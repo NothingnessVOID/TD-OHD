@@ -13,6 +13,7 @@ import { esc } from '../lib/format.js';
 import { typeName, channelName } from '../lib/vocabulary.js';
 import { t } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
+import { normaliseBirth } from '../lib/birth-input.js';
 
 
 let latestTeamState = null;
@@ -30,13 +31,14 @@ export function renderTeamView() {
   const selectedIds = new Set([...wrap.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.value));
   const people = listPeople();
   const current = getCurrentChart();
-  if (!people.length) {
+  if (!people.length && !current) {
     wrap.innerHTML = `<p class="panel-intro">${t('A team needs at least two people — add their birth data below, or save charts first to pick them by name.')}</p>`;
     return;
   }
   wrap.innerHTML = `
     <div class="saved-people-label">${t('Include')}</div>
     <div class="team-saved-list">
+      ${current && !current.birth.id ? `<label class="team-saved-person"><input type="checkbox" value="__current" ${hadChoices ? selectedIds.has('__current') ? 'checked' : '' : 'checked'}>${esc(current.birth.name || t('Current chart'))}</label>` : ''}
       ${people.map(p => `
         <label class="team-saved-person">
           <input type="checkbox" value="${esc(p.id)}" ${(hadChoices ? selectedIds.has(p.id) : current?.birth?.id === p.id) ? 'checked' : ''}>
@@ -72,51 +74,53 @@ function runTeamAnalysis() {
   const charts = [];
   const names = [];
   const generatedNames = new Map();
+  const pendingSaves = [];
+  const fail = source => {
+    latestTeamState = { kind: 'error', source };
+    document.getElementById('team-content').innerHTML = `<p class="field-error" role="alert">${esc(t(source))}</p>`;
+  };
 
-  // Saved people (checkboxes)
-  const people = listPeople();
-  document.querySelectorAll('#team-saved input[type=checkbox]:checked').forEach(cb => {
-    const person = people.find(p => p.id === cb.value);
-    if (!person) return;
-    // Reuse the already-computed chart for the current person
-    if (current?.birth?.id === person.id) {
-      charts.push(current.chart);
-      names.push(person.name);
-    } else {
-      const data = computeChart(birthFromPerson(person));
-      charts.push(data.chart);
+  try {
+    const people = listPeople();
+    for (const cb of document.querySelectorAll('#team-saved input[type=checkbox]:checked')) {
+      if (cb.value === '__current') {
+        if (!current) throw new Error('A selected team member is unavailable.');
+        charts.push(current.chart); names.push(current.birth.name || t('Current chart'));
+        continue;
+      }
+      const person = people.find(p => p.id === cb.value);
+      if (!person) throw new Error('A selected team member is unavailable.');
+      charts.push(current?.birth?.id === person.id ? current.chart : computeChart(birthFromPerson(person)).chart);
       names.push(person.name);
     }
-  });
-
-  // Quick-add rows
-  document.querySelectorAll('#team-members .team-member-row').forEach((row) => {
-    const date = row.querySelector('.team-date').value;
-    if (!date) return;
-    const time = row.querySelector('.team-time').value || '12:00';
-    const loc = row._placeSearch?.getBirthLocation(date, time);
-    if (!loc) { row._placeSearch?.flagMissing(); return; } // skip rather than chart at UTC=0
-    const enteredName = row.querySelector('.team-name').value.trim();
-    const number = charts.length + 1;
-    const name = enteredName || t('Person {number}', { number });
-    if (!enteredName) generatedNames.set(name, number);
-    const data = computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
-    if (localMode) {
-      try { savePerson({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null }); }
-      catch (e) { reportSaveFailure(e); }
+    for (const row of document.querySelectorAll('#team-members .team-member-row')) {
+      const date = row.querySelector('.team-date').value;
+      const enteredName = row.querySelector('.team-name').value.trim();
+      if (!date && !enteredName && !row._placeSearch?.hasInput()) continue;
+      if (!date) { row.querySelector('.team-date').focus(); throw new Error('Complete every entered team member.'); }
+      const time = row.querySelector('.team-time').value;
+      const loc = row._placeSearch?.getBirthLocation(date, time);
+      if (!loc) { row._placeSearch?.flagMissing(); throw new Error('Complete every entered team member.'); }
+      const number = charts.length + 1;
+      const name = enteredName || t('Person {number}', { number });
+      if (!enteredName) generatedNames.set(name, number);
+      const birth = normaliseBirth({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
+      charts.push(computeChart(birth).chart); names.push(name);
+      if (localMode) pendingSaves.push(birth);
     }
-    charts.push(data.chart);
-    names.push(name);
-  });
+  } catch (error) { fail(error.code || error.message); return; }
 
   if (charts.length < 2) {
-    latestTeamState = { kind: 'error' };
-    document.getElementById('team-content').innerHTML =
-      `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
-    return;
+    fail('Add at least two people to analyze the group.'); return;
   }
+  if (charts.length > 9) { fail('Choose no more than nine team members.'); return; }
 
-  const result = analyzePenta(charts, names);
+  let result;
+  try { result = analyzePenta(charts, names); }
+  catch { fail('Team analysis could not be calculated.'); return; }
+  for (const birth of pendingSaves) {
+    try { savePerson(birth); } catch (error) { reportSaveFailure(error); }
+  }
   latestTeamState = { kind: 'result', result, generatedNames };
   renderTeamContent(result, generatedNames);
 }
@@ -130,7 +134,7 @@ export function refreshTeamLanguage() {
   if (latestTeamState?.kind === 'result') renderTeamContent(latestTeamState.result, latestTeamState.generatedNames);
   else if (latestTeamState?.kind === 'error') {
     document.getElementById('team-content').innerHTML =
-      `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
+      `<p class="field-error" role="alert">${esc(t(latestTeamState.source))}</p>`;
   }
 }
 
@@ -168,7 +172,7 @@ function renderTeamContent(result, generatedNames = new Map()) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Members')}</div>
-        <div class="value">${result.memberCount} ${result.isPenta ? t('(Penta)') : ''}</div>
+        <div class="value">${result.memberCount}</div>
         <div class="detail">${t('{channels} channels, {centers} centers', { channels: result.stats.totalChannels, centers: result.stats.totalDefinedCenters })}</div>
       </div>
     </div>
@@ -179,7 +183,7 @@ function renderTeamContent(result, generatedNames = new Map()) {
     ${result.electromagnetics.length > 0 ? `
       <div style="margin-top:16px">
         <div class="panel-title">${t('Electromagnetic Connections ({count})', { count: result.electromagnetics.length })}</div>
-        ${result.electromagnetics.slice(0, 10).map(e => `
+        ${result.electromagnetics.map(e => `
           <div class="connection-type" style="border-left:3px solid var(--electromagnetic)">
             <div class="conn-channel">${esc(channelName(e.gates || e.channel))}</div>
             <div class="conn-desc">${esc(displayName(e.personA))} + ${esc(displayName(e.personB))} — ${esc(contentText(e.theme))}</div>
