@@ -70,6 +70,9 @@ Implementation entries record commit, checks, preview and remaining limitations.
   transit page uses sky-only mode. Structural references are recorded in
   `docs/knowledge-sources.md`; imported reading text is not represented as an
   original licensed edition.
+- Batch 2 integration commit: `f5253b0`. The checkpoint tag points to the
+  documentation follow-up commit immediately after it; its recoverable bundle
+  is kept outside this checkout at `../TD-OHD-recovery/knowledge-library-v1.bundle`.
 - Validation at the checkpoint: 150 deterministic tests passed, two optional
   external tests skipped; static and desktop builds passed, Pages bundle check
   excluded local-account code, and all existing browser E2E checks passed with
