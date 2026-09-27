@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "signature": "6ff2cf44710449de589b",
+  "signatureInput": {
+    "format": 1,
+    "engine": "1.6.0",
+    "astronomy": "2.1.19",
+    "calculationAdapterSha256": "38919f8710e81b9fc9a33be5d64d57286563ddd72c8f861c4f6ceee99e3403e0",
+    "timeAdapterSha256": "3ae825b0da27555e664c495fc68255b7d6f6b1e5c88817291b8d39b557a4452c",
+    "engineSecondsPatchSha256": "1db17d38026cb7fed1151551dc146d90fdfd67a2ae2f36097da54bd008ee9471",
+    "annualAlgorithmSha256": "9249da63ece887156fa402afdbc6d4894857a6ce9309ed4c319b4950b62f9090",
+    "scanStepMs": 60000,
+    "boundaryToleranceMs": 1000,
+    "points": 13,
+    "convention": "NatalEngine 1.6.0 geocentric transit gates, paired Earth and lunar nodes"
+  },
+  "years": {
+    "2026": {
+      "path": "6ff2cf44710449de589b/2026.c86ace5bada03fc3.json",
+      "sha256": "c86ace5bada03fc3019ad22bab71f518f22c2cf9893e45f7fc38f2c01af46c47",
+      "bytes": 198931,
+      "gzipBytes": 53835,
+      "brotliBytes": 34875,
+      "gateEvents": 1189,
+      "lineEvents": 5966,
+      "records": 7156
+    }
+  }
+}
