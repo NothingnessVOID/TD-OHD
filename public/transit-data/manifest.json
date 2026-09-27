@@ -15,6 +15,56 @@
     "convention": "NatalEngine 1.6.0 geocentric transit gates, paired Earth and lunar nodes"
   },
   "years": {
+    "2021": {
+      "path": "6ff2cf44710449de589b/2021.6cf654c2c297f5a5.json",
+      "sha256": "6cf654c2c297f5a51d1d92643905f0f9aef396e8e9406064910a8320a9d2a6e1",
+      "bytes": 200212,
+      "gzipBytes": 54229,
+      "brotliBytes": 35376,
+      "gateEvents": 1203,
+      "lineEvents": 6000,
+      "records": 7204
+    },
+    "2022": {
+      "path": "6ff2cf44710449de589b/2022.73ad66a3378be64c.json",
+      "sha256": "73ad66a3378be64c1b86a9eb0ca2798e16e669e6ea12edc36354fb28d979f2d0",
+      "bytes": 199105,
+      "gzipBytes": 53787,
+      "brotliBytes": 35034,
+      "gateEvents": 1194,
+      "lineEvents": 5968,
+      "records": 7163
+    },
+    "2023": {
+      "path": "6ff2cf44710449de589b/2023.f51746a5b9fc5a7b.json",
+      "sha256": "f51746a5b9fc5a7b0e1de798fb0cf043b05e408bf889fca47f5fcbe1cd74fc78",
+      "bytes": 197304,
+      "gzipBytes": 53376,
+      "brotliBytes": 34795,
+      "gateEvents": 1176,
+      "lineEvents": 5923,
+      "records": 7100
+    },
+    "2024": {
+      "path": "6ff2cf44710449de589b/2024.83d4a483fdef34c4.json",
+      "sha256": "83d4a483fdef34c429d3f289bfb04c817135bcddff48dcc474d1bb5eb11d4f16",
+      "bytes": 201812,
+      "gzipBytes": 54641,
+      "brotliBytes": 35586,
+      "gateEvents": 1208,
+      "lineEvents": 6052,
+      "records": 7261
+    },
+    "2025": {
+      "path": "6ff2cf44710449de589b/2025.399891123e8e3c24.json",
+      "sha256": "399891123e8e3c247ed9b2e9eac3fbcad28863a43b26bb1bda1220def2ce2b35",
+      "bytes": 197822,
+      "gzipBytes": 53500,
+      "brotliBytes": 34580,
+      "gateEvents": 1188,
+      "lineEvents": 5928,
+      "records": 7117
+    },
     "2026": {
       "path": "6ff2cf44710449de589b/2026.c86ace5bada03fc3.json",
       "sha256": "c86ace5bada03fc3019ad22bab71f518f22c2cf9893e45f7fc38f2c01af46c47",
@@ -24,6 +74,106 @@
       "gateEvents": 1189,
       "lineEvents": 5966,
       "records": 7156
+    },
+    "2027": {
+      "path": "6ff2cf44710449de589b/2027.99148b9ff6b1a831.json",
+      "sha256": "99148b9ff6b1a83131892c4292eede6bc57b40aacd9b335f37b3b9e77ddb1e9d",
+      "bytes": 199543,
+      "gzipBytes": 54078,
+      "brotliBytes": 35084,
+      "gateEvents": 1198,
+      "lineEvents": 5981,
+      "records": 7180
+    },
+    "2028": {
+      "path": "6ff2cf44710449de589b/2028.4b283ee830cc0322.json",
+      "sha256": "4b283ee830cc0322ce714e27f31e1605f115b63ade664103e1eb743398e56931",
+      "bytes": 199025,
+      "gzipBytes": 53735,
+      "brotliBytes": 34969,
+      "gateEvents": 1190,
+      "lineEvents": 5969,
+      "records": 7160
+    },
+    "2029": {
+      "path": "6ff2cf44710449de589b/2029.d013876b5537e768.json",
+      "sha256": "d013876b5537e768d8c5152d13c06e5f29648a3f48ed1ae968f49533a0e5a391",
+      "bytes": 197861,
+      "gzipBytes": 53476,
+      "brotliBytes": 34765,
+      "gateEvents": 1189,
+      "lineEvents": 5929,
+      "records": 7119
+    },
+    "2030": {
+      "path": "6ff2cf44710449de589b/2030.6074fcc3e7251a79.json",
+      "sha256": "6074fcc3e7251a7969fa909fc82bf7487da09482d774a0afb17a3b5907653d35",
+      "bytes": 200108,
+      "gzipBytes": 54151,
+      "brotliBytes": 35380,
+      "gateEvents": 1199,
+      "lineEvents": 6000,
+      "records": 7200
+    },
+    "2031": {
+      "path": "6ff2cf44710449de589b/2031.66a2a47873e43ee8.json",
+      "sha256": "66a2a47873e43ee8d1cb315510d7dd070a55ed07b1647512815765ff1d953b04",
+      "bytes": 195662,
+      "gzipBytes": 52935,
+      "brotliBytes": 34334,
+      "gateEvents": 1175,
+      "lineEvents": 5867,
+      "records": 7043
+    },
+    "2032": {
+      "path": "6ff2cf44710449de589b/2032.0bff16876e6f17c9.json",
+      "sha256": "0bff16876e6f17c9678b1e04cda2541620fb323a5d8983fcf5774c880eb39d2a",
+      "bytes": 202635,
+      "gzipBytes": 54835,
+      "brotliBytes": 35928,
+      "gateEvents": 1212,
+      "lineEvents": 6078,
+      "records": 7291
+    },
+    "2033": {
+      "path": "6ff2cf44710449de589b/2033.16ec9459f38dfc8b.json",
+      "sha256": "16ec9459f38dfc8b7a66f1d7d2da38033032e8b5034de34080cffd1578dca564",
+      "bytes": 197100,
+      "gzipBytes": 53309,
+      "brotliBytes": 34639,
+      "gateEvents": 1181,
+      "lineEvents": 5906,
+      "records": 7088
+    },
+    "2034": {
+      "path": "6ff2cf44710449de589b/2034.c3427ea7b9bac40a.json",
+      "sha256": "c3427ea7b9bac40a51a467c8b29a832944a0217ffb6d99d8ea25192bef333746",
+      "bytes": 199489,
+      "gzipBytes": 53825,
+      "brotliBytes": 35098,
+      "gateEvents": 1190,
+      "lineEvents": 5984,
+      "records": 7175
+    },
+    "2035": {
+      "path": "6ff2cf44710449de589b/2035.1dfc5930be59c8cf.json",
+      "sha256": "1dfc5930be59c8cf3b84f6887a5eb7185aa115c053855b690e6b917d574f8514",
+      "bytes": 199289,
+      "gzipBytes": 53982,
+      "brotliBytes": 35075,
+      "gateEvents": 1196,
+      "lineEvents": 5972,
+      "records": 7169
+    },
+    "2036": {
+      "path": "6ff2cf44710449de589b/2036.ba793f945b5472ea.json",
+      "sha256": "ba793f945b5472ea084dec33d61936358b337469e48aa8a14a8f658478fe1d13",
+      "bytes": 198338,
+      "gzipBytes": 53660,
+      "brotliBytes": 35094,
+      "gateEvents": 1188,
+      "lineEvents": 5950,
+      "records": 7139
     }
   }
 }

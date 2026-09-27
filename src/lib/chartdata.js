@@ -4,6 +4,17 @@
 
 import { calculateHumanDesign, calculateGeneKeys } from 'natalengine';
 
+const chartCache = new Map();
+const sensitivityCache = new Map();
+const remember = (cache, key, value) => {
+  cache.delete(key); cache.set(key, value);
+  if (cache.size > 8) cache.delete(cache.keys().next().value);
+  return value;
+};
+const calculationKey = birth => JSON.stringify([
+  birth.birthDate, birth.birthTime, birth.timezone, Boolean(birth.timeUnknown)
+]);
+
 function toDecimalHour(birthTime) {
   const [hours, minutes] = (birthTime || '12:00').split(':').map(Number);
   return hours + (minutes || 0) / 60;
@@ -14,9 +25,13 @@ function toDecimalHour(birthTime) {
  * @returns {{ birth, chart, geneKeys }}
  */
 export function computeChart(birth) {
-  const chart = calculateHumanDesign(birth.birthDate, toDecimalHour(birth.birthTime), birth.timezone ?? 0);
-  const geneKeys = calculateGeneKeys(chart);
-  return { birth, chart, geneKeys };
+  const key = calculationKey(birth);
+  let data = chartCache.get(key);
+  if (!data) {
+    const chart = calculateHumanDesign(birth.birthDate, toDecimalHour(birth.birthTime), birth.timezone ?? 0);
+    data = remember(chartCache, key, { chart, geneKeys: calculateGeneKeys(chart) });
+  }
+  return { birth, ...data };
 }
 
 /**
@@ -28,6 +43,8 @@ export function computeChart(birth) {
  * @returns {{ stable: string[], shifts: string[] }}
  */
 export function sensitivityCheck(birth, chart, windowMinutes = 15) {
+  const cacheKey = `${calculationKey(birth)}:${windowMinutes}`;
+  if (sensitivityCache.has(cacheKey)) return sensitivityCache.get(cacheKey);
   const base = {
     type: chart.type.name,
     authority: chart.authority.name,
@@ -62,8 +79,8 @@ export function sensitivityCheck(birth, chart, windowMinutes = 15) {
     }
   }
 
-  return {
+  return remember(sensitivityCache, cacheKey, {
     stable: Object.keys(base).filter(k => !shifted.has(k)).map(k => labels[k]),
     shifts: [...shifted].map(k => labels[k])
-  };
+  });
 }
