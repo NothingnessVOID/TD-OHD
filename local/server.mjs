@@ -7,6 +7,7 @@ import { resolve, dirname, extname, join, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
 import { normaliseBirth } from '../src/lib/birth-input.js';
+import { normalizeObservation, restoreObservationRecords } from '../src/lib/observation-record.js';
 
 const derive = promisify(scrypt);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -44,17 +45,19 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
     CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, expires INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS people (id TEXT PRIMARY KEY, data TEXT NOT NULL, deleted INTEGER NOT NULL DEFAULT 0);
-    CREATE TABLE IF NOT EXISTS operations (id TEXT PRIMARY KEY, created INTEGER NOT NULL);`);
+    CREATE TABLE IF NOT EXISTS operations (id TEXT PRIMARY KEY, created INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS observations (id TEXT PRIMARY KEY, data TEXT NOT NULL);`);
   const setting = key => db.prepare('SELECT value FROM settings WHERE key=?').get(key)?.value;
   const putSetting = (key, value) => db.prepare('INSERT OR REPLACE INTO settings VALUES (?,?)').run(key, value);
   if (!setting('instance')) putSetting('instance', randomUUID());
   const people = () => db.prepare('SELECT data FROM people WHERE deleted=0 ORDER BY rowid').all().map(r => JSON.parse(r.data));
+  const observations = () => db.prepare('SELECT data FROM observations ORDER BY rowid').all().map(r => JSON.parse(r.data));
   const snapshot = (prefix = 'daily') => {
     const backupDir = join(dataDir, 'backups');
     mkdirSync(backupDir, { recursive: true, mode: 0o700 });
     const stamp = prefix === 'daily' ? new Date().toISOString().slice(0, 10) : new Date().toISOString().replace(/[:.]/g, '-');
     const path = join(backupDir, `${prefix}-${stamp}.json`);
-    writeFileSync(path + '.tmp', JSON.stringify({ format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people() }, null, 2), { mode: 0o600 });
+    writeFileSync(path + '.tmp', JSON.stringify({ format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people(), observations: observations() }, null, 2), { mode: 0o600 });
     renameSync(path + '.tmp', path);
   };
   let failedLogins = 0, lockedUntil = 0;
@@ -161,7 +164,41 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
       }
       if (url.pathname === '/api/local/backup' && req.method === 'GET') {
         auth(); res.setHeader('Content-Disposition', `attachment; filename="human-design-${new Date().toISOString().slice(0,10)}.json"`);
-        return json(200, { format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people() });
+        return json(200, { format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people(), observations: observations() });
+      }
+      if (url.pathname === '/api/local/observations' && req.method === 'GET') {
+        auth(); return json(200, { records: observations() });
+      }
+      if (url.pathname === '/api/local/observations' && req.method === 'PUT') {
+        auth(); let record;
+        try { record = normalizeObservation(await body()); }
+        catch { throw fail(400, '观察记录无效。'); }
+        if (db.prepare('SELECT id FROM observations WHERE id=?').get(record.id)) snapshot('before-observation-edit');
+        db.prepare('INSERT INTO observations VALUES (?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(record.id, JSON.stringify(record));
+        let backupWarning = false;
+        try { snapshot(); } catch { backupWarning = true; }
+        return json(200, { record, backupWarning });
+      }
+      if (url.pathname.startsWith('/api/local/observations/') && req.method === 'DELETE') {
+        auth(); const id = decodeURIComponent(url.pathname.slice('/api/local/observations/'.length));
+        if (!/^[\w-]{1,100}$/.test(id)) throw fail(400, '观察记录编号无效。');
+        snapshot('before-observation-delete');
+        db.prepare('DELETE FROM observations WHERE id=?').run(id);
+        return json(200, { ok: true });
+      }
+      if (url.pathname === '/api/local/observations/import' && req.method === 'POST') {
+        auth(); const input = await body(); let plan;
+        try { plan = restoreObservationRecords(observations(), input, randomUUID); }
+        catch { throw fail(400, '观察记录备份无效。'); }
+        if (plan.records.length) snapshot('before-observation-import');
+        db.exec('BEGIN IMMEDIATE');
+        try {
+          for (const record of plan.records) db.prepare('INSERT INTO observations VALUES (?,?)').run(record.id, JSON.stringify(record));
+          db.exec('COMMIT');
+        } catch (error) { db.exec('ROLLBACK'); throw error; }
+        let backupWarning = false;
+        if (plan.records.length) { try { snapshot(); } catch { backupWarning = true; } }
+        return json(200, { counts: plan.counts, backupWarning });
       }
       if (url.pathname.startsWith('/api/') || url.pathname === '/mcp') throw fail(404, '没有这个接口。');
       if (!['GET','HEAD'].includes(req.method)) throw fail(405, '请求方式不支持。');

@@ -26,6 +26,9 @@ const SERVER_ERROR_SOURCES = {
   '密码刚刚被修改，请用新密码重试。': 'The password was just changed. Please try again with the new password.',
   '密码已在其他窗口修改，请重新登录。': 'The password was changed in another window. Please log in again.',
   '保存请求无效。': 'The save request is invalid.',
+  '观察记录无效。': 'The observation is invalid.',
+  '观察记录编号无效。': 'The observation ID is invalid.',
+  '观察记录备份无效。': 'The observation backup is invalid.',
   '请求方式不支持。': 'This request method is not supported.',
   '本机服务暂时无法完成操作，请重试。': 'The local service could not complete the operation. Please try again.'
 };

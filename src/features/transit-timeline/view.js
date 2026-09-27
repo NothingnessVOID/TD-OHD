@@ -1292,6 +1292,20 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     },
     deactivate,
     refresh() { if (active) renderMoment(); },
+    observationContext() {
+      if (!active || !chart) return null;
+      const all = snapshotInstant === selected && snapshotActivations ? snapshotActivations : host.snapshot(selected);
+      const activations = planetFilter === 'all' ? all : { [planetFilter]: all[planetFilter] };
+      const model = host.buildModel(chart.chart, activations, mode);
+      return {
+        instantUtc: new Date(selected).toISOString(), displayZone: zone, mode, planetFilter,
+        activations: Object.fromEntries(Object.entries(activations).filter(([, value]) => value?.gate && value?.line)
+          .map(([planet, value]) => [planet, { gate: value.gate, line: value.line }])),
+        activeGates: [...model.activeGates].map(String).sort((a, b) => Number(a) - Number(b)),
+        activeChannels: model.channels.map(channel => channel.gates.join('-')).sort(),
+        definedCenters: [...model.definedCenters].sort()
+      };
+    },
     setLanguage,
     destroy() { deactivate(); client.dispose(); queryClient.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
   };

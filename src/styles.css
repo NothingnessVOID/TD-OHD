@@ -2221,6 +2221,14 @@ body.modal-open { overflow: hidden; }
    Small-screen header (P0-1) — no horizontal page scroll, ever
    ============================================= */
 
+@media (min-width: 641px) and (max-width: 1080px) {
+  .header-inner { gap: 12px; }
+  .logo, .header-actions { flex-shrink: 0; }
+  .nav { flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-link { flex-shrink: 0; white-space: nowrap; padding: 6px 10px; }
+}
+
 @media (max-width: 640px) {
   .header-inner {
     padding: 0 10px;

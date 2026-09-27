@@ -31,7 +31,7 @@ test('localized navigation keeps Timeline after Transits with stable translation
     .map(match => [match[1], match[2]]);
   assert.deepEqual(items, [['chart', 'My Chart'], ['transits', 'Transits'],
     ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'Team'],
-    ['library', 'Knowledge Library']]);
+    ['library', 'Knowledge Library'], ['observations', 'Observations']]);
 });
 
 test('locale preference, supported browser languages and unsupported-language fallback', () => {

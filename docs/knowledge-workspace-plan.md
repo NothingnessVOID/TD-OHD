@@ -14,7 +14,7 @@ Chinese / English display, without parentheses.
 | 2 | Complete catalog, routes, shared contextual detail, six lines, topology, circuits (F01–10, F14, F26–27) | Browse without a chart; all entities reachable | Complete |
 | 3 | Line events, contributors, fixing evidence, persistent detail (F11–13, F20) | Line changes and source changes inspectable | Complete |
 | 4 | Watchlist, planet filter, event navigation, comparison, condition/bridge queries | Bounded cancellable queries | Complete |
-| 5 | Observations, snapshots, storage adapters, import/export | Durable notes and conflict-preserving restore | Pending |
+| 5 | Observations, snapshots, storage adapters, import/export | Durable notes and conflict-preserving restore | Complete |
 | 6 | Lazy resources, accessibility, mobile regression, final validation (F28, F27) | Three languages and 60/40 mobile layout retained | Pending |
 
 After batch 2: commit, tag `checkpoint/knowledge-library-v1`, save a Git bundle
@@ -107,3 +107,25 @@ Implementation entries record commit, checks, preview and remaining limitations.
   persistence after a fresh navigation, single-planet consistency, A/B,
   line-query jump and calculation cancellation. Watchlist IDs remain local to
   one browser; observation records use the separate storage work in batch 5.
+- Batch 4 commit: `be4a8d6`. The full timeline browser suite, including
+  mobile touch and layout checks, passed before this commit.
+- Batch 5 in progress: a standalone observations view stores the immediate
+  observation, later interpretation, real-world event, tags, optional person
+  link or anonymous code, UTC instant, display zone and an optional timeline
+  snapshot separately. Static mode uses IndexedDB; desktop mode uses an
+  authenticated additive SQLite table. Export supports full and deidentified
+  files; the latter removes person links, labels and chart snapshots and warns
+  that names inside free text remain. Restore
+  previews additions/conflicts/unchanged notes and keeps conflicting versions
+  as copies. The installed SQLite database received a consistent pre-migration
+  backup at `backups/before-observations-2026-09-27.sqlite`; its integrity
+  check returned `ok`. Development tests use isolated synthetic databases.
+  Verification: 161 deterministic tests passed, two optional external tests
+  skipped; both static and desktop builds passed; the static bundle check
+  excluded local-account code. Browser checks covered anonymous notes,
+  reload/edit, language switching with an unsaved draft, mobile width,
+  deidentified export, conflict-preserving restore, timeline snapshot, and
+  independent desktop browser sessions. The existing non-year timeline
+  browser regression passed after a medium-width header overflow fix; the
+  year-range behavior was already validated in batch 4. Local preview remains
+  available at `http://127.0.0.1:5173/` with synthetic examples only.
