@@ -21,6 +21,7 @@ import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import './lib/language-switcher.css';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
+import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
 
 // ==========================================
 // State
@@ -52,6 +53,7 @@ function setupLanguageSwitcher() {
     refreshTeamLanguage();
     refreshTransitLanguage();
     timelineView?.setLanguage(timelineLanguageOptions());
+    if (!document.getElementById('library-view').classList.contains('hidden')) renderReferenceView({ languageChange: true });
     localAccountUi?.refreshLocalLanguage();
   });
 }
@@ -82,12 +84,13 @@ function toggleTheme() {
 // ==========================================
 // Navigation
 // ==========================================
-const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline'];
+const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'library'];
 
 function showView(view) {
   closeDetailDialog();
   if (view !== 'timeline') timelineView?.deactivate();
-  if (!currentData && view !== 'chart') return;
+  if (!currentData && view !== 'chart' && view !== 'library') return;
+  if (view !== 'library' && location.hash.startsWith('#library')) history.replaceState(null, '', location.pathname);
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
 
   document.querySelectorAll('.nav-link').forEach(l =>
@@ -101,9 +104,9 @@ function showView(view) {
   for (const v of VIEWS) {
     document.getElementById(`${v}-view`).classList.add('hidden');
   }
-  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData);
+  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view === 'library');
 
-  if (!currentData) return;
+  if (!currentData && view !== 'library') return;
   document.getElementById(`${view}-view`).classList.remove('hidden');
 
   // Per-view refresh on open
@@ -111,12 +114,20 @@ function showView(view) {
   if (view === 'connection') renderConnectionView();
   if (view === 'team') renderTeamView();
   if (view === 'timeline') timelineView?.activate();
+  if (view === 'library') {
+    if (!location.hash.startsWith('#library')) openReference(null, null, { replace: true });
+    history.replaceState(null, '', `${location.pathname}${location.hash}`);
+    renderReferenceView();
+  }
 }
 
 function setupNavigation() {
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => showView(link.dataset.view));
   });
+  window.addEventListener('ohd-reference-navigation', () => showView('library'));
+  window.addEventListener('popstate', () => { if (location.hash.startsWith('#library')) showView('library'); });
+  window.addEventListener('hashchange', () => { if (location.hash.startsWith('#library')) showView('library'); });
 }
 
 // ==========================================
@@ -384,6 +395,7 @@ function init() {
   setupTransitView();
   setupConnectionView();
   setupTeamView();
+  setupReferenceView();
   timelineView = setupTimelineView();
   setupPeopleSwitcher();
 
@@ -425,6 +437,7 @@ function init() {
   // Boot order: connection invite → shared URL → last person → entry form
   // (read the deep-link view before loadBirth rewrites the URL)
   const deepLinkView = new URLSearchParams(window.location.search).get('view');
+  const libraryLink = location.hash.startsWith('#library') ? location.hash : null;
   const connectInvite = new URLSearchParams(window.location.search).get('connect') === '1';
   const fromUrl = paramsToBirth(window.location.search.slice(1));
 
@@ -453,6 +466,7 @@ function init() {
 
   if (fromUrl) {
     loadBirth(fromUrl, { save: false });
+    if (libraryLink) { history.replaceState(null, '', `${location.pathname}${libraryLink}`); showView('library'); return; }
     if (deepLinkView && VIEWS.includes(deepLinkView)) showView(deepLinkView);
     // Shared-chart landing: someone opened a link to a chart that isn't
     // theirs — invite them to make their own (the viral loop).
@@ -482,10 +496,12 @@ function init() {
     const person = getPerson(lastId);
     if (person) {
       loadBirth(birthFromPerson(person), { save: false });
+      if (libraryLink) { history.replaceState(null, '', `${location.pathname}${libraryLink}`); showView('library'); }
       return;
     }
   }
   renderPeopleSwitcher();
+  if (libraryLink) showView('library');
 }
 
 async function boot() {

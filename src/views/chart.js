@@ -7,7 +7,8 @@ import {
   CHANNELS,
   LINE_NAMES
 } from 'natalengine';
-import { GATE_DESCRIPTIONS, LINE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
+import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
+import { gateReading, channelReading, centerReading, channelsForGate, channelById } from '../lib/reference-content.js';
 import { t, formatDisplay, countLabel } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
@@ -57,7 +58,7 @@ export function refreshChartLanguage() {
     detailHistory = history;
     currentLens = lens;
     detailContext = context;
-    if (selected.kind === 'gate') showGateDetail(selected.id, false);
+    if (selected.kind === 'gate') showGateDetail(selected.id, false, selected.source);
     else if (selected.kind === 'channel') showTransitChannelDetail(selected.id, false);
     else showCenterDetail(selected.id, false);
   }
@@ -156,7 +157,7 @@ export function rerenderBodygraph(transitGates = null) {
   if (!current) return;
   const container = document.getElementById('bodygraph-container');
   bodygraphApi = renderBodygraph(container, current.chart, {
-    onGateClick: showGateDetail,
+    onGateClick: (gate, source) => showGateDetail(gate, true, source),
     onCenterClick: showCenterDetail,
     onHighlight: highlightPanelRows,
     transitGates: transitGates || undefined
@@ -299,38 +300,7 @@ function renderLens(gateNum) {
     ...(detailContext?.mode === 'transit-only' ? [] : gateActiveLines(gateNum, chart)),
     ...Object.values(detailContext?.transitGates || {}).filter(g => g?.gate === gateNum).map(g => g.line)
   ])].sort((a, b) => a - b);
-
-  if (currentLens === 'iching') {
-    const hx = HEXAGRAM_DESCRIPTIONS[gateNum];
-    if (!hx) return `<p class="gate-detail-desc">${t('No I Ching reading available.')}</p>`;
-    const lineHtml = lines.map(l => hx.lines?.[l]
-      ? `<div class="gate-detail-line"><strong>${t('Line {line}', { line: l })}</strong><p>${esc(hx.lines[l])}</p></div>` : '').join('');
-    return `
-      <div class="gate-detail-keynote">${t('Hexagram {gate}', { gate: gateNum })} · ${esc(hexagramName(gateNum))}</div>
-      <p class="gate-detail-desc">${esc(hx.meaning)}</p>
-      ${lineHtml ? `<div class="gate-detail-lines">${lineHtml}</div>` : ''}
-      <p class="lens-note">${t('The I Ching hexagram this gate is built on — Ra drew Human Design from this classical source.')}</p>`;
-  }
-
-  if (currentLens === 'gk') {
-    const gk = GENE_KEY_DESCRIPTIONS[gateNum];
-    if (!gk) return `<p class="gate-detail-desc">${t('No Gene Keys reading available.')}</p>`;
-    return `
-      <div class="gk-spectrum"><span class="gk-shadow">${esc(geneKeyTerm(gateNum, 'shadow'))}</span><span class="gk-arrow">→</span><span class="gk-gift">${esc(geneKeyTerm(gateNum, 'gift'))}</span><span class="gk-arrow">→</span><span class="gk-siddhi">${esc(geneKeyTerm(gateNum, 'siddhi'))}</span></div>
-      <p class="gate-detail-desc">${esc(gk.description)}</p>
-      <p class="lens-note">${t("Gene Key {gate} · the Shadow → Gift → Siddhi spectrum (Richard Rudd's evolution of Human Design).", { gate: gateNum })}</p>`;
-  }
-
-  // Human Design (default)
-  const desc = GATE_DESCRIPTIONS[gateNum];
-  const lineHtml = lines.map(l => {
-    const ld = LINE_DESCRIPTIONS[gateNum]?.[l];
-    return ld ? `<div class="gate-detail-line"><strong>${t('Line {line}', { line: l })} · ${esc(ld.keynote)}</strong><p>${esc(ld.description)}</p></div>` : '';
-  }).join('');
-  return `
-    ${desc ? `<div class="gate-detail-keynote">${esc(desc.keynote)}</div>` : ''}
-    ${desc ? `<p class="gate-detail-desc">${esc(desc.description)}</p>` : ''}
-    ${lineHtml ? `<div class="gate-detail-lines">${lineHtml}</div>` : ''}`;
+  return gateReading(gateNum, currentLens, { activeLines: lines, selectedLine: null });
 }
 
 function resetDetail() {
@@ -361,24 +331,25 @@ export function refreshTransitDetail(context) {
 
 function showTransitChannelDetail(id, pushHistory = true) {
   const model = detailContext?.model;
-  const channel = CHANNELS.find(ch => ch.gates.join('-') === id);
-  if (!model || !channel) return;
-  const description = CHANNEL_DESCRIPTIONS[id]?.description;
+  const channel = channelById(id);
+  if (!channel || !current) return;
+  id = channel.gates.join('-');
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   currentDetail = { kind: 'channel', id };
-  const active = model.channels.some(ch => ch.gates.join('-') === id);
+  const active = (model?.channels || current.chart.channels).some(ch => ch.gates.join('-') === id);
+  const source = model && active ? model.channelSource(channel) : active ? 'defined' : 'inactive';
   const detail = document.getElementById('gate-detail');
   detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body">
       <div class="detail-label">${t('Channel {channel}', { channel: id })}</div><div class="detail-name">${esc(channelName(channel.gates))}</div>
-      <span class="circuit-badge transit-source-badge ${active ? model.channelSource(channel) : 'inactive'}">${t(active ? TRANSIT_SOURCE_LABELS[model.channelSource(channel)] : 'No complete channel in this view')}</span>
+      <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
-      ${description ? `<p class="gate-detail-desc transit-channel-description">${esc(contentText(description))}</p>` : ''}
-      <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="${esc(t('Gate {gate} · {source}', { gate: g, source: t(TRANSIT_SOURCE_LABELS[model.gateSource(g)]) }))}">
-        <span class="transit-detail-gate"><strong>${t('Gate {gate}', { gate: g })}</strong>${model.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
+      ${channelReading(id)}
+      <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="${esc(t('Gate {gate}', { gate: g }))}">
+        <span class="transit-detail-gate"><strong>${t('Gate {gate}', { gate: g })}</strong>${model?.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model?.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
         <span class="transit-detail-action">${t('View gate details')}</span>
       </button>`).join('')}</div>
-      <p class="lens-note">${t('Transit additions do not change your birth chart.')}</p>
+      ${model ? `<p class="lens-note">${t('Transit additions do not change your birth chart.')}</p>` : ''}
     </div></div>`;
   detailContext?.decorateDetail?.(detail, currentDetail);
   openDetailDialog(detail, resetDetail);
@@ -391,7 +362,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
 function goBack() {
   const prev = detailHistory.pop();
   if (!prev) return closeDetailDialog();
-  if (prev.kind === 'gate') showGateDetail(prev.id, false);
+  if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.source);
   else if (prev.kind === 'channel') showTransitChannelDetail(prev.id, false);
   else showCenterDetail(prev.id, false);
 }
@@ -424,10 +395,10 @@ function fitSheetHeight(card, prevH = null) {
   card.style.height = targetH + 'px';
 }
 
-export function showGateDetail(gateNum, pushHistory = true) {
+export function showGateDetail(gateNum, pushHistory = true, source = null) {
   if (!current) return;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
-  currentDetail = { kind: 'gate', id: gateNum };
+  currentDetail = { kind: 'gate', id: gateNum, source };
   const { chart } = current;
   const detail = document.getElementById('gate-detail');
   const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
@@ -439,30 +410,29 @@ export function showGateDetail(gateNum, pushHistory = true) {
     ? formatDisplay('lineTag', line, lineName(line))
     : '';
   for (const [planet, g] of Object.entries(chart.gates.design)) {
-    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-design">${PLANET_GLYPHS[planet]} ${t('Design')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
+    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-design${source?.side === 'design' && source.planet === planet ? ' selected-activation' : ''}">${PLANET_GLYPHS[planet]} ${t('Design')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
   }
   for (const [planet, g] of Object.entries(chart.gates.personality)) {
-    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-personality">${PLANET_GLYPHS[planet]} ${t('Personality')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
+    if (g?.gate === gateNum) acts.push(`<span class="bg-tt-personality${source?.side === 'personality' && source.planet === planet ? ' selected-activation' : ''}">${PLANET_GLYPHS[planet]} ${t('Personality')} ${planetName(planet)} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
   }
 
   const transitActs = Object.entries(detailContext?.transitGates || {})
     .filter(([, g]) => g?.gate === gateNum)
     .map(([planet, g]) => `<span>${PLANET_GLYPHS[planet] || ''} ${t('Transit')} ${esc(planetName(planet))} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
 
-  const inChannels = (detailContext?.model?.channels || chart.channels || []).filter(ch => ch.gates.includes(gateNum));
+  const inChannels = channelsForGate(gateNum);
   const channelHtml = inChannels.map(ch => {
     const key = ch.gates.join('-');
-    const chDesc = CHANNEL_DESCRIPTIONS[key];
+    const channelActive = (detailContext?.model?.channels || chart.channels).some(active => active.gates.join('-') === key);
     return `
       <div class="gate-detail-channel">
-        ${detailContext?.model ? `<button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(ch.gates))}</button>` : `<strong>${esc(formatDisplay('channelDetail', channelName(ch.gates), key))}</strong>`}
+        <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(ch.gates))}</button>
         <span class="circuit-badge ${esc(ch.circuit)}">${esc(circuitName(ch.circuit))}</span>
-        ${detailContext?.model ? `<span class="circuit-badge transit-source-badge ${detailContext.model.channelSource(ch)}">${t(TRANSIT_SOURCE_LABELS[detailContext.model.channelSource(ch)])}</span>` : chDesc ? `<p>${esc(chDesc.whenDefined)}</p>` : ''}
+        ${detailContext?.model ? `<span class="circuit-badge transit-source-badge ${channelActive ? detailContext.model.channelSource(ch) : 'inactive'}">${t(channelActive ? TRANSIT_SOURCE_LABELS[detailContext.model.channelSource(ch)] : 'No complete channel in this view')}</span>` : `<span class="circuit-badge transit-source-badge ${channelActive ? 'defined' : 'inactive'}">${t(channelActive ? 'Defined' : 'Not defined in this view')}</span>`}
       </div>
     `;
   }).join('');
 
-  const isActive = acts.length > 0;
   detail.innerHTML = `
     <div class="gate-detail-card">
       <div class="gate-detail-nav">${detailNav()}</div>
@@ -473,8 +443,7 @@ export function showGateDetail(gateNum, pushHistory = true) {
         ${detailContext ? `<div class="gate-detail-transits"><div class="detail-label">${t('Transit activations')}</div>${transitActs.length ? transitActs.join('<br>') : t('Not activated by the selected transit.')}</div>` : ''}
         <div class="lens-switch">${lenses().map(([k, label]) => `<button type="button" data-lens="${k}" class="${k === currentLens ? 'active' : ''}">${label}</button>`).join('')}</div>
         <div id="lens-content">${renderLens(gateNum)}</div>
-        ${(isActive || detailContext?.model) && channelHtml ? channelHtml : ''}
-        ${desc?.harmonic ? `<p class="gate-detail-harmonic">${t('Harmonic gate:')} <button class="gate-link" data-gate="${desc.harmonic}">${t('Gate {gate}', { gate: desc.harmonic })}</button>${t(detailContext?.model ? (detailContext.model.channels.some(ch => ch.gates.includes(gateNum) && ch.gates.includes(desc.harmonic)) ? ' (channel active in this view)' : ' (no complete channel in this view)') : chart.gates.all.includes(desc.harmonic) ? ' (active — channel formed)' : ' (open — you meet this energy in others)')}</p>` : ''}
+        ${channelHtml}
       </div>
     </div>
   `;
@@ -489,8 +458,6 @@ export function showGateDetail(gateNum, pushHistory = true) {
     document.getElementById('lens-content').innerHTML = renderLens(gateNum);
   }));
   detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
-  detail.querySelectorAll('.gate-link[data-gate]').forEach(btn =>
-    btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate))));
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
@@ -522,8 +489,6 @@ export function showCenterDetail(centerKey, pushHistory = true) {
   const natalHere = model?.mode === 'overlay' && model.natalCenters.has(centerKey);
   const status = model ? definedHere ? natalHere ? 'defined' : 'transit-defined' : 'undefined' : c.status;
   const statusLabel = t(model ? natalHere ? 'Defined in birth chart' : definedHere ? model.mode === 'transit-only' ? 'Defined by transits' : 'Defined with transits' : 'Not defined in this view' : status.charAt(0).toUpperCase() + status.slice(1));
-  const meaning = contentText(status === 'defined' ? (c.definedMeaning || c.pressure)
-    : status === 'undefined' ? c.undefinedMeaning : c.openMeaning);
 
   // Gates that live in this center, active ones marked and clickable.
   const activeSet = model?.activeGates || new Set(chart.gates.all);
@@ -542,7 +507,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
         ${touching.map(ch => {
           const key = ch.gates.join('-');
           const on = definedKeys.has(key);
-          return model ? `<button type="button" class="cd-channel ${on ? 'on' : ''}" data-center-channel="${key}">${esc(channelName(ch.gates))} <span class="cd-channel-gates">${key}</span></button>` : `<span class="cd-channel ${on ? 'on' : ''}">${esc(channelName(ch.gates))} <span class="cd-channel-gates">${key}</span></span>`;
+          return `<button type="button" class="cd-channel ${on ? 'on' : ''}" data-center-channel="${key}">${esc(channelName(ch.gates))} <span class="cd-channel-gates">${key}</span></button>`;
         }).join('')}
       </div>
     </div>` : '';
@@ -558,7 +523,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
           <span class="center-status ${status}">${statusLabel}</span>
           <span class="center-detail-theme">${esc(contentText(c.theme || ''))}${c.biological ? ` · ${esc(contentText(c.biological))}` : ''}</span>
         </div>
-        <p class="gate-detail-desc">${esc(model ? t(definedHere ? natalHere ? 'This center is already defined in the birth chart.' : 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.') : meaning || '')}</p>
+        ${model ? `<p class="gate-detail-desc">${t(definedHere ? natalHere ? 'This center is already defined in the birth chart.' : 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : centerReading(centerKey, { status, includeTheme: false })}
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>
@@ -637,14 +602,6 @@ function renderCentersPanel(container) {
 
 function renderChannelsPanel(container) {
   const { chart } = current;
-  if (chart.channels.length === 0) {
-    container.innerHTML = `
-      <div class="panel-title">${t('Channels')}</div>
-      <p>${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>
-    `;
-    return;
-  }
-
   // Hanging gates: for every channel where exactly one gate is active,
   // the active gate "hangs", seeking its partner. Gates in multiple
   // channels (10, 20, 34, 57) can hang toward several partners at once.
@@ -676,6 +633,7 @@ function renderChannelsPanel(container) {
 
   container.innerHTML = `
     <div class="panel-title">${t('Channels ({count} defined)', { count: chart.channels.length })}</div>
+    ${chart.channels.length === 0 ? `<p class="panel-intro">${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>` : ''}
     ${channelsHtml}
     ${hanging.length ? `
       <div class="panel-title" style="margin-top:20px">${t('Hanging Gates ({count})', { count: hanging.length })}</div>
@@ -737,12 +695,12 @@ function renderPlanetsPanel(container) {
     const p = chart.gates.personality[planet];
     return `
       <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
+        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
         <span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span>
         <span class="planet-cell-name">${esc(planetName(planet))}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
+        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
       </div>
     `;
   }).join('');
@@ -766,7 +724,7 @@ function renderPlanetsPanel(container) {
     const g = parseInt(cell.dataset.gate);
     if (g) {
       cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showGateDetail(g));
+      cell.addEventListener('click', () => showGateDetail(g, true, { side: cell.dataset.side, planet: cell.dataset.planet, line: Number(cell.dataset.line) }));
       wireRowHover(cell, g);
     }
   });

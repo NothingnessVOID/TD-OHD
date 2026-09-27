@@ -761,7 +761,7 @@ export function renderBodygraph(container, chart, opts = {}) {
         row.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') highlightGate(null); });
         if (opts.onGateClick) {
           row.style.cursor = 'pointer';
-          row.addEventListener('click', () => opts.onGateClick(g.gate));
+          row.addEventListener('click', () => opts.onGateClick(g.gate, { side, planet, line: g.line }));
         }
       }
       col.appendChild(row);
