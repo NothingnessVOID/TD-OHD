@@ -15,7 +15,7 @@
 | 事件 | 闸门 1,189；爻线 5,966；合计 7,155。 |
 | SHA-256 | `c86ace5bada03fc3019ad22bab71f518f22c2cf9893e45f7fc38f2c01af46c47`。 |
 | 同引擎对照 | `node scripts/verify-transit-events.mjs 2026`：20,506 个抽样时刻，差异 0；覆盖边界前后、逆行和年末。 |
-| 跨时区 | 默认本地环境与 `TZ=Asia/Shanghai` 重新生成的核心数据逐字节相同。 |
+| 跨时区 | 默认本地环境、`TZ=Asia/Shanghai`、`TZ=America/New_York`、`TZ=UTC` 重新生成的 2026 文件均得到相同 SHA-256 `c86ace5b…01af46c47`；纽约与 UTC 单次耗时分别 36.460、37.013 秒。 |
 
 ## 预览、已知问题和未验证项
 

@@ -49,6 +49,8 @@ test('rejects malformed explicit time, zone and coordinates', () => {
   assert.equal(paramsToBirth('d=1990-06-15&t=12:00&tz=0x10'), null);
   assert.equal(paramsToBirth('d=1990-06-15&t=12:00&tz=0&lat=900&lon=0'), null);
   assert.equal(paramsToBirth('d=1990-06-15&t=12:00&tz=0&lat=12oops&lon=0'), null);
+  assert.equal(paramsToBirth('d=1990-06-15&t=12:00&tz=0&iana=Not_A_Zone'), null);
+  assert.equal(paramsToBirth('d=1990-06-15&t=12:00&iana=Asia%2FTokyo'), null);
 });
 
 test('fractional timezone offsets survive', () => {
