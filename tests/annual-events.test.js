@@ -26,6 +26,7 @@ test('line changes and simultaneous point changes replay atomically', () => {
   assert.deepEqual(replayAnnual(data, start).sun, [1, 1]);
   assert.deepEqual(replayAnnual(data, start + 1000).sun, [1, 2]);
   assert.deepEqual(replayAnnual(data, start + 2000).earth, [2, 1]);
+  assert.deepEqual(replayAnnual(data, start + 3000).sun, [1, 1]); // reverse crossing returns to the prior gate
   assert.throws(() => replayAnnual(data, end), RangeError);
   const broken = fixture();
   broken.events[2][2] = 2;
@@ -123,4 +124,19 @@ test('annual cache evicts by recent use and actual encoded bytes', async () => {
   await loader.load(2027);
   assert.deepEqual(loader.cachedYears(), [2025, 2027]);
   assert.ok(loader.cachedBytes() <= budget);
+});
+
+test('manifest signature mismatch fails closed before requesting a year file', async () => {
+  let yearRequests = 0;
+  const loader = createAnnualLoader({ fetcher: async url => {
+    if (url.endsWith('manifest.json')) {
+      return new Response(JSON.stringify({ format: 1, signature: 'outdated-calculation', years: {} }));
+    }
+    yearRequests++;
+    return new Response('');
+  } });
+  const [segment] = await loader.loadRange(start, start + 86_400_000);
+  assert.match(segment.data.unavailable, /signature mismatch/i);
+  assert.equal(yearRequests, 0);
+  assert.deepEqual(loader.cachedYears(), []);
 });

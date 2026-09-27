@@ -50,6 +50,11 @@ export function paramsToBirth(searchParams) {
       (hasCoords && (Math.abs(lat) > 90 || Math.abs(lon) > 180))) return null;
   const placeName = p.get('place');
   const iana = p.get('iana');
+  if (iana !== null) {
+    if (!iana.trim() || tz === null) return null;
+    try { new Intl.DateTimeFormat('en', { timeZone: iana }); }
+    catch { return null; }
+  }
 
   return {
     name: p.get('n') || null,
