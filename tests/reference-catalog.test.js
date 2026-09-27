@@ -9,8 +9,11 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(entries.filter(entry => entry.kind === kind).length, expected);
   }
   assert.equal(entries.some(entry => entry.kind === 'line'), false);
-  assert.ok(channelsForGate(34).length > 1);
-  assert.equal(new Set(channelsForGate(34).map(ch => ch.gates.join('-'))).size, channelsForGate(34).length);
+  for (const gate of [10, 20, 34, 57]) {
+    const partners = channelsForGate(gate).map(channel => channel.gates.join('-'));
+    assert.equal(partners.length, 3, `Gate ${gate} keeps all integration partners`);
+    assert.equal(new Set(partners).size, partners.length);
+  }
   assert.ok(circuitChannels('group', 'individual').some(ch => ch.circuit === 'integration'));
 });
 

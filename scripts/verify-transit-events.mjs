@@ -4,12 +4,19 @@ import { resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { snapshot } from '../src/features/transit-timeline/snapshot.js';
 import { discreteState, replayAnnual, sameActivation, TRANSIT_POINTS, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
+import { stateAt, natalIdentity } from '../src/features/transit-timeline/graph-provider.js';
+import { computeChart } from '../src/lib/chartdata.js';
 
 const root = resolve(import.meta.dirname, '..', 'public/transit-data');
 const manifest = JSON.parse(await readFile(resolve(root, 'manifest.json')));
 const years = process.argv.includes('--all') ? Object.keys(manifest.years).map(Number)
   : [Number(process.argv.find(arg => /^\d{4}$/.test(arg)) || 2026)];
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+const natal = natalIdentity(computeChart({ birthDate: '1985-01-01', birthTime: '12:00', timezone: 0 }).chart);
+const activations = state => Object.fromEntries(TRANSIT_POINTS.map(point =>
+  [point, { gate: state[point][0], line: state[point][1] }]));
+const graphState = (state, mode) => [...stateAt(natal, activations(state), mode)]
+  .sort(([a], [b]) => a.localeCompare(b));
 let totalDifferences = 0;
 let precedingFinal = null;
 for (const year of years) {
@@ -40,6 +47,7 @@ for (const year of years) {
     if (event[0] + 1000 < data.end) times.add(event[0] + 1000);
   }
   let differences = 0;
+  let graphDifferences = 0;
   const examples = [];
   for (const time of [...times].sort((a, b) => a - b)) {
     const actual = discreteState(snapshot(time));
@@ -49,14 +57,21 @@ for (const year of years) {
       if (examples.length < 12) examples.push({ time: new Date(time).toISOString(), point,
         direct: actual[point], replayed: replayed[point] });
     }
+    for (const mode of ['overlay', 'transit-only']) {
+      if (JSON.stringify(graphState(actual, mode)) !== JSON.stringify(graphState(replayed, mode))) {
+        graphDifferences++;
+        if (examples.length < 12) examples.push({ time: new Date(time).toISOString(), mode,
+          directGraph: graphState(actual, mode), replayedGraph: graphState(replayed, mode) });
+      }
+    }
   }
   const endState = discreteState(snapshot(data.end - 1000));
   for (const point of TRANSIT_POINTS) if (!sameActivation(final[point], endState[point])) {
     differences++;
     if (examples.length < 12) examples.push({ point, final: final[point], direct: endState[point] });
   }
-  totalDifferences += differences;
+  totalDifferences += differences + graphDifferences;
   console.log(JSON.stringify({ year, events: data.events.length, sampleTimes: times.size,
-    differences, examples, verifyMs: Math.round(performance.now() - started) }));
+    differences, graphDifferences, examples, verifyMs: Math.round(performance.now() - started) }));
 }
 if (totalDifferences) process.exitCode = 1;

@@ -58,3 +58,13 @@ test('condition rows combine any selections and all/any across rows with complem
   assert.throws(() => queryTimeline(result, []));
   assert.throws(() => queryTimeline(result, [{ kind: 'gate', ids: [999], state: 'active' }]));
 });
+
+test('parallel connecting paths keep a single complete fixed-island group', () => {
+  const parallel = [...channels,
+    { gates: [2, 14], centers: ['b', 'w'] },
+    { gates: [14, 3], centers: ['w', 'c'] }];
+  const two = natal([1, 2, 3, 4]);
+  assert.equal(natalIslands(two, parallel).length, 2);
+  assert.deepEqual(bridgeState(two, [1, 2, 3, 4, 9, 14], parallel).connected, [[1, 2]]);
+  assert.equal(bridgeState(two, [1, 2, 3, 4, 9, 14], parallel).complete, true);
+});

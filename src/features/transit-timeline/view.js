@@ -90,6 +90,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let requestedRange = null;
   const expandedGates = new Set();
   let navigationTimer = 0;
+  let navigationGeneration = 0;
   let queryResult = null;
   let queryConditions = null;
   let boundsZone = '';
@@ -433,6 +434,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     }) || [];
     const change = direction > 0 ? candidates[0] : candidates.at(-1);
     if (!change) { setText($('.tl-event-status'), t('noNextGate')); return; }
+    const currentNavigation = ++navigationGeneration;
     clearTimeout(navigationTimer);
     setText($('.tl-event-status'), '');
     const target = change.gates.find(gate => visibleRows.has(`gate:${gate}`));
@@ -442,8 +444,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       row?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
     requestAnimationFrame(() => {
+      if (currentNavigation !== navigationGeneration) return;
       context?.api?.highlightSelection({ kind: 'gates', gates: change.gates });
-      navigationTimer = setTimeout(() => { context?.api?.highlightSelection(null); highlight(null); }, 1400);
+      navigationTimer = setTimeout(() => {
+        if (currentNavigation !== navigationGeneration) return;
+        context?.api?.highlightSelection(null); highlight(null);
+      }, 1400);
     });
   }
 
@@ -778,10 +784,15 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       }
       const selection = { kind: 'targets', gates: [...gates].filter(Number.isInteger), centers: [...centers] };
       if (selection.gates.length || selection.centers.length) {
+        const currentNavigation = ++navigationGeneration;
         clearTimeout(navigationTimer);
         requestAnimationFrame(() => {
+          if (currentNavigation !== navigationGeneration) return;
           context?.api?.highlightSelection(selection);
-          navigationTimer = setTimeout(() => { context?.api?.highlightSelection(null); highlight(null); }, 1400);
+          navigationTimer = setTimeout(() => {
+            if (currentNavigation !== navigationGeneration) return;
+            context?.api?.highlightSelection(null); highlight(null);
+          }, 1400);
         });
         const targetKeys = [...selection.gates.map(gate => `gate:${gate}`), ...selection.centers.map(center => `center:${center}`)];
         const row = [...root.querySelectorAll('.tl-row')].find(node => targetKeys.includes(node.dataset.key));

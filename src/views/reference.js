@@ -13,6 +13,7 @@ let query = '';
 let limit = 60;
 let lens = 'hd';
 let built = false;
+let lastResult = null;
 
 function route() {
   const [path, search = ''] = location.hash.slice(1).split('?');
@@ -126,12 +127,23 @@ function build() {
 export function renderReferenceView({ languageChange = false } = {}) {
   const previousScroll = built ? document.querySelector('.reference-results')?.scrollTop || 0 : 0;
   const focused = document.activeElement?.id === 'reference-search';
+  const focusedResult = document.activeElement?.classList?.contains('reference-result')
+    ? { kind: document.activeElement.dataset.referenceKind, id: document.activeElement.dataset.referenceId,
+      line: document.activeElement.dataset.referenceLine || '' } : null;
+  const returning = document.activeElement?.hasAttribute?.('data-reference-back') && !route()?.kind;
   if (!built || languageChange) build();
   renderResults();
   renderDetail();
   document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
   if (previousScroll) document.querySelector('.reference-results').scrollTop = previousScroll;
   if (focused) document.getElementById('reference-search').focus({ preventScroll: true });
+  else if (focusedResult || returning) {
+    const target = focusedResult || lastResult;
+    const match = [...document.querySelectorAll('.reference-result')].find(node =>
+      node.dataset.referenceKind === target?.kind && node.dataset.referenceId === target?.id &&
+      (node.dataset.referenceLine || '') === (target?.line || ''));
+    match?.focus({ preventScroll: true });
+  }
 }
 
 export function setupReferenceView() {
@@ -144,7 +156,12 @@ export function setupReferenceView() {
   });
   mount.addEventListener('click', event => {
     const target = event.target.closest('[data-reference-kind]');
-    if (target) { openReference(target.dataset.referenceKind, target.dataset.referenceId, { line: Number(target.dataset.referenceLine) || null }); return; }
+    if (target) {
+      if (target.classList.contains('reference-result')) lastResult = { kind: target.dataset.referenceKind,
+        id: target.dataset.referenceId, line: target.dataset.referenceLine || '' };
+      openReference(target.dataset.referenceKind, target.dataset.referenceId, { line: Number(target.dataset.referenceLine) || null });
+      return;
+    }
     const filter = event.target.closest('[data-reference-filter]');
     if (filter) { category = filter.dataset.referenceFilter; limit = 60; renderReferenceView(); return; }
     const selectedLens = event.target.closest('[data-reference-lens]');
