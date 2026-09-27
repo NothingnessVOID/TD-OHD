@@ -6,7 +6,7 @@ export const en = {
   now: 'Now', range: 'Timeline range', year1: '1 year', pastYear1: 'Past year', hours24: '24 hours', days3: '3 days', days7: '7 days', days28: '28 days',
   overlay: 'Birth chart + transits', sky: 'Transit only', mode: 'Chart view',
   previous: 'Previous gate change', next: 'Next gate change', earlier: 'Earlier window', later: 'Later window',
-  scrub: 'Selected time', scrubHelp: 'Drag to explore · Arrow keys: 1 minute · Shift + arrow: 1 hour',
+  scrub: 'Selected time', scrubHelp: 'Drag to explore · Left/right: gate changes · Up/down: 1 minute',
   tracks: 'Activation windows', tracksIntro: 'Each bar shows when an activation is present.',
   filter: 'Show', all: 'All', centers: 'Centers', channels: 'Channels', gates: 'Gates',
   center: 'Center', channel: 'Channel', gate: 'Gate',
@@ -15,6 +15,15 @@ export const en = {
   loading: 'Calculating activation windows… {percent}%',
   loadingTitle: 'Calculating your timeline', loadingHint: 'Longer ranges may take a little more time.', ready: '{count} rows · {events} gate changes',
   noRows: 'No matching activations in this window.',
+  advanced: 'Advanced', conditions: 'State conditions', combine: 'Combine conditions', any: 'Any',
+  gateLine: 'Gate line', bridge: 'Natal definition bridge', conditionKind: 'Object type',
+  conditionTargets: 'Object IDs, separated by commas', conditionState: 'State',
+  activeState: 'Active / defined', inactiveState: 'Inactive / undefined',
+  addCondition: 'Add condition', removeCondition: 'Remove condition', runQuery: 'Find intervals',
+  noMatches: 'No matching intervals.', fullRange: 'The full requested range matches.',
+  matchCount: '{count} matching intervals',
+  noNextGate: 'No adjacent gate change in this range.',
+  fallbackNotice: 'Annual data unavailable; calculated this range directly.',
   error: 'Could not calculate this window. Try a shorter range or reload.', retry: 'Retry',
   empty: 'Choose a birth chart to explore its timeline.',
   planets: 'Transiting planets', currentState: 'At this moment',
@@ -44,7 +53,7 @@ export const en = {
   temporaryFixing: 'Temporary transit change',
   zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoom: 'Timeline range', hours1: '1 hour', hours6: '6 hours', customRange: 'Custom',
   gestures: 'Swipe sideways to move time · Pinch to zoom · Drag the tracks to select a moment',
-  timelineHelp: 'Arrow keys: 1 minute · Shift + arrow: 1 hour · + / −: zoom',
+  timelineHelp: 'Left/right: gate changes · Up/down: 1 minute · + / −: zoom',
 };
 
 export function translator(messages = {}) {

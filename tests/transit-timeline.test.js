@@ -53,6 +53,7 @@ test('birth state remains continuous and overlay and sky modes match the graph m
     const state = stateAt(birth, sky, mode);
     const expected = new Map([
       ...[...model.activeGates].map(gate => [`gate:${gate}`, model.gateSource(gate)]),
+      ...Object.values(sky).map(value => [`line:${value.gate}.${value.line}`, 'transit']),
       ...model.channels.map(channel => [`channel:${channel.gates.join('-')}`, model.channelSource(channel)]),
       ...[...model.definedCenters].map(center => [`center:${center}`, mode === 'overlay' && model.natalCenters.has(center) ? 'natal' : 'transit'])
     ]);

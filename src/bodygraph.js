@@ -59,18 +59,14 @@ export const PLANET_NAMES = {
 // Traditional center colors (defined state): Head & G yellow, Ajna green,
 // Heart & Sacral red, Throat/Spleen/Solar Plexus/Root brown-tan — tuned
 // per theme so the centerpiece respects dark mode instead of glowing.
-const CENTER_COLORS_LIGHT = {
-  head: '#e9d56b', ajna: '#a3c46c', throat: '#c2a06b',
-  g: '#e9d56b', heart: '#dd6356', spleen: '#c2a06b',
-  solar: '#c2a06b', sacral: '#dd6356', root: '#c2a06b'
-};
-// Vivid palette for dark mode: saturated hues that pop against near-black.
-const CENTER_COLORS_DARK = {
-  head: '#f0c040', ajna: '#5ebd6e', throat: '#c4884a',
-  g: '#f0c040', heart: '#e74c3c', spleen: '#c4884a',
-  solar: '#c4884a', sacral: '#e74c3c', root: '#c4884a'
-};
-const centerColors = () => isDark() ? CENTER_COLORS_DARK : CENTER_COLORS_LIGHT;
+const cssColor = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+const centerColors = () => ({
+  head: cssColor('--center-head', '#e9d56b'), ajna: cssColor('--center-ajna', '#a3c46c'),
+  throat: cssColor('--center-brown', '#c2a06b'), g: cssColor('--center-head', '#e9d56b'),
+  heart: cssColor('--center-red', '#dd6356'), spleen: cssColor('--center-brown', '#c2a06b'),
+  solar: cssColor('--center-brown', '#c2a06b'), sacral: cssColor('--center-red', '#dd6356'),
+  root: cssColor('--center-brown', '#c2a06b')
+});
 
 const SHAPE_KEY_MAP = {
   Head: 'head', Ajna: 'ajna', Throat: 'throat',
@@ -97,14 +93,14 @@ for (const ch of CHANNELS) {
 function palette() {
   const dark = isDark();
   return {
-    personality: dark ? '#f5f0e8' : '#262220',
-    design: dark ? '#e74c3c' : '#c0392b',
-    inactive: dark ? '#8c847a' : '#b8b0a6',
-    undefinedCenter: dark ? '#0d0c0a' : '#ffffff',
-    centerStroke: dark ? '#5a5248' : '#c0b8ae',
-    text: dark ? '#e8e4de' : '#1a1714',
-    textInactive: dark ? '#6f685f' : '#a39a90',
-    transit: 'var(--accent)'
+    personality: cssColor('--graph-personality', dark ? '#f5f0e8' : '#262220'),
+    design: cssColor('--graph-design', dark ? '#e74c3c' : '#c0392b'),
+    inactive: cssColor('--graph-inactive', dark ? '#8c847a' : '#b8b0a6'),
+    undefinedCenter: cssColor('--graph-undefined-center', dark ? '#0d0c0a' : '#ffffff'),
+    centerStroke: cssColor('--graph-center-stroke', dark ? '#5a5248' : '#c0b8ae'),
+    text: cssColor('--text', dark ? '#e8e4de' : '#1a1714'),
+    textInactive: cssColor('--graph-text-inactive', dark ? '#6f685f' : '#a39a90'),
+    transit: cssColor('--accent', dark ? '#d4943a' : '#c47a2a')
   };
 }
 
@@ -139,7 +135,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   const composite = opts.composite || null;
   const transit = opts.transitModel || null;
   // SVG presentation attributes inherit the same theme tokens as the legend and badges.
-  const transitColor = 'var(--transit-source)';
+  const transitColor = cssColor('--transit-source', '#1aadb7');
 
   const personalityGates = new Map(); // gate -> [{planet, line}]
   const designGates = new Map();
@@ -287,7 +283,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
   if (transit) {
     const hatch = svgEl('pattern', { id: paint('transit-center'), width: '10', height: '10', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
-    hatch.appendChild(svgEl('rect', { width: '10', height: '10', fill: 'var(--transit-source-soft)' }));
+    hatch.appendChild(svgEl('rect', { width: '10', height: '10', fill: cssColor('--transit-source-soft', '#e4f1ef') }));
     hatch.appendChild(svgEl('rect', { width: '2', height: '10', fill: transitColor, opacity: '.35' }));
     defs.appendChild(hatch);
   }
@@ -454,7 +450,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     // Text must contrast with the circle fill: in dark mode the
     // personality fill is light, so use dark text there.
     const litTextColor = transit?.gateSource(gateNum) === 'transit'
-      ? 'var(--transit-source-contrast)'
+      ? cssColor('--transit-source-contrast', '#16130f')
       : isDark() && personalityGates.has(gateNum) ? '#16130f' : '#fff';
     g.appendChild(svgEl('text', {
       x: c.cx, y: c.cy + 4,
@@ -480,16 +476,18 @@ export function renderBodygraph(container, chart, opts = {}) {
   // light the matching rows in the data panels (the reverse direction).
   let highlighted = null; // change-detection token
   let pinned = null;       // { kind:'gate'|'center', id } | null
-  const tokenOf = (sel) => sel ? `${sel.kind}:${sel.id}` : null;
+  const tokenOf = (sel) => sel ? `${sel.kind}:${sel.kind === 'gates' ? sel.gates.join(',') : sel.id}` : null;
 
   function litFor(sel) {
     const gates = new Set();
     const centers = new Set();
     if (!sel) return { gates, centers };
-    if (sel.kind === 'gate') {
-      gates.add(sel.id);
-      for (const ch of GATE_CHANNELS[sel.id] || []) {
-        if (definedChannelKeys.has(ch.gates.join('-'))) ch.gates.forEach(g => gates.add(g));
+    if (sel.kind === 'gate' || sel.kind === 'gates') {
+      for (const gate of sel.kind === 'gates' ? sel.gates : [sel.id]) {
+        gates.add(gate);
+        for (const ch of GATE_CHANNELS[gate] || []) {
+          if (definedChannelKeys.has(ch.gates.join('-'))) ch.gates.forEach(g => gates.add(g));
+        }
       }
       for (const g of gates) { const ck = GATES[g]?.center; if (ck) centers.add(ck); }
     } else if (sel.kind === 'channel') {

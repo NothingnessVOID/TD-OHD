@@ -163,16 +163,23 @@ try {
     await page.setViewportSize({ width: 1440, height: 1000 });
   });
 
-  await run('timeline keyboard updates the selected instant', async () => {
+  await run('left/right keyboard and buttons share gate navigation; up/down retain minute scrubbing', async () => {
     const before = await instant();
     const table = page.locator(`${tl} .tl-table`);
     await table.focus();
     await page.keyboard.press('ArrowRight');
-    assert.equal(await instant(), before + 60000);
-    await page.keyboard.press('Shift+ArrowLeft');
-    assert.equal(await instant(), before - 3540000);
-    await page.keyboard.press('Shift+ArrowRight');
-    assert.equal(await instant(), before + 60000);
+    const next = await instant();
+    assert.ok(next > before);
+    await page.locator(action('previous-gate')).click();
+    const previous = await instant();
+    assert.ok(previous < next);
+    await table.focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await instant(), next);
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await instant(), next + 60000);
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await instant(), next);
     assert.ok((await page.locator(`${tl} .tl-moment`).innerText()).length > 8);
   });
 
