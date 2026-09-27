@@ -51,6 +51,16 @@ history predates the privacy rewrite. No installed data is used by development.
 
 Implementation entries record commit, checks, preview and remaining limitations.
 
+| Batch | Committed revision(s) | Evidence gate |
+| --- | --- | --- |
+| 0 | `b7a4206` | Deterministic baseline and build identity |
+| 1 | `3a40a88`, integrated in `f5253b0` | Birth/share/team tests and static PNG browser check |
+| 2 | `f5253b0`, `4c15794` | Catalog coverage and `checkpoint/knowledge-library-v1` bundle |
+| 3 | `5342b67` | Line/source events and persistent detail browser check |
+| 4 | `be4a8d6` | Watchlist, comparison and cancellable query browser check |
+| 5 | `acb878a` | Static/desktop observation persistence and restore checks |
+| 6 | `82945d7`, `69c2027` | Lazy locale, keyboard, phone and full timeline regression |
+
 - Batch 0: 143 deterministic tests passed, 2 external geocoding tests skipped by
   default and available via `npm run test:external`. `npm run build:pages` passed;
   the generated `dist/build-info.json` reports the exact source revision, engine
