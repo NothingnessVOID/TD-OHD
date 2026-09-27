@@ -39,8 +39,13 @@ export function paramsToBirth(searchParams) {
   const tz = p.get('tz');
   const timezone = tz !== null && /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(tz) ? Number(tz) : NaN;
 
-  const lat = p.has('lat') ? Number(p.get('lat')) : null;
-  const lon = p.has('lon') ? Number(p.get('lon')) : null;
+  const coordinate = key => {
+    if (!p.has(key)) return null;
+    const raw = p.get(key);
+    return raw && /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) ? Number(raw) : NaN;
+  };
+  const lat = coordinate('lat');
+  const lon = coordinate('lon');
   const hasCoords = lat !== null || lon !== null;
   const placeName = p.get('place');
   const iana = p.get('iana');

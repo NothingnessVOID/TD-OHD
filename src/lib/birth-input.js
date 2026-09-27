@@ -30,8 +30,13 @@ export function normaliseBirth(birth, { confirmMinute = false } = {}) {
   if (location) {
     const validCoord = (value, max) => value == null ||
       (typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= max);
-    if (!validCoord(location.lat, 90) || !validCoord(location.lon, 180))
+    if (!validCoord(location.lat, 90) || !validCoord(location.lon, 180) ||
+        (location.lat == null) !== (location.lon == null))
       throw new BirthInputError('Enter valid birth coordinates.');
+    if (location.iana) {
+      try { new Intl.DateTimeFormat('en', { timeZone: location.iana }); }
+      catch { throw new BirthInputError('Enter a valid IANA time zone.'); }
+    }
   }
   return { ...birth, birthDate: date, birthTime: time, timeUnknown: unknown, timezone,
     ...(location ? { location: { ...location, timezone } } : {}) };

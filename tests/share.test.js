@@ -46,6 +46,16 @@ test('bad date, time and timezone never become a plausible noon UTC chart', () =
   assert.throws(() => paramsToBirth('d=1990-06-15&t=14:30&tz=8junk'), /UTC offset/);
 });
 
+test('rejects empty, partial and out-of-range coordinates and unknown IANA zones', () => {
+  for (const query of [
+    'lat=&lon=121', 'lat=31', 'lat=31&lon=181', 'lat=31x&lon=121',
+    'lat=31&lon=121&iana=Invalid/Nowhere'
+  ]) {
+    assert.throws(() => paramsToBirth(`d=1990-06-15&t=14:30&tz=8&${query}`));
+  }
+  assert.equal(paramsToBirth('d=1990-06-15&t=14:30&tz=8&lat=0&lon=0&iana=Etc%2FUTC').location.lat, 0);
+});
+
 test('fractional timezone offsets survive', () => {
   const out = paramsToBirth('d=1985-03-20&t=08:00&tz=5.5');
   assert.equal(out.timezone, 5.5);

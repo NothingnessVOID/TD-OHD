@@ -10,6 +10,7 @@ registerMessages('zh-CN', {
   'Confirm the birth minute before discarding seconds.': '出生时间含有秒数，请确认要使用的分钟后再继续。',
   'Enter a valid birth UTC offset.': '请输入有效的出生时 UTC 时差。',
   'Enter valid birth coordinates.': '请输入有效的出生地坐标。',
+  'Enter a valid IANA time zone.': '请输入有效的 IANA 时区标识。',
   'This shared link contains invalid birth data. Correct the link or enter the details below.': '分享链接的出生资料无效。请修正链接，或在下方重新输入。',
   'A saved chart contains invalid birth data. Re-enter its birth details before calculating.': '已保存的图包含无效出生资料。请重新输入出生资料后再计算。'
   ,'A selected team member is unavailable.': '所选团队成员的资料已不可用。'
@@ -35,6 +36,7 @@ registerMessages('zh-Hant', {
   'Confirm the birth minute before discarding seconds.': '出生時間含有秒數，請確認要使用的分鐘後再繼續。',
   'Enter a valid birth UTC offset.': '請輸入有效的出生時 UTC 時差。',
   'Enter valid birth coordinates.': '請輸入有效的出生地座標。',
+  'Enter a valid IANA time zone.': '請輸入有效的 IANA 時區識別碼。',
   'This shared link contains invalid birth data. Correct the link or enter the details below.': '分享連結的出生資料無效。請修正連結，或在下方重新輸入。',
   'A saved chart contains invalid birth data. Re-enter its birth details before calculating.': '已儲存的圖包含無效出生資料。請重新輸入出生資料後再計算。'
   ,'A selected team member is unavailable.': '所選團隊成員的資料已不可用。'
