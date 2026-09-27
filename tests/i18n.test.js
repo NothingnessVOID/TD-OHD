@@ -4,13 +4,14 @@ import { readFileSync, readdirSync } from 'node:fs';
 import * as engine from 'natalengine';
 import * as content from '../src/lib/content.js';
 import * as vocabulary from '../src/lib/vocabulary.js';
-import { getLocale, setLocale, resolveLocale, onLocaleChange, t, LOCALES, formatDisplay, countLabel } from '../src/lib/i18n.js';
+import { getLocale, setLocale, ensureLocale, resolveLocale, onLocaleChange, t, LOCALES, formatDisplay, countLabel } from '../src/lib/i18n.js';
 import { localeResources } from '../src/locales/index.js';
 import { formatBirth } from '../src/lib/format.js';
 import { computeChart, sensitivityCheck } from '../src/lib/chartdata.js';
 
 const directory = new URL('../src/locales/zh-CN/', import.meta.url);
 const uiCatalogs = readdirSync(directory).filter(name => /^ui-.*\.json$/.test(name));
+await Promise.all([ensureLocale('zh-CN'), ensureLocale('zh-Hant')]);
 
 test('TD-OHD branding keeps the personal fork, Pages URL and upstream attribution distinct', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');

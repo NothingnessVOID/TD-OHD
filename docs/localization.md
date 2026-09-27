@@ -6,10 +6,12 @@ The header selector supports English (`en`), Simplified Chinese (`zh-CN`) and Tr
 
 | Location | Responsibility |
 |---|---|
-| `src/locales/index.js` | Registers complete locale providers; the selector and browser-language resolver use this registry. |
-| `src/locales/en.js`, `src/locales/{zh-CN,zh-Hant}/index.js` | Each provider supplies `code`, `label`, `matches`, `messages`, `vocabulary`, `content`, `format` and `timeline`. Each Chinese directory owns its own complete dictionaries, using the layout below. |
+| `src/locales/index.js` | Registers lightweight locale providers and loads each Chinese UI/reading payload only when selected. The selector and browser-language resolver use this registry. |
+| `src/locales/en.js`, `src/locales/{zh-CN,zh-Hant}/index.js` | English is the upstream fallback. Chinese `index.js` exports language detection, terminology and formatting without long readings. |
+| `src/locales/{zh-CN,zh-Hant}/full.js` | On-demand UI, timeline and reading catalogs for the selected Chinese language. `ensureLocale(code)` loads this before redrawing the interface. |
 | `src/locales/zh-CN/{gates,lines,channels,hexagrams,gene-keys}.json` | Final domain dictionaries keyed by gate/line/channel identifiers. No review overlays. |
-| `src/locales/zh-CN/vocabulary.js` | Named terminology; classical hexagram names are derived from `hexagrams.json`. |
+| `src/locales/{zh-CN,zh-Hant}/hexagram-names.json` | The only maintained source of classical hexagram names; the long I Ching prose in `hexagrams.json` is loaded later. |
+| `src/locales/zh-CN/vocabulary.js` | Named terminology and the compact hexagram-name lookup. |
 | `src/locales/zh-CN/engine-messages.json`, `engine-templates.json` | Remaining engine text and dynamic sentence patterns. `content.js` derives lookups for already-owned readings and vocabulary rather than storing their prose twice. |
 | `src/locales/zh-CN/ui-*.json` | Feature-specific UI messages. Every source key has one owner; shared keys live in `ui-common.json`. |
 | `src/locales/{zh-CN,zh-Hant}/timeline.json` | Timeline messages keyed by the feature's stable identifiers. These are injected separately, never merged into the source-keyed UI catalog. |
@@ -25,7 +27,7 @@ Chinese Gene Keys spectrum keywords include the source term after a space, witho
 
 The `ohd-language` browser preference is independent of chart storage. A supported saved choice wins; otherwise supported browser languages are checked in order, with English as fallback. If preference storage is unavailable, switching still works for the current page. Unsupported locales are not advertised as translated.
 
-Changes redraw descriptions from existing calculated objects and preserve the selected view, chart panel, detail lens, form inputs, saved-person selection and team choices. They must not submit forms, save people or alter share URLs. Only explicitly marked application-owned UI is translated; user-entered names and places are never scanned or replaced.
+Changes redraw descriptions from existing calculated objects and preserve the selected view, chart panel, detail lens, form inputs, saved-person selection and team choices. The Chinese payload loads before a language change is applied; switching preserves the current reading position. They must not submit forms, save people or alter share URLs. Only explicitly marked application-owned UI is translated; user-entered names and places are never scanned or replaced.
 
 ## Traditional Chinese
 
@@ -38,8 +40,8 @@ OpenCC 1.4.2 was used offline to establish an initial character-converted draft,
 ## Adding a language
 
 1. Create a locale directory with reviewed domain dictionaries, vocabulary and UI catalogs. Preserve source meaning and placeholders. Record terminology sources and variant choices in a glossary, following [the Chinese glossary](./术语对照表.zh-CN.md).
-2. Add an `index.js` exporting the provider interface shown above. Implement the same `vocabulary` and `format` keys as `en.js`, plus the content dictionaries, text adapter and cross-name formatter. Supply `timeline: { locale, messages }` using an Intl locale and a reviewed timeline catalog. Set `content.bilingualGeneKeys` only if bilingual spectrum keywords are desired.
-3. Register the provider in `src/locales/index.js`. No view, selector or resolver branches are needed. Add any context-specific messages to `ui-contexts.json` with an English fallback.
+2. Add a lightweight `index.js` exporting `code`, `label`, `matches`, `vocabulary`, `format` and an empty UI/content placeholder. Put the complete `messages`, `content` and `timeline.messages` in `full.js`, with the existing source-text adapter and cross-name formatter. Supply an Intl locale and a reviewed timeline catalog. Set `content.bilingualGeneKeys` only if bilingual spectrum keywords are desired.
+3. Register the provider and its dynamic `full.js` loader in `src/locales/index.js`. No view, selector or resolver branches are needed. Add any context-specific messages to `ui-contexts.json` with an English fallback.
 4. Extend preference tests and include the language in coverage and formatting tests. Traditional Chinese needs reviewed terminology and prose; automatic script conversion alone is not a completed translation.
 5. Check navigation, open details, unsaved drafts, computed relationships and team selection during round-trip switching in a browser.
 
@@ -63,6 +65,7 @@ For new timeline copy, add a stable key to `src/features/transit-timeline/messag
 npm run test:localization
 node --test --test-skip-pattern='geocodes place|helpful errors' tests/*.test.js
 npm run build
+npm run e2e:locales
 ```
 
 `npm test` also runs two existing external geocoding checks. Offline-focused runs above exclude them without changing network security or application behavior.

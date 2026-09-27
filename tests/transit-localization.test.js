@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { calculateHDTransits } from 'natalengine';
 import { buildTransitGraph } from '../src/lib/transit-graph.js';
 import { renderTransitLegend, renderTransitSummary } from '../src/views/transit-presentation.js';
-import { setLocale, t } from '../src/lib/i18n.js';
+import { setLocale, ensureLocale, t } from '../src/lib/i18n.js';
 import { readFileSync } from 'node:fs';
+await Promise.all([ensureLocale('zh-CN'), ensureLocale('zh-Hant')]);
 
 const natal = { gates: { all: [11, 12, 22, 13, 33, 7, 21, 41, 55] },
   centers: { definedNames: ['throat', 'g', 'solar'] }, channels: [] };

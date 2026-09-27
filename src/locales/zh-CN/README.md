@@ -7,14 +7,16 @@
 | `gates.json` | 64 闸门的主题句、说明、象限和谐波编号 |
 | `lines.json` | 64 闸门 × 6 条人类图爻线，按闸门和爻编号定位 |
 | `channels.json` | 36 条通道的说明、定义表现和能量类型 |
-| `hexagrams.json` | 64 卦名、总义和 384 条易经爻辞；浮窗卦名也读取这里 |
+| `hexagram-names.json` | 64 个卦名，供浮窗与正文共用；卦名只在此维护 |
+| `hexagrams.json` | 64 卦总义和 384 条易经爻辞，选择中文时再加载 |
 | `gene-keys.json` | 64 组基因钥匙频谱词与说明，按编号区分同词异义 |
 | `vocabulary.js` | 类型、权威、中心、人生角色、HD 闸门名、通道名和四箭头等术语 |
 | `engine-messages.json` | 引擎返回的其余说明和词条，以完整英文源字符串为键 |
 | `engine-templates.json` | 引擎动态句型与译文；仅两处英文复数后缀显式省略 |
 | `ui-common.json` | 多个界面共用的文案；其他 UI 词典不重复声明 |
 | `ui-static.json`、`ui-main.json`、`ui-chart.json`、`ui-views.json`、`ui-bodygraph.json` | 分别对应静态页面、入口、个人图、其他视图和人体图文案 |
-| `index.js` | 本语言资源入口、标点、日期、列表和浮窗等显示规则 |
+| `index.js` | 轻量入口、术语、标点、日期、列表和浮窗等显示规则 |
+| `full.js` | 按需加载的 UI 文案和长篇正文入口 |
 | `content.js` | 由以上正式词典生成引擎文本查找，不维护第二份正文 |
 
 易经卦名、HD 闸门名、基因钥匙关键词分开维护，不能因为英文相同就全局替换。正文和术语支持按编号查找；动态引擎句子仍需要匹配上游英文文本，升级 NatalEngine 时要核对变化并补充测试。

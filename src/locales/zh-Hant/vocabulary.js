@@ -6,7 +6,7 @@
  * meaning of stored charts or shared URLs.
  */
 
-import hexagrams from './hexagrams.json' with { type: 'json' };
+import hexagramNames from './hexagram-names.json' with { type: 'json' };
 
 export const TYPE_ZH = {
   Generator: ['生產者', '等待回應', '挫敗', '滿足'],
@@ -88,7 +88,7 @@ export const CENTER_ZH = {
 };
 
 // Classical hexagram names are separate from the upstream Human Design names.
-export const HEXAGRAM_ZH = Object.fromEntries(Object.entries(hexagrams).map(([number, data]) => [number, data.name]));
+export const HEXAGRAM_ZH = hexagramNames;
 // Translate the upstream HD gate name only; keep hexagram labels separate.
 const GATE_NAMES = ['創造','接納','秩序','形成答案','固定節奏','摩擦','自我角色','貢獻','專注','自我行為','觀念','謹慎','傾聽者','力量技巧','極端','技能','意見','修正','需要','當下','獵人','開放','同化','合理化','純真','巧術者','照顧','玩家','堅持','感受的辨認','領導','延續','隱私','力量','改變','危機','友誼','戰士','挑釁','獨處','收縮','成長','洞見','相遇','聚集','身體之愛','領悟','深度','原則','價值','震盪','靜止','開始','野心','精神','刺激','直覺','活力','性','限制','神秘','細節','懷疑','困惑'];
 export const GATE_ZH = Object.fromEntries(GATE_NAMES.map((v, i) => [i + 1, v]));

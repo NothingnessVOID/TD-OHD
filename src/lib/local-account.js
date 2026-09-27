@@ -1,5 +1,5 @@
 import { localApi, initializeLocal, lockLocal, flushLocal, getLocalSaveNotice } from './local-store.js';
-import { LOCALES, getLocale, setLocale, onLocaleChange, registerMessages, translatePage, setMessage } from './i18n.js';
+import { LOCALES, getLocale, setLocale, ensureLocale, onLocaleChange, registerMessages, translatePage, setMessage } from './i18n.js';
 import localMessages from '../locales/zh-CN/ui-local.json' with { type: 'json' };
 import traditionalLocalMessages from '../locales/zh-Hant/ui-local.json' with { type: 'json' };
 import './local-account.css';
@@ -37,7 +37,13 @@ export async function unlockLocal() {
   const language = gate.querySelector('.language-switcher');
   language.innerHTML = LOCALES.map(({ code, label }) => `<option value="${code}" lang="${code}">${label}</option>`).join('');
   language.value = getLocale();
-  language.addEventListener('change', () => setLocale(language.value));
+  language.addEventListener('change', async () => {
+    const next = language.value;
+    language.disabled = true;
+    try { await ensureLocale(next); setLocale(next); }
+    catch { language.value = getLocale(); }
+    finally { language.disabled = false; }
+  });
   translatePage(gate);
   const app = document.getElementById('app');
   app.hidden = true; gate.hidden = false;

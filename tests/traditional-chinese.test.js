@@ -6,8 +6,9 @@ import * as hant from '../src/locales/zh-Hant/content.js';
 import * as cn from '../src/locales/zh-CN/content.js';
 import * as terms from '../src/lib/vocabulary.js';
 import * as content from '../src/lib/content.js';
-import { setLocale, t, formatDisplay } from '../src/lib/i18n.js';
+import { setLocale, ensureLocale, t, formatDisplay } from '../src/lib/i18n.js';
 import { localeResources } from '../src/locales/index.js';
+await Promise.all([ensureLocale('zh-CN'), ensureLocale('zh-Hant')]);
 
 const base = new URL('../src/locales/', import.meta.url);
 const read = (code, file) => JSON.parse(readFileSync(new URL(`${code}/${file}`, base), 'utf8'));

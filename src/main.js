@@ -18,7 +18,7 @@ import { setupTransitView, renderTransits, refreshTransitLanguage } from './view
 import { setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
-import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
+import { LOCALES, t, getLocale, setLocale, ensureLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import './lib/language-switcher.css';
 import './lib/knowledge-messages.js';
 import './lib/observation-messages.js';
@@ -43,9 +43,20 @@ function setupLanguageSwitcher() {
   const select = document.getElementById('language-switcher');
   select.innerHTML = LOCALES.map(({ code, label }) => `<option value="${code}" lang="${code}">${label}</option>`).join('');
   select.value = getLocale();
-  select.addEventListener('change', () => setLocale(select.value));
+  select.addEventListener('change', async () => {
+    const next = select.value;
+    select.disabled = true;
+    try { await ensureLocale(next); setLocale(next); }
+    catch (error) { console.error('Could not load language:', error); select.value = getLocale(); }
+    finally { select.disabled = false; }
+  });
   translatePage();
   onLocaleChange(() => {
+    const readingY = window.scrollY;
+    const detailBody = document.querySelector('#gate-detail .gate-detail-body');
+    const detailRatio = detailBody?.scrollHeight > detailBody?.clientHeight
+      ? detailBody.scrollTop / (detailBody.scrollHeight - detailBody.clientHeight) : 0;
+    const timelineScroll = document.querySelector('#timeline-view .tl-table')?.scrollTop || 0;
     select.value = getLocale();
     translatePage();
     if (!initialized) return;
@@ -61,6 +72,17 @@ function setupLanguageSwitcher() {
     if (!document.getElementById('library-view').classList.contains('hidden')) renderKnowledgeView();
     refreshObservationsLanguage();
     localAccountUi?.refreshLocalLanguage();
+    requestAnimationFrame(() => {
+      const nextDetail = document.querySelector('#gate-detail .gate-detail-body');
+      if (nextDetail) nextDetail.scrollTop = detailRatio * Math.max(0, nextDetail.scrollHeight - nextDetail.clientHeight);
+      const nextTimeline = document.querySelector('#timeline-view .tl-table');
+      if (nextTimeline) nextTimeline.scrollTop = timelineScroll;
+      const html = document.documentElement;
+      const priorScrollBehavior = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
+      window.scrollTo(0, readingY);
+      html.style.scrollBehavior = priorScrollBehavior;
+    });
   });
 }
 
@@ -538,6 +560,9 @@ function init() {
 }
 
 async function boot() {
+  document.getElementById('app').hidden = true;
+  try { await ensureLocale(getLocale()); }
+  catch (error) { console.error('Could not load preferred language:', error); setLocale('en', { persist: false }); }
   initTheme();
   setupLanguageSwitcher();
   if (localMode) {

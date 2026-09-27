@@ -1,8 +1,9 @@
 /** Read-only display dictionaries. English reads the original engine objects. */
 import * as engine from 'natalengine';
 import { getLocaleResources } from './i18n.js';
+import { localeResources } from '../locales/index.js';
 
-const content = () => getLocaleResources().content;
+const content = () => getLocaleResources().content || localeResources.en.content;
 function dictionary(name) {
   return new Proxy(engine[name], {
     get: (_source, key) => content().data[name]?.[key] ?? engine[name][key],

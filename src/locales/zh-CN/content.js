@@ -12,11 +12,11 @@ import * as vocabulary from './vocabulary.js';
 export const GATE_DESCRIPTIONS = gates;
 export const LINE_DESCRIPTIONS = lines;
 export const CHANNEL_DESCRIPTIONS = channels;
-export const HEXAGRAM_DESCRIPTIONS = hexagrams;
+export const HEXAGRAM_DESCRIPTIONS = Object.fromEntries(Object.entries(hexagrams).map(([number, data]) => [number, { name: vocabulary.HEXAGRAM_ZH[number], ...data }]));
 export const GENE_KEY_DESCRIPTIONS = geneKeys;
 
 const adapter = createChineseReadings({
-  catalog, templateSources, gates, lines, channels, hexagrams, vocabulary,
+  catalog, templateSources, gates, lines, channels, hexagrams: HEXAGRAM_DESCRIPTIONS, vocabulary,
   crossAngles: { 'Right Angle': '右角', 'Left Angle': '左角', Juxtaposition: '并列' },
   crossLabel: '化身十字之', unknown: '未知'
 });

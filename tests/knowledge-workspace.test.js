@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import { normaliseBirth, BirthInputError } from '../src/lib/birth-input.js';
 import { knowledgeEntries, knowledgeCounts, knowledgeEntry, searchKnowledge } from '../src/lib/knowledge-catalog.js';
 import '../src/lib/knowledge-messages.js';
-import { setLocale } from '../src/lib/i18n.js';
+import { setLocale, ensureLocale } from '../src/lib/i18n.js';
 import { checkedPng } from '../src/lib/chart-export.js';
 import { hangingGatePartners } from '../src/lib/knowledge-topology.js';
 import { calculateHumanDesign, analyzePenta } from 'natalengine';
+await Promise.all([ensureLocale('zh-CN'), ensureLocale('zh-Hant')]);
 
 const birth = {
   birthDate: '2000-02-29', birthTime: '14:30', timezone: 8,

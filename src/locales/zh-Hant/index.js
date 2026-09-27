@@ -1,29 +1,15 @@
 import * as zh from './vocabulary.js';
-import * as readings from './content.js';
-import contexts from '../ui-contexts.json' with { type: 'json' };
-import bodygraphMessages from './ui-bodygraph.json' with { type: 'json' };
-import chartMessages from './ui-chart.json' with { type: 'json' };
-import commonMessages from './ui-common.json' with { type: 'json' };
-import mainMessages from './ui-main.json' with { type: 'json' };
-import staticMessages from './ui-static.json' with { type: 'json' };
-import viewMessages from './ui-views.json' with { type: 'json' };
-import transitMessages from './ui-transits.json' with { type: 'json' };
-import timelineMessages from './timeline.json' with { type: 'json' };
-const messages = {
-  ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
-  ...mainMessages, ...staticMessages, ...viewMessages, ...contexts['zh-Hant']
-};
 export default {
   code: 'zh-Hant', label: '繁體中文', matches: language => /^zh-(?:Hant(?:-[a-z]+)?|TW|HK|MO)$/i.test(language),
-  messages,
-  timeline: { locale: 'zh-Hant', messages: timelineMessages },
+  messages: {},
+  timeline: { locale: 'zh-Hant', messages: {} },
   vocabulary: { typeName: zh.zhType, strategy: zh.zhStrategy, notSelf: zh.zhNotSelf, signature: zh.zhSignature,
     authorityName: zh.zhAuthority, profileName: zh.zhProfile, definitionName: zh.zhDefinition,
     centerName: zh.zhCenter, gateName: zh.zhGate, channelName: zh.zhChannel,
     circuitName: zh.zhCircuit, planetName: zh.zhPlanet, lineName: zh.zhLine,
     variable: zh.zhVariable, cognition: zh.zhCognition,
     typeDescription: name => zh.TYPE_PLAIN_ZH[name] || '', hexagramName: n => zh.HEXAGRAM_ZH[n] || `第 ${n} 卦`, graphCenter: zh.zhCenter },
-  content: { data: readings, text: readings.zhText, cross: readings.zhCross, bilingualGeneKeys: true },
+  content: null,
   format: {
     sensitivity: value => ({ Type: '類型', Authority: '權威', Profile: '人生角色', Definition: '定義', 'Incarnation Cross': '輪迴交叉', Variable: '四箭頭', Moon: '月亮閘門' })[value] || value,
     list: items => items.join('、'),

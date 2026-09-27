@@ -15,7 +15,7 @@ Chinese / English display, without parentheses.
 | 3 | Line events, contributors, fixing evidence, persistent detail (F11–13, F20) | Line changes and source changes inspectable | Complete |
 | 4 | Watchlist, planet filter, event navigation, comparison, condition/bridge queries | Bounded cancellable queries | Complete |
 | 5 | Observations, snapshots, storage adapters, import/export | Durable notes and conflict-preserving restore | Complete |
-| 6 | Lazy resources, accessibility, mobile regression, final validation (F28, F27) | Three languages and 60/40 mobile layout retained | Pending |
+| 6 | Lazy resources, accessibility, mobile regression, final validation (F28, F27) | Three languages and 60/40 mobile layout retained | Complete |
 
 After batch 2: commit, tag `checkpoint/knowledge-library-v1`, save a Git bundle
 outside the checkout and record its path. Continue subsequent batches. Restore by
@@ -109,7 +109,7 @@ Implementation entries record commit, checks, preview and remaining limitations.
   one browser; observation records use the separate storage work in batch 5.
 - Batch 4 commit: `be4a8d6`. The full timeline browser suite, including
   mobile touch and layout checks, passed before this commit.
-- Batch 5 in progress: a standalone observations view stores the immediate
+- Batch 5, commit `acb878a`: a standalone observations view stores the immediate
   observation, later interpretation, real-world event, tags, optional person
   link or anonymous code, UTC instant, display zone and an optional timeline
   snapshot separately. Static mode uses IndexedDB; desktop mode uses an
@@ -129,3 +129,19 @@ Implementation entries record commit, checks, preview and remaining limitations.
   browser regression passed after a medium-width header overflow fix; the
   year-range behavior was already validated in batch 4. Local preview remains
   available at `http://127.0.0.1:5173/` with synthetic examples only.
+- Batch 6: English and unsupported browser languages load without fetching
+  either Chinese reading catalog. Each Chinese catalog is fetched once when
+  selected; compact terminology and hexagram names remain available for
+  cross-language search and hover labels. Long I Ching prose is excluded from
+  the initial entry chunk. Locale switching retains the library hash route and
+  reading position, and the editor keeps keyboard focus when opening a note.
+  A DST-gap wall time is rejected rather than silently normalized. Existing
+  desktop and mobile timeline layouts and interactions remain unchanged.
+  Verification: 161 deterministic tests passed, two optional external
+  geocoding tests skipped; static and desktop builds passed; the static bundle
+  excludes local-account code. Production-bundle browser checks proved lazy
+  language loading and position retention. The full timeline browser suite,
+  workspace keyboard/small-screen checks, static and desktop observation
+  persistence, and the original end-to-end chart suite passed. `git diff
+  --check` passed. The initial application entry still exceeds Vite's 500 kB
+  advisory threshold; this does not include the deferred Chinese prose.

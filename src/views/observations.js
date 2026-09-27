@@ -65,7 +65,8 @@ function readForm() {
   const when = form.elements.when.value;
   if (when && when !== localInputValue(draft.observedAt)) {
     const parsed = new Date(when);
-    if (!Number.isFinite(parsed.getTime())) throw new Error(t('Choose a valid observation time.'));
+    if (!Number.isFinite(parsed.getTime()) || localInputValue(parsed.toISOString()) !== when)
+      throw new Error(t('Choose a valid observation time.'));
     draft.observedAt = parsed.toISOString();
     draft.displayZone = deviceZone();
     draft.snapshot = null;
@@ -78,6 +79,7 @@ function select(id) {
   draft = id ? structuredClone(records.find(record => record.id === id)) : fresh();
   dirty = false;
   render();
+  mount().querySelector('.ob-editor textarea[name="raw"]')?.focus({ preventScroll: true });
 }
 
 function render() {
@@ -132,6 +134,7 @@ function showImportPreview() {
     <div><button type="button" class="btn-primary" data-ob="confirm-import">${t('Import notes')}</button>
     <button type="button" class="btn-secondary" data-ob="cancel-import">${t('Cancel')}</button></div></div>`;
   panel.scrollIntoView({ block: 'nearest' });
+  panel.querySelector('[data-ob="confirm-import"]')?.focus({ preventScroll: true });
 }
 
 export function setupObservationsView({ getTimelineContext = () => null } = {}) {

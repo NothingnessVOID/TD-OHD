@@ -18,6 +18,8 @@
     "test:timeline": "node --test tests/line-fixing.test.js tests/timeline-duration.test.js tests/timeline-presets.test.js tests/timeline-ruler.test.js tests/timeline-viewport.test.js tests/transit-timeline.test.js",
     "e2e:timeline": "node tests/timeline-e2e.mjs && node tests/timeline-analysis-e2e.mjs && node tests/timeline-gestures-e2e.mjs && node tests/timeline-mobile-touch-e2e.mjs && node tests/timeline-mobile-layout-e2e.mjs",
     "e2e:observations": "node tests/observations-e2e.mjs && npm run build:desktop && node tests/observations-desktop-e2e.mjs",
+    "e2e:locales": "npm run build:pages && npm run check:pages-bundle && node tests/lazy-locales-e2e.mjs",
+    "e2e:workspace": "node tests/workspace-accessibility-e2e.mjs && node tests/observations-e2e.mjs",
     "e2e": "node tests/e2e.mjs"
   },
   "dependencies": {

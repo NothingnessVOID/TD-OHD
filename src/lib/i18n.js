@@ -1,5 +1,5 @@
 /** Locale state and source-keyed UI messages. English is the upstream fallback. */
-import { localeResources } from '../locales/index.js';
+import { localeResources, loadLocaleResource } from '../locales/index.js';
 export const LOCALES = Object.freeze(Object.values(localeResources).map(({code,label}) => ({code,label})));
 export const LOCALE_STORAGE_KEY = 'ohd-language';
 const catalogs = new Map(Object.entries(localeResources).map(([code, resources]) => [code, resources.messages]));
@@ -20,6 +20,11 @@ try { if (typeof window !== 'undefined') initialPreference = globalThis.localSto
 let locale = resolveLocale(initialPreference, globalThis.navigator?.languages || []);
 export const getLocale = () => locale;
 export const getLocaleResources = () => localeResources[locale] || localeResources.en;
+export async function ensureLocale(code) {
+  const resources = await loadLocaleResource(code);
+  catalogs.set(code, { ...resources.messages, ...catalogs.get(code) });
+  return resources;
+}
 export const formatDisplay = (kind, ...args) => (getLocaleResources().format[kind] || localeResources.en.format[kind])(...args);
 export const countLabel = (count, singular, plural) => t(count === 1 ? singular : plural, { count });
 
