@@ -29,6 +29,12 @@ export function setupEntryView({ onSubmit }) {
   let manualMode = false;
   let searchSeq = 0;
   let debounceTimer = null;
+  let searchController = null;
+  let composing = false;
+  const searchStatus = document.createElement('p');
+  searchStatus.className = 'field-error hidden';
+  searchStatus.setAttribute('role', 'status');
+  placeResults.after(searchStatus);
 
   // --- Saved people quick-pick ---
   function renderQuickPick() {
@@ -89,7 +95,14 @@ export function setupEntryView({ onSubmit }) {
     }
   }
 
+  placeInput.addEventListener('compositionstart', () => { composing = true; });
+  placeInput.addEventListener('compositionend', () => { composing = false; placeInput.dispatchEvent(new Event('input')); });
   placeInput.addEventListener('input', () => {
+    if (composing) return;
+    const seq = ++searchSeq;
+    searchController?.abort();
+    searchController = null;
+    searchStatus.classList.add('hidden');
     placeInput.removeAttribute('aria-invalid');
     document.getElementById('place-error')?.classList.add('hidden');
     selectedPlace = null;
@@ -98,11 +111,14 @@ export function setupEntryView({ onSubmit }) {
     clearTimeout(debounceTimer);
     if (q.length < 2) { clearResults(); return; }
     debounceTimer = setTimeout(async () => {
-      const seq = ++searchSeq;
+      searchController = new AbortController();
       try {
-        const places = await searchPlaces(q);
+        const places = await searchPlaces(q, 8, { signal: searchController.signal });
         if (seq !== searchSeq) return; // stale response
-        if (!places.length) { clearResults(); return; }
+        if (!places.length) {
+          clearResults(); searchStatus.textContent = t('No matching place found.');
+          searchStatus.classList.remove('hidden'); return;
+        }
         placeResults.innerHTML = places.map((p, i) =>
           `<button type="button" class="place-result" data-i="${i}">${esc(p.label)}</button>`
         ).join('');
@@ -112,8 +128,11 @@ export function setupEntryView({ onSubmit }) {
         placeResults.querySelectorAll('.place-result').forEach(btn => {
           btn.addEventListener('click', () => selectPlace(places[parseInt(btn.dataset.i)]));
         });
-      } catch {
+      } catch (error) {
+        if (seq !== searchSeq || error.name === 'AbortError') return;
         clearResults();
+        searchStatus.textContent = t('Place search is unavailable. Try again or enter a UTC offset manually.');
+        searchStatus.classList.remove('hidden');
       }
     }, 250);
   });
@@ -162,8 +181,9 @@ export function setupEntryView({ onSubmit }) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const birthDate = dateInput.value;
-    if (!birthDate) return;
-    const birthTime = timeUnknown.checked ? '12:00' : (timeInput.value || '12:00');
+    if (!birthDate || !form.reportValidity()) return;
+    const birthTime = timeUnknown.checked ? '12:00' : timeInput.value;
+    if (!birthTime) { timeInput.focus(); timeInput.setAttribute('aria-invalid', 'true'); return; }
 
     let timezone = 0;
     let location = null;
@@ -171,8 +191,8 @@ export function setupEntryView({ onSubmit }) {
       // Require an explicit offset — silently defaulting to UTC produces
       // confidently wrong charts.
       const raw = manualOffset.value.trim();
-      const parsed = parseFloat(raw);
-      if (raw === '' || Number.isNaN(parsed)) {
+      const parsed = Number(raw);
+      if (raw === '' || !Number.isFinite(parsed) || parsed < -14 || parsed > 14 || Math.round(parsed * 4) !== parsed * 4) {
         manualOffset.focus();
         manualOffset.setAttribute('aria-invalid', 'true');
         return;
@@ -183,7 +203,10 @@ export function setupEntryView({ onSubmit }) {
       try {
         timezone = offsetForZone(birthDate, birthTime, selectedPlace.timezone);
       } catch {
-        timezone = 0;
+        placeInput.focus(); placeInput.setAttribute('aria-invalid', 'true');
+        const error = document.getElementById('place-error');
+        if (error) { error.textContent = t('Could not resolve the offset for this date and place.'); error.classList.remove('hidden'); }
+        return;
       }
       location = {
         lat: selectedPlace.latitude,

@@ -63,16 +63,21 @@ export function setupTransitView() {
 
   const setNow = () => {
     const now = new Date();
-    dateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    if (secondsInput.checked) timeInput.value += `:${String(now.getSeconds()).padStart(2, '0')}`;
-    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const zone = zoneInput.value || localZone || 'UTC';
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+      timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+    }).formatToParts(now).map(part => [part.type, part.value]));
+    dateInput.value = `${parts.year}-${parts.month}-${parts.day}`;
+    timeInput.value = `${parts.hour}:${parts.minute}`;
+    if (secondsInput.checked) timeInput.value += `:${parts.second}`;
     if (zoneInput.tagName === 'SELECT' && ![...zoneInput.options].some(option => option.value === zone)) {
       zoneInput.add(new Option(zone, zone));
     }
     zoneInput.value = zone;
     renderTransits();
   };
+  zoneInput.value = localZone || 'UTC';
   setNow();
 
   dateInput.addEventListener('change', renderTransits);

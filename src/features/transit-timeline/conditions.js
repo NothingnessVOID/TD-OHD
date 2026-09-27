@@ -31,7 +31,12 @@ export function queryTimeline(result, conditions, { combine = 'all', mode = 'ove
         !['active', 'inactive'].includes(condition.state) || !Array.isArray(condition.ids) || !condition.ids.length) {
       throw new Error('Invalid condition');
     }
-    const keys = [...new Set(condition.ids.map(id => `${condition.kind}:${id}`))];
+    const keys = [...new Set(condition.ids.map(id => {
+      const key = `${condition.kind}:${id}`;
+      if (condition.kind !== 'channel' || available.has(key)) return key;
+      const reversed = `${condition.kind}:${String(id).split('-').reverse().join('-')}`;
+      return available.has(reversed) ? reversed : key;
+    }))];
     if (keys.some(key => !available.has(key) || !rows.has(key))) throw new Error('Unknown condition target');
     return { keys, state: condition.state };
   });

@@ -42,6 +42,7 @@ test('condition rows combine any selections and all/any across rows with complem
     { key: 'gate:14', intervals: [{ start: 0, end: 20, source: 'natal' }] },
     { key: 'gate:29', intervals: [{ start: 10, end: 30, source: 'transit' }] },
     { key: 'gate:30', intervals: [] },
+    { key: 'channel:3-60', intervals: [{ start: 10, end: 20, source: 'transit' }] },
     { key: 'bridge:natal', intervals: [{ start: 15, end: 25, source: '[[1,2]]' },
       { start: 25, end: 35, source: '[[1,2,3]]' }] }
   ] };
@@ -50,6 +51,7 @@ test('condition rows combine any selections and all/any across rows with complem
   assert.deepEqual(queryTimeline(result, [gate14, gate29]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [gate14, gate29], { combine: 'any' }).intervals.map(i => [i.start,i.end]), [[0,30]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [30], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[0,40]]);
+  assert.deepEqual(queryTimeline(result, [{ kind: 'channel', ids: ['60-3'], state: 'active' }]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3 }).intervals.map(i => [i.start,i.end]), [[15,25],[25,35]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'bridge', state: 'inactive' }], { natalIslandCount: 3 }).intervals.map(i => [i.start,i.end]), [[0,15],[35,40]]);
   assert.throws(() => queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3, mode: 'transit-only' }));

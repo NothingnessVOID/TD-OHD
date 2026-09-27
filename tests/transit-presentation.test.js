@@ -25,9 +25,9 @@ function summary(t, chart = natal, data = overlay, mode = 'overlay') {
   }
 }
 
-test('overlay retains the original synthesis, completion narratives and circuit badges', t => {
+test('overlay states structural completions without claiming a ranked strongest theme', t => {
   const html = summary(t);
-  assert.ok(html.includes(`strongest theme is the <strong>${overlay.channelCompletions[0].channel}</strong>`));
+  assert.doesNotMatch(html, /strongest theme|quiet sky/);
   assert.ok(html.includes(`Channel Completions (${overlay.stats.channelCompletions})`));
   assert.ok(html.includes('When a transit gate sits opposite one of your hanging gates'));
   assert.ok(overlay.channelCompletions.some(c => c.natalGate));
@@ -67,12 +67,12 @@ test('sky-only summary keeps circuit and center descriptions without natal claim
   assert.doesNotMatch(html, /your natal|your chart|Reinforced Gates|Temporarily Defined|strongest theme/);
 });
 
-test('no completions retains quiet-sky synthesis and does not list existing natal channels', t => {
+test('no completions reports the structural fact without a personal interpretation', t => {
   const allDefined = { gates: { all: Array.from({length:64}, (_,i) => i+1) },
     centers: { definedNames: [...new Set(CHANNELS.flatMap(c=>c.centers))] }, channels: CHANNELS };
   const data = calculateHDTransits(allDefined, '2026-09-24');
   const html = summary(t, allDefined, data);
-  assert.ok(html.includes('quiet sky for your chart'));
+  assert.doesNotMatch(html, /quiet sky|passes through gently|strongest theme/);
   assert.ok(html.includes('Channel Completions (0)'));
   assert.ok(html.includes('No channel completions from these transits.'));
   assert.doesNotMatch(html, /data-transit-detail="channel"|Temporarily Defined Centers/);

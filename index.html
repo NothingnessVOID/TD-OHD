@@ -101,7 +101,7 @@
           <div id="tz-chip" class="tz-chip hidden"></div>
           <div id="manual-tz-wrap" class="form-group hidden">
             <label for="manual-tz" data-i18n="UTC offset at birth (e.g. -7, 5.5)">UTC offset at birth (e.g. -7, 5.5)</label>
-            <input type="number" id="manual-tz" placeholder="e.g. -7 or 5.5" min="-12" max="14" step="0.25" data-i18n-placeholder="e.g. -7 or 5.5">
+            <input type="number" id="manual-tz" placeholder="e.g. -7 or 5.5" min="-14" max="14" step="0.25" data-i18n-placeholder="e.g. -7 or 5.5">
           </div>
           <button type="submit" class="btn-primary" data-i18n="View My Chart">View My Chart</button>
           <button type="button" id="manual-tz-toggle" class="link-button" style="margin:10px auto 0;display:block" data-i18n="Enter UTC offset manually instead">Enter UTC offset manually instead</button>
@@ -147,7 +147,6 @@
             <label for="transit-time" data-i18n="Time">Time</label>
             <div class="transit-time-group">
               <input type="time" id="transit-time" step="60">
-              <label class="transit-precision"><input type="checkbox" id="transit-seconds" aria-label="Include seconds" data-i18n-aria-label="Include seconds"> <span data-i18n="Seconds">Seconds</span></label>
             </div>
           </div>
           <label><span data-i18n="Timezone">Timezone</span><select id="transit-timezone" aria-describedby="transit-status"></select></label>
@@ -155,11 +154,14 @@
         </div>
         <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>
         <p id="transit-status" class="panel-intro" aria-live="polite"></p>
-        <div class="transit-view-toolbar">
+        <details class="transit-advanced"><summary data-i18n="Advanced">Advanced</summary>
+          <label class="transit-precision"><input type="checkbox" id="transit-seconds" aria-label="Include seconds" data-i18n-aria-label="Include seconds"> <span data-i18n="Seconds">Seconds</span></label>
           <fieldset class="transit-mode-switch" aria-label="Chart view" data-i18n-aria-label="Chart view">
             <label><input type="radio" name="transit-mode" value="overlay" checked><span data-i18n="Birth chart + transits">Birth chart + transits</span></label>
             <label><input type="radio" name="transit-mode" value="transit-only"><span data-i18n="Transit only">Transit only</span></label>
           </fieldset>
+        </details>
+        <div class="transit-view-toolbar">
           <div id="transit-graph-legend" class="transit-graph-legend" aria-label="Activation sources" data-i18n-aria-label="Activation sources"></div>
         </div>
         <div class="transit-layout">
