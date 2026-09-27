@@ -22,6 +22,8 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
   const byKey = new Map(rows.map(row => [row.key, row]));
   const open = new Map();
   const transitions = [];
+  const gateTransitions = [];
+  const gateChanges = [];
   let previous = snapshot(start);
   let previousTime = start;
   const planets = Object.keys(previous);
@@ -49,15 +51,17 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     const current = snapshot(time);
     let crossings;
     for (const planet of planets) {
-      if (previous[planet].gate === current[planet]?.gate) continue;
+      if (previous[planet].gate === current[planet]?.gate && previous[planet].line === current[planet]?.line) continue;
       crossings ||= new Set();
       let lo = previousTime;
       let hi = time;
       const gate = previous[planet].gate;
+      const line = previous[planet].line;
       while (hi - lo > tolerance) {
         const mid = Math.floor((lo + hi) / 2 / tolerance) * tolerance;
         if (mid <= lo) break;
-        if (snapshot(mid)[planet].gate === gate) lo = mid;
+        const midway = snapshot(mid)[planet];
+        if (midway.gate === gate && midway.line === line) lo = mid;
         else hi = mid;
       }
       crossings.add(hi);
@@ -65,8 +69,19 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     if (crossings) for (const crossing of [...crossings].sort((a, b) => a - b)) {
       // end is an exclusive range boundary, not a visible event.
       if (crossing >= end) continue;
-      apply(crossing, snapshot(crossing));
+      const crossingState = snapshot(crossing);
+      apply(crossing, crossingState);
       transitions.push(crossing);
+      const before = snapshot(Math.max(start, crossing - tolerance));
+      const gates = new Set();
+      for (const planet of planets) if (before[planet]?.gate !== crossingState[planet]?.gate) {
+        gates.add(before[planet].gate);
+        gates.add(crossingState[planet].gate);
+      }
+      if (gates.size) {
+        gateTransitions.push(crossing);
+        gateChanges.push({ time: crossing, gates: [...gates].sort((a, b) => a - b) });
+      }
     }
     previous = current;
     previousTime = time;
@@ -77,7 +92,8 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     byKey.get(key).intervals.push({ ...interval, end,
       clippedEnd: endState.get(key) === interval.source });
   }
-  return { start, end, rows, events: [...new Set(transitions)], scanStep, tolerance };
+  return { start, end, rows, events: [...new Set(transitions)],
+    gateEvents: [...new Set(gateTransitions)], gateChanges, scanStep, tolerance };
 }
 
 export function intervalAt(row, instant) {

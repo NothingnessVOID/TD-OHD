@@ -4,6 +4,9 @@ import { displayTime, wallTime, formatDuration } from './time.js';
 import { calendarRuler } from './ruler.js';
 import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
+import { queryTimeline } from './conditions.js';
+import { natalIslands } from './bridge.js';
+import { catalog } from './provider.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import './timeline.css';
 
@@ -63,6 +66,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let span = timelineRange.end - timelineRange.start;
   let windowRange = { ...timelineRange };
   let mode = 'overlay';
+  let planet = 'all';
   let active = false;
   let chart = null;
   let identity = '';
@@ -84,12 +88,27 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let viewFrame = 0;
   let gestureScale = 1;
   let requestedRange = null;
+  const expandedGates = new Set();
+  let navigationTimer = 0;
+  let queryResult = null;
   let boundsZone = '';
   let limits;
   const $ = selector => root.querySelector(selector);
   const listen = (node, type, fn, options = {}) => node.addEventListener(type, fn, { ...options, signal: events.signal });
   const format = (instant, compact = false) => displayTime(instant, zone, locale, compact);
   const button = (action, text, title = text) => `<button type="button" data-action="${action}" title="${esc(title)}" aria-label="${esc(title)}">${esc(text)}</button>`;
+  const targetCatalog = catalog();
+  function addConditionRow() {
+    const row = document.createElement('div');
+    row.className = 'tl-condition-row';
+    row.innerHTML = `<select data-condition="kind" aria-label="${esc(t('conditionKind'))}">${[
+      ['gate','gate'], ['line','gateLine'], ['channel','channel'], ['center','center'], ['bridge','bridge']
+    ].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select>
+      <input data-condition="ids" type="text" placeholder="14, 29" aria-label="${esc(t('conditionTargets'))}" list="tl-condition-targets">
+      <select data-condition="state" aria-label="${esc(t('conditionState'))}"><option value="active">${esc(t('activeState'))}</option><option value="inactive">${esc(t('inactiveState'))}</option></select>
+      ${button('remove-condition', '×', t('removeCondition'))}`;
+    $('.tl-condition-rows').append(row);
+  }
   function bounds() {
     if (boundsZone !== zone) {
       limits = {
@@ -119,6 +138,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       ${button('now', t('now'))}
       <label>${esc(t('mode'))}<select data-field="mode"><option value="overlay">${esc(t('overlay'))}</option><option value="transit-only">${esc(t('sky'))}</option></select></label>
     </div>
+    <details class="tl-advanced"><summary>${esc(t('advanced'))}</summary>
+      <label>${esc(t('planets'))}<select data-field="planet"><option value="all">${esc(t('all'))}</option>${host.planets.map(item => `<option value="${item.id}">${esc(item.name)}</option>`).join('')}</select></label>
+      <div class="tl-query-head"><strong>${esc(t('conditions'))}</strong><select data-field="combine" aria-label="${esc(t('combine'))}"><option value="all">${esc(t('all'))}</option><option value="any">${esc(t('any'))}</option></select></div>
+      <div class="tl-condition-rows"></div><datalist id="tl-condition-targets">${targetCatalog.filter(row => ['gate','line','channel','center'].includes(row.kind)).map(row => `<option value="${esc(row.id)}">${esc(row.name)}</option>`).join('')}</datalist>
+      <div class="tl-query-actions">${button('add-condition', t('addCondition'))}${button('run-query', t('runQuery'))}</div>
+      <div class="tl-query-status" role="status"></div><div class="tl-query-results"></div>
+    </details>
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
@@ -134,6 +160,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       <div class="tl-mobile-controls-panel" id="tl-mobile-controls" hidden></div>
     </div>
     <div class="tl-explorer"><section class="tl-tracks-panel" aria-label="${esc(t('tracks'))}">
+      <div class="tl-event-nav">${button('previous-gate', '←', t('previous'))}<span class="tl-event-status" role="status"></span>${button('next-gate', '→', t('next'))}</div>
       <div class="tl-table" aria-busy="true" tabindex="0" role="region" aria-label="${esc(t('scrub'))}" aria-describedby="tl-gesture-help" title="${esc(t('timelineHelp'))}">
         <div class="tl-panel-header">
           <label class="tl-kind"><span class="tl-sr-only">${esc(t('filter'))}</span><select data-field="kind" aria-label="${esc(t('filter'))}" title="${esc(t('filter'))}">${[['all','all'],['center','centersShort'],['channel','channels'],['gate','gates']].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select></label>
@@ -157,6 +184,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     </div></section></div></div>`;
 
   const mobileLayout = window.matchMedia('(max-width: 740px)');
+  addConditionRow();
   const toolbar = $('.tl-toolbar');
   const kindControl = $('.tl-kind');
   const compactControls = $('.tl-compact-controls');
@@ -223,8 +251,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const centers = new Set(selection?.centers || []);
     root.querySelectorAll('.tl-row').forEach(node => {
       const [kind, id] = node.dataset.key.split(':');
-      const lit = kind === 'gate' ? gates.has(Number(id)) : kind === 'center' ? centers.has(id)
-        : id.split('-').every(gate => gates.has(Number(gate)));
+      const lit = kind === 'gate' ? gates.has(Number(id)) : kind === 'line' ? gates.has(Number(id.split('.')[0]))
+        : kind === 'center' ? centers.has(id) : id.split('-').every(gate => gates.has(Number(gate)));
       node.classList.toggle('tl-row-lit', Boolean(selection && lit));
     });
   }
@@ -232,10 +260,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   function renderMoment() {
     frame = 0;
     if (!active || !chart) return;
-    const activations = snapshotInstant === selected && snapshotActivations
+    const full = snapshotInstant === selected && snapshotActivations
       ? snapshotActivations : host.snapshot(selected);
     snapshotInstant = selected;
-    snapshotActivations = activations;
+    snapshotActivations = full;
+    const activations = planet === 'all' ? full : { [planet]: full[planet] };
     const model = host.buildModel(chart.chart, activations, mode);
     context ||= {};
     Object.assign(context, { transitGates: activations, mode, model, decorateDetail, onDetailClose: clearTimingState });
@@ -313,6 +342,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   function rowSymbol(row) {
+    if (row.kind === 'line') return `<span class="tl-line-symbol">.${row.line}</span>`;
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;
     if (row.kind === 'channel') return `<span class="tl-channel-symbol">${esc(row.id)}</span>`;
     const shapes = {
@@ -341,11 +371,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const changesOnly = $('[data-field="changes"]').getAttribute('aria-pressed') === 'true';
     // Keep the row roster fixed for the completed calculation. Only bars are
     // clipped to the moving viewport, so empty tracks retain their position.
-    const rows = result.rows.filter(row => row.intervals.length > 0 && (kind === 'all' || row.kind === kind)
-      && (!query || `${name(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query))
+    const rows = result.rows.filter(row => row.kind !== 'bridge' && row.intervals.length > 0 && (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line'))
+      && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
+      && (!query || `${name(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
+        (row.kind === 'gate' && result.rows.some(line => line.kind === 'line' && line.gate === row.id && line.id.includes(query))))
       && (!changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
-    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row" data-key="${row.key}">
-      <button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(name(row))}" aria-label="${esc(name(row))}">${rowSymbol(row)}</button>
+    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}">
+      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}">${expandedGates.has(row.id) ? '▾' : '▸'}</button>` : ''}<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(name(row))}" aria-label="${esc(name(row))}">${rowSymbol(row)}</button></div>
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';
@@ -384,6 +416,32 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     moveViewport(next.range, next.selected);
   }
 
+  function jumpGate(direction) {
+    if (!result || calculating) { setText($('.tl-event-status'), t('loadingTitle')); return; }
+    const visibleRows = new Set([...root.querySelectorAll('.tl-row')].map(node => node.dataset.key));
+    const kind = $('[data-field="kind"]').value;
+    const candidates = result.gateChanges?.filter(change => {
+      if (direction > 0 ? change.time <= selected : change.time >= selected) return false;
+      if (kind === 'all' || kind === 'gate') return change.gates.some(gate => visibleRows.has(`gate:${gate}`));
+      return result.rows.some(row => visibleRows.has(row.key) && row.kind === kind &&
+        row.intervals.some(interval => interval.start === change.time || interval.end === change.time));
+    }) || [];
+    const change = direction > 0 ? candidates[0] : candidates.at(-1);
+    if (!change) { setText($('.tl-event-status'), t('noNextGate')); return; }
+    clearTimeout(navigationTimer);
+    setText($('.tl-event-status'), '');
+    const target = change.gates.find(gate => visibleRows.has(`gate:${gate}`));
+    selectTime(change.time);
+    if (target != null) {
+      const row = [...root.querySelectorAll('.tl-row')].find(node => node.dataset.key === `gate:${target}`);
+      row?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    }
+    requestAnimationFrame(() => {
+      context?.api?.highlightSelection({ kind: 'gates', gates: change.gates });
+      navigationTimer = setTimeout(() => { context?.api?.highlightSelection(null); highlight(null); }, 1400);
+    });
+  }
+
   function zoom(factor, anchor = Math.max(0, Math.min(1, ratioAt(windowRange, selected)))) {
     if (!result || calculating) return;
     moveViewport(zoomWindow(windowRange, factor, anchor, { maxSpan: timelineRange.end - timelineRange.start }));
@@ -400,6 +458,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     stopDrag();
     const token = ++generation;
     calculating = true;
+    queryResult = null; $('.tl-query-results').replaceChildren();
     result = null;
     closeTiming();
     renderRows();
@@ -413,12 +472,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // Presets own the complete calculation; zoom and pan only change windowRange.
     requestedRange = { ...timelineRange };
     try {
-      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode }, progress => {
+      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode, planet }, progress => {
         if (token === generation) renderProgress(progress);
       });
       if (token !== generation || !active) return;
       result = calculated;
       calculating = false;
+      setText($('.tl-event-status'), calculated.source === 'mixed' ? t('fallbackNotice') : '');
       $('.tl-calculation').hidden = true;
       $('.tl-table').setAttribute('aria-busy', 'false');
       requestedRange = null;
@@ -511,7 +571,9 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       [...body.children].filter(node => node.matches(summary)).forEach(node => heading.append(node));
     }
 
-    const row = result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
+    const row = pendingDetail?.row?.kind === 'line' && selection.kind === 'gate' &&
+      pendingDetail.row.gate === Number(selection.id) ? pendingDetail.row
+      : result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
     const interval = row && (pendingDetail?.row === row ? pendingDetail.interval : intervalAt(row, selected));
     // Birth definitions are persistent; only temporary transit participation has timing.
     if (!interval || interval.source === 'natal') return;
@@ -539,7 +601,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     renderMoment();
     pendingDetail = { row, interval };
     root.querySelector(`.tl-bar[data-key="${row.key}"][data-interval="${index}"]`)?.setAttribute('aria-pressed', 'true');
-    host.showDetail(row.kind, row.id, context);
+    host.showDetail(row.kind === 'line' ? 'gate' : row.kind, row.kind === 'line' ? row.gate : row.id, context);
   }
 
   function clockChanged() {
@@ -598,13 +660,29 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     mode = event.target.value;
     host.closeDetail(); calculate(); renderMoment();
   });
+  listen($('[data-field="planet"]'), 'change', event => {
+    planet = event.target.value;
+    host.closeDetail(); calculate(); renderMoment();
+  });
+  listen($('.tl-advanced'), 'input', event => {
+    if (!event.target.closest('.tl-condition-row, [data-field="combine"]')) return;
+    queryResult = null; $('.tl-query-results').replaceChildren();
+    setText($('.tl-query-status'), '');
+    if (event.target.matches('[data-condition="kind"]')) {
+      const row = event.target.closest('.tl-condition-row');
+      const bridge = event.target.value === 'bridge';
+      row.querySelector('[data-condition="ids"]').hidden = bridge;
+      row.querySelector('[data-condition="state"]').hidden = bridge;
+    }
+  });
   for (const field of ['kind','search']) listen($(`[data-field="${field}"]`), 'input', () => { closeTiming(); renderRows(); });
   listen($('.tl-table'), 'keydown', event => {
     if (event.target !== $('.tl-table')) return;
-    const direction = ['ArrowRight','ArrowUp'].includes(event.key) ? 1 : ['ArrowLeft','ArrowDown'].includes(event.key) ? -1 : 0;
-    if (direction) {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      event.preventDefault(); jumpGate(event.key === 'ArrowRight' ? 1 : -1);
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       event.preventDefault();
-      selectTime(selected + direction * MINUTE * (event.shiftKey ? 60 : 1));
+      selectTime(selected + (event.key === 'ArrowUp' ? 1 : -1) * MINUTE * (event.shiftKey ? 60 : 1));
     } else if (['+','=','-','_'].includes(event.key)) {
       event.preventDefault(); zoom(['+','='].includes(event.key) ? 2 : .5);
     }
@@ -643,6 +721,41 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (action === 'mobile-controls') { showMobileControls(controlPanel.hidden); return; }
     if (!controlPanel.hidden && !controlPanel.contains(event.target)) showMobileControls(false);
     if (action === 'now') selectTime(Date.now(), { recenter: true });
+    if (action === 'previous-gate' || action === 'next-gate') jumpGate(action === 'next-gate' ? 1 : -1);
+    if (action === 'expand-gate') {
+      const gate = Number(event.target.closest('[data-gate]').dataset.gate);
+      if (expandedGates.has(gate)) expandedGates.delete(gate); else expandedGates.add(gate);
+      renderRows();
+    }
+    if (action === 'add-condition') addConditionRow();
+    if (action === 'remove-condition') {
+      event.target.closest('.tl-condition-row').remove();
+      queryResult = null; $('.tl-query-results').replaceChildren();
+    }
+    if (action === 'run-query') {
+      try {
+        const conditions = [...root.querySelectorAll('.tl-condition-row')].map(row => ({
+          kind: row.querySelector('[data-condition="kind"]').value,
+          ids: row.querySelector('[data-condition="ids"]').value.split(/[,，\s]+/).filter(Boolean),
+          state: row.querySelector('[data-condition="state"]').value
+        }));
+        queryResult = queryTimeline(result, conditions, {
+          combine: $('[data-field="combine"]').value, mode,
+          natalIslandCount: natalIslands(host.identity(chart.chart)).length,
+          catalog: targetCatalog
+        });
+        setText($('.tl-query-status'), queryResult.empty ? t('noMatches') : queryResult.fullRange ? t('fullRange') :
+          t('matchCount', { count: queryResult.intervals.length }));
+        $('.tl-query-results').innerHTML = queryResult.intervals.map((interval, index) =>
+          `<button type="button" data-query-interval="${index}">${esc(format(interval.start))} → ${esc(format(interval.end))} · ${esc(formatDuration(interval.end - interval.start, t))}</button>`).join('');
+      } catch (error) { queryResult = null; $('.tl-query-results').replaceChildren(); setText($('.tl-query-status'), error.message); }
+    }
+    const queryButton = event.target.closest('[data-query-interval]');
+    if (queryButton && queryResult) {
+      const interval = queryResult.intervals[Number(queryButton.dataset.queryInterval)];
+      selectTime(interval.start);
+      queryButton.scrollIntoView({ block: 'nearest' });
+    }
     if (action === 'changes') {
       const toggle = $('[data-field="changes"]');
       toggle.setAttribute('aria-pressed', String(toggle.getAttribute('aria-pressed') !== 'true'));
@@ -657,7 +770,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const rowButton = event.target.closest('[data-row]');
     if (rowButton && context) {
       const row = result?.rows.find(item => item.key === rowButton.dataset.row);
-      if (row) host.showDetail(row.kind, row.id, context);
+      if (row) host.showDetail(row.kind === 'line' ? 'gate' : row.kind,
+        row.kind === 'line' ? row.gate : row.id, context);
     }
     const planet = event.target.closest('[data-planet], [data-birth-planet]');
     if (planet?.dataset.gate && context) host.showDetail('gate', Number(planet.dataset.gate), context);
@@ -849,6 +963,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const previous = t;
     const timeError = $('.tl-time-error').textContent;
     const loadStatus = $('.tl-load-status').textContent;
+    const eventStatus = $('.tl-event-status').textContent;
     t = translator(nextMessages);
     if (nextLocale) locale = nextLocale;
     if (nextLabel !== undefined) labeler = nextLabel;
@@ -864,13 +979,33 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     put('.tl-empty-state', 'empty');
     put('.tl-heading h2', 'title');
     if (chart) setText($('.tl-person'), chart.birth.name || t('person'));
-    for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['mode','mode']]) fieldLabel(field, key);
+    for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['mode','mode'], ['planet','planets']]) fieldLabel(field, key);
     for (const [action, key] of [['now','now'], ['retry','retry']]) {
       const button = $(`[data-action="${action}"]`);
       setText(button, t(key));
       button.title = t(key);
       button.setAttribute('aria-label', t(key));
     }
+    for (const [action, key] of [['previous-gate','previous'], ['next-gate','next']]) {
+      const node = $(`[data-action="${action}"]`);
+      node.title = t(key); node.setAttribute('aria-label', t(key));
+    }
+    put('.tl-advanced summary', 'advanced');
+    put('.tl-query-head strong', 'conditions');
+    for (const [action, key] of [['add-condition','addCondition'], ['run-query','runQuery']]) {
+      const node = $(`[data-action="${action}"]`);
+      setText(node, t(key)); node.title = t(key); node.setAttribute('aria-label', t(key));
+    }
+    setText($('[data-field="planet"] option[value="all"]'), t('all'));
+    for (const item of host.planets) setText($(`[data-field="planet"] option[value="${item.id}"]`), item.name);
+    for (const [value, key] of [['all','all'],['any','any']]) setText($(`[data-field="combine"] option[value="${value}"]`), t(key));
+    root.querySelectorAll('.tl-condition-row').forEach(row => {
+      for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center'],['bridge','bridge']])
+        setText(row.querySelector(`[data-condition="kind"] option[value="${value}"]`), t(key));
+      setText(row.querySelector('[data-condition="state"] option[value="active"]'), t('activeState'));
+      setText(row.querySelector('[data-condition="state"] option[value="inactive"]'), t('inactiveState'));
+      row.querySelector('[data-action="remove-condition"]').setAttribute('aria-label', t('removeCondition'));
+    });
     for (const [value, key] of [['overlay','overlay'], ['transit-only','sky']])
       setText($(`[data-field="mode"] option[value="${value}"]`), t(key));
     const foldLabel = $('.tl-fold').firstChild;
@@ -880,6 +1015,9 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (timeError) {
       const key = ['fold','gap','invalid'].find(candidate => timeError === previous(candidate));
       if (key) put('.tl-time-error', key);
+    }
+    if (eventStatus === previous('fallbackNotice') || eventStatus === previous('noNextGate')) {
+      setText($('.tl-event-status'), t(eventStatus === previous('fallbackNotice') ? 'fallbackNotice' : 'noNextGate'));
     }
     attr('.tl-moment', 'aria-label', 'selected');
     put('.tl-legend-disclosure summary', 'legend');
@@ -972,6 +1110,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     deactivate,
     refresh() { if (active) renderMoment(); },
     setLanguage,
-    destroy() { deactivate(); client.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
+    destroy() { clearTimeout(navigationTimer); deactivate(); client.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
   };
 }
