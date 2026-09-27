@@ -14,9 +14,11 @@ export function yearSegments(start, end) {
 }
 
 /** Validated public data, shared across requests and independent of person. */
-export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BASE_URL || './', capacity = 3 } = {}) {
+export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BASE_URL || './',
+  capacity = 3, capacityBytes = 1_000_000 } = {}) {
   const cache = new Map();
   const pending = new Map();
+  let cachedBytes = 0;
   let manifestPromise;
   const asset = path => new URL(`${base}transit-data/${path}`, globalThis.location?.href || 'http://localhost/').href;
   async function manifest() {
@@ -32,7 +34,7 @@ export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BA
     if (cache.has(year)) {
       const value = cache.get(year);
       cache.delete(year); cache.set(year, value);
-      return value;
+      return value.data;
     }
     if (pending.has(year)) return pending.get(year);
     const promise = (async () => {
@@ -48,8 +50,13 @@ export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BA
       const data = JSON.parse(new TextDecoder().decode(bytes));
       if (data.signature !== ANNUAL_SIGNATURE || data.year !== year) throw new Error('Annual signature/year mismatch');
       verifyAnnualStructure(data);
-      cache.set(year, data);
-      while (cache.size > capacity) cache.delete(cache.keys().next().value);
+      cache.set(year, { data, bytes: bytes.byteLength });
+      cachedBytes += bytes.byteLength;
+      while (cache.size > capacity || cachedBytes > capacityBytes) {
+        const oldest = cache.keys().next().value;
+        cachedBytes -= cache.get(oldest).bytes;
+        cache.delete(oldest);
+      }
       return data;
     })().finally(() => pending.delete(year));
     pending.set(year, promise);
@@ -65,7 +72,8 @@ export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BA
       }));
       return segments.map((segment, index) => ({ ...segment, data: data[index] }));
     },
-    clear() { cache.clear(); pending.clear(); manifestPromise = null; },
-    cachedYears() { return [...cache.keys()]; }
+    clear() { cache.clear(); cachedBytes = 0; pending.clear(); manifestPromise = null; },
+    cachedYears() { return [...cache.keys()]; },
+    cachedBytes() { return cachedBytes; }
   };
 }

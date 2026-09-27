@@ -6,18 +6,25 @@ import { calculateHumanDesign, calculateGeneKeys } from 'natalengine';
 
 const chartCache = new Map();
 const sensitivityCache = new Map();
+// This cache lives only for the current app runtime. Bump this token when the
+// pinned natal engine, hour adapter, or birth calculation rules change.
+const CHART_CACHE_RULE = 'natalengine-1.6.0:minute-hour-v1:unknown-noon-v1';
 const remember = (cache, key, value) => {
   cache.delete(key); cache.set(key, value);
   if (cache.size > 8) cache.delete(cache.keys().next().value);
   return value;
 };
+const effectiveBirthTime = birth => birth.timeUnknown ? '12:00' : birth.birthTime;
 const calculationKey = birth => JSON.stringify([
-  birth.birthDate, birth.birthTime, birth.timezone, Boolean(birth.timeUnknown)
+  CHART_CACHE_RULE, birth.birthDate, effectiveBirthTime(birth), birth.timezone, Boolean(birth.timeUnknown)
 ]);
 
 function toDecimalHour(birthTime) {
-  const [hours, minutes] = (birthTime || '12:00').split(':').map(Number);
-  return hours + (minutes || 0) / 60;
+  if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(birthTime || '')) {
+    throw new RangeError('Birth time must use HH:MM; seconds are not supported');
+  }
+  const [hours, minutes] = birthTime.split(':').map(Number);
+  return hours + minutes / 60;
 }
 
 /**
@@ -25,10 +32,11 @@ function toDecimalHour(birthTime) {
  * @returns {{ birth, chart, geneKeys }}
  */
 export function computeChart(birth) {
+  const decimalHour = toDecimalHour(effectiveBirthTime(birth));
   const key = calculationKey(birth);
   let data = chartCache.get(key);
   if (!data) {
-    const chart = calculateHumanDesign(birth.birthDate, toDecimalHour(birth.birthTime), birth.timezone ?? 0);
+    const chart = calculateHumanDesign(birth.birthDate, decimalHour, birth.timezone ?? 0);
     data = remember(chartCache, key, { chart, geneKeys: calculateGeneKeys(chart) });
   }
   return { birth, ...data };
@@ -61,7 +69,7 @@ export function sensitivityCheck(birth, chart, windowMinutes = 15) {
     variable: 'Variable', moon: 'Moon'
   };
 
-  const decimal = toDecimalHour(birth.birthTime);
+  const decimal = toDecimalHour(effectiveBirthTime(birth));
   const shifted = new Set();
   for (const delta of [-windowMinutes / 60, windowMinutes / 60]) {
     const c = calculateHumanDesign(birth.birthDate, decimal + delta, birth.timezone ?? 0);
