@@ -76,3 +76,51 @@ test('annual loader deduplicates, validates and reuses year for 7/28/7 requests'
   assert.equal(yearRequests, 1);
   assert.deepEqual(loader.cachedYears(), [2026]);
 });
+
+test('missing and corrupted annual files stay unavailable and never enter the cache', async () => {
+  const data = fixture();
+  const bytes = Buffer.from(JSON.stringify(data));
+  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  const manifest = { format: 1, signature: ANNUAL_SIGNATURE, years: {
+    2026: { path: 'x/2026.json', bytes: bytes.length, sha256 }
+  } };
+  const requests = [];
+  const loader = createAnnualLoader({ fetcher: async url => {
+    requests.push(url);
+    if (url.endsWith('manifest.json')) return new Response(JSON.stringify(manifest));
+    return new Response(Buffer.from(bytes.toString().replace('"year":2026', '"year":2025')));
+  } });
+  const segments = await loader.loadRange(start, end + 1000);
+  assert.deepEqual(segments.map(item => item.year), [2026, 2027]);
+  assert.ok(segments.every(item => item.data.unavailable));
+  assert.deepEqual(loader.cachedYears(), []);
+  assert.equal(requests.filter(url => url.includes('2026.json')).length, 1);
+  assert.equal(requests.filter(url => url.includes('2027')).length, 0);
+});
+
+test('annual cache evicts by recent use and actual encoded bytes', async () => {
+  const encoded = new Map([2025, 2026, 2027].map(yearValue => {
+    const offset = Date.UTC(yearValue, 0, 1) - start;
+    const source = fixture();
+    const data = { ...source, year: yearValue, start: source.start + offset,
+      end: Date.UTC(yearValue + 1, 0, 1),
+      events: source.events.map(event => [event[0] + offset, ...event.slice(1)]) };
+    return [yearValue, Buffer.from(JSON.stringify(data))];
+  }));
+  const manifest = { format: 1, signature: ANNUAL_SIGNATURE, years: {} };
+  for (const [yearValue, bytes] of encoded) manifest.years[yearValue] = {
+    path: `x/${yearValue}.json`, bytes: bytes.length,
+    sha256: createHash('sha256').update(bytes).digest('hex')
+  };
+  const budget = 2 * Math.max(...[...encoded.values()].map(bytes => bytes.length));
+  const loader = createAnnualLoader({ capacity: 3, capacityBytes: budget,
+    fetcher: async url => url.endsWith('manifest.json')
+      ? new Response(JSON.stringify(manifest))
+      : new Response(encoded.get(Number(url.match(/(202[5-7])\.json/)?.[1]))) });
+  await loader.load(2025);
+  await loader.load(2026);
+  await loader.load(2025);
+  await loader.load(2027);
+  assert.deepEqual(loader.cachedYears(), [2025, 2027]);
+  assert.ok(loader.cachedBytes() <= budget);
+});
