@@ -27,6 +27,55 @@ import { birthToParams, connectionUrl } from '../lib/share.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
+
+function downloadChartBlob(blob) {
+  const href = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = href; anchor.download = 'human-design-chart.png';
+  document.body.append(anchor); anchor.click(); anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(href), 1000);
+}
+
+async function renderLocalChartPng() {
+  const original = document.querySelector('#bodygraph-container svg');
+  if (!original) throw new Error('Bodygraph unavailable');
+  const clone = original.cloneNode(true);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  const originals = [original, ...original.querySelectorAll('*')];
+  const copies = [clone, ...clone.querySelectorAll('*')];
+  for (let index = 0; index < originals.length; index++) {
+    const style = getComputedStyle(originals[index]);
+    for (const property of ['fill','stroke','stroke-width','opacity','color','font-family','font-size','font-weight','display']) {
+      const value = style.getPropertyValue(property);
+      if (value) copies[index].style.setProperty(property, value);
+    }
+  }
+  // Capture the finished graph even when the user exports during its entrance animation.
+  clone.querySelectorAll('.bg-reveal, .bg-reveal-paths').forEach(node => {
+    node.classList.remove('bg-reveal', 'bg-reveal-paths');
+    node.style.setProperty('animation', 'none');
+    node.style.setProperty('opacity', '1');
+  });
+  const svgUrl = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' }));
+  try {
+    const image = new Image();
+    image.src = svgUrl;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080; canvas.height = 1920;
+    const context = canvas.getContext('2d');
+    const theme = getComputedStyle(document.documentElement);
+    context.fillStyle = theme.getPropertyValue('--bg').trim() || '#faf8f5';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = theme.getPropertyValue('--text').trim() || '#1a1714';
+    context.textAlign = 'center'; context.font = '52px sans-serif';
+    context.fillText('Human Design', 540, 150);
+    const ratio = Math.min(900 / image.width, 1450 / image.height);
+    const width = image.width * ratio; const height = image.height * ratio;
+    context.drawImage(image, (1080 - width) / 2, 280 + (1450 - height) / 2, width, height);
+    return await new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed')), 'image/png'));
+  } finally { URL.revokeObjectURL(svgUrl); }
+}
 let detailHistory = []; // stack of { kind, id } for modal back-navigation
 let currentDetail = null;
 let detailContext = null;
@@ -93,6 +142,7 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
       <button id="save-image" class="btn-secondary btn-small">${t('Save image')}</button>
       <button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>
     </div>
+    <small class="share-fields">${esc(t('Share fields'))}: ${esc([...birthToParams(birth)].map(([key, value]) => `${key}=${value}`).join(' · '))}</small>
   `;
   document.getElementById('share-chart').addEventListener('click', async (e) => {
     if (!onShare) return;
@@ -100,33 +150,31 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
       await onShare();
       e.target.textContent = t('Link copied ✓');
     } catch {
-      e.target.textContent = t('Copy blocked — use the address bar URL');
+      e.target.textContent = t('Copy blocked — please try again');
     }
     setTimeout(() => { e.target.textContent = t('Copy chart link'); }, 2500);
   });
 
-  // Download a 9:16 share card (Reels / Stories / TikTok), rendered by the
-  // Worker's /og endpoint. (No-op offline / on the static mirror.)
+  // Download a 9:16 share card; static/offline builds render the existing SVG.
   document.getElementById('save-image').addEventListener('click', async (e) => {
     const btn = e.target;
     btn.textContent = t('Preparing…');
     try {
-      const params = birthToParams(birth);
-      params.set('format', 'story');
-      if (document.documentElement.getAttribute('data-theme') === 'dark') params.set('theme', 'dark');
-      const res = await fetch(`/og/card.png?${params}`);
-      if (!res.ok) throw new Error('render failed');
-      const blob = await res.blob();
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${(birth.name || 'human-design').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-chart.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(a.href);
-      btn.textContent = t('Saved ✓');
+      if (['static', 'desktop'].includes(import.meta.env.MODE)) {
+        downloadChartBlob(await renderLocalChartPng());
+        btn.textContent = t('Saved ✓');
+      } else {
+        const params = birthToParams(birth);
+        params.set('format', 'story');
+        if (document.documentElement.getAttribute('data-theme') === 'dark') params.set('theme', 'dark');
+        const res = await fetch(`/og/card.png?${params}`);
+        if (!res.ok || !res.headers.get('content-type')?.startsWith('image/png')) throw new Error('render failed');
+        downloadChartBlob(await res.blob());
+        btn.textContent = t('Saved ✓');
+      }
     } catch {
-      btn.textContent = t('Image unavailable here');
+      try { downloadChartBlob(await renderLocalChartPng()); btn.textContent = t('Saved ✓'); }
+      catch { btn.textContent = t('Image unavailable here'); }
     }
     setTimeout(() => { btn.textContent = t('Save image'); }, 2500);
   });
@@ -139,7 +187,7 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
       await navigator.clipboard.writeText(connectionUrl(birth));
       btn.textContent = t('Invite copied ✓');
     } catch {
-      btn.textContent = t('Copy blocked — use the address bar');
+      btn.textContent = t('Copy blocked — please try again');
     }
     setTimeout(() => { btn.textContent = t('Invite to compare'); }, 2500);
   });

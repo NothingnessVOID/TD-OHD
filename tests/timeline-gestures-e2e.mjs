@@ -929,8 +929,9 @@ try {
           && Math.abs(current.y - current.contentCenterY) < 30
           && ['transparent', 'rgba(0, 0, 0, 0)'].includes(current.cardBackground)
           && current.cardShadow === 'none' && current.cardBorder === '0px'
-          && current.fontSize >= 40 && current.percent === '0%'
-          && current.progressMax === 100 && current.progressValue === 0
+          && current.fontSize >= 40 && /^\d+%$/.test(current.percent)
+          && current.progressMax === 100 && current.progressValue === Number(current.percent.slice(0, -1))
+          && current.progressValue >= 0 && current.progressValue <= 100
           && current.title.length > 0,
         `${label} unobtrusive panel-centered loading state: ${JSON.stringify(current)}`);
       };

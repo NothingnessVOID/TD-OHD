@@ -14,6 +14,8 @@ try {
   await page.locator(`${root} [data-action="run-query"]`).click();
   assert.equal(await page.locator(`${root} [data-query-interval]`).count(), 1);
   const active = await page.locator(`${root} [data-query-interval]`).first().textContent();
+  await page.locator(`${root} [data-query-interval]`).first().click();
+  await page.waitForFunction(() => document.querySelector('#timeline-view .tl-row[data-key="gate:18"]')?.classList.contains('tl-row-lit'));
   await page.locator(`${root} [data-condition="state"]`).first().selectOption('inactive');
   await page.locator(`${root} [data-action="run-query"]`).click();
   assert.ok(await page.locator(`${root} [data-query-interval]`).count() >= 1);

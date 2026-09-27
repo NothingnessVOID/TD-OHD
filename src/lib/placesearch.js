@@ -21,9 +21,10 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
       <input type="text" class="ps-input" placeholder="${esc(t(placeholder))}" autocomplete="off" aria-label="${esc(t(placeholder))}">
       <div class="ps-results hidden"></div>
     </div>
-    <input type="number" class="ps-manual hidden" placeholder="${esc(t('UTC offset, e.g. -6'))}" min="-12" max="14" step="0.5" aria-label="${esc(t('UTC offset at birth'))}">
+    <input type="number" class="ps-manual hidden" placeholder="${esc(t('UTC offset, e.g. -6'))}" min="-14" max="14" step="0.25" aria-label="${esc(t('UTC offset at birth'))}">
     <button type="button" class="ps-toggle">${t('Enter UTC offset')}</button>
     <div class="ps-chip hidden"></div>
+    <div class="ps-status field-error hidden" role="status"></div>
   `;
   const place = mount.querySelector('.ps-place');
   const input = mount.querySelector('.ps-input');
@@ -31,6 +32,7 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
   const manual = mount.querySelector('.ps-manual');
   const toggle = mount.querySelector('.ps-toggle');
   const chip = mount.querySelector('.ps-chip');
+  const status = mount.querySelector('.ps-status');
 
   let selected = null;
   let found = [];
@@ -38,6 +40,8 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
   let debounce = null;
   let seqCounter = 0;
   let manualMode = false;
+  let composing = false;
+  let controller = null;
 
   const dateTime = () => (getDateTime?.() || {});
 
@@ -52,7 +56,9 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     if (manualMode) {
       const v = manual.value.trim();
       if (v === '') { chip.classList.add('hidden'); return; }
-      chip.textContent = `${t('Manual offset')} · ${formatOffset(parseFloat(v) || 0)}`;
+      const parsed = Number(v);
+      if (!Number.isFinite(parsed) || parsed < -14 || parsed > 14) { chip.classList.add('hidden'); return; }
+      chip.textContent = `${t('Manual offset')} · ${formatOffset(parsed)}`;
       chip.classList.remove('hidden');
       return;
     }
@@ -85,7 +91,13 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     items[activeIndex].scrollIntoView({ block: 'nearest' });
   }
 
+  input.addEventListener('compositionstart', () => { composing = true; });
+  input.addEventListener('compositionend', () => { composing = false; input.dispatchEvent(new Event('input')); });
   input.addEventListener('input', () => {
+    if (composing) return;
+    const seq = ++seqCounter;
+    controller?.abort(); controller = null;
+    status.classList.add('hidden');
     selected = null;
     input.removeAttribute('aria-invalid');
     updateChip();
@@ -93,11 +105,13 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     clearTimeout(debounce);
     if (q.length < 2) { clearResults(); return; }
     debounce = setTimeout(async () => {
-      const seq = ++seqCounter;
+      controller = new AbortController();
       try {
-        const places = await searchPlaces(q);
+        const places = await searchPlaces(q, 8, { signal: controller.signal });
         if (seq !== seqCounter) return; // stale response
-        if (!places.length) { clearResults(); return; }
+        if (!places.length) {
+          clearResults(); status.textContent = t('No matching place found.'); status.classList.remove('hidden'); return;
+        }
         results.innerHTML = places.map((p, i) =>
           `<button type="button" class="ps-result" data-i="${i}">${esc(p.label)}</button>`).join('');
         results.classList.remove('hidden');
@@ -105,8 +119,11 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
         activeIndex = -1;
         results.querySelectorAll('.ps-result').forEach(btn =>
           btn.addEventListener('click', () => pick(places[parseInt(btn.dataset.i)])));
-      } catch {
+      } catch (error) {
+        if (seq !== seqCounter || error.name === 'AbortError') return;
         clearResults();
+        status.textContent = t('Place search is unavailable. Try again or enter a UTC offset manually.');
+        status.classList.remove('hidden');
       }
     }, 250);
   });
@@ -161,13 +178,13 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     getBirthLocation(date, time) {
       if (manualMode) {
         const v = manual.value.trim();
-        const parsed = parseFloat(v);
-        if (v === '' || Number.isNaN(parsed)) return null;
+        const parsed = Number(v);
+        if (v === '' || !Number.isFinite(parsed) || parsed < -14 || parsed > 14 || Math.round(parsed * 4) !== parsed * 4) return null;
         return { timezone: parsed };
       }
       if (!selected) return null;
-      let timezone = 0;
-      try { timezone = offsetForZone(date, time, selected.timezone); } catch { timezone = 0; }
+      let timezone;
+      try { timezone = offsetForZone(date, time, selected.timezone); } catch { return null; }
       return { timezone, lat: selected.latitude, lon: selected.longitude, iana: selected.timezone, name: selected.label };
     },
     destroy() {

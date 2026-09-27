@@ -476,20 +476,22 @@ export function renderBodygraph(container, chart, opts = {}) {
   // light the matching rows in the data panels (the reverse direction).
   let highlighted = null; // change-detection token
   let pinned = null;       // { kind:'gate'|'center', id } | null
-  const tokenOf = (sel) => sel ? `${sel.kind}:${sel.kind === 'gates' ? sel.gates.join(',') : sel.id}` : null;
+  const tokenOf = (sel) => sel ? `${sel.kind}:${sel.kind === 'gates' ? sel.gates.join(',')
+    : sel.kind === 'targets' ? `${(sel.gates || []).join(',')}:${(sel.centers || []).join(',')}` : sel.id}` : null;
 
   function litFor(sel) {
     const gates = new Set();
     const centers = new Set();
     if (!sel) return { gates, centers };
-    if (sel.kind === 'gate' || sel.kind === 'gates') {
-      for (const gate of sel.kind === 'gates' ? sel.gates : [sel.id]) {
+    if (sel.kind === 'gate' || sel.kind === 'gates' || sel.kind === 'targets') {
+      for (const gate of sel.kind === 'targets' ? sel.gates || [] : sel.kind === 'gates' ? sel.gates : [sel.id]) {
         gates.add(gate);
         for (const ch of GATE_CHANNELS[gate] || []) {
           if (definedChannelKeys.has(ch.gates.join('-'))) ch.gates.forEach(g => gates.add(g));
         }
       }
       for (const g of gates) { const ck = GATES[g]?.center; if (ck) centers.add(ck); }
+      if (sel.kind === 'targets') for (const center of sel.centers || []) centers.add(center);
     } else if (sel.kind === 'channel') {
       const channel = CHANNELS.find(ch => ch.gates.join('-') === sel.id);
       channel?.gates.forEach(g => gates.add(g));

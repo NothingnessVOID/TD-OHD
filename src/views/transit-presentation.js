@@ -1,6 +1,6 @@
 import { CENTERS } from 'natalengine';
 import { esc } from '../lib/format.js';
-import { t, countLabel } from '../lib/i18n.js';
+import { t } from '../lib/i18n.js';
 import { contentText } from '../lib/content.js';
 import { gateName, channelName, circuitName, centerName } from '../lib/vocabulary.js';
 
@@ -44,17 +44,7 @@ export function renderTransitSummary(overlay, model) {
   const centers = only ? [...model.definedCenters].map(center => ({
     center, centerName: CENTERS[center]?.name, theme: CENTERS[center]?.theme,
   })) : overlay.temporarilyDefinedCenters;
-  const strongest = overlay.channelCompletions[0];
-  const synthesis = only ? '' : strongest
-    ? t('At the selected time, the strongest theme is the <strong>{channel}</strong> channel {connection} — {count} in total.', {
-      channel: esc(channelName(strongest.gates)),
-      connection: esc(t(strongest.natalGate ? 'completing through your chart' : 'active in the field')),
-      count: esc(countLabel(overlay.stats.channelCompletions, '{count} channel completion', '{count} channel completions')),
-    })
-    : esc(t('At the selected time, it is a quiet sky for your chart — no transit completes one of your channels, so the weather passes through gently.'));
-
   document.getElementById('transit-content').innerHTML = `
-    ${synthesis ? `<p class="panel-intro" style="font-size:14px">${synthesis}</p>` : ''}
     <div class="foundation-grid" style="margin-bottom:20px">
       ${[['Transit Sun', overlay.highlights.sun], ['Transit Moon', overlay.highlights.moon]].map(([label, g]) => `<button type="button" class="foundation-item foundation-clickable transit-summary-button" data-transit-detail="gate" data-id="${g.gate}"><span class="label">${esc(t(label))}</span><span class="value">${esc(t('Gate {gate} · Line {line}', g))}</span><span class="detail">${esc(gateName(g.gate))}${!only && g.reinforcesNatal ? esc(t(' — reinforces your natal gate')) : ''}</span></button>`).join('')}
     </div>

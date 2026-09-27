@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { offsetForZone, formatOffset } from '../src/lib/location.js';
+import { offsetForZone, formatOffset, searchPlaces } from '../src/lib/location.js';
 
 test('US Mountain time: DST summer vs winter', () => {
   assert.equal(offsetForZone('1990-06-15', '14:30', 'America/Denver'), -6); // MDT
@@ -45,4 +45,22 @@ test('formatOffset', () => {
   assert.equal(formatOffset(5.5), 'UTC+5:30');
   assert.equal(formatOffset(0), 'UTC+0');
   assert.equal(formatOffset(5.75), 'UTC+5:45');
+});
+
+test('place search passes query language and preserves IANA zone', async () => {
+  const previous = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async url => {
+    calls.push(new URL(url));
+    return { ok: true, json: async () => ({ results: [{
+      name: '東京', admin1: '東京都', country: '日本', latitude: 35.7,
+      longitude: 139.7, timezone: 'Asia/Tokyo', country_code: 'JP'
+    }] }) };
+  };
+  try {
+    const result = await searchPlaces('とうきょう');
+    assert.equal(calls[0].searchParams.get('language'), 'ja');
+    assert.equal(result[0].timezone, 'Asia/Tokyo');
+    assert.match(result[0].label, /東京/);
+  } finally { globalThis.fetch = previous; }
 });

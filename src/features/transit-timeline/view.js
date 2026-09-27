@@ -91,6 +91,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const expandedGates = new Set();
   let navigationTimer = 0;
   let queryResult = null;
+  let queryConditions = null;
   let boundsZone = '';
   let limits;
   const $ = selector => root.querySelector(selector);
@@ -186,13 +187,16 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const mobileLayout = window.matchMedia('(max-width: 740px)');
   addConditionRow();
   const toolbar = $('.tl-toolbar');
+  const advanced = $('.tl-advanced');
   const kindControl = $('.tl-kind');
   const compactControls = $('.tl-compact-controls');
   const controlPanel = $('.tl-mobile-controls-panel');
   const toolbarAnchor = document.createComment('timeline toolbar home');
+  const advancedAnchor = document.createComment('timeline advanced home');
   const kindAnchor = document.createComment('timeline filter home');
   const compactAnchor = document.createComment('timeline compact controls home');
   toolbar.before(toolbarAnchor);
+  advanced.before(advancedAnchor);
   kindControl.before(kindAnchor);
   compactControls.before(compactAnchor);
   function showMobileControls(open) {
@@ -201,9 +205,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
   function placeControls() {
     showMobileControls(false);
-    if (mobileLayout.matches) controlPanel.append(toolbar, kindControl, compactControls);
+    if (mobileLayout.matches) controlPanel.append(toolbar, advanced, kindControl, compactControls);
     else {
       toolbarAnchor.after(toolbar);
+      advancedAnchor.after(advanced);
       kindAnchor.after(kindControl);
       compactAnchor.after(compactControls);
     }
@@ -744,17 +749,44 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
           natalIslandCount: natalIslands(host.identity(chart.chart)).length,
           catalog: targetCatalog
         });
+        queryConditions = conditions;
         setText($('.tl-query-status'), queryResult.empty ? t('noMatches') : queryResult.fullRange ? t('fullRange') :
           t('matchCount', { count: queryResult.intervals.length }));
         $('.tl-query-results').innerHTML = queryResult.intervals.map((interval, index) =>
           `<button type="button" data-query-interval="${index}">${esc(format(interval.start))} → ${esc(format(interval.end))} · ${esc(formatDuration(interval.end - interval.start, t))}</button>`).join('');
-      } catch (error) { queryResult = null; $('.tl-query-results').replaceChildren(); setText($('.tl-query-status'), error.message); }
+      } catch (error) { queryResult = null; queryConditions = null; $('.tl-query-results').replaceChildren(); setText($('.tl-query-status'), error.message); }
     }
     const queryButton = event.target.closest('[data-query-interval]');
     if (queryButton && queryResult) {
       const interval = queryResult.intervals[Number(queryButton.dataset.queryInterval)];
       selectTime(interval.start);
-      queryButton.scrollIntoView({ block: 'nearest' });
+      const gates = new Set(); const centers = new Set();
+      for (const condition of queryConditions || []) {
+        for (const id of condition.ids || []) {
+          if (condition.kind === 'gate' || condition.kind === 'line') gates.add(Number(String(id).split('.')[0]));
+          if (condition.kind === 'channel') String(id).split('-').forEach(gate => gates.add(Number(gate)));
+          if (condition.kind === 'center') centers.add(id);
+        }
+      }
+      if (interval.bridgeGroup) {
+        try {
+          const islands = natalIslands(host.identity(chart.chart));
+          for (const index of JSON.parse(interval.bridgeGroup).flat()) {
+            for (const center of islands[index - 1] || []) centers.add(center);
+          }
+        } catch { /* Invalid bridge metadata cannot change the selected time. */ }
+      }
+      const selection = { kind: 'targets', gates: [...gates].filter(Number.isInteger), centers: [...centers] };
+      if (selection.gates.length || selection.centers.length) {
+        clearTimeout(navigationTimer);
+        requestAnimationFrame(() => {
+          context?.api?.highlightSelection(selection);
+          navigationTimer = setTimeout(() => { context?.api?.highlightSelection(null); highlight(null); }, 1400);
+        });
+        const targetKeys = [...selection.gates.map(gate => `gate:${gate}`), ...selection.centers.map(center => `center:${center}`)];
+        const row = [...root.querySelectorAll('.tl-row')].find(node => targetKeys.includes(node.dataset.key));
+        row?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      }
     }
     if (action === 'changes') {
       const toggle = $('[data-field="changes"]');
