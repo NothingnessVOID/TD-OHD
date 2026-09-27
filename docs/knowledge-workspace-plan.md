@@ -56,7 +56,7 @@ Implementation entries record commit, checks, preview and remaining limitations.
 | 0 | `b7a4206` | Deterministic baseline and build identity |
 | 1 | `3a40a88`, integrated in `f5253b0`, boundary follow-up `813e04a` | Birth/share/team tests and static PNG browser check |
 | 2 | `f5253b0`, `4c15794`, provenance follow-up `48f40cd` | Catalog coverage and `checkpoint/knowledge-library-v1` bundle |
-| 3 | `5342b67` | Line/source events and persistent detail browser check |
+| 3 | `5342b67`, cache-version follow-up `04e84e7` | Line/source events, persistent detail and cache identity checks |
 | 4 | `be4a8d6` | Watchlist, comparison and cancellable query browser check |
 | 5 | `acb878a` | Static/desktop observation persistence and restore checks |
 | 6 | `82945d7`, `69c2027` | Lazy locale, keyboard, phone and full timeline regression |
@@ -155,6 +155,9 @@ Implementation entries record commit, checks, preview and remaining limitations.
   persistence, and the original end-to-end chart suite passed. `git diff
   --check` passed. The initial application entry still exceeds Vite's 500 kB
   advisory threshold; this does not include the deferred Chinese prose.
+- The timeline cache key now includes event level, planet choice and the shared
+  rule version. Build metadata and new observation snapshots use that same
+  version; existing backups with older strings remain readable.
 - Final scope audit: the original chart panel's channel, gate, planet and
   incarnation-cross entries now expose focusable button semantics and keyboard
   activation. The design-date panel copy names the 88° solar-arc rule rather
@@ -164,6 +167,6 @@ Implementation entries record commit, checks, preview and remaining limitations.
 - The source label for synthesized readings opens a short provenance disclosure;
   the reading itself is never hidden behind it. Share parsing now rejects
   empty/partial coordinates and invalid IANA zones. After those follow-ups,
-  `npm test` reports 162 passed, 2 optional external checks skipped and 0
+  `npm test` reports 163 passed, 2 optional external checks skipped and 0
   failures. The local checkpoint deliberately remains at the original batch-2
   version; the follow-ups are on this branch and do not rewrite it.
