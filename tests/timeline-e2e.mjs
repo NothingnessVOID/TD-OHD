@@ -20,6 +20,8 @@ const field = name => `${tl} [data-field="${name}"]`;
 const action = name => `${tl} [data-action="${name}"]`;
 const detail = '#gate-detail[role="dialog"][aria-modal="true"]';
 const timing = `${detail} .tl-detail-timing`;
+const modelessDetail = '#gate-detail[role="dialog"][aria-modal="false"]';
+const modelessTiming = `${modelessDetail} .tl-detail-timing`;
 const calculatedRange = () => page.locator(`${tl} .tl-table`).evaluate(el => ({
   start: Number(el.dataset.calculatedStart), end: Number(el.dataset.calculatedEnd),
   viewStart: Number(el.dataset.start), viewEnd: Number(el.dataset.end),
@@ -107,6 +109,41 @@ try {
     assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 7)),
       'default seven days run from local midnight three days before through four days after');
     assert.deepEqual([range.viewStart, range.viewEnd], [range.start, range.end]);
+  });
+
+  await run('optional line level exposes active and inactive lines with their rule source', async () => {
+    await page.selectOption(field('span'), '1');
+    await ready();
+    await page.selectOption(field('event-level'), 'line');
+    await ready();
+    assert.ok(await page.locator(`${tl} .tl-row[data-key^="line:"]`).count() > 0);
+    const lineBar = page.locator(`${tl} .tl-bar[data-key^="line:"]:not([data-source="natal"])`).first();
+    assert.ok(await lineBar.count() > 0);
+    await lineBar.click();
+    assert.equal(await page.locator(`${timing}[data-kind="line"]`).count(), 1);
+    assert.match(await page.locator(`${detail} .detail-label`).first().innerText(), /Line [1-6]/i);
+    assert.ok(await page.locator(`${detail} .gate-detail-line.selected-line`).count() > 0);
+    assert.ok(await page.locator(`${timing} .tl-detail-rule`).count() > 0);
+    assert.match(await page.locator(`${timing} a`).getAttribute('href'), /SharpAstrology\.HumanDesign/);
+    await page.locator(`${timing} .tl-detail-follow`).click();
+    assert.equal(await page.locator(modelessDetail).count(), 1);
+    const beforeFollow = await instant();
+    await page.locator(`${tl} .tl-table`).focus();
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction(before => Number(document.querySelector('#timeline-view .tl-table').dataset.selected) > before, beforeFollow);
+    assert.equal(await page.locator(`${modelessTiming}[data-kind="line"]`).count(), 1,
+      'line detail remains open while the timeline moves');
+    await page.locator(`${modelessTiming} .tl-detail-follow`).click();
+    assert.equal(await page.locator(detail).getAttribute('aria-modal'), 'true');
+    await page.keyboard.press('Escape');
+    await page.locator(field('inactive')).click();
+    assert.equal(await page.locator(`${tl} .tl-row[data-key^="line:"]`).count(), 384);
+    await page.locator(field('inactive')).click();
+    await page.selectOption(field('event-level'), 'gate');
+    await ready();
+    assert.equal(await page.locator(`${tl} .tl-row[data-key^="line:"]`).count(), 0);
+    await page.selectOption(field('span'), '7');
+    await ready();
   });
 
   await run('graph tooltips keep source colors and clear the adjacent timeline', async () => {

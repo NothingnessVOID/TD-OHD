@@ -4,6 +4,7 @@ import { displayTime, wallTime, formatDuration } from './time.js';
 import { calendarRuler } from './ruler.js';
 import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
+import { LINE_FIXING_PLANETS } from './line-fixing-data.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import './timeline.css';
 
@@ -63,6 +64,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let span = timelineRange.end - timelineRange.start;
   let windowRange = { ...timelineRange };
   let mode = 'overlay';
+  let eventLevel = 'gate';
   let active = false;
   let chart = null;
   let identity = '';
@@ -136,11 +138,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-explorer"><section class="tl-tracks-panel" aria-label="${esc(t('tracks'))}">
       <div class="tl-table" aria-busy="true" tabindex="0" role="region" aria-label="${esc(t('scrub'))}" aria-describedby="tl-gesture-help" title="${esc(t('timelineHelp'))}">
         <div class="tl-panel-header">
-          <label class="tl-kind"><span class="tl-sr-only">${esc(t('filter'))}</span><select data-field="kind" aria-label="${esc(t('filter'))}" title="${esc(t('filter'))}">${[['all','all'],['center','centersShort'],['channel','channels'],['gate','gates']].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select></label>
+          <label class="tl-kind"><span class="tl-sr-only">${esc(t('filter'))}</span><select data-field="kind" aria-label="${esc(t('filter'))}" title="${esc(t('filter'))}">${[['all','all'],['center','centersShort'],['channel','channels'],['gate','gates'],['line','lines']].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select></label>
           <div class="tl-compact-controls">
             <label class="tl-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="m12 12 5 5"/></svg><input type="search" data-field="search" placeholder="${esc(t('searchShort'))}" aria-label="${esc(t('search'))}" title="${esc(t('search'))}"></label>
+            <select data-field="event-level" aria-label="${esc(t('eventLevel'))}" title="${esc(t('eventLevel'))}"><option value="gate">${esc(t('gateLevel'))}</option><option value="line">${esc(t('lineLevel'))}</option></select>
             <select data-field="span" aria-label="${esc(t('zoom'))}" title="${esc(t('zoom'))}">${rangeOptions.map(([value,key]) => `<option value="${value}" ${value === '7' ? 'selected' : ''}>${esc(t(key))}</option>`).join('')}</select>
             <button type="button" class="tl-changes" data-field="changes" data-action="changes" aria-pressed="false" aria-label="${esc(t('onlyChanges'))}" title="${esc(t('onlyChanges'))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 14h5V6h6v8h5"/></svg><span>${esc(t('changesShort'))}</span></button>
+            <button type="button" class="tl-changes" data-field="inactive" data-action="inactive" aria-pressed="false" aria-label="${esc(t('showInactive'))}" title="${esc(t('showInactive'))}"><span>${esc(t('inactiveShort'))}</span></button>
           </div>
           <div class="tl-track tl-ticks"></div>
         </div>
@@ -223,7 +227,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const centers = new Set(selection?.centers || []);
     root.querySelectorAll('.tl-row').forEach(node => {
       const [kind, id] = node.dataset.key.split(':');
-      const lit = kind === 'gate' ? gates.has(Number(id)) : kind === 'center' ? centers.has(id)
+      const lit = kind === 'gate' || kind === 'line' ? gates.has(Number(id.split('.')[0])) : kind === 'center' ? centers.has(id)
         : id.split('-').every(gate => gates.has(Number(gate)));
       node.classList.toggle('tl-row-lit', Boolean(selection && lit));
     });
@@ -278,6 +282,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     root.querySelectorAll('.tl-legend [data-source]').forEach(node => {
       node.hidden = mode === 'transit-only' && node.dataset.source !== 'transit';
     });
+    if (pendingDetail?.follow) host.refreshDetail?.(context);
   }
 
   function renderFixing(node, state, baseTitle, scope) {
@@ -294,7 +299,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const nextSelected = Math.max(range.start, Math.min(range.end - 1000, Math.round(instant / 1000) * 1000));
     if (!recenter && nextSelected === selected) return;
     selected = nextSelected;
-    host.closeDetail(); closeTiming();
+    if (recenter) { host.closeDetail(); closeTiming(); }
     $('.tl-time-error').textContent = '';
     $('.tl-fold').hidden = true;
     if (recenter) {
@@ -314,6 +319,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
 
   function rowSymbol(row) {
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;
+    if (row.kind === 'line') return `<span class="tl-line-symbol">${row.id}</span>`;
     if (row.kind === 'channel') return `<span class="tl-channel-symbol">${esc(row.id)}</span>`;
     const shapes = {
       head: '<path d="M14 3 26 24H2Z"/>', ajna: '<path d="M2 4h24L14 25Z"/>',
@@ -339,9 +345,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const kind = $('[data-field="kind"]').value;
     const query = $('[data-field="search"]').value.toLocaleLowerCase(locale).trim();
     const changesOnly = $('[data-field="changes"]').getAttribute('aria-pressed') === 'true';
+    const showInactive = $('[data-field="inactive"]').getAttribute('aria-pressed') === 'true';
     // Keep the row roster fixed for the completed calculation. Only bars are
     // clipped to the moving viewport, so empty tracks retain their position.
-    const rows = result.rows.filter(row => row.intervals.length > 0 && (kind === 'all' || row.kind === kind)
+    const rows = result.rows.filter(row => (showInactive || row.intervals.length > 0) && (kind === 'all' || row.kind === kind)
       && (!query || `${name(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query))
       && (!changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
     reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row" data-key="${row.key}">
@@ -369,7 +376,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     windowRange = range;
     span = range.end - range.start;
     selected = nextSelected;
-    host.closeDetail(); closeTiming();
     $('.tl-time-error').textContent = '';
     $('.tl-fold').hidden = true;
     syncClock();
@@ -413,7 +419,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // Presets own the complete calculation; zoom and pan only change windowRange.
     requestedRange = { ...timelineRange };
     try {
-      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode }, progress => {
+      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode, eventLevel }, progress => {
         if (token === generation) renderProgress(progress);
       });
       if (token !== generation || !active) return;
@@ -511,10 +517,35 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       [...body.children].filter(node => node.matches(summary)).forEach(node => heading.append(node));
     }
 
-    const row = result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
-    const interval = row && (pendingDetail?.row === row ? pendingDetail.interval : intervalAt(row, selected));
-    // Birth definitions are persistent; only temporary transit participation has timing.
-    if (!interval || interval.source === 'natal') return;
+    const pendingRow = pendingDetail?.row;
+    const pendingMatches = pendingRow && (pendingRow.kind === selection.kind && String(pendingRow.id) === String(selection.id)
+      || pendingRow.kind === 'line' && selection.kind === 'gate' && pendingRow.gate === Number(selection.id));
+    const row = pendingMatches ? pendingRow
+      : result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
+    if (row?.kind === 'line') label.textContent += ` · ${t('line')} ${row.line}`;
+    const interval = row && (pendingMatches && !pendingDetail.follow
+      ? pendingDetail.interval : intervalAt(row, selected));
+    // A followed item can become inactive. Keep its small inspector usable so
+    // the reader can switch back to a fixed, full-size detail at any moment.
+    if (!interval || interval.source === 'natal') {
+      if (pendingMatches && pendingDetail.follow) {
+        header.classList.add('tl-detail-has-timing');
+        const inactive = document.createElement('aside');
+        inactive.className = 'tl-detail-timing';
+        inactive.textContent = t(interval ? 'natal' : 'inactiveAtTime');
+        const fixed = document.createElement('button');
+        fixed.type = 'button'; fixed.className = 'tl-detail-follow';
+        fixed.textContent = t('followTime'); fixed.setAttribute('aria-pressed', 'true');
+        fixed.addEventListener('click', () => {
+          pendingDetail.follow = false;
+          host.setDetailModal?.(detail, true);
+          fixed.textContent = t('fixedTime');
+          fixed.setAttribute('aria-pressed', 'false');
+        });
+        inactive.append(fixed); header.append(inactive);
+      }
+      return;
+    }
     header.classList.add('tl-detail-has-timing');
     const timing = document.createElement('aside');
     timing.className = 'tl-detail-timing';
@@ -525,6 +556,50 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       <dl class="tl-timing-values"><div class="tl-timing-duration"><dt title="${esc(t('duration'))}">${esc(t('durationShort'))}</dt><dd>${esc(formatDuration(interval.end - interval.start, t))}</dd></div>
       <div class="tl-timing-boundary"><dt>${esc(t('start'))}</dt><dd title="${esc(interval.clippedStart ? t('before') : `${t('start')}: ${format(interval.start)}`)}">${esc(interval.clippedStart ? t('beforeShort') : format(interval.start, true))}</dd></div>
       <div class="tl-timing-boundary"><dt>${esc(t('end'))}</dt><dd title="${esc(interval.clippedEnd ? t('after') : `${t('end')}: ${format(interval.end)}`)}">${esc(interval.clippedEnd ? t('afterShort') : format(interval.end, true))}</dd></div></dl>`;
+    if (pendingMatches) {
+      const follow = document.createElement('button');
+      follow.type = 'button';
+      follow.className = 'tl-detail-follow';
+      follow.textContent = t(pendingDetail.follow ? 'followTime' : 'fixedTime');
+      follow.setAttribute('aria-pressed', String(pendingDetail.follow));
+      follow.addEventListener('click', () => {
+        pendingDetail.follow = !pendingDetail.follow;
+        host.setDetailModal?.(detail, !pendingDetail.follow);
+        follow.textContent = t(pendingDetail.follow ? 'followTime' : 'fixedTime');
+        follow.setAttribute('aria-pressed', String(pendingDetail.follow));
+        if (pendingDetail.follow) host.refreshDetail?.(context);
+      });
+      timing.append(follow);
+    }
+    const relevantGate = event => row.kind === 'line' || row.kind === 'gate'
+      ? Number(event.from.gate) === Number(row.gate || row.id) || Number(event.to.gate) === Number(row.gate || row.id)
+      : row.kind === 'channel' && row.id.split('-').some(gate => Number(gate) === event.from.gate || Number(gate) === event.to.gate);
+    const sourceEvents = (result?.sourceEvents || []).filter(event => event.time >= interval.start && event.time <= interval.end && relevantGate(event));
+    if (sourceEvents.length) {
+      const provenance = document.createElement('div');
+      provenance.className = 'tl-detail-provenance';
+      const visible = sourceEvents.slice(0, 8);
+      provenance.innerHTML = `<strong>${esc(t('sourceEvents'))} (${sourceEvents.length})</strong><ul>${visible.map(event => {
+        const planet = host.planets.find(item => item.id === event.planet)?.name || event.planet;
+        return `<li>${esc(format(event.time, true))} · ${esc(planet)} · ${esc(event.from.gate == null ? '—' : `${event.from.gate}.${event.from.line}`)} → ${esc(event.to.gate == null ? '—' : `${event.to.gate}.${event.to.line}`)}</li>`;
+      }).join('')}</ul>${sourceEvents.length > visible.length ? `<small>${esc(t('moreSourceEvents', { count: sourceEvents.length - visible.length }))}</small>` : ''}`;
+      timing.append(provenance);
+    }
+    if (row.kind === 'line') {
+      const rule = LINE_FIXING_PLANETS[row.id];
+      const ruleNode = document.createElement('p');
+      ruleNode.className = 'tl-detail-rule';
+      const planets = ids => ids.length ? ids.map(id => host.planets.find(item => item.id === id)?.name || id).join(', ') : '—';
+      ruleNode.textContent = rule
+        ? `${t('lineRule')}: ${t('fixing_exalted')} ${planets(rule.exalted)} · ${t('fixing_detriment')} ${planets(rule.detriment)}`
+        : `${t('lineRule')}: ${t('fixing_unknown')}`;
+      timing.append(ruleNode);
+      const source = document.createElement('a');
+      source.href = 'https://github.com/CReizner/SharpAstrology.HumanDesign/blob/5d95ece57098fd776df7f2362722c1392a6f06b6/Utility/HumanDesignUtility.cs';
+      source.target = '_blank'; source.rel = 'noopener noreferrer';
+      source.textContent = `${t('ruleSource')} ↗`;
+      timing.append(source);
+    }
     header.append(timing);
   }
 
@@ -537,7 +612,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     }
     if (frame) { cancelAnimationFrame(frame); frame = 0; }
     renderMoment();
-    pendingDetail = { row, interval };
+    pendingDetail = { row, interval, follow: false };
     root.querySelector(`.tl-bar[data-key="${row.key}"][data-interval="${index}"]`)?.setAttribute('aria-pressed', 'true');
     host.showDetail(row.kind, row.id, context);
   }
@@ -598,7 +673,20 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     mode = event.target.value;
     host.closeDetail(); calculate(); renderMoment();
   });
-  for (const field of ['kind','search']) listen($(`[data-field="${field}"]`), 'input', () => { closeTiming(); renderRows(); });
+  listen($('[data-field="event-level"]'), 'change', event => {
+    if (!['gate', 'line'].includes(event.target.value)) return;
+    eventLevel = event.target.value;
+    if (eventLevel === 'gate' && $('[data-field="kind"]').value === 'line') $('[data-field="kind"]').value = 'all';
+    host.closeDetail(); calculate();
+  });
+  listen($('[data-field="kind"]'), 'input', event => {
+    if (event.target.value === 'line' && eventLevel !== 'line') {
+      eventLevel = 'line';
+      $('[data-field="event-level"]').value = 'line';
+      host.closeDetail(); calculate();
+    } else { closeTiming(); renderRows(); }
+  });
+  listen($('[data-field="search"]'), 'input', () => { closeTiming(); renderRows(); });
   listen($('.tl-table'), 'keydown', event => {
     if (event.target !== $('.tl-table')) return;
     const direction = ['ArrowRight','ArrowUp'].includes(event.key) ? 1 : ['ArrowLeft','ArrowDown'].includes(event.key) ? -1 : 0;
@@ -648,6 +736,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       toggle.setAttribute('aria-pressed', String(toggle.getAttribute('aria-pressed') !== 'true'));
       closeTiming(); renderRows();
     }
+    if (action === 'inactive') {
+      const toggle = $('[data-field="inactive"]');
+      toggle.setAttribute('aria-pressed', String(toggle.getAttribute('aria-pressed') !== 'true'));
+      closeTiming(); renderRows();
+    }
     if (action === 'retry') calculate();
     const bar = event.target.closest('[data-interval]');
     if (bar && result) {
@@ -657,7 +750,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const rowButton = event.target.closest('[data-row]');
     if (rowButton && context) {
       const row = result?.rows.find(item => item.key === rowButton.dataset.row);
-      if (row) host.showDetail(row.kind, row.id, context);
+      if (row) {
+        pendingDetail = { row, interval: intervalAt(row, selected), follow: false };
+        host.showDetail(row.kind, row.id, context);
+      }
     }
     const planet = event.target.closest('[data-planet], [data-birth-planet]');
     if (planet?.dataset.gate && context) host.showDetail('gate', Number(planet.dataset.gate), context);
@@ -898,15 +994,20 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     for (const attribute of ['aria-label','title']) {
       attr('[data-field="kind"]', attribute, 'filter');
       attr('[data-field="search"]', attribute, 'search');
+      attr('[data-field="event-level"]', attribute, 'eventLevel');
       attr('[data-field="span"]', attribute, 'zoom');
       attr('[data-field="changes"]', attribute, 'onlyChanges');
+      attr('[data-field="inactive"]', attribute, 'showInactive');
     }
     attr('[data-field="search"]', 'placeholder', 'searchShort');
-    for (const [value, key] of [['all','all'], ['center','centersShort'], ['channel','channels'], ['gate','gates']])
+    for (const [value, key] of [['all','all'], ['center','centersShort'], ['channel','channels'], ['gate','gates'], ['line','lines']])
       setText($(`[data-field="kind"] option[value="${value}"]`), t(key));
+    for (const [value, key] of [['gate','gateLevel'], ['line','lineLevel']])
+      setText($(`[data-field="event-level"] option[value="${value}"]`), t(key));
     for (const [value, key] of rangeOptions)
       setText($(`[data-field="span"] option[value="${value}"]`), t(key));
     put('.tl-changes span', 'changesShort');
+    put('.tl-compact-controls [data-field="inactive"] span', 'inactiveShort');
     for (const action of ['mobile-controls','mobile-exit']) {
       const key = action === 'mobile-controls' ? 'mobileControls' : 'backToChart';
       const node = $(`[data-action="${action}"]`);

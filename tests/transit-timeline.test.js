@@ -45,6 +45,41 @@ test('a shared gate stays active until its last planet departs', () => {
   ]);
 });
 
+test('line level records 14.1 to 14.2 without ending Gate 14', () => {
+  const natal = { gates: { all: [] }, centers: { definedNames: [] } };
+  const result = calculateTimeline({ start: 0, end: MINUTE, eventLevel: 'line',
+    snapshot: time => ({ sun: { gate: 14, line: time < 10_000 ? 1 : 2 } }),
+    states: activations => stateAt(natal, activations, 'transit-only', 'line'),
+    catalog: [14, 1, 2].map((value, index) => index === 0
+      ? { key: 'gate:14' } : { key: `line:14.${value}` }) });
+  assert.deepEqual(result.events, [10_000]);
+  assert.deepEqual(result.sourceEvents, [{ time: 10_000, planet: 'sun', kind: 'line',
+    from: { gate: 14, line: 1 }, to: { gate: 14, line: 2 } }]);
+  assert.deepEqual(intervals(result, 'gate:14'), [
+    { start: 0, end: MINUTE, source: 'transit', clippedStart: true, clippedEnd: true }
+  ]);
+  assert.equal(intervals(result, 'line:14.1')[0].end, 10_000);
+  assert.equal(intervals(result, 'line:14.2')[0].start, 10_000);
+});
+
+test('another contributor joining a gate is an event, not a second channel start', () => {
+  const natal = { gates: { all: [] }, centers: { definedNames: [] } };
+  const result = calculateTimeline({ start: 0, end: MINUTE,
+    snapshot: time => ({
+      sun: { gate: 3, line: 1 },
+      moon: { gate: time < 20_000 ? 1 : 60, line: 2 },
+      mars: { gate: time < 30_000 ? 2 : 60, line: 3 }
+    }),
+    states: activations => stateAt(natal, activations, 'transit-only'),
+    catalog: [{ key: 'channel:3-60' }] });
+  assert.deepEqual(result.events, [20_000, 30_000]);
+  assert.deepEqual(intervals(result, 'channel:3-60'), [
+    { start: 20_000, end: MINUTE, source: 'transit', clippedStart: false, clippedEnd: true }
+  ]);
+  assert.deepEqual(result.sourceEvents.map(event => [event.time, event.planet, event.to.gate]),
+    [[20_000, 'moon', 60], [30_000, 'mars', 60]]);
+});
+
 test('birth state remains continuous and overlay and sky modes match the graph model', () => {
   const birth = { gates: { all: [20] }, centers: { definedNames: [] } };
   const sky = { sun: { gate: 57, line: 1 }, moon: { gate: 10, line: 2 } };

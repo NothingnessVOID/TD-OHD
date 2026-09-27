@@ -4,16 +4,17 @@ import { calculateLineFixings, calculateTransitLineFixings } from '../features/t
 import { snapshot, natalIdentity } from '../features/transit-timeline/provider.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { transitInstants, formatTransitOffset } from '../lib/transit-time.js';
-import { closeDetailDialog } from '../lib/detail-dialog.js';
+import { closeDetailDialog, setDetailDialogModal } from '../lib/detail-dialog.js';
 import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './chart.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { getLocaleResources, t } from '../lib/i18n.js';
-import { centerName, channelName, gateName, planetName } from '../lib/vocabulary.js';
+import { centerName, channelName, gateName, planetName, lineName } from '../lib/vocabulary.js';
 
 // Localize display labels only; worker row IDs and calculation data stay intact.
 export function timelineRowLabel(row) {
   if (row.kind === 'center') return centerName(row.id);
   if (row.kind === 'channel') return `${row.id} · ${channelName(row.id)}`;
+  if (row.kind === 'line') return `${row.id} · ${gateName(row.gate)} · ${lineName(row.line)}`;
   return t('Gate {gate} · {name}', { gate: row.id, name: gateName(row.id) });
 }
 
@@ -35,6 +36,7 @@ export function setupTimelineView(options = {}) {
       resolveTime: transitInstants,
       formatOffset: formatTransitOffset,
       closeDetail: closeDetailDialog,
+      setDetailModal: setDetailDialogModal,
       onExit: () => document.querySelector('.nav-link[data-view="chart"]')?.click(),
       showDetail: showTransitDetail,
       refreshDetail: refreshTransitDetail,

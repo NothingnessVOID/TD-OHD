@@ -12,7 +12,7 @@ Chinese / English display, without parentheses.
 | 0 | Baseline, build identity, deterministic/external test separation (F24) | Reproducible local checks | Complete |
 | 1 | Birth validation, sensitivity scope, provenance, team validation, static export, share preview (F15–19, F21–23, F25) | No silent input corruption; working export | Complete |
 | 2 | Complete catalog, routes, shared contextual detail, six lines, topology, circuits (F01–10, F14, F26–27) | Browse without a chart; all entities reachable | Complete |
-| 3 | Line events, contributors, fixing evidence, persistent detail (F11–13, F20) | Line changes and source changes inspectable | Pending |
+| 3 | Line events, contributors, fixing evidence, persistent detail (F11–13, F20) | Line changes and source changes inspectable | Complete |
 | 4 | Watchlist, planet filter, event navigation, comparison, condition/bridge queries | Bounded cancellable queries | Pending |
 | 5 | Observations, snapshots, storage adapters, import/export | Durable notes and conflict-preserving restore | Pending |
 | 6 | Lazy resources, accessibility, mobile regression, final validation (F28, F27) | Three languages and 60/40 mobile layout retained | Pending |
@@ -80,3 +80,16 @@ Implementation entries record commit, checks, preview and remaining limitations.
   three lenses, both Chinese choices, anonymous share preview, and sky-only
   mode without a birth chart. The large first-load content bundle remains for
   batch 6. Numerical engine accuracy has not been independently certified.
+- Batch 3: the default timeline remains gate-level; selecting line-level adds
+  384 optional line tracks and recognizes same-gate line crossings without
+  ending a continuous gate or channel interval. Planet contribution changes
+  are kept as separate source events and shown alongside the interval. The
+  existing line-fixing table is linked to its versioned MIT source, with the
+  absent 54.4 rule still explicitly unknown. A fixed modal detail can be
+  switched to a small non-modal following card for scrubbing without reopening
+  the item. Inactive tracks are opt-in. The one-minute scan limit and
+  approximate crossing tolerance remain visible rather than presented as
+  independently certified astronomical precision. Verification: 152 local
+  tests passed, two optional external geocoding tests skipped; static build
+  and local-account exclusion check passed. New browser checks cover line
+  tracks, rule source, selected line and the follow/fixed switch.

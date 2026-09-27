@@ -295,8 +295,9 @@ function renderLens(gateNum) {
     ...Object.values(detailContext?.transitGates || {}).filter(g => g?.gate === gateNum).map(g => g.line)
   ])].sort((a, b) => a - b);
   const focused = currentDetail?.focus;
-  const focusedLine = focused && chart.gates[focused.side]?.[focused.planet]?.gate === gateNum
-    ? chart.gates[focused.side][focused.planet].line : null;
+  const focusedLine = Number.isInteger(focused?.line) ? focused.line
+    : focused && chart.gates[focused.side]?.[focused.planet]?.gate === gateNum
+      ? chart.gates[focused.side][focused.planet].line : null;
   const lines = focusedLine ? [focusedLine, ...activeLines.filter(line => line !== focusedLine)] : activeLines;
 
   if (currentLens === 'iching') {
@@ -345,7 +346,11 @@ export function showTransitDetail(kind, id, context) {
   if (!current) { openKnowledge(kind, id); return; }
   closeDetailDialog();
   detailContext = context;
-  if (kind === 'gate') showGateDetail(id);
+  if (kind === 'line') {
+    const [gate, line] = String(id).split('.').map(Number);
+    showGateDetail(gate, true, { line });
+  }
+  else if (kind === 'gate') showGateDetail(id);
   else if (kind === 'channel') showTransitChannelDetail(id);
   else showCenterDetail(id);
 }
@@ -496,7 +501,7 @@ export function showGateDetail(gateNum, pushHistory = true, focus = null) {
   detail.querySelectorAll('.gate-link[data-gate]').forEach(btn =>
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate))));
   wireKnowledgeButton(detail);
-  detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
+  if (detail.getAttribute('aria-modal') === 'true') detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
 // ==========================================
@@ -585,7 +590,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
     wireRowHover(btn, parseInt(btn.dataset.gate));
   });
   wireKnowledgeButton(detail);
-  detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
+  if (detail.getAttribute('aria-modal') === 'true') detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
 // ==========================================

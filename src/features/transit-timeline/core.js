@@ -12,19 +12,23 @@ export const MAX_TIMELINE_SPAN = 367 * DAY;
  * can be missed. Never present the refinement tolerance as ephemeris accuracy.
  */
 export function calculateTimeline({ start, end, snapshot, states, catalog,
-  scanStep = MINUTE, tolerance = 1000, onProgress = () => {} }) {
+  scanStep = MINUTE, tolerance = 1000, eventLevel = 'gate', onProgress = () => {} }) {
   if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start ||
       !Number.isFinite(scanStep) || !Number.isFinite(tolerance) ||
-      scanStep < tolerance || tolerance < 1 || end - start > MAX_TIMELINE_SPAN) {
+      scanStep < tolerance || tolerance < 1 || end - start > MAX_TIMELINE_SPAN ||
+      !['gate', 'line'].includes(eventLevel)) {
     throw new RangeError('Invalid timeline calculation range');
   }
   const rows = catalog.map(row => ({ ...row, intervals: [] }));
   const byKey = new Map(rows.map(row => [row.key, row]));
   const open = new Map();
   const transitions = [];
+  const sourceEvents = [];
   let previous = snapshot(start);
   let previousTime = start;
   const planets = Object.keys(previous);
+  const changed = (before, after) => before?.gate !== after?.gate ||
+    (eventLevel === 'line' && before?.line !== after?.line);
 
   const apply = (time, activations) => {
     const next = states(activations);
@@ -49,23 +53,33 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     const current = snapshot(time);
     let crossings;
     for (const planet of planets) {
-      if (previous[planet].gate === current[planet]?.gate) continue;
+      if (!changed(previous[planet], current[planet])) continue;
       crossings ||= new Set();
       let lo = previousTime;
       let hi = time;
-      const gate = previous[planet].gate;
+      const original = previous[planet];
       while (hi - lo > tolerance) {
         const mid = Math.floor((lo + hi) / 2 / tolerance) * tolerance;
         if (mid <= lo) break;
-        if (snapshot(mid)[planet].gate === gate) lo = mid;
+        if (!changed(original, snapshot(mid)[planet])) lo = mid;
         else hi = mid;
       }
       crossings.add(hi);
     }
+    let beforeAtCrossing = previous;
     if (crossings) for (const crossing of [...crossings].sort((a, b) => a - b)) {
       // end is an exclusive range boundary, not a visible event.
       if (crossing >= end) continue;
-      apply(crossing, snapshot(crossing));
+      const after = snapshot(crossing);
+      for (const planet of planets) if (changed(beforeAtCrossing[planet], after[planet])) {
+        const from = beforeAtCrossing[planet], to = after[planet];
+        sourceEvents.push({ time: crossing, planet,
+          kind: from?.gate !== to?.gate ? 'gate' : 'line',
+          from: { gate: from?.gate ?? null, line: from?.line ?? null },
+          to: { gate: to?.gate ?? null, line: to?.line ?? null } });
+      }
+      apply(crossing, after);
+      beforeAtCrossing = after;
       transitions.push(crossing);
     }
     previous = current;
@@ -77,7 +91,7 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     byKey.get(key).intervals.push({ ...interval, end,
       clippedEnd: endState.get(key) === interval.source });
   }
-  return { start, end, rows, events: [...new Set(transitions)], scanStep, tolerance };
+  return { start, end, rows, events: [...new Set(transitions)], sourceEvents, eventLevel, scanStep, tolerance };
 }
 
 export function intervalAt(row, instant) {
