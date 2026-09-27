@@ -54,8 +54,8 @@ Implementation entries record commit, checks, preview and remaining limitations.
 | Batch | Committed revision(s) | Evidence gate |
 | --- | --- | --- |
 | 0 | `b7a4206` | Deterministic baseline and build identity |
-| 1 | `3a40a88`, integrated in `f5253b0` | Birth/share/team tests and static PNG browser check |
-| 2 | `f5253b0`, `4c15794` | Catalog coverage and `checkpoint/knowledge-library-v1` bundle |
+| 1 | `3a40a88`, integrated in `f5253b0`, boundary follow-up `813e04a` | Birth/share/team tests and static PNG browser check |
+| 2 | `f5253b0`, `4c15794`, provenance follow-up `48f40cd` | Catalog coverage and `checkpoint/knowledge-library-v1` bundle |
 | 3 | `5342b67` | Line/source events and persistent detail browser check |
 | 4 | `be4a8d6` | Watchlist, comparison and cancellable query browser check |
 | 5 | `acb878a` | Static/desktop observation persistence and restore checks |
@@ -161,3 +161,9 @@ Implementation entries record commit, checks, preview and remaining limitations.
   than suggesting a fixed 88-day subtraction. This was checked against Jovian
   Archive's Human Design Dictionary and chart-calculation explanation; the
   engine's independent numerical accuracy remains unclaimed.
+- The source label for synthesized readings opens a short provenance disclosure;
+  the reading itself is never hidden behind it. Share parsing now rejects
+  empty/partial coordinates and invalid IANA zones. After those follow-ups,
+  `npm test` reports 162 passed, 2 optional external checks skipped and 0
+  failures. The local checkpoint deliberately remains at the original batch-2
+  version; the follow-ups are on this branch and do not rewrite it.
