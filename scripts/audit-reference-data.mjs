@@ -8,7 +8,7 @@ import * as zhHant from '../src/locales/zh-Hant/content.js';
 const output = new URL('../artifacts/data-audit/', import.meta.url);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const sources = [
-  'package-lock.json', 'scripts/patch-natalengine-seconds.mjs', 'src/lib/content.js',
+  'package-lock.json', 'scripts/patch-natalengine-seconds.mjs', 'src/lib/content.js', 'src/lib/quarter.js',
   'node_modules/natalengine/src/calculators/humandesign.js',
   ...['gate-descriptions', 'gate-lines', 'channel-descriptions', 'hexagram-descriptions', 'gene-key-descriptions']
     .map(name => `node_modules/natalengine/src/data/${name}.js`),

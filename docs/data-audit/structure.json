@@ -1,0 +1,249 @@
+{
+  "scope": "structure-only",
+  "centers": 9,
+  "gates": 64,
+  "channels": 36,
+  "multiPartnerGates": [
+    {
+      "gate": 10,
+      "partners": [
+        20,
+        34,
+        57
+      ]
+    },
+    {
+      "gate": 20,
+      "partners": [
+        10,
+        34,
+        57
+      ]
+    },
+    {
+      "gate": 34,
+      "partners": [
+        10,
+        20,
+        57
+      ]
+    },
+    {
+      "gate": 57,
+      "partners": [
+        10,
+        20,
+        34
+      ]
+    }
+  ],
+  "quarterMismatches": [
+    {
+      "gate": 3,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 5,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 7,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 8,
+      "source": "Mutation",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 9,
+      "source": "Duality",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 11,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 12,
+      "source": "Mutation",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 13,
+      "source": "Civilization",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 14,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 17,
+      "source": "Duality",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 21,
+      "source": "Civilization",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 22,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 23,
+      "source": "Mutation",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 24,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 25,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 26,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 27,
+      "source": "Civilization",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 28,
+      "source": "Mutation",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 30,
+      "source": "Duality",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 32,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 34,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 35,
+      "source": "Duality",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 36,
+      "source": "Duality",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 37,
+      "source": "Civilization",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 39,
+      "source": "Mutation",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 40,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 41,
+      "source": "Duality",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 42,
+      "source": "Duality",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 44,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 48,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 49,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 50,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 51,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 52,
+      "source": "Duality",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 53,
+      "source": "Duality",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 54,
+      "source": "Civilization",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 55,
+      "source": "Mutation",
+      "corrected": "Initiation"
+    },
+    {
+      "gate": 57,
+      "source": "Civilization",
+      "corrected": "Duality"
+    },
+    {
+      "gate": 58,
+      "source": "Duality",
+      "corrected": "Mutation"
+    },
+    {
+      "gate": 62,
+      "source": "Duality",
+      "corrected": "Civilization"
+    },
+    {
+      "gate": 63,
+      "source": "Duality",
+      "corrected": "Initiation"
+    }
+  ],
+  "checkedFields": 4740,
+  "issues": []
+}
