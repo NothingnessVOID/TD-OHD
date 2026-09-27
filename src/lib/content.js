@@ -1,11 +1,17 @@
 /** Read-only display dictionaries. English reads the original engine objects. */
 import * as engine from 'natalengine';
-import { getLocaleResources } from './i18n.js';
+import { getLocale, getLocaleResources } from './i18n.js';
+import { quarterForGate } from './quarter.js';
 
 const content = () => getLocaleResources().content;
 function dictionary(name) {
   return new Proxy(engine[name], {
-    get: (_source, key) => content().data[name]?.[key] ?? engine[name][key],
+    get: (_source, key) => {
+      const value = content().data[name]?.[key] ?? engine[name][key];
+      if (name !== 'GATE_DESCRIPTIONS' || typeof key !== 'string' || !/^\d+$/.test(key) || !value) return value;
+      const quarter = quarterForGate(Number(key), getLocale());
+      return quarter ? { ...value, quarter } : value;
+    },
     set: () => false
   });
 }

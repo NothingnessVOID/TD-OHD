@@ -3,7 +3,8 @@
   "sourceHashes": {
     "package-lock.json": "7396e9ce66bb551e8fd509338a51139dcecd52822dd0e94de82ff454b5fb9b4e",
     "scripts/patch-natalengine-seconds.mjs": "1db17d38026cb7fed1151551dc146d90fdfd67a2ae2f36097da54bd008ee9471",
-    "src/lib/content.js": "9e31116b5e2464284f76dc4cf5f91388bc8bab6ef286c0fd84a3e461f9a49794",
+    "src/lib/content.js": "13ece11856712f4ba2c5f2e25ac3c1528f9b4da73a0561a865a7c4b64dede444",
+    "src/lib/quarter.js": "325593f8c20cc0d69925513f9c8ca3401a497f12f72b9223653700859a607cb5",
     "node_modules/natalengine/src/calculators/humandesign.js": "16b4cf44fc4a05b962a02f10d2764c993d2be588d54348ce2cc6b2bcfd08d7fe",
     "node_modules/natalengine/src/data/gate-descriptions.js": "6dccbd7f73ca4d589090d847dbfdc2068e78cf508dbf32f4c191e3045e184bb7",
     "node_modules/natalengine/src/data/gate-lines.js": "6e526734abab8ea8c2e125caa639271a31bdc4615690de9a63d3670369df256d",

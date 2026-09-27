@@ -145,10 +145,19 @@ test('English explanations are the upstream engine originals; Chinese covers eve
   for (const locale of ['en', 'zh-CN', 'zh-Hant', 'en']) {
     setLocale(locale, { persist: false });
     for (const field of fields) {
-      if (locale === 'en') assert.equal(JSON.stringify(content[field]), JSON.stringify(engine[field]), field);
+      if (locale === 'en' && field !== 'GATE_DESCRIPTIONS') {
+        assert.equal(JSON.stringify(content[field]), JSON.stringify(engine[field]), field);
+      }
     }
     for (let gate = 1; gate <= 64; gate++) {
-      if (locale === 'en') assert.equal(vocabulary.gateName(gate), engine.GATES[gate].name);
+      if (locale === 'en') {
+        assert.equal(vocabulary.gateName(gate), engine.GATES[gate].name);
+        const { quarter: sourceQuarter, ...sourceReading } = engine.GATE_DESCRIPTIONS[gate];
+        const { quarter: correctedQuarter, ...displayReading } = content.GATE_DESCRIPTIONS[gate];
+        assert.deepEqual(displayReading, sourceReading, `gate ${gate} source reading`);
+        assert.ok(correctedQuarter);
+        assert.ok(sourceQuarter);
+      }
       else assert.match(vocabulary.gateName(gate), /\p{Script=Han}/u);
       if (locale !== 'en') {
         assert.match(content.GATE_DESCRIPTIONS[gate].description, /\p{Script=Han}/u);
