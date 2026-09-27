@@ -1,0 +1,53 @@
+{
+  "engineVersion": "1.6.0",
+  "sourceHashes": {
+    "package-lock.json": "7396e9ce66bb551e8fd509338a51139dcecd52822dd0e94de82ff454b5fb9b4e",
+    "scripts/patch-natalengine-seconds.mjs": "1db17d38026cb7fed1151551dc146d90fdfd67a2ae2f36097da54bd008ee9471",
+    "src/lib/content.js": "9e31116b5e2464284f76dc4cf5f91388bc8bab6ef286c0fd84a3e461f9a49794",
+    "node_modules/natalengine/src/calculators/humandesign.js": "16b4cf44fc4a05b962a02f10d2764c993d2be588d54348ce2cc6b2bcfd08d7fe",
+    "node_modules/natalengine/src/data/gate-descriptions.js": "6dccbd7f73ca4d589090d847dbfdc2068e78cf508dbf32f4c191e3045e184bb7",
+    "node_modules/natalengine/src/data/gate-lines.js": "6e526734abab8ea8c2e125caa639271a31bdc4615690de9a63d3670369df256d",
+    "node_modules/natalengine/src/data/channel-descriptions.js": "175b7c37be509f63fe32658ec4d93a511d93189082f08a5957bfde0171a35054",
+    "node_modules/natalengine/src/data/hexagram-descriptions.js": "082068ba7a625cbae7b40350306446cbef3d85af7fdcdc5acf36ba02fc1d64e0",
+    "node_modules/natalengine/src/data/gene-key-descriptions.js": "1682589cdeacd132068214fad5083cd043ff7cb7b0c67219dce07aa3db862b85",
+    "src/locales/zh-CN/gates.json": "80ab56c380e53911dc5794ee03c155b873fb5447dc300ab815f9bbbc21a0ebcf",
+    "src/locales/zh-CN/lines.json": "b19f1c836dabd8aa9765cb11f2c0be5ed547c774aa28be2e05e001473e931dc1",
+    "src/locales/zh-CN/channels.json": "6554f281ec9405bc48df374d259e6fe24d46e59c262525c367f9d815463b5b87",
+    "src/locales/zh-CN/hexagrams.json": "8db03d219af42321f531768c08ae45841ff49d419960c17a1a27e3d24d565d77",
+    "src/locales/zh-CN/gene-keys.json": "c6b625a58c885f820aa8e58095266f60d41c88f971b2587ccfea3490828b89a8",
+    "src/locales/zh-Hant/gates.json": "08e2a37155b23f093dd122e82cdc384d16b33641053f5aaf21e8d30fa225e180",
+    "src/locales/zh-Hant/lines.json": "10ca1caf8a1a3ac85b931c8f0d981a096ee9ff0276447efe94cfabb9053190ee",
+    "src/locales/zh-Hant/channels.json": "50b5989e818813f7e01730b546921f4acbee39ca83731e92270f0f8f4727b9e4",
+    "src/locales/zh-Hant/hexagrams.json": "fa3e762d0944b8e76c75775eb5e9b864051df942bc50d0dc4c5abbc36804fd60",
+    "src/locales/zh-Hant/gene-keys.json": "0bbcf63911a72b7c8b33e0daed2e3a3a9025397d157f5d176e8507c9cfe631d8"
+  },
+  "counts": {
+    "en": {
+      "gate": 64,
+      "line": 384,
+      "channel": 36,
+      "hexagram": 64,
+      "gene-key": 64
+    },
+    "zh-CN": {
+      "gate": 64,
+      "line": 384,
+      "channel": 36,
+      "hexagram": 64,
+      "gene-key": 64
+    },
+    "zh-Hant": {
+      "gate": 64,
+      "line": 384,
+      "channel": 36,
+      "hexagram": 64,
+      "gene-key": 64
+    }
+  },
+  "centers": 9,
+  "channels": 36,
+  "gates": 64,
+  "missing": [],
+  "rawExportPath": "artifacts/data-audit/raw-reference.json",
+  "reviewStatus": "unreviewed"
+}
