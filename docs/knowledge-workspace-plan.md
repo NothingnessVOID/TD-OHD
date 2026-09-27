@@ -13,7 +13,7 @@ Chinese / English display, without parentheses.
 | 1 | Birth validation, sensitivity scope, provenance, team validation, static export, share preview (F15–19, F21–23, F25) | No silent input corruption; working export | Complete |
 | 2 | Complete catalog, routes, shared contextual detail, six lines, topology, circuits (F01–10, F14, F26–27) | Browse without a chart; all entities reachable | Complete |
 | 3 | Line events, contributors, fixing evidence, persistent detail (F11–13, F20) | Line changes and source changes inspectable | Complete |
-| 4 | Watchlist, planet filter, event navigation, comparison, condition/bridge queries | Bounded cancellable queries | Pending |
+| 4 | Watchlist, planet filter, event navigation, comparison, condition/bridge queries | Bounded cancellable queries | Complete |
 | 5 | Observations, snapshots, storage adapters, import/export | Durable notes and conflict-preserving restore | Pending |
 | 6 | Lazy resources, accessibility, mobile regression, final validation (F28, F27) | Three languages and 60/40 mobile layout retained | Pending |
 
@@ -93,3 +93,17 @@ Implementation entries record commit, checks, preview and remaining limitations.
   tests passed, two optional external geocoding tests skipped; static build
   and local-account exclusion check passed. New browser checks cover line
   tracks, rule source, selected line and the follow/fixed switch.
+- Batch 4: a per-browser, non-sensitive ID watchlist; one-planet timeline
+  calculation and matching graph; previous/next event navigation; A/B active
+  entity differences; and worker-backed condition searches for channel,
+  center, specified line and a real path between natal definition islands.
+  Results stay within the calculated interval, expose matching times and
+  channel paths, and can jump to the source item. Recalculation and profile
+  changes cancel stale query workers; search and long timeline calculations
+  also have explicit cancel controls. A missing result is reported as missing
+  only in the selected range. Verification: 156 tests passed, two optional
+  geocoding tests skipped; static and desktop builds passed, with the static
+  bundle excluding local-account code. Browser checks covered watchlist
+  persistence after a fresh navigation, single-planet consistency, A/B,
+  line-query jump and calculation cancellation. Watchlist IDs remain local to
+  one browser; observation records use the separate storage work in batch 5.
