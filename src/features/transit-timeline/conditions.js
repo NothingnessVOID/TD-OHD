@@ -21,10 +21,11 @@ export function queryTimeline(result, conditions, { combine = 'all', mode = 'ove
   const rows = new Map(result.rows.map(row => [row.key, row]));
   const normalized = conditions.map(condition => {
     if (condition.kind === 'bridge') {
+      if (!['active', 'inactive'].includes(condition.state)) throw new Error('Invalid bridge state');
       if (mode !== 'overlay') throw new Error('Bridge requires birth chart + transits mode');
       if (natalIslandCount < 2) throw new Error(natalIslandCount === 0
         ? 'No natal definition islands to bridge' : 'Natal definition is already connected');
-      return { keys: ['bridge:natal'], state: 'active' };
+      return { keys: ['bridge:natal'], state: condition.state };
     }
     if (!['gate', 'line', 'channel', 'center'].includes(condition.kind) ||
         !['active', 'inactive'].includes(condition.state) || !Array.isArray(condition.ids) || !condition.ids.length) {
