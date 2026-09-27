@@ -589,6 +589,7 @@ body {
 }
 
 .channel-item:hover, .gate-item:hover { background: var(--bg-sunken); }
+.channel-item[role="button"], .gate-item[role="button"] { cursor: pointer; }
 
 .channel-item .channel-name, .gate-item .gate-name {
   font-weight: 600;

@@ -145,3 +145,9 @@ Implementation entries record commit, checks, preview and remaining limitations.
   persistence, and the original end-to-end chart suite passed. `git diff
   --check` passed. The initial application entry still exceeds Vite's 500 kB
   advisory threshold; this does not include the deferred Chinese prose.
+- Final scope audit: the original chart panel's channel, gate, planet and
+  incarnation-cross entries now expose focusable button semantics and keyboard
+  activation. The design-date panel copy names the 88° solar-arc rule rather
+  than suggesting a fixed 88-day subtraction. This was checked against Jovian
+  Archive's Human Design Dictionary and chart-calculation explanation; the
+  engine's independent numerical accuracy remains unclaimed.

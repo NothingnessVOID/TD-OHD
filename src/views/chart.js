@@ -186,6 +186,14 @@ function wireRowHover(el, gateNum) {
   el.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') detailGraph()?.highlightGate?.(null); });
 }
 
+function wireKeyboardActivation(el, activate) {
+  el.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    activate();
+  });
+}
+
 function wireCenterHover(el, centerKey) {
   el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') bodygraphApi?.highlightCenter?.(centerKey); });
   el.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') bodygraphApi?.highlightCenter?.(null); });
@@ -658,7 +666,7 @@ function renderChannelsPanel(container) {
     const key = `${ch.gates[0]}-${ch.gates[1]}`;
     const desc = CHANNEL_DESCRIPTIONS[key];
     return `
-      <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
+      <div class="channel-item" data-gate="${ch.gates[0]}" data-channel="${key}" tabindex="0" role="button">
         <div class="channel-name">
           ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
           <span class="circuit-badge ${esc(ch.circuit)}">${esc(circuitName(ch.circuit))}</span>
@@ -685,8 +693,12 @@ function renderChannelsPanel(container) {
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
     wireRowHover(btn, parseInt(btn.dataset.gate));
   });
-  container.querySelectorAll('.channel-item[data-gate]').forEach(item =>
-    wireRowHover(item, parseInt(item.dataset.gate)));
+  container.querySelectorAll('.channel-item[data-channel]').forEach(item => {
+    const open = () => openKnowledge('channel', item.dataset.channel);
+    item.addEventListener('click', open);
+    wireKeyboardActivation(item, open);
+    wireRowHover(item, parseInt(item.dataset.gate));
+  });
 }
 
 function renderGatesPanel(container) {
@@ -703,7 +715,7 @@ function renderGatesPanel(container) {
       if (g?.gate === gateNum) acts.push(`<span class="act-personality">${PLANET_GLYPHS[planet]} ${gateNum}.${g.line}</span>`);
     }
     return `
-      <div class="gate-item" data-gate="${gateNum}">
+      <div class="gate-item" data-gate="${gateNum}" tabindex="0" role="button">
         <div class="gate-name">${t('Gate {gate}: {name}', { gate: gateNum, name: esc(desc?.keynote || GATES[gateNum]?.name || '') })}</div>
         <div class="gate-meta">${acts.join(' ')}</div>
       </div>
@@ -716,7 +728,9 @@ function renderGatesPanel(container) {
     ${gatesHtml}
   `;
   container.querySelectorAll('.gate-item').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
+    const open = () => showGateDetail(parseInt(item.dataset.gate));
+    item.addEventListener('click', open);
+    wireKeyboardActivation(item, open);
     wireRowHover(item, parseInt(item.dataset.gate));
   });
 }
@@ -733,12 +747,12 @@ function renderPlanetsPanel(container) {
     const p = chart.gates.personality[planet];
     return `
       <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
+        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" ${d ? `tabindex="0" role="button" aria-label="${esc(`${planetName(planet)} ${t('Design')} ${d.gate}.${d.line}`)}"` : ''} title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
         <span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span>
         <span class="planet-cell-name">${esc(planetName(planet))}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
+        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" ${p ? `tabindex="0" role="button" aria-label="${esc(`${planetName(planet)} ${t('Personality')} ${p.gate}.${p.line}`)}"` : ''} title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
       </div>
     `;
   }).join('');
@@ -746,7 +760,7 @@ function renderPlanetsPanel(container) {
   const dDate = chart.positions?.design?.date;
   container.innerHTML = `
     <div class="panel-title">${t('Planetary Activations')}</div>
-    <p class="panel-intro">${t('Each planet activates a gate and line. Design (red) was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality (black) is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
+    <p class="panel-intro">${t('Each planet activates a gate and line. Design (red) is calculated when the Sun was 88° behind its birth position{date} — your unconscious, body-level themes. Personality (black) is calculated at birth — what you can consciously recognize.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
     <div class="planet-table">
       <div class="planet-table-row planet-table-head">
         <span class="planet-cell act-design">${t('Design')}</span>
@@ -762,7 +776,9 @@ function renderPlanetsPanel(container) {
     const g = parseInt(cell.dataset.gate);
     if (g) {
       cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showGateDetail(g, true, { side: cell.dataset.side, planet: cell.dataset.planet }));
+      const open = () => showGateDetail(g, true, { side: cell.dataset.side, planet: cell.dataset.planet });
+      cell.addEventListener('click', open);
+      wireKeyboardActivation(cell, open);
       wireRowHover(cell, g);
     }
   });
@@ -837,7 +853,7 @@ function renderCrossPanel(container) {
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `
-          <div class="foundation-item foundation-clickable" data-gate="${gate}">
+          <div class="foundation-item foundation-clickable" data-gate="${gate}" tabindex="0" role="button">
             <div class="label">${t(labels[i])}</div>
             <div class="value">${t('Gate {gate}', { gate })}</div>
             <div class="detail">${esc(gateName(gate))}</div>
@@ -848,7 +864,9 @@ function renderCrossPanel(container) {
     ${geneKeysHtml}
   `;
   container.querySelectorAll('.foundation-clickable').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
+    const open = () => showGateDetail(parseInt(item.dataset.gate));
+    item.addEventListener('click', open);
+    wireKeyboardActivation(item, open);
     wireRowHover(item, parseInt(item.dataset.gate));
   });
 }

@@ -34,6 +34,31 @@ try {
   await page.keyboard.press('Enter');
   await page.locator('.ob-list-item').first().waitFor();
 
+  const chartPage = await context.newPage();
+  await chartPage.goto(`${base}/?d=1990-06-15&t=14%3A30&tz=8`);
+  await chartPage.locator('#chart-view:not(.hidden)').waitFor();
+  await chartPage.locator('.panel-tab[data-panel="channels"]').click();
+  const channel = chartPage.locator('.channel-item[role="button"]').first();
+  await channel.focus();
+  await chartPage.keyboard.press('Enter');
+  assert.match(new URL(chartPage.url()).hash, /^#library\/channel\//);
+  await chartPage.goBack();
+  await chartPage.locator('.panel-tab[data-panel="gates"]').click();
+  await chartPage.locator('.gate-item[role="button"]').first().focus();
+  await chartPage.keyboard.press(' ');
+  await chartPage.locator('#gate-detail:not(.hidden)').waitFor();
+  await chartPage.locator('#gate-detail .gate-detail-close').click();
+  await chartPage.locator('.panel-tab[data-panel="planets"]').click();
+  await chartPage.locator('.planet-cell[role="button"]').first().focus();
+  await chartPage.keyboard.press('Enter');
+  await chartPage.locator('#gate-detail:not(.hidden)').waitFor();
+  await chartPage.locator('#gate-detail .gate-detail-close').click();
+  await chartPage.locator('.panel-tab[data-panel="cross"]').click();
+  await chartPage.locator('.foundation-clickable[role="button"]').first().focus();
+  await chartPage.keyboard.press(' ');
+  await chartPage.locator('#gate-detail:not(.hidden)').waitFor();
+  await chartPage.close();
+
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, locale: 'en-GB' });
   for (const hash of ['#library', '#observations']) {
     await mobile.goto(`${base}/${hash}`);

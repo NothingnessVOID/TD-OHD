@@ -71,7 +71,7 @@
   "Color {color} · Tone {tone} · Base {base}": "基色 {color} · 基调 {tone} · 基质 {base}",
   "Color · Tone · Base": "基色 · 基调 · 基质",
   "Planetary Activations": "行星激活",
-  "Each planet activates a gate and line. Design (red) was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality (black) is the moment of birth — who you know yourself to be.": "每颗行星会激活一个闸门与爻线。设计（红色）按出生前约 88 天计算{date}，对应无意识、身体层面的主题。人格（黑色）取出生时刻，对应你意识中的自己。",
+  "Each planet activates a gate and line. Design (red) is calculated when the Sun was 88° behind its birth position{date} — your unconscious, body-level themes. Personality (black) is calculated at birth — what you can consciously recognize.": "每颗行星会激活一个闸门与爻线。设计（红色）取太阳相对出生位置回溯 88° 时的行星位置{date}，对应身体层面较不易自觉的主题。人格（黑色）取出生时刻，对应较容易自觉的部分。",
   "Variable data unavailable.": "暂无四箭头资料。",
   "Left — focused": "左向 · 聚焦／主动",
   "Right — receptive": "右向 · 接收／开放",
