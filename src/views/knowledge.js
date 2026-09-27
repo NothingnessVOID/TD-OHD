@@ -51,7 +51,7 @@ export function openKnowledge(type = null, id = null, { replace = false } = {}) 
 
 const entityButton = (type, id, label) => `<button type="button" class="knowledge-link" data-entity="${esc(type)}" data-id="${esc(String(id))}">${esc(label)}</button>`;
 const sourceLink = (url = SOURCE) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${t('Source and terminology')}</a>`;
-const upstreamReading = (file) => `<span class="knowledge-source">${t('Upstream synthesized reading')} · ${t('not an original Ra Uru Hu text')} · <a href="https://github.com/Unforced-Dev/natalengine/blob/main/src/data/${file}" target="_blank" rel="noopener noreferrer">${t('Source code')}</a></span>`;
+const upstreamReading = (file) => `<details class="knowledge-source knowledge-provenance"><summary>${t('Upstream synthesized reading')}</summary><span>${t('not an original Ra Uru Hu text')} · <a href="https://github.com/Unforced-Dev/natalengine/blob/main/src/data/${file}" target="_blank" rel="noopener noreferrer">${t('Source code')}</a></span></details>`;
 
 function gateBody(id, selectedLine = null) {
   const n = Number(id);

@@ -339,7 +339,7 @@ function renderLens(gateNum) {
     ${desc ? `<div class="gate-detail-keynote">${esc(desc.keynote)}</div>` : ''}
     ${desc ? `<p class="gate-detail-desc">${esc(desc.description)}</p>` : ''}
     ${lineHtml ? `<div class="gate-detail-lines">${lineHtml}</div>` : ''}
-    <a class="knowledge-source" href="https://github.com/Unforced-Dev/natalengine/blob/main/src/data/${lineHtml ? 'gate-lines.js' : 'gate-descriptions.js'}" target="_blank" rel="noopener noreferrer">${t('Upstream synthesized reading')} ↗</a>`;
+    <details class="knowledge-source knowledge-provenance"><summary>${t('Upstream synthesized reading')}</summary><span>${t('not an original Ra Uru Hu text')} · <a href="https://github.com/Unforced-Dev/natalengine/blob/main/src/data/${lineHtml ? 'gate-lines.js' : 'gate-descriptions.js'}" target="_blank" rel="noopener noreferrer">${t('Source code')}</a></span></details>`;
 }
 
 function resetDetail() {

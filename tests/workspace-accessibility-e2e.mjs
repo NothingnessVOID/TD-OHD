@@ -14,6 +14,8 @@ try {
   await page.locator('#knowledge-results .knowledge-result').first().focus();
   await page.keyboard.press('Enter');
   assert.match(new URL(page.url()).hash, /^#library\/channel\/24-61/);
+  await page.locator('#knowledge-detail .knowledge-provenance summary').click();
+  assert.equal(await page.locator('#knowledge-detail .knowledge-provenance').getAttribute('open'), '');
   await page.goBack();
   assert.equal(await page.locator('#knowledge-search').inputValue(), '24-61');
 
