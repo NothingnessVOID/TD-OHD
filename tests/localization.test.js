@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import * as engine from 'natalengine';
 import * as zh from '../src/locales/zh-CN/content.js';
 import { HEXAGRAM_ZH, zhGate, zhCenter, zhChannel } from '../src/locales/zh-CN/vocabulary.js';
+import { gateReading } from '../src/lib/reference-content.js';
+import { getLocale, setLocale } from '../src/lib/i18n.js';
 
 function chinese(value, label) {
   assert.equal(typeof value, 'string', label);
@@ -95,12 +97,12 @@ test('computed charts, relationships, teams and transits have translated dynamic
 test('no translation-only disclosure; tooltip keeps the HD name with a parenthetical hexagram', () => {
   const source = readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8');
   assert.doesNotMatch(source,/source-original|查看英文原文|避免误造|缺乏统一授权/);
-  assert.match(source,/\$\{esc\(ld.description\)\}/);
-  assert.match(source,/\$\{esc\(hx.meaning\)\}/);
-  assert.match(source,/\$\{esc\(gk.description\)\}/);
-  for (const field of ['shadow', 'gift', 'siddhi']) {
-    assert.ok(source.includes(`<span class="gk-${field}">\u0024{esc(geneKeyTerm(gateNum, '${field}'))}</span>`));
-  }
+  const previousLocale = getLocale();
+  setLocale('zh-CN', { persist: false });
+  assert.match(gateReading(34, 'hd'), /gate-detail-line/);
+  assert.match(gateReading(34, 'iching'), /gate-detail-desc/);
+  for (const field of ['shadow', 'gift', 'siddhi']) assert.match(gateReading(34, 'gk'), new RegExp(`gk-${field}`));
+  setLocale(previousLocale, { persist: false });
   const graph = readFileSync(new URL('../src/bodygraph.js',import.meta.url),'utf8');
   for (const variable of ['gateNum', 'g']) {
     assert.ok(graph.includes(`formatDisplay('gateTooltip', displayGate(${variable}), hexagramName(${variable}))`));

@@ -30,7 +30,7 @@ test('localized navigation keeps Timeline after Transits with stable translation
   const items = [...nav.matchAll(/data-view="([^"]+)" data-i18n="([^"]+)"/g)]
     .map(match => [match[1], match[2]]);
   assert.deepEqual(items, [['chart', 'My Chart'], ['transits', 'Transits'],
-    ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'Team']]);
+    ['timeline', 'Timeline'], ['library', 'Reference Library'], ['connection', 'Connection'], ['team', 'Team']]);
 });
 
 test('locale preference, supported browser languages and unsupported-language fallback', () => {

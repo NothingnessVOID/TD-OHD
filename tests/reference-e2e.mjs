@@ -1,0 +1,63 @@
+import { chromium } from 'playwright-core';
+import assert from 'node:assert/strict';
+
+const base = process.env.E2E_URL || 'http://127.0.0.1:5186';
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
+try {
+  for (const viewport of [{ width: 1380, height: 900 }, { width: 390, height: 844 }]) {
+    const page = await browser.newPage({ viewport });
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.goto(`${base}/#library`);
+    await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
+    assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
+    assert.match(await page.locator('#reference-count').innerText(), /118|条结果/);
+    assert.equal(await page.locator('#birth-entry').isVisible(), false);
+    await page.locator('[data-reference-filter="channel"]').click();
+    assert.match(await page.locator('#reference-count').innerText(), /36/);
+    await page.locator('#reference-search').fill('60–3');
+    assert.equal(await page.locator('.reference-result').count(), 1);
+    await page.locator('.reference-result').click();
+    assert.match(page.url(), /#library\/channel\/3-60/);
+    assert.match(await page.locator('#reference-detail').innerText(), /3-60/);
+    await page.goto(`${base}/#library/gate/14?line=2`);
+    await page.locator('#reference-detail .gate-detail-line[data-line="2"]').waitFor();
+    assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 1);
+    assert.equal(await page.locator('#reference-detail [data-reference-line]').count(), 6);
+    await page.locator('#language-switcher').selectOption('en');
+    assert.match(await page.locator('.reference-heading h1').innerText(), /Reference Library/);
+    assert.match(page.url(), /#library\/gate\/14\?line=2/);
+    await page.locator('#language-switcher').selectOption('zh-Hant');
+    assert.match(await page.locator('.reference-heading h1').innerText(), /資料庫/);
+    await page.locator('#language-switcher').selectOption('zh-CN');
+    await page.goto(`${base}/#library/gate/14.7`);
+    await page.locator('#reference-detail').waitFor();
+    assert.match(await page.locator('#reference-detail').innerText(), /无效|Invalid/);
+
+    await page.goto(`${base}/?d=1990-06-15&t=14%3A30&tz=-6`);
+    await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
+    await page.locator('.bg-planet-row[data-gate="34"]').first().click();
+    await page.locator('#gate-detail:not(.hidden)').waitFor();
+    const popupCore = await page.locator('#lens-content').innerText();
+    assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
+    assert.ok(await page.locator('#gate-detail .selected-activation').count());
+    assert.ok(await page.locator('#gate-detail [data-channel]').count() > 1);
+    await page.locator('#gate-detail [data-channel]').first().click();
+    assert.match(await page.locator('#gate-detail').innerText(), /通道|Channel/);
+    await page.locator('#gate-detail .gate-detail-back').click();
+    assert.ok(await page.locator('#gate-detail .selected-activation').count());
+    await page.keyboard.press('Escape');
+    await page.locator('.nav-link[data-view="library"]').click();
+    await page.locator('#library-view:not(.hidden)').waitFor();
+    assert.equal(new URL(page.url()).search, '');
+    await page.goto(`${base}/#library/gate/34`);
+    await page.locator('#reference-detail .gate-detail-line').first().waitFor();
+    const libraryCore = await page.locator('#reference-detail .reference-reading').innerText();
+    assert.equal(libraryCore.trim(), popupCore.trim());
+    assert.deepEqual(errors, []);
+    await page.close();
+  }
+  console.log('Reference browser flow passed at desktop and mobile viewports.');
+} finally {
+  await browser.close();
+}

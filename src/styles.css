@@ -1576,6 +1576,43 @@ body.modal-open { overflow: hidden; }
 }
 .gate-detail-line strong { display: block; font-size: 13px; margin-bottom: 3px; }
 .gate-detail-line p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+.gate-detail-line.current-line { border-color: var(--accent); background: var(--accent-soft); }
+.selected-activation { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+.reference-heading { margin: 22px 0 18px; }
+.reference-heading h1 { margin: 0 0 5px; font-size: 25px; }
+.reference-heading p { color: var(--text-secondary); margin: 0; }
+.reference-layout { display: grid; grid-template-columns: minmax(245px, 310px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.reference-sidebar, .reference-detail { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.reference-sidebar { padding: 16px; }
+.reference-sidebar label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.reference-sidebar input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+.reference-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 13px 0; }
+.reference-filters button, .reference-more { padding: 7px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text-secondary); cursor: pointer; }
+.reference-filters button.active { border-color: var(--accent); color: var(--accent-hover); background: var(--accent-soft); }
+#reference-count { color: var(--text-tertiary); font-size: 12px; margin: 8px 0; }
+.reference-results { max-height: min(65vh, 660px); overflow: auto; display: flex; flex-direction: column; gap: 5px; }
+.reference-result { width: 100%; text-align: left; padding: 9px 10px; border: 1px solid transparent; border-radius: var(--radius); background: transparent; color: var(--text); cursor: pointer; }
+.reference-result:hover, .reference-result:focus-visible { background: var(--bg-sunken); border-color: var(--border); }
+.reference-result small { display: block; color: var(--text-tertiary); font-size: 11px; }
+.reference-result strong { display: block; font-weight: 600; font-size: 13px; }
+.reference-detail { min-height: 320px; padding: clamp(18px, 3vw, 30px); }
+.reference-detail h2 { font-size: 24px; margin: 7px 0 12px; }
+.reference-detail h3 { font-size: 15px; margin: 22px 0 9px; }
+.reference-detail-body { max-width: 780px; }
+.reference-back { border: 0; background: transparent; color: var(--accent-hover); cursor: pointer; padding: 0 0 16px; }
+.reference-empty, .reference-note { color: var(--text-secondary); }
+.reference-reading { margin-top: 16px; }
+.reference-links { display: flex; flex-wrap: wrap; gap: 7px; }
+.reference-link { border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 10px; background: var(--bg); color: var(--text); cursor: pointer; }
+.reference-link:hover, .reference-link:focus-visible { border-color: var(--accent); }
+.reference-detail .lens-switch { max-width: 450px; }
+@media (max-width: 700px) {
+  .reference-layout { display: block; }
+  .reference-sidebar { margin-bottom: 12px; }
+  .reference-results { max-height: 230px; }
+  .reference-detail { min-height: 260px; }
+}
 
 /* Lens switcher — Human Design / I Ching / Gene Keys */
 .lens-switch {
