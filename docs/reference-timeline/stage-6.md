@@ -11,7 +11,7 @@
 
 | 验证 | 结果 |
 |---|---|
-| `npm test` | 后续补测共 159 项中 157 通过、2 失败。两项均是阶段 0 即存在的 MCP 在线地理编码 `fetch failed`，与本地功能测试分开记录。 |
+| `npm test` | 最终复跑共 161 项中 159 通过、2 失败。两项均是阶段 0 即存在的 MCP 在线地理编码 `fetch failed`，与本地功能测试分开记录。 |
 | `npm run test:timeline`、`npm run test:localization` | 54/54 与 30/30 通过。 |
 | `node --test tests/location.test.js tests/share.test.js tests/local-server.test.js` | 16/16 通过；本地账户临时服务测试包含两浏览器会话、持久保存、合并、权限边界和重启。 |
 | 开发服务器浏览器测试 | `timeline-e2e`、`timeline-gestures-e2e`、`timeline-mobile-touch-e2e`、`timeline-mobile-layout-e2e`、`timeline-conditions-e2e` 均通过。 |
@@ -20,9 +20,10 @@
 | 年度数据浏览器复用 | 7 天→28 天→7 天只请求 manifest 一次、2026 年年度文件一次。 |
 | 单时刻“现在” | 桌面及手机视口把时区设为 `Asia/Tokyo` 后点击“现在”，仍为 `Asia/Tokyo`。 |
 | 静态 PNG | 桌面、手机视口及深色主题均成功下载 1080×1920 图片；目视确认身体图通道与中心完整，无个人姓名和地点标签。 |
-| 后续验收补测 | `tests/annual-fallback-e2e.mjs` 验证年度文件 HTTP 503 时只回退请求的 7 天；`tests/place-search-e2e.mjs` 验证输入页候选时序与反馈；`tests/quarter-correction-e2e.mjs` 验证有来源依据的 3 号闸门象限纠错。 |
+| 后续验收补测 | `tests/annual-fallback-e2e.mjs` 验证年度文件 HTTP 503 时只回退请求的 7 天；`tests/place-search-e2e.mjs` 验证输入法组合、候选时序与反馈；`tests/quarter-correction-e2e.mjs` 验证有来源依据的 3 号闸门象限纠错。 |
+| 贯通验收 | `ACCEPTANCE_CAPTURE=1 E2E_URL=http://127.0.0.1:5187 node tests/reference-v1-acceptance-e2e.mjs` 在桌面 1440×1000 和手机模拟视口 390×844 均通过。各从同一合成二分出生盘走完通道、闸门六爻、资料库同文、行运、7→28→7、闸门导航、多条件、桥接、无身份字段复制分享和刷新恢复；各只请求一次年度文件。 |
 
-预览证据：[桌面行运](stage-6/desktop-transits.png)、[手机行运](stage-6/mobile-transits.png)、[手机时间轴](stage-6/mobile-timeline.png)、[手机控制面板](stage-6/mobile-controls.png)、[静态导出浅色 PNG](stage-6/desktop-chart.png)、[深色 PNG](stage-6/dark-chart.png)。所有人物数据均为合成样本；手机是浏览器视口模拟，并非 iOS/安卓实机。
+预览证据：[桌面行运](stage-6/desktop-transits.png)、[手机行运](stage-6/mobile-transits.png)、[手机时间轴](stage-6/mobile-timeline.png)、[手机控制面板](stage-6/mobile-controls.png)、[桌面贯通验收](stage-6/acceptance-1440.png)、[手机贯通验收](stage-6/acceptance-390.png)、[静态导出浅色 PNG](stage-6/desktop-chart.png)、[深色 PNG](stage-6/dark-chart.png)。所有人物数据均为合成样本；手机是浏览器视口模拟，并非 iOS/安卓实机。
 
 ## 已知问题与未验证项
 
@@ -32,3 +33,5 @@
 - 资料资产完成结构清点，原件保留在本地忽略目录；文本真伪和逐条术语审校仍列为待核，未用模型填空。
 
 回退点为本阶段独立提交；前五阶段提交与固定基线均保留。没有合并 `main`、推送或部署生产。
+
+最终汇总与逐项证据分别见 [交付报告](final-report.md) 和 [验收逐项记录](acceptance-checklist.md)。

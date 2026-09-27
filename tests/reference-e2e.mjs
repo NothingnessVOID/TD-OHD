@@ -13,6 +13,15 @@ try {
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
     assert.match(await page.locator('#reference-count').innerText(), /118|条结果/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
+    if (viewport.width > 600) {
+      await page.locator('#reference-results').evaluate(node => { node.scrollTop = 150; });
+      assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
+    }
+    await page.locator('#reference-results .reference-result').nth(7).click();
+    await page.locator('#reference-detail .reference-back').waitFor();
+    if (viewport.width > 600) assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
+    await page.locator('#reference-detail .reference-back').click();
+    assert.equal(await page.evaluate(() => document.activeElement?.classList.contains('reference-result')), true);
     await page.locator('[data-reference-filter="channel"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /36/);
     await page.locator('#reference-search').fill('60–3');
@@ -40,11 +49,18 @@ try {
     await page.locator('#gate-detail:not(.hidden)').waitFor();
     const popupCore = await page.locator('#lens-content').innerText();
     assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
+    await page.locator('#gate-detail [data-lens="iching"]').click();
+    assert.ok((await page.locator('#lens-content').innerText()).length > 20);
+    await page.locator('#gate-detail [data-lens="gk"]').click();
+    assert.ok((await page.locator('#lens-content').innerText()).length > 20);
     assert.ok(await page.locator('#gate-detail .selected-activation').count());
     assert.ok(await page.locator('#gate-detail [data-channel]').count() > 1);
     await page.locator('#gate-detail [data-channel]').first().click();
     assert.match(await page.locator('#gate-detail').innerText(), /通道|Channel/);
     await page.locator('#gate-detail .gate-detail-back').click();
+    assert.equal(await page.locator('#gate-detail [data-lens="gk"]').getAttribute('class'), 'active');
+    await page.locator('#gate-detail [data-lens="hd"]').click();
+    assert.equal((await page.locator('#lens-content').innerText()).trim(), popupCore.trim());
     assert.ok(await page.locator('#gate-detail .selected-activation').count());
     await page.keyboard.press('Escape');
     await page.locator('.nav-link[data-view="library"]').click();
@@ -54,6 +70,23 @@ try {
     await page.locator('#reference-detail .gate-detail-line').first().waitFor();
     const libraryCore = await page.locator('#reference-detail .reference-reading').innerText();
     assert.equal(libraryCore.trim(), popupCore.trim());
+    await page.locator('#reference-detail [data-reference-lens="iching"]').click();
+    assert.ok((await page.locator('#reference-detail .reference-reading').innerText()).length > 20);
+    await page.locator('#reference-detail [data-reference-lens="gk"]').click();
+    await page.locator('#reference-detail [data-reference-kind="channel"]').first().click();
+    await page.goBack();
+    await page.locator('#reference-detail [data-reference-lens="gk"].active').waitFor();
+    await page.reload();
+    await page.locator('#reference-detail [data-reference-lens="hd"].active').waitFor();
+
+    // A zero-channel synthetic chart still exposes its activated hanging gates.
+    await page.goto(`${base}/?d=1981-03-22&t=12%3A00&tz=0`);
+    await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
+    assert.ok(await page.locator('.bg-planet-row[data-gate]').count() > 0);
+    await page.locator('.bg-planet-row[data-gate]').first().click();
+    await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
+    await page.locator('#gate-detail [data-channel]').first().click();
+    assert.match(await page.locator('#gate-detail').innerText(), /Not defined|未定义|未定義/);
     assert.deepEqual(errors, []);
     await page.close();
   }

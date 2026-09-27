@@ -31,10 +31,22 @@ try {
   await page.locator('#place-results .place-result').filter({ hasText: /^To,/ }).waitFor();
   assert.ok(requested.includes('To'), 'two-character searches run');
 
+  const beforeComposition = requested.length;
+  await input.evaluate(node => {
+    node.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true }));
+    node.value = 'Tokyo';
+    node.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.waitForTimeout(300);
+  assert.equal(requested.length, beforeComposition, 'IME input waits for composition to finish');
+  await input.evaluate(node => node.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true })));
+  await page.waitForFunction(() => document.querySelector('#place-results .place-result')?.textContent?.includes('Tokyo'));
+  assert.equal(requested.at(-1), 'Tokyo');
+
   await input.fill('noresults');
   await page.locator('#place-group [role="status"]').filter({ hasText: /No matching|没有|無/ }).waitFor();
   await input.fill('offline');
   await page.locator('#place-group [role="status"]').filter({ hasText: /unavailable|不可用|無法/ }).waitFor();
   assert.equal(await page.locator('#place-results .place-result').count(), 0);
-  console.log('Place search stale, short-query and error-state browser checks passed.');
+  console.log('Place search stale, IME, short-query and error-state browser checks passed.');
 } finally { await browser.close(); }
