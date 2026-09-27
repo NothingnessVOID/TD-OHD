@@ -1,6 +1,7 @@
 /** Portable observation format. No birth details are stored in a note by default. */
+import { TIMELINE_RULE_VERSION } from '../features/transit-timeline/version.js';
 export const OBSERVATION_FORMAT = 'td-ohd-observations-v1';
-export const OBSERVATION_RULE_VERSION = 'timeline-rules-1';
+export const OBSERVATION_RULE_VERSION = TIMELINE_RULE_VERSION;
 export const OBSERVATION_ENGINE_VERSION = 'natalengine-1.6.0';
 
 const validIso = value => typeof value === 'string' && Number.isFinite(Date.parse(value))

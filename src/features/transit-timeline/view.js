@@ -6,6 +6,7 @@ import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
 import { createTimelineQueryClient } from './query-client.js';
 import { LINE_FIXING_PLANETS } from './line-fixing-data.js';
+import { TIMELINE_RULE_VERSION } from './version.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import './timeline.css';
 
@@ -538,7 +539,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // Presets own the complete calculation; zoom and pan only change windowRange.
     requestedRange = { ...timelineRange };
     try {
-      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode, eventLevel, planet: planetFilter }, progress => {
+      const calculated = await client.calculate({ ...requestedRange, natal: host.identity(chart.chart), mode, eventLevel, planet: planetFilter, ruleVersion: TIMELINE_RULE_VERSION }, progress => {
         if (token === generation) renderProgress(progress);
       });
       if (token !== generation || !active) return;
