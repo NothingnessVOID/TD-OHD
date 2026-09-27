@@ -1,14 +1,51 @@
 import { calculateTimeline } from './core.js';
-import { snapshot, stateAt, catalog } from './provider.js';
+import { timelineFromAnnual } from './annual-timeline.js';
+import { stateAt, catalog } from './graph-provider.js';
 
-self.onmessage = ({ data }) => {
+function mergeSegments(parts, start, end) {
+  const rows = catalog().map(row => ({ ...row, intervals: [] }));
+  const byKey = new Map(rows.map(row => [row.key, row]));
+  for (const part of parts) for (const row of part.rows) {
+    const output = byKey.get(row.key).intervals;
+    for (const interval of row.intervals) {
+      const previous = output.at(-1);
+      if (previous?.end === interval.start && previous.source === interval.source) {
+        previous.end = interval.end;
+        previous.clippedEnd = interval.clippedEnd;
+      } else output.push({ ...interval });
+    }
+  }
+  const byTime = new Map();
+  for (const part of parts) for (const change of part.gateChanges || []) {
+    const gates = byTime.get(change.time) || new Set();
+    change.gates.forEach(gate => gates.add(gate));
+    byTime.set(change.time, gates);
+  }
+  return { start, end, rows,
+    events: [...new Set(parts.flatMap(part => part.events))].sort((a, b) => a - b),
+    gateEvents: [...new Set(parts.flatMap(part => part.gateEvents || part.events))].sort((a, b) => a - b),
+    gateChanges: [...byTime].sort(([a], [b]) => a - b).map(([time, gates]) => ({ time, gates: [...gates] })),
+    source: parts.every(part => part.source === 'annual') ? 'annual' : 'mixed' };
+}
+
+self.onmessage = async ({ data }) => {
   try {
-    const result = calculateTimeline({
-      start: data.start, end: data.end, snapshot, catalog: catalog(),
-      states: activations => stateAt(data.natal, activations, data.mode),
-      onProgress: progress => self.postMessage({ type: 'progress', progress })
+    // The ephemeris code is needed only for missing or invalid annual data.
+    const fallbackSnapshot = data.segments.some(segment => segment.data.unavailable)
+      ? (await import('./snapshot.js')).snapshot : null;
+    const parts = data.segments.map((segment, index) => {
+      const options = { start: segment.start, end: segment.end,
+        natal: data.natal, mode: data.mode, catalog: catalog(),
+        stateAt: (natal, activations, mode) => stateAt(natal, activations, mode, data.planet) };
+      const result = !segment.data.unavailable
+        ? timelineFromAnnual({ ...options, years: [segment.data] })
+        : calculateTimeline({ start: segment.start, end: segment.end, snapshot: fallbackSnapshot, catalog: options.catalog,
+          states: activations => stateAt(data.natal, activations, data.mode, data.planet),
+          onProgress: progress => self.postMessage({ type: 'progress', progress: (index + progress) / data.segments.length }) });
+      self.postMessage({ type: 'progress', progress: (index + 1) / data.segments.length });
+      return result;
     });
-    self.postMessage({ type: 'result', result });
+    self.postMessage({ type: 'result', result: mergeSegments(parts, data.start, data.end) });
   } catch (error) {
     self.postMessage({ type: 'error', message: error.message });
   }
