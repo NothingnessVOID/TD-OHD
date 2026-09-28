@@ -102,7 +102,7 @@ try {
     await ready();
     const controls = page.locator(`${root} .tl-mobile-controls-panel`);
     const span = page.locator(`${root} [data-field="span"]`);
-    await span.selectOption('28'); await ready();
+    await span.selectOption('30'); await ready();
     await span.selectOption('7'); await ready();
     assert.equal(await span.inputValue(), '7');
     assert.ok(annualRequests.length >= 1, 'annual file was loaded');

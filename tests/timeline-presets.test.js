@@ -9,7 +9,7 @@ const at = iso => Date.parse(iso);
 const resolve = (date, time, zone) => transitInstants(date, time, zone)[0].instant;
 
 test('the one-day preset covers the selected local calendar date', () => {
-  assert.deepEqual(RANGE_OPTIONS.map(([value]) => value), ['1', '3', '7', '28', 'year', 'past-year']);
+  assert.deepEqual(RANGE_OPTIONS.map(([value]) => value), ['1', '3', '7', '30', '90', '180', 'year', 'past-year']);
   const instant = resolve('2026-09-24', '01:45:00', 'Asia/Shanghai');
   const window = presetWindow(instant, '1', 'Asia/Shanghai', transitInstants);
   assert.deepEqual(window, { start: at('2026-09-23T16:00:00Z'), end: at('2026-09-24T16:00:00Z') });
@@ -21,13 +21,15 @@ test('the one-day preset covers the selected local calendar date', () => {
   assert.deepEqual(fall, { start: at('2026-11-01T04:00:00Z'), end: at('2026-11-02T05:00:00Z') });
 });
 
-test('3, 7 and 28 days use complete Shanghai calendar dates independent of clock time', () => {
+test('3, 7, 30, 90 and 180 days use complete Shanghai calendar dates around the selected date', () => {
   const morning = resolve('2026-09-24', '09:50:00', 'Asia/Shanghai');
   const evening = resolve('2026-09-24', '23:30:00', 'Asia/Shanghai');
   const expected = {
     '3': ['2026-09-22T16:00:00Z', '2026-09-25T16:00:00Z'],
     '7': ['2026-09-20T16:00:00Z', '2026-09-27T16:00:00Z'],
-    '28': ['2026-09-09T16:00:00Z', '2026-10-07T16:00:00Z']
+    '30': ['2026-09-08T16:00:00Z', '2026-10-08T16:00:00Z'],
+    '90': ['2026-08-09T16:00:00Z', '2026-11-07T16:00:00Z'],
+    '180': ['2026-06-25T16:00:00Z', '2026-12-22T16:00:00Z']
   };
   for (const [preset, [start, end]] of Object.entries(expected)) {
     const window = { start: at(start), end: at(end) };

@@ -42,12 +42,12 @@
 .tl-advanced-panel > label select { width: 130px; }
 .tl-query-head, .tl-query-actions { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
 .tl-condition-rows { display: grid; gap: 5px; }
-.tl-condition-row { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.tl-condition-row { display: flex; align-items: flex-start; gap: 5px; min-width: 0; }
 .tl-condition-row { flex-wrap: wrap; }
 .tl-condition-row select { min-width: 0; }
 .tl-target-picker { position: relative; flex: 0 1 230px; min-width: 150px; max-width: 260px; }
 .tl .tl-target-picker > button { width: 100%; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tl-target-popover { position: absolute; top: calc(100% + 3px); left: 0; z-index: 12; width: min(360px, 80vw); padding: 8px; border: 1px solid var(--tl-line); border-radius: 7px; background: var(--tl-surface); box-shadow: var(--shadow-lg); }
+.tl-target-popover { position: relative; width: 100%; margin-top: 3px; padding: 8px; border: 1px solid var(--tl-line); border-radius: 7px; background: var(--tl-surface); }
 .tl .tl-target-popover > input { width: 100%; min-height: 38px; }
 .tl-target-options { max-height: 250px; overflow-y: auto; overscroll-behavior: contain; margin-top: 6px; }
 .tl .tl-target-option { display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 34px; padding: 3px 5px; font-size: 12px; color: var(--text); cursor: pointer; }
@@ -140,7 +140,9 @@
 .tl-row { height: var(--tl-row-height); border-bottom: 1px solid var(--border-subtle); }
 .tl-row:last-child { border-bottom: 0; }
 .tl-row-label { display: flex; align-items: center; justify-content: center; min-width: 0; border-right: 1px solid var(--tl-line); }
-.tl .tl-gate-expand { flex: 0 0 10px; width: 10px; min-width: 0; min-height: 0; padding: 0; border: 0; background: none; color: var(--text-secondary); font-size: 16px; line-height: 1; }
+.tl button.tl-gate-expand[data-action] { flex: 0 0 18px; width: 18px; height: 100%; min-width: 0; min-height: 0; padding: 0; border: 0; background: none; color: var(--text-secondary); display: grid; place-items: center; }
+.tl .tl-gate-expand svg { width: 18px; height: 22px; fill: currentColor; transform-origin: center; }
+.tl .tl-gate-expand[aria-expanded="true"] svg { transform: rotate(90deg); }
 .tl-line-row .tl-row-label { padding-left: 10px; }
 .tl-line-symbol { font-size: 11px; font-variant-numeric: tabular-nums; }
 .tl .tl-row-name { min-width: 0; border: 0; border-right: 1px solid var(--tl-line); background: var(--tl-surface); display: flex; align-items: center; justify-content: center; padding: 2px; color: var(--text-secondary); }

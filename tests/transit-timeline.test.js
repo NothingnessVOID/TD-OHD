@@ -80,6 +80,13 @@ test('birth state remains continuous and overlay and sky modes match the graph m
     { gates: { all: [10, 20] }, centers: { definedNames: ['spleen', 'throat'] } });
 });
 
+test('transit-only rows still show when transits join fixed natal islands', () => {
+  const birth = { gates: { all: [3, 60, 2, 13, 33] }, centers: { definedNames: [] } };
+  const sky = { sun: { gate: 14, line: 1 } };
+  assert.equal(stateAt(birth, sky, 'overlay').get('bridge:natal'), '[[1,2]]');
+  assert.equal(stateAt(birth, sky, 'transit-only').get('bridge:natal'), '[[1,2]]');
+});
+
 test('birth channel and its centers remain defined through unrelated sky changes', () => {
   const birth = { gates: { all: [10, 34] }, centers: { definedNames: ['g', 'sacral'] } };
   const result = calculateTimeline({ start: 0, end: MINUTE,

@@ -136,7 +136,7 @@ try {
       assert.equal(await page.locator(`${tl} .tl-tracks-panel .tl-event-nav`).count(), 0);
     }
 
-    await page.locator(`${tl} [data-field="span"]`).selectOption('28');
+    await page.locator(`${tl} [data-field="span"]`).selectOption('30');
     await ready();
     if (viewport.width < 600) await page.locator(`${tl} [data-action="mobile-controls"]`).click();
     await page.locator(`${tl} .tl-advanced summary`).click();

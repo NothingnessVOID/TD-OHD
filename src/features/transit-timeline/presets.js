@@ -2,7 +2,8 @@ import { DAY } from './core.js';
 import { wallTime } from './time.js';
 
 export const RANGE_OPTIONS = [
-  ['1', 'hours24'], ['3', 'days3'], ['7', 'days7'], ['28', 'days28'],
+  ['1', 'hours24'], ['3', 'days3'], ['7', 'days7'], ['30', 'days30'],
+  ['90', 'days90'], ['180', 'days180'],
   ['year', 'year1'], ['past-year', 'pastYear1'],
 ];
 
@@ -64,7 +65,7 @@ export function presetWindow(instant, preset, zone, resolveTime) {
     start: localDayBoundary(currentDate, zone),
     end: localDayBoundary(shiftDate(currentDate, 1), zone)
   };
-  const daysBefore = { '3': 1, '7': 3, '28': 14 }[preset];
+  const daysBefore = { '3': 1, '7': 3, '30': 15, '90': 45, '180': 90 }[preset];
   const daysAfter = Number(preset) - daysBefore;
   return {
     start: localDayBoundary(shiftDate(currentDate, -daysBefore), zone),

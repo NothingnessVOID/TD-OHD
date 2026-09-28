@@ -408,7 +408,7 @@ body {
   margin: 0 auto;
   padding: 24px;
   display: grid;
-  grid-template-columns: minmax(350px, 1.2fr) minmax(0, .8fr);
+  grid-template-columns: minmax(350px, min(50vw, 610px)) minmax(0, 1fr);
   gap: 18px;
   align-items: start;
 }
