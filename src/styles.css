@@ -1873,7 +1873,7 @@ body.modal-open { overflow: hidden; }
 
 .planet-table-row {
   display: grid;
-  grid-template-columns: 56px 44px 24px 1fr 44px 56px;
+  grid-template-columns: 56px 44px minmax(0, 1fr) 44px 56px;
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
@@ -1890,7 +1890,8 @@ body.modal-open { overflow: hidden; }
 .planet-table-row:nth-child(even) { background: var(--bg-sunken); }
 .planet-table-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; }
 
-.planet-cell-glyph { text-align: center; opacity: 0.75; }
+.planet-cell-identity { display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; white-space: nowrap; }
+.planet-cell-glyph { flex: none; width: 16px; text-align: center; opacity: 0.75; }
 .planet-cell-name { color: var(--text-secondary); font-size: 12.5px; }
 
 .arrow-card .arrow-side {
@@ -1927,12 +1928,12 @@ body.modal-open { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .row-lit { transition: none; } }
 
-/* Small phones: the 6-column planet table can't hold its fixed columns under
-   ~360px, so drop the Color·Tone·Base sub-cells (advanced detail) and keep the
-   gate.line · glyph · name · gate.line spine, which always fits. */
+/* Small phones keep the original compact value · planet · value layout. */
 @media (max-width: 480px) {
-  .planet-table-row { grid-template-columns: auto 20px 1fr auto; gap: 5px; font-size: 12.5px; }
+  .planet-table-row { grid-template-columns: auto minmax(0, 1fr) auto; gap: 5px; font-size: 12.5px; }
   .planet-cell-sub { display: none; }
+  .planet-table-head > span:nth-child(3) { display: none; }
+  .planet-table-head .act-personality { grid-column: 3; }
 }
 
 /* =============================================
