@@ -19,7 +19,6 @@ import { setupConnectionView, renderConnectionView, compareWithGuest, rerenderCo
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
-import './lib/language-switcher.css';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
 import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
 

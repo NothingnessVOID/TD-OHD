@@ -8,15 +8,50 @@ const page = await browser.newPage({ viewport: { width: 903, height: 703 }, loca
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
 try {
+  const early = await browser.newPage({ viewport: { width: 1280, height: 703 }, locale: 'en-US' });
+  await early.route('**/src/main.js', route => route.abort());
+  await early.goto(`${base}/`);
+  assert.deepEqual(await early.evaluate(() => {
+    const select = document.querySelector('#language-switcher');
+    const language = document.querySelector('.language-control').getBoundingClientRect();
+    const theme = document.querySelector('#theme-toggle').getBoundingClientRect();
+    return [getComputedStyle(select).opacity, getComputedStyle(select).position, language.right <= theme.left];
+  }), ['0', 'absolute', true], 'header controls stay separate before JavaScript loads');
+  await early.close();
+
   await page.goto(`${base}/#library/center/head`);
   await page.locator('#reference-detail .center-reading').waitFor();
   assert.equal(await page.locator('.reference-heading p').count(), 0);
   assert.equal(await page.locator('#reference-detail .center-reading-state').count(), 3);
+  await page.setViewportSize({ width: 471, height: 703 });
+  const detailHeading = await page.evaluate(() => {
+    const back = document.querySelector('#reference-detail .reference-back').getBoundingClientRect();
+    const label = document.querySelector('#reference-detail .detail-label').getBoundingClientRect();
+    const title = document.querySelector('#reference-detail h2').getBoundingClientRect();
+    return { backBottom: back.bottom, labelTop: label.top, labelBottom: label.bottom, titleTop: title.top };
+  });
+  assert.ok(detailHeading.backBottom <= detailHeading.labelTop && detailHeading.labelBottom <= detailHeading.titleTop,
+    `mobile library heading does not overlap: ${JSON.stringify(detailHeading)}`);
+  await page.setViewportSize({ width: 903, height: 703 });
 
   await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
   await page.locator('#bodygraph-container svg').waitFor();
   assert.equal(await page.locator('#type-banner .banner-actions').count(), 0);
   assert.equal(await page.locator('#chart-share-menu summary').isVisible(), true);
+  assert.equal((await page.locator('#chart-share-menu summary').innerText()).trim(), '');
+  assert.equal(await page.locator('#chart-share-menu summary').evaluate(node => node.getBoundingClientRect().width), 32);
+  await page.setViewportSize({ width: 714, height: 703 });
+  const chartColumns = await page.evaluate(() => {
+    const graph = document.querySelector('#bodygraph-container');
+    const svg = graph.querySelector('svg').getBoundingClientRect();
+    const design = graph.querySelector('.bg-planets-design').getBoundingClientRect();
+    const personality = graph.querySelector('.bg-planets-personality').getBoundingClientRect();
+    return { aligned: Math.abs(design.top - svg.top) <= 1 && Math.abs(personality.top - svg.top) <= 1,
+      width: svg.width, documentWidth: document.documentElement.scrollWidth };
+  });
+  assert.ok(chartColumns.aligned && chartColumns.width > 350 && chartColumns.documentWidth <= 714,
+    `714px chart keeps planet columns beside the graph: ${JSON.stringify(chartColumns)}`);
+  await page.setViewportSize({ width: 903, height: 703 });
   await page.locator('#bodygraph-container .bg-gate').first().click();
   const titleSizes = await page.locator('#gate-detail .detail-name').evaluate(node => ({
     name: getComputedStyle(node).fontSize,
@@ -65,6 +100,23 @@ try {
   await page.waitForTimeout(300);
   assert.ok(Math.abs((await page.evaluate(() => scrollY)) - documentY) <= 2,
     'query navigation preserves the document scroll position');
+  await page.setViewportSize({ width: 471, height: 703 });
+  const timelineMenu = await page.locator(`${root} .tl-mobile-exit`).evaluate(node => {
+    const box = node.getBoundingClientRect();
+    return { x: box.x, y: box.y, width: box.width, height: box.height,
+      fontSize: getComputedStyle(node).fontSize, label: node.getAttribute('aria-label') };
+  });
+  assert.deepEqual(timelineMenu, { x: 10, y: 10, width: 36, height: 36, fontSize: '17px', label: '打开导航' });
+  await page.setViewportSize({ width: 343, height: 703 });
+  const rangeSize = await page.locator(`${root} .tl-mobile-range`).evaluate(node => {
+    const box = node.getBoundingClientRect();
+    const select = node.querySelector('select');
+    return { width: box.width, height: box.height, label: select.selectedOptions[0].textContent.trim() };
+  });
+  assert.ok(rangeSize.width <= 64 && rangeSize.height <= 32 && rangeSize.label === '7 天',
+    `compact mobile range stays readable: ${JSON.stringify(rangeSize)}`);
+  await page.locator(`${root} .tl-mobile-exit`).click();
+  assert.equal(await page.locator('body').evaluate(node => node.classList.contains('mobile-nav-open')), true);
   assert.deepEqual(errors, []);
   console.log('Second review browser checks passed.');
 } finally {
