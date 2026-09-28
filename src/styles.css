@@ -245,6 +245,10 @@ body {
   justify-content: center;
 }
 
+.chart-required-card { max-width: 440px; margin: clamp(48px, 12vh, 120px) auto; padding: 28px; text-align: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); }
+.chart-required-card h2 { font-family: var(--font-serif); font-weight: 500; margin-bottom: 12px; }
+.chart-required-card p { color: var(--text-secondary); margin-bottom: 20px; }
+
 .entry-container {
   max-width: 520px;
   width: 100%;
@@ -1631,6 +1635,9 @@ body.modal-open { overflow: hidden; }
 .reference-back { border: 0; background: transparent; color: var(--accent-hover); cursor: pointer; padding: 0 0 16px; }
 .reference-empty, .reference-note { color: var(--text-secondary); }
 .reference-reading { margin-top: 16px; }
+.reference-line-target { border-color: var(--accent); background: var(--accent-soft); }
+@media (prefers-reduced-motion: no-preference) { .reference-line-target { animation: reference-line-glow 1.7s ease-out both; } }
+@keyframes reference-line-glow { from { box-shadow: 0 0 0 3px var(--accent); } to { box-shadow: none; } }
 .reference-links { display: flex; flex-wrap: wrap; gap: 7px; }
 .reference-link { border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 10px; background: var(--bg); color: var(--text); cursor: pointer; }
 .reference-link:hover, .reference-link:focus-visible { border-color: var(--accent); }

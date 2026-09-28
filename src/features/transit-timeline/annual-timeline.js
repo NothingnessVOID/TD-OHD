@@ -4,7 +4,7 @@ const activationObjects = state => Object.fromEntries(TRANSIT_POINTS.map(point =
   [point, { gate: state[point][0], line: state[point][1] }]));
 
 /** Derive graph intervals from a verified annual index. No ephemeris calls. */
-export function timelineFromAnnual({ start, end, natal, mode, years, catalog, stateAt }) {
+export function timelineFromAnnual({ start, end, natal, mode, planet = 'all', years, catalog, stateAt }) {
   const ordered = [...years].sort((a, b) => a.start - b.start);
   if (!ordered.length || ordered[0].start > start || ordered.at(-1).end < end) {
     throw new Error('Annual data does not cover the requested range');
@@ -44,17 +44,22 @@ export function timelineFromAnnual({ start, end, natal, mode, years, catalog, st
       if (time >= end) break;
       let gateChanged = false;
       const changedGates = new Set();
+      const changedPlanets = new Set();
       while (index < data.events.length && data.events[index][0] === time) {
         const event = data.events[index++];
         current[TRANSIT_POINTS[event[1]]] = [event[4], event[5]];
-        gateChanged ||= event[2] !== event[4];
-        if (event[2] !== event[4]) { changedGates.add(event[2]); changedGates.add(event[4]); }
+        const point = TRANSIT_POINTS[event[1]];
+        if (event[2] !== event[4] && (planet === 'all' || point === planet)) {
+          gateChanged = true;
+          changedPlanets.add(point);
+          changedGates.add(event[2]); changedGates.add(event[4]);
+        }
       }
       apply(time, current);
       events.push(time);
       if (gateChanged) {
         gateEvents.push(time);
-        gateChanges.push({ time, gates: [...changedGates].sort((a, b) => a - b) });
+        gateChanges.push({ time, gates: [...changedGates].sort((a, b) => a - b), planets: [...changedPlanets].sort() });
       }
     }
     // Keep the final state for seam verification, even if the visible range

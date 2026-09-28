@@ -170,7 +170,7 @@ try {
     await page.keyboard.press('ArrowRight');
     const next = await instant();
     assert.ok(next > before);
-    await page.locator(action('previous-gate')).click();
+    await page.locator(`${tl} .tl-toolbar .tl-event-nav [data-action="previous-gate"]`).click();
     const previous = await instant();
     assert.ok(previous < next);
     await table.focus();

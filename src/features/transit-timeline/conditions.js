@@ -53,8 +53,10 @@ export function queryTimeline(result, conditions, { combine = 'all', mode = 'ove
     const start = sorted[i]; const end = sorted[i + 1];
     if (start === end) continue;
     const matches = normalized.map(condition => {
-      const active = condition.keys.some(key => Boolean(intervalAt(rows.get(key), start)));
-      return condition.state === 'active' ? active : !active;
+      return condition.keys.some(key => {
+        const active = Boolean(intervalAt(rows.get(key), start));
+        return condition.state === 'active' ? active : !active;
+      });
     });
     if (!(combine === 'all' ? matches.every(Boolean) : matches.some(Boolean))) continue;
     const bridgeGroup = bridgeSelected ? intervalAt(rows.get('bridge:natal'), start)?.source || '' : '';

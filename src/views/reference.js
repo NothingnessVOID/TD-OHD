@@ -14,6 +14,7 @@ let limit = 60;
 let lens = 'hd';
 let built = false;
 let lastResult = null;
+let lineHighlightTimer = 0;
 
 function route() {
   const [path, search = ''] = location.hash.slice(1).split('?');
@@ -36,7 +37,13 @@ function address(kind = null, id = null, line = null) {
 }
 
 export function openReference(kind = null, id = null, { line = null, replace = false } = {}) {
-  history[replace ? 'replaceState' : 'pushState'](null, '', address(kind, id, line));
+  const inside = location.hash.startsWith('#library');
+  if (!inside) {
+    const previousView = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
+    history.replaceState({ ...history.state, ohdView: previousView }, '', location.href);
+  }
+  const depth = inside ? (history.state?.ohdReferenceDepth ?? 0) + 1 : 0;
+  history[replace ? 'replaceState' : 'pushState']({ ohdReferenceDepth: depth }, '', address(kind, id, line));
   window.dispatchEvent(new Event('ohd-reference-navigation'));
 }
 
@@ -48,8 +55,7 @@ const lensButtons = () => `<div class="lens-switch">${[['hd', 'Human Design'], [
 function gateDetail(entry, line) {
   const gate = Number(entry.id);
   const channels = channelsForGate(gate);
-  return `${lensButtons()}<div class="reference-reading">${gateReading(gate, lens, { selectedLine: line })}</div>
-    <h3>${t('All six lines')}</h3><div class="reference-links">${Array.from({ length: 6 }, (_, i) => link('gate', gate, `${gate}.${i + 1}`, i + 1)).join('')}</div>
+  return `${lensButtons()}<div class="reference-reading">${gateReading(gate, lens)}</div>
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3>${link('center', GATES[gate].center, centerName(GATES[gate].center))}`;
 }
@@ -73,9 +79,12 @@ function centerDetail(entry) {
 
 function circuitDetail(entry) {
   const channels = circuitChannels(entry.kind, entry.id);
+  if (entry.kind === 'group' && entry.id === 'individual') return [
+    ['knowing', circuitName('knowing')], ['centering', circuitName('centering')], ['integration', t('Integration Channels')]
+  ].map(([id, title]) => `<h3>${esc(title)}</h3><div class="reference-links">${channels.filter(ch => ch.subcircuit === id)
+    .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`).join('');
   const subcircuits = entry.kind === 'group' ? [...new Set(channels.map(ch => ch.subcircuit))].filter(id => id && id !== 'integration') : [];
   return `${subcircuits.length ? `<h3>${t('Circuits')}</h3><div class="reference-links">${subcircuits.map(id => link('circuit', id, circuitName(id))).join('')}</div>` : ''}
-    ${entry.kind === 'group' && entry.id === 'individual' ? `<p class="reference-note">${t('Integration')}</p>` : ''}
     <h3>${t('Reference channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
 
@@ -94,12 +103,20 @@ function renderDetail() {
   const body = entry.kind === 'gate' ? gateDetail(entry, selected.line)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry) : circuitDetail(entry);
-  article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back to results')}</button>
-    <div class="detail-label">${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.id)}${selected.line ? `.${selected.line}` : ''}</div>
-    <h2>${esc(entry.name)}${selected.line ? ` · ${selected.line}` : ''}</h2>
+  article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
+    <div class="detail-label">${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.id)}</div>
+    <h2>${esc(entry.name)}</h2>
     ${entry.kind === 'gate' ? `<p class="label-soft">${esc(hexagramName(Number(entry.id)))}</p>` : ''}
     <div class="reference-detail-body">${body}</div>`;
   article.scrollTop = 0;
+  clearTimeout(lineHighlightTimer);
+  if (entry.kind === 'gate' && selected.line && lens !== 'gk') requestAnimationFrame(() => {
+    const target = article.querySelector(`.reference-reading [data-line="${selected.line}"]`);
+    if (!target) return;
+    target.scrollIntoView({ block: 'center', behavior: 'instant' });
+    target.classList.add('reference-line-target');
+    lineHighlightTimer = setTimeout(() => target.classList.remove('reference-line-target'), 1700);
+  });
 }
 
 function renderResults() {
@@ -167,6 +184,12 @@ export function setupReferenceView() {
     const selectedLens = event.target.closest('[data-reference-lens]');
     if (selectedLens) { lens = selectedLens.dataset.referenceLens; renderDetail(); return; }
     if (event.target.closest('[data-reference-more]')) { limit += 60; renderResults(); }
-    if (event.target.closest('[data-reference-back]')) openReference();
+    if (event.target.closest('[data-reference-back]')) {
+      if ((history.state?.ohdReferenceDepth ?? 0) > 0) history.back();
+      else {
+        history.replaceState({ ohdReferenceDepth: 0 }, '', address());
+        renderReferenceView();
+      }
+    }
   });
 }

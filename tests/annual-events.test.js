@@ -63,12 +63,26 @@ test('a point leaves a still-active gate without inventing a new channel', () =>
   const result = timelineFromAnnual({ start, end: start + 2000, years: [data],
     natal: { gates: { all: [10, 20] }, centers: { definedNames: [] } }, mode: 'overlay', stateAt,
     catalog: [{ key: 'gate:10' }, { key: 'channel:10-20' }] });
-  assert.deepEqual(result.gateChanges, [{ time: start + 1000, gates: [1, 10] }],
+  assert.deepEqual(result.gateChanges, [{ time: start + 1000, gates: [1, 10], planets: ['sun'] }],
     'the departing gate remains identifiable for navigation highlight');
   assert.deepEqual(result.rows.find(row => row.key === 'channel:10-20').intervals,
     [{ start, end: start + 2000, source: 'natal', clippedStart: true, clippedEnd: true }]);
   assert.deepEqual(result.rows.find(row => row.key === 'gate:10').intervals,
     [{ start, end: start + 2000, source: 'both', clippedStart: true, clippedEnd: true }]);
+});
+
+test('moon-only annual navigation excludes other points and line-only events', () => {
+  const data = fixture();
+  const moon = TRANSIT_POINTS.indexOf('moon');
+  data.events = [
+    [start + 1000, 0, 1, 1, 2, 1],
+    [start + 2000, moon, 1, 1, 1, 2],
+    [start + 3000, moon, 1, 2, 3, 1]
+  ];
+  const result = timelineFromAnnual({ start, end: start + 4000, years: [data], planet: 'moon',
+    natal: {}, mode: 'transit-only', catalog: [], stateAt: () => new Map() });
+  assert.deepEqual(result.gateEvents, [start + 3000]);
+  assert.deepEqual(result.gateChanges, [{ time: start + 3000, gates: [1, 3], planets: ['moon'] }]);
 });
 
 test('annual loader deduplicates, validates and reuses year for 7/28/7 requests', async () => {

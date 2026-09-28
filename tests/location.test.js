@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { offsetForZone, formatOffset, searchPlaces } from '../src/lib/location.js';
+import { offsetForZone, formatOffset, searchPlaces, isCityPlace } from '../src/lib/location.js';
 
 test('US Mountain time: DST summer vs winter', () => {
   assert.equal(offsetForZone('1990-06-15', '14:30', 'America/Denver'), -6); // MDT
@@ -54,7 +54,7 @@ test('place search passes query language and preserves IANA zone', async () => {
     calls.push(new URL(url));
     return { ok: true, json: async () => ({ results: [{
       name: '東京', admin1: '東京都', country: '日本', latitude: 35.7,
-      longitude: 139.7, timezone: 'Asia/Tokyo', country_code: 'JP'
+      longitude: 139.7, timezone: 'Asia/Tokyo', country_code: 'JP', feature_code: 'PPLC', population: 9733276
     }] }) };
   };
   try {
@@ -62,5 +62,33 @@ test('place search passes query language and preserves IANA zone', async () => {
     assert.equal(calls[0].searchParams.get('language'), 'ja');
     assert.equal(result[0].timezone, 'Asia/Tokyo');
     assert.match(result[0].label, /東京/);
+  } finally { globalThis.fetch = previous; }
+});
+
+test('city candidates exclude village duplicates even for the same Shanghai name', async () => {
+  const previous = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: true, json: async () => ({ results: [
+    { name: '上海', admin1: '云南', country: '中国', feature_code: 'PPL', latitude: 26.1, longitude: 100.1, timezone: 'Asia/Shanghai' },
+    { name: '上海', admin1: '上海市', country: '中国', feature_code: 'PPLA', population: 24874500, latitude: 31.2, longitude: 121.5, timezone: 'Asia/Shanghai' },
+    { name: '上海', admin1: '四川', country: '中国', feature_code: 'PPL', latitude: 30.1, longitude: 104.1, timezone: 'Asia/Shanghai' },
+    { name: '上海', admin1: '浙江', country: '中国', feature_code: 'PPL', latitude: 29.1, longitude: 120.1, timezone: 'Asia/Shanghai' },
+    { name: '上海街区', admin1: '上海市', country: '中国', feature_code: 'PPLX', population: 500000, latitude: 31.2, longitude: 121.5, timezone: 'Asia/Shanghai' }
+  ] }) });
+  try {
+    const places = await searchPlaces('上海');
+    assert.equal(places.length, 1);
+    assert.match(places[0].label, /上海市/);
+  } finally { globalThis.fetch = previous; }
+  assert.equal(isCityPlace({ feature_code: 'PPL', population: 22000, latitude: 1, longitude: 1, timezone: 'UTC' }), true);
+  assert.equal(isCityPlace({ feature_code: 'PPLF', population: 22000, latitude: 1, longitude: 1, timezone: 'UTC' }), false);
+});
+
+test('place search handles no results and network failure without fallback candidates', async () => {
+  const previous = globalThis.fetch;
+  try {
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({ results: [] }) });
+    assert.deepEqual(await searchPlaces('Nobodyville'), []);
+    globalThis.fetch = async () => { throw new Error('network unavailable'); };
+    await assert.rejects(searchPlaces('Shanghai'), /network unavailable/);
   } finally { globalThis.fetch = previous; }
 });
