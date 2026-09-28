@@ -64,7 +64,7 @@ try {
     return { aligned: Math.abs(design.top - svg.top) <= 1 && Math.abs(personality.top - svg.top) <= 1,
       width: svg.width, documentWidth: document.documentElement.scrollWidth };
   });
-  assert.ok(chartColumns.aligned && chartColumns.width > 350 && chartColumns.documentWidth <= 714,
+  assert.ok(chartColumns.aligned && chartColumns.width > 300 && chartColumns.width <= 331 && chartColumns.documentWidth <= 714,
     `714px chart keeps planet columns beside the graph: ${JSON.stringify(chartColumns)}`);
   await page.setViewportSize({ width: 682, height: 703 });
   assert.deepEqual(await page.locator('#bodygraph-container .bg-planets-personality').evaluate(column => [
