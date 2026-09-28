@@ -30,6 +30,11 @@ export function natalIslands(natal, channels = CHANNELS) {
   return components(channels.filter(channel => channel.gates.every(gate => gates.has(gate))));
 }
 
+/** Each connected group merges its fixed natal islands into one island. */
+export function bridgedIslandCount(natalCount, connected) {
+  return natalCount - connected.reduce((merged, group) => merged + Math.max(0, new Set(group).size - 1), 0);
+}
+
 /** Connected groups refer to fixed natal island numbers, not transient islands. */
 export function bridgeState(natal, activeGates, channels = CHANNELS) {
   const islands = natalIslands(natal, channels);

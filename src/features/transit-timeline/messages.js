@@ -17,7 +17,7 @@ export const en = {
   noRows: 'No matching activations in this window.',
   advanced: 'Advanced', conditions: 'State conditions', combine: 'Combine conditions', any: 'Any',
   allConditions: 'All conditions must match', anyCondition: 'Any condition may match',
-  gateLine: 'Gate line', bridge: 'Natal definition bridge', conditionKind: 'Object type',
+  gateLine: 'Gate line', bridge: 'Natal definition bridge', bridgeCount: '{from} islands → {to} islands', conditionKind: 'Object type',
   conditionTargets: 'Select valid targets', selectedTargets: '{count} selected',
   searchTargets: 'Search targets…', removeTarget: 'Remove {id}', conditionState: 'State',
   activeState: 'Active / defined', inactiveState: 'Inactive / undefined',

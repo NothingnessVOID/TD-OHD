@@ -34,6 +34,7 @@
   "any": "任一",
   "gateLine": "閘門爻線",
   "bridge": "本命定義島橋接",
+  "bridgeCount": "{from} 分 → {to} 分",
   "conditionKind": "對象類型",
   "conditionTargets": "選擇有效目標",
   "selectedTargets": "已選擇 {count} 項",
