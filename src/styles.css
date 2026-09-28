@@ -2260,8 +2260,9 @@ body.modal-open { overflow: hidden; }
   }
 
   .logo { gap: 4px; flex-shrink: 0; margin-right: auto; }
-  .logo-text { display: none; }
+  .logo-text { display: inline; }
   .mobile-menu-toggle { display: grid; place-items: center; flex: none; width: 36px; height: 36px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--bg-elevated); color: var(--text); font-size: 17px; cursor: pointer; }
+  .mobile-menu-toggle svg { display: block; width: 18px; height: 18px; }
 
   .nav {
     display: none; position: fixed; top: var(--header-height); left: 8px; z-index: 120;
@@ -2278,6 +2279,7 @@ body.modal-open { overflow: hidden; }
 
   .header-actions { flex-shrink: 0; gap: 5px; }
   .people-switcher { max-width: 76px; font-size: 11px; }
+  .header-actions:has(.chart-share-menu.hidden) .people-switcher { min-width: 96px; max-width: 104px; }
   #bodygraph-container .bg-grid { grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); }
   #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
   #bodygraph-container .bg-planets { flex-direction: column; flex-wrap: nowrap; }
@@ -2292,6 +2294,10 @@ body.modal-open { overflow: hidden; }
   .transit-graph .bg-planet-row { font-size: 9px; }
 
   .sync-popover { right: 8px; left: 8px; width: auto; }
+}
+
+@media (max-width: 400px) {
+  .logo-text { font-size: 15px; }
 }
 
 /* Panel tabs: roomier targets + scroll affordance (P2-4) */

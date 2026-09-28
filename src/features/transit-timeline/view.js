@@ -202,7 +202,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
-      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}">☰</button>
+      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       <div class="tl-graph-panel">
         <div class="tl-selected"><output class="tl-moment" aria-label="${esc(t('selected'))}"><span class="tl-moment-date"></span><span class="tl-moment-time"></span></output></div>
         <details class="tl-legend-disclosure"><summary>${esc(t('legend'))}</summary><div class="tl-legend">${['natal','transit','completed','both'].map(source => `<span data-source="${source}"><i></i>${esc(t(source))}</span>`).join('')}</div></details>

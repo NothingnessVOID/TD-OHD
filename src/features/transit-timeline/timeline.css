@@ -339,6 +339,7 @@
     top: 9px; left: 10px; width: 36px; min-height: 36px; height: 36px;
     font-size: 17px; box-shadow: none;
   }
+  body.timeline-active #timeline-view .tl-mobile-exit svg { display: block; width: 18px; height: 18px; }
   body.timeline-active #timeline-view .tl-mobile-controls-trigger {
     bottom: 9px; left: 11px;
     background: var(--accent-strong); color: #fff;
