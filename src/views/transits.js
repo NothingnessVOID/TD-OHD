@@ -4,12 +4,13 @@
  */
 
 import { calculateHDTransits, calculateTransitGates } from 'natalengine';
-import { renderBodygraph } from '../bodygraph.js';
+import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { esc } from '../lib/format.js';
 import { t, setMessage } from '../lib/i18n.js';
 import { transitInstants, engineTransitArguments, formatTransitOffset } from '../lib/transit-time.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { renderTransitLegend, renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
+import { planetName } from '../lib/vocabulary.js';
 
 import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './chart.js';
 
@@ -45,21 +46,8 @@ export function setupTransitView() {
   const dateInput = document.getElementById('transit-date');
   const timeInput = document.getElementById('transit-time');
   const secondsInput = document.getElementById('transit-seconds');
-  let zoneInput = document.getElementById('transit-timezone');
-  const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (Intl.supportedValuesOf) {
-    const zones = [...new Set(['UTC', localZone, ...Intl.supportedValuesOf('timeZone')])].sort();
-    zoneInput.innerHTML = zones.map(zone => `<option value="${esc(zone)}">${esc(zone)}</option>`).join('');
-  } else {
-    // Older browsers can still resolve a typed IANA zone, even without a zone list.
-    const input = document.createElement('input');
-    input.id = zoneInput.id;
-    input.dataset.i18nPlaceholder = 'e.g. Europe/London';
-    input.placeholder = t(input.dataset.i18nPlaceholder);
-    input.setAttribute('aria-describedby', 'transit-status');
-    zoneInput.replaceWith(input);
-    zoneInput = input;
-  }
+  const zoneInput = document.getElementById('transit-timezone');
+  const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
   const setNow = () => {
     const now = new Date();
@@ -71,13 +59,12 @@ export function setupTransitView() {
     dateInput.value = `${parts.year}-${parts.month}-${parts.day}`;
     timeInput.value = `${parts.hour}:${parts.minute}`;
     if (secondsInput.checked) timeInput.value += `:${parts.second}`;
-    if (zoneInput.tagName === 'SELECT' && ![...zoneInput.options].some(option => option.value === zone)) {
-      zoneInput.add(new Option(zone, zone));
-    }
     zoneInput.value = zone;
+    zoneInput.textContent = zone;
     renderTransits();
   };
   zoneInput.value = localZone || 'UTC';
+  zoneInput.textContent = zoneInput.value;
   setNow();
 
   dateInput.addEventListener('change', renderTransits);
@@ -88,7 +75,6 @@ export function setupTransitView() {
     timeInput.value = minute ? minute + (secondsInput.checked ? ':00' : '') : '';
     renderTransits();
   });
-  zoneInput.addEventListener('change', renderTransits);
   document.getElementById('transit-choice').addEventListener('change', renderTransits);
   document.getElementById('transit-now').addEventListener('click', setNow);
 }
@@ -154,7 +140,7 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
       ? transitDetailContext : { transitGates: overlay.transitGates, mode, model };
     transitDetailContext = context;
     context.api = renderBodygraph(graphContainer, chart, {
-      planetColumns: false,
+      planetColumns: true,
       animate: false,
       transitGates,
       transitModel: model,
@@ -162,6 +148,27 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
       onCenterClick: center => showTransitDetail('center', center, context),
       onHighlight: highlightTransitRows
     });
+    const grid = graphContainer.querySelector('.bg-grid');
+    if (grid) {
+      const design = grid.querySelector('.bg-planets-design');
+      const personality = grid.querySelector('.bg-planets-personality');
+      const pair = document.createElement('div');
+      pair.className = 'transit-birth-pair';
+      pair.append(design, personality);
+      grid.append(pair);
+      const transitColumn = document.createElement('div');
+      transitColumn.className = 'bg-planets transit-planet-column';
+      transitColumn.innerHTML = `<div class="bg-planets-head">${esc(t('Transits'))}</div>` + PLANET_ORDER.map(planet => {
+        const activation = overlay.transitGates?.[planet];
+        return `<button type="button" class="bg-planet-row" data-transit-planet="${planet}" ${activation ? `data-gate="${activation.gate}"` : ''} title="${esc(planetName(planet))}"><span class="bg-planet-glyph">${PLANET_GLYPHS[planet]}</span><span class="bg-planet-act">${activation ? `${activation.gate}.${activation.line}` : '—'}</span></button>`;
+      }).join('');
+      grid.prepend(transitColumn);
+      transitColumn.querySelectorAll('[data-gate]').forEach(row => {
+        row.addEventListener('click', () => showTransitDetail('gate', Number(row.dataset.gate), context));
+        row.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') context.api.highlightSelection({ kind: 'gate', id: Number(row.dataset.gate) }); });
+        row.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') context.api.highlightSelection(null); });
+      });
+    }
   }
 
   renderTransitSummary(overlay, model);

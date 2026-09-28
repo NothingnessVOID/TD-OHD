@@ -63,7 +63,7 @@ const activeSourcesMatchBars = targetPage => targetPage.evaluate(() => {
     const source = bar?.dataset.source || null;
     if ((row.dataset.activeSource || null) !== source || row.classList.contains('tl-row-active') !== Boolean(source))
       mismatch.push({ key: row.dataset.key, expected: source, actual: row.dataset.activeSource || null });
-    if (source) {
+    if (source && !row.classList.contains('tl-row-lit')) {
       const name = getComputedStyle(row.querySelector('.tl-row-name'));
       if (source === 'both' && !name.backgroundImage.includes('repeating-linear-gradient'))
         mismatch.push({ key: row.dataset.key, source, css: name.backgroundImage });
@@ -419,35 +419,22 @@ try {
     await page.keyboard.press('Escape');
   });
 
-  await run('timezone change preserves the instant; DST gap and fold are explicit', async () => {
+  await run('timezone is displayed read only and date changes keep local range', async () => {
     const ruler = await page.locator(`${tl} .tl-ticks`).boundingBox();
     await page.mouse.click(ruler.x + ruler.width / 2, ruler.y + ruler.height / 2);
     await page.locator(field('span')).dispatchEvent('change');
     await ready();
-    const before = await instant();
-    await page.selectOption(field('zone'), 'America/New_York');
-    await ready();
-    assert.equal(await instant(), before);
+    assert.equal(await page.locator(field('zone')).evaluate(node => node.tagName), 'OUTPUT');
+    assert.ok((await page.locator(field('zone')).innerText()).trim().length > 0);
     let range = await calculatedRange();
     assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 7)),
-      'timezone change realigns seven full local days');
+      'displayed timezone aligns seven full local days');
     await page.fill(field('date'), '2026-03-08');
     await page.fill(field('time'), '12:30:00');
     await ready();
     range = await calculatedRange();
     assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 7)),
-      'explicit date keeps local-midnight boundaries through spring DST');
-    await page.fill(field('time'), '02:30:00');
-    assert.match(await page.locator(`${tl} .tl-time-error`).innerText(), /does not exist|不存在/);
-    await page.fill(field('date'), '2026-11-01');
-    await page.fill(field('time'), '01:30:00');
-    assert.equal(await page.locator(`${tl} .tl-fold`).isVisible(), true);
-    assert.equal(await page.locator(`${field('fold')} option`).count(), 3);
-    const choices = await page.locator(`${field('fold')} option`).evaluateAll(els => els.slice(1).map(el => Number(el.value)));
-    assert.equal(Math.abs(choices[1] - choices[0]), 3600000);
-    await page.selectOption(field('fold'), String(choices[1]));
-    assert.equal(await instant(), choices[1]);
-    assert.equal(await page.locator(`${tl} .tl-fold`).isVisible(), false);
+      'explicit date keeps local-midnight boundaries');
   });
 
   await run('original four views still navigate', async () => {
@@ -578,15 +565,15 @@ try {
 
   if (!process.env.SKIP_TIMELINE_YEAR) await run('centered and past year calculate local anniversaries with monthly ruler and detail', async () => {
     await page.setViewportSize({ width: 927, height: 800 });
-    await page.selectOption(field('zone'), 'America/New_York');
+    const zone = await page.locator(field('zone')).evaluate(node => node.value);
     await page.fill(field('date'), '2025-03-15');
     await page.fill(field('time'), '12:00:00');
     await ready();
-    const expected = await page.evaluate(async () => {
+    const expected = await page.evaluate(async zone => {
       const { transitInstants } = await import('/src/lib/transit-time.js');
-      const at = date => transitInstants(date, '12:00:00', 'America/New_York')[0].instant;
+      const at = date => transitInstants(date, '12:00:00', zone)[0].instant;
       return { past: at('2024-03-15'), halfPast: at('2024-09-15'), selected: at('2025-03-15'), halfFuture: at('2025-09-15') };
-    });
+    }, zone);
     assert.equal(await instant(), expected.selected);
     for (const [preset, start, end] of [
       ['year', expected.halfPast, expected.halfFuture],

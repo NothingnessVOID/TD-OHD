@@ -23,11 +23,12 @@
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open navigation" data-i18n-aria-label="Open navigation" aria-controls="primary-nav" aria-expanded="false">☰</button>
         <a href="./" class="logo">
           <span class="logo-mark">◇</span>
           <span class="logo-text">TD-OHD</span>
         </a>
-        <nav class="nav">
+        <nav class="nav" id="primary-nav">
           <button class="nav-link active" data-view="chart" data-i18n="My Chart">My Chart</button>
           <button class="nav-link" data-view="transits" data-i18n="Transits">Transits</button>
           <button class="nav-link" data-view="timeline" data-i18n="Timeline">Timeline</button>
@@ -38,6 +39,7 @@
         <div class="header-actions">
           <select id="people-switcher" class="people-switcher hidden" title="Saved charts" data-i18n-title="Saved charts"></select>
           <button id="sync-button" class="btn-secondary btn-small hidden"></button>
+          <details id="chart-share-menu" class="chart-share-menu hidden"><summary title="Share" aria-label="Share" data-i18n-title="Share" data-i18n-aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-i18n="Share">Share</span></summary><div class="chart-share-actions"></div></details>
           <div class="theme-toggle language-control">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"></circle>
@@ -149,7 +151,7 @@
               <input type="time" id="transit-time" step="60">
             </div>
           </div>
-          <label><span data-i18n="Timezone">Timezone</span><select id="transit-timezone" aria-describedby="transit-status"></select></label>
+          <span class="transit-zone-label"><span data-i18n="Timezone">Timezone</span> <output id="transit-timezone"></output></span>
           <button id="transit-now" class="btn-secondary" data-i18n="Now">Now</button>
         </div>
         <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>

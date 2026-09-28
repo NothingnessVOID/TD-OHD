@@ -123,8 +123,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const selected = targetChoices(kind).find(item => String(item.id) === row.selectedTarget);
     setText(toggle, `${selected ? targetLabel(selected) : t('conditionTargets')} ▾`);
     toggle.setAttribute('aria-label', t('conditionTargets'));
-    row.querySelector('.tl-target-chips').innerHTML = selected
-      ? `<button type="button" data-action="remove-target" data-target-id="${esc(selected.id)}" aria-label="${esc(t('removeTarget', { id: targetLabel(selected) }))}">${esc(targetLabel(selected))} ×</button>` : '';
     renderTargetOptions(row);
   }
   let conditionSequence = 0;
@@ -133,7 +131,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     row.className = 'tl-condition-row';
     row.dataset.conditionId = String(++conditionSequence);
     row.innerHTML = `<select data-condition="kind" aria-label="${esc(t('conditionKind'))}">${[
-      ['gate','gate'], ['line','gateLine'], ['channel','channel'], ['center','center'], ['bridge','bridge']
+      ['bridge','bridge'], ['center','center'], ['channel','channel'], ['gate','gate'], ['line','gateLine']
     ].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select>
       <div class="tl-target-picker" data-condition="ids">
         <button type="button" data-action="toggle-targets" aria-expanded="false" aria-label="${esc(t('conditionTargets'))}"></button>
@@ -142,10 +140,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
           <div class="tl-target-options" role="group" aria-label="${esc(t('conditionTargets'))}"></div>
           <span class="tl-target-count"></span>
         </div>
-        <div class="tl-target-chips"></div>
       </div>
       <select data-condition="state" aria-label="${esc(t('conditionState'))}"><option value="active">${esc(t('activeState'))}</option><option value="inactive">${esc(t('inactiveState'))}</option></select>
       ${button('remove-condition', '×', t('removeCondition'))}`;
+    row.querySelector('[data-condition="kind"]').value = 'gate';
     row.selectedTarget = null;
     $('.tl-condition-rows').append(row);
     renderTargetPicker(row);
@@ -189,14 +187,14 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-toolbar">
       <label>${esc(t('date'))}<input data-field="date" type="date" min="1800-01-01" max="2200-12-31"></label>
       <label>${esc(t('time'))}<input data-field="time" type="time" step="1"></label>
-      <label class="tl-zone">${esc(t('zone'))}<select data-field="zone"></select></label>
+      <span class="tl-zone">${esc(t('zone'))} <output data-field="zone"></output></span>
       ${button('now', t('now'))}
       <label>${esc(t('mode'))}<select data-field="mode"><option value="overlay">${esc(t('overlay'))}</option><option value="transit-only">${esc(t('sky'))}</option></select></label>
       <div class="tl-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}<span class="tl-event-status" role="status"></span></div>
     </div>
     <details class="tl-advanced"><summary>${esc(t('advanced'))}</summary>
       <label>${esc(t('planets'))}<select data-field="planet"><option value="all">${esc(t('all'))}</option>${host.planets.map(item => `<option value="${item.id}">${esc(item.name)}</option>`).join('')}</select></label>
-      <div class="tl-query-head"><strong>${esc(t('conditions'))}</strong><select data-field="combine" aria-label="${esc(t('combine'))}"><option value="all">${esc(t('all'))}</option><option value="any">${esc(t('any'))}</option></select></div>
+      <div class="tl-query-head"><strong>${esc(t('conditions'))}</strong><select data-field="combine" aria-label="${esc(t('combine'))}"><option value="all">${esc(t('allConditions'))}</option><option value="any">${esc(t('anyCondition'))}</option></select></div>
       <div class="tl-condition-rows"></div>
       <div class="tl-query-actions">${button('add-condition', t('addCondition'))}${button('run-query', t('runQuery'))}</div>
       <div class="tl-query-status" role="status"></div><div class="tl-query-results"></div>
@@ -204,7 +202,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
-      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('backToChart'))}" title="${esc(t('backToChart'))}">←</button>
+      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('backToChart'))}" title="${esc(t('backToChart'))}">☰</button>
       <div class="tl-graph-panel">
         <div class="tl-selected"><output class="tl-moment" aria-label="${esc(t('selected'))}"><span class="tl-moment-date"></span><span class="tl-moment-time"></span></output></div>
         <details class="tl-legend-disclosure"><summary>${esc(t('legend'))}</summary><div class="tl-legend">${['natal','transit','completed','both'].map(source => `<span data-source="${source}"><i></i>${esc(t(source))}</span>`).join('')}</div></details>
@@ -212,7 +210,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         <div class="tl-planet-column tl-transit-column bg-planets"><div class="bg-planets-head">${esc(t('transit'))}</div><div class="tl-planets" data-planets="transit"></div></div>
         <div class="tl-planet-column tl-birth-column"><div class="tl-birth-head${locale.startsWith('en') ? ' tl-birth-head-en' : ''}"><span class="bg-planets-design"><span class="bg-planets-head">${esc(t('design'))}</span></span><span aria-hidden="true"></span><span class="bg-planets-personality"><span class="bg-planets-head">${esc(t('personality'))}</span></span></div><div class="tl-birth-planets"></div></div>
       </div>
-      <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><span aria-hidden="true">☷</span></button>
+      <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
       <div class="tl-mobile-range"></div>
       <div class="tl-mobile-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}</div>
       <div class="tl-mobile-controls-panel" id="tl-mobile-controls" hidden></div>
@@ -280,18 +278,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   placeControls();
 
   $('[data-action="retry"]').hidden = true;
-  const zones = [...new Set(['UTC', zone, ...(Intl.supportedValuesOf?.('timeZone') || [])])].sort();
-  $('[data-field="zone"]').innerHTML = zones.map(value => `<option>${esc(value)}</option>`).join('');
   $('[data-field="zone"]').value = zone;
-  // Browsers without a timezone catalogue still accept arbitrary IANA zones.
-  if (!Intl.supportedValuesOf) {
-    const input = document.createElement('input');
-    input.dataset.field = 'zone'; input.value = zone;
-    $('[data-field="zone"]').replaceWith(input);
-  }
+  $('[data-field="zone"]').textContent = zone;
 
   function syncClock() {
     const wall = wallTime(selected, zone);
+    $('[data-field="zone"]').textContent = zone;
     $('[data-field="date"]').value = wall.date;
     $('[data-field="time"]').value = wall.time;
     $('.tl-moment-date').textContent = wall.date;
@@ -312,6 +304,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       if (interval) node.dataset.activeSource = interval.source;
       else delete node.dataset.activeSource;
     });
+  }
+
+  function scrollRowInsideTable(row) {
+    if (!row) return;
+    const table = $('.tl-table');
+    const target = table.scrollTop + row.getBoundingClientRect().top - table.getBoundingClientRect().top - (table.clientHeight - row.offsetHeight) / 2;
+    table.scrollTo({ top: Math.max(0, target), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
 
   function highlight(selection) {
@@ -360,7 +359,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       $('[data-field="search"]').value = '';
       renderRows();
     }
-    selectTime(interval.start);
+    selectTime(interval.start, { centerView: true });
     const gates = new Set(); const centers = new Set(); const channels = new Set(); const lines = new Set();
     for (const condition of targets) {
       const id = condition.ids[0];
@@ -374,6 +373,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         const islands = natalIslands(host.identity(chart.chart));
         for (const island of JSON.parse(interval.bridgeGroup).flat()) for (const center of islands[island - 1] || []) centers.add(center);
       } catch { /* Ignore invalid display metadata. */ }
+      if (!lead && centers.size) {
+        $('[data-field="kind"]').value = 'center';
+        $('[data-field="search"]').value = '';
+        renderRows();
+      }
     }
     const visual = { gates: [...gates], centers: [...centers], channels: [...channels], lines: [...lines] };
     const currentNavigation = ++navigationGeneration;
@@ -381,8 +385,9 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     highlight(visual);
     requestAnimationFrame(() => {
       if (currentNavigation !== navigationGeneration) return;
-      const row = targetKeys.map(key => root.querySelector(`.tl-row[data-key="${key}"]`)).find(Boolean);
-      row?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      const row = targetKeys.map(key => root.querySelector(`.tl-row[data-key="${key}"]`)).find(Boolean)
+        || [...centers].map(id => root.querySelector(`.tl-row[data-key="center:${id}"]`)).find(Boolean);
+      scrollRowInsideTable(row);
       if (gates.size || centers.size) context?.api?.highlightSelection({ kind: 'targets', gates: visual.gates, centers: visual.centers });
       navigationTimer = setTimeout(() => {
         if (currentNavigation !== navigationGeneration) return;
@@ -451,11 +456,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     node.setAttribute('aria-label', node.title);
   }
 
-  function selectTime(instant, { recenter = false } = {}) {
+  function selectTime(instant, { recenter = false, centerView = false } = {}) {
     if (!recenter && (!result || calculating)) return;
     const range = recenter ? bounds() : result;
     const nextSelected = Math.max(range.start, Math.min(range.end - 1000, Math.round(instant / 1000) * 1000));
-    if (!recenter && nextSelected === selected) return;
+    if (!recenter && !centerView && nextSelected === selected) return;
     selected = nextSelected;
     host.closeDetail(); closeTiming();
     $('.tl-time-error').textContent = '';
@@ -467,7 +472,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       span = windowRange.end - windowRange.start;
       selected = Math.max(windowRange.start, Math.min(windowRange.end - 1000, selected));
       calculate();
-    } else if (selected < windowRange.start || selected >= windowRange.end) {
+    } else if (centerView || selected < windowRange.start || selected >= windowRange.end) {
       windowRange = clampWindow(centeredWindow(selected, span), result);
       renderRows();
     }
@@ -552,9 +557,25 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
 
   function jumpGate(direction) {
     if (!result || calculating) { setText($('.tl-event-status'), t('loadingTitle')); return; }
-    const candidates = result.gateChanges?.filter(change =>
+    const gateStarts = new Map();
+    for (const row of result.rows.filter(item => item.kind === 'gate')) {
+      for (const interval of row.intervals) {
+        if (interval.start <= result.start || interval.source === 'natal') continue;
+        const entry = gateStarts.get(interval.start) || new Set();
+        entry.add(Number(row.id));
+        gateStarts.set(interval.start, entry);
+      }
+    }
+    const candidates = (result.gateChanges || []).filter(change =>
       (direction > 0 ? change.time > selected : change.time < selected) &&
-      (planet === 'all' || !change.planets || change.planets.includes(planet))) || [];
+      (planet === 'all' || !change.planets || change.planets.includes(planet)) && gateStarts.has(change.time))
+      .map(change => {
+        const gates = [...gateStarts.get(change.time)];
+        if (planet === 'all') return { ...change, gates };
+        const before = host.snapshot(change.time - 1000)?.[planet];
+        const after = host.snapshot(change.time)?.[planet];
+        return { ...change, gates: after?.gate !== before?.gate ? gates.filter(gate => gate === after?.gate) : [] };
+      }).filter(change => change.gates.length);
     const change = direction > 0 ? candidates[0] : candidates.at(-1);
     if (!change) { setText($('.tl-event-status'), t('noNextGate')); return; }
     const currentNavigation = ++navigationGeneration;
@@ -569,12 +590,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       visibleRows = new Set([...root.querySelectorAll('.tl-row')].map(node => node.dataset.key));
     }
     const target = change.gates.find(gate => visibleRows.has(`gate:${gate}`));
-    selectTime(change.time);
+    selectTime(change.time, { centerView: true });
     requestAnimationFrame(() => {
       if (currentNavigation !== navigationGeneration) return;
       if (target != null) {
         const row = [...root.querySelectorAll('.tl-row')].find(node => node.dataset.key === `gate:${target}`);
-        row?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+        scrollRowInsideTable(row);
       }
       highlight({ gates: change.gates });
       context?.api?.highlightSelection({ kind: 'gates', gates: change.gates });
@@ -749,10 +770,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
 
   function clockChanged() {
     try {
-      const zoneValue = $('[data-field="zone"]').value.trim();
-      const matches = host.resolveTime($('[data-field="date"]').value, $('[data-field="time"]').value, zoneValue);
+      const matches = host.resolveTime($('[data-field="date"]').value, $('[data-field="time"]').value, zone);
       if (!matches.length) throw new Error('gap');
-      zone = zoneValue;
       if (matches.length > 1) {
         $('.tl-fold').hidden = false;
         $('[data-field="fold"]').innerHTML = `<option value="">${esc(t('chooseOffset'))}</option>` + matches.map(match => `<option value="${match.instant}">${esc(host.formatOffset(match.offset))}</option>`).join('');
@@ -770,29 +789,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   listen($('[data-field="time"]'), 'change', clockChanged);
   listen($('[data-field="fold"]'), 'change', event => {
     if (event.target.value) selectTime(Number(event.target.value), { recenter: true });
-  });
-  listen($('[data-field="zone"]'), 'change', () => {
-    try {
-      const candidate = $('[data-field="zone"]').value.trim();
-      wallTime(selected, candidate); // Validate before changing the working zone.
-      const zoneChanged = zone !== candidate;
-      zone = candidate;
-      if (zoneChanged && preset !== '1') {
-        // Calendar days and anniversaries belong to the chosen zone, not to the
-        // current zoomed viewport or cursor position reached while exploring it.
-        const wasFullRange = windowRange.start === timelineRange.start && windowRange.end === timelineRange.end;
-        timelineRange = boundRange(presetWindow(rangeAnchor, preset, zone, host.resolveTime));
-        windowRange = wasFullRange ? { ...timelineRange } : clampWindow(windowRange, timelineRange);
-        span = windowRange.end - windowRange.start;
-        selected = Math.max(windowRange.start, Math.min(windowRange.end - 1000, selected));
-        calculate();
-        renderMoment();
-      }
-      $('.tl-fold').hidden = true;
-      $('.tl-time-error').textContent = '';
-      syncClock(); renderRows();
-      if (pendingDetail) openTiming(pendingDetail.row, pendingDetail.interval, pendingDetail.row.intervals.indexOf(pendingDetail.interval));
-    } catch { $('.tl-time-error').textContent = t('invalid'); }
   });
   listen($('[data-field="span"]'), 'change', event => {
     if (!rangeOptions.some(([value]) => value === event.target.value)) return;
@@ -898,7 +894,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       queryResult = null; $('.tl-query-results').replaceChildren();
       return;
     }
-    if (action === 'mobile-exit') { showMobileControls(false); host.onExit?.(); return; }
+    if (action === 'mobile-exit') { showMobileControls(false); document.getElementById('mobile-menu-toggle')?.click(); return; }
     if (action === 'mobile-controls') { showMobileControls(controlPanel.hidden); return; }
     if (!controlPanel.hidden && !controlPanel.contains(event.target)) showMobileControls(false);
     if (action === 'now') selectTime(Date.now(), { recenter: true });
@@ -1178,7 +1174,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     }
     setText($('[data-field="planet"] option[value="all"]'), t('all'));
     for (const item of host.planets) setText($(`[data-field="planet"] option[value="${item.id}"]`), item.name);
-    for (const [value, key] of [['all','all'],['any','any']]) setText($(`[data-field="combine"] option[value="${value}"]`), t(key));
+    for (const [value, key] of [['all','allConditions'],['any','anyCondition']]) setText($(`[data-field="combine"] option[value="${value}"]`), t(key));
     root.querySelectorAll('.tl-condition-row').forEach(row => {
       for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center'],['bridge','bridge']])
         setText(row.querySelector(`[data-condition="kind"] option[value="${value}"]`), t(key));

@@ -408,7 +408,7 @@ body {
   margin: 0 auto;
   padding: 24px;
   display: grid;
-  grid-template-columns: minmax(350px, .9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(350px, 1.2fr) minmax(0, .8fr);
   gap: 18px;
   align-items: start;
 }
@@ -452,6 +452,10 @@ body {
   width: 100%;
   height: auto;
 }
+#bodygraph-container .bg-grid { grid-template-columns: minmax(48px, 15%) minmax(0, 70%) minmax(48px, 15%); gap: 0; }
+#bodygraph-container { padding: 16px 8px; }
+#bodygraph-container .bg-planet-row { padding: 2px 0; gap: 1px; font-size: 10px; }
+#bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
 
 /* =============================================
    Info Panels
@@ -770,7 +774,8 @@ body {
   color: var(--text);
 }
 
-#transit-timezone { width: 210px; max-width: 100%; }
+.transit-zone-label { display: inline-flex; gap: 5px; align-items: center; height: 40px; color: var(--text-secondary); font-size: 12px; }
+#transit-timezone { color: var(--text); font-size: 13px; }
 .transit-time-field {
   display: flex;
   flex-direction: column;
@@ -812,41 +817,6 @@ body {
   color: var(--accent);
 }
 .transit-precision input { margin: 0; }
-
-/* Keep the picker in the same theme as the existing place-search menu.
-   Browsers without customizable selects retain their native picker. */
-@supports (appearance: base-select) {
-  #transit-timezone,
-  #transit-timezone::picker(select) {
-    appearance: base-select;
-  }
-  #transit-timezone { font-weight: 400; }
-
-  #transit-timezone::picker(select) {
-    margin-top: 4px;
-    max-height: 240px;
-    overflow-y: auto;
-    background: var(--bg-elevated);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    font: 13px var(--font);
-  }
-
-  #transit-timezone option {
-    padding: 9px 12px;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  #transit-timezone option:last-child { border-bottom: none; }
-  #transit-timezone option:hover,
-  #transit-timezone option:focus { background: var(--bg-sunken); }
-  #transit-timezone option:checked {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-  #transit-timezone::picker-icon { color: var(--text-secondary); }
-}
 
 #transit-choice-label { font-size: 12px; color: var(--text-secondary); }
 #transit-choice { margin-left: 8px; }
@@ -1416,9 +1386,16 @@ body {
    ============================================= */
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
+.mobile-menu-toggle { display: none; }
+.chart-share-menu { position: relative; }
+.chart-share-menu summary { display: flex; align-items: center; justify-content: center; gap: 4px; height: 32px; padding: 0 9px; border: 1px solid var(--border); border-radius: 17px; cursor: pointer; list-style: none; font-size: 12px; color: var(--text); }
+.chart-share-menu summary svg { width: 16px; height: 16px; }
+.chart-share-menu summary::-webkit-details-marker { display: none; }
+.chart-share-actions { position: absolute; right: 0; top: calc(100% + 9px); z-index: 105; width: max-content; display: grid; gap: 6px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
+.chart-share-actions button { text-align: left; }
 
 .people-switcher {
-  max-width: 160px;
+  max-width: 104px;
   padding: 5px 8px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -1535,6 +1512,13 @@ body.modal-open { overflow: hidden; }
   align-items: center;
   padding: 10px 16px 8px;
 }
+.gate-detail-nav { position: absolute; top: 0; right: 0; z-index: 2; }
+.gate-detail-card { position: relative; }
+.gate-detail-nav-buttons { padding: 12px; gap: 8px; }
+.gate-detail-body > .detail-label, .gate-detail-body > .detail-name { padding-right: 82px; }
+.gate-detail-body > .channel-detail-heading { padding-right: 82px; }
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .detail-name,
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .channel-detail-heading { padding-right: 142px; }
 
 .gate-detail-back {
   display: flex;
@@ -1581,7 +1565,7 @@ body.modal-open { overflow: hidden; }
   line-height: 1.2;
   margin-bottom: 10px;
 }
-.detail-hexagram { font-size: .62em; font-weight: 400; color: var(--text-secondary); }
+.detail-hexagram { font-size: 1em; font-weight: inherit; color: inherit; }
 .channel-detail-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 18px; }
 .channel-detail-heading .detail-name { margin-bottom: 0; }
 .channel-detail-heading .circuit-badge { flex: none; }
@@ -1749,6 +1733,8 @@ body.modal-open { overflow: hidden; }
 .center-detail-theme { font-size: 12px; color: var(--text-tertiary); }
 .center-reading { margin: 14px 0 18px; padding: 14px 16px; background: var(--bg-sunken); border-left: 3px solid var(--accent); border-radius: var(--radius); }
 .center-reading-label { margin-bottom: 8px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--accent-hover); }
+.center-reading-state + .center-reading-state { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.center-reading-state > strong { display: block; margin-bottom: 5px; font-size: 12px; color: var(--text); }
 .center-reading .gate-detail-desc { margin: 0 0 8px; font-size: 14px; line-height: 1.7; }
 .center-reading .gate-detail-desc:last-child { margin-bottom: 0; }
 .center-detail-section { margin-top: 12px; }
@@ -1947,12 +1933,23 @@ body.modal-open { overflow: hidden; }
 
 .transit-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 360px) 1fr;
-  gap: 28px;
+  grid-template-columns: minmax(350px, 1.2fr) minmax(0, .8fr);
+  gap: 18px;
   align-items: start;
 }
 
 .transit-graph { min-width: 0; padding: 14px; }
+.transit-graph .bg-grid { display: block; position: relative; }
+.transit-graph .bg-svg-wrap { width: 100%; }
+.transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; width: 126px; min-width: 0; }
+.transit-planet-column { position: absolute; top: 38px; left: 0; z-index: 2; width: 58px; }
+.transit-birth-pair .bg-planets { min-width: 0; }
+.transit-graph .bg-planet-row { padding: 2px 0; gap: 1px; font-size: 10px; }
+.transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--transit-source-text); }
+.transit-birth-pair .bg-planets-head { font-size: 9px; letter-spacing: 0; }
+.transit-birth-pair .bg-planets-design .bg-planet-row { justify-content: flex-end; }
+.transit-birth-pair .bg-planets-design .bg-planet-glyph { order: 2; }
+.transit-birth-pair .bg-planets-date { display: none; }
 
 @media (max-width: 768px) {
   .transit-layout { grid-template-columns: 1fr; }
@@ -2251,26 +2248,39 @@ body.modal-open { overflow: hidden; }
     gap: 6px;
   }
 
-  .logo { gap: 4px; flex-shrink: 0; }
-  .logo-text { display: none; } /* the mark carries the brand at this size */
+  .logo { gap: 4px; flex-shrink: 0; margin-right: auto; }
+  .logo-text { display: none; }
+  .mobile-menu-toggle { display: grid; place-items: center; flex: none; width: 36px; height: 36px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--bg-elevated); color: var(--text); font-size: 17px; cursor: pointer; }
 
   .nav {
-    flex: 1;
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    display: none; position: fixed; top: var(--header-height); left: 8px; z-index: 120;
+    width: min(260px, calc(100vw - 16px)); max-height: calc(100dvh - var(--header-height) - 8px);
+    overflow-y: auto; flex-direction: column; padding: 10px;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: var(--bg-elevated); box-shadow: var(--shadow-lg);
   }
-  .nav::-webkit-scrollbar { display: none; }
+  body.mobile-nav-open .nav { display: flex; }
 
   .nav-link {
-    white-space: nowrap;
-    padding: 6px 9px;
-    font-size: 12px;
+    width: 100%; min-height: 40px; padding: 8px 12px; text-align: left; font-size: 14px;
   }
 
-  .header-actions { flex-shrink: 0; gap: 6px; }
-  .people-switcher { max-width: 88px; font-size: 11px; }
+  .header-actions { flex-shrink: 0; gap: 5px; }
+  .chart-share-menu summary { width: 32px; padding: 0; }
+  .chart-share-menu summary span { display: none; }
+  .people-switcher { max-width: 76px; font-size: 11px; }
+  #bodygraph-container .bg-grid { grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); }
+  #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
+  #bodygraph-container .bg-planets { flex-direction: column; flex-wrap: nowrap; }
+  #bodygraph-container .bg-planets-head, #bodygraph-container .bg-planets-date { width: auto; }
+  #bodygraph-container .bg-planets-date { display: none; }
+  #bodygraph-container .bg-planet-row { font-size: 9px; }
+  .transit-graph .bg-svg-wrap { grid-column: auto; grid-row: auto; }
+  .transit-planet-column { width: 42px; top: 30px; }
+  .transit-birth-pair { width: 88px; top: 30px; }
+  .transit-graph .bg-planets { flex-direction: column; flex-wrap: nowrap; }
+  .transit-graph .bg-planets-head { width: auto; }
+  .transit-graph .bg-planet-row { font-size: 9px; }
 
   .sync-popover { right: 8px; left: 8px; width: auto; }
 }

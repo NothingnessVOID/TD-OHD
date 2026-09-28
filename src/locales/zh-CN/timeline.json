@@ -28,6 +28,8 @@
   "fallbackNotice": "年度资料不可用，已直接计算当前范围。",
   "advanced": "高级设置",
   "conditions": "状态条件",
+  "allConditions": "同时满足所有条件",
+  "anyCondition": "满足任意一个条件",
   "combine": "条件组合",
   "any": "任一",
   "gateLine": "闸门爻线",

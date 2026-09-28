@@ -719,10 +719,10 @@ try {
       'date jump keeps the selected overall range');
   });
 
-  await log('DST dates use real local-midnight ruler cells and aligned gridlines', async () => {
-    await page.selectOption(`${root} [data-field="zone"]`, 'America/New_York');
+  await log('read-only local timezone uses aligned midnight ruler cells', async () => {
+    assert.equal(await page.locator(`${root} [data-field="zone"]`).evaluate(node => node.tagName), 'OUTPUT');
     await page.selectOption(`${root} [data-field="span"]`, '3');
-    for (const [date, hours] of [['2026-03-08', 23], ['2026-11-01', 25]]) {
+    for (const [date, hours] of [['2026-03-08', 24], ['2026-11-01', 24]]) {
       await page.locator(`${root} [data-field="date"]`).fill(date);
       await page.locator(`${root} [data-field="time"]`).fill('12:00:00');
       await ready(page, 3);

@@ -72,7 +72,7 @@ function channelDetail(entry) {
 function centerDetail(entry) {
   const gates = Object.keys(GATES).map(Number).filter(gate => GATES[gate].center === entry.id);
   const channels = channelsForCenter(entry.id);
-  return `${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}
+  return `<section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}</section>
     <h3>${t('Related gates')}</h3><div class="reference-links">${gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
@@ -136,8 +136,7 @@ function renderResults() {
 
 function build() {
   const mount = document.getElementById('library-view');
-  mount.innerHTML = `<div class="view-container-wide"><header class="reference-heading"><h1>${t('Reference Library')}</h1>
-    <p>${t('Browse the original chart reference without a birth chart.')}</p></header>
+  mount.innerHTML = `<div class="view-container-wide"><header class="reference-heading"><h1>${t('Reference Library')}</h1></header>
     <div class="reference-layout"><aside class="reference-sidebar"><label for="reference-search">${t('Search reference')}</label>
       <input id="reference-search" type="search" autocomplete="off" placeholder="${t('Search by number or name')}" value="${esc(query)}">
       <div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div>

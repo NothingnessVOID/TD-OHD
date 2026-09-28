@@ -138,11 +138,11 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
     <div class="type-birthline">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${t('time unknown — chart uses noon')}</em>` : ''}</div>
     <div class="type-strategy">${t('Strategy:')} ${esc(strategy(chart.type.name))}</div>
     <p class="type-plain">${esc(typeDescription(chart.type.name))}</p>
-    <div class="banner-actions">
+  `;
+  document.querySelector('#chart-share-menu .chart-share-actions').innerHTML = `
       <button id="share-chart" class="btn-secondary btn-small">${t('Copy chart link')}</button>
       <button id="save-image" class="btn-secondary btn-small">${t('Save image')}</button>
       <button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>
-    </div>
   `;
   document.getElementById('share-chart').addEventListener('click', async (e) => {
     if (!onShare) return;
@@ -548,13 +548,12 @@ export function showCenterDetail(centerKey, pushHistory = true) {
   const model = detailContext?.model;
   const definedHere = model?.definedCenters.has(centerKey);
   const natalHere = model?.mode === 'overlay' && model.natalCenters.has(centerKey);
-  const status = model ? definedHere ? natalHere ? 'defined' : 'transit-defined' : 'undefined' : c.status;
-  const statusLabel = t(model ? natalHere ? 'Defined in birth chart' : definedHere ? model.mode === 'transit-only' ? 'Defined by transits' : 'Defined with transits' : 'Not defined in this view' : status.charAt(0).toUpperCase() + status.slice(1));
-
   // Gates that live in this center, active ones marked and clickable.
   const activeSet = model?.activeGates || new Set(chart.gates.all);
   const gatesIn = Object.keys(GATES).map(Number)
     .filter(g => GATES[g].center === centerKey).sort((a, b) => a - b);
+  const status = model ? definedHere ? natalHere ? 'defined' : 'transit-defined' : gatesIn.some(gate => activeSet.has(gate)) ? 'undefined' : 'open' : c.status;
+  const statusLabel = t(model ? natalHere ? 'Defined in birth chart' : definedHere ? model.mode === 'transit-only' ? 'Defined by transits' : 'Defined with transits' : status === 'open' ? 'Open' : 'Undefined' : status.charAt(0).toUpperCase() + status.slice(1));
   const gateChips = gatesIn.map(g =>
     `<button class="gate-chip ${activeSet.has(g) ? model?.gateSource(g) === 'transit' ? 'transit-active' : 'active' : ''}" data-gate="${g}" title="${t('Gate {gate}', { gate: g })}${GATES[g]?.name ? ' — ' + esc(gateName(g)) : ''}">${g}</button>`).join('');
 
@@ -579,14 +578,12 @@ export function showCenterDetail(centerKey, pushHistory = true) {
       <div class="gate-detail-body">
         <div class="detail-label">${esc(centerName(centerKey))}</div>
         <div class="detail-name">${esc(contentText(c.theme || c.name))}</div>
-        ${model ? `<p class="lens-note">${t(model.mode === 'transit-only' ? 'Transit only · status from the selected time.' : 'Birth chart + transits · hatching marks temporary additions.')}</p>` : ''}
         <div class="center-detail-head">
           <span class="center-status ${status}">${statusLabel}</span>
           <span class="center-detail-theme">${t('Center theme')}: ${esc(contentText(c.theme || ''))}${c.biological ? ` · ${t('Biological association')}: ${esc(contentText(c.biological))}` : ''}</span>
         </div>
-        ${model && !natalHere ? `<p class="gate-detail-desc">${t(definedHere ? 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : ''}
         <section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>
-          ${centerReading(centerKey, { status: model ? null : status, includeTheme: false })}</section>
+          ${centerReading(centerKey, { status: definedHere || status === 'defined' ? 'defined' : status === 'open' ? 'open' : 'undefined', includeTheme: false })}</section>
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>

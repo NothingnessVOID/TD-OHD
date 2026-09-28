@@ -26,7 +26,7 @@ test('TD-OHD branding keeps the personal fork, Pages URL and upstream attributio
 
 test('localized navigation keeps Timeline after Transits with stable translation keys', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  const nav = html.match(/<nav class="nav">([\s\S]*?)<\/nav>/)[1];
+  const nav = html.match(/<nav class="nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const items = [...nav.matchAll(/data-view="([^"]+)" data-i18n="([^"]+)"/g)]
     .map(match => [match[1], match[2]]);
   assert.deepEqual(items, [['chart', 'My Chart'], ['transits', 'Transits'],
