@@ -51,6 +51,12 @@ try {
   });
   assert.ok(chartColumns.aligned && chartColumns.width > 350 && chartColumns.documentWidth <= 714,
     `714px chart keeps planet columns beside the graph: ${JSON.stringify(chartColumns)}`);
+  await page.setViewportSize({ width: 682, height: 703 });
+  assert.deepEqual(await page.locator('#bodygraph-container .bg-planets-personality').evaluate(column => [
+    getComputedStyle(column.querySelector('.bg-planets-head')).textAlign,
+    getComputedStyle(column.querySelector('.bg-planets-date')).textAlign,
+    getComputedStyle(column.querySelector('.bg-planet-row')).justifyContent
+  ]), ['right', 'right', 'flex-end'], 'personality heading, date and values share right alignment');
   await page.setViewportSize({ width: 903, height: 703 });
   await page.locator('#bodygraph-container .bg-gate').first().click();
   const titleSizes = await page.locator('#gate-detail .detail-name').evaluate(node => ({

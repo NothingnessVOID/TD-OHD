@@ -456,6 +456,8 @@ body {
 #bodygraph-container { padding: 16px 8px; }
 #bodygraph-container .bg-planet-row { padding: 2px 0; gap: 1px; font-size: 10px; }
 #bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
+#bodygraph-container .bg-planets-personality .bg-planets-head,
+#bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
 
 /* =============================================
    Info Panels
