@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { natalIslands, bridgeState } from '../src/features/transit-timeline/bridge.js';
+import { natalIslands, bridgeState, bridgedIslandCount } from '../src/features/transit-timeline/bridge.js';
 import { queryTimeline } from '../src/features/transit-timeline/conditions.js';
 
 const channels = [
@@ -34,6 +34,10 @@ test('two, three and four fixed natal islands bridge through new intermediate ce
   assert.equal(bridgeState(three, [...three.gates.all, 9], channels).islands.length, 3);
   assert.equal(bridgeState(four, [...four.gates.all, 9], channels).islands.length, 4);
   assert.deepEqual(bridgeState(four, [...four.gates.all, 9, 12, 13], channels).connected, [[1,2,3,4]]);
+  assert.equal(bridgedIslandCount(3, [[1,2]]), 2);
+  assert.equal(bridgedIslandCount(3, [[1,2,3]]), 1);
+  assert.equal(bridgedIslandCount(4, [[1,2], [3,4]]), 2);
+  assert.equal(bridgedIslandCount(4, [[1,2,3,4]]), 1);
   assert.equal(bridgeState(natal([1,2]), [1,2,3,4,9], channels).applicable, false);
 });
 

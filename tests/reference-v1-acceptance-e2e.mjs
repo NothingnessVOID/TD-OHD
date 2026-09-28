@@ -56,12 +56,20 @@ try {
     await page.locator('#transits-view:not(.hidden)').waitFor();
     assert.equal(await page.locator('#transit-timezone').evaluate(node => node.tagName), 'OUTPUT');
     await page.locator('#transit-now').click();
+    assert.equal(await page.locator('#transit-time').getAttribute('step'), '1');
+    assert.match(await page.locator('#transit-time').inputValue(), /^\d{2}:\d{2}:\d{2}$/);
+    assert.equal(await page.locator('#transits-view .transit-advanced').count(), 0);
+    await page.locator('#transit-only-toggle').click();
+    assert.equal(await page.locator('#transit-only-toggle').getAttribute('aria-pressed'), 'true');
+    await page.locator('#transit-only-toggle').click();
     assert.ok((await page.locator('#transit-timezone').innerText()).trim());
     assert.ok(await page.locator('#transit-bodygraph .bodygraph-svg').count());
 
     await navClick('timeline');
     await page.locator(`${root}:not(.hidden) .tl-table`).waitFor();
     await ready();
+    assert.equal(await page.locator(`${root} .tl-toolbar > .tl-advanced`).count(), 1);
+    assert.equal(await page.locator(`${root} .tl-toolbar > .tl-mode-toggle`).count(), 1);
     const checkSourceColors = async () => {
       const colors = await page.evaluate(() => {
         const probe = document.createElement('span');

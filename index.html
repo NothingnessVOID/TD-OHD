@@ -149,21 +149,15 @@
           <div class="transit-time-field">
             <label for="transit-time" data-i18n="Time">Time</label>
             <div class="transit-time-group">
-              <input type="time" id="transit-time" step="60">
+              <input type="time" id="transit-time" step="1">
             </div>
           </div>
           <span class="transit-zone-label"><span data-i18n="Timezone">Timezone</span> <output id="transit-timezone"></output></span>
           <button id="transit-now" class="btn-secondary" data-i18n="Now">Now</button>
+          <button id="transit-only-toggle" type="button" class="btn-secondary transit-only-toggle" aria-pressed="false" data-i18n="Transit only">Transit only</button>
         </div>
         <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>
         <p id="transit-status" class="panel-intro" aria-live="polite"></p>
-        <details class="transit-advanced"><summary data-i18n="Advanced">Advanced</summary>
-          <label class="transit-precision"><input type="checkbox" id="transit-seconds" aria-label="Include seconds" data-i18n-aria-label="Include seconds"> <span data-i18n="Seconds">Seconds</span></label>
-          <fieldset class="transit-mode-switch" aria-label="Chart view" data-i18n-aria-label="Chart view">
-            <label><input type="radio" name="transit-mode" value="overlay" checked><span data-i18n="Birth chart + transits">Birth chart + transits</span></label>
-            <label><input type="radio" name="transit-mode" value="transit-only"><span data-i18n="Transit only">Transit only</span></label>
-          </fieldset>
-        </details>
         <div class="transit-view-toolbar">
           <div id="transit-graph-legend" class="transit-graph-legend" aria-label="Activation sources" data-i18n-aria-label="Activation sources"></div>
         </div>

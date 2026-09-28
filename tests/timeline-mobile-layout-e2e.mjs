@@ -77,8 +77,9 @@ try {
   const panel = root.locator('.tl-mobile-controls-panel');
   assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
   if (process.env.MOBILE_PANEL_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_PANEL_SCREENSHOT });
-  for (const field of ['date', 'time', 'zone', 'mode', 'kind', 'search', 'changes'])
+  for (const field of ['date', 'time', 'zone', 'kind', 'search', 'changes'])
     assert.ok(await panel.locator(`[data-field="${field}"]`).count(), `${field} stays available in the floating controls`);
+  assert.ok(await panel.locator('[data-action="toggle-mode"]').count(), 'transit-only button stays available in the floating controls');
   assert.ok(await root.locator('.tl-mobile-range [data-field="span"]').count(), 'range is outside the floating controls');
   await trigger.click();
   await root.locator('.tl-mobile-range [data-field="span"]').selectOption('1');

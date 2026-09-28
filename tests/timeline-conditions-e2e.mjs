@@ -26,7 +26,8 @@ try {
   await page.locator(`${root} [data-action="run-query"]`).click();
   assert.ok(await page.locator(`${root} [data-query-interval]`).count() >= 1);
   assert.notEqual(await page.locator(`${root} [data-query-interval]`).first().textContent(), active);
-  await page.locator(`${root} [data-action="remove-target"]`).first().click();
+  await page.locator(`${root} [data-condition="kind"]`).first().selectOption('center');
+  await page.locator(`${root} [data-condition="kind"]`).first().selectOption('gate');
   await page.locator(`${root} [data-action="toggle-targets"]`).first().click();
   await page.locator(`${root} [data-condition="target-search"]`).first().fill('999.1');
   assert.equal(await page.locator(`${root} .tl-condition-row`).first().locator('.tl-target-option').count(), 0);
@@ -44,14 +45,15 @@ try {
   assert.equal(await page.locator(`${root} [data-query-interval]`).count(), 1,
     'the natal gate is active for the complete overlay range');
   const overlayResult = await page.locator(`${root} [data-query-interval]`).first().innerText();
-  await page.locator(`${root} [data-field="mode"]`).selectOption('transit-only');
+  await page.locator(`${root} [data-action="toggle-mode"]`).click();
   await page.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false');
   await page.locator(`${root} [data-field="planet"]`).selectOption('moon');
   await page.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false');
   await page.locator(`${root} [data-action="run-query"]`).click();
   const moonResults = await page.locator(`${root} [data-query-interval]`).allInnerTexts();
   assert.ok(moonResults.every(text => text !== overlayResult), 'moon-only sky does not inherit a natal full-range match');
-  await page.locator(`${root} [data-action="remove-target"]`).first().click();
+  await page.locator(`${root} [data-condition="kind"]`).first().selectOption('center');
+  await page.locator(`${root} [data-condition="kind"]`).first().selectOption('gate');
   assert.equal(await page.locator(`${root} [data-query-interval]`).count(), 0,
     'editing a condition immediately clears the old result');
   await page.locator(`${root} [data-action="run-query"]`).click();

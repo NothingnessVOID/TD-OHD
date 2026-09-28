@@ -676,7 +676,7 @@ try {
       return { row: row.isSameNode(root.querySelector(`.tl-row[data-key="${key}"]`)),
         bar: bar.isSameNode(root.querySelector(`.tl-row[data-key="${key}"] .tl-bar[data-source="natal"]`)),
         svg: svg.isSameNode(root.querySelector('.tl-graph .bodygraph-svg')),
-        hover: bar.matches(':hover'), rowLit: row.classList.contains('tl-row-lit') };
+        hover: bar.matches(':hover'), rowHover: row.classList.contains('tl-row-hover') };
     });
     assert.ok(Object.values(hoverStable).every(Boolean),
       `hovered natal center bar survives wheel pan: ${JSON.stringify(hoverStable)}`);
@@ -756,11 +756,12 @@ try {
   });
 
   await log('transit-only fixing marks use transit providers', async () => {
-    await page.selectOption(`${root} [data-field="mode"]`, 'transit-only');
+    await page.locator(`${root} [data-action="toggle-mode"]`).click();
+    assert.equal(await page.locator(`${root} [data-action="toggle-mode"]`).getAttribute('aria-pressed'), 'true');
     await ready(page);
     await checkFixings(page, 'transit-only');
     assert.deepEqual(await birthValues(page), originalBirthValues, 'hidden birth values remain fixed');
-    await page.selectOption(`${root} [data-field="mode"]`, 'overlay');
+    await page.locator(`${root} [data-action="toggle-mode"]`).click();
     await ready(page);
     await checkFixings(page, 'overlay');
   });

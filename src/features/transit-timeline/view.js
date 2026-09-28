@@ -5,7 +5,7 @@ import { calendarRuler } from './ruler.js';
 import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
 import { queryTimeline } from './conditions.js';
-import { natalIslands } from './bridge.js';
+import { natalIslands, bridgedIslandCount } from './bridge.js';
 import { catalog } from './provider.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import './timeline.css';
@@ -175,15 +175,15 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       <label>${esc(t('time'))}<input data-field="time" type="time" step="1"></label>
       <span class="tl-zone">${esc(t('zone'))} <output data-field="zone"></output></span>
       ${button('now', t('now'))}
-      <label>${esc(t('mode'))}<select data-field="mode"><option value="overlay">${esc(t('overlay'))}</option><option value="transit-only">${esc(t('sky'))}</option></select></label>
+      <button type="button" class="tl-mode-toggle" data-action="toggle-mode" aria-pressed="false" title="${esc(t('sky'))}">${esc(t('sky'))}</button>
       <div class="tl-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}<span class="tl-event-status" role="status"></span></div>
     </div>
-    <details class="tl-advanced"><summary>${esc(t('advanced'))}</summary>
+    <details class="tl-advanced"><summary>${esc(t('advanced'))}</summary><div class="tl-advanced-panel">
       <label>${esc(t('planets'))}<select data-field="planet"><option value="all">${esc(t('all'))}</option>${host.planets.map(item => `<option value="${item.id}">${esc(item.name)}</option>`).join('')}</select></label>
       <div class="tl-query-head"><strong>${esc(t('conditions'))}</strong><select data-field="combine" aria-label="${esc(t('combine'))}"><option value="all">${esc(t('allConditions'))}</option><option value="any">${esc(t('anyCondition'))}</option></select></div>
       <div class="tl-condition-rows"></div>
       <div class="tl-query-actions">${button('add-condition', t('addCondition'))}${button('run-query', t('runQuery'))}</div>
-      <div class="tl-query-status" role="status"></div><div class="tl-query-results"></div>
+      <div class="tl-query-status" role="status"></div><div class="tl-query-results"></div></div>
     </details>
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
@@ -228,17 +228,16 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   addConditionRow();
   const toolbar = $('.tl-toolbar');
   const advanced = $('.tl-advanced');
+  $('.tl-event-nav').before(advanced);
   const kindControl = $('.tl-kind');
   const compactControls = $('.tl-compact-controls');
   const controlPanel = $('.tl-mobile-controls-panel');
   const toolbarAnchor = document.createComment('timeline toolbar home');
-  const advancedAnchor = document.createComment('timeline advanced home');
   const kindAnchor = document.createComment('timeline filter home');
   const compactAnchor = document.createComment('timeline compact controls home');
   const spanControl = $('[data-field="span"]');
   const spanAnchor = document.createComment('timeline range home');
   toolbar.before(toolbarAnchor);
-  advanced.before(advancedAnchor);
   kindControl.before(kindAnchor);
   compactControls.before(compactAnchor);
   spanControl.before(spanAnchor);
@@ -250,11 +249,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     showMobileControls(false);
     if (mobileLayout.matches) {
       $('.tl-mobile-range').append(spanControl);
-      controlPanel.append(toolbar, advanced, compactControls, kindControl);
+      controlPanel.append(toolbar, compactControls, kindControl);
     }
     else {
       toolbarAnchor.after(toolbar);
-      advancedAnchor.after(advanced);
       kindAnchor.after(kindControl);
       compactAnchor.after(compactControls);
       spanAnchor.after(spanControl);
@@ -477,7 +475,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   function rowSymbol(row) {
-    if (row.kind === 'bridge') return '<span class="tl-bridge-symbol">↔</span>';
+    if (row.kind === 'bridge') return '<svg class="tl-bridge-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="4.5" cy="6.5" r="2"/><circle cx="4.5" cy="17.5" r="2"/><path d="M7 6.5h3c3.5 0 4 5.5 7 5.5M7 17.5h3c3.5 0 4-5.5 7-5.5"/><circle cx="19" cy="12" r="3"/></svg>';
     if (row.kind === 'line') return `<span class="tl-line-symbol">.${row.line}</span>`;
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;
     if (row.kind === 'channel') return `<span class="tl-channel-symbol">${esc(row.id)}</span>`;
@@ -508,7 +506,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // Keep the row roster fixed for the completed calculation. Only bars are
     // clipped to the moving viewport, so empty tracks retain their position.
     const rowName = row => row.kind === 'bridge' ? t('bridge') : name(row);
-    const bridgeApplicable = mode === 'overlay' && chart && natalIslands(host.identity(chart.chart)).length > 1;
+    const natalIslandCount = chart ? natalIslands(host.identity(chart.chart)).length : 0;
+    const bridgeApplicable = mode === 'overlay' && natalIslandCount > 1;
     const rows = result.rows.filter(row => (row.kind === 'bridge' ? bridgeApplicable : row.intervals.length > 0) &&
       (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
@@ -520,9 +519,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';
-        const bridgeGroups = row.kind === 'bridge' ? JSON.parse(interval.source).map(group => group.join('↔')).join(', ') : '';
-        const title = `${rowName(row)}${bridgeGroups ? ` · ${bridgeGroups}` : ''} · ${row.kind === 'bridge' ? t('transit') : t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
-        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${row.kind === 'bridge' ? 'transit' : interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(row.kind === 'bridge' ? bridgeGroups : rowName(row))}</span></button>`;
+        const bridgeCount = row.kind === 'bridge' ? t('bridgeCount', {
+          from: natalIslandCount, to: bridgedIslandCount(natalIslandCount, JSON.parse(interval.source))
+        }) : '';
+        const title = `${rowName(row)}${bridgeCount ? ` · ${bridgeCount}` : ''} · ${row.kind === 'bridge' ? t('transit') : t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
+        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${row.kind === 'bridge' ? 'transit' : interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(row.kind === 'bridge' ? bridgeCount : rowName(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
     $('.tl-table').scrollTop = scroll;
     if (sync) syncClock();
@@ -809,8 +810,9 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     preset = event.target.value;
     selectTime(selected, { recenter: true });
   });
-  listen($('[data-field="mode"]'), 'change', event => {
-    mode = event.target.value;
+  listen($('[data-action="toggle-mode"]'), 'click', () => {
+    mode = mode === 'overlay' ? 'transit-only' : 'overlay';
+    $('[data-action="toggle-mode"]').setAttribute('aria-pressed', String(mode === 'transit-only'));
     host.closeDetail(); calculate(); renderMoment();
   });
   listen($('[data-field="planet"]'), 'change', event => {
@@ -1166,7 +1168,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     put('.tl-empty-state', 'empty');
     put('.tl-heading h2', 'title');
     if (chart) setText($('.tl-person'), chart.birth.name || t('person'));
-    for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['mode','mode'], ['planet','planets']]) fieldLabel(field, key);
+    for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['planet','planets']]) fieldLabel(field, key);
     for (const [action, key] of [['now','now'], ['retry','retry']]) {
       const button = $(`[data-action="${action}"]`);
       setText(button, t(key));
@@ -1198,8 +1200,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       renderTargetPicker(row);
     });
     if (queryResult) renderQueryResults();
-    for (const [value, key] of [['overlay','overlay'], ['transit-only','sky']])
-      setText($(`[data-field="mode"] option[value="${value}"]`), t(key));
+    const modeToggle = $('[data-action="toggle-mode"]');
+    setText(modeToggle, t('sky'));
+    modeToggle.title = t('sky');
+    modeToggle.setAttribute('aria-pressed', String(mode === 'transit-only'));
     const foldLabel = $('.tl-fold').firstChild;
     if (foldLabel.nodeType === Node.TEXT_NODE) foldLabel.textContent = t('chooseOffset');
     const foldPlaceholder = $('[data-field="fold"] option[value=""]');

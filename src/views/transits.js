@@ -42,10 +42,13 @@ export function setupTransitView() {
   view.addEventListener('focusin', previewDetail);
   view.addEventListener('pointerout', clearPreview);
   view.addEventListener('focusout', clearPreview);
-  document.querySelectorAll('input[name="transit-mode"]').forEach(input => input.addEventListener('change', renderTransits));
+  const modeButton = document.getElementById('transit-only-toggle');
+  modeButton.addEventListener('click', () => {
+    modeButton.setAttribute('aria-pressed', String(modeButton.getAttribute('aria-pressed') !== 'true'));
+    renderTransits();
+  });
   const dateInput = document.getElementById('transit-date');
   const timeInput = document.getElementById('transit-time');
-  const secondsInput = document.getElementById('transit-seconds');
   const zoneInput = document.getElementById('transit-timezone');
   const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
@@ -57,8 +60,7 @@ export function setupTransitView() {
       hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
     }).formatToParts(now).map(part => [part.type, part.value]));
     dateInput.value = `${parts.year}-${parts.month}-${parts.day}`;
-    timeInput.value = `${parts.hour}:${parts.minute}`;
-    if (secondsInput.checked) timeInput.value += `:${parts.second}`;
+    timeInput.value = `${parts.hour}:${parts.minute}:${parts.second}`;
     zoneInput.value = zone;
     zoneInput.textContent = zone;
     renderTransits();
@@ -69,12 +71,6 @@ export function setupTransitView() {
 
   dateInput.addEventListener('change', renderTransits);
   timeInput.addEventListener('change', renderTransits);
-  secondsInput.addEventListener('change', () => {
-    const minute = timeInput.value.slice(0, 5);
-    timeInput.step = secondsInput.checked ? '1' : '60';
-    timeInput.value = minute ? minute + (secondsInput.checked ? ':00' : '') : '';
-    renderTransits();
-  });
   document.getElementById('transit-choice').addEventListener('change', renderTransits);
   document.getElementById('transit-now').addEventListener('click', setNow);
 }
@@ -86,7 +82,7 @@ export function renderTransits() {
   lastTransitResult = null;
   const date = document.getElementById('transit-date').value;
   let time = document.getElementById('transit-time').value;
-  if (time.length === 5 && document.getElementById('transit-seconds').checked) time += ':00';
+  if (time.length === 5) time += ':00';
   const zone = document.getElementById('transit-timezone').value.trim();
   const status = document.getElementById('transit-status');
   const choiceLabel = document.getElementById('transit-choice-label');
@@ -117,7 +113,7 @@ export function renderTransits() {
     .filter(Boolean)
     .map(g => g.gate);
 
-  const mode = document.querySelector('input[name="transit-mode"]:checked').value;
+  const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
   lastTransitResult = { chart: current.chart, overlay, transitGates, model, mode };
   drawTransitResult(lastTransitResult);
@@ -195,7 +191,7 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
 
 export function renderTransitContent(overlay, date = null) {
   const current = getCurrentChart();
-  const mode = document.querySelector('input[name="transit-mode"]:checked').value;
+  const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   renderTransitSummary(overlay, buildTransitGraph(current.chart, overlay.transitGates, mode),
     document.getElementById('transit-status')?.textContent || `${date} · 12:00 UTC`);
 
