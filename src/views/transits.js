@@ -154,7 +154,12 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
       const personality = grid.querySelector('.bg-planets-personality');
       const pair = document.createElement('div');
       pair.className = 'transit-birth-pair';
-      pair.append(design, personality);
+      const glyphs = document.createElement('div');
+      glyphs.className = 'bg-planets transit-birth-glyphs';
+      glyphs.setAttribute('aria-hidden', 'true');
+      glyphs.innerHTML = '<div class="bg-planets-head">&nbsp;</div>' + PLANET_ORDER.map(planet =>
+        `<div class="bg-planet-row"><span class="bg-planet-glyph">${PLANET_GLYPHS[planet]}</span></div>`).join('');
+      pair.append(design, glyphs, personality);
       grid.append(pair);
       const transitColumn = document.createElement('div');
       transitColumn.className = 'bg-planets transit-planet-column';
