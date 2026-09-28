@@ -59,6 +59,11 @@
   --collective: #2980b9;
   --integration: #27ae60;
 
+  /* Comparison graph sources; identical values to the original palette. */
+  --connection-person-a: #2a9d8f;
+  --connection-person-b: #e07a5f;
+  --connection-bridged: #d4a23a;
+
   /* Layout */
   --max-width: 1200px;
   --header-height: 56px;
@@ -111,6 +116,9 @@
   --graph-undefined-center: #0d0c0a;
   --graph-center-stroke: #5a5248;
   --graph-text-inactive: #6f685f;
+  --connection-person-a: #3db5a5;
+  --connection-person-b: #e8927a;
+  --connection-bridged: #cda64a;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
   --shadow: 0 2px 8px rgba(0,0,0,0.3);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);

@@ -52,6 +52,36 @@ try {
     await page.locator('.nav-link[data-view="timeline"]').click();
     await page.locator(`${root}:not(.hidden) .tl-table`).waitFor();
     await ready();
+    const checkSourceColors = async () => {
+      const colors = await page.evaluate(() => {
+        const probe = document.createElement('span');
+        document.body.append(probe);
+        probe.style.color = 'var(--transit-source)';
+        const expected = getComputedStyle(probe).color;
+        probe.style.color = 'var(--transit-source-text)';
+        const expectedText = getComputedStyle(probe).color;
+        probe.remove();
+        const bar = document.querySelector('#timeline-view .tl-bar[data-source="transit"]');
+        const legend = document.querySelector('#timeline-view .tl-legend [data-source="transit"] i');
+        const ring = document.querySelector('#timeline-view .tl-graph .bg-transit-ring');
+        const planet = document.querySelector('#timeline-view .tl-transit-column .bg-planet-act');
+        return { expected, expectedText, bar: bar && getComputedStyle(bar).backgroundColor,
+          legend: legend && getComputedStyle(legend).backgroundColor,
+          ring: ring && getComputedStyle(ring).stroke,
+          planetText: planet && getComputedStyle(planet).color };
+      });
+      assert.ok(colors.bar && colors.legend && colors.ring, JSON.stringify(colors));
+      assert.equal(colors.bar, colors.expected);
+      assert.equal(colors.legend, colors.expected);
+      assert.equal(colors.ring, colors.expected);
+      assert.equal(colors.planetText, colors.expectedText);
+    };
+    await checkSourceColors();
+    await page.locator('#theme-toggle').evaluate(node => node.click());
+    await ready();
+    await checkSourceColors();
+    await page.locator('#theme-toggle').evaluate(node => node.click());
+    await ready();
     const controls = page.locator(`${root} .tl-mobile-controls-panel`);
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
     const span = page.locator(`${root} [data-field="span"]`);
@@ -101,6 +131,23 @@ try {
     await page.locator(`${root} .tl-row-lit`).first().waitFor({ timeout: 5000 });
     assert.equal(await page.locator(`${root} .tl-row-lit .tl-row-label`).first().evaluate(node => getComputedStyle(node).animationName), 'none');
     await page.emulateMedia({ reducedMotion: 'no-preference' });
+    for (let index = 0; index < 3; index++) {
+      await page.locator(`${root} [data-action="next-gate"]`).click();
+      const next = await selected();
+      assert.ok(next > rapidTime, 'animated rapid navigation stays ordered');
+      rapidTime = next;
+    }
+    await page.waitForTimeout(450);
+    assert.equal(await selected(), rapidTime);
+    assert.ok(await page.locator(`${root} .tl-row-lit`).count(), 'latest highlight survives old callbacks');
+    const visibleTarget = await page.locator(`${root} .tl-row-lit`).evaluateAll(nodes => {
+      const table = document.querySelector('#timeline-view .tl-table').getBoundingClientRect();
+      return nodes.some(node => {
+        const row = node.getBoundingClientRect();
+        return row.bottom > table.top && row.top < table.bottom;
+      });
+    });
+    assert.equal(visibleTarget, true, 'latest highlighted track remains visible');
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
     await page.locator(`${root} .tl-advanced summary`).click();
     await page.locator(`${root} [data-condition="kind"]`).first().selectOption('gate');

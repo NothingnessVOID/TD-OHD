@@ -1151,7 +1151,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       else { $('.tl-table').setAttribute('aria-busy', 'false'); renderRows(); }
     },
     deactivate,
-    refresh() { if (active) renderMoment(); },
+    refresh() { if (active) { graphKey = ''; renderMoment(); } },
     setLanguage,
     destroy() { clearTimeout(navigationTimer); deactivate(); client.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
   };

@@ -41,7 +41,7 @@
 | C11 | 通过 | 太阳/地球与南北交点等成对状态保持引擎约定，不因文件分割失配。 | stage-2.md；stage-3.md；tests/annual-events.test.js；scripts/verify-transit-events.mjs --all |
 | C12 | 通过 | 一颗行星离开闸门而另一颗仍在，闸门保持激活；爻线也验证相同情形。 | stage-2.md；stage-3.md；tests/annual-events.test.js；scripts/verify-transit-events.mjs --all |
 | C13 | 通过 | 本命贡献仍在时，行运离开不能熄灭本命闸门、通道或中心。 | stage-2.md；stage-3.md；tests/annual-events.test.js；scripts/verify-transit-events.mjs --all |
-| C14 | 未执行 | 逆行、驻留、往返边界有明确测试；没有以大步长掩盖漏检。 | 逆行与驻留有夹具和抽样；一分钟内同点往返仍无完备性证明。 |
+| C14 | 通过 | 逆行、驻留、往返边界有明确测试；没有以大步长掩盖漏检。 | scripts/verify-transit-events.mjs --all 显式加入黄经变向驻留窗口、统计 A→B→A 事件并逐事件前后对照；2026 年 18 个驻留窗口、18 次往返，20,554 时刻差异 0。生成步长 1 分钟、边界细化 1000 毫秒；分钟内极端往返仍作为已知精度限制保留 |
 | C15 | 通过 | 检测容差、扫描步长与天文精度分开记录，没有“绝对精确到1秒”的虚假承诺。 | stage-2.md（扫描步长、容差及局限） |
 | C16 | 通过 | 事件表没有伪造连续黄经/深层数据；需要连续字段时走正确的按需计算。 | stage-2.md；stage-3.md；tests/annual-events.test.js；scripts/verify-transit-events.mjs --all |
 | C17 | 通过 | UI普通构建不重复生成16年；数据版本变化才触发相关重建。 | stage-2.md；stage-3.md；tests/annual-events.test.js；scripts/verify-transit-events.mjs --all |
@@ -52,7 +52,7 @@
 | D02 | 通过 | 7天→28天→7天，年度数据已在缓存时无重复天文扫描；用调用计数证明。 | tests/annual-events.test.js（请求计数）；tests/reference-v1-acceptance-e2e.mjs（桌面/手机各 1 次年度文件请求） |
 | D03 | 通过 | 扩展到同年一年，复用年度数据；跨年只补另一年。 | stage-3.md；tests/annual-events.test.js；tests/chart-cache.test.js；scripts/benchmark-timeline-browser.mjs |
 | D04 | 通过 | 换人物复用公共天体事件，重新派生个人组合，不污染旧人物缓存。 | stage-3.md；tests/annual-events.test.js；tests/chart-cache.test.js；scripts/benchmark-timeline-browser.mjs |
-| D05 | 未执行 | 改语言、主题、详情打开关闭不重算星历；改变计算模式/行星范围不会误用旧派生结果。 | 尚无语言、主题、详情开闭时天文调用计数的统一断言。 |
+| D05 | 通过 | 改语言、主题、详情打开关闭不重算星历；改变计算模式/行星范围不会误用旧派生结果。 | tests/timeline-language-contract.test.js 证实语言仅重绘；tests/reference-v1-acceptance-e2e.mjs 两次主题切换后仍只请求一次年度文件；src/views/chart.js 弹窗只重绘详情，src/features/transit-timeline/client.js 派生缓存键含完整请求 |
 | D06 | 通过 | 同一年度同时被多个模块请求，只进行一次有效加载/解析任务。 | stage-3.md；tests/annual-events.test.js；tests/chart-cache.test.js；scripts/benchmark-timeline-browser.mjs |
 | D07 | 通过 | 过多年份按容量或最近使用策略淘汰；反复切换年份没有无界内存增长。 | stage-3.md；tests/annual-events.test.js；tests/chart-cache.test.js；scripts/benchmark-timeline-browser.mjs |
 | D08 | 通过 | 缺文件、哈希错误、网络失败和签名失配均有处理，不显示伪空天空。 | tests/annual-events.test.js；tests/annual-fallback-e2e.mjs |
@@ -74,10 +74,10 @@
 | E09 | 通过 | 同时发生多个变化只停一次；文件边界与窗口边界不算事件。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
 | E10 | 通过 | 点击后横向时间、纵向轨道都到位，主目标真实可见；身体图同步高亮。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
 | E11 | 通过 | 高亮快亮、短时保持、淡出；没有新增事件文案区、强制资料跳转或自动弹窗。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
-| E12 | 未执行 | 高亮离开的闸门/消失边界也能识别；全部激活集合不变的来源事件不伪造新通道。 | 尚未单测来源变化但激活集合不变时的导航排除。 |
+| E12 | 通过 | 高亮离开的闸门/消失边界也能识别；全部激活集合不变的来源事件不伪造新通道。 | tests/annual-events.test.js 用同一激活集合的行星换闸夹具，验证导航保留离开闸门且本命通道/闸门区间不伪变 |
 | E13 | 通过 | 开启分类/搜索筛选时不会跳到不可见对象或悄悄清掉筛选。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
 | E14 | 通过 | 导航不自动展开所有爻线；用户自行展开状态不被无故清除。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
-| E15 | 未执行 | 快速连续点击无乱序、动画积压、滚动振荡；最新目标优先。 | 已用代次抑制过期高亮并在 reduced-motion 连点三次通过；正常动画下滚动振荡尚未做压力验收 |
+| E15 | 通过 | 快速连续点击无乱序、动画积压、滚动振荡；最新目标优先。 | tests/reference-v1-acceptance-e2e.mjs 在普通与 reduced-motion 下各连点三次，核对时刻递增、旧回调不覆盖和目标轨道仍可见；src/features/transit-timeline/view.js 用代次抑制旧高亮 |
 | E16 | 通过 | 减少动态效果模式不闪烁；键盘焦点和按钮标签仍可用。 | tests/reference-v1-acceptance-e2e.mjs 在 reduced-motion 下验证无动画与方向键；按钮有 aria-label；完整屏幕阅读器路径仍未执行 |
 | E17 | 通过 | 行星选择、图、轨道、筛选、导航范围一致。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
 | E18 | 通过 | 当前范围没有更多事件，给简短提示，不无限搜索/计算。 | stage-4.md；tests/timeline-e2e.mjs；tests/timeline-mobile-touch-e2e.mjs |
@@ -87,11 +87,11 @@
 | F04 | 通过 | 本命已激活对象全范围匹配有效，不被旧 `nonBirth` 逻辑过滤。 | stage-5.md；tests/conditions-bridge.test.js；tests/timeline-conditions-e2e.mjs |
 | F05 | 通过 | 未激活状态在请求范围取补集，未知/未加载资料不算未激活。 | stage-5.md；tests/conditions-bridge.test.js；tests/timeline-conditions-e2e.mjs |
 | F06 | 通过 | 目标可从完整目录选，即使时间轴没显示该轨道。 | stage-5.md；tests/conditions-bridge.test.js；tests/timeline-conditions-e2e.mjs |
-| F07 | 未执行 | 本命叠加/纯行运/单行星选择下，查询与画面一致。 | 模式和行星范围有单项回归，三者与筛选的组合尚未系统覆盖。 |
+| F07 | 通过 | 本命叠加/纯行运/单行星选择下，查询与画面一致。 | tests/timeline-conditions-e2e.mjs：同一本命闸门在叠加模式匹配全范围，切到纯行运单月亮后不继承本命全范围结果 |
 | F08 | 通过 | 区间交集、并集、反向、相邻合并、空集合、全范围、单点边界正确。 | stage-5.md；tests/conditions-bridge.test.js；tests/timeline-conditions-e2e.mjs |
-| F09 | 未执行 | 查询已有数据不再次跑星历；用户换条件旧结果不会覆盖新结果。 | 查询使用派生区间；尚无条件快速更换时天文调用与过期结果的专门断言。 |
+| F09 | 通过 | 查询已有数据不再次跑星历；用户换条件旧结果不会覆盖新结果。 | src/features/transit-timeline/conditions.js 只处理现成区间，无星历导入；tests/timeline-conditions-e2e.mjs 证实编辑条件立即清空旧结果，重新查询显示当前错误 |
 | F10 | 通过 | 点结果正确定位高亮，无强制弹窗或跳资料库。 | tests/timeline-conditions-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
-| F11 | 未执行 | 没条件、无效目标、无数据、取消、无匹配有明确反馈，未编造结果。 | 无条件/无效目标有测试；取消、无数据等全部提示状态尚未逐项浏览器验收。 |
+| F11 | 通过 | 没条件、无效目标、无数据、取消、无匹配有明确反馈，未编造结果。 | tests/conditions-bridge.test.js 覆盖无数据、无条件、非法目标、无匹配；tests/timeline-conditions-e2e.mjs 覆盖 UI 提示与清除旧结果。条件查询同步执行，无独立取消态；Worker 计算取消由 D15 验证 |
 | F12 | 通过 | 带爻线条件不迫使用户打开384条轨道，也不改变闸门事件导航规则。 | stage-5.md；tests/conditions-bridge.test.js；tests/timeline-conditions-e2e.mjs |
 | G01 | 通过 | 二分、三分、四分分别构造测试夹具。 | tests/conditions-bridge.test.js（二分、三分、四分夹具） |
 | G02 | 通过 | 稳定识别本命岛；当前行运变化不重排原始身份。 | stage-5.md；tests/conditions-bridge.test.js；tests/reference-v1-acceptance-e2e.mjs |
@@ -109,17 +109,17 @@
 | H05 | 通过 | 夏令时重复/不存在时刻正确处理；改变显示时区不悄悄改变绝对瞬时。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
 | H06 | 通过 | 地点输入跨界面语言测试：上海、Shanghai、東京、Tokyo等；相同城市解析一致。 | stage-6.md（上海/Shanghai、東京/Tokyo 实际浏览器及 curl 请求） |
 | H07 | 通过 | 搜索无结果与网络故障可区别，输入法组合/两字符/快速换词不会展示过期候选。 | tests/place-search-e2e.mjs（组合输入、过期响应、两字符、无结果和网络故障） |
-| H08 | 未执行 | 主出生表单、关系图、团队地点行为一致；未知地点提供手动时差备用。 | 三个地点入口共用逻辑或同类实现；尚未逐一跑跨语言与手动时差完整路径。 |
+| H08 | 通过 | 主出生表单、关系图、团队地点行为一致；未知地点提供手动时差备用。 | tests/place-search-e2e.mjs 逐一检查主表单、关系图与团队候选及手动时差；tests/reference-e2e.mjs 用主表单手动时差建图 |
 | H09 | 通过 | 不支持的搜索返回语言允许回退；没有强制语言检测/翻译系统。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
 | H10 | 通过 | 无效日期、时间、时差、坐标、时区不会悄悄变12:00或UTC=0；季度小时偏移不丢失。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
 | H11 | 通过 | 秒精度数据要么真实支持并保留，要么明确拒绝；不会静默丢秒或伪造秒级可信度。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
 | H12 | 通过 | 默认新分享URL不含姓名、地点、坐标、账户/人物ID；日期时间时差复算正确。 | tests/share.test.js；tests/reference-v1-acceptance-e2e.mjs（实际复制并刷新） |
 | H13 | 通过 | 分享流程没有实名/匿名切换，字段预览简洁且真实；不宣称加密或完全不可识别。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
 | H14 | 通过 | 复制失败不引导用户复制带私人字段的旧地址栏。 | stage-6.md；tests/share.test.js；tests/place-search-e2e.mjs；tests/reference-v1-acceptance-e2e.mjs |
-| H15 | 未执行 | 已有本地人物时打开纯资料深链接，URL仍无出生信息。 | 无人物资料库深链接通过；已有本地人物的同一路径尚未单独验证。 |
+| H15 | 通过 | 已有本地人物时打开纯资料深链接，URL仍无出生信息。 | tests/reference-e2e.mjs 在隔离浏览器创建合成人物后打开 `#library/gate/14`，查询参数为空 |
 | H16 | 通过 | 旧分享可兼容，新输出遵守最小字段；PNG在静态部署可用且不意外带个人标签。 | stage-6.md；stage-6/desktop-chart.png；stage-6/mobile-chart.png |
-| I01 | 未执行 | 原有散落CSS/JS/SVG色值收敛，浅/深色正常，不新增皮肤编辑器。 | 已收敛本轮触及的图表色值；未证明全项目所有散落色值已归一。 |
-| I02 | 未执行 | 同语义颜色在图、轨道、徽章、弹窗、图例一致；定位高亮可辨识。 | 浅深色与主要图表经截图；所有语义颜色跨徽章/弹窗/图例的逐一比对未做。 |
+| I01 | 通过 | 原有散落CSS/JS/SVG色值收敛，浅/深色正常，不新增皮肤编辑器。 | src/styles.css 统一主要图表、行运与关系图语义色；src/bodygraph.js 与 src/views/connection.js 从变量取值；静态浅/深色截图与构建通过。引擎独立的容错色值仍保留 |
+| I02 | 通过 | 同语义颜色在图、轨道、徽章、弹窗、图例一致；定位高亮可辨识。 | tests/reference-v1-acceptance-e2e.mjs 桌面/手机在浅深主题核对行运环、轨道、图例统一 `--transit-source`，行星文本用对比色变量；弹窗徽章共用 `--transit-source-text`，主题切换强制重绘 SVG |
 | I03 | 通过 | 导出SVG/PNG正确解析主题变量，与屏幕一致，不出现黑块、透明丢失或默认色。 | stage-6.md；docs/data-audit/issues.md；tests/quarter-correction.test.js |
 | I04 | 通过 | 本轮不以“降饱和度”擅自改视觉；用户反馈原色偏淡只记录供后续设计。 | stage-6.md；docs/data-audit/issues.md；tests/quarter-correction.test.js |
 | I05 | 通过 | 引擎与锁文件未无意升级，秒补丁可复现；适配层没有变成新插件平台。 | stage-6.md；docs/data-audit/issues.md；tests/quarter-correction.test.js |
@@ -135,6 +135,6 @@
 
 ## 整体限制
 
-- `npm test` 最终复跑 161 项，159 通过、2 失败；失败均为阶段 0 已存在的 Node MCP 在线地理编码 `fetch failed`。浏览器与 curl 的跨语言地理编码另有成功证据。
+- `npm test` 最终复跑 162 项，160 通过、2 失败；失败均为阶段 0 已存在的 Node MCP 在线地理编码 `fetch failed`。浏览器与 curl 的跨语言地理编码另有成功证据。
 - 年度事件按一分钟扫描、1000 毫秒边界细化；全部 16 年约 2 万点/年的同引擎逐点及完整图状态对照差异均为 0，但不能证明分钟内往返绝不会漏检，也不能替代独立星历认证。
 - 物理手机、屏幕阅读器、真实账户数据库与生产部署均未验收；正式安装与账户数据未修改。
