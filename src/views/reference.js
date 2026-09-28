@@ -4,10 +4,11 @@ import { gateReading, channelReading, centerReading, channelsForGate, channelsFo
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';
 import { t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
+import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
 import '../lib/reference-messages.js';
 
-const categories = ['all', 'center', 'channel', 'gate', 'group', 'circuit'];
-const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', group: 'Circuit groups', circuit: 'Reference circuits' };
+const categories = ['all', 'center', 'channel', 'gate', 'group'];
+const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', group: 'Circuit groups' };
 let category = 'all';
 let query = '';
 let limit = 60;
@@ -65,8 +66,7 @@ function channelDetail(entry) {
   return `${channelReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}
     <h3>${t('Related gates')}</h3><div class="reference-links">${channel.gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3><div class="reference-links">${channel.centers.map(center => link('center', center, centerName(center))).join('')}</div>
-    <h3>${t('Circuits')}</h3>${link('group', channel.circuit === 'integration' ? 'individual' : channel.circuit,
-      circuitName(channel.circuit === 'integration' ? 'individual' : channel.circuit))}`;
+    <h3>${t('Circuit groups')}</h3>${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}`;
 }
 
 function centerDetail(entry) {
@@ -79,13 +79,11 @@ function centerDetail(entry) {
 
 function circuitDetail(entry) {
   const channels = circuitChannels(entry.kind, entry.id);
-  if (entry.kind === 'group' && entry.id === 'individual') return [
-    ['knowing', circuitName('knowing')], ['centering', circuitName('centering')], ['integration', t('Integration Channels')]
-  ].map(([id, title]) => `<h3>${esc(title)}</h3><div class="reference-links">${channels.filter(ch => ch.subcircuit === id)
-    .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`).join('');
-  const subcircuits = entry.kind === 'group' ? [...new Set(channels.map(ch => ch.subcircuit))].filter(id => id && id !== 'integration') : [];
-  return `${subcircuits.length ? `<h3>${t('Circuits')}</h3><div class="reference-links">${subcircuits.map(id => link('circuit', id, circuitName(id))).join('')}</div>` : ''}
-    <h3>${t('Reference channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
+  return CIRCUIT_GROUPS[entry.id].map(id => {
+    const title = id === 'integration' ? t('Integration Channels') : circuitName(id);
+    return `<h3>${esc(title)}</h3><div class="reference-links">${channels.filter(ch => channelCircuit(ch).circuit === id)
+      .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
+  }).join('');
 }
 
 function renderDetail() {
@@ -105,9 +103,14 @@ function renderDetail() {
   const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry) : circuitDetail(entry);
+  const heading = entry.kind === 'channel' ? (() => {
+    const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
+    const group = channelCircuit(channel).group;
+    return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2><span class="circuit-badge ${group}">${esc(circuitName(group))}</span></div>`;
+  })() : `<h2>${esc(entry.name)}</h2>`;
   article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
-    <div class="detail-label">${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.id)}</div>
-    <h2>${esc(entry.name)}</h2>
+    <div class="detail-label">${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</div>
+    ${heading}
     ${entry.kind === 'gate' ? `<p class="label-soft">${esc(hexagramName(Number(entry.id)))}</p>` : ''}
     <div class="reference-detail-body">${body}</div>`;
   article.scrollTop = 0;
@@ -125,7 +128,7 @@ function renderResults() {
   const results = document.getElementById('reference-results');
   const matches = searchReference(query, category);
   results.innerHTML = matches.slice(0, limit).map(entry => `<button type="button" class="reference-result" data-reference-kind="${entry.kind}" data-reference-id="${esc(entry.id)}">
-    <small>${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
+    <small>${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
     + (matches.length > limit ? `<button type="button" class="reference-more" data-reference-more>${t('Show more')}</button>` : '')
     || `<p>${t('No matching reference.')}</p>`;
   document.getElementById('reference-count').textContent = t('{count} results', { count: matches.length });

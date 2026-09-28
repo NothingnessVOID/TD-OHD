@@ -16,9 +16,23 @@ try {
     circuit: [...document.querySelectorAll('[data-reference-filter]')].some(node => node.textContent === '回路'),
     detailBottom: document.querySelector('#reference-detail').getBoundingClientRect().bottom
   }));
-  assert.ok(library.group && library.circuit, 'groups and circuits are separate filters');
+  assert.ok(library.group && !library.circuit, 'only circuit groups remain in the filter');
   assert.ok(library.bodyHeight <= library.viewport + 2 && library.detailBottom <= library.viewport,
     `library stays inside the desktop viewport: ${JSON.stringify(library)}`);
+  const groupSections = () => desktop.locator('#reference-detail .reference-detail-body h3').allInnerTexts();
+  assert.deepEqual(await groupSections(), ['知晓回路', '中心化回路', '整合通道']);
+  assert.deepEqual(await desktop.locator('#reference-detail .reference-detail-body h3').last().evaluate(node =>
+    [...node.nextElementSibling.querySelectorAll('[data-reference-id]')].map(link => link.dataset.referenceId)),
+  ['10-20', '10-57', '20-34', '34-57']);
+  await desktop.goto(`${base}/#library/group/collective`);
+  assert.deepEqual(await groupSections(), ['逻辑回路', '感知回路']);
+  await desktop.goto(`${base}/#library/group/tribal`);
+  assert.deepEqual(await groupSections(), ['自我回路', '防御回路']);
+  for (const [id, group] of [['10-34', '个体回路'], ['20-57', '个体回路'],
+    ['30-41', '集体回路'], ['32-54', '家族回路']]) {
+    await desktop.goto(`${base}/#library/channel/${id}`);
+    assert.equal(await desktop.locator('#reference-detail .channel-detail-heading .circuit-badge').innerText(), group);
+  }
   await desktop.locator('#reference-search').fill('14.2');
   assert.equal(await desktop.locator('#reference-results .reference-result').count(), 0, 'line search is removed');
 
@@ -34,6 +48,10 @@ try {
   'hover emphasizes one foundation card');
   await desktop.locator('#bodygraph-container .bg-gate[data-gate="23"]').first().click();
   assert.match(await desktop.locator('#gate-detail .detail-hexagram').innerText(), /^（.+）$/);
+  await desktop.locator('#gate-detail .gate-detail-close').click();
+  await desktop.locator('#bodygraph-container .bg-gate[data-gate="30"]').first().click();
+  await desktop.locator('#gate-detail [data-channel="30-41"]').click();
+  assert.match(await desktop.locator('#gate-detail .channel-detail-heading .circuit-badge').innerText(), /集体回路/);
 
   await desktop.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&view=timeline`);
   await desktop.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false',

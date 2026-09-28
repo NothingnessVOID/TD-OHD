@@ -11,7 +11,7 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /118|条结果/);
+    assert.match(await page.locator('#reference-count').innerText(), /112|条结果/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
     if (viewport.width > 600) {
       await page.locator('#reference-results').evaluate(node => { node.scrollTop = 150; });
