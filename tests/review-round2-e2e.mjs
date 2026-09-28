@@ -140,7 +140,8 @@ try {
   assert.equal(await page.locator(`${root} [data-field="zone"]`).evaluate(node => node.tagName), 'OUTPUT');
   await page.locator(`${root} .tl-advanced summary`).click();
   assert.deepEqual(await page.locator(`${root} [data-condition="kind"]`).first().locator('option').evaluateAll(nodes => nodes.map(node => node.value)),
-    ['bridge', 'center', 'channel', 'gate', 'line']);
+    ['center', 'channel', 'gate', 'line']);
+  assert.equal(await page.locator(`${root} .tl-row`).first().getAttribute('data-key'), 'bridge:natal');
   assert.equal(await page.locator(`${root} .tl-target-chips`).count(), 0);
   assert.match(await page.locator(`${root} [data-field="combine"]`).innerText(), /同时满足所有条件/);
 
@@ -172,16 +173,13 @@ try {
   await page.waitForFunction(() => !document.querySelector('#timeline-view .tl-row-lit') &&
     !document.querySelector('#timeline-view .tl-navigation-gate'), null, { timeout: 5000 });
 
-  await page.locator(`${root} [data-condition="kind"]`).first().selectOption('bridge');
-  await page.locator(`${root} [data-action="run-query"]`).click();
-  await page.locator(`${root} [data-query-interval]`).first().waitFor();
-  const queryButton = page.locator(`${root} [data-query-interval]`).first();
-  await queryButton.scrollIntoViewIfNeeded();
+  const bridgeBar = page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first();
+  await bridgeBar.scrollIntoViewIfNeeded();
   const documentY = await page.evaluate(() => scrollY);
-  await queryButton.click();
+  await bridgeBar.click();
   await page.waitForTimeout(300);
   assert.ok(Math.abs((await page.evaluate(() => scrollY)) - documentY) <= 2,
-    'query navigation preserves the document scroll position');
+    'bridge interval selection preserves the document scroll position');
   await page.setViewportSize({ width: 471, height: 703 });
   const timelineMenu = await page.locator(`${root} .tl-mobile-exit`).evaluate(node => {
     const box = node.getBoundingClientRect();
