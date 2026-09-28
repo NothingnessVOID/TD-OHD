@@ -142,7 +142,7 @@ try {
   assert.deepEqual(await page.locator(`${root} [data-condition="kind"]`).first().locator('option').evaluateAll(nodes => nodes.map(node => node.value)),
     ['center', 'channel', 'gate', 'line']);
   assert.equal(await page.locator(`${root} .tl-row`).first().getAttribute('data-key'), 'bridge:natal');
-  assert.match(await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first().innerText(), /2 分 → 1 分/);
+  assert.match(await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first().innerText(), /2 → 1/);
   assert.equal(await page.locator(`${root} .tl-target-chips`).count(), 0);
   assert.match(await page.locator(`${root} [data-field="combine"]`).innerText(), /同时满足所有条件/);
 

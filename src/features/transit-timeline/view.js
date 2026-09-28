@@ -507,15 +507,15 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // clipped to the moving viewport, so empty tracks retain their position.
     const rowName = row => row.kind === 'bridge' ? t('bridge') : name(row);
     const natalIslandCount = chart ? natalIslands(host.identity(chart.chart)).length : 0;
-    const bridgeApplicable = mode === 'overlay' && natalIslandCount > 1;
+    const bridgeApplicable = natalIslandCount > 1;
     const rows = result.rows.filter(row => (row.kind === 'bridge' ? bridgeApplicable : row.intervals.length > 0) &&
       (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
       && (!query || `${rowName(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
         (row.kind === 'gate' && result.rows.some(line => line.kind === 'line' && line.gate === row.id && line.id.includes(query))))
-      && (!changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
+      && (row.kind === 'bridge' || !changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
     reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}">
-      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}">${expandedGates.has(row.id) ? '▾' : '▸'}</button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
+      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M1 1 19 10 1 19Z"/></svg></button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';

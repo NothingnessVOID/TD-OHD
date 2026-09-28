@@ -31,10 +31,11 @@ export function stateAt(natal, activations, mode, planet = 'all') {
   for (const center of model.definedCenters) {
     states.set(`center:${center}`, mode === 'overlay' && model.natalCenters.has(center) ? 'natal' : 'transit');
   }
-  if (mode === 'overlay') {
-    const bridge = bridgeState(natal, model.activeGates);
-    if (bridge.connected.length) states.set('bridge:natal', JSON.stringify(bridge.connected));
-  }
+  // This row describes how current transits connect the fixed natal islands,
+  // even when the bodygraph is displaying transit activations alone.
+  const combinedGates = new Set([...natal.gates.all, ...Object.values(effective).filter(Boolean).map(value => value.gate)]);
+  const bridge = bridgeState(natal, combinedGates);
+  if (bridge.connected.length) states.set('bridge:natal', JSON.stringify(bridge.connected));
   return states;
 }
 

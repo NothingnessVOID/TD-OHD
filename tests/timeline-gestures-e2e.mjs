@@ -32,8 +32,8 @@ const expectedLocalRange = (page, days) => page.evaluate(async days => {
   const date = `${parts.year}-${parts.month}-${parts.day}`;
   const addDays = offset => new Date(Date.parse(`${date}T00:00:00Z`) + offset * 86400000).toISOString().slice(0, 10);
   const { transitInstants } = await import('/src/lib/transit-time.js');
-  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : 14;
-  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : 14;
+  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : days / 2;
+  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : days / 2;
   return { start: transitInstants(addDays(-before), '00:00:00', zone)[0].instant,
     end: transitInstants(addDays(after), '00:00:00', zone)[0].instant };
 }, days);
@@ -223,7 +223,7 @@ try {
     assert.deepEqual(Object.keys(values).sort(), ['design', 'personality']);
     assert.ok(values.design && values.personality);
     const presets = await page.locator(`${root} [data-field="span"] option`).evaluateAll(options => options.map(o => o.value));
-    assert.deepEqual(presets, ['1', '3', '7', '28', 'year', 'past-year']);
+    assert.deepEqual(presets, ['1', '3', '7', '30', '90', '180', 'year', 'past-year']);
     await checkCompactPlanets(page, '927px');
   });
 
@@ -782,7 +782,7 @@ try {
 
   await log('rapid range switches and view reentry settle on latest range', async () => {
     await page.selectOption(`${root} [data-field="span"]`, '1');
-    await page.selectOption(`${root} [data-field="span"]`, '28');
+    await page.selectOption(`${root} [data-field="span"]`, '30');
     await page.locator('.nav-link[data-view="chart"]').click();
     await page.locator('.nav-link[data-view="timeline"]').click();
     await page.selectOption(`${root} [data-field="span"]`, '3');
@@ -795,11 +795,11 @@ try {
     await moonMatches(page);
   });
 
-  await log('28-day reentry calculates uncached first and last moments', async () => {
-    await page.selectOption(`${root} [data-field="span"]`, '28');
+  await log('30-day reentry calculates uncached first and last moments', async () => {
+    await page.selectOption(`${root} [data-field="span"]`, '30');
     await page.locator('.nav-link[data-view="chart"]').click();
     await page.locator('.nav-link[data-view="timeline"]').click();
-    await ready(page, 28);
+    await ready(page, 30);
     const edges = await page.locator(`${root} .tl-bar`).evaluateAll(bars => {
       const intervals = bars.map(bar => ({
         left: parseFloat(bar.style.left),
@@ -810,7 +810,7 @@ try {
         last: Math.max(...intervals.map(interval => interval.right)),
       };
     });
-    assert.ok(edges.first < 1 && edges.last > 99, `28-day bars reach both viewport edges: ${JSON.stringify(edges)}`);
+    assert.ok(edges.first < 1 && edges.last > 99, `30-day bars reach both viewport edges: ${JSON.stringify(edges)}`);
     await page.waitForTimeout(350);
     assert.equal(await page.locator(tableSelector).getAttribute('aria-busy'), 'false');
     await page.selectOption(`${root} [data-field="span"]`, '7');

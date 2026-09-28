@@ -35,8 +35,8 @@ const expectedLocalRange = (targetPage, days) => targetPage.evaluate(async days 
   const date = `${parts.year}-${parts.month}-${parts.day}`;
   const addDays = offset => new Date(Date.parse(`${date}T00:00:00Z`) + offset * 86400000).toISOString().slice(0, 10);
   const { transitInstants } = await import('/src/lib/transit-time.js');
-  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : 14;
-  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : 14;
+  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : days / 2;
+  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : days / 2;
   return { start: transitInstants(addDays(-before), '00:00:00', zone)[0].instant,
     end: transitInstants(addDays(after), '00:00:00', zone)[0].instant };
 }, days);
@@ -102,7 +102,7 @@ try {
     assert.ok(await page.locator(`${tl} .tl-bar`).count() > 0);
     assert.match(await page.locator(`${tl} .tl-person`).innerText(), /Timeline Demo/);
     assert.deepEqual(await page.locator(field('span')).locator('option').evaluateAll(options => options.map(option => option.value)),
-      ['1', '3', '7', '28', 'year', 'past-year']);
+      ['1', '3', '7', '30', '90', '180', 'year', 'past-year']);
     const range = await calculatedRange();
     assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 7)),
       'default seven days run from local midnight three days before through four days after');
@@ -209,7 +209,7 @@ try {
     const expected = await expectedLocalRange(page, 1);
     assert.deepEqual([oneDay.start, oneDay.end], [expected.start, expected.end],
       'one-day preset covers the selected local calendar date');
-    await page.selectOption(field('span'), '28');
+    await page.selectOption(field('span'), '30');
     await page.click('.nav-link[data-view="chart"]');
     await page.click('.nav-link[data-view="timeline"]');
     await page.selectOption(field('span'), '7');
@@ -221,12 +221,12 @@ try {
     assert.equal(await page.locator(`${tl} .tl-table`).getAttribute('aria-busy'), 'false');
   });
 
-  await run('3-day and 28-day ranges follow local calendar boundaries', async () => {
-    await page.selectOption(field('span'), '28');
+  await run('3-day and 30-day ranges follow local calendar boundaries', async () => {
+    await page.selectOption(field('span'), '30');
     await ready();
     assert.ok(await page.locator(`${tl} .tl-bar`).count() > 0);
     let range = await calculatedRange();
-    assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 28)));
+    assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 30)));
     await page.selectOption(field('span'), '3');
     await ready();
     range = await calculatedRange();
