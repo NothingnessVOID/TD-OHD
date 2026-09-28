@@ -11,6 +11,13 @@ const village = admin1 => ({ ...city, admin1, feature_code: 'PPL', population: u
 try {
   for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
     const page = await browser.newPage({ viewport, locale: 'zh-CN' });
+    const navClick = async view => {
+      if (viewport.width < 600 && await page.locator('#mobile-menu-toggle').getAttribute('aria-expanded') !== 'true') {
+        if (await page.locator('#timeline-view [data-action="mobile-exit"]').isVisible()) await page.locator('#timeline-view [data-action="mobile-exit"]').click();
+        else await page.locator('#mobile-menu-toggle').click();
+      }
+      await page.locator(`.nav-link[data-view="${view}"]`).click();
+    };
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.route('**/geocoding-api.open-meteo.com/v1/search?*', route => route.fulfill({
@@ -24,7 +31,7 @@ try {
     await page.goto(`${base}/`);
 
     for (const view of ['transits', 'timeline', 'connection', 'team']) {
-      await page.locator(`.nav-link[data-view="${view}"]`).click();
+      await navClick(view);
       await page.locator('#chart-required-view:not(.hidden)').waitFor();
       assert.match(await page.locator('#chart-required-view').innerText(), /请先建立出生图/);
       assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), [view]);
@@ -43,7 +50,7 @@ try {
     await page.locator('#birth-form button[type="submit"]').click();
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
 
-    await page.locator('.nav-link[data-view="library"]').click();
+    await navClick('library');
     await page.locator('#library-view:not(.hidden)').waitFor();
     assert.equal(new URL(page.url()).hash, '#library');
     await page.locator('#reference-search').fill('14.2');
@@ -76,7 +83,7 @@ try {
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['chart']);
 
-    await page.locator('.nav-link[data-view="transits"]').click();
+    await navClick('transits');
     await page.locator('#transits-view:not(.hidden)').waitFor();
     await page.locator('#transit-bodygraph .bg-center[data-center="throat"]').click();
     await page.locator('#gate-detail .center-detail-card[data-center="throat"]').waitFor();
@@ -88,9 +95,10 @@ try {
     });
     const transitCenter = await page.locator('#gate-detail .center-detail-card .gate-detail-desc').allTextContents();
     assert.ok(canonicalCenter.length >= 2);
-    for (const paragraph of canonicalCenter) assert.ok(transitCenter.some(text => text.trim() === paragraph));
+    assert.equal(transitCenter.length, 1, 'transit detail shows one reading for its current state');
+    assert.ok(canonicalCenter.some(paragraph => paragraph === transitCenter[0].trim()));
     await page.keyboard.press('Escape');
-    await page.locator('.nav-link[data-view="library"]').click();
+    await navClick('library');
     await page.locator('#reference-search').fill('14');
     await page.locator('#reference-results .reference-result').first().click();
     await page.goBack();
@@ -100,7 +108,7 @@ try {
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['transits']);
 
-    await page.locator('.nav-link[data-view="timeline"]').click();
+    await navClick('timeline');
     const tl = '#timeline-view';
     const table = page.locator(`${tl} .tl-table`);
     const selected = () => table.evaluate(node => Number(node.dataset.selected));
@@ -128,9 +136,9 @@ try {
       assert.equal(await page.locator(`${tl} .tl-tracks-panel .tl-event-nav`).count(), 0);
     }
 
-    if (viewport.width < 600) await page.locator(`${tl} [data-action="mobile-controls"]`).click();
     await page.locator(`${tl} [data-field="span"]`).selectOption('28');
     await ready();
+    if (viewport.width < 600) await page.locator(`${tl} [data-action="mobile-controls"]`).click();
     await page.locator(`${tl} .tl-advanced summary`).click();
     await page.locator(`${tl} [data-field="planet"]`).selectOption('moon');
     await ready();
@@ -164,13 +172,14 @@ try {
     await first.locator('[data-condition="target-search"]').fill('14.2');
     assert.equal(await first.locator('.tl-target-option').count(), 1);
     await first.locator('input[data-target-id="14.2"]').check();
-    assert.match(await first.locator('.tl-target-chips').innerText(), /14\.2/);
+    assert.match(await first.locator('[data-action="toggle-targets"]').innerText(), /14\.2/);
+    assert.equal(await first.locator('.tl-target-chips').count(), 0);
     await first.locator('[data-condition="kind"]').selectOption('channel');
     await first.locator('[data-action="toggle-targets"]').click();
     await first.locator('[data-condition="target-search"]').fill('60-3');
     assert.equal(await first.locator('.tl-target-option').count(), 1);
     await first.locator('input[data-target-id="3-60"]').check();
-    assert.match(await first.locator('.tl-target-chips').innerText(), /3-60/);
+    assert.match(await first.locator('[data-action="toggle-targets"]').innerText(), /3-60/);
     assert.equal(await first.locator('input[data-condition="ids"]').count(), 0);
     await first.locator('[data-condition="kind"]').selectOption('bridge');
     assert.equal(await first.locator('.tl-target-picker').isVisible(), false);

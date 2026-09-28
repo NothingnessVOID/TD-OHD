@@ -98,6 +98,9 @@ function showView(view, { fromHistory = false } = {}) {
     history.pushState({ ohdView: view }, '', `${location.pathname}${location.search}`);
   }
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
+  document.body.classList.remove('mobile-nav-open');
+  document.getElementById('mobile-menu-toggle').setAttribute('aria-expanded', 'false');
+  document.getElementById('chart-share-menu').classList.toggle('hidden', view !== 'chart' || !currentData);
 
   document.querySelectorAll('.nav-link').forEach(l =>
     l.classList.toggle('active', l.dataset.view === view));
@@ -130,6 +133,18 @@ function showView(view, { fromHistory = false } = {}) {
 }
 
 function setupNavigation() {
+  const menu = document.getElementById('mobile-menu-toggle');
+  menu.addEventListener('click', () => {
+    const open = !document.body.classList.contains('mobile-nav-open');
+    document.body.classList.toggle('mobile-nav-open', open);
+    menu.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.header') && !event.target.closest('.tl-mobile-exit')) {
+      document.body.classList.remove('mobile-nav-open');
+      menu.setAttribute('aria-expanded', 'false');
+    }
+  });
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => showView(link.dataset.view));
   });

@@ -34,10 +34,9 @@
 }
 @media (max-width: 640px) {
   .language-switcher { max-width: 82px; font-size: 11px; padding-inline: 3px; }
-  /* Leave navigation usable when the extra selector shares a narrow header. */
-  :root { --header-height: 88px; }
-  .header-inner { flex-wrap: wrap; padding-block: 6px; }
-  .header-actions { margin-left: auto; gap: 4px; }
+  :root { --header-height: 56px; }
+  .header-inner { flex-wrap: nowrap; padding-block: 0; }
+  .header-actions { margin-left: 0; gap: 4px; }
   .header-actions .people-switcher { max-width: 72px; }
-  .header .nav { order: 1; flex: 0 0 100%; justify-content: center; }
+  .header .nav { order: 0; flex: none; justify-content: flex-start; }
 }

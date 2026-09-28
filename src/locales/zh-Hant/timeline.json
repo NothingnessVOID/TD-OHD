@@ -28,6 +28,8 @@
   "fallbackNotice": "年度資料無法使用，已直接計算目前範圍。",
   "advanced": "進階設定",
   "conditions": "狀態條件",
+  "allConditions": "同時滿足所有條件",
+  "anyCondition": "滿足任意一個條件",
   "combine": "條件組合",
   "any": "任一",
   "gateLine": "閘門爻線",

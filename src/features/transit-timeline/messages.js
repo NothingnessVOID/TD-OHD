@@ -16,6 +16,7 @@ export const en = {
   loadingTitle: 'Calculating your timeline', loadingHint: 'Longer ranges may take a little more time.', ready: '{count} rows · {events} gate changes',
   noRows: 'No matching activations in this window.',
   advanced: 'Advanced', conditions: 'State conditions', combine: 'Combine conditions', any: 'Any',
+  allConditions: 'All conditions must match', anyCondition: 'Any condition may match',
   gateLine: 'Gate line', bridge: 'Natal definition bridge', conditionKind: 'Object type',
   conditionTargets: 'Select valid targets', selectedTargets: '{count} selected',
   searchTargets: 'Search targets…', removeTarget: 'Remove {id}', conditionState: 'State',

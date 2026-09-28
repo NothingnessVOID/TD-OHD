@@ -152,7 +152,9 @@ try {
     'the vertical gesture does not switch to time panning');
 
   await root.locator('[data-action="mobile-exit"]').click();
+  assert.equal(await page.locator('#mobile-menu-toggle').getAttribute('aria-expanded'), 'true');
   assert.equal(await page.locator('.header').evaluate(node => getComputedStyle(node).display), 'block');
+  await page.locator('.nav-link[data-view="chart"]').click();
   assert.equal(await page.locator('#chart-view').isVisible(), true);
   await context.close();
   console.log('Mobile timeline split layout, controls, hour ruler and touch highlight passed.');

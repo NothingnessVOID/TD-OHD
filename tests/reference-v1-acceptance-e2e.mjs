@@ -17,6 +17,14 @@ try {
       if (/transit-data\/[^/]+\/\d{4}\.[^/]+\.json/.test(request.url())) annualRequests.push(request.url());
     });
     const root = '#timeline-view';
+    const navClick = async view => {
+      if (viewport.width < 600 && await page.locator('#mobile-menu-toggle').getAttribute('aria-expanded') !== 'true') {
+        if (view === 'chart' && await page.locator(`${root} [data-action="mobile-exit"]`).isVisible()) {
+          await page.locator(`${root} [data-action="mobile-exit"]`).click();
+        } else await page.locator('#mobile-menu-toggle').click();
+      }
+      await page.locator(`.nav-link[data-view="${view}"]`).click();
+    };
     const gateButton = action => page.locator(`${root} ${viewport.width < 600 ? '.tl-mobile-event-nav' : '.tl-toolbar .tl-event-nav'} [data-action="${action}"]`);
     const ready = () => page.waitForFunction(() =>
       document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false',
@@ -34,7 +42,7 @@ try {
     assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('#chart-view').isVisible(), true);
-    await page.locator('.nav-link[data-view="library"]').click();
+    await navClick('library');
     await page.locator('#library-view:not(.hidden)').waitFor();
     assert.equal(new URL(page.url()).search, '');
     assert.ok(gateNumber >= 1 && gateNumber <= 64, `selected gate from channel ${channel}`);
@@ -42,16 +50,16 @@ try {
     await page.locator('#reference-detail .gate-detail-line').first().waitFor();
     assert.equal((await page.locator('#reference-detail .reference-reading').innerText()).trim(), popupCore);
     if (viewport.width < 600) await page.locator('#reference-detail .reference-back').click();
-    await page.locator('.nav-link[data-view="chart"]').click();
+    await navClick('chart');
     await page.locator('#chart-view:not(.hidden)').waitFor();
-    await page.locator('.nav-link[data-view="transits"]').click();
+    await navClick('transits');
     await page.locator('#transits-view:not(.hidden)').waitFor();
-    await page.locator('#transit-timezone').selectOption('Asia/Tokyo');
+    assert.equal(await page.locator('#transit-timezone').evaluate(node => node.tagName), 'OUTPUT');
     await page.locator('#transit-now').click();
-    assert.equal(await page.locator('#transit-timezone').inputValue(), 'Asia/Tokyo');
+    assert.ok((await page.locator('#transit-timezone').innerText()).trim());
     assert.ok(await page.locator('#transit-bodygraph .bodygraph-svg').count());
 
-    await page.locator('.nav-link[data-view="timeline"]').click();
+    await navClick('timeline');
     await page.locator(`${root}:not(.hidden) .tl-table`).waitFor();
     await ready();
     const checkSourceColors = async () => {
@@ -85,7 +93,6 @@ try {
     await page.locator('#theme-toggle').evaluate(node => node.click());
     await ready();
     const controls = page.locator(`${root} .tl-mobile-controls-panel`);
-    if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
     const span = page.locator(`${root} [data-field="span"]`);
     await span.selectOption('28'); await ready();
     await span.selectOption('7'); await ready();
@@ -99,7 +106,6 @@ try {
     assert.equal(await expand.getAttribute('aria-expanded'), 'true');
     const parent = await expand.locator('xpath=ancestor::div[@data-key]').getAttribute('data-key');
     assert.match(await page.locator(`${root} .tl-row[data-key="${parent}"] + .tl-row`).getAttribute('data-key'), /^line:/);
-    if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
     const table = page.locator(`${root} .tl-table`);
     const selected = () => table.evaluate(node => Number(node.dataset.selected));
     const before = await selected();
@@ -182,10 +188,10 @@ try {
       await page.screenshot({ path: `docs/reference-timeline/stage-6/acceptance-${viewport.width}.png` });
     }
 
-    if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-exit"]`).click();
-    else await page.locator('.nav-link[data-view="chart"]').click();
+    await navClick('chart');
     await page.locator('#chart-view:not(.hidden)').waitFor();
     assert.equal(await page.locator('.share-fields').count(), 0);
+    await page.locator('#chart-share-menu summary').click();
     await page.locator('#share-chart').click();
     const shared = await page.evaluate(() => navigator.clipboard.readText());
     const sharedUrl = new URL(shared);

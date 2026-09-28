@@ -56,5 +56,5 @@ export function centerReading(id, { status = null, includeTheme = true } = {}) {
   const readings = status ? [[status, center[`${status}Meaning`] || (status === 'defined' ? center.pressure : '')]]
     : [['defined', center.definedMeaning || center.pressure], ['undefined', center.undefinedMeaning], ['open', center.openMeaning]];
   return `${includeTheme ? `<p class="gate-detail-desc">${esc(contentText(center.theme || ''))}${center.biological ? ` · ${esc(contentText(center.biological))}` : ''}</p>` : ''}
-    ${readings.map(([, text]) => text ? `<p class="gate-detail-desc">${esc(contentText(text))}</p>` : '').join('')}`;
+    ${readings.map(([state, text]) => text ? `<div class="center-reading-state">${status ? '' : `<strong>${esc(t(({ defined: 'Defined', undefined: 'Undefined', open: 'Open' })[state]))}</strong>`}<p class="gate-detail-desc">${esc(contentText(text))}</p></div>` : '').join('')}`;
 }
