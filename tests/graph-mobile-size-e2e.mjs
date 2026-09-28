@@ -14,6 +14,20 @@ try {
     assert.ok(graph <= 331, `${width}px birth graph is capped: ${graph}`);
   }
 
+  await page.setViewportSize({ width: 1224, height: 703 });
+  const birthDesktop = await page.evaluate(() => {
+    const column = document.querySelector('#chart-view .chart-column');
+    return {
+      graphWidth: document.querySelector('#bodygraph-container svg').getBoundingClientRect().width,
+      cardHeight: document.querySelector('#bodygraph-container').getBoundingClientRect().height,
+      columnHeight: column.clientHeight,
+      scrollHeight: column.scrollHeight
+    };
+  });
+  assert.ok(birthDesktop.graphWidth <= 361 && birthDesktop.graphWidth >= 359 &&
+    birthDesktop.cardHeight <= 599 && birthDesktop.scrollHeight <= birthDesktop.columnHeight + 1,
+  `1224px birth graph fits without inner scrolling: ${JSON.stringify(birthDesktop)}`);
+
   await page.setViewportSize({ width: 754, height: 703 });
   await page.locator('.nav-link[data-view="transits"]').click();
   await page.locator('.transit-birth-pair').waitFor();
@@ -45,7 +59,25 @@ try {
   });
   assert.ok(desktop.overflow === 'visible' && desktop.cardBottom <= desktop.viewport + 1,
     `830px desktop graph is reachable by page scrolling: ${JSON.stringify(desktop)}`);
-  console.log('Bodygraph size and desktop scroll checks passed.');
+  await page.setViewportSize({ width: 1224, height: 703 });
+  const transitDesktop = await page.evaluate(() => {
+    const column = document.querySelector('#transits-view .chart-column');
+    return {
+      graphWidth: document.querySelector('#transit-bodygraph svg').getBoundingClientRect().width,
+      cardHeight: document.querySelector('#transit-bodygraph').getBoundingClientRect().height,
+      columnHeight: column.clientHeight,
+      scrollHeight: column.scrollHeight
+    };
+  });
+  assert.ok(transitDesktop.graphWidth <= 361 && transitDesktop.graphWidth >= 359 &&
+    transitDesktop.cardHeight <= 599 && transitDesktop.scrollHeight <= transitDesktop.columnHeight + 1,
+  `1224px transit graph fits without inner scrolling: ${JSON.stringify(transitDesktop)}`);
+  await page.locator('.nav-link[data-view="timeline"]').click();
+  await page.locator('.tl-graph-panel').waitFor();
+  const timelineHeight = await page.locator('.tl-graph-panel').evaluate(node => node.getBoundingClientRect().height);
+  assert.ok(timelineHeight >= 540 && timelineHeight <= 545,
+    `1224px timeline graph uses available height: ${timelineHeight}`);
+  console.log('Bodygraph and timeline size checks passed.');
 } finally {
   await browser.close();
 }

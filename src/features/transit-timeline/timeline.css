@@ -9,7 +9,7 @@
   --tl-day-odd: color-mix(in srgb, var(--tl-transit) 6%, transparent);
   --tl-day-divider: color-mix(in srgb, var(--text-secondary) 12%, transparent);
   --tl-label-width: 40px; --tl-row-height: 28px;
-  --tl-canvas-height: clamp(490px, calc(100dvh - 212px), 710px);
+  --tl-canvas-height: clamp(490px, calc(100dvh - 160px), 710px);
   max-width: 1500px; margin: 0 auto; padding: 14px 24px 30px; color: var(--text);
 }
 .tl [hidden] { display: none !important; }

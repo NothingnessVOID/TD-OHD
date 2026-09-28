@@ -453,6 +453,7 @@ body {
   height: auto;
 }
 #bodygraph-container .bg-grid { grid-template-columns: minmax(48px, 15%) minmax(0, 70%) minmax(48px, 15%); gap: 0; }
+#bodygraph-container .bg-svg-wrap { width: 100%; max-width: 360px; justify-self: center; }
 #bodygraph-container { padding: 16px 8px; }
 #bodygraph-container .bg-planet-row { padding: 2px 0; gap: 1px; font-size: 10px; }
 #bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
@@ -1952,7 +1953,7 @@ body.modal-open { overflow: hidden; }
 
 .transit-graph { min-width: 0; padding: 14px; }
 .transit-graph .bg-grid { display: block; position: relative; }
-.transit-graph .bg-svg-wrap { width: 100%; }
+.transit-graph .bg-svg-wrap { width: min(100%, 360px); margin-inline: auto; }
 .transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; width: 126px; min-width: 0; }
 .transit-planet-column { position: absolute; top: 38px; left: 0; z-index: 2; width: 58px; }
 .transit-birth-pair .bg-planets { min-width: 0; }
