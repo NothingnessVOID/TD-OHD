@@ -23,9 +23,10 @@ test('the reference catalog covers the engine topology without top-level lines',
 test('reversed and typographic channel IDs resolve while invalid gate and line IDs stay invalid', () => {
   assert.equal(referenceEntry('channel', '60–3')?.id, '3-60');
   assert.equal(referenceEntry('channel', '60-3')?.id, '3-60');
-  assert.equal(searchReference('14.2')[0]?.id, '14');
-  assert.equal(searchReference('14.2')[0]?.line, 2);
-  for (const value of ['14.0', '14.7', '14.foo', '14.1.extra']) assert.deepEqual(searchReference(value), []);
+  assert.ok(searchReference('14').some(entry => entry.kind === 'gate' && entry.id === '14'));
+  for (const value of ['14.', '14.2', '14.0', '14.7', '14.foo', '14.1.extra']) assert.deepEqual(searchReference(value), []);
+  assert.equal(searchReference('', 'group').length, 3);
+  assert.equal(searchReference('', 'circuit').some(entry => entry.kind === 'group'), false);
   assert.equal(referenceEntry('gate', '65'), null);
   assert.equal(referenceEntry('channel', '1-2'), null);
 });

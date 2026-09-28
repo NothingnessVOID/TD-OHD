@@ -134,7 +134,7 @@ const checkCompactPlanets = async (page, label, mobile = false) => {
   for (const gap of [...layout.transitGaps, ...layout.personalityGaps])
     assert.ok(Math.abs(gap - 2) < 1, `${label} value-to-arrow gap ${gap}px`);
   assert.equal(layout.selectedSpan, '7');
-  if (mobile) assert.ok(layout.spanInMobilePanel, `${label} range moved to floating controls`);
+  if (mobile) assert.ok(!layout.spanInMobilePanel, `${label} range stays outside the controls panel`);
   else assert.ok(layout.spanWidth < 79 && layout.spanAlign === 'right',
     `${label} compact right-aligned range: ${JSON.stringify(layout)}`);
 };
@@ -467,7 +467,7 @@ try {
     }
   });
 
-  await log('reverse wheel restores cursor to 35/65 percent before moving viewport', async () => {
+  await log('reverse wheel pans immediately without a fixed recovery zone', async () => {
     const table = page.locator(tableSelector);
     await table.scrollIntoViewIfNeeded();
     const ticks = await page.locator(`${root} .tl-ticks`).boundingBox();
@@ -482,18 +482,15 @@ try {
       assert.equal(edge.selected, direction < 0 ? edge.start : edge.end - 1000);
       await page.mouse.wheel(-direction * ticks.width * .2, 0);
       const cursorOnly = await state(page);
-      assert.deepEqual([cursorOnly.start, cursorOnly.end], [edge.start, edge.end],
-        'small reverse wheel moves only the cursor');
-      const cursorRatio = (cursorOnly.selected - cursorOnly.start) / (cursorOnly.end - cursorOnly.start);
-      assert.ok(direction < 0 ? cursorRatio > .15 && cursorRatio < .35 : cursorRatio < .85 && cursorRatio > .65,
-        `cursor approaches threshold before viewport recovery: ${cursorRatio}`);
+      assert.ok(direction < 0 ? cursorOnly.start > edge.start : cursorOnly.start < edge.start,
+        'small reverse wheel moves the viewport immediately');
       await page.mouse.wheel(-direction * ticks.width * .25, 0);
       const recovered = await state(page);
       assert.ok(direction < 0 ? recovered.start > cursorOnly.start : recovered.start < cursorOnly.start,
         'larger reverse wheel starts moving the viewport');
       const recoveredRatio = (recovered.selected - recovered.start) / (recovered.end - recovered.start);
-      assert.ok(direction < 0 ? recoveredRatio >= .34 && recoveredRatio <= .37 : recoveredRatio <= .66 && recoveredRatio >= .63,
-        `cursor stays near the 35/65 percent handoff: ${recoveredRatio}`);
+      assert.ok(direction < 0 ? recoveredRatio < .02 : recoveredRatio > .98,
+        `cursor remains at the visible edge while panning: ${recoveredRatio}`);
       assert.equal(await table.getAttribute('aria-busy'), 'false');
       assert.equal(await page.evaluate(() => window.__tlWorkerCount), workers);
     }
@@ -832,11 +829,11 @@ try {
         const stage = document.querySelector('#timeline-view .tl-stage').getBoundingClientRect();
         const tracks = document.querySelector('#timeline-view .tl-tracks-panel').getBoundingClientRect();
         return { height: rect.height, stageBottom: stage.bottom, tracksTop: tracks.top,
-          tracksBottom: tracks.bottom, controlsInPanel: !!document.querySelector('#timeline-view [data-field="span"]')
-            ?.closest('.tl-mobile-controls-panel') };
+          tracksBottom: tracks.bottom, rangeFloating: !!document.querySelector('#timeline-view [data-field="span"]')
+            ?.closest('.tl-mobile-range') };
       });
       assert.ok(layout.height <= 32 && Math.abs(layout.stageBottom - layout.tracksTop) < 3 &&
-        layout.tracksBottom <= 845 && layout.controlsInPanel,
+        layout.tracksBottom <= 845 && layout.rangeFloating,
         `390px split timeline: ${JSON.stringify(layout)}`);
     });
   } finally { await mobileContext.close(); }

@@ -77,15 +77,16 @@ try {
   const panel = root.locator('.tl-mobile-controls-panel');
   assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
   if (process.env.MOBILE_PANEL_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_PANEL_SCREENSHOT });
-  for (const field of ['date', 'time', 'zone', 'mode', 'kind', 'search', 'span', 'changes'])
+  for (const field of ['date', 'time', 'zone', 'mode', 'kind', 'search', 'changes'])
     assert.ok(await panel.locator(`[data-field="${field}"]`).count(), `${field} stays available in the floating controls`);
-  await panel.locator('[data-field="span"]').selectOption('1');
+  assert.ok(await root.locator('.tl-mobile-range [data-field="span"]').count(), 'range is outside the floating controls');
+  await trigger.click();
+  await root.locator('.tl-mobile-range [data-field="span"]').selectOption('1');
   await page.waitForFunction(() => {
     const node = document.querySelector('#timeline-view .tl-table');
     return node?.getAttribute('aria-busy') === 'false' &&
       Number(node.dataset.calculatedEnd) - Number(node.dataset.calculatedStart) === 86400000;
   }, null, { timeout: 120000 });
-  await trigger.click();
   assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
   if (process.env.MOBILE_HOURLY_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_HOURLY_SCREENSHOT });
   const hourCells = await root.locator('.tl-ticks .tl-date-cell[data-granularity="hour"]').evaluateAll(nodes =>

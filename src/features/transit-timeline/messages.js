@@ -23,6 +23,7 @@ export const en = {
   addCondition: 'Add condition', removeCondition: 'Remove condition', runQuery: 'Find intervals',
   noMatches: 'No matching intervals.', fullRange: 'The full requested range matches.',
   matchCount: '{count} matching intervals',
+  previousMatch: 'Previous match', nextMatch: 'Next match',
   noNextGate: 'No adjacent gate change in this range.',
   fallbackNotice: 'Annual data unavailable; calculated this range directly.',
   error: 'Could not calculate this window. Try a shorter range or reload.', retry: 'Retry',

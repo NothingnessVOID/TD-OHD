@@ -123,7 +123,8 @@ export function renderBodygraph(container, chart, opts = {}) {
   const interactive = !opts.compact;
   const showColumns = !opts.compact && opts.planetColumns !== false && !opts.composite;
   const animate = opts.animate !== false && !opts.compact;
-  container.innerHTML = '';
+  // Keep the previous graph painted until the replacement SVG is complete.
+  const nextGraph = document.createDocumentFragment();
   container.classList.add('bg-root');
   if (opts.compact) container.classList.add('bg-compact');
 
@@ -729,7 +730,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       if (centerEl && opts.onCenterClick) { evt.preventDefault(); opts.onCenterClick(centerEl.getAttribute('data-center')); }
     });
 
-    container.appendChild(tooltip);
+    nextGraph.appendChild(tooltip);
   }
 
   // ---------- Planet columns ----------
@@ -777,10 +778,11 @@ export function renderBodygraph(container, chart, opts = {}) {
     svgWrap.appendChild(svg);
     wrap.appendChild(svgWrap);
     wrap.appendChild(planetColumn('personality', chart.gates?.personality, chart.positions?.personality?.date || null));
-    container.appendChild(wrap);
+    nextGraph.appendChild(wrap);
   } else {
-    container.appendChild(svg);
+    nextGraph.appendChild(svg);
   }
+  container.replaceChildren(nextGraph);
 
   const api = { highlightGate, highlightCenter, highlightSelection: selection => applySelection(selection || pinned), setPinned };
   if (composite) Object.assign(api, { gateOwner, centerOwner, channelDynamic });

@@ -47,11 +47,14 @@ try {
     await page.locator('#library-view:not(.hidden)').waitFor();
     assert.equal(new URL(page.url()).hash, '#library');
     await page.locator('#reference-search').fill('14.2');
+    assert.equal(await page.locator('#reference-results .reference-result').count(), 0);
+    await page.locator('[data-reference-filter="gate"]').click();
+    await page.locator('#reference-search').fill('14');
     await page.locator('#reference-results .reference-result').first().click();
-    await page.locator('#reference-detail .gate-detail-line[data-line="2"].reference-line-target').waitFor();
+    await page.locator('#reference-detail .gate-detail-line[data-line="2"]').waitFor();
     assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 6);
     assert.equal(await page.locator('#reference-detail [data-reference-line]').count(), 0);
-    assert.match(page.url(), /#library\/gate\/14\?line=2/);
+    assert.match(page.url(), /#library\/gate\/14$/);
     await page.locator('[data-reference-lens="gk"]').click();
     assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 0);
     assert.doesNotMatch(await page.locator('#reference-detail h2').innerText(), /14\.2/);
@@ -61,7 +64,7 @@ try {
     await page.locator('#reference-detail [data-reference-kind="gate"][data-reference-id="2"]').click();
     assert.match(page.url(), /#library\/gate\/2/);
     for (const [hash, title] of [
-      ['#library/channel/2-14', /2-14/], ['#library/gate/14?line=2', /14/], ['#library', /选择条目|Select an entry/]
+      ['#library/channel/2-14', /2-14/], ['#library/gate/14', /14/], ['#library', /选择条目|Select an entry/]
     ]) {
       await page.goBack();
       await page.waitForFunction(expected => location.hash === expected, hash);
@@ -171,7 +174,7 @@ try {
     assert.equal(await first.locator('input[data-condition="ids"]').count(), 0);
     await first.locator('[data-condition="kind"]').selectOption('bridge');
     assert.equal(await first.locator('.tl-target-picker').isVisible(), false);
-    assert.equal(await first.locator('[data-condition="state"]').isVisible(), true);
+    assert.equal(await first.locator('[data-condition="state"]').isVisible(), false);
     await page.goto(`${base}/#library/gate/14`);
     await page.locator('#reference-detail:not(.hidden) .reference-back').click();
     await page.waitForFunction(() => location.hash === '#library');

@@ -66,16 +66,7 @@ export function panTimeline(range, selected, deltaMs, bounds) {
   if (!Number.isFinite(selected)) throw new RangeError('Invalid viewport instant');
   const shifted = panWindow(range, deltaMs);
   const shift = shifted.start - range.start;
-  const span = range.end - range.start;
-  let windowShift = shift;
-  if (shift > 0 && selected < range.start + span * .35) {
-    const recovery = Math.ceil((range.start + span * .35 - selected) / SECOND) * SECOND;
-    windowShift = Math.max(0, shift - recovery);
-  } else if (shift < 0 && selected > range.start + span * .65) {
-    const recovery = Math.ceil((selected - range.start - span * .65) / SECOND) * SECOND;
-    windowShift = Math.min(0, shift + recovery);
-  }
-  const nextRange = clampWindow(panWindow(range, windowShift), bounds);
+  const nextRange = clampWindow(shifted, bounds);
   const nextSelected = Math.round((selected + shift) / SECOND) * SECOND;
   return {
     range: nextRange,

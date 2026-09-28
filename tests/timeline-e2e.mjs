@@ -576,7 +576,7 @@ try {
     }
   });
 
-  if (!process.env.SKIP_TIMELINE_YEAR) await run('future and past year calculate local anniversaries with monthly ruler and detail', async () => {
+  if (!process.env.SKIP_TIMELINE_YEAR) await run('centered and past year calculate local anniversaries with monthly ruler and detail', async () => {
     await page.setViewportSize({ width: 927, height: 800 });
     await page.selectOption(field('zone'), 'America/New_York');
     await page.fill(field('date'), '2025-03-15');
@@ -585,11 +585,11 @@ try {
     const expected = await page.evaluate(async () => {
       const { transitInstants } = await import('/src/lib/transit-time.js');
       const at = date => transitInstants(date, '12:00:00', 'America/New_York')[0].instant;
-      return { past: at('2024-03-15'), selected: at('2025-03-15'), future: at('2026-03-15') };
+      return { past: at('2024-03-15'), halfPast: at('2024-09-15'), selected: at('2025-03-15'), halfFuture: at('2025-09-15') };
     });
     assert.equal(await instant(), expected.selected);
     for (const [preset, start, end] of [
-      ['year', expected.selected, expected.future],
+      ['year', expected.halfPast, expected.halfFuture],
       ['past-year', expected.past, expected.selected + 1000],
     ]) {
       assert.equal(await instant(), expected.selected, `${preset} starts from the same selected moment`);

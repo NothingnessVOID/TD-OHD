@@ -21,7 +21,8 @@ try {
     await page.locator('#reference-detail .reference-back').waitFor();
     if (viewport.width > 600) assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
     await page.locator('#reference-detail .reference-back').click();
-    assert.equal(await page.evaluate(() => document.activeElement?.classList.contains('reference-result')), true);
+    assert.match(await page.locator('#reference-detail .reference-empty').innerText(), /选择条目|Select an entry/);
+    if (viewport.width > 600) assert.equal(await page.evaluate(() => window.scrollY), 0);
     await page.locator('[data-reference-filter="channel"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /36/);
     await page.locator('#reference-search').fill('60–3');
