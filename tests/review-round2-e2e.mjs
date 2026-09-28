@@ -57,7 +57,31 @@ try {
     getComputedStyle(column.querySelector('.bg-planets-date')).textAlign,
     getComputedStyle(column.querySelector('.bg-planet-row')).justifyContent
   ]), ['right', 'right', 'flex-end'], 'personality heading, date and values share right alignment');
+  await page.locator('.panel-tab[data-panel="planets"]').click();
+  for (const width of [682, 343]) {
+    await page.setViewportSize({ width, height: 703 });
+    const table = await page.locator('.planet-table-row:not(.planet-table-head)').first().evaluate(row => {
+      const cells = [...row.children].filter(cell => getComputedStyle(cell).display !== 'none');
+      const bounds = row.getBoundingClientRect();
+      const first = cells[0].getBoundingClientRect();
+      const last = cells.at(-1).getBoundingClientRect();
+      const planet = row.querySelector('.planet-cell-identity').getBoundingClientRect();
+      return { planetMidpointDelta: Math.abs((planet.left + planet.right) / 2 - (bounds.left + bounds.right) / 2),
+        contentWidth: last.right - first.left, rowWidth: bounds.width };
+    });
+    assert.ok(table.planetMidpointDelta <= 1 && table.contentWidth <= table.rowWidth,
+      `${width}px planet identity stays centered: ${JSON.stringify(table)}`);
+  }
   await page.setViewportSize({ width: 903, height: 703 });
+  const narrowPanel = await page.locator('.planet-table-row:not(.planet-table-head)').first().evaluate(row => {
+    const bounds = row.getBoundingClientRect();
+    const visible = [...row.children].filter(cell => getComputedStyle(cell).display !== 'none');
+    const first = visible[0].getBoundingClientRect();
+    const last = visible.at(-1).getBoundingClientRect();
+    return { count: visible.length, left: first.left, right: last.right, rowLeft: bounds.left, rowRight: bounds.right };
+  });
+  assert.ok(narrowPanel.count === 5 && narrowPanel.left >= narrowPanel.rowLeft && narrowPanel.right <= narrowPanel.rowRight,
+    `903px side panel keeps planet values within the card: ${JSON.stringify(narrowPanel)}`);
   await page.locator('#bodygraph-container .bg-gate').first().click();
   const titleSizes = await page.locator('#gate-detail .detail-name').evaluate(node => ({
     name: getComputedStyle(node).fontSize,

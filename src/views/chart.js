@@ -757,8 +757,7 @@ function renderPlanetsPanel(container) {
       <div class="planet-table-row">
         <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
-        <span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span>
-        <span class="planet-cell-name">${esc(planetName(planet))}</span>
+        <span class="planet-cell-identity"><span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span><span class="planet-cell-name">${esc(planetName(planet))}</span></span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
         <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
       </div>
@@ -773,7 +772,7 @@ function renderPlanetsPanel(container) {
       <div class="planet-table-row planet-table-head">
         <span class="planet-cell act-design">${t('Design')}</span>
         <span class="planet-cell-sub">c.t.b</span>
-        <span></span><span></span>
+        <span></span>
         <span class="planet-cell-sub">c.t.b</span>
         <span class="planet-cell act-personality">${t('Personality')}</span>
       </div>
