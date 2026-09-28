@@ -17,6 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/lib/language-switcher.css">
 </head>
 <body>
   <div id="app">
@@ -32,14 +33,14 @@
           <button class="nav-link active" data-view="chart" data-i18n="My Chart">My Chart</button>
           <button class="nav-link" data-view="transits" data-i18n="Transits">Transits</button>
           <button class="nav-link" data-view="timeline" data-i18n="Timeline">Timeline</button>
-          <button class="nav-link" data-view="library" data-i18n="Reference Library">Reference Library</button>
           <button class="nav-link" data-view="connection" data-i18n="Connection">Connection</button>
           <button class="nav-link" data-view="team" data-i18n="Team">Team</button>
+          <button class="nav-link" data-view="library" data-i18n="Reference Library">Reference Library</button>
         </nav>
         <div class="header-actions">
           <select id="people-switcher" class="people-switcher hidden" title="Saved charts" data-i18n-title="Saved charts"></select>
           <button id="sync-button" class="btn-secondary btn-small hidden"></button>
-          <details id="chart-share-menu" class="chart-share-menu hidden"><summary title="Share" aria-label="Share" data-i18n-title="Share" data-i18n-aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-i18n="Share">Share</span></summary><div class="chart-share-actions"></div></details>
+          <details id="chart-share-menu" class="chart-share-menu hidden"><summary title="Share" aria-label="Share" data-i18n-title="Share" data-i18n-aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></summary><div class="chart-share-actions"></div></details>
           <div class="theme-toggle language-control">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"></circle>

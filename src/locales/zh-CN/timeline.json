@@ -134,5 +134,6 @@
   "gestures": "左右滑动以移动时间 · 双指捏合以缩放 · 拖动轨道以选择时刻",
   "mobileControls": "时间轴设置",
   "backToChart": "返回我的图",
+  "openNavigation": "打开导航",
   "timelineHelp": "左右键：闸门变化 · 上下键：1 分钟 · ＋／－：缩放"
 }

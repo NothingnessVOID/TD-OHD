@@ -202,7 +202,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
-      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('backToChart'))}" title="${esc(t('backToChart'))}">☰</button>
+      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}">☰</button>
       <div class="tl-graph-panel">
         <div class="tl-selected"><output class="tl-moment" aria-label="${esc(t('selected'))}"><span class="tl-moment-date"></span><span class="tl-moment-time"></span></output></div>
         <details class="tl-legend-disclosure"><summary>${esc(t('legend'))}</summary><div class="tl-legend">${['natal','transit','completed','both'].map(source => `<span data-source="${source}"><i></i>${esc(t(source))}</span>`).join('')}</div></details>
@@ -1226,7 +1226,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       setText($(`[data-field="span"] option[value="${value}"]`), t(key));
     put('.tl-changes span', 'changesShort');
     for (const action of ['mobile-controls','mobile-exit']) {
-      const key = action === 'mobile-controls' ? 'mobileControls' : 'backToChart';
+      const key = action === 'mobile-controls' ? 'mobileControls' : 'openNavigation';
       const node = $(`[data-action="${action}"]`);
       node.setAttribute('aria-label', t(key));
       node.title = t(key);
