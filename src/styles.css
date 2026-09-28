@@ -1117,7 +1117,7 @@ body {
   .bg-planets-head, .bg-planets-date { width: 100%; }
   .bg-planet-row { padding: 2px 4px; }
   #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
-  #bodygraph-container .bg-grid { max-width: 563px; margin-inline: auto; }
+  #bodygraph-container .bg-grid { max-width: 471px; margin-inline: auto; }
   #bodygraph-container .bg-planets,
   .transit-graph .bg-planets { flex-direction: column; flex-wrap: nowrap; }
   #bodygraph-container .bg-planets-head,
@@ -1953,24 +1953,23 @@ body.modal-open { overflow: hidden; }
 .transit-graph { min-width: 0; padding: 14px; }
 .transit-graph .bg-grid { display: block; position: relative; }
 .transit-graph .bg-svg-wrap { width: 100%; }
-.transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr); width: 110px; min-width: 0; }
+.transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; width: 126px; min-width: 0; }
 .transit-planet-column { position: absolute; top: 38px; left: 0; z-index: 2; width: 58px; }
 .transit-birth-pair .bg-planets { min-width: 0; }
 .transit-graph .bg-planet-row { padding: 2px 0; gap: 1px; font-size: 10px; }
 .transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--transit-source-text); }
 .transit-birth-pair .bg-planets-head { font-size: 9px; letter-spacing: 0; }
 .transit-birth-pair .bg-planets-design .bg-planet-row { justify-content: flex-end; }
-.transit-birth-pair .bg-planets-design .bg-planets-head { text-align: right; }
-.transit-birth-pair .bg-planets-personality .bg-planets-head { text-align: left; }
-.transit-birth-pair .bg-planets-design .bg-planet-glyph,
-.transit-birth-pair .bg-planets-personality .bg-planet-glyph { display: none; }
-.transit-birth-glyphs .bg-planet-row { justify-content: center; height: 16px; min-height: 16px; }
-.transit-birth-glyphs .bg-planet-glyph { width: auto; }
+.transit-birth-pair .bg-planets-design .bg-planet-glyph { order: 2; }
 .transit-birth-pair .bg-planets-date { display: none; }
 
 @media (max-width: 768px) {
   .transit-layout { grid-template-columns: 1fr; }
-  .transit-graph .bg-grid { max-width: 394px; margin-inline: auto; }
+  .transit-graph .bg-grid { max-width: 330px; margin-inline: auto; }
+}
+
+@media (min-width: 769px) and (max-width: 950px) {
+  #transits-view .chart-column { position: static; max-height: none; overflow: visible; }
 }
 
 /* =============================================
@@ -2300,7 +2299,6 @@ body.modal-open { overflow: hidden; }
   .transit-graph .bg-svg-wrap { grid-column: auto; grid-row: auto; }
   .transit-planet-column { width: 42px; top: 30px; }
   .transit-birth-pair { width: 98px; top: 30px; }
-  .transit-birth-glyphs .bg-planet-row { height: 15px; min-height: 15px; }
   .transit-graph .bg-planets { flex-direction: column; flex-wrap: nowrap; }
   .transit-graph .bg-planets-head { width: auto; }
   .transit-graph .bg-planet-row { font-size: 9px; }
