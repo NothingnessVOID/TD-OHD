@@ -108,17 +108,22 @@ try {
     select.classList.remove('hidden');
     select.innerHTML = '<option>当前人类图</option>';
   });
-  for (const width of [588, 421, 420, 390, 343]) {
+  for (const width of [768, 720, 682, 641, 588, 421, 420, 390, 343]) {
     await page.setViewportSize({ width, height: 703 });
     const header = await page.evaluate(() => {
       const logo = document.querySelector('.logo-text');
       const mark = document.querySelector('.logo').getBoundingClientRect();
       const actions = document.querySelector('.header-actions').getBoundingClientRect();
+      const nav = document.querySelector('.nav').getBoundingClientRect();
       return { visible: getComputedStyle(logo).display !== 'none', separate: mark.right <= actions.left,
+        navSeparate: nav.right <= actions.left,
+        navFont: getComputedStyle(document.querySelector('.nav-link')).fontSize,
         overflow: document.documentElement.scrollWidth > innerWidth };
     });
     assert.equal(header.visible, true, `${width}px logo label visibility`);
-    assert.ok(header.separate && !header.overflow, `${width}px header controls fit: ${JSON.stringify(header)}`);
+    assert.ok(header.separate && header.navSeparate && !header.overflow,
+      `${width}px header controls fit: ${JSON.stringify(header)}`);
+    if (width >= 681) assert.equal(header.navFont, '13px', `${width}px navigation keeps its normal type size`);
   }
   await page.setViewportSize({ width: 471, height: 703 });
   const headerIcon = await page.locator('#mobile-menu-toggle').evaluate(button => {

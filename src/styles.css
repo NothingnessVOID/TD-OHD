@@ -2206,7 +2206,7 @@ body.modal-open { overflow: hidden; }
 
   .nav-link {
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .foundation-grid {
@@ -2246,6 +2246,10 @@ body.modal-open { overflow: hidden; }
   .gate-detail-body {
     padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
+}
+
+@media (min-width: 641px) and (max-width: 680px) {
+  .nav-link { font-size: 12px; }
 }
 
 
