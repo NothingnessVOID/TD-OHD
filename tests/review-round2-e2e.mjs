@@ -23,6 +23,21 @@ try {
   await page.locator('#reference-detail .center-reading').waitFor();
   assert.equal(await page.locator('.reference-heading p').count(), 0);
   assert.equal(await page.locator('#reference-detail .center-reading-state').count(), 3);
+  await page.setViewportSize({ width: 327, height: 703 });
+  await page.locator('#people-switcher').evaluate(select => {
+    select.classList.remove('hidden');
+    select.innerHTML = '<option>当前人类图</option>';
+  });
+  const libraryHeader = await page.evaluate(() => ({
+    logo: getComputedStyle(document.querySelector('.logo-text')).display,
+    selectWidth: document.querySelector('#people-switcher').getBoundingClientRect().width,
+    logoRight: document.querySelector('.logo').getBoundingClientRect().right,
+    actionsLeft: document.querySelector('.header-actions').getBoundingClientRect().left,
+    overflow: document.documentElement.scrollWidth > innerWidth
+  }));
+  assert.ok(libraryHeader.logo !== 'none' && libraryHeader.selectWidth >= 96 &&
+    libraryHeader.logoRight < libraryHeader.actionsLeft && !libraryHeader.overflow,
+  `327px library header keeps branding and a readable chart selector: ${JSON.stringify(libraryHeader)}`);
   await page.setViewportSize({ width: 471, height: 703 });
   const detailHeading = await page.evaluate(() => {
     const back = document.querySelector('#reference-detail .reference-back').getBoundingClientRect();
@@ -89,6 +104,30 @@ try {
   }));
   assert.equal(titleSizes.name, titleSizes.hexagram);
   await page.keyboard.press('Escape');
+  await page.locator('#people-switcher').evaluate(select => {
+    select.classList.remove('hidden');
+    select.innerHTML = '<option>当前人类图</option>';
+  });
+  for (const width of [588, 421, 420, 390, 343]) {
+    await page.setViewportSize({ width, height: 703 });
+    const header = await page.evaluate(() => {
+      const logo = document.querySelector('.logo-text');
+      const mark = document.querySelector('.logo').getBoundingClientRect();
+      const actions = document.querySelector('.header-actions').getBoundingClientRect();
+      return { visible: getComputedStyle(logo).display !== 'none', separate: mark.right <= actions.left,
+        overflow: document.documentElement.scrollWidth > innerWidth };
+    });
+    assert.equal(header.visible, true, `${width}px logo label visibility`);
+    assert.ok(header.separate && !header.overflow, `${width}px header controls fit: ${JSON.stringify(header)}`);
+  }
+  await page.setViewportSize({ width: 471, height: 703 });
+  const headerIcon = await page.locator('#mobile-menu-toggle').evaluate(button => {
+    const box = button.getBoundingClientRect();
+    const svg = button.querySelector('svg').getBoundingClientRect();
+    return { width: svg.width, height: svg.height, x: svg.x - box.x, y: svg.y - box.y,
+      path: button.querySelector('path').getAttribute('d') };
+  });
+  await page.setViewportSize({ width: 903, height: 703 });
 
   await page.locator('.nav-link[data-view="timeline"]').click();
   const root = '#timeline-view';
@@ -133,10 +172,17 @@ try {
   await page.setViewportSize({ width: 471, height: 703 });
   const timelineMenu = await page.locator(`${root} .tl-mobile-exit`).evaluate(node => {
     const box = node.getBoundingClientRect();
-    return { x: box.x, y: box.y, width: box.width, height: box.height,
+    const stage = node.closest('.tl-stage').getBoundingClientRect();
+    return { x: box.x - stage.x, y: box.y - stage.y, width: box.width, height: box.height,
       fontSize: getComputedStyle(node).fontSize, label: node.getAttribute('aria-label') };
   });
   assert.deepEqual(timelineMenu, { x: 10, y: 10, width: 36, height: 36, fontSize: '17px', label: '打开导航' });
+  assert.deepEqual(await page.locator(`${root} .tl-mobile-exit`).evaluate(button => {
+    const box = button.getBoundingClientRect();
+    const svg = button.querySelector('svg').getBoundingClientRect();
+    return { width: svg.width, height: svg.height, x: svg.x - box.x, y: svg.y - box.y,
+      path: button.querySelector('path').getAttribute('d') };
+  }), headerIcon, 'timeline and header menu icons use the same centered drawing');
   await page.setViewportSize({ width: 343, height: 703 });
   const rangeSize = await page.locator(`${root} .tl-mobile-range`).evaluate(node => {
     const box = node.getBoundingClientRect();
