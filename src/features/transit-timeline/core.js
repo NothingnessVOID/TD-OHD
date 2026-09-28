@@ -12,7 +12,7 @@ export const MAX_TIMELINE_SPAN = 367 * DAY;
  * can be missed. Never present the refinement tolerance as ephemeris accuracy.
  */
 export function calculateTimeline({ start, end, snapshot, states, catalog,
-  scanStep = MINUTE, tolerance = 1000, onProgress = () => {} }) {
+  planet = 'all', scanStep = MINUTE, tolerance = 1000, onProgress = () => {} }) {
   if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start ||
       !Number.isFinite(scanStep) || !Number.isFinite(tolerance) ||
       scanStep < tolerance || tolerance < 1 || end - start > MAX_TIMELINE_SPAN) {
@@ -74,13 +74,15 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
       transitions.push(crossing);
       const before = snapshot(Math.max(start, crossing - tolerance));
       const gates = new Set();
-      for (const planet of planets) if (before[planet]?.gate !== crossingState[planet]?.gate) {
-        gates.add(before[planet].gate);
-        gates.add(crossingState[planet].gate);
+      const changedPlanets = new Set();
+      for (const point of planets) if (before[point]?.gate !== crossingState[point]?.gate && (planet === 'all' || point === planet)) {
+        gates.add(before[point].gate);
+        gates.add(crossingState[point].gate);
+        changedPlanets.add(point);
       }
       if (gates.size) {
         gateTransitions.push(crossing);
-        gateChanges.push({ time: crossing, gates: [...gates].sort((a, b) => a - b) });
+        gateChanges.push({ time: crossing, gates: [...gates].sort((a, b) => a - b), planets: [...changedPlanets].sort() });
       }
     }
     previous = current;

@@ -28,13 +28,13 @@ test('new share omits direct identity and preserves calculation inputs', () => {
   assert.deepEqual(paramsToBirth(birthToParams(full, { includeIdentity: true }).toString()), full);
 });
 
-test('minimal: date only', () => {
-  const out = paramsToBirth('d=1990-06-15');
-  assert.equal(out.birthDate, '1990-06-15');
-  assert.equal(out.birthTime, '12:00');
-  assert.equal(out.timezone, 0);
-  assert.equal(out.location, null);
-  assert.equal(out.name, null);
+test('incomplete links never imply noon or UTC', () => {
+  assert.equal(paramsToBirth('d=1990-06-15'), null);
+  assert.equal(paramsToBirth('d=1990-06-15&tz=0'), null);
+  assert.equal(paramsToBirth('d=1990-06-15&t=12:00'), null);
+  const unknown = paramsToBirth('d=1990-06-15&tz=0&tu=1');
+  assert.equal(unknown.birthTime, '12:00');
+  assert.equal(unknown.timeUnknown, true);
 });
 
 test('rejects malformed dates', () => {
@@ -61,5 +61,5 @@ test('fractional timezone offsets survive', () => {
 test('timeUnknown round-trips', () => {
   const out = paramsToBirth(birthToParams({ ...full, timeUnknown: true }).toString());
   assert.equal(out.timeUnknown, true);
-  assert.equal(paramsToBirth('d=1990-06-15').timeUnknown, false);
+  assert.equal(paramsToBirth('d=1990-06-15&t=14:30&tz=0').timeUnknown, false);
 });

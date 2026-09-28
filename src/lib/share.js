@@ -6,7 +6,7 @@
  *
  *   ?d=1990-06-15&t=14:30&tz=-6
  *
- * Only `d` is required; everything else has sensible fallbacks.
+ * Date, time (or explicit time-unknown flag), and timezone are required.
  */
 
 export function birthToParams(birth, { includeIdentity = false } = {}) {
@@ -34,11 +34,13 @@ export function paramsToBirth(searchParams) {
 
   const t = p.get('t');
   if (t !== null && !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(t)) return null;
+  const timeUnknown = p.get('tu') === '1';
+  if (!timeUnknown && t === null) return null;
   const birthTime = t || '12:00';
   const tz = p.get('tz');
-  if (tz !== null && (!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(tz) ||
+  if (tz === null || (!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(tz) ||
       !Number.isFinite(Number(tz)) || Number(tz) < -14 || Number(tz) > 14)) return null;
-  const timezone = tz === null ? 0 : Number(tz);
+  const timezone = Number(tz);
 
   const coordinatePattern = /^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/;
   if ((p.has('lat') && !coordinatePattern.test(p.get('lat'))) ||
@@ -60,7 +62,7 @@ export function paramsToBirth(searchParams) {
     name: p.get('n') || null,
     birthDate: d,
     birthTime,
-    timeUnknown: p.get('tu') === '1',
+    timeUnknown,
     timezone,
     location: (hasCoords || placeName || iana) ? {
       lat: hasCoords ? lat : null,

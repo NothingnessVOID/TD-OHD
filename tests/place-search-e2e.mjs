@@ -13,7 +13,7 @@ try {
     if (query === 'offline') return route.fulfill({ status: 503, body: 'unavailable' });
     const results = ['Oldtown', 'Tokyo', 'To'].includes(query) ? [{
       name: query, latitude: 35.6895, longitude: 139.6917,
-      timezone: 'Asia/Tokyo', country_code: 'JP', country: 'Japan'
+      timezone: 'Asia/Tokyo', country_code: 'JP', country: 'Japan', feature_code: 'PPLC', population: 9733276
     }] : [];
     return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ results }) });
   });

@@ -17,6 +17,7 @@ try {
       if (/transit-data\/[^/]+\/\d{4}\.[^/]+\.json/.test(request.url())) annualRequests.push(request.url());
     });
     const root = '#timeline-view';
+    const gateButton = action => page.locator(`${root} ${viewport.width < 600 ? '.tl-mobile-event-nav' : '.tl-toolbar .tl-event-nav'} [data-action="${action}"]`);
     const ready = () => page.waitForFunction(() =>
       document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false',
       null, { timeout: 120000 });
@@ -104,7 +105,7 @@ try {
     await table.focus(); await page.keyboard.press('ArrowRight');
     const nextGateTime = await selected();
     assert.ok(nextGateTime > before);
-    await page.locator(`${root} [data-action="previous-gate"]`).click();
+    await gateButton('previous-gate').click();
     assert.ok((await selected()) < nextGateTime);
 
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
@@ -121,7 +122,7 @@ try {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     let rapidTime = await selected();
     for (let index = 0; index < 3; index++) {
-      await page.locator(`${root} [data-action="next-gate"]`).click();
+      await gateButton('next-gate').click();
       const next = await selected();
       assert.ok(next > rapidTime, 'rapid navigation stays ordered');
       rapidTime = next;
@@ -132,7 +133,7 @@ try {
     assert.equal(await page.locator(`${root} .tl-row-lit .tl-row-label`).first().evaluate(node => getComputedStyle(node).animationName), 'none');
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     for (let index = 0; index < 3; index++) {
-      await page.locator(`${root} [data-action="next-gate"]`).click();
+      await gateButton('next-gate').click();
       const next = await selected();
       assert.ok(next > rapidTime, 'animated rapid navigation stays ordered');
       rapidTime = next;
@@ -151,10 +152,18 @@ try {
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
     await page.locator(`${root} .tl-advanced summary`).click();
     await page.locator(`${root} [data-condition="kind"]`).first().selectOption('gate');
-    await page.locator(`${root} [data-condition="ids"]`).first().fill('14, 29');
+    const chooseTarget = async (rowIndex, id) => {
+      const row = page.locator(`${root} .tl-condition-row`).nth(rowIndex);
+      await row.locator('[data-action="toggle-targets"]').click();
+      await row.locator('[data-condition="target-search"]').fill(id);
+      await row.locator(`input[data-target-id="${id}"]`).check();
+      await row.locator('[data-action="toggle-targets"]').click();
+    };
+    await chooseTarget(0, '14');
+    await chooseTarget(0, '29');
     await page.locator(`${root} [data-action="add-condition"]`).click();
     await page.locator(`${root} [data-condition="kind"]`).nth(1).selectOption('gate');
-    await page.locator(`${root} [data-condition="ids"]`).nth(1).fill('30');
+    await chooseTarget(1, '30');
     await page.locator(`${root} [data-field="combine"]`).selectOption('any');
     await page.locator(`${root} [data-action="run-query"]`).click();
     assert.ok(await page.locator(`${root} [data-query-interval]`).count());

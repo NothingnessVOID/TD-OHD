@@ -15,6 +15,9 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(new Set(partners).size, partners.length);
   }
   assert.ok(circuitChannels('group', 'individual').some(ch => ch.circuit === 'integration'));
+  for (const query of ['Integration', '整合']) {
+    assert.ok(searchReference(query).some(entry => entry.kind === 'group' && entry.id === 'individual'));
+  }
 });
 
 test('reversed and typographic channel IDs resolve while invalid gate and line IDs stay invalid', () => {

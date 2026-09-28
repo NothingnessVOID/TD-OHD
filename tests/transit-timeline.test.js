@@ -8,16 +8,25 @@ import { buildTransitGraph } from '../src/lib/transit-graph.js';
 const at = key => row => row.key === key;
 const intervals = (result, key) => result.rows.find(at(key)).intervals;
 
-function synthetic({ start = 0, end = MINUTE, crossings, natal = [], mode = 'transit-only', rows }) {
+function synthetic({ start = 0, end = MINUTE, crossings, natal = [], mode = 'transit-only', planet = 'all', scanStep = MINUTE, rows }) {
   const birth = { gates: { all: natal }, centers: { definedNames: [] } };
   const snapshotAt = time => Object.fromEntries(Object.entries(crossings).map(([planet, history]) => {
     const gate = history.filter(([at]) => at <= time).at(-1)[1];
     return [planet, { gate, line: 1 }];
   }));
   return calculateTimeline({ start, end, snapshot: snapshotAt,
-    states: activations => stateAt(birth, activations, mode),
-    catalog: rows.map(id => ({ key: `gate:${id}`, kind: 'gate', id })), scanStep: MINUTE });
+    states: activations => stateAt(birth, activations, mode, planet),
+    catalog: rows.map(id => ({ key: `gate:${id}`, kind: 'gate', id })), planet, scanStep });
 }
+
+test('fallback moon-only gate navigation excludes sun changes', () => {
+  const result = synthetic({ crossings: {
+    sun: [[0, 10], [10_000, 20]], moon: [[0, 30], [20_000, 40], [40_000, 50]]
+  }, planet: 'moon', scanStep: 10_000, rows: [10, 20, 30, 40, 50] });
+  assert.deepEqual(result.gateEvents, [20_000, 40_000]);
+  assert.deepEqual(result.gateChanges.map(change => change.planets), [['moon'], ['moon']]);
+  assert.deepEqual(result.gateChanges.map(change => change.gates), [[30, 40], [40, 50]]);
+});
 
 test('two planets crossing in one sample preserve the brief gap between them', () => {
   const result = synthetic({

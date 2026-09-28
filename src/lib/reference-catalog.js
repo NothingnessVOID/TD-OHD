@@ -19,7 +19,9 @@ export function referenceEntries() {
       aliases: [[...channel.gates].reverse().join('-'), channel.name, ...names('channelName', channel.gates)] })),
     ...Object.keys(GATES).map(Number).sort((a, b) => a - b).map(id => ({ kind: 'gate', id: String(id), name: gateName(id),
       aliases: [GATES[id].name, GATES[id].iching, hexagramName(id), ...names('gateName', id), ...names('hexagramName', id)] })),
-    ...groupIds.map(id => ({ kind: 'group', id, name: circuitName(id), aliases: names('circuitName', id) })),
+    ...groupIds.map(id => ({ kind: 'group', id, name: circuitName(id), aliases: [
+      ...names('circuitName', id), ...(id === 'individual' ? ['Integration', 'Integration Channels', ...names('circuitName', 'integration')] : [])
+    ] })),
     ...circuitIds.map(id => ({ kind: 'circuit', id, name: circuitName(id), aliases: names('circuitName', id) }))
   ];
 }

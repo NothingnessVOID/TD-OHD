@@ -571,7 +571,8 @@ export function showCenterDetail(centerKey, pushHistory = true) {
           <span class="center-status ${status}">${statusLabel}</span>
           <span class="center-detail-theme">${esc(contentText(c.theme || ''))}${c.biological ? ` · ${esc(contentText(c.biological))}` : ''}</span>
         </div>
-        ${model ? `<p class="gate-detail-desc">${t(definedHere ? natalHere ? 'This center is already defined in the birth chart.' : 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : centerReading(centerKey, { status, includeTheme: false })}
+        ${model ? `<p class="gate-detail-desc">${t(definedHere ? natalHere ? 'This center is already defined in the birth chart.' : 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : ''}
+        ${centerReading(centerKey, { status: model ? null : status, includeTheme: false })}
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>

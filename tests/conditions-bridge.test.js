@@ -50,6 +50,8 @@ test('condition rows combine any selections and all/any across rows with complem
   const gate29 = { kind: 'gate', ids: [29], state: 'active' };
   assert.deepEqual(queryTimeline(result, [gate14, gate29]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [gate14, gate29], { combine: 'any' }).intervals.map(i => [i.start,i.end]), [[0,30]]);
+  assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [14, 29], state: 'inactive' }]).intervals.map(i => [i.start,i.end]),
+    [[0,10],[20,40]], 'one inactive target is enough even while the other target is active');
   assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [30], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[0,40]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'channel', ids: ['60-3'], state: 'active' }]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3 }).intervals.map(i => [i.start,i.end]), [[15,25],[25,35]]);

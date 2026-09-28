@@ -86,11 +86,17 @@ function toggleTheme() {
 // ==========================================
 const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'library'];
 
-function showView(view) {
+function showView(view, { fromHistory = false } = {}) {
+  if (!VIEWS.includes(view)) return;
+  if (view === 'library' && !location.hash.startsWith('#library') && !fromHistory) {
+    openReference();
+    return;
+  }
   closeDetailDialog();
   if (view !== 'timeline') timelineView?.deactivate();
-  if (!currentData && view !== 'chart' && view !== 'library') return;
-  if (view !== 'library' && location.hash.startsWith('#library')) history.replaceState(null, '', location.pathname);
+  if (view !== 'library' && location.hash.startsWith('#library') && !fromHistory) {
+    history.pushState({ ohdView: view }, '', `${location.pathname}${location.search}`);
+  }
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
 
   document.querySelectorAll('.nav-link').forEach(l =>
@@ -104,9 +110,13 @@ function showView(view) {
   for (const v of VIEWS) {
     document.getElementById(`${v}-view`).classList.add('hidden');
   }
-  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view === 'library');
+  document.getElementById('chart-required-view').classList.add('hidden');
+  document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view !== 'chart');
 
-  if (!currentData && view !== 'library') return;
+  if (!currentData && view !== 'library') {
+    if (view !== 'chart') document.getElementById('chart-required-view').classList.remove('hidden');
+    return;
+  }
   document.getElementById(`${view}-view`).classList.remove('hidden');
 
   // Per-view refresh on open
@@ -115,8 +125,6 @@ function showView(view) {
   if (view === 'team') renderTeamView();
   if (view === 'timeline') timelineView?.activate();
   if (view === 'library') {
-    if (!location.hash.startsWith('#library')) openReference(null, null, { replace: true });
-    history.replaceState(null, '', `${location.pathname}${location.hash}`);
     renderReferenceView();
   }
 }
@@ -125,9 +133,16 @@ function setupNavigation() {
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => showView(link.dataset.view));
   });
-  window.addEventListener('ohd-reference-navigation', () => showView('library'));
-  window.addEventListener('popstate', () => { if (location.hash.startsWith('#library')) showView('library'); });
-  window.addEventListener('hashchange', () => { if (location.hash.startsWith('#library')) showView('library'); });
+  document.getElementById('chart-required-entry').addEventListener('click', () => {
+    showView('chart');
+    const first = ['birth-date', 'birth-time', 'birth-place'].find(id =>
+      id !== 'birth-time' || !document.getElementById('time-unknown').checked
+        ? !document.getElementById(id).value : false);
+    document.getElementById(first || 'birth-date').focus();
+  });
+  window.addEventListener('ohd-reference-navigation', () => showView('library', { fromHistory: true }));
+  window.addEventListener('popstate', event => showView(location.hash.startsWith('#library') ? 'library' : event.state?.ohdView || 'chart', { fromHistory: true }));
+  window.addEventListener('hashchange', () => showView(location.hash.startsWith('#library') ? 'library' : history.state?.ohdView || 'chart', { fromHistory: true }));
 }
 
 // ==========================================
@@ -489,6 +504,24 @@ function init() {
         });
       }
     }
+    return;
+  }
+  if (new URLSearchParams(window.location.search).has('d')) {
+    const params = new URLSearchParams(window.location.search);
+    const date = params.get('d');
+    const time = params.get('t');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date || '')) document.getElementById('birth-date').value = date;
+    if (/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time || '')) document.getElementById('birth-time').value = time;
+    if (params.get('tu') === '1') {
+      const unknown = document.getElementById('time-unknown');
+      unknown.checked = true;
+      unknown.dispatchEvent(new Event('change'));
+    }
+    const notice = document.getElementById('entry-invite');
+    setMessage(notice, 'The shared birth details are incomplete. Please fill in the missing information.');
+    notice.classList.remove('hidden');
+    showView('chart');
+    document.getElementById(!date ? 'birth-date' : !time && params.get('tu') !== '1' ? 'birth-time' : 'birth-place').focus();
     return;
   }
   const lastId = getLastPersonId();

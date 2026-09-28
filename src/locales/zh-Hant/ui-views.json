@@ -1,4 +1,8 @@
 {
+  "Create a birth chart first": "請先建立出生圖",
+  "This feature needs your birth date, birth time and birth place.": "此功能需要出生日期、出生時間和出生地點。",
+  "Enter birth details": "去填寫出生資訊",
+  "The shared birth details are incomplete. Please fill in the missing information.": "分享連結中的出生資料不完整，請補充缺少的資訊。",
   "{offset} at birth": "出生時 {offset}",
   "Search birth place instead": "改為搜尋出生地點",
   "Enter UTC offset manually": "改為手動輸入 UTC 時差",

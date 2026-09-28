@@ -212,7 +212,7 @@ test('compute_chart with explicit offset', async () => {
   assert.ok(out.humanDesign.variable.notation);
 });
 
-test('compute_chart geocodes place and resolves historical offset', async () => {
+test('online: compute_chart geocodes place and resolves historical offset', { skip: !process.env.OHD_ONLINE_TESTS }, async () => {
   const out = await callTool('compute_chart', {
     birth: { birthDate: '1990-06-15', birthTime: '14:30', place: 'Boulder, Colorado' }
   });
@@ -282,11 +282,14 @@ test('get_descriptions', async () => {
   assert.ok(out.centers.sacral.notSelfQuestion);
 });
 
-test('helpful errors: bad date, missing tz, unknown place', async () => {
+test('helpful errors: bad date and missing tz', async () => {
   const r1 = await rpc('tools/call', { name: 'compute_chart', arguments: { birth: { birthDate: 'junk' } } });
   assert.ok(r1.isError && /YYYY-MM-DD/.test(r1.content[0].text));
   const r2 = await rpc('tools/call', { name: 'compute_chart', arguments: { birth: { birthDate: '1990-06-15' } } });
   assert.ok(r2.isError && /place.*or.*utcOffset/i.test(r2.content[0].text));
+});
+
+test('online: unknown place returns a helpful error', { skip: !process.env.OHD_ONLINE_TESTS }, async () => {
   const r3 = await rpc('tools/call', { name: 'compute_chart', arguments: { birth: { birthDate: '1990-06-15', place: 'Xyzzyqwobble' } } });
   assert.ok(r3.isError && /no match/i.test(r3.content[0].text));
 });

@@ -31,8 +31,13 @@ try {
     assert.match(await page.locator('#reference-detail').innerText(), /3-60/);
     await page.goto(`${base}/#library/gate/14?line=2`);
     await page.locator('#reference-detail .gate-detail-line[data-line="2"]').waitFor();
-    assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 1);
-    assert.equal(await page.locator('#reference-detail [data-reference-line]').count(), 6);
+    assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 6);
+    assert.equal(await page.locator('#reference-detail [data-reference-line]').count(), 0);
+    await page.locator('#reference-detail .gate-detail-line[data-line="2"].reference-line-target').waitFor();
+    await page.locator('#reference-detail [data-reference-lens="gk"]').click();
+    assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 0);
+    assert.doesNotMatch(await page.locator('#reference-detail h2').innerText(), /14\.2/);
+    await page.locator('#reference-detail [data-reference-lens="hd"]').click();
     await page.locator('#language-switcher').selectOption('en');
     assert.match(await page.locator('.reference-heading h1').innerText(), /Reference Library/);
     assert.match(page.url(), /#library\/gate\/14\?line=2/);
