@@ -14,7 +14,7 @@
 | 验证 | 结果 |
 |---|---|
 | `node --test tests/reference-catalog.test.js` | 2/2 通过，覆盖数量、拓扑、反向编号及无效地址。 |
-| `node tests/reference-e2e.mjs` | 桌面与手机视口后续复跑通过：无出生盘、搜索、深链接、三种资料体系切换与返回、语言切换、弹窗与资料库正文一致、零完整通道图的悬挂端点、结果焦点与桌面滚动保持。 |
+| `node tests/reference-e2e.mjs` | 桌面与手机视口后续复跑通过：无出生盘、搜索、深链接、三种资料体系切换与返回、语言切换、弹窗与资料库正文一致、零完整通道图的悬挂端点、结果焦点与桌面滚动保持、已有合成本地人物的纯资料深链接。 |
 | `npm run test:localization` | 30/30 通过。 |
 | `npm run test:timeline` | 54/54 通过。 |
 | `E2E_URL=http://127.0.0.1:5186 node tests/timeline-e2e.mjs` | 浏览器时间轴回归通过。 |

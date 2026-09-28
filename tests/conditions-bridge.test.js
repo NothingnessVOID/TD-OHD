@@ -57,6 +57,10 @@ test('condition rows combine any selections and all/any across rows with complem
   assert.throws(() => queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3, mode: 'transit-only' }));
   assert.throws(() => queryTimeline(result, []));
   assert.throws(() => queryTimeline(result, [{ kind: 'gate', ids: [999], state: 'active' }]));
+  assert.throws(() => queryTimeline(null, [gate14]), /unavailable/);
+  const noMatch = queryTimeline(result, [gate14, { kind: 'gate', ids: [30], state: 'active' }]);
+  assert.equal(noMatch.empty, true);
+  assert.deepEqual(noMatch.intervals, []);
 });
 
 test('parallel connecting paths keep a single complete fixed-island group', () => {

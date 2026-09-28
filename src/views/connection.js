@@ -121,10 +121,12 @@ export function refreshConnectionLanguage() {
 // Person colors for the combined chart (theme-aware): teal = A, coral = B,
 // gold = a channel/center the two only complete together.
 function compositePalette() {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  return dark
-    ? { a: '#3db5a5', b: '#e8927a', bridged: '#cda64a' }
-    : { a: '#2a9d8f', b: '#e07a5f', bridged: '#d4a23a' };
+  const style = getComputedStyle(document.documentElement);
+  return {
+    a: style.getPropertyValue('--connection-person-a').trim(),
+    b: style.getPropertyValue('--connection-person-b').trim(),
+    bridged: style.getPropertyValue('--connection-bridged').trim()
+  };
 }
 
 const DYN_LABEL = {

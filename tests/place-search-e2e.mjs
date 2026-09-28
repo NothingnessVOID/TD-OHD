@@ -48,5 +48,18 @@ try {
   await input.fill('offline');
   await page.locator('#place-group [role="status"]').filter({ hasText: /unavailable|不可用|無法/ }).waitFor();
   assert.equal(await page.locator('#place-results .place-result').count(), 0);
-  console.log('Place search stale, IME, short-query and error-state browser checks passed.');
+
+  await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
+  await page.locator('#chart-view:not(.hidden)').waitFor();
+  for (const [view, scope] of [['connection', '#conn-place'], ['team', '#team-members .team-member-row:first-child .team-place']]) {
+    await page.locator(`.nav-link[data-view="${view}"]`).click();
+    const place = page.locator(`${scope} .ps-input`);
+    await place.fill('Tokyo');
+    await page.locator(`${scope} .ps-result`).first().click();
+    assert.match(await page.locator(`${scope} .ps-chip`).innerText(), /Tokyo, Japan.*UTC\+9/);
+    await page.locator(`${scope} .ps-toggle`).click();
+    await page.locator(`${scope} .ps-manual`).fill('9');
+    assert.match(await page.locator(`${scope} .ps-chip`).innerText(), /\+09|\+9/);
+  }
+  console.log('Place search main, connection and team entry checks passed, including stale, IME and manual fallback.');
 } finally { await browser.close(); }

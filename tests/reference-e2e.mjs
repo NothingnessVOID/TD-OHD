@@ -87,6 +87,21 @@ try {
     await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
     await page.locator('#gate-detail [data-channel]').first().click();
     assert.match(await page.locator('#gate-detail').innerText(), /Not defined|未定义|未定義/);
+
+    // Existing local profile cannot leak birth parameters into a pure library deep link.
+    await page.goto(`${base}/`);
+    await page.locator('#birth-entry:not(.hidden) #birth-form').waitFor();
+    await page.locator('#birth-name').fill('Synthetic Reader');
+    await page.locator('#birth-date').fill('1985-01-01');
+    await page.locator('#birth-time').fill('12:00');
+    await page.locator('#manual-tz-toggle').click();
+    await page.locator('#manual-tz').fill('0');
+    await page.locator('#birth-form button[type="submit"]').click();
+    await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
+    await page.goto(`${base}/#library/gate/14`);
+    await page.locator('#reference-detail .gate-detail-line').first().waitFor();
+    assert.equal(new URL(page.url()).search, '');
+    assert.equal(await page.locator('#birth-entry').isVisible(), false);
     assert.deepEqual(errors, []);
     await page.close();
   }

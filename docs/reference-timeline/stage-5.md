@@ -11,7 +11,7 @@
 | 验证 | 结果 |
 |---|---|
 | `node --test tests/conditions-bridge.test.js` | 后续补测 3/3 通过，含多重岛、平行桥接路径、组合、补集、未知目标和不适用模式。 |
-| `E2E_URL=http://127.0.0.1:5186 node tests/timeline-conditions-e2e.mjs` | 浏览器通过，含爻线激活／未激活与错误输入。 |
+| `E2E_URL=http://127.0.0.1:5186 node tests/timeline-conditions-e2e.mjs` | 后续复跑通过，含爻线激活／未激活、叠加与纯行运单行星切换、旧结果清除、无条件、无匹配与错误输入。 |
 | 桌面及 390×844 手机视口 | [桌面筛选截图](stage-5/desktop-filter.png)、[手机筛选截图](stage-5/mobile-filter.png)，使用合成出生数据 `1990-06-15 14:30 UTC+8`。 |
 
 ## 已知问题与未验证项

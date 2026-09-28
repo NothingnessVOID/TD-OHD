@@ -5,13 +5,14 @@ import { ANNUAL_SIGNATURE } from '../src/features/transit-timeline/annual-signat
 import { TRANSIT_POINTS, replayAnnual, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
 import { timelineFromAnnual } from '../src/features/transit-timeline/annual-timeline.js';
 import { createAnnualLoader } from '../src/features/transit-timeline/annual-loader.js';
+import { stateAt } from '../src/features/transit-timeline/graph-provider.js';
 
 const year = 2026;
 const start = Date.UTC(year, 0, 1);
 const end = Date.UTC(year + 1, 0, 1);
 const initial = Object.fromEntries(TRANSIT_POINTS.map(point => [point, [1, 1]]));
 function fixture() {
-  return { format: 1, year, start, end, pointOrder: TRANSIT_POINTS, initial,
+  return { format: 1, year, start, end, pointOrder: TRANSIT_POINTS, initial: structuredClone(initial),
     events: [
       [start + 1000, 0, 1, 1, 1, 2],
       [start + 2000, 0, 1, 2, 2, 1],
@@ -51,6 +52,23 @@ test('derived intervals retain separate point contributions and gate navigation 
     [[start, start + 4000]]); // all the other points still carry gate 1
   assert.deepEqual(result.rows.find(row => row.key === 'line:1.2').intervals.map(item => [item.start, item.end]),
     [[start + 1000, start + 2000]]);
+});
+
+test('a point leaves a still-active gate without inventing a new channel', () => {
+  const data = fixture();
+  data.initial.sun = [10, 1];
+  data.initial.moon = [10, 1];
+  data.events = [[start + 1000, 0, 10, 1, 1, 1]];
+  verifyAnnualStructure(data);
+  const result = timelineFromAnnual({ start, end: start + 2000, years: [data],
+    natal: { gates: { all: [10, 20] }, centers: { definedNames: [] } }, mode: 'overlay', stateAt,
+    catalog: [{ key: 'gate:10' }, { key: 'channel:10-20' }] });
+  assert.deepEqual(result.gateChanges, [{ time: start + 1000, gates: [1, 10] }],
+    'the departing gate remains identifiable for navigation highlight');
+  assert.deepEqual(result.rows.find(row => row.key === 'channel:10-20').intervals,
+    [{ start, end: start + 2000, source: 'natal', clippedStart: true, clippedEnd: true }]);
+  assert.deepEqual(result.rows.find(row => row.key === 'gate:10').intervals,
+    [{ start, end: start + 2000, source: 'both', clippedStart: true, clippedEnd: true }]);
 });
 
 test('annual loader deduplicates, validates and reuses year for 7/28/7 requests', async () => {

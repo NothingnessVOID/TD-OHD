@@ -35,6 +35,39 @@ for (const year of years) {
   }
   precedingFinal = final;
   const times = new Set([data.start, data.start + 1000, Math.floor((data.start + data.end) / 2), data.end - 1000]);
+  // Add explicit windows around longitude direction changes. These are
+  // stationary/reversal neighborhoods rather than only random timestamps.
+  let stationWindows = 0;
+  const stationPoints = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+  const direction = (a, b) => ((b - a + 540) % 360) - 180;
+  for (const point of stationPoints) {
+    let previous = null;
+    let previousDirection = null;
+    for (let time = data.start; time < data.end; time += 86_400_000) {
+      const longitude = snapshot(time)[point].longitude;
+      if (previous !== null) {
+        const currentDirection = Math.sign(direction(previous, longitude));
+        if (previousDirection && currentDirection && previousDirection !== currentDirection) {
+          stationWindows++;
+          for (const offset of [-43_200_000, 0, 43_200_000]) {
+            const sample = time + offset;
+            if (sample >= data.start && sample < data.end) times.add(sample);
+          }
+        }
+        if (currentDirection) previousDirection = currentDirection;
+      }
+      previous = longitude;
+    }
+  }
+  let roundTrips = 0;
+  for (let index = 0; index < TRANSIT_POINTS.length; index++) {
+    const pointEvents = data.events.filter(event => event[1] === index);
+    for (let i = 1; i < pointEvents.length; i++) {
+      const before = pointEvents[i - 1], after = pointEvents[i];
+      if (before[2] === after[4] && before[3] === after[5] &&
+          before[4] === after[2] && before[5] === after[3]) roundTrips++;
+    }
+  }
   let seed = year;
   for (let i = 0; i < 256; i++) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
@@ -72,6 +105,7 @@ for (const year of years) {
   }
   totalDifferences += differences + graphDifferences;
   console.log(JSON.stringify({ year, events: data.events.length, sampleTimes: times.size,
-    differences, graphDifferences, examples, verifyMs: Math.round(performance.now() - started) }));
+    stationWindows, roundTrips, differences, graphDifferences, examples,
+    verifyMs: Math.round(performance.now() - started) }));
 }
 if (totalDifferences) process.exitCode = 1;
