@@ -24,6 +24,7 @@ import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { birthToParams, connectionUrl } from '../lib/share.js';
+import { channelCircuit } from '../lib/circuit-topology.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -282,7 +283,10 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
   const crossDisplay = chart.incarnationCross
     ? crossName(chart.incarnationCross)
     : 'Unknown';
-  const circuitDominant = chart.circuitAnalysis?.dominant;
+  const circuitCounts = { individual: 0, collective: 0, tribal: 0 };
+  for (const channel of chart.channels || []) circuitCounts[channelCircuit(channel).group]++;
+  const [dominantName, dominantCount] = Object.entries(circuitCounts).sort((a, b) => b[1] - a[1])[0];
+  const circuitDominant = dominantCount ? { name: dominantName, channelCount: dominantCount } : null;
   const circuitText = circuitDominant
     ? formatDisplay('circuitSummary', circuitName(circuitDominant.name), countLabel(circuitDominant.channelCount, '{count} channel', '{count} channels'))
     : t('None');
@@ -396,7 +400,9 @@ function showTransitChannelDetail(id, pushHistory = true) {
   const detail = document.getElementById('gate-detail');
   detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body">
-      <div class="detail-label">${t('Channel {channel}', { channel: id })}</div><div class="detail-name">${esc(channelName(channel.gates))}</div>
+      <div class="detail-label">${t('Channel {channel}', { channel: id })}</div>
+      <div class="channel-detail-heading"><div class="detail-name">${esc(channelName(channel.gates))}</div>
+        <span class="circuit-badge ${channelCircuit(channel).group}">${esc(circuitName(channelCircuit(channel).group))}</span></div>
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${channelReading(id)}
@@ -482,7 +488,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     return `
       <div class="gate-detail-channel">
         <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(ch.gates))}</button>
-        <span class="circuit-badge ${esc(ch.circuit)}">${esc(circuitName(ch.circuit))}</span>
+        <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
         ${detailContext?.model ? `<span class="circuit-badge transit-source-badge ${channelActive ? detailContext.model.channelSource(ch) : 'inactive'}">${t(channelActive ? TRANSIT_SOURCE_LABELS[detailContext.model.channelSource(ch)] : 'No complete channel in this view')}</span>` : `<span class="circuit-badge transit-source-badge ${channelActive ? 'defined' : 'inactive'}">${t(channelActive ? 'Defined' : 'Not defined in this view')}</span>`}
       </div>
     `;
@@ -680,7 +686,7 @@ function renderChannelsPanel(container) {
       <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
         <div class="channel-name">
           ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
-          <span class="circuit-badge ${esc(ch.circuit)}">${esc(circuitName(ch.circuit))}</span>
+          <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
         </div>
         <div class="channel-meta">${esc(contentText(ch.theme))} · ${esc(formatDisplay('channelCenters', ch.centers, ch.centers.map(centerName)))}</div>
         ${desc ? `<div class="gate-description">${esc(desc.description)}<br><br><em>${esc(desc.whenDefined)}</em></div>` : ''}

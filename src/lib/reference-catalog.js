@@ -3,10 +3,9 @@ import { GATES, CHANNELS, CENTERS } from 'natalengine';
 import { localeResources } from '../locales/index.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from './vocabulary.js';
 import { channelById } from './reference-content.js';
+import { CIRCUIT_GROUPS, channelCircuit } from './circuit-topology.js';
 
-const groupIds = ['individual', 'collective', 'tribal'];
-const circuitIds = [...new Set(CHANNELS.map(channel => channel.subcircuit))]
-  .filter(id => id && id !== 'integration');
+const groupIds = Object.keys(CIRCUIT_GROUPS);
 const names = (field, ...args) => Object.values(localeResources).map(locale => locale.vocabulary[field](...args));
 const normalized = value => String(value ?? '').normalize('NFKC').toLocaleLowerCase()
   .replace(/[‐‑‒–—―−]/g, '-').replace(/\s+/g, ' ').trim();
@@ -21,13 +20,17 @@ export function referenceEntries() {
       aliases: [GATES[id].name, GATES[id].iching, hexagramName(id), ...names('gateName', id), ...names('hexagramName', id)] })),
     ...groupIds.map(id => ({ kind: 'group', id, name: circuitName(id), aliases: [
       ...names('circuitName', id), ...(id === 'individual' ? ['Integration', 'Integration Channels', ...names('circuitName', 'integration')] : [])
-    ] })),
-    ...circuitIds.map(id => ({ kind: 'circuit', id, name: circuitName(id), aliases: names('circuitName', id) }))
+    ] }))
   ];
 }
 
 export function referenceEntry(kind, id) {
   if (typeof id !== 'string' || !id) return null;
+  // Previously shared circuit links continue at their parent group.
+  if (kind === 'circuit') {
+    const group = Object.entries(CIRCUIT_GROUPS).find(([, circuits]) => circuits.includes(id))?.[0];
+    return group ? referenceEntry('group', group) : null;
+  }
   let canonical = id;
   if (kind === 'channel') {
     if (!/^\d{1,2}-\d{1,2}$/.test(normalized(id))) return null;
@@ -50,6 +53,6 @@ export function searchReference(query, category = 'all') {
 
 export function circuitChannels(kind, id) {
   return CHANNELS.filter(channel => kind === 'group'
-    ? channel.circuit === id || (id === 'individual' && channel.circuit === 'integration')
-    : channel.subcircuit === id);
+    ? channelCircuit(channel).group === id
+    : channelCircuit(channel).circuit === id);
 }

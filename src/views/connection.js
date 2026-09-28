@@ -15,6 +15,7 @@ import { typeName, authorityName, centerName, graphCenter, gateName, channelName
 import { contentText } from '../lib/content.js';
 import { t } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
+import { channelCircuit } from '../lib/circuit-topology.js';
 
 
 let placeB = null;
@@ -166,7 +167,10 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
   const br = comparison.bridging;
   const stats = comparison.stats || {};
 
-  const circuitBadge = (c) => c ? `<span class="circuit-badge ${esc(c)}">${esc(circuitName(c))}</span>` : '';
+  const circuitBadge = channel => {
+    const group = channelCircuit(channel).group;
+    return `<span class="circuit-badge ${group}">${esc(circuitName(group))}</span>`;
+  };
 
   const connSection = ([key, label, color, blurb]) => {
     const items = cc.connections[key] || [];
@@ -176,7 +180,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
         <p class="panel-intro">${t(blurb)}</p>
         ${items.length ? items.map(c => `
           <div class="connection-type" style="border-left:3px solid ${color}">
-            <div class="conn-channel">${esc(channelName(c.gates))} <span class="conn-gates">(${c.gates.join('–')})</span> ${circuitBadge(c.circuit)}</div>
+            <div class="conn-channel">${esc(channelName(c.gates))} <span class="conn-gates">(${c.gates.join('–')})</span> ${circuitBadge(c)}</div>
             <div class="conn-desc">${esc(contentText(c.description))}</div>
           </div>`).join('')
         : `<div class="conn-empty">${t('No {label} channels between you.', { label: t(label).toLowerCase() })}</div>`}

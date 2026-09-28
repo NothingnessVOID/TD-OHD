@@ -1582,6 +1582,9 @@ body.modal-open { overflow: hidden; }
   margin-bottom: 10px;
 }
 .detail-hexagram { font-size: .62em; font-weight: 400; color: var(--text-secondary); }
+.channel-detail-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 18px; }
+.channel-detail-heading .detail-name { margin-bottom: 0; }
+.channel-detail-heading .circuit-badge { flex: none; }
 
 /* Scrollable content area below the header bar */
 .gate-detail-body {
