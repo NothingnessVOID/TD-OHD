@@ -121,7 +121,7 @@ try {
     await page.keyboard.press('ArrowRight');
     assert.equal(await selected(), isolatedTime, 'typing focus isolates timeline arrows');
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-controls"]`).click();
-    await page.locator(`${root} .tl-row-name`).first().click();
+    await page.locator(`${root} .tl-row-name[data-row]`).first().click();
     await page.locator('#gate-detail:not(.hidden)').waitFor();
     await page.keyboard.press('ArrowRight');
     assert.equal(await selected(), isolatedTime, 'detail dialog isolates timeline arrows');
@@ -175,15 +175,13 @@ try {
     await page.locator(`${root} [data-query-interval]`).first().click();
     await page.locator(`${root} .tl-row-lit`).first().waitFor({ timeout: 5000 });
 
-    // Run a separate bridge condition for the fixed two-island birth chart.
+    // The fixed two-island chart shows bridge intervals ahead of center rows.
     await page.locator(`${root} [data-action="remove-condition"]`).nth(1).click();
-    await page.locator(`${root} [data-condition="kind"]`).first().selectOption('bridge');
-    await page.locator(`${root} [data-field="combine"]`).selectOption('all');
-    await page.locator(`${root} [data-action="run-query"]`).click();
-    assert.doesNotMatch(await page.locator(`${root} .tl-query-status`).textContent(), /already connected|No natal|not available|不适用/);
-    assert.ok(await page.locator(`${root} [data-query-interval]`).count(), 'two natal islands bridge in the selected week');
-    await page.locator(`${root} [data-query-interval]`).first().click();
-    await page.locator(`${root} .tl-row-lit`).first().waitFor({ timeout: 5000 });
+    await page.locator(`${root} [data-field="kind"]`).selectOption('all');
+    assert.equal(await page.locator(`${root} .tl-row`).first().getAttribute('data-key'), 'bridge:natal');
+    assert.ok(await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).count(), 'two natal islands bridge in the selected week');
+    await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first().click();
+    assert.equal(await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar[aria-pressed="true"]`).count(), 1);
     if (process.env.ACCEPTANCE_CAPTURE === '1') {
       await page.screenshot({ path: `docs/reference-timeline/stage-6/acceptance-${viewport.width}.png` });
     }

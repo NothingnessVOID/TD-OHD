@@ -181,9 +181,9 @@ try {
     await first.locator('input[data-target-id="3-60"]').check();
     assert.match(await first.locator('[data-action="toggle-targets"]').innerText(), /3-60/);
     assert.equal(await first.locator('input[data-condition="ids"]').count(), 0);
-    await first.locator('[data-condition="kind"]').selectOption('bridge');
-    assert.equal(await first.locator('.tl-target-picker').isVisible(), false);
-    assert.equal(await first.locator('[data-condition="state"]').isVisible(), false);
+    assert.equal(await first.locator('[data-condition="kind"] option[value="bridge"]').count(), 0);
+    assert.equal(await first.locator('.tl-target-picker').isVisible(), true);
+    assert.equal(await first.locator('[data-condition="state"]').isVisible(), true);
     await page.goto(`${base}/#library/gate/14`);
     await page.locator('#reference-detail:not(.hidden) .reference-back').click();
     await page.waitForFunction(() => location.hash === '#library');

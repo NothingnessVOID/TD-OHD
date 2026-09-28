@@ -118,8 +118,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   function renderTargetPicker(row) {
     const kind = row.querySelector('[data-condition="kind"]').value;
     const picker = row.querySelector('.tl-target-picker');
-    picker.hidden = kind === 'bridge';
-    if (kind === 'bridge') return;
+    picker.hidden = false;
     const toggle = picker.querySelector('[data-action="toggle-targets"]');
     const selected = targetChoices(kind).find(item => String(item.id) === row.selectedTarget);
     setText(toggle, `${selected ? targetLabel(selected) : t('conditionTargets')} ▾`);
@@ -132,7 +131,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     row.className = 'tl-condition-row';
     row.dataset.conditionId = String(++conditionSequence);
     row.innerHTML = `<select data-condition="kind" aria-label="${esc(t('conditionKind'))}">${[
-      ['bridge','bridge'], ['center','center'], ['channel','channel'], ['gate','gate'], ['line','gateLine']
+      ['center','center'], ['channel','channel'], ['gate','gate'], ['line','gateLine']
     ].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select>
       <div class="tl-target-picker" data-condition="ids">
         <button type="button" data-action="toggle-targets" aria-expanded="false" aria-label="${esc(t('conditionTargets'))}"></button>
@@ -148,20 +147,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     row.selectedTarget = null;
     $('.tl-condition-rows').append(row);
     renderTargetPicker(row);
-    syncBridgeControls();
-  }
-  function syncBridgeControls() {
-    root.querySelectorAll('.tl-condition-row').forEach(row => {
-      const kind = row.querySelector('[data-condition="kind"]');
-      kind.querySelector('option[value="bridge"]').disabled = mode === 'transit-only';
-      if (mode === 'transit-only' && kind.value === 'bridge') {
-        kind.value = 'gate'; row.selectedTarget = null; renderTargetPicker(row);
-      }
-      const bridge = kind.value === 'bridge';
-      const state = row.querySelector('[data-condition="state"]');
-      state.hidden = bridge;
-      if (bridge) state.value = 'active';
-    });
   }
   function bounds() {
     if (boundsZone !== zone) {
@@ -302,7 +287,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       const row = result?.rows.find(item => item.key === node.dataset.key);
       const interval = row && intervalAt(row, selected);
       node.classList.toggle('tl-row-active', Boolean(interval));
-      if (interval) node.dataset.activeSource = interval.source;
+      if (interval) node.dataset.activeSource = row.kind === 'bridge' ? 'transit' : interval.source;
       else delete node.dataset.activeSource;
     });
   }
@@ -492,6 +477,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   function rowSymbol(row) {
+    if (row.kind === 'bridge') return '<span class="tl-bridge-symbol">↔</span>';
     if (row.kind === 'line') return `<span class="tl-line-symbol">.${row.line}</span>`;
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;
     if (row.kind === 'channel') return `<span class="tl-channel-symbol">${esc(row.id)}</span>`;
@@ -521,18 +507,22 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const changesOnly = $('[data-field="changes"]').getAttribute('aria-pressed') === 'true';
     // Keep the row roster fixed for the completed calculation. Only bars are
     // clipped to the moving viewport, so empty tracks retain their position.
-    const rows = result.rows.filter(row => row.kind !== 'bridge' && row.intervals.length > 0 && (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line'))
+    const rowName = row => row.kind === 'bridge' ? t('bridge') : name(row);
+    const bridgeApplicable = mode === 'overlay' && chart && natalIslands(host.identity(chart.chart)).length > 1;
+    const rows = result.rows.filter(row => (row.kind === 'bridge' ? bridgeApplicable : row.intervals.length > 0) &&
+      (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
-      && (!query || `${name(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
+      && (!query || `${rowName(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
         (row.kind === 'gate' && result.rows.some(line => line.kind === 'line' && line.gate === row.id && line.id.includes(query))))
       && (!changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
     reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}">
-      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}">${expandedGates.has(row.id) ? '▾' : '▸'}</button>` : ''}<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(name(row))}" aria-label="${esc(name(row))}">${rowSymbol(row)}</button></div>
+      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}">${expandedGates.has(row.id) ? '▾' : '▸'}</button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';
-        const title = `${name(row)} · ${t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
-        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(name(row))}</span></button>`;
+        const bridgeGroups = row.kind === 'bridge' ? JSON.parse(interval.source).map(group => group.join('↔')).join(', ') : '';
+        const title = `${rowName(row)}${bridgeGroups ? ` · ${bridgeGroups}` : ''} · ${row.kind === 'bridge' ? t('transit') : t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
+        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${row.kind === 'bridge' ? 'transit' : interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(row.kind === 'bridge' ? bridgeGroups : rowName(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
     $('.tl-table').scrollTop = scroll;
     if (sync) syncClock();
@@ -779,8 +769,16 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     }
     if (frame) { cancelAnimationFrame(frame); frame = 0; }
     renderMoment();
-    pendingDetail = { row, interval };
     root.querySelector(`.tl-bar[data-key="${row.key}"][data-interval="${index}"]`)?.setAttribute('aria-pressed', 'true');
+    if (row.kind === 'bridge') {
+      const islands = natalIslands(host.identity(chart.chart));
+      const centers = [...new Set(JSON.parse(interval.source).flatMap(group => group.flatMap(number => islands[number - 1] || [])))];
+      context?.api?.highlightSelection({ kind: 'targets', gates: [], centers });
+      clearTimeout(navigationTimer);
+      navigationTimer = setTimeout(() => context?.api?.highlightSelection(null), 1800);
+      return;
+    }
+    pendingDetail = { row, interval };
     host.showDetail(row.kind === 'line' ? 'gate' : row.kind, row.kind === 'line' ? row.gate : row.id, context);
   }
 
@@ -813,7 +811,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   });
   listen($('[data-field="mode"]'), 'change', event => {
     mode = event.target.value;
-    syncBridgeControls();
     host.closeDetail(); calculate(); renderMoment();
   });
   listen($('[data-field="planet"]'), 'change', event => {
@@ -835,7 +832,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       row.querySelector('.tl-target-popover').hidden = true;
       row.querySelector('[data-action="toggle-targets"]').setAttribute('aria-expanded', 'false');
       renderTargetPicker(row);
-      syncBridgeControls();
     }
     if (event.target.matches('[data-target-id]')) {
       row.selectedTarget = event.target.checked ? event.target.dataset.targetId : null;
@@ -984,7 +980,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (event.pointerType === 'touch' || (event.type === 'focusin' && lastInput === 'touch')) return;
     const rowNode = event.target.closest('[data-row], [data-interval]');
     const row = rowNode && result?.rows.find(item => item.key === (rowNode.dataset.row || rowNode.dataset.key));
-    if (row) {
+    if (row && row.kind !== 'bridge') {
       hoverSelection = { kind: row.kind, id: row.id };
       context?.api?.highlightSelection(hoverSelection);
     }
@@ -1192,7 +1188,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     for (const item of host.planets) setText($(`[data-field="planet"] option[value="${item.id}"]`), item.name);
     for (const [value, key] of [['all','allConditions'],['any','anyCondition']]) setText($(`[data-field="combine"] option[value="${value}"]`), t(key));
     root.querySelectorAll('.tl-condition-row').forEach(row => {
-      for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center'],['bridge','bridge']])
+      for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center']])
         setText(row.querySelector(`[data-condition="kind"] option[value="${value}"]`), t(key));
       setText(row.querySelector('[data-condition="state"] option[value="active"]'), t('activeState'));
       setText(row.querySelector('[data-condition="state"] option[value="inactive"]'), t('inactiveState'));

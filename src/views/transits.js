@@ -154,7 +154,25 @@ function drawTransitResult({ chart, overlay, transitGates, model, mode }, preser
       const personality = grid.querySelector('.bg-planets-personality');
       const pair = document.createElement('div');
       pair.className = 'transit-birth-pair';
-      pair.append(design, personality);
+      const head = document.createElement('div');
+      head.className = 'transit-birth-head';
+      head.append(design.querySelector('.bg-planets-head'), document.createElement('span'), personality.querySelector('.bg-planets-head'));
+      pair.append(head);
+      const designRows = [...design.querySelectorAll('.bg-planet-row')];
+      const personalityRows = [...personality.querySelectorAll('.bg-planet-row')];
+      designRows.forEach((designRow, index) => {
+        const personalityRow = personalityRows[index];
+        const glyph = designRow.querySelector('.bg-planet-glyph');
+        personalityRow.querySelector('.bg-planet-glyph')?.remove();
+        const row = document.createElement('div');
+        row.className = 'transit-birth-row';
+        designRow.classList.add('transit-birth-value', 'bg-planets-design');
+        personalityRow.classList.add('transit-birth-value', 'bg-planets-personality');
+        row.append(designRow, glyph, personalityRow);
+        pair.append(row);
+      });
+      design.remove();
+      personality.remove();
       grid.append(pair);
       const transitColumn = document.createElement('div');
       transitColumn.className = 'bg-planets transit-planet-column';
