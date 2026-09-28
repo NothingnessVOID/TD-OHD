@@ -31,7 +31,7 @@ function reconcile(parent, markup) {
         for (const attr of next.attributes) {
           let value = attr.value;
           if (attr.name === 'class' && node.classList.contains('tl-row')) {
-            value += ['tl-row-active', 'tl-row-lit'].filter(name => node.classList.contains(name)).map(name => ` ${name}`).join('');
+            value += ['tl-row-active', 'tl-row-lit', 'tl-row-hover'].filter(name => node.classList.contains(name)).map(name => ` ${name}`).join('');
           }
           if (node.getAttribute(attr.name) !== value) node.setAttribute(attr.name, value);
         }
@@ -91,6 +91,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const expandedGates = new Set();
   let navigationTimer = 0;
   let navigationGeneration = 0;
+  let navigationGates = new Set();
   let queryResult = null;
   let queryConditions = null;
   let queryIndex = -1;
@@ -313,7 +314,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     table.scrollTo({ top: Math.max(0, target), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
 
-  function highlight(selection) {
+  function highlight(selection, className = 'tl-row-lit') {
     const gates = new Set(selection?.gates || []);
     const centers = new Set(selection?.centers || []);
     const channels = new Set(selection?.channels || []);
@@ -322,7 +323,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       const [kind, id] = node.dataset.key.split(':');
       const lit = kind === 'gate' ? gates.has(Number(id)) : kind === 'line' ? lines.has(id) || gates.has(Number(id.split('.')[0]))
         : kind === 'center' ? centers.has(id) : channels.has(id);
-      node.classList.toggle('tl-row-lit', Boolean(selection && lit));
+      node.classList.toggle(className, Boolean(selection && lit));
+    });
+  }
+
+  function paintNavigationGates() {
+    root.querySelectorAll('.tl-graph .bg-gate[data-gate]').forEach(node => {
+      node.classList.toggle('tl-navigation-gate', navigationGates.has(Number(node.dataset.gate)));
     });
   }
 
@@ -382,6 +389,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const visual = { gates: [...gates], centers: [...centers], channels: [...channels], lines: [...lines] };
     const currentNavigation = ++navigationGeneration;
     clearTimeout(navigationTimer);
+    navigationGates.clear();
+    paintNavigationGates();
     highlight(visual);
     requestAnimationFrame(() => {
       if (currentNavigation !== navigationGeneration) return;
@@ -410,11 +419,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const fixings = host.lineFixings?.(chart.chart, activations);
     const nextGraphKey = `${mode}:${[...model.transitGates].sort((a, b) => a - b).join(',')}`;
     if (graphChart !== chart.chart || graphKey !== nextGraphKey || !context.api) {
-      context.api = host.renderGraph($('.tl-graph'), chart.chart, context, highlight);
+      context.api = host.renderGraph($('.tl-graph'), chart.chart, context,
+        selection => highlight(selection, 'tl-row-hover'));
       graphChart = chart.chart;
       graphKey = nextGraphKey;
       if (hoverSelection) context.api?.highlightSelection(hoverSelection);
     }
+    paintNavigationGates();
     // Keep the birth columns fixed; only the left transit column follows time.
     if (!$('.tl-planets').children.length) {
       $('.tl-planets').innerHTML = host.planets.map(planet => `<button type="button" class="tl-planet bg-planet-row" data-planet="${planet.id}" title="${esc(planet.name)}"><span class="bg-planet-glyph" aria-hidden="true">${esc(planet.glyph)}</span><strong class="bg-planet-act"></strong><span class="tl-fixing-mark" aria-hidden="true"></span></button>`).join('');
@@ -580,6 +591,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (!change) { setText($('.tl-event-status'), t('noNextGate')); return; }
     const currentNavigation = ++navigationGeneration;
     clearTimeout(navigationTimer);
+    navigationGates.clear();
+    paintNavigationGates();
     highlight(null);
     setText($('.tl-event-status'), '');
     let visibleRows = new Set([...root.querySelectorAll('.tl-row')].map(node => node.dataset.key));
@@ -597,12 +610,15 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         const row = [...root.querySelectorAll('.tl-row')].find(node => node.dataset.key === `gate:${target}`);
         scrollRowInsideTable(row);
       }
+      navigationGates = new Set(change.gates);
       highlight({ gates: change.gates });
-      context?.api?.highlightSelection({ kind: 'gates', gates: change.gates });
+      paintNavigationGates();
       navigationTimer = setTimeout(() => {
         if (currentNavigation !== navigationGeneration) return;
-        context?.api?.highlightSelection(null); highlight(null);
-      }, 1800);
+        navigationGates.clear();
+        paintNavigationGates();
+        highlight(null);
+      }, 2400);
     });
   }
 

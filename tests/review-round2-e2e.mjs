@@ -156,13 +156,21 @@ try {
     assert.equal(started, true, `gate jump ${index + 1} starts an activation`);
     const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => ({
       outline: getComputedStyle(node).outlineColor,
-      shadow: getComputedStyle(node).boxShadow,
-      fill: getComputedStyle(node.querySelector('.tl-row-name')).backgroundColor
+      shadow: getComputedStyle(node).boxShadow
     }));
-    assert.match(glow.outline, /169, 99, 255/);
-    assert.match(glow.shadow, /169, 99, 255/);
-    assert.equal(glow.fill, 'rgba(0, 0, 0, 0)');
+    assert.match(glow.outline, /41, 128, 185/);
+    assert.match(glow.shadow, /41, 128, 185/);
   }
+  const flashRow = page.locator(`${root} .tl-row-lit`).first();
+  const flashKey = await flashRow.getAttribute('data-key');
+  await page.locator(`${root} .tl-row:not(.tl-row-lit) .tl-row-name`).first()
+    .dispatchEvent('pointerover', { pointerType: 'mouse' });
+  assert.equal(await page.locator(`${root} .tl-row[data-key="${flashKey}"].tl-row-lit`).count(), 1,
+    'hovering another row does not cancel jump feedback');
+  assert.ok(await page.locator(`${root} .tl-navigation-gate`).count() > 0,
+    'graph jump feedback remains visible through hover');
+  await page.waitForFunction(() => !document.querySelector('#timeline-view .tl-row-lit') &&
+    !document.querySelector('#timeline-view .tl-navigation-gate'), null, { timeout: 5000 });
 
   await page.locator(`${root} [data-condition="kind"]`).first().selectOption('bridge');
   await page.locator(`${root} [data-action="run-query"]`).click();
