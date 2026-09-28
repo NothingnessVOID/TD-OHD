@@ -9,7 +9,7 @@ import {
 } from 'natalengine';
 import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
 import { gateReading, channelReading, centerReading, channelsForGate, channelById } from '../lib/reference-content.js';
-import { t, formatDisplay, countLabel } from '../lib/i18n.js';
+import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
   definitionName, centerName, gateName, channelName, circuitName,
@@ -142,7 +142,6 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
       <button id="save-image" class="btn-secondary btn-small">${t('Save image')}</button>
       <button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>
     </div>
-    <small class="share-fields">${esc(t('Share fields'))}: ${esc([...birthToParams(birth)].map(([key, value]) => `${key}=${value}`).join(' · '))}</small>
   `;
   document.getElementById('share-chart').addEventListener('click', async (e) => {
     if (!onShare) return;
@@ -234,7 +233,15 @@ function highlightPanelRows(sel) {
 // Forward direction: hovering a data row lights its gate(s) on the bodygraph.
 // Mouse/pen only — on touch the tap opens the detail (which pins the selection).
 function wireRowHover(el, gateNum) {
-  el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') detailGraph()?.highlightGate?.(gateNum); });
+  el.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'touch') return;
+    detailGraph()?.highlightGate?.(gateNum);
+    if (el.classList.contains('foundation-clickable')) {
+      el.parentElement?.querySelectorAll('.foundation-clickable.row-lit').forEach(node => {
+        if (node !== el) node.classList.remove('row-lit');
+      });
+    }
+  });
   el.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') detailGraph()?.highlightGate?.(null); });
 }
 
@@ -486,7 +493,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
       <div class="gate-detail-nav">${detailNav()}</div>
       <div class="gate-detail-body">
         <div class="detail-label">${t('Gate {gate}', { gate: gateNum })}</div>
-        <div class="detail-name">${esc(gateName(gateNum))}</div>
+        <div class="detail-name">${esc(gateName(gateNum))} <span class="detail-hexagram">${getLocale().startsWith('zh') ? '（' : '('}${esc(hexagramName(gateNum))}${getLocale().startsWith('zh') ? '）' : ')'}</span></div>
         ${detailContext?.mode === 'transit-only' ? '' : acts.length ? `<div class="gate-detail-acts">${detailContext ? `<div class="detail-label">${t('Birth activations')}</div>` : ''}${acts.join('<br>')}</div>` : `<p class="gate-detail-inactive">${t('Not activated in your natal chart.')}</p>`}
         ${detailContext ? `<div class="gate-detail-transits"><div class="detail-label">${t('Transit activations')}</div>${transitActs.length ? transitActs.join('<br>') : t('Not activated by the selected transit.')}</div>` : ''}
         <div class="lens-switch">${lenses().map(([k, label]) => `<button type="button" data-lens="${k}" class="${k === currentLens ? 'active' : ''}">${label}</button>`).join('')}</div>
@@ -569,10 +576,11 @@ export function showCenterDetail(centerKey, pushHistory = true) {
         ${model ? `<p class="lens-note">${t(model.mode === 'transit-only' ? 'Transit only · status from the selected time.' : 'Birth chart + transits · hatching marks temporary additions.')}</p>` : ''}
         <div class="center-detail-head">
           <span class="center-status ${status}">${statusLabel}</span>
-          <span class="center-detail-theme">${esc(contentText(c.theme || ''))}${c.biological ? ` · ${esc(contentText(c.biological))}` : ''}</span>
+          <span class="center-detail-theme">${t('Center theme')}: ${esc(contentText(c.theme || ''))}${c.biological ? ` · ${t('Biological association')}: ${esc(contentText(c.biological))}` : ''}</span>
         </div>
-        ${model ? `<p class="gate-detail-desc">${t(definedHere ? natalHere ? 'This center is already defined in the birth chart.' : 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : ''}
-        ${centerReading(centerKey, { status: model ? null : status, includeTheme: false })}
+        ${model && !natalHere ? `<p class="gate-detail-desc">${t(definedHere ? 'A complete channel defines this center in the selected view. This does not change your birth chart.' : 'No complete channel defines this center in the selected view.')}</p>` : ''}
+        <section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>
+          ${centerReading(centerKey, { status: model ? null : status, includeTheme: false })}</section>
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>

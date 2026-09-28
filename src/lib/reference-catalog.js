@@ -39,14 +39,9 @@ export function referenceEntry(kind, id) {
 
 export function searchReference(query, category = 'all') {
   const text = normalized(query);
-  const lineMatch = /^(?:[1-9]|[1-5]\d|6[0-4])\.[1-6]$/.exec(text);
-  if (lineMatch && (category === 'all' || category === 'gate')) {
-    const [gate, line] = text.split('.').map(Number);
-    return [{ ...referenceEntry('gate', String(gate)), line }];
-  }
   const tokens = text.split(' ').filter(Boolean);
   return referenceEntries().filter(entry => {
-    if (category !== 'all' && category !== entry.kind && !(category === 'circuit' && entry.kind === 'group')) return false;
+    if (category !== 'all' && category !== entry.kind) return false;
     if (!tokens.length) return true;
     const values = [entry.id, entry.name, ...entry.aliases].map(normalized);
     return tokens.every(token => values.some(value => value.includes(token)));

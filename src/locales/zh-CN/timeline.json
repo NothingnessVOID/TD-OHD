@@ -46,6 +46,8 @@
   "noMatches": "没有匹配区间。",
   "fullRange": "请求的整个范围都匹配。",
   "matchCount": "匹配 {count} 个区间",
+  "previousMatch": "上一处",
+  "nextMatch": "下一处",
   "tracks": "激活时段",
   "tracksIntro": "每个条形表示一段激活存在的时间。",
   "filter": "显示",

@@ -46,6 +46,8 @@
   "noMatches": "沒有符合區間。",
   "fullRange": "請求的整個範圍都符合。",
   "matchCount": "符合 {count} 個區間",
+  "previousMatch": "上一處",
+  "nextMatch": "下一處",
   "tracks": "啟動時段",
   "tracksIntro": "每個長條表示一段啟動存在的時間。",
   "filter": "顯示",

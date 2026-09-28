@@ -54,10 +54,10 @@ test('a skipped local date resolves to the next existing day boundary', () => {
   assert.equal(wallTime(window.end, 'Pacific/Apia').date, '2012-01-02');
 });
 
-test('forward and past calendar years handle February 29 and exclusive end', () => {
+test('centered and past calendar years handle February 29 and exclusive end', () => {
   const leap = at('2024-02-29T12:34:56Z');
   const future = presetWindow(leap, 'year', 'UTC', transitInstants);
-  assert.deepEqual(future, { start: leap, end: at('2025-02-28T12:34:56Z') });
+  assert.deepEqual(future, { start: at('2023-08-29T12:34:56Z'), end: at('2024-08-29T12:34:56Z') });
   const past = presetWindow(leap, 'past-year', 'UTC', transitInstants);
   assert.deepEqual(past, { start: at('2023-02-28T12:34:56Z'), end: leap + 1000 });
   assert.ok(past.start <= leap && leap < past.end);
@@ -66,19 +66,20 @@ test('forward and past calendar years handle February 29 and exclusive end', () 
   const leapMidnight = presetWindow(at('2024-02-29T23:59:59Z'), 'past-year', 'UTC', transitInstants);
   assert.equal(leapMidnight.start, at('2023-02-28T23:59:59Z'));
   const ordinary = presetWindow(at('2026-09-24T09:50:00Z'), 'year', 'UTC', transitInstants);
-  assert.equal(ordinary.end, at('2027-09-24T09:50:00Z'));
+  assert.equal(ordinary.start, at('2026-03-24T09:50:00Z'));
+  assert.equal(ordinary.end, at('2027-03-24T09:50:00Z'));
 });
 
-test('spring anniversary moves through an IANA DST gap to the next valid minute', () => {
-  const instant = resolve('2025-03-08', '02:30:00', 'America/New_York');
+test('centered year moves through an IANA DST gap to the next valid minute', () => {
+  const instant = resolve('2025-09-08', '02:30:00', 'America/New_York');
   const window = presetWindow(instant, 'year', 'America/New_York', transitInstants);
-  assert.equal(window.start, instant);
+  assert.deepEqual(wallTime(window.start, 'America/New_York'), { date: '2025-03-08', time: '02:30:00' });
   assert.deepEqual(wallTime(window.end, 'America/New_York'), { date: '2026-03-08', time: '03:00:00' });
   assert.equal(window.end, at('2026-03-08T07:00:00Z'));
 });
 
-test('fall anniversary chooses the matching offset in an IANA DST fold', () => {
-  const source = resolve('2025-11-01', '01:30:00', 'America/New_York');
+test('centered year chooses the matching offset in an IANA DST fold', () => {
+  const source = resolve('2026-05-01', '01:30:00', 'America/New_York');
   const window = presetWindow(source, 'year', 'America/New_York', transitInstants);
   const matches = transitInstants('2026-11-01', '01:30:00', 'America/New_York');
   assert.equal(matches.length, 2);

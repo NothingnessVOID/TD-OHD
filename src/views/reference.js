@@ -6,8 +6,8 @@ import { t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import '../lib/reference-messages.js';
 
-const categories = ['all', 'center', 'channel', 'gate', 'circuit'];
-const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', circuit: 'Reference circuits' };
+const categories = ['all', 'center', 'channel', 'gate', 'group', 'circuit'];
+const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', group: 'Circuit groups', circuit: 'Reference circuits' };
 let category = 'all';
 let query = '';
 let limit = 60;
@@ -52,7 +52,7 @@ const channelId = channel => channel.gates.join('-');
 const lensButtons = () => `<div class="lens-switch">${[['hd', 'Human Design'], ['iching', 'I Ching'], ['gk', 'Gene Keys']]
   .map(([key, label]) => `<button type="button" data-reference-lens="${key}" class="${lens === key ? 'active' : ''}">${t(label)}</button>`).join('')}</div>`;
 
-function gateDetail(entry, line) {
+function gateDetail(entry) {
   const gate = Number(entry.id);
   const channels = channelsForGate(gate);
   return `${lensButtons()}<div class="reference-reading">${gateReading(gate, lens)}</div>
@@ -91,6 +91,8 @@ function circuitDetail(entry) {
 function renderDetail() {
   const selected = route();
   const article = document.getElementById('reference-detail');
+  document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind));
+  article.setAttribute('aria-label', selected?.kind ? t('Reference Library') : t('Select an entry to read.'));
   if (!selected?.kind && !selected?.invalid) {
     article.innerHTML = `<p class="reference-empty">${t('Select an entry to read.')}</p>`;
     return;
@@ -100,7 +102,7 @@ function renderDetail() {
     article.innerHTML = `<p class="reference-empty">${t('Invalid reference address.')}</p>`;
     return;
   }
-  const body = entry.kind === 'gate' ? gateDetail(entry, selected.line)
+  const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry) : circuitDetail(entry);
   article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
@@ -122,8 +124,8 @@ function renderDetail() {
 function renderResults() {
   const results = document.getElementById('reference-results');
   const matches = searchReference(query, category);
-  results.innerHTML = matches.slice(0, limit).map(entry => `<button type="button" class="reference-result" data-reference-kind="${entry.kind}" data-reference-id="${esc(entry.id)}"${entry.line ? ` data-reference-line="${entry.line}"` : ''}>
-    <small>${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.line ? `${entry.id}.${entry.line}` : entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
+  results.innerHTML = matches.slice(0, limit).map(entry => `<button type="button" class="reference-result" data-reference-kind="${entry.kind}" data-reference-id="${esc(entry.id)}">
+    <small>${t(labels[entry.kind] || 'Reference circuits')} · ${esc(entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
     + (matches.length > limit ? `<button type="button" class="reference-more" data-reference-more>${t('Show more')}</button>` : '')
     || `<p>${t('No matching reference.')}</p>`;
   document.getElementById('reference-count').textContent = t('{count} results', { count: matches.length });
@@ -137,16 +139,13 @@ function build() {
       <input id="reference-search" type="search" autocomplete="off" placeholder="${t('Search by number or name')}" value="${esc(query)}">
       <div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div>
       <p id="reference-count"></p><div id="reference-results" class="reference-results"></div></aside>
-      <article id="reference-detail" class="reference-detail"></article></div></div>`;
+      <article id="reference-detail" class="reference-detail" role="region"></article></div></div>`;
   built = true;
 }
 
 export function renderReferenceView({ languageChange = false } = {}) {
   const previousScroll = built ? document.querySelector('.reference-results')?.scrollTop || 0 : 0;
   const focused = document.activeElement?.id === 'reference-search';
-  const focusedResult = document.activeElement?.classList?.contains('reference-result')
-    ? { kind: document.activeElement.dataset.referenceKind, id: document.activeElement.dataset.referenceId,
-      line: document.activeElement.dataset.referenceLine || '' } : null;
   const returning = document.activeElement?.hasAttribute?.('data-reference-back') && !route()?.kind;
   if (!built || languageChange) build();
   renderResults();
@@ -154,13 +153,8 @@ export function renderReferenceView({ languageChange = false } = {}) {
   document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
   if (previousScroll) document.querySelector('.reference-results').scrollTop = previousScroll;
   if (focused) document.getElementById('reference-search').focus({ preventScroll: true });
-  else if (focusedResult || returning) {
-    const target = focusedResult || lastResult;
-    const match = [...document.querySelectorAll('.reference-result')].find(node =>
-      node.dataset.referenceKind === target?.kind && node.dataset.referenceId === target?.id &&
-      (node.dataset.referenceLine || '') === (target?.line || ''));
-    match?.focus({ preventScroll: true });
-  }
+  else if (returning && lastResult) document.querySelector(`.reference-result[data-reference-kind="${lastResult.kind}"][data-reference-id="${lastResult.id}"]`)
+    ?.focus({ preventScroll: true });
 }
 
 export function setupReferenceView() {
@@ -174,9 +168,8 @@ export function setupReferenceView() {
   mount.addEventListener('click', event => {
     const target = event.target.closest('[data-reference-kind]');
     if (target) {
-      if (target.classList.contains('reference-result')) lastResult = { kind: target.dataset.referenceKind,
-        id: target.dataset.referenceId, line: target.dataset.referenceLine || '' };
-      openReference(target.dataset.referenceKind, target.dataset.referenceId, { line: Number(target.dataset.referenceLine) || null });
+      if (target.classList.contains('reference-result')) lastResult = { kind: target.dataset.referenceKind, id: target.dataset.referenceId };
+      openReference(target.dataset.referenceKind, target.dataset.referenceId);
       return;
     }
     const filter = event.target.closest('[data-reference-filter]');

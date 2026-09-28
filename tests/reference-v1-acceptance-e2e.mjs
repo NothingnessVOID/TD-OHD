@@ -41,6 +41,7 @@ try {
     await page.goto(`${base}/#library/gate/${gateNumber}`);
     await page.locator('#reference-detail .gate-detail-line').first().waitFor();
     assert.equal((await page.locator('#reference-detail .reference-reading').innerText()).trim(), popupCore);
+    if (viewport.width < 600) await page.locator('#reference-detail .reference-back').click();
     await page.locator('.nav-link[data-view="chart"]').click();
     await page.locator('#chart-view:not(.hidden)').waitFor();
     await page.locator('.nav-link[data-view="transits"]').click();
@@ -157,13 +158,11 @@ try {
       await row.locator('[data-action="toggle-targets"]').click();
       await row.locator('[data-condition="target-search"]').fill(id);
       await row.locator(`input[data-target-id="${id}"]`).check();
-      await row.locator('[data-action="toggle-targets"]').click();
     };
     await chooseTarget(0, '14');
-    await chooseTarget(0, '29');
     await page.locator(`${root} [data-action="add-condition"]`).click();
     await page.locator(`${root} [data-condition="kind"]`).nth(1).selectOption('gate');
-    await chooseTarget(1, '30');
+    await chooseTarget(1, '29');
     await page.locator(`${root} [data-field="combine"]`).selectOption('any');
     await page.locator(`${root} [data-action="run-query"]`).click();
     assert.ok(await page.locator(`${root} [data-query-interval]`).count());
@@ -186,9 +185,7 @@ try {
     if (viewport.width < 600) await page.locator(`${root} [data-action="mobile-exit"]`).click();
     else await page.locator('.nav-link[data-view="chart"]').click();
     await page.locator('#chart-view:not(.hidden)').waitFor();
-    const fields = await page.locator('.share-fields').innerText();
-    assert.match(fields, /d=1985-01-01/);
-    assert.doesNotMatch(fields, /(?:\bn=|place=|lat=|lon=|iana=|id=)/);
+    assert.equal(await page.locator('.share-fields').count(), 0);
     await page.locator('#share-chart').click();
     const shared = await page.evaluate(() => navigator.clipboard.readText());
     const sharedUrl = new URL(shared);

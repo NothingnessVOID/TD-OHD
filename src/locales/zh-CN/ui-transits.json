@@ -44,7 +44,7 @@
   "Defined with transits": "叠加行运后形成定义",
   "Not defined in this view": "当前视图中未定义",
   "Transit only · status from the selected time.": "仅行运 · 显示所选时刻的状态。",
-  "Birth chart + transits · hatching marks temporary additions.": "出生图＋行运 · 斜线标记临时新增的定义。",
+  "Birth chart + transits · hatching marks temporary additions.": "斜线部分表示所选时刻由行运新增；出生图本身不变。",
   "This center is already defined in the birth chart.": "这个中心在出生图中已有定义。",
   "A complete channel defines this center in the selected view. This does not change your birth chart.": "当前视图中，一条完整通道使这个中心形成定义。这不会改变你的出生图。",
   "No complete channel defines this center in the selected view.": "当前视图中，没有完整通道使这个中心形成定义。",

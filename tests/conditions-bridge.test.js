@@ -37,7 +37,7 @@ test('two, three and four fixed natal islands bridge through new intermediate ce
   assert.equal(bridgeState(natal([1,2]), [1,2,3,4,9], channels).applicable, false);
 });
 
-test('condition rows combine any selections and all/any across rows with complements', () => {
+test('single-target condition rows combine all/any across rows with complements', () => {
   const result = { start: 0, end: 40, rows: [
     { key: 'gate:14', intervals: [{ start: 0, end: 20, source: 'natal' }] },
     { key: 'gate:29', intervals: [{ start: 10, end: 30, source: 'transit' }] },
@@ -50,12 +50,12 @@ test('condition rows combine any selections and all/any across rows with complem
   const gate29 = { kind: 'gate', ids: [29], state: 'active' };
   assert.deepEqual(queryTimeline(result, [gate14, gate29]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [gate14, gate29], { combine: 'any' }).intervals.map(i => [i.start,i.end]), [[0,30]]);
-  assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [14, 29], state: 'inactive' }]).intervals.map(i => [i.start,i.end]),
-    [[0,10],[20,40]], 'one inactive target is enough even while the other target is active');
+  assert.throws(() => queryTimeline(result, [{ kind: 'gate', ids: [14, 29], state: 'inactive' }]), /Invalid condition/);
+  assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [14], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[20,40]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [30], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[0,40]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'channel', ids: ['60-3'], state: 'active' }]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3 }).intervals.map(i => [i.start,i.end]), [[15,25],[25,35]]);
-  assert.deepEqual(queryTimeline(result, [{ kind: 'bridge', state: 'inactive' }], { natalIslandCount: 3 }).intervals.map(i => [i.start,i.end]), [[0,15],[35,40]]);
+  assert.throws(() => queryTimeline(result, [{ kind: 'bridge', state: 'inactive' }], { natalIslandCount: 3 }), /only matches/);
   assert.throws(() => queryTimeline(result, [{ kind: 'bridge', state: 'active' }], { natalIslandCount: 3, mode: 'transit-only' }));
   assert.throws(() => queryTimeline(result, []));
   assert.throws(() => queryTimeline(result, [{ kind: 'gate', ids: [999], state: 'active' }]));

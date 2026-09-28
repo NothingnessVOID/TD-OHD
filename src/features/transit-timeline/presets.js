@@ -7,12 +7,12 @@ export const RANGE_OPTIONS = [
 ];
 
 /** Match the local anniversary, clamping February 29 and resolving DST edges. */
-function anniversary(instant, direction, zone, resolveTime) {
+function calendarShift(instant, months, zone, resolveTime) {
   const wall = wallTime(instant, zone);
   const [year, month, day] = wall.date.split('-').map(Number);
-  const targetYear = year + direction;
-  const targetDay = Math.min(day, new Date(Date.UTC(targetYear, month, 0)).getUTCDate());
-  const local = Date.UTC(targetYear, month - 1, targetDay, ...wall.time.split(':').map(Number));
+  const target = new Date(Date.UTC(year, month - 1 + months, 1));
+  const targetDay = Math.min(day, new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate());
+  const local = Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), targetDay, ...wall.time.split(':').map(Number));
   const originalOffset = (Date.parse(`${wall.date}T${wall.time}Z`) - instant) / 3600000;
   // If the anniversary falls in a spring-forward gap, use its next valid minute.
   for (let minute = 0; minute <= 180; minute++) {
@@ -51,10 +51,13 @@ export function presetWindow(instant, preset, zone, resolveTime) {
   if (!Number.isFinite(instant) || !RANGE_OPTIONS.some(([value]) => value === preset)) {
     throw new RangeError('Invalid timeline preset');
   }
-  if (preset === 'year') return { start: instant, end: anniversary(instant, 1, zone, resolveTime) };
+  if (preset === 'year') return {
+    start: calendarShift(instant, -6, zone, resolveTime),
+    end: calendarShift(instant, 6, zone, resolveTime)
+  };
   if (preset === 'past-year') {
     const end = instant + 1000; // Include the selected second in the exclusive range.
-    return { start: anniversary(instant, -1, zone, resolveTime), end };
+    return { start: calendarShift(instant, -12, zone, resolveTime), end };
   }
   const currentDate = wallTime(instant, zone).date;
   if (preset === '1') return {
