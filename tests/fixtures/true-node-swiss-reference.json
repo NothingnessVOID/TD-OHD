@@ -1,0 +1,19 @@
+{
+  "reference": {
+    "library": "pyswisseph 2.10.3.2 / Swiss Ephemeris 2.10.03",
+    "calculation": "calc_ut(julday UTC, TRUE_NODE, FLG_SWIEPH), tropical longitude",
+    "returnedFlag": 2,
+    "ephemerisFile": "semo_18.se1",
+    "ephemerisSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+    "ephemerisSource": "https://github.com/aloistr/swisseph/blob/master/ephe/semo_18.se1",
+    "documentation": "https://www.astro.com/swisseph/swisseph.pdf",
+    "note": "Development comparison only. The Swiss library and ephemeris file are not bundled with the app."
+  },
+  "samples": [
+    { "instant": "2000-05-10T04:30:00Z", "purpose": "regular natal personality node", "trueLongitude": 117.0757553693096, "meanLongitude": 118.17256189488927 },
+    { "instant": "2026-07-25T06:00:00Z", "purpose": "near gate boundary in pinned engine", "trueLongitude": 330.13191037204945, "meanLongitude": 331.3029886167245 },
+    { "instant": "2026-04-03T12:00:00Z", "purpose": "near line boundary in pinned engine", "trueLongitude": 338.58220390824846, "meanLongitude": 337.272623231423 },
+    { "instant": "2026-11-05T00:00:00Z", "purpose": "near color boundary in pinned engine", "trueLongitude": 326.88913457877374, "meanLongitude": 325.86172326405307 },
+    { "instant": "2026-03-23T18:00:00Z", "purpose": "near tone boundary in pinned engine", "trueLongitude": 338.7538526660722, "meanLongitude": 337.84195766803253 }
+  ]
+}

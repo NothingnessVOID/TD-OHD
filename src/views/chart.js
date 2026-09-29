@@ -844,11 +844,11 @@ function renderVariablePanel(container) {
     return;
   }
   const arrowSymbol = (dir) => dir === 'left' ? '◀' : '▶';
-  const card = (slot, label, sub) => {
+  const card = (key, slot, label, sub) => {
     const [name] = variable(slot);
     const originalTerm = formatDisplay('originalTerm', slot.name);
     return `
-    <div class="arrow-card">
+    <div class="arrow-card" data-variable="${key}">
       <div class="arrow-direction">${arrowSymbol(slot.arrow)} <span class="arrow-side">${t(slot.arrow === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}${originalTerm ? ` <span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
@@ -861,10 +861,10 @@ function renderVariablePanel(container) {
     <div class="panel-title">${t('Variable — {notation}', { notation: esc(v.notation) })}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
     <div class="variable-grid">
-      ${card(v.determination, t('Determination (Digestion)'), v.determination.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
-      ${card(v.environment, t('Environment'))}
-      ${card(v.perspective, t('Perspective (View)'))}
-      ${card(v.motivation, t('Motivation'))}
+      ${card('determination', v.determination, t('Determination (Digestion)'), v.determination.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
+      ${card('motivation', v.motivation, t('Motivation'))}
+      ${card('environment', v.environment, t('Environment'))}
+      ${card('perspective', v.perspective, t('Perspective (View)'))}
     </div>
   `;
 }

@@ -8,7 +8,7 @@ const chartCache = new Map();
 const sensitivityCache = new Map();
 // This cache lives only for the current app runtime. Bump this token when the
 // pinned natal engine, hour adapter, or birth calculation rules change.
-const CHART_CACHE_RULE = 'natalengine-1.6.0:minute-hour-v1:unknown-noon-v1';
+const CHART_CACHE_RULE = 'natalengine-1.6.0:minute-hour-v2:unknown-noon-v1';
 const remember = (cache, key, value) => {
   cache.delete(key); cache.set(key, value);
   if (cache.size > 8) cache.delete(cache.keys().next().value);
@@ -19,7 +19,7 @@ const calculationKey = birth => JSON.stringify([
   CHART_CACHE_RULE, birth.birthDate, effectiveBirthTime(birth), birth.timezone, Boolean(birth.timeUnknown)
 ]);
 
-function toDecimalHour(birthTime) {
+export function toDecimalHour(birthTime) {
   if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(birthTime || '')) {
     throw new RangeError('Birth time must use HH:MM; seconds are not supported');
   }
@@ -36,7 +36,9 @@ export function computeChart(birth) {
   const key = calculationKey(birth);
   let data = chartCache.get(key);
   if (!data) {
-    const chart = calculateHumanDesign(birth.birthDate, decimalHour, birth.timezone ?? 0);
+    // The pinned engine's default Date constructor truncates fractional minutes.
+    // Its patched precision path rounds the complete decimal hour to milliseconds.
+    const chart = calculateHumanDesign(birth.birthDate, decimalHour, birth.timezone ?? 0, { preserveSeconds: true });
     data = remember(chartCache, key, { chart, geneKeys: calculateGeneKeys(chart) });
   }
   return { birth, ...data };
@@ -72,7 +74,7 @@ export function sensitivityCheck(birth, chart, windowMinutes = 15) {
   const decimal = toDecimalHour(effectiveBirthTime(birth));
   const shifted = new Set();
   for (const delta of [-windowMinutes / 60, windowMinutes / 60]) {
-    const c = calculateHumanDesign(birth.birthDate, decimal + delta, birth.timezone ?? 0);
+    const c = calculateHumanDesign(birth.birthDate, decimal + delta, birth.timezone ?? 0, { preserveSeconds: true });
     const probe = {
       type: c.type.name,
       authority: c.authority.name,

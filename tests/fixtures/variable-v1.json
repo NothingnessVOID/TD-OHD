@@ -1,0 +1,35 @@
+{
+  "provenance": "natalengine 1.6.0 with scripts/patch-natalengine-seconds.mjs; preserveSeconds calculation path; engine regression fixtures, not independent ephemeris validation",
+  "cases": [
+    {
+      "birthDate": "2000-05-10", "birthTime": "12:30", "timezone": 8,
+      "type": "Generator", "authority": "Sacral Authority", "profile": "2/4", "notation": "RR LL",
+      "arrows": {
+        "determination": { "source": "design", "planet": "sun", "longitude": 321.829927548, "gate": 49, "line": 4, "color": 1, "tone": 6, "base": 3, "arrow": "right" },
+        "environment": { "source": "design", "planet": "northNode", "longitude": 123.516564578, "gate": 31, "line": 2, "color": 4, "tone": 5, "base": 2, "arrow": "right" },
+        "motivation": { "source": "personality", "planet": "sun", "longitude": 49.825440954, "gate": 23, "line": 2, "color": 1, "tone": 1, "base": 3, "arrow": "left" },
+        "perspective": { "source": "personality", "planet": "northNode", "longitude": 117.024611844, "gate": 56, "line": 1, "color": 5, "tone": 1, "base": 5, "arrow": "left" }
+      }
+    },
+    {
+      "birthDate": "1990-06-15", "birthTime": "14:30", "timezone": -6,
+      "type": "Manifestor", "authority": "Emotional Authority", "profile": "2/5", "notation": "RL RR",
+      "arrows": {
+        "determination": { "source": "design", "planet": "sun", "longitude": 356.459655191, "gate": 36, "line": 5, "color": 1, "tone": 4, "base": 2, "arrow": "right" },
+        "environment": { "source": "design", "planet": "northNode", "longitude": 315.647368464, "gate": 13, "line": 3, "color": 4, "tone": 3, "base": 1, "arrow": "left" },
+        "motivation": { "source": "personality", "planet": "sun", "longitude": 84.467660597, "gate": 12, "line": 2, "color": 6, "tone": 5, "base": 4, "arrow": "right" },
+        "perspective": { "source": "personality", "planet": "northNode", "longitude": 308.219195293, "gate": 19, "line": 1, "color": 4, "tone": 5, "base": 5, "arrow": "right" }
+      }
+    },
+    {
+      "birthDate": "1981-03-22", "birthTime": "12:00", "timezone": 0,
+      "type": "Reflector", "authority": "Lunar Authority", "profile": "4/6", "notation": "LR RL",
+      "arrows": {
+        "determination": { "source": "design", "planet": "sun", "longitude": 273.784206074, "gate": 10, "line": 6, "color": 6, "tone": 3, "base": 3, "arrow": "left" },
+        "environment": { "source": "design", "planet": "northNode", "longitude": 131.345141197, "gate": 33, "line": 4, "color": 6, "tone": 5, "base": 5, "arrow": "right" },
+        "motivation": { "source": "personality", "planet": "sun", "longitude": 1.775950154, "gate": 25, "line": 4, "color": 5, "tone": 4, "base": 2, "arrow": "right" },
+        "perspective": { "source": "personality", "planet": "northNode", "longitude": 129.544671821, "gate": 33, "line": 3, "color": 1, "tone": 2, "base": 4, "arrow": "left" }
+      }
+    }
+  ]
+}
