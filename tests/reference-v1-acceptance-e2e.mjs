@@ -33,6 +33,7 @@ try {
     await page.goto(`${base}/${birth}`);
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     await page.locator('.bg-planet-row[data-gate]').first().click();
+    await page.locator('#gate-detail [data-planet-gate]').click();
     await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
     const channel = await page.locator('#gate-detail [data-channel]').first().getAttribute('data-channel');
     await page.locator('#gate-detail [data-channel]').first().click();

@@ -21,7 +21,7 @@ try {
     assert.ok(dimensions.graph <= dimensions.stage, `graph fits shared stage: ${JSON.stringify(dimensions)}`);
     if (width === 1224) {
       await page.locator('#transit-stage .tl-planet[data-gate]').first().click();
-      await page.locator('#gate-detail:not(.hidden)').waitFor();
+      await page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"][data-source="transit"]').waitFor();
       await page.keyboard.press('Escape');
       await page.evaluate(() => scrollTo(0, 500));
       const top = await page.locator('#transit-stage').evaluate(node => node.getBoundingClientRect().top);

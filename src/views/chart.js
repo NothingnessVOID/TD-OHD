@@ -25,6 +25,7 @@ import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { birthToParams, connectionUrl } from '../lib/share.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
+import { planetReference, activationSourceReference } from '../lib/planet-reference.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -108,7 +109,8 @@ export function refreshChartLanguage() {
     detailHistory = history;
     currentLens = lens;
     detailContext = context;
-    if (selected.kind === 'gate') showGateDetail(selected.id, false, selected.source);
+    if (selected.kind === 'planet') showPlanetDetail(selected, false);
+    else if (selected.kind === 'gate') showGateDetail(selected.id, false, selected.source);
     else if (selected.kind === 'channel') showTransitChannelDetail(selected.id, false);
     else showCenterDetail(selected.id, false);
   }
@@ -205,7 +207,9 @@ export function rerenderBodygraph(transitGates = null) {
   if (!current) return;
   const container = document.getElementById('bodygraph-container');
   bodygraphApi = renderBodygraph(container, current.chart, {
-    onGateClick: (gate, source) => showGateDetail(gate, true, source),
+    onGateClick: (gate, source) => source
+      ? showPlanetDetail({ source: source.side, planet: source.planet, activation: current.chart.gates[source.side]?.[source.planet] })
+      : showGateDetail(gate),
     onCenterClick: showCenterDetail,
     onHighlight: highlightPanelRows,
     transitGates: transitGates || undefined
@@ -373,7 +377,8 @@ function resetDetail() {
 export function showTransitDetail(kind, id, context) {
   closeDetailDialog();
   detailContext = context;
-  if (kind === 'gate') showGateDetail(id);
+  if (kind === 'planet') showPlanetDetail(id);
+  else if (kind === 'gate') showGateDetail(id);
   else if (kind === 'channel') showTransitChannelDetail(id);
   else showCenterDetail(id);
 }
@@ -383,7 +388,8 @@ export function showTransitDetail(kind, id, context) {
 export function refreshTransitDetail(context) {
   if (!currentDetail || detailContext !== context) return;
   const { kind, id } = currentDetail;
-  if (kind === 'gate') showGateDetail(id, false);
+  if (kind === 'planet') showPlanetDetail(currentDetail, false);
+  else if (kind === 'gate') showGateDetail(id, false);
   else if (kind === 'channel') showTransitChannelDetail(id, false);
   else showCenterDetail(id, false);
 }
@@ -423,7 +429,8 @@ function showTransitChannelDetail(id, pushHistory = true) {
 function goBack() {
   const prev = detailHistory.pop();
   if (!prev) return closeDetailDialog();
-  if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.source);
+  if (prev.kind === 'planet') showPlanetDetail(prev, false);
+  else if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.source);
   else if (prev.kind === 'channel') showTransitChannelDetail(prev.id, false);
   else showCenterDetail(prev.id, false);
 }
@@ -454,6 +461,46 @@ function fitSheetHeight(card, prevH = null) {
     card.style.transition = 'height 260ms cubic-bezier(0.4, 0, 0.2, 1)';
   }
   card.style.height = targetH + 'px';
+}
+
+/** A planetary point is a separate detail from the gate it currently activates. */
+export function showPlanetDetail({ source, planet, activation } = {}, pushHistory = true) {
+  if (!current || !['design', 'personality', 'transit'].includes(source) || !planet) return;
+  const resolved = source === 'transit'
+    ? detailContext?.transitGates?.[planet]
+    : current.chart.gates[source]?.[planet];
+  activation = resolved || activation;
+  if (!activation?.gate || !activation?.line) return;
+  if (pushHistory && currentDetail) detailHistory.push(currentDetail);
+  currentDetail = { kind: 'planet', id: planet, source, planet, activation };
+  const detail = document.getElementById('gate-detail');
+  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
+    ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
+  const sourceLabel = t(source === 'transit' ? 'Transit' : source === 'design' ? 'Design' : 'Personality');
+  const pointName = planetName(planet);
+  const gateLine = `${activation.gate}.${activation.line}`;
+  const substructure = ['color', 'tone', 'base'].every(key => Number.isFinite(activation[key]))
+    ? `<p class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}', activation)}</p>` : '';
+  detail.innerHTML = `<div class="gate-detail-card planet-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
+    <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
+      <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
+      <div class="detail-name">${esc(PLANET_GLYPHS[planet] || '')} ${esc(pointName)}</div>
+      <p class="gate-detail-desc">${esc(planetReference(planet, getLocale()))}</p>
+      <p class="planet-detail-source">${esc(activationSourceReference(source, getLocale()))}</p>
+      <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
+        aria-label="${esc(t('Gate {gate}', { gate: activation.gate }))} ${gateLine}">
+        <strong>${esc(t('Gate {gate}', { gate: activation.gate }))} · ${gateLine}</strong>
+        <span class="transit-detail-action">${esc(t('View gate details'))}</span>
+      </button>${substructure}
+    </div></div>`;
+  detailContext?.decorateDetail?.(detail, currentDetail);
+  openDetailDialog(detail, resetDetail);
+  fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
+  detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
+  detail.querySelector('[data-planet-gate]')?.addEventListener('click', () => showGateDetail(activation.gate, true,
+    source === 'transit' ? null : { side: source, planet, line: activation.line }));
+  detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
 export function showGateDetail(gateNum, pushHistory = true, source = null) {
@@ -783,7 +830,8 @@ function renderPlanetsPanel(container) {
     const g = parseInt(cell.dataset.gate);
     if (g) {
       cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showGateDetail(g, true, { side: cell.dataset.side, planet: cell.dataset.planet, line: Number(cell.dataset.line) }));
+      cell.addEventListener('click', () => showPlanetDetail({ source: cell.dataset.side,
+        planet: cell.dataset.planet, activation: chart.gates[cell.dataset.side]?.[cell.dataset.planet] }));
       wireRowHover(cell, g);
     }
   });
