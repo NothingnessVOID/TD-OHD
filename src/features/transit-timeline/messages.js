@@ -48,6 +48,7 @@ export const en = {
   design: 'Design', personality: 'Personality', birthPlanets: 'Birth activations',
   searchShort: 'Search', changesShort: 'Changes', centersShort: 'Centers',
   mobileControls: 'Timeline controls', backToChart: 'Back to chart', openNavigation: 'Open navigation',
+  saveImage: 'Save image', imageSaved: 'Saved ✓', imageUnavailable: 'Image unavailable here',
   timingDetails: 'Activation interval', timingShort: 'Transit interval', transitPlanets: 'Transit activations',
   beforeShort: 'Started earlier', afterShort: 'Ends later', durationShort: 'Duration',
   activeThroughoutRange: 'Active throughout the selected range',

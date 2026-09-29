@@ -11,7 +11,8 @@ import { computeChart, sensitivityCheck } from './lib/chartdata.js';
 import { esc } from './lib/format.js';
 import { listPeople, getPerson, savePerson, deletePerson, birthFromPerson, getLastPersonId, setLastPersonId, enableSync, setAiAccess, getAiAccess, setSharedGuest } from './lib/people.js';
 import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } from './lib/sync.js';
-import { paramsToBirth, birthToParams, shareUrl } from './lib/share.js';
+import { paramsToBirth, birthToParams } from './lib/share.js';
+import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
 import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage } from './views/chart.js';
 import { setupTransitView, renderTransits, refreshTransitLanguage } from './views/transits.js';
@@ -54,6 +55,7 @@ function setupLanguageSwitcher() {
     timelineView?.setLanguage(timelineLanguageOptions());
     if (!document.getElementById('library-view').classList.contains('hidden')) renderReferenceView({ languageChange: true });
     localAccountUi?.refreshLocalLanguage();
+    configureShareMenu(document.querySelector('.nav-link.active')?.dataset.view || 'chart', currentData?.birth);
   });
 }
 
@@ -99,7 +101,7 @@ function showView(view, { fromHistory = false } = {}) {
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
   document.body.classList.remove('mobile-nav-open');
   document.getElementById('mobile-menu-toggle').setAttribute('aria-expanded', 'false');
-  document.getElementById('chart-share-menu').classList.toggle('hidden', view !== 'chart' || !currentData);
+  configureShareMenu(view, currentData?.birth);
 
   document.querySelectorAll('.nav-link').forEach(l =>
     l.classList.toggle('active', l.dataset.view === view));
@@ -301,11 +303,7 @@ function loadBirth(birth, { save = false } = {}) {
   if (resolved.id) setLastPersonId(resolved.id);
   history.replaceState(null, '', `${window.location.pathname}?${birthToParams(resolved)}`);
 
-  renderChartView(currentData, {
-    // No optional chaining — a missing clipboard API must reject so the
-    // button reports failure honestly instead of "copied".
-    onShare: () => navigator.clipboard.writeText(shareUrl(resolved))
-  });
+  renderChartView(currentData);
   renderPeopleSwitcher();
   showView('chart');
 }

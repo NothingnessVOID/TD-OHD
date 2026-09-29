@@ -8,6 +8,7 @@ import { closeDetailDialog } from '../lib/detail-dialog.js';
 import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './chart.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { getLocaleResources, t } from '../lib/i18n.js';
+import { saveViewImage } from '../lib/view-share.js';
 import { centerName, channelName, gateName, planetName } from '../lib/vocabulary.js';
 
 // Localize display labels only; worker row IDs and calculation data stay intact.
@@ -36,6 +37,7 @@ export function setupTimelineView(options = {}) {
       formatOffset: formatTransitOffset,
       closeDetail: closeDetailDialog,
       onExit: () => document.querySelector('.nav-link[data-view="chart"]')?.click(),
+      saveImage: () => saveViewImage('timeline'),
       showDetail: showTransitDetail,
       refreshDetail: refreshTransitDetail,
       planets: PLANET_ORDER.map(id => ({ id, get name() { return planetName(id); }, glyph: PLANET_GLYPHS[id] })),

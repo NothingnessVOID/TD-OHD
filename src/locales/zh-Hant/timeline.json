@@ -139,5 +139,8 @@
   "mobileControls": "時間軸設定",
   "backToChart": "返回我的圖",
   "openNavigation": "開啟導覽",
+  "saveImage": "儲存圖片",
+  "imageSaved": "已儲存 ✓",
+  "imageUnavailable": "此處無法取得圖片",
   "timelineHelp": "左右鍵：閘門變化 · 上下鍵：1 分鐘 · ＋／－：縮放"
 }

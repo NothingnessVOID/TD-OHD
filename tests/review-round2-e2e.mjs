@@ -108,7 +108,7 @@ try {
     select.classList.remove('hidden');
     select.innerHTML = '<option>当前人类图</option>';
   });
-  for (const width of [768, 720, 682, 641, 588, 421, 420, 390, 343]) {
+  for (const width of [768, 720, 682, 660, 641, 632, 588, 421, 420, 390, 343, 327, 320]) {
     await page.setViewportSize({ width, height: 703 });
     const header = await page.evaluate(() => {
       const logo = document.querySelector('.logo-text');
@@ -118,11 +118,17 @@ try {
       return { visible: getComputedStyle(logo).display !== 'none', separate: mark.right <= actions.left,
         navSeparate: nav.right <= actions.left,
         navFont: getComputedStyle(document.querySelector('.nav-link')).fontSize,
+        navNoWrap: getComputedStyle(document.querySelector('.nav-link')).whiteSpace === 'nowrap',
+        selectWidth: document.querySelector('#people-switcher').getBoundingClientRect().width,
         overflow: document.documentElement.scrollWidth > innerWidth };
     });
     assert.equal(header.visible, true, `${width}px logo label visibility`);
     assert.ok(header.separate && header.navSeparate && !header.overflow,
       `${width}px header controls fit: ${JSON.stringify(header)}`);
+    if (width <= 640) assert.ok(header.selectWidth >= 96,
+      `${width}px chart selector shows its full label: ${JSON.stringify(header)}`);
+    if (width >= 641 && width <= 900) assert.equal(header.navNoWrap, true,
+      `${width}px navigation stays horizontal`);
     if (width >= 681) assert.equal(header.navFont, '13px', `${width}px navigation keeps its normal type size`);
   }
   await page.setViewportSize({ width: 471, height: 703 });
