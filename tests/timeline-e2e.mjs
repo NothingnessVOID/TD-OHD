@@ -109,6 +109,15 @@ try {
     assert.deepEqual([range.viewStart, range.viewEnd], [range.start, range.end]);
   });
 
+  await run('a full-window transit uses a bounded-knowledge duration label', async () => {
+    const fullWindow = page.locator(`${tl} .tl-bar.tl-clipped-start.tl-clipped-end:not([data-source="natal"])`).first();
+    assert.ok(await fullWindow.count(), 'sample timeline has a transit active across the selected range');
+    await fullWindow.click();
+    assert.match(await page.locator(`${timing} .tl-timing-duration dd`).innerText(),
+      /Active throughout the selected range|所选范围内持续激活|所選範圍內持續啟動/);
+    await page.keyboard.press('Escape');
+  });
+
   await run('graph tooltips keep source colors and clear the adjacent timeline', async () => {
     await page.setViewportSize({ width: 927, height: 713 });
     const graph = `${tl} .tl-graph`;

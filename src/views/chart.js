@@ -22,6 +22,7 @@ const humanList = items => formatDisplay('list', items);
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
+import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { birthToParams, connectionUrl } from '../lib/share.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
@@ -361,7 +362,7 @@ function gateActiveLines(gateNum, chart) {
 function renderLens(gateNum) {
   const chart = current.chart;
   const lines = [...new Set([
-    ...(detailContext?.mode === 'transit-only' ? [] : gateActiveLines(gateNum, chart)),
+    ...gateActiveLines(gateNum, chart),
     ...Object.values(detailContext?.transitGates || {}).filter(g => g?.gate === gateNum).map(g => g.line)
   ])].sort((a, b) => a - b);
   return gateReading(gateNum, currentLens, { activeLines: lines, selectedLine: null });
@@ -419,7 +420,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
       </button>`).join('')}</div>
       ${model ? `<p class="lens-note">${t('Transit additions do not change your birth chart.')}</p>` : ''}
     </div></div>`;
-  detailContext?.decorateDetail?.(detail, currentDetail);
+  decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'));
   detailGraph()?.setPinned?.({ kind: 'channel', id });
@@ -495,7 +496,7 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
         <span class="transit-detail-action">${esc(t('View gate details'))}</span>
       </button>${substructure}
     </div></div>`;
-  detailContext?.decorateDetail?.(detail, currentDetail);
+  decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
@@ -549,15 +550,15 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
       <div class="gate-detail-body">
         <div class="detail-label">${t('Gate {gate}', { gate: gateNum })}</div>
         <div class="detail-name">${esc(gateName(gateNum))} <span class="detail-hexagram">${getLocale().startsWith('zh') ? '（' : '('}${esc(hexagramName(gateNum))}${getLocale().startsWith('zh') ? '）' : ')'}</span></div>
-        ${detailContext?.mode === 'transit-only' ? '' : acts.length ? `<div class="gate-detail-acts">${detailContext ? `<div class="detail-label">${t('Birth activations')}</div>` : ''}${acts.join('<br>')}</div>` : `<p class="gate-detail-inactive">${t('Not activated in your natal chart.')}</p>`}
-        ${detailContext ? `<div class="gate-detail-transits"><div class="detail-label">${t('Transit activations')}</div>${transitActs.length ? transitActs.join('<br>') : t('Not activated by the selected transit.')}</div>` : ''}
+        ${acts.length ? `<div class="gate-detail-acts">${acts.join('<br>')}</div>` : ''}
+        ${detailContext && transitActs.length ? `<div class="gate-detail-transits">${transitActs.join('<br>')}</div>` : ''}
         <div class="lens-switch">${lenses().map(([k, label]) => `<button type="button" data-lens="${k}" class="${k === currentLens ? 'active' : ''}">${label}</button>`).join('')}</div>
         <div id="lens-content">${renderLens(gateNum)}</div>
         ${channelHtml}
       </div>
     </div>
   `;
-  detailContext?.decorateDetail?.(detail, currentDetail);
+  decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: gateNum });
@@ -642,7 +643,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
       </div>
     </div>
   `;
-  detailContext?.decorateDetail?.(detail, currentDetail);
+  decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'center', id: centerKey });

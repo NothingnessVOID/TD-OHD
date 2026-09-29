@@ -392,7 +392,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const activations = planet === 'all' ? full : { [planet]: full[planet] };
     const model = host.buildModel(chart.chart, activations, mode);
     context ||= {};
-    Object.assign(context, { transitGates: activations, mode, model, decorateDetail, onDetailClose: clearTimingState });
+    Object.assign(context, { transitGates: activations, mode, model, detailTiming, onDetailClose: clearTimingState });
     const fixings = host.lineFixings?.(chart.chart, activations);
     const nextGraphKey = `${mode}:${[...model.transitGates].sort((a, b) => a - b).join(',')}`;
     if (graphChart !== chart.chart || graphKey !== nextGraphKey || !context.api) {
@@ -634,88 +634,33 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     clearTimingState();
   }
 
-  // The host calls this for each center, channel or gate, including in-sheet
-  // navigation. Timing belongs to that item, never to the previously opened one.
-  function decorateDetail(detail, selection) {
-    const body = detail.querySelector('.gate-detail-body');
-    const label = body?.querySelector('.detail-label');
-    const title = body?.querySelector('.detail-name');
-    if (!body || !label || !title) return;
-    const header = document.createElement('div');
-    header.className = 'tl-detail-header';
-    const heading = document.createElement('div');
-    heading.className = 'tl-detail-heading';
-    body.prepend(header);
-    heading.append(label, title);
-    header.append(heading);
-
-    if (selection.kind === 'gate') {
-      const statuses = document.createElement('div');
-      statuses.className = 'tl-detail-statuses';
-      const sources = document.createElement('div');
-      sources.className = 'tl-detail-activations';
-      const appendGroup = (group, entries, labelKey) => {
-        if (!group) return;
-        const status = document.createElement('div');
-        status.className = `tl-activation-label${labelKey === 'transitPlanets' ? ' tl-activation-transit' : ''}`;
-        status.textContent = t(labelKey);
-        statuses.append(status);
-        // Preserve the host's complete activation text, including each line name.
-        // Reuse its spans so future details/localization aren't silently discarded.
-        const rows = [...group.querySelectorAll(':scope > span')];
-        rows.forEach((node, index) => {
-          const entry = entries[index];
-          node.classList.add('tl-activation-row');
-          if (!entry) return;
-          const [planet, activation, side] = entry;
-          node.dataset.activationSide = side;
-          node.dataset.activationPlanet = planet;
-          node.dataset.activationValue = `${activation.gate}.${activation.line}`;
-          if (side === 'transit') node.classList.add('tl-activation-transit');
-        });
-        group.replaceChildren(...rows);
-        group.classList.add('tl-detail-source');
-        sources.append(group);
-      };
-      const natal = body.querySelector('.gate-detail-acts');
-      const natalEntries = ['design', 'personality'].flatMap(side => Object.entries(chart.chart.gates[side] || {})
-        .filter(([, value]) => value?.gate === Number(selection.id)).map(([planet, value]) => [planet, value, side]));
-      appendGroup(natal, natalEntries, 'birthPlanets');
-      const inactive = body.querySelector('.gate-detail-inactive');
-      if (inactive) statuses.append(inactive);
-      const transit = body.querySelector('.gate-detail-transits');
-      const transitEntries = Object.entries(context?.transitGates || {})
-        .filter(([, value]) => value?.gate === Number(selection.id)).map(([planet, value]) => [planet, value, 'transit']);
-      if (transitEntries.length) appendGroup(transit, transitEntries, 'transitPlanets');
-      else if (transit) {
-        transit.querySelector('.detail-label')?.remove();
-        transit.className = 'gate-detail-inactive tl-activation-transit';
-        statuses.append(transit);
-      }
-      heading.append(statuses);
-      if (sources.childElementCount) header.after(sources);
-    } else {
-      const summary = selection.kind === 'center' ? '.lens-note, .center-detail-head' : '.transit-source-badge';
-      [...body.children].filter(node => node.matches(summary)).forEach(node => heading.append(node));
-    }
-
+  // The shared detail sheet asks the timeline for timing only. Chart details
+  // use the same layout in every view; other views have no timing to provide.
+  function detailTiming(selection) {
     const row = pendingDetail?.row?.kind === 'line' && selection.kind === 'gate' &&
       pendingDetail.row.gate === Number(selection.id) ? pendingDetail.row
       : result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
     const interval = row && (pendingDetail?.row === row ? pendingDetail.interval : intervalAt(row, selected));
-    // Birth definitions are persistent; only temporary transit participation has timing.
-    if (!interval || interval.source === 'natal') return;
-    header.classList.add('tl-detail-has-timing');
-    const timing = document.createElement('aside');
-    timing.className = 'tl-detail-timing';
-    timing.dataset.kind = row.kind;
-    timing.dataset.id = row.id;
-    timing.setAttribute('aria-label', t('timingDetails'));
-    timing.innerHTML = `<div class="tl-timing-source" title="${esc(t(interval.source))}">${esc(t('timingShort'))}<span title="${esc(t('estimated'))} ${esc(t('sampling'))}" aria-label="${esc(t('estimated'))}">≈</span></div>
-      <dl class="tl-timing-values"><div class="tl-timing-duration"><dt title="${esc(t('duration'))}">${esc(t('durationShort'))}</dt><dd>${esc(formatDuration(interval.end - interval.start, t))}</dd></div>
-      <div class="tl-timing-boundary"><dt>${esc(t('start'))}</dt><dd title="${esc(interval.clippedStart ? t('before') : `${t('start')}: ${format(interval.start)}`)}">${esc(interval.clippedStart ? t('beforeShort') : format(interval.start, true))}</dd></div>
-      <div class="tl-timing-boundary"><dt>${esc(t('end'))}</dt><dd title="${esc(interval.clippedEnd ? t('after') : `${t('end')}: ${format(interval.end)}`)}">${esc(interval.clippedEnd ? t('afterShort') : format(interval.end, true))}</dd></div></dl>`;
-    header.append(timing);
+    if (!interval || interval.source === 'natal') return null;
+    return {
+      kind: row.kind,
+      id: row.id,
+      label: t('timingDetails'),
+      source: t('timingShort'),
+      sourceTitle: t(interval.source),
+      estimateLabel: t('estimated'),
+      estimateTitle: `${t('estimated')} ${t('sampling')}`,
+      durationLabel: t('durationShort'),
+      durationTitle: t('duration'),
+      durationValue: interval.clippedStart && interval.clippedEnd
+        ? t('activeThroughoutRange') : formatDuration(interval.end - interval.start, t),
+      startLabel: t('start'),
+      startTitle: interval.clippedStart ? t('before') : `${t('start')}: ${format(interval.start)}`,
+      startValue: interval.clippedStart ? t('beforeShort') : format(interval.start, true),
+      endLabel: t('end'),
+      endTitle: interval.clippedEnd ? t('after') : `${t('end')}: ${format(interval.end)}`,
+      endValue: interval.clippedEnd ? t('afterShort') : format(interval.end, true)
+    };
   }
 
   function openTiming(row, interval, index) {
