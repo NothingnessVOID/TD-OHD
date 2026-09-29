@@ -1580,6 +1580,17 @@ body.modal-open { overflow: hidden; }
 
 .gate-detail-acts { font-size: 13px; margin-bottom: 8px; line-height: 1.7; }
 .gate-detail-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+.tl-detail-header:has(.channel-detail-heading) + .gate-detail-desc {
+  margin: 10px 0 14px;
+  padding: 7px 10px;
+  border-left: 2px solid var(--border-subtle);
+  border-radius: 3px;
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+}
 .gate-detail-inactive { font-size: 13px; color: var(--text-tertiary); font-style: italic; }
 
 /* Shared birth/transit/timeline detail heading and optional timing column. */
@@ -1602,7 +1613,7 @@ body.modal-open { overflow: hidden; }
 .gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--transit-source-text); }
 .tl-detail-heading .center-detail-head { margin-bottom: 0; }
 .tl-detail-heading .lens-note { margin: 0 0 6px; }
-.tl-detail-timing { min-width: 0; display: flex; flex-direction: column; padding-left: 10px; border-left: 1px solid var(--border-subtle); font-size: 10px; line-height: 1.4; }
+.tl-detail-timing { min-width: 0; display: flex; flex-direction: column; padding: 42px 0 0 10px; border-left: 1px solid var(--border-subtle); font-size: 10px; line-height: 1.4; }
 .tl-timing-source { display: flex; justify-content: space-between; gap: 6px; color: var(--text-secondary); margin-bottom: 3px; }
 .tl-timing-source > span { cursor: help; }
 .tl-timing-values { flex: 1; display: grid; align-content: space-between; gap: 3px; margin: 0; }
@@ -1610,6 +1621,8 @@ body.modal-open { overflow: hidden; }
 .tl-timing-values dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .tl-timing-duration { display: flex; align-items: baseline; gap: 5px; margin-bottom: 3px; }
 .tl-timing-duration dd { font-size: 14px; font-weight: 500; }
+.tl-timing-full-range .tl-timing-duration dd { font-size: 18px; line-height: 1; }
+.tl-timing-range-note { margin: auto 0 0; color: var(--text-secondary); line-height: 1.5; }
 .tl-timing-boundary { position: relative; padding-left: 11px; }
 .tl-timing-boundary::before { content: ''; position: absolute; left: 1px; top: .45em; width: 4px; height: 4px; border: 1px solid var(--text-tertiary); border-radius: 50%; }
 .tl-timing-boundary + .tl-timing-boundary::after { content: ''; position: absolute; left: 3px; bottom: calc(100% - .45em); height: calc(100% - 2px); border-left: 1px solid var(--border-subtle); }

@@ -777,7 +777,9 @@ try {
     await page.locator(`${root} .tl-bar:not([data-source="natal"])`).first().click();
     assert.equal(await page.locator('#gate-detail.gate-detail[role="dialog"][aria-modal="true"]:not(.hidden) .tl-detail-timing').isVisible(), true);
     assert.equal(await page.locator(`${root} .tl-interval-detail`).count(), 0);
-    assert.equal(await page.locator('#gate-detail .tl-timing-values dd').count(), 3);
+    assert.equal(await page.locator('#gate-detail .tl-timing-duration dd').count(), 1);
+    assert.equal(await page.locator('#gate-detail .tl-timing-boundary').count(),
+      await page.locator('#gate-detail .tl-timing-full-range').count() ? 0 : 2);
     await page.locator('#gate-detail .gate-detail-close').click();
     await page.locator(`${root} .tl-row[data-key^="gate:"][data-active-source]:not([data-active-source="natal"]) .tl-row-name`).first().click();
     await page.waitForSelector('#gate-detail:not(.hidden)');

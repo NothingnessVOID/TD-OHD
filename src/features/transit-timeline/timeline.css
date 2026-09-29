@@ -147,7 +147,7 @@
 .tl-row:last-child { border-bottom: 0; }
 .tl-row-label { display: flex; align-items: center; justify-content: center; min-width: 0; border-right: 1px solid var(--tl-line); }
 .tl button.tl-gate-expand[data-action] { flex: 0 0 18px; width: 18px; height: 100%; min-width: 0; min-height: 0; padding: 0; border: 0; background: none; color: var(--text-secondary); display: grid; place-items: center; }
-.tl .tl-gate-expand svg { width: 18px; height: 22px; fill: currentColor; transform-origin: center; }
+.tl .tl-gate-expand svg { width: 12px; height: 15px; fill: currentColor; transform-origin: center; }
 .tl .tl-gate-expand[aria-expanded="true"] svg { transform: rotate(90deg); }
 .tl-line-row .tl-row-label { padding-left: 10px; }
 .tl-line-symbol { font-size: 11px; font-variant-numeric: tabular-nums; }

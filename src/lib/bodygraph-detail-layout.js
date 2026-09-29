@@ -60,10 +60,14 @@ function appendTiming(header, timing) {
   aside.dataset.kind = timing.kind;
   aside.dataset.id = timing.id;
   aside.setAttribute('aria-label', timing.label);
+  if (timing.fullRange) aside.classList.add('tl-timing-full-range');
   aside.innerHTML = `<div class="tl-timing-source" title="${esc(timing.sourceTitle)}">${esc(timing.source)}<span title="${esc(timing.estimateTitle)}" aria-label="${esc(timing.estimateLabel)}">≈</span></div>
-    <dl class="tl-timing-values"><div class="tl-timing-duration"><dt title="${esc(timing.durationTitle)}">${esc(timing.durationLabel)}</dt><dd>${esc(timing.durationValue)}</dd></div>
-    <div class="tl-timing-boundary"><dt>${esc(timing.startLabel)}</dt><dd title="${esc(timing.startTitle)}">${esc(timing.startValue)}</dd></div>
-    <div class="tl-timing-boundary"><dt>${esc(timing.endLabel)}</dt><dd title="${esc(timing.endTitle)}">${esc(timing.endValue)}</dd></div></dl>`;
+    <dl class="tl-timing-values"><div class="tl-timing-duration"><dt title="${esc(timing.durationTitle)}">${esc(timing.durationLabel)}</dt><dd title="${esc(timing.durationTitle)}"${timing.fullRange ? ` aria-label="${esc(timing.fullRangeLabel)}"` : ''}>${esc(timing.durationValue)}</dd></div>
+    ${timing.fullRange
+      ? ''
+      : `<div class="tl-timing-boundary"><dt>${esc(timing.startLabel)}</dt><dd title="${esc(timing.startTitle)}">${esc(timing.startValue)}</dd></div>
+    <div class="tl-timing-boundary"><dt>${esc(timing.endLabel)}</dt><dd title="${esc(timing.endTitle)}">${esc(timing.endValue)}</dd></div>`}</dl>
+    ${timing.fullRange ? `<p class="tl-timing-range-note">${esc(timing.fullRangeLabel)}</p>` : ''}`;
   header.append(aside);
 }
 

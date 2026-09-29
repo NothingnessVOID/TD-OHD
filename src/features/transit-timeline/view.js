@@ -642,6 +642,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       : result?.rows.find(item => item.kind === selection.kind && String(item.id) === String(selection.id));
     const interval = row && (pendingDetail?.row === row ? pendingDetail.interval : intervalAt(row, selected));
     if (!interval || interval.source === 'natal') return null;
+    const fullRange = interval.clippedStart && interval.clippedEnd;
     return {
       kind: row.kind,
       id: row.id,
@@ -651,9 +652,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       estimateLabel: t('estimated'),
       estimateTitle: `${t('estimated')} ${t('sampling')}`,
       durationLabel: t('durationShort'),
-      durationTitle: t('duration'),
-      durationValue: interval.clippedStart && interval.clippedEnd
-        ? t('activeThroughoutRange') : formatDuration(interval.end - interval.start, t),
+      durationTitle: fullRange ? t('activeThroughoutRange') : t('duration'),
+      durationValue: fullRange ? '↔' : formatDuration(interval.end - interval.start, t),
+      fullRange,
+      fullRangeLabel: fullRange ? t('activeThroughoutRange') : '',
       startLabel: t('start'),
       startTitle: interval.clippedStart ? t('before') : `${t('start')}: ${format(interval.start)}`,
       startValue: interval.clippedStart ? t('beforeShort') : format(interval.start, true),

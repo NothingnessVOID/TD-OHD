@@ -109,12 +109,15 @@ try {
     assert.deepEqual([range.viewStart, range.viewEnd], [range.start, range.end]);
   });
 
-  await run('a full-window transit uses a bounded-knowledge duration label', async () => {
+  await run('a full-window transit marks its duration as open across the selected range', async () => {
     const fullWindow = page.locator(`${tl} .tl-bar.tl-clipped-start.tl-clipped-end:not([data-source="natal"])`).first();
     assert.ok(await fullWindow.count(), 'sample timeline has a transit active across the selected range');
     await fullWindow.click();
-    assert.match(await page.locator(`${timing} .tl-timing-duration dd`).innerText(),
+    assert.equal(await page.locator(`${timing} .tl-timing-duration dd`).innerText(), '↔');
+    assert.match(await page.locator(`${timing} .tl-timing-range-note`).innerText(),
       /Active throughout the selected range|所选范围内持续激活|所選範圍內持續啟動/);
+    assert.equal(await page.locator(`${timing} .tl-timing-boundary`).count(), 0,
+      'unknown start and end are not presented as the selected range boundaries');
     await page.keyboard.press('Escape');
   });
 
@@ -306,7 +309,9 @@ try {
     await bar.click();
     assert.equal(await page.locator(`${detail}:not(.hidden) .gate-detail-card`).isVisible(), true);
     assert.equal(await page.locator(`${tl} .tl-interval-detail`).count(), 0);
-    assert.equal(await page.locator(`${timing} .tl-timing-values dd`).count(), 3);
+    assert.equal(await page.locator(`${timing} .tl-timing-duration dd`).count(), 1);
+    assert.equal(await page.locator(`${timing} .tl-timing-boundary`).count(),
+      await page.locator(`${timing}.tl-timing-full-range`).count() ? 0 : 2);
     assert.match(await page.locator(timing).innerText(), /开始|结束|持续|Start|End|Duration/);
     assert.equal(await page.locator(detail).getAttribute('aria-modal'), 'true');
     assert.equal(await page.locator(`${tl} .tl-row[data-key="${key}"]`).getAttribute('data-active-source'), source);
@@ -353,12 +358,23 @@ try {
     await page.locator(`${tl} .tl-row[data-key="gate:${gate}"] .tl-row-name`).click();
     assert.match(await page.locator(`${detail} .tl-detail-heading .detail-label`).innerText(), new RegExp(`(?:Gate ${gate}|第 ${gate} 闸门)`, 'i'));
     const fromGate = await page.locator(timing).count();
+    await page.setViewportSize({ width: 895, height: 703 });
     await page.locator(`${detail} [data-channel="${channel}"]`).click();
     assert.equal(await page.locator(`${timing}[data-kind="channel"][data-id="${channel}"]`).count(), 1);
+    const overlap = await page.locator(detail).evaluate(node => {
+      const buttons = [...node.querySelectorAll('.gate-detail-nav-buttons button')];
+      const timingContent = [...node.querySelectorAll('.tl-timing-source, .tl-timing-values')];
+      const intersects = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+      return buttons.flatMap(button => timingContent.filter(content =>
+        intersects(button.getBoundingClientRect(), content.getBoundingClientRect()))
+        .map(content => `${button.className} overlaps ${content.className}`));
+    });
+    assert.deepEqual(overlap, [], 'at 895px navigation buttons do not cover timing content');
     await page.locator(`${detail} .gate-detail-back`).click();
     assert.match(await page.locator(`${detail} .tl-detail-heading .detail-label`).innerText(), new RegExp(`(?:Gate ${gate}|第 ${gate} 闸门)`, 'i'));
     assert.equal(await page.locator(timing).count(), fromGate, 'Back restores the gate timing state');
     await page.keyboard.press('Escape');
+    await page.setViewportSize({ width: 1440, height: 1000 });
   });
 
   await run('shared gate keeps full birth and transit activations below one compact header', async () => {
@@ -519,7 +535,9 @@ try {
       await mobile.locator(`${tl} .tl-bar:not([data-source="natal"])`).first().click();
       assert.equal(await mobile.locator(`${detail}:not(.hidden) ${timing.replace(`${detail} `, '')}`).isVisible(), true,
         'bar click opens the same detail sheet after dragging');
-      assert.equal(await mobile.locator(`${timing} .tl-timing-values dd`).count(), 3);
+      assert.equal(await mobile.locator(`${timing} .tl-timing-duration dd`).count(), 1);
+      assert.equal(await mobile.locator(`${timing} .tl-timing-boundary`).count(),
+        await mobile.locator(`${timing}.tl-timing-full-range`).count() ? 0 : 2);
       const mobileOverflow = await mobile.locator(detail).evaluate(node => {
         const timing = node.querySelector('.tl-detail-timing').getBoundingClientRect();
         const heading = node.querySelector('.tl-detail-heading').getBoundingClientRect();
