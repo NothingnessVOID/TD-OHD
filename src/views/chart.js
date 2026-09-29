@@ -27,6 +27,7 @@ import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference } from '../lib/planet-reference.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
+import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -345,7 +346,7 @@ function detailNav() {
 }
 
 function fitSheetHeight(card, prevH = null) {
-  if (window.innerWidth > 768) return;
+  if (window.innerWidth > PHONE_MAX_WIDTH) return;
   const maxH = window.innerHeight * 0.82;
   const minH = window.innerHeight * 0.35;
   const navH = card.querySelector('.gate-detail-nav')?.offsetHeight ?? 0;
@@ -371,7 +372,7 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   currentDetail = { kind: 'planet', id: planet, source, planet, activation };
   const detail = document.getElementById('gate-detail');
-  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
+  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
   const sourceLabel = t(source === 'transit' ? 'Transit' : source === 'design' ? 'Design' : 'Personality');
   const pointName = planetName(planet);
@@ -410,7 +411,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
   currentDetail = { kind: 'gate', id: gateNum, source };
   const { chart } = current;
   const detail = document.getElementById('gate-detail');
-  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
+  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
   const desc = GATE_DESCRIPTIONS[gateNum];
 
@@ -491,7 +492,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
   const c = centerObjects()[centerKey];
   if (!c) return;
   const detail = document.getElementById('gate-detail');
-  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= 768
+  const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
   const model = detailContext?.model;
   const definedHere = model?.definedCenters.has(centerKey);

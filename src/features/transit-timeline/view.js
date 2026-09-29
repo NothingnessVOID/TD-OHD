@@ -9,6 +9,7 @@ import { natalIslands, bridgedIslandCount } from './bridge.js';
 import { catalog } from './provider.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import { graphPanelMarkup, renderGraphColumns } from './graph-window.js';
+import { PHONE_MEDIA_QUERY } from '../../lib/breakpoints.js';
 import './timeline.css';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -218,7 +219,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       </div>
     </div></section></div></div>`;
 
-  const mobileLayout = window.matchMedia('(max-width: 640px)');
+  const mobileLayout = window.matchMedia(PHONE_MEDIA_QUERY);
   addConditionRow();
   const toolbar = $('.tl-toolbar');
   const advanced = $('.tl-advanced');
