@@ -40,6 +40,33 @@ jobs:
       - name: Check static bundle
         run: npm run check:pages-bundle
 
+      - name: Install Chromium for browser checks
+        run: npx playwright-core install --with-deps chromium
+
+      - name: Start browser test server
+        run: |
+          npm run dev -- --host 127.0.0.1 --port 5173 --strictPort > /tmp/pages-vite.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5173/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/pages-vite.log
+          exit 1
+
+      - name: Check timeline, planetary detail, and reference in browser
+        env:
+          E2E_URL: http://127.0.0.1:5173
+          CHROME_CHANNEL: chromium
+          SKIP_TIMELINE_YEAR: "1"
+        run: |
+          npm run e2e:timeline
+          npm run e2e:planet
+          npm run e2e:reference
+
+      - name: Show browser test server log on failure
+        if: failure()
+        run: cat /tmp/pages-vite.log || true
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
