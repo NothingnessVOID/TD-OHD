@@ -19,6 +19,7 @@
     "e2e:timeline": "node tests/timeline-e2e.mjs && node tests/timeline-gestures-e2e.mjs && node tests/timeline-mobile-touch-e2e.mjs && node tests/timeline-mobile-layout-e2e.mjs",
     "e2e:planet": "node tests/planet-detail-e2e.mjs",
     "e2e:reference": "node tests/reference-e2e.mjs",
+    "e2e:gate-meridian": "node tests/gate-meridian-e2e.mjs",
     "e2e": "node tests/e2e.mjs"
   },
   "dependencies": {

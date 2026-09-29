@@ -26,6 +26,7 @@ import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference } from '../lib/planet-reference.js';
+import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -244,7 +245,6 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
 // Gate detail (from bodygraph / list clicks)
 // ==========================================
 let currentLens = 'hd';
-const lenses = () => [['hd', t('Human Design')], ['iching', t('I Ching')], ['gk', t('Gene Keys')]];
 
 function gateActiveLines(gateNum, chart) {
   const s = new Set();
@@ -450,7 +450,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
         <div class="detail-name">${esc(gateName(gateNum))} <span class="detail-hexagram">${getLocale().startsWith('zh') ? '（' : '('}${esc(hexagramName(gateNum))}${getLocale().startsWith('zh') ? '）' : ')'}</span></div>
         ${acts.length ? `<div class="gate-detail-acts">${acts.join('<br>')}</div>` : ''}
         ${detailContext && transitActs.length ? `<div class="gate-detail-transits">${transitActs.join('<br>')}</div>` : ''}
-        <div class="lens-switch">${lenses().map(([k, label]) => `<button type="button" data-lens="${k}" class="${k === currentLens ? 'active' : ''}">${label}</button>`).join('')}</div>
+        ${renderGateLensSwitch(currentLens, 'data-lens')}
         <div id="lens-content">${renderLens(gateNum)}</div>
         ${channelHtml}
       </div>
