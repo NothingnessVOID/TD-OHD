@@ -1090,7 +1090,7 @@ body {
 
 /* Match .chart-layout's single-column breakpoint so the planet columns
    never squeeze the graph inside an already-narrow column. */
-@media (max-width: 768px) {
+@media (--phone) {
   .bg-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1780,11 +1780,11 @@ body.modal-open { overflow: hidden; }
 .reference-link { border: 1px solid var(--border); border-radius: var(--radius); padding: 7px 10px; background: var(--bg); color: var(--text); cursor: pointer; }
 .reference-link:hover, .reference-link:focus-visible { border-color: var(--accent); }
 .reference-detail .lens-switch { max-width: 450px; }
-@media (min-width: 701px) {
+@media (--above-phone) {
   body:has(#library-view:not(.hidden)) { overflow: hidden; }
   body:has(#library-view:not(.hidden)) .footer { display: none; }
 }
-@media (max-width: 700px) {
+@media (--phone) {
   .reference-heading { display: block; }
   .reference-heading p { text-align: left; }
   .reference-layout { display: block; height: auto; min-height: 0; }
@@ -2145,11 +2145,18 @@ body.modal-open { overflow: hidden; }
 .transit-birth-row .bg-planets-personality { justify-content: flex-start; }
 .transit-birth-row > .bg-planet-glyph { justify-self: center; }
 
-@media (min-width: 769px) and (max-width: 1050px) {
+@media (--above-phone) and (max-width: 1050px) {
   .transit-graph .bg-svg-wrap { width: min(100%, 310px); }
 }
 
-@media (max-width: 768px) {
+@media (--above-phone) and (max-width: 768px) {
+  .transit-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+  .transit-graph { padding: 8px; }
+  .transit-birth-pair { width: 110px; top: 30px; }
+  .transit-planet-column { width: 48px; top: 30px; }
+}
+
+@media (--phone) {
   .transit-layout { grid-template-columns: 1fr; }
   .transit-graph { width: calc(100% + 48px); margin-inline: -24px; border-radius: 0; }
   .transit-graph .bg-svg-wrap { width: min(100%, 260px); transform: translateX(-14px); }
@@ -2374,7 +2381,12 @@ body.modal-open { overflow: hidden; }
    Responsive
    ============================================= */
 
-@media (max-width: 768px) {
+@media (--above-phone) and (max-width: 768px) {
+  .chart-layout { grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr); gap: 12px; padding: 16px; }
+  .chart-layout .panel { padding: 16px; }
+}
+
+@media (--phone) {
   .chart-layout {
     grid-template-columns: 1fr;
   }
@@ -2403,6 +2415,10 @@ body.modal-open { overflow: hidden; }
   }
 
   .variable-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .connection-graphs {
     grid-template-columns: 1fr;
   }
 
@@ -2437,19 +2453,19 @@ body.modal-open { overflow: hidden; }
   }
 }
 
-@media (min-width: 641px) and (max-width: 900px) {
+@media (--above-phone) and (max-width: 900px) {
   .logo, .header-actions { flex-shrink: 0; }
   .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
   .nav-link { flex-shrink: 0; white-space: nowrap; }
 }
 
-@media (min-width: 641px) and (max-width: 768px) {
+@media (--above-phone) and (max-width: 768px) {
   .header-inner { padding-inline: 6px; gap: 4px; }
   .nav-link { padding-inline: 4px; }
 }
 
-@media (min-width: 641px) and (max-width: 680px) {
+@media (--above-phone) and (max-width: 680px) {
   .nav-link { font-size: 12px; }
 }
 
@@ -2458,7 +2474,7 @@ body.modal-open { overflow: hidden; }
    Small-screen header (P0-1) — no horizontal page scroll, ever
    ============================================= */
 
-@media (max-width: 640px) {
+@media (--phone) {
   .header-inner {
     padding: 0 10px;
     gap: 6px;
