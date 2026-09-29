@@ -207,6 +207,7 @@ export function rerenderBodygraph(transitGates = null) {
   if (!current) return;
   const container = document.getElementById('bodygraph-container');
   bodygraphApi = renderBodygraph(container, current.chart, {
+    animate: false,
     onGateClick: (gate, source) => source
       ? showPlanetDetail({ source: source.side, planet: source.planet, activation: current.chart.gates[source.side]?.[source.planet] })
       : showGateDetail(gate),
