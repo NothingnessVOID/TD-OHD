@@ -20,6 +20,9 @@ try {
     assert.ok(dimensions.scroll <= dimensions.viewport + 1, `no horizontal overflow: ${JSON.stringify(dimensions)}`);
     assert.ok(dimensions.graph <= dimensions.stage, `graph fits shared stage: ${JSON.stringify(dimensions)}`);
     if (width === 1224) {
+      await page.locator('#transit-stage .tl-planet[data-gate]').first().click();
+      await page.locator('#gate-detail:not(.hidden)').waitFor();
+      await page.keyboard.press('Escape');
       await page.evaluate(() => scrollTo(0, 500));
       const top = await page.locator('#transit-stage').evaluate(node => node.getBoundingClientRect().top);
       assert.ok(top >= 55 && top <= 80, `graph stage stays in view while summary scrolls: ${top}`);
