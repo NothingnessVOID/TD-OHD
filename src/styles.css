@@ -1518,6 +1518,7 @@ body.modal-open { overflow: hidden; }
 .gate-detail-back {
   display: flex;
   align-items: center;
+  min-height: 32px;
   gap: 4px;
   background: var(--bg-sunken);
   border: 1px solid var(--border);
@@ -1531,14 +1532,18 @@ body.modal-open { overflow: hidden; }
 .gate-detail-back:hover { color: var(--text); border-color: var(--text-secondary); }
 
 .gate-detail-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
   background: var(--bg-sunken);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 17px;
   line-height: 1;
   color: var(--text-tertiary);
   cursor: pointer;
-  padding: 3px 8px;
+  padding: 0;
   flex-shrink: 0;
 }
 .gate-detail-close:hover { color: var(--text); border-color: var(--text-secondary); }
