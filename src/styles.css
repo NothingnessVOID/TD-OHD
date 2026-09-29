@@ -55,9 +55,13 @@
 
   /* Circuit colors */
   --individual: #8e44ad;
+  --individual-soft: #f0e6f6;
   --tribal: #c0392b;
+  --tribal-soft: #fce4e4;
   --collective: #2980b9;
+  --collective-soft: #e4f0fc;
   --integration: #27ae60;
+  --integration-soft: #e4f6ec;
 
   /* Comparison graph sources; identical values to the original palette. */
   --connection-person-a: #2a9d8f;
@@ -116,6 +120,10 @@
   --graph-undefined-center: #0d0c0a;
   --graph-center-stroke: #5a5248;
   --graph-text-inactive: #6f685f;
+  --individual-soft: #2a1d32;
+  --tribal-soft: #2a1515;
+  --collective-soft: #152030;
+  --integration-soft: #152a1d;
   --connection-person-a: #3db5a5;
   --connection-person-b: #e8927a;
   --connection-bridged: #cda64a;
@@ -653,15 +661,10 @@ body {
   margin-left: 6px;
 }
 
-.circuit-badge.individual { background: #f0e6f6; color: #8e44ad; }
-.circuit-badge.tribal { background: #fce4e4; color: #c0392b; }
-.circuit-badge.collective { background: #e4f0fc; color: #2980b9; }
-.circuit-badge.integration { background: #e4f6ec; color: #27ae60; }
-
-[data-theme="dark"] .circuit-badge.individual { background: #2a1d32; }
-[data-theme="dark"] .circuit-badge.tribal { background: #2a1515; }
-[data-theme="dark"] .circuit-badge.collective { background: #152030; }
-[data-theme="dark"] .circuit-badge.integration { background: #152a1d; }
+.circuit-badge.individual { background: var(--individual-soft); color: var(--individual); }
+.circuit-badge.tribal { background: var(--tribal-soft); color: var(--tribal); }
+.circuit-badge.collective { background: var(--collective-soft); color: var(--collective); }
+.circuit-badge.integration { background: var(--integration-soft); color: var(--integration); }
 
 .gate-item .gate-description {
   font-size: 13px;
