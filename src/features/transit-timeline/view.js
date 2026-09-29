@@ -7,7 +7,7 @@ import { createTimelineClient } from './client.js';
 import { queryTimeline } from './conditions.js';
 import { natalIslands, bridgedIslandCount } from './bridge.js';
 import { catalog } from './provider.js';
-import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
+import { panWindow, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import { graphPanelMarkup, renderGraphColumns } from './graph-window.js';
 import './timeline.css';
 
@@ -489,10 +489,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const coversTimeline = range => range && range.start === timelineRange.start && range.end === timelineRange.end;
   // A gesture may only explore the completed calculation. It never requests
   // more data. New dates, explicit ranges, people and modes may calculate.
-  function moveViewport(range, instant = selected) {
+  function moveViewport(range, instant = selected, { allowOutside = false } = {}) {
     if (!result || calculating) return false;
-    range = clampWindow(range, result);
-    const nextSelected = Math.max(range.start, Math.min(range.end - 1000, Math.round(instant / 1000) * 1000));
+    if (!allowOutside) range = clampWindow(range, result);
+    const nextSelected = Math.max(result.start, Math.min(result.end - 1000,
+      Math.max(range.start, Math.min(range.end - 1000, Math.round(instant / 1000) * 1000))));
     const rangeChanged = range.start !== windowRange.start || range.end !== windowRange.end;
     if (!rangeChanged && nextSelected === selected) return false;
     const previousSelected = selected;
@@ -510,8 +511,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
 
   function panTime(delta) {
     if (!result || calculating) return;
-    const next = panTimeline(windowRange, selected, delta, result);
-    moveViewport(next.range, next.selected);
+    const instant = Math.max(result.start, Math.min(result.end - 1000, Math.round((selected + delta) / 1000) * 1000));
+    moveViewport(centeredWindow(instant, span), instant, { allowOutside: true });
   }
 
   function jumpGate(direction) {

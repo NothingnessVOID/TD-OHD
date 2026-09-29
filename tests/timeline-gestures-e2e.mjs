@@ -324,8 +324,9 @@ try {
     await page.waitForFunction(previous => Number(document.querySelector('#timeline-view .tl-table')?.dataset.selected) !== previous, before.selected);
     const after = await state(page);
     assert.ok(after.selected > before.selected && after.start > before.start);
-    assert.ok(Math.abs((after.selected - before.selected) - (after.start - before.start)) <= 1000);
-    assert.ok(after.start >= after.calculatedStart && after.end <= after.calculatedEnd);
+    assert.ok(after.selected >= after.calculatedStart && after.selected < after.calculatedEnd);
+    assert.ok(Math.abs((after.selected - after.start) / (after.end - after.start) - .5) < .001,
+      'horizontal scrolling keeps the selected time centered');
     await moonMatches(page);
     assert.deepEqual(await birthMoon(page), originalBirthMoon);
   });
@@ -415,7 +416,7 @@ try {
     assert.ok(Math.abs((restored.end - restored.start) - (before.end - before.start)) < 1000);
   });
 
-  await log('wheel keeps moving the cursor after viewport reaches both calculated edges', async () => {
+  await log('wheel keeps the selected time centered through both calculated edges', async () => {
     const table = page.locator(tableSelector);
     await table.scrollIntoViewIfNeeded();
     const box = await table.boundingBox();
@@ -423,26 +424,10 @@ try {
     for (const delta of [-100000, 100000]) {
       await page.mouse.wheel(delta, 0);
       const edge = await state(page);
-      assert.ok(edge.start >= edge.calculatedStart && edge.end <= edge.calculatedEnd,
-        `viewport escaped calculation: ${JSON.stringify(edge)}`);
-      assert.equal(delta < 0 ? edge.start : edge.end,
-        delta < 0 ? edge.calculatedStart : edge.calculatedEnd, 'viewport reached calculated edge');
-      const ticks = await page.locator(`${root} .tl-ticks`).boundingBox();
-      await page.mouse.click(ticks.x + ticks.width * .5, ticks.y + ticks.height * .5);
-      const middle = await state(page);
-      assert.ok(middle.selected > middle.start && middle.selected < middle.end - 1000,
-        `ruler selected inside the stopped viewport: ${JSON.stringify(middle)}`);
+      assert.equal(edge.selected, delta < 0 ? edge.calculatedStart : edge.calculatedEnd - 1000);
+      assert.ok(Math.abs((edge.selected - edge.start) / (edge.end - edge.start) - .5) < .001,
+        `selected time remains centered at calculation edge: ${JSON.stringify(edge)}`);
       const workers = await page.evaluate(() => window.__tlWorkerCount);
-      await page.mouse.move(box.x + box.width * .7, Math.min(box.y + 90, 690));
-      await page.mouse.wheel(delta < 0 ? -25 : 25, 0);
-      const moved = await state(page);
-      assert.deepEqual([moved.start, moved.end], [middle.start, middle.end], 'viewport stays at the edge');
-      assert.ok(delta < 0 ? moved.selected < middle.selected : moved.selected > middle.selected,
-        `continued wheel moves cursor toward ${delta < 0 ? 'left' : 'right'} edge`);
-      await page.mouse.wheel(delta, 0);
-      const terminal = await state(page);
-      assert.equal(terminal.selected, delta < 0 ? terminal.start : terminal.end - 1000,
-        'cursor reaches the end of the calculated viewport');
       await page.evaluate(() => {
         window.__tlTerminalSvg = document.querySelector('#timeline-view .tl-graph .bodygraph-svg');
         window.__tlTerminalSvgRemovals = 0;
@@ -456,7 +441,7 @@ try {
       await page.mouse.wheel(delta, 0);
       await page.waitForTimeout(100);
       const after = await state(page);
-      assert.deepEqual([after.selected, after.start, after.end], [terminal.selected, terminal.start, terminal.end]);
+      assert.deepEqual([after.selected, after.start, after.end], [edge.selected, edge.start, edge.end]);
       assert.equal(await page.evaluate(() => {
         window.__tlTerminalObserver.disconnect();
         return window.__tlTerminalSvg.isSameNode(document.querySelector('#timeline-view .tl-graph .bodygraph-svg'))
@@ -467,7 +452,7 @@ try {
     }
   });
 
-  await log('reverse wheel pans immediately without a fixed recovery zone', async () => {
+  await log('reverse wheel moves the centered selection immediately', async () => {
     const table = page.locator(tableSelector);
     await table.scrollIntoViewIfNeeded();
     const ticks = await page.locator(`${root} .tl-ticks`).boundingBox();
@@ -477,20 +462,18 @@ try {
     for (const direction of [-1, 1]) {
       await page.mouse.wheel(direction * 100000, 0);
       const edge = await state(page);
-      assert.equal(direction < 0 ? edge.start : edge.end,
-        direction < 0 ? edge.calculatedStart : edge.calculatedEnd);
-      assert.equal(edge.selected, direction < 0 ? edge.start : edge.end - 1000);
+      assert.equal(edge.selected, direction < 0 ? edge.calculatedStart : edge.calculatedEnd - 1000);
       await page.mouse.wheel(-direction * ticks.width * .2, 0);
-      const cursorOnly = await state(page);
-      assert.ok(direction < 0 ? cursorOnly.start > edge.start : cursorOnly.start < edge.start,
+      const first = await state(page);
+      assert.ok(direction < 0 ? first.start > edge.start : first.start < edge.start,
         'small reverse wheel moves the viewport immediately');
       await page.mouse.wheel(-direction * ticks.width * .25, 0);
       const recovered = await state(page);
-      assert.ok(direction < 0 ? recovered.start > cursorOnly.start : recovered.start < cursorOnly.start,
-        'larger reverse wheel starts moving the viewport');
+      assert.ok(direction < 0 ? recovered.start > first.start : recovered.start < first.start,
+        'larger reverse wheel continues moving the viewport');
       const recoveredRatio = (recovered.selected - recovered.start) / (recovered.end - recovered.start);
-      assert.ok(direction < 0 ? recoveredRatio < .02 : recoveredRatio > .98,
-        `cursor remains at the visible edge while panning: ${recoveredRatio}`);
+      assert.ok(Math.abs(recoveredRatio - .5) < .001,
+        `cursor remains centered while panning: ${recoveredRatio}`);
       assert.equal(await table.getAttribute('aria-busy'), 'false');
       assert.equal(await page.evaluate(() => window.__tlWorkerCount), workers);
     }
@@ -520,7 +503,7 @@ try {
     await page.waitForFunction(previous => Number(document.querySelector('#timeline-view .tl-table')?.dataset.start) > previous,
       releasedFrom.start, { timeout: 5000 });
     const moving = await state(page);
-    assert.ok(moving.start > releasedFrom.start && moving.end <= moving.calculatedEnd);
+    assert.ok(moving.start > releasedFrom.start && moving.selected < moving.calculatedEnd);
     await page.mouse.up();
     const released = await state(page);
     await page.waitForTimeout(200);
@@ -537,7 +520,7 @@ try {
     await page.waitForFunction(previous => Number(document.querySelector('#timeline-view .tl-table')?.dataset.start) < previous,
       leftFrom.start, { timeout: 5000 });
     const leftMoving = await state(page);
-    assert.ok(leftMoving.start < leftFrom.start && leftMoving.start >= leftMoving.calculatedStart);
+    assert.ok(leftMoving.start < leftFrom.start && leftMoving.selected >= leftMoving.calculatedStart);
     await page.mouse.up();
     const leftReleased = await state(page);
     await page.waitForTimeout(200);
@@ -548,15 +531,15 @@ try {
     await page.mouse.move(ticks.x + ticks.width * .7, y);
     await page.mouse.wheel(100000, 0);
     const boundary = await state(page);
-    assert.equal(boundary.end, boundary.calculatedEnd);
+    assert.equal(boundary.selected, boundary.calculatedEnd - 1000);
     await startEdgeDrag();
     await page.waitForTimeout(250);
     const stoppedAtBoundary = await state(page);
     assert.deepEqual([stoppedAtBoundary.start, stoppedAtBoundary.end], [boundary.start, boundary.end],
       'pointer hold cannot pan beyond calculated boundary');
-    assert.ok(stoppedAtBoundary.selected >= stoppedAtBoundary.end - (stoppedAtBoundary.end - stoppedAtBoundary.start) * .02
-      && stoppedAtBoundary.selected < stoppedAtBoundary.end,
-    'held pointer keeps cursor near the right edge without escaping it');
+    assert.ok(Math.abs((stoppedAtBoundary.selected - stoppedAtBoundary.start) /
+      (stoppedAtBoundary.end - stoppedAtBoundary.start) - .5) < .001,
+    'held pointer keeps the cursor centered at the right calculation boundary');
     await page.mouse.up();
 
     const cancelFrom = await retreat();
