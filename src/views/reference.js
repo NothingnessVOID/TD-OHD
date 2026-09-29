@@ -7,6 +7,7 @@ import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
+import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
 const categories = ['all', 'concept', 'center', 'channel', 'gate', 'planet', 'group'];
 const labels = { all: 'All entries', concept: 'Core concepts', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
@@ -51,13 +52,10 @@ export function openReference(kind = null, id = null, { line = null, replace = f
 
 const link = (kind, id, label, line = null) => `<button type="button" class="reference-link" data-reference-kind="${kind}" data-reference-id="${esc(String(id))}"${line ? ` data-reference-line="${line}"` : ''}>${esc(label)}</button>`;
 const channelId = channel => channel.gates.join('-');
-const lensButtons = () => `<div class="lens-switch">${[['hd', 'Human Design'], ['iching', 'I Ching'], ['gk', 'Gene Keys']]
-  .map(([key, label]) => `<button type="button" data-reference-lens="${key}" class="${lens === key ? 'active' : ''}">${t(label)}</button>`).join('')}</div>`;
-
 function gateDetail(entry) {
   const gate = Number(entry.id);
   const channels = channelsForGate(gate);
-  return `${lensButtons()}<div class="reference-reading">${gateReading(gate, lens)}</div>
+  return `${renderGateLensSwitch(lens, 'data-reference-lens')}<div class="reference-reading">${gateReading(gate, lens)}</div>
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3>${link('center', GATES[gate].center, centerName(GATES[gate].center))}`;
 }
@@ -127,7 +125,7 @@ function renderDetail() {
     <div class="reference-detail-body">${body}</div>`;
   article.scrollTop = 0;
   clearTimeout(lineHighlightTimer);
-  if (entry.kind === 'gate' && selected.line && lens !== 'gk') requestAnimationFrame(() => {
+  if (entry.kind === 'gate' && selected.line && (lens === 'hd' || lens === 'iching')) requestAnimationFrame(() => {
     const target = article.querySelector(`.reference-reading [data-line="${selected.line}"]`);
     if (!target) return;
     target.scrollIntoView({ block: 'center', behavior: 'instant' });

@@ -5,6 +5,7 @@ import { GATE_DESCRIPTIONS, LINE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS,
 import { t } from './i18n.js';
 import { esc } from './format.js';
 import { hexagramName } from './vocabulary.js';
+import { gateMeridianAcupoint } from './gate-meridian-data.js';
 
 export const channelsForGate = gate => CHANNELS.filter(channel => channel.gates.includes(Number(gate)));
 export const channelsForCenter = center => CHANNELS.filter(channel => channel.centers.includes(center));
@@ -16,6 +17,24 @@ export function gateReading(gate, lens = 'hd', { selectedLine = null, activeLine
   const lines = Array.from({ length: 6 }, (_, i) => i + 1)
     .filter(line => selectedLine == null || selectedLine === line);
   const lineClass = line => `gate-detail-line${activeLines.includes(line) || selectedLine === line ? ' current-line' : ''}`;
+  if (lens === 'meridian') {
+    const record = gateMeridianAcupoint(n);
+    if (!record) return '';
+    return `<section class="meridian-reading" aria-label="${esc(t('经络穴位'))}">
+      <div class="meridian-core">
+        <div class="meridian-core-item"><span class="meridian-label">${esc(t('对应经络'))}</span><strong class="meridian-value">${esc(record.meridian)}</strong></div>
+        <div class="meridian-core-item meridian-core-item--point"><span class="meridian-label">${esc(t('对应穴位'))}</span><strong class="meridian-value">${esc(record.acupoint)}</strong></div>
+        <div class="meridian-core-item meridian-location"><span class="meridian-label">${esc(t('穴位位置'))}</span><p>${esc(record.location_short)}</p></div>
+      </div>
+      <div class="meridian-relations">
+        <div class="meridian-relation"><span class="meridian-label">${esc(t('上卦'))}</span><strong class="meridian-relation-main">${esc(record.upper_trigram)} ${esc(record.upper_symbol)}</strong><span class="meridian-relation-sub">${esc(record.upper_attribute)} · ${esc(record.meridian)}</span></div>
+        <div class="meridian-relation"><span class="meridian-label">${esc(t('下卦'))}</span><strong class="meridian-relation-main">${esc(record.lower_trigram)} ${esc(record.lower_symbol)}</strong><span class="meridian-relation-sub">${esc(record.lower_element)}</span></div>
+        <div class="meridian-relation"><span class="meridian-label">${esc(t('五输穴'))}</span><strong class="meridian-relation-main">${esc(record.five_shu_type)}</strong></div>
+        <div class="meridian-relation"><span class="meridian-label">${esc(t('最终定位'))}</span><strong class="meridian-relation-main">${esc(record.acupoint)}</strong></div>
+      </div>
+      <div class="meridian-explanation"><span class="meridian-label">${esc(t('说明'))}</span><p>${esc(record.explanation)}</p></div>
+    </section>`;
+  }
   if (lens === 'iching') {
     const hexagram = HEXAGRAM_DESCRIPTIONS[n];
     if (!hexagram) return `<p class="gate-detail-desc">${t('No I Ching reading available.')}</p>`;
