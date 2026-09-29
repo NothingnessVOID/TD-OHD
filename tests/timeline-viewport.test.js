@@ -120,6 +120,19 @@ test('reverse panning recovers the cursor to center before moving either edge vi
     { range: { start: 8000, end: 18_000 }, selected: 13_000 });
 });
 
+test('a small pan after edge-anchored zoom never teleports an off-center cursor', () => {
+  const bounds = { start: 0, end: 30_000 };
+  const range = { start: 5000, end: 15_000 };
+  assert.deepEqual(panTimeline(range, 6000, 1000, bounds),
+    { range, selected: 7000 });
+  assert.deepEqual(panTimeline(range, 6000, -1000, bounds),
+    { range: { start: 4000, end: 14_000 }, selected: 5000 });
+  assert.deepEqual(panTimeline(range, 14_000, -1000, bounds),
+    { range, selected: 13_000 });
+  assert.deepEqual(panTimeline(range, 14_000, 1000, bounds),
+    { range: { start: 6000, end: 16_000 }, selected: 15_000 });
+});
+
 test('several short reverse pans equal one long pan across recovery and view motion', () => {
   const bounds = { start: 0, end: 20_000 };
   for (const [range, selected, delta] of [

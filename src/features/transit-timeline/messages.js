@@ -18,7 +18,7 @@ export const en = {
   advanced: 'Advanced', conditions: 'State conditions', combine: 'Combine conditions', any: 'Any',
   allConditions: 'All conditions must match', anyCondition: 'Any condition may match',
   gateLine: 'Gate line', bridge: 'Natal definition bridge', bridgeCount: '{from} → {to}', conditionKind: 'Object type',
-  conditionTargets: 'Select valid targets', selectedTargets: '{count} selected',
+  conditionTargets: 'Select targets', selectedTargets: '{count} selected',
   searchTargets: 'Search targets…', removeTarget: 'Remove {id}', conditionState: 'State',
   activeState: 'Active / defined', inactiveState: 'Inactive / undefined',
   addCondition: 'Add condition', removeCondition: 'Remove condition', runQuery: 'Find intervals',
