@@ -2,7 +2,9 @@ import { chromium } from 'playwright-core';
 import assert from 'node:assert/strict';
 
 const base = process.env.E2E_URL || 'http://127.0.0.1:5186';
-const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
+const browser = await chromium.launch(process.env.CHROME_PATH
+  ? { executablePath: process.env.CHROME_PATH, headless: true }
+  : { channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 try {
   for (const viewport of [{ width: 1380, height: 900 }, { width: 390, height: 844 }]) {
     const page = await browser.newPage({ viewport });
@@ -11,8 +13,32 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /112|条结果/);
+    assert.match(await page.locator('#reference-count').innerText(), /125/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
+    await page.locator('[data-reference-filter="planet"]').click();
+    assert.match(await page.locator('#reference-count').innerText(), /13/);
+    assert.equal(await page.locator('#reference-results .reference-result').count(), 13);
+    for (const [query, id] of [['太阳', 'sun'], ['Sun', 'sun'], ['北交点', 'northNode']]) {
+      await page.locator('#reference-search').fill(query);
+      assert.equal(await page.locator('#reference-results .reference-result').count(), 1);
+      assert.equal(await page.locator('#reference-results .reference-result').getAttribute('data-reference-id'), id);
+    }
+    await page.goto(`${base}/#library/planet/sun`);
+    await page.locator('#reference-detail h2').waitFor();
+    assert.match(await page.locator('#reference-detail').innerText(), /设计|Design/);
+    assert.equal(new URL(page.url()).search, '');
+    await page.goto(`${base}/#library/planet/northNode`);
+    await page.locator('#reference-detail h2').waitFor();
+    assert.match(await page.locator('#reference-detail h2').innerText(), /北交点|North Node/);
+    for (const language of ['zh-CN', 'en', 'zh-Hant']) {
+      await page.locator('#language-switcher').selectOption(language);
+      assert.match(page.url(), /#library\/planet\/northNode$/);
+      assert.ok((await page.locator('#reference-detail .reference-reading').innerText()).length > 50);
+    }
+    await page.locator('#language-switcher').selectOption('zh-CN');
+    await page.goto(`${base}/#library`);
+    await page.locator('#reference-search').fill('');
+    await page.locator('[data-reference-filter="all"]').click();
     if (viewport.width > 600) {
       await page.locator('#reference-results').evaluate(node => { node.scrollTop = 150; });
       assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
