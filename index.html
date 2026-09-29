@@ -140,34 +140,20 @@
     </section>
 
     <!-- Transits View -->
-    <section id="transits-view" class="view-section hidden">
-      <div class="view-container-wide">
-        <h2 class="view-title" data-i18n="Transits">Transits</h2>
-        <p class="view-subtitle" data-i18n="How the current planetary weather interacts with your chart">How the current planetary weather interacts with your chart</p>
-        <div class="transit-date-picker">
-          <label><span data-i18n="Date">Date</span><input type="date" id="transit-date"></label>
-          <div class="transit-time-field">
-            <label for="transit-time" data-i18n="Time">Time</label>
-            <div class="transit-time-group">
-              <input type="time" id="transit-time" step="1">
-            </div>
-          </div>
-          <span class="transit-zone-label"><span data-i18n="Timezone">Timezone</span> <output id="transit-timezone"></output></span>
-          <button id="transit-now" class="btn-secondary" data-i18n="Now">Now</button>
-          <button id="transit-only-toggle" type="button" class="btn-secondary transit-only-toggle" aria-pressed="false" data-i18n="Transit only">Transit only</button>
-        </div>
-        <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>
-        <p id="transit-status" class="panel-intro" aria-live="polite"></p>
-        <div class="transit-view-toolbar">
-          <div id="transit-graph-legend" class="transit-graph-legend" aria-label="Activation sources" data-i18n-aria-label="Activation sources"></div>
-        </div>
-        <div class="transit-layout">
-          <div class="chart-column">
-            <div id="transit-bodygraph" class="bodygraph-container transit-graph"></div>
-          </div>
-          <div id="transit-content" class="transit-content"></div>
-        </div>
-
+    <section id="transits-view" class="view-section hidden tl transit-reuse">
+      <div class="tl-heading"><h2 data-i18n="Transits">Transits</h2></div>
+      <div class="tl-toolbar">
+        <label><span data-i18n="Date">Date</span><input type="date" id="transit-date"></label>
+        <label><span data-i18n="Time">Time</span><input type="time" id="transit-time" step="1"></label>
+        <span class="tl-zone"><span data-i18n="Timezone">Timezone</span> <output id="transit-timezone"></output></span>
+        <button id="transit-now" type="button" data-action="transit-now" data-i18n="Now">Now</button>
+        <button id="transit-only-toggle" type="button" class="tl-mode-toggle" data-action="toggle-transit-mode" aria-pressed="false" data-i18n="Transit only">Transit only</button>
+      </div>
+      <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>
+      <p id="transit-status" class="tl-sr-only" aria-live="polite"></p>
+      <div class="tl-workspace">
+        <div id="transit-stage" class="tl-stage"></div>
+        <div id="transit-content" class="transit-content"></div>
       </div>
     </section>
 
