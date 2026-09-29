@@ -1,6 +1,9 @@
 /** Shared chart-detail heading, activation states and optional timeline timing. */
-import { t } from './i18n.js';
+import { LINE_NAMES } from 'natalengine';
+import { t, formatDisplay } from './i18n.js';
 import { esc } from './format.js';
+import { PLANET_GLYPHS } from './planet-reference.js';
+import { lineName, planetName } from './vocabulary.js';
 
 function activationRow(node, [planet, activation, side]) {
   node.classList.add('tl-activation-row');
@@ -8,6 +11,22 @@ function activationRow(node, [planet, activation, side]) {
   node.dataset.activationPlanet = planet;
   node.dataset.activationValue = `${activation.gate}.${activation.line}`;
   if (side === 'transit') node.classList.add('tl-activation-transit');
+
+  const glyph = document.createElement('span');
+  glyph.className = 'tl-activation-glyph';
+  glyph.textContent = PLANET_GLYPHS[planet] || '';
+  glyph.setAttribute('aria-hidden', 'true');
+
+  const identity = document.createElement('span');
+  identity.className = 'tl-activation-identity';
+  identity.textContent = `${t(side === 'design' ? 'Design' : side === 'personality' ? 'Personality' : 'Transit')} ${planetName(planet)}`;
+
+  const value = document.createElement('span');
+  value.className = 'tl-activation-value';
+  const lineTag = LINE_NAMES[activation.line]
+    ? formatDisplay('lineTag', activation.line, lineName(activation.line)) : '';
+  value.textContent = `— ${activation.gate}.${activation.line}${lineTag}`;
+  node.replaceChildren(glyph, identity, value);
 }
 
 function appendActivations(body, header, heading, selection, chart, context) {

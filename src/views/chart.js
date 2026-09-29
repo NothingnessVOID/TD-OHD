@@ -26,7 +26,7 @@ import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { birthToParams, connectionUrl } from '../lib/share.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, activationSourceReference } from '../lib/planet-reference.js';
+import { planetReference } from '../lib/planet-reference.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -483,17 +483,20 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   const gateLine = formatDisplay('planetGateLine', activation.gate,
     hexagramName(activation.gate), activation.line);
   const substructure = ['color', 'tone', 'base'].every(key => Number.isFinite(activation[key]))
-    ? `<p class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}', activation)}</p>` : '';
+    ? `<dl class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}',
+        { color: '', tone: '', base: '' }).split('·').map((label, index) => {
+        const value = activation[['color', 'tone', 'base'][index]];
+        return `<div class="planet-detail-substructure-item"><dt>${esc(label.trim())}</dt><dd>${esc(value)}</dd></div>`;
+      }).join('')}</dl>` : '';
   detail.innerHTML = `<div class="gate-detail-card planet-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
       <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
-      <div class="detail-name">${esc(PLANET_GLYPHS[planet] || '')} ${esc(pointName)}</div>
-      <p class="gate-detail-desc">${esc(planetReference(planet, getLocale()))}</p>
-      <p class="planet-detail-source">${esc(activationSourceReference(source, getLocale()))}</p>
+      <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
+      <p class="gate-detail-desc planet-detail-description">${esc(planetReference(planet, getLocale()))}</p>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
         aria-label="${esc(gateLine)}">
         <strong>${esc(gateLine)}</strong>
-        <span class="transit-detail-action">${esc(t('View gate details'))}</span>
+        <span class="transit-detail-action">${esc(t('View gate details'))}<span aria-hidden="true"> ↗</span></span>
       </button>${substructure}
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);

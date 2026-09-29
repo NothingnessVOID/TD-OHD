@@ -16,6 +16,10 @@ try {
       await detail.waitFor();
       assert.equal(await detail.getAttribute('data-source'), source);
       assert.equal(await detail.getAttribute('data-planet'), planet);
+      assert.equal(await detail.locator('.planet-detail-source').count(), 0,
+        'planet modal omits the redundant activation-source explanation');
+      assert.equal(await detail.locator('.planet-detail-substructure-item').count(), source === 'transit' ? 0 : 3,
+        'available color, tone and base remain separate readable fields');
       assert.equal(await page.locator('#gate-detail #lens-content').count(), 0,
         'planet detail does not embed the gate reading');
       const gate = await page.locator('#gate-detail [data-planet-gate]').getAttribute('data-planet-gate');
