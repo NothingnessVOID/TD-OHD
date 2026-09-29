@@ -377,7 +377,7 @@ try {
     await page.setViewportSize({ width: 1440, height: 1000 });
   });
 
-  await run('shared gate keeps full birth and transit activations below one compact header', async () => {
+  await run('shared gate keeps birth and transit activations in a compact left header column', async () => {
     const gates = await page.evaluate(() => {
       const value = node => node.querySelector('.bg-planet-act')?.textContent.trim().split('.')[0];
       const birth = [...document.querySelectorAll('#timeline-view .tl-birth-value[data-side]')].map(node => ({
@@ -401,29 +401,42 @@ try {
       const sources = node.querySelector('.tl-detail-activations');
       const timing = header?.querySelector('.tl-detail-timing');
       const rows = [...(sources?.querySelectorAll('.tl-activation-row') || [])];
-      return { headingContainsIdentity: !!heading?.querySelector('.detail-label') && !!heading?.querySelector('.detail-name'),
-        headerOnlyStatuses: !!statuses && statuses.querySelectorAll('.tl-activation-label').length === 2
-          && heading.querySelectorAll('.tl-activation-row').length === 0,
-        sourcesFollowHeader: header?.nextElementSibling === sources,
+      const title = heading?.querySelector('.detail-name')?.getBoundingClientRect();
+      const statusBox = statuses?.getBoundingClientRect();
+      const sourceBox = sources?.getBoundingClientRect();
+      const headingBox = heading?.getBoundingClientRect();
+      const timingBox = timing?.getBoundingClientRect();
+      const headerBox = header?.getBoundingClientRect();
+      return { headingContainsIdentity: !!heading?.querySelector('.detail-label') && !!title,
+        statusesInHeading: !!statuses && statuses.parentElement === heading
+          && statuses.querySelectorAll('.tl-activation-label').length === 2,
+        sourcesInHeading: !!sources && sources.parentElement === heading
+          && statuses.nextElementSibling === sources,
         birthGroups: sources?.querySelectorAll('.gate-detail-acts').length,
         transitGroups: sources?.querySelectorAll('.gate-detail-transits').length,
         rows: rows.map(row => ({ side: row.dataset.activationSide, planet: row.dataset.activationPlanet,
           activation: row.dataset.activationValue, text: row.textContent.trim(),
           weight: getComputedStyle(row).fontWeight,
+          identityRight: row.querySelector('.tl-activation-identity')?.getBoundingClientRect().right,
           columns: ['glyph', 'identity', 'value'].map(part =>
             row.querySelector(`.tl-activation-${part}`)?.getBoundingClientRect().left) })),
         groupGap: getComputedStyle(sources).rowGap,
         headingBeforeTiming: !!heading && !!node.querySelector('.tl-detail-timing')
           && Boolean(heading.compareDocumentPosition(timing) & Node.DOCUMENT_POSITION_FOLLOWING),
-        statusBottom: statuses?.getBoundingClientRect().bottom,
-        timingBottom: timing?.getBoundingClientRect().bottom };
+        titleToStatuses: statusBox?.top - title?.bottom,
+        statusesToSources: sourceBox?.top - statusBox?.bottom,
+        sourcesWithinLeft: !!sourceBox && !!headingBox && sourceBox.right <= headingBox.right + 1,
+        timingOnRight: !!timingBox && !!headingBox && !!headerBox
+          && timingBox.left >= headingBox.right - 1 && timingBox.right <= headerBox.right + 1,
+        timingContext: timing?.querySelector('.tl-timing-context')?.textContent,
+        timingBoundaries: [...(timing?.querySelectorAll('.tl-timing-boundary dd') || [])].map(value => value.textContent) };
     });
     const expected = [...gates.birth.filter(row => row.gate === gates.shared && row.side === 'design'),
       ...gates.birth.filter(row => row.gate === gates.shared && row.side === 'personality'),
       ...gates.transit.filter(row => row.gate === gates.shared)];
     assert.equal(grouped.headingContainsIdentity, true);
-    assert.equal(grouped.headerOnlyStatuses, true, 'header left column holds consecutive source labels only');
-    assert.equal(grouped.sourcesFollowHeader, true, 'full planet rows start immediately below the header');
+    assert.equal(grouped.statusesInHeading, true, 'source labels live in the header left column');
+    assert.equal(grouped.sourcesInHeading, true, 'planet activations follow status within the left column');
     assert.deepEqual([grouped.birthGroups, grouped.transitGroups], [1, 1]);
     assert.deepEqual(grouped.rows.map(({ side, planet, activation }) => ({ side, planet, activation })),
       expected.map(({ side, planet, activation }) => ({ side, planet, activation })),
@@ -442,11 +455,21 @@ try {
     assert.ok(grouped.rows[0].columns[0] < grouped.rows[0].columns[1]
       && grouped.rows[0].columns[1] < grouped.rows[0].columns[2],
     'glyph, planet identity and gate value occupy separate columns');
+    assert.ok(grouped.rows.every(row => row.columns[2] - row.identityRight >= -1
+      && row.columns[2] - row.identityRight < 24),
+    'gate values sit close to planet names without an oversized middle column');
     assert.equal(new Set(grouped.rows.map(row => row.weight)).size, 1, 'natal and transit rows use one font weight');
     assert.equal(grouped.groupGap, '0px', 'natal and transit rows are one continuous list');
     assert.equal(grouped.headingBeforeTiming, true, 'compact time panel follows the left heading');
-    assert.ok(Math.abs(grouped.statusBottom - grouped.timingBottom) < 12,
-      'status labels sit opposite the bottom of the timing panel');
+    assert.ok(grouped.titleToStatuses >= -1 && grouped.titleToStatuses < 20,
+      'activation status begins close below the gate title');
+    assert.ok(grouped.statusesToSources >= -1 && grouped.statusesToSources < 20,
+      'planet rows begin close below the activation status');
+    assert.equal(grouped.sourcesWithinLeft, true, 'planet rows remain inside the left column');
+    assert.equal(grouped.timingOnRight, true, 'timing fits to the right of the gate information');
+    assert.match(grouped.timingContext, /GMT|UTC/, 'gate timing shows one shared timezone context');
+    assert.ok(grouped.timingBoundaries.every(value => !/GMT|UTC/.test(value)),
+      'start and end do not repeat the timezone');
     await page.keyboard.press('Escape');
 
     await page.locator(`${tl} .tl-row[data-key="gate:${gates.birthOnly}"] .tl-row-name`).click();
@@ -542,7 +565,7 @@ try {
       const after = Number(await mobile.locator(`${tl} .tl-table`).getAttribute('data-selected'));
       assert.notEqual(after, before, 'touch dragging changed the selected instant');
       await moonMatches(mobile);
-      await mobile.locator(`${tl} .tl-bar:not([data-source="natal"])`).first().click();
+      await mobile.locator(`${tl} .tl-bar[data-key^="gate:"]:not([data-source="natal"])`).first().click();
       assert.equal(await mobile.locator(`${detail}:not(.hidden) ${timing.replace(`${detail} `, '')}`).isVisible(), true,
         'bar click opens the same detail sheet after dragging');
       assert.equal(await mobile.locator(`${timing} .tl-timing-duration dd`).count(), 1);
@@ -551,10 +574,13 @@ try {
       const mobileOverflow = await mobile.locator(detail).evaluate(node => {
         const timing = node.querySelector('.tl-detail-timing').getBoundingClientRect();
         const heading = node.querySelector('.tl-detail-heading').getBoundingClientRect();
+        const activations = node.querySelector('.tl-detail-activations')?.getBoundingClientRect();
         return timing.left >= -1 && timing.right <= innerWidth + 1
-          && heading.left >= -1 && heading.right <= innerWidth + 1;
+          && heading.left >= -1 && heading.right <= innerWidth + 1
+          && !!activations && activations.right <= innerWidth + 1
+          && timing.top >= heading.bottom - 1;
       });
-      assert.equal(mobileOverflow, true, 'mobile interval timing fits the viewport');
+      assert.equal(mobileOverflow, true, 'mobile gate timing stacks below all left-column information without overflow');
       await mobile.locator(`${detail} .gate-detail-close`).click();
       const graphVisible = await mobile.locator(`${tl} .tl-graph`).evaluate(el => {
         const r = el.getBoundingClientRect();

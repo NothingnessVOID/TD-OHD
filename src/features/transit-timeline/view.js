@@ -1,6 +1,6 @@
 import { DAY, MINUTE, centeredWindow, intervalAt } from './core.js';
 import { translator } from './messages.js';
-import { displayTime, wallTime, formatDuration } from './time.js';
+import { displayTime, wallTime, formatDuration, formatCompactTimingRange } from './time.js';
 import { calendarRuler } from './ruler.js';
 import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
@@ -643,6 +643,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const interval = row && (pendingDetail?.row === row ? pendingDetail.interval : intervalAt(row, selected));
     if (!interval || interval.source === 'natal') return null;
     const fullRange = interval.clippedStart && interval.clippedEnd;
+    const compactRange = formatCompactTimingRange(interval.start, interval.end, zone, locale);
     return {
       kind: row.kind,
       id: row.id,
@@ -659,9 +660,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       startLabel: t('start'),
       startTitle: interval.clippedStart ? t('before') : `${t('start')}: ${format(interval.start)}`,
       startValue: interval.clippedStart ? t('beforeShort') : format(interval.start, true),
+      summaryStartValue: interval.clippedStart ? t('beforeShort') : compactRange.summaryStartValue,
       endLabel: t('end'),
       endTitle: interval.clippedEnd ? t('after') : `${t('end')}: ${format(interval.end)}`,
-      endValue: interval.clippedEnd ? t('afterShort') : format(interval.end, true)
+      endValue: interval.clippedEnd ? t('afterShort') : format(interval.end, true),
+      summaryEndValue: interval.clippedEnd ? t('afterShort') : compactRange.summaryEndValue,
+      contextValue: compactRange.contextValue,
+      contextTitle: compactRange.contextTitle
     };
   }
 
