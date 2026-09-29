@@ -100,7 +100,7 @@ try {
     assert.equal(await page.locator(`${tl} .tl-calculation`).isVisible(), false,
       'calculation progress disappears when results are ready');
     assert.ok(await page.locator(`${tl} .tl-bar`).count() > 0);
-    assert.match(await page.locator(`${tl} .tl-person`).innerText(), /Timeline Demo/);
+    assert.equal(await page.locator(`${tl} .tl-heading`).count(), 0);
     assert.deepEqual(await page.locator(field('span')).locator('option').evaluateAll(options => options.map(option => option.value)),
       ['1', '3', '7', '30', '90', '180', 'year', 'past-year']);
     const range = await calculatedRange();
@@ -466,7 +466,7 @@ try {
     await page.selectOption('#people-switcher', first.value);
     await page.click('.nav-link[data-view="timeline"]');
     await ready();
-    assert.match(await page.locator(`${tl} .tl-person`).innerText(), /Timeline A/);
+    assert.equal(await page.locator(`${tl} .tl-heading`).count(), 0);
   });
 
   await run('mobile touch scrub, vertical table scroll, graph visibility and width', async () => {

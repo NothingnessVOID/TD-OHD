@@ -7,7 +7,7 @@ import { createTimelineClient } from './client.js';
 import { queryTimeline } from './conditions.js';
 import { natalIslands, bridgedIslandCount } from './bridge.js';
 import { catalog } from './provider.js';
-import { panWindow, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
+import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import { graphPanelMarkup, renderGraphColumns } from './graph-window.js';
 import './timeline.css';
 
@@ -170,7 +170,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const rangeOptions = RANGE_OPTIONS;
   root.innerHTML = `
     <p class="tl-empty-state" role="status">${esc(t('empty'))}</p>
-    <div class="tl-heading"><h2>${esc(t('title'))}</h2><span class="tl-person"></span></div>
     <div class="tl-toolbar">
       <label>${esc(t('date'))}<input data-field="date" type="date" min="1800-01-01" max="2200-12-31"></label>
       <label>${esc(t('time'))}<input data-field="time" type="time" step="1"></label>
@@ -489,9 +488,9 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const coversTimeline = range => range && range.start === timelineRange.start && range.end === timelineRange.end;
   // A gesture may only explore the completed calculation. It never requests
   // more data. New dates, explicit ranges, people and modes may calculate.
-  function moveViewport(range, instant = selected, { allowOutside = false } = {}) {
+  function moveViewport(range, instant = selected) {
     if (!result || calculating) return false;
-    if (!allowOutside) range = clampWindow(range, result);
+    range = clampWindow(range, result);
     const nextSelected = Math.max(result.start, Math.min(result.end - 1000,
       Math.max(range.start, Math.min(range.end - 1000, Math.round(instant / 1000) * 1000))));
     const rangeChanged = range.start !== windowRange.start || range.end !== windowRange.end;
@@ -511,8 +510,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
 
   function panTime(delta) {
     if (!result || calculating) return;
-    const instant = Math.max(result.start, Math.min(result.end - 1000, Math.round((selected + delta) / 1000) * 1000));
-    moveViewport(centeredWindow(instant, span), instant, { allowOutside: true });
+    const next = panTimeline(windowRange, selected, delta, result);
+    moveViewport(next.range, next.selected);
   }
 
   function jumpGate(direction) {
@@ -1124,8 +1123,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       if (node.nodeType === Node.TEXT_NODE) node.textContent = t(key);
     };
     put('.tl-empty-state', 'empty');
-    put('.tl-heading h2', 'title');
-    if (chart) setText($('.tl-person'), chart.birth.name || t('person'));
     for (const [field, key] of [['date','date'], ['time','time'], ['zone','zone'], ['planet','planets']]) fieldLabel(field, key);
     for (const [action, key] of [['now','now'], ['retry','retry']]) {
       const button = $(`[data-action="${action}"]`);
@@ -1256,7 +1253,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         client.cancel(); calculating = false;
         result = null; identity = nextIdentity; closeTiming();
       }
-      $('.tl-person').textContent = chart.birth.name || t('person');
       syncClock(); renderMoment();
       if (!coversTimeline(result) && !calculating) calculate();
       else { $('.tl-table').setAttribute('aria-busy', 'false'); renderRows(); }
