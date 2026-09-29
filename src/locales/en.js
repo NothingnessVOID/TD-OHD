@@ -42,6 +42,7 @@ export default {
     list: items => items.length < 2 ? items[0] || '' : items.length === 2 ? items.join(' and ') : items.slice(0,-1).join(', ') + ' and ' + items.at(-1),
     separated: (items, kind) => items.join(kind === 'channels' ? '; ' : ', '),
     parentheses: value => '(' + value + ')',
+    planetGateLine: (gate, hexagram, line) => `Gate ${gate} · Line ${line}`,
     gateTooltip: (name, hexagram) => name,
     channelTooltip: (name, gates) => name + ' (' + gates + ')',
     channelDetail: (name, gates) => 'Channel of ' + name + ' (' + gates + ')',

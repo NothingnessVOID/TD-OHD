@@ -478,7 +478,8 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
   const sourceLabel = t(source === 'transit' ? 'Transit' : source === 'design' ? 'Design' : 'Personality');
   const pointName = planetName(planet);
-  const gateLine = `${activation.gate}.${activation.line}`;
+  const gateLine = formatDisplay('planetGateLine', activation.gate,
+    hexagramName(activation.gate), activation.line);
   const substructure = ['color', 'tone', 'base'].every(key => Number.isFinite(activation[key]))
     ? `<p class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}', activation)}</p>` : '';
   detail.innerHTML = `<div class="gate-detail-card planet-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
@@ -488,8 +489,8 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
       <p class="gate-detail-desc">${esc(planetReference(planet, getLocale()))}</p>
       <p class="planet-detail-source">${esc(activationSourceReference(source, getLocale()))}</p>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
-        aria-label="${esc(t('Gate {gate}', { gate: activation.gate }))} ${gateLine}">
-        <strong>${esc(t('Gate {gate}', { gate: activation.gate }))} · ${gateLine}</strong>
+        aria-label="${esc(gateLine)}">
+        <strong>${esc(gateLine)}</strong>
         <span class="transit-detail-action">${esc(t('View gate details'))}</span>
       </button>${substructure}
     </div></div>`;
