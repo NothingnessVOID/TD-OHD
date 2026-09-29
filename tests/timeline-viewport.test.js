@@ -120,24 +120,29 @@ test('reverse panning recovers the cursor to center before moving either edge vi
     { range: { start: 8000, end: 18_000 }, selected: 13_000 });
 });
 
-test('a small pan after edge-anchored zoom never teleports an off-center cursor', () => {
+test('small pans after edge-anchored zoom recover either cursor smoothly', () => {
   const bounds = { start: 0, end: 30_000 };
   const range = { start: 5000, end: 15_000 };
   assert.deepEqual(panTimeline(range, 6000, 1000, bounds),
     { range, selected: 7000 });
   assert.deepEqual(panTimeline(range, 6000, -1000, bounds),
-    { range: { start: 4000, end: 14_000 }, selected: 5000 });
+    { range: { start: 3000, end: 13_000 }, selected: 5000 });
   assert.deepEqual(panTimeline(range, 14_000, -1000, bounds),
     { range, selected: 13_000 });
   assert.deepEqual(panTimeline(range, 14_000, 1000, bounds),
-    { range: { start: 6000, end: 16_000 }, selected: 15_000 });
+    { range: { start: 7000, end: 17_000 }, selected: 15_000 });
+  const right = panTimeline(range, 14_000, 1000, bounds);
+  assert.deepEqual(panTimeline(right.range, right.selected, 3000, bounds),
+    { range: { start: 13_000, end: 23_000 }, selected: 18_000 });
 });
 
-test('several short reverse pans equal one long pan across recovery and view motion', () => {
+test('several short pans equal one long pan across recovery and view motion', () => {
   const bounds = { start: 0, end: 20_000 };
   for (const [range, selected, delta] of [
     [{ start: 0, end: 10_000 }, 1000, 4000],
-    [{ start: 10_000, end: 20_000 }, 19_000, -4000]
+    [{ start: 10_000, end: 20_000 }, 19_000, -4000],
+    [{ start: 5000, end: 15_000 }, 6000, -4000],
+    [{ start: 5000, end: 15_000 }, 14_000, 4000]
   ]) {
     const first = panTimeline(range, selected, delta / 2, bounds);
     const second = panTimeline(first.range, first.selected, delta / 2, bounds);
