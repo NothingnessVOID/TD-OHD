@@ -1,7 +1,8 @@
 /** Chart-independent reference index. The engine topology stays authoritative. */
 import { GATES, CHANNELS, CENTERS } from 'natalengine';
 import { localeResources } from '../locales/index.js';
-import { gateName, channelName, centerName, circuitName, hexagramName } from './vocabulary.js';
+import { gateName, channelName, centerName, circuitName, hexagramName, planetName } from './vocabulary.js';
+import { PLANET_ORDER, PLANET_NAMES } from './planet-reference.js';
 import { channelById } from './reference-content.js';
 import { CIRCUIT_GROUPS, channelCircuit } from './circuit-topology.js';
 
@@ -18,6 +19,8 @@ export function referenceEntries() {
       aliases: [[...channel.gates].reverse().join('-'), channel.name, ...names('channelName', channel.gates)] })),
     ...Object.keys(GATES).map(Number).sort((a, b) => a - b).map(id => ({ kind: 'gate', id: String(id), name: gateName(id),
       aliases: [GATES[id].name, GATES[id].iching, hexagramName(id), ...names('gateName', id), ...names('hexagramName', id)] })),
+    ...PLANET_ORDER.map(id => ({ kind: 'planet', id, name: planetName(id),
+      aliases: [PLANET_NAMES[id], ...names('planetName', id)] })),
     ...groupIds.map(id => ({ kind: 'group', id, name: circuitName(id), aliases: [
       ...names('circuitName', id), ...(id === 'individual' ? ['Integration', 'Integration Channels', ...names('circuitName', 'integration')] : [])
     ] }))

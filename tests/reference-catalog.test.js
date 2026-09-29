@@ -4,6 +4,7 @@ import { referenceEntries, referenceEntry, searchReference, circuitChannels } fr
 import { channelsForGate } from '../src/lib/reference-content.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../src/lib/circuit-topology.js';
 import { CHANNELS } from 'natalengine';
+import { PLANET_ORDER, PLANET_REFERENCE_IDS } from '../src/lib/planet-reference.js';
 
 test('the reference catalog covers the engine topology without top-level lines', () => {
   const entries = referenceEntries();
@@ -17,6 +18,14 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(new Set(partners).size, partners.length);
   }
   assert.equal(entries.filter(entry => entry.kind === 'group').length, 3);
+  assert.equal(entries.length, 125);
+  assert.deepEqual(entries.filter(entry => entry.kind === 'planet').map(entry => entry.id), PLANET_ORDER);
+  assert.deepEqual([...PLANET_ORDER].sort(), [...PLANET_REFERENCE_IDS].sort());
+  assert.equal(referenceEntry('planet', 'northNode')?.id, 'northNode');
+  assert.equal(referenceEntry('planet', 'invalid'), null);
+  for (const query of ['太阳', 'Sun', '北交点']) {
+    assert.ok(searchReference(query, 'planet').length > 0, `${query} finds a planetary point`);
+  }
   assert.equal(entries.filter(entry => entry.kind === 'circuit').length, 0);
   assert.ok(circuitChannels('group', 'individual').some(ch => channelCircuit(ch).circuit === 'integration'));
   for (const query of ['Integration', '整合']) {

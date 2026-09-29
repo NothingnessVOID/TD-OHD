@@ -2,13 +2,14 @@ import { GATES, CHANNELS } from 'natalengine';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
 import { gateReading, channelReading, centerReading, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';
-import { t } from '../lib/i18n.js';
+import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
+import { planetReference, activationSourceReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
 
-const categories = ['all', 'center', 'channel', 'gate', 'group'];
-const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', group: 'Circuit groups' };
+const categories = ['all', 'center', 'channel', 'gate', 'planet', 'group'];
+const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
 let category = 'all';
 let query = '';
 let limit = 60;
@@ -86,6 +87,13 @@ function circuitDetail(entry) {
   }).join('');
 }
 
+function planetDetail(entry) {
+  const locale = getLocale();
+  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p>
+    ${['design', 'personality', 'transit'].map(source => `<section><h3>${esc(t(source === 'design' ? 'Design' : source === 'personality' ? 'Personality' : 'Transit'))}</h3>
+      <p>${esc(activationSourceReference(source, locale))}</p></section>`).join('')}</div>`;
+}
+
 function renderDetail() {
   const selected = route();
   const article = document.getElementById('reference-detail');
@@ -102,12 +110,13 @@ function renderDetail() {
   }
   const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
-      : entry.kind === 'center' ? centerDetail(entry) : circuitDetail(entry);
+      : entry.kind === 'center' ? centerDetail(entry)
+        : entry.kind === 'planet' ? planetDetail(entry) : circuitDetail(entry);
   const heading = entry.kind === 'channel' ? (() => {
     const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
     const group = channelCircuit(channel).group;
     return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2><span class="circuit-badge ${group}">${esc(circuitName(group))}</span></div>`;
-  })() : `<h2>${esc(entry.name)}</h2>`;
+  })() : `<h2>${entry.kind === 'planet' ? `${esc(PLANET_GLYPHS[entry.id])} ` : ''}${esc(entry.name)}</h2>`;
   article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
     <div class="detail-label">${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</div>
     ${heading}
