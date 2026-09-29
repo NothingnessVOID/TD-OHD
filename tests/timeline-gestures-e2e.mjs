@@ -325,8 +325,11 @@ try {
     const after = await state(page);
     assert.ok(after.selected > before.selected && after.start > before.start);
     assert.ok(after.selected >= after.calculatedStart && after.selected < after.calculatedEnd);
-    assert.ok(Math.abs((after.selected - after.start) / (after.end - after.start) - .5) < .001,
-      'horizontal scrolling centers the cursor when the viewport can follow');
+    const beforeRatio = (before.selected - before.start) / (before.end - before.start);
+    const afterRatio = (after.selected - after.start) / (after.end - after.start);
+    const travelledRatio = (after.selected - before.selected) / (before.end - before.start);
+    assert.ok(Math.abs(afterRatio - beforeRatio) <= Math.abs(travelledRatio) + .002,
+      'horizontal scrolling moves an off-center cursor without snapping it to center');
     await moonMatches(page);
     assert.deepEqual(await birthMoon(page), originalBirthMoon);
   });

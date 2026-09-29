@@ -38,7 +38,7 @@
   "bridge": "本命定義島橋接",
   "bridgeCount": "{from} → {to}",
   "conditionKind": "對象類型",
-  "conditionTargets": "選擇有效目標",
+  "conditionTargets": "選擇目標",
   "selectedTargets": "已選擇 {count} 項",
   "searchTargets": "搜尋目標……",
   "removeTarget": "移除 {id}",

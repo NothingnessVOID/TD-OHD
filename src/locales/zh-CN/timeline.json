@@ -38,7 +38,7 @@
   "bridge": "本命定义岛桥接",
   "bridgeCount": "{from} → {to}",
   "conditionKind": "对象类型",
-  "conditionTargets": "选择合法目标",
+  "conditionTargets": "选择目标",
   "selectedTargets": "已选择 {count} 项",
   "searchTargets": "搜索目标……",
   "removeTarget": "移除 {id}",
