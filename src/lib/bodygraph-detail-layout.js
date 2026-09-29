@@ -100,6 +100,7 @@ export function decorateBodygraphDetail(detail, selection, chart, context) {
   const header = document.createElement('div');
   header.className = 'tl-detail-header';
   if (selection.kind === 'gate') header.classList.add('tl-gate-detail-header');
+  if (selection.kind === 'channel') header.classList.add('tl-channel-detail-header');
   const heading = document.createElement('div');
   heading.className = 'tl-detail-heading';
   body.prepend(header);
@@ -120,6 +121,11 @@ export function decorateBodygraphDetail(detail, selection, chart, context) {
       }
       source.classList.add('tl-activation-label', 'tl-detail-channel-status');
       heading.append(source);
+    }
+    const statusNote = body.querySelector(':scope > .gate-detail-desc');
+    if (statusNote) {
+      statusNote.classList.add('tl-detail-channel-note');
+      heading.append(statusNote);
     }
   }
   appendTiming(header, context?.detailTiming?.(selection));
