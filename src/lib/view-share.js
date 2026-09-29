@@ -4,6 +4,22 @@ import { birthToParams, connectionUrl, shareUrl } from './share.js';
 
 const menu = () => document.getElementById('chart-share-menu');
 const actions = () => menu().querySelector('.chart-share-actions');
+let dismissalBound = false;
+
+function bindShareMenuDismissal() {
+  if (dismissalBound) return;
+  dismissalBound = true;
+  document.addEventListener('click', event => {
+    const shareMenu = menu();
+    if (shareMenu?.open && !shareMenu.contains(event.target)) shareMenu.open = false;
+  });
+  document.addEventListener('keydown', event => {
+    const shareMenu = menu();
+    if (event.key !== 'Escape' || !shareMenu?.open) return;
+    shareMenu.open = false;
+    shareMenu.querySelector('summary')?.focus();
+  });
+}
 
 function downloadPng(blob, filename) {
   const href = URL.createObjectURL(blob);
@@ -94,6 +110,7 @@ function feedback(button, message, reset) {
 }
 
 export function configureShareMenu(view, birth) {
+  bindShareMenuDismissal();
   const shareMenu = menu();
   const available = view === 'library' || Boolean(birth);
   shareMenu.open = false;

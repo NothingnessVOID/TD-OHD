@@ -192,7 +192,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       ${graphPanelMarkup({ labels: Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, t(key)])), locale })}
       <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
       <div class="tl-mobile-range"></div>
-      <div class="tl-mobile-event-nav">${host.saveImage ? `<button type="button" class="tl-mobile-share" data-action="share-image" aria-label="${esc(t('saveImage'))}" title="${esc(t('saveImage'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 2-2v-6"/></svg></button>` : ''}${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}</div>
+      <div class="tl-mobile-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}</div>
       <div class="tl-mobile-controls-panel" id="tl-mobile-controls" hidden></div>
     </div>
     <div class="tl-explorer"><section class="tl-tracks-panel" aria-label="${esc(t('tracks'))}">
@@ -819,25 +819,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     }
     if (action === 'mobile-exit') { showMobileControls(false); document.getElementById('mobile-menu-toggle')?.click(); return; }
     if (action === 'mobile-controls') { showMobileControls(controlPanel.hidden); return; }
-    if (action === 'share-image') {
-      const shareButton = event.target.closest('button');
-      shareButton.disabled = true;
-      Promise.resolve().then(() => host.saveImage()).then(() => {
-        shareButton.title = t('imageSaved');
-        shareButton.setAttribute('aria-label', shareButton.title);
-      }).catch(() => {
-        shareButton.title = t('imageUnavailable');
-        shareButton.setAttribute('aria-label', shareButton.title);
-      }).finally(() => {
-        shareButton.disabled = false;
-        setTimeout(() => {
-          if (!shareButton.isConnected) return;
-          shareButton.title = t('saveImage');
-          shareButton.setAttribute('aria-label', shareButton.title);
-        }, 2500);
-      });
-      return;
-    }
     if (!controlPanel.hidden && !controlPanel.contains(event.target)) showMobileControls(false);
     if (action === 'now') selectTime(Date.now(), { recenter: true });
     if (action === 'previous-gate' || action === 'next-gate') jumpGate(action === 'next-gate' ? 1 : -1);
@@ -1175,11 +1156,6 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       const node = $(`[data-action="${action}"]`);
       node.setAttribute('aria-label', t(key));
       node.title = t(key);
-    }
-    const shareButton = $('[data-action="share-image"]');
-    if (shareButton) {
-      shareButton.setAttribute('aria-label', t('saveImage'));
-      shareButton.title = t('saveImage');
     }
     put('#tl-gesture-help', 'gestures');
     attr('.tl-calculation progress', 'aria-label', 'loadingTitle');
