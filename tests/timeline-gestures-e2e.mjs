@@ -408,6 +408,23 @@ try {
     await checkFixings(page, 'overlay');
   });
 
+  await log('same-direction wheel smoothly brings an edge cursor toward center', async () => {
+    const before = await state(page);
+    const ticks = await page.locator(`${root} .tl-ticks`).boundingBox();
+    const table = await page.locator(tableSelector).boundingBox();
+    assert.ok(ticks && table);
+    const beforeRatio = (before.selected - before.start) / (before.end - before.start);
+    assert.ok(beforeRatio > .95, 'cursor begins near the right edge after pointer zoom');
+    await page.mouse.move(ticks.x + ticks.width * .7, Math.max(table.y + 15, Math.min(table.y + 80, 690)));
+    await page.mouse.wheel(ticks.width * .1, 0);
+    const after = await state(page);
+    const afterRatio = (after.selected - after.start) / (after.end - after.start);
+    assert.ok(after.selected > before.selected);
+    assert.ok(afterRatio < beforeRatio - .05 && afterRatio > .5,
+      `rightward pan eases cursor toward center without jumping: ${beforeRatio} → ${afterRatio}`);
+    assert.ok(after.start >= after.calculatedStart && after.end <= after.calculatedEnd);
+  });
+
   await log('keyboard zoom changes range in both directions', async () => {
     const before = await state(page);
     await page.locator(tableSelector).focus();

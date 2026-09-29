@@ -61,7 +61,7 @@ export function clampWindow(range, bounds) {
   return { start, end: start + span };
 }
 
-/** Move the cursor toward center at its actual pan speed, then pan the window. */
+/** Ease an off-center cursor toward center as the user pans, then follow it. */
 export function panTimeline(range, selected, deltaMs, bounds) {
   if (!Number.isFinite(selected)) throw new RangeError('Invalid viewport instant');
   const span = validRange(range);
@@ -70,12 +70,15 @@ export function panTimeline(range, selected, deltaMs, bounds) {
   const nextSelected = Math.max(bounds.start, Math.min(bounds.end - SECOND,
     Math.round((selected + deltaMs) / SECOND) * SECOND));
   const actualDelta = nextSelected - selected;
-  const centerShift = Math.round((nextSelected - (range.start + span / 2)) / SECOND) * SECOND;
-  // An off-center cursor can result from a zoom anchored at an edge. Jumping
-  // straight to its ideal centered window makes the first tiny pan teleport.
-  // Limit the window shift to the distance this gesture actually travelled.
-  const shift = actualDelta > 0 ? Math.max(0, Math.min(actualDelta, centerShift))
-    : Math.min(0, Math.max(actualDelta, centerShift));
+  const direction = Math.sign(actualDelta);
+  const distance = Math.abs(actualDelta);
+  const offset = direction * (selected - (range.start + span / 2));
+  // When moving toward center, hold the view until the cursor catches up.
+  // When moving away from center, let the view travel at most twice as fast
+  // until the cursor catches up. Both paths avoid a sudden recentering jump.
+  const shift = direction * Math.round((offset > 0
+    ? distance + Math.min(distance, offset)
+    : Math.max(0, distance + offset)) / SECOND) * SECOND;
   const nextRange = clampWindow({ start: range.start + shift, end: range.end + shift }, bounds);
   return {
     range: nextRange,
