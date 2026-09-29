@@ -61,16 +61,19 @@ export function clampWindow(range, bounds) {
   return { start, end: start + span };
 }
 
-/** Pan the window and selected instant; the instant keeps moving at a bound. */
+/** Keep the selected instant centered until the calculated range stops the window. */
 export function panTimeline(range, selected, deltaMs, bounds) {
   if (!Number.isFinite(selected)) throw new RangeError('Invalid viewport instant');
-  const shifted = panWindow(range, deltaMs);
-  const shift = shifted.start - range.start;
-  const nextRange = clampWindow(shifted, bounds);
-  const nextSelected = Math.round((selected + shift) / SECOND) * SECOND;
+  const span = validRange(range);
+  validRange(bounds);
+  if (!Number.isFinite(deltaMs)) throw new RangeError('Invalid viewport pan');
+  const nextSelected = Math.max(bounds.start, Math.min(bounds.end - SECOND,
+    Math.round((selected + deltaMs) / SECOND) * SECOND));
+  const idealStart = Math.round((nextSelected - span / 2) / SECOND) * SECOND;
+  const nextRange = clampWindow({ start: idealStart, end: idealStart + span }, bounds);
   return {
     range: nextRange,
-    selected: Math.max(nextRange.start, Math.min(nextRange.end - SECOND, nextSelected))
+    selected: nextSelected
   };
 }
 

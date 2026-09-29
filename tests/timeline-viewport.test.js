@@ -102,18 +102,22 @@ test('panTimeline works with a full-range view and normal or reverse pans', () =
     { range: { start: 3000, end: 7000 }, selected: 5000 });
 });
 
-test('panning moves the viewport continuously while keeping cursor movement', () => {
+test('reverse panning recovers the cursor to center before moving either edge viewport', () => {
   const bounds = { start: 0, end: 20_000 };
   const left = { start: 0, end: 10_000 };
   assert.deepEqual(panTimeline(left, 1000, 2000, bounds),
-    { range: { start: 2000, end: 12000 }, selected: 3000 });
+    { range: left, selected: 3000 });
   assert.deepEqual(panTimeline(left, 1000, 4000, bounds),
-    { range: { start: 4000, end: 14_000 }, selected: 5000 });
+    { range: left, selected: 5000 });
+  assert.deepEqual(panTimeline(left, 1000, 6000, bounds),
+    { range: { start: 2000, end: 12_000 }, selected: 7000 });
   const right = { start: 10_000, end: 20_000 };
   assert.deepEqual(panTimeline(right, 19_000, -2000, bounds),
-    { range: { start: 8000, end: 18_000 }, selected: 17_000 });
+    { range: right, selected: 17_000 });
   assert.deepEqual(panTimeline(right, 19_000, -4000, bounds),
-    { range: { start: 6000, end: 16_000 }, selected: 15_000 });
+    { range: right, selected: 15_000 });
+  assert.deepEqual(panTimeline(right, 19_000, -6000, bounds),
+    { range: { start: 8000, end: 18_000 }, selected: 13_000 });
 });
 
 test('several short reverse pans equal one long pan across recovery and view motion', () => {

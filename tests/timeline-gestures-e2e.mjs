@@ -325,9 +325,8 @@ try {
     const after = await state(page);
     assert.ok(after.selected > before.selected && after.start > before.start);
     assert.ok(after.selected >= after.calculatedStart && after.selected < after.calculatedEnd);
-    assert.ok(Math.abs((after.selected - after.start) / (after.end - after.start)
-      - (before.selected - before.start) / (before.end - before.start)) < .001,
-    'horizontal scrolling keeps the cursor position inside the calculated range');
+    assert.ok(Math.abs((after.selected - after.start) / (after.end - after.start) - .5) < .001,
+      'horizontal scrolling centers the cursor when the viewport can follow');
     await moonMatches(page);
     assert.deepEqual(await birthMoon(page), originalBirthMoon);
   });
@@ -454,7 +453,7 @@ try {
     }
   });
 
-  await log('reverse wheel moves the selection and viewport immediately', async () => {
+  await log('reverse wheel recenters the selection before the viewport follows', async () => {
     const table = page.locator(tableSelector);
     await table.scrollIntoViewIfNeeded();
     const ticks = await page.locator(`${root} .tl-ticks`).boundingBox();
@@ -467,14 +466,17 @@ try {
       assert.equal(edge.selected, direction < 0 ? edge.calculatedStart : edge.calculatedEnd - 1000);
       await page.mouse.wheel(-direction * ticks.width * .2, 0);
       const first = await state(page);
-      assert.ok(direction < 0 ? first.start > edge.start : first.start < edge.start,
-        'small reverse wheel moves the viewport immediately');
+      assert.equal(first.start, edge.start, 'viewport stays at the bound during cursor recovery');
       assert.ok(direction < 0 ? first.selected > edge.selected : first.selected < edge.selected,
         'small reverse wheel moves the selected time immediately');
       await page.mouse.wheel(-direction * ticks.width * .25, 0);
       const recovered = await state(page);
-      assert.ok(direction < 0 ? recovered.start > first.start : recovered.start < first.start,
-        'larger reverse wheel continues moving the viewport');
+      assert.equal(recovered.start, edge.start, 'viewport remains fixed until the cursor reaches center');
+      assert.ok(direction < 0 ? recovered.selected > first.selected : recovered.selected < first.selected);
+      await page.mouse.wheel(-direction * ticks.width * .2, 0);
+      const following = await state(page);
+      assert.ok(direction < 0 ? following.start > recovered.start : following.start < recovered.start,
+        'viewport follows once the cursor has crossed center');
       assert.ok(recovered.start >= recovered.calculatedStart && recovered.end <= recovered.calculatedEnd);
       assert.equal(await table.getAttribute('aria-busy'), 'false');
       assert.equal(await page.evaluate(() => window.__tlWorkerCount), workers);
