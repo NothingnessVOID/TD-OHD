@@ -409,7 +409,9 @@ try {
         transitGroups: sources?.querySelectorAll('.gate-detail-transits').length,
         rows: rows.map(row => ({ side: row.dataset.activationSide, planet: row.dataset.activationPlanet,
           activation: row.dataset.activationValue, text: row.textContent.trim(),
-          weight: getComputedStyle(row).fontWeight })),
+          weight: getComputedStyle(row).fontWeight,
+          columns: ['glyph', 'identity', 'value'].map(part =>
+            row.querySelector(`.tl-activation-${part}`)?.getBoundingClientRect().left) })),
         groupGap: getComputedStyle(sources).rowGap,
         headingBeforeTiming: !!heading && !!node.querySelector('.tl-detail-timing')
           && Boolean(heading.compareDocumentPosition(timing) & Node.DOCUMENT_POSITION_FOLLOWING),
@@ -432,6 +434,14 @@ try {
         && new RegExp(`${sideName} \\S+`).test(row.text) && /Line [1-6][,、]\s*the \S+/i.test(row.text),
         `complete side/planet/gate.line/line archetype text survives: ${row.text}`);
     }
+    for (let column = 0; column < 3; column++) {
+      const positions = grouped.rows.map(row => row.columns[column]);
+      assert.ok(positions.every(Number.isFinite) && Math.max(...positions) - Math.min(...positions) < 1,
+        `activation column ${column} has one shared alignment`);
+    }
+    assert.ok(grouped.rows[0].columns[0] < grouped.rows[0].columns[1]
+      && grouped.rows[0].columns[1] < grouped.rows[0].columns[2],
+    'glyph, planet identity and gate value occupy separate columns');
     assert.equal(new Set(grouped.rows.map(row => row.weight)).size, 1, 'natal and transit rows use one font weight');
     assert.equal(grouped.groupGap, '0px', 'natal and transit rows are one continuous list');
     assert.equal(grouped.headingBeforeTiming, true, 'compact time panel follows the left heading');
