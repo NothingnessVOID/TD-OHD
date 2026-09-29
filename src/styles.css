@@ -1640,6 +1640,86 @@ body.modal-open { overflow: hidden; }
 .tl-timing-boundary::before { content: ''; position: absolute; left: 1px; top: .45em; width: 4px; height: 4px; border: 1px solid var(--text-tertiary); border-radius: 50%; }
 .tl-timing-boundary + .tl-timing-boundary::after { content: ''; position: absolute; left: 3px; bottom: calc(100% - .45em); height: calc(100% - 2px); border-left: 1px solid var(--border-subtle); }
 .tl-timing-boundary dt { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Gate details keep the title, status and planet rows in one compact column.
+   Other detail sheets retain their existing header layout. */
+.tl-gate-detail-header.tl-detail-has-timing {
+  grid-template-columns: minmax(0, 1fr) fit-content(42%);
+  align-items: start;
+  column-gap: 12px;
+}
+.tl-gate-detail-header .tl-detail-heading > .detail-name { margin-bottom: 4px; }
+.tl-gate-detail-header .tl-detail-statuses {
+  margin-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 1px;
+}
+.tl-gate-detail-header .tl-detail-activations {
+  width: fit-content;
+  max-width: 100%;
+  margin: 7px 0 0;
+  grid-template-columns: 20px max-content minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 0;
+}
+.tl-gate-detail-header .tl-detail-source,
+.tl-gate-detail-header .tl-detail-activations .tl-activation-row { display: contents; }
+.tl-gate-detail-header .tl-detail-activations .tl-activation-row > span { min-width: 0; }
+.tl-gate-detail-header .tl-activation-identity { white-space: nowrap; }
+.tl-gate-detail-header .tl-detail-activations .selected-activation > span {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tl-gate-detail-header .tl-detail-timing {
+  padding: 42px 0 0 9px;
+  text-align: right;
+  line-height: 1.45;
+}
+.tl-gate-detail-header .tl-detail-timing::before { top: 42px; }
+.tl-gate-detail-header .tl-timing-source { justify-content: flex-end; }
+.tl-gate-detail-header .tl-timing-values {
+  flex: none;
+  align-content: start;
+  gap: 3px;
+}
+.tl-gate-detail-header .tl-timing-duration,
+.tl-gate-detail-header .tl-timing-boundary {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 5px;
+  margin: 0;
+  padding: 0;
+}
+.tl-gate-detail-header .tl-timing-duration dd { font-weight: 600; }
+.tl-gate-detail-header .tl-timing-boundary::before,
+.tl-gate-detail-header .tl-timing-boundary::after { display: none; }
+.tl-gate-detail-header .tl-timing-boundary dt {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: nowrap;
+}
+.tl-gate-detail-header .tl-timing-context {
+  margin: 5px 0 0;
+  color: var(--text-tertiary);
+  overflow-wrap: anywhere;
+}
+.tl-gate-detail-header .tl-timing-range-note { margin: 5px 0 0; }
+@media (max-width: 620px) {
+  .tl-gate-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr); row-gap: 9px; }
+  .tl-gate-detail-header .tl-detail-timing {
+    border-top: 1px solid var(--border-subtle);
+    padding: 8px 0 0;
+  }
+  .tl-gate-detail-header .tl-detail-timing::before { display: none; }
+}
 @media (max-width: 480px) {
   .tl-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .tl-detail-timing { border-top: 1px solid var(--border-subtle); padding: 8px 0 0; }

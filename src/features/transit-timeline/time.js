@@ -13,6 +13,44 @@ export function displayTime(instant, zone, locale = 'en-GB', compact = false) {
   }).format(instant);
 }
 
+/**
+ * Compact text for the detail sheet's timing summary. The range keeps the same
+ * start/end/context structure at every length: only the values change. A date
+ * is shared below the clocks on one local day; on different days each boundary
+ * carries its own date. The UTC offsets appear once in the context line, or as
+ * a transition when daylight-saving time changes inside the range.
+ */
+export function formatCompactTimingRange(start, end, zone, locale = 'en-GB') {
+  const startDate = wallTime(start, zone).date;
+  const endDate = wallTime(end, zone).date;
+  const sameDay = startDate === endDate;
+  const crossesYear = startDate.slice(0, 4) !== endDate.slice(0, 4);
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    timeZone: zone, month: 'short', day: 'numeric', ...(crossesYear ? { year: 'numeric' } : {})
+  });
+  const clockFormatter = new Intl.DateTimeFormat(locale, {
+    timeZone: zone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  });
+  const offsetFormatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: zone, timeZoneName: 'shortOffset'
+  });
+  const offset = instant => offsetFormatter.formatToParts(instant)
+    .find(part => part.type === 'timeZoneName').value;
+  const startOffset = offset(start);
+  const endOffset = offset(end);
+  const offsetValue = startOffset === endOffset ? startOffset : `${startOffset} → ${endOffset}`;
+  const boundary = instant => sameDay
+    ? clockFormatter.format(instant)
+    : `${dateFormatter.format(instant)} ${clockFormatter.format(instant)}`;
+
+  return {
+    summaryStartValue: boundary(start),
+    summaryEndValue: boundary(end),
+    contextValue: sameDay ? `${dateFormatter.format(start)} · ${offsetValue}` : offsetValue,
+    contextTitle: `${zone} · ${offsetValue}`
+  };
+}
+
 /** Format a nonnegative duration with localized day, hour and minute units. */
 export function formatDuration(durationMs, t) {
   if (!Number.isFinite(durationMs) || durationMs < 0) throw new RangeError('Invalid duration');

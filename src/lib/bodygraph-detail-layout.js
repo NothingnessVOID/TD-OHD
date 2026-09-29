@@ -29,7 +29,7 @@ function activationRow(node, [planet, activation, side]) {
   node.replaceChildren(glyph, identity, value);
 }
 
-function appendActivations(body, header, heading, selection, chart, context) {
+function appendActivations(body, heading, selection, chart, context) {
   const gate = Number(selection.id);
   const natalEntries = ['design', 'personality'].flatMap(side =>
     Object.entries(chart.gates[side] || {})
@@ -68,11 +68,12 @@ function appendActivations(body, header, heading, selection, chart, context) {
     addGroup('.gate-detail-transits', transitEntries);
   }
   heading.append(statuses);
-  if (sources.childElementCount) header.after(sources);
+  if (sources.childElementCount) heading.append(sources);
 }
 
 function appendTiming(header, timing) {
   if (!timing) return;
+  const gateSummary = header.classList.contains('tl-gate-detail-header');
   header.classList.add('tl-detail-has-timing');
   const aside = document.createElement('aside');
   aside.className = 'tl-detail-timing';
@@ -84,9 +85,10 @@ function appendTiming(header, timing) {
     <dl class="tl-timing-values"><div class="tl-timing-duration"><dt title="${esc(timing.durationTitle)}">${esc(timing.durationLabel)}</dt><dd title="${esc(timing.durationTitle)}"${timing.fullRange ? ` aria-label="${esc(timing.fullRangeLabel)}"` : ''}>${esc(timing.durationValue)}</dd></div>
     ${timing.fullRange
       ? ''
-      : `<div class="tl-timing-boundary"><dt>${esc(timing.startLabel)}</dt><dd title="${esc(timing.startTitle)}">${esc(timing.startValue)}</dd></div>
-    <div class="tl-timing-boundary"><dt>${esc(timing.endLabel)}</dt><dd title="${esc(timing.endTitle)}">${esc(timing.endValue)}</dd></div>`}</dl>
-    ${timing.fullRange ? `<p class="tl-timing-range-note">${esc(timing.fullRangeLabel)}</p>` : ''}`;
+      : `<div class="tl-timing-boundary"><dt>${esc(timing.startLabel)}</dt><dd title="${esc(timing.startTitle)}">${esc(gateSummary ? timing.summaryStartValue ?? timing.startValue : timing.startValue)}</dd></div>
+    <div class="tl-timing-boundary"><dt>${esc(timing.endLabel)}</dt><dd title="${esc(timing.endTitle)}">${esc(gateSummary ? timing.summaryEndValue ?? timing.endValue : timing.endValue)}</dd></div>`}</dl>
+    ${timing.fullRange ? `<p class="tl-timing-range-note">${esc(timing.fullRangeLabel)}</p>` : ''}
+    ${gateSummary && timing.contextValue ? `<p class="tl-timing-context" title="${esc(timing.contextTitle || timing.contextValue)}">${esc(timing.contextValue)}</p>` : ''}`;
   header.append(aside);
 }
 
@@ -97,6 +99,7 @@ export function decorateBodygraphDetail(detail, selection, chart, context) {
   if (!body || !label || !title) return;
   const header = document.createElement('div');
   header.className = 'tl-detail-header';
+  if (selection.kind === 'gate') header.classList.add('tl-gate-detail-header');
   const heading = document.createElement('div');
   heading.className = 'tl-detail-heading';
   body.prepend(header);
@@ -104,7 +107,7 @@ export function decorateBodygraphDetail(detail, selection, chart, context) {
   header.append(heading);
 
   if (selection.kind === 'gate') {
-    appendActivations(body, header, heading, selection, chart, context);
+    appendActivations(body, heading, selection, chart, context);
   } else if (selection.kind === 'center') {
     const centerHead = body.querySelector('.center-detail-head');
     if (centerHead) heading.append(centerHead);
