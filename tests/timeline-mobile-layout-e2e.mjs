@@ -53,7 +53,7 @@ try {
       `both panes remain visible together: ${JSON.stringify(layout)}`);
     assert.ok(layout.scrollWidth <= layout.viewport, `no page overflow at ${width}px`);
     const lanes = await page.evaluate(() => {
-      const rect = selector => document.querySelector(selector).getBoundingClientRect();
+      const rect = selector => document.querySelector(`#timeline-view ${selector}`).getBoundingClientRect();
       const transit = rect('.tl-transit-column');
       const planetRows = rect('.tl-transit-column .tl-planets');
       const birth = rect('.tl-birth-column');

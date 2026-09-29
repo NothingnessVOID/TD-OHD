@@ -417,7 +417,7 @@ try {
     assert.ok(Math.abs((restored.end - restored.start) - (before.end - before.start)) < 1000);
   });
 
-  await log('wheel keeps the selected time centered through both calculated edges', async () => {
+  await log('wheel reaches both calculated edges while viewport stays bounded', async () => {
     const table = page.locator(tableSelector);
     await table.scrollIntoViewIfNeeded();
     const box = await table.boundingBox();
