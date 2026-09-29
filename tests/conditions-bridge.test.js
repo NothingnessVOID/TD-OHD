@@ -36,6 +36,8 @@ test('two, three and four fixed natal islands bridge through new intermediate ce
   assert.deepEqual(bridgeState(four, [...four.gates.all, 9, 12, 13], channels).connected, [[1,2,3,4]]);
   assert.equal(bridgedIslandCount(3, [[1,2]]), 2);
   assert.equal(bridgedIslandCount(3, [[1,2,3]]), 1);
+  assert.equal(bridgedIslandCount(4, [[1,2]]), 3);
+  assert.equal(bridgedIslandCount(4, [[1,2,3]]), 2);
   assert.equal(bridgedIslandCount(4, [[1,2], [3,4]]), 2);
   assert.equal(bridgedIslandCount(4, [[1,2,3,4]]), 1);
   assert.equal(bridgeState(natal([1,2]), [1,2,3,4,9], channels).applicable, false);
@@ -54,6 +56,8 @@ test('single-target condition rows combine all/any across rows with complements'
   const gate29 = { kind: 'gate', ids: [29], state: 'active' };
   assert.deepEqual(queryTimeline(result, [gate14, gate29]).intervals.map(i => [i.start,i.end]), [[10,20]]);
   assert.deepEqual(queryTimeline(result, [gate14, gate29], { combine: 'any' }).intervals.map(i => [i.start,i.end]), [[0,30]]);
+  assert.deepEqual(queryTimeline(result, [gate14, { kind: 'gate', ids: [29], state: 'inactive' }],
+    { combine: 'any' }).intervals.map(i => [i.start,i.end]), [[0,20],[30,40]]);
   assert.throws(() => queryTimeline(result, [{ kind: 'gate', ids: [14, 29], state: 'inactive' }]), /Invalid condition/);
   assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [14], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[20,40]]);
   assert.deepEqual(queryTimeline(result, [{ kind: 'gate', ids: [30], state: 'inactive' }]).intervals.map(i => [i.start,i.end]), [[0,40]]);
