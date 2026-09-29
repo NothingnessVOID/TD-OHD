@@ -266,7 +266,8 @@ try {
   });
 
   await run('mode and filters alter rendered rows without errors', async () => {
-    await page.selectOption(field('mode'), 'transit-only');
+    await page.locator(`${tl} .tl-mode-toggle`).click();
+    assert.equal(await page.locator(`${tl} .tl-mode-toggle`).getAttribute('aria-pressed'), 'true');
     await ready();
     await page.locator(`${tl} .tl-legend-disclosure summary`).click();
     assert.equal(await page.locator(`${tl} .tl-legend [data-source="natal"]`).isVisible(), false);
@@ -279,7 +280,8 @@ try {
     await page.locator(field('changes')).click();
     assert.equal(await page.locator(field('changes')).getAttribute('aria-pressed'), 'false');
     await page.selectOption(field('kind'), 'all');
-    await page.selectOption(field('mode'), 'overlay');
+    await page.locator(`${tl} .tl-mode-toggle`).click();
+    assert.equal(await page.locator(`${tl} .tl-mode-toggle`).getAttribute('aria-pressed'), 'false');
     await ready();
     assert.deepEqual(await activeSourcesMatchBars(page), [], 'source marks match active intervals after filtering');
     const ruler = await page.locator(`${tl} .tl-ticks`).boundingBox();
@@ -528,12 +530,15 @@ try {
       const maxScroll = await table.evaluate(el => el.scrollHeight - el.clientHeight);
       assert.ok(maxScroll > 100, 'table has vertical scrollable content');
       await table.evaluate(el => { el.scrollTop = 0; });
-      const startY = Math.min(tableBox.y + tableBox.height - 30, 844 - 40);
-      const endY = startY - 170;
-      const startX = tableBox.x + 40;
-      const hit = await mobile.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('.tl-table') != null, { x: startX, y: startY });
-      assert.equal(hit, true, 'vertical scroll starts on uncovered table');
-      await touchSwipe(startX, startY, startX, endY);
+      const scrollTarget = await mobile.evaluate(({ x, bottom, top }) => {
+        for (let y = bottom; y > top; y -= 8) {
+          if (document.elementFromPoint(x, y)?.closest('.tl-row .tl-track')) return { x, y };
+        }
+        return null;
+      }, { x: target.x, bottom: Math.min(tableBox.y + tableBox.height - 30, 844 - 40),
+        top: Math.max(tableBox.y + 40, 170) });
+      assert.ok(scrollTarget, 'vertical scroll starts on an uncovered timeline track');
+      await touchSwipe(scrollTarget.x, scrollTarget.y, scrollTarget.x, scrollTarget.y - 170);
       assert.ok(await table.evaluate(el => el.scrollTop) > 0, 'vertical touch scroll moves the table');
       const overflow = await mobile.evaluate(() => ({ width: innerWidth, html: document.documentElement.scrollWidth, body: document.body.scrollWidth }));
       assert.ok(overflow.html <= overflow.width + 1 && overflow.body <= overflow.width + 1, `horizontal overflow: ${JSON.stringify(overflow)}`);

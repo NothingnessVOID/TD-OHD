@@ -10,6 +10,7 @@ try {
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&view=transits`);
     await page.locator('#transit-stage .tl-graph .bodygraph-svg').waitFor();
+    assert.equal(await page.locator('#transits-view .tl-heading').count(), 0);
     assert.equal(await page.locator('#transit-stage .tl-planet').count(), 13);
     assert.equal(await page.locator('#transit-stage .tl-birth-value').count(), 26);
     assert.ok((await page.locator('#transit-content').innerText()).includes('行运太阳'));
@@ -23,7 +24,8 @@ try {
       await page.locator('#transit-stage .tl-planet[data-gate]').first().click();
       await page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"][data-source="transit"]').waitFor();
       await page.keyboard.press('Escape');
-      await page.evaluate(() => scrollTo(0, 500));
+      // Check within the sticky section; past its bottom the graph releases naturally.
+      await page.evaluate(() => scrollTo(0, 300));
       const top = await page.locator('#transit-stage').evaluate(node => node.getBoundingClientRect().top);
       assert.ok(top >= 55 && top <= 80, `graph stage stays in view while summary scrolls: ${top}`);
     }
