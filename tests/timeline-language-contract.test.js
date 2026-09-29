@@ -44,6 +44,17 @@ test('duration messages work in all three shipped timeline languages', () => {
   }
 });
 
+test('a full-window activation does not report the window width as its duration', () => {
+  const labels = {
+    'en-GB': 'Active throughout the selected range',
+    'zh-CN': '所选范围内持续激活',
+    'zh-Hant': '所選範圍內持續啟動',
+  };
+  for (const [locale, catalog] of Object.entries(catalogs)) {
+    assert.equal(translator(catalog)('activeThroughoutRange'), labels[locale]);
+  }
+});
+
 test('the same calendar instants use each language’s ruler labels', () => {
   const range = {
     start: Date.parse('2026-09-22T16:00:00Z'),

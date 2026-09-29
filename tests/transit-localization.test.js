@@ -66,6 +66,19 @@ test('all transit time validation messages have separate Simplified and Traditio
   setLocale('en', { persist: false });
 });
 
+test('shared detail activation states have concise localized labels', () => {
+  for (const [locale, birth, transit] of [
+    ['en', 'Birth not activated', 'Transit not activated'],
+    ['zh-CN', '出生图未激活', '行运未激活'],
+    ['zh-Hant', '出生圖未啟動', '流日未啟動'],
+  ]) {
+    setLocale(locale, { persist: false });
+    assert.equal(t('Birth not activated'), birth);
+    assert.equal(t('Transit not activated'), transit);
+  }
+  setLocale('en', { persist: false });
+});
+
 test('locale redraw uses cached transit results, separate from the calculation path', () => {
   const source = readFileSync(new URL('../src/views/transits.js', import.meta.url), 'utf8');
   const refresh = source.slice(source.indexOf('export function refreshTransitLanguage'), source.indexOf('export function renderTransitContent'));

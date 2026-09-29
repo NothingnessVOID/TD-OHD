@@ -1582,6 +1582,43 @@ body.modal-open { overflow: hidden; }
 .gate-detail-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
 .gate-detail-inactive { font-size: 13px; color: var(--text-tertiary); font-style: italic; }
 
+/* Shared birth/transit/timeline detail heading and optional timing column. */
+.tl-detail-header { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; gap: 14px; margin-bottom: 8px; }
+.tl-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr) 176px; }
+.tl-detail-heading { min-width: 0; display: flex; flex-direction: column; }
+.tl-detail-heading > .detail-name { margin-bottom: 8px; }
+.tl-detail-statuses { margin-top: auto; display: grid; gap: 2px; }
+.tl-detail-activations { display: grid; gap: 0; margin-bottom: 12px; }
+.tl-detail-source.gate-detail-acts, .tl-detail-source.gate-detail-transits { padding: 0; margin: 0; border: 0; font-size: 13px; line-height: 1.65; }
+.tl-activation-label { color: var(--text-secondary); font-size: 12px; font-weight: 600; line-height: 1.5; }
+.tl-activation-label.tl-activation-natal:not(.tl-activation-inactive) { color: var(--accent); }
+.tl-activation-label.tl-activation-transit:not(.tl-activation-inactive) { color: var(--transit-source-text); }
+.tl-activation-label.tl-activation-inactive { color: var(--text-secondary); }
+.tl-detail-activations .tl-activation-row { display: block; font-weight: 600; overflow-wrap: anywhere; }
+.tl-activation-transit { color: var(--transit-source-text); }
+.tl-detail-statuses .gate-detail-inactive { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.5; font-style: normal; }
+.gate-detail-body .transit-source-badge.tl-detail-channel-status { display: block; align-self: start; width: fit-content; padding: 0; margin: 0; border-radius: 0; background: none; font-size: 12px; font-weight: 600; line-height: 1.5; text-transform: none; letter-spacing: normal; }
+.gate-detail-body .tl-detail-channel-status.tl-activation-natal { color: var(--accent); }
+.gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--transit-source-text); }
+.tl-detail-heading .center-detail-head { margin-bottom: 0; }
+.tl-detail-heading .lens-note { margin: 0 0 6px; }
+.tl-detail-timing { min-width: 0; display: flex; flex-direction: column; padding-left: 10px; border-left: 1px solid var(--border-subtle); font-size: 10px; line-height: 1.4; }
+.tl-timing-source { display: flex; justify-content: space-between; gap: 6px; color: var(--text-secondary); margin-bottom: 3px; }
+.tl-timing-source > span { cursor: help; }
+.tl-timing-values { flex: 1; display: grid; align-content: space-between; gap: 3px; margin: 0; }
+.tl-timing-values dt { color: var(--text-secondary); }
+.tl-timing-values dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.tl-timing-duration { display: flex; align-items: baseline; gap: 5px; margin-bottom: 3px; }
+.tl-timing-duration dd { font-size: 14px; font-weight: 500; }
+.tl-timing-boundary { position: relative; padding-left: 11px; }
+.tl-timing-boundary::before { content: ''; position: absolute; left: 1px; top: .45em; width: 4px; height: 4px; border: 1px solid var(--text-tertiary); border-radius: 50%; }
+.tl-timing-boundary + .tl-timing-boundary::after { content: ''; position: absolute; left: 3px; bottom: calc(100% - .45em); height: calc(100% - 2px); border-left: 1px solid var(--border-subtle); }
+.tl-timing-boundary dt { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 480px) {
+  .tl-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .tl-detail-timing { border-left: 0; border-top: 1px solid var(--border-subtle); padding: 8px 0 0; }
+}
+
 .gate-detail-lines { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .gate-detail-line {
   padding: 10px 12px;

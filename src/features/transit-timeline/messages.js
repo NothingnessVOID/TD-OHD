@@ -50,6 +50,7 @@ export const en = {
   mobileControls: 'Timeline controls', backToChart: 'Back to chart', openNavigation: 'Open navigation',
   timingDetails: 'Activation interval', timingShort: 'Transit interval', transitPlanets: 'Transit activations',
   beforeShort: 'Started earlier', afterShort: 'Ends later', durationShort: 'Duration',
+  activeThroughoutRange: 'Active throughout the selected range',
   fixing_exalted: 'Exaltation', fixing_detriment: 'Detriment', fixing_juxtaposed: 'Juxtaposition',
   fixing_none: 'Unfixed', fixing_unknown: 'Rule awaiting verification',
   natalFixing: 'Natal line fixing', transitFixing: 'Transit line fixing', combinedFixing: 'Birth + transit line fixing',

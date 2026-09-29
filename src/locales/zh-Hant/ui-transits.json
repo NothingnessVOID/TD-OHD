@@ -17,6 +17,8 @@
   "Activation sources": "啟動來源",
   "Birth activations": "出生圖啟動",
   "Transit activations": "流日啟動",
+  "Birth not activated": "出生圖未啟動",
+  "Transit not activated": "流日未啟動",
   "Transit gates": "流日閘門",
   "Gates added by transit": "流日新增的閘門",
   "Birth + transit gates": "出生圖與流日共同啟動的閘門",

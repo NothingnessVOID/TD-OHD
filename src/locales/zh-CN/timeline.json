@@ -119,6 +119,7 @@
   "beforeShort": "更早开始",
   "afterShort": "更晚结束",
   "durationShort": "持续时间",
+  "activeThroughoutRange": "所选范围内持续激活",
   "fixing_exalted": "上升",
   "fixing_detriment": "下降",
   "fixing_juxtaposed": "并列",
