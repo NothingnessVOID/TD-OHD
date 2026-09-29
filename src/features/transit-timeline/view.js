@@ -218,7 +218,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       </div>
     </div></section></div></div>`;
 
-  const mobileLayout = window.matchMedia('(max-width: 740px)');
+  const mobileLayout = window.matchMedia('(max-width: 640px)');
   addConditionRow();
   const toolbar = $('.tl-toolbar');
   const advanced = $('.tl-advanced');
