@@ -37,6 +37,5 @@
   :root { --header-height: 56px; }
   .header-inner { flex-wrap: nowrap; padding-block: 0; }
   .header-actions { margin-left: 0; gap: 4px; }
-  .header-actions .people-switcher { max-width: 72px; }
   .header .nav { order: 0; flex: none; justify-content: flex-start; }
 }

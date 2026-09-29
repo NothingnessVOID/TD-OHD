@@ -24,66 +24,15 @@ import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
-import { birthToParams, connectionUrl } from '../lib/share.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference } from '../lib/planet-reference.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
-
-function downloadChartBlob(blob) {
-  const href = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = href; anchor.download = 'human-design-chart.png';
-  document.body.append(anchor); anchor.click(); anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(href), 1000);
-}
-
-async function renderLocalChartPng() {
-  const original = document.querySelector('#bodygraph-container svg');
-  if (!original) throw new Error('Bodygraph unavailable');
-  const clone = original.cloneNode(true);
-  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  const originals = [original, ...original.querySelectorAll('*')];
-  const copies = [clone, ...clone.querySelectorAll('*')];
-  for (let index = 0; index < originals.length; index++) {
-    const style = getComputedStyle(originals[index]);
-    for (const property of ['fill','stroke','stroke-width','opacity','color','font-family','font-size','font-weight','display']) {
-      const value = style.getPropertyValue(property);
-      if (value) copies[index].style.setProperty(property, value);
-    }
-  }
-  // Capture the finished graph even when the user exports during its entrance animation.
-  clone.querySelectorAll('.bg-reveal, .bg-reveal-paths').forEach(node => {
-    node.classList.remove('bg-reveal', 'bg-reveal-paths');
-    node.style.setProperty('animation', 'none');
-    node.style.setProperty('opacity', '1');
-  });
-  const svgUrl = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' }));
-  try {
-    const image = new Image();
-    image.src = svgUrl;
-    await image.decode();
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080; canvas.height = 1920;
-    const context = canvas.getContext('2d');
-    const theme = getComputedStyle(document.documentElement);
-    context.fillStyle = theme.getPropertyValue('--bg').trim() || '#faf8f5';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = theme.getPropertyValue('--text').trim() || '#1a1714';
-    context.textAlign = 'center'; context.font = '52px sans-serif';
-    context.fillText('Human Design', 540, 150);
-    const ratio = Math.min(900 / image.width, 1450 / image.height);
-    const width = image.width * ratio; const height = image.height * ratio;
-    context.drawImage(image, (1080 - width) / 2, 280 + (1450 - height) / 2, width, height);
-    return await new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed')), 'image/png'));
-  } finally { URL.revokeObjectURL(svgUrl); }
-}
 let detailHistory = []; // stack of { kind, id } for modal back-navigation
 let currentDetail = null;
 let detailContext = null;
 const detailGraph = () => detailContext?.api || bodygraphApi;
-let currentOnShare = null;
 
 const TYPE_COLORS = {
   'Generator': 'var(--generator)',
@@ -103,7 +52,7 @@ export function refreshChartLanguage() {
   const lens = currentLens;
   const context = detailContext;
   // A language change is not a close action: preserve feature-owned timing state.
-  renderChartView(current, { onShare: currentOnShare, preserveOtherDialog: true });
+  renderChartView(current, { preserveOtherDialog: true });
   document.querySelectorAll('.panel-tab').forEach(button => button.classList.toggle('active', button.dataset.panel === tab));
   renderPanelContent(tab);
   if (selected) {
@@ -117,10 +66,9 @@ export function refreshChartLanguage() {
   }
 }
 
-export function renderChartView(data, { onShare, preserveOtherDialog = false } = {}) {
+export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   if (!preserveOtherDialog) closeDetailDialog();
   current = data;
-  currentOnShare = onShare;
   const { birth, chart } = data;
 
   document.getElementById('birth-entry').classList.add('hidden');
@@ -142,59 +90,6 @@ export function renderChartView(data, { onShare, preserveOtherDialog = false } =
     <div class="type-strategy">${t('Strategy:')} ${esc(strategy(chart.type.name))}</div>
     <p class="type-plain">${esc(typeDescription(chart.type.name))}</p>
   `;
-  document.querySelector('#chart-share-menu .chart-share-actions').innerHTML = `
-      <button id="share-chart" class="btn-secondary btn-small">${t('Copy chart link')}</button>
-      <button id="save-image" class="btn-secondary btn-small">${t('Save image')}</button>
-      <button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>
-  `;
-  document.getElementById('share-chart').addEventListener('click', async (e) => {
-    if (!onShare) return;
-    try {
-      await onShare();
-      e.target.textContent = t('Link copied ✓');
-    } catch {
-      e.target.textContent = t('Copy blocked — please try again');
-    }
-    setTimeout(() => { e.target.textContent = t('Copy chart link'); }, 2500);
-  });
-
-  // Download a 9:16 share card; static/offline builds render the existing SVG.
-  document.getElementById('save-image').addEventListener('click', async (e) => {
-    const btn = e.target;
-    btn.textContent = t('Preparing…');
-    try {
-      if (['static', 'desktop'].includes(import.meta.env.MODE)) {
-        downloadChartBlob(await renderLocalChartPng());
-        btn.textContent = t('Saved ✓');
-      } else {
-        const params = birthToParams(birth);
-        params.set('format', 'story');
-        if (document.documentElement.getAttribute('data-theme') === 'dark') params.set('theme', 'dark');
-        const res = await fetch(`/og/card.png?${params}`);
-        if (!res.ok || !res.headers.get('content-type')?.startsWith('image/png')) throw new Error('render failed');
-        downloadChartBlob(await res.blob());
-        btn.textContent = t('Saved ✓');
-      }
-    } catch {
-      try { downloadChartBlob(await renderLocalChartPng()); btn.textContent = t('Saved ✓'); }
-      catch { btn.textContent = t('Image unavailable here'); }
-    }
-    setTimeout(() => { btn.textContent = t('Save image'); }, 2500);
-  });
-
-  // Dyad loop: copy a "compare designs with me" link. Whoever opens it goes
-  // straight to their connection chart against this person.
-  document.getElementById('invite-compare').addEventListener('click', async (e) => {
-    const btn = e.target;
-    try {
-      await navigator.clipboard.writeText(connectionUrl(birth));
-      btn.textContent = t('Invite copied ✓');
-    } catch {
-      btn.textContent = t('Copy blocked — please try again');
-    }
-    setTimeout(() => { btn.textContent = t('Invite to compare'); }, 2500);
-  });
-
   // --- Bodygraph ---
   rerenderBodygraph();
 

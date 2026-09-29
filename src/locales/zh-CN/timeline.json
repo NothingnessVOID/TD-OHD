@@ -139,5 +139,8 @@
   "mobileControls": "时间轴设置",
   "backToChart": "返回我的图",
   "openNavigation": "打开导航",
+  "saveImage": "保存图片",
+  "imageSaved": "已保存 ✓",
+  "imageUnavailable": "此处无法获取图片",
   "timelineHelp": "左右键：闸门变化 · 上下键：1 分钟 · ＋／－：缩放"
 }

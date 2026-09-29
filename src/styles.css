@@ -2396,6 +2396,18 @@ body.modal-open { overflow: hidden; }
   }
 }
 
+@media (min-width: 641px) and (max-width: 900px) {
+  .logo, .header-actions { flex-shrink: 0; }
+  .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-link { flex-shrink: 0; white-space: nowrap; }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .header-inner { padding-inline: 6px; gap: 4px; }
+  .nav-link { padding-inline: 4px; }
+}
+
 @media (min-width: 641px) and (max-width: 680px) {
   .nav-link { font-size: 12px; }
 }
@@ -2430,8 +2442,7 @@ body.modal-open { overflow: hidden; }
   }
 
   .header-actions { flex-shrink: 0; gap: 5px; }
-  .people-switcher { max-width: 76px; font-size: 11px; }
-  .header-actions:has(.chart-share-menu.hidden) .people-switcher { min-width: 96px; max-width: 104px; }
+  .people-switcher { width: 96px; min-width: 96px; max-width: 96px; font-size: 11px; }
   #bodygraph-container .bg-grid { grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); }
   #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
   #bodygraph-container .bg-planets { flex-direction: column; flex-wrap: nowrap; }
@@ -2450,6 +2461,15 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 400px) {
   .logo-text { font-size: 15px; }
+}
+
+@media (max-width: 350px) {
+  .header-inner { padding-inline: 6px; gap: 3px; }
+  .header-actions { gap: 3px; }
+  .mobile-menu-toggle { width: 32px; height: 32px; }
+  .logo { gap: 2px; }
+  .logo-mark { font-size: 17px; }
+  .logo-text { font-size: 12px; }
 }
 
 /* Panel tabs: roomier targets + scroll affordance (P2-4) */
