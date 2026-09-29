@@ -45,12 +45,15 @@ try {
   const mobileErrors = [];
   mobile.on('pageerror', error => mobileErrors.push(error.message));
   await mobile.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&view=timeline`);
-  await mobile.locator('#timeline-view:not(.hidden) .tl-mobile-share').waitFor();
+  await mobile.locator('#timeline-view:not(.hidden) .tl-mobile-event-nav').waitFor();
   await mobile.waitForFunction(() =>
     document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
-  assert.equal(await mobile.locator('.tl-mobile-share').isVisible(), true, 'mobile timeline has an image action');
+  assert.equal(await mobile.locator('.tl-mobile-share').count(), 0, 'mobile timeline has no duplicate image action');
+  await mobile.locator('.tl-mobile-exit').click();
+  assert.equal(await mobile.locator('#chart-share-menu summary').isVisible(), true, 'mobile header exposes the shared image action');
+  await mobile.locator('#chart-share-menu summary').click();
   const mobileDownloaded = mobile.waitForEvent('download', { timeout: 30000 });
-  await mobile.locator('.tl-mobile-share').click();
+  await mobile.locator('#save-image').click();
   const mobileDownload = await mobileDownloaded;
   assert.equal(await mobileDownload.failure(), null, 'mobile timeline download succeeds');
   assert.equal(mobileDownload.suggestedFilename(), 'td-ohd-timeline.png');

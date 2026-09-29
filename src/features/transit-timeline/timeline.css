@@ -124,7 +124,6 @@
 .tl-event-nav button, .tl-mobile-event-nav button { min-width: 36px; font-size: 18px !important; line-height: 1; }
 .tl-event-status { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: 11px; }
 .tl-mobile-event-nav { display: none; }
-.tl-mobile-share svg { display: block; width: 17px; height: 17px; }
 .tl-table { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; background: var(--tl-surface); overscroll-behavior-x: contain; scrollbar-gutter: stable; }
 .tl-panel-header { display: grid; grid-template-columns: var(--tl-label-width) minmax(0,1fr); grid-template-rows: 32px 21px; position: sticky; top: 0; z-index: 4; background: var(--bg-sunken); border-bottom: 1px solid var(--tl-line); }
 .tl-kind { position: relative; grid-row: 1 / 3; grid-column: 1; justify-content: center; border-right: 1px solid var(--tl-line); }
