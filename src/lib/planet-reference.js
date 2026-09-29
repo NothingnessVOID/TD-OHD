@@ -35,3 +35,20 @@ export function activationSourceReference(source, locale = 'en') {
 }
 
 export const PLANET_REFERENCE_IDS = Object.freeze(Object.keys(summaries));
+
+// Canonical chart-column order and symbols, shared by the graph and library.
+export const PLANET_ORDER = Object.freeze([
+  'sun', 'earth', 'northNode', 'southNode', 'moon', 'mercury',
+  'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'
+]);
+export const PLANET_GLYPHS = Object.freeze({
+  sun: '☉', earth: '⊕', moon: '☽', northNode: '☊', southNode: '☋',
+  mercury: '☿', venus: '♀', mars: '♂', jupiter: '♃', saturn: '♄',
+  uranus: '♅', neptune: '♆', pluto: '♇'
+});
+export const PLANET_NAMES = Object.freeze({
+  sun: 'Sun', earth: 'Earth', moon: 'Moon', northNode: 'North Node',
+  southNode: 'South Node', mercury: 'Mercury', venus: 'Venus', mars: 'Mars',
+  jupiter: 'Jupiter', saturn: 'Saturn', uranus: 'Uranus', neptune: 'Neptune',
+  pluto: 'Pluto'
+});

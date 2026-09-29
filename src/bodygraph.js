@@ -15,6 +15,8 @@
 import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from 'natalengine/bodygraph-data';
 import { GATES, CHANNELS } from 'natalengine';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
+import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
+export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
 
 let graphSequence = 0;
@@ -36,25 +38,6 @@ function el(tag, attrs = {}, ns = null) {
 const svgEl = (tag, attrs) => el(tag, attrs, SVG_NS);
 
 const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
-
-// Canonical HD planet-column order (Nodes before Moon) and glyphs
-export const PLANET_ORDER = [
-  'sun', 'earth', 'northNode', 'southNode', 'moon', 'mercury',
-  'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'
-];
-
-export const PLANET_GLYPHS = {
-  sun: '☉', earth: '⊕', moon: '☽', northNode: '☊', southNode: '☋',
-  mercury: '☿', venus: '♀', mars: '♂', jupiter: '♃', saturn: '♄',
-  uranus: '♅', neptune: '♆', pluto: '♇'
-};
-
-export const PLANET_NAMES = {
-  sun: 'Sun', earth: 'Earth', moon: 'Moon', northNode: 'North Node',
-  southNode: 'South Node', mercury: 'Mercury', venus: 'Venus', mars: 'Mars',
-  jupiter: 'Jupiter', saturn: 'Saturn', uranus: 'Uranus', neptune: 'Neptune',
-  pluto: 'Pluto'
-};
 
 // Traditional center colors (defined state): Head & G yellow, Ajna green,
 // Heart & Sacral red, Throat/Spleen/Solar Plexus/Root brown-tan — tuned
