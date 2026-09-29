@@ -29,6 +29,7 @@ export default {
     list: items => items.join('、'),
     separated: (items, kind) => items.join(kind === 'channels' ? '；' : '、'),
     parentheses: value => '（' + value + '）',
+    planetGateLine: (gate, hexagram, line) => `Gate ${gate}（${hexagram}） · 第${line}爻`,
     gateTooltip: (name, hexagram) => name + '（' + hexagram + '）',
     channelTooltip: (name, gates) => name + '（' + gates + '）',
     channelDetail: (name, gates) => name + '（' + gates + '）',

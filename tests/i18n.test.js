@@ -111,6 +111,17 @@ test('locale formatters preserve English and Chinese presentation conventions', 
   setLocale('en', { persist: false });
 });
 
+test('planet detail names a gate and line once in each language', () => {
+  for (const [locale, expected] of [
+    ['zh-CN', 'Gate 35（火地晋） · 第5爻'],
+    ['zh-Hant', 'Gate 35（火地晉） · 第5爻'],
+    ['en', 'Gate 35 · Line 5']
+  ]) {
+    setLocale(locale, { persist: false });
+    assert.equal(formatDisplay('planetGateLine', 35, vocabulary.hexagramName(35), 5), expected);
+  }
+});
+
 test('engine templates have unique sources and matching numbered placeholders', () => {
   const templates = JSON.parse(readFileSync(new URL('engine-templates.json', directory), 'utf8'));
   const seen = new Set();
