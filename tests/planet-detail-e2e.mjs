@@ -32,6 +32,18 @@ try {
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     await checkPlanet('#bodygraph-container .bg-planets-personality .bg-planet-row:first-of-type', 'personality');
     await checkPlanet('#bodygraph-container .bg-planets-design .bg-planet-row:first-of-type', 'design');
+    await page.locator('.panel-tab[data-panel="variable"]').click();
+    const variableCards = await page.locator('.variable-grid .arrow-card').evaluateAll(cards => cards.map(card => ({
+      key: card.dataset.variable, x: card.getBoundingClientRect().x, y: card.getBoundingClientRect().y,
+      direction: card.querySelector('.arrow-direction')?.textContent.trim().slice(0, 1),
+    })));
+    assert.deepEqual(variableCards.map(card => card.key),
+      ['determination', 'motivation', 'environment', 'perspective']);
+    assert.deepEqual(variableCards.map(card => card.direction), ['▶', '◀', '▶', '◀']);
+    if (width > 600) {
+      assert.ok(variableCards[0].x < variableCards[1].x && variableCards[0].y === variableCards[1].y);
+      assert.ok(variableCards[2].x < variableCards[3].x && variableCards[2].y === variableCards[3].y);
+    }
 
     await page.goto(`${base}/${birth}&view=transits`);
     await page.locator('#transit-stage .tl-planet[data-planet="sun"][data-gate]').waitFor();
