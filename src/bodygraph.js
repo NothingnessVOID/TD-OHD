@@ -738,8 +738,10 @@ export function renderBodygraph(container, chart, opts = {}) {
           })
           : t('{planet}: no activation', { planet: displayPlanet(planet) })
       });
-      row.appendChild(el('span', { class: 'bg-planet-glyph', text: PLANET_GLYPHS[planet] }));
-      row.appendChild(el('span', { class: 'bg-planet-act', text: g ? `${g.gate}.${g.line}` : '—' }));
+      const glyph = el('span', { class: 'bg-planet-glyph', text: PLANET_GLYPHS[planet] });
+      const activation = el('span', { class: 'bg-planet-act', text: g ? `${g.gate}.${g.line}` : '—' });
+      if (side === 'personality') row.append(activation, glyph);
+      else row.append(glyph, activation);
       if (g) {
         row.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') highlightGate(g.gate); });
         row.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') highlightGate(null); });
