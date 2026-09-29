@@ -920,7 +920,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         row.kind === 'line' ? row.gate : row.id, context);
     }
     const planet = event.target.closest('[data-planet], [data-birth-planet]');
-    if (planet?.dataset.gate && context) host.showDetail('gate', Number(planet.dataset.gate), context);
+    if (planet?.dataset.gate && context) host.showDetail('planet', {
+      source: planet.dataset.side || 'transit',
+      planet: planet.dataset.birthPlanet || planet.dataset.planet,
+    }, context);
   });
 
   let lastInput = 'pointer';

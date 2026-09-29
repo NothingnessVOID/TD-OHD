@@ -31,7 +31,10 @@ export function setupTransitView() {
   mountGraphPanel();
   document.getElementById('transits-view').addEventListener('click', event => {
     const planet = event.target.closest('.tl-planet[data-gate], .tl-birth-value[data-gate]');
-    if (planet?.dataset.gate && transitDetailContext) showTransitDetail('gate', Number(planet.dataset.gate), transitDetailContext);
+    if (planet?.dataset.gate && transitDetailContext) showTransitDetail('planet', {
+      source: planet.dataset.side || 'transit',
+      planet: planet.dataset.birthPlanet || planet.dataset.planet,
+    }, transitDetailContext);
     const button = event.target.closest('[data-transit-detail]');
     if (button && transitDetailContext) {
       const kind = button.dataset.transitDetail;

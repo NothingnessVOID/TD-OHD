@@ -52,7 +52,8 @@ try {
     await page.goto(`${base}/?d=1990-06-15&t=14%3A30&tz=-6`);
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     await page.locator('.bg-planet-row[data-gate="34"]').first().click();
-    await page.locator('#gate-detail:not(.hidden)').waitFor();
+    await page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"]').waitFor();
+    await page.locator('#gate-detail [data-planet-gate]').click();
     const popupCore = await page.locator('#lens-content').innerText();
     assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
     await page.locator('#gate-detail [data-lens="iching"]').click();
@@ -69,6 +70,7 @@ try {
     assert.equal((await page.locator('#lens-content').innerText()).trim(), popupCore.trim());
     assert.ok(await page.locator('#gate-detail .selected-activation').count());
     await page.keyboard.press('Escape');
+    if (viewport.width < 600) await page.locator('#mobile-menu-toggle').click();
     await page.locator('.nav-link[data-view="library"]').click();
     await page.locator('#library-view:not(.hidden)').waitFor();
     assert.equal(new URL(page.url()).search, '');
@@ -90,6 +92,7 @@ try {
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     assert.ok(await page.locator('.bg-planet-row[data-gate]').count() > 0);
     await page.locator('.bg-planet-row[data-gate]').first().click();
+    await page.locator('#gate-detail [data-planet-gate]').click();
     await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
     await page.locator('#gate-detail [data-channel]').first().click();
     assert.match(await page.locator('#gate-detail').innerText(), /Not defined|未定义|未定義/);

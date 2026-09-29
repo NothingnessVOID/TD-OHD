@@ -1,0 +1,49 @@
+import assert from 'node:assert/strict';
+import { chromium } from 'playwright-core';
+
+const base = process.env.E2E_URL || 'http://127.0.0.1:5173';
+const birth = '?d=2000-05-10&t=12%3A30&tz=8';
+const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
+
+try {
+  for (const width of [1224, 390]) {
+    const page = await browser.newPage({ viewport: { width, height: width < 600 ? 844 : 703 } });
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    const checkPlanet = async (selector, source, planet = 'sun') => {
+      await page.locator(selector).click();
+      const detail = page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"]');
+      await detail.waitFor();
+      assert.equal(await detail.getAttribute('data-source'), source);
+      assert.equal(await detail.getAttribute('data-planet'), planet);
+      assert.equal(await page.locator('#gate-detail #lens-content').count(), 0,
+        'planet detail does not embed the gate reading');
+      const gate = await page.locator('#gate-detail [data-planet-gate]').getAttribute('data-planet-gate');
+      await page.locator('#gate-detail [data-planet-gate]').click();
+      await page.locator('#gate-detail #lens-content').waitFor();
+      assert.ok((await page.locator('#gate-detail .detail-label').first().innerText()).includes(gate));
+      await page.locator('#gate-detail .gate-detail-back').click();
+      await detail.waitFor();
+      assert.equal(await detail.getAttribute('data-source'), source);
+      await page.keyboard.press('Escape');
+    };
+
+    await page.goto(`${base}/${birth}`);
+    await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
+    await checkPlanet('#bodygraph-container .bg-planets-personality .bg-planet-row:first-of-type', 'personality');
+    await checkPlanet('#bodygraph-container .bg-planets-design .bg-planet-row:first-of-type', 'design');
+
+    await page.goto(`${base}/${birth}&view=transits`);
+    await page.locator('#transit-stage .tl-planet[data-planet="sun"][data-gate]').waitFor();
+    await checkPlanet('#transit-stage .tl-planet[data-planet="sun"]', 'transit');
+
+    await page.goto(`${base}/${birth}&view=timeline`);
+    await page.locator('#timeline-view .tl-planet[data-planet="sun"][data-gate]').waitFor();
+    await checkPlanet('#timeline-view .tl-planet[data-planet="sun"]', 'transit');
+    assert.deepEqual(errors, []);
+    await page.close();
+  }
+  console.log('Planet → Gate → Back works from chart, transit and timeline on desktop and mobile.');
+} finally {
+  await browser.close();
+}

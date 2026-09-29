@@ -871,6 +871,7 @@ try {
       assert.ok(await planet.count() > 0);
       await planet.click();
       assert.equal(await loading.locator('#gate-detail:not(.hidden)').isVisible(), true);
+      assert.equal(await loading.locator('#gate-detail [data-detail-kind="planet"][data-source="transit"]').count(), 1);
       assert.equal(await loading.locator('#gate-detail .tl-detail-timing').count(), 0);
       await loading.keyboard.press('Escape');
     });
