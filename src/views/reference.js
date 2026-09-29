@@ -5,11 +5,11 @@ import { gateName, channelName, centerName, circuitName, hexagramName } from '..
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, activationSourceReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { planetReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
 
-const categories = ['all', 'center', 'channel', 'gate', 'planet', 'group'];
-const labels = { all: 'All entries', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
+const categories = ['all', 'concept', 'center', 'channel', 'gate', 'planet', 'group'];
+const labels = { all: 'All entries', concept: 'Core concepts', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
 let category = 'all';
 let query = '';
 let limit = 60;
@@ -89,9 +89,11 @@ function circuitDetail(entry) {
 
 function planetDetail(entry) {
   const locale = getLocale();
-  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p>
-    ${['design', 'personality', 'transit'].map(source => `<section><h3>${esc(t(source === 'design' ? 'Design' : source === 'personality' ? 'Personality' : 'Transit'))}</h3>
-      <p>${esc(activationSourceReference(source, locale))}</p></section>`).join('')}</div>`;
+  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p></div>`;
+}
+
+function conceptDetail(entry) {
+  return `<div class="reference-reading"><p>${esc(activationConceptReference(entry.id, getLocale()))}</p></div>`;
 }
 
 function renderDetail() {
@@ -111,7 +113,8 @@ function renderDetail() {
   const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry)
-        : entry.kind === 'planet' ? planetDetail(entry) : circuitDetail(entry);
+        : entry.kind === 'planet' ? planetDetail(entry)
+          : entry.kind === 'concept' ? conceptDetail(entry) : circuitDetail(entry);
   const heading = entry.kind === 'channel' ? (() => {
     const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
     const group = channelCircuit(channel).group;

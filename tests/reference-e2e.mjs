@@ -13,7 +13,7 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /125/);
+    assert.match(await page.locator('#reference-count').innerText(), /128/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
     await page.locator('[data-reference-filter="planet"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /13/);
@@ -25,7 +25,12 @@ try {
     }
     await page.goto(`${base}/#library/planet/sun`);
     await page.locator('#reference-detail h2').waitFor();
-    assert.match(await page.locator('#reference-detail').innerText(), /设计|Design/);
+    assert.equal(await page.locator('#reference-detail .reference-reading section').count(), 0);
+    await page.goto(`${base}/#library/concept/transit`);
+    await page.locator('#reference-detail h2').waitFor();
+    assert.match(await page.locator('#reference-detail .reference-reading').innerText(), /行运|Transit/);
+    await page.goto(`${base}/#library/concept/design`);
+    assert.match(await page.locator('#reference-detail .reference-reading').innerText(), /88°/);
     assert.equal(new URL(page.url()).search, '');
     await page.goto(`${base}/#library/planet/northNode`);
     await page.locator('#reference-detail h2').waitFor();
@@ -33,7 +38,7 @@ try {
     for (const language of ['zh-CN', 'en', 'zh-Hant']) {
       await page.locator('#language-switcher').selectOption(language);
       assert.match(page.url(), /#library\/planet\/northNode$/);
-      assert.ok((await page.locator('#reference-detail .reference-reading').innerText()).length > 50);
+      assert.ok((await page.locator('#reference-detail .reference-reading').innerText()).length > 20);
     }
     await page.locator('#language-switcher').selectOption('zh-CN');
     await page.goto(`${base}/#library`);

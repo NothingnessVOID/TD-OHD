@@ -18,7 +18,11 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(new Set(partners).size, partners.length);
   }
   assert.equal(entries.filter(entry => entry.kind === 'group').length, 3);
-  assert.equal(entries.length, 125);
+  assert.equal(entries.length, 128);
+  assert.deepEqual(entries.filter(entry => entry.kind === 'concept').map(entry => entry.id),
+    ['design', 'personality', 'transit']);
+  assert.equal(referenceEntry('concept', 'transit')?.id, 'transit');
+  assert.ok(searchReference('行运', 'concept').some(entry => entry.id === 'transit'));
   assert.deepEqual(entries.filter(entry => entry.kind === 'planet').map(entry => entry.id), PLANET_ORDER);
   assert.deepEqual([...PLANET_ORDER].sort(), [...PLANET_REFERENCE_IDS].sort());
   assert.equal(referenceEntry('planet', 'northNode')?.id, 'northNode');

@@ -1,8 +1,9 @@
 /** Chart-independent reference index. The engine topology stays authoritative. */
 import { GATES, CHANNELS, CENTERS } from 'natalengine';
 import { localeResources } from '../locales/index.js';
+import { getLocale } from './i18n.js';
 import { gateName, channelName, centerName, circuitName, hexagramName, planetName } from './vocabulary.js';
-import { PLANET_ORDER, PLANET_NAMES } from './planet-reference.js';
+import { PLANET_ORDER, PLANET_NAMES, ACTIVATION_CONCEPT_IDS, activationConceptName, activationConceptAliases } from './planet-reference.js';
 import { channelById } from './reference-content.js';
 import { CIRCUIT_GROUPS, channelCircuit } from './circuit-topology.js';
 
@@ -13,6 +14,8 @@ const normalized = value => String(value ?? '').normalize('NFKC').toLocaleLowerC
 
 export function referenceEntries() {
   return [
+    ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', id,
+      name: activationConceptName(id, getLocale()), aliases: activationConceptAliases(id) })),
     ...Object.keys(CENTERS).map(id => ({ kind: 'center', id, name: centerName(id),
       aliases: [CENTERS[id].name, ...names('centerName', id)] })),
     ...CHANNELS.map(channel => ({ kind: 'channel', id: channel.gates.join('-'), name: channelName(channel.gates),
