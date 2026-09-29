@@ -3,22 +3,35 @@
  * natal chart, with the transit gates ringed on a bodygraph.
  */
 
-import { calculateHDTransits, calculateTransitGates } from 'natalengine';
+import { calculateHDTransits } from 'natalengine';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
-import { esc } from '../lib/format.js';
-import { t, setMessage } from '../lib/i18n.js';
+import { setMessage, getLocaleResources } from '../lib/i18n.js';
 import { transitInstants, engineTransitArguments, formatTransitOffset } from '../lib/transit-time.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
-import { renderTransitLegend, renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
+import { renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
 import { planetName } from '../lib/vocabulary.js';
+import { calculateLineFixings, calculateTransitLineFixings } from '../features/transit-timeline/line-fixing.js';
+import { graphPanelMarkup, renderGraphColumns } from '../features/transit-timeline/graph-window.js';
+import { translator } from '../features/transit-timeline/messages.js';
 
 import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './chart.js';
 
 let transitDetailContext = null;
 let lastTransitResult = null;
+const graphLabels = () => {
+  const translate = translator(getLocaleResources().timeline.messages);
+  return Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, translate(key)]));
+};
+const mountGraphPanel = () => {
+  const locale = getLocaleResources().timeline.locale;
+  document.getElementById('transit-stage').innerHTML = graphPanelMarkup({ labels: graphLabels(), locale, graphId: 'transit-bodygraph' });
+};
 
 export function setupTransitView() {
+  mountGraphPanel();
   document.getElementById('transits-view').addEventListener('click', event => {
+    const planet = event.target.closest('.tl-planet[data-gate], .tl-birth-value[data-gate]');
+    if (planet?.dataset.gate && transitDetailContext) showTransitDetail('gate', Number(planet.dataset.gate), transitDetailContext);
     const button = event.target.closest('[data-transit-detail]');
     if (button && transitDetailContext) {
       const kind = button.dataset.transitDetail;
@@ -29,12 +42,16 @@ export function setupTransitView() {
   const previewDetail = event => {
     if (event.pointerType === 'touch') return;
     const button = event.target.closest('[data-transit-detail]');
-    if (!button) return;
-    const kind = button.dataset.transitDetail;
-    transitDetailContext?.api?.highlightSelection({ kind, id: kind === 'gate' ? Number(button.dataset.id) : button.dataset.id });
+    if (button) {
+      const kind = button.dataset.transitDetail;
+      transitDetailContext?.api?.highlightSelection({ kind, id: kind === 'gate' ? Number(button.dataset.id) : button.dataset.id });
+      return;
+    }
+    const planet = event.target.closest('.tl-planet[data-gate], .tl-birth-value[data-gate]');
+    if (planet?.dataset.gate) transitDetailContext?.api?.highlightSelection({ kind: 'gate', id: Number(planet.dataset.gate) });
   };
   const clearPreview = event => {
-    const button = event.target.closest('[data-transit-detail]');
+    const button = event.target.closest('[data-transit-detail], .tl-planet[data-gate], .tl-birth-value[data-gate]');
     if (button && !button.contains(event.relatedTarget)) transitDetailContext?.api?.highlightSelection(null);
   };
   const view = document.getElementById('transits-view');
@@ -92,6 +109,7 @@ export function renderTransits() {
     matches = transitInstants(date, time, zone);
     if (!matches.length) throw new Error('This local time does not exist in that timezone. Choose another time.');
   } catch (error) {
+    status.classList.remove('tl-sr-only');
     setMessage(status, error instanceof RangeError ? 'Enter a valid IANA timezone.' : error.message);
     choiceLabel.hidden = true;
     document.getElementById('transit-bodygraph').replaceChildren();
@@ -104,18 +122,15 @@ export function renderTransits() {
   choiceLabel.hidden = matches.length < 2;
   choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatTransitOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
   choice.value = String(selected.instant);
+  status.classList.add('tl-sr-only');
   delete status.dataset.i18n;
   status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
   const [transitDate, engineOffset] = engineTransitArguments(selected.instant);
 
   const overlay = calculateHDTransits(current.chart, transitDate, engineOffset);
-  const transitGates = Object.values(calculateTransitGates(transitDate, engineOffset)?.gates || {})
-    .filter(Boolean)
-    .map(g => g.gate);
-
   const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
-  lastTransitResult = { chart: current.chart, overlay, transitGates, model, mode };
+  lastTransitResult = { chart: current.chart, overlay, model, mode, date, time, offset: selected.offset };
   drawTransitResult(lastTransitResult);
 }
 
@@ -123,66 +138,33 @@ export function renderTransits() {
 // wall-clock time again or changing the user's DST-fold choice.
 export function refreshTransitLanguage() {
   if (lastTransitResult?.chart !== getCurrentChart()?.chart) return;
-  if (lastTransitResult) drawTransitResult(lastTransitResult, true);
+  if (lastTransitResult) { mountGraphPanel(); drawTransitResult(lastTransitResult, true); }
 }
 
-function drawTransitResult({ chart, overlay, transitGates, model, mode }, preserveDetail = false) {
-  renderTransitLegend(mode);
-
-  // Bodygraph colored by activation source
+function drawTransitResult({ chart, overlay, model, mode, date, time, offset }, preserveDetail = false) {
+  const stage = document.getElementById('transit-stage');
   const graphContainer = document.getElementById('transit-bodygraph');
   if (graphContainer) {
     const context = preserveDetail && transitDetailContext
       ? transitDetailContext : { transitGates: overlay.transitGates, mode, model };
     transitDetailContext = context;
     context.api = renderBodygraph(graphContainer, chart, {
-      planetColumns: true,
+      planetColumns: false,
       animate: false,
-      transitGates,
+      touchPreview: true,
+      transitGates: model.transitGates,
       transitModel: model,
       onGateClick: gate => showTransitDetail('gate', gate, context),
       onCenterClick: center => showTransitDetail('center', center, context),
       onHighlight: highlightTransitRows
     });
-    const grid = graphContainer.querySelector('.bg-grid');
-    if (grid) {
-      const design = grid.querySelector('.bg-planets-design');
-      const personality = grid.querySelector('.bg-planets-personality');
-      const pair = document.createElement('div');
-      pair.className = 'transit-birth-pair';
-      const head = document.createElement('div');
-      head.className = 'transit-birth-head';
-      head.append(design.querySelector('.bg-planets-head'), document.createElement('span'), personality.querySelector('.bg-planets-head'));
-      pair.append(head);
-      const designRows = [...design.querySelectorAll('.bg-planet-row')];
-      const personalityRows = [...personality.querySelectorAll('.bg-planet-row')];
-      designRows.forEach((designRow, index) => {
-        const personalityRow = personalityRows[index];
-        const glyph = designRow.querySelector('.bg-planet-glyph');
-        personalityRow.querySelector('.bg-planet-glyph')?.remove();
-        const row = document.createElement('div');
-        row.className = 'transit-birth-row';
-        designRow.classList.add('transit-birth-value', 'bg-planets-design');
-        personalityRow.classList.add('transit-birth-value', 'bg-planets-personality');
-        row.append(designRow, glyph, personalityRow);
-        pair.append(row);
-      });
-      design.remove();
-      personality.remove();
-      grid.append(pair);
-      const transitColumn = document.createElement('div');
-      transitColumn.className = 'bg-planets transit-planet-column';
-      transitColumn.innerHTML = `<div class="bg-planets-head">${esc(t('Transits'))}</div>` + PLANET_ORDER.map(planet => {
-        const activation = overlay.transitGates?.[planet];
-        return `<button type="button" class="bg-planet-row" data-transit-planet="${planet}" ${activation ? `data-gate="${activation.gate}"` : ''} title="${esc(planetName(planet))}"><span class="bg-planet-glyph">${PLANET_GLYPHS[planet]}</span><span class="bg-planet-act">${activation ? `${activation.gate}.${activation.line}` : '—'}</span></button>`;
-      }).join('');
-      grid.prepend(transitColumn);
-      transitColumn.querySelectorAll('[data-gate]').forEach(row => {
-        row.addEventListener('click', () => showTransitDetail('gate', Number(row.dataset.gate), context));
-        row.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') context.api.highlightSelection({ kind: 'gate', id: Number(row.dataset.gate) }); });
-        row.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') context.api.highlightSelection(null); });
-      });
-    }
+    const translate = translator(getLocaleResources().timeline.messages);
+    const planets = PLANET_ORDER.map(id => ({ id, name: planetName(id), glyph: PLANET_GLYPHS[id] }));
+    renderGraphColumns({ root: stage, chart, activations: overlay.transitGates, mode, planets,
+      fixings: { birth: calculateLineFixings(chart, overlay.transitGates), transit: calculateTransitLineFixings(chart, overlay.transitGates) },
+      translate });
+    stage.querySelector('.tl-moment-date').textContent = date;
+    stage.querySelector('.tl-moment-time').textContent = `${time} ${formatTransitOffset(offset)}`;
   }
 
   renderTransitSummary(overlay, model);

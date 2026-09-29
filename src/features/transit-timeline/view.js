@@ -8,6 +8,7 @@ import { queryTimeline } from './conditions.js';
 import { natalIslands, bridgedIslandCount } from './bridge.js';
 import { catalog } from './provider.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
+import { graphPanelMarkup, renderGraphColumns } from './graph-window.js';
 import './timeline.css';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -189,13 +190,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
       <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-      <div class="tl-graph-panel">
-        <div class="tl-selected"><output class="tl-moment" aria-label="${esc(t('selected'))}"><span class="tl-moment-date"></span><span class="tl-moment-time"></span></output></div>
-        <details class="tl-legend-disclosure"><summary>${esc(t('legend'))}</summary><div class="tl-legend">${['natal','transit','completed','both'].map(source => `<span data-source="${source}"><i></i>${esc(t(source))}</span>`).join('')}</div></details>
-        <div class="tl-graph bodygraph-container"></div>
-        <div class="tl-planet-column tl-transit-column bg-planets"><div class="bg-planets-head">${esc(t('transit'))}</div><div class="tl-planets" data-planets="transit"></div></div>
-        <div class="tl-planet-column tl-birth-column"><div class="tl-birth-head${locale.startsWith('en') ? ' tl-birth-head-en' : ''}"><span class="bg-planets-design"><span class="bg-planets-head">${esc(t('design'))}</span></span><span aria-hidden="true"></span><span class="bg-planets-personality"><span class="bg-planets-head">${esc(t('personality'))}</span></span></div><div class="tl-birth-planets"></div></div>
-      </div>
+      ${graphPanelMarkup({ labels: Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, t(key)])), locale })}
       <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
       <div class="tl-mobile-range"></div>
       <div class="tl-mobile-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}</div>
@@ -409,45 +404,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       if (hoverSelection) context.api?.highlightSelection(hoverSelection);
     }
     paintNavigationGates();
-    // Keep the birth columns fixed; only the left transit column follows time.
-    if (!$('.tl-planets').children.length) {
-      $('.tl-planets').innerHTML = host.planets.map(planet => `<button type="button" class="tl-planet bg-planet-row" data-planet="${planet.id}" title="${esc(planet.name)}"><span class="bg-planet-glyph" aria-hidden="true">${esc(planet.glyph)}</span><strong class="bg-planet-act"></strong><span class="tl-fixing-mark" aria-hidden="true"></span></button>`).join('');
-      $('.tl-birth-planets').innerHTML = host.planets.map(planet => `<div class="tl-birth-row"><button type="button" class="tl-birth-value bg-planet-row bg-planets-design" data-birth-planet="${planet.id}" data-side="design"><span class="tl-fixing-mark" aria-hidden="true"></span><span class="bg-planet-act"></span></button><span class="bg-planet-glyph tl-birth-glyph" aria-hidden="true">${esc(planet.glyph)}</span><button type="button" class="tl-birth-value bg-planet-row bg-planets-personality" data-birth-planet="${planet.id}" data-side="personality"><span class="bg-planet-act"></span><span class="tl-fixing-mark" aria-hidden="true"></span></button></div>`).join('');
-    }
-    root.querySelectorAll('[data-planet]').forEach(node => {
-      const value = activations[node.dataset.planet];
-      const planet = host.planets.find(planet => planet.id === node.dataset.planet);
-      node.dataset.gate = value?.gate ?? '';
-      setText(node.querySelector('strong'), value ? `${value.gate}.${value.line}` : '—');
-      const fixing = fixings?.transit[node.dataset.planet];
-      const state = mode === 'transit-only' ? fixing?.transitOnlyState : fixing?.combinedState;
-      const scope = mode === 'transit-only' ? t('transitFixing') : t('combinedFixing');
-      renderFixing(node, state, `${t('transit')} · ${planet.name} · ${node.querySelector('strong').textContent}`, scope);
-    });
-    $('.tl-birth-column').hidden = mode === 'transit-only';
-    root.querySelectorAll('[data-birth-planet]').forEach(node => {
-      const value = chart.chart.gates[node.dataset.side]?.[node.dataset.birthPlanet];
-      const planet = host.planets.find(planet => planet.id === node.dataset.birthPlanet);
-      node.dataset.gate = value?.gate ?? '';
-      const text = value ? `${value.gate}.${value.line}` : '—';
-      setText(node.querySelector('.bg-planet-act'), text);
-      const fixing = fixings?.birth[node.dataset.side]?.[node.dataset.birthPlanet];
-      const scope = fixing?.temporaryChange
-        ? `${t('temporaryFixing')} · ${t('natalFixing')}: ${t(`fixing_${fixing.natalState}`)}`
-        : t('natalFixing');
-      renderFixing(node, fixing?.transitAdjustedState, `${t(node.dataset.side)} · ${planet.name} · ${text}`, scope);
-    });
-    root.querySelectorAll('.tl-legend [data-source]').forEach(node => {
-      node.hidden = mode === 'transit-only' && node.dataset.source !== 'transit';
-    });
-  }
-
-  function renderFixing(node, state, baseTitle, scope) {
-    const mark = node.querySelector('.tl-fixing-mark');
-    mark.dataset.state = state || '';
-    setText(mark, ({ exalted: '▲', detriment: '▼', juxtaposed: '▲▼', unknown: '?' })[state] || '');
-    node.title = state ? `${baseTitle} · ${scope} · ${t(`fixing_${state}`)}` : baseTitle;
-    node.setAttribute('aria-label', node.title);
+    renderGraphColumns({ root, chart: chart.chart, activations, mode, planets: host.planets, fixings, translate: t });
   }
 
   function selectTime(instant, { recenter = false, centerView = false } = {}) {
