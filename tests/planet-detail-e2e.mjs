@@ -48,10 +48,14 @@ try {
     await page.goto(`${base}/${birth}&view=transits`);
     await page.locator('#transit-stage .tl-planet[data-planet="sun"][data-gate]').waitFor();
     await checkPlanet('#transit-stage .tl-planet[data-planet="sun"]', 'transit');
+    await checkPlanet('#transit-stage .tl-birth-value.bg-planets-design[data-birth-planet="sun"]', 'design');
+    await checkPlanet('#transit-stage .tl-birth-value.bg-planets-personality[data-birth-planet="sun"]', 'personality');
 
     await page.goto(`${base}/${birth}&view=timeline`);
     await page.locator('#timeline-view .tl-planet[data-planet="sun"][data-gate]').waitFor();
     await checkPlanet('#timeline-view .tl-planet[data-planet="sun"]', 'transit');
+    await checkPlanet('#timeline-view .tl-birth-value.bg-planets-design[data-birth-planet="sun"]', 'design');
+    await checkPlanet('#timeline-view .tl-birth-value.bg-planets-personality[data-birth-planet="sun"]', 'personality');
     assert.deepEqual(errors, []);
     await page.close();
   }
