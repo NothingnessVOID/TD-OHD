@@ -258,7 +258,7 @@
 
 /* The timeline becomes a two-pane instrument on phones. Other views and the
    desktop timeline retain their existing layout and navigation. */
-@media (max-width: 740px) {
+@media (max-width: 640px) {
   body.timeline-active { height: 100dvh; overflow: hidden; }
   body.timeline-active #app { height: 100dvh; overflow: hidden; }
   body.timeline-active .header, body.timeline-active .footer { display: none; }
