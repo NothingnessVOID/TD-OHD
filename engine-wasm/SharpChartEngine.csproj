@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WasmEnableHotReload>false</WasmEnableHotReload>
+    <WasmBuildNative>false</WasmBuildNative>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpAstrology.HumanDesign" Version="1.2.0" />
+    <PackageReference Include="SharpAstrology.SwissEph" Version="0.5.1" />
+  </ItemGroup>
+</Project>

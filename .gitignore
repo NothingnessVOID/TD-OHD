@@ -1,5 +1,9 @@
 node_modules
 dist
+/public/engine/
+/engine-wasm/bin/
+/engine-wasm/obj/
+/.dotnet-sdk/
 /artifacts/
 .DS_Store
 *.local
