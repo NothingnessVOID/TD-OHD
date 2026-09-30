@@ -30,6 +30,7 @@ export function renderVariableArrowRow(variable, edge, translate) {
     cell.className = 'bg-variable-arrow';
     cell.dataset.variable = item.key;
     cell.dataset.position = item.position;
+    cell.dataset.source = item.source.startsWith('design.') ? 'design' : 'personality';
     cell.dataset.direction = item.direction;
     cell.dataset.tone = item.tone ?? '';
     cell.setAttribute('aria-label', `${translate(item.label)}: ${translate(item.direction === 'left' ? 'Left — focused' : 'Right — receptive')}`);

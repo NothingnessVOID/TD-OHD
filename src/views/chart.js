@@ -19,7 +19,7 @@ import {
 
 const humanList = items => formatDisplay('list', items);
 
-import { variableDirection } from '../lib/variable-arrows.js';
+import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
@@ -236,7 +236,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Variable')}</div>
-        <div class="value">${esc(current.chart.variable?.notation || '—')}</div>
+        <div class="value foundation-variable-arrows">${variableArrows(chart.variable).map(item => `<span data-variable="${item.key}" data-source="${item.source.split('.')[0]}" title="${esc(t(item.label))}" aria-label="${esc(t(item.label))}">${item.symbol}</span>`).join('') || '—'}</div>
         <div class="detail">${t('Determination · Environment · Perspective · Motivation')}</div>
       </div>
     </div>
@@ -754,7 +754,7 @@ function renderVariablePanel(container) {
     const originalTerm = formatDisplay('originalTerm', slot.name);
     return `
     <div class="arrow-card" data-variable="${key}">
-      <div class="arrow-direction">${arrowSymbol(direction)} <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
+      <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}${originalTerm ? ` <span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
       <div class="arrow-desc">${esc(contentText(slot.description))}</div>
@@ -771,7 +771,6 @@ function renderVariablePanel(container) {
       ${card('environment', v.environment, t('Environment'))}
       ${card('perspective', v.perspective, t('Perspective'))}
     </div>
-    <div class="variable-notation">${esc(v.notation || '')}</div>
   `;
 }
 
