@@ -278,7 +278,7 @@ function openEditPerson(birth) {
 // ==========================================
 // Chart loading
 // ==========================================
-function loadBirth(birth, { save = false } = {}) {
+async function loadBirth(birth, { save = false } = {}) {
   if (localMode && !birth.id && !save) {
     const existing = listPeople().find(p => p.name === birth.name && p.birthDate === birth.birthDate && p.birthTime === birth.birthTime && p.location?.timezone === birth.timezone);
     if (existing) birth = birthFromPerson(existing);
@@ -297,8 +297,17 @@ function loadBirth(birth, { save = false } = {}) {
     }
   }
 
-  currentData = computeChart(resolved);
-  currentData.sensitivity = resolved.timeUnknown ? null : sensitivityCheck(resolved, currentData.chart);
+  try {
+    currentData = await computeChart(resolved);
+    currentData.sensitivity = resolved.timeUnknown ? null : await sensitivityCheck(resolved, currentData.chart);
+  } catch (error) {
+    console.error('Birth chart calculation failed:', error);
+    const notice = document.getElementById('entry-invite');
+    setMessage(notice, `Birth chart calculation failed: ${error.message}`);
+    notice?.classList.remove('hidden');
+    document.getElementById('birth-entry')?.classList.remove('hidden');
+    return null;
+  }
 
   if (resolved.id) setLastPersonId(resolved.id);
   history.replaceState(null, '', `${window.location.pathname}?${birthToParams(resolved)}`);
@@ -306,6 +315,7 @@ function loadBirth(birth, { save = false } = {}) {
   renderChartView(currentData);
   renderPeopleSwitcher();
   showView('chart');
+  return currentData;
 }
 
 // ==========================================
@@ -415,7 +425,7 @@ async function setupSync() {
 // ==========================================
 // Boot
 // ==========================================
-function init() {
+async function init() {
   initTheme();
   setupNavigation();
   setupPanelTabs();
@@ -449,8 +459,8 @@ function init() {
   } else setupSync();
 
   entryApi = setupEntryView({
-    onSubmit: (birth, { savedPerson = false } = {}) => {
-      loadBirth(birth, { save: !savedPerson && (localMode || !!birth.name) });
+    onSubmit: async (birth, { savedPerson = false } = {}) => {
+      if (!await loadBirth(birth, { save: !savedPerson && (localMode || !!birth.name) })) return;
       if (pendingCompare) {
         pendingCompare = false;
         document.getElementById('entry-invite')?.classList.add('hidden');
@@ -475,7 +485,7 @@ function init() {
     const lastId = getLastPersonId();
     const me = lastId && getPerson(lastId);
     if (me) {
-      loadBirth(birthFromPerson(me), { save: false }); // returning visitor → straight to the compare
+      await loadBirth(birthFromPerson(me), { save: false }); // returning visitor → straight to the compare
       showView('connection');
       compareWithGuest();
     } else {
@@ -492,7 +502,7 @@ function init() {
   }
 
   if (fromUrl) {
-    loadBirth(fromUrl, { save: false });
+    await loadBirth(fromUrl, { save: false });
     if (libraryLink) { history.replaceState(null, '', `${location.pathname}${libraryLink}`); showView('library'); return; }
     if (deepLinkView && VIEWS.includes(deepLinkView)) showView(deepLinkView);
     // Shared-chart landing: someone opened a link to a chart that isn't
@@ -540,7 +550,7 @@ function init() {
   if (lastId) {
     const person = getPerson(lastId);
     if (person) {
-      loadBirth(birthFromPerson(person), { save: false });
+      await loadBirth(birthFromPerson(person), { save: false });
       if (libraryLink) { history.replaceState(null, '', `${location.pathname}${libraryLink}`); showView('library'); }
       return;
     }
@@ -558,7 +568,7 @@ async function boot() {
     if (!(await localAccountUi.unlockLocal())) return;
   }
   document.getElementById('app').hidden = false;
-  init();
+  await init();
 }
 boot().catch(error => {
   console.error('Could not open local library:', error.message);

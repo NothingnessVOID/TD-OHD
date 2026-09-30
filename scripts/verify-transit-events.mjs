@@ -5,14 +5,14 @@ import { performance } from 'node:perf_hooks';
 import { snapshot } from '../src/features/transit-timeline/snapshot.js';
 import { discreteState, replayAnnual, sameActivation, TRANSIT_POINTS, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
 import { stateAt, natalIdentity } from '../src/features/transit-timeline/graph-provider.js';
-import { computeChart } from '../src/lib/chartdata.js';
+import { calculateHumanDesign } from 'natalengine';
 
 const root = resolve(import.meta.dirname, '..', 'public/transit-data');
 const manifest = JSON.parse(await readFile(resolve(root, 'manifest.json')));
 const years = process.argv.includes('--all') ? Object.keys(manifest.years).map(Number)
   : [Number(process.argv.find(arg => /^\d{4}$/.test(arg)) || 2026)];
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
-const natal = natalIdentity(computeChart({ birthDate: '1985-01-01', birthTime: '12:00', timezone: 0 }).chart);
+const natal = natalIdentity(calculateHumanDesign('1985-01-01', 12, 0, { preserveSeconds: true }));
 const activations = state => Object.fromEntries(TRANSIT_POINTS.map(point =>
   [point, { gate: state[point][0], line: state[point][1] }]));
 const graphState = (state, mode) => [...stateAt(natal, activations(state), mode)]
