@@ -249,6 +249,14 @@ await check('connection compare works (place search resolves tz)', async () => {
   await page.waitForSelector('#conn-detail', { state: 'hidden' });
 });
 
+await check('connection skin recolors the composite without changing source semantics', async () => {
+  await page.addStyleTag({ content: 'html[data-hd-skin="connection-probe"] { --hd-connection-a: #1234EE; --hd-connection-b: #EE3412; }' });
+  await page.evaluate(async () => (await import('/src/lib/appearance.js')).setHumanDesignSkin('connection-probe'));
+  await page.waitForFunction(() => document.querySelectorAll('#conn-composite .bg-gate-path[fill="#1234EE"], #conn-composite .bg-gate-path[fill="#EE3412"]').length > 0);
+  const design = await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim());
+  if (design === '#1234EE' || design === '#EE3412') throw new Error('relationship colors overwrote Design');
+});
+
 // --- Team using manual rows with place search ---
 await check('team analysis works (place search per row)', async () => {
   await page.click('.nav-link[data-view="team"]');
