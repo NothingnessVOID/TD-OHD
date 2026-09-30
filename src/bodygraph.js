@@ -2,10 +2,9 @@
  * Interactive Bodygraph Renderer
  *
  * Renders the canonical Human Design bodygraph:
- * - Design (red) and Personality (black) planet columns flanking the graph
- * - Per-gate half-channel coloring: black / red / candy-striped for both
- * - Canonical center colors (yellow head & G, green ajna, brown throat/
- *   spleen/solar/root, red heart & sacral)
+ * - Design and Personality planet columns flanking the graph
+ * - Per-gate half-channel coloring from Human Design skin tokens
+ * - Nine independently skinnable center colors
  * - Hover highlights + tooltips, click-through to gate detail
  * - Optional transit-gate overlay
  *
@@ -37,19 +36,15 @@ function el(tag, attrs = {}, ns = null) {
 }
 const svgEl = (tag, attrs) => el(tag, attrs, SVG_NS);
 
-const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+const CENTER_KEYS = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
 
-// Traditional center colors (defined state): Head & G yellow, Ajna green,
-// Heart & Sacral red, Throat/Spleen/Solar Plexus/Root brown-tan — tuned
-// per theme so the centerpiece respects dark mode instead of glowing.
-const cssColor = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-const centerColors = () => ({
-  head: cssColor('--center-head', '#e9d56b'), ajna: cssColor('--center-ajna', '#a3c46c'),
-  throat: cssColor('--center-brown', '#c2a06b'), g: cssColor('--center-head', '#e9d56b'),
-  heart: cssColor('--center-red', '#dd6356'), spleen: cssColor('--center-brown', '#c2a06b'),
-  solar: cssColor('--center-brown', '#c2a06b'), sacral: cssColor('--center-red', '#dd6356'),
-  root: cssColor('--center-brown', '#c2a06b')
-});
+// CSS owns all palette and visual-parameter values. A skin only needs to
+// provide tokens; the renderer never has to know its actual color format.
+const skinToken = (style, name) => style.getPropertyValue(name).trim();
+const centerColors = (style) => Object.fromEntries(CENTER_KEYS.map(key => [key, {
+  edge: skinToken(style, `--hd-center-${key}`),
+  core: skinToken(style, `--hd-center-${key}-core`)
+}]));
 
 const SHAPE_KEY_MAP = {
   Head: 'head', Ajna: 'ajna', Throat: 'throat',
@@ -73,17 +68,36 @@ for (const ch of CHANNELS) {
   }
 }
 
-function palette() {
-  const dark = isDark();
+function palette(style) {
+  const read = name => skinToken(style, name);
   return {
-    personality: cssColor('--graph-personality', dark ? '#f5f0e8' : '#262220'),
-    design: cssColor('--graph-design', dark ? '#e74c3c' : '#c0392b'),
-    inactive: cssColor('--graph-inactive', dark ? '#8c847a' : '#b8b0a6'),
-    undefinedCenter: cssColor('--graph-undefined-center', dark ? '#0d0c0a' : '#ffffff'),
-    centerStroke: cssColor('--graph-center-stroke', dark ? '#5a5248' : '#c0b8ae'),
-    text: cssColor('--text', dark ? '#e8e4de' : '#1a1714'),
-    textInactive: cssColor('--graph-text-inactive', dark ? '#6f685f' : '#a39a90'),
-    transit: cssColor('--accent', dark ? '#d4943a' : '#c47a2a')
+    personality: read('--hd-personality'),
+    personalityOn: read('--hd-personality-on'),
+    design: read('--hd-design'),
+    designOn: read('--hd-design-on'),
+    bothOn: read('--hd-both-on'),
+    transit: read('--hd-transit'),
+    transitOn: read('--hd-transit-on'),
+    transitSoft: read('--hd-transit-soft'),
+    transitHatchOpacity: read('--hd-transit-hatch-opacity'),
+    transitRingWidth: read('--hd-transit-ring-width'),
+    inactive: read('--hd-inactive'),
+    inactiveOn: read('--hd-inactive-on'),
+    inactiveChannelOpacity: read('--hd-inactive-channel-opacity'),
+    inactiveCircleOpacity: read('--hd-gate-circle-opacity'),
+    undefinedCenter: read('--hd-undefined-center'),
+    centerStroke: read('--hd-center-stroke'),
+    centerStrokeWidth: read('--hd-center-stroke-width'),
+    gateNumberSize: read('--hd-gate-number-size'),
+    gateNumberBaselineOffset: Number.parseFloat(read('--hd-gate-number-baseline-offset')),
+    gateActiveWeight: read('--hd-gate-active-weight'),
+    gateInactiveWeight: read('--hd-gate-inactive-weight'),
+    connectionAOn: read('--hd-connection-a-on'),
+    connectionBOn: read('--hd-connection-b-on'),
+    connectionBothOn: read('--hd-connection-both-on'),
+    connectionACore: read('--hd-connection-a-core'),
+    connectionBCore: read('--hd-connection-b-core'),
+    connectionBridgedCore: read('--hd-connection-bridged-core')
   };
 }
 
@@ -111,7 +125,8 @@ export function renderBodygraph(container, chart, opts = {}) {
   container.classList.add('bg-root');
   if (opts.compact) container.classList.add('bg-compact');
 
-  const colors = palette();
+  const style = getComputedStyle(document.documentElement);
+  const colors = palette(style);
 
   // Composite (two-person) overlay: color the body by WHO brings each gate,
   // instead of by personality/design. The half-channel model makes this read
@@ -119,7 +134,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   const composite = opts.composite || null;
   const transit = opts.transitModel || null;
   // SVG presentation attributes inherit the same theme tokens as the legend and badges.
-  const transitColor = cssColor('--transit-source', '#1aadb7');
+  const transitColor = colors.transit;
 
   const personalityGates = new Map(); // gate -> [{planet, line}]
   const designGates = new Map();
@@ -223,22 +238,13 @@ export function renderBodygraph(container, chart, opts = {}) {
   pattern.appendChild(svgEl('rect', { width: '4', height: '8', fill: colors.design }));
   defs.appendChild(pattern);
 
-  // Whisper-subtle radial depth for defined centers: a slightly brighter core
-  // fading to the traditional hue at the edge, so a defined center reads as
-  // *energized* against a flat-white open one — without touching the hue identity.
-  const lighten = (hex, amt) => {
-    const n = parseInt(hex.slice(1), 16);
-    const r = Math.min(255, ((n >> 16) & 255) + Math.round(255 * amt));
-    const g = Math.min(255, ((n >> 8) & 255) + Math.round(255 * amt));
-    const b = Math.min(255, (n & 255) + Math.round(255 * amt));
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-  };
-  const coreAmt = isDark() ? 0.08 : 0.17;
+  // Core and edge are CSS-derived skin tokens, so gradients accept modern CSS
+  // color formats without parsing or modifying a hex value in JavaScript.
   if (!composite) {
-    for (const [key, color] of Object.entries(centerColors())) {
+    for (const [key, color] of Object.entries(centerColors(style))) {
       const grad = svgEl('radialGradient', { id: paint(`cg-${key}`), cx: '0.5', cy: '0.36', r: '0.78' });
-      grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': lighten(color, coreAmt) }));
-      grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': color }));
+      grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': color.core }));
+      grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': color.edge }));
       defs.appendChild(grad);
     }
   } else {
@@ -250,15 +256,15 @@ export function renderBodygraph(container, chart, opts = {}) {
     ab.appendChild(svgEl('rect', { width: '8', height: '8', fill: colA }));
     ab.appendChild(svgEl('rect', { width: '4', height: '8', fill: colB }));
     defs.appendChild(ab);
-    const radial = (id, color) => {
+    const radial = (id, color, core) => {
       const grad = svgEl('radialGradient', { id: paint(id), cx: '0.5', cy: '0.36', r: '0.78' });
-      grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': lighten(color, coreAmt) }));
+      grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': core }));
       grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': color }));
       defs.appendChild(grad);
     };
-    radial('cc-a', colA);
-    radial('cc-b', colB);
-    radial('cc-bridged', colBridged);
+    radial('cc-a', colA, colors.connectionACore);
+    radial('cc-b', colB, colors.connectionBCore);
+    radial('cc-bridged', colBridged, colors.connectionBridgedCore);
     // Both define it → a diagonal blend from one person's hue to the other's.
     const both = svgEl('linearGradient', { id: paint('cc-both'), x1: '0', y1: '0', x2: '1', y2: '1' });
     both.appendChild(svgEl('stop', { offset: '0', 'stop-color': colA }));
@@ -267,8 +273,8 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
   if (transit) {
     const hatch = svgEl('pattern', { id: paint('transit-center'), width: '10', height: '10', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
-    hatch.appendChild(svgEl('rect', { width: '10', height: '10', fill: cssColor('--transit-source-soft', '#e4f1ef') }));
-    hatch.appendChild(svgEl('rect', { width: '2', height: '10', fill: transitColor, opacity: '.35' }));
+    hatch.appendChild(svgEl('rect', { width: '10', height: '10', fill: colors.transitSoft }));
+    hatch.appendChild(svgEl('rect', { width: '2', height: '10', fill: transitColor, opacity: colors.transitHatchOpacity }));
     defs.appendChild(hatch);
   }
   svg.appendChild(defs);
@@ -289,6 +295,20 @@ export function renderBodygraph(container, chart, opts = {}) {
     if (p) return colors.personality;
     if (d) return colors.design;
     return colors.inactive;
+  };
+  const gateOnColor = (gateNum) => {
+    if (transit?.gateSource(gateNum) === 'transit') return colors.transitOn;
+    if (composite) {
+      const owner = gateOwner(gateNum);
+      return owner === 'a' ? colors.connectionAOn
+        : owner === 'b' ? colors.connectionBOn
+        : owner === 'both' ? colors.connectionBothOn : colors.inactiveOn;
+    }
+    const personality = personalityGates.has(gateNum);
+    const design = designGates.has(gateNum);
+    return personality && design ? colors.bothOn
+      : personality ? colors.personalityOn
+      : design ? colors.designOn : colors.inactiveOn;
   };
   const centerFill = (key, defined) => {
     if (transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(key))) return `url(#${paint('transit-center')})`;
@@ -329,7 +349,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     }
     const path = svgEl('path', {
       d, fill, class: 'bg-gate-path bg-integration-span',
-      opacity: gates.length ? '1' : isDark() ? '0.55' : '0.38',
+      opacity: gates.length ? '1' : colors.inactiveChannelOpacity,
       'pointer-events': 'none'
     });
     pathGroup.appendChild(path);
@@ -338,11 +358,10 @@ export function renderBodygraph(container, chart, opts = {}) {
   for (const [gateStr, pathData] of Object.entries(GATE_PATHS)) {
     const gateNum = parseInt(gateStr);
     const isActive = activeGates.has(gateNum);
-    const inactiveOpacity = isDark() ? '0.55' : '0.38';
     const path = svgEl('path', {
       d: joinedGates.has(gateNum) ? joinedPaths[gateNum] || pathData : pathData,
       fill: gateFill(gateNum),
-      opacity: isActive ? '1' : inactiveOpacity,
+      opacity: isActive ? '1' : colors.inactiveChannelOpacity,
       'data-gate': gateNum,
       class: 'bg-gate-path'
     });
@@ -366,7 +385,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       d: shapeData.path,
       fill: centerFill(centerKey, defined),
       stroke: transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(centerKey)) ? transitColor : defined ? 'none' : colors.centerStroke,
-      'stroke-width': '2',
+      'stroke-width': colors.centerStrokeWidth,
       'data-center': centerKey,
       class: 'bg-center'
     });
@@ -416,32 +435,26 @@ export function renderBodygraph(container, chart, opts = {}) {
         fill: 'transparent', stroke: 'none', class: 'bg-gate-hit'
       }));
     }
-    const inactiveCircleOpacity = isDark() ? '0.55' : '0.42';
     g.appendChild(svgEl('circle', {
       cx: c.cx, cy: c.cy, r: c.r || 12.3,
       fill: isActive ? fill : colors.inactive,
-      'fill-opacity': isActive ? '1' : inactiveCircleOpacity,
+      'fill-opacity': isActive ? '1' : colors.inactiveCircleOpacity,
       stroke: 'none',
       class: 'bg-gate-circle'
     }));
     if (transit ? transit.gateSource(gateNum) === 'both' : transitGates.has(gateNum)) {
       g.appendChild(svgEl('circle', {
         cx: c.cx, cy: c.cy, r: (c.r || 12.3) + 4.5,
-        fill: 'none', stroke: transit ? transitColor : colors.transit, 'stroke-width': '2.5',
+        fill: 'none', stroke: transitColor, 'stroke-width': colors.transitRingWidth,
         'stroke-dasharray': transit ? 'none' : '4 3', class: 'bg-transit-ring'
       }));
     }
-    // Text must contrast with the circle fill: in dark mode the
-    // personality fill is light, so use dark text there.
-    const litTextColor = transit?.gateSource(gateNum) === 'transit'
-      ? cssColor('--transit-source-contrast', '#16130f')
-      : isDark() && personalityGates.has(gateNum) ? '#16130f' : '#fff';
     g.appendChild(svgEl('text', {
-      x: c.cx, y: c.cy + 4,
-      'text-anchor': 'middle', 'font-size': '11',
-      'font-weight': isActive ? '700' : '400',
-      'font-family': 'Inter, system-ui, sans-serif',
-      fill: isActive ? litTextColor : colors.textInactive,
+      x: c.cx, y: c.cy + colors.gateNumberBaselineOffset,
+      'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
+      'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
+      'font-family': skinToken(style, '--font'),
+      fill: isActive ? gateOnColor(gateNum) : colors.inactiveOn,
       'pointer-events': 'none',
       text: gateNum
     }));
