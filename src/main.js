@@ -22,6 +22,7 @@ import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
 import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
+import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 
 // ==========================================
 // State
@@ -60,26 +61,21 @@ function setupLanguageSwitcher() {
 }
 
 // ==========================================
-// Theme
+// Appearance
 // ==========================================
-function initTheme() {
-  const saved = localStorage.getItem('bodygraph-theme');
-  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-}
-
-function toggleTheme() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  localStorage.setItem('bodygraph-theme', isDark ? 'light' : 'dark');
-  // Bodygraph colors are computed at render time — refresh visible graphs
+function refreshAppearanceGraphs() {
+  // SVG colors are read from skin tokens at render time. CSS-only details,
+  // legends and planetary rows update as soon as the root attributes change.
   if (currentData) {
     rerenderBodygraph();
     rerenderConnectionGraphs();
     if (!document.getElementById('transits-view').classList.contains('hidden')) renderTransits();
     timelineView?.refresh();
   }
+}
+
+function toggleTheme() {
+  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
 }
 
 // ==========================================
@@ -416,7 +412,8 @@ async function setupSync() {
 // Boot
 // ==========================================
 function init() {
-  initTheme();
+  initAppearance();
+  onAppearanceChange(refreshAppearanceGraphs);
   setupNavigation();
   setupPanelTabs();
   setupTransitView();
