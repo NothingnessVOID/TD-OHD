@@ -40,10 +40,14 @@ try {
     const variableCards = await page.locator('.variable-grid .arrow-card').evaluateAll(cards => cards.map(card => ({
       key: card.dataset.variable, x: card.getBoundingClientRect().x, y: card.getBoundingClientRect().y,
       direction: card.querySelector('.arrow-direction')?.textContent.trim().slice(0, 1),
+      tone: Number(card.querySelector('.arrow-meta')?.textContent.match(/(?:Tone|基调|音调)\s*(\d)/)?.[1]),
     })));
     assert.deepEqual(variableCards.map(card => card.key),
       ['determination', 'motivation', 'environment', 'perspective']);
-    assert.deepEqual(variableCards.map(card => card.direction), ['▶', '◀', '▶', '◀']);
+    for (const card of variableCards) {
+      assert.ok(card.tone >= 1 && card.tone <= 6);
+      assert.equal(card.direction, card.tone <= 3 ? '◀' : '▶');
+    }
     if (width > 600) {
       assert.ok(variableCards[0].x < variableCards[1].x && variableCards[0].y === variableCards[1].y);
       assert.ok(variableCards[2].x < variableCards[3].x && variableCards[2].y === variableCards[3].y);
