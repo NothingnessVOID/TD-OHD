@@ -71,7 +71,7 @@ export function compareWithGuest() {
   runComparison();
 }
 
-function runComparison() {
+async function runComparison() {
   const current = getCurrentChart();
   if (!current) return;
 
@@ -102,7 +102,12 @@ function runComparison() {
   }
   if (!birthB) return;
 
-  const b = computeChart(birthB);
+  let b;
+  try { b = await computeChart(birthB); }
+  catch (error) {
+    document.getElementById('connection-content').innerHTML = `<p class="panel-intro">${esc(error.message)}</p>`;
+    return;
+  }
   b.defaultDisplayName = defaultName;
   if (localMode && !select.value) {
     try { savePerson(birthB); } catch (e) { reportSaveFailure(e); }
