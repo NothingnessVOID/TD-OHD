@@ -48,11 +48,25 @@ try {
     const value = await item.locator('.value').innerText();
     assert.ok(value.trim() && value.trim() !== '—', `${label} is present`);
     if (label === 'Profile') assert.match(value, /[1-6]\/[1-6]/);
-    if (label === 'Variable') assert.match(value, /^P[LR]{2} D[LR]{2}$/);
+    if (label === 'Variable') assert.equal(await item.locator('[data-variable]').count(), 4, 'Foundation Variable shows four semantic arrows');
   }
   await page.locator('.panel-tab[data-panel="variable"]').click();
   assert.equal(await page.locator('#panel-content .arrow-card').count(), 4, 'Variable panel has four semantic cards');
-  assert.match(await page.locator('.variable-notation').innerText(), /^P[LR]{2} D[LR]{2}$/);
+  assert.equal(await page.locator('.variable-notation').count(), 0, 'Variable panel does not show notation code');
+  assert.doesNotMatch(await page.locator('#chart-view').innerText(), /P[LR]{2}\s+D[LR]{2}/, 'Chart UI does not show notation code');
+  for (const key of ['determination', 'environment', 'motivation', 'perspective']) {
+    const source = key === 'determination' || key === 'environment' ? 'design' : 'personality';
+    const graph = page.locator(`#bodygraph-container .bg-variable-arrow[data-variable="${key}"]`);
+    const summary = page.locator(`.foundation-variable-arrows [data-variable="${key}"]`);
+    const card = page.locator(`#panel-content .arrow-card[data-variable="${key}"] .variable-direction-symbol`);
+    const symbol = await graph.locator('.bg-variable-symbol').innerText();
+    const color = await graph.locator('.bg-variable-symbol').evaluate(node => getComputedStyle(node).color);
+    assert.equal(await summary.getAttribute('data-source'), source);
+    assert.equal(await summary.innerText(), symbol, `${key} foundation arrow matches graph`);
+    assert.equal(await card.innerText(), symbol, `${key} panel arrow matches graph`);
+    assert.equal(await summary.evaluate(node => getComputedStyle(node).color), color, `${key} foundation source color matches graph`);
+    assert.equal(await card.evaluate(node => getComputedStyle(node).color), color, `${key} panel source color matches graph`);
+  }
   const runtimeRequestsBefore = engineRequests.filter(url => url.includes('/_framework/'));
   assert.ok(runtimeRequestsBefore.some(url => /dotnet\.native.*\.wasm(?:\?|$)/.test(url)), '.NET native WASM loaded');
   assert.ok(runtimeRequestsBefore.some(url => /SharpChartEngine.*\.wasm(?:\?|$)/.test(url)), 'Main assembly WASM loaded');

@@ -57,8 +57,13 @@ async function checkViewport(viewport) {
     assert.ok(arrowAt('top-left').x < arrowAt('top-right').x);
     assert.ok(arrowAt('bottom-left').x < arrowAt('bottom-right').x);
     const svg = await page.locator('#bodygraph-container .bodygraph-svg').boundingBox();
-    for (const position of ['top-left', 'top-right']) assert.ok(arrowAt(position).y + arrowAt(position).height <= svg.y + 1, `${position} does not overlap SVG`);
-    for (const position of ['bottom-left', 'bottom-right']) assert.ok(arrowAt(position).y >= svg.y + svg.height - 1, `${position} does not overlap SVG`);
+    for (const side of ['left', 'right']) {
+      const upper = arrowAt(`top-${side}`);
+      const lower = arrowAt(`bottom-${side}`);
+      assert.ok(upper.y + upper.height <= lower.y + 1, `${side} pair preserves semantic order without overlap`);
+      assert.ok(lower.y - upper.y <= Math.max(100, svg.height * 0.25), `${side} pair stays clustered near upper graph`);
+      assert.ok(lower.y < svg.y + svg.height * 0.55, `${side} pair does not move to graph bottom`);
+    }
     await openMore();
     for (const selector of ['#chart-share-menu', '#language-switcher', '#theme-toggle', '#skin-settings-button']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector} is reachable at ${viewport.width}px`);
@@ -93,6 +98,10 @@ async function checkViewport(viewport) {
     assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${custom.personality}"]`).count() > 0, 'Personality color repaints chart immediately');
     assert.equal(await page.locator('#bodygraph-container .bg-gate text').first().getAttribute('font-size'), '13px', 'Gate number size repaints SVG immediately');
     assert.equal(await page.locator('#bodygraph-container .bg-svg-wrap').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(229, 238, 247)', 'BodyGraph background updates immediately');
+    for (const [key, color] of Object.entries({ determination: 'rgb(166, 43, 140)', environment: 'rgb(166, 43, 140)', motivation: 'rgb(50, 91, 167)', perspective: 'rgb(50, 91, 167)' })) {
+      const symbol = page.locator(`#bodygraph-container .bg-variable-arrow[data-variable="${key}"] .bg-variable-symbol`);
+      assert.equal(await symbol.evaluate(node => getComputedStyle(node).color), color, `${key} arrow follows its Design/Personality color`);
+    }
     const centerColor = () => page.locator('#bodygraph-container radialGradient[id$="-cg-g"] stop[offset="1"]').getAttribute('stop-color');
     const classicCenter = await centerColor();
     await preset('chakra');
