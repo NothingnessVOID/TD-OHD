@@ -277,6 +277,7 @@ await check('team analysis works (place search per row)', async () => {
 // --- Theme toggle re-renders graph ---
 await check('theme toggle flips palette and re-renders bodygraph', async () => {
   await page.click('.nav-link[data-view="chart"]');
+  await page.locator('#more-toggle').click();
   await page.click('#theme-toggle');
   const theme = await page.getAttribute('html', 'data-theme');
   if (theme !== 'dark') throw new Error(`theme: ${theme}`);

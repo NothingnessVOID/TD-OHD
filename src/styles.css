@@ -1,5 +1,7 @@
 @import './styles/tokens/site-default.css';
 @import './styles/tokens/human-design-classic.css';
+@import './styles/tokens/human-design-chakra.css';
+@import './styles/appearance-controls.css';
 
 /* Layout and typography stay here. Site and Human Design skin values live in
    separate token files, allowing future skins without component rewrites. */

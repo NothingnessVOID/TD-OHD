@@ -13,6 +13,8 @@
 
 import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from 'natalengine/bodygraph-data';
 import { GATES, CHANNELS } from 'natalengine';
+import { renderVariableArrowRow } from './lib/variable-arrows.js';
+import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
 import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
@@ -768,17 +770,22 @@ export function renderBodygraph(container, chart, opts = {}) {
     return col;
   }
 
+  const svgWrap = el('div', { class: 'bg-svg-wrap' });
+  const topArrows = renderVariableArrowRow(chart.variable, 'top', t);
+  const bottomArrows = renderVariableArrowRow(chart.variable, 'bottom', t);
+  if (topArrows) svgWrap.appendChild(topArrows);
+  svgWrap.appendChild(svg);
+  if (bottomArrows) svgWrap.appendChild(bottomArrows);
+
   if (showColumns) {
     const designDate = chart.positions?.design?.date || null;
     const wrap = el('div', { class: 'bg-grid' });
     wrap.appendChild(planetColumn('design', chart.gates?.design, designDate));
-    const svgWrap = el('div', { class: 'bg-svg-wrap' });
-    svgWrap.appendChild(svg);
     wrap.appendChild(svgWrap);
     wrap.appendChild(planetColumn('personality', chart.gates?.personality, chart.positions?.personality?.date || null));
     nextGraph.appendChild(wrap);
   } else {
-    nextGraph.appendChild(svg);
+    nextGraph.appendChild(topArrows || bottomArrows ? svgWrap : svg);
   }
   container.replaceChildren(nextGraph);
 

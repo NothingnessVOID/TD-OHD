@@ -9,7 +9,7 @@
   <meta property="og:site_name" content="TD Open Human Design">
   <meta property="og:title" content="TD Open Human Design — Interactive Charts" data-i18n-content="TD Open Human Design — Interactive Charts">
   <meta property="og:description" content="Precise transits, an interactive timeline, and three interface languages. Based on Open Human Design." data-i18n-content="Precise transits, an interactive timeline, and three interface languages. Based on Open Human Design.">
-  <meta property="og:url" content="https://nothingnessvoid.github.io/TD-OHD/">
+  <meta property="og:url" content="https://td-ohd.netlify.app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="TD Open Human Design — Interactive Charts" data-i18n-content="TD Open Human Design — Interactive Charts">
   <meta name="twitter:description" content="Precise transits, an interactive timeline, and three interface languages. Based on Open Human Design." data-i18n-content="Precise transits, an interactive timeline, and three interface languages. Based on Open Human Design.">
@@ -40,8 +40,12 @@
         <div class="header-actions">
           <select id="people-switcher" class="people-switcher hidden" title="Saved charts" data-i18n-title="Saved charts"></select>
           <button id="sync-button" class="btn-secondary btn-small hidden"></button>
-          <details id="chart-share-menu" class="chart-share-menu hidden"><summary title="Share" aria-label="Share" data-i18n-title="Share" data-i18n-aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></summary><div class="chart-share-actions"></div></details>
-          <div class="theme-toggle language-control">
+          <details id="more-menu" class="more-menu">
+            <summary id="more-toggle" class="theme-toggle" aria-label="More" title="More" data-i18n-aria-label="More" data-i18n-title="More" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></summary>
+            <div class="more-panel">
+              <div class="more-item more-share">          <details id="chart-share-menu" class="chart-share-menu hidden"><summary title="Share" aria-label="Share" data-i18n-title="Share" data-i18n-aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></summary><div class="chart-share-actions"></div></details>
+<span data-i18n="Share">Share</span></div>
+              <div class="more-item">          <div class="theme-toggle language-control">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"></circle>
               <path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9Z"></path>
@@ -52,9 +56,13 @@
               <option value="zh-Hant" lang="zh-Hant">繁體中文</option>
             </select>
           </div>
-          <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" data-i18n-title="Toggle dark mode" data-i18n-aria-label="Toggle dark mode">
+<span data-i18n="Language">Language</span></div>
+              <div class="more-item">          <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" data-i18n-title="Toggle dark mode" data-i18n-aria-label="Toggle dark mode">
             <span class="theme-icon" aria-hidden="true">◐</span>
-          </button>
+          </button><span data-i18n="Theme">Theme</span></div>
+              <div class="more-item"><button id="skin-settings-button" class="theme-toggle" aria-label="Skin" title="Skin" data-i18n-aria-label="Skin" data-i18n-title="Skin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-3.7 1.5 1.5 0 0 1 .8-2.8H17a4 4 0 0 0 4-4c0-4.4-4-7.5-9-7.5Z"/><circle cx="7.5" cy="11" r=".7"/><circle cx="9" cy="7" r=".7"/><circle cx="14" cy="6.5" r=".7"/><circle cx="17.5" cy="10" r=".7"/></svg></button><span data-i18n="Skin">Skin</span></div>
+            </div>
+          </details>
         </div>
         <div id="sync-popover" class="sync-popover hidden">
           <div class="panel-title" data-i18n="Sync &amp; connect your AI">Sync &amp; connect your AI</div>
@@ -67,6 +75,25 @@
         </div>
       </div>
     </header>
+
+
+    <dialog id="skin-settings" class="skin-settings" aria-labelledby="skin-settings-title">
+      <div class="skin-settings-header"><div><p class="skin-eyebrow" data-i18n="Appearance">Appearance</p><h2 id="skin-settings-title" data-i18n="Skin">Skin</h2></div><button id="skin-settings-close" class="theme-toggle" aria-label="Close" data-i18n-aria-label="Close">×</button></div>
+      <div class="skin-presets" role="group" aria-label="Skin" data-i18n-aria-label="Skin">
+        <button type="button" data-skin-preset="classic"><span class="skin-swatch classic-swatch" aria-hidden="true"></span><span data-i18n="Classic">Classic</span></button>
+        <button type="button" data-skin-preset="chakra"><span class="skin-swatch chakra-swatch" aria-hidden="true"></span><span data-i18n="Chakra">Chakra</span></button>
+      </div>
+      <p class="skin-custom-note" data-i18n="Customize the current skin and theme">Customize the current skin and theme</p>
+      <div class="skin-custom-fields">
+        <label for="appearance-accent"><span data-i18n="Accent">Accent</span><input type="color" id="appearance-accent" data-appearance-key="accent"></label>
+        <label for="appearance-personality"><span data-i18n="Personality">Personality</span><input type="color" id="appearance-personality" data-appearance-key="personality"></label>
+        <label for="appearance-design"><span data-i18n="Design">Design</span><input type="color" id="appearance-design" data-appearance-key="design"></label>
+        <label for="appearance-transit"><span data-i18n="Transit">Transit</span><input type="color" id="appearance-transit" data-appearance-key="transit"></label>
+        <label for="appearance-graphBackground"><span data-i18n="Graph Background">Graph Background</span><input type="color" id="appearance-graphBackground" data-appearance-key="graphBackground"></label>
+        <label for="appearance-gateNumberSize" class="skin-size-field"><span data-i18n="Gate Number Size">Gate Number Size</span><span class="skin-size-control"><input type="range" id="appearance-gateNumberSize" data-appearance-key="gateNumberSize" min="9" max="14" step="1"><output for="appearance-gateNumberSize" id="appearance-size-value"></output></span></label>
+      </div>
+      <div class="skin-settings-footer"><button type="button" id="appearance-restore" class="btn-secondary" data-i18n="Restore Current Preset">Restore Current Preset</button><button type="button" id="appearance-reset" class="link-button" data-i18n="Reset All">Reset All</button></div>
+    </dialog>
 
     <!-- Birth Data Entry -->
     <section id="birth-entry" class="birth-entry">

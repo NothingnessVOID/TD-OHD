@@ -23,6 +23,7 @@ import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMes
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
 import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
+import { setupAppearanceControls } from './lib/appearance-controls.js';
 
 // ==========================================
 // State
@@ -423,6 +424,7 @@ async function setupSync() {
 // ==========================================
 async function init() {
   onAppearanceChange(refreshAppearanceGraphs);
+  setupAppearanceControls();
   setupNavigation();
   setupPanelTabs();
   setupTransitView();

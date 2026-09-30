@@ -1,8 +1,8 @@
 # Appearance and skin foundation
 
 Baseline: `13c70f2ce4dab5199a2438bfc08475f1cbd23549`.
-This change organizes the released appearance; it does not introduce another
-palette or a skin selection control.
+The foundation preserves the released Classic palette. The completed controls
+add a More menu, a skin dialog, and a Chakra center palette.
 
 ## State and ownership
 
@@ -24,7 +24,15 @@ the root attributes. `setTheme()`, `setSiteSkin()`, and
 updates immediately. The subscriber redraws the SVGs that resolve computed
 tokens while rendering: birth, transit, timeline, and connection/composite.
 The existing theme preference remains stored under `bodygraph-theme`. The
-only configured skins in this version are site `default` and HD `classic`.
+configured skins are site `default` and HD `classic` / `chakra`.
+Preset selection and the six supported overrides are stored in
+`td-ohd-appearance-v1`, independently for each preset and light/dark theme.
+Restore Current Preset clears the current pair; Reset All returns to Classic
+and the system theme preference, clearing all overrides.
+
+Four Variable arrows surround the graph in fixed semantic positions:
+determination / motivation above, environment / perspective below. They read
+the existing chart Variable arrow or Tone, never the notation string.
 
 ## Site skin inputs
 
