@@ -412,7 +412,6 @@ async function setupSync() {
 // Boot
 // ==========================================
 function init() {
-  initAppearance();
   onAppearanceChange(refreshAppearanceGraphs);
   setupNavigation();
   setupPanelTabs();
@@ -547,7 +546,7 @@ function init() {
 }
 
 async function boot() {
-  initTheme();
+  initAppearance();
   setupLanguageSwitcher();
   if (localMode) {
     document.getElementById('app').hidden = true;
