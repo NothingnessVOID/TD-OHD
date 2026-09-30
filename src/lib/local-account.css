@@ -1,7 +1,7 @@
 /* Optional local-account UI; kept separate from the upstream chart stylesheet. */
 [hidden] { display: none !important; }
-.local-auth { min-height: 100vh; display: grid; place-items: center; padding: 36px 22px; background: radial-gradient(ellipse at 50% 0%, #dcc5a42b, transparent 65%); }
-.local-auth-card { width: min(100%, 440px); padding: 40px 36px 28px; border: 1px solid var(--border); border-radius: 22px; background: var(--bg-card, var(--bg)); box-shadow: 0 14px 60px #3c30210b; }
+.local-auth { min-height: 100vh; display: grid; place-items: center; padding: 36px 22px; background: radial-gradient(ellipse at 50% 0%, var(--site-auth-glow), transparent 65%); }
+.local-auth-card { width: min(100%, 440px); padding: 40px 36px 28px; border: 1px solid var(--border); border-radius: 22px; background: var(--bg-card, var(--bg)); box-shadow: 0 14px 60px var(--site-auth-shadow); }
 .local-auth-brand { display: flex; gap: 10px; align-items: center; margin-bottom: 36px; font-weight: 600; }
 .local-auth-brand > span { color: var(--accent); font-size: 27px; }
 .local-auth-brand small { margin-left: auto; font-weight: 400; color: var(--text-secondary); }
@@ -16,7 +16,7 @@
 .local-auth-status { min-height: 24px; margin-top: 14px; }
 .local-auth-foot { padding-top: 22px; margin-top: 14px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--text-tertiary); }
 .local-storage-status { color: var(--text-secondary); font-size: 12px; }
-.local-storage-status[data-state=error] { color: #b14c32; }
+.local-storage-status[data-state=error] { color: var(--status-error-soft); }
 .local-account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
 .local-account-actions a { text-decoration: none; }
 .local-password-settings { padding: 14px 0; border-top: 1px solid var(--border); }

@@ -1,136 +1,15 @@
-/* =============================================
-   Bodygraph App — Design System
-   ============================================= */
+@import './styles/tokens/site-default.css';
+@import './styles/tokens/human-design-classic.css';
 
+/* Layout and typography stay here. Site and Human Design skin values live in
+   separate token files, allowing future skins without component rewrites. */
 :root {
-  /* Warm neutral palette */
-  --bg: #faf8f5;
-  --bg-elevated: #ffffff;
-  --bg-sunken: #f0ede8;
-  --text: #1a1714;
-  --text-secondary: #6b6560;
-  --text-tertiary: #6f675f; /* ≥4.5:1 even on --bg-sunken — tertiary carries labels */
-  --border: #e5e0da;
-  --border-subtle: #ede9e3;
-
-  /* Accent colors */
-  --accent: #c47a2a;
-  --accent-strong: #9a5e1c; /* 4.5:1 with white — buttons/CTAs */
-  --accent-soft: #f5e6d0;
-  --accent-hover: #834e15;
-
-  /* HD system colors */
-  --personality: #2d2d2d;
-  --design: #c0392b;
-  --both: #6b4423;
-  --undefined: #c8c0b8;
-  --electromagnetic: #c47a2a;
-
-  /* Transit palette: shared by the SVG and UI. */
-  --transit-source: #1aadb7;
-  --transit-source-soft: #e4f1ef;
-  --transit-source-contrast: #16130f;
-  --transit-source-text: #19767b;
-
-  /* Center colors */
-  --defined-fill: var(--accent);
-  --undefined-fill: transparent;
-  --center-head: #e9d56b;
-  --center-ajna: #a3c46c;
-  --center-brown: #c2a06b;
-  --center-red: #dd6356;
-  --graph-personality: #262220;
-  --graph-design: #c0392b;
-  --graph-inactive: #b8b0a6;
-  --graph-undefined-center: #ffffff;
-  --graph-center-stroke: #c0b8ae;
-  --graph-text-inactive: #a39a90;
-
-  /* Type colors */
-  --generator: #d4a843;
-  --manifesting-generator: #e08832;
-  --manifestor: #c0392b;
-  --projector: #2980b9;
-  --reflector: #7f8c8d;
-
-  /* Circuit colors */
-  --individual: #8e44ad;
-  --individual-soft: #f0e6f6;
-  --tribal: #c0392b;
-  --tribal-soft: #fce4e4;
-  --collective: #2980b9;
-  --collective-soft: #e4f0fc;
-  --integration: #27ae60;
-  --integration-soft: #e4f6ec;
-
-  /* Comparison graph sources; identical values to the original palette. */
-  --connection-person-a: #2a9d8f;
-  --connection-person-b: #e07a5f;
-  --connection-bridged: #d4a23a;
-
-  /* Layout */
   --max-width: 1200px;
   --header-height: 56px;
   --radius: 8px;
   --radius-lg: 12px;
-
-  /* Typography */
   --font: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Crimson Pro', Georgia, serif;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-
-  /* Modal */
-  --modal-backdrop: rgba(15, 12, 8, 0.45);
-}
-
-/* Dark mode */
-[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #141210;
-  --bg-elevated: #1e1c18;
-  --bg-sunken: #0c0b09;
-  --text: #e8e4de;
-  --text-secondary: #9e978e;
-  --text-tertiary: #8a8378; /* lifted for AA on dark surfaces */
-  --border: #2a2620;
-  --border-subtle: #221f1a;
-  --accent: #d4943a;
-  --accent-strong: #8a5418; /* dark-mode CTA bg, 4.6:1 with white */
-  --accent-soft: #2a2115;
-  --accent-hover: #a3631d;
-  --personality: #e0dcd6;
-  --design: #e74c3c;
-  --both: #d4943a;
-  --undefined: #3a3630;
-  --transit-source: #66c7cc;
-  --transit-source-soft: #1a2726;
-  --transit-source-contrast: #16130f;
-  --transit-source-text: #66c7cc;
-  --center-head: #f0c040;
-  --center-ajna: #5ebd6e;
-  --center-brown: #c4884a;
-  --center-red: #e74c3c;
-  --graph-personality: #f5f0e8;
-  --graph-design: #e74c3c;
-  --graph-inactive: #8c847a;
-  --graph-undefined-center: #0d0c0a;
-  --graph-center-stroke: #5a5248;
-  --graph-text-inactive: #6f685f;
-  --individual-soft: #2a1d32;
-  --tribal-soft: #2a1515;
-  --collective-soft: #152030;
-  --integration-soft: #152a1d;
-  --connection-person-a: #3db5a5;
-  --connection-person-b: #e8927a;
-  --connection-bridged: #cda64a;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
-  --shadow: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
-  --modal-backdrop: rgba(0, 0, 0, 0.65);
 }
 
 /* =============================================
@@ -143,7 +22,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 
 /* P2-7: visible focus for keyboard users without polluting mouse clicks */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -324,7 +203,7 @@ body {
   width: 100%;
   padding: 12px 20px;
   background: var(--accent-strong);
-  color: white;
+  color: var(--accent-on);
   border: none;
   border-radius: var(--radius);
   font-size: 14px;
@@ -375,18 +254,12 @@ body {
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: #f7e8ef;
-  color: #8a2850;
-  border: 0.5px solid #d898b8;
+  background: var(--type-badge-bg);
+  color: var(--type-badge-text);
+  border: 0.5px solid var(--type-badge-border);
   border-radius: 20px;
   padding: 4px 14px;
   margin-bottom: 8px;
-}
-
-[data-theme="dark"] .type-badge {
-  background: #2a1520;
-  color: #d47898;
-  border-color: #582840;
 }
 
 .type-banner .type-detail {
@@ -399,13 +272,11 @@ body {
   margin-top: 12px;
   padding: 4px 14px;
   background: var(--accent-soft);
-  color: #8a5418; /* 5:1 on --accent-soft */
+  color: var(--type-strategy-text); /* 5:1 on --accent-soft */
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
 }
-
-[data-theme="dark"] .type-banner .type-strategy { color: var(--accent); }
 
 /* =============================================
    Chart Layout
@@ -429,15 +300,11 @@ body {
 }
 
 .bodygraph-container {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
+  background: var(--hd-graph-panel-bg);
+  border: 1px solid var(--hd-graph-panel-border);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-lg);
-}
-
-[data-theme="dark"] .bodygraph-container {
-  background: var(--bg-sunken);
 }
 
 /* Dark mode: give all inner cards a distinct surface so they read
@@ -661,10 +528,10 @@ body {
   margin-left: 6px;
 }
 
-.circuit-badge.individual { background: var(--individual-soft); color: var(--individual); }
-.circuit-badge.tribal { background: var(--tribal-soft); color: var(--tribal); }
-.circuit-badge.collective { background: var(--collective-soft); color: var(--collective); }
-.circuit-badge.integration { background: var(--integration-soft); color: var(--integration); }
+.circuit-badge.individual { background: var(--hd-circuit-individual-soft); color: var(--hd-circuit-individual); }
+.circuit-badge.tribal { background: var(--hd-circuit-tribal-soft); color: var(--hd-circuit-tribal); }
+.circuit-badge.collective { background: var(--hd-circuit-collective-soft); color: var(--hd-circuit-collective); }
+.circuit-badge.integration { background: var(--hd-circuit-integration-soft); color: var(--hd-circuit-integration); }
 
 .gate-item .gate-description {
   font-size: 13px;
@@ -987,7 +854,7 @@ body {
   align-items: start;
 }
 
-.bg-svg-wrap { min-width: 0; }
+.bg-svg-wrap { min-width: 0; background: var(--hd-graph-bg); }
 
 .bg-planets {
   display: flex;
@@ -995,6 +862,7 @@ body {
   gap: 1px;
   padding-top: 8px;
   font-variant-numeric: tabular-nums;
+  color: var(--hd-planet-column-text);
 }
 
 .bg-planets-head {
@@ -1005,8 +873,8 @@ body {
   margin-bottom: 2px;
 }
 
-.bg-planets-design .bg-planets-head { color: var(--design); }
-.bg-planets-personality .bg-planets-head { color: var(--personality); }
+.bg-planets-design .bg-planets-head { color: var(--hd-design); }
+.bg-planets-personality .bg-planets-head { color: var(--hd-personality); }
 
 .bg-planets-date {
   font-size: 9px;
@@ -1039,8 +907,8 @@ body {
   opacity: 0.75;
 }
 
-.bg-planets-design .bg-planet-act { color: var(--design); font-weight: 600; }
-.bg-planets-personality .bg-planet-act { color: var(--personality); font-weight: 600; }
+.bg-planets-design .bg-planet-act { color: var(--hd-design); font-weight: 600; }
+.bg-planets-personality .bg-planet-act { color: var(--hd-personality); font-weight: 600; }
 
 /* Hover highlight: dim everything, then re-light the hovered gate/channel */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
@@ -1065,8 +933,8 @@ body {
   width: max-content;
   max-width: min(260px, calc(100vw - 16px));
   padding: 8px 11px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: var(--hd-tooltip-bg);
+  border: 1px solid var(--hd-tooltip-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   font-size: 12px;
@@ -1078,12 +946,12 @@ body {
 
 .bg-tt-acts { margin-top: 3px; display: flex; flex-wrap: wrap; gap: 6px; }
 .bg-tooltip .bg-tt-source.natal, .bg-tooltip .bg-tt-source.inactive { color: var(--text-secondary); }
-.bg-tooltip .bg-tt-source.transit { color: var(--transit-source-text); }
+.bg-tooltip .bg-tt-source.transit { color: var(--hd-transit-text); }
 .bg-tooltip .bg-tt-source.both { color: var(--text-secondary); }
-.bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--transit-source-text); }
+.bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--hd-transit-text); }
 .bg-tooltip .bg-tt-source.completed { color: var(--accent); }
-.bg-tt-design { color: var(--design); font-weight: 600; }
-.bg-tt-personality { color: var(--personality); font-weight: 600; }
+.bg-tt-design { color: var(--hd-design); font-weight: 600; }
+.bg-tt-personality { color: var(--hd-personality); font-weight: 600; }
 .bg-tt-channel { margin-top: 3px; color: var(--text-secondary); font-size: 11px; }
 
 .bg-compact .bodygraph-svg { width: 100%; height: auto; }
@@ -1228,7 +1096,7 @@ body {
   color: var(--text);
 }
 .place-search .ps-input[aria-invalid="true"],
-.place-search .ps-manual[aria-invalid="true"] { border-color: var(--design); }
+.place-search .ps-manual[aria-invalid="true"] { border-color: var(--status-error); }
 .place-search .ps-results {
   position: absolute;
   top: 100%;
@@ -1285,7 +1153,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1475,8 +1343,8 @@ body.modal-open { overflow: hidden; }
    ============================================= */
 
 .gate-detail-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--accent);
+  background: var(--hd-detail-bg);
+  border: 1px solid var(--hd-detail-border);
   border-radius: var(--radius-lg);
   margin-bottom: 16px;
   box-shadow: var(--shadow);
@@ -1611,7 +1479,7 @@ body.modal-open { overflow: hidden; }
 .tl-detail-source.gate-detail-acts, .tl-detail-source.gate-detail-transits { padding: 0; margin: 0; border: 0; font-size: 13px; line-height: 1.65; }
 .tl-activation-label { color: var(--text-secondary); font-size: 12px; font-weight: 600; line-height: 1.5; }
 .tl-activation-label.tl-activation-natal:not(.tl-activation-inactive) { color: var(--accent); }
-.tl-activation-label.tl-activation-transit:not(.tl-activation-inactive) { color: var(--transit-source-text); }
+.tl-activation-label.tl-activation-transit:not(.tl-activation-inactive) { color: var(--hd-transit-text); }
 .tl-activation-label.tl-activation-inactive { color: var(--text-secondary); }
 .tl-detail-activations .tl-activation-row {
   display: grid;
@@ -1623,11 +1491,11 @@ body.modal-open { overflow: hidden; }
 .tl-activation-glyph { text-align: center; font-size: 1.08em; line-height: 1; }
 .tl-activation-identity, .tl-activation-value { min-width: 0; overflow-wrap: anywhere; }
 .tl-activation-value { font-variant-numeric: tabular-nums; }
-.tl-activation-transit { color: var(--transit-source-text); }
+.tl-activation-transit { color: var(--hd-transit-text); }
 .tl-detail-statuses .gate-detail-inactive { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.5; font-style: normal; }
 .gate-detail-body .transit-source-badge.tl-detail-channel-status { display: block; align-self: start; width: fit-content; padding: 0; margin: 0; border-radius: 0; background: none; font-size: 12px; font-weight: 600; line-height: 1.5; text-transform: none; letter-spacing: normal; }
 .gate-detail-body .tl-detail-channel-status.tl-activation-natal { color: var(--accent); }
-.gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--transit-source-text); }
+.gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--hd-transit-text); }
 .tl-detail-heading .center-detail-head { margin-bottom: 0; }
 .tl-detail-heading .lens-note { margin: 0 0 6px; }
 .tl-detail-timing { position: relative; min-width: 0; display: flex; flex-direction: column; padding: 42px 0 0 10px; font-size: 10px; line-height: 1.4; }
@@ -1822,7 +1690,7 @@ body.modal-open { overflow: hidden; }
 .lens-switch button.active {
   background: var(--bg-elevated);
   color: var(--text);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--lens-active-shadow);
 }
 .gate-lens-switch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .gate-lens-switch button { min-width: 0; min-height: 40px; line-height: 1.3; white-space: normal; overflow-wrap: break-word; }
@@ -1981,11 +1849,8 @@ body.modal-open { overflow: hidden; }
 }
 
 .reliability { color: var(--text-secondary); }
-.reliability-solid { background: #e9f4ed; }
-.reliability-soft { background: #f7eedd; }
-[data-theme="dark"] .reliability-solid { background: #1a2a20; }
-[data-theme="dark"] .reliability-soft { background: #2a2115; }
-[data-theme="dark"] .reliability-solid .reliability-dot { background: #3fae6e; }
+.reliability-solid { background: var(--status-success-soft); }
+.reliability-soft { background: var(--status-caution-soft); }
 
 .reliability-dot {
   flex-shrink: 0;
@@ -1996,7 +1861,7 @@ body.modal-open { overflow: hidden; }
   top: -1px;
 }
 
-.reliability-solid .reliability-dot { background: #27ae60; }
+.reliability-solid .reliability-dot { background: var(--status-success); }
 .reliability-soft .reliability-dot { background: var(--accent); }
 
 .shared-cta {
@@ -2025,8 +1890,8 @@ body.modal-open { overflow: hidden; }
   color: var(--text-tertiary);
 }
 
-.act-design { color: var(--design); font-weight: 600; }
-.act-personality { color: var(--personality); font-weight: 600; }
+.act-design { color: var(--hd-design); font-weight: 600; }
+.act-personality { color: var(--hd-personality); font-weight: 600; }
 
 .hanging-gates { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -2133,12 +1998,12 @@ body.modal-open { overflow: hidden; }
 .transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; width: 130px; min-width: 0; font-variant-numeric: tabular-nums; }
 .transit-planet-column { position: absolute; top: 38px; left: 0; z-index: 2; width: 58px; }
 .transit-graph .bg-planet-row { height: 17px; line-height: 17px; padding: 0 1px; gap: 1px; font-size: 10px; }
-.transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--transit-source-text); }
+.transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--hd-transit-text); }
 .transit-birth-head, .transit-birth-row { display: grid; grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr); gap: 2px; align-items: center; }
 .transit-birth-head { height: 20px; align-items: start; }
 .transit-birth-head .bg-planets-head { font-size: 9px; letter-spacing: 0; margin: 0; white-space: nowrap; }
-.transit-birth-head .bg-planets-head:first-child { text-align: right; color: var(--design); }
-.transit-birth-head .bg-planets-head:last-child { color: var(--personality); }
+.transit-birth-head .bg-planets-head:first-child { text-align: right; color: var(--hd-design); }
+.transit-birth-head .bg-planets-head:last-child { color: var(--hd-personality); }
 .transit-birth-row { height: 17px; }
 .transit-birth-row .transit-birth-value { min-width: 0; height: 17px; line-height: 17px; }
 .transit-birth-row .bg-planets-design { justify-content: flex-end; }
@@ -2249,9 +2114,9 @@ body.modal-open { overflow: hidden; }
   background: var(--bg-sunken);
   border-left: 3px solid var(--border);
 }
-.conn-detail-channel.electromagnetic { border-left-color: var(--electromagnetic, #c2725a); }
-.conn-detail-channel.companionship { border-left-color: var(--integration); }
-.conn-detail-channel.compromise { border-left-color: var(--collective); }
+.conn-detail-channel.electromagnetic { border-left-color: var(--hd-electromagnetic); }
+.conn-detail-channel.companionship { border-left-color: var(--hd-circuit-integration); }
+.conn-detail-channel.compromise { border-left-color: var(--hd-circuit-collective); }
 .conn-detail-channel.dominance { border-left-color: var(--text-tertiary); }
 .cdc-dyn {
   font-size: 10.5px; font-weight: 700; text-transform: uppercase;
@@ -2551,33 +2416,31 @@ body.modal-open { overflow: hidden; }
 }
 
 .field-error {
-  color: #b3422f;
+  color: var(--status-error);
   font-size: 12px;
   margin-top: 4px;
 }
-[data-theme="dark"] .field-error { color: #e07a68; }
-
-input[aria-invalid="true"] { border-color: #b3422f !important; }
+input[aria-invalid="true"] { border-color: var(--status-error) !important; }
 
 /* Transit sources use the shared palette above. Controls retain the app accent. */
 .transit-only-toggle[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .transit-view-toolbar { margin: 0 0 18px; }
-.transit-graph-legend { display:flex; flex-wrap:wrap; gap:10px 20px; font-size:12px; margin-bottom:10px; color:var(--text-secondary); }
+.transit-graph-legend { display:flex; flex-wrap:wrap; gap:10px 20px; font-size:12px; margin-bottom:10px; color:var(--hd-legend-text); }
 .transit-graph-legend > span, .transit-legend-group > span { display:flex; align-items:center; gap:7px; }
 .transit-legend-group { display:flex; flex-wrap:wrap; gap:10px 20px; max-width:100%; }
 .transit-key { display:inline-block; width:18px; height:12px; border-radius:2px; flex-shrink:0; }
-.transit-key.natal { background:linear-gradient(90deg,var(--design) 50%,var(--personality) 50%); }
-.transit-key.sky-gate { width:14px; height:14px; border-radius:50%; background:var(--transit-source); }
+.transit-key.natal { background:linear-gradient(90deg,var(--hd-design) 50%,var(--hd-personality) 50%); }
+.transit-key.sky-gate { width:14px; height:14px; border-radius:50%; background:var(--hd-transit); }
 .transit-key.natal, .transit-key.sky-line { width:22px; height:4px; border-radius:0; }
-.transit-key.sky-line { background:var(--transit-source); }
-.transit-key.both { border:2px solid var(--transit-source); border-radius:50%; width:14px; height:14px; }
-.transit-key.center { border:1px solid var(--transit-source); background:repeating-linear-gradient(135deg,var(--transit-source-soft) 0 3px,var(--transit-source) 3px 4px); }
-.transit-source-badge { background:var(--transit-source-soft); color:var(--transit-source-text); }
+.transit-key.sky-line { background:var(--hd-transit); }
+.transit-key.both { border:2px solid var(--hd-transit); border-radius:50%; width:14px; height:14px; }
+.transit-key.center { border:1px solid var(--hd-transit); background:repeating-linear-gradient(135deg,var(--hd-transit-soft) 0 3px,var(--hd-transit) 3px 4px); }
+.transit-source-badge { background:var(--hd-transit-soft); color:var(--hd-transit-text); }
 .gate-detail-body > .transit-source-badge { margin-left:0; }
 .transit-source-badge.natal, .transit-source-badge.inactive { background:var(--bg-sunken); color:var(--text-secondary); }
-.gate-detail-transits { color:var(--transit-source-text); }
-.center-status.transit-defined { color:var(--transit-source-text); }
-.gate-chip.transit-active { background:var(--transit-source-soft); color:var(--transit-source-text); border-color:var(--transit-source); }
+.gate-detail-transits { color:var(--hd-transit-text); }
+.center-status.transit-defined { color:var(--hd-transit-text); }
+.gate-chip.transit-active { background:var(--hd-transit-soft); color:var(--hd-transit-text); border-color:var(--hd-transit); }
 
 /* Direct drill-down for transit exploration. */
 /* Reuse the original card colors and row-lit accent without overriding them. */
@@ -2593,6 +2456,9 @@ input[aria-invalid="true"] { border-color: #b3422f !important; }
 .planet-detail-card .gate-detail-body { padding: 25px 30px 29px; }
 .planet-detail-card .tl-detail-header { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
 .planet-detail-card .detail-label { margin-bottom: 10px; }
+.planet-detail-card .gate-detail-body[data-source="design"] .detail-label { color: var(--hd-design); }
+.planet-detail-card .gate-detail-body[data-source="personality"] .detail-label { color: var(--hd-personality); }
+.planet-detail-card .gate-detail-body[data-source="transit"] .detail-label { color: var(--hd-transit-text); }
 .planet-detail-card .planet-detail-title {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
