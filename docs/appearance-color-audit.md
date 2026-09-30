@@ -61,3 +61,12 @@ This is a source audit, not a claim that every color combination has passed
 visual contrast review. Temporary purple Design, alternate Transit, individual
 G/Root, and light/dark browser checks belong in the implementation validation
 report. No test colors are part of the production palette.
+
+The default palette keeps the released site's principal values. Three small
+rendered differences follow from the requested single-source rule: personality
+SVG ink now uses the existing personality text token (`#2d2d2d` light,
+`#e0dcd6` dark) instead of its separate graph shade; the optional transit
+ring on a birth graph now uses Transit teal instead of the site accent;
+derived transit soft/text shades and center gradient cores may differ slightly
+from the former fixed/JS-generated values. These are linkage changes, not a
+new palette design.
