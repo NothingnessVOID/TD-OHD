@@ -683,7 +683,7 @@ function renderGatesPanel(container) {
 
   container.innerHTML = `
     <div class="panel-title">${t('Active Gates ({count})', { count: allGates.length })}</div>
-    <p class="panel-intro"><span class="act-design">${t('Red = Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Black = Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
+    <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
     ${gatesHtml}
   `;
   container.querySelectorAll('.gate-item').forEach(item => {
@@ -716,7 +716,7 @@ function renderPlanetsPanel(container) {
   const dDate = chart.positions?.design?.date;
   container.innerHTML = `
     <div class="panel-title">${t('Planetary Activations')}</div>
-    <p class="panel-intro">${t('Each planet activates a gate and line. Design (red) was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality (black) is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
+    <p class="panel-intro">${t('Each planet activates a gate and line. Design was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
     <div class="planet-table">
       <div class="planet-table-row planet-table-head">
         <span class="planet-cell act-design">${t('Design')}</span>
