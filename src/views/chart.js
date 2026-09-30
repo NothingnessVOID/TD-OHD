@@ -19,6 +19,7 @@ import {
 
 const humanList = items => formatDisplay('list', items);
 
+import { variableDirection } from '../lib/variable-arrows.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
@@ -745,13 +746,15 @@ function renderVariablePanel(container) {
     container.innerHTML = `<div class="panel-title">${t('Variable')}</div><p>${t('Variable data unavailable.')}</p>`;
     return;
   }
-  const arrowSymbol = (dir) => dir === 'left' ? '◀' : '▶';
+  const arrowSymbol = (dir) => dir === 'left' ? '←' : dir === 'right' ? '→' : '—';
   const card = (key, slot, label, sub) => {
+    if (!slot) return '';
+    const direction = variableDirection(slot);
     const [name] = variable(slot);
     const originalTerm = formatDisplay('originalTerm', slot.name);
     return `
     <div class="arrow-card" data-variable="${key}">
-      <div class="arrow-direction">${arrowSymbol(slot.arrow)} <span class="arrow-side">${t(slot.arrow === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
+      <div class="arrow-direction">${arrowSymbol(direction)} <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}${originalTerm ? ` <span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
       <div class="arrow-desc">${esc(contentText(slot.description))}</div>
@@ -760,14 +763,15 @@ function renderVariablePanel(container) {
     </div>
   `; };
   container.innerHTML = `
-    <div class="panel-title">${t('Variable — {notation}', { notation: esc(v.notation) })}</div>
+    <div class="panel-title">${t('Variable')}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
     <div class="variable-grid">
-      ${card('determination', v.determination, t('Determination (Digestion)'), v.determination.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
+      ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
       ${card('motivation', v.motivation, t('Motivation'))}
       ${card('environment', v.environment, t('Environment'))}
-      ${card('perspective', v.perspective, t('Perspective (View)'))}
+      ${card('perspective', v.perspective, t('Perspective'))}
     </div>
+    <div class="variable-notation">${esc(v.notation || '')}</div>
   `;
 }
 

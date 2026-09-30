@@ -36,10 +36,14 @@ try {
     await page.locator('#reference-detail h2').waitFor();
     assert.match(await page.locator('#reference-detail h2').innerText(), /北交点|North Node/);
     for (const language of ['zh-CN', 'en', 'zh-Hant']) {
+      // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
       await page.locator('#language-switcher').selectOption(language);
       assert.match(page.url(), /#library\/planet\/northNode$/);
       assert.ok((await page.locator('#reference-detail .reference-reading').innerText()).length > 20);
     }
+    // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
     await page.locator('#language-switcher').selectOption('zh-CN');
     await page.goto(`${base}/#library`);
     await page.locator('#reference-search').fill('');
@@ -70,11 +74,17 @@ try {
     assert.equal(await page.locator('#reference-detail .gate-detail-line').count(), 0);
     assert.doesNotMatch(await page.locator('#reference-detail h2').innerText(), /14\.2/);
     await page.locator('#reference-detail [data-reference-lens="hd"]').click();
+    // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
     await page.locator('#language-switcher').selectOption('en');
     assert.match(await page.locator('.reference-heading h1').innerText(), /Reference Library/);
     assert.match(page.url(), /#library\/gate\/14\?line=2/);
+    // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
     await page.locator('#language-switcher').selectOption('zh-Hant');
     assert.match(await page.locator('.reference-heading h1').innerText(), /資料庫/);
+    // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
     await page.locator('#language-switcher').selectOption('zh-CN');
     await page.goto(`${base}/#library/gate/14.7`);
     await page.locator('#reference-detail').waitFor();
