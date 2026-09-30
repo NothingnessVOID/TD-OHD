@@ -5,7 +5,7 @@ import { GATES, CHANNELS, CENTERS, TYPES, PROFILES, AUTHORITIES, CIRCUIT_GROUPS 
 const centerKeys = { Root: 'root', Sacral: 'sacral', Emotions: 'solar', Spleen: 'spleen', Heart: 'heart', Self: 'g', Throat: 'throat', Mind: 'ajna', Crown: 'head' };
 const typeKeys = { Manifestor: 'manifestor', ManifestingGenerator: 'manifestingGenerator', Generator: 'generator', Projector: 'projector', Reflector: 'reflector' };
 const authorityKeys = { Emotional: 'emotional', Sacral: 'sacral', Splenic: 'splenic', EgoManifested: 'ego', EgoProjected: 'ego', SelfProjected: 'self', Mental: 'mental', Lunar: 'lunar' };
-const definitionNames = { None: 'No Definition', SingleDefinition: 'Single Definition', SplitDefinition: 'Split Definition', TripleSplitDefinition: 'Triple Split Definition', QuadrupleSplitDefinition: 'Quadruple Split Definition' };
+const definitionNames = { Empty: 'No Definition', SingleDefinition: 'Single Definition', SplitDefinition: 'Split Definition', TripleSplit: 'Triple Split Definition', QuadrupleSplit: 'Quadruple Split Definition' };
 const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 const variableNames = {
   determination: ['Appetite', 'Taste', 'Thirst', 'Touch', 'Sound', 'Light'],
@@ -84,9 +84,9 @@ function makeVariable(personality, design) {
   const motivation = variableItem('motivation', personality.sun);
   const perspective = variableItem('perspective', personality.northNode);
   const letter = item => item.arrow === 'left' ? 'L' : 'R';
+  const notation = `P${letter(motivation)}${letter(perspective)} D${letter(determination)}${letter(environment)}`;
   return { determination, environment, motivation, perspective,
-    notation: `${letter(determination)}${letter(environment)} ${letter(motivation)}${letter(perspective)}`,
-    standardNotation: `P${letter(motivation)}${letter(perspective)} D${letter(determination)}${letter(environment)}`,
+    notation, standardNotation: notation,
     digestiveType: determination.name, environmentType: environment.name,
     motivationType: motivation.name, perspectiveType: perspective.name };
 }
@@ -111,7 +111,7 @@ export function adaptSharpChart(raw, birth) {
   const crossGates = [personality.sun.gate, personality.earth.gate, design.sun.gate, design.earth.gate];
   const angle = profileNumbers === '4/1' ? 'juxtaposition' : ['5/1', '5/2', '6/2', '6/3'].includes(profileNumbers) ? 'left' : 'right';
   const angleName = { right: 'Right Angle', left: 'Left Angle', juxtaposition: 'Juxtaposition' }[angle];
-  const crossName = raw.incarnationCross.replace(/^(RightAngle|LeftAngle|Juxtaposition)CrossOf/, '').replace(/([a-z])([A-Z])/g, '$1 $2');
+  const crossName = raw.incarnationCross.replace(/^(RightAngle|LeftAngle|Juxtaposition)CrossOf/, '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Za-z])(\d+)$/, '$1 $2');
   const cross = { angle, angleName, name: crossName,
     fullName: `${angleName} Cross of ${crossName} (${crossGates[0]}/${crossGates[1]} | ${crossGates[2]}/${crossGates[3]})`,
     gates: crossGates, gateNames: crossGates.map(g => GATES[g].name) };
