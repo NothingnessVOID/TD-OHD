@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
       - name: Install locked dependencies
         run: npm ci
       - name: Check locales, terminology, interpolation and language switching contracts

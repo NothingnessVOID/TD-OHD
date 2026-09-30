@@ -67,58 +67,61 @@ function addMemberRow() {
   membersContainer.appendChild(row);
 }
 
-function runTeamAnalysis() {
+async function runTeamAnalysis() {
   const current = getCurrentChart();
   const charts = [];
   const names = [];
   const generatedNames = new Map();
+  try {
+    // Saved people (checkboxes)
+    const people = listPeople();
+    for (const cb of document.querySelectorAll('#team-saved input[type=checkbox]:checked')) {
+      const person = people.find(p => p.id === cb.value);
+      if (!person) continue;
+      // Reuse the already-computed chart for the current person
+      if (current?.birth?.id === person.id) {
+        charts.push(current.chart);
+        names.push(person.name);
+      } else {
+        const data = await computeChart(birthFromPerson(person));
+        charts.push(data.chart);
+        names.push(person.name);
+      }
+    }
 
-  // Saved people (checkboxes)
-  const people = listPeople();
-  document.querySelectorAll('#team-saved input[type=checkbox]:checked').forEach(cb => {
-    const person = people.find(p => p.id === cb.value);
-    if (!person) return;
-    // Reuse the already-computed chart for the current person
-    if (current?.birth?.id === person.id) {
-      charts.push(current.chart);
-      names.push(person.name);
-    } else {
-      const data = computeChart(birthFromPerson(person));
+    // Quick-add rows
+    for (const row of document.querySelectorAll('#team-members .team-member-row')) {
+      const date = row.querySelector('.team-date').value;
+      if (!date) continue;
+      const time = row.querySelector('.team-time').value || '12:00';
+      const loc = row._placeSearch?.getBirthLocation(date, time);
+      if (!loc) { row._placeSearch?.flagMissing(); continue; } // skip rather than chart at UTC=0
+      const enteredName = row.querySelector('.team-name').value.trim();
+      const number = charts.length + 1;
+      const name = enteredName || t('Person {number}', { number });
+      if (!enteredName) generatedNames.set(name, number);
+      const data = await computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
+      if (localMode) {
+        try { savePerson({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null }); }
+        catch (e) { reportSaveFailure(e); }
+      }
       charts.push(data.chart);
-      names.push(person.name);
+      names.push(name);
     }
-  });
 
-  // Quick-add rows
-  document.querySelectorAll('#team-members .team-member-row').forEach((row) => {
-    const date = row.querySelector('.team-date').value;
-    if (!date) return;
-    const time = row.querySelector('.team-time').value || '12:00';
-    const loc = row._placeSearch?.getBirthLocation(date, time);
-    if (!loc) { row._placeSearch?.flagMissing(); return; } // skip rather than chart at UTC=0
-    const enteredName = row.querySelector('.team-name').value.trim();
-    const number = charts.length + 1;
-    const name = enteredName || t('Person {number}', { number });
-    if (!enteredName) generatedNames.set(name, number);
-    const data = computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
-    if (localMode) {
-      try { savePerson({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null }); }
-      catch (e) { reportSaveFailure(e); }
+    if (charts.length < 2) {
+      latestTeamState = { kind: 'error' };
+      document.getElementById('team-content').innerHTML =
+        `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
+      return;
     }
-    charts.push(data.chart);
-    names.push(name);
-  });
 
-  if (charts.length < 2) {
-    latestTeamState = { kind: 'error' };
-    document.getElementById('team-content').innerHTML =
-      `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
-    return;
+    const result = analyzePenta(charts, names);
+    latestTeamState = { kind: 'result', result, generatedNames };
+    renderTeamContent(result, generatedNames);
+  } catch (error) {
+    document.getElementById('team-content').innerHTML = `<p class="panel-intro">${esc(error.message)}</p>`;
   }
-
-  const result = analyzePenta(charts, names);
-  latestTeamState = { kind: 'result', result, generatedNames };
-  renderTeamContent(result, generatedNames);
 }
 
 export function refreshTeamLanguage() {
