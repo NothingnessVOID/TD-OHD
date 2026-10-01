@@ -6,6 +6,12 @@ const menu = () => document.getElementById('chart-share-menu');
 const actions = () => menu().querySelector('.chart-share-actions');
 let dismissalBound = false;
 
+function siteColor(token) {
+  const color = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+  if (!color) throw new Error(`Missing appearance token: ${token}`);
+  return color;
+}
+
 function bindShareMenuDismissal() {
   if (dismissalBound) return;
   dismissalBound = true;
@@ -61,10 +67,9 @@ async function renderLocalChartPng() {
     canvas.width = 1080;
     canvas.height = 1920;
     const context = canvas.getContext('2d');
-    const theme = getComputedStyle(document.documentElement);
-    context.fillStyle = theme.getPropertyValue('--bg').trim() || '#faf8f5';
+    context.fillStyle = siteColor('--bg');
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = theme.getPropertyValue('--text').trim() || '#1a1714';
+    context.fillStyle = siteColor('--text');
     context.textAlign = 'center';
     context.font = '52px sans-serif';
     context.fillText('Human Design', 540, 150);
@@ -84,12 +89,11 @@ async function renderViewPng(view) {
   // Keep the screenshot local. Loading the renderer on demand avoids adding it
   // to the initial chart, transit, and timeline bundles.
   const { toBlob } = await import('html-to-image');
-  const theme = getComputedStyle(document.documentElement);
   const width = Math.ceil(root.getBoundingClientRect().width);
   const height = Math.ceil(root.getBoundingClientRect().height);
   const pixelRatio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(24_000_000 / Math.max(width * height, 1)));
   const blob = await toBlob(root, {
-    backgroundColor: theme.getPropertyValue('--bg').trim() || '#faf8f5',
+    backgroundColor: siteColor('--bg'),
     pixelRatio,
     skipFonts: true,
     // Export the visible view as it is, including its current scroll position.

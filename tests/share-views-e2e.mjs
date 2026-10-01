@@ -20,6 +20,7 @@ try {
     }
     if (view === 'timeline') await page.waitForFunction(() =>
       document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
+    await page.locator('#more-toggle').click();
     assert.equal(await page.locator('#chart-share-menu summary').isVisible(), true, `${view} share button`);
     await page.locator('#chart-share-menu summary').click();
     assert.equal(await page.locator('#save-image').isVisible(), true, `${view} image action`);
@@ -50,6 +51,7 @@ try {
     document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
   assert.equal(await mobile.locator('.tl-mobile-share').count(), 0, 'mobile timeline has no duplicate image action');
   await mobile.locator('.tl-mobile-exit').click();
+  await mobile.locator('#more-toggle').click();
   assert.equal(await mobile.locator('#chart-share-menu summary').isVisible(), true, 'mobile header exposes the shared image action');
   await mobile.locator('#chart-share-menu summary').click();
   const mobileDownloaded = mobile.waitForEvent('download', { timeout: 30000 });
