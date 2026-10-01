@@ -1,10 +1,76 @@
 # Open Human Design — Platform Architecture
 
-> Accounts, sync, and the user-scoped remote MCP server. Synthesized 2026-06-04 from
-> 4-angle platform research + 3 competing architecture proposals + a 3-lens judge panel
-> (unanimous winner: Cloudflare-native). Companion to `RESEARCH.md` (product requirements).
+> Current TD-OHD runtime updated 2026-10-01 after the SharpAstrology migration.
+> The cloud platform, pricing, brand and roadmap sections preserve the historical
+> 2026-06-04 planning record. Those plans are optional and are not the current
+> production deployment. Companion to `RESEARCH.md` (product requirements).
 
-## The destination
+## Current runtime architecture
+
+Production: [TD-OHD on Netlify](https://td-ohd.netlify.app/), a static deployment.
+Birth, Transit and Timeline realtime snapshots / missing-data fallback use the
+same browser runtime. No calculation server is required for the production app.
+
+```text
+CURRENT PRODUCTION
+Netlify static hosting (SPA, WASM, assemblies and ephemeris assets)
+  ↓
+Vite browser SPA
+  ↓
+.NET 10 Browser WASM (one shared lazy initialization)
+  ↓
+SharpAstrology.HumanDesign 1.2.0
+  ↓
+SharpAstrology.SwissEph 0.5.1
+  ↓
+pinned file-based Swiss Ephemeris .se1 files
+```
+
+`allowMoshierFallback: false`: missing Swiss files or calculation failures report
+an error; there is no fallback to another astronomical engine or external API.
+The 2021–2036 annual transit data was regenerated with SharpAstrology + Swiss.
+The native generator and browser runtime share the C# transit core; Timeline
+loads verified annual data and uses the same browser Sharp runtime when that data
+is unavailable. See [the migration record](SHARP_ENGINE_MIGRATION.md).
+
+Derived application logic is maintained by TD-OHD locally:
+
+```text
+TD-OHD local modules
+├─ Gene Keys
+├─ Connection
+├─ Penta / Team
+├─ transit overlay analysis and topology
+└─ canonical HD static catalogs (GATES / CHANNELS / CENTERS and vocabulary)
+```
+
+The astronomical / HD activation engine, these local derived modules, and product
+services (Auth / Sync / MCP) are separate layers. NatalEngine 1.6.0 is a historical
+source, not a runtime dependency: package and lockfile entries, runtime / test /
+script imports and the seconds patch have been removed. Its third-party source
+and MIT attribution remain in [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+
+```text
+OPTIONAL / FUTURE CLOUD PLATFORM — not current production
+Cloudflare Worker
+├─ authentication
+├─ birth-profile sync
+├─ OAuth / MCP
+└─ optional server-side chart endpoints
+   └─ explicit compatible env.SHARP_ENGINE host adapter required
+```
+
+No Cloudflare Worker calculation backend was deployed as part of the migration.
+Computational paths used by `worker/mcp.js`, `worker/og.js` and `worker/seo.js`
+require an explicit `env.SHARP_ENGINE` host adapter through
+`worker/chart-provider.js`. Birth and transit require `calculateBirth` and
+`calculateTransit`; optional astrology also requires `calculateAstrology`.
+The migration does not provision a server-side Sharp runtime. Without the required
+adapter method, computation fails explicitly; it does not silently use the old
+engine, another astronomical engine, or fabricated results. Static catalog and
+non-computational routes do not need this adapter.
+
+## The destination (historical cloud platform plan)
 
 A person asks their AI: *"Pull up my partner's chart — are we electromagnetic anywhere?"*
 — and it just works, because they connected Open HD to Claude once, months ago.
@@ -12,7 +78,8 @@ A person asks their AI: *"Pull up my partner's chart — are we electromagnetic 
 Three experiences, in priority order:
 
 1. **Anonymous (default, sacred)** — enter a birthday, get a chart, instantly. No wall,
-   no account, no network dependency for core flows. Byte-identical to today's static app.
+   no account, no calculation backend dependency for core flows. The current static
+   app downloads its WASM and pinned Swiss assets before calculation.
 2. **Signed in (optional)** — saved people sync across devices. Sign-in is a *convenience
    upgrade*, surfaced lazily ("sync across devices / connect your AI"), never a gate.
 3. **AI-connected (the magic)** — a hosted, user-scoped MCP server. Connect once via
@@ -21,19 +88,25 @@ Three experiences, in priority order:
 
 ## The load-bearing insight
 
-**Charts are never stored.** natalengine is deterministic, pure-JS, and runs anywhere —
-browser, Worker, MCP tool handler. Only *birth data* persists (~6 fields/person, ≤50
-people/user). Consequences:
+**Charts are never stored.** Stored profiles contain birth data, and charts are
+deterministically recomputed from that data. The current browser calculation uses
+SharpAstrology.HumanDesign + SharpAstrology.SwissEph + file-based Swiss Ephemeris
+through .NET Browser WASM. Cloud sync, when enabled on a configured optional
+platform, persists birth profiles rather than chart calculation results.
+Consequences for that optional platform:
 
 - The backend is tiny: `users`, `people`, OAuth tokens. No chart cache, no invalidation,
-  no migrations when the engine improves — recompute is always fresh and always right.
-- The privacy story is data minimization, for real: we hold birth data only, nothing derived.
-- The same engine version serves the SPA and the MCP — one source of truth for accuracy.
+  no chart-result migrations when the engine improves. Recomputations use the
+  configured engine and ephemeris versions; correctness is verified separately.
+- The storage contract minimizes data: birth profiles only, no derived charts.
+- Browser and native annual generation share the Sharp transit core. A future MCP
+  compute host must explicitly supply a compatible Sharp + file Swiss adapter;
+  shared server/browser versions are a requirement, not a deployed guarantee.
 
-## Decision: Cloudflare all the way
+## Historical decision: Cloudflare cloud platform (not current production)
 
-Three architectures were designed and judged (CF-native / Supabase-centric / local-first
-purist). **Cloudflare-native won 3/3** on the lenses that matter here (solo-maintainer ops,
+In the June 2026 planning exercise, three architectures were designed and judged
+(CF-native / Supabase-centric / local-first purist). **Cloudflare-native won 3/3** on the lenses that matter here (solo-maintainer ops,
 MCP quality with real clients, cost, open-source ethos). Why:
 
 | Factor | Cloudflare | Supabase |
@@ -42,46 +115,58 @@ MCP quality with real clients, cost, open-source ethos). Why:
 | Always-on cost | **$0–5/mo** (DOs free since Apr 2025; D1/Workers free tiers cover hobby→10k users) | **$25/mo floor** — free tier pauses projects after 7 days of DB inactivity, disqualifying for an always-on MCP endpoint |
 | Ops | ONE Worker, ONE `wrangler deploy`, ONE log stream | Two platforms (static host + Supabase) |
 | Auth | better-auth on Workers+D1 (magic link, Google/Apple, passkeys later) — more DIY | Turnkey, best-in-class (anonymous-upgrade-in-place is genuinely elegant) |
-| Engine compat | natalengine + astronomy-engine are pure ESM, zero data files — bundle comfortably under the 3 MiB free limit (verified) | Also fine (npm: specifiers in Deno) |
+| Current engine/runtime characteristics | SharpAstrology uses .NET 10 Browser WASM and file-based Swiss assets delivered by the static host. The current Netlify app needs no server. Optional Worker compute needs an explicit Sharp host adapter; the old in-process bundle assumption is superseded. | No Supabase Sharp host/runtime was supplied or validated by this migration. |
 
 Supabase's one real edge — fastest path to turnkey sync — doesn't outweigh the $25 floor
 and the hand-rolled MCP auth seam, given that the MCP *is the headline feature*.
 
-**Client reality check (2026):** Claude supports custom remote connectors on ALL plans
+**Historical client assessment (June 2026; not revalidated here):** Claude supports custom remote connectors on ALL plans
 (Free gets 1) — paste URL, browser OAuth consent. ChatGPT: developer mode, all plans.
 Cursor: one-click + OAuth. Current spec: 2025-06-18, Streamable HTTP, OAuth 2.1 + PKCE,
 RFC 9728 protected-resource metadata, RFC 8707 resource indicators, DCR (RFC 7591 — what
 Notion/Linear/Stripe actually ship; CIMD later). The demand side is consumer-ready *now*.
 
-## Architecture
+## Architecture: production and optional cloud services
 
+The current production diagram is in **Current runtime architecture** above.
+Netlify delivers the static app; browser WASM performs chart calculations.
+The following router describes the optional cloud platform code / plan, not an
+active TD-OHD production calculation backend:
+
+```text
+Optional Cloudflare Worker
+├─ Static Assets                       → optional SPA hosting
+├─ /api/auth/*                         → better-auth
+├─ /api/sync                           → D1 birth-profile sync
+├─ /mcp                               → MCP handlers
+├─ OAuth / discovery routes            → optional account integration
+└─ computational MCP / OG / SEO paths  → explicit env.SHARP_ENGINE host adapter
 ```
-                        ┌────────────────────── Cloudflare Worker (one deploy) ──────────────────────┐
- Browser (SPA)          │  Router:                                                                    │
- ┌──────────────┐       │   /*                    → Static Assets (Vite SPA, index.html fallback)     │
- │ Vite app     │──GET──┼─▶ /api/auth/*           → better-auth (magic link, Google, Apple)           │
- │ localStorage │◀─sync─┼─▶ /api/sync             → D1 LWW delta sync (session cookie)                │
- │ (live store) │       │   /mcp                  → OAuthProvider.apiHandler = OpenHDMcp.serve()      │
- └──────────────┘       │   /authorize /token /register /.well-known/* → workers-oauth-provider       │
-       ▲                │                                                                             │
- Claude/ChatGPT/Cursor  │  Bindings: ASSETS · DB (D1) · OAUTH_KV (KV) · OPENHD_MCP (DO namespace)     │
-       └──── OAuth ────▶│  Compute:  natalengine imported in-process (calculators, NOT the stdio mcp) │
-                        └─────────────────────────────────────────────────────────────────────────────┘
-```
+
+Auth, sync and MCP provisioning remain separate from astronomical computation.
+The browser WASM runtime is not automatically imported into a Worker. A compatible
+server Sharp host must be supplied and validated before cloud compute is usable.
 
 ### Storage seam (already built)
 
-`src/lib/people.js` is the single persistence seam (59 lines, wraps natalengine profiles).
-It becomes a `PeopleStore` interface with two impls:
+TD-OHD maintains its own birth-profile persistence and PeopleStore seam:
+`src/lib/profile-storage.js` handles browser profiles, and `src/lib/people.js`
+provides the application-facing store. Existing saved records survive migration.
+The optional cloud plan uses two roles:
+
 - **LocalStore** — today's localStorage. Always the live source of truth for the UI
   (instant, optimistic, offline-correct).
 - **SyncStore** — decorator added when signed in: queues pushes, merges pulls. `main.js`
-  never changes.
+  consumes the store seam.
 
 `VITE_OHD_API_BASE` unset → all sync code dead-paths → the app remains a pure static
 site for self-hosters. **The backend is an enhancement, never a dependency.**
 
-### Schema (D1) — mirrors natalengine's profile shape losslessly
+### Schema (D1) — TD-OHD stored birth-profile contract
+
+This optional cloud storage schema mirrors TD-OHD's stored birth-profile contract.
+It persists birth data and profile metadata, not chart calculation results, and
+is independent of the astronomical engine. The schema design is unchanged.
 
 ```sql
 CREATE TABLE people (
@@ -118,11 +203,14 @@ on `updated_at` is *correct*, not a compromise. CRDTs are overkill.
 - No server-side anonymous users — anonymous stays *truly local* (no MAU churn, no shadow
   accounts). Sign-in is the moment data first leaves the device, and the UI says so.
 
-### MCP server (the headline)
+### MCP server (optional cloud platform)
 
-`OpenHDMcp extends McpAgent` (Durable Object per session, Streamable HTTP), wrapped by
-`workers-oauth-provider` (authorize/token/register + discovery + DCR). better-auth is the
-OAuth upstream, so SPA identity and MCP identity are one user.
+The June design proposed `McpAgent` and Durable Objects. The current repository
+instead exposes `handleMcpRequest` in `worker/mcp.js` using stateless Streamable
+HTTP; `worker/index.js` wraps routing with `workers-oauth-provider`. The optional
+auth integration uses better-auth, intending SPA and MCP identity to share one user.
+This section preserves the cloud integration design; it is not a production
+readiness claim. Compute handlers require the Sharp host adapter described above.
 
 **Tool design principle: the right number is "one tool per human intent."** Not one per
 engine function (overwhelming — the engine has dozens), not one mega-tool (un-promptable).
@@ -135,12 +223,13 @@ BirthInput = { birthDate, birthTime?, place? }        // place geocoded + tz-res
            | "Saved Name"                              // Phase 4+, signed-in only
 ```
 
-> **Decision 2026-06-06: the hosted MCP requires sign-in.** A free anonymous endpoint
-> would undercut the metering model (unlimited anonymous compute beside a 50-unit
-> signed-in tier is incoherent), and every connector becoming an account feeds the
-> supporter funnel. The zero-auth path for power users is the engine's own stdio MCP
-> (`npx natalengine-mcp`) — and self-hosters can run their own Worker. One URL:
-> `openhumandesign.com/mcp`, OAuth from the first request.
+> **Historical decision 2026-06-06: hosted MCP requires sign-in.**
+> The proposed anonymous endpoint would undercut the planned metering model.
+> The former `npx natalengine-mcp` escape hatch is a superseded architecture note,
+> not a current TD-OHD recommendation or dependency. The proposed
+> `openhumandesign.com/mcp` URL is part of that historical brand/platform plan,
+> not the current production site. Self-hosted Worker computation now requires an
+> explicit compatible Sharp host adapter; the static app remains the local option.
 
 **The five compute tools** (deterministic math; metered at 1 unit each):
 
@@ -168,31 +257,30 @@ Three design rules with teeth:
 - **`ai_access` is enforced in the query**, not the prompt: MCP tools can only see rows
   the user explicitly flagged. "Your AI sees exactly what you granted" is a database
   guarantee, not a policy claim.
-- **The engine stays a pure math library; the MCP lives in the product.** (Decision
-  2026-06-04, reversing an earlier draft.) natalengine = calculators + data tables,
-  deterministic, zero I/O — the thing others build on. The MCP server knows about users,
-  people, and `ai_access`, so it belongs here in the Worker, which imports the engine's
-  *calculators* directly (never the stdio entry). Longer-term, the engine should get
-  *lighter*: the stdio MCP bin stays as a demo, but `storage/profiles.js`-style product
-  features migrate up into apps. Anyone wanting their own MCP wraps the library in ~50
-  lines, as we do.
+- **Keep activation, derived logic and product services separate.** The
+  astronomical / HD activation layer is SharpAstrology + file Swiss Ephemeris.
+  Gene Keys, Connection, Penta, transit topology and vocabulary belong to TD-OHD's
+  local modules. Auth, sync, people and `ai_access` belong to the product service
+  layer. Worker compute uses an explicitly supplied compatible Sharp host adapter;
+  it does not directly import a JavaScript astronomy calculator or stdio server.
 - **One-shot tools.** Each tool answers a whole human intent in one call — `get_chart`
   inlines the relevant interpretive text so the AI rarely needs a follow-up. Fewer
   round-trips = better answers, less context burn, and fair metering (below).
 
 ### Multi-system from day one (the suite question, deferred correctly)
 
-The people store is system-agnostic (birth data only) and the engine already computes
-Western astrology, Vedic, and Gene Keys. So the MCP exposes `calculate_astrology` /
-`gene_keys_profile` etc. nearly for free, making the *AI surface* multi-system before any
-second app exists. Product strategy: **OpenHD stays the focused best-in-class HD app**
-(the open competitive lane per RESEARCH.md); future astrology/Gene Keys apps would be new
-frontends on this same Worker — same accounts, same people, same MCP.
+The people store remains system-agnostic because it stores birth data only.
+The historical plan was to expose multiple systems through one account/MCP layer
+before adding separate frontends. Currently, HD activations come from Sharp and
+Gene Keys is a local derived module. Optional server astrology requires the host's
+explicit `calculateAstrology` implementation; this migration does not claim a
+production Western/Vedic astrology service. The future suite, shared accounts,
+people store and specialty frontends remain planned product directions.
 
-### Privacy ladder (honest by construction)
+### Privacy ladder (historical optional cloud design)
 
-E2E encryption is fundamentally incompatible with server-side chart computation — so we
-don't pretend. The ladder, stated plainly in the UI:
+The June design assumed that server-side computation would need plaintext birth
+data and proposed a separate encrypted sync-only tier. Its planned UI ladder was:
 
 1. **Default**: "Your birth data stays on your device." (true, literally)
 2. **Sync on**: "Stored encrypted-at-rest so your devices stay in sync. We store only
@@ -202,7 +290,7 @@ don't pretend. The ladder, stated plainly in the UI:
 4. *(Phase 5, optional)*: true-E2E "sync without AI" tier — passphrase, AES-256-GCM,
    server stores ciphertext — for privacy maximalists, mutually exclusive with MCP.
 
-## Pricing (decided 2026-06-04)
+## Pricing (historical plan, decided 2026-06-04; not a live offering)
 
 **$3/month or $20/year** — for the cloud, never the app.
 
@@ -220,20 +308,28 @@ don't pretend. The ladder, stated plainly in the UI:
   chart."* Implementation: a monthly counter column in D1.
 - Rationale: the market hates paywalls (RESEARCH.md §1.3); we charge only for what runs
   on our servers. Annual ($20) keeps Stripe fees ~4% (vs ~33% at $1/mo). Infra floor is
-  $5/mo → subscriber #3 makes the platform self-sustaining. Compute is not a cost factor:
-  a full chart + gene keys benchmarks at **0.9ms** of Worker CPU.
+  $5/mo → subscriber #3 makes the platform self-sustaining in that historical model.
+  The earlier Worker CPU benchmark belonged to the superseded engine architecture
+  and does not establish Sharp host costs. No new performance or pricing estimate
+  is asserted here.
 
-## Brand & domain architecture (decided 2026-06-04)
+## Brand & domain architecture (historical platform/brand plan, 2026-06-04)
+
+The names, domain ownership/availability notes and connector copy below record
+June's planning assumptions. They are not current deployment facts. The current
+production URL is `https://td-ohd.netlify.app/`; this migration did not provision
+the proposed account, MCP or specialty domains.
 
 - **Consumer apps get specialty domains.** This app: `openhumandesign.com` (checked
   available 2026-06-04 — register in the same Cloudflare account that runs the Worker).
   Future astrology/Gene Keys frontends get their own names. Specialty positioning wins
   (RESEARCH.md); an umbrella consumer brand would dilute it.
-- **The platform stays quiet on `natalengine.com`** (already owned): OAuth at
-  `accounts.natalengine.com`, MCP at `mcp.natalengine.com`. The MCP connector name users
-  see in Claude is deliberately multi-system: *NatalEngine — your people's charts, any
-  system*. When app #2 arrives, "sign in with your NatalEngine account" is the whole
-  cross-app story.
+- **Historical umbrella brand proposal:** `natalengine.com` was recorded as
+  already owned; `accounts.natalengine.com` and `mcp.natalengine.com` were proposed
+  for OAuth and MCP. Proposed connector copy was *NatalEngine — your people's
+  charts, any system*, with "sign in with your NatalEngine account" as a future
+  cross-app story. These names describe the old brand plan, not the current engine
+  dependency or a deployed TD-OHD account/MCP service.
 - **Naming caution:** the bare "OpenHD" shorthand collides with an established FOSS
   project (OpenHD, drone video — openhdfpv.org). Use the full "Open Human Design"
   wordmark; don't tattoo the abbreviation. (The name itself is still being felt out —
@@ -248,18 +344,24 @@ don't pretend. The ladder, stated plainly in the UI:
    ever stored, trivially portable.
 3. **Open interface** — the MCP/API contract is public; we charge for hosting, not access
    to the interface.
-4. **Open engine** — natalengine is MIT on npm; competing frontends welcome.
+4. **Open engine** — the historical plan cited NatalEngine's MIT npm library.
+   Current calculation uses SharpAstrology + Swiss; licensing and source attribution
+   are recorded in `THIRD_PARTY_NOTICES.md`. Competing frontends remain welcome.
 5. **Self-hosting as credible exit** — the static app runs with the backend env unset,
    forever. HD users mostly won't self-host; the point is the *guarantee* (our cloud must
    earn its keep), not the practice.
 
-## Build phases
+## Build phases (historical cloud roadmap; not current production status)
+
+These June 2026 milestones and effort estimates are retained as the planning
+record. Historical code/test completion does not establish current deployment or
+Sharp server compute readiness. The current static runtime is described above.
 
 | Phase | What | Effort |
 |---|---|---|
 | **0** | ✅ *done 2026-06-04* — `PeopleStore` seam in `src/lib/people.js` (no behavior change; protects self-hosters) | ~0.5 day |
 | **1** | ✅ *code done 2026-06-04* — `wrangler.jsonc` + `worker/index.js` (Workers Static Assets, SPA fallback); **deploy pending `wrangler login` + domain** | ~0.5–1 day |
-| **2** | ✅ *code done 2026-06-04* — `worker/mcp.js`: all five tools live, stateless streamable HTTP, flexible geocoding, 11 tests + verified through workerd. No auth yet (tools are public deterministic math); OAuth ships with accounts. Test against Claude/ChatGPT after deploy. | ~2–4 days |
+| **2** | *Historical code milestone 2026-06-04* — `worker/mcp.js` handlers and workerd tests existed under the earlier engine architecture. Current computational handlers require `env.SHARP_ENGINE`; migration did not deploy or provision a server Sharp runtime. Real connector validation remains a deployment gate. | ~2–4 days |
 | **3** | better-auth (magic link + Google + Apple) + D1 schema + LWW sync + SyncStore + lazy sign-in UI | ~3–5 days |
 | **4** | **User-scoped MCP** — `list_people`/`get_chart` over D1 with `ai_access` gating + name resolution → *"pull up Mom's chart" works* | ~2–3 days |
 | **5** | Passkeys, dedupe UI, E2E no-AI tier, Turnstile, legacy `/sse` compat, privacy copy polish | ongoing |
@@ -269,7 +371,7 @@ don't pretend. The ladder, stated plainly in the UI:
 **Cost**: $0 on free tiers; $5/mo Workers Paid recommended for production headroom.
 (Supabase equivalent: $25/mo floor because free projects pause after 7 idle days.)
 
-## Known sharp edges
+## Known sharp edges (optional cloud integration notes)
 
 - **better-auth on Workers**: must use a per-request `createAuth(env)` factory — the
   documented module-singleton silently breaks (D1 binding changes per invocation).
@@ -280,19 +382,18 @@ don't pretend. The ladder, stated plainly in the UI:
 - **Team/Enterprise Claude** requires an org Owner to add custom connectors — individual
   plans (incl. Free, 1 connector) are the launch audience.
 
-## The Parachute vision (deliberate seams, no coupling)
+## The Parachute vision (historical future roadmap; no current integration claim)
 
 What this platform does — personal data + scoped tokens + "my AI can just access it" —
 is Parachute Computer's thesis in miniature. The full vision has three horizons:
 
-**Horizon 1 (now): the open API is anchor-able into anyone's Parachute setup.**
-Because the MCP/API contract is public and the compute tools need no account, a person
-running their own Parachute can wire chart computation into their personal system today —
-a Parachute Runner that posts the day's transits into a vault note, an agent that
-computes a chart for anyone they meet, their own custom chart UI reading our API. *They
-don't need our app at all* — and that's the point. OpenHD is the mainstream on-ramp; the
-open interface is the power-user's escape hatch. Both consume the same engine, so
-accuracy is identical everywhere.
+**Horizon 1 (planned): an open API for a Parachute setup.**
+The historical vision is a Parachute Runner writing transit notes, an agent
+computing charts, or a custom chart UI. These integrations depend on a configured
+service, its access policy and an explicit compatible Sharp compute host. No
+public production computation endpoint or Parachute integration is established
+by this migration. The static browser app is available now; the API path remains
+optional future work.
 
 **Horizon 2: people-as-vault-data.** The `PeopleStore` interface and the MCP tool
 contract are the two storage-agnostic seams. A Parachute-backed implementation slots in
