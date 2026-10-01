@@ -42,6 +42,7 @@ export function renderGraphColumns({ root, chart, activations, mode, planets, fi
     const text = value ? `${value.gate}.${value.line}` : '—';
     setText(node.querySelector('.bg-planet-act'), text);
     const fixing = fixings?.birth[node.dataset.side]?.[node.dataset.birthPlanet];
+    node.querySelector('.tl-fixing-mark').dataset.temporary = String(fixing?.temporaryChange === true);
     const scope = fixing?.temporaryChange
       ? `${translate('temporaryFixing')} · ${translate('natalFixing')}: ${translate(`fixing_${fixing.natalState}`)}`
       : translate('natalFixing');

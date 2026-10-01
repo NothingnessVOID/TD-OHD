@@ -1,4 +1,4 @@
-import { CUSTOM_TOKENS, getCustomOverrides, getHumanDesignSkin, onAppearanceChange, setHumanDesignSkin, setCustomOverride, restoreCurrentPreset, resetAppearance } from './appearance.js';
+import { CUSTOM_TOKENS, getCustomOverrides, getHumanDesignSkin, onAppearanceChange, setHumanDesignSkin, setCustomOverride, restoreCurrentPreset } from './appearance.js';
 import { onLocaleChange, translatePage } from './i18n.js';
 
 export function setupAppearanceControls() {
@@ -6,11 +6,14 @@ export function setupAppearanceControls() {
   const toggle = document.getElementById('more-toggle');
   const dialog = document.getElementById('skin-settings');
   const share = document.getElementById('chart-share-menu');
-  const closeMore = () => { more.open = false; share.open = false; };
+  const language = document.getElementById('language-menu');
+  const closeMore = () => { more.open = false; share.open = false; language.open = false; };
   more.addEventListener('toggle', () => {
     toggle.setAttribute('aria-expanded', String(more.open));
-    if (!more.open) share.open = false;
+    if (!more.open) { share.open = false; language.open = false; }
   });
+  share.addEventListener('toggle', () => { if (share.open) language.open = false; });
+  language.addEventListener('toggle', () => { if (language.open) share.open = false; });
   document.addEventListener('click', event => { if (more.open && !more.contains(event.target)) closeMore(); });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && more.open) { closeMore(); toggle.focus(); }
@@ -41,7 +44,6 @@ export function setupAppearanceControls() {
   dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.addEventListener('click', () => setHumanDesignSkin(button.dataset.skinPreset)));
   dialog.querySelectorAll('[data-appearance-key]').forEach(input => input.addEventListener('input', () => { if (input.validity.valid && input.value !== '') setCustomOverride(input.dataset.appearanceKey,input.value); }));
   document.getElementById('appearance-restore').addEventListener('click',restoreCurrentPreset);
-  document.getElementById('appearance-reset').addEventListener('click',resetAppearance);
   onAppearanceChange(() => { if (dialog.open) refresh(); });
   onLocaleChange(() => translatePage(dialog));
 }
