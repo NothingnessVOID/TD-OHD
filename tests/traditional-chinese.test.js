@@ -1,7 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import * as engine from 'natalengine';
+import * as displayData from '../src/lib/human-design/display-data.js';
+import { compareHumanDesign } from '../src/lib/human-design/connection.js';
+import { analyzePenta } from '../src/lib/human-design/penta.js';
+import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
+import { calculateNativeBirth, calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
+const engine = { ...displayData, compareHumanDesign, analyzePenta };
 import * as hant from '../src/locales/zh-Hant/content.js';
 import * as cn from '../src/locales/zh-CN/content.js';
 import * as terms from '../src/lib/vocabulary.js';
@@ -100,14 +105,15 @@ test('reviewed regional terminology is independent of Simplified and English', (
   assert.equal(content.GATE_DESCRIPTIONS[60].description, engine.GATE_DESCRIPTIONS[60].description);
 });
 
-test('Traditional computed chart, relationship, transit and team prose preserves engine data', () => {
-  const charts = Array.from({ length: 18 }, (_, i) => engine.calculateHumanDesign(`${1975+i}-0${1+i%9}-${String(1+i%27).padStart(2,'0')}`, i%24+0.5, 8));
+test('Traditional computed chart, relationship, transit and team prose preserves engine data', async () => {
+  const charts = await Promise.all(Array.from({ length: 18 }, (_, i) => calculateNativeBirth(`${1975+i}-0${1+i%9}-${String(1+i%27).padStart(2,'0')}`, i%24+0.5, 8)));
+  const sky = await calculateNativeTransit('2026-09-24T12:00:00Z');
   const original = JSON.stringify(charts);
   const check = value => translated(hant.zhText(value));
   for (const [i, chart] of charts.entries()) {
     [chart.type.description, chart.authority.description, chart.profile.theme, chart.circuitAnalysis?.dominant?.theme].filter(Boolean).forEach(check);
     for (const key of ['determination', 'environment', 'perspective', 'motivation']) check(chart.variable[key].description);
-    check(chart.variable.determination.cognition.description);
+    check(chart.variable.determination.cognition.name);
     assert.match(hant.zhCross(chart.incarnationCross), /輪迴交叉/);
     const comparison = engine.compareHumanDesign(chart, charts[(i+1)%charts.length]);
     for (const key of ['dynamic', 'gifts', 'challenges', 'tips']) check(comparison.typeInteraction[key]);
@@ -117,7 +123,7 @@ test('Traditional computed chart, relationship, transit and team prose preserves
     check(comparison.summary);
     comparison.centerDynamics.forEach(v => check(v.description));
     Object.values(comparison.connectionChart.connections).flat().forEach(v => check(v.description));
-    const transit = engine.calculateHDTransits(chart, '2026-09-24');
+    const transit = analyzeTransitActivations(chart, sky);
     transit.temporarilyDefinedCenters.forEach(v => check(v.theme));
     transit.reinforcedGates.forEach(v => check(v.meaning));
   }

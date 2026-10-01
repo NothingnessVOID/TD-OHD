@@ -1,13 +1,13 @@
 /**
  * Location & timezone resolution for birth data.
  *
- * Thin re-export of natalengine's timezone module — Open-Meteo geocoding
+ * Local timezone utilities — Open-Meteo geocoding
  * (returns IANA zone) + historical UTC offset resolution via the Intl API.
  * Birth charts are extremely time-sensitive; this handles historical DST,
  * wartime time, and half-hour zones correctly.
  */
 
-import { resolveUtcOffset, formatUtcOffset } from 'natalengine';
+import { resolveUtcOffset, formatUtcOffset } from './timezone.js';
 import { getLocale } from './i18n.js';
 
 // GeoNames PPL also includes villages. Keep administrative seats and populated

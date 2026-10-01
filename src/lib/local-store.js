@@ -2,9 +2,10 @@
 // not the authoritative library. Each operation has its own durable key so tabs
 // cannot overwrite one another's unsent edits.
 import { t } from './i18n.js';
+import { PROFILE_STORAGE_KEY } from './profile-storage.js';
 
 export const localMode = import.meta.env.VITE_OHD_LOCAL === 'true';
-const CACHE = 'natalengine_profiles';
+const CACHE = PROFILE_STORAGE_KEY;
 const OUTBOX = 'ohd-local-op-';
 let cache = [];
 let flight = null;

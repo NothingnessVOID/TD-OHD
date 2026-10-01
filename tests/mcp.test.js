@@ -6,6 +6,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { handleMcpRequest } from '../worker/mcp.js';
+import { calculateNativeBirth, calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
+const SHARP_ENGINE = { calculateBirth: calculateNativeBirth, calculateTransit: calculateNativeTransit,
+  async calculateAstrology(date, hour, timezone) {
+    const transit = await calculateNativeTransit(Date.parse(`${date}T00:00:00Z`) + (hour - timezone) * 3600000);
+    const names = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const planets = Object.fromEntries(Object.entries(transit.gates).map(([point, value]) => [point, { sign: names[Math.floor(value.longitude / 30)], degree: value.longitude % 30 }]));
+    return { ...planets, planets };
+  }
+};
 
 let id = 0;
 async function rpc(method, params = {}) {
@@ -16,7 +25,7 @@ async function rpc(method, params = {}) {
       accept: 'application/json, text/event-stream'
     },
     body: JSON.stringify({ jsonrpc: '2.0', id: ++id, method, params })
-  }));
+  }), { SHARP_ENGINE });
   assert.equal(res.status, 200, `${method} → HTTP ${res.status}`);
   const body = await res.json();
   assert.ok(!body.error, `${method} → ${JSON.stringify(body.error)}`);
@@ -72,7 +81,7 @@ async function rpcPersonal(method, params, db) {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
     body: JSON.stringify({ jsonrpc: '2.0', id: ++id, method, params })
-  }), { DB: db || stubDb() }, { userId: 'user-1', email: 't@example.com' });
+  }), { DB: db || stubDb(), SHARP_ENGINE }, { userId: 'user-1', email: 't@example.com' });
   const body = await res.json();
   assert.ok(!body.error, JSON.stringify(body.error));
   return body.result;

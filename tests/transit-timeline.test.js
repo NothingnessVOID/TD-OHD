@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateTimeline, intervalAt, adjacentEvent, MINUTE, DAY, MAX_TIMELINE_SPAN } from '../src/features/transit-timeline/core.js';
-import { snapshot, stateAt, catalog, natalIdentity } from '../src/features/transit-timeline/provider.js';
+import { calculateTimeline, calculateTimelineAsync, intervalAt, adjacentEvent, MINUTE, DAY, MAX_TIMELINE_SPAN } from '../src/features/transit-timeline/core.js';
+import { stateAt, catalog, natalIdentity } from '../src/features/transit-timeline/provider.js';
 import { wallTime, displayTime } from '../src/features/transit-timeline/time.js';
 import { buildTransitGraph } from '../src/lib/transit-graph.js';
+import { calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
 
 const at = key => row => row.key === key;
 const intervals = (result, key) => result.rows.find(at(key)).intervals;
@@ -168,18 +169,23 @@ test('display clock labels the date and both sides of a DST fold', () => {
     { date: '2025-12-31', time: '19:30:00' });
 });
 
-test('pinned engine crossing agrees with every visible graph state on both sides', () => {
-  const crossing = Date.parse('2026-09-23T06:10:42Z');
+test('pinned Sharp crossing agrees with every visible graph state on both sides', async () => {
+  const crossing = Date.parse('2026-09-23T06:10:20Z');
+  const cache = new Map();
+  const snapshot = instant => {
+    if (!cache.has(instant)) cache.set(instant, calculateNativeTransit(instant).then(value => value.gates));
+    return cache.get(instant);
+  };
   const birth = { gates: { all: [20] }, centers: { definedNames: [] } };
   const rows = catalog();
-  assert.equal(snapshot(crossing - 1000).moon.gate, 13);
-  assert.equal(snapshot(crossing).moon.gate, 49);
+  assert.equal((await snapshot(crossing - 1000)).moon.gate, 13);
+  assert.equal((await snapshot(crossing)).moon.gate, 49);
   for (const mode of ['overlay', 'transit-only']) {
-    const result = calculateTimeline({ start: crossing - 2 * MINUTE, end: crossing + 2 * MINUTE,
+    const result = await calculateTimelineAsync({ start: crossing - 2 * MINUTE, end: crossing + 2 * MINUTE,
       snapshot, states: activations => stateAt(birth, activations, mode), catalog: rows });
     assert.ok(result.events.includes(crossing), `${mode}: missing exact-second crossing`);
     for (const time of [crossing - 2_000, crossing - 1_000, crossing, crossing + 1_000, crossing + 2_000]) {
-      const expected = stateAt(birth, snapshot(time), mode);
+      const expected = stateAt(birth, await snapshot(time), mode);
       const actual = new Map(result.rows.flatMap(row => {
         const interval = intervalAt(row, time);
         return interval ? [[row.key, interval.source]] : [];

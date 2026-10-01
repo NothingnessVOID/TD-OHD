@@ -78,6 +78,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   let graphKey = '';
   let snapshotInstant;
   let snapshotActivations;
+  let momentGeneration = 0;
   let hoverSelection = null;
   let generation = 0;
   let frame = 0;
@@ -383,11 +384,24 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     });
   }
 
-  function renderMoment() {
+  async function renderMoment() {
     frame = 0;
     if (!active || !chart) return;
-    const full = snapshotInstant === selected && snapshotActivations
-      ? snapshotActivations : host.snapshot(selected);
+    const moment = ++momentGeneration;
+    const requestedInstant = selected;
+    const requestedChart = chart.chart;
+    const requestedMode = mode;
+    const requestedPlanet = planet;
+    let full;
+    try {
+      full = snapshotInstant === requestedInstant && snapshotActivations
+        ? snapshotActivations : await host.snapshot(requestedInstant);
+    } catch (error) {
+      if (moment === momentGeneration && active && selected === requestedInstant && chart?.chart === requestedChart) $('.tl-time-error').textContent = error.message;
+      return;
+    }
+    if (moment !== momentGeneration || !active || chart?.chart !== requestedChart ||
+        selected !== requestedInstant || mode !== requestedMode || planet !== requestedPlanet) return;
     snapshotInstant = selected;
     snapshotActivations = full;
     const activations = planet === 'all' ? full : { [planet]: full[planet] };
@@ -514,8 +528,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     moveViewport(next.range, next.selected);
   }
 
-  function jumpGate(direction) {
+  async function jumpGate(direction) {
     if (!result || calculating) { setText($('.tl-event-status'), t('loadingTitle')); return; }
+    const currentNavigation = ++navigationGeneration;
+    const requestedResult = result;
+    const requestedInstant = selected;
+    const requestedPlanet = planet;
     const gateStarts = new Map();
     for (const row of result.rows.filter(item => item.kind === 'gate')) {
       for (const interval of row.intervals) {
@@ -525,19 +543,36 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         gateStarts.set(interval.start, entry);
       }
     }
-    const candidates = (result.gateChanges || []).filter(change =>
-      (direction > 0 ? change.time > selected : change.time < selected) &&
-      (planet === 'all' || !change.planets || change.planets.includes(planet)) && gateStarts.has(change.time))
-      .map(change => {
-        const gates = [...gateStarts.get(change.time)];
-        if (planet === 'all') return { ...change, gates };
-        const before = host.snapshot(change.time - 1000)?.[planet];
-        const after = host.snapshot(change.time)?.[planet];
-        return { ...change, gates: after?.gate !== before?.gate ? gates.filter(gate => gate === after?.gate) : [] };
-      }).filter(change => change.gates.length);
+    let candidates = (result.gateChanges || []).filter(change =>
+      (direction > 0 ? change.time > requestedInstant : change.time < requestedInstant) &&
+      (requestedPlanet === 'all' || !change.planets || change.planets.includes(requestedPlanet)) && gateStarts.has(change.time))
+      .map(change => ({ ...change, gates: [...gateStarts.get(change.time)] }));
+    if (requestedPlanet !== 'all') {
+      const ordered = direction > 0 ? candidates : [...candidates].reverse();
+      candidates = [];
+      try {
+        for (let index = 0; index < ordered.length; index += 32) {
+          const batch = ordered.slice(index, index + 32);
+          const instants = batch.flatMap(change => [change.time - 1000, change.time]);
+          const activations = host.snapshotBatch
+            ? await host.snapshotBatch(instants) : await Promise.all(instants.map(time => host.snapshot(time)));
+          if (!Array.isArray(activations) || activations.length !== instants.length) throw new Error('Invalid snapshot batch response');
+          if (currentNavigation !== navigationGeneration || result !== requestedResult ||
+              selected !== requestedInstant || planet !== requestedPlanet || !active) return;
+          const matching = batch.map((change, offset) => {
+            const before = activations[offset * 2]?.[requestedPlanet];
+            const after = activations[offset * 2 + 1]?.[requestedPlanet];
+            return { ...change, gates: after?.gate !== before?.gate ? change.gates.filter(gate => gate === after?.gate) : [] };
+          }).filter(change => change.gates.length);
+          if (matching.length) { candidates = direction > 0 ? matching : matching.reverse(); break; }
+        }
+      } catch (error) {
+        if (currentNavigation === navigationGeneration && active) $('.tl-time-error').textContent = error.message;
+        return;
+      }
+    }
     const change = direction > 0 ? candidates[0] : candidates.at(-1);
     if (!change) { setText($('.tl-event-status'), t('noNextGate')); return; }
-    const currentNavigation = ++navigationGeneration;
     clearTimeout(navigationTimer);
     navigationGates.clear();
     paintNavigationGates();

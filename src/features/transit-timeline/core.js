@@ -98,6 +98,109 @@ export function calculateTimeline({ start, end, snapshot, states, catalog,
     gateEvents: [...new Set(gateTransitions)], gateChanges, scanStep, tolerance };
 }
 
+/** Same scan/refinement contract, using bounded batches across asynchronous ephemeris boundaries. */
+export async function calculateTimelineAsync({ start, end, snapshot, states, catalog,
+  snapshotBatch, batchSize = 64, planet = 'all', scanStep = MINUTE, tolerance = 1000, onProgress = () => {} }) {
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start ||
+      !Number.isFinite(scanStep) || !Number.isFinite(tolerance) ||
+      scanStep < tolerance || tolerance < 1 || end - start > MAX_TIMELINE_SPAN) {
+    throw new RangeError('Invalid timeline calculation range');
+  }
+  if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 2048) throw new RangeError('Invalid snapshot batch size');
+  let snapshots = new Map();
+  const snapshotCached = async time => {
+    if (!snapshots.has(time)) snapshots.set(time, await snapshot(time));
+    return snapshots.get(time);
+  };
+  const loadBatch = async instants => {
+    const values = snapshotBatch ? await snapshotBatch(instants) : await Promise.all(instants.map(snapshot));
+    if (!Array.isArray(values) || values.length !== instants.length) throw new Error('Invalid snapshot batch response');
+    snapshots = new Map(instants.map((time, index) => [time, values[index]]));
+  };
+  const rows = catalog.map(row => ({ ...row, intervals: [] }));
+  const byKey = new Map(rows.map(row => [row.key, row]));
+  const open = new Map();
+  const transitions = [];
+  const gateTransitions = [];
+  const gateChanges = [];
+  let previous = await snapshotCached(start);
+  let previousTime = start;
+  const planets = Object.keys(previous);
+
+  const apply = (time, activations) => {
+    const next = states(activations);
+    for (const [key, interval] of open) {
+      if (next.get(key) !== interval.source) {
+        interval.end = time;
+        byKey.get(key).intervals.push(interval);
+        open.delete(key);
+      }
+    }
+    for (const [key, source] of next) {
+      if (!open.has(key) && byKey.has(key)) {
+        open.set(key, { start: time, source, clippedStart: time === start });
+      }
+    }
+  };
+  apply(start, previous);
+  const total = Math.ceil((end - start) / scanStep);
+  const progressEvery = Math.max(120, Math.ceil(total / 100));
+  for (let i = 1; i <= total; i++) {
+    const time = Math.min(start + i * scanStep, end);
+    if ((i - 1) % batchSize === 0) {
+      const instants = Array.from({ length: Math.min(batchSize, total - i + 1) }, (_, offset) => Math.min(start + (i + offset) * scanStep, end));
+      await loadBatch(instants);
+    }
+    const current = await snapshotCached(time);
+    let crossings;
+    for (const planet of planets) {
+      if (previous[planet].gate === current[planet]?.gate && previous[planet].line === current[planet]?.line) continue;
+      crossings ||= new Set();
+      let lo = previousTime;
+      let hi = time;
+      const gate = previous[planet].gate;
+      const line = previous[planet].line;
+      while (hi - lo > tolerance) {
+        const mid = Math.floor((lo + hi) / 2 / tolerance) * tolerance;
+        if (mid <= lo) break;
+        const midway = (await snapshotCached(mid))[planet];
+        if (midway.gate === gate && midway.line === line) lo = mid;
+        else hi = mid;
+      }
+      crossings.add(hi);
+    }
+    if (crossings) for (const crossing of [...crossings].sort((a, b) => a - b)) {
+      // end is an exclusive range boundary, not a visible event.
+      if (crossing >= end) continue;
+      const crossingState = await snapshotCached(crossing);
+      apply(crossing, crossingState);
+      transitions.push(crossing);
+      const before = await snapshotCached(Math.max(start, crossing - tolerance));
+      const gates = new Set();
+      const changedPlanets = new Set();
+      for (const point of planets) if (before[point]?.gate !== crossingState[point]?.gate && (planet === 'all' || point === planet)) {
+        gates.add(before[point].gate);
+        gates.add(crossingState[point].gate);
+        changedPlanets.add(point);
+      }
+      if (gates.size) {
+        gateTransitions.push(crossing);
+        gateChanges.push({ time: crossing, gates: [...gates].sort((a, b) => a - b), planets: [...changedPlanets].sort() });
+      }
+    }
+    previous = current;
+    previousTime = time;
+    if (i % progressEvery === 0 || i === total) onProgress(i / total);
+  }
+  const endState = states(previous);
+  for (const [key, interval] of open) {
+    byKey.get(key).intervals.push({ ...interval, end,
+      clippedEnd: endState.get(key) === interval.source });
+  }
+  return { start, end, rows, events: [...new Set(transitions)],
+    gateEvents: [...new Set(gateTransitions)], gateChanges, scanStep, tolerance };
+}
+
 export function intervalAt(row, instant) {
   return row.intervals.find(interval => interval.start <= instant && instant < interval.end);
 }

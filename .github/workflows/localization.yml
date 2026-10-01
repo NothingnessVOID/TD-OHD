@@ -22,6 +22,8 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Install locked dependencies
         run: npm ci
+      - name: Prepare pinned Sharp runtime and Swiss files for native tests
+        run: npm run build:engine
       - name: Check locales, terminology, interpolation and language switching contracts
         run: npm run test:localization
       - name: Build all languages

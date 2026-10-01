@@ -1,0 +1,236 @@
+{
+  "baselineMain": "8143d6e36ec9d9e5dc47ea599a648b811c01d645",
+  "engine": "SharpAstrology.HumanDesign 1.2.0 + SharpAstrology.SwissEph 0.5.1",
+  "ephemeris": "file Swiss; fallback disabled",
+  "annualSignature": "5da02472c5f378854648",
+  "samplePrecision": "whole UTC seconds, matching the UI and annual boundary contract",
+  "years": [
+    {
+      "year": 2021,
+      "events": 7203,
+      "sampleTimes": 20689,
+      "stationWindows": 17,
+      "roundTrips": 23,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 3246
+    },
+    {
+      "year": 2022,
+      "events": 7166,
+      "sampleTimes": 20592,
+      "stationWindows": 19,
+      "roundTrips": 20,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2274
+    },
+    {
+      "year": 2023,
+      "events": 7091,
+      "sampleTimes": 20367,
+      "stationWindows": 18,
+      "roundTrips": 17,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2221
+    },
+    {
+      "year": 2024,
+      "events": 7252,
+      "sampleTimes": 20838,
+      "stationWindows": 17,
+      "roundTrips": 18,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2311
+    },
+    {
+      "year": 2025,
+      "events": 7108,
+      "sampleTimes": 20405,
+      "stationWindows": 19,
+      "roundTrips": 26,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2235
+    },
+    {
+      "year": 2026,
+      "events": 7151,
+      "sampleTimes": 20543,
+      "stationWindows": 18,
+      "roundTrips": 14,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2276
+    },
+    {
+      "year": 2027,
+      "events": 7187,
+      "sampleTimes": 20644,
+      "stationWindows": 17,
+      "roundTrips": 23,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2237
+    },
+    {
+      "year": 2028,
+      "events": 7167,
+      "sampleTimes": 20581,
+      "stationWindows": 17,
+      "roundTrips": 24,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2249
+    },
+    {
+      "year": 2029,
+      "events": 7114,
+      "sampleTimes": 20449,
+      "stationWindows": 20,
+      "roundTrips": 18,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2241
+    },
+    {
+      "year": 2030,
+      "events": 7195,
+      "sampleTimes": 20678,
+      "stationWindows": 18,
+      "roundTrips": 20,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2348
+    },
+    {
+      "year": 2031,
+      "events": 7046,
+      "sampleTimes": 20235,
+      "stationWindows": 20,
+      "roundTrips": 23,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2235
+    },
+    {
+      "year": 2032,
+      "events": 7286,
+      "sampleTimes": 20942,
+      "stationWindows": 16,
+      "roundTrips": 19,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2278
+    },
+    {
+      "year": 2033,
+      "events": 7079,
+      "sampleTimes": 20332,
+      "stationWindows": 20,
+      "roundTrips": 23,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2202
+    },
+    {
+      "year": 2034,
+      "events": 7162,
+      "sampleTimes": 20573,
+      "stationWindows": 17,
+      "roundTrips": 21,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2279
+    },
+    {
+      "year": 2035,
+      "events": 7172,
+      "sampleTimes": 20594,
+      "stationWindows": 16,
+      "roundTrips": 24,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2280
+    },
+    {
+      "year": 2036,
+      "events": 7138,
+      "sampleTimes": 20512,
+      "stationWindows": 18,
+      "roundTrips": 14,
+      "differences": 0,
+      "graphDifferences": 0,
+      "examples": [],
+      "verifyMs": 2254
+    }
+  ],
+  "totals": {
+    "years": 16,
+    "sampleTimes": 328974,
+    "planetComparisons": 4276662,
+    "events": 114517,
+    "stationWindows": 287,
+    "roundTrips": 327,
+    "gateLineDifferences": 0,
+    "graphDifferences": 0
+  },
+  "browserVsNative": {
+    "timestamps": 52,
+    "planets": 13,
+    "fields": [
+      "gate",
+      "line",
+      "color",
+      "tone",
+      "base",
+      "longitude"
+    ],
+    "longitudeTolerance": 1e-9,
+    "result": "PASS"
+  },
+  "interactiveBatchSize": 64,
+  "nativeAnnualBatchSize": 4096,
+  "staticHostSmoke": {
+    "views": [
+      "Birth",
+      "Transit",
+      "Timeline",
+      "Connection",
+      "Team",
+      "Gene Keys"
+    ],
+    "timelineDays": [
+      30,
+      90,
+      180
+    ],
+    "timelineMilliseconds": [
+      75,
+      80,
+      132
+    ],
+    "crossYear": "2025-12 / 2026-01",
+    "errors": 0,
+    "result": "PASS"
+  },
+  "optionalWorker": "Host Sharp adapter required; no edge astronomy runtime was added or deployed.",
+  "signatureFinalization": "Time adapter trailing whitespace normalized; Sharp-generated event payloads retained byte-for-byte and file checksums recomputed."
+}

@@ -8,6 +8,7 @@
     <WasmBuildNative>false</WasmBuildNative>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../engine-core/SharpTransitCore.csproj" />
     <PackageReference Include="SharpAstrology.HumanDesign" Version="1.2.0" />
     <PackageReference Include="SharpAstrology.SwissEph" Version="0.5.1" />
   </ItemGroup>

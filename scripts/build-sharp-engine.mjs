@@ -10,6 +10,11 @@ const target = path.join(root, 'public/engine');
 const ephe = path.join(target, 'ephe');
 const dotnet = process.env.DOTNET || 'dotnet';
 
+// Prepare the shared native audit tool before concurrent Node test processes start.
+execFileSync(dotnet, ['build', 'engine-tools/SharpTransitGenerator.csproj', '-c', 'Release', '-v', 'quiet'], {
+  cwd: root, stdio: 'inherit', env: { ...process.env, DOTNET_CLI_TELEMETRY_OPTOUT: '1' }
+});
+
 execFileSync(dotnet, ['publish', 'engine-wasm/SharpChartEngine.csproj', '-c', 'Release', '-v', 'quiet'], {
   cwd: root, stdio: 'inherit', env: { ...process.env, DOTNET_CLI_TELEMETRY_OPTOUT: '1' }
 });

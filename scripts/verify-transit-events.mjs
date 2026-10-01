@@ -2,17 +2,20 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { snapshot } from '../src/features/transit-timeline/snapshot.js';
+import { SharpNativeClient } from './lib/sharp-native-client.mjs';
 import { discreteState, replayAnnual, sameActivation, TRANSIT_POINTS, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
 import { stateAt, natalIdentity } from '../src/features/transit-timeline/graph-provider.js';
-import { calculateHumanDesign } from 'natalengine';
+
 
 const root = resolve(import.meta.dirname, '..', 'public/transit-data');
 const manifest = JSON.parse(await readFile(resolve(root, 'manifest.json')));
 const years = process.argv.includes('--all') ? Object.keys(manifest.years).map(Number)
   : [Number(process.argv.find(arg => /^\d{4}$/.test(arg)) || 2026)];
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
-const natal = natalIdentity(calculateHumanDesign('1985-01-01', 12, 0, { preserveSeconds: true }));
+const natal = natalIdentity({ gates: { all: [3, 60, 13, 33, 4, 61, 23, 43] },
+  centers: { definedNames: ['root', 'sacral', 'g', 'throat', 'ajna', 'head'] } });
+const client = new SharpNativeClient();
+const snapshot = async time => (await client.snapshot(time)).activations;
 const activations = state => Object.fromEntries(TRANSIT_POINTS.map(point =>
   [point, { gate: state[point][0], line: state[point][1] }]));
 const graphState = (state, mode) => [...stateAt(natal, activations(state), mode)]
@@ -40,11 +43,14 @@ for (const year of years) {
   let stationWindows = 0;
   const stationPoints = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
   const direction = (a, b) => ((b - a + 540) % 360) - 180;
+  const dayTimes = [];
+  for (let time = data.start; time < data.end; time += 86_400_000) dayTimes.push(time);
+  const daySnapshots = new Map((await client.batch(dayTimes)).map((value, index) => [dayTimes[index], value.activations]));
   for (const point of stationPoints) {
     let previous = null;
     let previousDirection = null;
     for (let time = data.start; time < data.end; time += 86_400_000) {
-      const longitude = snapshot(time)[point].longitude;
+      const longitude = daySnapshots.get(time)[point].longitude;
       if (previous !== null) {
         const currentDirection = Math.sign(direction(previous, longitude));
         if (previousDirection && currentDirection && previousDirection !== currentDirection) {
@@ -71,7 +77,9 @@ for (const year of years) {
   let seed = year;
   for (let i = 0; i < 256; i++) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-    times.add(data.start + seed % (data.end - data.start));
+    // Cache boundaries and UI clocks resolve whole UTC seconds. Millisecond
+    // samples would test sub-second precision this cache does not represent.
+    times.add(Math.floor((data.start + seed % (data.end - data.start)) / 1000) * 1000);
   }
   // Independent direct-engine samples on both sides of every detected boundary.
   for (const event of data.events) {
@@ -82,8 +90,13 @@ for (const year of years) {
   let differences = 0;
   let graphDifferences = 0;
   const examples = [];
-  for (const time of [...times].sort((a, b) => a - b)) {
-    const actual = discreteState(snapshot(time));
+  const orderedTimes = [...times].sort((a, b) => a - b);
+  for (let offset = 0; offset < orderedTimes.length; offset += 2048) {
+    const batchTimes = orderedTimes.slice(offset, offset + 2048);
+    const direct = await client.batch(batchTimes);
+    for (let index = 0; index < batchTimes.length; index++) {
+    const time = batchTimes[index];
+    const actual = discreteState(direct[index].activations);
     const replayed = replayAnnual(data, time);
     for (const point of TRANSIT_POINTS) if (!sameActivation(actual[point], replayed[point])) {
       differences++;
@@ -98,7 +111,8 @@ for (const year of years) {
       }
     }
   }
-  const endState = discreteState(snapshot(data.end - 1000));
+  }
+  const endState = discreteState(await snapshot(data.end - 1000));
   for (const point of TRANSIT_POINTS) if (!sameActivation(final[point], endState[point])) {
     differences++;
     if (examples.length < 12) examples.push({ point, final: final[point], direct: endState[point] });
@@ -108,4 +122,5 @@ for (const year of years) {
     stationWindows, roundTrips, differences, graphDifferences, examples,
     verifyMs: Math.round(performance.now() - started) }));
 }
+await client.close();
 if (totalDifferences) process.exitCode = 1;

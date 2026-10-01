@@ -84,7 +84,7 @@ const moonMatches = async targetPage => {
     const selected = Number(document.querySelector('#timeline-view .tl-table')?.dataset.selected);
     const actual = document.querySelector('#timeline-view .tl-planet[data-planet="moon"] strong')?.textContent;
     const { snapshot } = await import('/src/features/transit-timeline/provider.js');
-    const expected = snapshot(selected).moon;
+    const expected = (await snapshot(selected)).moon;
     return actual === `${expected.gate}.${expected.line}`;
   }, null, { timeout: 10000 });
 };
