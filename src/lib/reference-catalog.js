@@ -1,5 +1,5 @@
 /** Chart-independent reference index. The engine topology stays authoritative. */
-import { GATES, CHANNELS, CENTERS } from 'natalengine';
+import { GATES, CHANNELS, CENTERS } from './human-design/catalog.js';
 import { localeResources } from '../locales/index.js';
 import { getLocale } from './i18n.js';
 import { gateName, channelName, centerName, circuitName, hexagramName, planetName } from './vocabulary.js';

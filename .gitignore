@@ -11,3 +11,8 @@ dist
 .wrangler
 .dev.vars
 _*.mjs
+
+/engine-core/bin/
+/engine-core/obj/
+/engine-tools/bin/
+/engine-tools/obj/

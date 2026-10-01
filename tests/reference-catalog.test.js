@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../src/lib/reference-catalog.js';
 import { channelsForGate } from '../src/lib/reference-content.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../src/lib/circuit-topology.js';
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from '../src/lib/human-design/catalog.js';
 import { PLANET_ORDER, PLANET_REFERENCE_IDS } from '../src/lib/planet-reference.js';
 
 test('the reference catalog covers the engine topology without top-level lines', () => {

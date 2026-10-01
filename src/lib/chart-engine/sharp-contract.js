@@ -1,6 +1,6 @@
-// TD-OHD's stable chart contract. NatalEngine supplies only descriptive catalogs;
+// TD-OHD's stable chart contract. Local modules supply descriptive catalogs;
 // every planetary activation and the 88-degree design date come from SharpAstrology.
-import { GATES, CHANNELS, CENTERS, TYPES, PROFILES, AUTHORITIES, CIRCUIT_GROUPS } from 'natalengine/humandesign';
+import { GATES, CHANNELS, CENTERS, TYPES, PROFILES, AUTHORITIES, CIRCUIT_GROUPS } from '../human-design/catalog.js';
 
 const centerKeys = { Root: 'root', Sacral: 'sacral', Emotions: 'solar', Spleen: 'spleen', Heart: 'heart', Self: 'g', Throat: 'throat', Mind: 'ajna', Crown: 'head' };
 const typeKeys = { Manifestor: 'manifestor', ManifestingGenerator: 'manifestingGenerator', Generator: 'generator', Projector: 'projector', Reflector: 'reflector' };

@@ -1,4 +1,4 @@
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from './human-design/catalog.js';
 
 // Display topology is derived from gates, so centers require an entire channel.
 export function buildTransitGraph(natal, activations, mode = 'overlay') {

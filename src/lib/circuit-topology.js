@@ -1,5 +1,5 @@
 /** Display taxonomy for the 36 channels. The engine's calculation data stays untouched. */
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from './human-design/catalog.js';
 
 export const CIRCUIT_GROUPS = Object.freeze({
   individual: ['knowing', 'centering', 'integration'],

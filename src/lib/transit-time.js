@@ -38,14 +38,3 @@ export function formatTransitOffset(offset) {
   if (seconds % 60 === 0) return formatOffset(offset);
   return `UTC${offset < 0 ? '-' : '+'}${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 }
-
-/** NatalEngine reads a Date through browser-local getters before applying its offset. */
-export function engineTransitArguments(instant) {
-  const date = new Date(instant);
-  // getTimezoneOffset() truncates historical offsets to minutes (e.g. Nepal
-  // used +05:41:16 in 1900). Reconstruct the local clock in UTC to retain seconds.
-  const localClock = new Date(instant);
-  localClock.setUTCFullYear(date.getFullYear(), date.getMonth(), date.getDate());
-  localClock.setUTCHours(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
-  return [date, (localClock.getTime() - instant) / HOUR];
-}

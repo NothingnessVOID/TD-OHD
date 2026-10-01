@@ -1,4 +1,4 @@
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from '../../lib/human-design/catalog.js';
 
 function components(channels) {
   const graph = new Map();

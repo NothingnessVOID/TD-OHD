@@ -3,30 +3,27 @@ import { createHash } from 'node:crypto';
 import { gzipSync, brotliCompressSync } from 'node:zlib';
 import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
-import { snapshot } from '../src/features/transit-timeline/snapshot.js';
-import { generateAnnualEvents, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
+import { createAnnualSource } from './lib/sharp-annual-source.mjs';
+import { generateAnnualEventsAsync, verifyAnnualStructure } from '../src/features/transit-timeline/annual-events.js';
 
 const root = resolve(import.meta.dirname, '..');
 const hash = value => createHash('sha256').update(value).digest('hex');
 const read = path => readFile(resolve(root, path));
-const packageLock = JSON.parse(await read('package-lock.json'));
-const dependencyVersion = name => packageLock.packages[`node_modules/${name}`]?.version;
+const ephemeris = JSON.parse(await read('engine-wasm/ephemeris-manifest.json'));
 const signatureInput = {
   format: 1,
-  engine: dependencyVersion('natalengine'),
-  astronomy: dependencyVersion('astronomy-engine'),
-  calculationAdapterSha256: hash(await read('src/features/transit-timeline/snapshot.js')),
+  engine: 'SharpAstrology.HumanDesign 1.2.0',
+  ephemerisProvider: 'SharpAstrology.SwissEph 0.5.1',
+  swissCommit: ephemeris.commit,
+  swissFiles: ephemeris.files,
+  transitAdapterSha256: hash(await read('engine-core/TransitCore.cs')),
   timeAdapterSha256: hash(await read('src/lib/transit-time.js')),
-  engineSecondsPatchSha256: hash(await read('scripts/patch-natalengine-seconds.mjs')),
-  annualAlgorithmSha256: hash(generateAnnualEvents.toString()),
+  annualAlgorithmSha256: hash(generateAnnualEventsAsync.toString()),
   scanStepMs: 60_000,
   boundaryToleranceMs: 1_000,
   points: 13,
-  convention: 'NatalEngine 1.6.0 geocentric transit gates, paired Earth and lunar nodes'
+  convention: 'SharpAstrology.HumanDesign 1.2.0 + SharpAstrology.SwissEph 0.5.1 + file-based Swiss Ephemeris, geocentric Human Design transit activations, no Moshier fallback'
 };
-if (signatureInput.engine !== '1.6.0' || signatureInput.astronomy !== '2.1.19') {
-  throw new Error('Review calculation signature after dependency change');
-}
 const signature = hash(JSON.stringify(signatureInput)).slice(0, 20);
 const years = process.argv.includes('--all')
   ? Array.from({ length: 16 }, (_, i) => 2021 + i)
@@ -39,9 +36,11 @@ catch { manifest = { format: 1, signature, signatureInput, years: {} }; }
 if (manifest.signature !== signature) manifest = { format: 1, signature, signatureInput, years: {} };
 for (const year of years) {
   const started = performance.now();
-  const data = generateAnnualEvents({ year, snapshot,
+  const source = createAnnualSource(Date.UTC(year, 0, 1), Date.UTC(year + 1, 0, 1));
+  const data = await generateAnnualEventsAsync({ year, snapshot: source.snapshot,
     onProgress: progress => { if (progress === 1 || Math.round(progress * 100) % 20 === 0) process.stderr.write(`\r${year}: ${Math.round(progress * 100)}%`); }
   });
+  await source.client.close();
   data.signature = signature;
   verifyAnnualStructure(data);
   const bytes = Buffer.from(JSON.stringify(data));
@@ -58,6 +57,7 @@ for (const year of years) {
     lineEvents: data.events.filter(event => event[2] === event[4]).length,
     records: data.events.length + 1
   };
+  await writeFile(resolve(outputRoot, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   const elapsedMs = Math.round(performance.now() - started);
   const memory = process.memoryUsage();
   process.stderr.write('\n');

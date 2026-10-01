@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateTransitGates, calculateHDTransits, calculateBirthPositions } from 'natalengine';
-import { transitInstants, engineTransitArguments, formatTransitOffset } from '../src/lib/transit-time.js';
+import { calculateNativeTransit, nativeClient } from '../scripts/lib/sharp-native-client.mjs';
+import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
+import { transitInstants, formatTransitOffset } from '../src/lib/transit-time.js';
 
 test('Shanghai wall time resolves to the intended UTC instant, including 45-minute zones', () => {
   assert.equal(new Date(transitInstants('2026-09-23', '14:30', 'Asia/Shanghai')[0].instant).toISOString(), '2026-09-23T06:30:00.000Z');
@@ -16,15 +17,13 @@ test('DST gap is rejected and repeated hour offers both instants', () => {
   ]);
 });
 
-test('engine receives the selected minute and changes transit output during the day', () => {
-  const times = ['08:00', '14:00', '20:00'].map(time => {
+test('engine receives the selected minute and changes transit output during the day', async () => {
+  const times = await Promise.all(['08:00', '14:00', '20:00'].map(time => {
     const instant = transitInstants('2026-09-23', time, 'Asia/Shanghai')[0].instant;
-    const [date, offset] = engineTransitArguments(instant);
-    return calculateTransitGates(date, offset);
-  });
+    return calculateNativeTransit(instant);
+  }));
   assert.deepEqual(times.map(t => `${t.gates.moon.gate}.${t.gates.moon.line}`), ['13.3', '13.6', '49.4']);
-  // 20:00 in Shanghai is the engine's legacy date-only default: noon UTC.
-  assert.deepEqual(times[2].gates, calculateTransitGates('2026-09-23').gates);
+  assert.deepEqual(times[2].gates, (await calculateNativeTransit('2026-09-23T12:00:00Z')).gates);
 });
 
 test('historical DST, half-hour zones and midnight use the selected date', () => {
@@ -71,27 +70,25 @@ test('historical offsets retain seconds in conversion and display', () => {
   assert.equal(formatTransitOffset(5.75), 'UTC+5:45');
 });
 
-test('both transit APIs match direct astronomy at the exact second, not the start of the minute', () => {
+test('Sharp transit adapter and overlay preserve official activation fields at the exact second', async () => {
   // Include host DST boundaries and year rollover; run with several host TZ values.
   for (const iso of ['1900-01-01T12:00:25Z', '2026-09-23T06:30:25Z', '2026-03-08T10:00:01Z', '2026-11-01T09:30:25Z', '2027-01-01T00:00:01Z']) {
     const instant = Date.parse(iso);
-    const utc = new Date(instant);
-    const expected = calculateBirthPositions(utc.getUTCFullYear(), utc.getUTCMonth() + 1, utc.getUTCDate(),
-      utc.getUTCHours() + utc.getUTCMinutes() / 60 + utc.getUTCSeconds() / 3600, 0, null, null, { preserveSeconds: true });
-    const args = engineTransitArguments(instant);
-    const gates = calculateTransitGates(...args).gates;
-    for (const planet of ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'northNode']) {
-      assert.ok(Math.abs(gates[planet].longitude - expected[planet].longitude) < 1e-8, `${iso}: ${planet}`);
+    const expected = await nativeClient().snapshot(instant);
+    const transits = await calculateNativeTransit(instant);
+    assert.equal(Object.keys(transits.gates).length, 13);
+    for (const [planet, value] of Object.entries(expected.activations)) {
+      for (const field of ['gate', 'line', 'color', 'tone', 'base', 'longitude'])
+        assert.equal(transits.gates[planet][field], value[field], `${iso}: ${planet}.${field}`);
     }
-    assert.notEqual(gates.moon.longitude, calculateTransitGates(...engineTransitArguments(instant - utc.getUTCSeconds() * 1000)).gates.moon.longitude);
-    assert.deepEqual(calculateHDTransits({}, ...args).transitGates, gates);
+    const minute = Math.floor(instant / 60000) * 60000;
+    assert.notEqual(transits.gates.moon.longitude, (await calculateNativeTransit(minute)).gates.moon.longitude);
+    assert.deepEqual(analyzeTransitActivations({}, transits).transitGates, transits.gates);
   }
 });
 
-test('adjacent seconds can cross a transit gate boundary in the pinned engine', () => {
-  const moons = ['14:10:41', '14:10:42'].map(time => {
-    const { instant } = transitInstants('2026-09-23', time, 'Asia/Shanghai')[0];
-    return calculateTransitGates(...engineTransitArguments(instant)).gates.moon;
-  });
-  assert.deepEqual(moons.map(moon => `${moon.gate}.${moon.line}`), ['13.6', '49.1']);
+test('adjacent seconds can cross a transit gate boundary in the pinned Sharp engine', async () => {
+  const instants = ['2026-09-23T06:10:19.000Z', '2026-09-23T06:10:20.000Z'];
+  const moons = await Promise.all(instants.map(instant => calculateNativeTransit(instant)));
+  assert.deepEqual(moons.map(value => `${value.gates.moon.gate}.${value.gates.moon.line}`), ['13.6', '49.1']);
 });

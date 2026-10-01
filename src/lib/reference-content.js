@@ -1,5 +1,5 @@
 /** Static reference prose shared by the chart detail sheet and library. */
-import { CHANNELS, CENTERS } from 'natalengine';
+import { CHANNELS, CENTERS } from './human-design/catalog.js';
 import { GATE_DESCRIPTIONS, LINE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS,
   HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS, contentText, geneKeyTerm } from './content.js';
 import { t } from './i18n.js';

@@ -10,7 +10,15 @@ const page = await context.newPage();
 const errors = [];
 const engineRequests = [];
 const engineResponses = [];
+const annualResponses = [];
+const assetFailures = [];
 page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(`${message.text()} ${message.location().url || ''}`.trim()); });
+page.on('response', response => {
+  const path = new URL(response.url()).pathname;
+  if (path.includes('/transit-data/')) annualResponses.push({ url: response.url(), status: response.status() });
+  if (new URL(response.url()).origin === new URL(base).origin && response.status() >= 400) assetFailures.push(`${response.status()} ${path}`);
+});
 page.on('request', request => { if (new URL(request.url()).pathname.includes('/engine/')) engineRequests.push(request.url()); });
 page.on('response', response => { if (new URL(response.url()).pathname.includes('/engine/')) engineResponses.push({ url: response.url(), status: response.status(), mime: response.headers()['content-type'] }); });
 page.on('requestfailed', request => { if (new URL(request.url()).pathname.includes('/engine/')) errors.push(`Engine request failed: ${request.url()} ${request.failure()?.errorText}`); });
@@ -31,6 +39,7 @@ try {
     styles: [...document.querySelectorAll('link[rel="stylesheet"][href]')].map(node => node.href).filter(url => new URL(url).origin === location.origin)
   }));
   assert.ok(resourceUrls.scripts.length && resourceUrls.styles.length, 'HTML references JS and CSS');
+  assert.ok(resourceUrls.scripts.every(url => !new URL(url).pathname.startsWith('/src/')), 'Static production bundle, no application source imports');
   await head(`${base}/`, /text\/html/);
   await head(resourceUrls.scripts[0], /(?:javascript|ecmascript)/);
   await head(resourceUrls.styles[0], /text\/css/);
@@ -48,12 +57,14 @@ try {
     const value = await item.locator('.value').innerText();
     assert.ok(value.trim() && value.trim() !== '—', `${label} is present`);
     if (label === 'Profile') assert.match(value, /[1-6]\/[1-6]/);
-    if (label === 'Variable') assert.equal(await item.locator('[data-variable]').count(), 4, 'Foundation Variable shows four semantic arrows');
+    if (label === 'Variable') assert.equal(await item.locator('[data-variable]').count(), 4, 'Foundation Variable shows four semantic letters');
   }
   await page.locator('.panel-tab[data-panel="variable"]').click();
   assert.equal(await page.locator('#panel-content .arrow-card').count(), 4, 'Variable panel has four semantic cards');
   assert.equal(await page.locator('.variable-notation').count(), 0, 'Variable panel does not show notation code');
-  assert.doesNotMatch(await page.locator('#chart-view').innerText(), /P[LR]{2}\s+D[LR]{2}/, 'Chart UI does not show notation code');
+  assert.match(await page.locator('.foundation-variable-notation').innerText(), /P[LR]{2}\s+D[LR]{2}/, 'Top summary preserves standard Variable notation');
+  assert.doesNotMatch(await page.locator('#panel-content').innerText(), /P[LR]{2}\s+D[LR]{2}/, 'Detailed explanation does not acquire notation code');
+  assert.deepEqual(await page.locator('.foundation-variable-arrows [data-variable]').evaluateAll(nodes => nodes.map(node => node.dataset.variable)), ['motivation', 'perspective', 'determination', 'environment']);
   for (const key of ['determination', 'environment', 'motivation', 'perspective']) {
     const source = key === 'determination' || key === 'environment' ? 'design' : 'personality';
     const graph = page.locator(`#bodygraph-container .bg-variable-arrow[data-variable="${key}"]`);
@@ -67,6 +78,11 @@ try {
     assert.equal(await summary.evaluate(node => getComputedStyle(node).color), color, `${key} foundation source color matches graph`);
     assert.equal(await card.evaluate(node => getComputedStyle(node).color), color, `${key} panel source color matches graph`);
   }
+  await page.locator('.panel-tab[data-panel="cross"]').click();
+  await page.locator('#panel-content .panel-title').filter({ hasText: 'Gene Keys' }).waitFor();
+  const geneKeyValues = await page.locator('#panel-content .foundation-item .value').allTextContents();
+  assert.equal(geneKeyValues.filter(value => /^Key \d+\.[1-6]$/.test(value.trim())).length, 4, 'Gene Keys activation spheres and lines rendered from the birth chart');
+  console.log('Deployment smoke: Gene Keys activation sequence PASS');
   const runtimeRequestsBefore = engineRequests.filter(url => url.includes('/_framework/'));
   assert.ok(runtimeRequestsBefore.some(url => /dotnet\.native.*\.wasm(?:\?|$)/.test(url)), '.NET native WASM loaded');
   assert.ok(runtimeRequestsBefore.some(url => /SharpChartEngine.*\.wasm(?:\?|$)/.test(url)), 'Main assembly WASM loaded');
@@ -85,18 +101,82 @@ try {
   assert.ok(await page.locator('.composite-legend').isVisible(), 'Connection legend visible');
   console.log('Deployment smoke: second actual birth and Connection reuse existing runtime PASS');
 
+  await page.locator('.nav-link[data-view="team"]').click();
+  for (const checkbox of await page.locator('#team-saved input[type="checkbox"]').all()) await checkbox.uncheck();
+  await page.locator('#add-member').click();
+  for (const [index, date] of ['1992-11-02', '1985-03-20'].entries()) {
+    const row = page.locator('#team-members .team-member-row').nth(index);
+    await row.locator('.team-name').fill(`Synthetic smoke team ${index + 1}`);
+    await row.locator('.team-date').fill(date);
+    await row.locator('.team-time').fill('12:00');
+    await row.locator('.team-place .ps-toggle').click();
+    await row.locator('.team-place .ps-manual').fill('0');
+  }
+  await page.locator('#team-calculate').click();
+  await page.locator('#team-content .role-card').first().waitFor({ timeout: 60000 });
+  assert.equal(await page.locator('#team-content .role-card').count(), 9, 'Team structural roles rendered');
+  console.log('Deployment smoke: Team manual inputs and group analysis PASS');
+
   await page.locator('.nav-link[data-view="transits"]').click();
   await page.locator('#transit-stage .bodygraph-svg').waitFor({ timeout: 60000 });
+  await page.waitForFunction(() => document.querySelector('#transit-stage .tl-planet .bg-planet-act')?.textContent.trim());
   assert.equal(await page.locator('#transit-stage .bg-variable-arrow').count(), 0, 'Transit graph does not show natal Variable arrows');
+  const nowTransitSun = await page.locator('#transit-stage .tl-planet[data-planet="sun"] .bg-planet-act').innerText();
+  await page.locator('#transit-date').fill('2025-12-31');
+  await page.locator('#transit-date').dispatchEvent('change');
+  await page.waitForFunction(() => document.querySelector('#transit-stage .tl-moment-date')?.textContent === '2025-12-31', null, { timeout: 60000 });
+  assert.ok((await page.locator('#transit-stage .tl-planets').innerText()).trim());
+  assert.notEqual(await page.locator('#transit-stage .tl-planet[data-planet="sun"] .bg-planet-act').innerText(), nowTransitSun, 'Custom date refreshes actual transit activations');
+  console.log('Deployment smoke: Transit now and custom UTC instant PASS');
+
   await page.locator('.nav-link[data-view="timeline"]').click();
-  await page.locator('#timeline-view .bodygraph-svg').waitFor({ timeout: 60000 });
-  assert.equal(await page.locator('#timeline-view .bg-variable-arrow').count(), 0, 'Timeline graph does not show natal Variable arrows');
-  await page.locator('#timeline-view .tl-row').first().waitFor({ timeout: 60000 });
+  const readyTimeline = async () => {
+    await page.locator('#timeline-view .bodygraph-svg').waitFor({ timeout: 60000 });
+    await page.waitForFunction(() => document.querySelector('#timeline-view .tl-planet .bg-planet-act')?.textContent.trim(), null, { timeout: 60000 });
+    await page.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false' &&
+      document.querySelector('#timeline-view .tl-calculation')?.hidden && document.querySelectorAll('#timeline-view .tl-row').length > 0,
+      null, { timeout: 120000 });
+    assert.equal(await page.locator('#timeline-view .bg-variable-arrow').count(), 0, 'Timeline graph does not show natal Variable arrows');
+    assert.ok(await page.locator('#timeline-view .tl-bar').count() > 0, 'Timeline contains activation intervals');
+  };
+  await readyTimeline();
+  const performanceResults = [];
+  for (const preset of ['30', '90', '180']) {
+    const started = Date.now();
+    await page.locator('#timeline-view [data-field="span"]').selectOption(preset);
+    await readyTimeline();
+    const range = await page.locator('#timeline-view .tl-table').evaluate(node => ({ start: Number(node.dataset.calculatedStart), end: Number(node.dataset.calculatedEnd) }));
+    assert.ok(range.end - range.start >= (Number(preset) - 1) * 86400000, `${preset}-day full range calculated`);
+    performanceResults.push({ preset, elapsedMs: Date.now() - started });
+  }
+  const annualReads = () => annualResponses.filter(response => !response.url.endsWith('/manifest.json')).length;
+  const loadedBeforeRepeat = annualReads();
+  await page.locator('#timeline-view [data-field="span"]').selectOption('30');
+  await readyTimeline();
+  assert.equal(annualReads(), loadedBeforeRepeat, 'Repeated range reuses annual cache');
+  await page.locator('#timeline-view [data-field="date"]').fill('2025-12-31');
+  await page.locator('#timeline-view [data-field="date"]').dispatchEvent('change');
+  await readyTimeline();
+  const crossYear = await page.locator('#timeline-view .tl-table').evaluate(node => ({ start: Number(node.dataset.calculatedStart), end: Number(node.dataset.calculatedEnd) }));
+  assert.equal(new Date(crossYear.start).getUTCFullYear(), 2025);
+  assert.equal(new Date(crossYear.end).getUTCFullYear(), 2026);
+  for (const year of [2021, 2026, 2036]) {
+    await page.locator('#timeline-view [data-field="date"]').fill(`${year}-06-15`);
+    await page.locator('#timeline-view [data-field="date"]').dispatchEvent('change');
+    await readyTimeline();
+    const range = await page.locator('#timeline-view .tl-table').evaluate(node => ({ start: Number(node.dataset.calculatedStart), end: Number(node.dataset.calculatedEnd) }));
+    assert.equal(new Date(range.start).getUTCFullYear(), year, `${year} cached timeline start`);
+    assert.equal(new Date(range.end).getUTCFullYear(), year, `${year} cached timeline end`);
+    assert.ok(annualResponses.some(response => response.url.includes(`/${year}.`) && response.status === 200), `${year} Sharp annual file loaded`);
+  }
+  assert.ok(annualResponses.every(response => response.status === 200), 'Annual manifest and data served successfully');
+  console.log(`Deployment smoke: Timeline 30/90/180 days, cached 2021/2026/2036 ranges and 2025/2026 boundary PASS ${JSON.stringify(performanceResults)}`);
+
   await page.locator('.nav-link[data-view="library"]').click();
   await page.locator('#reference-count').waitFor();
   assert.match(await page.locator('#reference-count').innerText(), /128/);
   assert.ok(await page.locator('#reference-results .reference-result').count() > 0);
-  console.log('Deployment smoke: Transit, Timeline and Reference PASS');
+  console.log('Deployment smoke: Reference PASS');
 
   assert.ok(engineResponses.length > 0);
   for (const response of engineResponses) assert.ok(response.status >= 200 && response.status < 400, `Engine HTTP ${response.status}: ${response.url}`);
@@ -117,7 +197,8 @@ try {
     assert.doesNotMatch(response.headers()['content-type'] || '', /text\/html/, 'Ephemeris path serves a file, not SPA fallback');
     assert.equal(createHash('sha256').update(await response.body()).digest('hex'), hash, `${file} pinned SHA256`);
   }
-  assert.deepEqual(errors, [], 'No page/runtime/request errors');
+  assert.deepEqual(assetFailures, [], 'No failed static assets or annual data');
+  assert.deepEqual(errors, [], 'No page/runtime/console/request errors');
   console.log('Deployment smoke: HTML/JS/CSS/WASM/assembly/Swiss assets, pinned hashes and browser errors PASS');
 } finally {
   await context.close();

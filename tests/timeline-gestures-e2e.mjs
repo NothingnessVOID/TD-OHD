@@ -57,7 +57,7 @@ const moonMatches = async page => {
     const actual = document.querySelector('#timeline-view .tl-planets [data-planet="moon"] strong')?.textContent;
     if (!table || !actual) return false;
     const { snapshot } = await import('/src/features/transit-timeline/provider.js');
-    const moon = snapshot(Number(table.dataset.selected)).moon;
+    const moon = (await snapshot(Number(table.dataset.selected))).moon;
     return actual === `${moon.gate}.${moon.line}`;
   }, null, { timeout: 10000 });
 };
@@ -79,7 +79,7 @@ const checkFixings = async (page, mode) => {
     ]);
     const chart = getCurrentChart().chart;
     const selected = Number(document.querySelector('#timeline-view .tl-table').dataset.selected);
-    const transit = snapshot(selected);
+    const transit = await snapshot(selected);
     const birth = calculateLineFixings(chart, transit);
     const sky = calculateTransitLineFixings(chart, transit);
     const transitRows = [...document.querySelectorAll('#timeline-view .tl-planet[data-planet]')].map(node => ({
@@ -667,6 +667,11 @@ try {
     await moonMatches(page);
     await checkFixings(page, 'overlay');
 
+    // Scrubbing may cross a gate boundary and replace the graph. Compare the
+    // wheel gesture with the settled graph, rather than the pre-drag graph.
+    await page.evaluate(() => {
+      window.__tlStable.svg = document.querySelector('#timeline-view .tl-graph .bodygraph-svg');
+    });
     const stableKey = await page.evaluate(() => window.__tlStable.key);
     const natal = page.locator(`${root} .tl-row[data-key="${stableKey}"] .tl-bar[data-source="natal"]`);
     await natal.scrollIntoViewIfNeeded();

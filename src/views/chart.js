@@ -6,7 +6,7 @@ import {
   GATES,
   CHANNELS,
   LINE_NAMES
-} from 'natalengine';
+} from '../lib/human-design/catalog.js';
 import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
 import { gateReading, channelReading, centerReading, channelsForGate, channelById } from '../lib/reference-content.js';
 import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';

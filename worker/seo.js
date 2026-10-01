@@ -1,7 +1,7 @@
 /**
  * Server-rendered SEO pages — the crawlable surface the SPA can't provide.
  *
- * The Worker already runs natalengine, so every content page (gates, types,
+ * Every content page (gates, types,
  * centers, channels, profiles) is rendered as real HTML at the edge from the
  * engine's own data — including the 384 line interpretations, which makes the
  * gate pages uniquely deep. Edge-cached; deterministic; links back into the
@@ -11,9 +11,9 @@
 import {
   TYPES, PROFILES, AUTHORITIES, CENTERS, GATES, CHANNELS, CIRCUIT_GROUPS,
   GATE_DESCRIPTIONS, LINE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS,
-  HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS,
-  calculateHumanDesign
-} from 'natalengine';
+  HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS
+} from '../src/lib/human-design/display-data.js';
+import { calculateHumanDesign } from './chart-provider.js';
 import { CELEBRITIES } from './celebrities.js';
 
 const ORIGIN = 'https://openhumandesign.com';
@@ -146,7 +146,7 @@ ${body}
 </main>
 <footer class="site"><div class="in">
   <a href="/human-design">Human Design reference</a> · <a href="/">Free chart calculator</a><br>
-  Open Human Design — open-source, original interpretations, computed in your browser. Powered by <a href="https://www.npmjs.com/package/natalengine">natalengine</a>.
+  Open Human Design — open-source, original interpretations, computed in your browser. Powered by <a href="https://github.com/CReizner/SharpAstrology.HumanDesign">SharpAstrology</a>.
 </div></footer>
 </body>
 </html>`;
@@ -323,11 +323,11 @@ function profilePage(slug) {
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const formatDate = (d) => { const [y, mo, da] = d.split('-').map(Number); return `${MONTHS[mo - 1]} ${da}, ${y}`; };
 
-function celebrityPage(slug) {
+async function celebrityPage(slug, engine) {
   const c = CELEB_BY_SLUG[slug];
   if (!c) return null;
   const [h, m] = c.birthTime.split(':').map(Number);
-  const chart = calculateHumanDesign(c.birthDate, h + (m || 0) / 60, c.utcOffset);
+  const chart = await calculateHumanDesign(c.birthDate, h + (m || 0) / 60, c.utcOffset, engine);
   const tSlug = TYPE_SLUG_OF[NAME_TO_TYPESLUG[chart.type.name]] || 'generator';
   const pSlug = profileSlug(chart.profile.numbers);
   const cross = chart.incarnationCross?.name ? chart.incarnationCross.name.replace(/^The /, '') : null;
@@ -377,12 +377,12 @@ function celebrityPage(slug) {
   });
 }
 
-function celebrityIndexPage() {
-  const items = CELEBRITIES.map(c => {
+async function celebrityIndexPage(engine) {
+  const items = await Promise.all(CELEBRITIES.map(async c => {
     const [h, m] = c.birthTime.split(':').map(Number);
-    const chart = calculateHumanDesign(c.birthDate, h + (m || 0) / 60, c.utcOffset);
+    const chart = await calculateHumanDesign(c.birthDate, h + (m || 0) / 60, c.utcOffset, engine);
     return { c, type: chart.type.name, profile: chart.profile.numbers };
-  });
+  }));
   const byType = {};
   for (const it of items) (byType[it.type] = byType[it.type] || []).push(it);
   const body = `
@@ -487,14 +487,14 @@ function hubPage() {
 }
 
 // --- router + sitemap -----------------------------------------------------
-export async function handleSeoPage(request) {
+export async function handleSeoPage(request, engine) {
   const url = new URL(request.url);
   const p = url.pathname.replace(/\/$/, '') || '/';
   let html = null, m;
   if (p === '/human-design') html = hubPage();
   else if (p === '/compatibility') html = compatibilityPage();
-  else if (p === '/celebrity') html = celebrityIndexPage();
-  else if ((m = p.match(/^\/celebrity\/([a-z0-9-]+)$/))) html = celebrityPage(m[1]);
+  else if (p === '/celebrity') html = await celebrityIndexPage(engine);
+  else if ((m = p.match(/^\/celebrity\/([a-z0-9-]+)$/))) html = await celebrityPage(m[1], engine);
   else if ((m = p.match(/^\/circuit\/([a-z]+)$/))) html = circuitPage(m[1]);
   else if ((m = p.match(/^\/gate\/(\d{1,2})$/))) html = gatePage(+m[1]);
   else if ((m = p.match(/^\/type\/([a-z-]+)$/))) html = typePage(m[1]);

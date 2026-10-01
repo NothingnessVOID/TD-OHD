@@ -1,4 +1,4 @@
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from '../../lib/human-design/catalog.js';
 import { LINE_FIXING_PLANETS } from './line-fixing-data.js';
 
 const KNOWN_PLANETS = new Set([
@@ -76,7 +76,7 @@ function contributionsFor(target, providers, rule) {
 /**
  * Calculate fixed line states for natal chart activations, without mutating the chart.
  *
- * @param {object} chart - NatalEngine chart with gates.design and gates.personality.
+ * @param {object} chart - TD-OHD chart with gates.design and gates.personality.
  * @param {object} [transitActivations] - Optional calculateTransitGates().gates,
  *   or an equivalent planet -> {gate, line} map for one instant.
  * @returns {object} design/personality maps keyed by natal planet. Each result has
