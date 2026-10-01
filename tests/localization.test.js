@@ -1,7 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import * as engine from 'natalengine';
+import * as displayData from '../src/lib/human-design/display-data.js';
+import { compareHumanDesign } from '../src/lib/human-design/connection.js';
+import { analyzePenta } from '../src/lib/human-design/penta.js';
+import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
+import { calculateNativeBirth, calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
+const engine = { ...displayData, compareHumanDesign, analyzePenta };
 import * as zh from '../src/locales/zh-CN/content.js';
 import { HEXAGRAM_ZH, zhGate, zhCenter, zhChannel } from '../src/locales/zh-CN/vocabulary.js';
 import { gateReading } from '../src/lib/reference-content.js';
@@ -60,14 +65,15 @@ test('source prose is preserved in the engine; localization affects display copi
   for (const [key,c] of Object.entries(engine.CENTERS)) assert.equal(zh.zhText(c.name), zhCenter(key));
 });
 
-test('computed charts, relationships, teams and transits have translated dynamic display prose', () => {
-  const charts = Array.from({ length: 18 }, (_,i) => engine.calculateHumanDesign(`${1975+i}-0${1+i%9}-${String(1+i%27).padStart(2,'0')}`, i%24+0.5, 8));
+test('computed charts, relationships, teams and transits have translated dynamic display prose', async () => {
+  const charts = await Promise.all(Array.from({ length: 18 }, (_,i) => calculateNativeBirth(`${1975+i}-0${1+i%9}-${String(1+i%27).padStart(2,'0')}`, i%24+0.5, 8)));
+  const sky = await calculateNativeTransit('2026-09-24T12:00:00Z');
   const originals = JSON.stringify(charts);
   const check = (v,label) => chinese(zh.zhText(v),label);
   for (const [i,c] of charts.entries()) {
     [c.type.description,c.authority.description,c.profile.theme,c.circuitAnalysis?.dominant?.theme].filter(Boolean).forEach(v=>check(v,'foundation'));
     for (const key of ['determination','environment','perspective','motivation']) check(c.variable[key].description,`variable ${key}`);
-    check(c.variable.determination.cognition.description,'cognition');
+    check(c.variable.determination.cognition.name,'cognition');
     chinese(zh.zhCross(c.incarnationCross),'incarnation cross');
     const comp = engine.compareHumanDesign(c, charts[(i+1)%charts.length]);
     for (const key of ['dynamic','gifts','challenges','tips']) check(comp.typeInteraction[key],`type ${key}`);
@@ -77,7 +83,7 @@ test('computed charts, relationships, teams and transits have translated dynamic
     check(comp.summary,'summary');
     comp.centerDynamics.forEach(v=>check(v.description,'center dynamic'));
     Object.values(comp.connectionChart.connections).flat().forEach(v=>check(v.description,'channel dynamic'));
-    const transit = engine.calculateHDTransits(c,'2026-09-24');
+    const transit = analyzeTransitActivations(c, sky);
     transit.temporarilyDefinedCenters.forEach(v=>check(v.theme,'transit center'));
     transit.reinforcedGates.forEach(v=>{
       check(v.meaning,'reinforced gate');

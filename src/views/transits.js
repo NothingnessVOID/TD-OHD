@@ -3,10 +3,11 @@
  * natal chart, with the transit gates ringed on a bodygraph.
  */
 
-import { calculateHDTransits } from 'natalengine';
+import { sharpProvider } from '../lib/chart-engine/sharp-provider.js';
+import { analyzeTransitActivations } from '../lib/transit-analysis.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { setMessage, getLocaleResources } from '../lib/i18n.js';
-import { transitInstants, engineTransitArguments, formatTransitOffset } from '../lib/transit-time.js';
+import { transitInstants, formatTransitOffset } from '../lib/transit-time.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
 import { planetName } from '../lib/vocabulary.js';
@@ -18,6 +19,7 @@ import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './char
 
 let transitDetailContext = null;
 let lastTransitResult = null;
+let requestSequence = 0;
 const graphLabels = () => {
   const translate = translator(getLocaleResources().timeline.messages);
   return Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, translate(key)]));
@@ -95,7 +97,8 @@ export function setupTransitView() {
   document.getElementById('transit-now').addEventListener('click', setNow);
 }
 
-export function renderTransits() {
+export async function renderTransits() {
+  const request = ++requestSequence;
   const current = getCurrentChart();
   if (!current) return;
   transitDetailContext = null;
@@ -128,9 +131,19 @@ export function renderTransits() {
   status.classList.add('tl-sr-only');
   delete status.dataset.i18n;
   status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
-  const [transitDate, engineOffset] = engineTransitArguments(selected.instant);
-
-  const overlay = calculateHDTransits(current.chart, transitDate, engineOffset);
+  let activations;
+  try {
+    activations = await sharpProvider.calculateTransitSnapshot(selected.instant);
+  } catch (error) {
+    if (request !== requestSequence) return;
+    status.classList.remove('tl-sr-only');
+    status.textContent = error.message;
+    return;
+  }
+  if (request !== requestSequence || current.chart !== getCurrentChart()?.chart) return;
+  const activeGates = [...new Set(Object.values(activations).map(value => value.gate))];
+  const overlay = analyzeTransitActivations(current.chart, { date: new Date(selected.instant).toISOString(),
+    gates: activations, activeGates, activeGateCount: activeGates.length });
   const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
   lastTransitResult = { chart: current.chart, overlay, model, mode, date, time, offset: selected.offset };

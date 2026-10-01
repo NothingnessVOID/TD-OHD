@@ -1,4 +1,4 @@
-import { GATES, CHANNELS } from 'natalengine';
+import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
 import { gateReading, channelReading, centerReading, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';

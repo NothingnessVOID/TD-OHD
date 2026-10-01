@@ -71,6 +71,45 @@ export function generateAnnualEvents({ year, snapshot, onProgress = () => {} }) 
     initial, events: changes };
 }
 
+/** Async provider adaptation of the same minute scan and second boundary refinement. */
+export async function generateAnnualEventsAsync({ year, snapshot, onProgress = () => {} }) {
+  if (!Number.isInteger(year) || year < 1900 || year > 2200) throw new RangeError('Invalid UTC year');
+  const start = Date.UTC(year, 0, 1);
+  const end = Date.UTC(year + 1, 0, 1);
+  const initial = discreteState(await snapshot(start));
+  const changes = [];
+  let previous = initial;
+  let previousTime = start;
+  const total = (end - start) / ANNUAL_SCAN_STEP;
+  for (let step = 1; step <= total; step++) {
+    const time = start + step * ANNUAL_SCAN_STEP;
+    const current = discreteState(await snapshot(time));
+    for (const point of TRANSIT_POINTS) {
+      if (sameActivation(previous[point], current[point])) continue;
+      let lo = previousTime;
+      let hi = time;
+      const from = previous[point];
+      while (hi - lo > ANNUAL_TOLERANCE) {
+        const mid = Math.floor((lo + hi) / 2 / ANNUAL_TOLERANCE) * ANNUAL_TOLERANCE;
+        if (mid <= lo) break;
+        if (sameActivation(discreteState(await snapshot(mid))[point], from)) lo = mid;
+        else hi = mid;
+      }
+      if (hi < end) {
+        const to = discreteState(await snapshot(hi))[point];
+        changes.push([hi, TRANSIT_POINTS.indexOf(point), from[0], from[1], to[0], to[1]]);
+      }
+    }
+    previous = current;
+    previousTime = time;
+    if (step % 10000 === 0 || step === total) onProgress(step / total);
+  }
+  changes.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return { format: ANNUAL_FORMAT, year, start, end, pointOrder: TRANSIT_POINTS,
+    scanStepMs: ANNUAL_SCAN_STEP, boundaryToleranceMs: ANNUAL_TOLERANCE,
+    initial, events: changes };
+}
+
 export function replayAnnual(data, instant) {
   if (instant < data.start || instant >= data.end) throw new RangeError('Instant outside UTC year');
   const state = Object.fromEntries(TRANSIT_POINTS.map(point => [point, [...data.initial[point]]]));

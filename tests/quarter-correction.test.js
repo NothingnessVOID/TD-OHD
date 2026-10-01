@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { GATE_DESCRIPTIONS as raw } from 'natalengine';
+import { GATE_DESCRIPTIONS as raw } from '../src/lib/human-design/english-readings.js';
 import { GATE_DESCRIPTIONS as displayed } from '../src/lib/content.js';
 import { getLocale, setLocale } from '../src/lib/i18n.js';
 import { quarterForGate, quarterGroups } from '../src/lib/quarter.js';

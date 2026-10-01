@@ -1,5 +1,5 @@
 /** Shared chart-detail heading, activation states and optional timeline timing. */
-import { LINE_NAMES } from 'natalengine';
+import { LINE_NAMES } from './human-design/catalog.js';
 import { t, formatDisplay } from './i18n.js';
 import { esc } from './format.js';
 import { PLANET_GLYPHS } from './planet-reference.js';

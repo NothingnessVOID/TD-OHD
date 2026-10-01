@@ -1,11 +1,10 @@
 {
   "name": "open-human-design",
   "version": "0.3.0",
-  "description": "TD Open Human Design (TD-OHD) \u2014 a fork with precise transits, an interactive timeline and three interface languages",
+  "description": "TD Open Human Design (TD-OHD) — a fork with precise transits, an interactive timeline and three interface languages",
   "type": "module",
   "scripts": {
     "start:local": "node local/server.mjs",
-    "postinstall": "node scripts/patch-natalengine-seconds.mjs",
     "dev": "npm run build:engine && vite",
     "build:engine": "node scripts/build-sharp-engine.mjs",
     "build": "npm run build:engine && vite build",
@@ -22,7 +21,11 @@
     "e2e:appearance": "node tests/appearance-skin-e2e.mjs && node tests/appearance-controls-e2e.mjs",
     "e2e:reference": "node tests/reference-e2e.mjs",
     "e2e:gate-meridian": "node tests/gate-meridian-e2e.mjs",
-    "e2e": "node tests/e2e.mjs"
+    "e2e": "node tests/e2e.mjs",
+    "test:sharp": "node --test tests/sharp-transit-contract.test.js tests/no-*engine.test.js",
+    "e2e:sharp": "node tests/sharp-transit-e2e.mjs",
+    "generate:annual": "node scripts/generate-transit-events.mjs --all",
+    "verify:annual": "node scripts/verify-transit-events.mjs --all"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "^0.7.2",
@@ -31,8 +34,7 @@
     "better-auth": "^1.6.14",
     "html-to-image": "^1.11.13",
     "kysely": "^0.28.17",
-    "kysely-d1": "^0.4.0",
-    "natalengine": "1.6.0"
+    "kysely-d1": "^0.4.0"
   },
   "devDependencies": {
     "playwright-core": "^1.60.0",

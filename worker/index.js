@@ -6,7 +6,7 @@
  *                   every tool — saved names, metering, the works). Decision
  *                   2026-06-06: no anonymous MCP — it would undercut the
  *                   metering model, and the zero-auth path for power users
- *                   is the engine's own stdio MCP (npx natalengine-mcp).
+ *                   uses an explicitly supplied host Sharp adapter.
  *   /oauth/token, /oauth/register, /.well-known/* → handled by the provider
  *   everything else → defaultHandler below:
  *     /authorize    → sign-in + consent pages (worker/oauth-ui.js)
@@ -66,11 +66,11 @@ const defaultHandler = {
     const { pathname } = url;
 
     if (pathname === '/og/card.png') {
-      return handleOgImage(request);
+      return handleOgImage(request, env.SHARP_ENGINE);
     }
 
     if (pathname === '/chart.svg') {
-      return handleChartSvg(request);
+      return handleChartSvg(request, env.SHARP_ENGINE);
     }
 
     if (pathname === '/authorize') {
@@ -106,7 +106,7 @@ const defaultHandler = {
     // SEO: server-rendered reference pages (crawlable HTML the SPA can't give).
     if (pathname === '/sitemap.xml') return handleSitemap();
     if (pathname === '/robots.txt') return handleRobots();
-    const seoPage = await handleSeoPage(request);
+    const seoPage = await handleSeoPage(request, env.SHARP_ENGINE);
     if (seoPage) return seoPage;
 
     // Static assets (SPA) — wrangler serves env.ASSETS with SPA fallback.
@@ -114,7 +114,7 @@ const defaultHandler = {
     // unfurls show the person, not the generic site card.
     const assetResponse = await env.ASSETS.fetch(request);
     if (url.searchParams.has('d') && (assetResponse.headers.get('content-type') || '').includes('text/html')) {
-      return rewriteShareMeta(assetResponse, url);
+      return await rewriteShareMeta(assetResponse, url, env.SHARP_ENGINE);
     }
     return assetResponse;
   }

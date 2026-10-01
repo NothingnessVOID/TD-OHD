@@ -7,8 +7,8 @@
  * additions (list_people / save_person / saved-name BirthInputs).
  *
  * Stateless: a fresh Server + transport per request (the SDK-documented
- * pattern for serverless runtimes). Charts compute in ~1ms, so JSON
- * responses (no SSE stream) keep clients simple and fast.
+ * pattern for serverless runtimes). An explicit Sharp host supplies charts;
+ * JSON responses keep the existing client contract.
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -20,24 +20,16 @@ import {
   ReadResourceRequestSchema
 } from '@modelcontextprotocol/sdk/types.js';
 
-import {
-  calculateHumanDesign,
-  calculateGeneKeys,
-  calculateAstrology,
-  compareHumanDesign,
-  calculateHDTransits,
-  analyzePenta,
-  searchPlaces,
-  resolveUtcOffset,
-  GATE_DESCRIPTIONS,
-  LINE_DESCRIPTIONS,
-  CHANNEL_DESCRIPTIONS,
-  HEXAGRAM_DESCRIPTIONS,
-  GENE_KEY_DESCRIPTIONS,
-  CENTERS,
-  GATES,
-  renderBodygraphSVG
-} from 'natalengine';
+import { calculateHumanDesign, calculateAstrology, calculateHDTransits } from './chart-provider.js';
+import { calculateGeneKeys } from '../src/lib/gene-keys.js';
+import { compareHumanDesign } from '../src/lib/human-design/connection.js';
+import { analyzePenta } from '../src/lib/human-design/penta.js';
+import { searchPlaces } from '../src/lib/location.js';
+import { resolveUtcOffset } from '../src/lib/timezone.js';
+import { GATE_DESCRIPTIONS, LINE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS } from '../src/lib/human-design/english-readings.js';
+import { CENTERS, GATES } from '../src/lib/human-design/catalog.js';
+import { renderBodygraphSVG } from '../src/lib/human-design/svg-renderer.js';
+
 
 // ---------------------------------------------------------------------------
 // BirthInput resolution
@@ -445,14 +437,14 @@ const TOOLS = [
     },
     async handler({ birth, systems = ['human_design'], detail = 'summary', image = 'auto' }, ctx) {
       const b = await resolveBirth(birth, 'birth', ctx);
-      const hd = calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset);
+      const hd = await calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset, ctx.env?.SHARP_ENGINE);
       const out = { ...birthMeta(b) };
       if (systems.includes('human_design')) out.humanDesign = hdSummary(hd, detail);
       if (systems.includes('gene_keys')) out.geneKeys = gkSummary(calculateGeneKeys(hd));
       if (systems.includes('astrology')) {
         const lat = birth.lat ?? b.placeNote?.lat ?? null;
         const lon = birth.lon ?? b.placeNote?.lon ?? null;
-        out.astrology = astroSummary(calculateAstrology(b.birthDate, b.birthHour, b.utcOffset, lat, lon));
+        out.astrology = astroSummary(await calculateAstrology(b.birthDate, b.birthHour, b.utcOffset, lat, lon, ctx.env?.SHARP_ENGINE));
       }
       const base = json(out);
       const links = chartLinks(b);
@@ -496,8 +488,8 @@ const TOOLS = [
     },
     async handler({ personA, personB }, ctx) {
       const [a, b] = await Promise.all([resolveBirth(personA, 'personA', ctx), resolveBirth(personB, 'personB', ctx)]);
-      const chartA = calculateHumanDesign(a.birthDate, a.birthHour, a.utcOffset);
-      const chartB = calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset);
+      const chartA = await calculateHumanDesign(a.birthDate, a.birthHour, a.utcOffset, ctx.env?.SHARP_ENGINE);
+      const chartB = await calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset, ctx.env?.SHARP_ENGINE);
       const cmp = compareHumanDesign(chartA, chartB);
       const cc = cmp.connectionChart;
       const connList = (items) => items.map(c => ({ channel: `${c.channel} (${c.gates.join('-')})`, circuit: c.circuit, meaning: c.description }));
@@ -541,9 +533,9 @@ const TOOLS = [
     },
     async handler({ birth, date }, ctx) {
       const b = await resolveBirth(birth, 'birth', ctx);
-      const chart = calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset);
+      const chart = await calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset, ctx.env?.SHARP_ENGINE);
       const d = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : new Date().toISOString().split('T')[0];
-      const t = calculateHDTransits(chart, d);
+      const t = await calculateHDTransits(chart, d, ctx.env?.SHARP_ENGINE);
       return json({
         ...birthMeta(b),
         natalType: chart.type.name,
@@ -584,7 +576,7 @@ const TOOLS = [
     async handler({ members }, ctx) {
       if (!Array.isArray(members) || members.length < 2) throw new Error('members: need at least 2 people');
       const resolved = await Promise.all(members.map((m, i) => resolveBirth(m, (typeof m === 'string' ? m : m.name) || `member ${i + 1}`, ctx)));
-      const charts = resolved.map(b => calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset));
+      const charts = await Promise.all(resolved.map(b => calculateHumanDesign(b.birthDate, b.birthHour, b.utcOffset, ctx.env?.SHARP_ENGINE)));
       const names = members.map((m, i) => (typeof m === 'string' ? m : m.name) || resolved[i]._savedName || `Person ${i + 1}`);
       const r = analyzePenta(charts, names);
       return json({

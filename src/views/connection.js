@@ -4,7 +4,8 @@
  */
 
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
-import { compareHumanDesign, GATES, CHANNELS } from 'natalengine';
+import { compareHumanDesign } from '../lib/human-design/connection.js';
+import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph } from '../bodygraph.js';
 import { computeChart } from '../lib/chartdata.js';
 import { listPeople, birthFromPerson, getSharedGuest, savePerson } from '../lib/people.js';

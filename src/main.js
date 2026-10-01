@@ -3,7 +3,7 @@
  *
  * Slim orchestrator: theme, navigation, boot sequence, people switcher.
  * The views live in src/views/, calculation in src/lib/chartdata.js,
- * persistence in src/lib/people.js (backed by natalengine profiles).
+ * persistence in src/lib/people.js (backed by local birth profiles).
  */
 
 import { closeDetailDialog } from './lib/detail-dialog.js';

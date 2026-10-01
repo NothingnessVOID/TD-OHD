@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import * as engine from 'natalengine';
+import * as engine from '../src/lib/human-design/display-data.js';
 import * as content from '../src/lib/content.js';
 import * as vocabulary from '../src/lib/vocabulary.js';
 import { getLocale, setLocale, resolveLocale, onLocaleChange, t, LOCALES, formatDisplay, countLabel } from '../src/lib/i18n.js';

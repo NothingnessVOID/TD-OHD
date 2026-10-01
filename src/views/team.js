@@ -3,7 +3,7 @@
  * (checkboxes) plus optional quick-add rows.
  */
 
-import { analyzePenta } from 'natalengine';
+import { analyzePenta } from '../lib/human-design/penta.js';
 import { computeChart } from '../lib/chartdata.js';
 import { listPeople, birthFromPerson, savePerson } from '../lib/people.js';
 import { localMode, reportSaveFailure } from '../lib/local-store.js';

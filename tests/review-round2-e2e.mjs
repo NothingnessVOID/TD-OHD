@@ -158,8 +158,8 @@ try {
     const started = await page.locator(`${root} .tl-table`).evaluate(async table => {
       const at = Number(table.dataset.selected);
       const { snapshot } = await import('/src/features/transit-timeline/provider.js');
-      const before = new Set(Object.values(snapshot(at - 1000)).filter(Boolean).map(item => item.gate));
-      return Object.values(snapshot(at)).some(item => item && !before.has(item.gate));
+      const before = new Set(Object.values(await snapshot(at - 1000)).filter(Boolean).map(item => item.gate));
+      return Object.values(await snapshot(at)).some(item => item && !before.has(item.gate));
     });
     assert.equal(started, true, `gate jump ${index + 1} starts an activation`);
     const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => ({

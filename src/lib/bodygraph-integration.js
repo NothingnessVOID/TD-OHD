@@ -1,5 +1,5 @@
 // Missing shared span from hdkit's MIT-licensed bodygraph geometry, also used
-// by natalengine/bodygraph-data. Keep its separate upper and lower junctions.
+// by the local bodygraph geometry catalog. Keep its separate upper and lower junctions.
 // https://github.com/jdempcy/hdkit/blob/main/sample-apps/hdkit_sample_app/app/assets/images/bodygraph-blank-with-gate-outlines.svg
 // Extend each connected branch's two straight edges to the trunk's outer
 // edge. Gate 34 also overlaps the trunk terminal by half a SVG unit,

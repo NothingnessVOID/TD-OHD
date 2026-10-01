@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateHDTransits, CHANNELS } from 'natalengine';
+import { CHANNELS } from '../src/lib/human-design/catalog.js';
+import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
+import { calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
 import { buildTransitGraph } from '../src/lib/transit-graph.js';
 import { renderTransitSummary } from '../src/views/transit-presentation.js';
 
@@ -8,7 +10,8 @@ const natal = {
   gates: { all: [11, 12, 22, 13, 33, 7, 21, 41, 55] },
   centers: { definedNames: ['throat', 'g', 'solar'] }, channels: [],
 };
-const overlay = calculateHDTransits(natal, '2026-09-24');
+const sky = await calculateNativeTransit('2026-09-24T12:00:00Z');
+const overlay = analyzeTransitActivations(natal, sky);
 function summary(t, chart = natal, data = overlay, mode = 'overlay') {
   const previous = globalThis.document;
   const target = { innerHTML: '' };
@@ -70,7 +73,7 @@ test('sky-only summary keeps circuit and center descriptions without natal claim
 test('no completions reports the structural fact without a personal interpretation', t => {
   const allDefined = { gates: { all: Array.from({length:64}, (_,i) => i+1) },
     centers: { definedNames: [...new Set(CHANNELS.flatMap(c=>c.centers))] }, channels: CHANNELS };
-  const data = calculateHDTransits(allDefined, '2026-09-24');
+  const data = analyzeTransitActivations(allDefined, sky);
   const html = summary(t, allDefined, data);
   assert.doesNotMatch(html, /quiet sky|passes through gently|strongest theme/);
   assert.ok(html.includes('Channel Completions (0)'));

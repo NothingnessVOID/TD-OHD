@@ -1,7 +1,7 @@
 /** Structural checks only. This does not certify the meaning of any prose. */
 import { writeFile } from 'node:fs/promises';
 import { GATES, CHANNELS, CENTERS, GATE_DESCRIPTIONS, LINE_DESCRIPTIONS,
-  CHANNEL_DESCRIPTIONS, HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS } from 'natalengine';
+  CHANNEL_DESCRIPTIONS, HEXAGRAM_DESCRIPTIONS, GENE_KEY_DESCRIPTIONS } from '../src/lib/human-design/display-data.js';
 import * as zhCN from '../src/locales/zh-CN/content.js';
 import * as zhHant from '../src/locales/zh-Hant/content.js';
 import { referenceEntry } from '../src/lib/reference-catalog.js';

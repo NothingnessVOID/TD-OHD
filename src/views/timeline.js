@@ -1,7 +1,7 @@
 /** App-to-feature bridge for chart data, rendering, and shared detail dialogs. */
 import { createTransitTimeline } from '../features/transit-timeline/view.js';
 import { calculateLineFixings, calculateTransitLineFixings } from '../features/transit-timeline/line-fixing.js';
-import { snapshot, natalIdentity } from '../features/transit-timeline/provider.js';
+import { snapshot, snapshotBatch, natalIdentity } from '../features/transit-timeline/provider.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { transitInstants, formatTransitOffset } from '../lib/transit-time.js';
 import { closeDetailDialog } from '../lib/detail-dialog.js';
@@ -28,7 +28,7 @@ export function setupTimelineView(options = {}) {
     ...options,
     host: {
       getChart: getCurrentChart,
-      snapshot,
+      snapshot, snapshotBatch,
       lineFixings: (chart, transit) => ({ birth: calculateLineFixings(chart, transit), transit: calculateTransitLineFixings(chart, transit) }),
       identity: natalIdentity,
       buildModel: buildTransitGraph,

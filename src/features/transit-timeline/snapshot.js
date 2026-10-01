@@ -1,7 +1,10 @@
-/** Stable ephemeris adapter for public annual data and instant calculations. */
-import { calculateTransitGates } from 'natalengine';
-import { engineTransitArguments } from '../../lib/transit-time.js';
+/** Browser WASM snapshots. Instant and annual generation share the same engine boundary. */
+import { sharpProvider } from '../../lib/chart-engine/sharp-provider.js';
 
-export function snapshot(instant) {
-  return calculateTransitGates(...engineTransitArguments(instant)).gates;
+export async function snapshot(instant) {
+  return sharpProvider.calculateTransitSnapshot(instant);
+}
+
+export async function snapshotBatch(instants) {
+  return sharpProvider.calculateTransitSnapshots(instants);
 }

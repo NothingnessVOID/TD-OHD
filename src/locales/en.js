@@ -1,4 +1,4 @@
-import * as engine from 'natalengine';
+import * as engine from '../lib/human-design/display-data.js';
 import contexts from './ui-contexts.json' with { type: 'json' };
 const TYPES = Object.fromEntries(Object.values(engine.TYPES).map(type => [type.name, type]));
 const CHANNELS = Object.fromEntries(engine.CHANNELS.map(channel => [channel.gates.join('-'), channel.name]));
