@@ -667,6 +667,11 @@ try {
     await moonMatches(page);
     await checkFixings(page, 'overlay');
 
+    // Scrubbing may cross a gate boundary and replace the graph. Compare the
+    // wheel gesture with the settled graph, rather than the pre-drag graph.
+    await page.evaluate(() => {
+      window.__tlStable.svg = document.querySelector('#timeline-view .tl-graph .bodygraph-svg');
+    });
     const stableKey = await page.evaluate(() => window.__tlStable.key);
     const natal = page.locator(`${root} .tl-row[data-key="${stableKey}"] .tl-bar[data-source="natal"]`);
     await natal.scrollIntoViewIfNeeded();
