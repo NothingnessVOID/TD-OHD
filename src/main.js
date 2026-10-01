@@ -15,7 +15,7 @@ import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
 import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage } from './views/chart.js';
-import { setupTransitView, renderTransits, refreshTransitLanguage } from './views/transits.js';
+import { setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
@@ -32,6 +32,7 @@ let currentData = null; // { birth, chart, geneKeys, sensitivity }
 let pendingCompare = false; // a connection invite is waiting for the visitor's own chart
 let entryApi = null;
 let timelineView = null;
+const shareDataProviders = { transits: getCurrentTransitExportData, timeline: () => timelineView?.getCurrentTransitExportData() };
 let localAccountUi = null;
 let initialized = false;
 
@@ -71,7 +72,7 @@ function setupLanguageSwitcher() {
     timelineView?.setLanguage(timelineLanguageOptions());
     if (!document.getElementById('library-view').classList.contains('hidden')) renderReferenceView({ languageChange: true });
     localAccountUi?.refreshLocalLanguage();
-    configureShareMenu(document.querySelector('.nav-link.active')?.dataset.view || 'chart', currentData?.birth);
+    configureShareMenu(document.querySelector('.nav-link.active')?.dataset.view || 'chart', currentData, shareDataProviders);
   });
 }
 
@@ -112,7 +113,7 @@ function showView(view, { fromHistory = false } = {}) {
   document.body.classList.toggle('timeline-active', view === 'timeline' && !!currentData);
   document.body.classList.remove('mobile-nav-open');
   document.getElementById('mobile-menu-toggle').setAttribute('aria-expanded', 'false');
-  configureShareMenu(view, currentData?.birth);
+  configureShareMenu(view, currentData, shareDataProviders);
 
   document.querySelectorAll('.nav-link').forEach(l =>
     l.classList.toggle('active', l.dataset.view === view));
