@@ -25,9 +25,10 @@ updates immediately. The subscriber redraws the SVGs that resolve computed
 tokens while rendering: birth, transit, timeline, and connection/composite.
 The existing theme preference remains stored under `bodygraph-theme`. The
 configured skins are site `default` and HD `classic` / `chakra`.
-Preset selection and the six supported overrides are stored in
-`td-ohd-appearance-v1`, independently for each preset and light/dark theme.
-Restore Current Preset clears the current pair; Reset All returns to Classic
+Preset selection and appearance overrides are stored in
+`td-ohd-appearance-v1`. All custom colors and gate number size are global across skins and themes.
+Classic / Chakra select only the nine center colors.
+Restore Current Preset clears the current color overrides; Reset All returns to Classic
 and the system theme preference, clearing all overrides.
 
 Four Variable arrows surround the graph in fixed semantic positions:

@@ -20,14 +20,13 @@
 /* Transit and timeline own a fixed graph canvas. The wrapper must inherit
    that canvas rather than sizing the SVG from its intrinsic aspect ratio. */
 .tl .tl-graph .bg-svg-wrap { width: 100%; height: 100%; background: transparent; }
-.tl .tl-graph .bg-variable-row { inset-inline-start: 18%; inset-inline-end: 29%; top: 36px; }
-.tl .tl-graph .bg-variable-bottom { top: 102px; }
-.tl .tl-graph .bg-variable-arrow { width: 56px; }
 @media (--phone) {
   .bg-variable-arrow { width: 54px; }
   .bg-variable-bottom { top: 80px; }
-  .tl .tl-graph .bg-variable-row { inset-inline-start: 18%; inset-inline-end: 29%; }
 }
-.foundation-variable-arrows { display: grid; grid-template-columns: max-content max-content; gap: 2px 18px; font-size: 24px; line-height: 1; }
+.foundation-variable-arrows { display: flex; gap: 3px; font-size: 24px; line-height: 1; }
+.foundation-variable-arrows [data-variable="determination"] { margin-inline-start: 10px; }
 .foundation-variable-arrows [data-source="design"], .arrow-direction[data-source="design"] .variable-direction-symbol { color: var(--hd-design); }
 .foundation-variable-arrows [data-source="personality"], .arrow-direction[data-source="personality"] .variable-direction-symbol { color: var(--hd-personality); }
+
+.bg-natal-fixing { flex: 0 0 7px; width: 7px; font-size: 7px; line-height: 7px; overflow-wrap: anywhere; text-align: center; color: var(--text-secondary); }

@@ -1,7 +1,7 @@
 /* Local layout only; colors continue to come from the existing skin tokens. */
 .tl {
   --tl-surface: var(--bg-elevated); --tl-line: var(--border);
-  --tl-transit: var(--hd-transit); --tl-transit-ink: var(--hd-transit-on);
+  --tl-transit: color-mix(in srgb, var(--hd-transit) 75%, #445457); --tl-transit-ink: var(--hd-transit-on);
   --tl-birth: var(--text-secondary); --tl-cursor-color: var(--accent-strong);
   --tl-date-even: color-mix(in srgb, var(--tl-surface) 85%, var(--text-secondary));
   --tl-date-odd: color-mix(in srgb, var(--tl-surface) 92%, var(--tl-transit));
@@ -146,8 +146,8 @@
 .tl-row { height: var(--tl-row-height); border-bottom: 1px solid var(--border-subtle); }
 .tl-row:last-child { border-bottom: 0; }
 .tl-row-label { display: flex; align-items: center; justify-content: center; min-width: 0; border-right: 1px solid var(--tl-line); }
-.tl button.tl-gate-expand[data-action] { flex: 0 0 18px; width: 18px; height: 100%; min-width: 0; min-height: 0; padding: 0; border: 0; background: none; color: var(--text-secondary); display: grid; place-items: center; }
-.tl .tl-gate-expand svg { width: 12px; height: 15px; fill: currentColor; transform-origin: center; }
+.tl button.tl-gate-expand[data-action] { box-sizing: border-box; flex: 0 0 20px; width: 20px; height: 100%; min-width: 0; min-height: 0; padding: 0 2px 0 6px; border: 0; background: none; color: var(--text-secondary); display: grid; place-items: center; }
+.tl .tl-gate-expand svg { width: 10px; height: 13px; fill: currentColor; transform-origin: center; }
 .tl .tl-gate-expand[aria-expanded="true"] svg { transform: rotate(90deg); }
 .tl-line-row .tl-row-label { padding-left: 10px; }
 .tl-line-symbol { font-size: 11px; font-variant-numeric: tabular-nums; }
@@ -172,6 +172,12 @@
 .tl .tl-row-active[data-active-source="transit"] .tl-row-name { background: var(--hd-transit-soft); box-shadow: inset 2px 0 var(--tl-transit); }
 .tl .tl-row-active[data-active-source="both"] .tl-row-name { background: repeating-linear-gradient(135deg, var(--accent-soft) 0 5px, var(--hd-transit-soft) 5px 10px); box-shadow: inset 2px 0 var(--tl-transit), inset 4px 0 var(--accent); }
 .tl .tl-row-active[data-active-source="completed"] .tl-row-name { background: var(--hd-transit-soft); box-shadow: inset 2px 0 var(--tl-transit), inset 4px 0 var(--accent); }
+/* Gate activation markers sit before the expand control, outside the number badge. */
+.tl .tl-row-active .tl-row-label:has(.tl-gate-expand) { box-shadow: inset 2px 0 var(--accent); }
+.tl .tl-row-active[data-active-source="transit"] .tl-row-label:has(.tl-gate-expand) { box-shadow: inset 2px 0 var(--tl-transit); }
+.tl .tl-row-active[data-active-source="both"] .tl-row-label:has(.tl-gate-expand),
+.tl .tl-row-active[data-active-source="completed"] .tl-row-label:has(.tl-gate-expand) { box-shadow: inset 2px 0 var(--tl-transit), inset 4px 0 var(--accent); }
+.tl .tl-row-active .tl-row-label:has(.tl-gate-expand) .tl-row-name { box-shadow: none; }
 .tl-center-symbol { stroke: var(--text-secondary); stroke-width: .65px; }
 .tl-center-head { color: var(--hd-center-head); }
 .tl-center-ajna { color: var(--hd-center-ajna); }

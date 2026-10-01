@@ -5,8 +5,12 @@ export function setupAppearanceControls() {
   const more = document.getElementById('more-menu');
   const toggle = document.getElementById('more-toggle');
   const dialog = document.getElementById('skin-settings');
-  const closeMore = () => { more.open = false; document.getElementById('chart-share-menu').open = false; };
-  more.addEventListener('toggle', () => toggle.setAttribute('aria-expanded', String(more.open)));
+  const share = document.getElementById('chart-share-menu');
+  const closeMore = () => { more.open = false; share.open = false; };
+  more.addEventListener('toggle', () => {
+    toggle.setAttribute('aria-expanded', String(more.open));
+    if (!more.open) share.open = false;
+  });
   document.addEventListener('click', event => { if (more.open && !more.contains(event.target)) closeMore(); });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && more.open) { closeMore(); toggle.focus(); }
@@ -26,7 +30,6 @@ export function setupAppearanceControls() {
       const key = input.dataset.appearanceKey;
       input.value = custom[key] ?? (key === 'gateNumberSize' ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue(CUSTOM_TOKENS[key])) : colorValue(key === 'graphBackground' ? '--hd-graph-panel-bg' : CUSTOM_TOKENS[key]));
     });
-    document.getElementById('appearance-size-value').value = `${document.getElementById('appearance-gateNumberSize').value}px`;
   }
   document.getElementById('skin-settings-button').addEventListener('click', () => { closeMore(); refresh(); dialog.showModal(); });
   document.getElementById('skin-settings-close').addEventListener('click', () => dialog.close());
@@ -36,7 +39,7 @@ export function setupAppearanceControls() {
   });
   dialog.addEventListener('close', () => toggle.focus());
   dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.addEventListener('click', () => setHumanDesignSkin(button.dataset.skinPreset)));
-  dialog.querySelectorAll('[data-appearance-key]').forEach(input => input.addEventListener('input', () => setCustomOverride(input.dataset.appearanceKey,input.value)));
+  dialog.querySelectorAll('[data-appearance-key]').forEach(input => input.addEventListener('input', () => { if (input.validity.valid && input.value !== '') setCustomOverride(input.dataset.appearanceKey,input.value); }));
   document.getElementById('appearance-restore').addEventListener('click',restoreCurrentPreset);
   document.getElementById('appearance-reset').addEventListener('click',resetAppearance);
   onAppearanceChange(() => { if (dialog.open) refresh(); });

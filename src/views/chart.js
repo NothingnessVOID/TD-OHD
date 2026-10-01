@@ -236,7 +236,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Variable')}</div>
-        <div class="value foundation-variable-arrows">${variableArrows(chart.variable).map(item => `<span data-variable="${item.key}" data-source="${item.source.split('.')[0]}" title="${esc(t(item.label))}" aria-label="${esc(t(item.label))}">${item.symbol}</span>`).join('') || '—'}</div>
+        <div class="value foundation-variable-arrows">${variableArrows(chart.variable).sort((a, b) => ['motivation', 'perspective', 'determination', 'environment'].indexOf(a.key) - ['motivation', 'perspective', 'determination', 'environment'].indexOf(b.key)).map(item => `<span data-variable="${item.key}" data-source="${item.source.split('.')[0]}" title="${esc(t(item.label))}" aria-label="${esc(t(item.label))}">${item.direction === 'left' ? 'L' : 'R'}</span>`).join('') || '—'}</div>
         <div class="detail">${t('Determination · Environment · Perspective · Motivation')}</div>
       </div>
     </div>

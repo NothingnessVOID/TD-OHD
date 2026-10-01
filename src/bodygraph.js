@@ -13,6 +13,7 @@
 
 import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from 'natalengine/bodygraph-data';
 import { GATES, CHANNELS } from 'natalengine';
+import { calculateLineFixings } from './features/transit-timeline/line-fixing.js';
 import { renderVariableArrowRow } from './lib/variable-arrows.js';
 import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
@@ -438,7 +439,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       }));
     }
     g.appendChild(svgEl('circle', {
-      cx: c.cx, cy: c.cy, r: c.r || 12.3,
+      cx: c.cx, cy: c.cy, r: (c.r || 12.3) + 4,
       fill: isActive ? fill : colors.inactive,
       'fill-opacity': isActive ? '1' : colors.inactiveCircleOpacity,
       stroke: 'none',
@@ -446,13 +447,14 @@ export function renderBodygraph(container, chart, opts = {}) {
     }));
     if (transit ? transit.gateSource(gateNum) === 'both' : transitGates.has(gateNum)) {
       g.appendChild(svgEl('circle', {
-        cx: c.cx, cy: c.cy, r: (c.r || 12.3) + 4.5,
+        cx: c.cx, cy: c.cy, r: (c.r || 12.3) + 8.5,
         fill: 'none', stroke: transitColor, 'stroke-width': colors.transitRingWidth,
         'stroke-dasharray': transit ? 'none' : '4 3', class: 'bg-transit-ring'
       }));
     }
     g.appendChild(svgEl('text', {
-      x: c.cx, y: c.cy + colors.gateNumberBaselineOffset,
+      x: c.cx, y: c.cy,
+      'dominant-baseline': 'central', opacity: '1', 'fill-opacity': '1',
       'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
       'font-family': skinToken(style, '--font'),
@@ -732,6 +734,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
 
   // ---------- Planet columns ----------
+  const natalFixings = showColumns ? calculateLineFixings(chart) : null;
   function planetColumn(side, gates, dateLabel) {
     const col = el('div', { class: `bg-planets bg-planets-${side}` });
     const title = t(side === 'design' ? 'Design' : 'Personality');
@@ -755,8 +758,11 @@ export function renderBodygraph(container, chart, opts = {}) {
       });
       const glyph = el('span', { class: 'bg-planet-glyph', text: PLANET_GLYPHS[planet] });
       const activation = el('span', { class: 'bg-planet-act', text: g ? `${g.gate}.${g.line}` : '—' });
-      if (side === 'personality') row.append(activation, glyph);
-      else row.append(glyph, activation);
+      const state = natalFixings?.[side]?.[planet]?.natalState;
+      const fixing = el('span', { class: 'bg-natal-fixing', 'data-state': state || '',
+        'aria-hidden': 'true', text: ({ exalted: '▲', detriment: '▼', juxtaposed: '▲▼', unknown: '?' })[state] || '' });
+      if (side === 'personality') row.append(fixing, activation, glyph);
+      else row.append(glyph, activation, fixing);
       if (g) {
         row.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') highlightGate(g.gate); });
         row.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch') highlightGate(null); });
@@ -771,8 +777,9 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
 
   const svgWrap = el('div', { class: 'bg-svg-wrap' });
-  const topArrows = renderVariableArrowRow(chart.variable, 'top', t);
-  const bottomArrows = renderVariableArrowRow(chart.variable, 'bottom', t);
+  const graphVariable = opts.planetColumns === false ? null : chart.variable;
+  const topArrows = renderVariableArrowRow(graphVariable, 'top', t);
+  const bottomArrows = renderVariableArrowRow(graphVariable, 'bottom', t);
   if (topArrows) svgWrap.appendChild(topArrows);
   svgWrap.appendChild(svg);
   if (bottomArrows) svgWrap.appendChild(bottomArrows);

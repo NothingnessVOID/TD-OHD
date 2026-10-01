@@ -6,7 +6,7 @@
   --hd-personality-on: #ffffff;
   --hd-design: #c0392b;
   --hd-design-on: #ffffff;
-  --hd-transit: #1aadb7;
+  --hd-transit: #1af4ff;
   --hd-transit-on: #16130f;
   --hd-transit-text: color-mix(in srgb, var(--hd-transit) 65%, #16130f);
   --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 9.8%, var(--bg));
@@ -38,7 +38,7 @@
   --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 62%, white);
 
   --hd-inactive: #b8b0a6;
-  --hd-inactive-on: #a39a90;
+  --hd-inactive-on: #312c26;
   --hd-undefined-center: #ffffff;
   --hd-center-stroke: #c0b8ae;
   --hd-defined-fill: var(--accent);
@@ -58,7 +58,7 @@
   --hd-legend-text: var(--text-secondary);
   --hd-planet-column-text: var(--text);
 
-  --hd-gate-number-size: 11px;
+  --hd-gate-number-size: 22px;
   --hd-gate-number-baseline-offset: 4;
   --hd-gate-active-weight: 700;
   --hd-gate-inactive-weight: 400;
@@ -140,7 +140,7 @@
   --hd-personality: #e0dcd6;
   --hd-personality-on: #16130f;
   --hd-design: #e74c3c;
-  --hd-transit: #66c7cc;
+  --hd-transit: #1af4ff;
   --hd-transit-text: var(--hd-transit);
   --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 10%, #111516);
   --hd-both: var(--accent);
@@ -167,7 +167,7 @@
   --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 86%, white);
 
   --hd-inactive: #8c847a;
-  --hd-inactive-on: #6f685f;
+  --hd-inactive-on: #f1ebe2;
   --hd-undefined-center: #0d0c0a;
   --hd-center-stroke: #5a5248;
   --hd-graph-panel-bg: var(--bg-sunken);

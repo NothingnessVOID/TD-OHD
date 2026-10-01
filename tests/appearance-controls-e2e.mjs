@@ -26,13 +26,13 @@ async function checkViewport(viewport) {
   };
   const openSettings = async () => {
     await openMore();
-    await page.locator('#skin-settings-button').click();
+    await page.locator('#skin-settings-button').click({ position: { x: 4, y: 16 } });
     await page.locator('#skin-settings').waitFor({ state: 'visible' });
   };
   const switchTheme = async () => {
     await page.keyboard.press('Escape');
     await openMore();
-    await page.locator('#theme-toggle').click();
+    await page.locator('#theme-toggle').click({ position: { x: 4, y: 16 } });
     await openSettings();
   };
   try {
@@ -68,13 +68,36 @@ async function checkViewport(viewport) {
     for (const selector of ['#chart-share-menu', '#language-switcher', '#theme-toggle', '#skin-settings-button']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector} is reachable at ${viewport.width}px`);
     }
+    const menuGeometry = await page.locator('.more-panel').evaluate(node => ({
+      background: getComputedStyle(node).backgroundColor,
+      border: getComputedStyle(node).borderWidth,
+      boxShadow: getComputedStyle(node).boxShadow,
+      labels: node.querySelectorAll(':scope > span, .more-item > span').length,
+      icons: [...node.querySelectorAll(':scope > .theme-toggle, :scope > .chart-share-menu > summary')].map(icon => {
+        const rect = icon.getBoundingClientRect();
+        return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, radius: getComputedStyle(icon).borderRadius };
+      })
+    }));
+    assert.equal(menuGeometry.background, 'rgba(0, 0, 0, 0)', 'More has no outer background box');
+    assert.equal(menuGeometry.border, '0px');
+    assert.equal(menuGeometry.boxShadow, 'none');
+    assert.equal(menuGeometry.labels, 0, 'More exposes icons without visible labels');
+    assert.equal(menuGeometry.icons.length, 4);
+    for (const [index, icon] of menuGeometry.icons.entries()) {
+      assert.equal(icon.width, icon.height, 'Menu icon is circular');
+      assert.equal(icon.width, menuGeometry.icons[0].width, 'Menu icons share diameter');
+      assert.equal(icon.x, menuGeometry.icons[0].x, 'Menu icons align vertically');
+      if (index) assert.ok(icon.y >= menuGeometry.icons[index - 1].y + icon.height, 'Menu icons do not overlap');
+    }
+    await page.locator('#language-switcher').click({ position: { x: 4, y: 16 } });
+    await page.keyboard.press('Escape');
     for (const language of ['zh-CN', 'zh-Hant', 'en']) {
       await openMore();
       await page.locator('#language-switcher').selectOption(language);
       assert.equal(await page.locator('html').getAttribute('lang'), language, 'Language control remains usable');
     }
     await openMore();
-    await page.locator('#chart-share-menu > summary').click();
+    await page.locator('#chart-share-menu > summary').click({ position: { x: 4, y: 16 } });
     const downloadEvent = page.waitForEvent('download', { timeout: 60000 });
     await page.locator('#save-image').click();
     const download = await downloadEvent;
@@ -86,17 +109,17 @@ async function checkViewport(viewport) {
     const preset = name => page.locator(`[data-skin-preset="${name}"]`).click();
     await preset('classic');
     const defaults = Object.fromEntries(await Promise.all(['accent', 'personality', 'design', 'transit', 'graphBackground', 'gateNumberSize'].map(async key => [key, await value(key)])));
-    const custom = { accent: '#7b2cff', personality: '#325ba7', design: '#a62b8c', transit: '#00bb77', graphBackground: '#e5eef7', gateNumberSize: '13' };
+    const custom = { accent: '#7b2cff', personality: '#325ba7', design: '#a62b8c', transit: '#00bb77', graphBackground: '#e5eef7', gateNumberSize: '18' };
     for (const [key, next] of Object.entries(custom)) await setValue(key, next);
     assert.equal((await token('--accent')).toLowerCase(), custom.accent);
     assert.equal((await token('--hd-personality')).toLowerCase(), custom.personality);
     assert.equal((await token('--hd-design')).toLowerCase(), custom.design);
     assert.equal((await token('--hd-transit')).toLowerCase(), custom.transit);
     assert.equal((await token('--hd-graph-panel-bg')).toLowerCase(), custom.graphBackground);
-    assert.equal(await token('--hd-gate-number-size'), '13px');
+    assert.equal(await token('--hd-gate-number-size'), '18px');
     assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${custom.design}"]`).count() > 0, 'Design color repaints chart immediately');
     assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${custom.personality}"]`).count() > 0, 'Personality color repaints chart immediately');
-    assert.equal(await page.locator('#bodygraph-container .bg-gate text').first().getAttribute('font-size'), '13px', 'Gate number size repaints SVG immediately');
+    assert.equal(await page.locator('#bodygraph-container .bg-gate text').first().getAttribute('font-size'), '18px', 'Gate number size repaints SVG immediately');
     assert.equal(await page.locator('#bodygraph-container .bg-svg-wrap').evaluate(node => getComputedStyle(node).backgroundColor), 'rgb(229, 238, 247)', 'BodyGraph background updates immediately');
     for (const [key, color] of Object.entries({ determination: 'rgb(166, 43, 140)', environment: 'rgb(166, 43, 140)', motivation: 'rgb(50, 91, 167)', perspective: 'rgb(50, 91, 167)' })) {
       const symbol = page.locator(`#bodygraph-container .bg-variable-arrow[data-variable="${key}"] .bg-variable-symbol`);
@@ -107,26 +130,29 @@ async function checkViewport(viewport) {
     await preset('chakra');
     assert.equal(await page.locator('html').getAttribute('data-hd-skin'), 'chakra');
     assert.notEqual(await centerColor(), classicCenter, 'Chakra changes center color');
-    assert.notEqual(await value('design'), custom.design, 'Classic overrides do not leak into Chakra');
+    assert.equal(await value('design'), custom.design, 'Source color is global across skins');
+    assert.equal(await value('gateNumberSize'), custom.gateNumberSize, 'Gate size is global across presets');
     await setValue('design', '#b04717');
     await preset('classic');
-    assert.equal(await value('design'), custom.design, 'Classic overrides survive preset changes');
+    assert.equal(await value('design'), '#b04717', 'Source changes apply to both skins');
     assert.equal(await centerColor(), classicCenter, 'Switching back restores Classic center color');
     await switchTheme();
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
-    assert.notEqual(await value('design'), custom.design, 'Light overrides do not leak into Dark');
+    assert.equal(await value('design'), '#b04717', 'Source color is global across themes');
+    assert.equal(await value('gateNumberSize'), custom.gateNumberSize, 'Gate size is global across themes');
     await setValue('design', '#a1b2c3');
     await switchTheme();
-    assert.equal(await value('design'), custom.design, 'Light overrides survive theme changes');
+    custom.design = '#a1b2c3';
+    assert.equal(await value('design'), custom.design, 'Source changes persist across themes');
     await page.keyboard.press('Escape');
     await page.reload({ timeout: 60000 });
     await page.locator('#bodygraph-container .bodygraph-svg').waitFor({ timeout: 60000 });
     await openSettings();
     for (const [key, next] of Object.entries(custom)) assert.equal(await value(key), next, `${key} persists across reload`);
     await page.locator('#appearance-restore').click();
-    for (const [key, initial] of Object.entries(defaults)) assert.equal(await value(key), initial, `${key} restored to active preset default`);
+    for (const [key, initial] of Object.entries(defaults)) assert.equal(await value(key), key === 'gateNumberSize' ? custom.gateNumberSize : initial, `${key} restores colors while keeping global size`);
     await preset('chakra');
-    assert.equal(await value('design'), '#b04717', 'Restore affects only current preset/theme');
+    assert.equal(await value('design'), defaults.design, 'Restore default colors applies across skins');
     await page.locator('#appearance-reset').click();
     assert.equal(await page.locator('html').getAttribute('data-hd-skin'), 'classic');
     await preset('chakra');

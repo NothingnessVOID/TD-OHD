@@ -16,7 +16,10 @@ const inspect = selector => page.locator(selector).first().evaluate(node => ({
   stopColor: node.getAttribute('stop-color')
 }));
 const setAppearance = (method, value) => page.evaluate(async ({ method, value }) => {
-  (await import('/src/lib/appearance.js'))[method](value);
+  // Vite may timestamp module URLs after HMR; use the instance loaded by main.
+  const moduleUrl = performance.getEntriesByType('resource').map(entry => entry.name)
+    .filter(url => new URL(url).pathname === '/src/lib/appearance.js').at(-1) || '/src/lib/appearance.js';
+  (await import(moduleUrl))[method](value);
 }, { method, value });
 
 try {
@@ -75,8 +78,16 @@ try {
     assert.notEqual((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
       beforeTransitText, `${view} transit planet column follows the Transit text derivative`);
     const legend = `${stage} .tl-legend [data-source="transit"] i`;
-    assert.equal((await inspect(legend)).background, 'rgb(0, 238, 68)',
-      `${view} legend follows the Transit token`);
+    const expectedLegend = await page.evaluate(() => {
+      const probe = document.createElement('i');
+      probe.style.backgroundColor = 'color-mix(in srgb, #00EE44 75%, #445457)';
+      document.body.append(probe);
+      const color = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      return color;
+    });
+    assert.equal((await inspect(legend)).background, expectedLegend,
+      `${view} legend follows the existing Transit color derivative`);
   }
   assert.deepEqual(errors, []);
   console.log('Appearance skin: Design/Transit linkage, G/Root independence, details, and live light/dark refresh passed.');
