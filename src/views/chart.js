@@ -188,6 +188,10 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
   const crossDisplay = chart.incarnationCross
     ? crossName(chart.incarnationCross)
     : 'Unknown';
+  const crossParts = crossDisplay.match(/^(.*?)([（(][^（）()]*[）)])$/s);
+  const crossDisplayHtml = crossParts
+    ? `${esc(crossParts[1].trim())}<br>${esc(crossParts[2])}`
+    : esc(crossDisplay);
   const circuitCounts = { individual: 0, collective: 0, tribal: 0 };
   for (const channel of chart.channels || []) circuitCounts[channelCircuit(channel).group]++;
   const [dominantName, dominantCount] = Object.entries(circuitCounts).sort((a, b) => b[1] - a[1])[0];
@@ -232,7 +236,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Incarnation Cross')}</div>
-        <div class="value">${esc(crossDisplay)}</div>
+        <div class="value">${crossDisplayHtml}</div>
         <div class="detail">${t('Gates')} ${chart.incarnationCross?.gates?.join(' / ') || '—'}</div>
       </div>
       <div class="foundation-item foundation-variable-card">
@@ -773,7 +777,7 @@ function renderVariablePanel(container) {
     <div class="arrow-card" data-variable="${key}">
       <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
-      <div class="arrow-type">${esc(name)}${originalTerm ? ` <span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
+      <div class="arrow-type">${esc(name)}${originalTerm ? `<br><span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
       <div class="arrow-desc">${esc(contentText(slot.description))}</div>
       <div class="arrow-meta">${t('Color {color} · Tone {tone}', { color: slot.color, tone: slot.tone })}</div>
       ${sub || ''}
@@ -783,7 +787,7 @@ function renderVariablePanel(container) {
     <div class="panel-title">${t('Variable')}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
     <div class="variable-grid">
-      ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
+      ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${v.determination.cognition.description ? `${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}` : ''}</div>` : '')}
       ${card('motivation', v.motivation, t('Motivation'))}
       ${card('environment', v.environment, t('Environment'))}
       ${card('perspective', v.perspective, t('Perspective'))}
@@ -811,7 +815,7 @@ function renderCrossPanel(container) {
             <div class="foundation-item">
               <div class="label">${esc(contentText(s.sphere))}</div>
               <div class="value">${t('Key {key}', { key: esc(s.keyLine || s.key) })}</div>
-              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field) || s[field])).join(' → ')}</div>
+              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field) || s[field])).join(' →<br>')}</div>
             </div>
           ` : '';
         }).join('')}
