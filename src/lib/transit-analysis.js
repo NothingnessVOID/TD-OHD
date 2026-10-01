@@ -1,6 +1,7 @@
 // TD-OHD local structural analysis. Source attribution and MIT terms: THIRD_PARTY_NOTICES.md.
 // See THIRD_PARTY_NOTICES.md. No astronomical position calculation occurs here.
 import { GATES, CHANNELS, CENTERS } from './human-design/catalog.js';
+import { channelCircuit } from './circuit-topology.js';
 
 // Accept the transit activation contract supplied by the SharpAstrology provider.
 export function analyzeTransitActivations(natalChart, transits) {
@@ -31,7 +32,7 @@ export function analyzeTransitActivations(natalChart, transits) {
         gates: channel.gates,
         centers: channel.centers,
         theme: channel.theme,
-        circuit: channel.circuit,
+        circuit: channelCircuit(channel).group,
         natalGate,
         transitGate,
         transitPlanet,

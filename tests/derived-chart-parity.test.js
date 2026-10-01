@@ -6,6 +6,7 @@ import { GATES, CHANNELS } from '../src/lib/human-design/catalog.js';
 import { calculateGeneKeys } from '../src/lib/gene-keys.js';
 import { compareHumanDesign } from '../src/lib/human-design/connection.js';
 import { analyzePenta } from '../src/lib/human-design/penta.js';
+import { channelCircuit } from '../src/lib/circuit-topology.js';
 import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
 
 const fixtures = JSON.parse(readFileSync(new URL('./fixtures/derived-parity.json', import.meta.url), 'utf8'));
@@ -33,9 +34,16 @@ function calculate({ kind, input }) {
   const gates = Object.fromEntries(Object.entries(activationMap(input.activations)).map(([point, value]) =>
     [point, { ...value, longitude: 0, gateName: GATES[value.gate].name, center: GATES[value.gate].center }]));
   const activeGates = [...new Set(Object.values(gates).map(value => value.gate))];
-  return analyzeTransitActivations(charts[input.chart], {
+  const result = analyzeTransitActivations(charts[input.chart], {
     date: 'synthetic-activation-fixture', gates, activeGates, activeGateCount: activeGates.length,
   });
+  // Phase 2 intentionally unifies circuit classification; every other output retains its v1 hash.
+  for (const completion of result.channelCompletions) {
+    const channel = CHANNELS.find(c => c.gates.join('-') === completion.gates.join('-'));
+    assert.equal(completion.circuit, channelCircuit(channel).group);
+    completion.circuit = channel.circuit; // Project only this approved change for the historical hash.
+  }
+  return result;
 }
 
 for (const [kind, count] of [['connection', 64], ['penta', 32], ['geneKeys', 64], ['transit', 64]]) {

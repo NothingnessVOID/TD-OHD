@@ -1,0 +1,220 @@
+{
+  "determination": [
+    {
+      "arrow": "left",
+      "color": 1,
+      "tone": 2,
+      "base": 4,
+      "name": "Appetite",
+      "description": "Eat simple, one thing at a time. Consecutive diet.",
+      "cognition": {
+        "name": "Taste"
+      }
+    },
+    {
+      "arrow": "left",
+      "color": 2,
+      "tone": 2,
+      "base": 4,
+      "name": "Taste",
+      "description": "Sensitive palate. Open or closed taste preferences.",
+      "cognition": {
+        "name": "Taste"
+      }
+    },
+    {
+      "arrow": "left",
+      "color": 3,
+      "tone": 2,
+      "base": 4,
+      "name": "Thirst",
+      "description": "Temperature sensitivity. Hot or cold food and drink.",
+      "cognition": {
+        "name": "Taste"
+      }
+    },
+    {
+      "arrow": "left",
+      "color": 4,
+      "tone": 2,
+      "base": 4,
+      "name": "Touch",
+      "description": "Environment affects digestion. Calm surroundings needed.",
+      "cognition": {
+        "name": "Taste"
+      }
+    },
+    {
+      "arrow": "left",
+      "color": 5,
+      "tone": 2,
+      "base": 4,
+      "name": "Sound",
+      "description": "Acoustic environment matters. Sound affects metabolism.",
+      "cognition": {
+        "name": "Taste"
+      }
+    },
+    {
+      "arrow": "left",
+      "color": 6,
+      "tone": 2,
+      "base": 4,
+      "name": "Light",
+      "description": "Light conditions affect eating. Direct or indirect light.",
+      "cognition": {
+        "name": "Taste"
+      }
+    }
+  ],
+  "environment": [
+    {
+      "arrow": "right",
+      "color": 1,
+      "tone": 5,
+      "base": 5,
+      "name": "Caves",
+      "description": "Enclosed, protected, selective spaces. Privacy and shelter."
+    },
+    {
+      "arrow": "right",
+      "color": 2,
+      "tone": 5,
+      "base": 5,
+      "name": "Markets",
+      "description": "Places of exchange and gathering. Commercial, busy spaces."
+    },
+    {
+      "arrow": "right",
+      "color": 3,
+      "tone": 5,
+      "base": 5,
+      "name": "Kitchens",
+      "description": "Transformative spaces where things are heated and prepared."
+    },
+    {
+      "arrow": "right",
+      "color": 4,
+      "tone": 5,
+      "base": 5,
+      "name": "Mountains",
+      "description": "Elevated spaces with views and room to see."
+    },
+    {
+      "arrow": "right",
+      "color": 5,
+      "tone": 5,
+      "base": 5,
+      "name": "Valleys",
+      "description": "Acoustically rich environments. Sounds and resonance."
+    },
+    {
+      "arrow": "right",
+      "color": 6,
+      "tone": 5,
+      "base": 5,
+      "name": "Shores",
+      "description": "Transitional spaces. Edges, boundaries, thresholds."
+    }
+  ],
+  "motivation": [
+    {
+      "arrow": "left",
+      "color": 1,
+      "tone": 3,
+      "base": 5,
+      "name": "Fear",
+      "description": "Motivated to understand the unknown. Natural researcher and learner."
+    },
+    {
+      "arrow": "left",
+      "color": 2,
+      "tone": 3,
+      "base": 5,
+      "name": "Hope",
+      "description": "Motivated by patience and trust. Waits and observes before acting."
+    },
+    {
+      "arrow": "left",
+      "color": 3,
+      "tone": 3,
+      "base": 5,
+      "name": "Desire",
+      "description": "Motivated to move and organize. Initiates with purpose."
+    },
+    {
+      "arrow": "left",
+      "color": 4,
+      "tone": 3,
+      "base": 5,
+      "name": "Need",
+      "description": "Motivated by service. Identifies what must be done for the collective."
+    },
+    {
+      "arrow": "left",
+      "color": 5,
+      "tone": 3,
+      "base": 5,
+      "name": "Guilt",
+      "description": "Motivated by deep responsibility. Driven to fix and manage."
+    },
+    {
+      "arrow": "left",
+      "color": 6,
+      "tone": 3,
+      "base": 5,
+      "name": "Innocence",
+      "description": "Motivated by non-doing. Shows up without agenda or expectation."
+    }
+  ],
+  "perspective": [
+    {
+      "arrow": "right",
+      "color": 1,
+      "tone": 4,
+      "base": 2,
+      "name": "Survival",
+      "description": "Awareness focused on security and self-preservation."
+    },
+    {
+      "arrow": "right",
+      "color": 2,
+      "tone": 4,
+      "base": 2,
+      "name": "Possibility",
+      "description": "Open, optimistic view. Sees potential everywhere."
+    },
+    {
+      "arrow": "right",
+      "color": 3,
+      "tone": 4,
+      "base": 2,
+      "name": "Power",
+      "description": "Focused on influence and impact. Sees dynamics of control."
+    },
+    {
+      "arrow": "right",
+      "color": 4,
+      "tone": 4,
+      "base": 2,
+      "name": "Wanting",
+      "description": "Driven by desire. Sees what is needed or missing."
+    },
+    {
+      "arrow": "right",
+      "color": 5,
+      "tone": 4,
+      "base": 2,
+      "name": "Probability",
+      "description": "Analytical, practical view. Calculates odds and outcomes."
+    },
+    {
+      "arrow": "right",
+      "color": 6,
+      "tone": 4,
+      "base": 2,
+      "name": "Personal",
+      "description": "Introspective, self-reflective, deeply personal lens."
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "samples": 320,
+  "islandDifferences": 0,
+  "definitions": {
+    "SplitDefinition": 159,
+    "SingleDefinition": 120,
+    "TripleSplit": 34,
+    "Empty": 6,
+    "QuadrupleSplit": 1
+  },
+  "legacyComparison": {
+    "samples": 320,
+    "islandDifferences": 0,
+    "legacyPresentationDifferences": 0,
+    "circuitAnalysisChanges": 132
+  },
+  "foundationLayout": [
+    {
+      "width": 1224,
+      "locale": "en",
+      "identical": true
+    },
+    {
+      "width": 1224,
+      "locale": "zh-CN",
+      "identical": true
+    },
+    {
+      "width": 903,
+      "locale": "en",
+      "identical": true
+    },
+    {
+      "width": 903,
+      "locale": "zh-CN",
+      "identical": true
+    },
+    {
+      "width": 664,
+      "locale": "en",
+      "identical": true
+    },
+    {
+      "width": 664,
+      "locale": "zh-CN",
+      "identical": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "identical": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "identical": true
+    }
+  ],
+  "protectedConsumers": {
+    "relationshipNativePairs": 64,
+    "teamNativeGroups": 32,
+    "differences": 0
+  }
+}
