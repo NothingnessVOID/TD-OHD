@@ -20,6 +20,7 @@ import {
 const humanList = items => formatDisplay('list', items);
 
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
+import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
@@ -225,19 +226,29 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <div class="detail">${countLabel(chart.centers.definedNames.length, '{count} defined center', '{count} defined centers')}, ${countLabel(chart.channels.length, '{count} channel', '{count} channels')}</div>
       </div>
       <div class="foundation-item">
-        <div class="label">${t('Incarnation Cross')}</div>
-        <div class="value">${esc(crossDisplay)}</div>
-        <div class="detail">${t('Gates')} ${chart.incarnationCross?.gates?.join(' / ') || '—'}</div>
-      </div>
-      <div class="foundation-item">
         <div class="label">${t('Dominant Circuit')}</div>
         <div class="value">${esc(circuitText)}</div>
         <div class="detail">${circuitDominant ? esc(contentText(circuitDominant.theme || '')) : t('No defined channels')}</div>
       </div>
       <div class="foundation-item">
+        <div class="label">${t('Incarnation Cross')}</div>
+        <div class="value">${esc(crossDisplay)}</div>
+        <div class="detail">${t('Gates')} ${chart.incarnationCross?.gates?.join(' / ') || '—'}</div>
+      </div>
+      <div class="foundation-item foundation-variable-card">
         <div class="label">${t('Variable')}</div>
-        <div class="value foundation-variable-arrows">${variableArrows(chart.variable).sort((a, b) => ['motivation', 'perspective', 'determination', 'environment'].indexOf(a.key) - ['motivation', 'perspective', 'determination', 'environment'].indexOf(b.key)).map(item => `<span data-variable="${item.key}" data-source="${item.source.split('.')[0]}" title="${esc(t(item.label))}" aria-label="${esc(t(item.label))}">${item.direction === 'left' ? 'L' : 'R'}</span>`).join('') || '—'}</div>
-        <div class="detail">${t('Determination · Environment · Perspective · Motivation')}</div>
+        ${chart.variable?.notation ? `<div class="foundation-variable-notation">${esc(t('Standard notation:'))} ${esc(chart.variable.notation)}</div>` : ''}
+        <div class="value foundation-variable-arrows">${[
+          { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
+          { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
+        ].map(group => `<div class="foundation-variable-group" data-source="${group.source}">
+          <div class="foundation-variable-heading">${esc(t(group.label))}${getLocale() !== 'en' ? `<small>${group.label}</small>` : ''}</div>
+          <div class="foundation-variable-pair">${group.keys.map(key => {
+            const item = variableArrows(chart.variable).find(item => item.key === key);
+            const label = { motivation: 'Motivation', perspective: 'Perspective', determination: 'Determination', environment: 'Environment' }[key];
+            return `<div class="foundation-variable-slot"><span data-variable="${key}" data-source="${group.source}" aria-label="${esc(t(label))}">${item ? (item.direction === 'left' ? 'L' : 'R') : '—'}</span><div class="foundation-variable-caption" title="${label}">${esc(t(label))}</div></div>`;
+          }).join('')}</div>
+        </div>`).join('')}</div>
       </div>
     </div>
   `;
@@ -695,6 +706,12 @@ function renderGatesPanel(container) {
 
 function renderPlanetsPanel(container) {
   const { chart } = current;
+  const fixings = calculateLineFixings(chart);
+  const activationCell = (activation, side, planet) => {
+    const state = fixings[side]?.[planet]?.natalState;
+    const symbol = ({ exalted: '▲', detriment: '▼', juxtaposed: '▲▼', unknown: '?' })[state] || '';
+    return `<span class="planet-cell-number">${activation ? `${activation.gate}.${activation.line}` : '—'}<span class="planet-cell-fixing" data-state="${state || ''}" aria-hidden="true">${symbol}</span></span>`;
+  };
   // Substructure tooltip: gate.line then color/tone/base (the 6/6/6/5 layers)
   const sub = (g) => g && g.color
     ? t('Color {color} · Tone {tone} · Base {base}', { color: g.color, tone: g.tone, base: g.base })
@@ -705,11 +722,11 @@ function renderPlanetsPanel(container) {
     const p = chart.gates.personality[planet];
     return `
       <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${d ? `${d.gate}.${d.line}` : '—'}</span>
+        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${activationCell(d, 'design', planet)}</span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
         <span class="planet-cell-identity"><span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span><span class="planet-cell-name">${esc(planetName(planet))}</span></span>
         <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${p ? `${p.gate}.${p.line}` : '—'}</span>
+        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${activationCell(p, 'personality', planet)}</span>
       </div>
     `;
   }).join('');
