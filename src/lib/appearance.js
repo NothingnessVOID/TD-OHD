@@ -91,9 +91,10 @@ export function restoreCurrentPreset() {
   persist(); notify();
 }
 export function resetAppearance() {
+  const theme = getTheme();
   globalOverrides = {};
-  try { localStorage.removeItem(THEME_STORAGE_KEY); localStorage.removeItem(APPEARANCE_STORAGE_KEY); } catch { /* No persistent storage. */ }
-  root().setAttribute('data-theme',window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  try { localStorage.removeItem(APPEARANCE_STORAGE_KEY); } catch { /* No persistent storage. */ }
+  write(THEME_STORAGE_KEY, theme);
   root().setAttribute('data-skin',DEFAULT_SITE_SKIN);
   root().setAttribute('data-hd-skin',DEFAULT_HD_SKIN);
   notify();

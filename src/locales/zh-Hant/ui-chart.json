@@ -121,5 +121,17 @@
   "Perspective": "視角",
   "Global appearance settings": "全域外觀設定",
   "Restore Default Colors": "恢復預設顏色",
-  "Standard notation:": "標準寫法："
+  "Standard notation:": "標準寫法：",
+  "Copy data": "複製資料",
+  "Data copied ✓": "資料已複製 ✓",
+  "Transit data is not ready yet": "行運資料尚未準備好",
+  "Human Design data": "Human Design（人類圖）資料",
+  "Basic structure": "基礎結構",
+  "Signature": "簽名",
+  "Not-Self Theme": "非自己主題",
+  "Gate combination": "閘門組合",
+  "Completely open": "完全開放",
+  "Planetary activations": "行星啟動",
+  "Standard notation": "標準編碼",
+  "Selected moment": "所選時刻"
 }

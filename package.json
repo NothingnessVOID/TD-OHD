@@ -17,6 +17,7 @@
     "test:localization": "node --test tests/i18n.test.js tests/localization.test.js tests/traditional-chinese.test.js tests/transit-localization.test.js tests/timeline-language-contract.test.js",
     "test:timeline": "node --test tests/line-fixing.test.js tests/timeline-detail-time.test.js tests/timeline-duration.test.js tests/timeline-presets.test.js tests/timeline-ruler.test.js tests/timeline-viewport.test.js tests/transit-timeline.test.js",
     "e2e:timeline": "node tests/timeline-e2e.mjs && node tests/timeline-gestures-e2e.mjs && node tests/timeline-mobile-touch-e2e.mjs && node tests/timeline-mobile-layout-e2e.mjs",
+    "e2e:chart-data-export": "node tests/chart-data-export-e2e.mjs",
     "e2e:planet": "node tests/planet-detail-e2e.mjs",
     "e2e:appearance": "node tests/appearance-skin-e2e.mjs && node tests/appearance-controls-e2e.mjs",
     "e2e:reference": "node tests/reference-e2e.mjs",
