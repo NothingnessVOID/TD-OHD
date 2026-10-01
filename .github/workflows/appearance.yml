@@ -1,0 +1,39 @@
+name: Appearance validation
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  appearance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright-core install --with-deps chromium
+      - name: Start browser test server
+        run: |
+          ./node_modules/.bin/vite --host 127.0.0.1 --port 5173 --strictPort > /tmp/appearance-vite.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5173/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/appearance-vite.log
+          exit 1
+      - run: npm run e2e:appearance
+        env:
+          E2E_URL: http://127.0.0.1:5173
+          CHROME_CHANNEL: chromium
+      - name: Show browser log on failure
+        if: failure()
+        run: cat /tmp/appearance-vite.log || true

@@ -198,6 +198,7 @@ try {
     await navClick('chart');
     await page.locator('#chart-view:not(.hidden)').waitFor();
     assert.equal(await page.locator('.share-fields').count(), 0);
+    await page.locator('#more-toggle').click();
     await page.locator('#chart-share-menu summary').click();
     await page.locator('#share-chart').click();
     const shared = await page.evaluate(() => navigator.clipboard.readText());

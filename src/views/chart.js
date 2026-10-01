@@ -19,6 +19,7 @@ import {
 
 const humanList = items => formatDisplay('list', items);
 
+import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
@@ -235,7 +236,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Variable')}</div>
-        <div class="value">${esc(current.chart.variable?.notation || '—')}</div>
+        <div class="value foundation-variable-arrows">${variableArrows(chart.variable).sort((a, b) => ['motivation', 'perspective', 'determination', 'environment'].indexOf(a.key) - ['motivation', 'perspective', 'determination', 'environment'].indexOf(b.key)).map(item => `<span data-variable="${item.key}" data-source="${item.source.split('.')[0]}" title="${esc(t(item.label))}" aria-label="${esc(t(item.label))}">${item.direction === 'left' ? 'L' : 'R'}</span>`).join('') || '—'}</div>
         <div class="detail">${t('Determination · Environment · Perspective · Motivation')}</div>
       </div>
     </div>
@@ -683,7 +684,7 @@ function renderGatesPanel(container) {
 
   container.innerHTML = `
     <div class="panel-title">${t('Active Gates ({count})', { count: allGates.length })}</div>
-    <p class="panel-intro"><span class="act-design">${t('Red = Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Black = Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
+    <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
     ${gatesHtml}
   `;
   container.querySelectorAll('.gate-item').forEach(item => {
@@ -716,7 +717,7 @@ function renderPlanetsPanel(container) {
   const dDate = chart.positions?.design?.date;
   container.innerHTML = `
     <div class="panel-title">${t('Planetary Activations')}</div>
-    <p class="panel-intro">${t('Each planet activates a gate and line. Design (red) was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality (black) is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
+    <p class="panel-intro">${t('Each planet activates a gate and line. Design was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
     <div class="planet-table">
       <div class="planet-table-row planet-table-head">
         <span class="planet-cell act-design">${t('Design')}</span>
@@ -745,13 +746,15 @@ function renderVariablePanel(container) {
     container.innerHTML = `<div class="panel-title">${t('Variable')}</div><p>${t('Variable data unavailable.')}</p>`;
     return;
   }
-  const arrowSymbol = (dir) => dir === 'left' ? '◀' : '▶';
+  const arrowSymbol = (dir) => dir === 'left' ? '←' : dir === 'right' ? '→' : '—';
   const card = (key, slot, label, sub) => {
+    if (!slot) return '';
+    const direction = variableDirection(slot);
     const [name] = variable(slot);
     const originalTerm = formatDisplay('originalTerm', slot.name);
     return `
     <div class="arrow-card" data-variable="${key}">
-      <div class="arrow-direction">${arrowSymbol(slot.arrow)} <span class="arrow-side">${t(slot.arrow === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
+      <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}${originalTerm ? ` <span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
       <div class="arrow-desc">${esc(contentText(slot.description))}</div>
@@ -760,13 +763,13 @@ function renderVariablePanel(container) {
     </div>
   `; };
   container.innerHTML = `
-    <div class="panel-title">${t('Variable — {notation}', { notation: esc(v.notation) })}</div>
+    <div class="panel-title">${t('Variable')}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
     <div class="variable-grid">
-      ${card('determination', v.determination, t('Determination (Digestion)'), v.determination.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
+      ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}</div>` : '')}
       ${card('motivation', v.motivation, t('Motivation'))}
       ${card('environment', v.environment, t('Environment'))}
-      ${card('perspective', v.perspective, t('Perspective (View)'))}
+      ${card('perspective', v.perspective, t('Perspective'))}
     </div>
   `;
 }

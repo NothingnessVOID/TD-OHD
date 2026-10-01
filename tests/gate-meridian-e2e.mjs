@@ -77,6 +77,8 @@ try {
 
     await page.goto(`${base}/#library/gate/24`);
     await page.locator('#reference-detail h2').waitFor();
+    // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
     await page.locator('#language-switcher').selectOption('zh-CN');
     const librarySwitch = page.locator('#reference-detail .gate-lens-switch');
     const libraryReading = page.locator('#reference-detail .reference-reading');
@@ -84,11 +86,15 @@ try {
     await checkLenses({ switcher: librarySwitch, reading: libraryReading, attribute: 'data-reference-lens' });
     if (width === 1380) {
       for (const [language, label] of [['zh-Hant', '經絡穴位'], ['en', '经络穴位']]) {
+        // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
         await page.locator('#language-switcher').selectOption(language);
         assert.equal(await librarySwitch.locator('[data-reference-lens="meridian"]').innerText(), label);
         await librarySwitch.locator('[data-reference-lens="meridian"]').click();
         assert.equal(await libraryReading.locator('.meridian-core-item--point .meridian-value').innerText(), '隐白穴');
       }
+      // Exercise locale redraw while the mobile reference detail overlay stays open.
+    if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
       await page.locator('#language-switcher').selectOption('zh-CN');
     }
 
@@ -96,6 +102,7 @@ try {
       const lightPointBackground = await libraryReading.locator('.meridian-core-item--point')
         .evaluate(node => getComputedStyle(node).backgroundColor);
       await page.goto(`${base}/#library`);
+      await page.locator('#more-toggle').click();
       await page.locator('#theme-toggle').click();
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
       await page.goto(`${base}/#library/gate/24`);

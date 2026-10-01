@@ -46,7 +46,7 @@ try {
       ['determination', 'motivation', 'environment', 'perspective']);
     for (const card of variableCards) {
       assert.ok(card.tone >= 1 && card.tone <= 6);
-      assert.equal(card.direction, card.tone <= 3 ? '◀' : '▶');
+      assert.equal(card.direction, card.tone <= 3 ? '←' : '→');
     }
     if (width > 600) {
       assert.ok(variableCards[0].x < variableCards[1].x && variableCards[0].y === variableCards[1].y);

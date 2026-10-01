@@ -124,14 +124,13 @@ export function refreshConnectionLanguage() {
   }
 }
 
-// Person colors for the combined chart (theme-aware): teal = A, coral = B,
-// gold = a channel/center the two only complete together.
+// Relationship colors are separate from personality/design/transit sources.
 function compositePalette() {
   const style = getComputedStyle(document.documentElement);
   return {
-    a: style.getPropertyValue('--connection-person-a').trim(),
-    b: style.getPropertyValue('--connection-person-b').trim(),
-    bridged: style.getPropertyValue('--connection-bridged').trim()
+    a: style.getPropertyValue('--hd-connection-a').trim(),
+    b: style.getPropertyValue('--hd-connection-b').trim(),
+    bridged: style.getPropertyValue('--hd-connection-bridged').trim()
   };
 }
 
@@ -150,8 +149,8 @@ const DYN_BLURB = {
 // connection runs through (individual / tribal / collective / integration).
 const CONN_TYPES = [
   ['electromagnetic', 'Electromagnetic', 'var(--electromagnetic)', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
-  ['companionship', 'Companionship', 'var(--integration)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
-  ['compromise', 'Compromise', 'var(--collective)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
+  ['companionship', 'Companionship', 'var(--hd-circuit-integration)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
+  ['compromise', 'Compromise', 'var(--hd-circuit-collective)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
   ['dominance', 'Dominance', 'var(--text-tertiary)', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
 ];
 

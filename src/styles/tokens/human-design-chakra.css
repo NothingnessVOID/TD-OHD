@@ -1,0 +1,23 @@
+/* Center palette only. Source, connection and circuit semantics stay independent. */
+[data-hd-skin="chakra"] {
+  --hd-center-head: #a38abb;
+  --hd-center-ajna: #7579aa;
+  --hd-center-throat: #6e9fbe;
+  --hd-center-g: #79a889;
+  --hd-center-heart: #659b77;
+  --hd-center-solar: #d4ba63;
+  --hd-center-spleen: #bca652;
+  --hd-center-sacral: #cf9561;
+  --hd-center-root: #bd7169;
+}
+[data-hd-skin="chakra"][data-theme="dark"] {
+  --hd-center-head: #a28bbd;
+  --hd-center-ajna: #8184b8;
+  --hd-center-throat: #75aacb;
+  --hd-center-g: #80b493;
+  --hd-center-heart: #6ba581;
+  --hd-center-solar: #d8bf70;
+  --hd-center-spleen: #bda958;
+  --hd-center-sacral: #d69e70;
+  --hd-center-root: #c47f76;
+}

@@ -11,10 +11,10 @@ import { formatBirth } from '../src/lib/format.js';
 const directory = new URL('../src/locales/zh-CN/', import.meta.url);
 const uiCatalogs = readdirSync(directory).filter(name => /^ui-.*\.json$/.test(name));
 
-test('TD-OHD branding keeps the personal fork, Pages URL and upstream attribution distinct', () => {
+test('TD-OHD branding keeps the personal fork, production URL and upstream attribution distinct', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /<span class="logo-text">TD-OHD<\/span>/);
-  assert.match(html, /<meta property="og:url" content="https:\/\/nothingnessvoid\.github\.io\/TD-OHD\/">/);
+  assert.match(html, /<meta property="og:url" content="https:\/\/td-ohd\.netlify\.app\/">/);
   assert.match(html, /href="https:\/\/github\.com\/NothingnessVOID\/TD-OHD"/);
   assert.match(html, /href="https:\/\/github\.com\/Unforced-Dev\/open-human-design"/);
   for (const locale of ['zh-CN', 'zh-Hant']) {

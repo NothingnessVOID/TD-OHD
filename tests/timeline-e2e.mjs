@@ -64,7 +64,8 @@ const activeSourcesMatchBars = targetPage => targetPage.evaluate(() => {
     if ((row.dataset.activeSource || null) !== source || row.classList.contains('tl-row-active') !== Boolean(source))
       mismatch.push({ key: row.dataset.key, expected: source, actual: row.dataset.activeSource || null });
     if (source && !row.classList.contains('tl-row-lit')) {
-      const name = getComputedStyle(row.querySelector('.tl-row-name'));
+      const name = getComputedStyle(row.querySelector('.tl-gate-expand')
+        ? row.querySelector('.tl-row-label') : row.querySelector('.tl-row-name'));
       if (source === 'both' && !name.backgroundImage.includes('repeating-linear-gradient'))
         mismatch.push({ key: row.dataset.key, source, css: name.backgroundImage });
       if (source !== 'both' && !name.boxShadow.includes('inset'))
