@@ -4,7 +4,7 @@ export const DEFAULT_HD_SKIN = 'classic';
 export const APPEARANCE_STORAGE_KEY = 'td-ohd-appearance-v1';
 const THEME_STORAGE_KEY = 'bodygraph-theme';
 const listeners = new Set();
-let overrides = {};
+let globalOverrides = {};
 export const CUSTOM_TOKENS = Object.freeze({
   accent: '--accent', personality: '--hd-personality', design: '--hd-design',
   transit: '--hd-transit', graphBackground: '--hd-graph-bg', gateNumberSize: '--hd-gate-number-size'
@@ -13,14 +13,13 @@ const root = () => document.documentElement;
 const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
 const write = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Still works in private storage. */ } };
 const validValue = (key, value) => key === 'gateNumberSize'
-  ? ['number', 'string'].includes(typeof value) && Number.isFinite(Number(value)) && Number(value) >= 9 && Number(value) <= 14
+  ? ['number', 'string'].includes(typeof value) && Number.isFinite(Number(value)) && Number(value) >= 14 && Number(value) <= 30
   : typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 export const getTheme = () => root().getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
 export const getSiteSkin = () => root().getAttribute('data-skin') || DEFAULT_SITE_SKIN;
 export const getHumanDesignSkin = () => root().getAttribute('data-hd-skin') || DEFAULT_HD_SKIN;
 export const getAppearance = () => ({ theme: getTheme(), siteSkin: getSiteSkin(), humanDesignSkin: getHumanDesignSkin() });
-const scope = () => `${getHumanDesignSkin()}:${getTheme()}`;
-export const getCustomOverrides = () => ({ ...overrides[scope()] });
+export const getCustomOverrides = () => ({ ...globalOverrides });
 function applyOverrides() {
   const style = root().style;
   if (!style) return;
@@ -37,25 +36,30 @@ function applyOverrides() {
     style.setProperty('--accent-on', (rgb[0]*299 + rgb[1]*587 + rgb[2]*114)/1000 > 150 ? '#16130f' : '#ffffff');
   }
 }
-function persist() { write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 1, preset: getHumanDesignSkin(), overrides })); }
+function persist() { write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 2, preset: getHumanDesignSkin(), globalOverrides })); }
 function notify() { applyOverrides(); for (const listener of listeners) listener(getAppearance()); }
 export function initAppearance() {
-  overrides = {};
+  globalOverrides = {};
   let preset = DEFAULT_HD_SKIN;
+  const savedTheme = read(THEME_STORAGE_KEY);
+  const theme = savedTheme === 'dark' || (!savedTheme && window.matchMedia?.('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
   try {
     const saved = JSON.parse(read(APPEARANCE_STORAGE_KEY));
-    if (saved?.version === 1) {
+    if ([1, 2].includes(saved?.version)) {
       if (['classic', 'chakra'].includes(saved.preset)) preset = saved.preset;
-      for (const skin of ['classic','chakra']) for (const theme of ['light','dark']) {
-        const name = `${skin}:${theme}`;
-        for (const [key,value] of Object.entries(saved.overrides?.[name] || {})) {
-          if (Object.hasOwn(CUSTOM_TOKENS,key) && validValue(key,value)) (overrides[name] ||= {})[key] = key === 'gateNumberSize' ? Number(value) : value;
+      const accept = values => {
+        for (const [key,value] of Object.entries(values || {})) {
+          if (Object.hasOwn(CUSTOM_TOKENS,key) && validValue(key,value)) globalOverrides[key] = key === 'gateNumberSize' ? Number(value) : value;
         }
+      };
+      // Migrate old per-skin settings. Chakra and the current theme take priority.
+      if (saved.version === 1) {
+        for (const skin of ['classic','chakra']) for (const mode of [theme === 'light' ? 'dark' : 'light', theme]) accept(saved.overrides?.[`${skin}:${mode}`]);
       }
+      accept(saved.globalOverrides);
     }
   } catch { /* Discard malformed preferences. */ }
-  const savedTheme = read(THEME_STORAGE_KEY);
-  root().setAttribute('data-theme', savedTheme === 'dark' || (!savedTheme && window.matchMedia?.('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');
+  root().setAttribute('data-theme', theme);
   root().setAttribute('data-skin', DEFAULT_SITE_SKIN);
   root().setAttribute('data-hd-skin', preset);
   applyOverrides();
@@ -78,12 +82,16 @@ export function setHumanDesignSkin(skin) {
 }
 export function setCustomOverride(key, value) {
   if (!Object.hasOwn(CUSTOM_TOKENS,key) || !validValue(key,value)) throw new TypeError('Invalid appearance override');
-  (overrides[scope()] ||= {})[key] = key === 'gateNumberSize' ? Number(value) : value;
+  globalOverrides[key] = key === 'gateNumberSize' ? Number(value) : value;
   persist(); notify();
 }
-export function restoreCurrentPreset() { delete overrides[scope()]; persist(); notify(); }
+export function restoreCurrentPreset() {
+  const size = globalOverrides.gateNumberSize;
+  globalOverrides = size == null ? {} : { gateNumberSize: size };
+  persist(); notify();
+}
 export function resetAppearance() {
-  overrides = {};
+  globalOverrides = {};
   try { localStorage.removeItem(THEME_STORAGE_KEY); localStorage.removeItem(APPEARANCE_STORAGE_KEY); } catch { /* No persistent storage. */ }
   root().setAttribute('data-theme',window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   root().setAttribute('data-skin',DEFAULT_SITE_SKIN);

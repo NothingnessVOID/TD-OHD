@@ -62,7 +62,7 @@ try {
     const symbol = await graph.locator('.bg-variable-symbol').innerText();
     const color = await graph.locator('.bg-variable-symbol').evaluate(node => getComputedStyle(node).color);
     assert.equal(await summary.getAttribute('data-source'), source);
-    assert.equal(await summary.innerText(), symbol, `${key} foundation arrow matches graph`);
+    assert.equal(await summary.innerText(), symbol === '←' ? 'L' : 'R', `${key} foundation arrow matches graph`);
     assert.equal(await card.innerText(), symbol, `${key} panel arrow matches graph`);
     assert.equal(await summary.evaluate(node => getComputedStyle(node).color), color, `${key} foundation source color matches graph`);
     assert.equal(await card.evaluate(node => getComputedStyle(node).color), color, `${key} panel source color matches graph`);
@@ -87,8 +87,10 @@ try {
 
   await page.locator('.nav-link[data-view="transits"]').click();
   await page.locator('#transit-stage .bodygraph-svg').waitFor({ timeout: 60000 });
+  assert.equal(await page.locator('#transit-stage .bg-variable-arrow').count(), 0, 'Transit graph does not show natal Variable arrows');
   await page.locator('.nav-link[data-view="timeline"]').click();
   await page.locator('#timeline-view .bodygraph-svg').waitFor({ timeout: 60000 });
+  assert.equal(await page.locator('#timeline-view .bg-variable-arrow').count(), 0, 'Timeline graph does not show natal Variable arrows');
   await page.locator('#timeline-view .tl-row').first().waitFor({ timeout: 60000 });
   await page.locator('.nav-link[data-view="library"]').click();
   await page.locator('#reference-count').waitFor();

@@ -41,5 +41,5 @@ test('site and HD palettes have separate complete light and dark sections', () =
   assert.match(hd, /--hd-tooltip-bg:[^;]+;/);
   assert.match(hd, /--hd-detail-bg:[^;]+;/);
   assert.match(hd, /--hd-legend-bg:[^;]+;/);
-  assert.match(hd, /--hd-gate-number-size:\s*11px;/);
+  assert.match(hd, /--hd-gate-number-size:\s*22px;/);
 });
