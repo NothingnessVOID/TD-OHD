@@ -114,3 +114,17 @@ test('no translation-only disclosure; tooltip keeps the HD name with a parenthet
   const css = readFileSync(new URL('../src/styles.css',import.meta.url),'utf8');
   assert.doesNotMatch(css,/\.local-auth|\.source-original|\.bg-tt-name/);
 });
+
+
+test('numbered SharpAstrology cross names translate in both Chinese locales without changing English or gates', async () => {
+  const hant = await import('../src/locales/zh-Hant/content.js');
+  const { localeResources } = await import('../src/locales/index.js');
+  const cross = { name: 'Explanation 2', angleName: 'Right Angle', gates: [23, 43, 49, 4], fullName: 'Right Angle Cross of Explanation 2 (23/43 | 49/4)' };
+  const original = JSON.stringify(cross);
+  assert.equal(localeResources.en.content.cross(cross), cross.fullName);
+  assert.equal(zh.zhCross(cross), '右角化身十字之解释 2（23/43 | 49/4）');
+  assert.equal(hant.zhCross(cross), '右角輪迴交叉之解釋 2（23/43 | 49/4）');
+  assert.equal(zh.zhCross({ ...cross, name: 'The Sphinx 4' }), '右角化身十字之斯芬克斯 4（23/43 | 49/4）');
+  assert.equal(hant.zhCross({ ...cross, name: 'The Sphinx 4' }), '右角輪迴交叉之斯芬克斯 4（23/43 | 49/4）');
+  assert.equal(JSON.stringify(cross), original);
+});

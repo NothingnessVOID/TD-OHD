@@ -276,8 +276,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
   if (transit) {
     const hatch = svgEl('pattern', { id: paint('transit-center'), width: '10', height: '10', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
-    hatch.appendChild(svgEl('rect', { width: '10', height: '10', fill: colors.transitSoft }));
-    hatch.appendChild(svgEl('rect', { width: '2', height: '10', fill: transitColor, opacity: colors.transitHatchOpacity }));
+    hatch.appendChild(svgEl('rect', { width: '4', height: '10', fill: transitColor, opacity: colors.transitHatchOpacity }));
     defs.appendChild(hatch);
   }
   svg.appendChild(defs);
@@ -314,8 +313,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       : design ? colors.designOn : colors.inactiveOn;
   };
   const centerFill = (key, defined) => {
-    if (transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(key))) return `url(#${paint('transit-center')})`;
-    if (transit?.mode === 'transit-only') return colors.undefinedCenter;
+    if (transit?.mode === 'transit-only') return defined ? `url(#${paint(`cg-${key}`)})` : colors.undefinedCenter;
     if (composite) {
       const o = centerOwner(key);
       return o ? `url(#${paint(`cc-${o}`)})` : colors.undefinedCenter;
@@ -384,11 +382,13 @@ export function renderBodygraph(container, chart, opts = {}) {
     const centerKey = SHAPE_KEY_MAP[shapeKey];
     if (!shapeData || !centerKey) return;
     const defined = definedCenters.has(centerKey);
+    const transitDefined = transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(centerKey));
     const path = svgEl('path', {
       d: shapeData.path,
       fill: centerFill(centerKey, defined),
-      stroke: transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(centerKey)) ? transitColor : defined ? 'none' : colors.centerStroke,
-      'stroke-width': colors.centerStrokeWidth,
+      'fill-opacity': transitDefined ? '0.5' : '1',
+      stroke: transitDefined ? transitColor : defined ? 'none' : colors.centerStroke,
+      'stroke-width': transitDefined ? Number(colors.centerStrokeWidth) + 2 : colors.centerStrokeWidth,
       'data-center': centerKey,
       class: 'bg-center'
     });
@@ -410,6 +410,17 @@ export function renderBodygraph(container, chart, opts = {}) {
     }
     centerPathEls[centerKey] = path;
     centerGroup.appendChild(path);
+    if (transit && defined && (transit.mode === 'transit-only' || !transit.natalCenters.has(centerKey))) {
+      const hatch = svgEl('path', {
+        d: shapeData.path, fill: `url(#${paint('transit-center')})`,
+        class: 'bg-center-transit-hatch', 'pointer-events': 'none', 'aria-hidden': 'true'
+      });
+      if (animate) {
+        hatch.classList.add('bg-reveal');
+        hatch.style.animationDelay = `${i * 70}ms`;
+      }
+      centerGroup.appendChild(hatch);
+    }
   });
   svg.appendChild(centerGroup);
 
@@ -777,7 +788,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
 
   const svgWrap = el('div', { class: 'bg-svg-wrap' });
-  const graphVariable = opts.planetColumns === false ? null : chart.variable;
+  const graphVariable = opts.composite || opts.planetColumns === false ? null : chart.variable;
   const topArrows = renderVariableArrowRow(graphVariable, 'top', t);
   const bottomArrows = renderVariableArrowRow(graphVariable, 'bottom', t);
   if (topArrows) svgWrap.appendChild(topArrows);

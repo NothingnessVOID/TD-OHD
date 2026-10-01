@@ -464,8 +464,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // clipped to the moving viewport, so empty tracks retain their position.
     const rowName = row => row.kind === 'bridge' ? t('bridge') : name(row);
     const natalIslandCount = chart ? natalIslands(host.identity(chart.chart)).length : 0;
-    const bridgeApplicable = natalIslandCount > 1;
-    const rows = result.rows.filter(row => (row.kind === 'bridge' ? bridgeApplicable : row.intervals.length > 0) &&
+    const rows = result.rows.filter(row => (row.kind === 'bridge' || row.intervals.length > 0) &&
       (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
       && (!query || `${rowName(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
