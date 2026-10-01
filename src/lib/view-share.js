@@ -1,4 +1,5 @@
 /** The header's share menu follows the visible view, not the last rendered chart. */
+import { formatChartDataExport } from './chart-data-export.js';
 import { t } from './i18n.js';
 import { birthToParams, connectionUrl, shareUrl } from './share.js';
 
@@ -113,7 +114,10 @@ function feedback(button, message, reset) {
   setTimeout(() => { if (button.isConnected) button.textContent = t(reset); }, 2500);
 }
 
-export function configureShareMenu(view, birth) {
+export function configureShareMenu(view, currentData, providers = {}) {
+  const birth = currentData?.birth;
+  const chart = currentData?.chart;
+  const copyDataAvailable = Boolean(chart) && ['chart', 'transits', 'timeline'].includes(view);
   bindShareMenuDismissal();
   const shareMenu = menu();
   const available = view === 'library' || Boolean(birth);
@@ -125,8 +129,28 @@ export function configureShareMenu(view, birth) {
   }
 
   actions().innerHTML = `${view === 'chart' ? `<button id="share-chart" class="btn-secondary btn-small">${t('Copy chart link')}</button>` : ''}
+    ${copyDataAvailable ? `<button id="copy-data" class="btn-secondary btn-small">${t('Copy data')}</button>` : ''}
     <button id="save-image" class="btn-secondary btn-small">${t('Save image')}</button>
     ${view === 'chart' ? `<button id="invite-compare" class="btn-secondary btn-small">${t('Invite to compare')}</button>` : ''}`;
+
+  if (copyDataAvailable) {
+    document.getElementById('copy-data').addEventListener('click', async event => {
+      const button = event.currentTarget;
+      const snapshot = view === 'chart' ? null : providers[view]?.();
+      if (view !== 'chart' && !snapshot) {
+        feedback(button, 'Transit data is not ready yet', 'Copy data');
+        return;
+      }
+      try {
+        // Deliberately pass only computed results, never the birth object.
+        const text = formatChartDataExport({ chart, transit: snapshot?.activations, transitMoment: snapshot });
+        await navigator.clipboard.writeText(text);
+        feedback(button, 'Data copied ✓', 'Copy data');
+      } catch {
+        feedback(button, 'Copy blocked — please try again', 'Copy data');
+      }
+    });
+  }
 
   if (view === 'chart') {
     document.getElementById('share-chart').addEventListener('click', async event => {
