@@ -65,7 +65,7 @@ async function checkViewport(viewport) {
       assert.ok(lower.y < svg.y + svg.height * 0.55, `${side} pair does not move to graph bottom`);
     }
     await openMore();
-    for (const selector of ['#chart-share-menu', '#language-switcher', '#theme-toggle', '#skin-settings-button']) {
+    for (const selector of ['#chart-share-menu', '#language-menu > summary', '#theme-toggle', '#skin-settings-button']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector} is reachable at ${viewport.width}px`);
     }
     const menuGeometry = await page.locator('.more-panel').evaluate(node => ({
@@ -89,11 +89,12 @@ async function checkViewport(viewport) {
       assert.equal(icon.x, menuGeometry.icons[0].x, 'Menu icons align vertically');
       if (index) assert.ok(icon.y >= menuGeometry.icons[index - 1].y + icon.height, 'Menu icons do not overlap');
     }
-    await page.locator('#language-switcher').click({ position: { x: 4, y: 16 } });
+    await page.locator('#language-menu > summary').click({ position: { x: 4, y: 16 } });
     await page.keyboard.press('Escape');
     for (const language of ['zh-CN', 'zh-Hant', 'en']) {
       await openMore();
-      await page.locator('#language-switcher').selectOption(language);
+      await page.locator('#language-menu > summary').click();
+      await page.locator(`[data-language="${language}"]`).click();
       assert.equal(await page.locator('html').getAttribute('lang'), language, 'Language control remains usable');
     }
     await openMore();
@@ -153,15 +154,9 @@ async function checkViewport(viewport) {
     for (const [key, initial] of Object.entries(defaults)) assert.equal(await value(key), key === 'gateNumberSize' ? custom.gateNumberSize : initial, `${key} restores colors while keeping global size`);
     await preset('chakra');
     assert.equal(await value('design'), defaults.design, 'Restore default colors applies across skins');
-    await page.locator('#appearance-reset').click();
-    assert.equal(await page.locator('html').getAttribute('data-hd-skin'), 'classic');
-    await preset('chakra');
-    assert.notEqual(await value('design'), '#b04717', 'Reset removes overrides from other presets');
-    await preset('classic');
-    await switchTheme();
-    assert.notEqual(await value('design'), '#a1b2c3', 'Reset removes overrides from other themes');
+    assert.equal(await page.locator('#appearance-reset').count(), 0, 'Only restore default colors is offered');
     await page.keyboard.press('Escape');
-    console.log(`Appearance controls ${viewport.width}px: four arrows, menu, presets, live colors, theme isolation, persistence, restore and reset PASS`);
+    console.log(`Appearance controls ${viewport.width}px: four arrows, menu, presets, live colors, theme isolation, persistence, restore PASS`);
   } finally {
     await context.close();
   }

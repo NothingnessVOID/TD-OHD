@@ -1,3 +1,4 @@
+import { transitExportSnapshot } from '../../lib/chart-data-export.js';
 import { DAY, MINUTE, centeredWindow, intervalAt } from './core.js';
 import { translator } from './messages.js';
 import { displayTime, wallTime, formatDuration, formatCompactTimingRange } from './time.js';
@@ -1226,6 +1227,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   return {
+    getCurrentTransitExportData() {
+      if (!active || !chart || chart.chart !== host.getChart()?.chart || graphChart !== chart.chart
+        || snapshotInstant !== selected || !snapshotActivations) return null;
+      const wall = wallTime(selected, zone);
+      const offset = (Date.parse(`${wall.date}T${wall.time}Z`) - selected) / 3600000;
+      return transitExportSnapshot(snapshotActivations, { ...wall, offset });
+    },
     activate() {
       chart = host.getChart();
       if (!chart) {

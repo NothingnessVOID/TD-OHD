@@ -69,6 +69,18 @@ test('appearance custom settings remain global across presets/themes, persist, r
     setHumanDesignSkin('classic');
     setTheme('dark');
     assert.equal(getCustomOverrides().gateNumberSize,22);
+    for (const theme of ['light', 'dark']) {
+      window.matchMedia = () => ({ matches: theme === 'light' }); // System preference opposes current mode.
+      setTheme(theme);
+      setCustomOverride('design', '#123456');
+      restoreCurrentPreset();
+      assert.equal(getAppearance().theme, theme, 'restore colors preserves current mode');
+      resetAppearance();
+      assert.equal(getAppearance().theme, theme, 'reset preserves current mode');
+      assert.equal(storage.get('bodygraph-theme'), theme);
+      initAppearance();
+      assert.equal(getAppearance().theme, theme, 'preserved mode survives reload');
+    }
   } finally {
     for (const [key,descriptor] of Object.entries(savedGlobals)) {
       if (descriptor) Object.defineProperty(globalThis,key,descriptor);

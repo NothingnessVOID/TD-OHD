@@ -3,6 +3,7 @@
  * natal chart, with the transit gates ringed on a bodygraph.
  */
 
+import { transitExportSnapshot } from '../lib/chart-data-export.js';
 import { sharpProvider } from '../lib/chart-engine/sharp-provider.js';
 import { analyzeTransitActivations } from '../lib/transit-analysis.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
@@ -20,6 +21,11 @@ import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './char
 let transitDetailContext = null;
 let lastTransitResult = null;
 let requestSequence = 0;
+/** Only the successfully rendered moment; cleared as soon as a new request starts. */
+export function getCurrentTransitExportData() {
+  if (!lastTransitResult || lastTransitResult.chart !== getCurrentChart()?.chart) return null;
+  return transitExportSnapshot(lastTransitResult.overlay.transitGates, lastTransitResult);
+}
 const graphLabels = () => {
   const translate = translator(getLocaleResources().timeline.messages);
   return Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, translate(key)]));
@@ -100,9 +106,9 @@ export function setupTransitView() {
 export async function renderTransits() {
   const request = ++requestSequence;
   const current = getCurrentChart();
-  if (!current) return;
   transitDetailContext = null;
   lastTransitResult = null;
+  if (!current) return;
   const date = document.getElementById('transit-date').value;
   let time = document.getElementById('transit-time').value;
   if (time.length === 5) time += ':00';
@@ -146,8 +152,9 @@ export async function renderTransits() {
     gates: activations, activeGates, activeGateCount: activeGates.length });
   const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
-  lastTransitResult = { chart: current.chart, overlay, model, mode, date, time, offset: selected.offset };
-  drawTransitResult(lastTransitResult);
+  const rendered = { chart: current.chart, overlay, model, mode, date, time, offset: selected.offset };
+  drawTransitResult(rendered);
+  lastTransitResult = rendered;
 }
 
 // A language change redraws cached results, without resolving the selected
