@@ -41,9 +41,23 @@ function setupLanguageSwitcher() {
   select.innerHTML = LOCALES.map(({ code, label }) => `<option value="${code}" lang="${code}">${label}</option>`).join('');
   select.value = getLocale();
   select.addEventListener('change', () => setLocale(select.value));
+  const menu = document.getElementById('language-menu');
+  const actions = menu.querySelector('.language-actions');
+  actions.innerHTML = LOCALES.map(({ code, label }) => `<button type="button" class="btn-secondary btn-small" data-language="${code}" lang="${code}">${label}</button>`).join('');
+  const refreshChoices = () => actions.querySelectorAll('[data-language]').forEach(button =>
+    button.setAttribute('aria-pressed', String(button.dataset.language === getLocale())));
+  refreshChoices();
+  actions.addEventListener('click', event => {
+    const button = event.target.closest('[data-language]');
+    if (!button) return;
+    setLocale(button.dataset.language);
+    menu.open = false;
+    menu.querySelector('summary').focus();
+  });
   translatePage();
   onLocaleChange(() => {
     select.value = getLocale();
+    refreshChoices();
     translatePage();
     if (!initialized) return;
     const chartVisible = !document.getElementById('chart-view').classList.contains('hidden');
