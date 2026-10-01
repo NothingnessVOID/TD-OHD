@@ -1,0 +1,76 @@
+{
+  "layoutComparisons": [
+    {
+      "width": 1224,
+      "locale": "en",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 1224,
+      "locale": "zh-CN",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 1224,
+      "locale": "zh-Hant",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 903,
+      "locale": "en",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 903,
+      "locale": "zh-CN",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 903,
+      "locale": "zh-Hant",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 664,
+      "locale": "en",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 664,
+      "locale": "zh-CN",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 664,
+      "locale": "zh-Hant",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-Hant",
+      "textAndGeometryEqual": true,
+      "longDetailIsolation": true
+    }
+  ]
+}

@@ -13,12 +13,14 @@ import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
   definitionName, centerName, gateName, channelName, circuitName,
-  planetName, lineName, variable, cognition, typeDescription, hexagramName
+  planetName, lineName, variable, cognition, hexagramName
 } from '../lib/vocabulary.js';
 
 
 const humanList = items => formatDisplay('list', items);
 
+import { foundationSummary } from '../lib/knowledge/foundation-summary.js';
+import { getKnowledgeDetail } from '../lib/knowledge/registry.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
@@ -92,7 +94,7 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
     <div class="type-detail">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))} · ${esc(authorityName(chart.authority.name))} · ${esc(definitionName(chart.definition))}</div>
     <div class="type-birthline">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${t('time unknown — chart uses noon')}</em>` : ''}</div>
     <div class="type-strategy">${t('Strategy:')} ${esc(strategy(chart.type.name))}</div>
-    <p class="type-plain">${esc(typeDescription(chart.type.name))}</p>
+    <p class="type-plain">${esc(foundationSummary(chart, 'type', 'hero'))}</p>
   `;
   // --- Bodygraph ---
   rerenderBodygraph();
@@ -207,7 +209,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       <div class="foundation-item">
         <div class="label">${t('Type')}</div>
         <div class="value">${esc(typeName(chart.type.name))}</div>
-        <div class="detail">${esc(contentText(chart.type.description))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'type'))}</div>
       </div>
       <div class="foundation-item">
         <div class="label">${t('Strategy')}</div>
@@ -217,12 +219,12 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       <div class="foundation-item">
         <div class="label">${t('Authority')}</div>
         <div class="value">${esc(authorityName(chart.authority.name))}</div>
-        <div class="detail">${esc(contentText(chart.authority.description))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'authority'))}</div>
       </div>
       <div class="foundation-item">
         <div class="label">${t('Profile')}</div>
         <div class="value">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))}</div>
-        <div class="detail">${esc(contentText(chart.profile.theme))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'profile'))}</div>
       </div>
       <div class="foundation-item">
         <div class="label">${t('Definition')}</div>
@@ -773,12 +775,13 @@ function renderVariablePanel(container) {
     const direction = variableDirection(slot);
     const [name] = variable(slot);
     const originalTerm = formatDisplay('originalTerm', slot.name);
+    const knowledgeDetail = slot.valueId ? getKnowledgeDetail({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
     return `
     <div class="arrow-card" data-variable="${key}">
       <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}${originalTerm ? `<br><span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
-      <div class="arrow-desc">${esc(contentText(slot.description))}</div>
+      <div class="arrow-desc">${esc(knowledgeDetail?.content ?? contentText(slot.description))}</div>
       <div class="arrow-meta">${t('Color {color} · Tone {tone}', { color: slot.color, tone: slot.tone })}</div>
       ${sub || ''}
     </div>
