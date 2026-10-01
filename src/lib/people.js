@@ -2,8 +2,7 @@
  * Saved people — the single persistence seam (see docs/PLATFORM.md).
  *
  * The app talks to a PeopleStore; today there is one implementation,
- * LocalStore, wrapping natalengine's profile storage so any
- * natalengine-powered app shares the same library of saved birth data.
+ * LocalStore, preserving the existing browser library of saved birth data.
  *
  * When accounts ship, a SyncStore decorator wraps LocalStore here —
  * localStorage stays the live source of truth for the UI (instant,
@@ -14,13 +13,13 @@
  * self-hosted static builds) → pure local behavior, no network.
  */
 
-import { getProfiles, getProfile, saveProfile, deleteProfile } from 'natalengine';
+import { getProfiles, getProfile, saveProfile, deleteProfile } from './profile-storage.js';
 import { localMode, localList, localGet, localSave, localDelete } from './local-store.js';
 
 const LAST_KEY = 'ohd-last-person-id';
 
 // ---------------------------------------------------------------------------
-// LocalStore — natalengine profiles in localStorage
+// LocalStore — birth profiles in localStorage
 // ---------------------------------------------------------------------------
 const LocalStore = {
   list: getProfiles,

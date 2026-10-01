@@ -1,4 +1,4 @@
-import { calculateTimeline } from './core.js';
+import { calculateTimelineAsync } from './core.js';
 import { timelineFromAnnual } from './annual-timeline.js';
 import { stateAt, catalog } from './graph-provider.js';
 
@@ -30,23 +30,41 @@ function mergeSegments(parts, start, end) {
     source: parts.every(part => part.source === 'annual') ? 'annual' : 'mixed' };
 }
 
+let snapshotRequestId = 0;
+const pendingSnapshots = new Map();
+function requestSnapshots(instants) {
+  return new Promise((resolve, reject) => {
+    const id = ++snapshotRequestId;
+    pendingSnapshots.set(id, { resolve, reject });
+    self.postMessage({ type: 'snapshotBatch', id, instants });
+  });
+}
+
 self.onmessage = async ({ data }) => {
+  if (data.type === 'snapshotBatchResult') {
+    const pending = pendingSnapshots.get(data.id);
+    if (pending) {
+      pendingSnapshots.delete(data.id);
+      if (data.error) pending.reject(new Error(data.error));
+      else pending.resolve(data.snapshots);
+    }
+    return;
+  }
   try {
-    // The ephemeris code is needed only for missing or invalid annual data.
-    const fallbackSnapshot = data.segments.some(segment => segment.data.unavailable)
-      ? (await import('./snapshot.js')).snapshot : null;
-    const parts = data.segments.map((segment, index) => {
+    // Missing annual data uses the main thread's already initialized browser WASM runtime.
+    const parts = [];
+    for (const [index, segment] of data.segments.entries()) {
       const options = { start: segment.start, end: segment.end,
         natal: data.natal, mode: data.mode, planet: data.planet, catalog: catalog(),
         stateAt: (natal, activations, mode) => stateAt(natal, activations, mode, data.planet) };
       const result = !segment.data.unavailable
         ? timelineFromAnnual({ ...options, years: [segment.data] })
-        : calculateTimeline({ start: segment.start, end: segment.end, snapshot: fallbackSnapshot, catalog: options.catalog, planet: data.planet,
+        : await calculateTimelineAsync({ start: segment.start, end: segment.end, snapshot: async instant => (await requestSnapshots([instant]))[0], snapshotBatch: requestSnapshots, catalog: options.catalog, planet: data.planet,
           states: activations => stateAt(data.natal, activations, data.mode, data.planet),
           onProgress: progress => self.postMessage({ type: 'progress', progress: (index + progress) / data.segments.length }) });
       self.postMessage({ type: 'progress', progress: (index + 1) / data.segments.length });
-      return result;
-    });
+      parts.push(result);
+    }
     self.postMessage({ type: 'result', result: mergeSegments(parts, data.start, data.end) });
   } catch (error) {
     self.postMessage({ type: 'error', message: error.message });

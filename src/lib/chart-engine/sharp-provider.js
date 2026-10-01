@@ -1,4 +1,5 @@
-import { calculateGeneKeys } from 'natalengine';
+import { calculateGeneKeys } from '../gene-keys.js';
+import { adaptSharpTransit } from './sharp-transit-contract.js';
 import { adaptSharpChart } from './sharp-contract.js';
 import { toDecimalHour } from './birth-time.js';
 
@@ -24,7 +25,9 @@ export function initializeEngine() {
     const runtime = await dotnet.create();
     const exports = await runtime.getAssemblyExports(runtime.getConfig().mainAssemblyName);
     await runtime.runMain();
-    return { calculate: exports.SharpChartEngine.Bridge.CalculateBirthChart, assetBase };
+    const bridge = exports.SharpChartEngine.Bridge;
+    return { calculate: bridge.CalculateBirthChart, transit: bridge.CalculateTransit,
+      transitBatch: bridge.CalculateTransitBatch, assetBase };
   })().catch(error => { initialization = undefined; throw error; });
 }
 
@@ -45,5 +48,15 @@ export const sharpProvider = Object.freeze({
     const chart = await calculate(birth);
     return { chart, geneKeys: calculateGeneKeys(chart) };
   },
-  calculateBirthAtOffset: calculate
+  calculateBirthAtOffset: calculate,
+  async calculateTransitSnapshot(instant) {
+    const utc = new Date(instant).toISOString();
+    const { transit, assetBase } = await initializeEngine();
+    return adaptSharpTransit(JSON.parse(await transit(utc, assetBase))).gates;
+  },
+  async calculateTransitSnapshots(instants) {
+    const timestamps = instants.map(instant => new Date(instant).toISOString());
+    const { transitBatch, assetBase } = await initializeEngine();
+    return JSON.parse(await transitBatch(JSON.stringify(timestamps), assetBase)).map(value => adaptSharpTransit(value).gates);
+  }
 });

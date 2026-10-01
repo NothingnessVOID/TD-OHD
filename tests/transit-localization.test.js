@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateHDTransits } from 'natalengine';
+import { analyzeTransitActivations } from '../src/lib/transit-analysis.js';
+import { calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
 import { buildTransitGraph } from '../src/lib/transit-graph.js';
 import { renderTransitLegend, renderTransitSummary } from '../src/views/transit-presentation.js';
 import { setLocale, t } from '../src/lib/i18n.js';
@@ -8,7 +9,8 @@ import { readFileSync } from 'node:fs';
 
 const natal = { gates: { all: [11, 12, 22, 13, 33, 7, 21, 41, 55] },
   centers: { definedNames: ['throat', 'g', 'solar'] }, channels: [] };
-const overlay = calculateHDTransits(natal, '2026-09-24');
+const sky = await calculateNativeTransit('2026-09-24T12:00:00Z');
+const overlay = analyzeTransitActivations(natal, sky);
 
 function render(locale, mode, data = overlay) {
   const previous = globalThis.document;
@@ -83,6 +85,6 @@ test('locale redraw uses cached transit results, separate from the calculation p
   const source = readFileSync(new URL('../src/views/transits.js', import.meta.url), 'utf8');
   const refresh = source.slice(source.indexOf('export function refreshTransitLanguage'), source.indexOf('export function renderTransitContent'));
   assert.match(refresh, /drawTransitResult\(lastTransitResult, true\)/);
-  assert.doesNotMatch(refresh, /transitInstants\(|calculateHDTransits\(|calculateTransitGates\(|\.value\s*=/);
+  assert.doesNotMatch(refresh, /transitInstants\(|calculateHDTransits\(|calculateTransitGates\(|calculateTransitSnapshots?\(|\.value\s*=/);
   assert.match(refresh, /refreshTransitDetail\(transitDetailContext\)/);
 });

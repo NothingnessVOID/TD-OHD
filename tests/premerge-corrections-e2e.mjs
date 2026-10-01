@@ -152,7 +152,7 @@ try {
       moonTimes.push(instant);
       const moonChanged = await page.evaluate(async time => {
         const { snapshot } = await import('/src/features/transit-timeline/provider.js');
-        return snapshot(time - 1000).moon.gate !== snapshot(time).moon.gate;
+        return (await snapshot(time - 1000)).moon.gate !== (await snapshot(time)).moon.gate;
       }, instant);
       assert.equal(moonChanged, true, `moon gate changed at ${instant}`);
     }

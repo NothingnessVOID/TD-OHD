@@ -8,7 +8,8 @@
  *   ?format=square     → 1080×1080 square card (posts)
  */
 
-import { calculateHumanDesign, renderChartCardSVG, renderStoryCardSVG, renderBodygraphSVG } from 'natalengine';
+import { calculateHumanDesign } from './chart-provider.js';
+import { renderChartCardSVG, renderStoryCardSVG, renderBodygraphSVG } from '../src/lib/human-design/svg-renderer.js';
 import { svgToPng } from './render.js';
 
 export function parseChartParams(searchParams) {
@@ -25,12 +26,12 @@ export function parseChartParams(searchParams) {
   };
 }
 
-export function computeForParams(p) {
+export async function computeForParams(p, engine) {
   const [h, m] = p.birthTime.split(':').map(Number);
-  return calculateHumanDesign(p.birthDate, h + (m || 0) / 60, p.timezone);
+  return calculateHumanDesign(p.birthDate, h + (m || 0) / 60, p.timezone, engine);
 }
 
-export async function handleOgImage(request) {
+export async function handleOgImage(request, engine) {
   const url = new URL(request.url);
   const params = parseChartParams(url.searchParams);
   if (!params) {
@@ -43,7 +44,7 @@ export async function handleOgImage(request) {
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const chart = computeForParams(params);
+  const chart = await computeForParams(params, engine);
   const theme = url.searchParams.get('theme') === 'dark' ? 'dark' : 'light';
   const format = url.searchParams.get('format');
   let svg, width;
@@ -71,7 +72,7 @@ export async function handleOgImage(request) {
  * Pure string render (no rasterization), edge-cached. The scalable,
  * crisp chart image; linked from MCP results and usable as an <img src>.
  */
-export async function handleChartSvg(request) {
+export async function handleChartSvg(request, engine) {
   const url = new URL(request.url);
   const params = parseChartParams(url.searchParams);
   if (!params) {
@@ -83,7 +84,7 @@ export async function handleChartSvg(request) {
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
-  const chart = computeForParams(params);
+  const chart = await computeForParams(params, engine);
   const svg = renderBodygraphSVG(chart, {
     theme: url.searchParams.get('theme') === 'dark' ? 'dark' : 'light',
     planetColumns: url.searchParams.get('columns') !== 'false',
@@ -106,13 +107,13 @@ export async function handleChartSvg(request) {
  * Manifesting Generator…" + the per-chart card instead of the generic
  * site tags. Runs for everyone (harmless for humans — meta tags only).
  */
-export function rewriteShareMeta(htmlResponse, url) {
+export async function rewriteShareMeta(htmlResponse, url, engine) {
   const params = parseChartParams(url.searchParams);
   if (!params) return htmlResponse;
 
   let title, description;
   try {
-    const chart = computeForParams(params);
+    const chart = await computeForParams(params, engine);
     const who = params.name || 'This chart';
     title = `${who} — ${chart.type.name} ${chart.profile.numbers}`;
     description = `${chart.authority.name} · ${chart.definition} · ${chart.incarnationCross?.name ? 'Cross of ' + chart.incarnationCross.name.replace(/^The /, '') : 'Human Design'} — see the full chart, free.`;

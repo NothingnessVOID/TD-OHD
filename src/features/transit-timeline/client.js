@@ -1,9 +1,12 @@
 import { createAnnualLoader } from './annual-loader.js';
+import { snapshotBatch } from './snapshot.js';
 
 /** Public annual cache outlives per-request workers; derived results are bounded. */
-export function createTimelineClient() {
+export function createTimelineClient({ annualLoader = createAnnualLoader(),
+  batchSnapshot = snapshotBatch,
+  workerFactory = () => new Worker(new URL('./timeline.worker.js', import.meta.url), { type: 'module' }) } = {}) {
   const cache = new Map();
-  const annual = createAnnualLoader();
+  const annual = annualLoader;
   let active = null;
   function cancel() {
     if (!active) return;
@@ -26,13 +29,23 @@ export function createTimelineClient() {
           const segments = await annual.loadRange(request.start, request.end);
           if (active !== task) return;
           onProgress?.(0.1);
-          const worker = new Worker(new URL('./timeline.worker.js', import.meta.url), { type: 'module' });
+          const worker = workerFactory();
           task.worker = worker;
           const finish = () => { worker.terminate(); if (active === task) active = null; };
           worker.onerror = event => { finish(); reject(new Error(event.message)); };
           worker.onmessage = ({ data }) => {
             if (active !== task) return;
             if (data.type === 'progress') { onProgress?.(0.1 + data.progress * 0.9); return; }
+            if (data.type === 'snapshotBatch') {
+              Promise.resolve().then(() => batchSnapshot(data.instants)).then(async snapshots => {
+                // Give the main thread a paint/input turn between bounded engine batches.
+                await new Promise(resolve => setTimeout(resolve, 0));
+                if (active === task) worker.postMessage({ type: 'snapshotBatchResult', id: data.id, snapshots });
+              }).catch(error => {
+                if (active === task) worker.postMessage({ type: 'snapshotBatchResult', id: data.id, error: error.message });
+              });
+              return;
+            }
             finish();
             if (data.type === 'error') { reject(new Error(data.message)); return; }
             cache.set(key, data.result);

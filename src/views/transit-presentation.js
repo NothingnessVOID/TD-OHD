@@ -1,4 +1,4 @@
-import { CENTERS } from 'natalengine';
+import { CENTERS } from '../lib/human-design/catalog.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { contentText } from '../lib/content.js';

@@ -2,17 +2,17 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-**这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了浏览器 WASM 本命计算引擎、精细行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** 当前暂用英文名称 TD Open Human Design，缩写 TD-OHD；暂不展开 TD 的中文含义。
+**这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了浏览器 WASM 出生图与行运计算、精细行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** 当前暂用英文名称 TD Open Human Design，缩写 TD-OHD；暂不展开 TD 的中文含义。
 
 **[官方网页版 · Netlify](https://td-ohd.netlify.app/)** · [独立发布的旧版 GitHub Pages](https://nothingnessvoid.github.io/TD-OHD/)
 
-2026-10-01 更新包含本命计算引擎迁移、外观设置和本命四箭头。范围、数据覆盖与限制见[本次发布说明](docs/releases/web-2026-10-01.md)。GitHub Pages 尚未同步本次更新。
+2026-10-01 首次发布迁移了出生图引擎，并加入外观设置和本命四箭头。当前迁移继续补完行运与时间轴，统一使用 SharpAstrology 计算核心；架构、复现步骤及验证状态见[引擎迁移说明](docs/SHARP_ENGINE_MIGRATION.md)。[早期发布说明](docs/releases/web-2026-10-01.md)记录历史版本，不代表本轮迁移范围。源码更新本身不会发布 Netlify 或 GitHub Pages。
 
 原项目提供交互式人类图，包括人体图、行星激活、类型、策略、内在权威、人生角色、四箭头／PHS、化身十字、行运、关系合图与团队分析。本仓库在这些已有功能上继续开发，不把原项目的成果写成新增功能。
 
 ## 这个分叉增加了什么
 
-- **浏览器本命计算引擎：**采用 SharpAstrology.HumanDesign 1.2.0、SharpAstrology.SwissEph 0.5.1 和 Swiss Ephemeris 文件，在 .NET 10 浏览器 WebAssembly 中运行。行运、行运时间轴、Gene Keys 以及部分数据与解读仍使用 NatalEngine 1.6.0。本次更新没有替换全部计算路径，也不构成计算精度认证。
+- **统一出生图与行运引擎：**采用 SharpAstrology.HumanDesign 1.2.0、SharpAstrology.SwissEph 0.5.1 和 Swiss Ephemeris 文件，在 .NET 10 浏览器 WebAssembly 中运行。当前行运、时间轴快照与原生年度事件生成共用 C# 行运核心；Gene Keys、关系合图与 Penta 团队分析改为本地派生模块，拓扑、术语、解读和 SVG 几何数据由本地静态资料维护。原 NatalEngine 依赖及秒精度补丁已移除；本轮不构成全部历史日期或计算精度认证。
 - **外观设置：**明暗主题、Classic／Chakra 能量中心配色，以及强调色、意识、设计、行运、图表背景、闸门字号六项持久化设置。六项自定义设置全局共用，切换主题或中心配色时继续生效；Classic／Chakra 只改变能量中心颜色。
 - **本命四箭头：**设计侧显示摄取与环境，意识侧显示动机与视角；左右方向读取计算结果。行运图与关系合图不附加本命四箭头。
 
@@ -51,14 +51,17 @@ npm run dev
 ```
 
 ```bash
+npm run build:engine
 npm test
 npm run build:pages
 npm run check:pages-bundle
 ```
 
-安装时会对 NatalEngine 1.6.0 应用带版本检查的补丁，让行运计算保留秒数。如果安装时禁用了脚本，构建前请手动运行 `node scripts/patch-natalengine-seconds.mjs`。本命计算采用 [SharpAstrology.HumanDesign](https://github.com/CReizner/SharpAstrology.HumanDesign) 与 [SharpAstrology.SwissEph](https://github.com/CReizner/SharpAstrology.SwissEph)；[NatalEngine](https://github.com/Unforced-Dev/natalengine)继续参与行运和解读。打包星历文件覆盖 1800—2399 年；这是随构建提供的数据范围，不代表本次迁移新定义了产品日期策略或完成了完整历史范围认证。缺失星历时会报错，已禁用 Moshier 回退。首次本命计算会从本站按需加载 WASM 运行时和星历文件。来源与许可证见[第三方声明](THIRD_PARTY_NOTICES.md)。
+直接运行 Node 测试或年度生成命令前，先运行 `npm run build:engine`，准备原生 .NET 客户端所需的运行文件和 `public/engine/ephe` 中已校验的星历。安装时不再打引擎补丁。出生图与行运采用 [SharpAstrology.HumanDesign](https://github.com/CReizner/SharpAstrology.HumanDesign) 与 [SharpAstrology.SwissEph](https://github.com/CReizner/SharpAstrology.SwissEph)。打包星历文件覆盖 1800—2399 年；这是随构建提供的数据范围，不代表新定义产品日期策略或完成完整历史范围认证。缺失星历时会报错，不使用 Moshier 或旧引擎回退。首次计算会从本站按需加载 WASM 运行时和星历文件。来源与许可证见[第三方声明](THIRD_PARTY_NOTICES.md)。
 
-行运时间默认精确到分钟；开启 **Seconds（秒）** 后可输入 `HH:mm:ss`，关闭时秒数会恢复为 `00`。**现在**按钮会遵循当前精度。修改 NatalEngine 补丁后，可用 `npm run dev -- --force` 刷新 Vite 的依赖缓存。开发服务器运行时可执行 `npm run e2e` 做浏览器冒烟测试。
+行运时间默认精确到分钟；开启 **Seconds（秒）** 后可输入 `HH:mm:ss`，关闭时秒数恢复为 `00`。**现在**按钮遵循当前精度。开发服务器运行时可执行 `npm run e2e` 做浏览器冒烟测试；年度数据重建和校验命令见[迁移说明](docs/SHARP_ENGINE_MIGRATION.md)。
+
+仓库保留的可选 Cloudflare MCP、OG 图片及名人图表处理器，需要宿主显式提供 `env.SHARP_ENGINE` 适配器。本轮没有新增或部署服务端引擎；未提供适配器时不会暗中使用旧计算器。Netlify 静态应用仍全部通过浏览器 WASM 计算。
 
 外观令牌集中在 [`src/styles/tokens/`](src/styles/tokens/) 中。行运来源色为 `#1af4ff`；时间轴用 75% 来源色与 `#445457` 混合得到较柔和的轨道颜色。闸门数字默认字号为 22 个 SVG 单位，可调范围为 14—30；来源高亮采用圆圈。这些设置只影响显示，不改变计算结果。
 

@@ -40,47 +40,35 @@ public static partial class Bridge
         await EnsureBlock(BlockFor(designDate.Year), assetBase);
         var chart = new HumanDesignChart(birth, designDate, eph);
 
-        static void WriteSide(Utf8JsonWriter writer, string name, Dictionary<Planets, Activation> side)
-        {
-            writer.WriteStartObject(name);
-            foreach (var (planet, activation) in side)
-            {
-                var key = planet.ToString();
-                writer.WriteStartObject(char.ToLowerInvariant(key[0]) + key[1..]);
-                writer.WriteNumber("gate", activation.Gate.ToNumber());
-                writer.WriteNumber("line", activation.Line.ToNumber());
-                writer.WriteNumber("color", activation.Color.ToNumber());
-                writer.WriteNumber("tone", activation.Tone.ToNumber());
-                writer.WriteNumber("base", activation.Base.ToNumber());
-                writer.WriteNumber("longitude", activation.Longitude);
-                writer.WriteEndObject();
-            }
-            writer.WriteEndObject();
-        }
-
-        var buffer = new ArrayBufferWriter<byte>();
-        using var writer = new Utf8JsonWriter(buffer);
-        writer.WriteStartObject();
-        writer.WriteString("birthUtc", birth.ToString("O"));
-        writer.WriteString("designUtc", designDate.ToString("O"));
-        writer.WriteString("type", chart.Type.ToString());
-        writer.WriteString("authority", chart.Authority.ToString());
-        writer.WriteString("profile", chart.Profile.ToText());
-        writer.WriteString("definition", chart.SplitDefinition.ToString());
-        writer.WriteString("incarnationCross", chart.IncarnationCross.ToString());
-        WriteSide(writer, "personality", chart.PersonalityActivation);
-        WriteSide(writer, "design", chart.DesignActivation);
-        writer.WriteStartArray("channels");
-        foreach (var channel in chart.ActiveChannels) writer.WriteStringValue(channel.ToString());
-        writer.WriteEndArray();
-        writer.WriteStartObject("centers");
-        foreach (var (center, activation) in chart.CenterActivations)
-            writer.WriteString(center.ToString(), activation.ToString());
-        writer.WriteEndObject();
-        writer.WriteEndObject();
-        writer.Flush();
-        return System.Text.Encoding.UTF8.GetString(buffer.WrittenSpan);
+        return TransitCore.SerializeBirth(chart, birth, designDate);
     }
+
+    [JSExport]
+    public static async Task<string> CalculateTransit(string utcIso, string assetBase)
+    {
+        var utc = TransitCore.ParseUtc(utcIso);
+        await EnsureBlock(BlockFor(utc.Year), assetBase);
+        using var eph = CreateTransitContext();
+        return TransitCore.Calculate(utc, eph);
+    }
+
+    [JSExport]
+    public static async Task<string> CalculateTransitBatch(string utcInstantsJson, string assetBase)
+    {
+        using var values = JsonDocument.Parse(utcInstantsJson);
+        if (values.RootElement.ValueKind != JsonValueKind.Array)
+            throw new ArgumentException("UTC instants must be a JSON array");
+        var instants = values.RootElement.EnumerateArray()
+            .Select(value => TransitCore.ParseUtc(value.GetString()!)).ToArray();
+        foreach (var block in instants.Select(utc => BlockFor(utc.Year)).Distinct())
+            await EnsureBlock(block, assetBase);
+        using var eph = CreateTransitContext();
+        return TransitCore.CalculateBatch(instants, eph);
+    }
+
+    private static SharpAstrology.Interfaces.IEphemerides CreateTransitContext() =>
+        new SwissEphemeridesService(rootPathToEph: EphemerisRoot,
+            ephType: EphType.Swiss, allowMoshierFallback: false).CreateContext();
 
     private static int BlockFor(int year) => year / 600 * 6;
 

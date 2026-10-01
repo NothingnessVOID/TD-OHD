@@ -11,7 +11,7 @@
  *   the user signed in. Static self-hosted builds: all of this is dead code.
  */
 
-import { getProfiles, saveProfile, deleteProfile } from 'natalengine';
+import { getProfiles, saveProfile, deleteProfile } from './profile-storage.js';
 import { getAiAccess, setAiAccess } from './people.js';
 
 const API = import.meta.env.VITE_OHD_API_BASE; // undefined = sync disabled

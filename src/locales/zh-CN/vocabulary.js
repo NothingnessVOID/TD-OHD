@@ -2,7 +2,7 @@
  * Simplified-Chinese display vocabulary for Human Design.
  *
  * Keep engine keys and calculation data in English.  This module only owns
- * presentation, so upstream NatalEngine updates cannot silently change the
+ * presentation, so upstream source updates cannot silently change the
  * meaning of stored charts or shared URLs.
  */
 

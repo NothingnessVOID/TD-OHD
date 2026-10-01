@@ -1,5 +1,5 @@
 /** Graph derivation from discrete activations; no ephemeris import. */
-import { CHANNELS, CENTERS, GATES } from 'natalengine';
+import { CHANNELS, CENTERS, GATES } from '../../lib/human-design/catalog.js';
 import { buildTransitGraph } from '../../lib/transit-graph.js';
 import { bridgeState } from './bridge.js';
 

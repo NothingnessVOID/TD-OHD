@@ -1,5 +1,5 @@
-/** Read-only display dictionaries. English reads the original engine objects. */
-import * as engine from 'natalengine';
+/** Read-only display dictionaries. English reads the local canonical display data. */
+import * as engine from './human-design/display-data.js';
 import { getLocale, getLocaleResources } from './i18n.js';
 import { quarterForGate } from './quarter.js';
 

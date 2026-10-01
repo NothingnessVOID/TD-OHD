@@ -1,6 +1,6 @@
 import '../src/styles.css';
 import { renderBodygraph } from '../src/bodygraph.js';
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from '../src/lib/human-design/catalog.js';
 const style = document.createElement('style');
 style.textContent = `.gallery{max-width:1200px;margin:32px auto;padding:0 20px}.gallery h1{font-size:26px}.gallery p{color:var(--text-secondary);margin:12px 0;line-height:1.7}.controls{display:flex;gap:20px;align-items:center;margin:24px 0;flex-wrap:wrap}.controls select{padding:8px;border:1px solid var(--border);border-radius:8px;color:var(--text);background:var(--bg-elevated)}#cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}.case{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:20px}.case h2{font-size:18px}.case p{font-size:12px;min-height:40px}.case .bodygraph-svg{width:100%;max-height:none}.case .bg-svg-wrap{width:100%}.case .bg-grid{display:block}`;
 document.head.append(style);

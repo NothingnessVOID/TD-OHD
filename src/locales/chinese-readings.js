@@ -1,5 +1,5 @@
 /** Shared source lookup only. Translations remain owned by each locale. */
-import * as engine from 'natalengine';
+import * as engine from '../lib/human-design/display-data.js';
 
 export function createChineseReadings({ catalog, templateSources, gates, lines, channels, hexagrams, vocabulary, crossAngles, crossLabel, unknown }) {
   const { zhCenter, zhGate, zhChannel, TYPE_ZH, AUTHORITY_ZH, PROFILE_ZH, DEFINITION_ZH, LINE_ZH, PLANET_ZH } = vocabulary;

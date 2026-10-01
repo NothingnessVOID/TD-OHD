@@ -57,7 +57,7 @@ const moonMatches = async page => {
     const actual = document.querySelector('#timeline-view .tl-planets [data-planet="moon"] strong')?.textContent;
     if (!table || !actual) return false;
     const { snapshot } = await import('/src/features/transit-timeline/provider.js');
-    const moon = snapshot(Number(table.dataset.selected)).moon;
+    const moon = (await snapshot(Number(table.dataset.selected))).moon;
     return actual === `${moon.gate}.${moon.line}`;
   }, null, { timeout: 10000 });
 };
@@ -79,7 +79,7 @@ const checkFixings = async (page, mode) => {
     ]);
     const chart = getCurrentChart().chart;
     const selected = Number(document.querySelector('#timeline-view .tl-table').dataset.selected);
-    const transit = snapshot(selected);
+    const transit = await snapshot(selected);
     const birth = calculateLineFixings(chart, transit);
     const sky = calculateTransitLineFixings(chart, transit);
     const transitRows = [...document.querySelectorAll('#timeline-view .tl-planet[data-planet]')].map(node => ({

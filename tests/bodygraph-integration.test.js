@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHANNELS } from 'natalengine';
+import { CHANNELS } from '../src/lib/human-design/catalog.js';
 import { integrationSpanGates } from '../src/lib/bodygraph-integration.js';
 
 test('all sixteen Integration gate combinations color only completed crossing channels', () => {

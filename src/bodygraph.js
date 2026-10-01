@@ -8,11 +8,11 @@
  * - Hover highlights + tooltips, click-through to gate detail
  * - Optional transit-gate overlay
  *
- * Geometry from hdkit (MIT) via natalengine/bodygraph-data.
+ * Geometry from hdkit (MIT), maintained as local static SVG data.
  */
 
-import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from 'natalengine/bodygraph-data';
-import { GATES, CHANNELS } from 'natalengine';
+import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from './lib/human-design/bodygraph-geometry.js';
+import { GATES, CHANNELS } from './lib/human-design/catalog.js';
 import { calculateLineFixings } from './features/transit-timeline/line-fixing.js';
 import { renderVariableArrowRow } from './lib/variable-arrows.js';
 import './styles/variable-arrows.css';
