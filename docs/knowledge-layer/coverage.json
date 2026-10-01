@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "entries": 60,
+  "counts": [
+    {
+      "objectType": "type",
+      "count": 5,
+      "summary": 5,
+      "detail": 0,
+      "missingDetail": 5
+    },
+    {
+      "objectType": "authority",
+      "count": 8,
+      "summary": 8,
+      "detail": 0,
+      "missingDetail": 8
+    },
+    {
+      "objectType": "profile",
+      "count": 12,
+      "summary": 12,
+      "detail": 0,
+      "missingDetail": 12
+    },
+    {
+      "objectType": "definition",
+      "count": 5,
+      "summary": 0,
+      "detail": 0,
+      "missingDetail": 5
+    },
+    {
+      "objectType": "variable",
+      "count": 24,
+      "summary": 0,
+      "detail": 24,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "cognition",
+      "count": 6,
+      "summary": 0,
+      "detail": 0,
+      "missingDetail": 6
+    }
+  ],
+  "cross": {
+    "identity": "dynamic Sharp raw enum",
+    "staticArticles": 0,
+    "summary": 0,
+    "detail": 0
+  },
+  "entryReviewStatuses": {
+    "unreviewed": 60
+  }
+}
