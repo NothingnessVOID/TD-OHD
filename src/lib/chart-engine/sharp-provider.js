@@ -3,7 +3,7 @@ import { adaptSharpTransit } from './sharp-transit-contract.js';
 import { adaptSharpChart } from './sharp-contract.js';
 import { toDecimalHour } from './birth-time.js';
 
-const cacheRule = 'sharp-hd-1.2.0:sharp-swiss-0.5.1:swiss-files:adapter-v1';
+const cacheRule = 'sharp-hd-1.2.0:sharp-swiss-0.5.1:swiss-files:adapter-v2';
 const effectiveTime = birth => birth.timeUnknown ? '12:00' : birth.birthTime;
 let initialization;
 

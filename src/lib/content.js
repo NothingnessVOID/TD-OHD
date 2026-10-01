@@ -1,6 +1,7 @@
 /** Read-only display dictionaries. English reads the local canonical display data. */
 import * as engine from './human-design/display-data.js';
 import { getLocale, getLocaleResources } from './i18n.js';
+import { geneKeySpectrum } from './human-design/gene-key-spectrum.js';
 import { quarterForGate } from './quarter.js';
 
 const content = () => getLocaleResources().content;
@@ -25,7 +26,7 @@ export const crossName = cross => content().cross(cross);
 
 /** Keep the source term alongside Chinese Gene Keys keywords for comparison. */
 export function geneKeyTerm(gate, field) {
-  const original = engine.GENE_KEY_DESCRIPTIONS[gate]?.[field] || '';
+  const original = geneKeySpectrum(gate)[['shadow', 'gift', 'siddhi'].indexOf(field)] || '';
   const translated = GENE_KEY_DESCRIPTIONS[gate]?.[field] || original;
   return content().bilingualGeneKeys && original && translated !== original
     ? `${translated} ${original}` : translated;

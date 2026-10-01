@@ -70,7 +70,7 @@ public static class TransitCore
         writer.WriteNumber("longitude", activation.Longitude);
     }
 
-    // Existing birth serialization is shared unchanged so native audits can use the browser contract.
+    // Shared birth contract preserves Sharp identifiers for browser and native consumers.
     public static string SerializeBirth(HumanDesignChart chart, DateTime birth, DateTime designDate)
     {
         static void WriteSide(Utf8JsonWriter writer, string name, Dictionary<Planets, Activation> side)
@@ -109,6 +109,11 @@ public static class TransitCore
         writer.WriteStartObject("centers");
         foreach (var (center, activation) in chart.CenterActivations)
             writer.WriteString(center.ToString(), activation.ToString());
+        writer.WriteEndObject();
+        // Raw Sharp center -> component number mapping. Keep source labels intact.
+        writer.WriteStartObject("connectedComponents");
+        foreach (var (center, component) in chart.ConnectedComponents)
+            writer.WriteNumber(center.ToString(), component);
         writer.WriteEndObject();
         writer.WriteEndObject();
         writer.Flush();
