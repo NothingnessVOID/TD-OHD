@@ -63,7 +63,10 @@ export function createChineseReadings({ catalog, templateSources, gates, lines, 
     if (!cross) return unknown;
     const angle = crossAngles[cross.angleName] || '';
     const quartet = cross.gates?.length === 4 ? `（${cross.gates[0]}/${cross.gates[1]} | ${cross.gates[2]}/${cross.gates[3]}）` : '';
-    return `${angle}${crossLabel}${zhText(cross.name)}${quartet}`;
+    // SharpAstrology appends a variation number to the translated cross title.
+    const numbered = cross.name?.match(/^(.*?)\s+(\d+)$/);
+    const name = numbered ? `${zhText(numbered[1])} ${numbered[2]}` : zhText(cross.name);
+    return `${angle}${crossLabel}${name}${quartet}`;
   }
 
   return { text: zhText, cross: zhCross };
