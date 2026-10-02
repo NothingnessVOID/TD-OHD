@@ -1,0 +1,268 @@
+[
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 258,
+    "longitude": 305.7499968177302,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 2,
+    "longitude": 305.75577651228883,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 322,
+    "longitude": 305.74849486839827,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 274,
+    "longitude": 305.75577858018414,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 1282,
+    "longitude": 305.75577651228883,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 131330,
+    "longitude": 305.7499968177302,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "jd": 2457048.5555555555,
+    "flag": 770,
+    "longitude": 305.7499968177302,
+    "deltaTSeconds": 67.67261263190962,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 0,
+    "stamp": "2015-01-26T01:20:00.0000000Z",
+    "sdkJd": 2457048.5555555555,
+    "unixJd": 2457048.5555555555,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0,
+    "roundtripMicroseconds": -4.4
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 0.0001,
+    "stamp": "2015-01-26T01:20:00.0000001Z",
+    "sdkJd": 2457048.5555555555,
+    "unixJd": 2457048.5555555555,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0,
+    "roundtripMicroseconds": -4.5
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 0.1,
+    "stamp": "2015-01-26T01:20:00.0001000Z",
+    "sdkJd": 2457048.5555555555,
+    "unixJd": 2457048.555555557,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0.00012069940567016602,
+    "roundtripMicroseconds": 16.2
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 0.9999,
+    "stamp": "2015-01-26T01:20:00.0009999Z",
+    "sdkJd": 2457048.5555555555,
+    "unixJd": 2457048.555555567,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0.0010058283805847168,
+    "roundtripMicroseconds": 1.5
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 1,
+    "stamp": "2015-01-26T01:20:00.0010000Z",
+    "sdkJd": 2457048.555555567,
+    "unixJd": 2457048.555555567,
+    "utcToJulianRelativeSeconds": 0.0010058283805847168,
+    "unixToJulianRelativeSeconds": 0.0010058283805847168,
+    "roundtripMicroseconds": 1.4
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 100,
+    "stamp": "2015-01-26T01:20:00.1000000Z",
+    "sdkJd": 2457048.555556713,
+    "unixJd": 2457048.555556713,
+    "utcToJulianRelativeSeconds": 0.10001957416534424,
+    "unixToJulianRelativeSeconds": 0.10001957416534424,
+    "roundtripMicroseconds": 15.1
+  },
+  {
+    "iso": "2015-01-26T01:20:00Z",
+    "milliseconds": 271,
+    "stamp": "2015-01-26T01:20:00.2710000Z",
+    "sdkJd": 2457048.555558692,
+    "unixJd": 2457048.555558692,
+    "utcToJulianRelativeSeconds": 0.2710103988647461,
+    "unixToJulianRelativeSeconds": 0.2710103988647461,
+    "roundtripMicroseconds": 5.8
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 258,
+    "longitude": 300.1249969949901,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 2,
+    "longitude": 300.1307788390208,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 322,
+    "longitude": 300.12471992321485,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 274,
+    "longitude": 300.13078034896,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 1282,
+    "longitude": 300.1307788390208,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 131330,
+    "longitude": 300.1249969949901,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "jd": 2460695.45625,
+    "flag": 770,
+    "longitude": 300.1249969949901,
+    "deltaTSeconds": 68.99478640185143,
+    "source": "SwissEph",
+    "frame": "GeocentricEclipticOfDate"
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 0,
+    "stamp": "2025-01-19T22:57:00.0000000Z",
+    "sdkJd": 2460695.45625,
+    "unixJd": 2460695.45625,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0,
+    "roundtripMicroseconds": -16.2
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 0.0001,
+    "stamp": "2025-01-19T22:57:00.0000001Z",
+    "sdkJd": 2460695.45625,
+    "unixJd": 2460695.45625,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0,
+    "roundtripMicroseconds": -16.3
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 0.1,
+    "stamp": "2025-01-19T22:57:00.0001000Z",
+    "sdkJd": 2460695.45625,
+    "unixJd": 2460695.456250001,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0.00012069940567016602,
+    "roundtripMicroseconds": 4.4
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 0.9999,
+    "stamp": "2025-01-19T22:57:00.0009999Z",
+    "sdkJd": 2460695.45625,
+    "unixJd": 2460695.4562500115,
+    "utcToJulianRelativeSeconds": 0,
+    "unixToJulianRelativeSeconds": 0.0010058283805847168,
+    "roundtripMicroseconds": -10.2
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 1,
+    "stamp": "2025-01-19T22:57:00.0010000Z",
+    "sdkJd": 2460695.4562500115,
+    "unixJd": 2460695.4562500115,
+    "utcToJulianRelativeSeconds": 0.0010058283805847168,
+    "unixToJulianRelativeSeconds": 0.0010058283805847168,
+    "roundtripMicroseconds": -10.3
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 100,
+    "stamp": "2025-01-19T22:57:00.1000000Z",
+    "sdkJd": 2460695.4562511574,
+    "unixJd": 2460695.4562511574,
+    "utcToJulianRelativeSeconds": 0.10001957416534424,
+    "unixToJulianRelativeSeconds": 0.10001957416534424,
+    "roundtripMicroseconds": 3.4
+  },
+  {
+    "iso": "2025-01-19T22:57:00Z",
+    "milliseconds": 271,
+    "stamp": "2025-01-19T22:57:00.2710000Z",
+    "sdkJd": 2460695.4562531365,
+    "unixJd": 2460695.4562531365,
+    "utcToJulianRelativeSeconds": 0.2710103988647461,
+    "unixToJulianRelativeSeconds": 0.2710103988647461,
+    "roundtripMicroseconds": -5.7
+  }
+]

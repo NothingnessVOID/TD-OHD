@@ -1,0 +1,27 @@
+{
+  "candidateAndWindowRowsChecked": 5473,
+  "profileAndSunContractMismatchIds": [],
+  "maxAbsSolarArcResidualDegrees": 7.300834795387345e-06,
+  "fileRecordCounts": {
+    "sun-candidates.json": 90,
+    "design-sun-candidates.json": 150,
+    "personality-pure-line-candidates.json": 120,
+    "near-minute-candidates.json": 20,
+    "full-year-personality-near-half-second-candidates.json": 39,
+    "window-1985-01-25-18-34-00-minutes.jsonl": 121,
+    "window-1985-01-25-18-34-00-seconds.jsonl": 601,
+    "window-1985-11-25-06-36-00-minutes.jsonl": 121,
+    "window-1985-11-25-06-36-00-seconds.jsonl": 601,
+    "window-1995-04-11-02-30-00-minutes.jsonl": 121,
+    "window-1995-04-11-02-30-00-seconds.jsonl": 601,
+    "window-2015-01-26-01-20-00-minutes.jsonl": 121,
+    "window-2015-01-26-01-20-00-seconds.jsonl": 601,
+    "window-2015-02-04-06-56-00-minutes.jsonl": 121,
+    "window-2015-02-04-06-56-00-seconds.jsonl": 601,
+    "window-2025-01-19-22-57-00-minutes.jsonl": 121,
+    "window-2025-01-19-22-57-00-seconds.jsonl": 601,
+    "window-2025-03-15-18-56-00-minutes.jsonl": 121,
+    "window-2025-03-15-18-56-00-seconds.jsonl": 601
+  },
+  "rootReportingPrecision": "Milliseconds: SwissEph FromUtc drops sub-ms ticks; 0.0001sec search tolerance is bracket tolerance only."
+}

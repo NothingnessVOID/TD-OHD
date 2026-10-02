@@ -1,0 +1,74 @@
+[
+  {
+    "utc": "2015-01-26T01:20:00.0000000Z",
+    "flagsRequested": 258,
+    "flagsReturned": 258,
+    "cLongitude": 305.7499987027751,
+    "sharpLongitude": 305.7499968177302,
+    "cMinusSharpDegrees": 1.885044866867247e-06,
+    "cTargetDistanceArcsec": -0.004670009684559773
+  },
+  {
+    "utc": "2015-01-26T01:20:00.0000000Z",
+    "flagsRequested": 131330,
+    "flagsReturned": 131330,
+    "cLongitude": 305.7499968177302,
+    "sharpLongitude": 305.7499968177302,
+    "cMinusSharpDegrees": 0.0,
+    "cTargetDistanceArcsec": -0.011456171205281862
+  },
+  {
+    "utc": "2015-01-26T01:20:00.0000000Z",
+    "flagsRequested": 290,
+    "flagsReturned": 354,
+    "cLongitude": 305.53800791258476,
+    "sharpLongitude": 305.7499968177302,
+    "cMinusSharpDegrees": -0.21198890514546065,
+    "cTargetDistanceArcsec": -763.1715146948636
+  },
+  {
+    "utc": "2015-01-26T01:20:00.0000000Z",
+    "flagsRequested": 131362,
+    "flagsReturned": 131426,
+    "cLongitude": 305.53800602758145,
+    "sharpLongitude": 305.7499968177302,
+    "cMinusSharpDegrees": -0.21199079014877498,
+    "cTargetDistanceArcsec": -763.1783007067952
+  },
+  {
+    "utc": "2025-01-19T22:57:00.0000000Z",
+    "flagsRequested": 258,
+    "flagsReturned": 258,
+    "cLongitude": 300.1249988801649,
+    "sharpLongitude": 300.1249969949901,
+    "cMinusSharpDegrees": 1.8851748109227628e-06,
+    "cTargetDistanceArcsec": -0.004031406274407345
+  },
+  {
+    "utc": "2025-01-19T22:57:00.0000000Z",
+    "flagsRequested": 131330,
+    "flagsReturned": 131330,
+    "cLongitude": 300.1249969949901,
+    "sharpLongitude": 300.1249969949901,
+    "cMinusSharpDegrees": 0.0,
+    "cTargetDistanceArcsec": -0.010818035593729292
+  },
+  {
+    "utc": "2025-01-19T22:57:00.0000000Z",
+    "flagsRequested": 290,
+    "flagsReturned": 354,
+    "cLongitude": 299.7747460562792,
+    "sharpLongitude": 300.1249969949901,
+    "cMinusSharpDegrees": -0.3502509387109285,
+    "cTargetDistanceArcsec": -1260.9141973949363
+  },
+  {
+    "utc": "2025-01-19T22:57:00.0000000Z",
+    "flagsRequested": 131362,
+    "flagsReturned": 131426,
+    "cLongitude": 299.77474417114564,
+    "sharpLongitude": 300.1249969949901,
+    "cMinusSharpDegrees": -0.3502528238444711,
+    "cTargetDistanceArcsec": -1260.9209838756897
+  }
+]

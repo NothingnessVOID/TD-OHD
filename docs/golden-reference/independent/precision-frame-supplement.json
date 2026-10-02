@@ -1,0 +1,698 @@
+{
+  "summary": {
+    "nativeComparisonCount": 90,
+    "maxNativeMinusCICRSPersonalityDeg": 2.2737367544323206e-13,
+    "maxNativeMinusCICRSDesignDegAtTruncatedMillis": 4.6500758799083997e-10,
+    "interpretation": "Native Sharp default flags258 Sun matches independent C flags131330(SWIEPH|SPEED|ICRS), not C258; source lead is absent frame-bias correction in common Sun pipeline. Native submillisecond design ticks truncate at ephemeris input; finite precision cannot shift minute personality by 0.1s. Global float32longitude hypothesis fails controls because it would move both previous-line controls to following line."
+  },
+  "nativeVersusCICRS": [
+    {
+      "id": "1985-P38.6-to-54.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-10T06:19:09.488000+00:00"
+    },
+    {
+      "id": "1985-P38.6-to-54.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-10T06:22:15.099000+00:00"
+    },
+    {
+      "id": "1985-P38.6-to-54.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-10T07:05:33.630000+00:00"
+    },
+    {
+      "id": "1985-P54.1-to-54.2-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 2.2737367544323206e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1984-10-11T05:05:03.072000+00:00"
+    },
+    {
+      "id": "1985-P54.1-to-54.2-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-11T05:08:08.571000+00:00"
+    },
+    {
+      "id": "1985-P54.1-to-54.2-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-11T05:51:25.524000+00:00"
+    },
+    {
+      "id": "1985-P54.6-to-61.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.7053025658242404e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-15T22:41:39.864000+00:00"
+    },
+    {
+      "id": "1985-P54.6-to-61.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.1368683772161603e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-15T22:44:44.774000+00:00"
+    },
+    {
+      "id": "1985-P54.6-to-61.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.1368683772161603e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-15T23:27:53.488000+00:00"
+    },
+    {
+      "id": "1985-P61.6-to-60.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-21T14:34:20.033000+00:00"
+    },
+    {
+      "id": "1985-P61.6-to-60.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-21T14:37:24.258000+00:00"
+    },
+    {
+      "id": "1985-P61.6-to-60.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-21T15:20:23.379000+00:00"
+    },
+    {
+      "id": "1985-P60.3-to-60.4-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-24T10:19:46.532000+00:00"
+    },
+    {
+      "id": "1985-P60.3-to-60.4-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": -5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-24T10:22:50.400000+00:00"
+    },
+    {
+      "id": "1985-P60.3-to-60.4-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-24T11:05:44.541000+00:00"
+    },
+    {
+      "id": "1985-P60.6-to-41.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1984-10-27T05:59:12.068000+00:00"
+    },
+    {
+      "id": "1985-P60.6-to-41.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 5.684341886080802e-14,
+      "effectiveNativeDesignUtcMillis": "1984-10-27T06:02:15.566000+00:00"
+    },
+    {
+      "id": "1985-P60.6-to-41.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -4.6500758799083997e-10,
+      "effectiveNativeDesignUtcMillis": "1984-10-27T06:45:04.518000+00:00"
+    },
+    {
+      "id": "1995-P38.6-to-54.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-10T16:04:02.409000+00:00"
+    },
+    {
+      "id": "1995-P38.6-to-54.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.1368683772161603e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-10T16:07:08.020000+00:00"
+    },
+    {
+      "id": "1995-P38.6-to-54.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-10T16:50:26.554000+00:00"
+    },
+    {
+      "id": "1995-P54.1-to-54.2-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-11T14:48:56.464000+00:00"
+    },
+    {
+      "id": "1995-P54.1-to-54.2-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-11T14:52:01.973000+00:00"
+    },
+    {
+      "id": "1995-P54.1-to-54.2-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": -5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-11T15:36:20.917000+00:00"
+    },
+    {
+      "id": "1995-P54.6-to-61.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -5.684341886080802e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-16T08:26:01.863000+00:00"
+    },
+    {
+      "id": "1995-P54.6-to-61.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-16T08:29:06.838000+00:00"
+    },
+    {
+      "id": "1995-P54.6-to-61.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-16T09:12:16.445000+00:00"
+    },
+    {
+      "id": "1995-P61.6-to-60.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-22T00:22:51.773000+00:00"
+    },
+    {
+      "id": "1995-P61.6-to-60.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-22T00:25:56.011000+00:00"
+    },
+    {
+      "id": "1995-P61.6-to-60.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-22T01:08:55.312000+00:00"
+    },
+    {
+      "id": "1995-P60.3-to-60.4-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-24T20:11:17.014000+00:00"
+    },
+    {
+      "id": "1995-P60.3-to-60.4-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-24T20:14:20.866000+00:00"
+    },
+    {
+      "id": "1995-P60.3-to-60.4-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "1994-10-24T20:57:14.771000+00:00"
+    },
+    {
+      "id": "1995-P60.6-to-41.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-27T15:53:18.103000+00:00"
+    },
+    {
+      "id": "1995-P60.6-to-41.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-27T15:56:21.579000+00:00"
+    },
+    {
+      "id": "1995-P60.6-to-41.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "1994-10-27T16:39:10.212000+00:00"
+    },
+    {
+      "id": "2005-P38.6-to-54.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-10T02:24:39.313000+00:00"
+    },
+    {
+      "id": "2005-P38.6-to-54.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-10T02:27:44.896000+00:00"
+    },
+    {
+      "id": "2005-P38.6-to-54.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-10T03:11:03.036000+00:00"
+    },
+    {
+      "id": "2005-P54.1-to-54.2-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-11T01:09:21.996000+00:00"
+    },
+    {
+      "id": "2005-P54.1-to-54.2-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-11T01:12:27.482000+00:00"
+    },
+    {
+      "id": "2005-P54.1-to-54.2-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-11T01:55:44.266000+00:00"
+    },
+    {
+      "id": "2005-P54.6-to-61.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-15T18:42:49.978000+00:00"
+    },
+    {
+      "id": "2005-P54.6-to-61.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-15T18:45:54.941000+00:00"
+    },
+    {
+      "id": "2005-P54.6-to-61.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-15T19:29:04.384000+00:00"
+    },
+    {
+      "id": "2005-P61.6-to-60.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-21T10:35:30.475000+00:00"
+    },
+    {
+      "id": "2005-P61.6-to-60.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-21T10:38:34.740000+00:00"
+    },
+    {
+      "id": "2005-P61.6-to-60.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-21T11:22:35.855000+00:00"
+    },
+    {
+      "id": "2005-P60.3-to-60.4-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-24T06:23:57.802000+00:00"
+    },
+    {
+      "id": "2005-P60.3-to-60.4-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-24T06:27:01.719000+00:00"
+    },
+    {
+      "id": "2005-P60.3-to-60.4-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-24T07:10:57.829000+00:00"
+    },
+    {
+      "id": "2005-P60.6-to-41.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-27T02:07:28.635000+00:00"
+    },
+    {
+      "id": "2005-P60.6-to-41.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2004-10-27T02:10:32.175000+00:00"
+    },
+    {
+      "id": "2005-P60.6-to-41.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2004-10-27T02:53:21.692000+00:00"
+    },
+    {
+      "id": "2015-P38.6-to-54.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-10T12:25:44.255000+00:00"
+    },
+    {
+      "id": "2015-P38.6-to-54.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-10T12:28:49.898000+00:00"
+    },
+    {
+      "id": "2015-P38.6-to-54.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-10T13:12:08.876000+00:00"
+    },
+    {
+      "id": "2015-P54.1-to-54.2-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2014-10-11T11:11:51.637000+00:00"
+    },
+    {
+      "id": "2015-P54.1-to-54.2-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-11T11:14:57.167000+00:00"
+    },
+    {
+      "id": "2015-P54.1-to-54.2-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-11T11:58:14.550000+00:00"
+    },
+    {
+      "id": "2015-P54.6-to-61.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-16T04:49:50.608000+00:00"
+    },
+    {
+      "id": "2015-P54.6-to-61.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-16T04:52:55.567000+00:00"
+    },
+    {
+      "id": "2015-P54.6-to-61.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-16T05:36:04.967000+00:00"
+    },
+    {
+      "id": "2015-P61.6-to-60.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2014-10-21T20:45:08.804000+00:00"
+    },
+    {
+      "id": "2015-P61.6-to-60.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-21T20:48:13.096000+00:00"
+    },
+    {
+      "id": "2015-P61.6-to-60.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2014-10-21T21:31:13.153000+00:00"
+    },
+    {
+      "id": "2015-P60.3-to-60.4-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-24T16:32:09.632000+00:00"
+    },
+    {
+      "id": "2015-P60.3-to-60.4-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-24T16:35:13.576000+00:00"
+    },
+    {
+      "id": "2015-P60.3-to-60.4-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-24T17:18:08.778000+00:00"
+    },
+    {
+      "id": "2015-P60.6-to-41.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 5.684341886080802e-14,
+      "effectiveNativeDesignUtcMillis": "2014-10-27T12:13:18.193000+00:00"
+    },
+    {
+      "id": "2015-P60.6-to-41.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": -5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2014-10-27T12:16:21.769000+00:00"
+    },
+    {
+      "id": "2015-P60.6-to-41.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2014-10-27T12:59:11.805000+00:00"
+    },
+    {
+      "id": "2025-P38.6-to-54.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-09T22:36:31.899000+00:00"
+    },
+    {
+      "id": "2025-P38.6-to-54.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-09T22:39:37.563000+00:00"
+    },
+    {
+      "id": "2025-P38.6-to-54.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-09T23:22:56.834000+00:00"
+    },
+    {
+      "id": "2025-P54.1-to-54.2-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-10T21:21:48.522000+00:00"
+    },
+    {
+      "id": "2025-P54.1-to-54.2-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-10T21:24:54.082000+00:00"
+    },
+    {
+      "id": "2025-P54.1-to-54.2-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-10T22:08:11.886000+00:00"
+    },
+    {
+      "id": "2025-P54.6-to-61.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-15T15:00:48.081000+00:00"
+    },
+    {
+      "id": "2025-P54.6-to-61.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-15T15:03:53.113000+00:00"
+    },
+    {
+      "id": "2025-P54.6-to-61.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-15T15:48:05.206000+00:00"
+    },
+    {
+      "id": "2025-P61.6-to-60.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-21T07:00:59.079000+00:00"
+    },
+    {
+      "id": "2025-P61.6-to-60.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": -1.1368683772161603e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-21T07:04:03.362000+00:00"
+    },
+    {
+      "id": "2025-P61.6-to-60.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 1.1368683772161603e-13,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-21T07:47:03.298000+00:00"
+    },
+    {
+      "id": "2025-P60.3-to-60.4-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-24T02:50:28.700000+00:00"
+    },
+    {
+      "id": "2025-P60.3-to-60.4-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": -2.842170943040401e-14,
+      "effectiveNativeDesignUtcMillis": "2024-10-24T02:53:32.607000+00:00"
+    },
+    {
+      "id": "2025-P60.3-to-60.4-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-24T03:36:27.267000+00:00"
+    },
+    {
+      "id": "2025-P60.6-to-41.1-before",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-26T22:32:48.492000+00:00"
+    },
+    {
+      "id": "2025-P60.6-to-41.1-after",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": -5.684341886080802e-14,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-26T22:35:52.033000+00:00"
+    },
+    {
+      "id": "2025-P60.6-to-41.1-offset-midpoint",
+      "cICRSFlags": 131330,
+      "personalityNativeMinusCICRSDeg": 0.0,
+      "designNativeMinusCICRSDegAtTruncatedMillis": 0.0,
+      "effectiveNativeDesignUtcMillis": "2024-10-26T23:18:41.586000+00:00"
+    }
+  ],
+  "precisionControls": [
+    {
+      "id": "1985-control",
+      "utc": "1985-01-25T18:34:00Z",
+      "target": 305.75,
+      "observedOfficialSun": "41.4",
+      "c258Longitude": 305.7499984842605,
+      "c131330Longitude": 305.7499965996151,
+      "c258Float32": 305.75,
+      "c131330Float32": 305.75,
+      "bothFloat32AtBoundary": true,
+      "doubleLongitudeULPDeg": 5.684341886080802e-14,
+      "doubleJdULPSeconds": 4.023313522338867e-05,
+      "directCivilJd": 2446091.273611111
+    },
+    {
+      "id": "1995-control",
+      "utc": "1995-01-28T23:04:00Z",
+      "target": 308.5625,
+      "observedOfficialSun": "19.1",
+      "c258Longitude": 308.562495829402,
+      "c131330Longitude": 308.56249394458314,
+      "c258Float32": 308.5625,
+      "c131330Float32": 308.5625,
+      "bothFloat32AtBoundary": true,
+      "doubleLongitudeULPDeg": 5.684341886080802e-14,
+      "doubleJdULPSeconds": 4.023313522338867e-05,
+      "directCivilJd": 2449746.461111111
+    },
+    {
+      "id": "2015-mismatch",
+      "utc": "2015-01-26T01:20:00Z",
+      "target": 305.75,
+      "observedOfficialSun": "41.5",
+      "c258Longitude": 305.7499987027751,
+      "c131330Longitude": 305.7499968177302,
+      "c258Float32": 305.75,
+      "c131330Float32": 305.75,
+      "bothFloat32AtBoundary": true,
+      "doubleLongitudeULPDeg": 5.684341886080802e-14,
+      "doubleJdULPSeconds": 4.023313522338867e-05,
+      "directCivilJd": 2457048.5555555555
+    },
+    {
+      "id": "2025-mismatch",
+      "utc": "2025-01-19T22:57:00Z",
+      "target": 300.125,
+      "observedOfficialSun": "60.5",
+      "c258Longitude": 300.1249988801649,
+      "c131330Longitude": 300.1249969949901,
+      "c258Float32": 300.125,
+      "c131330Float32": 300.125,
+      "bothFloat32AtBoundary": true,
+      "doubleLongitudeULPDeg": 5.684341886080802e-14,
+      "doubleJdULPSeconds": 4.023313522338867e-05,
+      "directCivilJd": 2460695.45625
+    }
+  ]
+}

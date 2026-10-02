@@ -1,0 +1,20 @@
+[
+  {
+    "path": "<LOCAL_INSTALL>/public/engine/ephe/sepl_18.se1",
+    "bytes": 484061,
+    "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+    "header": "SWISSEPH  3\r\nsepl_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba"
+  },
+  {
+    "path": "<LOCAL_INSTALL>/dist/engine/ephe/sepl_18.se1",
+    "bytes": 484061,
+    "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+    "header": "SWISSEPH  3\r\nsepl_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba"
+  },
+  {
+    "path": "/tmp/td-ohd-sharp-audit/WebApp/SharpAstrology.WebApp.Wasm/wwwroot/ephe/sepl_18.se1",
+    "bytes": 484061,
+    "sha256": "b8e657c1f5a9c51821ef973baf233a3c07137101e35b95e00ac0e9eeea7fbeb8",
+    "header": "SWISSEPH  3\r\nsepl_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/04/18, based on JPL Ephemeris DE441.       \r\ncba"
+  }
+]

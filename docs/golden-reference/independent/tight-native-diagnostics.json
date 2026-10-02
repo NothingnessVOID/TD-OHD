@@ -1,0 +1,38 @@
+[
+  {
+    "personality": {
+      "utc": "2015-01-26T01:20:00.0000000Z",
+      "jd": 2457048.5555555555,
+      "longitude": 305.7499968177302,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "2014-10-31T06:20:25.9323969Z",
+      "jd": 2456961.7641890277,
+      "longitude": 217.7499968131752,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    }
+  },
+  {
+    "personality": {
+      "utc": "2025-01-19T22:57:00.0000000Z",
+      "jd": 2460695.45625,
+      "longitude": 300.1249969949901,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "2024-10-25T01:26:50.8069001Z",
+      "jd": 2460608.560310255,
+      "longitude": 212.12499699554274,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    }
+  }
+]

@@ -1,0 +1,4098 @@
+{
+  "schemaVersion": 1,
+  "reference": "Jovian Archive actual browser output",
+  "auditDate": "2026-10-02",
+  "continuedOn": "2026-10-03",
+  "inputsAreSynthetic": true,
+  "localBaseline": "http://127.0.0.1:8787",
+  "currentBaselineExpectedToFailGolden": true,
+  "planetOrder": [
+    "sun",
+    "earth",
+    "moon",
+    "northNode",
+    "southNode",
+    "mercury",
+    "venus",
+    "mars",
+    "jupiter",
+    "saturn",
+    "uranus",
+    "neptune",
+    "pluto"
+  ],
+  "cases": [
+    {
+      "id": "D1985-after",
+      "birthLocal": "1985-01-02T15:21:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "48.6",
+            "earth": "21.6",
+            "moon": "63.4",
+            "northNode": "8.5",
+            "southNode": "14.5",
+            "mercury": "48.3",
+            "venus": "1.2",
+            "mars": "10.4",
+            "jupiter": "58.2",
+            "saturn": "1.2",
+            "uranus": "9.6",
+            "neptune": "10.1",
+            "pluto": "50.6"
+          },
+          "personality": {
+            "sun": "38.3",
+            "earth": "39.3",
+            "moon": "23.1",
+            "northNode": "8.3",
+            "southNode": "14.3",
+            "mercury": "26.3",
+            "venus": "30.4",
+            "mars": "37.1",
+            "jupiter": "61.2",
+            "saturn": "14.1",
+            "uranus": "5.5",
+            "neptune": "10.4",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "3/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Tension (38/39 | 48/21)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PLR DLR"
+      },
+      "evidence": {
+        "json": "browser-evidence/D1985-after.json",
+        "dom": "browser-evidence/D1985-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "D1985-before",
+      "birthLocal": "1985-01-02T15:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "48.5",
+            "earth": "21.5",
+            "moon": "63.4",
+            "northNode": "8.5",
+            "southNode": "14.5",
+            "mercury": "48.3",
+            "venus": "1.2",
+            "mars": "10.4",
+            "jupiter": "58.2",
+            "saturn": "1.2",
+            "uranus": "9.6",
+            "neptune": "10.1",
+            "pluto": "50.6"
+          },
+          "personality": {
+            "sun": "38.3",
+            "earth": "39.3",
+            "moon": "23.1",
+            "northNode": "8.3",
+            "southNode": "14.3",
+            "mercury": "26.3",
+            "venus": "30.4",
+            "mars": "37.1",
+            "jupiter": "61.2",
+            "saturn": "14.1",
+            "uranus": "5.5",
+            "neptune": "10.4",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of Tension (38/39 | 48/21)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/D1985-before.json",
+        "dom": "browser-evidence/D1985-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "D1995-after",
+      "birthLocal": "1995-01-26T23:51:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.2",
+            "earth": "24.2",
+            "moon": "18.3",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "32.1",
+            "venus": "44.4",
+            "mars": "7.2",
+            "jupiter": "43.3",
+            "saturn": "55.6",
+            "uranus": "61.3",
+            "neptune": "61.1",
+            "pluto": "14.3"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "5.3",
+            "northNode": "44.4",
+            "southNode": "24.4",
+            "mercury": "49.3",
+            "venus": "26.4",
+            "mars": "29.5",
+            "jupiter": "9.5",
+            "saturn": "37.6",
+            "uranus": "60.1",
+            "neptune": "61.3",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "5/2",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DLR"
+      },
+      "evidence": {
+        "json": "browser-evidence/D1995-after.json",
+        "dom": "browser-evidence/D1995-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "D2005-before",
+      "birthLocal": "2005-01-12T14:37:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "32.4",
+            "earth": "42.4",
+            "moon": "9.5",
+            "northNode": "27.1",
+            "southNode": "28.1",
+            "mercury": "28.1",
+            "venus": "64.6",
+            "mars": "48.5",
+            "jupiter": "18.1",
+            "saturn": "56.1",
+            "uranus": "55.4",
+            "neptune": "19.6",
+            "pluto": "26.4"
+          },
+          "personality": {
+            "sun": "61.2",
+            "earth": "62.2",
+            "moon": "49.4",
+            "northNode": "3.2",
+            "southNode": "50.2",
+            "mercury": "10.6",
+            "venus": "10.6",
+            "mars": "5.2",
+            "jupiter": "57.4",
+            "saturn": "62.4",
+            "uranus": "55.5",
+            "neptune": "13.2",
+            "pluto": "11.1"
+          }
+        },
+        "profile": "2/4",
+        "incarnationCrossDisplay": "Right Angle Cross of Maya (61/62 | 32/42)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/D2005-before.json",
+        "dom": "browser-evidence/D2005-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "D2015-after",
+      "birthLocal": "2015-01-25T22:23:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.1",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "51.5",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DLR"
+      },
+      "evidence": {
+        "json": "browser-evidence/D2015-after.json",
+        "dom": "browser-evidence/D2015-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "D2025-after",
+      "birthLocal": "2025-01-27T04:57:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.3",
+            "earth": "24.3",
+            "moon": "44.1",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "14.4",
+            "venus": "26.1",
+            "mars": "56.3",
+            "jupiter": "45.4",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "41.6",
+            "earth": "31.6",
+            "moon": "58.5",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "60.3",
+            "venus": "36.1",
+            "mars": "62.2",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLR DLL"
+      },
+      "evidence": {
+        "json": "browser-evidence/D2025-after.json",
+        "dom": "browser-evidence/D2025-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-1230",
+      "birthLocal": "1985-01-05T12:30:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "57.3",
+            "earth": "51.3",
+            "moon": "51.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "57.2",
+            "venus": "1.5",
+            "mars": "10.6",
+            "jupiter": "58.2",
+            "saturn": "1.3",
+            "uranus": "9.6",
+            "neptune": "10.1",
+            "pluto": "50.6"
+          },
+          "personality": {
+            "sun": "38.6",
+            "earth": "39.6",
+            "moon": "12.4",
+            "northNode": "8.3",
+            "southNode": "14.3",
+            "mercury": "26.6",
+            "venus": "55.2",
+            "mars": "37.4",
+            "jupiter": "61.2",
+            "saturn": "14.1",
+            "uranus": "5.5",
+            "neptune": "10.4",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of Individualism (38/39 | 57/51)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PRL DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-1230.json",
+        "dom": "browser-evidence/G1985-1230.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-1231",
+      "birthLocal": "1985-01-05T12:31:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "57.3",
+            "earth": "51.3",
+            "moon": "51.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "57.2",
+            "venus": "1.5",
+            "mars": "10.6",
+            "jupiter": "58.2",
+            "saturn": "1.3",
+            "uranus": "9.6",
+            "neptune": "10.1",
+            "pluto": "50.6"
+          },
+          "personality": {
+            "sun": "38.6",
+            "earth": "39.6",
+            "moon": "12.4",
+            "northNode": "8.3",
+            "southNode": "14.3",
+            "mercury": "26.6",
+            "venus": "55.2",
+            "mars": "37.4",
+            "jupiter": "61.2",
+            "saturn": "14.1",
+            "uranus": "5.5",
+            "neptune": "10.4",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of Individualism (38/39 | 57/51)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PRL DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-1231.json",
+        "dom": "browser-evidence/G1985-1231.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-1232",
+      "birthLocal": "1985-01-05T12:32:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "57.3",
+            "earth": "51.3",
+            "moon": "51.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "57.2",
+            "venus": "1.5",
+            "mars": "10.6",
+            "jupiter": "58.2",
+            "saturn": "1.3",
+            "uranus": "9.6",
+            "neptune": "10.1",
+            "pluto": "50.6"
+          },
+          "personality": {
+            "sun": "54.1",
+            "earth": "53.1",
+            "moon": "12.4",
+            "northNode": "8.3",
+            "southNode": "14.3",
+            "mercury": "26.6",
+            "venus": "55.2",
+            "mars": "37.4",
+            "jupiter": "61.2",
+            "saturn": "14.1",
+            "uranus": "5.5",
+            "neptune": "10.4",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "1/3",
+        "incarnationCrossDisplay": "Right Angle Cross of Penetration (54/53 | 57/51)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PLL DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-1232.json",
+        "dom": "browser-evidence/G1985-1232.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-nov",
+      "birthLocal": "1985-11-25T06:36:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "59.6",
+            "earth": "55.6",
+            "moon": "19.3",
+            "northNode": "24.5",
+            "southNode": "44.5",
+            "mercury": "7.4",
+            "venus": "56.5",
+            "mars": "4.4",
+            "jupiter": "19.2",
+            "saturn": "43.4",
+            "uranus": "5.3",
+            "neptune": "10.3",
+            "pluto": "28.1"
+          },
+          "personality": {
+            "sun": "34.3",
+            "earth": "20.3",
+            "moon": "24.2",
+            "northNode": "24.2",
+            "southNode": "44.2",
+            "mercury": "9.6",
+            "venus": "43.1",
+            "mars": "57.3",
+            "jupiter": "19.5",
+            "saturn": "34.1",
+            "uranus": "26.1",
+            "neptune": "10.5",
+            "pluto": "28.5"
+          }
+        },
+        "profile": "3/6",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sleeping Phoenix (34/20 | 59/55)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PRR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-nov.json",
+        "dom": "browser-evidence/G1985-nov.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-repeatA",
+      "birthLocal": "1985-01-25T18:34:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "60.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "43.2",
+            "venus": "5.2",
+            "mars": "54.4",
+            "jupiter": "58.6",
+            "saturn": "1.5",
+            "uranus": "5.1",
+            "neptune": "10.2",
+            "pluto": "28.1"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "25.2",
+            "northNode": "23.6",
+            "southNode": "43.6",
+            "mercury": "54.6",
+            "venus": "36.1",
+            "mars": "36.2",
+            "jupiter": "60.1",
+            "saturn": "14.3",
+            "uranus": "5.6",
+            "neptune": "10.5",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-repeatA.json",
+        "dom": "browser-evidence/G1985-repeatA.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-repeatB",
+      "birthLocal": "1985-01-25T18:34:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "60.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "43.2",
+            "venus": "5.2",
+            "mars": "54.4",
+            "jupiter": "58.6",
+            "saturn": "1.5",
+            "uranus": "5.1",
+            "neptune": "10.2",
+            "pluto": "28.1"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "25.2",
+            "northNode": "23.6",
+            "southNode": "43.6",
+            "mercury": "54.6",
+            "venus": "36.1",
+            "mars": "36.2",
+            "jupiter": "60.1",
+            "saturn": "14.3",
+            "uranus": "5.6",
+            "neptune": "10.5",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-repeatB.json",
+        "dom": "browser-evidence/G1985-repeatB.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1985-tight",
+      "birthLocal": "1985-01-25T18:34:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "60.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "43.2",
+            "venus": "5.2",
+            "mars": "54.4",
+            "jupiter": "58.6",
+            "saturn": "1.5",
+            "uranus": "5.1",
+            "neptune": "10.2",
+            "pluto": "28.1"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "25.2",
+            "northNode": "23.6",
+            "southNode": "43.6",
+            "mercury": "54.6",
+            "venus": "36.1",
+            "mars": "36.2",
+            "jupiter": "60.1",
+            "saturn": "14.3",
+            "uranus": "5.6",
+            "neptune": "10.5",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+        "typeDisplay": "Projector",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1985-tight.json",
+        "dom": "browser-evidence/G1985-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1995-apr",
+      "birthLocal": "1995-04-11T03:30:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "61.3",
+            "earth": "62.3",
+            "moon": "35.4",
+            "northNode": "44.6",
+            "southNode": "24.6",
+            "mercury": "19.3",
+            "venus": "9.1",
+            "mars": "59.2",
+            "jupiter": "9.2",
+            "saturn": "37.4",
+            "uranus": "61.6",
+            "neptune": "61.3",
+            "pluto": "14.6"
+          },
+          "personality": {
+            "sun": "51.6",
+            "earth": "57.6",
+            "moon": "4.6",
+            "northNode": "28.4",
+            "southNode": "27.4",
+            "mercury": "51.3",
+            "venus": "63.6",
+            "mars": "7.2",
+            "jupiter": "5.5",
+            "saturn": "22.3",
+            "uranus": "60.5",
+            "neptune": "61.6",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of The Clarion (51/57 | 61/62)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-apr.json",
+        "dom": "browser-evidence/G1995-apr.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1995-dec",
+      "birthLocal": "1995-12-15T02:27:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "6.3",
+            "earth": "36.3",
+            "moon": "52.4",
+            "northNode": "50.1",
+            "southNode": "3.1",
+            "mercury": "57.5",
+            "venus": "46.5",
+            "mars": "28.6",
+            "jupiter": "9.4",
+            "saturn": "22.5",
+            "uranus": "60.1",
+            "neptune": "61.3",
+            "pluto": "14.5"
+          },
+          "personality": {
+            "sun": "26.6",
+            "earth": "45.6",
+            "moon": "47.5",
+            "northNode": "32.5",
+            "southNode": "42.5",
+            "mercury": "58.1",
+            "venus": "61.2",
+            "mars": "38.2",
+            "jupiter": "11.4",
+            "saturn": "22.2",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.2"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of Confrontation (26/45 | 6/36)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRL DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-dec.json",
+        "dom": "browser-evidence/G1995-dec.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G1995-feb-after",
+      "birthLocal": "1995-02-22T01:09:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-02-22T01:09:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "34.6",
+            "earth": "20.6",
+            "moon": "47.3",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "14.2",
+            "venus": "28.1",
+            "mars": "29.2",
+            "jupiter": "14.4",
+            "saturn": "37.1",
+            "uranus": "61.4",
+            "neptune": "61.1",
+            "pluto": "14.4"
+          },
+          "personality": {
+            "sun": "55.4",
+            "earth": "59.4",
+            "moon": "14.3",
+            "northNode": "44.1",
+            "southNode": "24.1",
+            "mercury": "41.6",
+            "venus": "54.5",
+            "mars": "4.1",
+            "jupiter": "5.2",
+            "saturn": "63.3",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sleeping Phoenix (55/59 | 34/20)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-feb-after.json",
+        "dom": "browser-evidence/G1995-feb-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G1995-feb-before",
+      "birthLocal": "1995-02-22T01:07:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-02-22T01:07:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "34.6",
+            "earth": "20.6",
+            "moon": "47.3",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "14.2",
+            "venus": "28.1",
+            "mars": "29.2",
+            "jupiter": "14.4",
+            "saturn": "37.1",
+            "uranus": "61.4",
+            "neptune": "61.1",
+            "pluto": "14.4"
+          },
+          "personality": {
+            "sun": "55.3",
+            "earth": "59.3",
+            "moon": "14.3",
+            "northNode": "44.1",
+            "southNode": "24.1",
+            "mercury": "41.6",
+            "venus": "54.5",
+            "mars": "4.1",
+            "jupiter": "5.2",
+            "saturn": "63.3",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "3/6",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sleeping Phoenix (55/59 | 34/20)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-feb-before.json",
+        "dom": "browser-evidence/G1995-feb-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G1995-feb",
+      "birthLocal": "1995-02-22T01:08:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "34.6",
+            "earth": "20.6",
+            "moon": "47.3",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "14.2",
+            "venus": "28.1",
+            "mars": "29.2",
+            "jupiter": "14.4",
+            "saturn": "37.1",
+            "uranus": "61.4",
+            "neptune": "61.1",
+            "pluto": "14.4"
+          },
+          "personality": {
+            "sun": "55.4",
+            "earth": "59.4",
+            "moon": "14.3",
+            "northNode": "44.1",
+            "southNode": "24.1",
+            "mercury": "41.6",
+            "venus": "54.5",
+            "mars": "4.1",
+            "jupiter": "5.2",
+            "saturn": "63.3",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sleeping Phoenix (55/59 | 34/20)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-feb.json",
+        "dom": "browser-evidence/G1995-feb.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G1995-jun-after",
+      "birthLocal": "1995-06-22T00:44:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "1995-06-21T23:44:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "25.5",
+            "earth": "46.5",
+            "moon": "11.2",
+            "northNode": "28.5",
+            "southNode": "27.5",
+            "mercury": "63.2",
+            "venus": "49.6",
+            "mars": "33.6",
+            "jupiter": "5.5",
+            "saturn": "22.1",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "34.1"
+          },
+          "personality": {
+            "sun": "15.3",
+            "earth": "10.3",
+            "moon": "42.4",
+            "northNode": "28.3",
+            "southNode": "27.3",
+            "mercury": "16.6",
+            "venus": "35.3",
+            "mars": "64.3",
+            "jupiter": "9.3",
+            "saturn": "36.3",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "14.5"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Vessel of Love (15/10 | 25/46)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-jun-after.json",
+        "dom": "browser-evidence/G1995-jun-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G1995-jun-before",
+      "birthLocal": "1995-06-22T00:42:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "1995-06-21T23:42:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "25.5",
+            "earth": "46.5",
+            "moon": "11.2",
+            "northNode": "28.5",
+            "southNode": "27.5",
+            "mercury": "63.2",
+            "venus": "49.6",
+            "mars": "33.6",
+            "jupiter": "5.5",
+            "saturn": "22.1",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "34.1"
+          },
+          "personality": {
+            "sun": "15.2",
+            "earth": "10.2",
+            "moon": "42.4",
+            "northNode": "28.3",
+            "southNode": "27.3",
+            "mercury": "16.6",
+            "venus": "35.3",
+            "mars": "64.3",
+            "jupiter": "9.3",
+            "saturn": "36.3",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "14.5"
+          }
+        },
+        "profile": "2/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Vessel of Love (15/10 | 25/46)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PRR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-jun-before.json",
+        "dom": "browser-evidence/G1995-jun-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G1995-jun",
+      "birthLocal": "1995-06-22T00:43:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "25.5",
+            "earth": "46.5",
+            "moon": "11.2",
+            "northNode": "28.5",
+            "southNode": "27.5",
+            "mercury": "63.2",
+            "venus": "49.6",
+            "mars": "33.6",
+            "jupiter": "5.5",
+            "saturn": "22.1",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "34.1"
+          },
+          "personality": {
+            "sun": "15.3",
+            "earth": "10.3",
+            "moon": "42.4",
+            "northNode": "28.3",
+            "southNode": "27.3",
+            "mercury": "16.6",
+            "venus": "35.3",
+            "mars": "64.3",
+            "jupiter": "9.3",
+            "saturn": "36.3",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "14.5"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Vessel of Love (15/10 | 25/46)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-jun.json",
+        "dom": "browser-evidence/G1995-jun.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G1995-tight",
+      "birthLocal": "1995-01-28T23:04:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.4",
+            "earth": "24.4",
+            "moon": "28.4",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "32.2",
+            "venus": "44.3",
+            "mars": "7.3",
+            "jupiter": "43.4",
+            "saturn": "55.6",
+            "uranus": "61.3",
+            "neptune": "61.1",
+            "pluto": "14.3"
+          },
+          "personality": {
+            "sun": "19.1",
+            "earth": "33.1",
+            "moon": "38.3",
+            "northNode": "44.4",
+            "southNode": "24.4",
+            "mercury": "49.2",
+            "venus": "26.6",
+            "mars": "29.4",
+            "jupiter": "9.5",
+            "saturn": "37.6",
+            "uranus": "60.1",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "1/4",
+        "incarnationCrossDisplay": "Right Angle Cross of The Four Ways (19/33 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-tight.json",
+        "dom": "browser-evidence/G1995-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2005-0411",
+      "birthLocal": "2005-01-19T04:11:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "50.6",
+            "earth": "3.6",
+            "moon": "63.4",
+            "northNode": "27.1",
+            "southNode": "28.1",
+            "mercury": "44.6",
+            "venus": "6.2",
+            "mars": "57.4",
+            "jupiter": "18.3",
+            "saturn": "56.1",
+            "uranus": "55.4",
+            "neptune": "19.6",
+            "pluto": "26.4"
+          },
+          "personality": {
+            "sun": "60.3",
+            "earth": "56.3",
+            "moon": "23.3",
+            "northNode": "3.2",
+            "southNode": "50.2",
+            "mercury": "38.4",
+            "venus": "38.3",
+            "mars": "5.6",
+            "jupiter": "57.4",
+            "saturn": "62.3",
+            "uranus": "55.5",
+            "neptune": "13.2",
+            "pluto": "11.1"
+          }
+        },
+        "profile": "3/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (60/56 | 50/3)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-0411.json",
+        "dom": "browser-evidence/G2005-0411.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2005-0412",
+      "birthLocal": "2005-01-19T04:12:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "50.6",
+            "earth": "3.6",
+            "moon": "63.4",
+            "northNode": "27.1",
+            "southNode": "28.1",
+            "mercury": "44.6",
+            "venus": "6.2",
+            "mars": "57.4",
+            "jupiter": "18.3",
+            "saturn": "56.1",
+            "uranus": "55.4",
+            "neptune": "19.6",
+            "pluto": "26.4"
+          },
+          "personality": {
+            "sun": "60.4",
+            "earth": "56.4",
+            "moon": "23.3",
+            "northNode": "3.2",
+            "southNode": "50.2",
+            "mercury": "38.4",
+            "venus": "38.3",
+            "mars": "5.6",
+            "jupiter": "57.4",
+            "saturn": "62.3",
+            "uranus": "55.5",
+            "neptune": "13.2",
+            "pluto": "11.1"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (60/56 | 50/3)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-0412.json",
+        "dom": "browser-evidence/G2005-0412.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2005-jul11",
+      "birthLocal": "2005-07-11T02:47:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "42.1",
+            "earth": "32.1",
+            "moon": "2.1",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "25.4",
+            "venus": "42.4",
+            "mars": "13.3",
+            "jupiter": "48.4",
+            "saturn": "53.6",
+            "uranus": "37.4",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "53.4",
+            "earth": "54.4",
+            "moon": "40.4",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "7.2",
+            "venus": "7.3",
+            "mars": "51.5",
+            "jupiter": "48.2",
+            "saturn": "56.4",
+            "uranus": "37.6",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Beginnings (53/54 | 42/32)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-jul11.json",
+        "dom": "browser-evidence/G2005-jul11.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2005-jul20-after",
+      "birthLocal": "2005-07-20T22:41:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-07-20T21:41:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.3",
+            "earth": "60.3",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (56/60 | 3/50)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-jul20-after.json",
+        "dom": "browser-evidence/G2005-jul20-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2005-jul20-before",
+      "birthLocal": "2005-07-20T22:39:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-07-20T21:39:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.2",
+            "earth": "60.2",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "2/5",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (56/60 | 3/50)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-jul20-before.json",
+        "dom": "browser-evidence/G2005-jul20-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2005-jul20",
+      "birthLocal": "2005-07-20T22:40:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.3",
+            "earth": "60.3",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (56/60 | 3/50)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-jul20.json",
+        "dom": "browser-evidence/G2005-jul20.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G2005-may",
+      "birthLocal": "2005-05-03T15:33:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "13.3",
+            "earth": "7.3",
+            "moon": "9.1",
+            "northNode": "42.6",
+            "southNode": "32.6",
+            "mercury": "19.1",
+            "venus": "60.6",
+            "mars": "11.6",
+            "jupiter": "57.4",
+            "saturn": "62.2",
+            "uranus": "55.6",
+            "neptune": "13.2",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "24.6",
+            "earth": "44.6",
+            "moon": "63.3",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "51.3",
+            "venus": "23.4",
+            "mars": "55.2",
+            "jupiter": "48.2",
+            "saturn": "62.2",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          }
+        },
+        "profile": "6/3",
+        "incarnationCrossDisplay": "Left Angle Cross of Incarnation (24/44 | 13/7)",
+        "typeDisplay": "Reflector",
+        "variableDisplay": "PRL DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-may.json",
+        "dom": "browser-evidence/G2005-may.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2005-tight",
+      "birthLocal": "2005-01-16T09:54:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "50.3",
+            "earth": "3.3",
+            "moon": "41.4",
+            "northNode": "27.1",
+            "southNode": "28.1",
+            "mercury": "44.2",
+            "venus": "47.5",
+            "mars": "57.2",
+            "jupiter": "18.2",
+            "saturn": "56.1",
+            "uranus": "55.4",
+            "neptune": "19.6",
+            "pluto": "26.4"
+          },
+          "personality": {
+            "sun": "60.1",
+            "earth": "56.1",
+            "moon": "51.1",
+            "northNode": "3.2",
+            "southNode": "50.2",
+            "mercury": "58.6",
+            "venus": "58.5",
+            "mars": "5.4",
+            "jupiter": "57.4",
+            "saturn": "62.4",
+            "uranus": "55.5",
+            "neptune": "13.2",
+            "pluto": "11.1"
+          }
+        },
+        "profile": "1/3",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (60/56 | 50/3)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-tight.json",
+        "dom": "browser-evidence/G2005-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2015-feb-after",
+      "birthLocal": "2015-02-04T06:57:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-02-04T06:57:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.3",
+            "earth": "7.3",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-feb-after.json",
+        "dom": "browser-evidence/G2015-feb-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2015-feb-before",
+      "birthLocal": "2015-02-04T06:55:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-02-04T06:55:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.2",
+            "earth": "7.2",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "profile": "2/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-feb-before.json",
+        "dom": "browser-evidence/G2015-feb-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2015-feb",
+      "birthLocal": "2015-02-04T06:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.3",
+            "earth": "7.3",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-feb.json",
+        "dom": "browser-evidence/G2015-feb.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G2015-final-proof",
+      "birthLocal": "2015-01-26T01:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-final-proof.json",
+        "dom": "browser-evidence/G2015-final-proof.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2015-repeatA",
+      "birthLocal": "2015-01-26T01:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-repeatA.json",
+        "dom": "browser-evidence/G2015-repeatA.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2015-repeatB",
+      "birthLocal": "2015-01-26T01:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-repeatB.json",
+        "dom": "browser-evidence/G2015-repeatB.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "control-or-repeat"
+    },
+    {
+      "id": "G2015-tight-after",
+      "birthLocal": "2015-01-26T01:21:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:21:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-tight-after.json",
+        "dom": "browser-evidence/G2015-tight-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2015-tight-before",
+      "birthLocal": "2015-01-26T01:19:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:19:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PRR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-tight-before.json",
+        "dom": "browser-evidence/G2015-tight-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2015-tight",
+      "birthLocal": "2015-01-26T01:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-tight.json",
+        "dom": "browser-evidence/G2015-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G2025-mar-after",
+      "birthLocal": "2025-03-15T18:57:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-03-15T18:57:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "11.6",
+            "earth": "12.6",
+            "moon": "33.5",
+            "northNode": "25.5",
+            "southNode": "46.5",
+            "mercury": "9.2",
+            "venus": "13.1",
+            "mars": "31.4",
+            "jupiter": "35.4",
+            "saturn": "63.3",
+            "uranus": "23.6",
+            "neptune": "36.5",
+            "pluto": "60.5"
+          },
+          "personality": {
+            "sun": "36.4",
+            "earth": "6.4",
+            "moon": "48.3",
+            "northNode": "36.6",
+            "southNode": "6.6",
+            "mercury": "21.1",
+            "venus": "17.4",
+            "mars": "53.5",
+            "jupiter": "35.3",
+            "saturn": "22.6",
+            "uranus": "23.6",
+            "neptune": "25.2",
+            "pluto": "41.2"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Eden (36/6 | 11/12)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-mar-after.json",
+        "dom": "browser-evidence/G2025-mar-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2025-mar-before",
+      "birthLocal": "2025-03-15T18:55:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-03-15T18:55:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "11.6",
+            "earth": "12.6",
+            "moon": "33.5",
+            "northNode": "25.5",
+            "southNode": "46.5",
+            "mercury": "9.2",
+            "venus": "13.1",
+            "mars": "31.4",
+            "jupiter": "35.4",
+            "saturn": "63.3",
+            "uranus": "23.6",
+            "neptune": "36.5",
+            "pluto": "60.5"
+          },
+          "personality": {
+            "sun": "36.3",
+            "earth": "6.3",
+            "moon": "48.3",
+            "northNode": "36.6",
+            "southNode": "6.6",
+            "mercury": "21.1",
+            "venus": "17.4",
+            "mars": "53.5",
+            "jupiter": "35.3",
+            "saturn": "22.6",
+            "uranus": "23.6",
+            "neptune": "25.2",
+            "pluto": "41.2"
+          }
+        },
+        "profile": "3/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Eden (36/6 | 11/12)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PRL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-mar-before.json",
+        "dom": "browser-evidence/G2025-mar-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2025-mar",
+      "birthLocal": "2025-03-15T18:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "11.6",
+            "earth": "12.6",
+            "moon": "33.5",
+            "northNode": "25.5",
+            "southNode": "46.5",
+            "mercury": "9.2",
+            "venus": "13.1",
+            "mars": "31.4",
+            "jupiter": "35.4",
+            "saturn": "63.3",
+            "uranus": "23.6",
+            "neptune": "36.5",
+            "pluto": "60.5"
+          },
+          "personality": {
+            "sun": "36.4",
+            "earth": "6.4",
+            "moon": "48.3",
+            "northNode": "36.6",
+            "southNode": "6.6",
+            "mercury": "21.1",
+            "venus": "17.4",
+            "mars": "53.5",
+            "jupiter": "35.3",
+            "saturn": "22.6",
+            "uranus": "23.6",
+            "neptune": "25.2",
+            "pluto": "41.2"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Eden (36/6 | 11/12)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-mar.json",
+        "dom": "browser-evidence/G2025-mar.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    },
+    {
+      "id": "G2025-tight-after",
+      "birthLocal": "2025-01-19T22:58:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-01-19T22:58:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.5",
+            "earth": "56.5",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of Distraction (60/56 | 28/27)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-tight-after.json",
+        "dom": "browser-evidence/G2025-tight-after.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2025-tight-before",
+      "birthLocal": "2025-01-19T22:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-01-19T22:56:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.4",
+            "earth": "56.4",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "4/1",
+        "incarnationCrossDisplay": "Juxtaposition Cross of Limitation (60/56 | 28/27)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PRR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-tight-before.json",
+        "dom": "browser-evidence/G2025-tight-before.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "neighbor"
+    },
+    {
+      "id": "G2025-tight",
+      "birthLocal": "2025-01-19T22:57:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.5",
+            "earth": "56.5",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of Distraction (60/56 | 28/27)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-tight.json",
+        "dom": "browser-evidence/G2025-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch"
+    }
+  ],
+  "mismatchCases": [
+    {
+      "id": "G1995-feb",
+      "birthLocal": "1995-02-22T01:08:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "34.6",
+            "earth": "20.6",
+            "moon": "47.3",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "mercury": "14.2",
+            "venus": "28.1",
+            "mars": "29.2",
+            "jupiter": "14.4",
+            "saturn": "37.1",
+            "uranus": "61.4",
+            "neptune": "61.1",
+            "pluto": "14.4"
+          },
+          "personality": {
+            "sun": "55.4",
+            "earth": "59.4",
+            "moon": "14.3",
+            "northNode": "44.1",
+            "southNode": "24.1",
+            "mercury": "41.6",
+            "venus": "54.5",
+            "mars": "4.1",
+            "jupiter": "5.2",
+            "saturn": "63.3",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sleeping Phoenix (55/59 | 34/20)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-feb.json",
+        "dom": "browser-evidence/G1995-feb.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "3/6",
+        "incarnationCrossRaw": "RightAngleCrossOfTheSleepingPhoenix",
+        "activations": {
+          "design": {
+            "sun": "34.6",
+            "earth": "20.6",
+            "northNode": "1.2",
+            "southNode": "2.2",
+            "moon": "47.3",
+            "mercury": "14.2",
+            "venus": "28.1",
+            "mars": "29.2",
+            "jupiter": "14.4",
+            "saturn": "37.1",
+            "uranus": "61.4",
+            "neptune": "61.1",
+            "pluto": "14.4"
+          },
+          "personality": {
+            "sun": "55.3",
+            "earth": "59.3",
+            "northNode": "44.1",
+            "southNode": "24.1",
+            "moon": "14.3",
+            "mercury": "41.6",
+            "venus": "54.5",
+            "mars": "4.1",
+            "jupiter": "5.2",
+            "saturn": "63.3",
+            "uranus": "60.3",
+            "neptune": "61.4",
+            "pluto": "34.1"
+          }
+        },
+        "personalitySunLongitude": 332.9374980286018,
+        "designSunLongitude": 244.9374980360528,
+        "designUtc": "1994-11-27T10:16:43.6340520Z",
+        "solarArcDegrees": 87.99999999254896,
+        "solarArcResidualDegrees": -7.451035344274715e-09,
+        "browserJson": "browser-evidence/td8787-G1995-feb.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "1995-02-22T01:08:00.170Z",
+        "officialLowerExclusiveUtc": "1995-02-22T01:07:00Z",
+        "officialUpperInclusiveUtc": "1995-02-22T01:08:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.17,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.17,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 332.9374999134079,
+        "designLongitude": 244.93749991330023,
+        "designUtc": "1994-11-27T10:16:43.633368Z",
+        "sunGateLine": {
+          "personality": "55.3",
+          "design": "34.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6",
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.3",
+          "59.3",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "55.3",
+            "officialGateLine": "55.4"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "59.3",
+            "officialGateLine": "59.4"
+          }
+        ],
+        "all26DifferenceFromActual8787Indices": []
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2449683.928282867,
+        "designUtc": "1994-11-27T10:16:43.639725Z",
+        "solarArcDegrees": 88.00000000043516,
+        "sunLongitude": {
+          "design": 244.9375000018227,
+          "personality": 332.9375000022579
+        },
+        "sunGateLine": {
+          "design": "34.6",
+          "personality": "55.4"
+        },
+        "profile": "4/6",
+        "sunPairMatchesOfficial": true,
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.4",
+          "59.4",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": [],
+        "deltaTSecondsAtBirth": 60.90908883864604,
+        "personalityExpectedLineLowerBoundaryUtc": "1995-02-22T01:07:59.999837Z",
+        "personalitySecondsToExpectedLineBoundary": -0.0001609325408935547
+      }
+    },
+    {
+      "id": "G1995-jun",
+      "birthLocal": "1995-06-22T00:43:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "25.5",
+            "earth": "46.5",
+            "moon": "11.2",
+            "northNode": "28.5",
+            "southNode": "27.5",
+            "mercury": "63.2",
+            "venus": "49.6",
+            "mars": "33.6",
+            "jupiter": "5.5",
+            "saturn": "22.1",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "34.1"
+          },
+          "personality": {
+            "sun": "15.3",
+            "earth": "10.3",
+            "moon": "42.4",
+            "northNode": "28.3",
+            "southNode": "27.3",
+            "mercury": "16.6",
+            "venus": "35.3",
+            "mars": "64.3",
+            "jupiter": "9.3",
+            "saturn": "36.3",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "14.5"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Vessel of Love (15/10 | 25/46)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G1995-jun.json",
+        "dom": "browser-evidence/G1995-jun.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "2/5",
+        "incarnationCrossRaw": "RightAngleCrossOfTheVesselOfLove2",
+        "activations": {
+          "design": {
+            "sun": "25.5",
+            "earth": "46.5",
+            "northNode": "28.5",
+            "southNode": "27.5",
+            "moon": "11.2",
+            "mercury": "63.2",
+            "venus": "49.6",
+            "mars": "33.6",
+            "jupiter": "5.5",
+            "saturn": "22.1",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "34.1"
+          },
+          "personality": {
+            "sun": "15.2",
+            "earth": "10.2",
+            "northNode": "28.3",
+            "southNode": "27.3",
+            "moon": "42.4",
+            "mercury": "16.6",
+            "venus": "35.3",
+            "mars": "64.3",
+            "jupiter": "9.3",
+            "saturn": "36.3",
+            "uranus": "60.4",
+            "neptune": "61.5",
+            "pluto": "14.5"
+          }
+        },
+        "personalitySunLongitude": 90.12499928156265,
+        "designSunLongitude": 2.124999282692504,
+        "designUtc": "1995-03-23T05:37:03.9094555Z",
+        "solarArcDegrees": 87.99999999887018,
+        "solarArcResidualDegrees": -1.1298197932774201e-09,
+        "browserJson": "browser-evidence/td8787-G1995-jun.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "1995-06-21T23:43:00.066Z",
+        "officialLowerExclusiveUtc": "1995-06-21T23:42:00Z",
+        "officialUpperInclusiveUtc": "1995-06-21T23:43:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.066,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.066,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 90.1250011663674,
+        "designLongitude": 2.1250011661089783,
+        "designUtc": "1995-03-23T05:37:03.908892Z",
+        "sunGateLine": {
+          "personality": "15.3",
+          "design": "25.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5",
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.3",
+          "10.3",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26GateLineMismatchCount": 0,
+        "all26GateLineMismatches": [],
+        "all26DifferenceFromActual8787Indices": [
+          13,
+          14
+        ]
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2449799.734072943,
+        "designUtc": "1995-03-23T05:37:03.902294Z",
+        "solarArcDegrees": 88.00000000007407,
+        "sunLongitude": {
+          "design": 2.1250011664583925,
+          "personality": 90.12500116653246
+        },
+        "sunGateLine": {
+          "design": "25.5",
+          "personality": "15.3"
+        },
+        "profile": "3/5",
+        "sunPairMatchesOfficial": true,
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.3",
+          "10.3",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": [],
+        "deltaTSecondsAtBirth": 61.19208895585703,
+        "personalityExpectedLineLowerBoundaryUtc": "1995-06-21T23:42:59.894328Z",
+        "personalitySecondsToExpectedLineBoundary": -0.10565221309661865
+      }
+    },
+    {
+      "id": "G2005-jul20",
+      "birthLocal": "2005-07-20T22:40:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 60,
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.3",
+            "earth": "60.3",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of Laws (56/60 | 3/50)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2005-jul20.json",
+        "dom": "browser-evidence/G2005-jul20.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "2/5",
+        "incarnationCrossRaw": "RightAngleCrossOfLaws2",
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "moon": "40.5",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.2",
+            "earth": "60.2",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "moon": "54.6",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "personalitySunLongitude": 118.24999900189322,
+        "designSunLongitude": 30.249999008775795,
+        "designUtc": "2005-04-20T05:46:02.8831967Z",
+        "solarArcDegrees": 87.9999999931174,
+        "solarArcResidualDegrees": -6.8826011556666344e-09,
+        "browserJson": "browser-evidence/td8787-G2005-jul20.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "2005-07-20T21:40:00.091Z",
+        "officialLowerExclusiveUtc": "2005-07-20T21:39:00Z",
+        "officialUpperInclusiveUtc": "2005-07-20T21:40:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.091,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.091,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 118.25000088684045,
+        "designLongitude": 30.250000886428644,
+        "designUtc": "2005-04-20T05:46:02.882352Z",
+        "sunGateLine": {
+          "personality": "56.3",
+          "design": "3.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5",
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.3",
+          "60.3",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26GateLineMismatchCount": 0,
+        "all26GateLineMismatches": [],
+        "all26DifferenceFromActual8787Indices": [
+          13,
+          14
+        ]
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2453480.740311211,
+        "designUtc": "2005-04-20T05:46:02.888628Z",
+        "solarArcDegrees": 87.99999999978324,
+        "sunLongitude": {
+          "design": 30.25000095785128,
+          "personality": 118.25000095763453
+        },
+        "sunGateLine": {
+          "design": "3.5",
+          "personality": "56.3"
+        },
+        "profile": "3/5",
+        "sunPairMatchesOfficial": true,
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.3",
+          "60.3",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": [],
+        "deltaTSecondsAtBirth": 64.76092842230749,
+        "personalityExpectedLineLowerBoundaryUtc": "2005-07-20T21:39:59.913275Z",
+        "personalitySecondsToExpectedLineBoundary": -0.08674263954162598
+      }
+    },
+    {
+      "id": "G2015-tight",
+      "birthLocal": "2015-01-26T01:20:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of The Alpha (41/31 | 44/24)",
+        "typeDisplay": "Generator",
+        "variableDisplay": "PLR DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-tight.json",
+        "dom": "browser-evidence/G2015-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "4/1",
+        "incarnationCrossRaw": "JuxtapositionCrossOfFantasy",
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "moon": "19.3",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "moon": "42.1",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "personalitySunLongitude": 305.7499968177302,
+        "designSunLongitude": 217.7499968131752,
+        "designUtc": "2014-10-31T06:20:25.9323969Z",
+        "solarArcDegrees": 88.00000000455503,
+        "solarArcResidualDegrees": 4.555033683573129e-09,
+        "browserJson": "browser-evidence/td8787-G2015-tight.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "2015-01-26T01:20:00.271Z",
+        "officialLowerExclusiveUtc": "2015-01-26T01:19:00Z",
+        "officialUpperInclusiveUtc": "2015-01-26T01:20:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.271,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.271,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 305.7499987027751,
+        "designLongitude": 217.74999870241882,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "41.4",
+            "officialGateLine": "41.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "31.4",
+            "officialGateLine": "31.5"
+          }
+        ],
+        "all26DifferenceFromActual8787Indices": []
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2456961.764189086,
+        "designUtc": "2014-10-31T06:20:25.937024Z",
+        "solarArcDegrees": 88.00000000018849,
+        "sunLongitude": {
+          "design": 217.749998798423,
+          "personality": 305.7499987986115
+        },
+        "sunGateLine": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "sunPairMatchesOfficial": false,
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "computed": "41.4",
+            "official": "41.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "computed": "31.4",
+            "official": "31.5"
+          }
+        ],
+        "deltaTSecondsAtBirth": 67.67261263190962,
+        "personalityExpectedLineLowerBoundaryUtc": "2015-01-26T01:20:00.102067Z",
+        "personalitySecondsToExpectedLineBoundary": 0.10207146406173706
+      }
+    },
+    {
+      "id": "G2015-feb",
+      "birthLocal": "2015-02-04T06:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.3",
+            "earth": "7.3",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "profile": "3/5",
+        "incarnationCrossDisplay": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+        "typeDisplay": "Manifesting Generator",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2015-feb.json",
+        "dom": "browser-evidence/G2015-feb.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "2/5",
+        "incarnationCrossRaw": "RightAngleCrossOfTheSphinx",
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "moon": "45.4",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.2",
+            "earth": "7.2",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "moon": "7.6",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "personalitySunLongitude": 315.124996759837,
+        "designSunLongitude": 227.1249967653152,
+        "designUtc": "2014-11-09T14:55:40.9503891Z",
+        "solarArcDegrees": 87.99999999452183,
+        "solarArcResidualDegrees": -5.478170805872651e-09,
+        "browserJson": "browser-evidence/td8787-G2015-feb.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "2015-02-04T06:56:00.277Z",
+        "officialLowerExclusiveUtc": "2015-02-04T06:55:00Z",
+        "officialUpperInclusiveUtc": "2015-02-04T06:56:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.277,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.277,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 315.1249986448729,
+        "designLongitude": 227.12499864521158,
+        "designUtc": "2014-11-09T14:55:40.949544Z",
+        "sunGateLine": {
+          "personality": "13.2",
+          "design": "1.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5",
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.2",
+          "7.2",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "13.2",
+            "officialGateLine": "13.3"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "7.2",
+            "officialGateLine": "7.3"
+          }
+        ],
+        "all26DifferenceFromActual8787Indices": []
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2456971.1220017876,
+        "designUtc": "2014-11-09T14:55:40.954453Z",
+        "solarArcDegrees": 87.99999999994392,
+        "sunLongitude": {
+          "design": 227.12499875331585,
+          "personality": 315.1249987532598
+        },
+        "sunGateLine": {
+          "design": "1.5",
+          "personality": "13.2"
+        },
+        "profile": "2/5",
+        "sunPairMatchesOfficial": false,
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.2",
+          "7.2",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "computed": "13.2",
+            "official": "13.3"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "computed": "7.2",
+            "official": "7.3"
+          }
+        ],
+        "deltaTSecondsAtBirth": 67.68321575667953,
+        "personalityExpectedLineLowerBoundaryUtc": "2015-02-04T06:56:00.106256Z",
+        "personalitySecondsToExpectedLineBoundary": 0.10625571012496948
+      }
+    },
+    {
+      "id": "G2025-tight",
+      "birthLocal": "2025-01-19T22:57:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.5",
+            "earth": "56.5",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "5/1",
+        "incarnationCrossDisplay": "Left Angle Cross of Distraction (60/56 | 28/27)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLR DRL"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-tight.json",
+        "dom": "browser-evidence/G2025-tight.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "4/1",
+        "incarnationCrossRaw": "JuxtapositionCrossOfLimitation",
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "moon": "33.4",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.4",
+            "earth": "56.4",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "moon": "48.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "personalitySunLongitude": 300.1249969949901,
+        "designSunLongitude": 212.12499699554274,
+        "designUtc": "2024-10-25T01:26:50.8069001Z",
+        "solarArcDegrees": 87.99999999944737,
+        "solarArcResidualDegrees": -5.526317181647755e-10,
+        "browserJson": "browser-evidence/td8787-G2025-tight.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "2025-01-19T22:57:00.256Z",
+        "officialLowerExclusiveUtc": "2025-01-19T22:56:00Z",
+        "officialUpperInclusiveUtc": "2025-01-19T22:57:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.256,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.256,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 300.1249988801649,
+        "designLongitude": 212.12499887979791,
+        "designUtc": "2024-10-25T01:26:50.805935Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "28.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1",
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.4",
+          "56.4",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "60.4",
+            "officialGateLine": "60.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "56.4",
+            "officialGateLine": "56.5"
+          }
+        ],
+        "all26DifferenceFromActual8787Indices": []
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2460608.5603102706,
+        "designUtc": "2024-10-25T01:26:50.807383Z",
+        "solarArcDegrees": 87.99999999965408,
+        "sunLongitude": {
+          "design": 212.12499897601046,
+          "personality": 300.12499897566454
+        },
+        "sunGateLine": {
+          "design": "28.1",
+          "personality": "60.4"
+        },
+        "profile": "4/1",
+        "sunPairMatchesOfficial": false,
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.4",
+          "56.4",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "computed": "60.4",
+            "official": "60.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "computed": "56.4",
+            "official": "56.5"
+          }
+        ],
+        "deltaTSecondsAtBirth": 68.99478640185143,
+        "personalityExpectedLineLowerBoundaryUtc": "2025-01-19T22:57:00.086968Z",
+        "personalitySecondsToExpectedLineBoundary": 0.08698403835296631
+      }
+    },
+    {
+      "id": "G2025-mar",
+      "birthLocal": "2025-03-15T18:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "historicalOffsetMinutes": 0,
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "expected": {
+        "activations": {
+          "design": {
+            "sun": "11.6",
+            "earth": "12.6",
+            "moon": "33.5",
+            "northNode": "25.5",
+            "southNode": "46.5",
+            "mercury": "9.2",
+            "venus": "13.1",
+            "mars": "31.4",
+            "jupiter": "35.4",
+            "saturn": "63.3",
+            "uranus": "23.6",
+            "neptune": "36.5",
+            "pluto": "60.5"
+          },
+          "personality": {
+            "sun": "36.4",
+            "earth": "6.4",
+            "moon": "48.3",
+            "northNode": "36.6",
+            "southNode": "6.6",
+            "mercury": "21.1",
+            "venus": "17.4",
+            "mars": "53.5",
+            "jupiter": "35.3",
+            "saturn": "22.6",
+            "uranus": "23.6",
+            "neptune": "25.2",
+            "pluto": "41.2"
+          }
+        },
+        "profile": "4/6",
+        "incarnationCrossDisplay": "Right Angle Cross of Eden (36/6 | 11/12)",
+        "typeDisplay": "Manifestor",
+        "variableDisplay": "PLL DRR"
+      },
+      "evidence": {
+        "json": "browser-evidence/G2025-mar.json",
+        "dom": "browser-evidence/G2025-mar.dom.txt",
+        "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+      },
+      "role": "mismatch",
+      "baseline": {
+        "source": "installed8787 actual WASM UI, pinned Sharp native numerical diagnostics",
+        "profile": "3/6",
+        "incarnationCrossRaw": "RightAngleCrossOfTheEden",
+        "activations": {
+          "design": {
+            "sun": "11.6",
+            "earth": "12.6",
+            "northNode": "25.5",
+            "southNode": "46.5",
+            "moon": "33.5",
+            "mercury": "9.2",
+            "venus": "13.1",
+            "mars": "31.4",
+            "jupiter": "35.4",
+            "saturn": "63.3",
+            "uranus": "23.6",
+            "neptune": "36.5",
+            "pluto": "60.5"
+          },
+          "personality": {
+            "sun": "36.3",
+            "earth": "6.3",
+            "northNode": "36.6",
+            "southNode": "6.6",
+            "moon": "48.3",
+            "mercury": "21.1",
+            "venus": "17.4",
+            "mars": "53.5",
+            "jupiter": "35.3",
+            "saturn": "22.6",
+            "uranus": "23.6",
+            "neptune": "25.2",
+            "pluto": "41.2"
+          }
+        },
+        "personalitySunLongitude": 355.43749799656126,
+        "designSunLongitude": 267.43749799977513,
+        "designUtc": "2024-12-18T20:55:44.1085292Z",
+        "solarArcDegrees": 87.99999999678613,
+        "solarArcResidualDegrees": -3.2138700589712244e-09,
+        "browserJson": "browser-evidence/td8787-G2025-mar.json"
+      },
+      "boundary": {
+        "sharpTransitionUtcMilliseconds": "2025-03-15T18:56:00.174Z",
+        "officialLowerExclusiveUtc": "2025-03-15T18:55:00Z",
+        "officialUpperInclusiveUtc": "2025-03-15T18:56:00Z",
+        "shiftEarlierThanSharpLowerBoundSeconds": 0.174,
+        "shiftEarlierThanSharpUpperBoundSeconds": 60.174,
+        "nativeRootReportingPrecisionSeconds": 0.001,
+        "officialPrecision": "Minute bracket only; no exact Jovian second/millisecond timestamp is known."
+      },
+      "independentC258": {
+        "personalityLongitude": 355.4374998817419,
+        "designLongitude": 267.43749988212306,
+        "designUtc": "2024-12-18T20:55:44.107765Z",
+        "sunGateLine": {
+          "personality": "36.3",
+          "design": "11.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6",
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.3",
+          "6.3",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "36.3",
+            "officialGateLine": "36.4"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "6.3",
+            "officialGateLine": "6.4"
+          }
+        ],
+        "all26DifferenceFromActual8787Indices": []
+      },
+      "independentC258DE431": {
+        "flagsRequestedAndReturned": 258,
+        "designJulianDay": 2460663.372038319,
+        "designUtc": "2024-12-18T20:55:44.110742Z",
+        "solarArcDegrees": 88.00000000007964,
+        "sunLongitude": {
+          "design": 267.43749995609045,
+          "personality": 355.4374999561701
+        },
+        "sunGateLine": {
+          "design": "11.6",
+          "personality": "36.3"
+        },
+        "profile": "3/6",
+        "sunPairMatchesOfficial": false,
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.3",
+          "6.3",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "computed": "36.3",
+            "official": "36.4"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "computed": "6.3",
+            "official": "6.4"
+          }
+        ],
+        "deltaTSecondsAtBirth": 68.9802019150298,
+        "personalityExpectedLineLowerBoundaryUtc": "2025-03-15T18:56:00.003823Z",
+        "personalitySecondsToExpectedLineBoundary": 0.003822147846221924
+      }
+    }
+  ],
+  "scopeNote": "Current results are recorded, not approved as correct. Golden expectations are official browser observations. Numerical independent C comparisons do not reveal proprietary Jovian longitudes.",
+  "independentEphemerisComparisonSummary": {
+    "cSwissVersion": "2.10.03",
+    "officialRecordCount": 47,
+    "uniqueUtcCount": 42,
+    "excluded": [],
+    "mandalaOffsetDegrees": 3.875,
+    "scope": "Independent C Swiss Ephemeris diagnostics, exact -88 degree design solar arc, existing captured official Gate.Line comparisons. Actual installed 8787 remains DE441 unchanged. Jovian internal library, flags, files, and time scale remain unknown. No fitted correction adopted. Gate.Line agreement does not prove finer activation subdivisions or Variable.",
+    "configurations": {
+      "DE441_C258": {
+        "flags": 258,
+        "recordCount": 47,
+        "sunPairMatches": 39,
+        "all26Matches": 39,
+        "sunPairMismatchIDs": [
+          "G1995-feb",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "all26MismatchIDs": [
+          "G1995-feb",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "singleMandalaOffsetIntersection": {
+          "lowerExclusive": 3.874999384406024,
+          "upperInclusive": 3.8749986448729032,
+          "feasible": false,
+          "gapIfInfeasibleDegrees": 7.395331209636424e-07,
+          "lowerWitness": {
+            "id": "G2005-jul11",
+            "side": "personality",
+            "longitude": 108.87499938440602,
+            "lowerExclusive": 3.874999384406024,
+            "upperInclusive": 4.812499384406024
+          },
+          "upperWitness": {
+            "id": "G2015-feb",
+            "side": "personality",
+            "longitude": 315.1249986448729,
+            "lowerExclusive": 2.9374986448729032,
+            "upperInclusive": 3.8749986448729032
+          }
+        }
+      },
+      "DE441_C131330": {
+        "flags": 131330,
+        "recordCount": 47,
+        "sunPairMatches": 37,
+        "all26Matches": 37,
+        "sunPairMismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "all26MismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "singleMandalaOffsetIntersection": {
+          "lowerExclusive": 3.874997499485559,
+          "upperInclusive": 3.8749967598370176,
+          "feasible": false,
+          "gapIfInfeasibleDegrees": 7.396485415256393e-07,
+          "lowerWitness": {
+            "id": "G2005-jul11",
+            "side": "personality",
+            "longitude": 108.87499749948556,
+            "lowerExclusive": 3.874997499485559,
+            "upperInclusive": 4.812497499485559
+          },
+          "upperWitness": {
+            "id": "G2015-feb",
+            "side": "personality",
+            "longitude": 315.124996759837,
+            "lowerExclusive": 2.9374967598370176,
+            "upperInclusive": 3.8749967598370176
+          }
+        }
+      },
+      "DE431_C258": {
+        "flags": 258,
+        "recordCount": 47,
+        "sunPairMatches": 40,
+        "all26Matches": 40,
+        "sunPairMismatchIDs": [
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "all26MismatchIDs": [
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "singleMandalaOffsetIntersection": {
+          "lowerExclusive": 3.8749994638244942,
+          "upperInclusive": 3.8749987532597743,
+          "feasible": false,
+          "gapIfInfeasibleDegrees": 7.105647199523446e-07,
+          "lowerWitness": {
+            "id": "G2005-jul11",
+            "side": "personality",
+            "longitude": 108.8749994638245,
+            "lowerExclusive": 3.8749994638244942,
+            "upperInclusive": 4.812499463824494
+          },
+          "upperWitness": {
+            "id": "G2015-feb",
+            "side": "personality",
+            "longitude": 315.1249987532598,
+            "lowerExclusive": 2.9374987532597743,
+            "upperInclusive": 3.8749987532597743
+          }
+        }
+      },
+      "DE431_C131330": {
+        "flags": 131330,
+        "recordCount": 47,
+        "sunPairMatches": 37,
+        "all26Matches": 37,
+        "sunPairMismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "all26MismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-final-proof",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ],
+        "singleMandalaOffsetIntersection": {
+          "lowerExclusive": 3.874997578904015,
+          "upperInclusive": 3.8749968682239455,
+          "feasible": false,
+          "gapIfInfeasibleDegrees": 7.106800694600679e-07,
+          "lowerWitness": {
+            "id": "G2005-jul11",
+            "side": "personality",
+            "longitude": 108.87499757890401,
+            "lowerExclusive": 3.874997578904015,
+            "upperInclusive": 4.812497578904015
+          },
+          "upperWitness": {
+            "id": "G2015-feb",
+            "side": "personality",
+            "longitude": 315.12499686822395,
+            "lowerExclusive": 2.9374968682239455,
+            "upperInclusive": 3.8749968682239455
+          }
+        }
+      }
+    }
+  },
+  "diagnosticSummary": {
+    "productionGoldenMismatchCases": 7,
+    "sameDE441StandardFrameMatchesOfSeven": 2,
+    "DE431StandardFrameMatchesOfSeven": 3,
+    "DE431StandardFrameHistoricalDeltaTTableSensitivityMatchesOfSeven": 5,
+    "historicalDeltaTExperimentRunsCompleteOldKernel": false,
+    "historicalDeltaTExperimentProvesJovianConfiguration": false,
+    "remainingMismatchCasesInHistoricalTableSensitivity": [
+      "G2015-tight",
+      "G2015-feb"
+    ],
+    "productionFixImplemented": false
+  }
+}
