@@ -1,76 +1,542 @@
 {
+  "phase": "4C",
+  "runs": [
+    {
+      "command": "npm run e2e:chart-data-export",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:reference",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:planet",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:appearance",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:sharp",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:timeline",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm run e2e:gate-meridian",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/browser-comments-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/channel-detail-layout-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/graph-mobile-size-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/premerge-corrections-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/review-round2-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/quarter-correction-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/reference-v1-acceptance-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/share-views-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/graph-window-fixing-colors-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/transit-window-reuse-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/timeline-conditions-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/annual-fallback-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "npm test",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": 262,
+      "failed": 0,
+      "skipped": 3
+    },
+    {
+      "command": "npm run test:localization",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run test:timeline",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    },
+    {
+      "command": "node tests/knowledge-layer-e2e.mjs",
+      "status": "passed",
+      "exitCode": 0,
+      "passed": null,
+      "failed": null,
+      "skipped": null
+    }
+  ],
   "layoutComparisons": [
     {
       "width": 1224,
       "locale": "en",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 2,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 3,
+          "previous": 102.375,
+          "current": 121.5625
+        }
+      ]
     },
     {
       "width": 1224,
       "locale": "zh-CN",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 121.5625,
+          "current": 102.375
+        },
+        {
+          "card": 1,
+          "previous": 121.5625,
+          "current": 102.375
+        },
+        {
+          "card": 2,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 3,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 6,
+          "previous": 155.765625,
+          "current": 144.078125
+        },
+        {
+          "card": 7,
+          "previous": 155.765625,
+          "current": 144.078125
+        }
+      ]
     },
     {
       "width": 1224,
       "locale": "zh-Hant",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 121.5625,
+          "current": 102.375
+        },
+        {
+          "card": 1,
+          "previous": 121.5625,
+          "current": 102.375
+        },
+        {
+          "card": 2,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 3,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 6,
+          "previous": 155.765625,
+          "current": 144.078125
+        },
+        {
+          "card": 7,
+          "previous": 155.765625,
+          "current": 144.078125
+        }
+      ]
     },
     {
       "width": 903,
       "locale": "en",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 140.75,
+          "current": 159.9375
+        },
+        {
+          "card": 1,
+          "previous": 140.75,
+          "current": 159.9375
+        },
+        {
+          "card": 2,
+          "previous": 147.15625,
+          "current": 185.53125
+        },
+        {
+          "card": 3,
+          "previous": 147.15625,
+          "current": 185.53125
+        }
+      ]
     },
     {
       "width": 903,
       "locale": "zh-CN",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 2,
+          "previous": 127.96875,
+          "current": 147.15625
+        },
+        {
+          "card": 3,
+          "previous": 127.96875,
+          "current": 147.15625
+        },
+        {
+          "card": 6,
+          "previous": 155.765625,
+          "current": 153.5625
+        },
+        {
+          "card": 7,
+          "previous": 155.765625,
+          "current": 153.5625
+        }
+      ]
     },
     {
       "width": 903,
       "locale": "zh-Hant",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 2,
+          "previous": 127.96875,
+          "current": 147.15625
+        },
+        {
+          "card": 3,
+          "previous": 127.96875,
+          "current": 147.15625
+        },
+        {
+          "card": 6,
+          "previous": 155.765625,
+          "current": 153.5625
+        },
+        {
+          "card": 7,
+          "previous": 155.765625,
+          "current": 153.5625
+        }
+      ]
     },
     {
       "width": 664,
       "locale": "en",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 159.9375,
+          "current": 179.125
+        },
+        {
+          "card": 1,
+          "previous": 159.9375,
+          "current": 179.125
+        },
+        {
+          "card": 2,
+          "previous": 166.34375,
+          "current": 204.71875
+        },
+        {
+          "card": 3,
+          "previous": 166.34375,
+          "current": 204.71875
+        }
+      ]
     },
     {
       "width": 664,
       "locale": "zh-CN",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 140.75,
+          "current": 121.5625
+        },
+        {
+          "card": 1,
+          "previous": 140.75,
+          "current": 121.5625
+        },
+        {
+          "card": 2,
+          "previous": 147.15625,
+          "current": 166.34375
+        },
+        {
+          "card": 3,
+          "previous": 147.15625,
+          "current": 166.34375
+        }
+      ]
     },
     {
       "width": 664,
       "locale": "zh-Hant",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 0,
+          "previous": 140.75,
+          "current": 121.5625
+        },
+        {
+          "card": 1,
+          "previous": 140.75,
+          "current": 121.5625
+        },
+        {
+          "card": 2,
+          "previous": 147.15625,
+          "current": 166.34375
+        },
+        {
+          "card": 3,
+          "previous": 147.15625,
+          "current": 166.34375
+        }
+      ]
     },
     {
       "width": 390,
       "locale": "en",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 2,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 3,
+          "previous": 102.375,
+          "current": 121.5625
+        },
+        {
+          "card": 6,
+          "previous": 153.5625,
+          "current": 127.96875
+        }
+      ]
     },
     {
       "width": 390,
       "locale": "zh-CN",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 7,
+          "previous": 241.9375,
+          "current": 218.5625
+        }
+      ]
     },
     {
       "width": 390,
       "locale": "zh-Hant",
-      "textAndGeometryEqual": true,
-      "longDetailIsolation": true
+      "cardCount": 8,
+      "cardWidthsEqual": true,
+      "longDetailIsolation": true,
+      "variablePureLocale": true,
+      "heightChanges": [
+        {
+          "card": 7,
+          "previous": 241.9375,
+          "current": 218.5625
+        }
+      ]
     }
   ]
 }

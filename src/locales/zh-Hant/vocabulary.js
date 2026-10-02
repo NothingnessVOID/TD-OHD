@@ -10,24 +10,26 @@ import hexagrams from './hexagrams.json' with { type: 'json' };
 
 export const TYPE_ZH = {
   Generator: ['生產者', '等待回應', '挫敗', '滿足'],
-  'Manifesting Generator': ['顯示生產者', '等待回應，行動前告知', '挫敗／憤怒', '滿足'],
+  'Manifesting Generator': ['顯示生產者', '等待回應', '挫敗', '滿足'],
   Manifestor: ['顯示者', '行動前告知', '憤怒', '平和'],
-  Projector: ['投射者', '等待邀請', '苦澀', '成功'],
+  Projector: ['投射者', '等待認可與邀請', '苦澀', '成功'],
   Reflector: ['反映者', '等待一個月亮週期', '失望', '驚喜']
 };
 
 export const TYPE_PLAIN_ZH = {
   Generator: '你擁有可持續的生命力。回應已經出現的事物，而非追逐尚未到來的事物，生活會運作得更順暢。',
-  'Manifesting Generator': '你擁有強勁而快速的能量，能同時投入許多事情。先回應，再告知會受到你行動影響的人。',
+  'Manifesting Generator': '你擁有強勁而快速的能量，能同時投入許多事情。先回應，再行動，並在過程中靈活調整。',
   Manifestor: '你來到這裡是為了發起行動。你不必等待任何人，但在行動前告知他人，能讓前路更順暢。',
   Projector: '你來到這裡是為了引導他人、清晰地看見系統。你的天賦在獲得認可和邀請時發揮作用，而非靠強行推進。',
-  Reflector: '你映照著群體的健康狀態。在作出重大決定前，給自己一個完整的月亮週期（約 28 天），並謹慎選擇所處的環境。'
+  Reflector: '你映照著群體的健康狀態。在作出重大決定前，給自己一個完整的月亮週期（約 29.5 天），並謹慎選擇所處的環境。'
 };
 
 export const AUTHORITY_ZH = {
   "Emotional Authority": "情緒權威",
   "Sacral Authority": "薦骨權威",
   "Splenic Authority": "直覺權威",
+  "Ego Manifested Authority": "意志力顯化權威",
+  "Ego-Projected Authority": "意志力投射權威",
   "Ego/Heart Authority": "意志力／心臟權威",
   "Self-Projected Authority": "自我投射權威",
   "Mental/Environment": "環境／聲音板權威",
@@ -62,13 +64,13 @@ export const CENTER_ZH = {
     "name": "頭頂中心"
   },
   "ajna": {
-    "name": "邏輯中心（Ajna）"
+    "name": "邏輯中心"
   },
   "throat": {
     "name": "喉嚨中心"
   },
   "g": {
-    "name": "G 中心（自我中心）"
+    "name": "自我中心"
   },
   "heart": {
     "name": "意志力中心（心臟／自我）"

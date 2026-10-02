@@ -25,9 +25,9 @@ export const contentText = value => content().text(value);
 export const crossName = cross => content().cross(cross);
 
 /** Keep the source term alongside Chinese Gene Keys keywords for comparison. */
-export function geneKeyTerm(gate, field) {
+export function geneKeyTerm(gate, field, { bilingual = true } = {}) {
   const original = geneKeySpectrum(gate)[['shadow', 'gift', 'siddhi'].indexOf(field)] || '';
   const translated = GENE_KEY_DESCRIPTIONS[gate]?.[field] || original;
-  return content().bilingualGeneKeys && original && translated !== original
+  return bilingual && content().bilingualGeneKeys && original && translated !== original
     ? `${translated} ${original}` : translated;
 }

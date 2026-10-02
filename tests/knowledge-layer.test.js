@@ -17,9 +17,9 @@ const query = (objectType, objectId, extra={})=>({domain:'human-design',objectTy
 const fixtures=JSON.parse(readFileSync(new URL('./fixtures/sharp-definition-components.json',import.meta.url)));
 const all = listKnowledgeEntries();
 
-test('60 unique foundation entries have valid domain, object type, sources, review and slot versions',()=>{
- assert.equal(all.length,60);assert.equal(new Set(all.map(x=>x.id)).size,60);
- for(const e of all) {assert.equal(validateKnowledgeEntry(e),e);assert.equal(e.reviewStatus,'unreviewed');}
+test('61 unique foundation entries have valid domain, object type, sources, review and slot versions',()=>{
+ assert.equal(all.length,61);assert.equal(new Set(all.map(x=>x.id)).size,61);
+ for(const e of all) {assert.equal(validateKnowledgeEntry(e),e);assert.ok(['unreviewed','reviewed'].includes(e.reviewStatus));}
  for(const [field,bad] of [['id','中文'],['domain','wrong'],['objectType','wrong'],['reviewStatus','official'],['version',0]])assert.throws(()=>validateKnowledgeEntry({...all[0],[field]:bad}));
  assert.throws(()=>validateKnowledgeEntry({...all[0],summary:{...all[0].summary,sourceId:'absent'}}));
  assert.throws(()=>createKnowledgeReader([foundationRecords[0],foundationRecords[0]]),/Duplicate/);
@@ -38,35 +38,31 @@ test('all expected Type/Authority/Profile/Definition/Variable/Cognition identiti
  for(const id of Object.keys(TYPES))assert.ok(getKnowledgeEntry(query('type',id)));
  for(const id of Object.keys(PROFILES))assert.ok(getKnowledgeEntry(query('profile',id)));
  const a=getKnowledgeEntry(query('authority','egoManifested')),b=getKnowledgeEntry(query('authority','egoProjected'));
- assert.notEqual(a.id,b.id);assert.equal(a.summary.sharedReference,b.summary.sharedReference);
- assert.equal(a.summary.path,'AUTHORITIES.ego.description');assert.equal(a.summary.content,b.summary.content);
- assert.equal(a.hasDetail,false);assert.equal(b.hasDetail,false);
+ assert.notEqual(a.id,b.id);assert.notEqual(a.detail.content,b.detail.content);assert.equal(a.hasDetail,true);assert.equal(b.hasDetail,true);
 });
 
-test('missing content is explicit; neither Summary nor Detail fabricates the other',()=>{
- for(const e of all.filter(e=>['definition','cognition','profile'].includes(e.objectType)))assert.equal(e.detail,null);
- const split=getKnowledgeEntry(query('definition','split'));assert.equal(split.summary,null);assert.equal(split.detailStatus,'missing');
- const hope=query('variable','motivation:hope');assert.equal(getKnowledgeSummary(hope),null);assert.ok(getKnowledgeDetail(hope));
- const generator=query('type','generator');assert.ok(getKnowledgeSummary(generator));assert.equal(getKnowledgeDetail(generator),null);
+test('missing content is explicit and neither slot fabricates the other',()=>{
+ const smell=getKnowledgeEntry(query('cognition','smell'));assert.equal(smell.summary,null);assert.equal(smell.detail,null);
+ const ref={read:()=> 'short',sourceId:'unknown',reviewStatus:'unreviewed',version:1};
+ const record={...foundationRecords[0],summary:ref,detail:null};let reader=createKnowledgeReader([record]);assert.equal(reader.getKnowledgeDetail(record),null);
+ record.summary=null;record.detail=ref;reader=createKnowledgeReader([record]);assert.equal(reader.getKnowledgeSummary(record),null);
  assert.equal(getKnowledgeEntry(query('authority','unrecognized')),null);
 });
 
 test('real Cross enums have dynamic identities, structural properties, and no manufactured prose',()=>{
  for(const sample of fixtures.samples){const c=adaptSharpChart(sample.raw,{timezone:0});const e=getKnowledgeEntry(query('cross',c.incarnationCross.rawId,{cross:c.incarnationCross}));
   assert.equal(e.id,`hd.cross.${sample.raw.incarnationCross}`);assert.equal(e.name,crossName(c.incarnationCross));
-  assert.deepEqual(e.properties.gates,c.incarnationCross.gates);assert.equal(e.summary,null);assert.equal(e.detail,null);
+  assert.deepEqual(e.properties.gates,c.incarnationCross.gates);assert.ok(e.summary);assert.equal(e.detail,null);
  }
- assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='cross').length,0);
+ assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='cross').length,1);
  assert.throws(()=>getKnowledgeEntry(query('cross',fixtures.samples[0].raw.incarnationCross,{cross:{rawId:'Different'}})),/mismatch/);
 });
 
-test('existing three-language Type, Authority, Profile, Variable and Cognition output is unchanged',()=>{
+test('existing three-language names and hero slots still use their original vocabulary',()=>{
  const previous=getLocale();try{for(const locale of ['en','zh-CN','zh-Hant']){setLocale(locale,{persist:false});
-  for(const [id,type] of Object.entries(TYPES)){const e=getKnowledgeEntry(query('type',id));assert.equal(e.name,typeName(type.name));assert.equal(e.summary.content,contentText(type.description));assert.equal(getKnowledgeSummary(query('type',id,{surface:'hero'})).content,typeDescription(type.name));assert.deepEqual(e.properties,{strategy:strategy(type.name),signature:signature(type.name),notSelf:notSelf(type.name),percentage:type.percentage});}
-  const families={emotional:'emotional',sacral:'sacral',splenic:'splenic',egoManifested:'ego',egoProjected:'ego',selfProjected:'self',mental:'mental',lunar:'lunar'};
-  for(const [id,family]of Object.entries(families)){const e=getKnowledgeEntry(query('authority',id));assert.equal(e.name,authorityName(AUTHORITIES[family].name));assert.equal(e.summary.content,contentText(AUTHORITIES[family].description));}
-  for(const [id,p]of Object.entries(PROFILES)){const e=getKnowledgeEntry(query('profile',id));assert.equal(e.name,profileName(id));assert.equal(e.summary.content,contentText(p.theme));}
-  for(const [kind,names]of Object.entries(variableNames))for(let color=1;color<=6;color++){const e=getKnowledgeEntry(query('variable',`${kind}:${variableValueId(kind,color)}`));assert.equal(e.name,variable({name:names[color-1]})[0]);assert.equal(e.detail.content,contentText(variableDescriptions[kind][color-1]));}
+  for(const [id,type] of Object.entries(TYPES)){const e=getKnowledgeEntry(query('type',id));assert.equal(e.name,typeName(type.name));assert.equal(getKnowledgeSummary(query('type',id,{surface:'hero'})).content,typeDescription(type.name));}
+  for(const id of Object.keys(PROFILES))assert.equal(getKnowledgeEntry(query('profile',id)).name,profileName(id));
+  for(const [kind,names]of Object.entries(variableNames))for(let color=1;color<=6;color++)assert.equal(getKnowledgeEntry(query('variable',`${kind}:${variableValueId(kind,color)}`)).name,variable({name:names[color-1]})[0]);
   for(const [index,id] of ['smell','taste','outerVision','innerVision','feeling','touch'].entries())assert.equal(getKnowledgeEntry(query('cognition',id)).name,cognition(cognitionNames[index]));
  }}finally{setLocale(previous,{persist:false});}
 });
@@ -97,7 +93,7 @@ test('Home and foundation renderers cannot call full-entry or Detail lookup',()=
  assert.equal(functions.length,2);
  for(const node of functions){const body=source.slice(node.start,node.end);assert.doesNotMatch(body,/getKnowledge(?:Detail|Entry)|\bentry\.detail/);assert.match(body,/foundationSummary\(/);}
  const facade=readFileSync(new URL('../src/lib/knowledge/foundation-summary.js',import.meta.url),'utf8');assert.doesNotMatch(facade,/getKnowledge(?:Detail|Entry)|\.detail\b/);
- for(const sample of fixtures.samples){const c=adaptSharpChart(sample.raw,{timezone:0});assert.equal(foundationSummary(c,'type'),contentText(c.type.description));assert.equal(foundationSummary(c,'authority'),contentText(c.authority.description));assert.equal(foundationSummary(c,'profile'),contentText(c.profile.theme));}
+ for(const sample of fixtures.samples){const c=adaptSharpChart(sample.raw,{timezone:0});for(const kind of ['type','authority','profile'])assert.equal(foundationSummary(c,kind),getKnowledgeSummary(query(kind,c.calculation[kind].id)).content);}
 });
 
 
