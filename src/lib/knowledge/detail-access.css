@@ -1,0 +1,18 @@
+/* Access affordances preserve the existing card box model and palette. */
+.knowledge-trigger { cursor: pointer; }
+.knowledge-trigger:hover { background-color: var(--bg-sunken); }
+.knowledge-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.knowledge-detail { color: var(--text); min-width: 0; }
+.knowledge-detail h2 { font-size: 1.5rem; line-height: 1.35; margin: 0 0 12px; overflow-wrap: anywhere; }
+.gate-detail-body > .knowledge-detail > h2 { padding-right: 82px; }
+.knowledge-summary { color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
+.knowledge-facts { padding: 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius); background: var(--bg-sunken); margin-bottom: 20px; }
+.knowledge-facts h3, .knowledge-body h3 { font-size: 0.875rem; color: var(--text-secondary); margin: 0 0 10px; }
+.knowledge-facts dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 6px 12px; margin: 0; font-size: 0.8125rem; line-height: 1.6; }
+.knowledge-facts dt { color: var(--text-tertiary); }
+.knowledge-facts dd { margin: 0; overflow-wrap: anywhere; }
+.knowledge-body p { font-size: 0.875rem; line-height: 1.8; margin: 0 0 14px; }
+.knowledge-term { font-weight: 600; }
+.knowledge-context { font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; padding-right: 82px; }
+.knowledge-library-link { margin-top: 12px; }
+.knowledge-result-summary { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

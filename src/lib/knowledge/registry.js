@@ -35,7 +35,12 @@ export function createKnowledgeReader(records, dynamic = () => null) {
         ...(record.propertySource ? { properties: metadata(record.propertySource) } : {}) }
     });
   };
-  return { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail };
+  // Static ID lookup derives from these same records; no hand-maintained route identity map.
+  const getKnowledgeEntryById = id => {
+    const record = records.find(item => item.id === id);
+    return record ? getKnowledgeEntry(record) : null;
+  };
+  return { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail };
 }
-export const { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(foundationRecords, crossRecord);
+export const { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(foundationRecords, crossRecord);
 export const listKnowledgeEntries = () => foundationRecords.map(record => getKnowledgeEntry(record));

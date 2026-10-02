@@ -1,0 +1,481 @@
+{
+  "phase": 5,
+  "baselineBranch": "feature/knowledge-content-v1",
+  "baselineCommit": "ae11ffe27b329dceee1cb679e0b381283fc3e400",
+  "candidateBranch": "feature/knowledge-access-v1",
+  "environment": {
+    "browser": "Chrome via playwright-core",
+    "servers": "isolated baseline and candidate Vite servers",
+    "comparisonFonts": "External Google fonts blocked equally; fallback font stack.",
+    "comparisonTime": "2026-10-01T06:31:21Z",
+    "birthFixture": "2000-05-10 12:30 UTC+8"
+  },
+  "commands": [
+    {
+      "command": "npm test",
+      "status": "passed",
+      "passed": 269,
+      "failed": 0,
+      "skipped": 3
+    },
+    {
+      "command": "npm run test:localization",
+      "status": "passed",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run test:timeline",
+      "status": "passed",
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "note": "Existing chunk size warning retained."
+    }
+  ],
+  "existingBrowserScripts": [
+    {
+      "name": "annual-fallback",
+      "exitCode": 0,
+      "command": "node tests/annual-fallback-e2e.mjs"
+    },
+    {
+      "name": "appearance-controls",
+      "exitCode": 0,
+      "command": "node tests/appearance-controls-e2e.mjs"
+    },
+    {
+      "name": "appearance-skin",
+      "exitCode": 0,
+      "command": "node tests/appearance-skin-e2e.mjs"
+    },
+    {
+      "name": "browser-comments",
+      "exitCode": 0,
+      "command": "node tests/browser-comments-e2e.mjs"
+    },
+    {
+      "name": "channel-detail-layout",
+      "exitCode": 0,
+      "command": "node tests/channel-detail-layout-e2e.mjs"
+    },
+    {
+      "name": "chart-data-export",
+      "exitCode": 0,
+      "command": "node tests/chart-data-export-e2e.mjs"
+    },
+    {
+      "name": "e2e",
+      "exitCode": 0,
+      "command": "node tests/e2e.mjs"
+    },
+    {
+      "name": "gate-meridian",
+      "exitCode": 0,
+      "command": "node tests/gate-meridian-e2e.mjs"
+    },
+    {
+      "name": "graph-mobile-size",
+      "exitCode": 0,
+      "command": "node tests/graph-mobile-size-e2e.mjs"
+    },
+    {
+      "name": "graph-window-fixing-colors",
+      "exitCode": 0,
+      "command": "node tests/graph-window-fixing-colors-e2e.mjs"
+    },
+    {
+      "name": "knowledge-layer",
+      "exitCode": 0,
+      "command": "node tests/knowledge-layer-e2e.mjs"
+    },
+    {
+      "name": "planet-detail",
+      "exitCode": 0,
+      "command": "node tests/planet-detail-e2e.mjs"
+    },
+    {
+      "name": "premerge-corrections",
+      "exitCode": 0,
+      "command": "node tests/premerge-corrections-e2e.mjs"
+    },
+    {
+      "name": "quarter-correction",
+      "exitCode": 0,
+      "command": "node tests/quarter-correction-e2e.mjs"
+    },
+    {
+      "name": "reference",
+      "exitCode": 0,
+      "command": "node tests/reference-e2e.mjs"
+    },
+    {
+      "name": "reference-v1-acceptance",
+      "exitCode": 0,
+      "attempts": 2,
+      "note": "Parallel run: mobile animation visibility assertion failed. Isolated rerun passed without modifying assertion or implementation.",
+      "command": "node tests/reference-v1-acceptance-e2e.mjs"
+    },
+    {
+      "name": "review-round2",
+      "exitCode": 0,
+      "command": "node tests/review-round2-e2e.mjs"
+    },
+    {
+      "name": "share-views",
+      "exitCode": 0,
+      "command": "node tests/share-views-e2e.mjs"
+    },
+    {
+      "name": "sharp-transit",
+      "exitCode": 0,
+      "command": "node tests/sharp-transit-e2e.mjs"
+    },
+    {
+      "name": "timeline",
+      "exitCode": 0,
+      "command": "node tests/timeline-e2e.mjs"
+    },
+    {
+      "name": "timeline-conditions",
+      "exitCode": 0,
+      "command": "node tests/timeline-conditions-e2e.mjs"
+    },
+    {
+      "name": "timeline-gestures",
+      "exitCode": 0,
+      "command": "node tests/timeline-gestures-e2e.mjs"
+    },
+    {
+      "name": "timeline-mobile-layout",
+      "exitCode": 0,
+      "command": "node tests/timeline-mobile-layout-e2e.mjs"
+    },
+    {
+      "name": "timeline-mobile-touch",
+      "exitCode": 0,
+      "command": "node tests/timeline-mobile-touch-e2e.mjs"
+    },
+    {
+      "name": "transit-window-reuse",
+      "exitCode": 0,
+      "command": "node tests/transit-window-reuse-e2e.mjs"
+    }
+  ],
+  "knowledgeAccess": {
+    "layoutComparisons": [
+      {
+        "width": 1224,
+        "locale": "en",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-CN",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-Hant",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 903,
+        "locale": "en",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-CN",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-Hant",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 664,
+        "locale": "en",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-CN",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-Hant",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 390,
+        "locale": "en",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-CN",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-Hant",
+        "foundationExact": true,
+        "variableExact": true,
+        "keyboard": true,
+        "modal": true,
+        "library": true,
+        "pureLocale": true
+      }
+    ],
+    "sameBodyLanguages": 15,
+    "routes": 6
+  },
+  "bodygraphRegression": {
+    "bodygraphComparisons": [
+      {
+        "width": 1224,
+        "scenario": "birth-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "birth-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "birth-planet",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-hd",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-iching",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-gk",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-meridian",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-channel",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "timeline-gate-timing",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "timeline-full-range-fixture",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-planet",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-hd",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-iching",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-gk",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-meridian",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-channel",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "timeline-gate-timing",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "timeline-full-range-fixture",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      }
+    ],
+    "ownerTransitions": true,
+    "timelineTimingSemantics": true
+  },
+  "excluded": [
+    "place-search-e2e.mjs: external geocoder-specific suite outside changed paths. Main E2E with place search still passed."
+  ],
+  "protection": {
+    "knowledgeBodyResourcesChanged": false,
+    "engineChanged": false,
+    "timelineAlgorithmChanged": false,
+    "relationshipAlgorithmChanged": false,
+    "teamAlgorithmChanged": false,
+    "productionDeployment": false
+  }
+}
