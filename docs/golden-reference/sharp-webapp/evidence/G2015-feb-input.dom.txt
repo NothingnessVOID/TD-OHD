@@ -1,0 +1,138 @@
+- dialog "Create person Close":
+  - heading "Create person" [level=6]
+  - button "Close":
+  - heading "Basic information" [level=5]
+  - paragraph: Essential for calculating basic astrological and human design charts.
+  - textbox "First name": G2015-feb
+  - group "First name"
+  - generic: First name
+  - textbox "Last name"
+  - group "Last name"
+  - generic: Last name
+  - textbox "Date of birth": 2015/02/04
+  - button "Open":
+  - generic: Date of birth
+  - textbox "Time of birth": 06:56
+  - button "Open":
+  - generic: Time of birth
+  - heading "Additional information for the database" [level=5]
+  - combobox "Folders": No folder
+  - group "Folders"
+  - generic: Folders
+  - paragraph: "Gender:"
+  - radiogroup:
+    - radio "Male"
+    - generic: Male
+    - radio "Female"
+    - generic: Female
+    - radio "Unknown" [checked]
+    - generic: Unknown
+  - textbox "Description"
+  - generic: Description
+  - heading "For house systems and birth time in utc." [level=5]
+  - textbox "Country": United Kingdom
+  - group "Country"
+  - generic: Country
+  - textbox "City": London
+  - group "City"
+  - generic: City
+  - textbox "Additional"
+  - group "Additional"
+  - generic: Additional
+  - button "Check place" [active]:
+    - text: Check place
+  - heading "Found" [level=6]
+  - paragraph: Greater London, England, United Kingdom
+  - paragraph: "Coordinates: 51.5074 / -0.1278"
+  - paragraph: "Time zone: Europe/London"
+  - paragraph: "Utc offset: +00:00"
+  - paragraph: "Daylight saving offset: +00:00"
+  - paragraph: "Birth time in utc: 2015-02-04 06:56:00"
+  - link "View on OpenStreetMap":
+    - /url: https://www.openstreetmap.org/?mlat=51.507446&mlon=-0.127765#map=15/51.507446/-0.127765
+  - text: Place data by
+  - link "OpenStreetMap contributors":
+    - /url: https://www.openstreetmap.org/copyright
+  - text: ", ODbL."
+  - button "Cancel":
+    - generic: Cancel
+  - button "Create":
+    - generic: Create
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G2015-tight Close tab" [selected]:
+    - text: G2015-tight
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G2015-tight Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Generator"
+  - paragraph: "Strategy: Wait to respond"
+  - paragraph: "Profile: 4 / 1"
+  - paragraph: "Authority: Emotional (Solar Plexus)"
+  - paragraph: "Definition: Split"
+  - paragraph: "Design date: 2014-10-31 06:20:25 UTC"
+  - paragraph: "Incarnation cross: The Juxtaposition Cross of Fantasy"
+  - paragraph: "Name:"
+  - paragraph: G2015-tight
+  - paragraph: "Born at: 2015/1/26"
+  - paragraph: "Local time: 上午1:20"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 上午1:20"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 44 / 1
+  - paragraph: 24 / 1
+  - paragraph: 57 / 5
+  - paragraph: 51 / 5
+  - paragraph: 19 / 3
+  - paragraph: 57 / 5
+  - paragraph: 21 / 5
+  - paragraph: 44 / 2
+  - paragraph: 10 / 6
+  - paragraph: 55 / 6
+  - paragraph: 43 / 6
+  - paragraph: 4 / 2
+  - paragraph: 38 / 2
+  - paragraph: 41 / 4
+  - paragraph: 31 / 4
+  - paragraph: 48 / 4
+  - paragraph: 21 / 4
+  - paragraph: 42 / 1
+  - paragraph: 13 / 3
+  - paragraph: 21 / 4
+  - paragraph: 30 / 4
+  - paragraph: 37 / 6
+  - paragraph: 37 / 1
+  - paragraph: 34 / 4
+  - paragraph: 4 / 1
+  - paragraph: 38 / 5

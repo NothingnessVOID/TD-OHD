@@ -1,0 +1,66 @@
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G1995-jun Close tab" [selected]:
+    - text: G1995-jun
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G1995-jun Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Manifesting Generator"
+  - paragraph: "Strategy: Wait to respond, then inform"
+  - paragraph: "Profile: 2 / 5"
+  - paragraph: "Authority: Emotional (Solar Plexus)"
+  - paragraph: "Definition: Split"
+  - paragraph: "Design date: 1995-03-23 05:37:03 UTC"
+  - paragraph: "Incarnation cross: The Right Angle Cross of the Vessel of Love 2"
+  - paragraph: "Name:"
+  - paragraph: G1995-jun
+  - paragraph: "Born at: 1995/6/22"
+  - paragraph: "Local time: 上午12:43"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 下午11:43"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 25 / 5
+  - paragraph: 46 / 5
+  - paragraph: 28 / 5
+  - paragraph: 27 / 5
+  - paragraph: 11 / 2
+  - paragraph: 63 / 2
+  - paragraph: 60 / 4
+  - paragraph: 49 / 6
+  - paragraph: 33 / 6
+  - paragraph: 61 / 5
+  - paragraph: 22 / 1
+  - paragraph: 5 / 5
+  - paragraph: 34 / 1
+  - paragraph: 15 / 2
+  - paragraph: 10 / 2
+  - paragraph: 28 / 3
+  - paragraph: 27 / 3
+  - paragraph: 42 / 4
+  - paragraph: 16 / 6
+  - paragraph: 60 / 4
+  - paragraph: 35 / 3
+  - paragraph: 64 / 3
+  - paragraph: 61 / 5
+  - paragraph: 36 / 3
+  - paragraph: 9 / 3
+  - paragraph: 14 / 5

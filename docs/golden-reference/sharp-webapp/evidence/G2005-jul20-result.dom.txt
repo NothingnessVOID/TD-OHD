@@ -1,0 +1,72 @@
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab" [selected]:
+    - text: G2005-jul20
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G2005-jul20 Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Generator"
+  - paragraph: "Strategy: Wait to respond"
+  - paragraph: "Profile: 2 / 5"
+  - paragraph: "Authority: Emotional (Solar Plexus)"
+  - paragraph: "Definition: Triple Split"
+  - paragraph: "Design date: 2005-04-20 05:46:02 UTC"
+  - paragraph: "Incarnation cross: The Right Angle Cross of Laws 2"
+  - paragraph: "Name:"
+  - paragraph: G2005-jul20
+  - paragraph: "Born at: 2005/7/20"
+  - paragraph: "Local time: 下午10:40"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 下午9:40"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 3 / 5
+  - paragraph: 50 / 5
+  - paragraph: 42 / 3
+  - paragraph: 32 / 3
+  - paragraph: 40 / 5
+  - paragraph: 17 / 1
+  - paragraph: 37 / 5
+  - paragraph: 27 / 4
+  - paragraph: 49 / 4
+  - paragraph: 13 / 5
+  - paragraph: 62 / 1
+  - paragraph: 48 / 3
+  - paragraph: 11 / 2
+  - paragraph: 56 / 2
+  - paragraph: 60 / 2
+  - paragraph: 51 / 3
+  - paragraph: 57 / 3
+  - paragraph: 54 / 6
+  - paragraph: 4 / 2
+  - paragraph: 37 / 5
+  - paragraph: 29 / 4
+  - paragraph: 42 / 6
+  - paragraph: 13 / 4
+  - paragraph: 56 / 5
+  - paragraph: 48 / 3
+  - paragraph: 26 / 6

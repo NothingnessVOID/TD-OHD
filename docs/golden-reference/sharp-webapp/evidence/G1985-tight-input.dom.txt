@@ -1,0 +1,156 @@
+- dialog "Create person Close":
+  - heading "Create person" [level=6]
+  - button "Close":
+  - heading "Basic information" [level=5]
+  - paragraph: Essential for calculating basic astrological and human design charts.
+  - textbox "First name": G1985-tight
+  - group "First name"
+  - generic: First name
+  - textbox "Last name"
+  - group "Last name"
+  - generic: Last name
+  - textbox "Date of birth": 1985/01/25
+  - button "Open":
+  - generic: Date of birth
+  - textbox "Time of birth": 18:34
+  - button "Open":
+  - generic: Time of birth
+  - heading "Additional information for the database" [level=5]
+  - combobox "Folders": No folder
+  - group "Folders"
+  - generic: Folders
+  - paragraph: "Gender:"
+  - radiogroup:
+    - radio "Male"
+    - generic: Male
+    - radio "Female"
+    - generic: Female
+    - radio "Unknown" [checked]
+    - generic: Unknown
+  - textbox "Description"
+  - generic: Description
+  - heading "For house systems and birth time in utc." [level=5]
+  - textbox "Country": United Kingdom
+  - group "Country"
+  - generic: Country
+  - textbox "City": London
+  - group "City"
+  - generic: City
+  - textbox "Additional"
+  - group "Additional"
+  - generic: Additional
+  - button "Check place" [active]:
+    - text: Check place
+  - heading "Found" [level=6]
+  - paragraph: Greater London, England, United Kingdom
+  - paragraph: "Coordinates: 51.5074 / -0.1278"
+  - paragraph: "Time zone: Europe/London"
+  - paragraph: "Utc offset: +00:00"
+  - paragraph: "Daylight saving offset: +00:00"
+  - paragraph: "Birth time in utc: 1985-01-25 18:34:00"
+  - link "View on OpenStreetMap":
+    - /url: https://www.openstreetmap.org/?mlat=51.507446&mlon=-0.127765#map=15/51.507446/-0.127765
+  - text: Place data by
+  - link "OpenStreetMap contributors":
+    - /url: https://www.openstreetmap.org/copyright
+  - text: ", ODbL."
+  - button "Cancel":
+    - generic: Cancel
+  - button "Create":
+    - generic: Create
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-feb Close tab":
+    - text: G2015-feb
+    - button "Close tab":
+  - tab "G2015-feb Close tab":
+    - text: G2015-feb
+    - button "Close tab":
+  - tab "G2025-tight Close tab":
+    - text: G2025-tight
+    - button "Close tab":
+  - tab "G2025-tight Close tab":
+    - text: G2025-tight
+    - button "Close tab":
+  - tab "G2025-mar Close tab":
+    - text: G2025-mar
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G2025-mar Close tab" [selected]:
+    - text: G2025-mar
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G2025-mar Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Manifestor"
+  - paragraph: "Strategy: Inform"
+  - paragraph: "Profile: 3 / 6"
+  - paragraph: "Authority: Emotional (Solar Plexus)"
+  - paragraph: "Definition: Single"
+  - paragraph: "Design date: 2024-12-18 20:55:44 UTC"
+  - paragraph: "Incarnation cross: The Right Angle Cross of the Eden"
+  - paragraph: "Name:"
+  - paragraph: G2025-mar
+  - paragraph: "Born at: 2025/3/15"
+  - paragraph: "Local time: 下午6:56"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 下午6:56"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 11 / 6
+  - paragraph: 12 / 6
+  - paragraph: 25 / 5
+  - paragraph: 46 / 5
+  - paragraph: 33 / 5
+  - paragraph: 9 / 2
+  - paragraph: 23 / 6
+  - paragraph: 13 / 1
+  - paragraph: 31 / 4
+  - paragraph: 36 / 5
+  - paragraph: 63 / 3
+  - paragraph: 35 / 4
+  - paragraph: 60 / 5
+  - paragraph: 36 / 3
+  - paragraph: 6 / 3
+  - paragraph: 36 / 6
+  - paragraph: 6 / 6
+  - paragraph: 48 / 3
+  - paragraph: 21 / 1
+  - paragraph: 23 / 6
+  - paragraph: 17 / 4
+  - paragraph: 53 / 5
+  - paragraph: 25 / 2
+  - paragraph: 22 / 6
+  - paragraph: 35 / 3
+  - paragraph: 41 / 2

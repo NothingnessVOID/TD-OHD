@@ -2,6 +2,8 @@
 
 审计日期：2026-10-02 至 2026-10-03。官方对照为 [Jovian Archive 计算器](https://jovianarchive.com/pages/get-your-human-design-chart)。本地对照固定为 **8787 安装版**。本轮只调查，没有修改生产代码、安装版本、时区规则或 Mandala 常数。
 
+**2026-10-03 新增第三对照源：**[SharpAstrology 作者官方 WebApp 九例实测报告](sharp-webapp/README.md)与[完整三方 JSON](sharp-webapp/comparison.json)。七例全部为 **Sharp 官方 WebApp = 8787 ≠ Jovian**，两个负对照三方一致；九例全部 234 项 Gate.Line 与 8787 相同。官方 WebApp 的 DE441 为 2026/04/18 构建，与 8787 的 2026/05/26 构建不同。本轮实测没有消除原有 Golden 差异。
+
 ## 结论
 
 已通过两站实际浏览器操作复现 **7 个 Profile 不一致案例**，覆盖 1995、2005、2015、2025 年和 7 个不同 Personality Sun Gate。1985 年作为负对照也进行了官方核对。样本是主动构造的边界出生时刻，并非用户个人出生资料。

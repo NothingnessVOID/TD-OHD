@@ -1,0 +1,58 @@
+- toolbar:
+  - button:
+  - button:
+  - button:
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G1995-feb Close tab" [selected]:
+    - text: G1995-feb
+    - button "Close tab":
+- button "Add tab":
+- tabpanel "G1995-feb Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Manifesting Generator"
+  - paragraph: "Strategy: Wait to respond, then inform"
+  - paragraph: "Profile: 3 / 6"
+  - paragraph: "Authority: Sacral"
+  - paragraph: "Definition: Split"
+  - paragraph: "Design date: 1994-11-27 10:16:43 UTC"
+  - paragraph: "Incarnation cross: The Right Angle Cross of the Sleeping Phoenix"
+  - paragraph: "Name:"
+  - paragraph: G1995-feb
+  - paragraph: "Born at: 1995/2/22"
+  - paragraph: "Local time: 上午1:08"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 上午1:08"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 34 / 6
+  - paragraph: 20 / 6
+  - paragraph: 1 / 2
+  - paragraph: 2 / 2
+  - paragraph: 47 / 3
+  - paragraph: 14 / 2
+  - paragraph: 61 / 4
+  - paragraph: 28 / 1
+  - paragraph: 29 / 2
+  - paragraph: 61 / 1
+  - paragraph: 37 / 1
+  - paragraph: 14 / 4
+  - paragraph: 14 / 4
+  - paragraph: 55 / 3
+  - paragraph: 59 / 3
+  - paragraph: 44 / 1
+  - paragraph: 24 / 1
+  - paragraph: 14 / 3
+  - paragraph: 41 / 6
+  - paragraph: 60 / 3
+  - paragraph: 54 / 5
+  - paragraph: 4 / 1
+  - paragraph: 61 / 4
+  - paragraph: 63 / 3
+  - paragraph: 5 / 2
+  - paragraph: 34 / 1
