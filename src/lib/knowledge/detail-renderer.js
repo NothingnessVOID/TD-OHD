@@ -1,4 +1,4 @@
-import { getKnowledgeEntry } from './registry.js';
+import { getKnowledgeEntry, getKnowledgeEntryById } from './registry.js';
 import { resolveKnowledgeText } from './terms.js';
 import { t } from '../i18n.js';
 import { typeName } from '../vocabulary.js';
@@ -22,9 +22,9 @@ function paragraphs(slot) {
   return (slot.template??slot.content).split(/\n\n+/).map(text=>`<p>${slot.template?resolveKnowledgeText(text,{rich:true}):esc(text)}</p>`).join('');
 }
 /** One knowledge body for every future surface. Context is escaped and kept outside it. */
-export function renderKnowledgeDetail(query, {contextText=''}={}) {
-  const entry=getKnowledgeEntry(query);
+export function renderKnowledgeDetail(query, {contextText='', showSpecificMissing=true}={}) {
+  const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
   const shared=entry.objectType==='cross'&&entry.objectId!=='introduction'?getKnowledgeEntry({objectType:'cross',objectId:'introduction'}):null;
-  return `${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-version="${entry.version}"><h2>${esc(entry.name)}</h2>${entry.summary?`<p class="knowledge-summary">${esc(entry.summary.content)}</p>`:''}${structuredFacts(entry)}<section class="knowledge-body"><h3>${esc(t('Detail'))}</h3>${shared?`<h4>${esc(t('Shared Cross introduction'))}</h4>${paragraphs(shared.detail)}<p class="knowledge-missing">${esc(t('Specific Cross detail is unavailable.'))}</p>`:paragraphs(entry.detail)}</section></article>`;
+  return `${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-version="${entry.version}"><h2>${esc(entry.name)}</h2>${entry.summary?`<p class="knowledge-summary">${esc(entry.summary.content)}</p>`:''}${structuredFacts(entry)}<section class="knowledge-body"><h3>${esc(t('Detail'))}</h3>${shared?`<h4>${esc(t('Shared Cross introduction'))}</h4>${paragraphs(shared.detail)}${showSpecificMissing?`<p class="knowledge-missing">${esc(t('Specific Cross detail is unavailable.'))}</p>`:''}`:paragraphs(entry.detail)}</section></article>`;
 }

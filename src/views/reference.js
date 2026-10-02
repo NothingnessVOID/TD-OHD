@@ -7,10 +7,11 @@ import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
+import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
-const categories = ['all', 'concept', 'center', 'channel', 'gate', 'planet', 'group'];
-const labels = { all: 'All entries', concept: 'Core concepts', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
+const categories = ['all', 'basic', 'center', 'channel', 'gate', 'variable', 'planet', 'group'];
+const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
 let category = 'all';
 let query = '';
 let limit = 60;
@@ -108,6 +109,14 @@ function renderDetail() {
     article.innerHTML = `<p class="reference-empty">${t('Invalid reference address.')}</p>`;
     return;
   }
+  if (entry.kind === 'knowledge') {
+    article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
+      <div class="detail-label">${t(labels[entry.category])}</div>
+      <div class="reference-detail-body">${renderKnowledgeDetail(entry.id, { showSpecificMissing: false })}</div>`;
+    article.scrollTop = 0;
+    clearTimeout(lineHighlightTimer);
+    return;
+  }
   const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry)
@@ -138,7 +147,7 @@ function renderResults() {
   const results = document.getElementById('reference-results');
   const matches = searchReference(query, category);
   results.innerHTML = matches.slice(0, limit).map(entry => `<button type="button" class="reference-result" data-reference-kind="${entry.kind}" data-reference-id="${esc(entry.id)}">
-    <small>${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
+    <small>${t(labels[entry.category ?? entry.kind] || 'Circuit groups')}${entry.kind === 'knowledge' ? '' : ` · ${esc(entry.id)}`}</small><strong>${esc(entry.name)}</strong>${entry.kind === 'knowledge' && entry.summary ? `<span class="knowledge-result-summary">${esc(entry.summary)}</span>` : ''}</button>`).join('')
     + (matches.length > limit ? `<button type="button" class="reference-more" data-reference-more>${t('Show more')}</button>` : '')
     || `<p>${t('No matching reference.')}</p>`;
   document.getElementById('reference-count').textContent = t('{count} results', { count: matches.length });

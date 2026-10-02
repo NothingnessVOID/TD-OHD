@@ -2,6 +2,7 @@
 import { GATES, CHANNELS, CENTERS } from './human-design/catalog.js';
 import { localeResources } from '../locales/index.js';
 import { getLocale } from './i18n.js';
+import { listKnowledgeEntries } from './knowledge/registry.js';
 import { gateName, channelName, centerName, circuitName, hexagramName, planetName } from './vocabulary.js';
 import { PLANET_ORDER, PLANET_NAMES, ACTIVATION_CONCEPT_IDS, activationConceptName, activationConceptAliases } from './planet-reference.js';
 import { channelById } from './reference-content.js';
@@ -14,8 +15,13 @@ const normalized = value => String(value ?? '').normalize('NFKC').toLocaleLowerC
 
 export function referenceEntries() {
   return [
-    ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', id,
+    ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', category: 'basic', id,
       name: activationConceptName(id, getLocale()), aliases: activationConceptAliases(id) })),
+    ...listKnowledgeEntries().filter(entry => entry.objectType !== 'cognition').map(entry => ({
+      kind: 'knowledge', category: entry.objectType === 'variable' ? 'variable' : 'basic',
+      id: entry.id, name: entry.name, summary: entry.summary?.content ?? '', hasDetail: entry.hasDetail,
+      objectType: entry.objectType, objectId: entry.objectId, aliases: [entry.objectId, entry.id]
+    })),
     ...Object.keys(CENTERS).map(id => ({ kind: 'center', id, name: centerName(id),
       aliases: [CENTERS[id].name, ...names('centerName', id)] })),
     ...CHANNELS.map(channel => ({ kind: 'channel', id: channel.gates.join('-'), name: channelName(channel.gates),
@@ -50,9 +56,9 @@ export function searchReference(query, category = 'all') {
   const text = normalized(query);
   const tokens = text.split(' ').filter(Boolean);
   return referenceEntries().filter(entry => {
-    if (category !== 'all' && category !== entry.kind) return false;
+    if (category !== 'all' && category !== (entry.category ?? entry.kind) && category !== entry.kind) return false;
     if (!tokens.length) return true;
-    const values = [entry.id, entry.name, ...entry.aliases].map(normalized);
+    const values = [entry.id, entry.name, entry.summary, ...entry.aliases].map(normalized);
     return tokens.every(token => values.some(value => value.includes(token)));
   });
 }
