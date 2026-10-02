@@ -1,0 +1,84 @@
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-feb Close tab":
+    - text: G2015-feb
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G2015-feb Close tab" [selected]:
+    - text: G2015-feb
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G2015-feb Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Manifesting Generator"
+  - paragraph: "Strategy: Wait to respond, then inform"
+  - paragraph: "Profile: 2 / 5"
+  - paragraph: "Authority: Sacral"
+  - paragraph: "Definition: Split"
+  - paragraph: "Design date: 2014-11-09 14:55:40 UTC"
+  - paragraph: "Incarnation cross: The Right Angle Cross of the Sphinx"
+  - paragraph: "Name:"
+  - paragraph: G2015-feb
+  - paragraph: "Born at: 2015/2/4"
+  - paragraph: "Local time: 上午6:56"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 上午6:56"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 1 / 5
+  - paragraph: 2 / 5
+  - paragraph: 57 / 5
+  - paragraph: 51 / 5
+  - paragraph: 45 / 4
+  - paragraph: 50 / 5
+  - paragraph: 21 / 5
+  - paragraph: 43 / 3
+  - paragraph: 38 / 2
+  - paragraph: 55 / 5
+  - paragraph: 14 / 1
+  - paragraph: 4 / 3
+  - paragraph: 38 / 3
+  - paragraph: 13 / 2
+  - paragraph: 7 / 2
+  - paragraph: 48 / 3
+  - paragraph: 21 / 3
+  - paragraph: 7 / 6
+  - paragraph: 41 / 4
+  - paragraph: 21 / 5
+  - paragraph: 37 / 5
+  - paragraph: 22 / 1
+  - paragraph: 37 / 1
+  - paragraph: 34 / 4
+  - paragraph: 7 / 6
+  - paragraph: 38 / 6

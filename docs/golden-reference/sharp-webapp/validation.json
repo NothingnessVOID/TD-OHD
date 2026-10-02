@@ -1,0 +1,16 @@
+{
+  "evidenceChecksPassed": 482,
+  "evidenceChecksFailed": 0,
+  "cases": 9,
+  "classificationA": 7,
+  "classificationB": 0,
+  "classificationC": 0,
+  "mismatchCasesPartiallyMatchingJovian": 0,
+  "allEqualNegativeControls": 2,
+  "sharpVsTdActivationComparisons": 234,
+  "sharpVsTdActivationDifferences": 0,
+  "sharpVsJovianActivationDifferences": 14,
+  "sharpVsJovianProfileDifferences": 7,
+  "crossIdentityDifferences": 2,
+  "note": "Evidence consistency checks passed. Seven baseline Golden failures remain; no engine fix was tested."
+}

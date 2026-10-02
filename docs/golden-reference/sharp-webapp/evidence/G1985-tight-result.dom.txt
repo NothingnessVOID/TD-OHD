@@ -1,0 +1,102 @@
+- toolbar:
+  - button:
+  - button:
+  - button:
+- button "Scroll tabs left":
+- tablist:
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-feb Close tab":
+    - text: G1995-feb
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G1995-jun Close tab":
+    - text: G1995-jun
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2005-jul20 Close tab":
+    - text: G2005-jul20
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-tight Close tab":
+    - text: G2015-tight
+    - button "Close tab":
+  - tab "G2015-feb Close tab":
+    - text: G2015-feb
+    - button "Close tab":
+  - tab "G2015-feb Close tab":
+    - text: G2015-feb
+    - button "Close tab":
+  - tab "G2025-tight Close tab":
+    - text: G2025-tight
+    - button "Close tab":
+  - tab "G2025-tight Close tab":
+    - text: G2025-tight
+    - button "Close tab":
+  - tab "G2025-mar Close tab":
+    - text: G2025-mar
+    - button "Close tab":
+  - tab "G2025-mar Close tab":
+    - text: G2025-mar
+    - button "Close tab":
+  - tab "G1985-tight Close tab":
+    - text: G1985-tight
+    - button "Close tab":
+  - tab "Database Close tab":
+    - text: Database
+    - button "Close tab":
+  - tab "G1985-tight Close tab" [selected]:
+    - text: G1985-tight
+    - button "Close tab":
+- button "Scroll tabs right" [disabled]:
+- button "Add tab":
+- tabpanel "G1985-tight Close tab":
+  - heading "Evaluation" [level=5]
+  - separator
+  - paragraph: "Type: Projector"
+  - paragraph: "Strategy: Wait for the invitation"
+  - paragraph: "Profile: 4 / 1"
+  - paragraph: "Authority: Self-Projected"
+  - paragraph: "Definition: Single"
+  - paragraph: "Design date: 1984-10-31 00:04:07 UTC"
+  - paragraph: "Incarnation cross: The Juxtaposition Cross of Fantasy"
+  - paragraph: "Name:"
+  - paragraph: G1985-tight
+  - paragraph: "Born at: 1985/1/25"
+  - paragraph: "Local time: 下午6:34"
+  - paragraph: "In: London, United Kingdom"
+  - paragraph: "Utc: 下午6:34"
+  - paragraph: "Lat: 51.51 Lon: -0.13"
+  - paragraph: 44 / 1
+  - paragraph: 24 / 1
+  - paragraph: 8 / 4
+  - paragraph: 14 / 4
+  - paragraph: 60 / 6
+  - paragraph: 43 / 2
+  - paragraph: 5 / 1
+  - paragraph: 5 / 2
+  - paragraph: 54 / 4
+  - paragraph: 10 / 2
+  - paragraph: 1 / 5
+  - paragraph: 58 / 6
+  - paragraph: 28 / 1
+  - paragraph: 41 / 4
+  - paragraph: 31 / 4
+  - paragraph: 23 / 6
+  - paragraph: 43 / 6
+  - paragraph: 25 / 2
+  - paragraph: 54 / 6
+  - paragraph: 5 / 6
+  - paragraph: 36 / 1
+  - paragraph: 36 / 2
+  - paragraph: 10 / 5
+  - paragraph: 14 / 3
+  - paragraph: 60 / 1
+  - paragraph: 28 / 3

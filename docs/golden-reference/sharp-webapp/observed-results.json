@@ -1,0 +1,507 @@
+{
+  "referenceUrl": "https://creizner.github.io/SharpAstrology.WebApp/",
+  "displayPlanetOrder": [
+    "sun",
+    "earth",
+    "northNode",
+    "southNode",
+    "moon",
+    "mercury",
+    "uranus",
+    "venus",
+    "mars",
+    "neptune",
+    "saturn",
+    "jupiter",
+    "pluto"
+  ],
+  "extractionMethod": "Rendered DOM paragraph rows, sides and symbols confirmed against official page SVGs. No calculation APIs invoked.",
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "birthLocal": "1995-02-22T01:08:00",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:48:50.038Z",
+      "activations": {
+        "design": {
+          "sun": "34.6",
+          "earth": "20.6",
+          "northNode": "1.2",
+          "southNode": "2.2",
+          "moon": "47.3",
+          "mercury": "14.2",
+          "venus": "28.1",
+          "mars": "29.2",
+          "jupiter": "14.4",
+          "saturn": "37.1",
+          "uranus": "61.4",
+          "neptune": "61.1",
+          "pluto": "14.4"
+        },
+        "personality": {
+          "sun": "55.3",
+          "earth": "59.3",
+          "northNode": "44.1",
+          "southNode": "24.1",
+          "moon": "14.3",
+          "mercury": "41.6",
+          "venus": "54.5",
+          "mars": "4.1",
+          "jupiter": "5.2",
+          "saturn": "63.3",
+          "uranus": "60.3",
+          "neptune": "61.4",
+          "pluto": "34.1"
+        }
+      },
+      "profile": "3/6",
+      "incarnationCrossDisplay": "The Right Angle Cross of the Sleeping Phoenix",
+      "designUtcDisplay": "1994-11-27 10:16:43 UTC",
+      "inputResultDisplay": [
+        "Born at: 1995/2/22",
+        "Local time: \u4e0a\u53481:08",
+        "In: London, United Kingdom",
+        "Utc: \u4e0a\u53481:08",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G1995-feb-input.dom.txt",
+        "result": "evidence/G1995-feb-result.dom.txt",
+        "screenshot": "evidence/G1995-feb-result.jpg"
+      }
+    },
+    {
+      "id": "G1995-jun",
+      "birthLocal": "1995-06-22T00:43:00",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:49:33.471Z",
+      "activations": {
+        "design": {
+          "sun": "25.5",
+          "earth": "46.5",
+          "northNode": "28.5",
+          "southNode": "27.5",
+          "moon": "11.2",
+          "mercury": "63.2",
+          "venus": "49.6",
+          "mars": "33.6",
+          "jupiter": "5.5",
+          "saturn": "22.1",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "34.1"
+        },
+        "personality": {
+          "sun": "15.2",
+          "earth": "10.2",
+          "northNode": "28.3",
+          "southNode": "27.3",
+          "moon": "42.4",
+          "mercury": "16.6",
+          "venus": "35.3",
+          "mars": "64.3",
+          "jupiter": "9.3",
+          "saturn": "36.3",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "14.5"
+        }
+      },
+      "profile": "2/5",
+      "incarnationCrossDisplay": "The Right Angle Cross of the Vessel of Love 2",
+      "designUtcDisplay": "1995-03-23 05:37:03 UTC",
+      "inputResultDisplay": [
+        "Born at: 1995/6/22",
+        "Local time: \u4e0a\u534812:43",
+        "In: London, United Kingdom",
+        "Utc: \u4e0b\u534811:43",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G1995-jun-input.dom.txt",
+        "result": "evidence/G1995-jun-result.dom.txt",
+        "screenshot": "evidence/G1995-jun-result.jpg"
+      }
+    },
+    {
+      "id": "G2005-jul20",
+      "birthLocal": "2005-07-20T22:40:00",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:50:10.464Z",
+      "activations": {
+        "design": {
+          "sun": "3.5",
+          "earth": "50.5",
+          "northNode": "42.3",
+          "southNode": "32.3",
+          "moon": "40.5",
+          "mercury": "17.1",
+          "venus": "27.4",
+          "mars": "49.4",
+          "jupiter": "48.3",
+          "saturn": "62.1",
+          "uranus": "37.5",
+          "neptune": "13.5",
+          "pluto": "11.2"
+        },
+        "personality": {
+          "sun": "56.2",
+          "earth": "60.2",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "moon": "54.6",
+          "mercury": "4.2",
+          "venus": "29.4",
+          "mars": "42.6",
+          "jupiter": "48.3",
+          "saturn": "56.5",
+          "uranus": "37.5",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        }
+      },
+      "profile": "2/5",
+      "incarnationCrossDisplay": "The Right Angle Cross of Laws 2",
+      "designUtcDisplay": "2005-04-20 05:46:02 UTC",
+      "inputResultDisplay": [
+        "Born at: 2005/7/20",
+        "Local time: \u4e0b\u534810:40",
+        "In: London, United Kingdom",
+        "Utc: \u4e0b\u53489:40",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2005-jul20-input.dom.txt",
+        "result": "evidence/G2005-jul20-result.dom.txt",
+        "screenshot": "evidence/G2005-jul20-result.jpg"
+      }
+    },
+    {
+      "id": "G2015-tight",
+      "birthLocal": "2015-01-26T01:20:00",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:50:33.480Z",
+      "activations": {
+        "design": {
+          "sun": "44.1",
+          "earth": "24.1",
+          "northNode": "57.5",
+          "southNode": "51.5",
+          "moon": "19.3",
+          "mercury": "57.5",
+          "venus": "44.2",
+          "mars": "10.6",
+          "jupiter": "4.2",
+          "saturn": "43.6",
+          "uranus": "21.5",
+          "neptune": "55.6",
+          "pluto": "38.2"
+        },
+        "personality": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "northNode": "48.4",
+          "southNode": "21.4",
+          "moon": "42.1",
+          "mercury": "13.3",
+          "venus": "30.4",
+          "mars": "37.6",
+          "jupiter": "4.1",
+          "saturn": "34.4",
+          "uranus": "21.4",
+          "neptune": "37.1",
+          "pluto": "38.5"
+        }
+      },
+      "profile": "4/1",
+      "incarnationCrossDisplay": "The Juxtaposition Cross of Fantasy",
+      "designUtcDisplay": "2014-10-31 06:20:25 UTC",
+      "inputResultDisplay": [
+        "Born at: 2015/1/26",
+        "Local time: \u4e0a\u53481:20",
+        "In: London, United Kingdom",
+        "Utc: \u4e0a\u53481:20",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2015-tight-input.dom.txt",
+        "result": "evidence/G2015-tight-result.dom.txt",
+        "screenshot": "evidence/G2015-tight-result.jpg"
+      }
+    },
+    {
+      "id": "G2015-feb",
+      "birthLocal": "2015-02-04T06:56:00",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:50:55.733Z",
+      "activations": {
+        "design": {
+          "sun": "1.5",
+          "earth": "2.5",
+          "northNode": "57.5",
+          "southNode": "51.5",
+          "moon": "45.4",
+          "mercury": "50.5",
+          "venus": "43.3",
+          "mars": "38.2",
+          "jupiter": "4.3",
+          "saturn": "14.1",
+          "uranus": "21.5",
+          "neptune": "55.5",
+          "pluto": "38.3"
+        },
+        "personality": {
+          "sun": "13.2",
+          "earth": "7.2",
+          "northNode": "48.3",
+          "southNode": "21.3",
+          "moon": "7.6",
+          "mercury": "41.4",
+          "venus": "37.5",
+          "mars": "22.1",
+          "jupiter": "7.6",
+          "saturn": "34.4",
+          "uranus": "21.5",
+          "neptune": "37.1",
+          "pluto": "38.6"
+        }
+      },
+      "profile": "2/5",
+      "incarnationCrossDisplay": "The Right Angle Cross of the Sphinx",
+      "designUtcDisplay": "2014-11-09 14:55:40 UTC",
+      "inputResultDisplay": [
+        "Born at: 2015/2/4",
+        "Local time: \u4e0a\u53486:56",
+        "In: London, United Kingdom",
+        "Utc: \u4e0a\u53486:56",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2015-feb-input.dom.txt",
+        "result": "evidence/G2015-feb-result.dom.txt",
+        "screenshot": "evidence/G2015-feb-result.jpg"
+      }
+    },
+    {
+      "id": "G2025-tight",
+      "birthLocal": "2025-01-19T22:57:00",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:51:15.661Z",
+      "activations": {
+        "design": {
+          "sun": "28.1",
+          "earth": "27.1",
+          "northNode": "17.3",
+          "southNode": "18.3",
+          "moon": "33.4",
+          "mercury": "1.5",
+          "venus": "9.4",
+          "mars": "62.6",
+          "jupiter": "45.5",
+          "saturn": "63.2",
+          "uranus": "8.2",
+          "neptune": "36.6",
+          "pluto": "60.4"
+        },
+        "personality": {
+          "sun": "60.4",
+          "earth": "56.4",
+          "northNode": "25.1",
+          "southNode": "46.1",
+          "moon": "48.1",
+          "mercury": "54.3",
+          "venus": "63.6",
+          "mars": "62.5",
+          "jupiter": "35.1",
+          "saturn": "63.6",
+          "uranus": "23.5",
+          "neptune": "36.6",
+          "pluto": "60.6"
+        }
+      },
+      "profile": "4/1",
+      "incarnationCrossDisplay": "The Juxtaposition Cross of Limitation",
+      "designUtcDisplay": "2024-10-25 01:26:50 UTC",
+      "inputResultDisplay": [
+        "Born at: 2025/1/19",
+        "Local time: \u4e0b\u534810:57",
+        "In: London, United Kingdom",
+        "Utc: \u4e0b\u534810:57",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2025-tight-input.dom.txt",
+        "result": "evidence/G2025-tight-result.dom.txt",
+        "screenshot": "evidence/G2025-tight-result.jpg"
+      }
+    },
+    {
+      "id": "G2025-mar",
+      "birthLocal": "2025-03-15T18:56:00",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:51:36.856Z",
+      "activations": {
+        "design": {
+          "sun": "11.6",
+          "earth": "12.6",
+          "northNode": "25.5",
+          "southNode": "46.5",
+          "moon": "33.5",
+          "mercury": "9.2",
+          "venus": "13.1",
+          "mars": "31.4",
+          "jupiter": "35.4",
+          "saturn": "63.3",
+          "uranus": "23.6",
+          "neptune": "36.5",
+          "pluto": "60.5"
+        },
+        "personality": {
+          "sun": "36.3",
+          "earth": "6.3",
+          "northNode": "36.6",
+          "southNode": "6.6",
+          "moon": "48.3",
+          "mercury": "21.1",
+          "venus": "17.4",
+          "mars": "53.5",
+          "jupiter": "35.3",
+          "saturn": "22.6",
+          "uranus": "23.6",
+          "neptune": "25.2",
+          "pluto": "41.2"
+        }
+      },
+      "profile": "3/6",
+      "incarnationCrossDisplay": "The Right Angle Cross of the Eden",
+      "designUtcDisplay": "2024-12-18 20:55:44 UTC",
+      "inputResultDisplay": [
+        "Born at: 2025/3/15",
+        "Local time: \u4e0b\u53486:56",
+        "In: London, United Kingdom",
+        "Utc: \u4e0b\u53486:56",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2025-mar-input.dom.txt",
+        "result": "evidence/G2025-mar-result.dom.txt",
+        "screenshot": "evidence/G2025-mar-result.jpg"
+      }
+    },
+    {
+      "id": "G1985-tight",
+      "birthLocal": "1985-01-25T18:34:00",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:51:59.271Z",
+      "activations": {
+        "design": {
+          "sun": "44.1",
+          "earth": "24.1",
+          "northNode": "8.4",
+          "southNode": "14.4",
+          "moon": "60.6",
+          "mercury": "43.2",
+          "venus": "5.2",
+          "mars": "54.4",
+          "jupiter": "58.6",
+          "saturn": "1.5",
+          "uranus": "5.1",
+          "neptune": "10.2",
+          "pluto": "28.1"
+        },
+        "personality": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "northNode": "23.6",
+          "southNode": "43.6",
+          "moon": "25.2",
+          "mercury": "54.6",
+          "venus": "36.1",
+          "mars": "36.2",
+          "jupiter": "60.1",
+          "saturn": "14.3",
+          "uranus": "5.6",
+          "neptune": "10.5",
+          "pluto": "28.3"
+        }
+      },
+      "profile": "4/1",
+      "incarnationCrossDisplay": "The Juxtaposition Cross of Fantasy",
+      "designUtcDisplay": "1984-10-31 00:04:07 UTC",
+      "inputResultDisplay": [
+        "Born at: 1985/1/25",
+        "Local time: \u4e0b\u53486:34",
+        "In: London, United Kingdom",
+        "Utc: \u4e0b\u53486:34",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G1985-tight-input.dom.txt",
+        "result": "evidence/G1985-tight-result.dom.txt",
+        "screenshot": "evidence/G1985-tight-result.jpg"
+      }
+    },
+    {
+      "id": "G2005-jul11",
+      "birthLocal": "2005-07-11T02:47:00",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "location": "London, England, United Kingdom",
+      "observedAt": "2026-10-02T17:52:19.570Z",
+      "activations": {
+        "design": {
+          "sun": "42.1",
+          "earth": "32.1",
+          "northNode": "42.3",
+          "southNode": "32.3",
+          "moon": "2.1",
+          "mercury": "25.4",
+          "venus": "42.4",
+          "mars": "13.3",
+          "jupiter": "48.4",
+          "saturn": "53.6",
+          "uranus": "37.4",
+          "neptune": "13.5",
+          "pluto": "11.2"
+        },
+        "personality": {
+          "sun": "53.4",
+          "earth": "54.4",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "moon": "40.4",
+          "mercury": "7.2",
+          "venus": "7.3",
+          "mars": "51.5",
+          "jupiter": "48.2",
+          "saturn": "56.4",
+          "uranus": "37.6",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        }
+      },
+      "profile": "4/1",
+      "incarnationCrossDisplay": "The Juxtaposition Cross of Beginnings",
+      "designUtcDisplay": "2005-04-10 15:56:01 UTC",
+      "inputResultDisplay": [
+        "Born at: 2005/7/11",
+        "Local time: \u4e0a\u53482:47",
+        "In: London, United Kingdom",
+        "Utc: \u4e0a\u53481:47",
+        "Lat: 51.51 Lon: -0.13"
+      ],
+      "evidence": {
+        "input": "evidence/G2005-jul11-input.dom.txt",
+        "result": "evidence/G2005-jul11-result.dom.txt",
+        "screenshot": "evidence/G2005-jul11-result.jpg"
+      }
+    }
+  ]
+}

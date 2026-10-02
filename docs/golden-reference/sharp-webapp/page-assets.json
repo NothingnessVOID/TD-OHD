@@ -1,0 +1,1314 @@
+{
+  "assets": [
+    {
+      "id": "01bb642a13f671e9",
+      "kind": "stylesheet",
+      "name": "roboto.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 15,
+          "property": "href"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.WebApp.Core/css/roboto.css"
+    },
+    {
+      "id": "637e0f1812c335c5",
+      "kind": "script",
+      "name": "blazor.webassembly.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 24,
+          "property": "src"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/blazor.webassembly.js"
+    },
+    {
+      "id": "fe14a319f592f39e",
+      "kind": "stylesheet",
+      "name": "site.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 17,
+          "property": "href"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.WebApp.Core/css/site.css"
+    },
+    {
+      "id": "9a728b6a1f466b88",
+      "kind": "stylesheet",
+      "name": "SharpAstrology.WebApp.Wasm.styles.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 18,
+          "property": "href"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/SharpAstrology.WebApp.Wasm.styles.css"
+    },
+    {
+      "id": "6fbfc886a8099610",
+      "kind": "stylesheet",
+      "name": "MudBlazor.min.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "link"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 16,
+          "property": "href"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/MudBlazor/MudBlazor.min.css"
+    },
+    {
+      "id": "45ce729e5f1a3ce3",
+      "kind": "script",
+      "name": "MudBlazor.min.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 25,
+          "property": "src"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/MudBlazor/MudBlazor.min.js"
+    },
+    {
+      "id": "008b29eb39c9f172",
+      "kind": "stylesheet",
+      "name": "SharpAstrology.WebApp.Core.3qp9pgmzo8.bundle.scp.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "css"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.WebApp.Core/SharpAstrology.WebApp.Core.3qp9pgmzo8.bundle.scp.css"
+    },
+    {
+      "id": "2223e962c9070893",
+      "kind": "stylesheet",
+      "name": "SharpAstrology.HumanDesign.BlazorComponents.jj9fv2rv5a.bundle.scp.css",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "css"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.HumanDesign.BlazorComponents/SharpAstrology.HumanDesign.BlazorComponents.jj9fv2rv5a.bundle.scp.css"
+    },
+    {
+      "id": "6b8f33561bb67191",
+      "kind": "script",
+      "name": "dotnet.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/dotnet.js"
+    },
+    {
+      "id": "e96785296c5c2fe6",
+      "kind": "font",
+      "name": "roboto-latin.woff2",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "css"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.WebApp.Core/fonts/roboto-latin.woff2"
+    },
+    {
+      "id": "9e00546a092a6647",
+      "kind": "script",
+      "name": "dotnet.native.puryxhmhq9.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/dotnet.native.puryxhmhq9.js"
+    },
+    {
+      "id": "8a2b893c1f4a12cc",
+      "kind": "script",
+      "name": "dotnet.runtime.web2r9gqbh.js",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "script"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/dotnet.runtime.web2r9gqbh.js"
+    },
+    {
+      "id": "d7a1680825e56eb4",
+      "kind": "other",
+      "name": "dotnet.native.u31nt9bth6.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/dotnet.native.u31nt9bth6.wasm"
+    },
+    {
+      "id": "d9d71691287b1abf",
+      "kind": "other",
+      "name": "System.Runtime.InteropServices.JavaScript.xs6yu76bks.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Runtime.InteropServices.JavaScript.xs6yu76bks.wasm"
+    },
+    {
+      "id": "227cfa0b18d5ff2d",
+      "kind": "other",
+      "name": "System.Private.CoreLib.z15ydkvy9p.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Private.CoreLib.z15ydkvy9p.wasm"
+    },
+    {
+      "id": "3021480c7180f20c",
+      "kind": "other",
+      "name": "Microsoft.AspNetCore.Components.s1il9u3hre.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.AspNetCore.Components.s1il9u3hre.wasm"
+    },
+    {
+      "id": "2d14d8599c215346",
+      "kind": "other",
+      "name": "GeoTimeZone.jb15q7epaa.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/GeoTimeZone.jb15q7epaa.wasm"
+    },
+    {
+      "id": "c17216e1bba69781",
+      "kind": "other",
+      "name": "Microsoft.AspNetCore.Components.Forms.70obyjt5p6.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.AspNetCore.Components.Forms.70obyjt5p6.wasm"
+    },
+    {
+      "id": "07dd481ae82f48cc",
+      "kind": "other",
+      "name": "Microsoft.AspNetCore.Components.Web.y1f3m3ij9d.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.AspNetCore.Components.Web.y1f3m3ij9d.wasm"
+    },
+    {
+      "id": "fda4ebe9fa9d3ecf",
+      "kind": "other",
+      "name": "Microsoft.EntityFrameworkCore.2d0zgeci29.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.EntityFrameworkCore.2d0zgeci29.wasm"
+    },
+    {
+      "id": "c87df005c44ba522",
+      "kind": "other",
+      "name": "Microsoft.AspNetCore.Components.WebAssembly.tzz5emmvn4.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.AspNetCore.Components.WebAssembly.tzz5emmvn4.wasm"
+    },
+    {
+      "id": "1982a3e261b03aef",
+      "kind": "other",
+      "name": "Microsoft.EntityFrameworkCore.Abstractions.pi7yff800x.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.EntityFrameworkCore.Abstractions.pi7yff800x.wasm"
+    },
+    {
+      "id": "54c2a8fe329e0ec7",
+      "kind": "other",
+      "name": "Microsoft.EntityFrameworkCore.InMemory.5nv3rwuaep.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.EntityFrameworkCore.InMemory.5nv3rwuaep.wasm"
+    },
+    {
+      "id": "94fb96c63a169c0b",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Caching.Memory.w3mwk94cr9.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Caching.Memory.w3mwk94cr9.wasm"
+    },
+    {
+      "id": "60181fc89adf291a",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Caching.Abstractions.g7silld1gd.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Caching.Abstractions.g7silld1gd.wasm"
+    },
+    {
+      "id": "05f3d5743b3af97f",
+      "kind": "other",
+      "name": "Microsoft.EntityFrameworkCore.Relational.0yr2m7z0qx.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.EntityFrameworkCore.Relational.0yr2m7z0qx.wasm"
+    },
+    {
+      "id": "75d1a2a16aadb3ea",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Configuration.g0au6nfhcv.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Configuration.g0au6nfhcv.wasm"
+    },
+    {
+      "id": "8c339f2596eac802",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Configuration.Abstractions.febyrvios0.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Configuration.Abstractions.febyrvios0.wasm"
+    },
+    {
+      "id": "0bf4e030edee1a8d",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Localization.xcslyy3nju.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Localization.xcslyy3nju.wasm"
+    },
+    {
+      "id": "ad6e7cf1a353e0f4",
+      "kind": "other",
+      "name": "Microsoft.Extensions.DependencyInjection.Abstractions.1zv4fth8jf.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.DependencyInjection.Abstractions.1zv4fth8jf.wasm"
+    },
+    {
+      "id": "fc4beb4712928e22",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Configuration.Json.ixktlrimdt.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Configuration.Json.ixktlrimdt.wasm"
+    },
+    {
+      "id": "8bce32f8bd44d61a",
+      "kind": "other",
+      "name": "Microsoft.Extensions.DependencyInjection.857rzh5ynj.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.DependencyInjection.857rzh5ynj.wasm"
+    },
+    {
+      "id": "7d2f2e9d5cdcd56c",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Localization.Abstractions.xt73qsqilp.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Localization.Abstractions.xt73qsqilp.wasm"
+    },
+    {
+      "id": "4cb8a17d7b9ac26d",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Logging.igobmllaak.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Logging.igobmllaak.wasm"
+    },
+    {
+      "id": "c31881706ec27c1b",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Logging.Abstractions.uswh6v4ubh.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Logging.Abstractions.uswh6v4ubh.wasm"
+    },
+    {
+      "id": "f1a51a90f4f73f49",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Validation.i1jbpxa1yw.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Validation.i1jbpxa1yw.wasm"
+    },
+    {
+      "id": "91cb8424ff0d769a",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Primitives.yxjt7vtatl.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Primitives.yxjt7vtatl.wasm"
+    },
+    {
+      "id": "8e7ea2c1b9a21917",
+      "kind": "other",
+      "name": "Microsoft.Extensions.Options.99vr637tk6.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.Extensions.Options.99vr637tk6.wasm"
+    },
+    {
+      "id": "8ed2b2e08b78321b",
+      "kind": "other",
+      "name": "Microsoft.JSInterop.f0wnw1ycrt.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.JSInterop.f0wnw1ycrt.wasm"
+    },
+    {
+      "id": "b5f95bb0bf167134",
+      "kind": "other",
+      "name": "Microsoft.JSInterop.WebAssembly.5ydn64ly88.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/Microsoft.JSInterop.WebAssembly.5ydn64ly88.wasm"
+    },
+    {
+      "id": "5a0d201dd6cd5fd6",
+      "kind": "other",
+      "name": "SharpAstrology.HumanDesign.kbseeri18h.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.HumanDesign.kbseeri18h.wasm"
+    },
+    {
+      "id": "4fe1a63f44dcee6a",
+      "kind": "other",
+      "name": "NodaTime.njkme91880.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/NodaTime.njkme91880.wasm"
+    },
+    {
+      "id": "b4a2c35995f80d13",
+      "kind": "other",
+      "name": "SharpAstrology.Base.1imuhkug1e.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.Base.1imuhkug1e.wasm"
+    },
+    {
+      "id": "98f6e2aebf55c15b",
+      "kind": "other",
+      "name": "MudBlazor.4xo8ub1i5i.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/MudBlazor.4xo8ub1i5i.wasm"
+    },
+    {
+      "id": "04b0d1904bf1983f",
+      "kind": "other",
+      "name": "SharpAstrology.SwissEph.53vzdhdca4.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.SwissEph.53vzdhdca4.wasm"
+    },
+    {
+      "id": "ebd69ab76229b277",
+      "kind": "other",
+      "name": "SharpAstrology.HumanDesign.BlazorComponents.dhhp4c2r81.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.HumanDesign.BlazorComponents.dhhp4c2r81.wasm"
+    },
+    {
+      "id": "f2dbcd4664f5ed63",
+      "kind": "other",
+      "name": "SharpAstrology.Symbols.BlazorComponents.3ysiqyolck.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.Symbols.BlazorComponents.3ysiqyolck.wasm"
+    },
+    {
+      "id": "d516ae5da8390d07",
+      "kind": "other",
+      "name": "SharpAstrology.Vedic.9lbvv6bngc.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.Vedic.9lbvv6bngc.wasm"
+    },
+    {
+      "id": "a24151c1c88f8813",
+      "kind": "other",
+      "name": "SharpAstrology.Vedic.BlazorComponents.sgam05qdje.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.Vedic.BlazorComponents.sgam05qdje.wasm"
+    },
+    {
+      "id": "0debdaa471139843",
+      "kind": "other",
+      "name": "SharpAstrology.West.4rjwmtqx5s.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.West.4rjwmtqx5s.wasm"
+    },
+    {
+      "id": "b8cfc68d5f3733e3",
+      "kind": "other",
+      "name": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm"
+    },
+    {
+      "id": "e100ae36c25e4b3d",
+      "kind": "other",
+      "name": "System.Collections.Concurrent.2ggfhhfpec.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Collections.Concurrent.2ggfhhfpec.wasm"
+    },
+    {
+      "id": "520a52f7b7d97dcb",
+      "kind": "other",
+      "name": "SharpAstrology.West.BlazorComponents.7hkn98dga1.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.West.BlazorComponents.7hkn98dga1.wasm"
+    },
+    {
+      "id": "c0814f875599a8f2",
+      "kind": "other",
+      "name": "System.Collections.NonGeneric.oibttf6gdi.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Collections.NonGeneric.oibttf6gdi.wasm"
+    },
+    {
+      "id": "81ae3c777b53a280",
+      "kind": "other",
+      "name": "System.Collections.Immutable.tpfialo96c.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Collections.Immutable.tpfialo96c.wasm"
+    },
+    {
+      "id": "44f529f71f48b999",
+      "kind": "other",
+      "name": "System.Collections.150hb7pf7k.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Collections.150hb7pf7k.wasm"
+    },
+    {
+      "id": "9ff5bb118d49f539",
+      "kind": "other",
+      "name": "System.ComponentModel.Annotations.zaanxhp4we.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.ComponentModel.Annotations.zaanxhp4we.wasm"
+    },
+    {
+      "id": "42894ea87e1110c6",
+      "kind": "other",
+      "name": "System.Collections.Specialized.7iu17envkd.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Collections.Specialized.7iu17envkd.wasm"
+    },
+    {
+      "id": "44c3d5bcffb17e37",
+      "kind": "other",
+      "name": "System.ComponentModel.llxzyckf9y.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.ComponentModel.llxzyckf9y.wasm"
+    },
+    {
+      "id": "5efccf1d9dcbcd76",
+      "kind": "other",
+      "name": "System.ComponentModel.TypeConverter.yrifh00iuf.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.ComponentModel.TypeConverter.yrifh00iuf.wasm"
+    },
+    {
+      "id": "c254b7a898774d0d",
+      "kind": "other",
+      "name": "System.ComponentModel.Primitives.dta5igbtvv.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.ComponentModel.Primitives.dta5igbtvv.wasm"
+    },
+    {
+      "id": "db3e086d7987b155",
+      "kind": "other",
+      "name": "System.Console.ucatz2mdat.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Console.ucatz2mdat.wasm"
+    },
+    {
+      "id": "6f90a209f0e74415",
+      "kind": "other",
+      "name": "System.Diagnostics.DiagnosticSource.ffe1ypoo85.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Diagnostics.DiagnosticSource.ffe1ypoo85.wasm"
+    },
+    {
+      "id": "ba1e2b4a05233d47",
+      "kind": "other",
+      "name": "System.Data.Common.hfxrxcjzpv.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Data.Common.hfxrxcjzpv.wasm"
+    },
+    {
+      "id": "48cade195c30617b",
+      "kind": "other",
+      "name": "System.Diagnostics.Tracing.xc97k4cu3g.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Diagnostics.Tracing.xc97k4cu3g.wasm"
+    },
+    {
+      "id": "92422c96a02619d4",
+      "kind": "other",
+      "name": "System.Linq.Queryable.hmjutrykee.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Linq.Queryable.hmjutrykee.wasm"
+    },
+    {
+      "id": "76b449ddeb23e856",
+      "kind": "other",
+      "name": "System.Linq.Expressions.79do1hjijs.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Linq.Expressions.79do1hjijs.wasm"
+    },
+    {
+      "id": "db992ac325a3583a",
+      "kind": "other",
+      "name": "System.IO.Pipelines.0luqpzcwkx.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.IO.Pipelines.0luqpzcwkx.wasm"
+    },
+    {
+      "id": "5d48618a25ea1636",
+      "kind": "other",
+      "name": "System.IO.Compression.ifn4d9nc3s.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.IO.Compression.ifn4d9nc3s.wasm"
+    },
+    {
+      "id": "105ac26b2db310dd",
+      "kind": "other",
+      "name": "System.Net.NetworkInformation.t83fhyuzw2.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Net.NetworkInformation.t83fhyuzw2.wasm"
+    },
+    {
+      "id": "ff229116c4a3dabe",
+      "kind": "other",
+      "name": "System.Memory.keitwv9skn.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Memory.keitwv9skn.wasm"
+    },
+    {
+      "id": "dda513a56f778da9",
+      "kind": "other",
+      "name": "System.Net.Primitives.yj6jxjk6ki.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Net.Primitives.yj6jxjk6ki.wasm"
+    },
+    {
+      "id": "bfdd6f490198bd21",
+      "kind": "other",
+      "name": "System.Net.Http.re8rybbisl.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Net.Http.re8rybbisl.wasm"
+    },
+    {
+      "id": "6141b92940e17a3f",
+      "kind": "other",
+      "name": "System.ObjectModel.qfsaqgjcrh.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.ObjectModel.qfsaqgjcrh.wasm"
+    },
+    {
+      "id": "d12a1b7979b16a87",
+      "kind": "other",
+      "name": "System.Linq.8elmz39ua0.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Linq.8elmz39ua0.wasm"
+    },
+    {
+      "id": "1b17bd9da58bd291",
+      "kind": "other",
+      "name": "System.Numerics.Vectors.j8kffr96gv.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Numerics.Vectors.j8kffr96gv.wasm"
+    },
+    {
+      "id": "0a72fc2eb1f1bbf5",
+      "kind": "other",
+      "name": "System.Runtime.InteropServices.kdrgmxrrq0.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Runtime.InteropServices.kdrgmxrrq0.wasm"
+    },
+    {
+      "id": "ac1139130e832b1e",
+      "kind": "other",
+      "name": "System.Private.Uri.zad52xdlsp.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Private.Uri.zad52xdlsp.wasm"
+    },
+    {
+      "id": "be7aacdd7a25a251",
+      "kind": "other",
+      "name": "System.Private.Xml.90s7c8fqcf.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Private.Xml.90s7c8fqcf.wasm"
+    },
+    {
+      "id": "b3aae70c5b2b9a8e",
+      "kind": "other",
+      "name": "System.Text.RegularExpressions.0gcppjmndn.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Text.RegularExpressions.0gcppjmndn.wasm"
+    },
+    {
+      "id": "9aca9694beae957b",
+      "kind": "other",
+      "name": "System.Security.Cryptography.2zkzja4hey.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Security.Cryptography.2zkzja4hey.wasm"
+    },
+    {
+      "id": "8e7bbb0813830e4e",
+      "kind": "other",
+      "name": "System.Threading.Thread.tushtfc6hy.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Threading.Thread.tushtfc6hy.wasm"
+    },
+    {
+      "id": "cc19885fbf214910",
+      "kind": "other",
+      "name": "System.Transactions.Local.f5umlgjzr5.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Transactions.Local.f5umlgjzr5.wasm"
+    },
+    {
+      "id": "def271c767c99842",
+      "kind": "other",
+      "name": "System.Runtime.Numerics.r9oyvjbb1p.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Runtime.Numerics.r9oyvjbb1p.wasm"
+    },
+    {
+      "id": "97ff6ebe791eb9a9",
+      "kind": "other",
+      "name": "System.Threading.5igcnabc3e.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Threading.5igcnabc3e.wasm"
+    },
+    {
+      "id": "0562e53622c06b46",
+      "kind": "other",
+      "name": "System.Text.Json.ofh9euqoog.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Text.Json.ofh9euqoog.wasm"
+    },
+    {
+      "id": "adab694324242d4d",
+      "kind": "other",
+      "name": "System.Text.Encodings.Web.qfhy8sdhzp.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Text.Encodings.Web.qfhy8sdhzp.wasm"
+    },
+    {
+      "id": "5a02515dfb5a05a3",
+      "kind": "other",
+      "name": "System.Runtime.yh0gst9559.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.Runtime.yh0gst9559.wasm"
+    },
+    {
+      "id": "137f21d594bceb4f",
+      "kind": "other",
+      "name": "SharpAstrology.WebApp.Wasm.3bakbz1hue.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.WebApp.Wasm.3bakbz1hue.wasm"
+    },
+    {
+      "id": "06821c160d9de8ba",
+      "kind": "other",
+      "name": "System.cvgusyd4es.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/System.cvgusyd4es.wasm"
+    },
+    {
+      "id": "01cd8b94d4dbc0bd",
+      "kind": "other",
+      "name": "SharpAstrology.WebApp.Core.7osw7vs505.wasm",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/SharpAstrology.WebApp.Core.7osw7vs505.wasm"
+    },
+    {
+      "id": "728f01342eeb22ae",
+      "kind": "other",
+      "name": "appsettings.json",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/appsettings.json"
+    },
+    {
+      "id": "386156afeda9ab34",
+      "kind": "other",
+      "name": "icudt_CJK.tjcz0u77k5.dat",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_framework/icudt_CJK.tjcz0u77k5.dat"
+    },
+    {
+      "id": "ca8bd2da3e252d04",
+      "kind": "image",
+      "name": "favicon.ico",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "other"
+        },
+        {
+          "kind": "attribute",
+          "nodeId": 19,
+          "property": "href"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/_content/SharpAstrology.WebApp.Core/favicon.ico"
+    },
+    {
+      "id": "b065e46fe27ba49d",
+      "kind": "other",
+      "name": "westernChartSettings.json",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/AppData/westernChartSettings.json"
+    },
+    {
+      "id": "ea50efe5f3188cee",
+      "kind": "other",
+      "name": "humanDesignGraphSettings.json",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/AppData/humanDesignGraphSettings.json"
+    },
+    {
+      "id": "47971418c59216ed",
+      "kind": "other",
+      "name": "vedicChartSettings.json",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/AppData/vedicChartSettings.json"
+    },
+    {
+      "id": "66db95fca3e06850",
+      "kind": "other",
+      "name": "ephemeridesSettings.json",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/AppData/ephemeridesSettings.json"
+    },
+    {
+      "id": "965dd09da1d717cc",
+      "kind": "other",
+      "name": "search",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://nominatim.openstreetmap.org/search?q=United%20Kingdom%2C%20London&format=jsonv2&limit=1&accept-language=en"
+    },
+    {
+      "id": "32b5ab785ceef382",
+      "kind": "other",
+      "name": "sepl_12.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/sepl_12.se1"
+    },
+    {
+      "id": "78765651b485f2e0",
+      "kind": "other",
+      "name": "semo_12.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/semo_12.se1"
+    },
+    {
+      "id": "f03de7ff3a5df45b",
+      "kind": "other",
+      "name": "seas_12.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/seas_12.se1"
+    },
+    {
+      "id": "2d63314c1f23c8dc",
+      "kind": "other",
+      "name": "sepl_18.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/sepl_18.se1"
+    },
+    {
+      "id": "21da3a86ffc9b43c",
+      "kind": "other",
+      "name": "semo_18.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/semo_18.se1"
+    },
+    {
+      "id": "b72b60f76b8d23a4",
+      "kind": "other",
+      "name": "seas_18.se1",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "fetch"
+        }
+      ],
+      "url": "https://creizner.github.io/SharpAstrology.WebApp/ephe/seas_18.se1"
+    }
+  ],
+  "id": "d7126779-a9e5-43fa-a592-de79d66051bf",
+  "pageUrl": "https://creizner.github.io/SharpAstrology.WebApp/",
+  "summary": {
+    "byKind": {
+      "font": 1,
+      "image": 1,
+      "other": 92,
+      "script": 5,
+      "stylesheet": 6,
+      "video": 0
+    },
+    "inlineSvgCount": 3027,
+    "totalCount": 105
+  },
+  "curationNote": "File asset URL inventory retained. 3027 inline SVG markup blocks omitted here; activation symbol SVGs are preserved separately in activation-symbols.json and chart output DOM is saved per case."
+}
