@@ -7,9 +7,9 @@ import { channelCircuit } from '../circuit-topology.js';
 const centerKeys = { Root: 'root', Sacral: 'sacral', Emotions: 'solar', Spleen: 'spleen', Heart: 'heart', Self: 'g', Throat: 'throat', Mind: 'ajna', Crown: 'head' };
 const typeKeys = { Manifestor: 'manifestor', ManifestingGenerator: 'manifestingGenerator', Generator: 'generator', Projector: 'projector', Reflector: 'reflector' };
 const authorityIds = { Emotional: 'emotional', Sacral: 'sacral', Splenic: 'splenic', EgoManifested: 'egoManifested', EgoProjected: 'egoProjected', SelfProjected: 'selfProjected', Mental: 'mental', Lunar: 'lunar' };
-export const definitionIds = { Empty: 'none', SingleDefinition: 'single', SplitDefinition: 'split', TripleSplit: 'tripleSplit', QuadrupleSplit: 'quadrupleSplit' };
+import { definitionIds, definitionNames } from '../human-design/identities.js';
+export { definitionIds, definitionNames } from '../human-design/identities.js';
 const authorityKeys = { Emotional: 'emotional', Sacral: 'sacral', Splenic: 'splenic', EgoManifested: 'ego', EgoProjected: 'ego', SelfProjected: 'self', Mental: 'mental', Lunar: 'lunar' };
-export const definitionNames = { Empty: 'No Definition', SingleDefinition: 'Single Definition', SplitDefinition: 'Split Definition', TripleSplit: 'Triple Split Definition', QuadrupleSplit: 'Quadruple Split Definition' };
 const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 
 const pad = n => String(n).padStart(2, '0');

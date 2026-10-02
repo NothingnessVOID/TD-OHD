@@ -19,8 +19,10 @@ import {
 
 const humanList = items => formatDisplay('list', items);
 
+import { authorityNames } from '../lib/human-design/identities.js';
+const authorityLabel = chart => authorityName(authorityNames[chart.calculation?.authority?.id ?? chart.authority?.id] ?? chart.authority.name);
 import { foundationSummary } from '../lib/knowledge/foundation-summary.js';
-import { getKnowledgeDetail } from '../lib/knowledge/registry.js';
+import { getKnowledgeSummary } from '../lib/knowledge/registry.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
@@ -91,7 +93,7 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   banner.innerHTML = `
     <div class="type-name">${who.replace(' — ', '')}</div>
     <div><span class="type-badge">${esc(typeName(chart.type.name))}</span></div>
-    <div class="type-detail">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))} · ${esc(authorityName(chart.authority.name))} · ${esc(definitionName(chart.definition))}</div>
+    <div class="type-detail">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))} · ${esc(authorityLabel(chart))} · ${esc(definitionName(chart.definition))}</div>
     <div class="type-birthline">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${t('time unknown — chart uses noon')}</em>` : ''}</div>
     <div class="type-strategy">${t('Strategy:')} ${esc(strategy(chart.type.name))}</div>
     <p class="type-plain">${esc(foundationSummary(chart, 'type', 'hero'))}</p>
@@ -218,7 +220,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
       </div>
       <div class="foundation-item">
         <div class="label">${t('Authority')}</div>
-        <div class="value">${esc(authorityName(chart.authority.name))}</div>
+        <div class="value">${esc(authorityLabel(chart))}</div>
         <div class="detail">${esc(foundationSummary(chart, 'authority'))}</div>
       </div>
       <div class="foundation-item">
@@ -248,7 +250,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
           { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
           { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
         ].map(group => `<div class="foundation-variable-group" data-source="${group.source}">
-          <div class="foundation-variable-heading">${esc(t(group.label))}${getLocale() !== 'en' ? `<small>${group.label}</small>` : ''}</div>
+          <div class="foundation-variable-heading">${esc(t(group.label))}</div>
           <div class="foundation-variable-pair">${group.keys.map(key => {
             const item = variableArrows(chart.variable).find(item => item.key === key);
             const label = { motivation: 'Motivation', perspective: 'Perspective', determination: 'Determination', environment: 'Environment' }[key];
@@ -774,15 +776,14 @@ function renderVariablePanel(container) {
     if (!slot) return '';
     const direction = variableDirection(slot);
     const [name] = variable(slot);
-    const originalTerm = formatDisplay('originalTerm', slot.name);
-    const knowledgeDetail = slot.valueId ? getKnowledgeDetail({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
+    const knowledgeSummary = slot.valueId ? getKnowledgeSummary({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
     return `
     <div class="arrow-card" data-variable="${key}">
       <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
-      <div class="arrow-type">${esc(name)}${originalTerm ? `<br><span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
-      <div class="arrow-desc">${esc(knowledgeDetail?.content ?? contentText(slot.description))}</div>
-      <div class="arrow-meta">${t('Color {color} · Tone {tone}', { color: slot.color, tone: slot.tone })}</div>
+      <div class="arrow-type">${esc(name)}</div>
+      <div class="arrow-desc">${esc(knowledgeSummary?.content ?? '')}</div>
+      <div class="arrow-meta">${t('Color {color} · Tone {tone} · Base {base}', { color: slot.color, tone: slot.tone, base: slot.base })}</div>
       ${sub || ''}
     </div>
   `; };
@@ -818,7 +819,7 @@ function renderCrossPanel(container) {
             <div class="foundation-item">
               <div class="label">${esc(contentText(s.sphere))}</div>
               <div class="value">${t('Key {key}', { key: esc(s.keyLine || s.key) })}</div>
-              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field) || s[field])).join(' →<br>')}</div>
+              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field, { bilingual:false }) || s[field])).join(' →<br>')}</div>
             </div>
           ` : '';
         }).join('')}
@@ -831,7 +832,7 @@ function renderCrossPanel(container) {
     <div class="panel-title">${t('Incarnation Cross')}</div>
     <div class="panel-heading">${esc(crossName(cross))}</div>
     <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
-    <p class="panel-intro" style="margin-top:8px">${t("Your cross is the life theme carried by your four primary gates — roughly 70% of the chart's energy. It unfolds over a lifetime; you don't have to do anything to live it.")}</p>
+    <p class="panel-intro" style="margin-top:8px">${esc(getKnowledgeSummary({objectType:'cross',objectId:'introduction'})?.content ?? '')}</p>
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `

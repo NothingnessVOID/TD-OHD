@@ -14,6 +14,10 @@ try {
     await row.locator('[data-condition="target-search"]').fill(id);
     await row.locator(`input[data-target-id="${id}"]`).check();
   };
+  // Pin the query fixture; a seven-day range around today eventually excludes this activation.
+  await page.locator('#timeline-view [data-field="date"]').fill('2026-09-28');
+  await page.locator('#timeline-view [data-field="date"]').dispatchEvent('change');
+  await page.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
   await page.locator(`${root} .tl-advanced summary`).click();
   await page.locator(`${root} [data-condition="kind"]`).first().selectOption('line');
   await choose(0, '18.1');

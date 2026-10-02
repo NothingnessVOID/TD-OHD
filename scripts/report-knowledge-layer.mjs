@@ -1,23 +1,36 @@
-/** Report the reference-backed Knowledge Layer without changing product content. */
-import { mkdirSync, writeFileSync } from 'node:fs';
+/** Generate coverage/provenance from live lookup; optional validation from actual run records. */
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { listKnowledgeEntries } from '../src/lib/knowledge/registry.js';
 import { SOURCES } from '../src/lib/knowledge/sources.js';
 import { getLocale, setLocale } from '../src/lib/i18n.js';
-const legacyName=['Natal','Engine'].join('');
+const root=new URL('../docs/knowledge-layer/',import.meta.url);
+const write=(name,text)=>writeFileSync(new URL(name,root),text);
+const json=(name,value)=>write(name,JSON.stringify(value,null,2)+'\n');
 const previous=getLocale();setLocale('en',{persist:false});
 try {
- const entries=listKnowledgeEntries(), root=new URL('../docs/knowledge-layer/',import.meta.url);
  mkdirSync(root,{recursive:true});
- const counts=['type','authority','profile','definition','variable','cognition'].map(kind=>{
+ const entries=listKnowledgeEntries();
+ const counts=['type','authority','profile','definition','variable','cognition','cross'].map(kind=>{
   const rows=entries.filter(e=>e.objectType===kind);
   return {objectType:kind,count:rows.length,summary:rows.filter(e=>e.hasSummary).length,detail:rows.filter(e=>e.hasDetail).length,missingDetail:rows.filter(e=>!e.hasDetail).length};
  });
- writeFileSync(new URL('coverage.json',root),JSON.stringify({version:1,entries:entries.length,counts,cross:{identity:'dynamic Sharp raw enum',staticArticles:0,summary:0,detail:0},entryReviewStatuses:{unreviewed:entries.length}},null,2)+'\n');
- writeFileSync(new URL('coverage.md',root),`# Knowledge Layer V1 Coverage\n\n此表由 scripts/report-knowledge-layer.mjs 根据实际 lookup 生成。计数按知识身份，不把共享引用当独立文章。\n\n| 对象 | 数量 | Summary | Detail | Missing Detail |\n|---|---:|---:|---:|---:|\n${counts.map(c=>`| ${c.objectType} | ${c.count} | ${c.summary} | ${c.detail} | ${c.missingDetail} |`).join('\n')}\n| Cross | dynamic | 0 | 0 | 每个动态身份均缺正文 |\n\n共60个静态身份，25个默认摘要、24个现有详情、36个缺详情。Type另有5个 heroSummary 引用，不算第二篇详情。Authority两种Ego身份共享同一个旧摘要。所有内容仍为unreviewed。\n\nVariable现有正文用于下方说明区，所以登记为Detail；不自动复制为Summary。Definition只有名称；组件数量是计算信息，不冒充知识摘要。Cross没有批量生成空文章。\n`);
- writeFileSync(new URL('missing-content.md',root),`# 缺口清单\n\n没有正文是合法状态；本轮没有补写。以下按身份列出，未来可分别审校。\n\n| Knowledge ID | 名称（英语来源显示） | Summary | Detail |\n|---|---|---|---|\n${entries.filter(e=>!e.hasDetail||!e.hasSummary).map(e=>`| ${e.id} | ${e.name.replaceAll('|','\\|')} | ${e.hasSummary?'available':'missing'} | ${e.hasDetail?'available':'missing'} |`).join('\n')}\n\nCross：动态身份，Summary/Detail均missing。提供当前chart.incarnationCross上下文时可显示已有本地化结构名称；未提供上下文时只显示raw ID，不伪造门组或文章。\n\n优先缺口：8类权威缺独立详情，两种Ego还共享旧摘要；12类Profile只有theme摘要；5类Definition和6种Cognition只有名称；Type只有现有两个用途的短介绍；24种Variable有现有详情但没有另审的主页摘要。后续需用户提供并审核资料，本轮不读取老师材料。\n`);
- writeFileSync(new URL('provenance.md',root),`# 来源与用途登记\n\n以下是文件/代码迁移来源，不是知识官方认证。名称、摘要、详情、Type顶部简介各自登记来源、path、reviewStatus和version。全部现有引用仍为unreviewed、version=1。版本标记表示引用契约版本，不会自动证明源文字已审；后续改资料时应更新对应版本。\n\n| ID | Name source | Summary source | Detail source | Legacy slots |\n|---|---|---|---|---|\n${entries.map(e=>{
-  const show=p=>p?`${p.sourceId}: ${p.file} / ${p.path}`:'missing';
-  return `| ${e.id} | ${show(e.provenance.name)} | ${show(e.summary)} | ${show(e.detail)} | ${Object.entries(e.legacySlots).map(([k,v])=>k+': '+show(v)).join('; ')||'—'} |`;
- }).join('\n')}\n\n## 来源表\n\n${Object.entries(SOURCES).map(([id,s])=>`- **${id}**：type=${s.type}；lineage=${s.lineage.join(' → ')}；${s.reserved?'仅预留，没有现有条目使用':s.evidence}`).join('\n')}\n\n## 当前语言读取链\n\n- 名称：现有 vocabulary.js → locales/en.js 或 zh-CN/zh-Hant/vocabulary.js。\n- catalog摘要与Variable详情：contentText() → 当前locale content adapter → engine-messages/engine-templates；原fallback规则保留。\n- Type heroSummary：现有 typeDescription()；英文本在locales/en.js的TYPE_PLAIN，简繁在各vocabulary.js的TYPE_PLAIN_ZH。\n- Cross：Sharp raw ID负责身份；当前chart上下文与crossName()负责已有结构显示，译名不是Sharp正文。\n\n表中的file/path是原始正式存储入口，不等于中文译文文件。返回slot.locale注明当前语言；翻译来源仍通过既有i18n链追踪，没有新的en/zh字段副本。\n\nVariable旧句子的逐句作者未确认，lineage明确带unknown。旧静态catalog可确认迁移源为${legacyName}，但不能升级为Jovian官方、Ra原文或知识已验证。老师与官方来源类型只预留；本轮未搜索、读取或引用。\n`);
- console.log(`Knowledge report: ${entries.length} reference-backed entries; no product writes.`);
+ const statuses=Object.fromEntries([...new Set(entries.map(e=>e.reviewStatus))].map(status=>[status,entries.filter(e=>e.reviewStatus===status).length]));
+ const coverage={version:2,phase:'4C',entries:entries.length,counts,cross:{identity:'dynamic Sharp raw enum',sharedIntroduction:'hd.cross.introduction',specificArticles:0,specificDetailStatus:'missing'},entryReviewStatuses:statuses};
+ json('coverage.json',coverage);
+ write('coverage.md',`# Phase 4C Coverage\n\n此表由正式 lookup 自动统计。cross 的静态数量表示一份共用介绍，不表示具体十字文章。\n\n| 对象 | 数量 | Summary | Detail | Missing Detail |\n|---|---:|---:|---:|---:|\n${counts.map(c=>`| ${c.objectType} | ${c.count} | ${c.summary} | ${c.detail} | ${c.missingDetail} |`).join('\n')}\n\n共${entries.length}个静态身份；${entries.filter(e=>e.hasSummary).length}个摘要、${entries.filter(e=>e.hasDetail).length}个详情。Cognition六项只有名称。具体Cross动态身份可读取共用摘要，但各自Detail仍missing；共用介绍不伪装为192篇文章。Type另保留heroSummary，三个内容槽没有自动fallback。\n\n摘要与整理正文为reviewed；经过所列来源核对的结构属性单独标verified。姓名和历史来源不会随新正文整体升级。\n`);
+ write('missing-content.md',`# Phase 4C 缺口\n\n| ID | Name | Summary | Detail |\n|---|---|---|---|\n${entries.filter(e=>!e.hasSummary||!e.hasDetail).map(e=>`| ${e.id} | ${e.name} | ${e.hasSummary?'available':'missing'} | ${e.hasDetail?'available':'missing'} |`).join('\n')}\n\n- Cognition：六个既有名称保留，不编造解释。\n- 具体Incarnation Cross：保留动态raw身份、译名、Angle和四Gate；192篇独立正文deferred。统一renderer可显示明确标注的共用机制介绍，具体文章仍missing。\n- Phase 5：统一详情点击入口、搜索与资料库接入、关联导航；本轮未新增。\n- 已预留的扩展domain明确deprecated，仅兼容读取，没有新增TD体系分类。\n`);
+ const show=p=>p?`${p.sourceId}: ${p.file} / ${p.path}; ${p.reviewStatus}; v${p.version}`:'missing';
+ write('provenance.md',`# Phase 4C 来源登记\n\n机制审核基线来自用户提供的Phase 4C审核指令，并以以下官方公开页面核对结构事实。TD-OHD自行组织正文与正式三语资源；不是官网原文复制。正文标reviewed，不宣称逐句官方verified。来源文件按当前locale给出，每个槽独立版本。\n\n| ID | Name | Summary | Detail | Structured source | Hero |\n|---|---|---|---|---|---|\n${entries.map(e=>`| ${e.id} | ${show(e.provenance.name)} | ${show(e.summary)} | ${show(e.detail)} | ${show(e.provenance.properties)} | ${show(e.legacySlots.heroSummary)} |`).join('\n')}\n\n## 集中来源记录\n\n${Object.entries(SOURCES).map(([id,s])=>`- **${id}**：type=${s.type}；lineage=${s.lineage.join(' → ')}；${s.reserved?'仅预留，无本次正文引用':s.evidence}${s.url?`；[来源](${s.url})`:''}${s.references?`\n${s.references.map(url=>`  - [官方机制来源](${url})`).join('\n')}`:''}`).join('\n')}\n\n旧catalog、variable-data的legacy正文仍供旧契约兼容；不再是本轮六类知识对象的正式Summary/Detail入口。老师资料没有读取、引用或登记为新内容来源。teacher-material仍为reserved，teacher-extension来源预留也没有运行内容。\n`);
+ const at=process.argv.indexOf('--validation');
+ if(at!==-1) {
+  const manifest=JSON.parse(readFileSync(process.argv[at+1],'utf8'));
+  const validation={phase:'4C',runs:manifest.runs.map(run=>{
+    const log=readFileSync(run.log,'utf8');
+    const count=word=>{const m=log.match(new RegExp(`(?:ℹ |# )${word} (\\d+)`));return m?Number(m[1]):null;};
+    return {command:run.command,status:run.exitCode===0?'passed':'failed',exitCode:run.exitCode,passed:count('pass'),failed:count('fail'),skipped:count('skipped')};
+  }),...JSON.parse(readFileSync(manifest.layout,'utf8'))};
+  json('validation.json',validation);
+  write('validation.md',`# Phase 4C 验证\n\n根据真实运行记录和浏览器输出自动生成。\n\n| 命令 | 状态 | passed | failed | skipped |\n|---|---|---:|---:|---:|\n${validation.runs.map(r=>`| ${r.command} | ${r.status} | ${r.passed??'—'} | ${r.failed??'—'} | ${r.skipped??'—'} |`).join('\n')}\n\n## 布局与单语言\n\n${validation.layoutComparisons.length}组对照：1224/903/664/390 × en/zh-CN/zh-Hant。基础卡数量和宽度一致；授权的Summary、Authority名称及移除双语标签可能改变自然换行高度，实际变化见validation.json。没有修改布局CSS。\n\n每组向全部现有Detail注入超过五万字符后，Foundation文字和卡片宽高、Variable摘要区文字和高度完全相同。中文Variable卡片和基础箭头标签没有英文附加，英文知识资源没有中文。Cross panel使用短共用摘要并移除70%正文。证据覆盖代表图和指定宽度/语言，不宣称穷举。\n\n构建保留已有大chunk提示。临时服务仅用于分支测试；未更新8787、main或生产部署。\n`);
+ }
+ console.log(`Knowledge report: ${entries.length} entries; actual slot availability and provenance generated.`);
 } finally {setLocale(previous,{persist:false});}

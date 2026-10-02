@@ -1,17 +1,17 @@
-# Knowledge Layer V1 Coverage
+# Phase 4C Coverage
 
-此表由 scripts/report-knowledge-layer.mjs 根据实际 lookup 生成。计数按知识身份，不把共享引用当独立文章。
+此表由正式 lookup 自动统计。cross 的静态数量表示一份共用介绍，不表示具体十字文章。
 
 | 对象 | 数量 | Summary | Detail | Missing Detail |
 |---|---:|---:|---:|---:|
-| type | 5 | 5 | 0 | 5 |
-| authority | 8 | 8 | 0 | 8 |
-| profile | 12 | 12 | 0 | 12 |
-| definition | 5 | 0 | 0 | 5 |
-| variable | 24 | 0 | 24 | 0 |
+| type | 5 | 5 | 5 | 0 |
+| authority | 8 | 8 | 8 | 0 |
+| profile | 12 | 12 | 12 | 0 |
+| definition | 5 | 5 | 5 | 0 |
+| variable | 24 | 24 | 24 | 0 |
 | cognition | 6 | 0 | 0 | 6 |
-| Cross | dynamic | 0 | 0 | 每个动态身份均缺正文 |
+| cross | 1 | 1 | 1 | 0 |
 
-共60个静态身份，25个默认摘要、24个现有详情、36个缺详情。Type另有5个 heroSummary 引用，不算第二篇详情。Authority两种Ego身份共享同一个旧摘要。所有内容仍为unreviewed。
+共61个静态身份；55个摘要、55个详情。Cognition六项只有名称。具体Cross动态身份可读取共用摘要，但各自Detail仍missing；共用介绍不伪装为192篇文章。Type另保留heroSummary，三个内容槽没有自动fallback。
 
-Variable现有正文用于下方说明区，所以登记为Detail；不自动复制为Summary。Definition只有名称；组件数量是计算信息，不冒充知识摘要。Cross没有批量生成空文章。
+摘要与整理正文为reviewed；经过所列来源核对的结构属性单独标verified。姓名和历史来源不会随新正文整体升级。

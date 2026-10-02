@@ -56,6 +56,10 @@ try {
   await desktop.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&view=timeline`);
   await desktop.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false',
     null, { timeout: 120000 });
+  // Pin the query fixture; a seven-day range around today eventually excludes this activation.
+  await desktop.locator('#timeline-view [data-field="date"]').fill('2026-08-07');
+  await desktop.locator('#timeline-view [data-field="date"]').dispatchEvent('change');
+  await desktop.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
   await desktop.locator('#timeline-view .tl-advanced summary').click();
   const row = desktop.locator('#timeline-view .tl-condition-row').first();
   await row.locator('[data-condition="kind"]').selectOption('channel');

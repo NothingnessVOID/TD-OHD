@@ -1,5 +1,7 @@
 import { SOURCES } from './sources.js';
 export const DOMAINS = Object.freeze(['human-design', 'iching', 'gene-keys', 'meridian', 'td-ohd-extension', 'teacher-extension']);
+export const DEPRECATED_DOMAINS = Object.freeze(['td-ohd-extension','teacher-extension']);
+// Read compatibility only; Phase 4C registers all content under human-design.
 export const OBJECT_TYPES = Object.freeze(['type', 'authority', 'profile', 'definition', 'cross', 'variable', 'cognition', 'gate', 'line', 'channel', 'center', 'geneKey', 'hexagram', 'meridian']);
 export const REVIEW_STATUSES = Object.freeze(['unreviewed', 'reviewed', 'verified', 'custom']);
 export function validateKnowledgeEntry(entry) {

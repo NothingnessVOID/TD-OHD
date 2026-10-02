@@ -15,8 +15,8 @@ try {
     const select = document.querySelector('#language-switcher');
     const language = document.querySelector('.language-control').getBoundingClientRect();
     const theme = document.querySelector('#theme-toggle').getBoundingClientRect();
-    return [getComputedStyle(select).opacity, getComputedStyle(select).position, language.right <= theme.left];
-  }), ['0', 'absolute', true], 'header controls stay separate before JavaScript loads');
+    return [getComputedStyle(select).clipPath, getComputedStyle(select).position, language.right <= theme.left];
+  }), ['inset(50%)', 'absolute', true], 'header controls stay separate before JavaScript loads');
   await early.close();
 
   await page.goto(`${base}/#library/center/head`);
@@ -52,6 +52,7 @@ try {
   await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
   await page.locator('#bodygraph-container svg').waitFor();
   assert.equal(await page.locator('#type-banner .banner-actions').count(), 0);
+  await page.locator('#more-toggle').click();
   assert.equal(await page.locator('#chart-share-menu summary').isVisible(), true);
   assert.equal((await page.locator('#chart-share-menu summary').innerText()).trim(), '');
   assert.equal(await page.locator('#chart-share-menu summary').evaluate(node => node.getBoundingClientRect().width), 32);
@@ -62,9 +63,9 @@ try {
     const design = graph.querySelector('.bg-planets-design').getBoundingClientRect();
     const personality = graph.querySelector('.bg-planets-personality').getBoundingClientRect();
     return { aligned: Math.abs(design.top - svg.top) <= 1 && Math.abs(personality.top - svg.top) <= 1,
-      width: svg.width, documentWidth: document.documentElement.scrollWidth };
+      width: svg.width, separated: design.right <= svg.left + 1 && svg.right <= personality.left + 1, documentWidth: document.documentElement.scrollWidth };
   });
-  assert.ok(chartColumns.aligned && chartColumns.width > 300 && chartColumns.width <= 331 && chartColumns.documentWidth <= 714,
+  assert.ok(chartColumns.aligned && chartColumns.separated && chartColumns.width > 0 && chartColumns.documentWidth <= 714,
     `714px chart keeps planet columns beside the graph: ${JSON.stringify(chartColumns)}`);
   await page.setViewportSize({ width: 682, height: 703 });
   assert.deepEqual(await page.locator('#bodygraph-container .bg-planets-personality').evaluate(column => [

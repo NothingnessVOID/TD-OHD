@@ -1,20 +1,22 @@
 import * as engine from '../lib/human-design/display-data.js';
+import { typeFacts } from '../lib/human-design/identities.js';
+const typeIdByName = { Generator:'generator', 'Manifesting Generator':'manifestingGenerator',Manifestor:'manifestor',Projector:'projector',Reflector:'reflector' };
 import contexts from './ui-contexts.json' with { type: 'json' };
 const TYPES = Object.fromEntries(Object.values(engine.TYPES).map(type => [type.name, type]));
 const CHANNELS = Object.fromEntries(engine.CHANNELS.map(channel => [channel.gates.join('-'), channel.name]));
 const PLANETS = { sun:'Sun', earth:'Earth', moon:'Moon', northNode:'North Node', southNode:'South Node', mercury:'Mercury', venus:'Venus', mars:'Mars', jupiter:'Jupiter', saturn:'Saturn', uranus:'Uranus', neptune:'Neptune', pluto:'Pluto' };
 const TYPE_PLAIN = {
   Generator: "You have sustainable life-force energy. Life works best when you respond to what shows up rather than chasing what isn't there yet.",
-  'Manifesting Generator': 'You have powerful, fast-moving energy for many things at once. Respond first, then inform the people your actions will affect.',
+  'Manifesting Generator': 'You have powerful, fast-moving energy for many things at once. Respond first, then move and adjust as needed.',
   Manifestor: "You're here to initiate. You don't need to wait for anyone — but informing people before you act keeps the path clear.",
   Projector: "You're here to guide others and see systems clearly. Your gifts land when they're recognized and invited, not pushed.",
-  Reflector: 'You mirror the health of your community. Take a full lunar cycle (~28 days) before big decisions and choose your environments carefully.'
+  Reflector: 'You mirror the health of your community. Take a full lunar cycle (~29.5 days) before big decisions and choose your environments carefully.'
 };
 const english = {
   typeName: name => name || '—',
-  strategy: name => TYPES[name]?.strategy || '—',
-  notSelf: name => TYPES[name]?.notSelf || '—',
-  signature: name => TYPES[name]?.signature || '—',
+  strategy: name => typeFacts[typeIdByName[name]]?.strategy || '—',
+  notSelf: name => typeFacts[typeIdByName[name]]?.notSelf || '—',
+  signature: name => typeFacts[typeIdByName[name]]?.signature || '—',
   authorityName: name => name || '—',
   profileName: numbers => engine.PROFILES[numbers]?.name || '',
   definitionName: value => value || '—',
