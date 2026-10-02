@@ -1,0 +1,5185 @@
+{
+  "summary": {
+    "cSwissVersion": "2.10.03",
+    "offsetBaselineDegrees": 3.875,
+    "allOfficialRecordCount": 32,
+    "uniqueOfficialBirthUtcCount": 28,
+    "unknownRecords": [],
+    "sevenMismatchCount": 7,
+    "standardFrameSunPairNowMatchesIDs": [
+      "G1995-jun",
+      "G2005-jul20"
+    ],
+    "standardFrameAll26GateLineNowMatchesIDs": [
+      "G1995-jun",
+      "G2005-jul20"
+    ],
+    "offsetIntersections": {
+      "currentSharp": {
+        "caseRecordCount": 32,
+        "uniqueBirthUtcCount": 28,
+        "sunConstraintCount": 64,
+        "offsetLowerExclusiveDegrees": 3.874997499485559,
+        "offsetUpperInclusiveDegrees": 3.8749967598370176,
+        "feasible": false,
+        "gapIfInfeasibleDegrees": 7.396485415256393e-07,
+        "lowerWitness": {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499749948556,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874997499485559,
+          "offsetUpperInclusiveDegrees": 4.812497499485559,
+          "expectedGateLine": "53.4"
+        },
+        "upperWitness": {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.124996759837,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374967598370176,
+          "offsetUpperInclusiveDegrees": 3.8749967598370176,
+          "expectedGateLine": "13.3"
+        },
+        "atCurrentOffsetSunPairMismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ]
+      },
+      "cSwiss258": {
+        "caseRecordCount": 32,
+        "uniqueBirthUtcCount": 28,
+        "sunConstraintCount": 64,
+        "offsetLowerExclusiveDegrees": 3.874999384406024,
+        "offsetUpperInclusiveDegrees": 3.8749986448729032,
+        "feasible": false,
+        "gapIfInfeasibleDegrees": 7.395331209636424e-07,
+        "lowerWitness": {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499938440602,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874999384406024,
+          "offsetUpperInclusiveDegrees": 4.812499384406024,
+          "expectedGateLine": "53.4"
+        },
+        "upperWitness": {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.1249986448729,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374986448729032,
+          "offsetUpperInclusiveDegrees": 3.8749986448729032,
+          "expectedGateLine": "13.3"
+        },
+        "atCurrentOffsetSunPairMismatchIDs": [
+          "G1995-feb",
+          "G2015-feb",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ]
+      },
+      "cSwiss131330": {
+        "caseRecordCount": 32,
+        "uniqueBirthUtcCount": 28,
+        "sunConstraintCount": 64,
+        "offsetLowerExclusiveDegrees": 3.874997499485559,
+        "offsetUpperInclusiveDegrees": 3.8749967598370176,
+        "feasible": false,
+        "gapIfInfeasibleDegrees": 7.396485415256393e-07,
+        "lowerWitness": {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499749948556,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874997499485559,
+          "offsetUpperInclusiveDegrees": 4.812497499485559,
+          "expectedGateLine": "53.4"
+        },
+        "upperWitness": {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.124996759837,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374967598370176,
+          "offsetUpperInclusiveDegrees": 3.8749967598370176,
+          "expectedGateLine": "13.3"
+        },
+        "atCurrentOffsetSunPairMismatchIDs": [
+          "G1995-feb",
+          "G1995-jun",
+          "G2005-jul20",
+          "G2015-feb",
+          "G2015-repeatA",
+          "G2015-repeatB",
+          "G2015-tight",
+          "G2025-mar",
+          "G2025-tight"
+        ]
+      }
+    },
+    "scope": "Hypothesis diagnostics only. No fitted value is adopted; no code modifications. All26 Gate.Line match does not alone prove full foundation/Variable equivalence."
+  },
+  "cases": [
+    {
+      "id": "D1985-after",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "38.3",
+        "design": "48.6"
+      },
+      "officialActivations": [
+        "48.6",
+        "21.6",
+        "63.4",
+        "8.5",
+        "14.5",
+        "48.3",
+        "1.2",
+        "10.4",
+        "58.2",
+        "1.2",
+        "9.6",
+        "10.1",
+        "50.6",
+        "38.3",
+        "39.3",
+        "23.1",
+        "8.3",
+        "14.3",
+        "26.3",
+        "30.4",
+        "37.1",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 282.1875000329448,
+        "designLongitude": 194.18750003141398,
+        "designUtc": "1984-10-07T06:56:55.0666102Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 282.1875019176009,
+        "designLongitude": 194.1875019179159,
+        "designUtc": "1984-10-07T06:56:55.066168Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 282.1875000329447,
+        "designLongitude": 194.18750003325164,
+        "designUtc": "1984-10-07T06:56:55.066168Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "officialProfile": "3/6"
+    },
+    {
+      "id": "D1985-before",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "38.3",
+        "design": "48.5"
+      },
+      "officialActivations": [
+        "48.5",
+        "21.5",
+        "63.4",
+        "8.5",
+        "14.5",
+        "48.3",
+        "1.2",
+        "10.4",
+        "58.2",
+        "1.2",
+        "9.6",
+        "10.1",
+        "50.6",
+        "38.3",
+        "39.3",
+        "23.1",
+        "8.3",
+        "14.3",
+        "26.3",
+        "30.4",
+        "37.1",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 282.18679227781274,
+        "designLongitude": 194.18679228271193,
+        "designUtc": "1984-10-07T06:55:53.0853733Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 282.18679416246886,
+        "designLongitude": 194.18679416278206,
+        "designUtc": "1984-10-07T06:55:53.084609Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 282.18679227781263,
+        "designLongitude": 194.18679227811782,
+        "designUtc": "1984-10-07T06:55:53.084609Z",
+        "sunGateLine": {
+          "personality": "38.3",
+          "design": "48.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5"
+      },
+      "officialProfile": "3/5"
+    },
+    {
+      "id": "D1995-after",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.5",
+        "design": "44.2"
+      },
+      "officialActivations": [
+        "44.2",
+        "24.2",
+        "18.3",
+        "1.2",
+        "2.2",
+        "32.1",
+        "44.4",
+        "7.2",
+        "43.3",
+        "55.6",
+        "61.3",
+        "61.1",
+        "14.3",
+        "41.5",
+        "31.5",
+        "5.3",
+        "44.4",
+        "24.4",
+        "49.3",
+        "26.4",
+        "29.5",
+        "9.5",
+        "37.6",
+        "60.1",
+        "61.3",
+        "34.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 306.562507288916,
+        "designLongitude": 218.5625072907749,
+        "designUtc": "1994-11-01T05:28:22.3567825Z",
+        "sunGateLine": {
+          "personality": "41.5",
+          "design": "44.2"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "5/2"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 306.56250917372995,
+        "designLongitude": 218.56250917416807,
+        "designUtc": "1994-11-01T05:28:22.355897Z",
+        "sunGateLine": {
+          "personality": "41.5",
+          "design": "44.2"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "5/2"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 306.562507288916,
+        "designLongitude": 218.56250728937687,
+        "designUtc": "1994-11-01T05:28:22.355897Z",
+        "sunGateLine": {
+          "personality": "41.5",
+          "design": "44.2"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "5/2"
+      },
+      "officialProfile": "5/2"
+    },
+    {
+      "id": "D2005-before",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "61.2",
+        "design": "32.4"
+      },
+      "officialActivations": [
+        "32.4",
+        "42.4",
+        "9.5",
+        "27.1",
+        "28.1",
+        "28.1",
+        "64.6",
+        "48.5",
+        "18.1",
+        "56.1",
+        "55.4",
+        "19.6",
+        "26.4",
+        "61.2",
+        "62.2",
+        "49.4",
+        "3.2",
+        "50.2",
+        "10.6",
+        "10.6",
+        "5.2",
+        "57.4",
+        "62.4",
+        "55.5",
+        "13.2",
+        "11.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 292.4999959112982,
+        "designLongitude": 204.49999591125012,
+        "designUtc": "2004-10-17T13:03:32.4173015Z",
+        "sunGateLine": {
+          "personality": "61.2",
+          "design": "32.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 292.4999977962086,
+        "designLongitude": 204.49999779663267,
+        "designUtc": "2004-10-17T13:03:32.417060Z",
+        "sunGateLine": {
+          "personality": "61.2",
+          "design": "32.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 292.4999959112982,
+        "designLongitude": 204.49999591171255,
+        "designUtc": "2004-10-17T13:03:32.417060Z",
+        "sunGateLine": {
+          "personality": "61.2",
+          "design": "32.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "officialProfile": "2/4"
+    },
+    {
+      "id": "D2015-after",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "19.1",
+        "57.5",
+        "51.5",
+        "57.5",
+        "44.2",
+        "10.6",
+        "4.2",
+        "43.6",
+        "21.5",
+        "55.6",
+        "38.2",
+        "41.4",
+        "31.4",
+        "51.5",
+        "48.4",
+        "21.4",
+        "13.3",
+        "30.4",
+        "37.6",
+        "4.1",
+        "34.4",
+        "21.4",
+        "37.1",
+        "38.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.6250104165509,
+        "designLongitude": 217.62501042288088,
+        "designUtc": "2014-10-31T03:20:23.7691818Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.6250123015962,
+        "designLongitude": 217.6250123018832,
+        "designUtc": "2014-10-31T03:20:23.768458Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.6250104165508,
+        "designLongitude": 217.6250104168293,
+        "designUtc": "2014-10-31T03:20:23.768458Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "officialProfile": "4/1"
+    },
+    {
+      "id": "D2025-after",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.6",
+        "design": "44.3"
+      },
+      "officialActivations": [
+        "44.3",
+        "24.3",
+        "44.1",
+        "17.3",
+        "18.3",
+        "14.4",
+        "26.1",
+        "56.3",
+        "45.4",
+        "63.2",
+        "8.2",
+        "36.6",
+        "60.4",
+        "41.6",
+        "31.6",
+        "58.5",
+        "25.1",
+        "46.1",
+        "60.3",
+        "36.1",
+        "62.2",
+        "35.1",
+        "63.6",
+        "23.5",
+        "36.6",
+        "60.6"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 307.50001135600047,
+        "designLongitude": 219.5000113552603,
+        "designUtc": "2024-11-01T10:38:40.1324030Z",
+        "sunGateLine": {
+          "personality": "41.6",
+          "design": "44.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 307.5000132411625,
+        "designLongitude": 219.50001324090317,
+        "designUtc": "2024-11-01T10:38:40.132041Z",
+        "sunGateLine": {
+          "personality": "41.6",
+          "design": "44.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 307.50001135600047,
+        "designLongitude": 219.50001135572646,
+        "designUtc": "2024-11-01T10:38:40.132041Z",
+        "sunGateLine": {
+          "personality": "41.6",
+          "design": "44.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G1985-1230",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "38.6",
+        "design": "57.3"
+      },
+      "officialActivations": [
+        "57.3",
+        "51.3",
+        "51.6",
+        "8.4",
+        "14.4",
+        "57.2",
+        "1.5",
+        "10.6",
+        "58.2",
+        "1.3",
+        "9.6",
+        "10.1",
+        "50.6",
+        "38.6",
+        "39.6",
+        "12.4",
+        "8.3",
+        "14.3",
+        "26.6",
+        "55.2",
+        "37.4",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 285.1237879563006,
+        "designLongitude": 197.12378795451014,
+        "designUtc": "1984-10-10T06:19:09.4884744Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 285.12378984096745,
+        "designLongitude": 197.12378984055408,
+        "designUtc": "1984-10-10T06:19:09.488112Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 285.1237879563004,
+        "designLongitude": 197.1237879558907,
+        "designUtc": "1984-10-10T06:19:09.488112Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G1985-1231",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "38.6",
+        "design": "57.3"
+      },
+      "officialActivations": [
+        "57.3",
+        "51.3",
+        "51.6",
+        "8.4",
+        "14.4",
+        "57.2",
+        "1.5",
+        "10.6",
+        "58.2",
+        "1.3",
+        "9.6",
+        "10.1",
+        "50.6",
+        "38.6",
+        "39.6",
+        "12.4",
+        "8.3",
+        "14.3",
+        "26.6",
+        "55.2",
+        "37.4",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 285.124495619239,
+        "designLongitude": 197.1244956238651,
+        "designUtc": "1984-10-10T06:20:11.3590300Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 285.12449750390584,
+        "designLongitude": 197.12449750346653,
+        "designUtc": "1984-10-10T06:20:11.358547Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 285.1244956192388,
+        "designLongitude": 197.1244956188031,
+        "designUtc": "1984-10-10T06:20:11.358547Z",
+        "sunGateLine": {
+          "personality": "38.6",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G1985-1232",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "54.1",
+        "design": "57.3"
+      },
+      "officialActivations": [
+        "57.3",
+        "51.3",
+        "51.6",
+        "8.4",
+        "14.4",
+        "57.2",
+        "1.5",
+        "10.6",
+        "58.2",
+        "1.3",
+        "9.6",
+        "10.1",
+        "50.6",
+        "54.1",
+        "53.1",
+        "12.4",
+        "8.3",
+        "14.3",
+        "26.6",
+        "55.2",
+        "37.4",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 285.12520328215425,
+        "designLongitude": 197.12520328201236,
+        "designUtc": "1984-10-10T06:21:13.2294649Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 285.1252051668211,
+        "designLongitude": 197.12520516667578,
+        "designUtc": "1984-10-10T06:21:13.228982Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 285.125203282154,
+        "designLongitude": 197.12520328201234,
+        "designUtc": "1984-10-10T06:21:13.228982Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "officialProfile": "1/3"
+    },
+    {
+      "id": "G1985-nov",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "34.3",
+        "design": "59.6"
+      },
+      "officialActivations": [
+        "59.6",
+        "55.6",
+        "19.3",
+        "24.5",
+        "44.5",
+        "7.4",
+        "56.5",
+        "4.4",
+        "19.2",
+        "43.4",
+        "5.3",
+        "10.3",
+        "28.1",
+        "34.3",
+        "20.3",
+        "24.2",
+        "24.2",
+        "44.2",
+        "9.6",
+        "43.1",
+        "57.3",
+        "19.5",
+        "34.1",
+        "26.1",
+        "10.5",
+        "28.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 242.93749584579962,
+        "designLongitude": 154.9374958497711,
+        "designUtc": "1985-08-28T07:25:25.3662452Z",
+        "sunGateLine": {
+          "personality": "34.3",
+          "design": "59.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 242.93749773047824,
+        "designLongitude": 154.93749773040966,
+        "designUtc": "1985-08-28T07:25:25.365642Z",
+        "sunGateLine": {
+          "personality": "34.3",
+          "design": "59.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 242.9374958457995,
+        "designLongitude": 154.93749584572396,
+        "designUtc": "1985-08-28T07:25:25.365642Z",
+        "sunGateLine": {
+          "personality": "34.3",
+          "design": "59.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "officialProfile": "3/6"
+    },
+    {
+      "id": "G1985-repeatA",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "60.6",
+        "8.4",
+        "14.4",
+        "43.2",
+        "5.2",
+        "54.4",
+        "58.6",
+        "1.5",
+        "5.1",
+        "10.2",
+        "28.1",
+        "41.4",
+        "31.4",
+        "25.2",
+        "23.6",
+        "43.6",
+        "54.6",
+        "36.1",
+        "36.2",
+        "60.1",
+        "14.3",
+        "5.6",
+        "10.5",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.749996605349,
+        "designUtc": "1984-10-31T00:04:07.9710549Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499984842605,
+        "designLongitude": 217.7499984839521,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.74999659929424,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "officialProfile": "4/1"
+    },
+    {
+      "id": "G1985-repeatB",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "60.6",
+        "8.4",
+        "14.4",
+        "43.2",
+        "5.2",
+        "54.4",
+        "58.6",
+        "1.5",
+        "5.1",
+        "10.2",
+        "28.1",
+        "41.4",
+        "31.4",
+        "25.2",
+        "23.6",
+        "43.6",
+        "54.6",
+        "36.1",
+        "36.2",
+        "60.1",
+        "14.3",
+        "5.6",
+        "10.5",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.749996605349,
+        "designUtc": "1984-10-31T00:04:07.9710549Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499984842605,
+        "designLongitude": 217.7499984839521,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.74999659929424,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "officialProfile": "4/1"
+    },
+    {
+      "id": "G1985-tight",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "60.6",
+        "8.4",
+        "14.4",
+        "43.2",
+        "5.2",
+        "54.4",
+        "58.6",
+        "1.5",
+        "5.1",
+        "10.2",
+        "28.1",
+        "41.4",
+        "31.4",
+        "25.2",
+        "23.6",
+        "43.6",
+        "54.6",
+        "36.1",
+        "36.2",
+        "60.1",
+        "14.3",
+        "5.6",
+        "10.5",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.749996605349,
+        "designUtc": "1984-10-31T00:04:07.9710549Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499984842605,
+        "designLongitude": 217.7499984839521,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499965996151,
+        "designLongitude": 217.74999659929424,
+        "designUtc": "1984-10-31T00:04:07.970492Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "officialProfile": "4/1"
+    },
+    {
+      "id": "G1995-apr",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "51.6",
+        "design": "61.3"
+      },
+      "officialActivations": [
+        "61.3",
+        "62.3",
+        "35.4",
+        "44.6",
+        "24.6",
+        "19.3",
+        "9.1",
+        "59.2",
+        "9.2",
+        "37.4",
+        "61.6",
+        "61.3",
+        "14.6",
+        "51.6",
+        "57.6",
+        "4.6",
+        "28.4",
+        "27.4",
+        "51.3",
+        "63.6",
+        "7.2",
+        "5.5",
+        "22.3",
+        "60.5",
+        "61.6",
+        "34.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 20.749996461526724,
+        "designLongitude": 292.74998918427195,
+        "designUtc": "1995-01-13T10:05:19.0948963Z",
+        "sunGateLine": {
+          "personality": "51.6",
+          "design": "61.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 20.749998346326162,
+        "designLongitude": 292.74999834672394,
+        "designUtc": "1995-01-13T10:05:19.711348Z",
+        "sunGateLine": {
+          "personality": "51.6",
+          "design": "61.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 20.749996461526724,
+        "designLongitude": 292.7499964619269,
+        "designUtc": "1995-01-13T10:05:19.711348Z",
+        "sunGateLine": {
+          "personality": "51.6",
+          "design": "61.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G1995-dec",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "26.6",
+        "design": "6.3"
+      },
+      "officialActivations": [
+        "6.3",
+        "36.3",
+        "52.4",
+        "50.1",
+        "3.1",
+        "57.5",
+        "46.5",
+        "28.6",
+        "9.4",
+        "22.5",
+        "60.1",
+        "61.3",
+        "14.5",
+        "26.6",
+        "45.6",
+        "47.5",
+        "32.5",
+        "42.5",
+        "58.1",
+        "61.2",
+        "38.2",
+        "11.4",
+        "22.2",
+        "60.3",
+        "61.4",
+        "34.2"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 262.62499591045446,
+        "designLongitude": 174.62499590629932,
+        "designUtc": "1995-09-18T00:14:19.5289125Z",
+        "sunGateLine": {
+          "personality": "26.6",
+          "design": "6.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 262.6249977952539,
+        "designLongitude": 174.6249977956578,
+        "designUtc": "1995-09-18T00:14:19.528390Z",
+        "sunGateLine": {
+          "personality": "26.6",
+          "design": "6.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 262.62499591045446,
+        "designLongitude": 174.62499591084332,
+        "designUtc": "1995-09-18T00:14:19.528390Z",
+        "sunGateLine": {
+          "personality": "26.6",
+          "design": "6.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G1995-feb",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "55.4",
+        "design": "34.6"
+      },
+      "officialActivations": [
+        "34.6",
+        "20.6",
+        "47.3",
+        "1.2",
+        "2.2",
+        "14.2",
+        "28.1",
+        "29.2",
+        "14.4",
+        "37.1",
+        "61.4",
+        "61.1",
+        "14.4",
+        "55.4",
+        "59.4",
+        "14.3",
+        "44.1",
+        "24.1",
+        "41.6",
+        "54.5",
+        "4.1",
+        "5.2",
+        "63.3",
+        "60.3",
+        "61.4",
+        "34.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 332.9374980286018,
+        "designLongitude": 244.9374980360528,
+        "designUtc": "1994-11-27T10:16:43.6340520Z",
+        "sunGateLine": {
+          "personality": "55.3",
+          "design": "34.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 332.9374999134079,
+        "designLongitude": 244.93749991330023,
+        "designUtc": "1994-11-27T10:16:43.633368Z",
+        "sunGateLine": {
+          "personality": "55.3",
+          "design": "34.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6",
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.3",
+          "59.3",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "55.3",
+            "officialGateLine": "55.4"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "59.3",
+            "officialGateLine": "59.4"
+          }
+        ]
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 332.93749802860185,
+        "designLongitude": 244.93749802851013,
+        "designUtc": "1994-11-27T10:16:43.633368Z",
+        "sunGateLine": {
+          "personality": "55.3",
+          "design": "34.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6"
+      },
+      "officialProfile": "4/6",
+      "actual8787Sun": {
+        "personality": "55.3",
+        "design": "34.6"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G1995-jun",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "15.3",
+        "design": "25.5"
+      },
+      "officialActivations": [
+        "25.5",
+        "46.5",
+        "11.2",
+        "28.5",
+        "27.5",
+        "63.2",
+        "49.6",
+        "33.6",
+        "5.5",
+        "22.1",
+        "60.4",
+        "61.5",
+        "34.1",
+        "15.3",
+        "10.3",
+        "42.4",
+        "28.3",
+        "27.3",
+        "16.6",
+        "35.3",
+        "64.3",
+        "9.3",
+        "36.3",
+        "60.4",
+        "61.5",
+        "14.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 90.12499928156265,
+        "designLongitude": 2.124999282692504,
+        "designUtc": "1995-03-23T05:37:03.9094555Z",
+        "sunGateLine": {
+          "personality": "15.2",
+          "design": "25.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 90.1250011663674,
+        "designLongitude": 2.1250011661089783,
+        "designUtc": "1995-03-23T05:37:03.908892Z",
+        "sunGateLine": {
+          "personality": "15.3",
+          "design": "25.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5",
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.3",
+          "10.3",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26GateLineMismatchCount": 0,
+        "all26GateLineMismatches": []
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 90.12499928156265,
+        "designLongitude": 2.124999281306475,
+        "designUtc": "1995-03-23T05:37:03.908892Z",
+        "sunGateLine": {
+          "personality": "15.2",
+          "design": "25.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "officialProfile": "3/5",
+      "actual8787Sun": {
+        "personality": "15.2",
+        "design": "25.5"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G1995-tight",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "19.1",
+        "design": "44.4"
+      },
+      "officialActivations": [
+        "44.4",
+        "24.4",
+        "28.4",
+        "1.2",
+        "2.2",
+        "32.2",
+        "44.3",
+        "7.3",
+        "43.4",
+        "55.6",
+        "61.3",
+        "61.1",
+        "14.3",
+        "19.1",
+        "33.1",
+        "38.3",
+        "44.4",
+        "24.4",
+        "49.2",
+        "26.6",
+        "29.4",
+        "9.5",
+        "37.6",
+        "60.1",
+        "61.4",
+        "34.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 308.5624939445832,
+        "designLongitude": 220.56249395398422,
+        "designUtc": "1994-11-03T05:24:32.5681677Z",
+        "sunGateLine": {
+          "personality": "19.1",
+          "design": "44.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/4"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 308.562495829402,
+        "designLongitude": 220.56249582898124,
+        "designUtc": "1994-11-03T05:24:32.567162Z",
+        "sunGateLine": {
+          "personality": "19.1",
+          "design": "44.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/4"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 308.56249394458314,
+        "designLongitude": 220.56249394418694,
+        "designUtc": "1994-11-03T05:24:32.567162Z",
+        "sunGateLine": {
+          "personality": "19.1",
+          "design": "44.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/4"
+      },
+      "officialProfile": "1/4"
+    },
+    {
+      "id": "G2005-0411",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "60.3",
+        "design": "50.6"
+      },
+      "officialActivations": [
+        "50.6",
+        "3.6",
+        "63.4",
+        "27.1",
+        "28.1",
+        "44.6",
+        "6.2",
+        "57.4",
+        "18.3",
+        "56.1",
+        "55.4",
+        "19.6",
+        "26.4",
+        "60.3",
+        "56.3",
+        "23.3",
+        "3.2",
+        "50.2",
+        "38.4",
+        "38.3",
+        "5.6",
+        "57.4",
+        "62.3",
+        "55.5",
+        "13.2",
+        "11.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 299.1868456478341,
+        "designLongitude": 211.1868456505135,
+        "designUtc": "2004-10-24T06:24:59.1084248Z",
+        "sunGateLine": {
+          "personality": "60.3",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 299.18684753276636,
+        "designLongitude": 211.1868475331127,
+        "designUtc": "2004-10-24T06:24:59.107781Z",
+        "sunGateLine": {
+          "personality": "60.3",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 299.1868456478341,
+        "designLongitude": 211.18684564819424,
+        "designUtc": "2004-10-24T06:24:59.107781Z",
+        "sunGateLine": {
+          "personality": "60.3",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/6"
+      },
+      "officialProfile": "3/6"
+    },
+    {
+      "id": "G2005-0412",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "60.4",
+        "design": "50.6"
+      },
+      "officialActivations": [
+        "50.6",
+        "3.6",
+        "63.4",
+        "27.1",
+        "28.1",
+        "44.6",
+        "6.2",
+        "57.4",
+        "18.3",
+        "56.1",
+        "55.4",
+        "19.6",
+        "26.4",
+        "60.4",
+        "56.4",
+        "23.3",
+        "3.2",
+        "50.2",
+        "38.4",
+        "38.3",
+        "5.6",
+        "57.4",
+        "62.3",
+        "55.5",
+        "13.2",
+        "11.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 299.18755246114546,
+        "designLongitude": 211.18755245722696,
+        "designUtc": "2004-10-24T06:26:00.4134232Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 299.1875543460777,
+        "designLongitude": 211.18755434632016,
+        "designUtc": "2004-10-24T06:26:00.413343Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/6"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 299.18755246114546,
+        "designLongitude": 211.18755246140174,
+        "designUtc": "2004-10-24T06:26:00.413343Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "50.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/6"
+      },
+      "officialProfile": "4/6"
+    },
+    {
+      "id": "G2005-jul11",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "53.4",
+        "design": "42.1"
+      },
+      "officialActivations": [
+        "42.1",
+        "32.1",
+        "2.1",
+        "42.3",
+        "32.3",
+        "25.4",
+        "42.4",
+        "13.3",
+        "48.4",
+        "53.6",
+        "37.4",
+        "13.5",
+        "11.2",
+        "53.4",
+        "54.4",
+        "40.4",
+        "51.3",
+        "57.3",
+        "7.2",
+        "7.3",
+        "51.5",
+        "48.2",
+        "56.4",
+        "37.6",
+        "13.4",
+        "26.6"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 108.87499749948556,
+        "designLongitude": 20.874997498289225,
+        "designUtc": "2005-04-10T15:56:01.7547287Z",
+        "sunGateLine": {
+          "personality": "53.4",
+          "design": "42.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 108.87499938440602,
+        "designLongitude": 20.874999384588005,
+        "designUtc": "2005-04-10T15:56:01.754125Z",
+        "sunGateLine": {
+          "personality": "53.4",
+          "design": "42.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 108.87499749948556,
+        "designLongitude": 20.8749974996609,
+        "designUtc": "2005-04-10T15:56:01.754125Z",
+        "sunGateLine": {
+          "personality": "53.4",
+          "design": "42.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "4/1"
+      },
+      "officialProfile": "4/1"
+    },
+    {
+      "id": "G2005-jul20",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "56.3",
+        "design": "3.5"
+      },
+      "officialActivations": [
+        "3.5",
+        "50.5",
+        "40.5",
+        "42.3",
+        "32.3",
+        "17.1",
+        "27.4",
+        "49.4",
+        "48.3",
+        "62.1",
+        "37.5",
+        "13.5",
+        "11.2",
+        "56.3",
+        "60.3",
+        "54.6",
+        "51.3",
+        "57.3",
+        "4.2",
+        "29.4",
+        "42.6",
+        "48.3",
+        "56.5",
+        "37.5",
+        "13.4",
+        "26.6"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 118.24999900189322,
+        "designLongitude": 30.249999008775795,
+        "designUtc": "2005-04-20T05:46:02.8831967Z",
+        "sunGateLine": {
+          "personality": "56.2",
+          "design": "3.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 118.25000088684045,
+        "designLongitude": 30.250000886428644,
+        "designUtc": "2005-04-20T05:46:02.882352Z",
+        "sunGateLine": {
+          "personality": "56.3",
+          "design": "3.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "3/5",
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.3",
+          "60.3",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26GateLineMismatchCount": 0,
+        "all26GateLineMismatches": []
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 118.24999900189322,
+        "designLongitude": 30.249999001503923,
+        "designUtc": "2005-04-20T05:46:02.882352Z",
+        "sunGateLine": {
+          "personality": "56.2",
+          "design": "3.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "officialProfile": "3/5",
+      "actual8787Sun": {
+        "personality": "56.2",
+        "design": "3.5"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G2005-may",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "24.6",
+        "design": "13.3"
+      },
+      "officialActivations": [
+        "13.3",
+        "7.3",
+        "9.1",
+        "42.6",
+        "32.6",
+        "19.1",
+        "60.6",
+        "11.6",
+        "57.4",
+        "62.2",
+        "55.6",
+        "13.2",
+        "11.2",
+        "24.6",
+        "44.6",
+        "63.3",
+        "42.3",
+        "32.3",
+        "51.3",
+        "23.4",
+        "55.2",
+        "48.2",
+        "62.2",
+        "37.5",
+        "13.5",
+        "11.2"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 43.249995281926694,
+        "designLongitude": 315.2499952833459,
+        "designUtc": "2005-02-03T23:37:57.2782265Z",
+        "sunGateLine": {
+          "personality": "24.6",
+          "design": "13.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 43.24999716685863,
+        "designLongitude": 315.24999716731816,
+        "designUtc": "2005-02-03T23:37:57.277905Z",
+        "sunGateLine": {
+          "personality": "24.6",
+          "design": "13.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 43.2499952819267,
+        "designLongitude": 315.2499952814567,
+        "designUtc": "2005-02-03T23:37:57.277824Z",
+        "sunGateLine": {
+          "personality": "24.6",
+          "design": "13.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "6/3"
+      },
+      "officialProfile": "6/3"
+    },
+    {
+      "id": "G2005-tight",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "60.1",
+        "design": "50.3"
+      },
+      "officialActivations": [
+        "50.3",
+        "3.3",
+        "41.4",
+        "27.1",
+        "28.1",
+        "44.2",
+        "47.5",
+        "57.2",
+        "18.2",
+        "56.1",
+        "55.4",
+        "19.6",
+        "26.4",
+        "60.1",
+        "56.1",
+        "51.1",
+        "3.2",
+        "50.2",
+        "58.6",
+        "58.5",
+        "5.4",
+        "57.4",
+        "62.4",
+        "55.5",
+        "13.2",
+        "11.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 296.3750012397706,
+        "designLongitude": 208.3750012424124,
+        "designUtc": "2004-10-21T10:37:33.3192067Z",
+        "sunGateLine": {
+          "personality": "60.1",
+          "design": "50.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 296.3750031246924,
+        "designLongitude": 208.3750031250144,
+        "designUtc": "2004-10-21T10:37:33.318805Z",
+        "sunGateLine": {
+          "personality": "60.1",
+          "design": "50.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 296.3750012397706,
+        "designLongitude": 208.3750012400961,
+        "designUtc": "2004-10-21T10:37:33.318805Z",
+        "sunGateLine": {
+          "personality": "60.1",
+          "design": "50.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "officialProfile": "1/3"
+    },
+    {
+      "id": "G2015-feb",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "13.3",
+        "design": "1.5"
+      },
+      "officialActivations": [
+        "1.5",
+        "2.5",
+        "45.4",
+        "57.5",
+        "51.5",
+        "50.5",
+        "43.3",
+        "38.2",
+        "4.3",
+        "14.1",
+        "21.5",
+        "55.5",
+        "38.3",
+        "13.3",
+        "7.3",
+        "7.6",
+        "48.3",
+        "21.3",
+        "41.4",
+        "37.5",
+        "22.1",
+        "7.6",
+        "34.4",
+        "21.5",
+        "37.1",
+        "38.6"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 315.124996759837,
+        "designLongitude": 227.1249967653152,
+        "designUtc": "2014-11-09T14:55:40.9503891Z",
+        "sunGateLine": {
+          "personality": "13.2",
+          "design": "1.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 315.1249986448729,
+        "designLongitude": 227.12499864521158,
+        "designUtc": "2014-11-09T14:55:40.949544Z",
+        "sunGateLine": {
+          "personality": "13.2",
+          "design": "1.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5",
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.2",
+          "7.2",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "13.2",
+            "officialGateLine": "13.3"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "7.2",
+            "officialGateLine": "7.3"
+          }
+        ]
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 315.124996759837,
+        "designLongitude": 227.12499676017154,
+        "designUtc": "2014-11-09T14:55:40.949544Z",
+        "sunGateLine": {
+          "personality": "13.2",
+          "design": "1.5"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "2/5"
+      },
+      "officialProfile": "3/5",
+      "actual8787Sun": {
+        "personality": "13.2",
+        "design": "1.5"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G2015-repeatA",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.5",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "19.3",
+        "57.5",
+        "51.5",
+        "57.5",
+        "44.2",
+        "10.6",
+        "4.2",
+        "43.6",
+        "21.5",
+        "55.6",
+        "38.2",
+        "41.5",
+        "31.5",
+        "42.1",
+        "48.4",
+        "21.4",
+        "13.3",
+        "30.4",
+        "37.6",
+        "4.1",
+        "34.4",
+        "21.4",
+        "37.1",
+        "38.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.7499968131752,
+        "designUtc": "2014-10-31T06:20:25.9323969Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499987027751,
+        "designLongitude": 217.74999870241882,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.74999681736492,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "officialProfile": "5/1"
+    },
+    {
+      "id": "G2015-repeatB",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.5",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "19.3",
+        "57.5",
+        "51.5",
+        "57.5",
+        "44.2",
+        "10.6",
+        "4.2",
+        "43.6",
+        "21.5",
+        "55.6",
+        "38.2",
+        "41.5",
+        "31.5",
+        "42.1",
+        "48.4",
+        "21.4",
+        "13.3",
+        "30.4",
+        "37.6",
+        "4.1",
+        "34.4",
+        "21.4",
+        "37.1",
+        "38.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.7499968131752,
+        "designUtc": "2014-10-31T06:20:25.9323969Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499987027751,
+        "designLongitude": 217.74999870241882,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.74999681736492,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "officialProfile": "5/1"
+    },
+    {
+      "id": "G2015-tight",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "41.5",
+        "design": "44.1"
+      },
+      "officialActivations": [
+        "44.1",
+        "24.1",
+        "19.3",
+        "57.5",
+        "51.5",
+        "57.5",
+        "44.2",
+        "10.6",
+        "4.2",
+        "43.6",
+        "21.5",
+        "55.6",
+        "38.2",
+        "41.5",
+        "31.5",
+        "42.1",
+        "48.4",
+        "21.4",
+        "13.3",
+        "30.4",
+        "37.6",
+        "4.1",
+        "34.4",
+        "21.4",
+        "37.1",
+        "38.5"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.7499968131752,
+        "designUtc": "2014-10-31T06:20:25.9323969Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 305.7499987027751,
+        "designLongitude": 217.74999870241882,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "41.4",
+            "officialGateLine": "41.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "31.4",
+            "officialGateLine": "31.5"
+          }
+        ]
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 305.7499968177302,
+        "designLongitude": 217.74999681736492,
+        "designUtc": "2014-10-31T06:20:25.932357Z",
+        "sunGateLine": {
+          "personality": "41.4",
+          "design": "44.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "officialProfile": "5/1",
+      "actual8787Sun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G2025-mar",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "36.4",
+        "design": "11.6"
+      },
+      "officialActivations": [
+        "11.6",
+        "12.6",
+        "33.5",
+        "25.5",
+        "46.5",
+        "9.2",
+        "13.1",
+        "31.4",
+        "35.4",
+        "63.3",
+        "23.6",
+        "36.5",
+        "60.5",
+        "36.4",
+        "6.4",
+        "48.3",
+        "36.6",
+        "6.6",
+        "21.1",
+        "17.4",
+        "53.5",
+        "35.3",
+        "22.6",
+        "23.6",
+        "25.2",
+        "41.2"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 355.43749799656126,
+        "designLongitude": 267.43749799977513,
+        "designUtc": "2024-12-18T20:55:44.1085292Z",
+        "sunGateLine": {
+          "personality": "36.3",
+          "design": "11.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 355.4374998817419,
+        "designLongitude": 267.43749988212306,
+        "designUtc": "2024-12-18T20:55:44.107765Z",
+        "sunGateLine": {
+          "personality": "36.3",
+          "design": "11.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6",
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.3",
+          "6.3",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "36.3",
+            "officialGateLine": "36.4"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "6.3",
+            "officialGateLine": "6.4"
+          }
+        ]
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 355.43749799656126,
+        "designLongitude": 267.4374979969317,
+        "designUtc": "2024-12-18T20:55:44.107765Z",
+        "sunGateLine": {
+          "personality": "36.3",
+          "design": "11.6"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "3/6"
+      },
+      "officialProfile": "4/6",
+      "actual8787Sun": {
+        "personality": "36.3",
+        "design": "11.6"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "G2025-tight",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "60.5",
+        "design": "28.1"
+      },
+      "officialActivations": [
+        "28.1",
+        "27.1",
+        "33.4",
+        "17.3",
+        "18.3",
+        "1.5",
+        "9.4",
+        "62.6",
+        "45.5",
+        "63.2",
+        "8.2",
+        "36.6",
+        "60.4",
+        "60.5",
+        "56.5",
+        "48.1",
+        "25.1",
+        "46.1",
+        "54.3",
+        "63.6",
+        "62.5",
+        "35.1",
+        "63.6",
+        "23.5",
+        "36.6",
+        "60.6"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 300.1249969949901,
+        "designLongitude": 212.12499699554274,
+        "designUtc": "2024-10-25T01:26:50.8069001Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "28.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 300.1249988801649,
+        "designLongitude": 212.12499887979791,
+        "designUtc": "2024-10-25T01:26:50.805935Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "28.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1",
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.4",
+          "56.4",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26GateLineMismatchCount": 2,
+        "all26GateLineMismatches": [
+          {
+            "side": "personality",
+            "point": "sun",
+            "cSwiss258GateLine": "60.4",
+            "officialGateLine": "60.5"
+          },
+          {
+            "side": "personality",
+            "point": "earth",
+            "cSwiss258GateLine": "56.4",
+            "officialGateLine": "56.5"
+          }
+        ]
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 300.1249969949901,
+        "designLongitude": 212.1249969946145,
+        "designUtc": "2024-10-25T01:26:50.805935Z",
+        "sunGateLine": {
+          "personality": "60.4",
+          "design": "28.1"
+        },
+        "sunMatchesOfficial": {
+          "personality": false,
+          "design": true
+        },
+        "sunPairMatchesOfficial": false,
+        "profile": "4/1"
+      },
+      "officialProfile": "5/1",
+      "actual8787Sun": {
+        "personality": "60.4",
+        "design": "28.1"
+      },
+      "actual8787SunEqualsNative": true
+    },
+    {
+      "id": "jovian-1985-1233",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+      "birthUtc": "1985-01-05T12:33:00Z",
+      "utcEvidence": "priorExplicitCaptureAt1985Jan5London1233",
+      "officialSun": {
+        "personality": "54.1",
+        "design": "57.3"
+      },
+      "officialActivations": [
+        "57.3",
+        "51.3",
+        "51.6",
+        "8.4",
+        "14.4",
+        "57.2",
+        "1.5",
+        "10.6",
+        "58.2",
+        "1.3",
+        "9.6",
+        "10.1",
+        "50.6",
+        "54.1",
+        "53.1",
+        "12.4",
+        "8.3",
+        "14.3",
+        "26.6",
+        "55.2",
+        "37.4",
+        "61.2",
+        "14.1",
+        "5.5",
+        "10.4",
+        "28.3"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 285.1259109450465,
+        "designLongitude": 197.12591094091658,
+        "designUtc": "1984-10-10T06:22:15.0998997Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 285.1259128297134,
+        "designLongitude": 197.12591282926144,
+        "designUtc": "1984-10-10T06:22:15.099337Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 285.1259109450463,
+        "designLongitude": 197.12591094459802,
+        "designUtc": "1984-10-10T06:22:15.099337Z",
+        "sunGateLine": {
+          "personality": "54.1",
+          "design": "57.3"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "1/3"
+      },
+      "officialProfile": "1/3"
+    },
+    {
+      "id": "jovian-control",
+      "file": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+      "birthUtc": "2000-05-10T04:30:00Z",
+      "utcEvidence": "capturedOfficialUTCProperties",
+      "officialSun": {
+        "personality": "23.2",
+        "design": "49.4"
+      },
+      "officialActivations": [
+        "49.4",
+        "4.4",
+        "3.4",
+        "31.2",
+        "41.2",
+        "37.4",
+        "61.1",
+        "25.2",
+        "3.4",
+        "24.4",
+        "13.5",
+        "41.3",
+        "5.2",
+        "23.2",
+        "43.2",
+        "33.5",
+        "56.1",
+        "60.1",
+        "23.3",
+        "24.4",
+        "20.5",
+        "2.6",
+        "23.2",
+        "49.2",
+        "41.5",
+        "5.1"
+      ],
+      "currentSharp": {
+        "personalityLongitude": 49.825466489161165,
+        "designLongitude": 321.8254664949692,
+        "designUtc": "2000-02-11T06:19:45.5924024Z",
+        "sunGateLine": {
+          "personality": "23.2",
+          "design": "49.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "cSwiss258": {
+        "personalityLongitude": 49.8254683740275,
+        "designLongitude": 321.82546837368795,
+        "designUtc": "2000-02-11T06:19:45.591477Z",
+        "sunGateLine": {
+          "personality": "23.2",
+          "design": "49.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "cSwiss131330": {
+        "personalityLongitude": 49.82546648916115,
+        "designLongitude": 321.82546648884306,
+        "designUtc": "2000-02-11T06:19:45.591477Z",
+        "sunGateLine": {
+          "personality": "23.2",
+          "design": "49.4"
+        },
+        "sunMatchesOfficial": {
+          "personality": true,
+          "design": true
+        },
+        "sunPairMatchesOfficial": true,
+        "profile": "2/4"
+      },
+      "officialProfile": "2/4"
+    }
+  ],
+  "offsetIntersections": {
+    "currentSharp": {
+      "caseRecordCount": 32,
+      "uniqueBirthUtcCount": 28,
+      "sunConstraintCount": 64,
+      "offsetLowerExclusiveDegrees": 3.874997499485559,
+      "offsetUpperInclusiveDegrees": 3.8749967598370176,
+      "feasible": false,
+      "gapIfInfeasibleDegrees": 7.396485415256393e-07,
+      "lowerWitness": {
+        "id": "G2005-jul11",
+        "birthUtc": "2005-07-11T01:47:00Z",
+        "side": "personality",
+        "longitude": 108.87499749948556,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+        "offsetLowerExclusiveDegrees": 3.874997499485559,
+        "offsetUpperInclusiveDegrees": 4.812497499485559,
+        "expectedGateLine": "53.4"
+      },
+      "upperWitness": {
+        "id": "G2015-feb",
+        "birthUtc": "2015-02-04T06:56:00Z",
+        "side": "personality",
+        "longitude": 315.124996759837,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+        "offsetLowerExclusiveDegrees": 2.9374967598370176,
+        "offsetUpperInclusiveDegrees": 3.8749967598370176,
+        "expectedGateLine": "13.3"
+      },
+      "atCurrentOffsetSunPairMismatchIDs": [
+        "G1995-feb",
+        "G1995-jun",
+        "G2005-jul20",
+        "G2015-feb",
+        "G2015-repeatA",
+        "G2015-repeatB",
+        "G2015-tight",
+        "G2025-mar",
+        "G2025-tight"
+      ],
+      "constraints": [
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "personality",
+          "longitude": 282.1875000329448,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 3.750000032944797,
+          "offsetUpperInclusiveDegrees": 4.687500032944797,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "design",
+          "longitude": 194.18750003141398,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375000314139754,
+          "offsetUpperInclusiveDegrees": 3.8750000314139754,
+          "expectedGateLine": "48.6"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "personality",
+          "longitude": 282.18679227781274,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.749292277812742,
+          "offsetUpperInclusiveDegrees": 4.686792277812742,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "design",
+          "longitude": 194.18679228271193,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.8742922827119344,
+          "offsetUpperInclusiveDegrees": 4.811792282711934,
+          "expectedGateLine": "48.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "personality",
+          "longitude": 306.562507288916,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 3.750007288915981,
+          "offsetUpperInclusiveDegrees": 4.687507288915981,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "design",
+          "longitude": 218.5625072907749,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 2.937507290774903,
+          "offsetUpperInclusiveDegrees": 3.875007290774903,
+          "expectedGateLine": "44.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "personality",
+          "longitude": 292.4999959112982,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.7499959112981855,
+          "offsetUpperInclusiveDegrees": 4.6874959112981855,
+          "expectedGateLine": "61.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "design",
+          "longitude": 204.49999591125012,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.8749959112501244,
+          "offsetUpperInclusiveDegrees": 4.812495911250124,
+          "expectedGateLine": "32.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "personality",
+          "longitude": 305.6250104165509,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 3.7500104165508787,
+          "offsetUpperInclusiveDegrees": 4.687510416550879,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "design",
+          "longitude": 217.62501042288088,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375104228808766,
+          "offsetUpperInclusiveDegrees": 3.8750104228808766,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "personality",
+          "longitude": 307.50001135600047,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 3.7500113560004706,
+          "offsetUpperInclusiveDegrees": 4.687511356000471,
+          "expectedGateLine": "41.6"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "design",
+          "longitude": 219.5000113552603,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375113552603125,
+          "offsetUpperInclusiveDegrees": 3.8750113552603125,
+          "expectedGateLine": "44.3"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "personality",
+          "longitude": 285.1237879563006,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.873787956300589,
+          "offsetUpperInclusiveDegrees": 4.811287956300589,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "design",
+          "longitude": 197.12378795451014,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.061287954510135,
+          "offsetUpperInclusiveDegrees": 3.998787954510135,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "personality",
+          "longitude": 285.124495619239,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.874495619238985,
+          "offsetUpperInclusiveDegrees": 4.811995619238985,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "design",
+          "longitude": 197.1244956238651,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.0619956238651014,
+          "offsetUpperInclusiveDegrees": 3.9994956238651014,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "personality",
+          "longitude": 285.12520328215425,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 2.9377032821542457,
+          "offsetUpperInclusiveDegrees": 3.8752032821542457,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "design",
+          "longitude": 197.12520328201236,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 3.0627032820123645,
+          "offsetUpperInclusiveDegrees": 4.0002032820123645,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "personality",
+          "longitude": 242.93749584579962,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.874995845799617,
+          "offsetUpperInclusiveDegrees": 4.812495845799617,
+          "expectedGateLine": "34.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "design",
+          "longitude": 154.9374958497711,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.0624958497710963,
+          "offsetUpperInclusiveDegrees": 3.9999958497710963,
+          "expectedGateLine": "59.6"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.749996605349,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.062496605348997,
+          "offsetUpperInclusiveDegrees": 3.999996605348997,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.749996605349,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.062496605348997,
+          "offsetUpperInclusiveDegrees": 3.999996605348997,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.749996605349,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062496605348997,
+          "offsetUpperInclusiveDegrees": 3.999996605348997,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "personality",
+          "longitude": 20.749996461526724,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.874996461526724,
+          "offsetUpperInclusiveDegrees": 4.812496461526724,
+          "expectedGateLine": "51.6"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "design",
+          "longitude": 292.74998918427195,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.0624891842719535,
+          "offsetUpperInclusiveDegrees": 3.9999891842719535,
+          "expectedGateLine": "61.3"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "personality",
+          "longitude": 262.62499591045446,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.8749959104544587,
+          "offsetUpperInclusiveDegrees": 4.812495910454459,
+          "expectedGateLine": "26.6"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "design",
+          "longitude": 174.62499590629932,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.0624959062993184,
+          "offsetUpperInclusiveDegrees": 3.9999959062993184,
+          "expectedGateLine": "6.3"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "personality",
+          "longitude": 332.9374980286018,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374980286017944,
+          "offsetUpperInclusiveDegrees": 3.8749980286017944,
+          "expectedGateLine": "55.4"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "design",
+          "longitude": 244.9374980360528,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 3.0624980360528014,
+          "offsetUpperInclusiveDegrees": 3.9999980360528014,
+          "expectedGateLine": "34.6"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "personality",
+          "longitude": 90.12499928156265,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 2.9374992815626513,
+          "offsetUpperInclusiveDegrees": 3.8749992815626513,
+          "expectedGateLine": "15.3"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "design",
+          "longitude": 2.124999282692504,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 3.0624992826924995,
+          "offsetUpperInclusiveDegrees": 3.9999992826924995,
+          "expectedGateLine": "25.5"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "personality",
+          "longitude": 308.5624939445832,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.8749939445831956,
+          "offsetUpperInclusiveDegrees": 4.812493944583196,
+          "expectedGateLine": "19.1"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "design",
+          "longitude": 220.56249395398422,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062493953984216,
+          "offsetUpperInclusiveDegrees": 3.999993953984216,
+          "expectedGateLine": "44.4"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "personality",
+          "longitude": 299.1868456478341,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.8743456478341045,
+          "offsetUpperInclusiveDegrees": 4.8118456478341045,
+          "expectedGateLine": "60.3"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "design",
+          "longitude": 211.1868456505135,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.0618456505135043,
+          "offsetUpperInclusiveDegrees": 3.9993456505135043,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "personality",
+          "longitude": 299.18755246114546,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 2.937552461145458,
+          "offsetUpperInclusiveDegrees": 3.875052461145458,
+          "expectedGateLine": "60.4"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "design",
+          "longitude": 211.18755245722696,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 3.062552457226957,
+          "offsetUpperInclusiveDegrees": 4.000052457226957,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499749948556,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874997499485559,
+          "offsetUpperInclusiveDegrees": 4.812497499485559,
+          "expectedGateLine": "53.4"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "design",
+          "longitude": 20.874997498289225,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.0624974982892255,
+          "offsetUpperInclusiveDegrees": 3.9999974982892255,
+          "expectedGateLine": "42.1"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "personality",
+          "longitude": 118.24999900189322,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 2.9374990018932152,
+          "offsetUpperInclusiveDegrees": 3.8749990018932152,
+          "expectedGateLine": "56.3"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "design",
+          "longitude": 30.249999008775795,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 3.062499008775795,
+          "offsetUpperInclusiveDegrees": 3.999999008775795,
+          "expectedGateLine": "3.5"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "personality",
+          "longitude": 43.249995281926694,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.8749952819266937,
+          "offsetUpperInclusiveDegrees": 4.812495281926694,
+          "expectedGateLine": "24.6"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "design",
+          "longitude": 315.2499952833459,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.0624952833459247,
+          "offsetUpperInclusiveDegrees": 3.9999952833459247,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "personality",
+          "longitude": 296.3750012397706,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9375012397705973,
+          "offsetUpperInclusiveDegrees": 3.8750012397705973,
+          "expectedGateLine": "60.1"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "design",
+          "longitude": 208.3750012424124,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062501242412395,
+          "offsetUpperInclusiveDegrees": 4.000001242412395,
+          "expectedGateLine": "50.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.124996759837,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374967598370176,
+          "offsetUpperInclusiveDegrees": 3.8749967598370176,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "design",
+          "longitude": 227.1249967653152,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 3.0624967653151884,
+          "offsetUpperInclusiveDegrees": 3.9999967653151884,
+          "expectedGateLine": "1.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.7499968131752,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.062496813175187,
+          "offsetUpperInclusiveDegrees": 3.999996813175187,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.7499968131752,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.062496813175187,
+          "offsetUpperInclusiveDegrees": 3.999996813175187,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.7499968131752,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062496813175187,
+          "offsetUpperInclusiveDegrees": 3.999996813175187,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "personality",
+          "longitude": 355.43749799656126,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 2.9374979965612624,
+          "offsetUpperInclusiveDegrees": 3.8749979965612624,
+          "expectedGateLine": "36.4"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "design",
+          "longitude": 267.43749799977513,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 3.0624979997751325,
+          "offsetUpperInclusiveDegrees": 3.9999979997751325,
+          "expectedGateLine": "11.6"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "personality",
+          "longitude": 300.1249969949901,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 2.937496994990113,
+          "offsetUpperInclusiveDegrees": 3.874996994990113,
+          "expectedGateLine": "60.5"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "design",
+          "longitude": 212.12499699554274,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0624969955427446,
+          "offsetUpperInclusiveDegrees": 3.9999969955427446,
+          "expectedGateLine": "28.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "personality",
+          "longitude": 285.1259109450465,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 2.938410945046485,
+          "offsetUpperInclusiveDegrees": 3.875910945046485,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "design",
+          "longitude": 197.12591094091658,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 3.063410940916583,
+          "offsetUpperInclusiveDegrees": 4.000910940916583,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "personality",
+          "longitude": 49.825466489161165,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 2.9504664891611654,
+          "offsetUpperInclusiveDegrees": 3.8879664891611654,
+          "expectedGateLine": "23.2"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "design",
+          "longitude": 321.8254664949692,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 3.0754664949691914,
+          "offsetUpperInclusiveDegrees": 4.0129664949691914,
+          "expectedGateLine": "49.4"
+        }
+      ]
+    },
+    "cSwiss258": {
+      "caseRecordCount": 32,
+      "uniqueBirthUtcCount": 28,
+      "sunConstraintCount": 64,
+      "offsetLowerExclusiveDegrees": 3.874999384406024,
+      "offsetUpperInclusiveDegrees": 3.8749986448729032,
+      "feasible": false,
+      "gapIfInfeasibleDegrees": 7.395331209636424e-07,
+      "lowerWitness": {
+        "id": "G2005-jul11",
+        "birthUtc": "2005-07-11T01:47:00Z",
+        "side": "personality",
+        "longitude": 108.87499938440602,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+        "offsetLowerExclusiveDegrees": 3.874999384406024,
+        "offsetUpperInclusiveDegrees": 4.812499384406024,
+        "expectedGateLine": "53.4"
+      },
+      "upperWitness": {
+        "id": "G2015-feb",
+        "birthUtc": "2015-02-04T06:56:00Z",
+        "side": "personality",
+        "longitude": 315.1249986448729,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+        "offsetLowerExclusiveDegrees": 2.9374986448729032,
+        "offsetUpperInclusiveDegrees": 3.8749986448729032,
+        "expectedGateLine": "13.3"
+      },
+      "atCurrentOffsetSunPairMismatchIDs": [
+        "G1995-feb",
+        "G2015-feb",
+        "G2015-repeatA",
+        "G2015-repeatB",
+        "G2015-tight",
+        "G2025-mar",
+        "G2025-tight"
+      ],
+      "constraints": [
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "personality",
+          "longitude": 282.1875019176009,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 3.750001917600912,
+          "offsetUpperInclusiveDegrees": 4.687501917600912,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "design",
+          "longitude": 194.1875019179159,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375019179159096,
+          "offsetUpperInclusiveDegrees": 3.8750019179159096,
+          "expectedGateLine": "48.6"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "personality",
+          "longitude": 282.18679416246886,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.749294162468857,
+          "offsetUpperInclusiveDegrees": 4.686794162468857,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "design",
+          "longitude": 194.18679416278206,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.874294162782064,
+          "offsetUpperInclusiveDegrees": 4.811794162782064,
+          "expectedGateLine": "48.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "personality",
+          "longitude": 306.56250917372995,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 3.75000917372995,
+          "offsetUpperInclusiveDegrees": 4.68750917372995,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "design",
+          "longitude": 218.56250917416807,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375091741680706,
+          "offsetUpperInclusiveDegrees": 3.8750091741680706,
+          "expectedGateLine": "44.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "personality",
+          "longitude": 292.4999977962086,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.7499977962086177,
+          "offsetUpperInclusiveDegrees": 4.687497796208618,
+          "expectedGateLine": "61.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "design",
+          "longitude": 204.49999779663267,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.8749977966326696,
+          "offsetUpperInclusiveDegrees": 4.81249779663267,
+          "expectedGateLine": "32.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "personality",
+          "longitude": 305.6250123015962,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 3.7500123015962004,
+          "offsetUpperInclusiveDegrees": 4.6875123015962,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "design",
+          "longitude": 217.6250123018832,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 2.937512301883203,
+          "offsetUpperInclusiveDegrees": 3.875012301883203,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "personality",
+          "longitude": 307.5000132411625,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 3.750013241162492,
+          "offsetUpperInclusiveDegrees": 4.687513241162492,
+          "expectedGateLine": "41.6"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "design",
+          "longitude": 219.50001324090317,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 2.937513240903172,
+          "offsetUpperInclusiveDegrees": 3.875013240903172,
+          "expectedGateLine": "44.3"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "personality",
+          "longitude": 285.12378984096745,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.873789840967447,
+          "offsetUpperInclusiveDegrees": 4.811289840967447,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "design",
+          "longitude": 197.12378984055408,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.061289840554082,
+          "offsetUpperInclusiveDegrees": 3.998789840554082,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "personality",
+          "longitude": 285.12449750390584,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.874497503905843,
+          "offsetUpperInclusiveDegrees": 4.811997503905843,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "design",
+          "longitude": 197.12449750346653,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.0619975034665288,
+          "offsetUpperInclusiveDegrees": 3.9994975034665288,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "personality",
+          "longitude": 285.1252051668211,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 2.937705166821104,
+          "offsetUpperInclusiveDegrees": 3.875205166821104,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "design",
+          "longitude": 197.12520516667578,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 3.0627051666757836,
+          "offsetUpperInclusiveDegrees": 4.000205166675784,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "personality",
+          "longitude": 242.93749773047824,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.874997730478242,
+          "offsetUpperInclusiveDegrees": 4.812497730478242,
+          "expectedGateLine": "34.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "design",
+          "longitude": 154.93749773040966,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.0624977304096603,
+          "offsetUpperInclusiveDegrees": 3.9999977304096603,
+          "expectedGateLine": "59.6"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499984842605,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.874998484260516,
+          "offsetUpperInclusiveDegrees": 4.812498484260516,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.7499984839521,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.062498483952112,
+          "offsetUpperInclusiveDegrees": 3.999998483952112,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499984842605,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.874998484260516,
+          "offsetUpperInclusiveDegrees": 4.812498484260516,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.7499984839521,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.062498483952112,
+          "offsetUpperInclusiveDegrees": 3.999998483952112,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499984842605,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.874998484260516,
+          "offsetUpperInclusiveDegrees": 4.812498484260516,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.7499984839521,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062498483952112,
+          "offsetUpperInclusiveDegrees": 3.999998483952112,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "personality",
+          "longitude": 20.749998346326162,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.874998346326162,
+          "offsetUpperInclusiveDegrees": 4.812498346326162,
+          "expectedGateLine": "51.6"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "design",
+          "longitude": 292.74999834672394,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.0624983467239417,
+          "offsetUpperInclusiveDegrees": 3.9999983467239417,
+          "expectedGateLine": "61.3"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "personality",
+          "longitude": 262.6249977952539,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.8749977952538757,
+          "offsetUpperInclusiveDegrees": 4.812497795253876,
+          "expectedGateLine": "26.6"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "design",
+          "longitude": 174.6249977956578,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.062497795657805,
+          "offsetUpperInclusiveDegrees": 3.999997795657805,
+          "expectedGateLine": "6.3"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "personality",
+          "longitude": 332.9374999134079,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 2.937499913407919,
+          "offsetUpperInclusiveDegrees": 3.874999913407919,
+          "expectedGateLine": "55.4"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "design",
+          "longitude": 244.93749991330023,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 3.062499913300229,
+          "offsetUpperInclusiveDegrees": 3.999999913300229,
+          "expectedGateLine": "34.6"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "personality",
+          "longitude": 90.1250011663674,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 2.9375011663673973,
+          "offsetUpperInclusiveDegrees": 3.8750011663673973,
+          "expectedGateLine": "15.3"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "design",
+          "longitude": 2.1250011661089783,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 3.062501166108973,
+          "offsetUpperInclusiveDegrees": 4.000001166108973,
+          "expectedGateLine": "25.5"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "personality",
+          "longitude": 308.562495829402,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.874995829401996,
+          "offsetUpperInclusiveDegrees": 4.812495829401996,
+          "expectedGateLine": "19.1"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "design",
+          "longitude": 220.56249582898124,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062495828981241,
+          "offsetUpperInclusiveDegrees": 3.999995828981241,
+          "expectedGateLine": "44.4"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "personality",
+          "longitude": 299.18684753276636,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.8743475327663646,
+          "offsetUpperInclusiveDegrees": 4.811847532766365,
+          "expectedGateLine": "60.3"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "design",
+          "longitude": 211.1868475331127,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.0618475331127115,
+          "offsetUpperInclusiveDegrees": 3.9993475331127115,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "personality",
+          "longitude": 299.1875543460777,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 2.937554346077718,
+          "offsetUpperInclusiveDegrees": 3.875054346077718,
+          "expectedGateLine": "60.4"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "design",
+          "longitude": 211.18755434632016,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 3.062554346320155,
+          "offsetUpperInclusiveDegrees": 4.000054346320155,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499938440602,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874999384406024,
+          "offsetUpperInclusiveDegrees": 4.812499384406024,
+          "expectedGateLine": "53.4"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "design",
+          "longitude": 20.874999384588005,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.062499384588005,
+          "offsetUpperInclusiveDegrees": 3.999999384588005,
+          "expectedGateLine": "42.1"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "personality",
+          "longitude": 118.25000088684045,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 2.9375008868404535,
+          "offsetUpperInclusiveDegrees": 3.8750008868404535,
+          "expectedGateLine": "56.3"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "design",
+          "longitude": 30.250000886428644,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 3.0625008864286443,
+          "offsetUpperInclusiveDegrees": 4.000000886428644,
+          "expectedGateLine": "3.5"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "personality",
+          "longitude": 43.24999716685863,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.874997166858627,
+          "offsetUpperInclusiveDegrees": 4.812497166858627,
+          "expectedGateLine": "24.6"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "design",
+          "longitude": 315.24999716731816,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.0624971673181562,
+          "offsetUpperInclusiveDegrees": 3.9999971673181562,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "personality",
+          "longitude": 296.3750031246924,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 2.937503124692398,
+          "offsetUpperInclusiveDegrees": 3.875003124692398,
+          "expectedGateLine": "60.1"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "design",
+          "longitude": 208.3750031250144,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0625031250143877,
+          "offsetUpperInclusiveDegrees": 4.000003125014388,
+          "expectedGateLine": "50.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.1249986448729,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374986448729032,
+          "offsetUpperInclusiveDegrees": 3.8749986448729032,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "design",
+          "longitude": 227.12499864521158,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 3.0624986452115763,
+          "offsetUpperInclusiveDegrees": 3.9999986452115763,
+          "expectedGateLine": "1.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499987027751,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 2.9374987027750876,
+          "offsetUpperInclusiveDegrees": 3.8749987027750876,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999870241882,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.0624987024188215,
+          "offsetUpperInclusiveDegrees": 3.9999987024188215,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499987027751,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 2.9374987027750876,
+          "offsetUpperInclusiveDegrees": 3.8749987027750876,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999870241882,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.0624987024188215,
+          "offsetUpperInclusiveDegrees": 3.9999987024188215,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499987027751,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9374987027750876,
+          "offsetUpperInclusiveDegrees": 3.8749987027750876,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999870241882,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0624987024188215,
+          "offsetUpperInclusiveDegrees": 3.9999987024188215,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "personality",
+          "longitude": 355.4374998817419,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 2.937499881741928,
+          "offsetUpperInclusiveDegrees": 3.874999881741928,
+          "expectedGateLine": "36.4"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "design",
+          "longitude": 267.43749988212306,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 3.0624998821230633,
+          "offsetUpperInclusiveDegrees": 3.9999998821230633,
+          "expectedGateLine": "11.6"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "personality",
+          "longitude": 300.1249988801649,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9374988801649238,
+          "offsetUpperInclusiveDegrees": 3.8749988801649238,
+          "expectedGateLine": "60.5"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "design",
+          "longitude": 212.12499887979791,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0624988797979142,
+          "offsetUpperInclusiveDegrees": 3.9999988797979142,
+          "expectedGateLine": "28.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "personality",
+          "longitude": 285.1259128297134,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 2.9384128297134,
+          "offsetUpperInclusiveDegrees": 3.8759128297134,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "design",
+          "longitude": 197.12591282926144,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 3.0634128292614378,
+          "offsetUpperInclusiveDegrees": 4.000912829261438,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "personality",
+          "longitude": 49.8254683740275,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 2.9504683740275013,
+          "offsetUpperInclusiveDegrees": 3.8879683740275013,
+          "expectedGateLine": "23.2"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "design",
+          "longitude": 321.82546837368795,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 3.0754683736879542,
+          "offsetUpperInclusiveDegrees": 4.012968373687954,
+          "expectedGateLine": "49.4"
+        }
+      ]
+    },
+    "cSwiss131330": {
+      "caseRecordCount": 32,
+      "uniqueBirthUtcCount": 28,
+      "sunConstraintCount": 64,
+      "offsetLowerExclusiveDegrees": 3.874997499485559,
+      "offsetUpperInclusiveDegrees": 3.8749967598370176,
+      "feasible": false,
+      "gapIfInfeasibleDegrees": 7.396485415256393e-07,
+      "lowerWitness": {
+        "id": "G2005-jul11",
+        "birthUtc": "2005-07-11T01:47:00Z",
+        "side": "personality",
+        "longitude": 108.87499749948556,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+        "offsetLowerExclusiveDegrees": 3.874997499485559,
+        "offsetUpperInclusiveDegrees": 4.812497499485559,
+        "expectedGateLine": "53.4"
+      },
+      "upperWitness": {
+        "id": "G2015-feb",
+        "birthUtc": "2015-02-04T06:56:00Z",
+        "side": "personality",
+        "longitude": 315.124996759837,
+        "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+        "offsetLowerExclusiveDegrees": 2.9374967598370176,
+        "offsetUpperInclusiveDegrees": 3.8749967598370176,
+        "expectedGateLine": "13.3"
+      },
+      "atCurrentOffsetSunPairMismatchIDs": [
+        "G1995-feb",
+        "G1995-jun",
+        "G2005-jul20",
+        "G2015-feb",
+        "G2015-repeatA",
+        "G2015-repeatB",
+        "G2015-tight",
+        "G2025-mar",
+        "G2025-tight"
+      ],
+      "constraints": [
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "personality",
+          "longitude": 282.1875000329447,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 3.7500000329446834,
+          "offsetUpperInclusiveDegrees": 4.687500032944683,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-after",
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "side": "design",
+          "longitude": 194.18750003325164,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-after.json",
+          "offsetLowerExclusiveDegrees": 2.937500033251638,
+          "offsetUpperInclusiveDegrees": 3.875000033251638,
+          "expectedGateLine": "48.6"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "personality",
+          "longitude": 282.18679227781263,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.7492922778126285,
+          "offsetUpperInclusiveDegrees": 4.6867922778126285,
+          "expectedGateLine": "38.3"
+        },
+        {
+          "id": "D1985-before",
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "side": "design",
+          "longitude": 194.18679227811782,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1985-before.json",
+          "offsetLowerExclusiveDegrees": 3.874292278117821,
+          "offsetUpperInclusiveDegrees": 4.811792278117821,
+          "expectedGateLine": "48.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "personality",
+          "longitude": 306.562507288916,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 3.750007288915981,
+          "offsetUpperInclusiveDegrees": 4.687507288915981,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "D1995-after",
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "side": "design",
+          "longitude": 218.56250728937687,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D1995-after.json",
+          "offsetLowerExclusiveDegrees": 2.9375072893768674,
+          "offsetUpperInclusiveDegrees": 3.8750072893768674,
+          "expectedGateLine": "44.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "personality",
+          "longitude": 292.4999959112982,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.7499959112981855,
+          "offsetUpperInclusiveDegrees": 4.6874959112981855,
+          "expectedGateLine": "61.2"
+        },
+        {
+          "id": "D2005-before",
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "side": "design",
+          "longitude": 204.49999591171255,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2005-before.json",
+          "offsetLowerExclusiveDegrees": 3.8749959117125456,
+          "offsetUpperInclusiveDegrees": 4.812495911712546,
+          "expectedGateLine": "32.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "personality",
+          "longitude": 305.6250104165508,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 3.750010416550822,
+          "offsetUpperInclusiveDegrees": 4.687510416550822,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "D2015-after",
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "side": "design",
+          "longitude": 217.6250104168293,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2015-after.json",
+          "offsetLowerExclusiveDegrees": 2.937510416829298,
+          "offsetUpperInclusiveDegrees": 3.875010416829298,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "personality",
+          "longitude": 307.50001135600047,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 3.7500113560004706,
+          "offsetUpperInclusiveDegrees": 4.687511356000471,
+          "expectedGateLine": "41.6"
+        },
+        {
+          "id": "D2025-after",
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "side": "design",
+          "longitude": 219.50001135572646,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/D2025-after.json",
+          "offsetLowerExclusiveDegrees": 2.937511355726457,
+          "offsetUpperInclusiveDegrees": 3.875011355726457,
+          "expectedGateLine": "44.3"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "personality",
+          "longitude": 285.1237879563004,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.8737879563004185,
+          "offsetUpperInclusiveDegrees": 4.8112879563004185,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1230",
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "side": "design",
+          "longitude": 197.1237879558907,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1230.json",
+          "offsetLowerExclusiveDegrees": 3.061287955890691,
+          "offsetUpperInclusiveDegrees": 3.998787955890691,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "personality",
+          "longitude": 285.1244956192388,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.8744956192388145,
+          "offsetUpperInclusiveDegrees": 4.8119956192388145,
+          "expectedGateLine": "38.6"
+        },
+        {
+          "id": "G1985-1231",
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "side": "design",
+          "longitude": 197.1244956188031,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1231.json",
+          "offsetLowerExclusiveDegrees": 3.0619956188031097,
+          "offsetUpperInclusiveDegrees": 3.9994956188031097,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "personality",
+          "longitude": 285.125203282154,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 2.9377032821540183,
+          "offsetUpperInclusiveDegrees": 3.8752032821540183,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "G1985-1232",
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "side": "design",
+          "longitude": 197.12520328201234,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-1232.json",
+          "offsetLowerExclusiveDegrees": 3.062703282012336,
+          "offsetUpperInclusiveDegrees": 4.000203282012336,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "personality",
+          "longitude": 242.9374958457995,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.8749958457995035,
+          "offsetUpperInclusiveDegrees": 4.8124958457995035,
+          "expectedGateLine": "34.3"
+        },
+        {
+          "id": "G1985-nov",
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "side": "design",
+          "longitude": 154.93749584572396,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-nov.json",
+          "offsetLowerExclusiveDegrees": 3.0624958457239586,
+          "offsetUpperInclusiveDegrees": 3.9999958457239586,
+          "expectedGateLine": "59.6"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatA",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.74999659929424,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.062496599294235,
+          "offsetUpperInclusiveDegrees": 3.999996599294235,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-repeatB",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.74999659929424,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.062496599294235,
+          "offsetUpperInclusiveDegrees": 3.999996599294235,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "personality",
+          "longitude": 305.7499965996151,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.8749965996150877,
+          "offsetUpperInclusiveDegrees": 4.812496599615088,
+          "expectedGateLine": "41.4"
+        },
+        {
+          "id": "G1985-tight",
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "side": "design",
+          "longitude": 217.74999659929424,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1985-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062496599294235,
+          "offsetUpperInclusiveDegrees": 3.999996599294235,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "personality",
+          "longitude": 20.749996461526724,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.874996461526724,
+          "offsetUpperInclusiveDegrees": 4.812496461526724,
+          "expectedGateLine": "51.6"
+        },
+        {
+          "id": "G1995-apr",
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "side": "design",
+          "longitude": 292.7499964619269,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-apr.json",
+          "offsetLowerExclusiveDegrees": 3.062496461926912,
+          "offsetUpperInclusiveDegrees": 3.999996461926912,
+          "expectedGateLine": "61.3"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "personality",
+          "longitude": 262.62499591045446,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.8749959104544587,
+          "offsetUpperInclusiveDegrees": 4.812495910454459,
+          "expectedGateLine": "26.6"
+        },
+        {
+          "id": "G1995-dec",
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "side": "design",
+          "longitude": 174.62499591084332,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-dec.json",
+          "offsetLowerExclusiveDegrees": 3.0624959108433245,
+          "offsetUpperInclusiveDegrees": 3.9999959108433245,
+          "expectedGateLine": "6.3"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "personality",
+          "longitude": 332.93749802860185,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374980286018513,
+          "offsetUpperInclusiveDegrees": 3.8749980286018513,
+          "expectedGateLine": "55.4"
+        },
+        {
+          "id": "G1995-feb",
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "side": "design",
+          "longitude": 244.93749802851013,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-feb.json",
+          "offsetLowerExclusiveDegrees": 3.0624980285101344,
+          "offsetUpperInclusiveDegrees": 3.9999980285101344,
+          "expectedGateLine": "34.6"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "personality",
+          "longitude": 90.12499928156265,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 2.9374992815626513,
+          "offsetUpperInclusiveDegrees": 3.8749992815626513,
+          "expectedGateLine": "15.3"
+        },
+        {
+          "id": "G1995-jun",
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "side": "design",
+          "longitude": 2.124999281306475,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-jun.json",
+          "offsetLowerExclusiveDegrees": 3.0624992813064864,
+          "offsetUpperInclusiveDegrees": 3.9999992813064864,
+          "expectedGateLine": "25.5"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "personality",
+          "longitude": 308.56249394458314,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.8749939445831387,
+          "offsetUpperInclusiveDegrees": 4.812493944583139,
+          "expectedGateLine": "19.1"
+        },
+        {
+          "id": "G1995-tight",
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "side": "design",
+          "longitude": 220.56249394418694,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G1995-tight.json",
+          "offsetLowerExclusiveDegrees": 3.06249394418694,
+          "offsetUpperInclusiveDegrees": 3.99999394418694,
+          "expectedGateLine": "44.4"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "personality",
+          "longitude": 299.1868456478341,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.8743456478341045,
+          "offsetUpperInclusiveDegrees": 4.8118456478341045,
+          "expectedGateLine": "60.3"
+        },
+        {
+          "id": "G2005-0411",
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "side": "design",
+          "longitude": 211.18684564819424,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0411.json",
+          "offsetLowerExclusiveDegrees": 3.061845648194236,
+          "offsetUpperInclusiveDegrees": 3.999345648194236,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "personality",
+          "longitude": 299.18755246114546,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 2.937552461145458,
+          "offsetUpperInclusiveDegrees": 3.875052461145458,
+          "expectedGateLine": "60.4"
+        },
+        {
+          "id": "G2005-0412",
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "side": "design",
+          "longitude": 211.18755246140174,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-0412.json",
+          "offsetLowerExclusiveDegrees": 3.0625524614017365,
+          "offsetUpperInclusiveDegrees": 4.0000524614017365,
+          "expectedGateLine": "50.6"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "personality",
+          "longitude": 108.87499749948556,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.874997499485559,
+          "offsetUpperInclusiveDegrees": 4.812497499485559,
+          "expectedGateLine": "53.4"
+        },
+        {
+          "id": "G2005-jul11",
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "side": "design",
+          "longitude": 20.8749974996609,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul11.json",
+          "offsetLowerExclusiveDegrees": 3.0624974996609,
+          "offsetUpperInclusiveDegrees": 3.9999974996609,
+          "expectedGateLine": "42.1"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "personality",
+          "longitude": 118.24999900189322,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 2.9374990018932152,
+          "offsetUpperInclusiveDegrees": 3.8749990018932152,
+          "expectedGateLine": "56.3"
+        },
+        {
+          "id": "G2005-jul20",
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "side": "design",
+          "longitude": 30.249999001503923,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-jul20.json",
+          "offsetLowerExclusiveDegrees": 3.062499001503923,
+          "offsetUpperInclusiveDegrees": 3.999999001503923,
+          "expectedGateLine": "3.5"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "personality",
+          "longitude": 43.2499952819267,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.874995281926701,
+          "offsetUpperInclusiveDegrees": 4.812495281926701,
+          "expectedGateLine": "24.6"
+        },
+        {
+          "id": "G2005-may",
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "side": "design",
+          "longitude": 315.2499952814567,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-may.json",
+          "offsetLowerExclusiveDegrees": 3.062495281456677,
+          "offsetUpperInclusiveDegrees": 3.999995281456677,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "personality",
+          "longitude": 296.3750012397706,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9375012397705973,
+          "offsetUpperInclusiveDegrees": 3.8750012397705973,
+          "expectedGateLine": "60.1"
+        },
+        {
+          "id": "G2005-tight",
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "side": "design",
+          "longitude": 208.3750012400961,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2005-tight.json",
+          "offsetLowerExclusiveDegrees": 3.062501240096111,
+          "offsetUpperInclusiveDegrees": 4.000001240096111,
+          "expectedGateLine": "50.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "personality",
+          "longitude": 315.124996759837,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 2.9374967598370176,
+          "offsetUpperInclusiveDegrees": 3.8749967598370176,
+          "expectedGateLine": "13.3"
+        },
+        {
+          "id": "G2015-feb",
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "side": "design",
+          "longitude": 227.12499676017154,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-feb.json",
+          "offsetLowerExclusiveDegrees": 3.062496760171541,
+          "offsetUpperInclusiveDegrees": 3.999996760171541,
+          "expectedGateLine": "1.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatA",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999681736492,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatA.json",
+          "offsetLowerExclusiveDegrees": 3.0624968173649165,
+          "offsetUpperInclusiveDegrees": 3.9999968173649165,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-repeatB",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999681736492,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-repeatB.json",
+          "offsetLowerExclusiveDegrees": 3.0624968173649165,
+          "offsetUpperInclusiveDegrees": 3.9999968173649165,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "personality",
+          "longitude": 305.7499968177302,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 2.9374968177302208,
+          "offsetUpperInclusiveDegrees": 3.8749968177302208,
+          "expectedGateLine": "41.5"
+        },
+        {
+          "id": "G2015-tight",
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "side": "design",
+          "longitude": 217.74999681736492,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2015-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0624968173649165,
+          "offsetUpperInclusiveDegrees": 3.9999968173649165,
+          "expectedGateLine": "44.1"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "personality",
+          "longitude": 355.43749799656126,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 2.9374979965612624,
+          "offsetUpperInclusiveDegrees": 3.8749979965612624,
+          "expectedGateLine": "36.4"
+        },
+        {
+          "id": "G2025-mar",
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "side": "design",
+          "longitude": 267.4374979969317,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-mar.json",
+          "offsetLowerExclusiveDegrees": 3.062497996931711,
+          "offsetUpperInclusiveDegrees": 3.999997996931711,
+          "expectedGateLine": "11.6"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "personality",
+          "longitude": 300.1249969949901,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 2.937496994990113,
+          "offsetUpperInclusiveDegrees": 3.874996994990113,
+          "expectedGateLine": "60.5"
+        },
+        {
+          "id": "G2025-tight",
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "side": "design",
+          "longitude": 212.1249969946145,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/G2025-tight.json",
+          "offsetLowerExclusiveDegrees": 3.0624969946144915,
+          "offsetUpperInclusiveDegrees": 3.9999969946144915,
+          "expectedGateLine": "28.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "personality",
+          "longitude": 285.1259109450463,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 2.9384109450463143,
+          "offsetUpperInclusiveDegrees": 3.8759109450463143,
+          "expectedGateLine": "54.1"
+        },
+        {
+          "id": "jovian-1985-1233",
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "side": "design",
+          "longitude": 197.12591094459802,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-1985-1233.json",
+          "offsetLowerExclusiveDegrees": 3.0634109445980187,
+          "offsetUpperInclusiveDegrees": 4.000910944598019,
+          "expectedGateLine": "57.3"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "personality",
+          "longitude": 49.82546648916115,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 2.950466489161151,
+          "offsetUpperInclusiveDegrees": 3.887966489161151,
+          "expectedGateLine": "23.2"
+        },
+        {
+          "id": "jovian-control",
+          "birthUtc": "2000-05-10T04:30:00Z",
+          "side": "design",
+          "longitude": 321.82546648884306,
+          "sourceFile": "/tmp/td-ohd-golden-audit/browser-evidence/jovian-control.json",
+          "offsetLowerExclusiveDegrees": 3.0754664888430625,
+          "offsetUpperInclusiveDegrees": 4.0129664888430625,
+          "expectedGateLine": "49.4"
+        }
+      ]
+    }
+  }
+}

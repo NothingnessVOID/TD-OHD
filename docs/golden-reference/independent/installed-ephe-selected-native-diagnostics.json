@@ -1,0 +1,112 @@
+[
+  {
+    "personality": {
+      "utc": "1985-01-05T12:33:00.0000000Z",
+      "jd": 2446071.0229166667,
+      "longitude": 285.1259109450465,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "1984-10-10T06:22:15.0998997Z",
+      "jd": 2445983.765452535,
+      "longitude": 197.12591094091658,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "id": "1985-P38.6-to-54.1-after",
+    "localDate": "1985-01-05",
+    "localTime": "12:33",
+    "ianaZone": "Europe/London"
+  },
+  {
+    "personality": {
+      "utc": "1995-01-11T11:00:00.0000000Z",
+      "jd": 2449728.9583333335,
+      "longitude": 290.75128941607977,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "1994-10-16T08:29:06.8381345Z",
+      "jd": 2449641.853551366,
+      "longitude": 202.7512894191321,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "id": "1995-P54.6-to-61.1-after",
+    "localDate": "1995-01-11",
+    "localTime": "11:00",
+    "ianaZone": "Europe/London"
+  },
+  {
+    "personality": {
+      "utc": "2005-01-19T04:13:00.0000000Z",
+      "jd": 2453389.675694444,
+      "longitude": 299.1882592743478,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "2004-10-24T06:27:01.7193469Z",
+      "jd": 2453302.7687698957,
+      "longitude": 211.18825927577652,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "id": "2005-P60.3-to-60.4-after",
+    "localDate": "2005-01-19",
+    "localTime": "04:13",
+    "ianaZone": "Europe/London"
+  },
+  {
+    "personality": {
+      "utc": "2015-01-16T20:20:00.0000000Z",
+      "jd": 2457039.347222222,
+      "longitude": 296.37630668919286,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "2014-10-21T20:48:13.0961296Z",
+      "jd": 2456952.366818241,
+      "longitude": 208.3763066927935,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "id": "2015-P61.6-to-60.1-after",
+    "localDate": "2015-01-16",
+    "localTime": "20:20",
+    "ianaZone": "Europe/London"
+  },
+  {
+    "personality": {
+      "utc": "2025-01-21T19:12:00.0000000Z",
+      "jd": 2460697.3,
+      "longitude": 302.0011471752125,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "design": {
+      "utc": "2024-10-26T22:35:52.0336567Z",
+      "jd": 2460610.441574456,
+      "longitude": 214.00114717617828,
+      "source": "SwissEph",
+      "frame": "GeocentricEclipticOfDate",
+      "flags": 258
+    },
+    "id": "2025-P60.6-to-41.1-after",
+    "localDate": "2025-01-21",
+    "localTime": "19:12",
+    "ianaZone": "Europe/London"
+  }
+]

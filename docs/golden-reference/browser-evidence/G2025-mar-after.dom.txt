@@ -1,0 +1,1827 @@
+- link "Skip to content":
+  - /url: "#main"
+- complementary:
+  - paragraph:
+    - link "Study Season | Ends Oct 4 →":
+      - /url: /collections/study-season
+  - paragraph:
+    - link "25% off Beginner & Intermediate lectures, $50 off Learning Paths":
+      - /url: /collections/study-season
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+- banner:
+  - button "Menu":
+    - generic: Menu
+  - link "Jovian Archive":
+    - /url: /
+    - generic: Jovian Archive
+  - list:
+    - link "Search":
+      - /url: /search
+      - generic: Search
+    - generic: Login
+    - link "Cart 0 items":
+      - /url: /cart
+      - generic: Cart
+      - generic: 0 items
+      - text: "0"
+- main:
+  - tablist:
+    - tab "Personal Chart" [selected]
+    - tab "Relationship Chart"
+    - tab "Just Now Chart"
+  - paragraph: THE ORIGINAL HUMAN DESIGN CHART • CREATED BY RA URU HU
+  - paragraph: Free Human Design Chart Calculator
+  - paragraph: Calculate your free Human Design chart—your unique blueprint for understanding yourself. Learn how you’re designed to make decisions, connect with others, and align with your authentic nature.
+  - button:
+  - heading "Properties" [level=3]
+  - paragraph: Birth Data
+  - generic: 
+  - paragraph: Name
+  - paragraph: G2025-mar-after
+  - generic: 
+  - paragraph: Date and Time (Local)
+  - paragraph: March 15, 2025, 18:57
+  - generic: 
+  - paragraph: Date and Time (UTC)
+  - paragraph: March 15, 2025, 18:57
+  - generic: 
+  - paragraph: Location
+  - paragraph: London, United Kingdom
+  - paragraph: Properties
+  - generic: 
+  - paragraph: Type
+  - paragraph: Manifestor
+  - generic: 
+  - paragraph: Strategy
+  - paragraph: To Inform
+  - generic: 
+  - paragraph: Signature
+  - paragraph: Peace
+  - generic: 
+  - paragraph: Not-Self Theme
+  - paragraph: Anger
+  - generic: 
+  - paragraph: Authority
+  - paragraph: Solar Plexus
+  - generic: 
+  - paragraph: Definition
+  - paragraph: Single
+  - generic: 
+  - paragraph: Incarnation Cross
+  - paragraph: Right Angle Cross of Eden (36/6 | 11/12)
+  - generic: 
+  - paragraph: Profile
+  - paragraph: 4/6
+  - generic: 
+  - paragraph: Variable
+  - paragraph: PLL DRR
+  - generic: Recent Charts
+  - generic: G2025-mar-after
+  - generic: G2025-mar-before
+  - generic: G2025-tight-after
+  - generic: G2025-tight-before
+  - generic: G2015-feb-after
+  - generic: G2015-feb-before
+  - generic: G2015-tight-after
+  - generic: G2015-tight-before
+  - generic: G2005-jul20-after
+  - generic: G2005-jul20-before
+  - button "Classic":
+    - text: Classic
+  - button "Download PDF":
+    - text: Download PDF
+  - heading "50M+" [level=5]
+  - paragraph: Charts generated
+  - heading "25+" [level=5]
+  - paragraph: Years of data
+  - heading "100%" [level=5]
+  - paragraph: Free and accurate
+  - paragraph: THE HOME OF RA URU HU'S OFFICIAL TEACHINGS
+  - paragraph: What is Human Design?
+  - paragraph: "Human Design is the science of differentiation, a system that maps how your energy is designed to operate, calculated from your birth date, time, and place. It's based on a simple premise: every single human being has the potential to live out their uniqueness. That's what the system is meant for. It was founded by Ra Uru Hu in 1987, and he spent the rest of his life teaching it with precision. Jovian Archive, which he created in 1999, is its official source."
+  - heading "The BodyGraph" [level=5]
+  - paragraph: What makes it work is the BodyGraph, a map of your energetic design drawn from the moment you were born. It shows you nine Centers, the Channels connecting them, and the Gates within those Channels. Each of these has a specific role in how you think, feel, decide, and move through life. The BodyGraph synthesizes ancient systems—the I Ching, astrology, the Chakra system, Kabbalah—but it's none of those things. It's something entirely new.
+  - heading "Strategy & Authority" [level=5]
+  - paragraph: "The real power is practical. Human Design gives you two tools: your Type with its Strategy, and your Inner Authority. Your Type—Generator (including Manifesting Generator), Projector, Manifestor, or Reflector—tells you how you're designed to move through the world. Your Inner Authority tells you how you're equipped to make decisions. When you honor both, you stop fighting yourself. You stop trying to be someone you're not. You start living as yourself."
+  - heading "Your Conditioning" [level=5]
+  - paragraph: The system also reveals what's conditioned in you, the places where you've been taught to doubt yourself or operate against your design. It shows you where you're genuinely open and receptive to others, and where you have consistent energy. It teaches you to distinguish between your own unique design, and the energy you've absorbed from your environment.
+  - paragraph: Human Design isn't philosophy. It's an experiment. You get your chart free, at the top of this page, you learn your mechanics, and you test it. Live it. See what happens when you actually follow what it suggests. That's how you know it works.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - generic: Human Design isn't philosophy. It's an experiment. Live it.
+  - heading "Learn more about your Human Design chart" [level=2]
+  - paragraph: Your Human Design chart is a mechanical map of who you are. Also called a BodyGraph, it's calculated from your birth date, time, and place, and it shows how your energy is built to operate, where you're most susceptible to conditioning, and how you can make decisions as yourself. It's not about belief. It's something you can test in your own life. Here's what each element of your chart reveals.
+  - group "1 / 6":
+    - link:
+      - /url: /pages/type-and-strategy-in-human-design
+    - link "Type and Strategy":
+      - /url: /pages/type-and-strategy-in-human-design
+      - heading "Type and Strategy" [level=5]
+    - paragraph: Type and Strategy are the foundation of Human Design. They are the keys to understanding how your energy operates and how you can navigate life with less resistance and more alignment. If you’re new to Human Design, this is where you begin.
+    - link "Learn more":
+      - /url: /pages/type-and-strategy-in-human-design
+      - generic: Learn more
+  - group "2 / 6":
+    - link:
+      - /url: /pages/what-is-inner-authority-in-human-design
+    - link "Inner Authority":
+      - /url: /pages/what-is-inner-authority-in-human-design
+      - heading "Inner Authority" [level=5]
+    - paragraph: Inner Authority is the cornerstone of Human Design. It’s the mechanism within you that knows what’s correct for you, the part of you that can guide your decisions in alignment with your true nature. It’s not about the mind, not about logic or reasoning.
+    - link "Learn more":
+      - /url: /pages/what-is-inner-authority-in-human-design
+      - generic: Learn more
+  - group "3 / 6":
+    - link:
+      - /url: /pages/understanding-the-not-self-in-human-design
+    - link "Not-Self and Conditioning":
+      - /url: /pages/understanding-the-not-self-in-human-design
+      - heading "Not-Self and Conditioning" [level=5]
+    - paragraph: The Not-Self and conditioning are central to understanding Human Design. They are the forces that pull you away from your true nature, the mechanics that keep you trapped in a life of resistance and struggle.
+    - link "Learn more":
+      - /url: /pages/understanding-the-not-self-in-human-design
+      - generic: Learn more
+  - group "4 / 6":
+    - link:
+      - /url: /pages/understanding-definition-in-human-design
+    - link "Definition":
+      - /url: /pages/understanding-definition-in-human-design
+      - heading "Definition" [level=5]
+    - paragraph: Definition in Human Design is the foundation of your uniqueness. It represents the consistent, reliable energy in your Design—the parts of you that are fixed and unchanging.
+    - link "Learn more":
+      - /url: /pages/understanding-definition-in-human-design
+      - generic: Learn more
+  - group "5 / 6":
+    - link:
+      - /url: /pages/understanding-profile-in-human-design
+    - link "Profile":
+      - /url: /pages/understanding-profile-in-human-design
+      - heading "Profile" [level=5]
+    - paragraph: Profiles in Human Design are like the roles we play in life, the costumes we wear on the stage of existence. They’re derived from the combination of two lines in your BodyGraph—one from your Personality (conscious) and one from your Design (unconscious).
+    - link "Learn more":
+      - /url: /pages/understanding-profile-in-human-design
+      - generic: Learn more
+  - group "6 / 6":
+    - link:
+      - /url: /pages/incarnation-crosses-in-human-design
+    - link "Incarnation Cross":
+      - /url: /pages/incarnation-crosses-in-human-design
+      - heading "Incarnation Cross" [level=5]
+    - paragraph: In Human Design, your Incarnation Cross is the overarching theme of your life. It’s the story you’re here to live out, the purpose that drives your existence. Think of it as the plotline of your life’s movie, the narrative that unfolds as you move through the world.
+    - link "Learn more":
+      - /url: /pages/incarnation-crosses-in-human-design
+      - generic: Learn more
+  - heading "10% Off + Free eBook" [level=2]
+  - paragraph:
+    - text: Begin your Human Design journey with our free ebook and introductory email series guiding you through the
+    - strong: 3 Steps to Transformation
+    - text: . Plus, get
+    - strong: 10% off
+    - text: your first purchase.
+  - checkbox "Verified" [checked]
+  - generic: Verified
+  - link:
+    - /url: https://altcha.org/
+  - textbox "Name":
+    - /placeholder: " "
+  - generic: Name
+  - textbox "E-mail":
+    - /placeholder: " "
+  - generic: E-mail
+  - button "Subscribe":
+    - generic: Subscribe
+  - paragraph: We hate spam and promise to keep your email address safe.
+  - heading "How to read your Human Design chart" [level=2]
+  - paragraph: Your BodyGraph is a map of nine Centers connected by Channels, with Gates at either end. The colored areas are what is fixed and reliable in you. The white areas are where the world enters and where conditioning lives. Learn to read the architecture — Centers, Channels, Gates, Definition, and the red and black of your Design and Personality — and you stop guessing about who you are.
+  - group "1 / 6":
+    - link:
+      - /url: /pages/the-nine-centers-of-the-bodygraph-in-human-design
+    - link "The Nine Centers":
+      - /url: /pages/the-nine-centers-of-the-bodygraph-in-human-design
+      - heading "The Nine Centers" [level=5]
+    - paragraph: In Human Design, the Centers are the nine energy hubs in the BodyGraph, each representing a specific function in your life. They are the foundation of how energy flows through you and how you interact with the world.
+    - link "Learn more":
+      - /url: /pages/the-nine-centers-of-the-bodygraph-in-human-design
+      - generic: Learn more
+  - group "2 / 6":
+    - link:
+      - /url: /pages/channels-in-human-design-the-life-force
+    - link "36 Channels":
+      - /url: /pages/channels-in-human-design-the-life-force
+      - heading "36 Channels" [level=5]
+    - paragraph: Channels in Human Design are the energetic pathways that connect the nine Centers in the BodyGraph. They are the bridges between Centers, creating a flow of energy and information.
+    - link "Learn more":
+      - /url: /pages/channels-in-human-design-the-life-force
+      - generic: Learn more
+  - group "3 / 6":
+    - link:
+      - /url: /pages/gates-and-hexagrams-in-human-design
+    - link "64 Gates and Hexagrams":
+      - /url: /pages/gates-and-hexagrams-in-human-design
+      - heading "64 Gates and Hexagrams" [level=5]
+    - paragraph: Gates and Hexagrams are foundational elements of the Human Design System, deeply tied to the mechanics of your energy and the way you interact with the world. Let’s break it down.
+    - link "Learn more":
+      - /url: /pages/gates-and-hexagrams-in-human-design
+      - generic: Learn more
+  - group "4 / 6":
+    - link:
+      - /url: /pages/what-is-circuitry-in-human-design
+    - link "Circuitry":
+      - /url: /pages/what-is-circuitry-in-human-design
+      - heading "Circuitry" [level=5]
+    - paragraph: Circuitry in Human Design is the matrix of energetic pathways that connect the Centers in the BodyGraph. These pathways, called Channels, are grouped into Circuits, each with its own unique purpose and theme.
+    - link "Learn more":
+      - /url: /pages/what-is-circuitry-in-human-design
+      - generic: Learn more
+  - group "5 / 6":
+    - link:
+      - /url: /pages/the-black-and-red-in-human-design
+    - link "Personality and Design":
+      - /url: /pages/the-black-and-red-in-human-design
+      - heading "Personality and Design" [level=5]
+    - paragraph: Personality and Design—these are the two fundamental aspects of what makes you, you, in the Human Design System. They are the core of what we call the “human binary,” the duality that defines our existence.
+    - link "Learn more":
+      - /url: /pages/the-black-and-red-in-human-design
+      - generic: Learn more
+  - group "6 / 6":
+    - link:
+      - /url: /pages/the-6-lines-of-the-hexagram-in-human-design
+    - link "The Six Lines":
+      - /url: /pages/the-6-lines-of-the-hexagram-in-human-design
+      - heading "The Six Lines" [level=5]
+    - paragraph: The six lines in Human Design are the foundation of the hexagram structure, and they represent six archetypal ways of being in the world. Each line has its own unique theme, its own way of expressing itself, and its own role in the grand scheme of things.
+    - link "Learn more":
+      - /url: /pages/the-6-lines-of-the-hexagram-in-human-design
+      - generic: Learn more
+  - heading "What to do after you get your chart" [level=2]
+  - paragraph: "Your Type is the starting point for reading your Human Design chart. It's determined by the definition in your BodyGraph — which Centers are active and how they connect — and it tells you the nature of your aura and the Strategy that removes resistance from your life. There are four Types: Manifestor, Generator (including the Manifesting Generator subtype), Projector, and Reflector. Each operates differently. Start with yours."
+  - group "1 / 5":
+    - link:
+      - /url: /pages/generator-human-design
+    - link "What is a Generator?":
+      - /url: /pages/generator-human-design
+      - heading "What is a Generator?" [level=5]
+    - paragraph: A Generator in Human Design has a defined Sacral Center and is here to respond, not initiate. Learn the strategy, signature, and mechanics of Generator energy.
+    - link "Learn more":
+      - /url: /pages/generator-human-design
+      - generic: Learn more
+  - group "2 / 5":
+    - link:
+      - /url: /pages/manifesting-generator-human-design
+    - link "What is a Manifesting Generator?":
+      - /url: /pages/manifesting-generator-human-design
+      - heading "What is a Manifesting Generator?" [level=5]
+    - paragraph: A Manifesting Generator in Human Design is a Generator with manifesting potential — same strategy, faster tempo. Learn the MG mechanics, sacral response, and not-self theme.
+    - link "Learn more":
+      - /url: /pages/manifesting-generator-human-design
+      - generic: Learn more
+  - group "3 / 5":
+    - link:
+      - /url: /pages/manifestor-human-design
+    - link "What is a Manifestor?":
+      - /url: /pages/manifestor-human-design
+      - heading "What is a Manifestor?" [level=5]
+    - paragraph: A Manifestor in Human Design is here to initiate. Learn the closed, repelling aura, the inform strategy, the peace signature, and what anger is telling you.
+    - link "Learn more":
+      - /url: /pages/manifestor-human-design
+      - generic: Learn more
+  - group "4 / 5":
+    - link:
+      - /url: /pages/projector-human-design
+    - link "What is a Projector?":
+      - /url: /pages/projector-human-design
+      - heading "What is a Projector?" [level=5]
+    - paragraph: A Projector in Human Design has a focused, penetrating aura and is here to guide. Learn what recognition and invitation mean, and why success follows when you honor them.
+    - link "Learn more":
+      - /url: /pages/projector-human-design
+      - generic: Learn more
+  - group "5 / 5":
+    - link:
+      - /url: /pages/reflector-human-design
+    - link "What is a Reflector?":
+      - /url: /pages/reflector-human-design
+      - heading "What is a Reflector?" [level=5]
+    - paragraph: A Reflector in Human Design has no fixed definition and a resistant, sampling aura. Learn the lunar cycle strategy, the surprise signature, and why environment is everything.
+    - link "Learn more":
+      - /url: /pages/reflector-human-design
+      - generic: Learn more
+  - paragraph: Human Design Questions
+  - heading "Questions about your Human Design Chart" [level=2]
+  - paragraph: New to Human Design? Here's what you need to know before and after you generate your Human Design BodyGraph.
+  - generic "What is a Human Design chart?":
+    - generic: What is a Human Design chart?
+  - generic "How can Human Design help me in daily life?":
+    - generic: How can Human Design help me in daily life?
+  - generic "How is my Human Design chart calculated?":
+    - generic: How is my Human Design chart calculated?
+  - generic "Why should I get my Human Design chart?":
+    - generic: Why should I get my Human Design chart?
+  - generic "Why do I need my exact birth time?":
+    - generic: Why do I need my exact birth time?
+  - generic "What will my Human Design chart tell me about myself?":
+    - generic: What will my Human Design chart tell me about myself?
+  - generic "What do the numbers on my chart mean?":
+    - generic: What do the numbers on my chart mean?
+  - generic "Is Human Design the same as astrology?":
+    - generic: Is Human Design the same as astrology?
+  - generic "Who created Human Design?":
+    - generic: Who created Human Design?
+  - generic "Is this chart really free?":
+    - generic: Is this chart really free?
+  - generic "What should I do after I get my chart?":
+    - generic: What should I do after I get my chart?
+  - generic "How is this different from other Human Design chart calculators?":
+    - generic: How is this different from other Human Design chart calculators?
+  - heading "Ra Uru Hu's lectures & courses about decision-making Ra Uru Hu's lectures & courses about decision-making" [level=2]:
+    - text: Ra Uru Hu's lectures & courses about decision-making
+    - generic: Ra Uru Hu's lectures & courses
+    - generic: about decision-making
+  - paragraph: "Discover the core mechanics of the four Types: Strategy, Signature, and the Not-Self Theme. Receive practical guidance to align with your Authority and make decisions you can trust."
+  - link "Explore all":
+    - /url: /collections/decision-making
+    - generic: Explore all
+  - link "Basics for Beginners":
+    - /url: /products/basics-for-beginners
+    - img "Basics for Beginners"
+  - link "Basics for Beginners":
+    - /url: /products/basics-for-beginners
+  - generic: Sale price
+  - text: $10.00
+  - generic: Are you new to Human Design, or looking for a solid understanding of the BodyGraph, its mechanics, and an overview of the Types and major Inner Authorities? This 1-hour introduction to the basics of Human De...
+  - link "Your Own Authority - A Beginner's Guide to Human Design":
+    - /url: /products/your-own-authority-a-beginners-guide-to-human-design
+    - img "Your Own Authority - A Beginner's Guide to Human Design"
+  - link "Your Own Authority - A Beginner's Guide to Human Design":
+    - /url: /products/your-own-authority-a-beginners-guide-to-human-design
+  - generic: Sale price
+  - text: $22.00
+  - generic: Your Own Authority – A Beginner’s Guide to Human Design by Dharmen and Leela Swann Herbert - e-Book with full-color illustrations, 138 pages. This beginner’s guide is a general introduction to the Human Desi...
+  - link "Generator and Manifesting Generator":
+    - /url: /products/generator-and-manifesting-generator
+    - img "Generator and Manifesting Generator"
+  - link "Generator and Manifesting Generator":
+    - /url: /products/generator-and-manifesting-generator
+  - generic: Sale price
+  - text: $9.00
+  - generic: The type that is essential to the well-being of our species as a whole is the Generator, who represent around 70% of the human population (Half of which are pure Generators, the other half are Manifesting Ge...
+  - link "The Way of the Generator":
+    - /url: /products/the-way-of-the-generator-2002
+    - img "The Way of the Generator"
+  - link "The Way of the Generator":
+    - /url: /products/the-way-of-the-generator-2002
+  - generic: Sale price
+  - text: $57.00
+  - generic: Living our Design involves setting the mind and its Not-Self urgings aside, and relying instead on Strategy and Authority. It’s a process of learning to “surrender to the experiment”, as Ra puts it. That sur...
+  - link "Fallen Angels":
+    - /url: /products/fallen-angels
+    - img "Fallen Angels"
+  - link "Fallen Angels":
+    - /url: /products/fallen-angels
+  - generic: Sale price
+  - text: $9.00
+  - generic: The way of the Generator is everybody's way in the homogenized world while the planet is run by and dominated by the frustrated, enslaved spirit of Generators. In order for Generators to be able to live acco...
+  - link "Frustration or Satisfaction | RC8.10":
+    - /url: /products/frustration-or-satisfaction-rc8-10
+    - img "Frustration or Satisfaction | RC8.10"
+  - link "Frustration or Satisfaction | RC8.10":
+    - /url: /products/frustration-or-satisfaction-rc8-10
+  - generic: Sale price
+  - text: $19.00
+  - generic: Generators represent almost 70% of the world’s population. As a vital source of productive energy, they generally have a great impact on everyone around them, making their awareness and well-being important ...
+  - link "Generator Transformation - The Color of Envelopment":
+    - /url: /products/generator-transformation-the-color-of-envelopment
+    - img "Generator Transformation - The Color of Envelopment"
+  - link "Generator Transformation - The Color of Envelopment":
+    - /url: /products/generator-transformation-the-color-of-envelopment
+  - generic: Sale price
+  - text: $19.00
+  - generic: A detailed guide to the Generator aura and its unique relationship to each Type, this lecture explores the theme of conditioning through Color Transference and how varied this phenomenon is for Generators—of...
+  - link "Projector":
+    - /url: /products/projector
+    - img "Projector"
+  - link "Projector":
+    - /url: /products/projector
+  - generic: Sale price
+  - text: $9.00
+  - generic: Projectors are a non-energy Type and represent just over 20% of the population. As a relatively new form, they are only now beginning to come into their natural power and position. Join Ra as he discusses ho...
+  - link "Projectors - A Clarion's Alert":
+    - /url: /products/projectors-a-clarions-alert
+    - img "Projectors - A Clarion's Alert"
+  - link "Projectors - A Clarion's Alert":
+    - /url: /products/projectors-a-clarions-alert
+  - generic: Sale price
+  - text: $9.00
+  - generic: Projectors, your focused and penetrating aura is needed through invitation to take in knowledge bases and master the systems that organize and hold humanity together. You are needed as an enormous resource f...
+  - link "Projector Transformation - Color Transference Recognition":
+    - /url: /products/projector-transformation-color-transference-recognition
+    - img "Projector Transformation - Color Transference Recognition"
+  - link "Projector Transformation - Color Transference Recognition":
+    - /url: /products/projector-transformation-color-transference-recognition
+  - generic: Sale price
+  - text: $19.00
+  - generic: This lecture dives into substructure, offering the practical value of understanding Personality Motivation and Perspective to Projector success. As the youngest Type historically, Projectors are on the rise,...
+  - link "Manifestor":
+    - /url: /products/manifestor
+    - img "Manifestor"
+  - link "Manifestor":
+    - /url: /products/manifestor
+  - generic: Sale price
+  - text: $9.00
+  - generic: Only about 9% of the population are Manifestors. As we move towards 2027, statistically there will be a real burst in the number of their births. This theme of the Manifestor and particularly how to raise Ma...
+  - link "Manifestor Manifesto":
+    - /url: /products/manifestor-manifesto-1
+    - img "Manifestor Manifesto"
+  - link "Manifestor Manifesto":
+    - /url: /products/manifestor-manifesto-1
+  - generic: Sale price
+  - text: $67.00
+  - generic: Do you remember the song, “It’s Not Easy Being Green”? The same could be said of the challenges of being a Manifestor. Manifestors currently account for 9% of the population — a small percentage, but with qu...
+  - link "Manifestor Manifesto (eBook)":
+    - /url: /products/manifestor-manifesto
+    - img "Manifestor Manifesto (eBook)"
+  - link "Manifestor Manifesto (eBook)":
+    - /url: /products/manifestor-manifesto
+  - generic: Sale price
+  - text: $49.00
+  - generic: This guide for Manifestors came out of a five-week program in which Ra informed Manifestors how to transform their lives and fully embrace their manifesting potential and gifts. Although this material was ex...
+  - link "Manifestor Encore":
+    - /url: /products/manifestor-encore
+    - img "Manifestor Encore"
+  - link "Manifestor Encore":
+    - /url: /products/manifestor-encore
+  - generic: Sale price
+  - text: $9.00
+  - generic: We are living in a time of transition, a time of change, a time of deep mutation. Everything about the nature of the world we live in, in a sense, can be understood from the current background frequency. The...
+  - link "Manifestor Transformation - Motivation and Impact":
+    - /url: /products/manifestor-transformation-motivation-and-impact
+    - img "Manifestor Transformation - Motivation and Impact"
+  - link "Manifestor Transformation - Motivation and Impact":
+    - /url: /products/manifestor-transformation-motivation-and-impact
+  - generic: Sale price
+  - text: $19.00
+  - generic: This is a deeper exploration of the Manifestor process through aura and Color, and a guide to correctness for Manifestors and those who are impacted by them. Historically, Manifestors were the alphas of huma...
+  - link "Reflector":
+    - /url: /products/reflector
+    - img "Reflector"
+  - link "Reflector":
+    - /url: /products/reflector
+  - generic: Sale price
+  - text: $9.00
+  - generic: Reflectors represent around 1.3 or 1.4% of the human population, and as such are very different from the other Types. A Reflector’s design is unique in that there is no definition in the Bodygraph, and there...
+  - link "Reflector Reflections":
+    - /url: /products/reflector-reflections
+    - img "Reflector Reflections"
+  - link "Reflector Reflections":
+    - /url: /products/reflector-reflections
+  - generic: Sale price
+  - text: $19.00
+  - generic: This is a practical guide to understanding the Reflector process and purpose along with new tools for aiding them in their experiment. Reflectors are the rarest Type on the planet. WIthout any definition in ...
+  - link "The Signature Question":
+    - /url: /products/the-signature-question
+    - img "The Signature Question"
+  - link "The Signature Question":
+    - /url: /products/the-signature-question
+  - generic: Sale price
+  - text: $9.00
+  - generic: Signposts are something that allow you to have a way for your mind to measure. Signature is the positive side of the not-self theme of any Type. In The Signature Question, Ra explains the signposts for each ...
+  - generic: Save $14.00
+  - 'link "The Type Series: Strategy, Signature and Aura"':
+    - /url: /products/type-strategy-signature-and-aura
+    - 'img "The Type Series: Strategy, Signature and Aura"'
+  - 'link "The Type Series: Strategy, Signature and Aura"':
+    - /url: /products/type-strategy-signature-and-aura
+  - generic: Sale price
+  - text: $22.00
+  - generic: Regular price
+  - text: $36.00
+  - generic: Everyone has the potential for differentiation in this life. What is actualized through Type—Generator (and Manifesting Generator), Manifestor, Projector, Reflector—is an extraordinary potential inherent in ...
+  - link "Projector Empowerment 1 | Lectures":
+    - /url: /products/projector-empowerment-lectures
+    - img "Projector Empowerment 1 | Lectures"
+  - link "Projector Empowerment 1 | Lectures":
+    - /url: /products/projector-empowerment-lectures
+  - generic: Sale price
+  - text: $47.00
+  - generic: Projectors have the potential to make tremendous contributions to those in their lives. By Design, Projectors are about the other. The insight and guidance they bring to others when they are in alignment wit...
+  - link "Projector Empowerment 2 | Analysis":
+    - /url: /products/projector-empowerment-analysis
+    - img "Projector Empowerment 2 | Analysis"
+  - link "Projector Empowerment 2 | Analysis":
+    - /url: /products/projector-empowerment-analysis
+  - generic: Sale price
+  - text: $67.00
+  - generic: "Acknowledging how each Projector offers their unique guidance to the world can help empower their signature of success. Projector Empowerment | Part II: Analysis focuses on Ra’s examination of individual Pro..."
+  - link "Solar Plexus Inner Authority":
+    - /url: /products/solar-plexus-inner-authority
+    - img "Solar Plexus Inner Authority"
+  - link "Solar Plexus Inner Authority":
+    - /url: /products/solar-plexus-inner-authority
+  - generic: Sale price
+  - text: $9.00
+  - generic: If you have a defined Solar Plexus Center, this is automatically your decision making authority. It is the most common of all inner authorities, belonging to about 51% of humanity. The Solar Plexus center op...
+  - link "Sacral Inner Authority":
+    - /url: /products/sacral-inner-authority
+    - img "Sacral Inner Authority"
+  - link "Sacral Inner Authority":
+    - /url: /products/sacral-inner-authority
+  - generic: Sale price
+  - text: $9.00
+  - generic: Sacral Authority belongs to non-emotional Generators, including Manifesting Generators, who have an undefined Solar Plexus Center. Correct Sacral Authority responds existentially, in each moment, to what li...
+  - link "Splenic Inner Authority":
+    - /url: /products/splenic-inner-authority
+    - img "Splenic Inner Authority"
+  - link "Splenic Inner Authority":
+    - /url: /products/splenic-inner-authority
+  - generic: Sale price
+  - text: $9.00
+  - generic: In order to have Splenic authority, you cannot have a defined Solar Plexus or Sacral Center but must have a defined Splenic Center. Splenic authority operates only in the Now. It is not a motor and can be d...
+  - link "Minor Authorities":
+    - /url: /products/minor-authorities
+    - img "Minor Authorities"
+  - link "Minor Authorities":
+    - /url: /products/minor-authorities
+  - generic: Sale price
+  - text: $9.00
+  - generic: Ra looks at a group of rare authorities that represent about 4% of people. They can be quickly recognized as designs with at least one defined channel and an open Solar Plexus Center, an open Sacral Center a...
+  - link "No Direct Inner Authority":
+    - /url: /products/no-direct-inner-authority
+    - img "No Direct Inner Authority"
+  - link "No Direct Inner Authority":
+    - /url: /products/no-direct-inner-authority
+  - generic: Sale price
+  - text: $9.00
+  - generic: "Definition is what leads us to see both Type and where the decision making Authority lies. In this lecture, Ra takes us through the two very different variations of those who have no direct inner authority: ..."
+  - generic: Save $18.00
+  - link "The Inner Authority Series":
+    - /url: /products/inner-authority
+    - img "The Inner Authority Series"
+  - link "The Inner Authority Series":
+    - /url: /products/inner-authority
+  - generic: Sale price
+  - text: $27.00
+  - generic: Regular price
+  - text: $45.00
+  - generic: Inner Authority is a transformative series where Ra Uru Hu guides you through the core mechanics of decision-making within the Human Design System. This series provides a comprehensive understanding of Inner...
+  - link "Outer Authority - The Truth About Mind":
+    - /url: /products/outer-authority-the-truth-about-mind
+    - img "Outer Authority - The Truth About Mind"
+  - link "Outer Authority - The Truth About Mind":
+    - /url: /products/outer-authority-the-truth-about-mind
+  - generic: Sale price
+  - text: $19.00
+  - generic: How much do you trust your mind when making decisions? Human Design states that giving the Mind this authority frequently leads to resistance and getting stuck in the themes of our open centers. When using S...
+  - generic: Save $55.00
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+    - img "The Just About You Series"
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+  - generic: Sale price
+  - text: $117.00
+  - generic: Regular price
+  - text: $172.00
+  - generic: The Just About You series brings together six essential lectures that explore the many ways Human Design shapes our lives and relationships. From uncovering the wisdom hidden in our shadows and understanding...
+  - link "Design Concepts":
+    - /url: /products/design-concepts-1
+    - img "Design Concepts"
+  - link "Design Concepts":
+    - /url: /products/design-concepts-1
+  - generic: Sale price
+  - text: $97.00
+  - generic: The Maia? The Monopole? And what is the G Center? If you’re looking for an in-depth introductory teaching to Human Design, the 10-lesson Design Concepts course is a valuable guide to the foundational element...
+  - link "Design Concepts (eBook)":
+    - /url: /products/design-concepts
+    - img "Design Concepts (eBook)"
+  - link "Design Concepts (eBook)":
+    - /url: /products/design-concepts
+  - generic: Sale price
+  - text: $49.00
+  - generic: If you’re new to Human Design, this ebook will greatly expand your understanding of Human Design fundamentals. Taught by Ra Uru Hu, Design Concepts is an ideal opportunity for Human Design students and newco...
+  - link "The Four Views":
+    - /url: /products/the-four-views-1
+    - img "The Four Views"
+  - link "The Four Views":
+    - /url: /products/the-four-views-1
+  - generic: Sale price
+  - text: $99.00
+  - generic: Do you want to learn more about Human Design but don’t know where to begin? Knowing how to look at the BodyGraph is key to understanding foundational concepts to start your own experiment. After years of tea...
+  - link "The Four Views (eBook)":
+    - /url: /products/the-four-views
+    - img "The Four Views (eBook)"
+  - link "The Four Views (eBook)":
+    - /url: /products/the-four-views
+  - generic: Sale price
+  - text: $49.00
+  - generic: Do you want to learn more about Human Design but don’t know where to begin? Knowing how to look at the BodyGraph is key to understanding foundational concepts to start your own experiment. After years of tea...
+  - generic: Save $88.00
+  - 'link "The Human Design System: A Complete Guide Series"':
+    - /url: /products/the-human-design-system-a-complete-guide
+    - 'img "The Human Design System: A Complete Guide Series"'
+  - 'link "The Human Design System: A Complete Guide Series"':
+    - /url: /products/the-human-design-system-a-complete-guide
+  - generic: Sale price
+  - text: $197.00
+  - generic: Regular price
+  - text: $285.00
+  - generic: In this multi-lesson video series Ra Uru Hu offers a profound and comprehensive journey through the full architecture of Human Design. Spanning topics from the origin of consciousness and the mechanics of th...
+  - generic: Save $162.00
+  - 'link "Beginner 1: Fundamentals of the Human Design System"':
+    - /url: /products/beginner-1-fundamentals-of-the-human-design-system
+    - 'img "Beginner 1: Fundamentals of the Human Design System"'
+  - 'link "Beginner 1: Fundamentals of the Human Design System"':
+    - /url: /products/beginner-1-fundamentals-of-the-human-design-system
+  - generic: Sale price
+  - text: $249.00
+  - generic: Regular price
+  - text: $411.00
+  - generic: Beginner 1 is your gateway into the original teachings of Ra Uru Hu. This immersive course delivers a carefully curated learning experience designed to ground you in the essential mechanics, language, and co...
+  - generic: Save $177.00
+  - 'link "Beginner 2: Type, Strategy, and Inner Authority"':
+    - /url: /products/beginner-2-type-strategy-and-inner-authority
+    - 'img "Beginner 2: Type, Strategy, and Inner Authority"'
+  - 'link "Beginner 2: Type, Strategy, and Inner Authority"':
+    - /url: /products/beginner-2-type-strategy-and-inner-authority
+  - generic: Sale price
+  - text: $249.00
+  - generic: Regular price
+  - text: $426.00
+  - generic: This course offers a clear and practical introduction to the four Human Design Types and the vital role of Strategy and Inner Authority. Through a curated series of Ra Uru Hu’s most accessible teachings, you...
+  - generic: Save $108.00
+  - 'link "Beginner 3: The Not-Self and Conditioned Mind"':
+    - /url: /products/beginner-3-the-not-self-and-conditioned-mind
+    - 'img "Beginner 3: The Not-Self and Conditioned Mind"'
+  - 'link "Beginner 3: The Not-Self and Conditioned Mind"':
+    - /url: /products/beginner-3-the-not-self-and-conditioned-mind
+  - generic: Sale price
+  - text: $199.00
+  - generic: Regular price
+  - text: $307.00
+  - generic: "Beginner 3 offers an essential introduction to one of the most transformative teachings in Human Design: the Not-Self. Through Ra Uru Hu’s foundational lectures and in-depth analysis, you’ll explore how ment..."
+  - generic: Save $31.00
+  - link "The Mystic Monologues Series":
+    - /url: /products/the-mystic-monologues
+    - img "The Mystic Monologues Series"
+  - link "The Mystic Monologues Series":
+    - /url: /products/the-mystic-monologues
+  - generic: Sale price
+  - text: $77.00
+  - generic: Regular price
+  - text: $108.00
+  - generic: The Mystic Monologues invites you into the extraordinary journey of Ra Uru Hu, a skeptic turned mystic, whose life was transformed by a profound encounter with “The Voice” on January 3, 1987. This series of ...
+  - heading "What Ra's students say What Ra's students say" [level=2]:
+    - text: What Ra's students say
+    - generic: What Ra's students say
+  - paragraph: Kath Durand
+  - paragraph: Numistmatist
+  - generic: I worked with astrology and did charts for people for many years. I always felt some things were missing until I found Human Design. It gave me a complete understanding of who I am and who I came here to be in this lifetime, a complete owner's manual. It also helped immeasurably in many relationships by helping me understand others and not take their actions personally. Learning how to make decisions, small and large, was a complete game-changer in my life. I was no longer indecisive. Learning how emotional energy works (I am open), completely changed my self-confidence and understanding who I really am. I hope everyone has the opportunity to learn from Ra's words. The information directly from Ra's teachings was pure and succinct and provided the basis for understanding myself and others.
+  - paragraph: Sabine
+  - paragraph: Mom
+  - generic: It has only been a few months since I came into contact with Human Design and Ra's teachings, but it has already changed and impacted both my own life and that of my partner a great deal. Finding out about our own designs, learning about what's important for our (mental, physical, emotional) health from a very personalized perspective (i.e. our own charts) has been a game-changer. I never thought of myself as an emotional being, but learning about my defined Solar Plexus has revealed years of my own emotional suppression. I can already see and feel my waves and understanding that this is part of me and that I also need to take responsibility for it (for what I send out into the world) has been extremely helpful in becoming more aware of myself and my impact on others.
+  - paragraph: Maybelline Tan Siong Eeh
+  - paragraph: Customer Success
+  - generic: Discovering the Human Design System in 2017 has profoundly reshaped my life. Following my Strategy and Authority has allowed me to shed conditioned beliefs, fostering a deeper self-awareness and more authentic interactions with others. Embracing my design has been transformative, guiding me to make decisions aligned with my unique blueprint rather than societal expectations. This journey of deconditioning has liberated me from self-imposed limitations, empowering me to navigate life with clarity and confidence. Human Design has not only been a tool for personal growth but also a framework for understanding and respecting the diversity of human nature. It continues to enrich my journey, offering insights that resonate deeply in both personal and professional spheres.
+  - paragraph: Britney Mackey
+  - paragraph: Product Design
+  - generic: I discovered Human Design during the pandemic and quickly devoured all the learnings I could from it. I have always felt misunderstood or difficult as I find it really challenging to go along with the status quo. After learning about my design, I felt a huge sense of relief and understanding about myself—I'm not meant to operate the same way as everyone else. I used to force opportunities to happen and everything would feel off or eventually failed, which was really frustrating. I learned that as a Generator, I need to trust my Strategy and Authority to find what opportunities are right for me and respond to them. I now feel more in alignment and am experimenting with other areas of human design in my life.
+  - paragraph: Vinay Swaminathan
+  - paragraph: Healer
+  - generic: It has been the single most useful tool in terms of navigating reality, decision making, deep self knowledge unfolding, understanding others and making sense of my existence. Since I first became aware in 2021, it has radically shifted my reality. The one biggest gift, in the form of positive impact that I can share has been the understanding of my profile and incarnation cross. As a 1/3, the particular understanding of my destiny being totally personal. The knowledge that my impact happens through self-exploration and finding my big YES’s. It has created a massive sense of ease and I’m much less susceptible to conditioning.
+  - paragraph: Stephen Polsky
+  - paragraph: Cryptocurrency Consultant
+  - generic: Once I learned my design, I was able to see why my particular life experiences were so different than most people. As a reflector, I have always found it natural and easy to fit into many different groups. Learning Human Design gave me an answer to a question I didn't really think could be answered. The very nature of my energy is so wildly different than most everyone else that when I tried to share my experience with people, they would just chalk it up to I'm just "lucky". Between being a reflector and having the gate of the listener, I have been able to more fully understand why a lot of my life operates the way it does.
+  - paragraph: Christine Lenihan
+  - paragraph: Tarot and Palm Reader
+  - generic: Embarking on the journey of learning Human Design has been nothing short of transformative for me. It has opened up a world of self-discovery and understanding that I never knew was possible. Human Design has given me the tools to navigate life with a newfound sense of clarity and purpose. It has helped me understand my unique blueprint and how to live in harmony with it. Whether it's recognizing my natural strengths, understanding my decision-making process, or appreciating the dynamics in my relationships, Human Design has provided a profound sense of alignment and peace. I am truly grateful for Ra's teachings.
+  - paragraph: Lauren Osselton
+  - paragraph: Copywriter + Coach for Creatives
+  - generic: As an Emotional Projector, learning about my Human Design has been absolutely transformational for me. Before learning about my design, I was living life under the societal conditioning structures that had me burning out OVER and OVER again. It was exhausting. I continually felt like there was something I was doing WRONG in my own business too. Then I realized I'd been burning out over and over again because I was operating like a Generator when in reality I was a Projector! I now integrate Human Design into ALL the work I do with my clients which allows me to coach them much deeper and more personalized.
+  - paragraph: David Wilson Barnes
+  - paragraph: Actor
+  - generic: Listening to the recordings of Ra Uru Hu teaching Human Design is like going to the source of the purest, freshest water and drinking your fill until you can't absorb anymore, always knowing that there are depths upon depths upon depths that remain to embody and understand. No one else speaks about HD with such authority and a complete lack of sentimentality. He was both a poet and a mechanic and he spoke about HD in mechanical terms with such elegance and continuity that it's impossible, if you have any interest in HD, to not be pulled into his frequency and learn at depths otherwise unavailable.
+  - paragraph: Jym Tarrant
+  - paragraph: Human Design Analyst & Guide, Awakening by Design & Human Design America
+  - generic: For me, Human Design cannot be separated from the teachings of Ra Uru Hu. The educational resources he created contain the frequency and information of the entirety of the system. Human Design is a cosmic language that transcends mental information. A transmission of embodied wisdom. Receiving the wisdom of this system directly through Ra Uru Hu's words has helped me to transform intellectual fascination into a true path of Awakening. Thank you, Ra. It brings me indescribable joy to live each day in resonance with the message of awareness that you worked so tirelessly to deliver to the world.
+  - paragraph: Cielia Hatch
+  - paragraph: Therapist
+  - generic: My Human Design journey started when a friend notified me, "I don't think you are living according to your type?!" Boy was she right. After 48 years of living as a manifesting generator, I discovered I am actually a mental projector. When I listened to Ra's talk about projectors, "From Bitterness to Success," his account of the life of a classic not-self projector mirrored the script of suffering and failure that was my life. Since then, I've started the experiment to see if I can live my life another way, and so far, the suffering and self acceptance has eased tremendously. I now have hope.
+  - paragraph: Michele Anne Phillips
+  - paragraph: Thetahealing Practitioner
+  - generic: I absolutely love Human Design. It has helped me so much to learn about my unique design. I now have clarity on how to use my Strategy and Authority for making decisions, the reasons for certain patterns in my life, and how I can best align with my energy to experience more satisfaction and less frustration. The wisdom around the Gates and Channels within the defined versus undefined energy centers has helped me understand why I feel certain ways, where I can trust myself versus where I am subject to outside influences, and opens the doors for better understanding of my self on all levels.
+  - paragraph: Wioleta Wójcik
+  - paragraph: Writer, Author of Children's Books on Human Design
+  - generic: Human Design entered my life at a pivotal moment. I was exhausted by the superficial spirituality that seemed to be everywhere - all crystals and surrendering personal authority. Ra's teachings were a breath of fresh air in this hazy atmosphere of new-age platitudes. This journey has been more valuable than years of conventional therapy. Thanks to Ra's teachings, I've learned the art of being a relaxed passenger in life's journey. I'm no longer trying to control every turn, instead, I'm learning to respond to life as it unfolds, trusting in my design and the wisdom of simply being.
+  - paragraph: Guin White
+  - paragraph: Coach & Consultant
+  - generic: Learning human design, and specifically learning from Ra, has given me tremendous insights into how we, as human beings, can become much more self-aware to a level that has previously been unavailable to us. Without Ra's transmission of these teachings, I know that my life would personally not be as good as it is today, and I would not be able to help the people that I do, including my family, friends, associates and clients. Human Design has made an enormous impact on my life, and the lives of those I know and serve, and that wouldn't have been possible without Ra's teachings.
+  - paragraph: Solomon Onita, Jr.
+  - paragraph: Filmmaker
+  - generic: Learning Human Design has helped me both within my personal and professional life. Personally, Human Design has given me a tool in understanding myself and how I navigate the world. Allowing me to gain more daily efficiency in my decision-making process by trusting my strategy and authority, Human Design has become a daily tool I use as a life compass. Professional, Human Design is the ultimate story telling tool for me. It's an incredible way for designing and crafting characters/stories that feel purposeful, authentic and relevant for today's chaotic world.
+  - paragraph: Brandon Douglass
+  - paragraph: Business Development
+  - generic: I discovered Human Design roughly 2 years ago and there is nothing more valuable in the space than Ra's direct teachings. His transmission of the knowledge is obviously uniquely his, but it is an order of magnitude more potent than from any other being simply because he is the source of it all. Without feeling the depth and clarity of Ra's understanding, I doubt I would have ever payed Human Design a second glance. Understanding my Type as a Projector was perhaps the most validating and liberating discovery of my life since I realized I was alive.
+  - paragraph: Darryl Reeves
+  - paragraph: Counselor and Company Director
+  - generic: In my 40+ years of counseling and, having completed many courses myself in various personal profiling and psychological analysis programs, Human Design has proven to be the most succinct, accurate and effective for me. It cuts down on the time needed to get to the heart of the issues that concern people. Of course, implementation is another matter. Everyone is different and their conditioning naturally affects their speed of change and adoption of new and helpful understandings, but having clarity on who you TRULY are is a great starting point.
+  - paragraph: Rodney Urand
+  - paragraph: Instructional Technologist
+  - generic: I stumbled upon Human Design from Ra and found that the teachings were at a level of comprehension that I could not only understand, but also absorb. My personal testimonial speaks to the Strategy aspect of Human Design. I was always feeling like I was going against the grain when it came to making decisions or making things happen. Learning that my strategy is waiting to respond has literally changed my life in ways that I cannot even put into words. Instead of going against the grain in life, I now know how to listen to my body to respond.
+  - paragraph: Laurie Baum, MSW
+  - paragraph: Psychotherapist, Astrologer
+  - generic: My whole life changed the second I learned through Ra's Human Design teachings that I am a Generator! I have continued my studies of Ra's Human Design teachings—and I can't get enough! Ra's Human Design teachings, both written and recorded, are truly transformational and life-changing! I am a psychotherapist and astrologer and recommend Human Design readings to all of my clients. They bring an infinite depth of self-awareness and realization. It's an amazing tool for self-actualization and differentiation! I can't imagine life without it!
+  - paragraph: Mark A Barsekian
+  - paragraph: General Manager
+  - generic: There are numerous positive impacts on my life that learning Human Design from Ra has brought about. What first astounded me in learning about Human Design is how much insight it brought me in relating to and working with other people. In understanding myself and learning about my Type, Not-Self Theme, Strategy, and Signature, I can better understand why I do and don’t do certain things. I know I’ve only scratched the surface of the teachings of Ra and I’m very much looking forward to continuing to dive deeper into human design.
+  - paragraph: Sarah Dlugosh
+  - paragraph: Small Business Owner, Registered Nurse
+  - generic: Human Design has changed everything for me. I have been a student of Human Design since around 2011. Much like a lot of people, I did not implement Strategy & Authority initially. I studied and studied and studied, which is no surprise since I have the Profile 1/4. Fast-forward to 2019, after being in a very unsatisfying career, I really settled into practicing the mechanics of Strategy & Authority. While it was not easy, my life is much more satisfying, and I am definitely more successful than I was prior to Human Design.
+  - paragraph: Marieke Schnoing-Gels
+  - paragraph: Coach
+  - generic: Since the moment Human Design came to me (four years ago), I haven't had a day without listening to lectures from Ra. Human Design has meant so much to me. It brought me out of my deep pit of burnout and has made me more compassionate and loving as a person and as a mother to my children. I am raising my children according their design and I find that this is a blessing for my children as well. I am a great lover of the original teachings of Ra. His voice resonates deeply and I love his practical, rich way of explaining.
+  - paragraph: Korynn Elliott
+  - paragraph: Writer
+  - generic: As a Projector mother to a Manifestor daughter, I’ve found that learning from Ra has been so helpful for us over the years. I find so much beauty in his words. And by learning from and observing him, I’ve come to truly see, respect and understand my daughter’s utter creative genius (and her challenges) and it’s helped me to better navigate my role as a gentle guide for her. I’ve also found it so helpful to go directly to the source rather than get overwhelmed by the endless interpretations out there right now.
+  - paragraph: Andreea Nori Popa
+  - paragraph: Astrologer & HD PTL student
+  - generic: Ra empowered me in becoming my authentic self. I spent the pandemic listening to everything I could find from him and it saved me and my mind. It gave me direction, focus and a practical solution to my struggle. In a weird way, he was my best friend. Everything that I have learned from him is settling in, layer by layer, and now, 4 years later, I can see the flowers blooming. I have a better grip on my mind, I am focused on building self awarness everyday and I am making better decisions for my health.
+  - paragraph: Julie Kokesch
+  - paragraph: Life Coach Doctor of Psychology
+  - generic: I have been following Ra’s teachings for over seven years now. Following my Strategy and Authority has changed my life exponentially for the better. His teachings have helped my unique design find a place in this world. I have applied his teachings to my job, to my life, and I’ve moved across the country based on his teachings. I feel so much freedom since I started the deep conditioning process. The technique of waiting to be invited has saved me so much wasted energy. I am very grateful.
+  - paragraph: Jessica Brandon
+  - paragraph: Director
+  - generic: The teachings emphasize living authentically. By following my Human Design, I’m learning to trust my gut/intuition. This new self-trust has been essential in my transition to entrepreneurship, where decisions need to be made quickly and confidently. Embracing my design has really helped me reduce stress and resistance, making my entrepreneurial journey smoother and much more fulfilling. I would recommend Ra's teachings to anyone as the clarity and empowerment they offer is life-changing.
+  - paragraph: June Hansen
+  - paragraph: IT Professional
+  - generic: From the moment I listened to hours of Ra's recordings on the Human Design System, I have started living more authentically and true to myself. I am happier, I am way more financially successful than I've ever been in my life, and I am eternally grateful to Ra having brought this system to the masses. Without it, I can honestly say I would not have come to love myself as I do. Human Design has also helped me understand my loved ones better too. It is truly life changing.
+  - paragraph: Lisa Mountain
+  - paragraph: Guide
+  - generic: I have found Ra’s teachings, both audio and video, to be where the real magic of Human Design is. It is through Ra that the information really hits home and sinks in. I would highly recommended learning as much as possible through his direct teachings. Ra and Human Design have improved my life in so many ways. Understanding my Type, Strategy and Authority from him has been so beneficial—I now accept myself for who I am and understand why others are the way they are.
+  - paragraph: Chih-Hung Chen
+  - paragraph: Freelancer
+  - generic: I am a Human Design learner and practitioner from Taiwan. I was fortunate to have access to the transcripts of Ra’s lectures at the very beginning of my Human Design studies. Since Ra received the entire system from the Voice and is the one who understands everything, we can see the completeness and consistency of this system through his teachings. From the perspective that knowledge must be regarded rigorously, Ra’s teaching content is undoubtedly irreplaceable.
+  - paragraph: Nikki Woods
+  - paragraph: Media Personality
+  - generic: Discovering Human Design through the teachings of Ra Uru Hu has been nothing short of life-changing for me. Through his clear and insightful guidance, I learned how to align my decisions and actions with my true nature. This alignment has brought a profound sense of peace and purpose to my life, something I had been missing for years. The knowledge I gained has not only enhanced my personal life but also improved my relationships and professional endeavors.
+  - paragraph: Haroon Shareef
+  - paragraph: Student, YouTuber
+  - generic: One of the first things I watched of Ra were the short RaZen videos. It immediately had an effect on me. Ra's voice, his sense of humor, and his unique style are incredibly authentic. After that, I self-learned Human Design from myBodyGraph. One of the biggest transformations from following my Strategy and Authority was how healthy I became. I used to get sick a lot, and now, even in the rare moments when I am sick, I come out learning a lot about myself.
+  - paragraph: Aeliana Moon
+  - paragraph: Energetics and Embodiment Coach
+  - generic: Learning from Ra and his teachings directly has been awe inspiring. He delivers his insights with such directness and power. Hearing his voice alone is an experience. Listening to his transmissions about Human Design is transformative. You can feel it in the very cells of your body. His contemplations and teachings are amusing, clear, powerful, and thought provoking. Receiving Human Design from the source has been an honor and a treat to say the least.
+  - paragraph: Angela Madalina McCreary
+  - paragraph: Tarot reader
+  - generic: When I discovered HD, I was battling post-partum depression. I was looking for ways to understand why my whole life crumbled. It is a fantastic system that will help you be the person you were always meant to be. Little by little, having someone like Ra Uru Hu guide you is quite extraordinary. I will be forever thankful that I came across this system that showed me WHO I AM. Thank you, Ra Uru Hu! Thank you for giving me myself back!
+  - paragraph: Pamela De Lucia
+  - paragraph: Engineer - Akasic Record Terapist
+  - generic: Human Design came to me at the end of last year. I didn't want to learn another tool or technique, but once I started, I couldn't stop. As an engineer, I fell in love with the clarity of the system's foundations. As a holistic therapist, many of the known systems fit together into one, so simple and easy to apply. My native language is Spanish, but listening to Ra invites me to go deeper, layer by layer, in my spiritual development.
+  - paragraph: Sheena McKinney
+  - paragraph: Owner of Terrain Wellness LLC
+  - generic: What a valuable and comprehensive tool for Human Design. Easy to use but also rich with information. It's been incredibly helpful for understanding both me, loved ones and clients. The ability to listen and/or read the content is so appreciated for different learning styles as well as ways of accessing the information. I understand and embrace how I was designed and it's given me a lot more confidence and peace.
+  - paragraph: Shehani Perera
+  - paragraph: Business Consultant
+  - generic: Learning about Human Design and delving into its study changed everything for me. Suddenly, I could see myself more clearly. It provided me with tools and knowledge to make better decisions and understand why certain situations persisted. This knowledge empowered me to make significant changes in my life, and I continue to navigate everything with clarity and resonance because of it. Thank you—I am so grateful.
+  - paragraph: Ilkgun Jankowski
+  - paragraph: Meditation Teacher
+  - generic: Ra Uru Hu's Human Design teachings have opened my eyes to a new way of living. His unique approach and detailed explanations have given me the tools to navigate life with greater ease and purpose. I've gained a deeper understanding of my strengths and how to leverage them effectively. The impact of his teachings is profound and lasting. Learning Human Design from Ra Uru Hu has been a transformative experience.
+  - paragraph: Jerry Wistrom
+  - paragraph: Retired - Business Coach
+  - generic: I think that the most profound thing that I have learned from Ra and Human Design is about my emotions not being my own, but an amplification of those around me. Learning that one aspect of myself has had a huge impact on my life. I had no idea how much my emotions were bounced around by those around me. I had no idea how my natural state of being was unemotional. THANK YOU RA! THANK YOU HUMAN DESIGN!!!
+  - paragraph: Christopher Morris
+  - paragraph: Maintenance and engineering manager
+  - generic: I continuously come back to listen to Ra’s voice or read his words because I absorb Human Design information more and more on a deeper level. The Human Design System, through Ra’s direct teachings, has changed my life in so many ways that I can’t be grateful enough. I feel less stress, body has less ailments, mind is at ease, and I have more love for myself than I can remember having in previous years.
+  - paragraph: Veronika Prochotska
+  - paragraph: Mental Wellbeing Coach
+  - generic: As a Mental Projector, I have been learning about how to navigate my life, recharge my energy battery, the importance of my environment, my soundboarding tools to make important decisions in my life, how my fully open emotional center affects me, and how I can navigate it all and thrive in life. Also in relationships, I love the insights to be able to tune into each other in healthier and better ways!
+  - paragraph: Katie Griffith
+  - paragraph: SAHM
+  - generic: I’ve listened to and benefited from many of Ra’s recordings on Jovian. The one that probably impacted me the most was his talk about triple splits. I had never realized before that triple splits are more like single definitions and I gained so much insight into how I best operate as a triple split. I’ve recommended the recording to numerous people in different forums and have gotten great feedback.
+  - paragraph: Elizabeth Peebles
+  - paragraph: Pharmacist
+  - generic: Human Design has helped me understand myself and my way in the world so much. When I learned about open and closed centers it made so much sense why different people have different strengths. It's helped me understand my spouse and marriage dynamic so much. I see where my husband's open channels make him attracted to certain energies of mine. Its helped me significantly with relationships.
+  - paragraph: Olga Gainullina
+  - paragraph: Writer
+  - generic: Human Design completely transformed my life. It helped me to understand and accept myself, it helped me to understand my anger and the mechanics of how I work as a Manifestor. It helped me see how different I am and how I can communicate and relate to the world and people in the correct way. It was though I finally got the permission to relax and be myself and that’s a wonderful feeling.
+  - paragraph: Ana McCardell
+  - paragraph: Health Coach
+  - generic: I have studied esoteric knowledge for many years and experienced numerous spiritual moments. While ancient wisdom often emphasizes the importance of discernment in decision-making, it rarely offers personalized guidance. Ra provided the missing key—understanding how to make decisions that are uniquely correct for each individual. Discovering this aspect was life-changing for me.
+  - paragraph: Kate Bailey
+  - paragraph: Coach
+  - generic: Personally, everything I read about my specific Human Design chart landed in my body as truth regarding my specific and sometimes challenging experience in the world. Human Design has led me to a deep knowing of how to navigate life and relationships. The strategies and insights I have gained have led to better relationships, more business, and stepping fully into my purpose.
+  - paragraph: Aline Renée
+  - paragraph: Life Coach
+  - generic: I am learning through Ra's teachings the pure and raw approach to Human Design. Although every knowledge is depending on the interpretation of the apprentice, Ra´s is pure and full of passion. I strongly recommend to other people tap into the source to hear the vibration in his voice and to read the detail and in depth human design knowledge from the first messenger.
+  - paragraph: Clinton
+  - paragraph: Education
+  - generic: I first encountered Human Design about three years ago and was compelled by how accurate the information was that I received. Ra is very knowledgeable and has developed a unique way in which he helps others better understand themselves. Having such a unique perspective and somewhere I can go for answers about myself that can’t be compared is genuinely remarkable.
+  - paragraph: Erik Holmlund
+  - paragraph: Life Coach
+  - generic: I am one of those rare reflectors. I found Ra’s teachings around the time that I found out I have autism and ADHD. Letting go and following my lunar authority has been so instrumental in my own healing process and has opened me up to a more connected, enchanted way of living that’s not driven by money or the need to impress, but rather what my true Desire is.
+  - paragraph: Andrea Berg
+  - paragraph: Speaker, Mentor and Teacher
+  - generic: Learning directly from Ra has been a catalyst in my leadership journey. Ra has a way of cutting through the mind chatter and bringing you back to your own unique journey. Your own trip, as he would say. I cannot recommend listening to Ra lectures enough!! As a practitioner, I cannot imagine sharing this knowledge without direct experience of Ra’s teachings.
+  - generic: 3/50
+  - paragraph: LEARN FROM THE SOURCE
+  - paragraph: Learning Path
+  - paragraph: Carefully curated by our team, these Learning Paths bring together hundreds of Ra Uru Hu’s original Human Design lectures and courses into structured paths of study. Each path provides a clear, comprehensive route through the major levels of the Human Design System, from foundational concepts to advanced specializations.
+  - link "See all paths":
+    - /url: /collections/learning-paths
+  - group "1 / 11":
+    - 'img "Beginner 1: Fundamentals of the Human Design System"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Beginner 1: Fundamentals of the Human Design System" [level=2]':
+      - 'link "Beginner 1: Fundamentals of the Human Design System"':
+        - /url: /products/beginner-1-fundamentals-of-the-human-design-system
+    - generic: Sale price
+    - text: $249.00
+    - generic: Regular price
+    - text: $411.00
+    - paragraph: Beginner 1 is your gateway into the original teachings of Ra Uru Hu. This immersive course delivers a carefully curated learning experience designed to ground you in the essential mechanics, language, and cosmology of Human Design. With no prior study required, you’ll be introduced to the foundational elements of the...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "2 / 11":
+    - 'img "Beginner 2: Type, Strategy, and Inner Authority"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Beginner 2: Type, Strategy, and Inner Authority" [level=2]':
+      - 'link "Beginner 2: Type, Strategy, and Inner Authority"':
+        - /url: /products/beginner-2-type-strategy-and-inner-authority
+    - generic: Sale price
+    - text: $249.00
+    - generic: Regular price
+    - text: $426.00
+    - paragraph: This course offers a clear and practical introduction to the four Human Design Types and the vital role of Strategy and Inner Authority. Through a curated series of Ra Uru Hu’s most accessible teachings, you’ll learn how each Type is designed to interact with the world and make decisions correctly—moving...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "3 / 11":
+    - 'img "Beginner 3: The Not-Self and Conditioned Mind"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Beginner 3: The Not-Self and Conditioned Mind" [level=2]':
+      - 'link "Beginner 3: The Not-Self and Conditioned Mind"':
+        - /url: /products/beginner-3-the-not-self-and-conditioned-mind
+    - generic: Sale price
+    - text: $199.00
+    - generic: Regular price
+    - text: $307.00
+    - paragraph: "Beginner 3 offers an essential introduction to one of the most transformative teachings in Human Design: the Not-Self. Through Ra Uru Hu’s foundational lectures and in-depth analysis, you’ll explore how mental strategies shaped by open Centers distort your perception, pull you away from your truth, and lead to a life..."
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "4 / 11":
+    - 'img "Intermediate 1: The BodyGraph | Centers, Channels, and Gates"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Intermediate 1: The BodyGraph | Centers, Channels, and Gates" [level=2]':
+      - 'link "Intermediate 1: The BodyGraph | Centers, Channels, and Gates"':
+        - /url: /products/intermediate-1-the-bodygraph-centers-channels-and-gates
+    - generic: Sale price
+    - text: $299.00
+    - generic: Regular price
+    - text: $516.00
+    - paragraph: This course is designed for students ready to move beyond the basics and develop a practical, working knowledge of how the BodyGraph truly functions. Through a carefully curated selection of Ra Uru Hu’s teachings, you’ll explore the structural mechanics of Human Design—including Definition types, Centers, Channels, Gates, Streams, and Circuits—and...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "5 / 11":
+    - 'img "Intermediate 2: Profiles, Lines, and Incarnation Crosses"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Intermediate 2: Profiles, Lines, and Incarnation Crosses" [level=2]':
+      - 'link "Intermediate 2: Profiles, Lines, and Incarnation Crosses"':
+        - /url: /products/intermediate-2-profiles-lines-and-incarnation-crosses
+    - generic: Sale price
+    - text: $449.00
+    - generic: Regular price
+    - text: $809.00
+    - paragraph: This course takes you into the core of Human Design’s purpose mechanics, guiding you through the 12 Profiles, the structure of the Lines, and the architecture of Incarnation Crosses. With Ra Uru Hu’s original teachings, you’ll discover how Profile defines your costume in life, how the six Lines are shaped...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "6 / 11":
+    - 'img "Advanced 1: Left, Right, and the 16 Variables"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Advanced 1: Left, Right, and the 16 Variables" [level=2]':
+      - 'link "Advanced 1: Left, Right, and the 16 Variables"':
+        - /url: /products/advanced-1-left-right-and-the-16-variables
+    - generic: Sale price
+    - text: $449.00
+    - generic: Regular price
+    - text: $815.00
+    - paragraph: This course takes you deep into the mechanics of Variable—the most advanced and transformative framework in Human Design. Across this collection of lectures, Ra Uru Hu introduces the Four Transformations (Digestion, Environment, Perspective, and Awareness) and explains how Variable reveals your unique cognitive orientation and path to differentiation. You’ll learn...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "7 / 11":
+    - 'img "Advanced 2: The Four Transformations"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Advanced 2: The Four Transformations" [level=2]':
+      - 'link "Advanced 2: The Four Transformations"':
+        - /url: /products/advanced-2-the-four-transformations
+    - generic: Sale price
+    - text: $299.00
+    - generic: Regular price
+    - text: $422.00
+    - paragraph: This course guides you into the transformational core of the Human Design System—the Four Transformations of Digestion, Environment, View, and Motivation. Throughout, Ra Uru Hu reveals how true differentiation begins with the body and is completed in the mind. You’ll learn how Primary Health System (PHS) and Rave Psychology work...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "8 / 11":
+    - 'img "Extended Curriculum 1: History, Global Cycles, and 2027"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Extended Curriculum 1: History, Global Cycles, and 2027" [level=2]':
+      - 'link "Extended Curriculum 1: History, Global Cycles, and 2027"':
+        - /url: /products/extended-curriculum-1-history-global-cycles-and-2027
+    - generic: Sale price
+    - text: $349.00
+    - generic: Regular price
+    - text: $515.00
+    - paragraph: This course offers a sweeping and essential exploration of the evolutionary changes now underway as humanity approaches the transition of 2027. Through Ra Uru Hu’s most prophetic teachings, you’ll gain insight into the mechanics of global cycles, the breakdown of tribal infrastructures, and the end of the Cross of Planning....
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "9 / 11":
+    - 'img "Extended Curriculum 2: Money and Business"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Extended Curriculum 2: Money and Business" [level=2]':
+      - 'link "Extended Curriculum 2: Money and Business"':
+        - /url: /products/extended-curriculum-2-money-and-business
+    - generic: Sale price
+    - text: $169.00
+    - generic: Regular price
+    - text: $199.00
+    - paragraph: As the world moves beyond the collective bargains of the Cross of Planning, this course offers a radically different approach to success, wealth, and survival. In this advanced series, Ra Uru Hu unpacks how material potential is encoded in your design—revealing that true financial alignment can be found by following...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "10 / 11":
+    - 'img "Extended Curriculum 3: Dreams"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Extended Curriculum 3: Dreams" [level=2]':
+      - 'link "Extended Curriculum 3: Dreams"':
+        - /url: /products/extended-curriculum-3-dreams
+    - generic: Sale price
+    - text: $179.00
+    - generic: Regular price
+    - text: $232.00
+    - paragraph: Human Design offers a rare and profound look into the hidden mechanics of the dream state through the lens of DreamRave charts. Unlike conventional dream interpretation, this course reveals how we physically and energetically shift from our Waking 9-Centered Design into a 5-Centered DreamRave matrix each night—activating a different set...
+    - button "Add to cart":
+      - generic: Add to cart
+  - group "11 / 11":
+    - 'img "Extended Curriculum 4: Death and Bardo"'
+    - button "Zoom":
+      - generic: Zoom
+    - 'heading "Extended Curriculum 4: Death and Bardo" [level=2]':
+      - 'link "Extended Curriculum 4: Death and Bardo"':
+        - /url: /products/extended-curriculum-4-death-and-bardo
+    - generic: Sale price
+    - text: $137.00
+    - generic: Regular price
+    - text: $221.00
+    - paragraph: This course invites you into one of the most mystical applications of Human Design—the process of dying, death, and bardo. Building on inspiration from ancient texts like the Tibetan and Egyptian Books of the Dead, Ra Uru Hu presents the Rave Book of the Dead, offering a precise map of...
+    - button "Add to cart":
+      - generic: Add to cart
+  - button "Previous slide" [disabled]:
+    - generic: Previous
+  - button "Next slide":
+    - generic: Next
+  - heading "Next steps Next steps" [level=2]:
+    - text: Next steps
+    - generic: Next steps
+  - paragraph: STEP 1
+  - paragraph: Human Design Learning Hubs
+  - paragraph: Gain an introductory understanding of the Human Design System through our Beginner, Intermediate, Advanced, and Extended learning hubs.
+  - link "Beginner Hub":
+    - /url: /pages/beginner
+  - paragraph: STEP 2
+  - paragraph: Explore our Learning Paths
+  - paragraph: Combining 100’s of Ra Uru Hu’s teachings, begin a meticulously structured journey through the Human Design System.
+  - link "Learning Paths":
+    - /url: /collections/learning-paths
+  - paragraph: STEP 3
+  - paragraph: myBodyGraph
+  - paragraph: Learn about yourself and your loved one’s through a guided and interactive Human Design analysis service built on Ra’s teachings.
+  - link "myBodyGraph":
+    - /url: https://app.mybodygraph.com/free-chart
+  - heading "The Deeper Mechanics" [level=2]
+  - link "View more":
+    - /url: /pages/advanced
+    - generic: View more
+  - paragraph: "Beneath Type, Strategy, and Authority is a deeper layer of mechanics. Variable — the four arrows around the head of your BodyGraph — reveals how your cognition is designed to operate: how you take in nourishment, where your body belongs, how you see, and what drives your awareness. This is not where you begin. It is where the experiment deepens once you are living your design."
+  - group "1 / 3":
+    - link:
+      - /url: /pages/the-basics-of-substructure-in-human-design
+    - link "The Basics of Substructure":
+      - /url: /pages/the-basics-of-substructure-in-human-design
+      - heading "The Basics of Substructure" [level=5]
+    - paragraph: Substructure is where the real magic of Human Design begins to unfold. If you’re new to this, you’ve probably encountered the Hexagrams and their six Lines—this is the surface level of the system, the entry point. But beneath each Line lies a deeper architecture, a layered structure that reveals the true mechanics of differentiation.
+    - link "Learn more":
+      - /url: /pages/the-basics-of-substructure-in-human-design
+      - generic: Learn more
+  - group "2 / 3":
+    - link:
+      - /url: /pages/leftness-and-rightness-variables-in-human-design
+    - link "Variables and Transformation":
+      - /url: /pages/leftness-and-rightness-variables-in-human-design
+      - heading "Variables and Transformation" [level=5]
+    - paragraph: Variable is the key to understanding how we, as nine-centered beings, are designed to operate at the deepest cognitive level. It’s a framework that reveals the mechanics of our differentiation—how our brains, bodies, and awareness are uniquely configured to navigate the world.
+    - link "Learn more":
+      - /url: /pages/leftness-and-rightness-variables-in-human-design
+      - generic: Learn more
+  - group "3 / 3":
+    - link:
+      - /url: /pages/nourishing-your-body-through-dietary-regimen-the-foundation-of-alignment
+    - link "Nourishing Your Body Through Dietary Regimen":
+      - /url: /pages/nourishing-your-body-through-dietary-regimen-the-foundation-of-alignment
+      - heading "Nourishing Your Body Through Dietary Regimen" [level=5]
+    - paragraph: When we talk about Dietary Regimen in the context of Human Design, we’re looking at the very essence of how your body is nourished. This isn’t just about food in the conventional sense—it’s about aligning your physical form to its unique needs.
+    - link "Learn more":
+      - /url: /pages/nourishing-your-body-through-dietary-regimen-the-foundation-of-alignment
+      - generic: Learn more
+  - heading "Ra's lectures by topic Ra's lectures by topic" [level=2]:
+    - text: Ra's lectures by topic
+    - generic: Ra's lectures by topic
+  - generic: Type & Strategy
+  - paragraph: Explore Ra Uru Hu's lectures by Human Design topic.
+  - link "View all":
+    - /url: /collections/type-strategy
+    - generic: View all
+  - link "Basics for Beginners":
+    - /url: /products/basics-for-beginners
+    - img "Basics for Beginners"
+  - link "Basics for Beginners":
+    - /url: /products/basics-for-beginners
+  - generic: Sale price
+  - text: $10.00
+  - generic: Are you new to Human Design, or looking for a solid understanding of the BodyGraph, its mechanics, and an overview of the Types and major Inner Authorities? This 1-hour introduction to the basics of Human De...
+  - link "Generator and Manifesting Generator":
+    - /url: /products/generator-and-manifesting-generator
+    - img "Generator and Manifesting Generator"
+  - link "Generator and Manifesting Generator":
+    - /url: /products/generator-and-manifesting-generator
+  - generic: Sale price
+  - text: $9.00
+  - generic: The type that is essential to the well-being of our species as a whole is the Generator, who represent around 70% of the human population (Half of which are pure Generators, the other half are Manifesting Ge...
+  - link "The Way of the Generator":
+    - /url: /products/the-way-of-the-generator-2002
+    - img "The Way of the Generator"
+  - link "The Way of the Generator":
+    - /url: /products/the-way-of-the-generator-2002
+  - generic: Sale price
+  - text: $57.00
+  - generic: Living our Design involves setting the mind and its Not-Self urgings aside, and relying instead on Strategy and Authority. It’s a process of learning to “surrender to the experiment”, as Ra puts it. That sur...
+  - link "Fallen Angels":
+    - /url: /products/fallen-angels
+    - img "Fallen Angels"
+  - link "Fallen Angels":
+    - /url: /products/fallen-angels
+  - generic: Sale price
+  - text: $9.00
+  - generic: The way of the Generator is everybody's way in the homogenized world while the planet is run by and dominated by the frustrated, enslaved spirit of Generators. In order for Generators to be able to live acco...
+  - link "Frustration or Satisfaction | RC8.10":
+    - /url: /products/frustration-or-satisfaction-rc8-10
+    - img "Frustration or Satisfaction | RC8.10"
+  - link "Frustration or Satisfaction | RC8.10":
+    - /url: /products/frustration-or-satisfaction-rc8-10
+  - generic: Sale price
+  - text: $19.00
+  - generic: Generators represent almost 70% of the world’s population. As a vital source of productive energy, they generally have a great impact on everyone around them, making their awareness and well-being important ...
+  - link "The Art of Reading Generators":
+    - /url: /products/the-art-of-reading-generators
+    - img "The Art of Reading Generators"
+  - link "The Art of Reading Generators":
+    - /url: /products/the-art-of-reading-generators
+  - generic: Sale price
+  - text: $57.00
+  - generic: If you are interested in understanding Generators, either because you are one yourself or you want to learn about the dominant Type on this planet, this package is an excellent learning opportunity. The Art ...
+  - link "Sex and the Generator":
+    - /url: /products/sex-and-the-generator
+    - img "Sex and the Generator"
+  - link "Sex and the Generator":
+    - /url: /products/sex-and-the-generator
+  - generic: Sale price
+  - text: $19.00
+  - generic: The nature of sexuality varies greatly among the different Types. And the primary difference stems from the Sacral Center itself, which is the core and essence of what a Generator is. Through response, the n...
+  - link "Generator Transformation - The Color of Envelopment":
+    - /url: /products/generator-transformation-the-color-of-envelopment
+    - img "Generator Transformation - The Color of Envelopment"
+  - link "Generator Transformation - The Color of Envelopment":
+    - /url: /products/generator-transformation-the-color-of-envelopment
+  - generic: Sale price
+  - text: $19.00
+  - generic: A detailed guide to the Generator aura and its unique relationship to each Type, this lecture explores the theme of conditioning through Color Transference and how varied this phenomenon is for Generators—of...
+  - link "Projector":
+    - /url: /products/projector
+    - img "Projector"
+  - link "Projector":
+    - /url: /products/projector
+  - generic: Sale price
+  - text: $9.00
+  - generic: Projectors are a non-energy Type and represent just over 20% of the population. As a relatively new form, they are only now beginning to come into their natural power and position. Join Ra as he discusses ho...
+  - link "Projectors - A Clarion's Alert":
+    - /url: /products/projectors-a-clarions-alert
+    - img "Projectors - A Clarion's Alert"
+  - link "Projectors - A Clarion's Alert":
+    - /url: /products/projectors-a-clarions-alert
+  - generic: Sale price
+  - text: $9.00
+  - generic: Projectors, your focused and penetrating aura is needed through invitation to take in knowledge bases and master the systems that organize and hold humanity together. You are needed as an enormous resource f...
+  - link "The Art of Reading Projectors":
+    - /url: /products/the-art-of-reading-projectors
+    - img "The Art of Reading Projectors"
+  - link "The Art of Reading Projectors":
+    - /url: /products/the-art-of-reading-projectors
+  - generic: Sale price
+  - text: $57.00
+  - generic: The Art of Reading Projectors is an invaluable audio experience for anyone wanting deeper insight into the Projector Aura Type. Ra takes us through six overviews of unique Projectors, each approximately 30 m...
+  - link "Projector Empowerment 1 | Lectures":
+    - /url: /products/projector-empowerment-lectures
+    - img "Projector Empowerment 1 | Lectures"
+  - link "Projector Empowerment 1 | Lectures":
+    - /url: /products/projector-empowerment-lectures
+  - generic: Sale price
+  - text: $47.00
+  - generic: Projectors have the potential to make tremendous contributions to those in their lives. By Design, Projectors are about the other. The insight and guidance they bring to others when they are in alignment wit...
+  - link "Projector Empowerment 2 | Analysis":
+    - /url: /products/projector-empowerment-analysis
+    - img "Projector Empowerment 2 | Analysis"
+  - link "Projector Empowerment 2 | Analysis":
+    - /url: /products/projector-empowerment-analysis
+  - generic: Sale price
+  - text: $67.00
+  - generic: "Acknowledging how each Projector offers their unique guidance to the world can help empower their signature of success. Projector Empowerment | Part II: Analysis focuses on Ra’s examination of individual Pro..."
+  - link "Projector Transformation - Color Transference Recognition":
+    - /url: /products/projector-transformation-color-transference-recognition
+    - img "Projector Transformation - Color Transference Recognition"
+  - link "Projector Transformation - Color Transference Recognition":
+    - /url: /products/projector-transformation-color-transference-recognition
+  - generic: Sale price
+  - text: $19.00
+  - generic: This lecture dives into substructure, offering the practical value of understanding Personality Motivation and Perspective to Projector success. As the youngest Type historically, Projectors are on the rise,...
+  - link "Manifestor":
+    - /url: /products/manifestor
+    - img "Manifestor"
+  - link "Manifestor":
+    - /url: /products/manifestor
+  - generic: Sale price
+  - text: $9.00
+  - generic: Only about 9% of the population are Manifestors. As we move towards 2027, statistically there will be a real burst in the number of their births. This theme of the Manifestor and particularly how to raise Ma...
+  - link "Manifestor Manifesto":
+    - /url: /products/manifestor-manifesto-1
+    - img "Manifestor Manifesto"
+  - link "Manifestor Manifesto":
+    - /url: /products/manifestor-manifesto-1
+  - generic: Sale price
+  - text: $67.00
+  - generic: Do you remember the song, “It’s Not Easy Being Green”? The same could be said of the challenges of being a Manifestor. Manifestors currently account for 9% of the population — a small percentage, but with qu...
+  - link "Manifestor Manifesto (eBook)":
+    - /url: /products/manifestor-manifesto
+    - img "Manifestor Manifesto (eBook)"
+  - link "Manifestor Manifesto (eBook)":
+    - /url: /products/manifestor-manifesto
+  - generic: Sale price
+  - text: $49.00
+  - generic: This guide for Manifestors came out of a five-week program in which Ra informed Manifestors how to transform their lives and fully embrace their manifesting potential and gifts. Although this material was ex...
+  - link "Manifestor Encore":
+    - /url: /products/manifestor-encore
+    - img "Manifestor Encore"
+  - link "Manifestor Encore":
+    - /url: /products/manifestor-encore
+  - generic: Sale price
+  - text: $9.00
+  - generic: We are living in a time of transition, a time of change, a time of deep mutation. Everything about the nature of the world we live in, in a sense, can be understood from the current background frequency. The...
+  - link "Manifestor Transformation - Motivation and Impact":
+    - /url: /products/manifestor-transformation-motivation-and-impact
+    - img "Manifestor Transformation - Motivation and Impact"
+  - link "Manifestor Transformation - Motivation and Impact":
+    - /url: /products/manifestor-transformation-motivation-and-impact
+  - generic: Sale price
+  - text: $19.00
+  - generic: This is a deeper exploration of the Manifestor process through aura and Color, and a guide to correctness for Manifestors and those who are impacted by them. Historically, Manifestors were the alphas of huma...
+  - link "Reflector":
+    - /url: /products/reflector
+    - img "Reflector"
+  - link "Reflector":
+    - /url: /products/reflector
+  - generic: Sale price
+  - text: $9.00
+  - generic: Reflectors represent around 1.3 or 1.4% of the human population, and as such are very different from the other Types. A Reflector’s design is unique in that there is no definition in the Bodygraph, and there...
+  - link "Reflector Reflections":
+    - /url: /products/reflector-reflections
+    - img "Reflector Reflections"
+  - link "Reflector Reflections":
+    - /url: /products/reflector-reflections
+  - generic: Sale price
+  - text: $19.00
+  - generic: This is a practical guide to understanding the Reflector process and purpose along with new tools for aiding them in their experiment. Reflectors are the rarest Type on the planet. WIthout any definition in ...
+  - link "The Signature Question":
+    - /url: /products/the-signature-question
+    - img "The Signature Question"
+  - link "The Signature Question":
+    - /url: /products/the-signature-question
+  - generic: Sale price
+  - text: $9.00
+  - generic: Signposts are something that allow you to have a way for your mind to measure. Signature is the positive side of the not-self theme of any Type. In The Signature Question, Ra explains the signposts for each ...
+  - generic: Save $14.00
+  - 'link "The Type Series: Strategy, Signature and Aura"':
+    - /url: /products/type-strategy-signature-and-aura
+    - 'img "The Type Series: Strategy, Signature and Aura"'
+  - 'link "The Type Series: Strategy, Signature and Aura"':
+    - /url: /products/type-strategy-signature-and-aura
+  - generic: Sale price
+  - text: $22.00
+  - generic: Regular price
+  - text: $36.00
+  - generic: Everyone has the potential for differentiation in this life. What is actualized through Type—Generator (and Manifesting Generator), Manifestor, Projector, Reflector—is an extraordinary potential inherent in ...
+  - link "Type Sexual Signatures":
+    - /url: /products/type-sexual-signatures
+    - img "Type Sexual Signatures"
+  - link "Type Sexual Signatures":
+    - /url: /products/type-sexual-signatures
+  - generic: Sale price
+  - text: $19.00
+  - generic: We all have the potential for sexual fulfillment. However, most human beings don't enter into bonds correctly. With most of the population being made up of Generators, this leaves much of the world giving of...
+  - link "You and the Other":
+    - /url: /products/you-and-the-other
+    - img "You and the Other"
+  - link "You and the Other":
+    - /url: /products/you-and-the-other
+  - generic: Sale price
+  - text: $19.00
+  - generic: Type is one of the most influential aspects of the connection between two people. The inherent aura mechanics of each person in a partnership determine how each can relate to the other — or how the relations...
+  - link "A Human Design Guide to Parenting":
+    - /url: /products/a-human-design-guide-to-parenting
+    - img "A Human Design Guide to Parenting"
+  - link "A Human Design Guide to Parenting":
+    - /url: /products/a-human-design-guide-to-parenting
+  - generic: Sale price
+  - text: $19.00
+  - generic: Raising children can be challenging in many ways. Knowing what to do and how to approach them based on their uniqueness takes awareness of specific techniques that parents are often not equipped with. Human ...
+  - link "Raising Children According to Their Design":
+    - /url: /products/raising-children-according-to-their-design
+    - img "Raising Children According to Their Design"
+  - link "Raising Children According to Their Design":
+    - /url: /products/raising-children-according-to-their-design
+  - generic: Sale price
+  - text: $17.00
+  - generic: For many of us, learning to live according to our Design is eye-opening. So many things change and make sense when our approaches and choices are informed by our unique Design. As we recognize more and more ...
+  - link "Nurturing a Unique Being":
+    - /url: /products/nurturing-a-unique-being
+    - img "Nurturing a Unique Being"
+  - link "Nurturing a Unique Being":
+    - /url: /products/nurturing-a-unique-being
+  - generic: Sale price
+  - text: $29.00
+  - generic: There are many perspectives on how children should be raised. How do we know which ones are best? Everything from what to eat, how to create bedtime habits, and the best methods to educate are often taught i...
+  - link "Design Concepts":
+    - /url: /products/design-concepts-1
+    - img "Design Concepts"
+  - link "Design Concepts":
+    - /url: /products/design-concepts-1
+  - generic: Sale price
+  - text: $97.00
+  - generic: The Maia? The Monopole? And what is the G Center? If you’re looking for an in-depth introductory teaching to Human Design, the 10-lesson Design Concepts course is a valuable guide to the foundational element...
+  - link "Design Concepts (eBook)":
+    - /url: /products/design-concepts
+    - img "Design Concepts (eBook)"
+  - link "Design Concepts (eBook)":
+    - /url: /products/design-concepts
+  - generic: Sale price
+  - text: $49.00
+  - generic: If you’re new to Human Design, this ebook will greatly expand your understanding of Human Design fundamentals. Taught by Ra Uru Hu, Design Concepts is an ideal opportunity for Human Design students and newco...
+  - link "The Four Views":
+    - /url: /products/the-four-views-1
+    - img "The Four Views"
+  - link "The Four Views":
+    - /url: /products/the-four-views-1
+  - generic: Sale price
+  - text: $99.00
+  - generic: Do you want to learn more about Human Design but don’t know where to begin? Knowing how to look at the BodyGraph is key to understanding foundational concepts to start your own experiment. After years of tea...
+  - link "The Four Views (eBook)":
+    - /url: /products/the-four-views
+    - img "The Four Views (eBook)"
+  - link "The Four Views (eBook)":
+    - /url: /products/the-four-views
+  - generic: Sale price
+  - text: $49.00
+  - generic: Do you want to learn more about Human Design but don’t know where to begin? Knowing how to look at the BodyGraph is key to understanding foundational concepts to start your own experiment. After years of tea...
+  - link "Keynoting":
+    - /url: /products/keynoting
+    - img "Keynoting"
+  - link "Keynoting":
+    - /url: /products/keynoting
+  - generic: Sale price
+  - text: $29.00
+  - generic: Looking at a Human Design chart can be overwhelming. There is simply so much information available. Some people see the Gates first, others the Channels, and some the Centers. But, what is the "correct" meth...
+  - link "The History of the Types - An Evolutionary View | RA 2.10":
+    - /url: /products/the-history-of-the-types-an-evolutionary-view-ra-2-10
+    - img "The History of the Types - An Evolutionary View | RA 2.10"
+  - link "The History of the Types - An Evolutionary View | RA 2.10":
+    - /url: /products/the-history-of-the-types-an-evolutionary-view-ra-2-10
+  - generic: Sale price
+  - text: $19.00
+  - generic: "In 1994, Ra Uru Hu published a collection of graphics and keynotes he called “Rave Anatomy: Mapping the Mechanics of the Maia.” In 2007, he updated those graphics and recorded Rave Anatomy 1. The following y..."
+  - generic: Save $162.00
+  - 'link "Beginner 1: Fundamentals of the Human Design System"':
+    - /url: /products/beginner-1-fundamentals-of-the-human-design-system
+    - 'img "Beginner 1: Fundamentals of the Human Design System"'
+  - 'link "Beginner 1: Fundamentals of the Human Design System"':
+    - /url: /products/beginner-1-fundamentals-of-the-human-design-system
+  - generic: Sale price
+  - text: $249.00
+  - generic: Regular price
+  - text: $411.00
+  - generic: Beginner 1 is your gateway into the original teachings of Ra Uru Hu. This immersive course delivers a carefully curated learning experience designed to ground you in the essential mechanics, language, and co...
+  - generic: Save $177.00
+  - 'link "Beginner 2: Type, Strategy, and Inner Authority"':
+    - /url: /products/beginner-2-type-strategy-and-inner-authority
+    - 'img "Beginner 2: Type, Strategy, and Inner Authority"'
+  - 'link "Beginner 2: Type, Strategy, and Inner Authority"':
+    - /url: /products/beginner-2-type-strategy-and-inner-authority
+  - generic: Sale price
+  - text: $249.00
+  - generic: Regular price
+  - text: $426.00
+  - generic: This course offers a clear and practical introduction to the four Human Design Types and the vital role of Strategy and Inner Authority. Through a curated series of Ra Uru Hu’s most accessible teachings, you...
+  - link "Your Own Authority - A Beginner's Guide to Human Design":
+    - /url: /products/your-own-authority-a-beginners-guide-to-human-design
+    - img "Your Own Authority - A Beginner's Guide to Human Design"
+  - link "Your Own Authority - A Beginner's Guide to Human Design":
+    - /url: /products/your-own-authority-a-beginners-guide-to-human-design
+  - generic: Sale price
+  - text: $22.00
+  - generic: Your Own Authority – A Beginner’s Guide to Human Design by Dharmen and Leela Swann Herbert - e-Book with full-color illustrations, 138 pages. This beginner’s guide is a general introduction to the Human Desi...
+  - generic: Save $240.00
+  - 'link "Intermediate 3: Relationships, Sex, and Family"':
+    - /url: /products/intermediate-3-relationships-sex-and-family
+    - 'img "Intermediate 3: Relationships, Sex, and Family"'
+  - 'link "Intermediate 3: Relationships, Sex, and Family"':
+    - /url: /products/intermediate-3-relationships-sex-and-family
+  - generic: Sale price
+  - text: $349.00
+  - generic: Regular price
+  - text: $589.00
+  - generic: Relationships are one of the most powerful mirrors for awakening—and one of the most complex arenas of conditioning. In this course, Ra Uru Hu explores how Human Design reveals the true mechanics of how we b...
+  - link "Ra's Guide to the Rave Chart":
+    - /url: /products/ras-guide-to-the-rave-chart
+    - img "Ra's Guide to the Rave Chart"
+  - link "Ra's Guide to the Rave Chart":
+    - /url: /products/ras-guide-to-the-rave-chart
+  - generic: Sale price
+  - text: $29.00
+  - generic: Human Design BodyGraphs display an intricate synthesis of 26 activations across 9 Centers and 64 Gates. Is there a simple way to extract and benefit from the information being displayed without needing to kn...
+  - link "Ra's Guide to the Movie":
+    - /url: /products/ras-guide-to-the-movie
+    - img "Ra's Guide to the Movie"
+  - link "Ra's Guide to the Movie":
+    - /url: /products/ras-guide-to-the-movie
+  - generic: Sale price
+  - text: $39.00
+  - generic: Behind its practical aspects, Human Design has roots in deeply mystical concepts. When one is beginning to investigate those deeper aspects of the knowledge, one needs to study the foundational concepts to s...
+  - generic: Save $19.00
+  - link "The Ra Uru Hu Lectures | Ibiza 2009":
+    - /url: /products/ra-uru-hu-lectures-ibiza-2009
+    - img "The Ra Uru Hu Lectures | Ibiza 2009"
+  - link "The Ra Uru Hu Lectures | Ibiza 2009":
+    - /url: /products/ra-uru-hu-lectures-ibiza-2009
+  - generic: Sale price
+  - text: $57.00
+  - generic: Regular price
+  - text: $76.00
+  - generic: This 4-part video collection explores how we navigate the changing mechanics of life and consciousness—uncovering the impact of shifting financial structures, the role of the Moon in shaping our experiences,...
+  - generic: Save $55.00
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+    - img "The Just About You Series"
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+  - generic: Sale price
+  - text: $117.00
+  - generic: Regular price
+  - text: $172.00
+  - generic: The Just About You series brings together six essential lectures that explore the many ways Human Design shapes our lives and relationships. From uncovering the wisdom hidden in our shadows and understanding...
+  - generic: Save $31.00
+  - link "The Mystic Monologues Series":
+    - /url: /products/the-mystic-monologues
+    - img "The Mystic Monologues Series"
+  - link "The Mystic Monologues Series":
+    - /url: /products/the-mystic-monologues
+  - generic: Sale price
+  - text: $77.00
+  - generic: Regular price
+  - text: $108.00
+  - generic: The Mystic Monologues invites you into the extraordinary journey of Ra Uru Hu, a skeptic turned mystic, whose life was transformed by a profound encounter with “The Voice” on January 3, 1987. This series of ...
+  - heading "Ra's lectures by theme Ra's lectures by theme" [level=2]:
+    - text: Ra's lectures by theme
+    - generic: Ra's lectures by theme
+  - generic: Relationships & Sexuality
+  - paragraph: Explore Ra Uru Hu's lectures categorized into life themes and goals.
+  - link "View all":
+    - /url: /collections/relationships-sexuality
+    - generic: View all
+  - link "Sex and Love and the True Self":
+    - /url: /products/sex-and-love-and-the-true-self
+    - img "Sex and Love and the True Self"
+  - link "Sex and Love and the True Self":
+    - /url: /products/sex-and-love-and-the-true-self
+  - generic: Sale price
+  - text: $19.00
+  - generic: Many myths surround the topic of intimate relationships and sexual bonding, and what they are supposed to be. The truth is, in addition to how we are individually designed for intimacy, the way we are condit...
+  - link "Split Definitions and Relationships":
+    - /url: /products/split-definitions-and-relationships
+    - img "Split Definitions and Relationships"
+  - link "Split Definitions and Relationships":
+    - /url: /products/split-definitions-and-relationships
+  - generic: Sale price
+  - text: $19.00
+  - generic: Maintaining quality relationships is one of the most important aspects of our wellbeing. What interpersonal mechanisms actually makes this goal possible? Human Design shows us that forty-six percent of human...
+  - link "Sex and the Generator":
+    - /url: /products/sex-and-the-generator
+    - img "Sex and the Generator"
+  - link "Sex and the Generator":
+    - /url: /products/sex-and-the-generator
+  - generic: Sale price
+  - text: $19.00
+  - generic: The nature of sexuality varies greatly among the different Types. And the primary difference stems from the Sacral Center itself, which is the core and essence of what a Generator is. Through response, the n...
+  - link "Aware Partnership":
+    - /url: /products/aware-partnership
+    - img "Aware Partnership"
+  - link "Aware Partnership":
+    - /url: /products/aware-partnership
+  - generic: Sale price
+  - text: $19.00
+  - generic: While relationships can be a rich source of joy and satisfaction, often they are also a source of frustration and struggle. Understanding what causes difficulty and conflict within a relationship is possible...
+  - link "Type Sexual Signatures":
+    - /url: /products/type-sexual-signatures
+    - img "Type Sexual Signatures"
+  - link "Type Sexual Signatures":
+    - /url: /products/type-sexual-signatures
+  - generic: Sale price
+  - text: $19.00
+  - generic: We all have the potential for sexual fulfillment. However, most human beings don't enter into bonds correctly. With most of the population being made up of Generators, this leaves much of the world giving of...
+  - link "Partnership Analysis":
+    - /url: /products/partnership-analysis
+    - img "Partnership Analysis"
+  - link "Partnership Analysis":
+    - /url: /products/partnership-analysis
+  - generic: Sale price
+  - text: $39.00
+  - generic: Partnership Analysis is a four-part course taught by Ra Uru Hu, recorded live online in June 2005 for Human Design Analysts around the world. Across four in-depth lectures, Ra reveals how to read the Connect...
+  - link "The Design of Human Sexuality":
+    - /url: /products/the-design-of-human-sexuality
+    - img "The Design of Human Sexuality"
+  - link "The Design of Human Sexuality":
+    - /url: /products/the-design-of-human-sexuality
+  - generic: Sale price
+  - text: $119.00
+  - generic: For most of us, sexuality holds the potential for connection, relationship and joy. But as Nine-Centered beings, our sexuality has also been a source of complex emotions and impulses that are not easily unde...
+  - link "The Love Gates":
+    - /url: /products/the-love-gates
+    - img "The Love Gates"
+  - link "The Love Gates":
+    - /url: /products/the-love-gates
+  - generic: Sale price
+  - text: $39.00
+  - generic: How do you express love, and what kind of love is right for you? In Human Design we look at relationships from the perspective of connecting with others through Gates and Channels. Some connections are based...
+  - link "You and Love/Sex/Friendship":
+    - /url: /products/you-and-love-sex-friendship
+    - img "You and Love/Sex/Friendship"
+  - link "You and Love/Sex/Friendship":
+    - /url: /products/you-and-love-sex-friendship
+  - generic: Sale price
+  - text: $19.00
+  - generic: For many of us, relationships are a rich source of joy and satisfaction, and, often, also a source of frustration and struggle. Human Design shows each of us how we can be conditioned in our approach to rela...
+  - link "You and the Other":
+    - /url: /products/you-and-the-other
+    - img "You and the Other"
+  - link "You and the Other":
+    - /url: /products/you-and-the-other
+  - generic: Sale price
+  - text: $19.00
+  - generic: Type is one of the most influential aspects of the connection between two people. The inherent aura mechanics of each person in a partnership determine how each can relate to the other — or how the relations...
+  - link "A Life Story":
+    - /url: /products/a-life-story
+    - img "A Life Story"
+  - link "A Life Story":
+    - /url: /products/a-life-story
+  - generic: Sale price
+  - text: $39.00
+  - generic: This 5-lecture series explores the true life story of a woman named Eva, as seen through various levels and mechanics of Human Design—individually, in partnership, and in the context of her family Penta. By ...
+  - link "Conditioning, Love, Mind":
+    - /url: /products/conditioning-love-mind
+    - img "Conditioning, Love, Mind"
+  - link "Conditioning, Love, Mind":
+    - /url: /products/conditioning-love-mind
+  - generic: Sale price
+  - text: $37.00
+  - generic: We are often taught that love and wholeness are obtained outside of ourselves. This conditioning usually leads us to seek out relationships for fulfillment. But why do we so often end up continuing to search...
+  - link "Attraction and Resonance":
+    - /url: /products/attraction-and-resonance
+    - img "Attraction and Resonance"
+  - link "Attraction and Resonance":
+    - /url: /products/attraction-and-resonance
+  - generic: Sale price
+  - text: $9.00
+  - generic: Ra explores the basic duality of our genetic programming. Our genes are very clever in the way they manipulate us to bond and mate to guarantee the survival of our species. That genetic imperative attracts u...
+  - generic: Save $240.00
+  - 'link "Intermediate 3: Relationships, Sex, and Family"':
+    - /url: /products/intermediate-3-relationships-sex-and-family
+    - 'img "Intermediate 3: Relationships, Sex, and Family"'
+  - 'link "Intermediate 3: Relationships, Sex, and Family"':
+    - /url: /products/intermediate-3-relationships-sex-and-family
+  - generic: Sale price
+  - text: $349.00
+  - generic: Regular price
+  - text: $589.00
+  - generic: Relationships are one of the most powerful mirrors for awakening—and one of the most complex arenas of conditioning. In this course, Ra Uru Hu explores how Human Design reveals the true mechanics of how we b...
+  - generic: Save $27.00
+  - link "The Group Mechanics Series":
+    - /url: /products/group-mechanics
+    - img "The Group Mechanics Series"
+  - link "The Group Mechanics Series":
+    - /url: /products/group-mechanics
+  - generic: Sale price
+  - text: $67.00
+  - generic: Regular price
+  - text: $94.00
+  - generic: This two-part series on Group Mechanics reveals how collective auras shape and condition human life. It explores the dynamics of small trans-auric forms, called Pentas, which dominate families, schools, and ...
+  - link "The History and Future of Unrequited Love":
+    - /url: /products/the-history-and-future-of-unrequited-love
+    - img "The History and Future of Unrequited Love"
+  - link "The History and Future of Unrequited Love":
+    - /url: /products/the-history-and-future-of-unrequited-love
+  - generic: Sale price
+  - text: $12.00
+  - generic: The Bodygraph has three distinct patterns that lay a foundation for our understanding of what we call “Love”. Each of these patterns operate through channels connecting the Root Center to the Solar Plexus, m...
+  - generic: Save $55.00
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+    - img "The Just About You Series"
+  - link "The Just About You Series":
+    - /url: /products/just-about-you
+  - generic: Sale price
+  - text: $117.00
+  - generic: Regular price
+  - text: $172.00
+  - generic: The Just About You series brings together six essential lectures that explore the many ways Human Design shapes our lives and relationships. From uncovering the wisdom hidden in our shadows and understanding...
+  - link "The Nine-Centered Being and Communion":
+    - /url: /products/the-nine-centered-being-and-communion
+    - img "The Nine-Centered Being and Communion"
+  - link "The Nine-Centered Being and Communion":
+    - /url: /products/the-nine-centered-being-and-communion
+  - generic: Sale price
+  - text: $19.00
+  - generic: What does it mean to be a Nine-Centered being and commune with the other? How does that relate to being strategic or receptive? In this lesson, Ra explains the evolutionary process from the strategic way of ...
+  - link "The Opening of Mating Season - Valentine's Day Deconstruction | RC8.6":
+    - /url: /products/the-opening-of-mating-season-valentines-day-deconstruction-rc8-6
+    - img "The Opening of Mating Season - Valentine's Day Deconstruction | RC8.6"
+  - link "The Opening of Mating Season - Valentine's Day Deconstruction | RC8.6":
+    - /url: /products/the-opening-of-mating-season-valentines-day-deconstruction-rc8-6
+  - generic: Sale price
+  - text: $17.00
+  - generic: Valentine’s Day is an occasion marked by traditions of showing affection and love through gift giving and special events. This tribal approach to supporting our bonds with others can be explained by the Sun’...
+  - link "Partnership Analysis":
+    - /url: /products/partnership-analysis-audio
+    - img "Partnership Analysis"
+  - link "Partnership Analysis":
+    - /url: /products/partnership-analysis-audio
+  - generic: Sale price
+  - text: $97.00
+  - generic: Partnership Analysis is a four-part course taught by Ra Uru Hu, recorded live online in June 2005 for Human Design Analysts around the world. Across four in-depth lectures, Ra reveals how to read the Connect...
+  - paragraph
+  - generic: "01"
+  - paragraph:
+    - text: Jovian Archive
+    - generic: Jovian Archive
+  - paragraph: Ra’s complete library—from fundamentals to advanced insights. Everything Human Design, one place.
+  - paragraph:
+    - link "Explore teachings ↗":
+      - /url: /collections/all
+      - strong: Explore teachings ↗
+  - generic: "02"
+  - paragraph:
+    - text: myBodyGraph
+    - generic: myBodyGraph
+  - paragraph: Interactive Human Design analysis tailored to you. Understand yourself and your connections clearly.
+  - paragraph:
+    - link "myBodyGraph.com ↗":
+      - /url: https://www.mybodygraph.com/
+      - strong: myBodyGraph.com ↗
+  - generic: "03"
+  - paragraph:
+    - text: Maia Mechanics
+    - generic: Maia Mechanics
+  - paragraph: Pro-level online Human Design software. Precise, powerful, always updated.
+  - paragraph:
+    - link "MaiaMechanics.com ↗":
+      - /url: https://www.maiamechanics.com/
+      - strong: MaiaMechanics.com ↗
+  - generic: "04"
+  - paragraph:
+    - text: Ra.TV
+    - generic: Ra.TV
+  - paragraph: All Ra’s video teachings plus a community committed to mastering Human Design.
+  - paragraph:
+    - link "Ra.TV ↗":
+      - /url: https://ra.tv/
+      - strong: Ra.TV ↗
+  - generic: "05"
+  - paragraph:
+    - text: Human Design Mastery
+    - generic: Human Design
+    - generic: Mastery
+  - paragraph: Ra’s teachings plus elite coaching. Master Human Design, master your life.
+  - paragraph:
+    - link "HumanDesignMastery.com ↗":
+      - /url: https://humandesignmastery.com/
+      - strong: HumanDesignMastery.com ↗
+  - paragraph: Stay updated with new insights, tools, and exclusive offers
+  - checkbox "Verified" [checked]
+  - generic: Verified
+  - link:
+    - /url: https://altcha.org/
+  - textbox "Name":
+    - /placeholder: " "
+  - generic: Name
+  - textbox "E-mail":
+    - /placeholder: " "
+  - generic: E-mail
+  - button "Subscribe":
+    - generic: Subscribe
+  - img "Jovian Logo"
+  - paragraph: The official source of the Human Design System and the complete teachings of Ra Uru Hu.
+  - list:
+    - link "About Jovian Archive":
+      - /url: /pages/about-jovian-archive
+      - text: About Jovian Archive
+    - link "About Ra Uru Hu":
+      - /url: /pages/about-ra-uru-hu
+      - text: About Ra Uru Hu
+    - link "About Human Design":
+      - /url: /pages/about-human-design
+      - text: About Human Design
+  - link:
+    - /url: https://www.instagram.com/humandesignsystem/
+  - link:
+    - /url: https://www.facebook.com/JovianArchive
+  - link:
+    - /url: https://www.youtube.com/@JovianArchiveMedia
+  - button "Change country or currency":
+    - generic: USD $
+  - paragraph: Explore Human Design
+  - list:
+    - link "Free Human Design Chart":
+      - /url: /pages/get-your-human-design-chart
+      - text: Free Human Design Chart
+    - link "Beginner Hub":
+      - /url: /pages/beginner
+      - text: Beginner Hub
+    - link "Intermediate Hub":
+      - /url: /pages/intermediate
+      - text: Intermediate Hub
+    - link "Advanced Hub":
+      - /url: /pages/advanced
+      - text: Advanced Hub
+    - link "Extended Hub":
+      - /url: /pages/extended
+      - text: Extended Hub
+    - link "Human Design Dictionary":
+      - /url: /pages/human-design-dictionary
+      - text: Human Design Dictionary
+    - link "Human Design Statistics":
+      - /url: /pages/human-design-statistics
+      - text: Human Design Statistics
+    - link "Blog":
+      - /url: /blogs/human-design-basics
+      - text: Blog
+  - paragraph: Shop & Services
+  - list:
+    - link "All Teachings":
+      - /url: /collections/all
+      - text: All Teachings
+    - link "Learning Paths":
+      - /url: /collections/learning-paths
+      - text: Learning Paths
+    - link "AI Ra":
+      - /url: /pages/ai-ra
+      - text: AI Ra
+    - link "MMI for Windows":
+      - /url: /products/maia-mechanics-imaging-mmi
+      - text: MMI for Windows
+    - link "myBodyGraph":
+      - /url: https://mybodygraph.com
+      - text: myBodyGraph
+    - link "Maia Mechanics Online":
+      - /url: https://maiamechanics.com
+      - text: Maia Mechanics Online
+    - link "Ra.TV":
+      - /url: https://ra.tv
+      - text: Ra.TV
+    - link "Human Design Mastery":
+      - /url: https://humandesignmastery.com
+      - text: Human Design Mastery
+    - link "Affiliate Partner Program":
+      - /url: https://affiliate.jovianarchive.com/
+      - text: Affiliate Partner Program
+  - paragraph: Support & Legal
+  - list:
+    - link "Contact":
+      - /url: /pages/contact
+      - text: Contact
+    - link "FAQs":
+      - /url: /pages/faq
+      - text: FAQs
+    - link "Terms & Conditions":
+      - /url: /pages/terms-and-conditions
+      - text: Terms & Conditions
+    - link "Privacy Policy":
+      - /url: /pages/privacy-policy
+      - text: Privacy Policy
+    - link "Cookies Policy":
+      - /url: /pages/cookies-policy
+      - text: Cookies Policy
+  - list:
+    - img "American Express"
+    - img "Apple Pay"
+    - img "Google Pay"
+    - img "Mastercard"
+    - img "PayPal"
+    - img "Shop Pay"
+    - img "Union Pay"
+    - img "Visa"
+  - paragraph: © 2026, Jovian Archive Media Pte. Ltd. All Rights Reserved. The Rave BodyGraph™ and Rave Mandala™ are registered trademarks.

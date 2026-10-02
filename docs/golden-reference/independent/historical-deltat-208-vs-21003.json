@@ -1,0 +1,2960 @@
+{
+  "summary": {
+    "scope": "Historical DeltaT-table-only sensitivity. This does not run a completeC2.08 kernel or prove Jovian configuration. CurrentC kernel+DE431 fixed, old default table interpolation reconstructed exactly; modern implementation validated against C deltat_ex at all47 birth and design epochs. No fitted values and no production changes.",
+    "historicalSource": {
+      "package": "pyswisseph",
+      "version": "2.08.00-1",
+      "metadataURL": "https://pypi.org/pypi/pyswisseph/2.08.00-1/json",
+      "sdistURL": "https://files.pythonhosted.org/packages/8d/63/a0373099b5e888a2ad42d3f1668893e42afb4655dbc5ba06e0b615005eb4/pyswisseph-2.08.00-1.tar.gz",
+      "sdistFilename": "pyswisseph-2.08.00-1.tar.gz",
+      "sdistSha256": "6b4818c0224d309c0b01f3c52df2432900dddcde345364408d99eafc9cdd1e71",
+      "sdistSha256VerifiedAgainstPyPI": true,
+      "sourceScope": "vendored Swiss Ephemeris libswe source from historical PyPI source distribution; incomplete official-repository v2.08.00a tree excluded",
+      "libsweSourceVersion": "#define SE_VERSION      \"2.08\"  //\"2.07.02a\"",
+      "swephlibSha256": "0b21ed2288e798045d08d754c6401aecf4143b40424610401387b4ceb0f3b22b",
+      "swephHsha256": "9ddc35acd1092f33a50817699478ddcdfe80f93c157ab61bb91886dcee0f4fdf"
+    },
+    "historicalSourceTabEnd": 2027,
+    "currentSourceTabEnd": 2028,
+    "table21003VsActualCMaxDifferenceSeconds": 7.105427357601002e-15,
+    "officialRecordCount": 47,
+    "all26Matches": 42,
+    "all26MismatchIDs": [
+      "G2015-feb",
+      "G2015-final-proof",
+      "G2015-repeatA",
+      "G2015-repeatB",
+      "G2015-tight"
+    ],
+    "residualFourAll26NowMatchIDs": [
+      "G2025-mar",
+      "G2025-tight"
+    ],
+    "conclusion": "Authentic2.08 historical table is identical near2015; gives exactlyzero shift at both2015 births/designs and leaves both mismatches. Near2025 its older forecast advances by about3seconds and can match both2025 cases. Thus this specific oldDeltaT-table-only hypothesis cannot explain all four residual UTCs or allofficial results.",
+    "historicalVsModernTableInterpolationCodeEqualIgnoringCommentsAndWhitespace": true
+  },
+  "cases": [
+    {
+      "id": "D1985-after",
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-02T15:21:00.000005Z",
+          "c21003DeltaTSeconds": 54.346264415091646,
+          "table21003DeltaTSeconds": 54.346264415091646,
+          "table208DeltaTSeconds": 54.346264415091646,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-07T06:56:55.071639Z",
+          "c21003DeltaTSeconds": 54.22741148096119,
+          "table21003DeltaTSeconds": 54.22741148096119,
+          "table208DeltaTSeconds": 54.22741148096119,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-07T06:56:55.071639Z",
+        "sun": {
+          "design": "48.6",
+          "personality": "38.3"
+        },
+        "profile": "3/6",
+        "all26GateLine": [
+          "48.6",
+          "21.6",
+          "63.4",
+          "8.5",
+          "14.5",
+          "48.3",
+          "1.2",
+          "10.4",
+          "58.2",
+          "1.2",
+          "9.6",
+          "10.1",
+          "50.6",
+          "38.3",
+          "39.3",
+          "23.1",
+          "8.3",
+          "14.3",
+          "26.3",
+          "30.4",
+          "37.1",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "D1985-before",
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-02T15:20:00.000009Z",
+          "c21003DeltaTSeconds": 54.34626337935428,
+          "table21003DeltaTSeconds": 54.34626337935428,
+          "table208DeltaTSeconds": 54.34626337935428,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-07T06:55:53.090081Z",
+          "c21003DeltaTSeconds": 54.22741048818322,
+          "table21003DeltaTSeconds": 54.22741048818322,
+          "table208DeltaTSeconds": 54.22741048818322,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-07T06:55:53.090081Z",
+        "sun": {
+          "design": "48.5",
+          "personality": "38.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "48.5",
+          "21.5",
+          "63.4",
+          "8.5",
+          "14.5",
+          "48.3",
+          "1.2",
+          "10.4",
+          "58.2",
+          "1.2",
+          "9.6",
+          "10.1",
+          "50.6",
+          "38.3",
+          "39.3",
+          "23.1",
+          "8.3",
+          "14.3",
+          "26.3",
+          "30.4",
+          "37.1",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "D1995-after",
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-01-26T23:50:59.999992Z",
+          "c21003DeltaTSeconds": 60.847412537492545,
+          "table21003DeltaTSeconds": 60.847412537492545,
+          "table208DeltaTSeconds": 60.847412537492545,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1994-11-01T05:28:22.360323Z",
+          "c21003DeltaTSeconds": 60.65189726831069,
+          "table21003DeltaTSeconds": 60.65189726831069,
+          "table208DeltaTSeconds": 60.65189726831069,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1994-11-01T05:28:22.360323Z",
+        "sun": {
+          "design": "44.2",
+          "personality": "41.5"
+        },
+        "profile": "5/2",
+        "all26GateLine": [
+          "44.2",
+          "24.2",
+          "18.3",
+          "1.2",
+          "2.2",
+          "32.1",
+          "44.4",
+          "7.2",
+          "43.3",
+          "55.6",
+          "61.3",
+          "61.1",
+          "14.3",
+          "41.5",
+          "31.5",
+          "5.3",
+          "44.4",
+          "24.4",
+          "49.3",
+          "26.4",
+          "29.5",
+          "9.5",
+          "37.6",
+          "60.1",
+          "61.3",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "D2005-before",
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-01-12T14:37:00.000002Z",
+          "c21003DeltaTSeconds": 64.69143024629953,
+          "table21003DeltaTSeconds": 64.69143024629953,
+          "table208DeltaTSeconds": 64.69143024629953,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2004-10-17T13:03:32.422451Z",
+          "c21003DeltaTSeconds": 64.66180351100049,
+          "table21003DeltaTSeconds": 64.66180351100049,
+          "table208DeltaTSeconds": 64.66180351100049,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2004-10-17T13:03:32.422451Z",
+        "sun": {
+          "design": "32.4",
+          "personality": "61.2"
+        },
+        "profile": "2/4",
+        "all26GateLine": [
+          "32.4",
+          "42.4",
+          "9.5",
+          "27.1",
+          "28.1",
+          "28.1",
+          "64.6",
+          "48.5",
+          "18.1",
+          "56.1",
+          "55.4",
+          "19.6",
+          "26.4",
+          "61.2",
+          "62.2",
+          "49.4",
+          "3.2",
+          "50.2",
+          "10.6",
+          "10.6",
+          "5.2",
+          "57.4",
+          "62.4",
+          "55.5",
+          "13.2",
+          "11.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "D2015-after",
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-25T22:22:59.999985Z",
+          "c21003DeltaTSeconds": 67.67247193612154,
+          "table21003DeltaTSeconds": 67.67247193612154,
+          "table208DeltaTSeconds": 67.67247193612154,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T03:20:23.773044Z",
+          "c21003DeltaTSeconds": 67.57900980985244,
+          "table21003DeltaTSeconds": 67.57900980985244,
+          "table208DeltaTSeconds": 67.57900980985244,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T03:20:23.773044Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.1",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "51.5",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "D2025-after",
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-01-27T04:56:59.999984Z",
+          "c21003DeltaTSeconds": 68.9928651399391,
+          "table21003DeltaTSeconds": 68.9928651399391,
+          "table208DeltaTSeconds": 72.03542835224025,
+          "oldMinusModernSeconds": 3.042563212301147
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-11-01T10:38:40.134375Z",
+          "c21003DeltaTSeconds": 69.01708953246562,
+          "table21003DeltaTSeconds": 69.01708953246562,
+          "table208DeltaTSeconds": 71.91812939092915,
+          "oldMinusModernSeconds": 2.901039858463534
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-11-01T10:38:40.323631Z",
+        "sun": {
+          "design": "44.3",
+          "personality": "41.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "44.3",
+          "24.3",
+          "44.1",
+          "17.3",
+          "18.3",
+          "14.4",
+          "26.1",
+          "56.3",
+          "45.4",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "41.6",
+          "31.6",
+          "58.5",
+          "25.1",
+          "46.1",
+          "60.3",
+          "36.1",
+          "62.2",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-1230",
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-05T12:30:00.000013Z",
+          "c21003DeltaTSeconds": 54.3505610422816,
+          "table21003DeltaTSeconds": 54.350561042281605,
+          "table208DeltaTSeconds": 54.350561042281605,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-10T06:19:09.488756Z",
+          "c21003DeltaTSeconds": 54.23152334423317,
+          "table21003DeltaTSeconds": 54.23152334423317,
+          "table208DeltaTSeconds": 54.23152334423317,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-10T06:19:09.488756Z",
+        "sun": {
+          "design": "57.3",
+          "personality": "38.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "57.3",
+          "51.3",
+          "51.6",
+          "8.4",
+          "14.4",
+          "57.2",
+          "1.5",
+          "10.6",
+          "58.2",
+          "1.3",
+          "9.6",
+          "10.1",
+          "50.6",
+          "38.6",
+          "39.6",
+          "12.4",
+          "8.3",
+          "14.3",
+          "26.6",
+          "55.2",
+          "37.4",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-1231",
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-05T12:31:00.000010Z",
+          "c21003DeltaTSeconds": 54.3505620777066,
+          "table21003DeltaTSeconds": 54.3505620777066,
+          "table208DeltaTSeconds": 54.3505620777066,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-10T06:20:11.359191Z",
+          "c21003DeltaTSeconds": 54.23152433353467,
+          "table21003DeltaTSeconds": 54.231524333534665,
+          "table208DeltaTSeconds": 54.231524333534665,
+          "oldMinusModernSeconds": -7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-10T06:20:11.359191Z",
+        "sun": {
+          "design": "57.3",
+          "personality": "38.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "57.3",
+          "51.3",
+          "51.6",
+          "8.4",
+          "14.4",
+          "57.2",
+          "1.5",
+          "10.6",
+          "58.2",
+          "1.3",
+          "9.6",
+          "10.1",
+          "50.6",
+          "38.6",
+          "39.6",
+          "12.4",
+          "8.3",
+          "14.3",
+          "26.6",
+          "55.2",
+          "37.4",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-1232",
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-05T12:32:00.000006Z",
+          "c21003DeltaTSeconds": 54.35056311313139,
+          "table21003DeltaTSeconds": 54.35056311313139,
+          "table208DeltaTSeconds": 54.35056311313139,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-10T06:21:13.229626Z",
+          "c21003DeltaTSeconds": 54.23152532283587,
+          "table21003DeltaTSeconds": 54.23152532283587,
+          "table208DeltaTSeconds": 54.23152532283587,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-10T06:21:13.229626Z",
+        "sun": {
+          "design": "57.3",
+          "personality": "54.1"
+        },
+        "profile": "1/3",
+        "all26GateLine": [
+          "57.3",
+          "51.3",
+          "51.6",
+          "8.4",
+          "14.4",
+          "57.2",
+          "1.5",
+          "10.6",
+          "58.2",
+          "1.3",
+          "9.6",
+          "10.1",
+          "50.6",
+          "54.1",
+          "53.1",
+          "12.4",
+          "8.3",
+          "14.3",
+          "26.6",
+          "55.2",
+          "37.4",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-nov",
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-11-25T06:35:59.999992Z",
+          "c21003DeltaTSeconds": 54.82100340599611,
+          "table21003DeltaTSeconds": 54.82100340599611,
+          "table208DeltaTSeconds": 54.82100340599611,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1985-08-28T07:25:25.365642Z",
+          "c21003DeltaTSeconds": 54.694934616968474,
+          "table21003DeltaTSeconds": 54.694934616968474,
+          "table208DeltaTSeconds": 54.694934616968474,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1985-08-28T07:25:25.365642Z",
+        "sun": {
+          "design": "59.6",
+          "personality": "34.3"
+        },
+        "profile": "3/6",
+        "all26GateLine": [
+          "59.6",
+          "55.6",
+          "19.3",
+          "24.5",
+          "44.5",
+          "7.4",
+          "56.5",
+          "4.4",
+          "19.2",
+          "43.4",
+          "5.3",
+          "10.3",
+          "28.1",
+          "34.3",
+          "20.3",
+          "24.2",
+          "24.2",
+          "44.2",
+          "9.6",
+          "43.1",
+          "57.3",
+          "19.5",
+          "34.1",
+          "26.1",
+          "10.5",
+          "28.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-repeatA",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-25T18:33:59.999999Z",
+          "c21003DeltaTSeconds": 54.38072542120087,
+          "table21003DeltaTSeconds": 54.38072542120087,
+          "table208DeltaTSeconds": 54.38072542120087,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-31T00:04:07.970974Z",
+          "c21003DeltaTSeconds": 54.260015051823,
+          "table21003DeltaTSeconds": 54.260015051823004,
+          "table208DeltaTSeconds": 54.260015051823004,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-31T00:04:07.970974Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "60.6",
+          "8.4",
+          "14.4",
+          "43.2",
+          "5.2",
+          "54.4",
+          "58.6",
+          "1.5",
+          "5.1",
+          "10.2",
+          "28.1",
+          "41.4",
+          "31.4",
+          "25.2",
+          "23.6",
+          "43.6",
+          "54.6",
+          "36.1",
+          "36.2",
+          "60.1",
+          "14.3",
+          "5.6",
+          "10.5",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-repeatB",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-25T18:33:59.999999Z",
+          "c21003DeltaTSeconds": 54.38072542120087,
+          "table21003DeltaTSeconds": 54.38072542120087,
+          "table208DeltaTSeconds": 54.38072542120087,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-31T00:04:07.970974Z",
+          "c21003DeltaTSeconds": 54.260015051823,
+          "table21003DeltaTSeconds": 54.260015051823004,
+          "table208DeltaTSeconds": 54.260015051823004,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-31T00:04:07.970974Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "60.6",
+          "8.4",
+          "14.4",
+          "43.2",
+          "5.2",
+          "54.4",
+          "58.6",
+          "1.5",
+          "5.1",
+          "10.2",
+          "28.1",
+          "41.4",
+          "31.4",
+          "25.2",
+          "23.6",
+          "43.6",
+          "54.6",
+          "36.1",
+          "36.2",
+          "60.1",
+          "14.3",
+          "5.6",
+          "10.5",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1985-tight",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-25T18:33:59.999999Z",
+          "c21003DeltaTSeconds": 54.38072542120087,
+          "table21003DeltaTSeconds": 54.38072542120087,
+          "table208DeltaTSeconds": 54.38072542120087,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-31T00:04:07.970974Z",
+          "c21003DeltaTSeconds": 54.260015051823,
+          "table21003DeltaTSeconds": 54.260015051823004,
+          "table208DeltaTSeconds": 54.260015051823004,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-31T00:04:07.970974Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "60.6",
+          "8.4",
+          "14.4",
+          "43.2",
+          "5.2",
+          "54.4",
+          "58.6",
+          "1.5",
+          "5.1",
+          "10.2",
+          "28.1",
+          "41.4",
+          "31.4",
+          "25.2",
+          "23.6",
+          "43.6",
+          "54.6",
+          "36.1",
+          "36.2",
+          "60.1",
+          "14.3",
+          "5.6",
+          "10.5",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-apr",
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-04-11T02:29:59.999987Z",
+          "c21003DeltaTSeconds": 61.02286436600216,
+          "table21003DeltaTSeconds": 61.02286436600216,
+          "table208DeltaTSeconds": 61.02286436600216,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1995-01-13T10:05:19.713762Z",
+          "c21003DeltaTSeconds": 60.81531956426791,
+          "table21003DeltaTSeconds": 60.81531956426791,
+          "table208DeltaTSeconds": 60.81531956426791,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1995-01-13T10:05:19.713762Z",
+        "sun": {
+          "design": "61.3",
+          "personality": "51.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "61.3",
+          "62.3",
+          "35.4",
+          "44.6",
+          "24.6",
+          "19.3",
+          "9.1",
+          "59.2",
+          "9.2",
+          "37.4",
+          "61.6",
+          "61.3",
+          "14.6",
+          "51.6",
+          "57.6",
+          "4.6",
+          "28.4",
+          "27.4",
+          "51.3",
+          "63.6",
+          "7.2",
+          "5.5",
+          "22.3",
+          "60.5",
+          "61.6",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-dec",
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-12-15T02:26:59.999997Z",
+          "c21003DeltaTSeconds": 61.59204586974829,
+          "table21003DeltaTSeconds": 61.59204586974829,
+          "table208DeltaTSeconds": 61.59204586974829,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1995-09-18T00:14:19.527263Z",
+          "c21003DeltaTSeconds": 61.39549956952027,
+          "table21003DeltaTSeconds": 61.39549956952026,
+          "table208DeltaTSeconds": 61.39549956952026,
+          "oldMinusModernSeconds": -7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1995-09-18T00:14:19.527263Z",
+        "sun": {
+          "design": "6.3",
+          "personality": "26.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "6.3",
+          "36.3",
+          "52.4",
+          "50.1",
+          "3.1",
+          "57.5",
+          "46.5",
+          "28.6",
+          "9.4",
+          "22.5",
+          "60.1",
+          "61.3",
+          "14.5",
+          "26.6",
+          "45.6",
+          "47.5",
+          "32.5",
+          "42.5",
+          "58.1",
+          "61.2",
+          "38.2",
+          "11.4",
+          "22.2",
+          "60.3",
+          "61.4",
+          "34.2"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-feb-after",
+      "birthUtc": "1995-02-22T01:09:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-02-22T01:08:59.999995Z",
+          "c21003DeltaTSeconds": 60.90909048334674,
+          "table21003DeltaTSeconds": 60.90909048334674,
+          "table208DeltaTSeconds": 60.90909048334674,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1994-11-27T10:17:43.338858Z",
+          "c21003DeltaTSeconds": 60.70955812524458,
+          "table21003DeltaTSeconds": 60.70955812524458,
+          "table208DeltaTSeconds": 60.70955812524458,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1994-11-27T10:17:43.338858Z",
+        "sun": {
+          "design": "34.6",
+          "personality": "55.4"
+        },
+        "profile": "4/6",
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.4",
+          "59.4",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-feb-before",
+      "birthUtc": "1995-02-22T01:07:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-02-22T01:07:00.000002Z",
+          "c21003DeltaTSeconds": 60.909087193945545,
+          "table21003DeltaTSeconds": 60.909087193945545,
+          "table208DeltaTSeconds": 60.909087193945545,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1994-11-27T10:15:43.940672Z",
+          "c21003DeltaTSeconds": 60.70955507895001,
+          "table21003DeltaTSeconds": 60.70955507895001,
+          "table208DeltaTSeconds": 60.70955507895001,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1994-11-27T10:15:43.940672Z",
+        "sun": {
+          "design": "34.6",
+          "personality": "55.3"
+        },
+        "profile": "3/6",
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.3",
+          "59.3",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-feb",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-02-22T01:07:59.999998Z",
+          "c21003DeltaTSeconds": 60.90908883864604,
+          "table21003DeltaTSeconds": 60.90908883864604,
+          "table208DeltaTSeconds": 60.90908883864604,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1994-11-27T10:16:43.639725Z",
+          "c21003DeltaTSeconds": 60.709556602096214,
+          "table21003DeltaTSeconds": 60.709556602096214,
+          "table208DeltaTSeconds": 60.709556602096214,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1994-11-27T10:16:43.639725Z",
+        "sun": {
+          "design": "34.6",
+          "personality": "55.4"
+        },
+        "profile": "4/6",
+        "all26GateLine": [
+          "34.6",
+          "20.6",
+          "47.3",
+          "1.2",
+          "2.2",
+          "14.2",
+          "28.1",
+          "29.2",
+          "14.4",
+          "37.1",
+          "61.4",
+          "61.1",
+          "14.4",
+          "55.4",
+          "59.4",
+          "14.3",
+          "44.1",
+          "24.1",
+          "41.6",
+          "54.5",
+          "4.1",
+          "5.2",
+          "63.3",
+          "60.3",
+          "61.4",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-jun-after",
+      "birthUtc": "1995-06-21T23:44:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-06-21T23:44:00.000017Z",
+          "c21003DeltaTSeconds": 61.192090580486344,
+          "table21003DeltaTSeconds": 61.192090580486344,
+          "table208DeltaTSeconds": 61.192090580486344,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1995-03-23T05:38:01.611255Z",
+          "c21003DeltaTSeconds": 60.97821321276681,
+          "table21003DeltaTSeconds": 60.97821321276681,
+          "table208DeltaTSeconds": 60.97821321276681,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1995-03-23T05:38:01.611255Z",
+        "sun": {
+          "design": "25.5",
+          "personality": "15.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.3",
+          "10.3",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-jun-before",
+      "birthUtc": "1995-06-21T23:42:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-06-21T23:41:59.999984Z",
+          "c21003DeltaTSeconds": 61.19208733122882,
+          "table21003DeltaTSeconds": 61.19208733122883,
+          "table208DeltaTSeconds": 61.19208733122883,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        },
+        {
+          "epoch": "design",
+          "utc": "1995-03-23T05:36:06.193414Z",
+          "c21003DeltaTSeconds": 60.97821005009444,
+          "table21003DeltaTSeconds": 60.97821005009444,
+          "table208DeltaTSeconds": 60.97821005009444,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1995-03-23T05:36:06.193414Z",
+        "sun": {
+          "design": "25.5",
+          "personality": "15.2"
+        },
+        "profile": "2/5",
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.2",
+          "10.2",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-jun",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-06-21T23:42:59.999980Z",
+          "c21003DeltaTSeconds": 61.19208895585703,
+          "table21003DeltaTSeconds": 61.19208895585703,
+          "table208DeltaTSeconds": 61.19208895585703,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1995-03-23T05:37:03.902294Z",
+          "c21003DeltaTSeconds": 60.97821163142956,
+          "table21003DeltaTSeconds": 60.97821163142956,
+          "table208DeltaTSeconds": 60.97821163142956,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1995-03-23T05:37:03.902294Z",
+        "sun": {
+          "design": "25.5",
+          "personality": "15.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "25.5",
+          "46.5",
+          "11.2",
+          "28.5",
+          "27.5",
+          "63.2",
+          "49.6",
+          "33.6",
+          "5.5",
+          "22.1",
+          "60.4",
+          "61.5",
+          "34.1",
+          "15.3",
+          "10.3",
+          "42.4",
+          "28.3",
+          "27.3",
+          "16.6",
+          "35.3",
+          "64.3",
+          "9.3",
+          "36.3",
+          "60.4",
+          "61.5",
+          "14.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G1995-tight",
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1995-01-28T23:03:59.999999Z",
+          "c21003DeltaTSeconds": 60.85206699999573,
+          "table21003DeltaTSeconds": 60.85206699999573,
+          "table208DeltaTSeconds": 60.85206699999573,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "1994-11-03T05:24:32.571909Z",
+          "c21003DeltaTSeconds": 60.65628641512322,
+          "table21003DeltaTSeconds": 60.65628641512322,
+          "table208DeltaTSeconds": 60.65628641512322,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1994-11-03T05:24:32.571909Z",
+        "sun": {
+          "design": "44.4",
+          "personality": "19.1"
+        },
+        "profile": "1/4",
+        "all26GateLine": [
+          "44.4",
+          "24.4",
+          "28.4",
+          "1.2",
+          "2.2",
+          "32.2",
+          "44.3",
+          "7.3",
+          "43.4",
+          "55.6",
+          "61.3",
+          "61.1",
+          "14.3",
+          "19.1",
+          "33.1",
+          "38.3",
+          "44.4",
+          "24.4",
+          "49.2",
+          "26.6",
+          "29.4",
+          "9.5",
+          "37.6",
+          "60.1",
+          "61.4",
+          "34.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-0411",
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-01-19T04:10:59.999988Z",
+          "c21003DeltaTSeconds": 64.69349025553305,
+          "table21003DeltaTSeconds": 64.69349025553305,
+          "table208DeltaTSeconds": 64.69349025553305,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2004-10-24T06:24:59.114058Z",
+          "c21003DeltaTSeconds": 64.66405857247338,
+          "table21003DeltaTSeconds": 64.66405857247338,
+          "table208DeltaTSeconds": 64.66405857247338,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2004-10-24T06:24:59.114058Z",
+        "sun": {
+          "design": "50.6",
+          "personality": "60.3"
+        },
+        "profile": "3/6",
+        "all26GateLine": [
+          "50.6",
+          "3.6",
+          "63.4",
+          "27.1",
+          "28.1",
+          "44.6",
+          "6.2",
+          "57.4",
+          "18.3",
+          "56.1",
+          "55.4",
+          "19.6",
+          "26.4",
+          "60.3",
+          "56.3",
+          "23.3",
+          "3.2",
+          "50.2",
+          "38.4",
+          "38.3",
+          "5.6",
+          "57.4",
+          "62.3",
+          "55.5",
+          "13.2",
+          "11.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-0412",
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-01-19T04:11:59.999984Z",
+          "c21003DeltaTSeconds": 64.69349047440163,
+          "table21003DeltaTSeconds": 64.69349047440163,
+          "table208DeltaTSeconds": 64.69349047440163,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2004-10-24T06:26:00.419619Z",
+          "c21003DeltaTSeconds": 64.66405881112658,
+          "table21003DeltaTSeconds": 64.66405881112658,
+          "table208DeltaTSeconds": 64.66405881112658,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2004-10-24T06:26:00.419619Z",
+        "sun": {
+          "design": "50.6",
+          "personality": "60.4"
+        },
+        "profile": "4/6",
+        "all26GateLine": [
+          "50.6",
+          "3.6",
+          "63.4",
+          "27.1",
+          "28.1",
+          "44.6",
+          "6.2",
+          "57.4",
+          "18.3",
+          "56.1",
+          "55.4",
+          "19.6",
+          "26.4",
+          "60.4",
+          "56.4",
+          "23.3",
+          "3.2",
+          "50.2",
+          "38.4",
+          "38.3",
+          "5.6",
+          "57.4",
+          "62.3",
+          "55.5",
+          "13.2",
+          "11.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-jul11",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-07-11T01:47:00.000020Z",
+          "c21003DeltaTSeconds": 64.75668259218413,
+          "table21003DeltaTSeconds": 64.75668259218413,
+          "table208DeltaTSeconds": 64.75668259218413,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2005-04-10T15:56:01.761609Z",
+          "c21003DeltaTSeconds": 64.72085162998873,
+          "table21003DeltaTSeconds": 64.72085162998873,
+          "table208DeltaTSeconds": 64.72085162998873,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2005-04-10T15:56:01.761609Z",
+        "sun": {
+          "design": "42.1",
+          "personality": "53.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "42.1",
+          "32.1",
+          "2.1",
+          "42.3",
+          "32.3",
+          "25.4",
+          "42.4",
+          "13.3",
+          "48.4",
+          "53.6",
+          "37.4",
+          "13.5",
+          "11.2",
+          "53.4",
+          "54.4",
+          "40.4",
+          "51.3",
+          "57.3",
+          "7.2",
+          "7.3",
+          "51.5",
+          "48.2",
+          "56.4",
+          "37.6",
+          "13.4",
+          "26.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-jul20-after",
+      "birthUtc": "2005-07-20T21:41:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-07-20T21:41:00.000014Z",
+          "c21003DeltaTSeconds": 64.76092872524138,
+          "table21003DeltaTSeconds": 64.76092872524138,
+          "table208DeltaTSeconds": 64.76092872524138,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2005-04-20T05:47:01.546045Z",
+          "c21003DeltaTSeconds": 64.72432219805258,
+          "table21003DeltaTSeconds": 64.72432219805258,
+          "table208DeltaTSeconds": 64.72432219805258,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2005-04-20T05:47:01.546045Z",
+        "sun": {
+          "design": "3.5",
+          "personality": "56.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.3",
+          "60.3",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-jul20-before",
+      "birthUtc": "2005-07-20T21:39:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-07-20T21:38:59.999981Z",
+          "c21003DeltaTSeconds": 64.76092811937383,
+          "table21003DeltaTSeconds": 64.76092811937383,
+          "table208DeltaTSeconds": 64.76092811937383,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2005-04-20T05:45:04.231212Z",
+          "c21003DeltaTSeconds": 64.72432170171157,
+          "table21003DeltaTSeconds": 64.72432170171157,
+          "table208DeltaTSeconds": 64.72432170171157,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2005-04-20T05:45:04.231212Z",
+        "sun": {
+          "design": "3.5",
+          "personality": "56.2"
+        },
+        "profile": "2/5",
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.2",
+          "60.2",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-jul20",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-07-20T21:40:00.000018Z",
+          "c21003DeltaTSeconds": 64.76092842230749,
+          "table21003DeltaTSeconds": 64.76092842230749,
+          "table208DeltaTSeconds": 64.76092842230749,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2005-04-20T05:46:02.888628Z",
+          "c21003DeltaTSeconds": 64.72432194988193,
+          "table21003DeltaTSeconds": 64.72432194988193,
+          "table208DeltaTSeconds": 64.72432194988193,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2005-04-20T05:46:02.888628Z",
+        "sun": {
+          "design": "3.5",
+          "personality": "56.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "3.5",
+          "50.5",
+          "40.5",
+          "42.3",
+          "32.3",
+          "17.1",
+          "27.4",
+          "49.4",
+          "48.3",
+          "62.1",
+          "37.5",
+          "13.5",
+          "11.2",
+          "56.3",
+          "60.3",
+          "54.6",
+          "51.3",
+          "57.3",
+          "4.2",
+          "29.4",
+          "42.6",
+          "48.3",
+          "56.5",
+          "37.5",
+          "13.4",
+          "26.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-may",
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-05-03T14:33:00.000016Z",
+          "c21003DeltaTSeconds": 64.72926842979187,
+          "table21003DeltaTSeconds": 64.72926842979187,
+          "table208DeltaTSeconds": 64.72926842979187,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2005-02-03T23:37:57.273721Z",
+          "c21003DeltaTSeconds": 64.69852902995142,
+          "table21003DeltaTSeconds": 64.69852902995142,
+          "table208DeltaTSeconds": 64.69852902995142,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2005-02-03T23:37:57.273721Z",
+        "sun": {
+          "design": "13.3",
+          "personality": "24.6"
+        },
+        "profile": "6/3",
+        "all26GateLine": [
+          "13.3",
+          "7.3",
+          "9.1",
+          "42.6",
+          "32.6",
+          "19.1",
+          "60.6",
+          "11.6",
+          "57.4",
+          "62.2",
+          "55.6",
+          "13.2",
+          "11.2",
+          "24.6",
+          "44.6",
+          "63.3",
+          "42.3",
+          "32.3",
+          "51.3",
+          "23.4",
+          "55.2",
+          "48.2",
+          "62.2",
+          "37.5",
+          "13.5",
+          "11.2"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2005-tight",
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2005-01-16T09:54:00.000008Z",
+          "c21003DeltaTSeconds": 64.69262145249371,
+          "table21003DeltaTSeconds": 64.69262145249371,
+          "table208DeltaTSeconds": 64.69262145249371,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2004-10-21T10:37:33.324840Z",
+          "c21003DeltaTSeconds": 64.6631096446857,
+          "table21003DeltaTSeconds": 64.6631096446857,
+          "table208DeltaTSeconds": 64.6631096446857,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2004-10-21T10:37:33.324840Z",
+        "sun": {
+          "design": "50.3",
+          "personality": "60.1"
+        },
+        "profile": "1/3",
+        "all26GateLine": [
+          "50.3",
+          "3.3",
+          "41.4",
+          "27.1",
+          "28.1",
+          "44.2",
+          "47.5",
+          "57.2",
+          "18.2",
+          "56.1",
+          "55.4",
+          "19.6",
+          "26.4",
+          "60.1",
+          "56.1",
+          "51.1",
+          "3.2",
+          "50.2",
+          "58.6",
+          "58.5",
+          "5.4",
+          "57.4",
+          "62.4",
+          "55.5",
+          "13.2",
+          "11.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2015-feb-after",
+      "birthUtc": "2015-02-04T06:57:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-02-04T06:56:59.999997Z",
+          "c21003DeltaTSeconds": 67.68321655668667,
+          "table21003DeltaTSeconds": 67.68321655668667,
+          "table208DeltaTSeconds": 67.68321655668667,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-11-09T14:56:41.533082Z",
+          "c21003DeltaTSeconds": 67.58884364728517,
+          "table21003DeltaTSeconds": 67.58884364728517,
+          "table208DeltaTSeconds": 67.58884364728517,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-11-09T14:56:41.533082Z",
+        "sun": {
+          "design": "1.5",
+          "personality": "13.3"
+        },
+        "profile": "3/5",
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.3",
+          "7.3",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2015-feb-before",
+      "birthUtc": "2015-02-04T06:55:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-02-04T06:55:00.000005Z",
+          "c21003DeltaTSeconds": 67.6832149566727,
+          "table21003DeltaTSeconds": 67.6832149566727,
+          "table208DeltaTSeconds": 67.6832149566727,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-11-09T14:54:40.375743Z",
+          "c21003DeltaTSeconds": 67.58884218931044,
+          "table21003DeltaTSeconds": 67.58884218931044,
+          "table208DeltaTSeconds": 67.58884218931044,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-11-09T14:54:40.375743Z",
+        "sun": {
+          "design": "1.5",
+          "personality": "13.2"
+        },
+        "profile": "2/5",
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.2",
+          "7.2",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2015-feb",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-02-04T06:56:00.000001Z",
+          "c21003DeltaTSeconds": 67.68321575667953,
+          "table21003DeltaTSeconds": 67.68321575667953,
+          "table208DeltaTSeconds": 67.68321575667953,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-11-09T14:55:40.954453Z",
+          "c21003DeltaTSeconds": 67.58884291829813,
+          "table21003DeltaTSeconds": 67.58884291829813,
+          "table208DeltaTSeconds": 67.58884291829813,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-11-09T14:55:40.954453Z",
+        "sun": {
+          "design": "1.5",
+          "personality": "13.2"
+        },
+        "profile": "2/5",
+        "all26GateLine": [
+          "1.5",
+          "2.5",
+          "45.4",
+          "57.5",
+          "51.5",
+          "50.5",
+          "43.3",
+          "38.2",
+          "4.3",
+          "14.1",
+          "21.5",
+          "55.5",
+          "38.3",
+          "13.2",
+          "7.2",
+          "7.6",
+          "48.3",
+          "21.3",
+          "41.4",
+          "37.5",
+          "22.1",
+          "7.6",
+          "34.4",
+          "21.5",
+          "37.1",
+          "38.6"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "index": 13,
+            "computed": "13.2",
+            "official": "13.3"
+          },
+          {
+            "index": 14,
+            "computed": "7.2",
+            "official": "7.3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G2015-final-proof",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:19:59.999995Z",
+          "c21003DeltaTSeconds": 67.67261263190962,
+          "table21003DeltaTSeconds": 67.67261263190962,
+          "table208DeltaTSeconds": 67.67261263190962,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:20:25.937024Z",
+          "c21003DeltaTSeconds": 67.57913911448756,
+          "table21003DeltaTSeconds": 67.57913911448756,
+          "table208DeltaTSeconds": 67.57913911448756,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:20:25.937024Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "index": 13,
+            "computed": "41.4",
+            "official": "41.5"
+          },
+          {
+            "index": 14,
+            "computed": "31.4",
+            "official": "31.5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G2015-repeatA",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:19:59.999995Z",
+          "c21003DeltaTSeconds": 67.67261263190962,
+          "table21003DeltaTSeconds": 67.67261263190962,
+          "table208DeltaTSeconds": 67.67261263190962,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:20:25.937024Z",
+          "c21003DeltaTSeconds": 67.57913911448756,
+          "table21003DeltaTSeconds": 67.57913911448756,
+          "table208DeltaTSeconds": 67.57913911448756,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:20:25.937024Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "index": 13,
+            "computed": "41.4",
+            "official": "41.5"
+          },
+          {
+            "index": 14,
+            "computed": "31.4",
+            "official": "31.5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G2015-repeatB",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:19:59.999995Z",
+          "c21003DeltaTSeconds": 67.67261263190962,
+          "table21003DeltaTSeconds": 67.67261263190962,
+          "table208DeltaTSeconds": 67.67261263190962,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:20:25.937024Z",
+          "c21003DeltaTSeconds": 67.57913911448756,
+          "table21003DeltaTSeconds": 67.57913911448756,
+          "table208DeltaTSeconds": 67.57913911448756,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:20:25.937024Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "index": 13,
+            "computed": "41.4",
+            "official": "41.5"
+          },
+          {
+            "index": 14,
+            "computed": "31.4",
+            "official": "31.5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G2015-tight-after",
+      "birthUtc": "2015-01-26T01:21:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:20:59.999992Z",
+          "c21003DeltaTSeconds": 67.67261342683513,
+          "table21003DeltaTSeconds": 67.67261342683513,
+          "table208DeltaTSeconds": 67.67261342683513,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:21:26.963448Z",
+          "c21003DeltaTSeconds": 67.57913984501472,
+          "table21003DeltaTSeconds": 67.57913984501472,
+          "table208DeltaTSeconds": 67.57913984501472,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:21:26.963448Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.5"
+        },
+        "profile": "5/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.5",
+          "31.5",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2015-tight-before",
+      "birthUtc": "2015-01-26T01:19:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:18:59.999999Z",
+          "c21003DeltaTSeconds": 67.67261183698457,
+          "table21003DeltaTSeconds": 67.67261183698457,
+          "table208DeltaTSeconds": 67.67261183698457,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:19:24.910600Z",
+          "c21003DeltaTSeconds": 67.57913838396075,
+          "table21003DeltaTSeconds": 67.57913838396075,
+          "table208DeltaTSeconds": 67.57913838396075,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:19:24.910600Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2015-tight",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2015-01-26T01:19:59.999995Z",
+          "c21003DeltaTSeconds": 67.67261263190962,
+          "table21003DeltaTSeconds": 67.67261263190962,
+          "table208DeltaTSeconds": 67.67261263190962,
+          "oldMinusModernSeconds": 0.0
+        },
+        {
+          "epoch": "design",
+          "utc": "2014-10-31T06:20:25.937024Z",
+          "c21003DeltaTSeconds": 67.57913911448756,
+          "table21003DeltaTSeconds": 67.57913911448756,
+          "table208DeltaTSeconds": 67.57913911448756,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2014-10-31T06:20:25.937024Z",
+        "sun": {
+          "design": "44.1",
+          "personality": "41.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "44.1",
+          "24.1",
+          "19.3",
+          "57.5",
+          "51.5",
+          "57.5",
+          "44.2",
+          "10.6",
+          "4.2",
+          "43.6",
+          "21.5",
+          "55.6",
+          "38.2",
+          "41.4",
+          "31.4",
+          "42.1",
+          "48.4",
+          "21.4",
+          "13.3",
+          "30.4",
+          "37.6",
+          "4.1",
+          "34.4",
+          "21.4",
+          "37.1",
+          "38.5"
+        ],
+        "all26MismatchCount": 2,
+        "all26Mismatches": [
+          {
+            "index": 13,
+            "computed": "41.4",
+            "official": "41.5"
+          },
+          {
+            "index": 14,
+            "computed": "31.4",
+            "official": "31.5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G2025-mar-after",
+      "birthUtc": "2025-03-15T18:57:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-03-15T18:56:59.999997Z",
+          "c21003DeltaTSeconds": 68.98020172944129,
+          "table21003DeltaTSeconds": 68.98020172944129,
+          "table208DeltaTSeconds": 72.09838033414435,
+          "oldMinusModernSeconds": 3.1181786047030613
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-12-18T20:56:42.817243Z",
+          "c21003DeltaTSeconds": 69.00354476164799,
+          "table21003DeltaTSeconds": 69.00354476164799,
+          "table208DeltaTSeconds": 71.9830564240824,
+          "oldMinusModernSeconds": 2.979511662434419
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-12-18T20:56:42.888617Z",
+        "sun": {
+          "design": "11.6",
+          "personality": "36.4"
+        },
+        "profile": "4/6",
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.4",
+          "6.4",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2025-mar-before",
+      "birthUtc": "2025-03-15T18:55:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-03-15T18:55:00.000005Z",
+          "c21003DeltaTSeconds": 68.9802021006183,
+          "table21003DeltaTSeconds": 68.9802021006183,
+          "table208DeltaTSeconds": 72.09837848736117,
+          "oldMinusModernSeconds": 3.1181763867428742
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-12-18T20:54:45.404241Z",
+          "c21003DeltaTSeconds": 69.00354515068382,
+          "table21003DeltaTSeconds": 69.00354515068382,
+          "table208DeltaTSeconds": 71.98305456378557,
+          "oldMinusModernSeconds": 2.979509413101752
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-12-18T20:54:45.475695Z",
+        "sun": {
+          "design": "11.6",
+          "personality": "36.3"
+        },
+        "profile": "3/6",
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.3",
+          "6.3",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2025-mar",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-03-15T18:56:00.000001Z",
+          "c21003DeltaTSeconds": 68.9802019150298,
+          "table21003DeltaTSeconds": 68.9802019150298,
+          "table208DeltaTSeconds": 72.09837941075274,
+          "oldMinusModernSeconds": 3.1181774957229464
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-12-18T20:55:44.110742Z",
+          "c21003DeltaTSeconds": 69.00354495616591,
+          "table21003DeltaTSeconds": 69.00354495616591,
+          "table208DeltaTSeconds": 71.98305549393399,
+          "oldMinusModernSeconds": 2.9795105377680784
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-12-18T20:55:44.182196Z",
+        "sun": {
+          "design": "11.6",
+          "personality": "36.4"
+        },
+        "profile": "4/6",
+        "all26GateLine": [
+          "11.6",
+          "12.6",
+          "33.5",
+          "25.5",
+          "46.5",
+          "9.2",
+          "13.1",
+          "31.4",
+          "35.4",
+          "63.3",
+          "23.6",
+          "36.5",
+          "60.5",
+          "36.4",
+          "6.4",
+          "48.3",
+          "36.6",
+          "6.6",
+          "21.1",
+          "17.4",
+          "53.5",
+          "35.3",
+          "22.6",
+          "23.6",
+          "25.2",
+          "41.2"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2025-tight-after",
+      "birthUtc": "2025-01-19T22:58:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-01-19T22:57:59.999980Z",
+          "c21003DeltaTSeconds": 68.99478621791037,
+          "table21003DeltaTSeconds": 68.99478621791037,
+          "table208DeltaTSeconds": 72.02588678898286,
+          "oldMinusModernSeconds": 3.0311005710724856
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-10-25T01:27:52.068608Z",
+          "c21003DeltaTSeconds": 69.0191899194524,
+          "table21003DeltaTSeconds": 69.0191899194524,
+          "table208DeltaTSeconds": 71.90802329816916,
+          "oldMinusModernSeconds": 2.888833378716754
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-10-25T01:27:52.274601Z",
+        "sun": {
+          "design": "28.1",
+          "personality": "60.5"
+        },
+        "profile": "5/1",
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.5",
+          "56.5",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2025-tight-before",
+      "birthUtc": "2025-01-19T22:56:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-01-19T22:55:59.999988Z",
+          "c21003DeltaTSeconds": 68.99478658579248,
+          "table21003DeltaTSeconds": 68.99478658579248,
+          "table208DeltaTSeconds": 72.02588496197686,
+          "oldMinusModernSeconds": 3.0310983761843744
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-10-25T01:25:49.546078Z",
+          "c21003DeltaTSeconds": 69.01919032265724,
+          "table21003DeltaTSeconds": 69.01919032265724,
+          "table208DeltaTSeconds": 71.90802135691683,
+          "oldMinusModernSeconds": 2.8888310342595958
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-10-25T01:25:49.751991Z",
+        "sun": {
+          "design": "28.1",
+          "personality": "60.4"
+        },
+        "profile": "4/1",
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.4",
+          "56.4",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "G2025-tight",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2025-01-19T22:56:59.999984Z",
+          "c21003DeltaTSeconds": 68.99478640185143,
+          "table21003DeltaTSeconds": 68.99478640185143,
+          "table208DeltaTSeconds": 72.02588587547987,
+          "oldMinusModernSeconds": 3.0310994736284442
+        },
+        {
+          "epoch": "design",
+          "utc": "2024-10-25T01:26:50.807383Z",
+          "c21003DeltaTSeconds": 69.01919012105468,
+          "table21003DeltaTSeconds": 69.01919012105468,
+          "table208DeltaTSeconds": 71.90802232754368,
+          "oldMinusModernSeconds": 2.888832206488999
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2024-10-25T01:26:51.013296Z",
+        "sun": {
+          "design": "28.1",
+          "personality": "60.5"
+        },
+        "profile": "5/1",
+        "all26GateLine": [
+          "28.1",
+          "27.1",
+          "33.4",
+          "17.3",
+          "18.3",
+          "1.5",
+          "9.4",
+          "62.6",
+          "45.5",
+          "63.2",
+          "8.2",
+          "36.6",
+          "60.4",
+          "60.5",
+          "56.5",
+          "48.1",
+          "25.1",
+          "46.1",
+          "54.3",
+          "63.6",
+          "62.5",
+          "35.1",
+          "63.6",
+          "23.5",
+          "36.6",
+          "60.6"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "jovian-1985-1233",
+      "birthUtc": "1985-01-05T12:33:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "1985-01-05T12:33:00.000003Z",
+          "c21003DeltaTSeconds": 54.35056414855624,
+          "table21003DeltaTSeconds": 54.350564148556245,
+          "table208DeltaTSeconds": 54.350564148556245,
+          "oldMinusModernSeconds": 7.105427357601002e-15
+        },
+        {
+          "epoch": "design",
+          "utc": "1984-10-10T06:22:15.099980Z",
+          "c21003DeltaTSeconds": 54.2315263121353,
+          "table21003DeltaTSeconds": 54.2315263121353,
+          "table208DeltaTSeconds": 54.2315263121353,
+          "oldMinusModernSeconds": 0.0
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "1984-10-10T06:22:15.099980Z",
+        "sun": {
+          "design": "57.3",
+          "personality": "54.1"
+        },
+        "profile": "1/3",
+        "all26GateLine": [
+          "57.3",
+          "51.3",
+          "51.6",
+          "8.4",
+          "14.4",
+          "57.2",
+          "1.5",
+          "10.6",
+          "58.2",
+          "1.3",
+          "9.6",
+          "10.1",
+          "50.6",
+          "54.1",
+          "53.1",
+          "12.4",
+          "8.3",
+          "14.3",
+          "26.6",
+          "55.2",
+          "37.4",
+          "61.2",
+          "14.1",
+          "5.5",
+          "10.4",
+          "28.3"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    },
+    {
+      "id": "jovian-control",
+      "birthUtc": "2000-05-10T04:30:00Z",
+      "deltaT": [
+        {
+          "epoch": "birth",
+          "utc": "2000-05-10T04:30:00.000000Z",
+          "c21003DeltaTSeconds": 63.930721848965405,
+          "table21003DeltaTSeconds": 63.9307218489654,
+          "table208DeltaTSeconds": 63.9307218489654,
+          "oldMinusModernSeconds": -7.105427357601002e-15
+        },
+        {
+          "epoch": "design",
+          "utc": "2000-02-11T06:19:45.591638Z",
+          "c21003DeltaTSeconds": 63.86213823772872,
+          "table21003DeltaTSeconds": 63.862138237728715,
+          "table208DeltaTSeconds": 63.862138237728715,
+          "oldMinusModernSeconds": -7.105427357601002e-15
+        }
+      ],
+      "sensitivityOnly": {
+        "configuration": "C2.10.03 standard258 + DE431, replacing default DeltaT with historical2.08 table interpolation",
+        "designUtc": "2000-02-11T06:19:45.591638Z",
+        "sun": {
+          "design": "49.4",
+          "personality": "23.2"
+        },
+        "profile": "2/4",
+        "all26GateLine": [
+          "49.4",
+          "4.4",
+          "3.4",
+          "31.2",
+          "41.2",
+          "37.4",
+          "61.1",
+          "25.2",
+          "3.4",
+          "24.4",
+          "13.5",
+          "41.3",
+          "5.2",
+          "23.2",
+          "43.2",
+          "33.5",
+          "56.1",
+          "60.1",
+          "23.3",
+          "24.4",
+          "20.5",
+          "2.6",
+          "23.2",
+          "49.2",
+          "41.5",
+          "5.1"
+        ],
+        "all26MismatchCount": 0,
+        "all26Mismatches": []
+      }
+    }
+  ]
+}
