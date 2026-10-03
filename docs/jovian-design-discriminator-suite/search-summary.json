@@ -1,0 +1,87 @@
+{
+  "baseline": "C2",
+  "seedSource": "/tmp/jovian-discriminator/search-pool.json",
+  "seedPolicy": "immutable previous boundary pool, re-rooted with C2 as Design TT; Sun plus 88 degrees determines birth TT; inverse C2 model delta-T determines numerical UTC; nearest minute",
+  "convertedTransitions": 31375,
+  "screenCandidateCount": 3900,
+  "countsByBody": {
+    "sun": 107,
+    "moon": 1435,
+    "northNode": 54,
+    "mercury": 139,
+    "venus": 135,
+    "mars": 68,
+    "jupiter": 519,
+    "saturn": 495,
+    "uranus": 430,
+    "neptune": 227,
+    "pluto": 294
+  },
+  "contrastCounts": {
+    "C1": 451,
+    "C3": 2212,
+    "C4": 3132,
+    "C5": 2881,
+    "C6": 502
+  },
+  "fullPoolCount": 462,
+  "eligibleNonfutureFullCases": 354,
+  "selectedCaseCount": 28,
+  "selectedDecades": {
+    "1980": 13,
+    "1990": 3,
+    "2000": 3,
+    "2010": 5,
+    "2020": 4
+  },
+  "selectedDesignBodyCoverage": {
+    "sun": 2,
+    "moon": 2,
+    "northNode": 9,
+    "mercury": 2,
+    "venus": 2,
+    "mars": 1,
+    "jupiter": 2,
+    "saturn": 2,
+    "uranus": 2,
+    "neptune": 2,
+    "pluto": 2
+  },
+  "selectedC2ContrastCoverage": {
+    "C1": 7,
+    "C3": 9,
+    "C4": 24,
+    "C5": 24,
+    "C6": 16
+  },
+  "allModelsStable1sCount": 28,
+  "allModelsStable5sCount": 21,
+  "recomputation": {
+    "unchangedUtcInputs": true,
+    "noReselection": true,
+    "gateLineProfileAndAllFourSensitivityChecksUnchanged": true,
+    "changedResults": [],
+    "maxDesignRootDifferenceSeconds": 4.023313522338867e-05,
+    "maxLongitudeDifferenceDegrees": 6.7487704313862196e-09,
+    "rootAlgorithm": "immutable bisection64",
+    "maxArcResidualDegrees": 4.595790414896328e-10
+  },
+  "fixedDraftSeal": {
+    "frozenAtUtc": "2026-10-03T14:11:22.185555+00:00",
+    "fixedDraftSource": "/tmp/jovian-design-discriminator/draft-bisection-28",
+    "caseCount": 28,
+    "reselected": false,
+    "inputBijectionVerified": true
+  },
+  "reproduceNativeWorkers": {
+    "instruction": "Create a JSON pool containing points [{utc: birthUtc, triggers: []}] from the fixed cases. Run each model command in its own process; Newton is used only for candidate inverse mapping, immutable Model.chart supplies all full predictions. Workers recalculate all 13+13 activations and all four second sensitivities.",
+    "commands": [
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C1 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C1.json",
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C2 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C2.json",
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C3 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C3.json",
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C4 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C4.json",
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C5 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C5.json",
+      "python3 docs/jovian-design-discriminator-suite/scripts/search.py evaluate --full --model C6 --runtime /tmp/ra-era-research --pool /tmp/jovian-design-discriminator/bisection-recompute/pool.json --output /tmp/jovian-design-discriminator/bisection-recompute/C6.json"
+    ]
+  }
+}

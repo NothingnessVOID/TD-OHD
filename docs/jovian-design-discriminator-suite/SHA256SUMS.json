@@ -1,0 +1,123 @@
+{
+  "sealedAtUtc": "2026-10-03T14:11:22.185555+00:00",
+  "algorithm": "SHA256",
+  "officialCollectionBegan": false,
+  "files": {
+    "design-discriminator-cases.json": "63e5ec76b1b3805f4688dd7de8dbc097b311b966d3b186826fd5f84fbcc36435",
+    "design-predictions-sealed.json": "c587f3d612f7d9cfa9577812338c550e8ff89cedc0166a3ca09d439492c235e9",
+    "search-summary.json": "eb8dd04516b1535aafbfc47383a00da9f252a11dfad58499da5e242bef1ce291",
+    "scripts/search.py": "584d0b76e558b2ad9d678ef05373f73069e533190fe51b279c40cc59f14eb1ed",
+    "scripts/research_models.py": "2455d4f8273c41687b2b8ae323e4d7512060bc5fa80195a79bed6674d2b7e8ca",
+    "scripts/seal.py": "d771f35432a0baec0480da47248561ec38a6fe2dcb5eb17a7461edef9e796b41"
+  },
+  "inheritedFiles": {
+    "docs/jovian-discriminator-suite/scripts/models.py": "fa1f1516466c6943d80dd5ae6d9f1f179560e6586a8da996c8e604215da88a6e",
+    "docs/ra-era-astronomy-stack/scripts/run_stack.py": "05119717d8459a818240efaad71b2b150a4336df633873576c2e6d3cc5e6a116",
+    "docs/golden-reference/root-cause-v2/scripts/frozen_mapping.py": "99208a832f88a4c055921be3df0cce7b9946485f35f1edb646d972ac8d280f04",
+    "docs/ra-era-astronomy-stack/acquisition-manifest.json": "b73529c2f66c03283930d68f70630fffa145c3b2415d90cbcfc203d6fe3cda25",
+    "docs/jovian-discriminator-suite/predictions-sealed.json": "c0eb987401b1e7d8ae7fa0ad297e51d4764d77f15767cdf318d7eed74738b128"
+  },
+  "assetProvenance": {
+    "inheritedManifest": "docs/ra-era-astronomy-stack/acquisition-manifest.json",
+    "manifestSha256": "b73529c2f66c03283930d68f70630fffa145c3b2415d90cbcfc203d6fe3cda25",
+    "assets": [
+      {
+        "name": "maitreya7.tar.bz2",
+        "url": "https://archive.debian.org/debian/pool/main/m/maitreya/maitreya_7.0.7.orig.tar.bz2",
+        "bytes": 7904437,
+        "sha256": "83a3414ab071958d1eb12768c36936074588c6eea87c4c35bb264f1602a589cc",
+        "kind": "source-archive",
+        "redistributed": false,
+        "versionMacro": "1.76.00",
+        "sourceSubdir": "maitreya-7.0.7/src/swe",
+        "dscSha256Verified": true,
+        "verifiedLocalSha256": "83a3414ab071958d1eb12768c36936074588c6eea87c4c35bb264f1602a589cc"
+      },
+      {
+        "name": "libswe-177.tar.bz2",
+        "url": "https://archive.debian.org/debian/pool/main/libs/libswe/libswe_1.77.00.0005.orig.tar.bz2",
+        "bytes": 844528,
+        "sha256": "66a5101bca0a65adfc8b6754f09fd0d0321e32753b90ae6c769757d028787b25",
+        "kind": "source-archive",
+        "redistributed": false,
+        "versionMacro": "1.77.00",
+        "sourceSubdir": "libswe-1.77.00.0005/astrodienst/src",
+        "dscSha256Verified": true,
+        "verifiedLocalSha256": "66a5101bca0a65adfc8b6754f09fd0d0321e32753b90ae6c769757d028787b25"
+      },
+      {
+        "name": "modern.tar.gz",
+        "url": "https://codeload.github.com/aloistr/swisseph/tar.gz/175e1fcb3108bcd5c0d146c803f51dcf23508012",
+        "bytes": 8288483,
+        "sha256": "3fc81e72be98d4de80e9bf56fa6c6d1368327ee23f99db7415341f3b60e5f466",
+        "kind": "source-archive",
+        "redistributed": false,
+        "versionMacro": "2.10.03",
+        "sourceSubdir": "swisseph-175e1fcb3108bcd5c0d146c803f51dcf23508012",
+        "verifiedLocalSha256": "3fc81e72be98d4de80e9bf56fa6c6d1368327ee23f99db7415341f3b60e5f466"
+      },
+      {
+        "name": "de406/sepl_18.se1",
+        "url": "https://raw.githubusercontent.com/arcanous/astrosonnet/92ecd816bcec2816c2e794369acd7743e927ab1a/eph/sepl_18.se1",
+        "bytes": 484065,
+        "sha256": "20c69631d1e5d9af4a1eb7fca265bf777fe2d532bcd99e6b1660838edf5d0e11",
+        "kind": "compressed-ephemeris",
+        "redistributed": false,
+        "deNumber": 406,
+        "upstreamCopyright": "Astrodienst",
+        "mirrorCommit": "92ecd816bcec2816c2e794369acd7743e927ab1a",
+        "verifiedLocalSha256": "20c69631d1e5d9af4a1eb7fca265bf777fe2d532bcd99e6b1660838edf5d0e11"
+      },
+      {
+        "name": "de406/semo_18.se1",
+        "url": "https://raw.githubusercontent.com/arcanous/astrosonnet/92ecd816bcec2816c2e794369acd7743e927ab1a/eph/semo_18.se1",
+        "bytes": 1305686,
+        "sha256": "fc8c8648b992c17408dfe572884e54c2e963410077222ccbd0e4b84f8312617c",
+        "kind": "compressed-ephemeris",
+        "redistributed": false,
+        "deNumber": 406,
+        "upstreamCopyright": "Astrodienst",
+        "mirrorCommit": "92ecd816bcec2816c2e794369acd7743e927ab1a",
+        "verifiedLocalSha256": "fc8c8648b992c17408dfe572884e54c2e963410077222ccbd0e4b84f8312617c"
+      },
+      {
+        "name": "de441/sepl_18.se1",
+        "url": "https://raw.githubusercontent.com/aloistr/swisseph/cae9ecd4b201544d85e411aced17660932514d43/ephe/sepl_18.se1",
+        "bytes": 484061,
+        "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "kind": "compressed-ephemeris",
+        "redistributed": false,
+        "deNumber": 441,
+        "upstreamCopyright": "Astrodienst",
+        "mirrorCommit": "cae9ecd4b201544d85e411aced17660932514d43",
+        "verifiedLocalSha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66"
+      },
+      {
+        "name": "de441/semo_18.se1",
+        "url": "https://raw.githubusercontent.com/aloistr/swisseph/cae9ecd4b201544d85e411aced17660932514d43/ephe/semo_18.se1",
+        "bytes": 1304771,
+        "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+        "kind": "compressed-ephemeris",
+        "redistributed": false,
+        "deNumber": 441,
+        "upstreamCopyright": "Astrodienst",
+        "mirrorCommit": "cae9ecd4b201544d85e411aced17660932514d43",
+        "verifiedLocalSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      {
+        "name": "de406.eph",
+        "url": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de406/lnxm3000p3000.406",
+        "bytes": 199437056,
+        "sha256": "b23009e208d625c5e830c4cb67e6313d7f9eadeffe17292a7471f33250c9342d",
+        "kind": "jpl-binary",
+        "redistributed": false,
+        "deNumber": 406,
+        "md5": "39e63b24f3540b92ec83be008f20d70e",
+        "md5Note": "Official Linux little-endian artifact; distinct from astro.com published MD5 of de406e.eph. Not substituted or claimed to match that endian variant.",
+        "verifiedLocalSha256": "b23009e208d625c5e830c4cb67e6313d7f9eadeffe17292a7471f33250c9342d"
+      }
+    ],
+    "redistributed": false
+  },
+  "protocol": "Never alter after collection begins; separate IDs and seal required for any alternative suite."
+}

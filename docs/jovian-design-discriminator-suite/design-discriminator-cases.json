@@ -1,0 +1,567 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "d3693d4942a23e043fa75efd84287f7393656f78",
+  "frozenAtUtc": "2026-10-03T14:11:22.185555+00:00",
+  "preparedAtUtc": "2026-10-03T14:03:57.458936+00:00",
+  "inputsAreSynthetic": true,
+  "selection": "C2 Design model-predicted disagreement only; no official outputs consulted",
+  "caseCount": 28,
+  "cases": [
+    {
+      "id": "JDD-01",
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "birthLocal": "2018-10-02T16:17:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2010,
+      "disagreementBodies": [
+        "sun"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-02",
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "birthLocal": "2020-10-11T16:00:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2020,
+      "disagreementBodies": [
+        "sun"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-03",
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "birthLocal": "2016-10-06T14:26:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2010,
+      "disagreementBodies": [
+        "mercury"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-04",
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "birthLocal": "2017-04-11T01:55:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2010,
+      "disagreementBodies": [
+        "moon"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-05",
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "birthLocal": "2017-10-02T22:59:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2010,
+      "disagreementBodies": [
+        "moon"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-06",
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "birthLocal": "2017-10-11T00:44:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2010,
+      "disagreementBodies": [
+        "mercury"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-07",
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "birthLocal": "2022-04-06T15:48:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2020,
+      "disagreementBodies": [
+        "mars"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": false,
+      "C2ContrastModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": true
+    },
+    {
+      "id": "JDD-08",
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "birthLocal": "2025-10-12T13:21:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2020,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-09",
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "birthLocal": "1980-10-01T20:30:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-10",
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "birthLocal": "1980-10-06T10:32:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-11",
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "birthLocal": "1986-03-31T10:25:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-12",
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "birthLocal": "1986-04-02T10:17:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-13",
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "birthLocal": "2025-12-09T18:15:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 0,
+      "decade": 2020,
+      "disagreementBodies": [
+        "neptune"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-14",
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "birthLocal": "1994-10-07T10:31:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1990,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-15",
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "birthLocal": "2003-10-12T21:48:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2000,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-16",
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "birthLocal": "2004-04-04T04:37:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2000,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-17",
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "birthLocal": "2004-10-12T23:58:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 2000,
+      "disagreementBodies": [
+        "northNode"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C6"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-18",
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "birthLocal": "1981-01-09T20:26:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 0,
+      "decade": 1980,
+      "disagreementBodies": [
+        "pluto"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-19",
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "birthLocal": "1981-02-02T08:05:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 0,
+      "decade": 1980,
+      "disagreementBodies": [
+        "pluto"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-20",
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "birthLocal": "1983-06-18T02:23:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "neptune"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-21",
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "birthLocal": "1985-06-10T21:11:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "uranus"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-22",
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "birthLocal": "1987-07-31T06:12:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "uranus"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-23",
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "birthLocal": "1992-08-02T10:35:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1990,
+      "disagreementBodies": [
+        "saturn"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-24",
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "birthLocal": "1995-01-26T03:23:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 0,
+      "decade": 1990,
+      "disagreementBodies": [
+        "saturn"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C4",
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-25",
+      "birthUtc": "1980-10-05T10:56:00Z",
+      "birthLocal": "1980-10-05T11:56:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "venus"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-26",
+      "birthUtc": "1980-10-06T14:21:00Z",
+      "birthLocal": "1980-10-06T15:21:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "venus"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-27",
+      "birthUtc": "1984-08-20T06:46:00Z",
+      "birthLocal": "1984-08-20T07:46:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 60,
+      "decade": 1980,
+      "disagreementBodies": [
+        "jupiter"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C5"
+      ],
+      "sensitive": false
+    },
+    {
+      "id": "JDD-28",
+      "birthUtc": "1988-03-05T23:22:00Z",
+      "birthLocal": "1988-03-05T23:22:00",
+      "location": "London, England, United Kingdom",
+      "ianaTimezone": "Europe/London",
+      "utcOffsetMinutes": 0,
+      "decade": 1980,
+      "disagreementBodies": [
+        "jupiter"
+      ],
+      "allModelsStableAtPlusMinus1s": true,
+      "allModelsStableAtPlusMinus5s": true,
+      "C2ContrastModels": [
+        "C5"
+      ],
+      "sensitive": false
+    }
+  ]
+}
