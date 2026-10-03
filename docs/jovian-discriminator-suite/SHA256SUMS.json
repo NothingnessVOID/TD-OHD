@@ -1,0 +1,15 @@
+{
+  "sealedAtUtc": "2026-10-03T12:34:35.585151+00:00",
+  "algorithm": "SHA256",
+  "officialCollectionBegan": false,
+  "files": {
+    "cases.json": "bea6aef8d295e7327398cf89c58dcc7e8326d0af9bc23ed3d575812f6ff1858f",
+    "discriminator-cases.json": "bea6aef8d295e7327398cf89c58dcc7e8326d0af9bc23ed3d575812f6ff1858f",
+    "predictions-sealed.json": "c0eb987401b1e7d8ae7fa0ad297e51d4764d77f15767cdf318d7eed74738b128",
+    "search-summary.json": "bfbbd9e4a7a0e7aa704ce1b4f8a8392a2950cec0cb2b4138498bc0cbad47bc8f",
+    "scripts/models.py": "fa1f1516466c6943d80dd5ae6d9f1f179560e6586a8da996c8e604215da88a6e",
+    "scripts/seal.py": "8d12b117ea36b5934ddd994f027774c0ad3c739f1f86712b01e0bec1a27df4f5",
+    "scripts/search.py": "cdf3329cb5afcc2d440a4ac71314a6994db66dd301f589715caf2bb49ad6524f"
+  },
+  "protocol": "Never change these files after collection begins. An alternative suite requires separate IDs and seal."
+}

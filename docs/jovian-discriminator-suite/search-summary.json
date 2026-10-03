@@ -1,0 +1,59 @@
+{
+  "range": "1980-01-01 through 2030-12-31",
+  "searchPolicy": "Jan/Jul first 14 days each year for Sun/Moon/Mercury/Venus/Mars/True Node; Jupiter/Saturn/Uranus/Neptune/Pluto full continuous range at 2-day step",
+  "sampleIntervals": 109504,
+  "C1transitions": 31407,
+  "screenCandidateCount": 3858,
+  "countsByBody": {
+    "sun": 88,
+    "moon": 1406,
+    "northNode": 53,
+    "mercury": 125,
+    "venus": 108,
+    "mars": 62,
+    "jupiter": 508,
+    "saturn": 540,
+    "uranus": 455,
+    "neptune": 223,
+    "pluto": 293
+  },
+  "contrastCounts": {
+    "C2": 408,
+    "C3": 1717,
+    "C4": 2727,
+    "C5": 2493,
+    "C6": 51
+  },
+  "fullPoolCount": 370,
+  "eligibleNonfutureFullCases": 278,
+  "selectedCaseCount": 28,
+  "selectedDecades": {
+    "1980": 12,
+    "1990": 3,
+    "2000": 3,
+    "2010": 7,
+    "2020": 3
+  },
+  "selectedBodyCoverage": {
+    "sun": 1,
+    "moon": 2,
+    "northNode": 9,
+    "mercury": 2,
+    "venus": 2,
+    "mars": 1,
+    "jupiter": 2,
+    "saturn": 3,
+    "uranus": 2,
+    "neptune": 2,
+    "pluto": 2
+  },
+  "selectedContrastCoverage": {
+    "C2": 6,
+    "C3": 2,
+    "C4": 21,
+    "C5": 18,
+    "C6": 9
+  },
+  "allModelsStable1sCount": 28,
+  "allModelsStable5sCount": 18
+}
