@@ -1,0 +1,102 @@
+{
+  "repository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+  "baseline": "342a57997c1b987e7949acc98897c8b73d05939a",
+  "localSeriesBranch": "fix/swiss-c-parity-series",
+  "submissionStatus": "LOCAL PREPARATION ONLY",
+  "submissionOrder": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "dependencies": {
+    "testInfrastructure": "A introduces the shared validator used by B/C/D.",
+    "exportedPatchContexts": "Cumulative tested series; each commit is tested against its immediately preceding parent.",
+    "physics": "UTC conversion, ordinary-body frame bias, apparent Moon and osculating-node lunar delay are separate fixes. This pack does not claim individually rebased standalone PRs were tested."
+  },
+  "commits": [
+    {
+      "pr": "A",
+      "title": "UTC / UT1 conversion",
+      "upstreamStatus": "NEEDS FIX",
+      "commit": "16aba0ebb5f64d64a6af8bd97f70184079ffb1f2",
+      "parent": "342a57997c1b987e7949acc98897c8b73d05939a",
+      "runtimeFiles": [
+        "Application/Calendar/CalendarService.cs"
+      ],
+      "testFiles": [
+        "validation/Harness.cs.txt",
+        "validation/cases-a.json",
+        "validation/compare.py"
+      ],
+      "totalFiles": 4,
+      "patch": "0001-utc-ut1.patch",
+      "patchSha256": "0c11f0f1c928f918743b3922141ddacb43995ac7bdde69205c914e0669cc923e",
+      "testedInSeries": true,
+      "recommendation": "Apply in A \u2192 B \u2192 C \u2192 D order. The exported series uses cumulative parent contexts and the shared validator is introduced by A."
+    },
+    {
+      "pr": "B",
+      "title": "ICRS to J2000 frame bias",
+      "upstreamStatus": "NEEDS FIX",
+      "commit": "106a812386534fc4773a49ccff6a2a6309a613d3",
+      "parent": "16aba0ebb5f64d64a6af8bd97f70184079ffb1f2",
+      "runtimeFiles": [
+        "Application/Bodies/BodyService.cs",
+        "Application/Bodies/BodyState.cs",
+        "Application/Bodies/CorrectionPipeline.cs",
+        "Infrastructure/Jpl/JplBodyPositionSource.cs",
+        "Infrastructure/SwissEph/SwissEphBodyPositionSource.cs"
+      ],
+      "testFiles": [
+        "validation/cases-b.json",
+        "validation/guards-b.cs.txt"
+      ],
+      "totalFiles": 7,
+      "patch": "0002-frame-bias.patch",
+      "patchSha256": "80436ca21d24a2a51a2b7d4e81622781084139400882c8b517abcaa450433a3d",
+      "testedInSeries": true,
+      "recommendation": "Apply in A \u2192 B \u2192 C \u2192 D order. The exported series uses cumulative parent contexts and the shared validator is introduced by A."
+    },
+    {
+      "pr": "C",
+      "title": "Moon light-time Earth refetch",
+      "upstreamStatus": "NEEDS FIX",
+      "commit": "480a8474818c84fcd8b002112a0e53c665f2f739",
+      "parent": "106a812386534fc4773a49ccff6a2a6309a613d3",
+      "runtimeFiles": [
+        "Application/Bodies/BodyService.cs",
+        "Application/Bodies/CorrectionPipeline.cs"
+      ],
+      "testFiles": [
+        "validation/cases-c.json",
+        "validation/guards-c.cs.txt"
+      ],
+      "totalFiles": 4,
+      "patch": "0003-moon-light-time.patch",
+      "patchSha256": "e71ddb08e1dd31fa34f5f79cc28dbc53a551b663246f56c4ef768c467670f215",
+      "testedInSeries": true,
+      "recommendation": "Apply in A \u2192 B \u2192 C \u2192 D order. The exported series uses cumulative parent contexts and the shared validator is introduced by A."
+    },
+    {
+      "pr": "D",
+      "title": "True Node apparent lunar light-time",
+      "upstreamStatus": "NEEDS FIX",
+      "commit": "5cfcd43b3f246759e476fc7b607763a6038aabd8",
+      "parent": "480a8474818c84fcd8b002112a0e53c665f2f739",
+      "runtimeFiles": [
+        "Application/Bodies/BodyService.cs",
+        "SwissEphemerides.cs"
+      ],
+      "testFiles": [
+        "validation/cases-d.json",
+        "validation/guards-d.cs.txt"
+      ],
+      "totalFiles": 4,
+      "patch": "0004-true-node.patch",
+      "patchSha256": "e016832e0f6f3c207b7a1b5a9c95cba03c9668df1c5dc69cfc5fa712d26f78c3",
+      "testedInSeries": true,
+      "recommendation": "Apply in A \u2192 B \u2192 C \u2192 D order. The exported series uses cumulative parent contexts and the shared validator is introduced by A."
+    }
+  ]
+}

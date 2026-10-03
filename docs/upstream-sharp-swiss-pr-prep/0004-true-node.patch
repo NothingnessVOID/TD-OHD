@@ -1,0 +1,301 @@
+From 5cfcd43b3f246759e476fc7b607763a6038aabd8 Mon Sep 17 00:00:00 2001
+From: Swiss parity contributors <contributor@example.invalid>
+Date: Sun, 4 Oct 2026 02:13:57 +0800
+Subject: [PATCH] fix: preserve true node apparent lunar light time
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+---
+ Application/Bodies/BodyService.cs |  19 +++-
+ SwissEphemerides.cs               |  19 ++--
+ validation/cases-d.json           | 152 ++++++++++++++++++++++++++++++
+ validation/guards-d.cs.txt        |  48 ++++++++++
+ 4 files changed, 222 insertions(+), 16 deletions(-)
+ create mode 100644 validation/cases-d.json
+ create mode 100644 validation/guards-d.cs.txt
+
+diff --git a/Application/Bodies/BodyService.cs b/Application/Bodies/BodyService.cs
+index d632ef0..3f69f99 100755
+--- a/Application/Bodies/BodyService.cs
++++ b/Application/Bodies/BodyService.cs
+@@ -253,10 +253,11 @@ public sealed class BodyService
+     /// exactly like the C original, so the resulting node honours nutation
+     /// (the element math then needs no further correction, per the comment
+     /// at sweph.c#L5468-L5472). Other apparent-position corrections
+-    /// (aberration, light-time, gravitational deflection) are not layered
+-    /// on top, matching the geometric semantics of
+-    /// <see cref="Phenomena.NodesAndApsidesService"/> and the
+-    /// SEFLG_TRUEPOS golden tests. Heliocentric and barycentric
++    /// (aberration, gravitational deflection) are not layered on top.
++    /// Swiss/JPL apparent samples do include the lunar light-time refetch
++    /// in lunar_osc_elem; TruePosition bypasses it and retains the
++    /// geometric samples used by the SEFLG_TRUEPOS golden tests.
++    /// Heliocentric and barycentric
+     /// request bits short-circuit to zero (sweph.c#L860-L864).
+     /// </para>
+     /// </remarks>
+@@ -340,6 +341,16 @@ public sealed class BodyService
+         IBodyPositionSource source, JulianDay jd, EphemerisFlags resolvedFlags, bool withNutation)
+     {
+         var moon = source.Compute(CelestialBody.Moon, jd, resolvedFlags | EphemerisFlags.Speed);
++        // lunar_osc_elem refetches the raw geocentric Moon at emission TT
++        // for Swiss/JPL apparent nodes and apogees. Moshier and TRUEPOS
++        // bypass this step. Rotate both position and velocity at reception
++        // TT below, without the planetary apparent-position pipeline.
++        if (source.Kind != EphemerisSource.Moshier
++            && (resolvedFlags & EphemerisFlags.TruePosition) == 0)
++        {
++            var lightTime = moon.Position.Length * AstronomicalConstants.LightTimeAuPerDay;
++            moon = source.Compute(CelestialBody.Moon, new JulianDay(jd.Value - lightTime), resolvedFlags | EphemerisFlags.Speed);
++        }
+         return MoonToEclipticOfDate(moon, jd.Value, withNutation);
+     }
+ 
+diff --git a/SwissEphemerides.cs b/SwissEphemerides.cs
+index 6b964cb..0d07032 100755
+--- a/SwissEphemerides.cs
++++ b/SwissEphemerides.cs
+@@ -317,19 +317,14 @@ public sealed class SwissEphemerides : IEphemerides
+     };
+ 
+     /// <summary>
+-    /// Geometric flag set required by the lunar-osculating-elements branch
+-    /// of <see cref="BodyService"/> (see
+-    /// <see cref="LunarOsculatingElements"/>): no aberration, no
+-    /// gravitational deflection, true position. Nutation
+-    /// stays enabled so node longitudes refer to the true equinox of date,
+-    /// matching the C library's default output (its node path ignores the
+-    /// aberration / deflection / true-position bits anyway).
+-    /// The moon position underneath comes from the context's preferred source.
+-    /// The sidereal bit added by <see cref="NodeGeometryFlags"/> reaches the
+-    /// sidereal gate of <see cref="BodyService.Compute"/>, which runs on the
+-    /// osculating-elements branch as well.
++    /// Apparent lunar node flags matching the C library's default output.
++    /// No aberration or deflection is applied to osculating points, but
++    /// TRUEPOS must stay clear: lunar_osc_elem uses it to decide whether
++    /// to refetch Swiss/JPL Moon samples at their light-time epoch.
++    /// Nutation and the configured source remain enabled.
+     /// </summary>
+-    private EphemerisFlags TrueNodeFlags(EphCalculationMode mode) => NodeGeometryFlags(mode);
++    private EphemerisFlags TrueNodeFlags(EphCalculationMode mode) =>
++        NodeGeometryFlags(mode) & ~EphemerisFlags.TruePosition;
+ 
+     /// <summary>
+     /// Mean lunar node is currently implemented by the analytical Moshier
+diff --git a/validation/cases-d.json b/validation/cases-d.json
+new file mode 100644
+index 0000000..3dd73f1
+--- /dev/null
++++ b/validation/cases-d.json
+@@ -0,0 +1,152 @@
++[
++  {
++    "body": 11,
++    "tt": 2446100.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2446100.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2446100.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 11,
++    "tt": 2446100.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2446100.5,
++    "flags": 322,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2450460.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2450460.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2450460.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 11,
++    "tt": 2450460.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2450460.5,
++    "flags": 322,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2453560.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2453560.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2453560.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 11,
++    "tt": 2453560.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2453560.5,
++    "flags": 322,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2457057.7896664813,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2457057.7896664813,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2457057.7896664813,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 11,
++    "tt": 2457057.7896664813,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2457057.7896664813,
++    "flags": 322,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2460680.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2460680.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2460680.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 11,
++    "tt": 2460680.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 11,
++    "tt": 2460680.5,
++    "flags": 322,
++    "control": false
++  }
++]
+diff --git a/validation/guards-d.cs.txt b/validation/guards-d.cs.txt
+new file mode 100644
+index 0000000..372b85e
+--- /dev/null
++++ b/validation/guards-d.cs.txt
+@@ -0,0 +1,48 @@
++using System.Text.Json;
++using SharpAstrology.SwissEphemerides;
++using SharpAstrology.SwissEphemerides.Application.Bodies;
++using SharpAstrology.SwissEphemerides.Application.Calendar;
++using SharpAstrology.SwissEphemerides.Domain.Constants;
++using SharpAstrology.SwissEphemerides.Domain.Mathematics;
++using SharpAstrology.SwissEphemerides.Domain.Time;
++
++// Source-spy tests verify emission epochs and raw velocity fetching for
++// every speed/nutation/source branch. No production trace hooks required.
++var guardCount=0;
++foreach(var source in new[]{EphemerisSource.SwissEph,EphemerisSource.Jpl,EphemerisSource.Moshier})
++foreach(var truth in new[]{false,true})
++foreach(var speed in new[]{false,true})
++foreach(var nutation in new[]{false,true}) {
++ var fake=new SpySource(source);var bodies=new BodyService(new SourceRouter(new[]{fake}),new CalendarService());
++ var flags=source switch {EphemerisSource.SwissEph=>EphemerisFlags.SwissEph,EphemerisSource.Jpl=>EphemerisFlags.JplEph,_=>EphemerisFlags.MoshierEph};
++ if(truth)flags|=EphemerisFlags.TruePosition;if(speed)flags|=EphemerisFlags.Speed;if(!nutation)flags|=EphemerisFlags.NoNutation;
++ var r=bodies.Compute(CelestialBody.TrueNode,new JulianDay(2457057.7896664813),flags);
++ var samples=speed?3:1;var retard=source!=EphemerisSource.Moshier&&!truth;
++ if(fake.Calls.Count!=samples*(retard?2:1))throw new Exception("Unexpected lunar fetch count");
++ for(var i=0;i<fake.Calls.Count;i++) {
++  var c=fake.Calls[i];if((c.flags&EphemerisFlags.Speed)==0)throw new Exception("Raw lunar velocity missing");
++  if(retard&&i%2==1) {
++   var t=fake.Calls[i-1].jd;var expected=t-SpySource.Position(t).Length*AstronomicalConstants.LightTimeAuPerDay;
++   if(c.jd!=expected)throw new Exception("Incorrect light-time epoch");
++  }
++ }
++ if(!speed&&r.Velocity!=Vec3.Zero)throw new Exception("No-speed API leaked velocity");
++ guardCount++;
++}
++using var ctx=new EphemerisContextBuilder().Build();
++using var adapter=new SharpAstrology.Ephemerides.SwissEphemerides(ctx);
++var method=typeof(SharpAstrology.Ephemerides.SwissEphemerides).GetMethod("TrueNodeFlags",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)!;
++foreach(var mode in new[]{SharpAstrology.Enums.EphCalculationMode.Tropic,SharpAstrology.Enums.EphCalculationMode.Sidereal}){
++ var f=(EphemerisFlags)method.Invoke(adapter,new object[]{mode})!;
++ if((f&EphemerisFlags.TruePosition)!=0)throw new Exception("Adapter forced TRUEPOS");
++}
++sealed class SpySource(EphemerisSource kind):IBodyPositionSource {
++ public EphemerisSource Kind=>kind;
++ public List<(double jd,EphemerisFlags flags)> Calls=new();
++ public bool CanProvide(CelestialBody body)=>body==CelestialBody.Moon;
++ public static Vec3 Position(double t)=>new(.002+.0001*(t-2457057.7896664813),.001,.0002);
++ public BodyState Compute(CelestialBody body,JulianDay jd,EphemerisFlags flags) {
++  Calls.Add((jd.Value,flags));var p=Position(jd.Value);
++  return new BodyState(p,new Vec3(.0001,.0002,-.00004),p.Length,Kind,Kind==EphemerisSource.Moshier?BodyStateFrame.GeocentricEclipticOfDate:BodyStateFrame.GeocentricJ2000Equator,441);
++ }
++}
+-- 
+2.39.5 (Apple Git-154)
+

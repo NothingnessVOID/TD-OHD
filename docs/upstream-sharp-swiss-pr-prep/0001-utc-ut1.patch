@@ -1,0 +1,154 @@
+From 16aba0ebb5f64d64a6af8bd97f70184079ffb1f2 Mon Sep 17 00:00:00 2001
+From: Swiss parity contributors <contributor@example.invalid>
+Date: Sun, 4 Oct 2026 02:13:57 +0800
+Subject: [PATCH] fix: convert UTC DateTime through UT1 time-scale pair
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+---
+ Application/Calendar/CalendarService.cs | 18 ++++++++++--
+ validation/Harness.cs.txt               | 19 ++++++++++++
+ validation/cases-a.json                 | 21 +++++++++++++
+ validation/compare.py                   | 39 +++++++++++++++++++++++++
+ 4 files changed, 95 insertions(+), 2 deletions(-)
+ create mode 100644 validation/Harness.cs.txt
+ create mode 100644 validation/cases-a.json
+ create mode 100644 validation/compare.py
+
+diff --git a/Application/Calendar/CalendarService.cs b/Application/Calendar/CalendarService.cs
+index faeb03b..b8da05f 100755
+--- a/Application/Calendar/CalendarService.cs
++++ b/Application/Calendar/CalendarService.cs
+@@ -67,14 +67,28 @@ public sealed class CalendarService
+     /// <param name="calendar">Calendar to interpret the date in.</param>
+     /// <returns>UT1 Julian Day.</returns>
+     public JulianDay UtcToJulianDay(DateTime utc, CalendarSystem calendar = CalendarSystem.Gregorian)
+-        => JulianDay.FromUtc(utc, calendar);
++    {
++        if (utc.Kind != DateTimeKind.Utc)
++            throw new ArgumentException("DateTime.Kind must be Utc.", nameof(utc));
++        // swe_utc_to_jd semantics, retaining every fractional DateTime tick.
++        var seconds = utc.Second + (utc.Ticks % TimeSpan.TicksPerSecond) / (double)TimeSpan.TicksPerSecond;
++        return UtcToJulianDayPair(utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute, seconds, calendar).Ut1;
++    }
+ 
+     /// <summary>
+     /// Inverse of <see cref="UtcToJulianDay"/>: a Julian Day back to a
+     /// UTC <see cref="DateTime"/>.
+     /// </summary>
+     public DateTime JulianDayToUtc(JulianDay jd, CalendarSystem calendar = CalendarSystem.Gregorian)
+-        => jd.ToUtc(calendar);
++    {
++        var utc = JdUt1ToUtc(jd, calendar);
++        // DateTime cannot represent 23:59:60. Keep that limitation explicit;
++        // callers needing leap-second labels can use JdUt1ToUtc directly.
++        if (utc.Second >= 60)
++            throw new NotSupportedException("Leap-second UTC labels cannot be represented by DateTime; use JdUt1ToUtc.");
++        return new DateTime(utc.Year, utc.Month, utc.Day, utc.Hour, utc.Minute, 0, DateTimeKind.Utc)
++            .AddTicks((long)Math.Round(utc.Second * TimeSpan.TicksPerSecond));
++    }
+ 
+     /// <summary>
+     /// Builds a Julian Day from a calendar date plus decimal hour.
+diff --git a/validation/Harness.cs.txt b/validation/Harness.cs.txt
+new file mode 100644
+index 0000000..468c806
+--- /dev/null
++++ b/validation/Harness.cs.txt
+@@ -0,0 +1,19 @@
++using System.Text.Json;
++using SharpAstrology.SwissEphemerides;
++using SharpAstrology.SwissEphemerides.Application.Calendar;
++using SharpAstrology.SwissEphemerides.Application.Bodies;
++using SharpAstrology.SwissEphemerides.Domain.Time;
++using var context=new EphemerisContextBuilder().UseSwissEphFiles(args[0]).DisableMoshier().Build();
++var calendar=new CalendarService();
++while(Console.ReadLine() is {} line){
++ using var doc=JsonDocument.Parse(line);var r=doc.RootElement;
++ if(r.TryGetProperty("utc",out var text)){
++  var date=DateTime.Parse(text.GetString()!,null,System.Globalization.DateTimeStyles.AdjustToUniversal|System.Globalization.DateTimeStyles.AssumeUniversal);
++  var jd=calendar.UtcToJulianDay(date);var back=calendar.JulianDayToUtc(jd);
++  Console.WriteLine(JsonSerializer.Serialize(new{ut1=jd.Value,roundtripSeconds=(back-date).TotalSeconds,utcKind=back.Kind.ToString()}));
++ }else{
++  var s=context.Bodies.Compute((CelestialBody)r.GetProperty("body").GetInt32(),new JulianDay(r.GetProperty("tt").GetDouble()),(EphemerisFlags)r.GetProperty("flags").GetInt32());
++  var x=s.Position;var v=s.Velocity;var lon=Math.Atan2(x.Y,x.X)*180/Math.PI;if(lon<0)lon+=360;
++  Console.WriteLine(JsonSerializer.Serialize(new{longitude=lon,speed=(x.X*v.Y-x.Y*v.X)/(x.X*x.X+x.Y*x.Y)*180/Math.PI,vector=new[]{x.X,x.Y,x.Z,v.X,v.Y,v.Z},source=s.Source.ToString()}));
++ }
++}
+diff --git a/validation/cases-a.json b/validation/cases-a.json
+new file mode 100644
+index 0000000..1c3af91
+--- /dev/null
++++ b/validation/cases-a.json
+@@ -0,0 +1,21 @@
++[
++  {
++    "utc": "1985-02-04T06:56:00.123456Z"
++  },
++  {
++    "utc": "1995-02-04T06:56:00.123456Z"
++  },
++  {
++    "utc": "2005-02-04T06:56:00.123456Z"
++  },
++  {
++    "utc": "2015-02-04T06:56:00.123456Z"
++  },
++  {
++    "utc": "2025-02-04T06:56:00.123456Z"
++  },
++  {
++    "utc": "1950-01-01T00:00:00Z",
++    "control": true
++  }
++]
+diff --git a/validation/compare.py b/validation/compare.py
+new file mode 100644
+index 0000000..83bff8f
+--- /dev/null
++++ b/validation/compare.py
+@@ -0,0 +1,39 @@
++#!/usr/bin/env python3
++"""Differential Swiss C oracle tests. No product mapping or external packages."""
++import argparse,ctypes as C,datetime,hashlib,json,os,subprocess,tempfile
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1]
++p=argparse.ArgumentParser();p.add_argument('--library',required=True);p.add_argument('--ephe',required=True);p.add_argument('--before',required=True);p.add_argument('--after',default='HEAD');p.add_argument('--patch',required=True);p.add_argument('--output',required=True);a=p.parse_args()
++cases=json.loads((ROOT/'validation'/('cases-'+a.patch+'.json')).read_text())
++lib=C.CDLL(a.library);lib.swe_set_ephe_path.argtypes=[C.c_char_p];lib.swe_set_ephe_path(a.ephe.encode());lib.swe_calc.argtypes=[C.c_double,C.c_int,C.c_int,C.POINTER(C.c_double),C.c_char_p];lib.swe_utc_to_jd.argtypes=[C.c_int,C.c_int,C.c_int,C.c_int,C.c_int,C.c_double,C.c_int,C.POINTER(C.c_double),C.c_char_p]
++oracle=[]
++for c in cases:
++ err=C.create_string_buffer(1024)
++ if 'utc' in c:
++  d=datetime.datetime.fromisoformat(c['utc'].replace('Z','+00:00'));v=(C.c_double*2)();r=lib.swe_utc_to_jd(d.year,d.month,d.day,d.hour,d.minute,d.second+d.microsecond/1e6,1,v,err);assert r==0 and not err.value;oracle.append({'ut1':v[1]})
++ else:
++  v=(C.c_double*6)();r=lib.swe_calc(c['tt'],c['body'],c['flags'],v,err);assert r>=0 and r&7==2 and not err.value,(r,err.value);oracle.append({'longitude':v[0],'speed':v[3]})
++def run(ref):
++ dest=Path(tempfile.mkdtemp(prefix='swiss-parity-'));archive=subprocess.check_output(['git','archive',ref],cwd=ROOT);subprocess.run(['tar','-x','-C',str(dest)],input=archive,check=True)
++ harness=Path(tempfile.mkdtemp(prefix='swiss-harness-'));(harness/'Program.cs').write_text((ROOT/'validation/Harness.cs.txt').read_text());(harness/'Harness.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup><ItemGroup><ProjectReference Include="'+str(dest/'SharpAstrology.SwissEph.csproj')+'" /></ItemGroup></Project>')
++ dotnet=os.environ.get('DOTNET','dotnet');subprocess.run([dotnet,'build',str(harness/'Harness.csproj'),'-c','Release','-v','quiet','-m:1'],check=True,stdout=subprocess.DEVNULL)
++ result=subprocess.run([dotnet,str(harness/'bin/Release/net10.0/Harness.dll'),a.ephe],input='\n'.join(map(json.dumps,cases))+'\n',text=True,capture_output=True,check=True);rows=[json.loads(l) for l in result.stdout.splitlines()];assert len(rows)==len(cases);return rows
++before=run(a.before);after=run(a.after);rows=[]
++guards=ROOT/'validation'/('guards-'+a.patch+'.cs.txt')
++if guards.exists():
++ dest=Path(tempfile.mkdtemp(prefix='swiss-guard-source-'));subprocess.run(['tar','-x','-C',str(dest)],input=subprocess.check_output(['git','archive',a.after],cwd=ROOT),check=True)
++ h=Path(tempfile.mkdtemp(prefix='swiss-guards-'));(h/'Program.cs').write_text(guards.read_text());(h/'Guard.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>SharpAstrology.SwissEphemerides.IntegrationTests</AssemblyName></PropertyGroup><ItemGroup><ProjectReference Include="'+str(dest/'SharpAstrology.SwissEph.csproj')+'" /></ItemGroup></Project>')
++ dotnet=os.environ.get('DOTNET','dotnet');subprocess.run([dotnet,'run','--project',str(h/'Guard.csproj'),'-c','Release'],check=True,stdout=subprocess.DEVNULL)
++
++for case,b,n,o in zip(cases,before,after,oracle):
++ if 'utc' in case:
++  br=(b['ut1']-o['ut1'])*86400;ar=(n['ut1']-o['ut1'])*86400;assert abs(ar)<0.0001;assert abs(n['roundtripSeconds'])<0.0001 and n['utcKind']=='Utc';unit='seconds'
++ else:
++  residual=lambda x:((x-o['longitude']+180)%360-180)*3600000
++  br=residual(b['longitude']);ar=residual(n['longitude']);unit='mas'
++  if case.get('control'):assert n['vector']==b['vector'],('control changed',case)
++  else:assert abs(ar)<(0.01 if a.patch=='b' else 0.001),(case,ar)
++ rows.append({'case':case,'before':b,'after':n,'oracle':o,'beforeResidual':br,'afterResidual':ar,'residualUnit':unit})
++assert any(abs(r['beforeResidual'])>abs(r['afterResidual'])+0.01 for r in rows if not r['case'].get('control')),'negative baseline did not detect bug'
++result={'patch':a.patch,'beforeCommit':subprocess.check_output(['git','rev-parse',a.before],cwd=ROOT,text=True).strip(),'afterCommit':subprocess.check_output(['git','rev-parse',a.after],cwd=ROOT,text=True).strip(),'oracleLibrarySha256':hashlib.sha256(Path(a.library).read_bytes()).hexdigest(),'ephemerisSha256':{name:hashlib.sha256((Path(a.ephe)/name).read_bytes()).hexdigest() for name in ['sepl_18.se1','semo_18.se1']},'passed':True,'cases':rows}
++Path(a.output).write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'patch':a.patch,'comparisons':len(rows),'passed':True}))
+-- 
+2.39.5 (Apple Git-154)
+

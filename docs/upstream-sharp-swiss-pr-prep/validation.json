@@ -1,0 +1,22 @@
+{
+  "allPassed": true,
+  "numericalComparisons": 101,
+  "recompiledOriginalC": true,
+  "verifiedComputationalSourceFiles": 18,
+  "syntheticGuards": {
+    "frameBias": 7,
+    "moon": 2,
+    "trueNodeSourceSpy": 24,
+    "trueNodeAdapter": 2
+  },
+  "gitAmPassed": true,
+  "originalSeriesTree": "dddcd55837af8eb61428d0a61e2ba23070e9d777",
+  "replayedPatchTree": "dddcd55837af8eb61428d0a61e2ba23070e9d777",
+  "privacyScanPassed": true,
+  "patchAstronomyOnlyScanPassed": true,
+  "diffCheckPassed": true,
+  "upstreamHead": "342a57997c1b987e7949acc98897c8b73d05939a",
+  "tdBase": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "noUpstreamPushOrSubmission": true,
+  "dependencyCsprojUnmodified": true
+}

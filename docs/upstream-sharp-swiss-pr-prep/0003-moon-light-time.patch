@@ -1,0 +1,313 @@
+From 480a8474818c84fcd8b002112a0e53c665f2f739 Mon Sep 17 00:00:00 2001
+From: Swiss parity contributors <contributor@example.invalid>
+Date: Sun, 4 Oct 2026 02:13:57 +0800
+Subject: [PATCH] fix: refetch emission Earth center for apparent Moon
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+---
+ Application/Bodies/BodyService.cs        |  16 ++-
+ Application/Bodies/CorrectionPipeline.cs |  35 +++++-
+ validation/cases-c.json                  | 152 +++++++++++++++++++++++
+ validation/guards-c.cs.txt               |  32 +++++
+ 4 files changed, 231 insertions(+), 4 deletions(-)
+ create mode 100644 validation/cases-c.json
+ create mode 100644 validation/guards-c.cs.txt
+
+diff --git a/Application/Bodies/BodyService.cs b/Application/Bodies/BodyService.cs
+index 33cfa32..d632ef0 100755
+--- a/Application/Bodies/BodyService.cs
++++ b/Application/Bodies/BodyService.cs
+@@ -106,18 +106,23 @@ public sealed class BodyService
+         BodyState rawBody;
+         try
+         {
+-            rawBody = chosenSource.Compute(body, jdEt, resolvedFlags);
++            // Lunar apparent position needs velocity internally even when
++            // the caller omits Speed (observer aberration / analytical delay).
++            rawBody = chosenSource.Compute(body, jdEt, body == CelestialBody.Moon ? resolvedFlags | EphemerisFlags.Speed : resolvedFlags);
+         }
+         catch (FileNotFoundException) when (chosenSource.Kind == EphemerisSource.SwissEph && _router.Has(EphemerisSource.Moshier))
+         {
+             resolvedFlags = (resolvedFlags & ~EphemerisFlags.SwissEph) | EphemerisFlags.MoshierEph;
+             (chosenSource, resolvedFlags) = _router.Resolve(resolvedFlags, body, jdEt);
+-            rawBody = chosenSource.Compute(body, jdEt, resolvedFlags);
++            // Lunar apparent position needs velocity internally even when
++            // the caller omits Speed (observer aberration / analytical delay).
++            rawBody = chosenSource.Compute(body, jdEt, body == CelestialBody.Moon ? resolvedFlags | EphemerisFlags.Speed : resolvedFlags);
+         }
+ 
+         // Earth & Sun bary states for the pipeline. These follow exactly the
+         // same source/fallback chain as the body itself.
+-        var rawEarthCenter = ResolveAndCompute(CelestialBody.Earth, jdEt, resolvedFlags);
++        var earthFlags = body == CelestialBody.Moon ? resolvedFlags | EphemerisFlags.Speed : resolvedFlags;
++        var rawEarthCenter = ResolveAndCompute(CelestialBody.Earth, jdEt, earthFlags);
+         var rawSun = ResolveSunState(jdEt, resolvedFlags, rawEarthCenter);
+ 
+         // Topocentric: fold the geographic offset into "earth" so the
+@@ -192,6 +197,11 @@ public sealed class BodyService
+ 
+         public bool HasEarthRefetch => true;
+ 
++        // Raw geocentric Moon must be lifted with the Earth center, even
++        // when the caller requests a topocentric apparent position.
++        public BodyState RefetchEarthCenter(JulianDay jd, EphemerisFlags flags)
++            => _service.ResolveAndCompute(CelestialBody.Earth, jd, flags & ~EphemerisFlags.Topocentric);
++
+         public BodyState RefetchEarth(JulianDay jd, EphemerisFlags flags)
+         {
+             var earthAtT = _service.ResolveAndCompute(CelestialBody.Earth, jd, flags);
+diff --git a/Application/Bodies/CorrectionPipeline.cs b/Application/Bodies/CorrectionPipeline.cs
+index 934a12b..e35046c 100755
+--- a/Application/Bodies/CorrectionPipeline.cs
++++ b/Application/Bodies/CorrectionPipeline.cs
+@@ -138,7 +138,37 @@ internal sealed class CorrectionPipeline
+         var dtsave = 0.0;
+         Span<double> xxsp = stackalloc double[3];
+         var hasXxsp = false;
+-        if (!truePos)
++        if (!truePos && body == CelestialBody.Moon)
++        {
++            // Moon has its own light-time prescription (app_pos_etc_moon),
++            // not the planet iteration/change-of-dt speed correction above.
++            // Compute one delay from the Moon-observer range at reception.
++            Span<double> range = stackalloc double[3];
++            for (var i = 0; i < 3; i++)
++                range[i] = xx0[i] - (isBary ? 0.0 : isHelio ? xSun[i] : xobs[i]);
++            dtsave = System.Math.Sqrt(range[0] * range[0] + range[1] * range[1] + range[2] * range[2])
++                * AstronomicalConstants.LightTimeAuPerDay;
++            if (rawBody.Source == EphemerisSource.Moshier)
++            {
++                // C's analytical Moon uses linear retarding of the already
++                // lifted state, retaining its original velocity.
++                for (var i = 0; i < 3; i++) xx[i] = xx0[i] - dtsave * xx0[i + 3];
++                for (var i = 3; i < 6; i++) xx[i] = xx0[i];
++            }
++            else
++            {
++                var emission = new JulianDay(jdEt.Value - dtsave);
++                ToJ2000Equator(fetcher.RefetchBody(body, emission, flags), emission.Value, xx);
++                // Both raw Moon and Earth center must belong to t-dt. Keep
++                // observer(t) for the later parallax/aberration subtraction.
++                Span<double> earthAtEmission = stackalloc double[6];
++                ToJ2000Equator(fetcher.RefetchEarthCenter(emission, flags), emission.Value, earthAtEmission);
++                for (var i = 0; i < 6; i++) xx[i] += earthAtEmission[i];
++            }
++            if (isHelio && rawBody.Source != EphemerisSource.Moshier)
++                for (var i = 0; i < 6; i++) xx[i] -= xSun[i];
++        }
++        else if (!truePos)
+         {
+             // Number of refinement iterations beyond the initial estimate.
+             // Mirrors C: JPL/SwissEph use 1; Moshier uses 0 (sweph.c#L2546-L2551).
+@@ -486,6 +516,9 @@ internal sealed class CorrectionPipeline
+         /// supplied time, with any topocentric offset already folded in.
+         /// </summary>
+         BodyState RefetchEarth(JulianDay jd, EphemerisFlags flags);
++
++        /// <summary>Earth center only; excludes topocentric observer offsets.</summary>
++        BodyState RefetchEarthCenter(JulianDay jd, EphemerisFlags flags);
+     }
+ 
+     /// <summary>
+diff --git a/validation/cases-c.json b/validation/cases-c.json
+new file mode 100644
+index 0000000..88bdf75
+--- /dev/null
++++ b/validation/cases-c.json
+@@ -0,0 +1,152 @@
++[
++  {
++    "body": 1,
++    "tt": 2446100.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2446100.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2446100.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 1,
++    "tt": 2446100.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2446100.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2450460.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2450460.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2450460.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 1,
++    "tt": 2450460.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2450460.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2453560.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2453560.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2453560.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 1,
++    "tt": 2453560.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2453560.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2457057.7896664813,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2457057.7896664813,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2457057.7896664813,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 1,
++    "tt": 2457057.7896664813,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2457057.7896664813,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2460680.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2460680.5,
++    "flags": 2,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2460680.5,
++    "flags": 274,
++    "control": true
++  },
++  {
++    "body": 1,
++    "tt": 2460680.5,
++    "flags": 1282,
++    "control": false
++  },
++  {
++    "body": 1,
++    "tt": 2460680.5,
++    "flags": 290,
++    "control": false
++  }
++]
+diff --git a/validation/guards-c.cs.txt b/validation/guards-c.cs.txt
+new file mode 100644
+index 0000000..85533cb
+--- /dev/null
++++ b/validation/guards-c.cs.txt
+@@ -0,0 +1,32 @@
++using System.Text.Json;
++using SharpAstrology.SwissEphemerides;
++using SharpAstrology.SwissEphemerides.Application.Bodies;
++using SharpAstrology.SwissEphemerides.Domain.Mathematics;
++using SharpAstrology.SwissEphemerides.Domain.Frames;
++using SharpAstrology.SwissEphemerides.Domain.Time;
++
++// Distinct center/observer callbacks make accidental topocentric lifting fail.
++var flags=EphemerisFlags.Speed|EphemerisFlags.Topocentric|EphemerisFlags.Equatorial|EphemerisFlags.J2000Equinox|EphemerisFlags.NoNutation|EphemerisFlags.Icrs|EphemerisFlags.NoAberration;
++var moon=new BodyState(new Vec3(.002,.001,.0001),Vec3.Zero,.002,EphemerisSource.SwissEph,BodyStateFrame.GeocentricJ2000Equator,441);
++var center=moon with {Position=new Vec3(1,0,0),Frame=BodyStateFrame.BarycentricJ2000Equator};
++var observer=center with{Position=new Vec3(1,.00003,0)};
++var emissionCenter=center with {Position=new Vec3(1-.0000002,0,0)};
++var fetcher=new GuardFetch(moon,emissionCenter,observer);
++var pipe=new CorrectionPipeline();
++var result=pipe.Apply(moon,observer,center,center with{Position=Vec3.Zero},fetcher,CelestialBody.Moon,JulianDay.J2000,flags);
++var expected=moon.Position+emissionCenter.Position-observer.Position;
++if ((result.Position-expected).Length>1e-16)throw new Exception("Earth center vs observer lift/double parallax regression");
++var trueResult=pipe.Apply(moon,observer,center,center with{Position=Vec3.Zero},new NoFetch(),CelestialBody.Moon,JulianDay.J2000,flags|EphemerisFlags.TruePosition);
++if ((trueResult.Position-(moon.Position+center.Position-observer.Position)).Length>1e-16)throw new Exception("true position should not refetch");
++readonly struct GuardFetch(BodyState moon,BodyState center,BodyState observer):CorrectionPipeline.IRefetchProvider{
++ public bool HasEarthRefetch=>true;
++ public BodyState RefetchBody(CelestialBody b,JulianDay jd,EphemerisFlags f)=>moon;
++ public BodyState RefetchEarthCenter(JulianDay jd,EphemerisFlags f)=>center;
++ public BodyState RefetchEarth(JulianDay jd,EphemerisFlags f)=>observer;
++}
++readonly struct NoFetch:CorrectionPipeline.IRefetchProvider{
++ public bool HasEarthRefetch=>false;
++ public BodyState RefetchBody(CelestialBody b,JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected refetch");
++ public BodyState RefetchEarthCenter(JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected center refetch");
++ public BodyState RefetchEarth(JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected observer refetch");
++}
+-- 
+2.39.5 (Apple Git-154)
+

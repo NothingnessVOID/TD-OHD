@@ -1,0 +1,493 @@
+From 106a812386534fc4773a49ccff6a2a6309a613d3 Mon Sep 17 00:00:00 2001
+From: Swiss parity contributors <contributor@example.invalid>
+Date: Sun, 4 Oct 2026 02:13:57 +0800
+Subject: [PATCH] fix: apply DE dependent ICRS to J2000 frame bias
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+---
+ Application/Bodies/BodyService.cs             |   6 +-
+ Application/Bodies/BodyState.cs               |   3 +-
+ Application/Bodies/CorrectionPipeline.cs      |  17 +-
+ Infrastructure/Jpl/JplBodyPositionSource.cs   |   8 +-
+ .../SwissEph/SwissEphBodyPositionSource.cs    |  10 +-
+ validation/cases-b.json                       | 272 ++++++++++++++++++
+ validation/guards-b.cs.txt                    |  22 ++
+ 7 files changed, 324 insertions(+), 14 deletions(-)
+ create mode 100644 validation/cases-b.json
+ create mode 100644 validation/guards-b.cs.txt
+
+diff --git a/Application/Bodies/BodyService.cs b/Application/Bodies/BodyService.cs
+index ee51925..33cfa32 100755
+--- a/Application/Bodies/BodyService.cs
++++ b/Application/Bodies/BodyService.cs
+@@ -534,7 +534,7 @@ public sealed class BodyService
+             new Vec3(s[3], s[4], s[5]),
+             state.Distance,
+             state.Source,
+-            state.Frame);
++            state.Frame, state.DeNumber);
+     }
+ 
+     private BodyState ResolveSunState(JulianDay jdEt, EphemerisFlags flags, BodyState earth)
+@@ -602,7 +602,7 @@ public sealed class BodyService
+             inSpeed ? new Vec3(cart[3], cart[4], cart[5]) : default,
+             ecliptic.Distance,
+             ecliptic.Source,
+-            ecliptic.Frame);
++            ecliptic.Frame, ecliptic.DeNumber);
+     }
+ 
+     private static BodyState AddVec3(BodyState a, BodyState b) =>
+@@ -611,7 +611,7 @@ public sealed class BodyService
+             new Vec3(a.Velocity.X + b.Velocity.X, a.Velocity.Y + b.Velocity.Y, a.Velocity.Z + b.Velocity.Z),
+             0.0,
+             a.Source,
+-            a.Frame);
++            a.Frame, a.DeNumber);
+ 
+     /// <summary>
+     /// Geographic observer offset in barycentric J2000-equator coordinates
+diff --git a/Application/Bodies/BodyState.cs b/Application/Bodies/BodyState.cs
+index f10844e..e369c23 100755
+--- a/Application/Bodies/BodyState.cs
++++ b/Application/Bodies/BodyState.cs
+@@ -40,7 +40,8 @@ public readonly record struct BodyState(
+     Vec3 Velocity,
+     double Distance,
+     EphemerisSource Source,
+-    BodyStateFrame Frame);
++    BodyStateFrame Frame,
++    int DeNumber = 0);
+ 
+ /// <summary>
+ /// Identifies the reference frame of a <see cref="BodyState"/>.
+diff --git a/Application/Bodies/CorrectionPipeline.cs b/Application/Bodies/CorrectionPipeline.cs
+index 3577fd0..934a12b 100755
+--- a/Application/Bodies/CorrectionPipeline.cs
++++ b/Application/Bodies/CorrectionPipeline.cs
+@@ -340,6 +340,14 @@ internal sealed class CorrectionPipeline
+             for (var i = 3; i < 6; i++) xx[i] = 0.0;
+         }
+ 
++        // Swiss C 2.10.03 sweph.c:2755/4051/4227: ICRS -> J2000, before
++        // precession (also for J2000 output). Use the actual selected source's
++        // file header, never the requested source or process-global metadata.
++        // C swi_get_denum explicitly returns 403 for Moshier; no JPL metadata
++        // participates in that analytical-source branch.
++        if (ShouldApplyFrameBias(rawBody.Source, rawBody.DeNumber, flags))
++            CatalogFrameTransforms.IcrsBias(xx, inSpeed, backward: false, model: _models.FrameBias);
++
+         // ---- Step 8: precession J2000 → date (sweph.c#L2766-L2773) --------
+         // skipped if SEFLG_J2000 set.
+         var precessNow = (flags & EphemerisFlags.J2000Equinox) == 0;
+@@ -419,7 +427,14 @@ internal sealed class CorrectionPipeline
+             inSpeed ? new Vec3(xx[3], xx[4], xx[5]) : default,
+             System.Math.Sqrt(xx[0] * xx[0] + xx[1] * xx[1] + xx[2] * xx[2]),
+             rawBody.Source,
+-            outFrame);
++            outFrame, rawBody.DeNumber);
++    }
++
++    internal static bool ShouldApplyFrameBias(EphemerisSource source, int fileDeNumber, EphemerisFlags flags)
++    {
++        // C swi_get_denum: Moshier -> 403; unread/zero file DE -> SE_DE_NUMBER (431).
++        var deNumber = source == EphemerisSource.Moshier ? 403 : fileDeNumber > 0 ? fileDeNumber : 431;
++        return (flags & EphemerisFlags.Icrs) == 0 && deNumber >= 403;
+     }
+ 
+     /// <summary>
+diff --git a/Infrastructure/Jpl/JplBodyPositionSource.cs b/Infrastructure/Jpl/JplBodyPositionSource.cs
+index 6c44034..1574227 100755
+--- a/Infrastructure/Jpl/JplBodyPositionSource.cs
++++ b/Infrastructure/Jpl/JplBodyPositionSource.cs
+@@ -123,7 +123,7 @@ internal sealed class JplBodyPositionSource : IBodyPositionSource, IDisposable
+             case CelestialBody.Moon:
+                 {
+                     var (pos, vel) = InterpolateBody(et, JplFileFormat.JplMoon, inSpeed);
+-                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.GeocentricJ2000Equator);
++                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.GeocentricJ2000Equator, DeNumber);
+                 }
+             case CelestialBody.Sun:
+                 {
+@@ -131,7 +131,7 @@ internal sealed class JplBodyPositionSource : IBodyPositionSource, IDisposable
+                     // (the C code treats `pvsun` as a separate buffer scaled the
+                     // same way). swejpl.c:823-827.
+                     var (pos, vel) = InterpolateBody(et, JplFileFormat.JplSun, inSpeed);
+-                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator);
++                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator, DeNumber);
+                 }
+             case CelestialBody.Earth:
+                 {
+@@ -143,7 +143,7 @@ internal sealed class JplBodyPositionSource : IBodyPositionSource, IDisposable
+                     var vel = inSpeed
+                         ? new Vec3(embV.X - moonV.X * w, embV.Y - moonV.Y * w, embV.Z - moonV.Z * w)
+                         : default;
+-                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator);
++                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator, DeNumber);
+                 }
+             case CelestialBody.Mercury:
+             case CelestialBody.Venus:
+@@ -156,7 +156,7 @@ internal sealed class JplBodyPositionSource : IBodyPositionSource, IDisposable
+                 {
+                     var jplIdx = MapPlanetToJplIndex(body);
+                     var (pos, vel) = InterpolateBody(et, jplIdx, inSpeed);
+-                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator);
++                    return new BodyState(pos, vel, pos.Length, EphemerisSource.Jpl, BodyStateFrame.BarycentricJ2000Equator, DeNumber);
+                 }
+             default:
+                 throw new UnsupportedBodyException(body, EphemerisSource.Jpl);
+diff --git a/Infrastructure/SwissEph/SwissEphBodyPositionSource.cs b/Infrastructure/SwissEph/SwissEphBodyPositionSource.cs
+index 172b639..1da6919 100755
+--- a/Infrastructure/SwissEph/SwissEphBodyPositionSource.cs
++++ b/Infrastructure/SwissEph/SwissEphBodyPositionSource.cs
+@@ -111,7 +111,7 @@ internal sealed class SwissEphBodyPositionSource : IBodyPositionSource, IDisposa
+     private BodyState ComputeMoonGeocentric(JulianDay jdEt, bool inSpeed)
+     {
+         var (pos, vel) = ReadFromFile(CelestialBody.Moon, Se1FileFormat.SeiMoon, jdEt, inSpeed);
+-        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.GeocentricJ2000Equator);
++        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.GeocentricJ2000Equator, GetReaderForBlock(Se1FileFormat.SeiMoon, jdEt).Header.JplDeNumber);
+     }
+ 
+     /// <summary>
+@@ -125,7 +125,7 @@ internal sealed class SwissEphBodyPositionSource : IBodyPositionSource, IDisposa
+         var (baryEmb, baryEmbV) = ReadFromFile(CelestialBody.Sun, Se1FileFormat.SeiEmb, jdEt, inSpeed);
+         var pos = baryEmb - helEarth;
+         var vel = inSpeed ? (baryEmbV - helEarthV) : default;
+-        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator);
++        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator, GetReaderForBlock(Se1FileFormat.SeiSunBary, jdEt).Header.JplDeNumber);
+     }
+ 
+     /// <summary>
+@@ -143,7 +143,7 @@ internal sealed class SwissEphBodyPositionSource : IBodyPositionSource, IDisposa
+         {
+             vel = new Vec3(baryEmbV.X - moonGeoV.X * w, baryEmbV.Y - moonGeoV.Y * w, baryEmbV.Z - moonGeoV.Z * w);
+         }
+-        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator);
++        return new BodyState(pos, vel, pos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator, GetReaderForBlock(Se1FileFormat.SeiEmb, jdEt).Header.JplDeNumber);
+     }
+ 
+     /// <summary>
+@@ -174,9 +174,9 @@ internal sealed class SwissEphBodyPositionSource : IBodyPositionSource, IDisposa
+                     fileVel.Y + (baryEmbV.Y - helEarthV.Y),
+                     fileVel.Z + (baryEmbV.Z - helEarthV.Z))
+                 : default;
+-            return new BodyState(bary, baryV, bary.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator);
++            return new BodyState(bary, baryV, bary.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator, GetReaderForBlock(SwissEphFileLocator.MapToSeiInternalIndex(body), jdEt).Header.JplDeNumber);
+         }
+-        return new BodyState(filePos, fileVel, filePos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator);
++        return new BodyState(filePos, fileVel, filePos.Length, EphemerisSource.SwissEph, BodyStateFrame.BarycentricJ2000Equator, GetReaderForBlock(SwissEphFileLocator.MapToSeiInternalIndex(body), jdEt).Header.JplDeNumber);
+     }
+ 
+     private (Vec3 Pos, Vec3 Vel) ReadFromFile(CelestialBody body, int seiBody, JulianDay jdEt, bool inSpeed)
+diff --git a/validation/cases-b.json b/validation/cases-b.json
+new file mode 100644
+index 0000000..3b027a7
+--- /dev/null
++++ b/validation/cases-b.json
+@@ -0,0 +1,272 @@
++[
++  {
++    "body": 0,
++    "tt": 2446100.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2446100.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2446100.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 2,
++    "tt": 2446100.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2446100.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2446100.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 5,
++    "tt": 2446100.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2446100.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2446100.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 0,
++    "tt": 2450460.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2450460.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2450460.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 2,
++    "tt": 2450460.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2450460.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2450460.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 5,
++    "tt": 2450460.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2450460.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2450460.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 0,
++    "tt": 2453560.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2453560.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2453560.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 2,
++    "tt": 2453560.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2453560.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2453560.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 5,
++    "tt": 2453560.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2453560.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2453560.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 0,
++    "tt": 2457057.7896664813,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2457057.7896664813,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2457057.7896664813,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 2,
++    "tt": 2457057.7896664813,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2457057.7896664813,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2457057.7896664813,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 5,
++    "tt": 2457057.7896664813,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2457057.7896664813,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2457057.7896664813,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 0,
++    "tt": 2460680.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2460680.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 0,
++    "tt": 2460680.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 2,
++    "tt": 2460680.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2460680.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 2,
++    "tt": 2460680.5,
++    "flags": 131330,
++    "control": true
++  },
++  {
++    "body": 5,
++    "tt": 2460680.5,
++    "flags": 258,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2460680.5,
++    "flags": 290,
++    "control": false
++  },
++  {
++    "body": 5,
++    "tt": 2460680.5,
++    "flags": 131330,
++    "control": true
++  }
++]
+diff --git a/validation/guards-b.cs.txt b/validation/guards-b.cs.txt
+new file mode 100644
+index 0000000..d32f6c8
+--- /dev/null
++++ b/validation/guards-b.cs.txt
+@@ -0,0 +1,22 @@
++using SharpAstrology.SwissEphemerides.Application.Bodies;
++using SharpAstrology.SwissEphemerides.Domain.Time;
++using SharpAstrology.SwissEphemerides.Domain.Frames;
++using SharpAstrology.SwissEphemerides.Domain.Mathematics;
++void Check(bool value){if(!value)throw new Exception("Frame bias guard failed");}
++var flags=EphemerisFlags.SwissEph|EphemerisFlags.Speed;
++Check(!CorrectionPipeline.ShouldApplyFrameBias(EphemerisSource.SwissEph,402,flags));
++Check(CorrectionPipeline.ShouldApplyFrameBias(EphemerisSource.SwissEph,403,flags));
++Check(CorrectionPipeline.ShouldApplyFrameBias(EphemerisSource.SwissEph,0,flags));
++Check(!CorrectionPipeline.ShouldApplyFrameBias(EphemerisSource.SwissEph,441,flags|EphemerisFlags.Icrs));
++Check(CorrectionPipeline.ShouldApplyFrameBias(EphemerisSource.Moshier,402,flags));
++var raw=new BodyState(new Vec3(1,.2,.3),new Vec3(.01,.02,.03),1,EphemerisSource.SwissEph,BodyStateFrame.BarycentricJ2000Equator,441);
++var zero=raw with {Position=Vec3.Zero,Velocity=Vec3.Zero};
++var f=flags|EphemerisFlags.TruePosition|EphemerisFlags.Barycentric|EphemerisFlags.Equatorial|EphemerisFlags.J2000Equinox|EphemerisFlags.NoNutation;
++var result=new CorrectionPipeline().Apply(raw,zero,zero,zero,new NoFetch(),CelestialBody.Mercury,JulianDay.J2000,f);
++Span<double> expected=stackalloc double[]{1,.2,.3,.01,.02,.03};CatalogFrameTransforms.IcrsBias(expected,true,false);
++Check(result.Position==new Vec3(expected[0],expected[1],expected[2]));Check(result.Velocity==new Vec3(expected[3],expected[4],expected[5]));
++readonly struct NoFetch:CorrectionPipeline.IRefetchProvider{
++ public bool HasEarthRefetch=>false;
++ public BodyState RefetchBody(CelestialBody b,JulianDay jd,EphemerisFlags f)=>throw new Exception();
++ public BodyState RefetchEarth(JulianDay jd,EphemerisFlags f)=>throw new Exception();
++}
+-- 
+2.39.5 (Apple Git-154)
+

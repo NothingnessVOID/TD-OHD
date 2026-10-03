@@ -1,0 +1,4422 @@
+{
+  "schemaVersion": 1,
+  "checkedUtc": "2026-10-03T18:19:39.404276+00:00",
+  "oracle": {
+    "repository": "https://github.com/aloistr/swisseph",
+    "version": "2.10.03",
+    "commit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+    "unmodified": true,
+    "recompiledThisRun": true,
+    "verifiedComputationalSourceFiles": [
+      {
+        "filename": "sweph.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.c",
+        "bytes": 290642,
+        "sha256": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f"
+      },
+      {
+        "filename": "swephlib.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.c",
+        "bytes": 164395,
+        "sha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05"
+      },
+      {
+        "filename": "swejpl.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.c",
+        "bytes": 33480,
+        "sha256": "44014e260ae9ab2b1e8f413bb8a35fa270e369e3fb4907cd137ae103d2a8d0c2"
+      },
+      {
+        "filename": "swemplan.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemplan.c",
+        "bytes": 27880,
+        "sha256": "d13502ca7b92e3e32317b67ba7f012d92fabd1d358c3394c094d5515a3567caa"
+      },
+      {
+        "filename": "swemmoon.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemmoon.c",
+        "bytes": 61388,
+        "sha256": "1d5f5ef9a95cf9a2f395b6334a58c63851ce0512d65bf08e49d3caf0a9fecb00"
+      },
+      {
+        "filename": "swecl.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swecl.c",
+        "bytes": 225794,
+        "sha256": "ab46bdc303978523c69d814d236432541ff48cb410b756ef78cc1e8d2b2be303"
+      },
+      {
+        "filename": "swehel.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehel.c",
+        "bytes": 123264,
+        "sha256": "7b4be28627afd22b059389abc4ef679b7259a0bcb9d0510e7ca3825901754b93"
+      },
+      {
+        "filename": "swehouse.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.c",
+        "bytes": 112151,
+        "sha256": "384c1d7b2a8bcef9f2cf16f7fbf02e7aa18f372bc11320874a5543b92aed95d9"
+      },
+      {
+        "filename": "swedate.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.c",
+        "bytes": 20063,
+        "sha256": "6790e989a003cb6422080d9aecf3c6567a25030f5b5647fd749e5b16422cfac7"
+      },
+      {
+        "filename": "sweph.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.h",
+        "bytes": 34361,
+        "sha256": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a"
+      },
+      {
+        "filename": "swephlib.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.h",
+        "bytes": 7786,
+        "sha256": "29a151bb0c6adcb73fa73eff805b498c26bdffbb81e82d55e1b50f79218ea82a"
+      },
+      {
+        "filename": "swejpl.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.h",
+        "bytes": 3995,
+        "sha256": "f61ae6173b150f456540afba68500989c642506822e0397cf99c2cb7f50aac0d"
+      },
+      {
+        "filename": "swephexp.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephexp.h",
+        "bytes": 40932,
+        "sha256": "dd8e74e2853915a316041397f31730219b7910333be6bba3934fd77130335f22"
+      },
+      {
+        "filename": "sweodef.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweodef.h",
+        "bytes": 10838,
+        "sha256": "a2ace0fc0ea81ffbf9eb0a7f9fc1c1446d98f07d3a170a2c54b8ef4908325462"
+      },
+      {
+        "filename": "swemptab.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemptab.h",
+        "bytes": 311984,
+        "sha256": "dc7595b81bd49e86a6204ed1e0a041c410a9de5c068fd1d90d350a82d604fb85"
+      },
+      {
+        "filename": "swenut2000a.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swenut2000a.h",
+        "bytes": 68486,
+        "sha256": "83b0a2f569174b56c8e26971b00f85f5ae52265b34c1c53436c7122e0f1faad7"
+      },
+      {
+        "filename": "swehouse.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.h",
+        "bytes": 3702,
+        "sha256": "7a91a007a4de0900ed6d234d74da421b2372d245b09a2ba8b74d6e2e054a200c"
+      },
+      {
+        "filename": "swedate.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.h",
+        "bytes": 3191,
+        "sha256": "886b001815561f2c5f5e40418ce00d62377cb8962180c38062ac83bfdab77b38"
+      }
+    ],
+    "source": "file-based Swiss DE441; no fallback allowed"
+  },
+  "patches": {
+    "a": {
+      "patch": "a",
+      "beforeCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+      "afterCommit": "16aba0ebb5f64d64a6af8bd97f70184079ffb1f2",
+      "oracleLibrarySha256": "6577186e5398697ccd66ab1d3c4d0a9df8b7c97794461bdd7ed3175b5cd093f3",
+      "ephemerisSha256": {
+        "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      "passed": true,
+      "cases": [
+        {
+          "case": {
+            "utc": "1985-02-04T06:56:00.123456Z"
+          },
+          "before": {
+            "ut1": 2446100.7888903124,
+            "roundtripSeconds": -0.000456,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2446100.788887877,
+            "roundtripSeconds": -1.98e-05,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2446100.788887877
+          },
+          "beforeResidual": 0.21041929721832275,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        },
+        {
+          "case": {
+            "utc": "1995-02-04T06:56:00.123456Z"
+          },
+          "before": {
+            "ut1": 2449752.7888903124,
+            "roundtripSeconds": -0.000456,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2449752.788893986,
+            "roundtripSeconds": -1.98e-05,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2449752.788893986
+          },
+          "beforeResidual": -0.31739920377731323,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        },
+        {
+          "case": {
+            "utc": "2005-02-04T06:56:00.123456Z"
+          },
+          "before": {
+            "ut1": 2453405.7888903124,
+            "roundtripSeconds": -0.000456,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2453405.7888843613,
+            "roundtripSeconds": -1.98e-05,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2453405.7888843613
+          },
+          "beforeResidual": 0.5141794681549072,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        },
+        {
+          "case": {
+            "utc": "2015-02-04T06:56:00.123456Z"
+          },
+          "before": {
+            "ut1": 2457057.7888903124,
+            "roundtripSeconds": -0.000456,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2457057.7888845396,
+            "roundtripSeconds": -1.98e-05,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2457057.7888845396
+          },
+          "beforeResidual": 0.49877017736434937,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        },
+        {
+          "case": {
+            "utc": "2025-02-04T06:56:00.123456Z"
+          },
+          "before": {
+            "ut1": 2460710.7888903124,
+            "roundtripSeconds": -0.000456,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2460710.7888925546,
+            "roundtripSeconds": -1.98e-05,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2460710.7888925546
+          },
+          "beforeResidual": -0.19372254610061646,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        },
+        {
+          "case": {
+            "utc": "1950-01-01T00:00:00Z",
+            "control": true
+          },
+          "before": {
+            "ut1": 2433282.5,
+            "roundtripSeconds": 0,
+            "utcKind": "Utc"
+          },
+          "after": {
+            "ut1": 2433282.5,
+            "roundtripSeconds": 0,
+            "utcKind": "Utc"
+          },
+          "oracle": {
+            "ut1": 2433282.5
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "seconds"
+        }
+      ],
+      "summary": {
+        "comparisons": 6,
+        "controls": 1,
+        "maximumBeforeResidual": 0.5141794681549072,
+        "maximumAfterResidual": 0.0,
+        "unit": "seconds",
+        "guardsPassed": true
+      }
+    },
+    "b": {
+      "patch": "b",
+      "beforeCommit": "16aba0ebb5f64d64a6af8bd97f70184079ffb1f2",
+      "afterCommit": "106a812386534fc4773a49ccff6a2a6309a613d3",
+      "oracleLibrarySha256": "6577186e5398697ccd66ab1d3c4d0a9df8b7c97794461bdd7ed3175b5cd093f3",
+      "ephemerisSha256": {
+        "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      "passed": true,
+      "cases": [
+        {
+          "case": {
+            "body": 0,
+            "tt": 2446100.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 315.1177833769998,
+            "speed": 1.0137930291437511,
+            "vector": [
+              0.6984683119028117,
+              -0.6956025057061279,
+              1.1069643823247155e-06,
+              0.012417530852774665,
+              0.012249644213964558,
+              9.818690067334851e-08
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 315.1177852616732,
+            "speed": 1.0137930291544832,
+            "vector": [
+              0.6984683347838284,
+              -0.6956024827309193,
+              1.0583230274363586e-06,
+              0.012417530449883123,
+              0.012249644622640627,
+              9.651813591502606e-08
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 315.1177852616732,
+            "speed": 1.0137928142100925
+          },
+          "beforeResidual": -6.78482422244997,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.149336586487749e-07,
+          "afterSpeedResidualDegreesPerDay": 2.1494439073066474e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2446100.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 315.32935698104586,
+            "speed": 1.0137229907490142,
+            "vector": [
+              0.7010321646354303,
+              -0.6930185657077417,
+              -2.022819594704739e-05,
+              0.012371365434384909,
+              0.012294557308046551,
+              7.598709170549695e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 315.32935886579327,
+            "speed": 1.0137229907542626,
+            "vector": [
+              0.7010321874315983,
+              -0.6930185426465518,
+              -2.027683645305922e-05,
+              0.012371365030008252,
+              0.012294557715052523,
+              7.582016555533755e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 315.32935886579327,
+            "speed": 1.013722775769056
+          },
+          "beforeResidual": -6.785090658922854,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.1497995827957084e-07,
+          "afterSpeedResidualDegreesPerDay": 2.1498520674789745e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2446100.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 315.1177833769998,
+            "speed": 1.0137930291437511,
+            "vector": [
+              0.6984683119028117,
+              -0.6956025057061279,
+              1.1069643823247155e-06,
+              0.012417530852774665,
+              0.012249644213964558,
+              9.818690067334851e-08
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 315.1177833769998,
+            "speed": 1.0137930291437511,
+            "vector": [
+              0.6984683119028117,
+              -0.6956025057061279,
+              1.1069643823247155e-06,
+              0.012417530852774665,
+              0.012249644213964558,
+              9.818690067334851e-08
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 315.1177833769998,
+            "speed": 1.013792814120974
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.1502277713913998e-07,
+          "afterSpeedResidualDegreesPerDay": 2.1502277713913998e-07
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2446100.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 304.2839068466981,
+            "speed": 1.615940849003278,
+            "vector": [
+              0.7794362526522732,
+              -1.1433005004104468,
+              -0.04411122725301048,
+              0.034467051692770055,
+              0.018723540529289918,
+              -0.001487179731716715
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.2839085435069,
+            "speed": 1.6159408447808457,
+            "vector": [
+              0.7794362857517415,
+              -1.1433004762138088,
+              -0.044111269534795106,
+              0.034467050924955535,
+              0.018723541614412833,
+              -0.0014871838658494577
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.2839085439294,
+            "speed": 1.6159408488248364
+          },
+          "beforeResidual": -6.110032722972392,
+          "afterResidual": -0.0015208570403046906,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.784417058559029e-10,
+          "afterSpeedResidualDegreesPerDay": -4.0439906978662066e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2446100.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 304.4955199887201,
+            "speed": 1.6158730715813057,
+            "vector": [
+              0.7836528771367365,
+              -1.140413029259259,
+              -0.044147450755390394,
+              0.0343962877679816,
+              0.018849766689117312,
+              -0.0014860957385275713
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.4955216855684,
+            "speed": 1.6158730673637338,
+            "vector": [
+              0.7836529101467578,
+              -1.1404130049391297,
+              -0.04414749303625293,
+              0.03439628699619403,
+              0.01884976777151542,
+              -0.001486099872626022
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.4955216859908,
+            "speed": 1.615873071369752
+          },
+          "beforeResidual": -6.110174535933766,
+          "afterResidual": -0.0015206524039967917,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.1155366347613835e-10,
+          "afterSpeedResidualDegreesPerDay": -4.006018183844162e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2446100.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 304.2839068466981,
+            "speed": 1.615940849003278,
+            "vector": [
+              0.7794362526522732,
+              -1.1433005004104468,
+              -0.04411122725301048,
+              0.034467051692770055,
+              0.018723540529289918,
+              -0.001487179731716715
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.2839068466981,
+            "speed": 1.615940849003278,
+            "vector": [
+              0.7794362526522732,
+              -1.1433005004104468,
+              -0.04411122725301048,
+              0.034467051692770055,
+              0.018723540529289918,
+              -0.001487179731716715
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.2839068471205,
+            "speed": 1.6159408530852515
+          },
+          "beforeResidual": -0.0015206524039967917,
+          "afterResidual": -0.0015206524039967917,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -4.0819734259400775e-09,
+          "afterSpeedResidualDegreesPerDay": -4.0819734259400775e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2446100.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 299.39111978857403,
+            "speed": 0.2303890891411512,
+            "vector": [
+              2.9864372384475124,
+              -5.301993499213615,
+              -0.03245935418999735,
+              0.01909589103024397,
+              0.015956435127577474,
+              -0.00016588660235364924
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 299.39112164112606,
+            "speed": 0.23038908894488194,
+            "vector": [
+              2.9864374095323134,
+              -5.301993402039788,
+              -0.03245948607636917,
+              0.019095890484202974,
+              0.0159564357502416,
+              -0.00016588907460594708
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 299.39112164112726,
+            "speed": 0.23038909218283365
+          },
+          "beforeResidual": -6.669191611763381,
+          "afterResidual": -4.297362465877086e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -3.04168246145764e-09,
+          "afterSpeedResidualDegreesPerDay": -3.2379517123093393e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2446100.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 299.60269930242606,
+            "speed": 0.23031907508231086,
+            "vector": [
+              3.0059953677291227,
+              -5.290928390354815,
+              -0.03262931032549843,
+              0.019030372298953692,
+              0.01602316205802332,
+              -0.00016369849256720262
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 299.6027011550024,
+            "speed": 0.23031907492307513,
+            "vector": [
+              3.0059955384543273,
+              -5.2909282925454315,
+              -0.032629442208046866,
+              0.019030371755130723,
+              0.016023162678652964,
+              -0.0001637009648001453
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 299.6027011550036,
+            "speed": 0.23031907815273311
+          },
+          "beforeResidual": -6.669279196103162,
+          "afterResidual": -4.297362465877086e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -3.070422249784599e-09,
+          "afterSpeedResidualDegreesPerDay": -3.2296579854929064e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2446100.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 299.39111978857403,
+            "speed": 0.2303890891411512,
+            "vector": [
+              2.9864372384475124,
+              -5.301993499213615,
+              -0.03245935418999735,
+              0.01909589103024397,
+              0.015956435127577474,
+              -0.00016588660235364924
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 299.39111978857403,
+            "speed": 0.2303890891411512,
+            "vector": [
+              2.9864372384475124,
+              -5.301993499213615,
+              -0.03245935418999735,
+              0.01909589103024397,
+              0.015956435127577474,
+              -0.00016588660235364924
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 299.3911197885752,
+            "speed": 0.23038909241675615
+          },
+          "beforeResidual": -4.297362465877086e-06,
+          "afterResidual": -4.297362465877086e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -3.275604953945077e-09,
+          "afterSpeedResidualDegreesPerDay": -3.275604953945077e-09
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2450460.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 291.8215218097331,
+            "speed": 1.0192556140139906,
+            "vector": [
+              0.3655776604911418,
+              -0.9130145935769478,
+              6.146520977190484e-07,
+              0.016257699117575748,
+              0.006464064990569076,
+              -7.657745763407948e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 291.82152369455827,
+            "speed": 1.0192556140058318,
+            "vector": [
+              0.36557769052604083,
+              -0.9130145815507609,
+              6.074502661435055e-07,
+              0.01625769890487531,
+              0.006464065525152081,
+              -7.676481013686211e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 291.82152369455827,
+            "speed": 1.0192552153078789
+          },
+          "beforeResidual": -6.78537060139206,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 3.9870611168169034e-07,
+          "afterSpeedResidualDegreesPerDay": 3.98697952874727e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2450460.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 291.862463751344,
+            "speed": 1.0192228427414152,
+            "vector": [
+              0.3662299814710324,
+              -0.9127531290433968,
+              -5.31500842571031e-06,
+              0.016252553864525163,
+              0.006475471160284768,
+              -4.863410623823922e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 291.86246563617044,
+            "speed": 1.0192228427384185,
+            "vector": [
+              0.3662300114973342,
+              -0.9127531169957024,
+              -5.32221015780987e-06,
+              0.0162525536514518,
+              0.006475471694929012,
+              -4.882140746220558e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 291.8624656361704,
+            "speed": 1.0192224440626074
+          },
+          "beforeResidual": -6.785374898754526,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 3.9867880774480113e-07,
+          "afterSpeedResidualDegreesPerDay": 3.9867581103081307e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2450460.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 291.8215218097331,
+            "speed": 1.0192556140139906,
+            "vector": [
+              0.3655776604911418,
+              -0.9130145935769478,
+              6.146520977190484e-07,
+              0.016257699117575748,
+              0.006464064990569076,
+              -7.657745763407948e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 291.8215218097331,
+            "speed": 1.0192556140139906,
+            "vector": [
+              0.3655776604911418,
+              -0.9130145935769478,
+              6.146520977190484e-07,
+              0.016257699117575748,
+              0.006464064990569076,
+              -7.657745763407948e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 291.82152180973316,
+            "speed": 1.0192552153112586
+          },
+          "beforeResidual": -2.0463630789890885e-07,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 3.987027319407588e-07,
+          "afterSpeedResidualDegreesPerDay": 3.987027319407588e-07
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2450460.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 273.0227758816742,
+            "speed": -0.12734311112954916,
+            "vector": [
+              0.04074788660391895,
+              -0.7716468381068474,
+              0.041352486792809146,
+              -0.0007625077596514906,
+              -0.018128550520418864,
+              -0.000450031650570561
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 273.02277808443625,
+            "speed": -0.12734312220652091,
+            "vector": [
+              0.04074791621012704,
+              -0.7716468354021175,
+              0.041352508090327755,
+              -0.00076250720921606,
+              -0.018128550559896567,
+              -0.00045003097357403186
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 273.0227780844362,
+            "speed": -0.12734312296741232
+          },
+          "beforeResidual": -7.929943217277469,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.183786316194535e-08,
+          "afterSpeedResidualDegreesPerDay": 7.608914054380023e-10
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2450460.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 273.0637148705151,
+            "speed": -0.12737569567638019,
+            "vector": [
+              0.04129924816793292,
+              -0.7716178024601312,
+              0.041347312056431496,
+              -0.0007499944935719302,
+              -0.018129101113625277,
+              -0.00044996327293874393
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 273.0637170732749,
+            "speed": -0.1273757067549995,
+            "vector": [
+              0.04129927777218787,
+              -0.7716177997343896,
+              0.041347333353986354,
+              -0.0007499939431067034,
+              -0.018129101153175547,
+              -0.000449962596960775
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 273.0637170732748,
+            "speed": -0.1273757075141787
+          },
+          "beforeResidual": -7.929934827188845,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.1837798519209741e-08,
+          "afterSpeedResidualDegreesPerDay": 7.591791917338497e-10
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2450460.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 273.0227758816742,
+            "speed": -0.12734311112954916,
+            "vector": [
+              0.04074788660391895,
+              -0.7716468381068474,
+              0.041352486792809146,
+              -0.0007625077596514906,
+              -0.018128550520418864,
+              -0.000450031650570561
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 273.0227758816742,
+            "speed": -0.12734311112954916,
+            "vector": [
+              0.04074788660391895,
+              -0.7716468381068474,
+              0.041352486792809146,
+              -0.0007625077596514906,
+              -0.018128550520418864,
+              -0.000450031650570561
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 273.02277588167414,
+            "speed": -0.12734311188785213
+          },
+          "beforeResidual": 2.0463630789890885e-07,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 7.583029759672399e-10,
+          "afterSpeedResidualDegreesPerDay": 7.583029759672399e-10
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2450460.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 297.73406447112535,
+            "speed": 0.2346752124887217,
+            "vector": [
+              2.8436757826385977,
+              -5.40858870533726,
+              -0.036952623269827845,
+              0.022778863381552137,
+              0.010456521694841854,
+              -0.0001643547586351016
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 297.73406631931675,
+            "speed": 0.234675212398032,
+            "vector": [
+              2.843675956788701,
+              -5.408588613009856,
+              -0.036952735156370764,
+              0.022778863025360776,
+              0.010456522438819353,
+              -0.00016435742883113766
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 297.73406631932517,
+            "speed": 0.2346752210076833
+          },
+          "beforeResidual": -6.653519335486635,
+          "afterResidual": -3.028617356903851e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -8.518961591708063e-09,
+          "afterSpeedResidualDegreesPerDay": -8.609651297453169e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2450460.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 297.7750076860061,
+            "speed": 0.23464241461877514,
+            "vector": [
+              2.8475399029132125,
+              -5.406555065365465,
+              -0.03698733731379367,
+              0.022768293362757916,
+              0.010471159399122828,
+              -0.0001629317358181493
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 297.7750095342014,
+            "speed": 0.2346424144913431,
+            "vector": [
+              2.847540076997364,
+              -5.406554972912888,
+              -0.036987449199608724,
+              0.022768293001657454,
+              0.010471160142744233,
+              -0.0001629344060093906
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 297.77500953420974,
+            "speed": 0.2346424231022942
+          },
+          "beforeResidual": -6.653533046119264,
+          "afterResidual": -3.00815372611396e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -8.483519053914534e-09,
+          "afterSpeedResidualDegreesPerDay": -8.610951091059249e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2450460.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 297.73406447112535,
+            "speed": 0.2346752124887217,
+            "vector": [
+              2.8436757826385977,
+              -5.40858870533726,
+              -0.036952623269827845,
+              0.022778863381552137,
+              0.010456521694841854,
+              -0.0001643547586351016
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 297.73406447112535,
+            "speed": 0.2346752124887217,
+            "vector": [
+              2.8436757826385977,
+              -5.40858870533726,
+              -0.036952623269827845,
+              0.022778863381552137,
+              0.010456521694841854,
+              -0.0001643547586351016
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 297.73406447113376,
+            "speed": 0.2346752210996709
+          },
+          "beforeResidual": -3.028617356903851e-05,
+          "afterResidual": -3.028617356903851e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -8.610949203680107e-09,
+          "afterSpeedResidualDegreesPerDay": -8.610949203680107e-09
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2453560.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 106.89587457868079,
+            "speed": 0.9537777395548254,
+            "vector": [
+              -0.2954863675310246,
+              0.9728119741806496,
+              2.491101986357158e-06,
+              -0.016187854163731964,
+              -0.004938982485838662,
+              -1.628640799913178e-09
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 106.89587646359644,
+            "speed": 0.9537777396197716,
+            "vector": [
+              -0.2954863995345789,
+              0.9728119644597482,
+              2.4889525016003056e-06,
+              -0.01618785400183285,
+              -0.004938983020431158,
+              1.8770609654279735e-10
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 106.89587646359642,
+            "speed": 0.9537775075935909
+          },
+          "beforeResidual": -6.785696280076081,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.319612344425792e-07,
+          "afterSpeedResidualDegreesPerDay": 2.3202618071316294e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2453560.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 106.82000236493808,
+            "speed": 0.9537291261576115,
+            "vector": [
+              -0.2941978918049997,
+              0.9732024100267839,
+              -9.364377716203354e-06,
+              -0.01619355453930761,
+              -0.004917292268410414,
+              -1.9437591269010068e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 106.82000424985428,
+            "speed": 0.9537291261588011,
+            "vector": [
+              -0.29419792382140075,
+              0.9732024003482439,
+              -9.366527043697115e-06,
+              -0.01619355437756316,
+              -0.004917292801136265,
+              -1.9256044260268675e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 106.82000424985428,
+            "speed": 0.9537288941591172
+          },
+          "beforeResidual": -6.78569832643916,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.3199849430444175e-07,
+          "afterSpeedResidualDegreesPerDay": 2.3199968390841263e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2453560.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 106.89587457868079,
+            "speed": 0.9537777395548254,
+            "vector": [
+              -0.2954863675310246,
+              0.9728119741806496,
+              2.491101986357158e-06,
+              -0.016187854163731964,
+              -0.004938982485838662,
+              -1.628640799913178e-09
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 106.89587457868079,
+            "speed": 0.9537777395548254,
+            "vector": [
+              -0.2954863675310246,
+              0.9728119741806496,
+              2.491101986357158e-06,
+              -0.016187854163731964,
+              -0.004938982485838662,
+              -1.628640799913178e-09
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 106.8958745786808,
+            "speed": 0.953777507558574
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.319962513208651e-07,
+          "afterSpeedResidualDegreesPerDay": 2.319962513208651e-07
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2453560.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 133.15083205102522,
+            "speed": 0.9591528581081978,
+            "vector": [
+              -0.5752006467277727,
+              0.6135807876322572,
+              -0.003612647196408497,
+              0.0003122280177450838,
+              -0.0209190773573257,
+              -0.0028199427823347462
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 133.15083395986315,
+            "speed": 0.9591528770127261,
+            "vector": [
+              -0.5752006672820871,
+              0.6135807685892268,
+              -0.003612608881440438,
+              0.0003122284182173044,
+              -0.020919077440455954,
+              -0.002819942119248235
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 133.15083395986318,
+            "speed": 0.9591528579794466
+          },
+          "beforeResidual": -6.871816651710105,
+          "afterResidual": -1.0231815394945443e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.2875123189814985e-10,
+          "afterSpeedResidualDegreesPerDay": 1.9033279508029466e-08
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2453560.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 133.0749621459066,
+            "speed": 0.9591061698759591,
+            "vector": [
+              -0.5743876307900817,
+              0.6143418963271235,
+              -0.0036196933275639276,
+              0.00028504436252179896,
+              -0.020919021451272064,
+              -0.0028198530598104307
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 133.07496405472008,
+            "speed": 0.9591061887895947,
+            "vector": [
+              -0.574387651369552,
+              0.6143418773118081,
+              -0.003619655012334605,
+              0.00028504476287134187,
+              -0.02091902153513136,
+              -0.0028198523972326178
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 133.0749640547201,
+            "speed": 0.9591061697409392
+          },
+          "beforeResidual": -6.871728658097709,
+          "afterResidual": -1.0231815394945443e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.3501988416209088e-10,
+          "afterSpeedResidualDegreesPerDay": 1.9048655541809012e-08
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2453560.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 133.15083205102522,
+            "speed": 0.9591528581081978,
+            "vector": [
+              -0.5752006467277727,
+              0.6135807876322572,
+              -0.003612647196408497,
+              0.0003122280177450838,
+              -0.0209190773573257,
+              -0.0028199427823347462
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 133.15083205102522,
+            "speed": 0.9591528581081978,
+            "vector": [
+              -0.5752006467277727,
+              0.6135807876322572,
+              -0.003612647196408497,
+              0.0003122280177450838,
+              -0.0209190773573257,
+              -0.0028199427823347462
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 133.15083205102528,
+            "speed": 0.9591528390594847
+          },
+          "beforeResidual": -2.0463630789890885e-07,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.904871316238399e-08,
+          "afterSpeedResidualDegreesPerDay": 1.904871316238399e-08
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2453560.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 190.56478895567096,
+            "speed": 0.09363874598896868,
+            "vector": [
+              -5.378416988994291,
+              -1.0031227124773732,
+              0.12195634738450162,
+              -0.013545845465073715,
+              -0.011622155798289494,
+              -3.179616458096231e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 190.5647908228101,
+            "speed": 0.09363874624870458,
+            "vector": [
+              -5.378416943550543,
+              -1.0031228853689675,
+              0.12195692942686509,
+              -0.013545845094858061,
+              -0.011622156244967983,
+              -3.1794396766939535e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 190.56479082281015,
+            "speed": 0.09363874742039396
+          },
+          "beforeResidual": -6.721701083733933,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -1.4314252838598662e-09,
+          "afterSpeedResidualDegreesPerDay": -1.171689384404928e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2453560.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 190.48890127577096,
+            "speed": 0.09358983541290992,
+            "vector": [
+              -5.3797404906751805,
+              -0.9959981006303827,
+              0.12197487851357525,
+              -0.013562068943534691,
+              -0.011599609632679569,
+              -3.135458131206352e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 190.48890314283645,
+            "speed": 0.09358983568969476,
+            "vector": [
+              -5.3797404454597615,
+              -0.9959982735747146,
+              0.12197546055805364,
+              -0.013562068565142544,
+              -0.011599610079867713,
+              -3.13528134928678e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 190.4889031428365,
+            "speed": 0.09358983686367657
+          },
+          "beforeResidual": -6.72143597739705,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -1.4507666457053148e-09,
+          "afterSpeedResidualDegreesPerDay": -1.1739818145395375e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2453560.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 190.56478895567096,
+            "speed": 0.09363874598896868,
+            "vector": [
+              -5.378416988994291,
+              -1.0031227124773732,
+              0.12195634738450162,
+              -0.013545845465073715,
+              -0.011622155798289494,
+              -3.179616458096231e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 190.56478895567096,
+            "speed": 0.09363874598896868,
+            "vector": [
+              -5.378416988994291,
+              -1.0031227124773732,
+              0.12195634738450162,
+              -0.013545845465073715,
+              -0.011622155798289494,
+              -3.179616458096231e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 190.564788955671,
+            "speed": 0.09363874716065806
+          },
+          "beforeResidual": -1.0231815394945443e-07,
+          "afterResidual": -1.0231815394945443e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -1.171689384404928e-09,
+          "afterSpeedResidualDegreesPerDay": -1.171689384404928e-09
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2457057.7896664813,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 315.12499090190704,
+            "speed": 1.0138466082684818,
+            "vector": [
+              0.6985238217397609,
+              -0.6954827876313487,
+              -3.240400982706948e-06,
+              0.012415434160956315,
+              0.012251933084918431,
+              2.1192744097380672e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 315.1249927869429,
+            "speed": 1.0138466082798427,
+            "vector": [
+              0.6985238446210893,
+              -0.6954827646497451,
+              -3.2883540121986243e-06,
+              0.01241543375789706,
+              0.012251933493628851,
+              2.102525554631418e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 315.12499278694287,
+            "speed": 1.0138466338436098
+          },
+          "beforeResidual": -6.786128983549133,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.557512801537598e-08,
+          "afterSpeedResidualDegreesPerDay": -2.556376710316499e-08
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2457057.7896664813,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 314.91258717248763,
+            "speed": 1.0138190455454104,
+            "vector": [
+              0.695940772516623,
+              -0.6980675312934349,
+              1.851346803949383e-05,
+              0.012460432615466168,
+              0.012205488402838739,
+              -7.778373153737028e-08
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 314.91258905745,
+            "speed": 1.0138190455440321,
+            "vector": [
+              0.6959407954828414,
+              -0.6980675083984557,
+              1.8465514154575313e-05,
+              0.012460432213934112,
+              0.012205488812747058,
+              -7.9459139165107e-08
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 314.91258905744996,
+            "speed": 1.0138190711633437
+          },
+          "beforeResidual": -6.78586438880302,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.561793333022422e-08,
+          "afterSpeedResidualDegreesPerDay": -2.5619311561086988e-08
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2457057.7896664813,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 315.12499090190704,
+            "speed": 1.0138466082684818,
+            "vector": [
+              0.6985238217397609,
+              -0.6954827876313487,
+              -3.240400982706948e-06,
+              0.012415434160956315,
+              0.012251933084918431,
+              2.1192744097380672e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 315.12499090190704,
+            "speed": 1.0138466082684818,
+            "vector": [
+              0.6985238217397609,
+              -0.6954827876313487,
+              -3.240400982706948e-06,
+              0.012415434160956315,
+              0.012251933084918431,
+              2.1192744097380672e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 315.1249909019071,
+            "speed": 1.0138466338413397
+          },
+          "beforeResidual": -2.0463630789890885e-07,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.5572857831335227e-08,
+          "afterSpeedResidualDegreesPerDay": -2.5572857831335227e-08
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2457057.7896664813,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 304.86200444401584,
+            "speed": -0.9712753807365198,
+            "vector": [
+              0.38011581633549185,
+              -0.5456540159852394,
+              0.04149926326416542,
+              -0.005355989324168261,
+              -0.012033393461262747,
+              -0.00034135706091485436
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.86200669651197,
+            "speed": -0.9712753856137915,
+            "vector": [
+              0.3801158385184114,
+              -0.5456540020914363,
+              0.04149924276091749,
+              -0.005355988962499886,
+              -0.012033393648882213,
+              -0.00034135611243313584
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.86200669651197,
+            "speed": -0.9712753800358607
+          },
+          "beforeResidual": -8.108986071420077,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -7.006590863056772e-10,
+          "afterSpeedResidualDegreesPerDay": -5.577930783928764e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2457057.7896664813,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 304.649679442202,
+            "speed": -0.9713055083579055,
+            "vector": [
+              0.3780905190961625,
+              -0.547057986075839,
+              0.041516828888143675,
+              -0.0054008261379794205,
+              -0.012013639002046706,
+              -0.0003407980060916695
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.6496816946627,
+            "speed": -0.9713055132714336,
+            "vector": [
+              0.3780905413303721,
+              -0.5470579722650688,
+              0.04151680838435398,
+              -0.005400825777552021,
+              -0.012013639190985937,
+              -0.0003407970576045933
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.6496816946628,
+            "speed": -0.9713055076934791
+          },
+          "beforeResidual": -8.108858787636564,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -6.644264027855229e-10,
+          "afterSpeedResidualDegreesPerDay": -5.5779544316791885e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2457057.7896664813,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 304.86200444401584,
+            "speed": -0.9712753807365198,
+            "vector": [
+              0.38011581633549185,
+              -0.5456540159852394,
+              0.04149926326416542,
+              -0.005355989324168261,
+              -0.012033393461262747,
+              -0.00034135706091485436
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 304.86200444401584,
+            "speed": -0.9712753807365198,
+            "vector": [
+              0.38011581633549185,
+              -0.5456540159852394,
+              0.04149926326416542,
+              -0.005355989324168261,
+              -0.012033393461262747,
+              -0.00034135706091485436
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 304.8620044440159,
+            "speed": -0.9712753751585892
+          },
+          "beforeResidual": -2.0463630789890885e-07,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -5.577930561884159e-09,
+          "afterSpeedResidualDegreesPerDay": -5.577930561884159e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2457057.7896664813,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 137.9620856685106,
+            "speed": -0.13263021365929575,
+            "vector": [
+              -3.227953779761622,
+              2.910332719198692,
+              0.07262858377910142,
+              0.007215091630372096,
+              0.007041071149576502,
+              0.0001392446577200973
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 137.96208746442255,
+            "speed": -0.13263021396144722,
+            "vector": [
+              -3.2279538681085183,
+              2.9103326154266136,
+              0.07262881552730316,
+              0.0072150914084189765,
+              0.007041071395650887,
+              0.00013924368473732266
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 137.96208746442255,
+            "speed": -0.132630215242823
+          },
+          "beforeResidual": -6.465282990575361,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.583527253767869e-09,
+          "afterSpeedResidualDegreesPerDay": 1.281375783257488e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2457057.7896664813,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 137.7496556798583,
+            "speed": -0.1326579553368359,
+            "vector": [
+              -3.2171423748635473,
+              2.9222816708969077,
+              0.07253845666177394,
+              0.007242550562161281,
+              0.00701584526662251,
+              0.00013828376226955813
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 137.7496574756858,
+            "speed": -0.13265795563780852,
+            "vector": [
+              -3.2171424635938175,
+              2.922281567460991,
+              0.07253868841379263,
+              0.0072425503454756094,
+              0.007015845509452973,
+              0.00013828279104530303
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 137.74965747568584,
+            "speed": -0.13265795688012247
+          },
+          "beforeResidual": -6.464979105658131,
+          "afterResidual": -1.0231815394945443e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.5432865818620911e-09,
+          "afterSpeedResidualDegreesPerDay": 1.242313946159257e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2457057.7896664813,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 137.9620856685106,
+            "speed": -0.13263021365929575,
+            "vector": [
+              -3.227953779761622,
+              2.910332719198692,
+              0.07262858377910142,
+              0.007215091630372096,
+              0.007041071149576502,
+              0.0001392446577200973
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 137.9620856685106,
+            "speed": -0.13263021365929575,
+            "vector": [
+              -3.227953779761622,
+              2.910332719198692,
+              0.07262858377910142,
+              0.007215091630372096,
+              0.007041071149576502,
+              0.0001392446577200973
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 137.9620856685106,
+            "speed": -0.13263021490146898
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.2421732253908857e-09,
+          "afterSpeedResidualDegreesPerDay": 1.2421732253908857e-09
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2460680.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 284.8910321500053,
+            "speed": 1.019402001983348,
+            "vector": [
+              0.2526970852099512,
+              -0.9503040217585259,
+              -1.1159501225321833e-06,
+              0.016908676312978873,
+              0.004492424463257465,
+              4.825441881294544e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 284.89103403518004,
+            "speed": 1.0194020020218681,
+            "vector": [
+              0.2526971164773364,
+              -0.9503040134441652,
+              -1.109678735233821e-06,
+              0.0169086761657839,
+              0.004492425019847774,
+              4.806710040057994e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 284.89103403518004,
+            "speed": 1.019401468310702
+          },
+          "beforeResidual": -6.786629114685638,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.336726460747343e-07,
+          "afterSpeedResidualDegreesPerDay": 5.337111661507521e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2460680.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 284.54152541761283,
+            "speed": 1.0193788671873383,
+            "vector": [
+              0.2468955237172556,
+              -0.9518277934313667,
+              5.162594007451782e-05,
+              0.01693538118249425,
+              0.0043890981813608865,
+              2.9968601681393085e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 284.5415273027946,
+            "speed": 1.0193788671895427,
+            "vector": [
+              0.24689555503480964,
+              -0.9518277853075355,
+              5.1632210839536175e-05,
+              0.016935381038136545,
+              0.004389098738494094,
+              2.978122925064927e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 284.54152730279463,
+            "speed": 1.0193783334851882
+          },
+          "beforeResidual": -6.786654489587818,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.337021500295691e-07,
+          "afterSpeedResidualDegreesPerDay": 5.337043544884068e-07
+        },
+        {
+          "case": {
+            "body": 0,
+            "tt": 2460680.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 284.8910321500053,
+            "speed": 1.019402001983348,
+            "vector": [
+              0.2526970852099512,
+              -0.9503040217585259,
+              -1.1159501225321833e-06,
+              0.016908676312978873,
+              0.004492424463257465,
+              4.825441881294544e-07
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 284.8910321500053,
+            "speed": 1.019402001983348,
+            "vector": [
+              0.2526970852099512,
+              -0.9503040217585259,
+              -1.1159501225321833e-06,
+              0.016908676312978873,
+              0.004492424463257465,
+              4.825441881294544e-07
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 284.8910321500053,
+            "speed": 1.0194014682754864
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.337078616829416e-07,
+          "afterSpeedResidualDegreesPerDay": 5.337078616829416e-07
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2460680.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 265.195100210775,
+            "speed": 1.3707881631090824,
+            "vector": [
+              -0.10146525540753658,
+              -1.2070795330789454,
+              0.011797870391774379,
+              0.027648170508711725,
+              -0.017071218827909983,
+              -0.0027412758472557105
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 265.19510215102673,
+            "speed": 1.37078815020742,
+            "vector": [
+              -0.10146521448965554,
+              -1.207079536019989,
+              0.011797921389760713,
+              0.02764817079117994,
+              -0.017071218010317777,
+              -0.002741278088009902
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 265.1951021510265,
+            "speed": 1.3707881514526898
+          },
+          "beforeResidual": -6.984905326135049,
+          "afterResidual": 8.185452315956354e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.1656392517878089e-08,
+          "afterSpeedResidualDegreesPerDay": -1.2452698872067458e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2460680.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 264.8455934677834,
+            "speed": 1.3707657775048092,
+            "vector": [
+              -0.10882649895599748,
+              -1.2064374650006275,
+              0.011866892879894841,
+              0.02754302029477573,
+              -0.017239664895285257,
+              -0.0027402445136056365
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 264.8455954080362,
+            "speed": 1.370765764607044,
+            "vector": [
+              -0.10882645805655553,
+              -1.2064374681883219,
+              0.011866943877851477,
+              0.027543020582210972,
+              -0.017239664079806614,
+              -0.0027402467549168964
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 264.84559540803605,
+            "speed": 1.3707657658505639
+          },
+          "beforeResidual": -6.984909623497515,
+          "afterResidual": 6.139089236967266e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 1.1654245346548464e-08,
+          "afterSpeedResidualDegreesPerDay": -1.2435199536753316e-09
+        },
+        {
+          "case": {
+            "body": 2,
+            "tt": 2460680.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 265.195100210775,
+            "speed": 1.3707881631090824,
+            "vector": [
+              -0.10146525540753658,
+              -1.2070795330789454,
+              0.011797870391774379,
+              0.027648170508711725,
+              -0.017071218827909983,
+              -0.0027412758472557105
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 265.195100210775,
+            "speed": 1.3707881631090824,
+            "vector": [
+              -0.10146525540753658,
+              -1.2070795330789454,
+              0.011797870391774379,
+              0.027648170508711725,
+              -0.017071218827909983,
+              -0.0027412758472557105
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 265.1951002107748,
+            "speed": 1.3707881643534783
+          },
+          "beforeResidual": 8.185452315956354e-07,
+          "afterResidual": 8.185452315956354e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -1.2443959196417609e-09,
+          "afterSpeedResidualDegreesPerDay": -1.2443959196417609e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2460680.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 72.80900803333382,
+            "speed": -0.09660907124354495,
+            "vector": [
+              1.2483502038548835,
+              4.035013550270778,
+              -0.04335870409612519,
+              0.009411299881129752,
+              0.006323831022652655,
+              0.000161010392967037
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 72.80900996989722,
+            "speed": -0.09660907156649517,
+            "vector": [
+              1.2483500666755867,
+              4.035013589884172,
+              -0.043358967184602415,
+              0.009411299689384353,
+              0.006323831346705231,
+              0.00016100921961326392
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 72.80900996989722,
+            "speed": -0.09660906911075656
+          },
+          "beforeResidual": -6.971628215524106,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.132788390341034e-09,
+          "afterSpeedResidualDegreesPerDay": -2.455738612461289e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2460680.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 72.45949408259563,
+            "speed": -0.09663224986671941,
+            "vector": [
+              1.272940360576222,
+              4.027321067234367,
+              -0.04359379979465805,
+              0.009451327252837698,
+              0.006265792449251218,
+              0.00015995464278957278
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 72.4594960191166,
+            "speed": -0.09663225022631465,
+            "vector": [
+              1.2729402236397647,
+              4.0273211076688895,
+              -0.043594062884725115,
+              0.009451327063038462,
+              0.006265792765460349,
+              0.00015995347091445067
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 72.45949601911661,
+            "speed": -0.09663224777415827
+          },
+          "beforeResidual": -6.9714755568384135,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.092561138256066e-09,
+          "afterSpeedResidualDegreesPerDay": -2.4521563807278213e-09
+        },
+        {
+          "case": {
+            "body": 5,
+            "tt": 2460680.5,
+            "flags": 131330,
+            "control": true
+          },
+          "before": {
+            "longitude": 72.80900803333382,
+            "speed": -0.09660907124354495,
+            "vector": [
+              1.2483502038548835,
+              4.035013550270778,
+              -0.04335870409612519,
+              0.009411299881129752,
+              0.006323831022652655,
+              0.000161010392967037
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 72.80900803333382,
+            "speed": -0.09660907124354495,
+            "vector": [
+              1.2483502038548835,
+              4.035013550270778,
+              -0.04335870409612519,
+              0.009411299881129752,
+              0.006323831022652655,
+              0.000161010392967037
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 72.80900803333384,
+            "speed": -0.09660906878426559
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.459279363486999e-09,
+          "afterSpeedResidualDegreesPerDay": -2.459279363486999e-09
+        }
+      ],
+      "summary": {
+        "comparisons": 45,
+        "controls": 15,
+        "maximumBeforeResidual": 8.108986071420077,
+        "maximumAfterResidual": 0.0015208570403046906,
+        "unit": "mas",
+        "guardsPassed": true
+      }
+    },
+    "c": {
+      "patch": "c",
+      "beforeCommit": "106a812386534fc4773a49ccff6a2a6309a613d3",
+      "afterCommit": "480a8474818c84fcd8b002112a0e53c665f2f739",
+      "oracleLibrarySha256": "6577186e5398697ccd66ab1d3c4d0a9df8b7c97794461bdd7ed3175b5cd093f3",
+      "ephemerisSha256": {
+        "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      "passed": true,
+      "cases": [
+        {
+          "case": {
+            "body": 1,
+            "tt": 2446100.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 113.58990301467011,
+            "speed": 13.84951931000668,
+            "vector": [
+              -0.0010018096454137324,
+              0.0022941536034970147,
+              0.00018966689714365972,
+              -0.0005403879104851759,
+              -0.0002745704766659871,
+              2.4050738479650723e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 113.58449789830806,
+            "speed": 13.848744330181354,
+            "vector": [
+              -0.0010016295388840415,
+              0.0022943312994580163,
+              0.0001896669004930109,
+              -0.0005403832057125999,
+              -0.00027455981257397096,
+              2.4050722768943913e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 113.58449789830898,
+            "speed": 13.848744330226273
+          },
+          "beforeResidual": 19458.418900126162,
+          "afterResidual": -3.2741809263825417e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0007749797804077474,
+          "afterSpeedResidualDegreesPerDay": -4.4918735397914134e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2446100.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 113.58449786700884,
+            "speed": 0,
+            "vector": [
+              -0.001001593423150516,
+              0.0022942485762244068,
+              0.00018966006187290428,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 113.58449789830806,
+            "speed": 0,
+            "vector": [
+              -0.0010016295388840417,
+              0.002294331299458016,
+              0.0001896669004930109,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 113.584497898309,
+            "speed": 0.0
+          },
+          "beforeResidual": -0.11268052730883937,
+          "afterResidual": -3.376499080331996e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2446100.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 113.58469867055737,
+            "speed": 13.848822297036465,
+            "vector": [
+              -0.0010016012586133163,
+              0.002294244596041981,
+              0.00018966041064136469,
+              -0.0005403880493599623,
+              -0.00027450208310954424,
+              2.4054003482261555e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 113.58469867055737,
+            "speed": 13.848822297036465,
+            "vector": [
+              -0.0010016012586133163,
+              0.002294244596041981,
+              0.00018966041064136469,
+              -0.0005403880493599623,
+              -0.00027450208310954424,
+              2.4054003482261555e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 113.58469867055739,
+            "speed": 13.848822297064983
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.851763269973162e-11,
+          "afterSpeedResidualDegreesPerDay": -2.851763269973162e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2446100.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 113.58449786055972,
+            "speed": 13.849049943727673,
+            "vector": [
+              -0.0010015934228989097,
+              0.0022942485763523313,
+              0.0001896600618616867,
+              -0.0005403966888816184,
+              -0.00027450777236084353,
+              2.405417516439053e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 113.57909294129676,
+            "speed": 13.848274875026908,
+            "vector": [
+              -0.0010014133074980967,
+              0.0022944262519957784,
+              0.00018966006353136802,
+              -0.0005403919767483224,
+              -0.0002744971105304411,
+              2.405415884575908e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 113.57909294129772,
+            "speed": 13.84827487507294
+          },
+          "beforeResidual": 19457.709343168972,
+          "afterResidual": -3.4788172342814505e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0007750686547325358,
+          "afterSpeedResidualDegreesPerDay": -4.603251113621809e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2446100.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 113.80154786264234,
+            "speed": 13.84949000343123,
+            "vector": [
+              -0.001010274887173273,
+              0.002290432214055846,
+              0.00018974134793631984,
+              -0.0005393676071213973,
+              -0.0002765635884319689,
+              2.4039068270525834e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 113.79614273151714,
+            "speed": 13.848715021738855,
+            "vector": [
+              -0.0010100954380400618,
+              0.00229061057387502,
+              0.0001897413578611641,
+              -0.0005393629415426068,
+              -0.00027655290725353055,
+              2.403905287958414e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 113.79614273151807,
+            "speed": 13.848715021747335
+          },
+          "beforeResidual": 19458.472047347186,
+          "afterResidual": -3.376499080331996e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0007749816838948931,
+          "afterSpeedResidualDegreesPerDay": -8.480327551296796e-12
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2450460.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 331.3193809215975,
+            "speed": 14.848163313760683,
+            "vector": [
+              0.0021180144506608317,
+              -0.001158648026437155,
+              0.00010660047860077033,
+              0.00031785953076900815,
+              0.0005392558859876986,
+              -4.7077440705802957e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 331.32384667250824,
+            "speed": 14.847343134633155,
+            "vector": [
+              0.002118241430068952,
+              -0.0011585576958502456,
+              0.00010660046912645691,
+              0.0003178636905086746,
+              0.0005392620177721125,
+              -4.707742560059673e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 331.3238466725055,
+            "speed": 14.847343134550288
+          },
+          "beforeResidual": -16076.703268890924,
+          "afterResidual": 9.822542779147625e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0008201792103950112,
+          "afterSpeedResidualDegreesPerDay": 8.286704655802168e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2450460.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 331.3238468642699,
+            "speed": 0,
+            "vector": [
+              0.0021181050218434393,
+              -0.0011584830790924302,
+              0.00010659360389533498,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 331.3238466725083,
+            "speed": 0,
+            "vector": [
+              0.0021182414300689525,
+              -0.0011585576958502456,
+              0.00010660046912645696,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 331.3238466725055,
+            "speed": 0.0
+          },
+          "beforeResidual": 0.6903518396939035,
+          "afterResidual": 1.0027179087046534e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2450460.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 331.32405408565626,
+            "speed": 14.847372523657981,
+            "vector": [
+              0.002118109457321334,
+              -0.0011584755528782475,
+              0.00010659294686069621,
+              0.0003178002087138926,
+              0.0005392523918689669,
+              -4.7076643883534524e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 331.32405408565626,
+            "speed": 14.847372523657981,
+            "vector": [
+              0.002118109457321334,
+              -0.0011584755528782475,
+              0.00010659294686069621,
+              0.0003178002087138926,
+              0.0005392523918689669,
+              -4.7076643883534524e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 331.32405408565626,
+            "speed": 14.847372523608573
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.9407589131078566e-11,
+          "afterSpeedResidualDegreesPerDay": 4.9407589131078566e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2450460.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 331.3238468504404,
+            "speed": 14.847265848019592,
+            "vector": [
+              0.0021181050215474833,
+              -0.0011584830795947436,
+              0.0001065936039392011,
+              0.00031779632017253683,
+              0.0005392492300183864,
+              -4.7076565353792706e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 331.3283123126407,
+            "speed": 14.846445629921005,
+            "vector": [
+              0.0021183319880962153,
+              -0.001158392741973869,
+              0.00010659359381770859,
+              0.0003178004829901088,
+              0.0005392553551009835,
+              -4.707654970586753e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 331.328312312638,
+            "speed": 14.84644562992096
+          },
+          "beforeResidual": -16075.663911260563,
+          "afterResidual": 9.822542779147625e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0008202180986316421,
+          "afterSpeedResidualDegreesPerDay": 4.440892098500626e-14
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2450460.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 331.36030716893794,
+            "speed": 14.848136382625436,
+            "vector": [
+              0.002118841782564248,
+              -0.0011571349759421136,
+              0.00010659396007345128,
+              0.00031747347922374074,
+              0.0005394820134063568,
+              -4.707332689901834e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 331.3647729203303,
+            "speed": 14.847316204139009,
+            "vector": [
+              0.0021190686973667503,
+              -0.0011570444831851638,
+              0.00010659395134591111,
+              0.0003174776346324498,
+              0.0005394881480331756,
+              -4.707331177298136e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 331.3647729203276,
+            "speed": 14.84731620409757
+          },
+          "beforeResidual": -16076.70500277436,
+          "afterResidual": 9.822542779147625e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0008201785278654228,
+          "afterSpeedResidualDegreesPerDay": 4.143885234952904e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2453560.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 134.22708703637784,
+            "speed": 11.839117233169624,
+            "vector": [
+              -0.0018887297332264644,
+              0.0019403871792665877,
+              0.0002126769926058961,
+              -0.0004011292826853076,
+              -0.00039008214753297546,
+              -2.1526768141910495e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 134.23208220519936,
+            "speed": 11.838732777076276,
+            "vector": [
+              -0.0018889836416236085,
+              0.001940309559566939,
+              0.00021267699048340934,
+              -0.00040113329031966747,
+              -0.00039008800659366823,
+              -2.152676327320485e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 134.23208220519766,
+            "speed": 11.838732777095696
+          },
+          "beforeResidual": -17982.60775134395,
+          "afterResidual": 6.139089236967266e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.00038445607392745274,
+          "afterSpeedResidualDegreesPerDay": -1.9420909325162938e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2453560.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 134.23208236470026,
+            "speed": 0,
+            "vector": [
+              -0.001888899418241685,
+              0.0019402230369298622,
+              0.00021266750702707553,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 134.23208220519936,
+            "speed": 0,
+            "vector": [
+              -0.0018889836416236085,
+              0.0019403095595669393,
+              0.00021267699048340945,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 134.23208220519766,
+            "speed": 0.0
+          },
+          "beforeResidual": 0.5742093776461843,
+          "afterResidual": 6.139089236967266e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2453560.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 134.23226808041994,
+            "speed": 11.8387298406385,
+            "vector": [
+              -0.0018889057100486104,
+              0.0019402169172855117,
+              0.00021266716927797818,
+              -0.00040108007371454684,
+              -0.00039010670651490266,
+              -2.152976742300286e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 134.23226808041994,
+            "speed": 11.8387298406385,
+            "vector": [
+              -0.0018889057100486104,
+              0.0019402169172855117,
+              0.00021266716927797818,
+              -0.00040108007371454684,
+              -0.00039010670651490266,
+              -2.152976742300286e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 134.23226808041994,
+            "speed": 11.838729840707156
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -6.865619184281968e-11,
+          "afterSpeedResidualDegreesPerDay": -6.865619184281968e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2453560.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 134.23208235367449,
+            "speed": 11.838626676314773,
+            "vector": [
+              -0.0018888994178681872,
+              0.001940223037293223,
+              0.0002126675070470951,
+              -0.00040107607425643,
+              -0.0003901038227314876,
+              -2.1529623868777334e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 134.23707729702733,
+            "speed": 11.838242150384888,
+            "vector": [
+              -0.0018891533119736869,
+              0.0019401454029123566,
+              0.0002126675033154345,
+              -0.00040108008122032403,
+              -0.00039010967561867724,
+              -2.152961854568787e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 134.2370772970256,
+            "speed": 11.838242150358735
+          },
+          "beforeResidual": -17981.79606398662,
+          "afterResidual": 6.24140739091672e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0003845259560382175,
+          "afterSpeedResidualDegreesPerDay": 2.6153301746489888e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2453560.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 134.1511719355507,
+            "speed": 11.839064460290164,
+            "vector": [
+              -0.0018861583390409593,
+              0.0019428892339339796,
+              0.0002126547872713647,
+              -0.00040164386108604657,
+              -0.00038954923188258637,
+              -2.152198137079356e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 134.15616710307984,
+            "speed": 11.838680006419242,
+            "vector": [
+              -0.0018864123500010091,
+              0.001942811950532836,
+              0.00021265478640272652,
+              -0.00040164787654227576,
+              -0.00038955508541571723,
+              -2.1521976400399456e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 134.15616710307816,
+            "speed": 11.838680006425937
+          },
+          "beforeResidual": -17982.60309883517,
+          "afterResidual": 6.036771083017811e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.000384453864226586,
+          "afterSpeedResidualDegreesPerDay": -6.695088927699544e-12
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2457057.7896664813,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 138.6822154201166,
+            "speed": 11.946933708482552,
+            "vector": [
+              -0.002027208047699758,
+              0.0017820609852625196,
+              -0.000191078821747591,
+              -0.0003797279298210665,
+              -0.00041554033315197123,
+              2.9535527335824416e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 138.67644561415295,
+            "speed": 11.946926668633619,
+            "vector": [
+              -0.002027014140919639,
+              0.0017822524246901925,
+              -0.00019107881632142985,
+              -0.0003797276271103979,
+              -0.00041553336909426556,
+              2.9535521041043096e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 138.6764456141555,
+            "speed": 11.946926668733303
+          },
+          "beforeResidual": 20771.301459888036,
+          "afterResidual": -9.208633855450898e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 7.039749249315719e-06,
+          "afterSpeedResidualDegreesPerDay": -9.968381675662386e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2457057.7896664813,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 138.67644569286068,
+            "speed": 0,
+            "vector": [
+              -0.002027028510847558,
+              0.0017822650545137996,
+              -0.00019108017066714377,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 138.67644561415295,
+            "speed": 0,
+            "vector": [
+              -0.002027014140919639,
+              0.0017822524246901923,
+              -0.00019107881632142985,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 138.6764456141555,
+            "speed": 0.0
+          },
+          "beforeResidual": 0.2833386133715976,
+          "afterResidual": -9.208633855450898e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2457057.7896664813,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 138.67663239940796,
+            "speed": 11.946906526168549,
+            "vector": [
+              -0.0020270344459229145,
+              0.0017822585610844227,
+              -0.0001910797091489914,
+              -0.0003797706348686247,
+              -0.00041549969697803735,
+              2.9531873586442292e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 138.67663239940796,
+            "speed": 11.946906526168549,
+            "vector": [
+              -0.0020270344459229145,
+              0.0017822585610844227,
+              -0.0001910797091489914,
+              -0.0003797706348686247,
+              -0.00041549969697803735,
+              2.9531873586442292e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 138.67663239940796,
+            "speed": 11.946906526175448
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -6.899369964230573e-12,
+          "afterSpeedResidualDegreesPerDay": -6.899369964230573e-12
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2457057.7896664813,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 138.6764456984236,
+            "speed": 11.947017221884924,
+            "vector": [
+              -0.0020270285110243675,
+              0.0017822650543203038,
+              -0.00019108017065336638,
+              -0.0003797757177854646,
+              -0.00041550207747750975,
+              2.953174538877494e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 138.67067585112716,
+            "speed": 11.9470100701214,
+            "vector": [
+              -0.0020268345837896433,
+              0.0017824564757650866,
+              -0.0001910801632991207,
+              -0.00037977541127195443,
+              -0.00041549510854716376,
+              2.9531738769426424e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 138.6706758511297,
+            "speed": 11.947010070189371
+          },
+          "beforeResidual": 20771.45025810978,
+          "afterResidual": -9.106315701501444e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 7.151695552209958e-06,
+          "afterSpeedResidualDegreesPerDay": -6.797051810281118e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2457057.7896664813,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 138.46992400692065,
+            "speed": 11.946906308201047,
+            "vector": [
+              -0.0020205883664568066,
+              0.001789557331183957,
+              -0.0001911338581180738,
+              -0.00038126483299126036,
+              -0.0004141278366907379,
+              2.955046237546562e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 138.46415419342557,
+            "speed": 11.946899274022629,
+            "vector": [
+              -0.002020393751317083,
+              0.0017897480504573955,
+              -0.00019113385982574523,
+              -0.00038126450436888355,
+              -0.00041412087389457,
+              2.9550455793784727e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 138.4641541934281,
+            "speed": 11.94689927406153
+          },
+          "beforeResidual": 20771.32857317565,
+          "afterResidual": -9.106315701501444e-06,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 7.0341395179696065e-06,
+          "afterSpeedResidualDegreesPerDay": -3.8900438426026085e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2460680.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 348.90436377432513,
+            "speed": 13.961680808025882,
+            "vector": [
+              0.0024412371874846274,
+              -0.00047875861048112705,
+              -4.394428570777978e-05,
+              0.00010870475382015445,
+              0.0005964347235404462,
+              5.2613801090189104e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 348.90690127146496,
+            "speed": 13.960589606923497,
+            "vector": [
+              0.002441480053290601,
+              -0.0004786939545161147,
+              -4.394427490736366e-05,
+              0.00010871155182994876,
+              0.0005964408308869178,
+              5.2613777164384e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 348.9069012714764,
+            "speed": 13.96058960692514
+          },
+          "beforeResidual": -9134.989744507038,
+          "afterResidual": -4.113189788768068e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.001091201100742012,
+          "afterSpeedResidualDegreesPerDay": -1.6431300764452317e-12
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2460680.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 348.90690137323026,
+            "speed": 0,
+            "vector": [
+              0.0024412584583611502,
+              -0.00047865050253452165,
+              -4.394028623905854e-05,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 348.90690127146496,
+            "speed": 0,
+            "vector": [
+              0.0024414800532906004,
+              -0.00047869395451611484,
+              -4.394427490736369e-05,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 348.9069012714764,
+            "speed": 0.0
+          },
+          "beforeResidual": 0.36631392958952347,
+          "afterResidual": -4.113189788768068e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2460680.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 348.90710199073294,
+            "speed": 13.960581361533036,
+            "vector": [
+              0.0024412600200279925,
+              -0.0004786419322148562,
+              -4.393953022332217e-05,
+              0.0001086723309204865,
+              0.0005963920288602846,
+              5.26095141618991e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 348.90710199073294,
+            "speed": 13.960581361533036,
+            "vector": [
+              0.0024412600200279925,
+              -0.0004786419322148562,
+              -4.393953022332217e-05,
+              0.0001086723309204865,
+              0.0005963920288602846,
+              5.26095141618991e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 348.9071019907329,
+            "speed": 13.960581361530584
+          },
+          "beforeResidual": 2.0463630789890885e-07,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.4513724383723456e-12,
+          "afterSpeedResidualDegreesPerDay": 2.4513724383723456e-12
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2460680.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 348.90690135372824,
+            "speed": 13.96050328718053,
+            "vector": [
+              0.0024412584582093545,
+              -0.00047865050336764374,
+              -4.394028631254639e-05,
+              0.00010866642932915343,
+              0.0005963897893363395,
+              5.260950165515783e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 348.9094386204067,
+            "speed": 13.959412142963206,
+            "vector": [
+              0.002441501319222299,
+              -0.00047858584646284276,
+              -4.394027542586323e-05,
+              0.00010867323162100449,
+              0.0005963958938130069,
+              5.260947754802715e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 348.90943862041814,
+            "speed": 13.95941214294068
+          },
+          "beforeResidual": -9134.160083635834,
+          "afterResidual": -4.113189788768068e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.001091144239849129,
+          "afterSpeedResidualDegreesPerDay": 2.2525981080434576e-11
+        },
+        {
+          "case": {
+            "body": 1,
+            "tt": 2460680.5,
+            "flags": 290,
+            "control": false
+          },
+          "before": {
+            "longitude": 348.5547996979756,
+            "speed": 13.961724405183874,
+            "vector": [
+              0.0024382711111060524,
+              -0.0004936437576035068,
+              -4.3928831520880976e-05,
+              0.0001123410582021964,
+              0.0005957625201246414,
+              5.257949199651257e-05
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 348.5573372000518,
+            "speed": 13.960633199840402,
+            "vector": [
+              0.002438514366795267,
+              -0.0004935805843238068,
+              -4.392882555829229e-05,
+              0.00011234789336979072,
+              0.0005957685857899598,
+              5.257946768095204e-05
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 348.5573372000633,
+            "speed": 13.96063319984692
+          },
+          "beforeResidual": -9135.007515533289,
+          "afterResidual": -4.133653419557959e-05,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0010912053369533936,
+          "afterSpeedResidualDegreesPerDay": -6.519229600598919e-12
+        }
+      ],
+      "summary": {
+        "comparisons": 25,
+        "controls": 5,
+        "maximumBeforeResidual": 20771.45025810978,
+        "maximumAfterResidual": 4.133653419557959e-05,
+        "unit": "mas",
+        "guardsPassed": true
+      }
+    },
+    "d": {
+      "patch": "d",
+      "beforeCommit": "480a8474818c84fcd8b002112a0e53c665f2f739",
+      "afterCommit": "5cfcd43b3f246759e476fc7b607763a6038aabd8",
+      "oracleLibrarySha256": "6577186e5398697ccd66ab1d3c4d0a9df8b7c97794461bdd7ed3175b5cd093f3",
+      "ephemerisSha256": {
+        "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      "passed": true,
+      "cases": [
+        {
+          "case": {
+            "body": 11,
+            "tt": 2446100.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 53.832869585458376,
+            "speed": -0.1736895341297467,
+            "vector": [
+              0.0015748247788072737,
+              0.0021543172794115397,
+              0,
+              5.8470822400426975e-06,
+              -5.709199200638199e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 53.83287210488054,
+            "speed": -0.17368902013853132,
+            "vector": [
+              0.0015748246939896282,
+              0.002154317362220032,
+              0,
+              5.847081820456457e-06,
+              -5.709159382229212e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 53.83287210488034,
+            "speed": -0.17368902008655285
+          },
+          "beforeResidual": -9.069919087778544,
+          "afterResidual": 7.16227077646181e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -5.140431938444046e-07,
+          "afterSpeedResidualDegreesPerDay": -5.197847707805181e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2446100.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 53.832869585458376,
+            "speed": 0,
+            "vector": [
+              0.0015748247788072737,
+              0.0021543172794115397,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 53.83287210488054,
+            "speed": 0,
+            "vector": [
+              0.0015748246939896282,
+              0.002154317362220032,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 53.83287210488034,
+            "speed": 0.0
+          },
+          "beforeResidual": -9.069919087778544,
+          "afterResidual": 7.16227077646181e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2446100.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 53.832869585458376,
+            "speed": -0.1736895341297467,
+            "vector": [
+              0.0015748247788072737,
+              0.0021543172794115397,
+              0,
+              5.8470822400426975e-06,
+              -5.709199200638199e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 53.832869585458376,
+            "speed": -0.1736895341297467,
+            "vector": [
+              0.0015748247788072737,
+              0.0021543172794115397,
+              0,
+              5.8470822400426975e-06,
+              -5.709199200638199e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 53.83286958545825,
+            "speed": -0.17368953341121976
+          },
+          "beforeResidual": 4.092726157978177e-07,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -7.185269323972676e-10,
+          "afterSpeedResidualDegreesPerDay": -7.185269323972676e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2446100.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 53.832869585458376,
+            "speed": -0.1736895341297467,
+            "vector": [
+              0.0015748247788072737,
+              0.0021543172794115397,
+              0,
+              5.8470822400426975e-06,
+              -5.709199200638199e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 53.83287210488054,
+            "speed": -0.17368902013853132,
+            "vector": [
+              0.0015748246939896282,
+              0.002154317362220032,
+              0,
+              5.847081820456457e-06,
+              -5.709159382229212e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 53.83287210488034,
+            "speed": -0.17368902008655285
+          },
+          "beforeResidual": -9.069919087778544,
+          "afterResidual": 7.16227077646181e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -5.140431938444046e-07,
+          "afterSpeedResidualDegreesPerDay": -5.197847707805181e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2446100.5,
+            "flags": 322,
+            "control": false
+          },
+          "before": {
+            "longitude": 53.836226702950235,
+            "speed": -0.17372132898001474,
+            "vector": [
+              0.0015746985487225219,
+              0.0021544095490337225,
+              0,
+              5.8486122813273395e-06,
+              -5.709730435850269e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 53.83622922237241,
+            "speed": -0.17372081489860725,
+            "vector": [
+              0.0015746984639000263,
+              0.0021544096318372474,
+              0,
+              5.84861185740429e-06,
+              -5.709690613104473e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 53.836229222372225,
+            "speed": -0.1737208154566786
+          },
+          "beforeResidual": -9.069919190096698,
+          "afterResidual": 6.139089236967266e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -5.135233361319713e-07,
+          "afterSpeedResidualDegreesPerDay": 5.580713668962289e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2450460.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 181.2622882052217,
+            "speed": -0.07460903465294337,
+            "vector": [
+              -0.002646147466769781,
+              -5.8306934290138094e-05,
+              -1.2637742766679255e-20,
+              1.9114769992528702e-05,
+              3.86860286701393e-06,
+              -6.318784610351778e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 181.26228924699518,
+            "speed": -0.07460970279003724,
+            "vector": [
+              -0.002646147733550635,
+              -5.830698830517827e-05,
+              1.2637718545701615e-20,
+              1.911475004971394e-05,
+              3.868633997846434e-06,
+              -6.318946042045979e-17
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 181.26228924699507,
+            "speed": -0.07460970297237614
+          },
+          "beforeResidual": -3.7503841440411634,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 6.683194327672393e-07,
+          "afterSpeedResidualDegreesPerDay": 1.8233889398366898e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2450460.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 181.2622882052217,
+            "speed": 0,
+            "vector": [
+              -0.002646147466769781,
+              -5.8306934290138094e-05,
+              -1.2637742766679255e-20,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 181.26228924699518,
+            "speed": 0,
+            "vector": [
+              -0.002646147733550635,
+              -5.830698830517827e-05,
+              1.2637718545701615e-20,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 181.26228924699507,
+            "speed": 0.0
+          },
+          "beforeResidual": -3.7503841440411634,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2450460.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 181.2622882052217,
+            "speed": -0.07460903465294337,
+            "vector": [
+              -0.002646147466769781,
+              -5.8306934290138094e-05,
+              -1.2637742766679255e-20,
+              1.9114769992528702e-05,
+              3.86860286701393e-06,
+              -6.318784610351778e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 181.2622882052217,
+            "speed": -0.07460903465294337,
+            "vector": [
+              -0.002646147466769781,
+              -5.8306934290138094e-05,
+              -1.2637742766679255e-20,
+              1.9114769992528702e-05,
+              3.86860286701393e-06,
+              -6.318784610351778e-17
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 181.26228820522152,
+            "speed": -0.07460903436543156
+          },
+          "beforeResidual": 6.139089236967266e-07,
+          "afterResidual": 6.139089236967266e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.875118060297055e-10,
+          "afterSpeedResidualDegreesPerDay": -2.875118060297055e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2450460.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 181.2622882052217,
+            "speed": -0.07460903465294337,
+            "vector": [
+              -0.002646147466769781,
+              -5.8306934290138094e-05,
+              -1.2637742766679255e-20,
+              1.9114769992528702e-05,
+              3.86860286701393e-06,
+              -6.318784610351778e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 181.26228924699518,
+            "speed": -0.07460970279003724,
+            "vector": [
+              -0.002646147733550635,
+              -5.830698830517827e-05,
+              1.2637718545701615e-20,
+              1.911475004971394e-05,
+              3.868633997846434e-06,
+              -6.318946042045979e-17
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 181.26228924699507,
+            "speed": -0.07460970297237614
+          },
+          "beforeResidual": -3.7503841440411634,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 6.683194327672393e-07,
+          "afterSpeedResidualDegreesPerDay": 1.8233889398366898e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2450460.5,
+            "flags": 322,
+            "control": false
+          },
+          "before": {
+            "longitude": 181.26175403512383,
+            "speed": -0.07460356150611548,
+            "vector": [
+              -0.0026461480102519014,
+              -5.8282264183397166e-05,
+              1.2637742766679248e-20,
+              1.9114811625892125e-05,
+              3.868171887536293e-06,
+              -6.318784610351785e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 181.2617550768973,
+            "speed": -0.07460422920372108,
+            "vector": [
+              -0.002646148277033255,
+              -5.8282318195947606e-05,
+              0,
+              1.9114791687414173e-05,
+              3.8682029983110565e-06,
+              6.318946042045976e-17
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 181.26175507689717,
+            "speed": -0.07460422944056541
+          },
+          "beforeResidual": -3.7503840417230094,
+          "afterResidual": 4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 6.679344499299633e-07,
+          "afterSpeedResidualDegreesPerDay": 2.368443358102823e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2453560.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 18.107139045045407,
+            "speed": -0.18759043255689997,
+            "vector": [
+              0.002392434633960848,
+              0.0007822981296070066,
+              -1.1083858629316235e-20,
+              -1.2704821151284656e-05,
+              -1.2824842893937628e-05,
+              5.541685486098232e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 18.10714198856059,
+            "speed": -0.18759101964575517,
+            "vector": [
+              0.0023924348332533454,
+              0.0007822983308239441,
+              0,
+              -1.2704771026449818e-05,
+              -1.2824855375273038e-05,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 18.10714198856053,
+            "speed": -0.18759101972472886
+          },
+          "beforeResidual": -10.596654408345785,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.871678288860149e-07,
+          "afterSpeedResidualDegreesPerDay": 7.897368869969057e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2453560.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 18.107139045045407,
+            "speed": 0,
+            "vector": [
+              0.002392434633960848,
+              0.0007822981296070066,
+              -1.1083858629316235e-20,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 18.10714198856059,
+            "speed": 0,
+            "vector": [
+              0.0023924348332533454,
+              0.0007822983308239441,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 18.10714198856053,
+            "speed": 0.0
+          },
+          "beforeResidual": -10.596654408345785,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2453560.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 18.107139045045407,
+            "speed": -0.18759043255689997,
+            "vector": [
+              0.002392434633960848,
+              0.0007822981296070066,
+              -1.1083858629316235e-20,
+              -1.2704821151284656e-05,
+              -1.2824842893937628e-05,
+              5.541685486098232e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 18.107139045045407,
+            "speed": -0.18759043255689997,
+            "vector": [
+              0.002392434633960848,
+              0.0007822981296070066,
+              -1.1083858629316235e-20,
+              -1.2704821151284656e-05,
+              -1.2824842893937628e-05,
+              5.541685486098232e-17
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 18.1071390450454,
+            "speed": -0.18759043295509598
+          },
+          "beforeResidual": 0.0,
+          "afterResidual": 0.0,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 3.9819600394785937e-10,
+          "afterSpeedResidualDegreesPerDay": 3.9819600394785937e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2453560.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 18.107139045045407,
+            "speed": -0.18759043255689997,
+            "vector": [
+              0.002392434633960848,
+              0.0007822981296070066,
+              -1.1083858629316235e-20,
+              -1.2704821151284656e-05,
+              -1.2824842893937628e-05,
+              5.541685486098232e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 18.10714198856059,
+            "speed": -0.18759101964575517,
+            "vector": [
+              0.0023924348332533454,
+              0.0007822983308239441,
+              0,
+              -1.2704771026449818e-05,
+              -1.2824855375273038e-05,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 18.10714198856053,
+            "speed": -0.18759101972472886
+          },
+          "beforeResidual": -10.596654408345785,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.871678288860149e-07,
+          "afterSpeedResidualDegreesPerDay": 7.897368869969057e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2453560.5,
+            "flags": 322,
+            "control": false
+          },
+          "before": {
+            "longitude": 18.108349966943482,
+            "speed": -0.18760079991740164,
+            "vector": [
+              0.0023924180998883505,
+              0.0007823486925192253,
+              0,
+              -1.2704409416836038e-05,
+              -1.282554458416265e-05,
+              -5.5416854860983925e-17
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 18.108352910458684,
+            "speed": -0.18760138703413712,
+            "vector": [
+              0.002392418299177268,
+              0.0007823488937405958,
+              0,
+              -1.2704360807715837e-05,
+              -1.2825557561520554e-05,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 18.108352910458617,
+            "speed": -0.1876013872433037
+          },
+          "beforeResidual": -10.596654510663939,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 5.87325902051683e-07,
+          "afterSpeedResidualDegreesPerDay": 2.091665729508918e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2457057.7896664813,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 191.42437435136964,
+            "speed": -0.16737878404513906,
+            "vector": [
+              -0.0026360619710116442,
+              -0.0005326904367311793,
+              0,
+              -7.310971301011798e-06,
+              6.537833951514652e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 191.42437696763173,
+            "speed": -0.1673792509659255,
+            "vector": [
+              -0.0026360618567506373,
+              -0.0005326905389257413,
+              0,
+              -7.3110191555272874e-06,
+              6.537846093494781e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 191.42437696763182,
+            "speed": -0.16737925045140492
+          },
+          "beforeResidual": -9.41854384564067,
+          "afterResidual": -3.069544618483633e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.6640626585880973e-07,
+          "afterSpeedResidualDegreesPerDay": -5.145205927981067e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2457057.7896664813,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 191.42437435136964,
+            "speed": 0,
+            "vector": [
+              -0.0026360619710116442,
+              -0.0005326904367311793,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 191.42437696763173,
+            "speed": 0,
+            "vector": [
+              -0.0026360618567506373,
+              -0.0005326905389257413,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 191.42437696763182,
+            "speed": 0.0
+          },
+          "beforeResidual": -9.41854384564067,
+          "afterResidual": -3.069544618483633e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2457057.7896664813,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 191.42437435136964,
+            "speed": -0.16737878404513906,
+            "vector": [
+              -0.0026360619710116442,
+              -0.0005326904367311793,
+              0,
+              -7.310971301011798e-06,
+              6.537833951514652e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 191.42437435136964,
+            "speed": -0.16737878404513906,
+            "vector": [
+              -0.0026360619710116442,
+              -0.0005326904367311793,
+              0,
+              -7.310971301011798e-06,
+              6.537833951514652e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 191.42437435136975,
+            "speed": -0.16737878381854326
+          },
+          "beforeResidual": -4.092726157978177e-07,
+          "afterResidual": -4.092726157978177e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": -2.2659579768102844e-10,
+          "afterSpeedResidualDegreesPerDay": -2.2659579768102844e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2457057.7896664813,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 191.42437435136964,
+            "speed": -0.16737878404513906,
+            "vector": [
+              -0.0026360619710116442,
+              -0.0005326904367311793,
+              0,
+              -7.310971301011798e-06,
+              6.537833951514652e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 191.42437696763173,
+            "speed": -0.1673792509659255,
+            "vector": [
+              -0.0026360618567506373,
+              -0.0005326905389257413,
+              0,
+              -7.3110191555272874e-06,
+              6.537846093494781e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 191.42437696763182,
+            "speed": -0.16737925045140492
+          },
+          "beforeResidual": -9.41854384564067,
+          "afterResidual": -3.069544618483633e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.6640626585880973e-07,
+          "afterSpeedResidualDegreesPerDay": -5.145205927981067e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2457057.7896664813,
+            "flags": 322,
+            "control": false
+          },
+          "before": {
+            "longitude": 191.4228126151476,
+            "speed": -0.16736809940373787,
+            "vector": [
+              -0.0026360764898095755,
+              -0.0005326185842346119,
+              0,
+              -7.310694107379168e-06,
+              6.537541577967404e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 191.4228152314097,
+            "speed": -0.1673685662743524,
+            "vector": [
+              -0.002636076375551319,
+              -0.0005326186864322815,
+              0,
+              -7.310741296194523e-06,
+              6.537553853304401e-06,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 191.42281523140974,
+            "speed": -0.1673685658646247
+          },
+          "beforeResidual": -9.418543743322516,
+          "afterResidual": -2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.6646088683321985e-07,
+          "afterSpeedResidualDegreesPerDay": -4.0972769621561156e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2460680.5,
+            "flags": 258,
+            "control": false
+          },
+          "before": {
+            "longitude": 0.44042837334504265,
+            "speed": -0.018604081173890025,
+            "vector": [
+              0.0024818308217955786,
+              1.9078023738210232e-05,
+              0,
+              -4.1455212743471415e-07,
+              -8.09090912892935e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 0.440428641022092,
+            "speed": -0.018604528571714758,
+            "vector": [
+              0.0024818308277527313,
+              1.9078035379419506e-05,
+              0,
+              -4.1455760048728085e-07,
+              -8.091103395766396e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 0.44042864102203333,
+            "speed": -0.018604528556036167
+          },
+          "beforeResidual": -0.9636371828491974,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.4738214614176153e-07,
+          "afterSpeedResidualDegreesPerDay": -1.5678590370438172e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2460680.5,
+            "flags": 2,
+            "control": false
+          },
+          "before": {
+            "longitude": 0.44042837334504265,
+            "speed": 0,
+            "vector": [
+              0.0024818308217955786,
+              1.9078023738210232e-05,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 0.440428641022092,
+            "speed": 0,
+            "vector": [
+              0.0024818308277527313,
+              1.9078035379419506e-05,
+              0,
+              0,
+              0,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 0.44042864102203333,
+            "speed": 0.0
+          },
+          "beforeResidual": -0.9636371828491974,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 0.0,
+          "afterSpeedResidualDegreesPerDay": 0.0
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2460680.5,
+            "flags": 274,
+            "control": true
+          },
+          "before": {
+            "longitude": 0.44042837334504265,
+            "speed": -0.018604081173890025,
+            "vector": [
+              0.0024818308217955786,
+              1.9078023738210232e-05,
+              0,
+              -4.1455212743471415e-07,
+              -8.09090912892935e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 0.44042837334504265,
+            "speed": -0.018604081173890025,
+            "vector": [
+              0.0024818308217955786,
+              1.9078023738210232e-05,
+              0,
+              -4.1455212743471415e-07,
+              -8.09090912892935e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 0.44042837334487933,
+            "speed": -0.018604081462117388
+          },
+          "beforeResidual": 6.139089236967266e-07,
+          "afterResidual": 6.139089236967266e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 2.8822736211631117e-10,
+          "afterSpeedResidualDegreesPerDay": 2.8822736211631117e-10
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2460680.5,
+            "flags": 1282,
+            "control": false
+          },
+          "before": {
+            "longitude": 0.44042837334504265,
+            "speed": -0.018604081173890025,
+            "vector": [
+              0.0024818308217955786,
+              1.9078023738210232e-05,
+              0,
+              -4.1455212743471415e-07,
+              -8.09090912892935e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 0.440428641022092,
+            "speed": -0.018604528571714758,
+            "vector": [
+              0.0024818308277527313,
+              1.9078035379419506e-05,
+              0,
+              -4.1455760048728085e-07,
+              -8.091103395766396e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 0.44042864102203333,
+            "speed": -0.018604528556036167
+          },
+          "beforeResidual": -0.9636371828491974,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.4738214614176153e-07,
+          "afterSpeedResidualDegreesPerDay": -1.5678590370438172e-11
+        },
+        {
+          "case": {
+            "body": 11,
+            "tt": 2460680.5,
+            "flags": 322,
+            "control": false
+          },
+          "before": {
+            "longitude": 0.44032531540281256,
+            "speed": -0.01858896855337018,
+            "vector": [
+              0.0024818308561071925,
+              1.907355966805693e-05,
+              0,
+              -4.145584461649754e-07,
+              -8.084355458664184e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "after": {
+            "longitude": 0.44032558307985953,
+            "speed": -0.018589415889711563,
+            "vector": [
+              0.002481830862064377,
+              1.9073571309255463e-05,
+              0,
+              -4.145640645006332e-07,
+              -8.084549709915824e-07,
+              0
+            ],
+            "source": "SwissEph"
+          },
+          "oracle": {
+            "longitude": 0.44032558307980574,
+            "speed": -0.01858941595350052
+          },
+          "beforeResidual": -0.9636371828491974,
+          "afterResidual": 2.0463630789890885e-07,
+          "residualUnit": "mas",
+          "beforeSpeedResidualDegreesPerDay": 4.474001303392261e-07,
+          "afterSpeedResidualDegreesPerDay": 6.378895675562823e-11
+        }
+      ],
+      "summary": {
+        "comparisons": 25,
+        "controls": 5,
+        "maximumBeforeResidual": 10.596654510663939,
+        "maximumAfterResidual": 7.16227077646181e-07,
+        "unit": "mas",
+        "guardsPassed": true
+      }
+    }
+  },
+  "allPassed": true,
+  "comparisons": 101
+}
