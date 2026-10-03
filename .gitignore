@@ -16,3 +16,6 @@ _*.mjs
 /engine-core/obj/
 /engine-tools/bin/
 /engine-tools/obj/
+
+/docs/sharp-swiss-parity-fix/scripts/parity-harness/bin/
+/docs/sharp-swiss-parity-fix/scripts/parity-harness/obj/

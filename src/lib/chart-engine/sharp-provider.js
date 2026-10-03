@@ -1,9 +1,10 @@
+import { ENGINE_SIGNATURE } from './engine-identity.js';
 import { calculateGeneKeys } from '../gene-keys.js';
 import { adaptSharpTransit } from './sharp-transit-contract.js';
 import { adaptSharpChart } from './sharp-contract.js';
 import { toDecimalHour } from './birth-time.js';
 
-const cacheRule = 'sharp-hd-1.2.0:sharp-swiss-0.5.1:swiss-files:adapter-v1';
+const cacheRule = `sharp:${ENGINE_SIGNATURE}:adapter-v1`;
 const effectiveTime = birth => birth.timeUnknown ? '12:00' : birth.birthTime;
 let initialization;
 
@@ -39,7 +40,7 @@ async function calculate(birth, offsetMinutes = 0) {
 }
 
 export const sharpProvider = Object.freeze({
-  id: 'sharpastrology-swiss', version: '1.2.0+0.5.1', cacheRule,
+  id: 'sharpastrology-swiss', version: '1.2.0+0.5.1+td-ohd-swiss-parity-v1', cacheRule,
   cacheKey(birth) {
     utcInstant(birth);
     return JSON.stringify([cacheRule, birth.birthDate, effectiveTime(birth), birth.timezone, Boolean(birth.timeUnknown)]);

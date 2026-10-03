@@ -1,6 +1,7 @@
+import { engineIdentity } from './engine-identity.mjs';
 /** Node-only JSON-lines client for the same SharpAstrology core used by browser WASM. */
 import { spawn, execFileSync } from 'node:child_process';
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, statSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { adaptSharpChart } from '../../src/lib/chart-engine/sharp-contract.js';
@@ -14,8 +15,11 @@ const iso = value => new Date(value).toISOString();
 
 export class SharpNativeClient {
   constructor({ dotnet = process.env.DOTNET || 'dotnet', epheRoot = path.join(root, 'public/engine/ephe') } = {}) {
-    if (!existsSync(assembly) || sources.some(file => statSync(file).mtimeMs > statSync(assembly).mtimeMs)) {
+    const signature = engineIdentity().signature;
+    const stamp = path.join(path.dirname(assembly), 'engine-signature.txt');
+    if (!existsSync(stamp) || readFileSync(stamp, 'utf8') !== signature || !existsSync(assembly) || sources.some(file => statSync(file).mtimeMs > statSync(assembly).mtimeMs)) {
       execFileSync(dotnet, ['build', project, '-c', 'Release', '-v', 'quiet'], { cwd: root, stdio: 'pipe' });
+      writeFileSync(stamp, signature);
     }
     this.pending = [];
     this.buffer = '';
