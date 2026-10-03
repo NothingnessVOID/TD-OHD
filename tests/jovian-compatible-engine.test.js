@@ -25,7 +25,7 @@ test('DST gap and fold are explicit and no solar-time correction is applied',()=
 test('invalid inputs and unknown engines fail instead of silently falling back',async()=>{
   assert.throws(()=>resolvePrototypeBirth({utc:'2025-01-01T12:00:00'}),/explicit zone/);
   assert.throws(()=>resolvePrototypeBirth({utc:'2025-02-30T12:00:00Z'}),/Invalid birth date/);
-  assert.throws(()=>resolvePrototypeBirth({date:'2025-02-30',time:'12:00',timezone:0}),/Invalid date/);
+  assert.throws(()=>resolvePrototypeBirth({date:'2025-02-30',time:'12:00',timezone:0}),/Invalid.*date/);
   const client=new BirthEnginePrototype();
   await assert.rejects(client.calculate({utc:'2025-01-01T00:00Z'},{engine:'typo'}),/Unknown engine/);
 });
