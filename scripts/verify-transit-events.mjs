@@ -7,7 +7,9 @@ import { discreteState, replayAnnual, sameActivation, TRANSIT_POINTS, verifyAnnu
 import { stateAt, natalIdentity } from '../src/features/transit-timeline/graph-provider.js';
 
 
-const root = resolve(import.meta.dirname, '..', 'public/transit-data');
+const inputIndex = process.argv.indexOf('--input');
+if (inputIndex !== -1 && !process.argv[inputIndex + 1]) throw new Error('--input requires a directory');
+const root = inputIndex !== -1 ? resolve(process.argv[inputIndex + 1]) : resolve(import.meta.dirname, '..', 'public/transit-data');
 const manifest = JSON.parse(await readFile(resolve(root, 'manifest.json')));
 const years = process.argv.includes('--all') ? Object.keys(manifest.years).map(Number)
   : [Number(process.argv.find(arg => /^\d{4}$/.test(arg)) || 2026)];

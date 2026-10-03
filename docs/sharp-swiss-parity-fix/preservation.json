@@ -1,0 +1,56 @@
+{
+  "installation8787": [
+    {
+      "path": "engine/_framework/dotnet.js",
+      "sha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+      "http8787Sha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "http8787Sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "http8787Sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.SwissEph.9e09zmgwb4.wasm",
+      "sha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "http8787Sha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpChartEngine.2914v7b7y7.wasm",
+      "sha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+      "http8787Sha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpTransitCore.p6tgwic1v4.wasm",
+      "sha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+      "http8787Sha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+      "unchanged": true
+    },
+    {
+      "path": "engine/ephe/sepl_18.se1",
+      "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "http8787Sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "unchanged": true
+    },
+    {
+      "path": "engine/ephe/semo_18.se1",
+      "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "http8787Sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "unchanged": true
+    }
+  ],
+  "publishedAnnualFilesVerifiedUnchanged": 17,
+  "mainMerge": false,
+  "deployment": false,
+  "goldenPackageFilesUnchanged": 320
+}

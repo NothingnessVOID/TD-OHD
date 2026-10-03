@@ -77,3 +77,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## TD-OHD SwissEph parity patch
+
+SwissEph 0.5.1 is built from the pinned repository-local snapshot in
+`third_party/SharpAstrology.SwissEph`, upstream commit
+`342a57997c1b987e7949acc98897c8b73d05939a`. Original AGPL-3.0 and
+Swiss Ephemeris licenses are preserved there and distributed with the engine.
+TD-OHD patch revision: `td-ohd-swiss-parity-v1`; source hashes and modified-file
+provenance are in `patch-manifest.json`. HumanDesign 1.2.0 and Base 0.14.0
+remain unmodified NuGet dependencies.

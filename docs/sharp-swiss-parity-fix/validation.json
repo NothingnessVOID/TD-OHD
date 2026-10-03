@@ -1,0 +1,93 @@
+{
+  "commands": {
+    "npm ci": {
+      "status": "PASS"
+    },
+    "npm run build:engine": {
+      "status": "PASS",
+      "warnings": 0,
+      "errors": 0
+    },
+    "npm test": {
+      "status": "PASS",
+      "passed": 244,
+      "failed": 0,
+      "skipped": 3
+    },
+    "npm run test:localization": {
+      "status": "PASS",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "npm run test:timeline": {
+      "status": "PASS",
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0
+    },
+    "npm run test:sharp": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "npm run build": {
+      "status": "PASS"
+    },
+    "npm run build:pages": {
+      "status": "PASS"
+    },
+    "npm run check:pages-bundle": {
+      "status": "PASS"
+    },
+    "e2e:sharp": {
+      "status": "PASS",
+      "timestamps": 52,
+      "points": 13,
+      "fields": [
+        "gate",
+        "line",
+        "color",
+        "tone",
+        "base",
+        "longitude"
+      ],
+      "missingEphemeris": "PASS",
+      "timelineFallback": "PASS",
+      "rapidChangesAndDstFold": "PASS"
+    },
+    "Swiss C fresh oracle + compare.py": {
+      "status": "PASS",
+      "caseRows": 9,
+      "numericComparisons": 234
+    },
+    "yearly generator isolated 2026": {
+      "status": "PASS",
+      "generationMs": 38749
+    },
+    "yearly verification": {
+      "status": "PASS",
+      "events": 7151,
+      "sampleTimes": 20544,
+      "differences": 0,
+      "graphDifferences": 0
+    },
+    "Golden evidence manifest": {
+      "status": "PASS",
+      "files": 320
+    },
+    "specialized Swiss regression": {
+      "status": "PASS",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "skippedReason": "Three pre-existing online geocoding tests gated by OHD_ONLINE_TESTS; unrelated to the calculation dependency patch",
+  "knownRemaining": "Moon longitude/Color/Tone/Base, node and speed residuals are recorded in results.json; all-body full numerical parity is not claimed",
+  "protected8787Assets": 8,
+  "publishedAnnualFilesUnchanged": 17,
+  "deployment": false,
+  "mainMerged": false
+}
