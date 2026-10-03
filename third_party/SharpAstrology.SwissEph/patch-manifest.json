@@ -5,8 +5,8 @@
     "swissUpstreamVersion": "0.5.1",
     "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
     "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
-    "patchRevision": "td-ohd-swiss-parity-v1",
-    "patchedSourceSha256": "8d368ffd22632387a2cc78072eeef2b29a1480c4d9429242de2b6457488224a6",
+    "patchRevision": "td-ohd-swiss-parity-v1-moon-light-time",
+    "patchedSourceSha256": "46a6c4205276c179630d047d16c0b744670d70d8a3a1b2b4efb0678ab1db86bd",
     "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
     "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1"
   },
@@ -17,8 +17,8 @@
     "swissUpstreamVersion": "0.5.1",
     "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
     "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
-    "patchRevision": "td-ohd-swiss-parity-v1",
-    "patchedSourceSha256": "8d368ffd22632387a2cc78072eeef2b29a1480c4d9429242de2b6457488224a6",
+    "patchRevision": "td-ohd-swiss-parity-v1-moon-light-time",
+    "patchedSourceSha256": "46a6c4205276c179630d047d16c0b744670d70d8a3a1b2b4efb0678ab1db86bd",
     "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
     "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
     "swissCommit": "3186eed405bd2b4ff520c91d0b27bb25e9d75106",
@@ -34,12 +34,12 @@
     "points": 13,
     "convention": "apparent tropical geocentric, proper UTC->UT1, file-based Swiss, no Moshier fallback"
   },
-  "signature": "295fd7c1531b857473d5",
+  "signature": "3440eda44d0f13c4afde",
   "changedFiles": [
     {
       "file": "Application/Bodies/BodyService.cs",
       "upstreamSha256": "4767dc3e26bdbc60f46d6a73bac15ce950fddf4d72f617f002b7604bc3421a91",
-      "patchedSha256": "5ea3b3aaeedc0540ae98535f36240b39a81ec2a25f35b6b96c31fb769303c309"
+      "patchedSha256": "ddb01adafe1756185749e4233b6829bccadd6ff6018328aa35fa3965d45101b3"
     },
     {
       "file": "Application/Bodies/BodyState.cs",
@@ -49,7 +49,7 @@
     {
       "file": "Application/Bodies/CorrectionPipeline.cs",
       "upstreamSha256": "7fb74e3f26a2e361cf5223f09e4dcfbc271793715b3e4c8d0b4e689ba4ef63bb",
-      "patchedSha256": "e1376bd0b7df5268a96daa0c2cce4d639069bf88f7eccaed56bc5887f2b37e9c"
+      "patchedSha256": "6c787705232e6d92a3fe7b7fe274fd7e66372e06ce62aca4f7b3d2c72dcb5842"
     },
     {
       "file": "Application/Calendar/CalendarService.cs",

@@ -20,7 +20,7 @@ export function engineIdentity() {
     humanDesignVersion: '1.2.0', baseVersion: '0.14.0', swissUpstreamVersion: '0.5.1',
     swissUpstreamRepository: 'https://github.com/CReizner/SharpAstrology.SwissEph',
     swissUpstreamCommit: '342a57997c1b987e7949acc98897c8b73d05939a',
-    patchRevision: 'td-ohd-swiss-parity-v1', patchedSourceSha256: hash(JSON.stringify(patchedFiles)),
+    patchRevision: 'td-ohd-swiss-parity-v1-moon-light-time', patchedSourceSha256: hash(JSON.stringify(patchedFiles)),
     ephemerisManifestSha256: hash(epheBytes), utcSemanticsVersion: 'utc-tt-ut1-swe-utc-to-jd-v1'
   };
   const signatureInput = {

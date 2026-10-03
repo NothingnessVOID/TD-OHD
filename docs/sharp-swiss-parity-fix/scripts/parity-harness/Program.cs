@@ -66,6 +66,7 @@ readonly struct NoFetch:CorrectionPipeline.IRefetchProvider{
  public bool HasEarthRefetch=>false;
  public BodyState RefetchBody(CelestialBody b,JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected refetch");
  public BodyState RefetchEarth(JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected refetch");
+ public BodyState RefetchEarthCenter(JulianDay jd,EphemerisFlags f)=>throw new Exception("unexpected center refetch");
 }
 sealed class FixtureProvider(JsonElement oracle,DateTime birth,DateTime design):IPlanetPositionProvider{
  public PlanetPosition PlanetsPosition(Planets planet,DateTime utc,EphCalculationMode mode=EphCalculationMode.Tropic){
