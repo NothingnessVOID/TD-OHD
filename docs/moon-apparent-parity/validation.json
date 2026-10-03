@@ -1,0 +1,43 @@
+{
+  "npmTest": {
+    "passed": 247,
+    "failed": 0,
+    "skipped": 3,
+    "total": 250
+  },
+  "localization": {
+    "passed": 34
+  },
+  "timeline": {
+    "passed": 61
+  },
+  "sharp": {
+    "passed": 5
+  },
+  "buildEngine": "PASS",
+  "build": "PASS",
+  "buildPages": "PASS",
+  "pagesBundle": "PASS",
+  "e2eSharp": {
+    "status": "PASS",
+    "instants": 52,
+    "planets": 13,
+    "fallback": "PASS",
+    "missingEphemeris": "PASS",
+    "rapidChanges": "PASS",
+    "DSTFold": "PASS"
+  },
+  "e2eNineGoldenWasm": {
+    "status": "PASS",
+    "cases": 9,
+    "activations": 234
+  },
+  "swissJplMoonAPI": {
+    "status": "PASS",
+    "cases": 288,
+    "velocityCaveat": "Existing topocentric observer-speed residual recorded; numerical longitude parity only."
+  },
+  "publishedAnnualRegeneration": false,
+  "deployment": false,
+  "mergeMain": false
+}

@@ -19,3 +19,6 @@ _*.mjs
 
 /docs/sharp-swiss-parity-fix/scripts/parity-harness/bin/
 /docs/sharp-swiss-parity-fix/scripts/parity-harness/obj/
+
+/docs/moon-apparent-parity/scripts/moon-harness/bin/
+/docs/moon-apparent-parity/scripts/moon-harness/obj/

@@ -8,7 +8,7 @@ import { ENGINE_IDENTITY, ENGINE_SIGNATURE } from '../src/lib/chart-engine/engin
 import { ANNUAL_SIGNATURE } from '../src/features/transit-timeline/annual-signature.js';
 import { sharpProvider } from '../src/lib/chart-engine/sharp-provider.js';
 const read = file => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
-const evidence = JSON.parse(read('docs/sharp-swiss-parity-fix/results.json'));
+const evidence = JSON.parse(read('docs/moon-apparent-parity/results.json'));
 
 test('both runtime projects use the same pinned repo-local Swiss source', () => {
   for (const file of ['engine-core/SharpTransitCore.csproj', 'engine-wasm/SharpChartEngine.csproj']) {
@@ -55,8 +55,8 @@ test('proper UTC, fractional ticks, inverse, DE/ICRS/Moshier/J2000 and speed gua
     assert.ok(Math.abs(result.fractionUt1 - fixture.oracle.fractionUt1) * 86400 < .0001);
     assert.ok(Math.abs(Date.parse(result.roundTripUtc) - Date.parse(result.birthUtc)) <= 1);
     for (const side of ['personality', 'design']) {
-      // All 26 discrete fields stay reproducible. Remaining Moon residuals are
-      // recorded explicitly, not declared Swiss full-chart parity.
+      // All 26 discrete fields reproduce the current lunar patch; original
+      // baseline evidence remains frozen in sharp-swiss-parity-fix/results.json.
       for (const [body, value] of Object.entries(result[side])) {
         const reference = fixture.sharp[side][body];
         for (const field of ['gate', 'line', 'color', 'tone', 'base']) assert.equal(value[field], reference[field]);

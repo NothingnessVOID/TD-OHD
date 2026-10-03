@@ -170,7 +170,7 @@ test('display clock labels the date and both sides of a DST fold', () => {
 });
 
 test('pinned Sharp crossing agrees with every visible graph state on both sides', async () => {
-  const crossing = Date.parse('2026-09-23T06:10:20Z');
+  const crossing = Date.parse('2026-09-23T06:10:49Z');
   const cache = new Map();
   const snapshot = instant => {
     if (!cache.has(instant)) cache.set(instant, calculateNativeTransit(instant).then(value => value.gates));
