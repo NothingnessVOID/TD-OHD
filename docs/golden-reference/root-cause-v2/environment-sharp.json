@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "frozenCaseIds": [
+    "G1995-feb",
+    "G1995-jun",
+    "G2005-jul20",
+    "G2015-tight",
+    "G2015-feb",
+    "G2025-tight",
+    "G2025-mar",
+    "G1985-tight",
+    "G2005-jul11"
+  ],
+  "inputPolicy": "birthUtc only; no local-time reconversion",
+  "fixedVersions": {
+    "Base": "0.14.0",
+    "SwissEph": "0.5.1",
+    "HumanDesign": "1.2.0"
+  },
+  "sourceCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+  "os": "macOS-15.5-arm64-arm-64bit",
+  "dotnetVersion": "10.0.401",
+  "originalCorrectionPipelineSha256": "7fb74e3f26a2e361cf5223f09e4dcfbc271793715b3e4c8d0b4e689ba4ef63bb",
+  "patchedCorrectionPipelineSha256": "7e7c63a16e6f9748873faf3db363703d12d16749a6b9539c6ad76d8f514fc7ce",
+  "patchScriptSha256": "7bedbd640da3eda0273f484f7ebd224dde11f7d15cb4f92f0b08de0b9a56bf2e",
+  "harnessSourceSha256": "b7b2a3c5b70ed63a68d925de3cb333b347e4d3d2c07c47bf5d2b926898a591a5",
+  "frozenMappingSha256": "99208a832f88a4c055921be3df0cce7b9946485f35f1edb646d972ac8d280f04",
+  "goldenCasesSha256": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb",
+  "fullFrozenSourceArchiveSha256": "7ae7f922d4af4db55086b7f5ddd4a69daeeeb4e4b28ed1cab85aba6e23000672",
+  "sourceParity": [
+    {
+      "source": "swiss",
+      "caseCount": 9,
+      "longitudeSpeedPairsExactlyEqual": 117,
+      "comparison": "NuGet original versus rebuilt frozen source with diagnostic metadata disabled"
+    },
+    {
+      "source": "jpl",
+      "caseCount": 9,
+      "longitudeSpeedPairsExactlyEqual": 117,
+      "comparison": "NuGet original versus rebuilt frozen source with diagnostic metadata disabled"
+    }
+  ],
+  "buildLogs": {
+    "current": "  \u6b63\u5728\u786e\u5b9a\u8981\u8fd8\u539f\u7684\u9879\u76ee\u2026\n  \u5df2\u8fd8\u539f <EXTERNAL_BUILD>/current/SharpDiagnostic.csproj (\u7528\u65f6 91 \u6beb\u79d2)\u3002\n  SharpDiagnostic -> <EXTERNAL_BUILD>/current-out/SharpDiagnostic.dll\n\n\u5df2\u6210\u529f\u751f\u6210\u3002\n    0 \u4e2a\u8b66\u544a\n    0 \u4e2a\u9519\u8bef\n\n\u5df2\u7528\u65f6\u95f4 00:00:01.59\n",
+    "biased": "  \u6b63\u5728\u786e\u5b9a\u8981\u8fd8\u539f\u7684\u9879\u76ee\u2026\n  \u5df2\u8fd8\u539f <EXTERNAL_BUILD>/biased/SharpDiagnostic.csproj (\u7528\u65f6 88 \u6beb\u79d2)\u3002\n  \u5df2\u8fd8\u539f <EXTERNAL_BUILD>/bias-source/SharpAstrology.SwissEph.csproj (\u7528\u65f6 88 \u6beb\u79d2)\u3002\n  SharpAstrology.SwissEph -> <EXTERNAL_BUILD>/biased-out/SharpAstrology.SwissEph.dll\n  SharpDiagnostic -> <EXTERNAL_BUILD>/biased-out/SharpDiagnostic.dll\n\n\u5df2\u6210\u529f\u751f\u6210\u3002\n    0 \u4e2a\u8b66\u544a\n    0 \u4e2a\u9519\u8bef\n\n\u5df2\u7528\u65f6\u95f4 00:00:02.18\n"
+  },
+  "patchLog": "Diagnostic patch applied; new SHA256=7e7c63a16e6f9748873faf3db363703d12d16749a6b9539c6ad76d8f514fc7ce\n",
+  "inputEphemerisAssets": [
+    {
+      "id": "sepl_18.se1",
+      "bytes": 484061,
+      "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "hashVerifiedBySharpRunner": true,
+      "sharedSourceProvenance": "asset-hashes-c.json"
+    },
+    {
+      "id": "semo_18.se1",
+      "bytes": 1304771,
+      "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "hashVerifiedBySharpRunner": true,
+      "sharedSourceProvenance": "asset-hashes-c.json"
+    },
+    {
+      "id": "de441.eph",
+      "bytes": 2788676624,
+      "sha256": "476096486def4e41bfceb29aa27f50784da0bce318902bcf7b88caad058cd4da",
+      "hashVerifiedBySharpRunner": true,
+      "sharedSourceProvenance": "asset-hashes-c.json"
+    }
+  ],
+  "originalPackageAssemblySha256": "7336ee5fe9df10ccbfb903e671ebd3a913d5d89dc82d894b0ff223a247354777",
+  "patchedAssemblySha256": "3d3aa9bdb33ac74cf1ca1332e50df6247116e7517b9493dc5c80803fde0e3a7b",
+  "ordinaryPipelineCorrectedStateCache": "None in BodyService.Compute: every call resolves raw source and invokes pipeline; source coefficient/segment caches may be reused.",
+  "outputsAreNotInstalled": true,
+  "biasMetadataExplanation": "0.5.1 BodyState has no DE field. Harness verifies actual registered source reader header DE441 and injects AppContext metadata for that source only. Unknown metadata skips bias.",
+  "packageDependencies": {
+    "SharpDiagnostic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SharpAstrology.Base/0.14.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rhmnXyx1W8QYex7uNVS/GeswV5j9VZ7iBVlUcGgleFAIzRrbbqzY5Rn8Voau55d6N7vfMDSwShbjLfX+OCQW5w==",
+      "path": "sharpastrology.base/0.14.0",
+      "hashPath": "sharpastrology.base.0.14.0.nupkg.sha512"
+    },
+    "SharpAstrology.HumanDesign/1.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-teknAB9EIcXeY+0P4HY/m27WhB6pCVchW1Z/cA3v6baETmD2PjNZLV5XKixFpHZ7liqWZIH0y3S+fQLpCb4puw==",
+      "path": "sharpastrology.humandesign/1.2.0",
+      "hashPath": "sharpastrology.humandesign.1.2.0.nupkg.sha512"
+    },
+    "SharpAstrology.SwissEph/0.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e3qa7tv1o3kvtB2k6FdQ8zvJPk81IyyE+G+7/R45IaCvkWncWJSyBL3nxq/HeIJSM8zPHiwwkWMZozD6sYMo2g==",
+      "path": "sharpastrology.swisseph/0.5.1",
+      "hashPath": "sharpastrology.swisseph.0.5.1.nupkg.sha512"
+    },
+    "System.Numerics.Tensors/10.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zcjjmjfSStqwt4ByTM/AETMDJI5CpR07yYweEoBaXnOHwXS3vAvc7ezOQjGN4dRCzk0LWEG7wYLvWsubZ2UzZg==",
+      "path": "system.numerics.tensors/10.0.7",
+      "hashPath": "system.numerics.tensors.10.0.7.nupkg.sha512"
+    }
+  },
+  "metadataGuardTests": "Every biased case checks DE402 skipped, ICRS skipped, Moshier unchanged, DE441 applied; original source + metadata disabled exactly equals package release."
+}

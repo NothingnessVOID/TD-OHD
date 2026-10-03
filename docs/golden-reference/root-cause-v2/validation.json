@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "checks": {
+    "frozenInputs": 9,
+    "exactMappingBoundaries": 384,
+    "cGroups": 3,
+    "cCases": 27,
+    "cActivations": 702,
+    "sharpGroups": 4,
+    "sharpCases": 36,
+    "sharpActivations": 468,
+    "biasGuardAssertions": 72
+  },
+  "nugetSourceRebuildExactPairs": 234,
+  "rawJplBiasSunClockParityCases": 9,
+  "mmi": "blocked and explicitly null, not passed chart tests",
+  "production": "unchanged",
+  "installation": "8 assets unchanged",
+  "applicationTests": "not run; docs/diagnostic-only changes, no application source or build modified"
+}

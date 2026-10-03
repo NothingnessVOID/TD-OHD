@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "sourceUnmodified": true,
+  "scope": "Source-level dynamic branch/function execution counters, not inferred only from flags. Instrumentation does not modify source equations. Each group executed in its own process/profile.",
+  "groups": [
+    {
+      "group": "A-SWISS",
+      "sunApparentFunctionCallCount": 344,
+      "sunFrameBiasCallSiteSource": "sweph.c:4052-4053",
+      "sunFrameBiasConditions": {
+        "notICRSOutput": {
+          "executedTrue": 344,
+          "executedFalse": 0
+        },
+        "effectiveDEGreaterOrEqual403": {
+          "executedTrue": 344,
+          "executedFalse": 0
+        }
+      },
+      "swiBiasFunctionCallCount": 560,
+      "swiBiasDefaultIAU2006BranchCount": 560,
+      "swiBiasDisabledModelReturnCount": 0,
+      "proofMethod": "LLVM instrumentation on unmodified official C source; source hash and compile flags recorded in environment-c.json"
+    },
+    {
+      "group": "A-JPL441",
+      "sunApparentFunctionCallCount": 343,
+      "sunFrameBiasCallSiteSource": "sweph.c:4052-4053",
+      "sunFrameBiasConditions": {
+        "notICRSOutput": {
+          "executedTrue": 343,
+          "executedFalse": 0
+        },
+        "effectiveDEGreaterOrEqual403": {
+          "executedTrue": 343,
+          "executedFalse": 0
+        }
+      },
+      "swiBiasFunctionCallCount": 559,
+      "swiBiasDefaultIAU2006BranchCount": 559,
+      "swiBiasDisabledModelReturnCount": 0,
+      "proofMethod": "LLVM instrumentation on unmodified official C source; source hash and compile flags recorded in environment-c.json"
+    },
+    {
+      "group": "A-JPL431",
+      "sunApparentFunctionCallCount": 346,
+      "sunFrameBiasCallSiteSource": "sweph.c:4052-4053",
+      "sunFrameBiasConditions": {
+        "notICRSOutput": {
+          "executedTrue": 346,
+          "executedFalse": 0
+        },
+        "effectiveDEGreaterOrEqual403": {
+          "executedTrue": 346,
+          "executedFalse": 0
+        }
+      },
+      "swiBiasFunctionCallCount": 562,
+      "swiBiasDefaultIAU2006BranchCount": 562,
+      "swiBiasDisabledModelReturnCount": 0,
+      "proofMethod": "LLVM instrumentation on unmodified official C source; source hash and compile flags recorded in environment-c.json"
+    }
+  ]
+}

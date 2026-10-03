@@ -1,0 +1,48 @@
+{
+  "captureDateUtc": "2026-10-03",
+  "sourceRepository": "https://github.com/aloistr/swisseph",
+  "sourceCommit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+  "officialJplDownloads": "https://www.astro.com/swisseph-download/jplfiles/",
+  "officialJplMd5": {
+    "de441.eph": "4e3b924463d17b68ec9c4a18240300cd",
+    "de431.eph": "fad0f432ae18c330f9e14915fbf8960a"
+  },
+  "READMEChecksumConflict": {
+    "de441README": "a7b2a5b8b2ebed52ea4da2304958053b",
+    "downloadPageAndActualNASALinuxFile": "4e3b924463d17b68ec9c4a18240300cd",
+    "handling": "Used exact NASA Linux download linked by Astrodienst dedicated JPL page. Binary header/runtimeDE441 and download-pageMD5 validated, conflicting README checksum explicitly preserved."
+  },
+  "interruptedNASA431Attempt": {
+    "status": "interrupted before completion",
+    "reason": "NASA DE431 sustained low throughput, 32MiB range responses repeatedly exceeded180seconds; switching to Astrodienst README recommended mirror. This incomplete file is not used for calculation.",
+    "sourceUrl": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de431/lnxm13000p17000.431",
+    "requestCount": 65,
+    "ownedDownloadProcessCountStopped": 16
+  },
+  "httpHeadEvidence": [
+    {
+      "sourceUrl": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de441/linux_m13000p17000.441",
+      "headers": [
+        "HTTP/1.1 200 OK",
+        "Date: Sat, 03 Oct 2026 01:09:45 GMT",
+        "Content-Type: application/octet-stream",
+        "Content-Length: 2788676624",
+        "Last-Modified: Thu, 04 Mar 2021 19:26:26 GMT",
+        "ETag: \"60413462-a637d410\"",
+        "Accept-Ranges: bytes"
+      ]
+    },
+    {
+      "sourceUrl": "https://ephe.scryr.io/jpl/de431.eph",
+      "headers": [
+        "HTTP/2 200 ",
+        "date: Sat, 03 Oct 2026 01:09:46 GMT",
+        "content-type: application/octet-stream",
+        "content-length: 2788676624",
+        "accept-ranges: bytes",
+        "etag: \"5263cb3f-a637d410\"",
+        "last-modified: Sun, 20 Oct 2013 12:23:27 GMT"
+      ]
+    }
+  ]
+}

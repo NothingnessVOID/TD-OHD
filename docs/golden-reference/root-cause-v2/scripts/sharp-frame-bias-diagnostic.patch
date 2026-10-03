@@ -1,0 +1,23 @@
+--- a/Application/Bodies/CorrectionPipeline.cs
++++ b/Application/Bodies/CorrectionPipeline.cs
+@@ -340,6 +340,20 @@
+             for (var i = 3; i < 6; i++) xx[i] = 0.0;
+         }
+ 
++        // DIAGNOSTIC ONLY. Mirror sweph.c 2.10.03:4052-4053 before precession.
++        // BodyState 0.5.1 lacks DE metadata. Harness injects the verified
++        // actual source reader Header DE number; unknown source metadata skips.
++        var diagnosticDeNumber = rawBody.Source switch
++        {
++            EphemerisSource.Jpl => AppContext.GetData("SharpDiagnostic.DeNumber.Jpl") is int jplDe ? jplDe : 0,
++            EphemerisSource.SwissEph => AppContext.GetData("SharpDiagnostic.DeNumber.SwissEph") is int swissDe ? swissDe : 0,
++            _ => 0, // Never apply to Moshier or unknown sources.
++        };
++        if ((flags & EphemerisFlags.Icrs) == 0 && diagnosticDeNumber >= 403)
++        {
++            CatalogFrameTransforms.IcrsBias(xx, inSpeed, backward: false, model: _models.FrameBias);
++        }
++
+         // ---- Step 8: precession J2000 → date (sweph.c#L2766-L2773) --------
+         // skipped if SEFLG_J2000 set.
+         var precessNow = (flags & EphemerisFlags.J2000Equinox) == 0;

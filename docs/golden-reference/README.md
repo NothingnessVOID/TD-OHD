@@ -4,6 +4,8 @@
 
 **2026-10-03 新增第三对照源：**[SharpAstrology 作者官方 WebApp 九例实测报告](sharp-webapp/README.md)与[完整三方 JSON](sharp-webapp/comparison.json)。七例全部为 **Sharp 官方 WebApp = 8787 ≠ Jovian**，两个负对照三方一致；九例全部 234 项 Gate.Line 与 8787 相同。官方 WebApp 的 DE441 为 2026/04/18 构建，与 8787 的 2026/05/26 构建不同。本轮实测没有消除原有 Golden 差异。
 
+**2026-10-03 root-cause v2：**[原版 Swiss C、raw JPL 与诊断 frame bias 报告](root-cause-v2/README.md)。三组 C 已真实执行并验证无 fallback：`.se1` 对齐 2/7，raw DE441/DE431 各 3/7；Sharp raw441 原版为 0/7，补 frame bias 后为 3/7且九例太阳黄经与 C raw441 数值对齐。四个 Golden 差异仍未解释；MMI 3.0 实际访问受阻，未填写推测结果。生产与 8787 未修改。
+
 ## 结论
 
 已通过两站实际浏览器操作复现 **7 个 Profile 不一致案例**，覆盖 1995、2005、2015、2025 年和 7 个不同 Personality Sun Gate。1985 年作为负对照也进行了官方核对。样本是主动构造的边界出生时刻，并非用户个人出生资料。

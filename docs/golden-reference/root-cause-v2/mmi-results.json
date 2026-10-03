@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-03T01:04:19.015603+00:00",
+  "status": "blocked",
+  "reason": "MMI UI test blocked by access requirement",
+  "product": "Maia Mechanics Imaging 3.0 desktop",
+  "actualUiAttempt": true,
+  "loginSubmitted": false,
+  "chartResultsObserved": false,
+  "blockers": [
+    "Official MMI 3.0 product requires Windows (Mac via virtualization); current audit host is macOS arm64 without a running MMI Windows environment.",
+    "The actual MMI desktop portal Login redirects to Jovian SSO with empty email/password fields; no authenticated MMI access or activation key was supplied."
+  ],
+  "uiSteps": [
+    {
+      "url": "https://jovianarchive.com/products/maia-mechanics-imaging-mmi",
+      "action": "Read platform/licensing/trial requirements; expand Chart Creation & Accuracy",
+      "evidence": [
+        "evidence/mmi-product.dom.txt",
+        "evidence/mmi-product.jpg"
+      ]
+    },
+    {
+      "url": "https://mmi.jovianarchive.com/",
+      "action": "Read Download Free Trial portal; activate trial download button; then Login",
+      "evidence": [
+        "evidence/mmi-portal.dom.txt"
+      ]
+    },
+    {
+      "url": "https://auth.jovianarchive.com/sso/app?appKey=mmi-desktop",
+      "action": "Observe unauthenticated SSO form; no credentials entered or submitted",
+      "evidence": [
+        "evidence/mmi-access-blocked.dom.txt",
+        "evidence/mmi-access-blocked.jpg"
+      ]
+    }
+  ],
+  "notTestedAsSubstitute": "MaiaMechanics.com is the distinct browser subscription product; not relabelled MMI 3.0.",
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "birthLocal": "1995-02-22T01:08:00",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G1995-jun",
+      "birthLocal": "1995-06-22T00:43:00",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2005-jul20",
+      "birthLocal": "2005-07-20T22:40:00",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2015-tight",
+      "birthLocal": "2015-01-26T01:20:00",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2015-feb",
+      "birthLocal": "2015-02-04T06:56:00",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2025-tight",
+      "birthLocal": "2025-01-19T22:57:00",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2025-mar",
+      "birthLocal": "2025-03-15T18:56:00",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G1985-tight",
+      "birthLocal": "1985-01-25T18:34:00",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    },
+    {
+      "id": "G2005-jul11",
+      "birthLocal": "2005-07-11T02:47:00",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "location": "London, England, United Kingdom",
+      "status": "blocked",
+      "personalitySun": null,
+      "personalityEarth": null,
+      "designSun": null,
+      "designEarth": null,
+      "profile": null,
+      "incarnationCross": null,
+      "classification": null
+    }
+  ]
+}
