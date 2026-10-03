@@ -1,0 +1,21 @@
+{
+  "status": "complete_passed",
+  "officialCases": 28,
+  "sealedCases": 28,
+  "fieldsPerModel": 728,
+  "designFieldsPerModel": 364,
+  "platformCases": {
+    "Jovian": 28
+  },
+  "oldUtcOverlap": 0,
+  "sealFilesAndInheritedHashesVerified": true,
+  "scoreRecomputedIndependently": true,
+  "rawEvidenceHashesVerified": true,
+  "pairedExact56OfficialFieldsVerified": true,
+  "browserTransferFNV1a32": "30758921",
+  "browserTransferAsciiCharacters": 14967,
+  "limitations": [
+    "This verifies saved observations and scores; raw UI evidence authenticity requires source captures and provenance review.",
+    "UNKNOWN official DesignDate timezone prevents exact UTC timestamp scoring."
+  ]
+}

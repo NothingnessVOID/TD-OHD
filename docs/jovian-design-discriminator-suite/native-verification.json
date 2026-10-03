@@ -1,0 +1,1280 @@
+{
+  "status": "passed",
+  "evaluationType": "independent_recomputation_of_model_predictions_no_official_test",
+  "caseCount": 28,
+  "modelCount": 6,
+  "activationFieldsVerified": 4368,
+  "maxLongitudeDeltaDegrees": 0,
+  "maxRootTtDeltaSeconds": 0.0,
+  "max88degreeResidualDegrees": 4.595790414896328e-10,
+  "checks": [
+    {
+      "name": "old seal cases.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal discriminator-cases.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal predictions-sealed.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal search-summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal scripts/models.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal scripts/seal.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old seal scripts/search.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal design-discriminator-cases.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal design-predictions-sealed.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal search-summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal scripts/search.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal scripts/research_models.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new seal scripts/seal.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new inherited seal docs/jovian-discriminator-suite/scripts/models.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new inherited seal docs/ra-era-astronomy-stack/scripts/run_stack.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new inherited seal docs/golden-reference/root-cause-v2/scripts/frozen_mapping.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new inherited seal docs/ra-era-astronomy-stack/acquisition-manifest.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new inherited seal docs/jovian-discriminator-suite/predictions-sealed.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native library C6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset maitreya7.tar.bz2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset libswe-177.tar.bz2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset modern.tar.gz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de406/sepl_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de406/semo_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de431/sepl_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de431/semo_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de441/sepl_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de441/semo_18.se1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de406.eph",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset libswe177.dsc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset maitreya7.dsc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset de405.iom.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset swisseph-2006.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acquisition asset header.406",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "research branch",
+      "passed": true,
+      "detail": "research/jovian-design-discriminator-suite-v1"
+    },
+    {
+      "name": "baseline remains ancestor of HEAD",
+      "passed": true,
+      "detail": "e29caef4ebabc9e35d3e60862ae1579455a3bf6d"
+    },
+    {
+      "name": "repository scope only new docs",
+      "passed": true,
+      "detail": [
+        "docs/jovian-design-discriminator-suite/README.md",
+        "docs/jovian-design-discriminator-suite/SHA256SUMS.json",
+        "docs/jovian-design-discriminator-suite/case-table.md",
+        "docs/jovian-design-discriminator-suite/comparison.json",
+        "docs/jovian-design-discriminator-suite/design-date-analysis.json",
+        "docs/jovian-design-discriminator-suite/design-date-analysis.md",
+        "docs/jovian-design-discriminator-suite/design-discriminator-cases.json",
+        "docs/jovian-design-discriminator-suite/design-predictions-sealed.json",
+        "docs/jovian-design-discriminator-suite/evidence/SHA256SUMS.json",
+        "docs/jovian-design-discriminator-suite/evidence/jovian-dom-submissions.tsv",
+        "docs/jovian-design-discriminator-suite/evidence/jovian-paired-dom.tsv",
+        "docs/jovian-design-discriminator-suite/evidence/mybodygraph-availability.dom.txt",
+        "docs/jovian-design-discriminator-suite/existing-design-discriminators.json",
+        "docs/jovian-design-discriminator-suite/existing-official-records.json",
+        "docs/jovian-design-discriminator-suite/manual-test-pack.md",
+        "docs/jovian-design-discriminator-suite/native-verification.json",
+        "docs/jovian-design-discriminator-suite/official-results.json",
+        "docs/jovian-design-discriminator-suite/postcollection-integrity.json",
+        "docs/jovian-design-discriminator-suite/reproduction.md",
+        "docs/jovian-design-discriminator-suite/scripts/compare.py",
+        "docs/jovian-design-discriminator-suite/scripts/existing_evidence.py",
+        "docs/jovian-design-discriminator-suite/scripts/import_official.py",
+        "docs/jovian-design-discriminator-suite/scripts/postcollection_integrity.py",
+        "docs/jovian-design-discriminator-suite/scripts/report.py",
+        "docs/jovian-design-discriminator-suite/scripts/research_models.py",
+        "docs/jovian-design-discriminator-suite/scripts/seal.py",
+        "docs/jovian-design-discriminator-suite/scripts/search.py",
+        "docs/jovian-design-discriminator-suite/scripts/verify.py",
+        "docs/jovian-design-discriminator-suite/search-summary.json",
+        "docs/jovian-design-discriminator-suite/validation.json"
+      ]
+    },
+    {
+      "name": "case IDs and counts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique suite UTC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native flags C1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C1",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "native flags C2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C2",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "native flags C3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C3",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "native flags C4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C4",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "native flags C5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C5",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "native flags C6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fresh recomputation JDD-01 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-02 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-03 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-04 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-05 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-06 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-07 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-08 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-09 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-10 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-11 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-12 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-13 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-14 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-15 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-16 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-17 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-18 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-19 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-20 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-21 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-22 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-23 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-24 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-25 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-26 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-27 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "fresh recomputation JDD-28 C6",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "suite sensitivity metadata JDD-01",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suite sensitivity metadata JDD-28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "research extension root algorithm preserves prior exact TT",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "failures": [],
+  "clockLimitation": "Official DesignDate display timezone UNKNOWN. Native UT1 numeric calendar and UTC-from-TT are both saved without fitted offsets. Clock labels are not exact UTC observed evidence."
+}

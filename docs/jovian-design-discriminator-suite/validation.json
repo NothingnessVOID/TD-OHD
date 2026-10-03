@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "checks": [
+    "All sealed and inherited files retain original SHA256",
+    "Complete unique official ID and UTC sets match sealed suite; no historical UTC overlap",
+    "Official samples collected after seal",
+    "Every observed new UTC verified on page",
+    "Each available platform submitted twice with stable 26 activations and Profile",
+    "Complete valid 13-body Personality and Design records",
+    "Score derived only after independent official observations"
+  ],
+  "officialCaseCount": 28,
+  "sealedCaseCount": 28,
+  "researchOnly": true,
+  "nativeReproduction": {
+    "status": "passed",
+    "evidenceFile": "native-verification.json",
+    "caseCount": 28,
+    "modelCount": 6,
+    "activationFieldsVerified": 4368
+  },
+  "sourceEvidenceHashVerification": "Provided raw evidence SHA256 manifest verified",
+  "browserIsolation": "Codex In-app Browser only; no Chrome control, cookie, token or session extraction",
+  "platformAvailability": {
+    "Jovian": {
+      "status": "available",
+      "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+      "cases": 28,
+      "repeatsPerCase": 2
+    },
+    "myBodyGraph": {
+      "status": "authentication_unavailable_in_isolated_browser",
+      "cases": 0,
+      "url": "https://app.mybodygraph.com/login?redirect=%2F%3Fv%3D2",
+      "observedAtUtc": "2026-10-03T14:52:25.309Z",
+      "evidenceFile": "evidence/mybodygraph-availability.dom.txt",
+      "action": "No credentials supplied, no registration, no Chrome control or session transfer; manual pack prepared"
+    }
+  },
+  "productionTests": "NOT RUN: production files unchanged",
+  "limitations": [
+    "Minute outputs cannot identify exact official longitude or internal ephemeris.",
+    "Repeated normal submissions show stable UI outputs; backend caching is unknown.",
+    "Model-disagreement sample is intentionally selected and not a population accuracy estimate.",
+    "Design timestamp timezone cannot be inferred from an unlabeled official date."
+  ]
+}

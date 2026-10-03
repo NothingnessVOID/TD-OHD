@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "source": "docs/jovian-design-discriminator-suite/existing-design-discriminators.json",
+  "sourceSha256": "6535f2516be53a7c20506fefbaefd5ee57507881e01d4fce68b37f5ac3f1596c",
+  "evaluationType": "retrospective_wall_minute_label_analysis",
+  "differentBirthUtcCount": 33,
+  "observedMinuteLabelCount": 33,
+  "observedTimezone": "UNKNOWN",
+  "derivation": "Minute values independently derived from saved full second-level clocks; truncation drops seconds, rounding adds 30 seconds then truncates; all values cross-checked against inherited minute fields. No timezone shifts or fitted offsets applied.",
+  "conditionalLiteralMatchCounts": {
+    "civilUtc_truncated": {
+      "C1": 32,
+      "C2": 31,
+      "C3": 33,
+      "C4": 33,
+      "C5": 33,
+      "C6": 32
+    },
+    "civilUtc_rounded": {
+      "C1": 10,
+      "C2": 10,
+      "C3": 11,
+      "C4": 11,
+      "C5": 11,
+      "C6": 10
+    },
+    "modelUt1Numeric_truncated": {
+      "C1": 33,
+      "C2": 33,
+      "C3": 33,
+      "C4": 33,
+      "C5": 33,
+      "C6": 33
+    },
+    "modelUt1Numeric_rounded": {
+      "C1": 11,
+      "C2": 11,
+      "C3": 12,
+      "C4": 12,
+      "C5": 12,
+      "C6": 11
+    }
+  },
+  "minutePartitionCounts": [
+    {
+      "hypothesis": "civilUtc_truncated",
+      "casesWithDifferentPredictedMinuteLabels": 2
+    },
+    {
+      "hypothesis": "civilUtc_rounded",
+      "casesWithDifferentPredictedMinuteLabels": 1
+    },
+    {
+      "hypothesis": "modelUt1Numeric_truncated",
+      "casesWithDifferentPredictedMinuteLabels": 0
+    },
+    {
+      "hypothesis": "modelUt1Numeric_rounded",
+      "casesWithDifferentPredictedMinuteLabels": 1
+    }
+  ],
+  "conditionallyDifferingLabels": [
+    {
+      "birthUtc": "2023-07-04T12:50:00Z",
+      "ids": [
+        "JDS-23"
+      ],
+      "observedWallMinuteLabels": [
+        "2023-04-04T08:27"
+      ],
+      "timezone": "UNKNOWN",
+      "clockHypothesis": "civilUtc",
+      "displayPolicyHypothesis": "truncated",
+      "predictedMinuteLabels": {
+        "C1": "2023-04-04T08:27",
+        "C2": "2023-04-04T08:28",
+        "C3": "2023-04-04T08:27",
+        "C4": "2023-04-04T08:27",
+        "C5": "2023-04-04T08:27",
+        "C6": "2023-04-04T08:27"
+      },
+      "underlyingClockLabelsWithSeconds": {
+        "C1": "2023-04-04T08:27:58.070614",
+        "C2": "2023-04-04T08:28:00.834067",
+        "C3": "2023-04-04T08:27:48.013376",
+        "C4": "2023-04-04T08:27:48.021262",
+        "C5": "2023-04-04T08:27:48.154111",
+        "C6": "2023-04-04T08:27:58.081557"
+      },
+      "conditionallyMatchingModels": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "interpretation": "Conditional literal calendar-label equality only; no physical timestamp, timezone, or model winner established"
+    },
+    {
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "ids": [
+        "G2025-tight"
+      ],
+      "observedWallMinuteLabels": [
+        "2024-10-25T01:26"
+      ],
+      "timezone": "UNKNOWN",
+      "clockHypothesis": "civilUtc",
+      "displayPolicyHypothesis": "truncated",
+      "predictedMinuteLabels": {
+        "C1": "2024-10-25T01:27",
+        "C2": "2024-10-25T01:27",
+        "C3": "2024-10-25T01:26",
+        "C4": "2024-10-25T01:26",
+        "C5": "2024-10-25T01:26",
+        "C6": "2024-10-25T01:27"
+      },
+      "underlyingClockLabelsWithSeconds": {
+        "C1": "2024-10-25T01:27:03.937467",
+        "C2": "2024-10-25T01:27:06.820412",
+        "C3": "2024-10-25T01:26:50.833615",
+        "C4": "2024-10-25T01:26:50.834339",
+        "C5": "2024-10-25T01:26:50.704949",
+        "C6": "2024-10-25T01:27:03.930707"
+      },
+      "conditionallyMatchingModels": [
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "interpretation": "Conditional literal calendar-label equality only; no physical timestamp, timezone, or model winner established"
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:00Z",
+      "ids": [
+        "JDS-07"
+      ],
+      "observedWallMinuteLabels": [
+        "2024-12-12T04:47"
+      ],
+      "timezone": "UNKNOWN",
+      "clockHypothesis": "civilUtc",
+      "displayPolicyHypothesis": "rounded",
+      "predictedMinuteLabels": {
+        "C1": "2024-12-12T04:48",
+        "C2": "2024-12-12T04:48",
+        "C3": "2024-12-12T04:47",
+        "C4": "2024-12-12T04:47",
+        "C5": "2024-12-12T04:47",
+        "C6": "2024-12-12T04:48"
+      },
+      "underlyingClockLabelsWithSeconds": {
+        "C1": "2024-12-12T04:47:34.396936",
+        "C2": "2024-12-12T04:47:37.171333",
+        "C3": "2024-12-12T04:47:21.569728",
+        "C4": "2024-12-12T04:47:21.573751",
+        "C5": "2024-12-12T04:47:21.509941",
+        "C6": "2024-12-12T04:47:34.391545"
+      },
+      "conditionallyMatchingModels": [
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "interpretation": "Conditional literal calendar-label equality only; no physical timestamp, timezone, or model winner established"
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:00Z",
+      "ids": [
+        "JDS-20"
+      ],
+      "observedWallMinuteLabels": [
+        "2004-08-04T13:25"
+      ],
+      "timezone": "UNKNOWN",
+      "clockHypothesis": "modelUt1Numeric",
+      "displayPolicyHypothesis": "rounded",
+      "predictedMinuteLabels": {
+        "C1": "2004-08-04T13:26",
+        "C2": "2004-08-04T13:26",
+        "C3": "2004-08-04T13:25",
+        "C4": "2004-08-04T13:25",
+        "C5": "2004-08-04T13:25",
+        "C6": "2004-08-04T13:26"
+      },
+      "underlyingClockLabelsWithSeconds": {
+        "C1": "2004-08-04T13:25:30.153143",
+        "C2": "2004-08-04T13:25:30.153184",
+        "C3": "2004-08-04T13:25:29.646528",
+        "C4": "2004-08-04T13:25:29.642746",
+        "C5": "2004-08-04T13:25:29.607502",
+        "C6": "2004-08-04T13:25:30.142119"
+      },
+      "conditionallyMatchingModels": [
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "interpretation": "Conditional literal calendar-label equality only; no physical timestamp, timezone, or model winner established"
+    }
+  ],
+  "unconditionalModelDiscriminators": 0,
+  "conclusions": [
+    "Under modelUT1Numeric truncation all six models produce the same observed minute label for all 33 cases.",
+    "Only civilUTC truncation partitions C2 from C1 in one label; this requires an unverified display-clock assumption and is not actual evidence rejecting C2.",
+    "Rounded display hypotheses fit only 10–12 of 33 labels.",
+    "No label identifies C3 versus C4 versus C5 under any of the four tested hypotheses.",
+    "No known-timezone or known-display-policy DesignDate observation establishes a model discriminator."
+  ],
+  "limitations": [
+    "Saved historical labels are retrospective known evidence, not new blind observations.",
+    "Timezone and whether the UI clock represents civil UTC or a model numeric calendar are undisclosed.",
+    "Truncation and rounding are explicit hypotheses, not observed display implementation.",
+    "Minute labels cannot recover exact DesignTT, longitude, or delta-T.",
+    "All new Jovian chart captures lack an observed DesignDate and add no timestamp evidence."
+  ]
+}

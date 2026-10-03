@@ -1,0 +1,16 @@
+Observed at 2026-10-03T14:52:25.309Z
+URL https://app.mybodygraph.com/login?redirect=%2F%3Fv%3D2
+Browser Codex In-app Browser, isolated research tab
+Relevant DOM excerpt:
+- banner:
+  - text: myBodyGraph
+  - button "Login"
+  - button "Sign Up"
+- heading "Login" [level=2]
+- textbox "Type your email"
+- textbox "Type your password"
+- button "Login"
+- link "Register here":
+  - /url: /register?redirect=%2F%3Fv%3D2
+- button "Forgot password"
+No login action, no credentials collected, no registration or session transfer.

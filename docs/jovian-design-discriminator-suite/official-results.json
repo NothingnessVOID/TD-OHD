@@ -1,0 +1,2799 @@
+{
+  "schemaVersion": 1,
+  "collection": "Independent normal UI submissions; DOM-visible SVG values and Properties",
+  "bodyOrder": [
+    "sun",
+    "earth",
+    "moon",
+    "northNode",
+    "southNode",
+    "mercury",
+    "venus",
+    "mars",
+    "jupiter",
+    "saturn",
+    "uranus",
+    "neptune",
+    "pluto"
+  ],
+  "capturedCaseCount": 28,
+  "submissionCount": 56,
+  "transferVerification": {
+    "method": "FNV1a32 UTF16 code units (all source characters ASCII)",
+    "browserChecksum": "30758921",
+    "transcribedChecksum": "30758921",
+    "browserCharacters": 14967,
+    "transcribedCharacters": 14967,
+    "status": "passed"
+  },
+  "platformAvailability": {
+    "Jovian": {
+      "status": "available",
+      "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+      "cases": 28,
+      "repeatsPerCase": 2
+    },
+    "myBodyGraph": {
+      "status": "authentication_unavailable_in_isolated_browser",
+      "cases": 0,
+      "url": "https://app.mybodygraph.com/login?redirect=%2F%3Fv%3D2",
+      "observedAtUtc": "2026-10-03T14:52:25.309Z",
+      "evidenceFile": "evidence/mybodygraph-availability.dom.txt",
+      "action": "No credentials supplied, no registration, no Chrome control or session transfer; manual pack prepared"
+    }
+  },
+  "evidenceSemantics": {
+    "leftColumn": "Design: mmi-widget shadowRoot svg.orientation-left text",
+    "rightColumn": "Personality: mmi-widget shadowRoot svg.orientation-right text",
+    "valueFilter": "Rendered text matching Gate.Line, 13 entries each column",
+    "birthUtc": "Properties: Date and Time (UTC), checked against input on every submission",
+    "profile": "Properties: Profile, recorded independently",
+    "repeatStability": "Both submissions sampled separately; exported original 56-record TSV transfer checksum verified"
+  },
+  "cases": [
+    {
+      "id": "JDD-01",
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:35:18.457Z",
+              "birthUtcVerified": "2018-10-02T15:17:00Z",
+              "birthUtcDisplayed": "October 2, 2018, 15:17",
+              "personality": {
+                "sun": "18.6",
+                "earth": "17.6",
+                "moon": "39.4",
+                "northNode": "31.2",
+                "southNode": "41.2",
+                "mercury": "57.4",
+                "venus": "44.4",
+                "mars": "41.5",
+                "jupiter": "43.4",
+                "saturn": "10.6",
+                "uranus": "3.6",
+                "neptune": "63.4",
+                "pluto": "54.4"
+              },
+              "design": {
+                "sun": "39.3",
+                "earth": "38.3",
+                "moon": "37.2",
+                "northNode": "31.5",
+                "southNode": "41.5",
+                "mercury": "31.5",
+                "venus": "4.4",
+                "mars": "19.2",
+                "jupiter": "1.1",
+                "saturn": "58.2",
+                "uranus": "27.1",
+                "neptune": "63.6",
+                "pluto": "54.6"
+              },
+              "profile": "6/3",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of Upheaval (18/17 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:35:53.835Z",
+              "birthUtcVerified": "2018-10-02T15:17:00Z",
+              "birthUtcDisplayed": "October 2, 2018, 15:17",
+              "personality": {
+                "sun": "18.6",
+                "earth": "17.6",
+                "moon": "39.4",
+                "northNode": "31.2",
+                "southNode": "41.2",
+                "mercury": "57.4",
+                "venus": "44.4",
+                "mars": "41.5",
+                "jupiter": "43.4",
+                "saturn": "10.6",
+                "uranus": "3.6",
+                "neptune": "63.4",
+                "pluto": "54.4"
+              },
+              "design": {
+                "sun": "39.3",
+                "earth": "38.3",
+                "moon": "37.2",
+                "northNode": "31.5",
+                "southNode": "41.5",
+                "mercury": "31.5",
+                "venus": "4.4",
+                "mars": "19.2",
+                "jupiter": "1.1",
+                "saturn": "58.2",
+                "uranus": "27.1",
+                "neptune": "63.6",
+                "pluto": "54.6"
+              },
+              "profile": "6/3",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of Upheaval (18/17 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-02",
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:36:06.169Z",
+              "birthUtcVerified": "2020-10-11T15:00:00Z",
+              "birthUtcDisplayed": "October 11, 2020, 15:00",
+              "personality": {
+                "sun": "57.4",
+                "earth": "51.4",
+                "moon": "33.1",
+                "northNode": "45.6",
+                "southNode": "26.6",
+                "mercury": "44.4",
+                "venus": "40.5",
+                "mars": "42.2",
+                "jupiter": "54.4",
+                "saturn": "61.6",
+                "uranus": "24.2",
+                "neptune": "22.2",
+                "pluto": "61.2"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "51.3",
+                "northNode": "15.1",
+                "southNode": "10.1",
+                "mercury": "52.2",
+                "venus": "16.5",
+                "mars": "17.5",
+                "jupiter": "61.2",
+                "saturn": "60.4",
+                "uranus": "24.3",
+                "neptune": "22.5",
+                "pluto": "61.4"
+              },
+              "profile": "4/1",
+              "type": "Projector",
+              "incarnationCross": "Juxtaposition Cross of Intuition (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:36:09.084Z",
+              "birthUtcVerified": "2020-10-11T15:00:00Z",
+              "birthUtcDisplayed": "October 11, 2020, 15:00",
+              "personality": {
+                "sun": "57.4",
+                "earth": "51.4",
+                "moon": "33.1",
+                "northNode": "45.6",
+                "southNode": "26.6",
+                "mercury": "44.4",
+                "venus": "40.5",
+                "mars": "42.2",
+                "jupiter": "54.4",
+                "saturn": "61.6",
+                "uranus": "24.2",
+                "neptune": "22.2",
+                "pluto": "61.2"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "51.3",
+                "northNode": "15.1",
+                "southNode": "10.1",
+                "mercury": "52.2",
+                "venus": "16.5",
+                "mars": "17.5",
+                "jupiter": "61.2",
+                "saturn": "60.4",
+                "uranus": "24.3",
+                "neptune": "22.5",
+                "pluto": "61.4"
+              },
+              "profile": "4/1",
+              "type": "Projector",
+              "incarnationCross": "Juxtaposition Cross of Intuition (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-03",
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:36:12.430Z",
+              "birthUtcVerified": "2016-10-06T13:26:00Z",
+              "birthUtcDisplayed": "October 6, 2016, 13:26",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "5.4",
+                "northNode": "64.1",
+                "southNode": "63.1",
+                "mercury": "46.1",
+                "venus": "1.3",
+                "mars": "58.3",
+                "jupiter": "18.3",
+                "saturn": "5.1",
+                "uranus": "42.3",
+                "neptune": "37.5",
+                "pluto": "38.6"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "4.5",
+                "northNode": "64.4",
+                "southNode": "63.4",
+                "mercury": "53.2",
+                "venus": "62.4",
+                "mars": "43.5",
+                "jupiter": "47.2",
+                "saturn": "9.6",
+                "uranus": "42.4",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:36:15.561Z",
+              "birthUtcVerified": "2016-10-06T13:26:00Z",
+              "birthUtcDisplayed": "October 6, 2016, 13:26",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "5.4",
+                "northNode": "64.1",
+                "southNode": "63.1",
+                "mercury": "46.1",
+                "venus": "1.3",
+                "mars": "58.3",
+                "jupiter": "18.3",
+                "saturn": "5.1",
+                "uranus": "42.3",
+                "neptune": "37.5",
+                "pluto": "38.6"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "4.5",
+                "northNode": "64.4",
+                "southNode": "63.4",
+                "mercury": "53.2",
+                "venus": "62.4",
+                "mars": "43.5",
+                "jupiter": "47.2",
+                "saturn": "9.6",
+                "uranus": "42.4",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-04",
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:36:18.691Z",
+              "birthUtcVerified": "2017-04-11T00:55:00Z",
+              "birthUtcDisplayed": "April 11, 2017, 00:55",
+              "personality": {
+                "sun": "42.1",
+                "earth": "32.1",
+                "moon": "57.4",
+                "northNode": "59.3",
+                "southNode": "55.3",
+                "mercury": "27.3",
+                "venus": "36.5",
+                "mars": "23.5",
+                "jupiter": "57.3",
+                "saturn": "11.6",
+                "uranus": "42.4",
+                "neptune": "63.2",
+                "pluto": "54.5"
+              },
+              "design": {
+                "sun": "61.3",
+                "earth": "62.3",
+                "moon": "31.4",
+                "northNode": "59.5",
+                "southNode": "55.5",
+                "mercury": "10.3",
+                "venus": "37.6",
+                "mars": "22.2",
+                "jupiter": "32.2",
+                "saturn": "11.1",
+                "uranus": "51.6",
+                "neptune": "37.5",
+                "pluto": "54.3"
+              },
+              "profile": "1/3",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Maya (42/32 | 61/62)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:36:21.524Z",
+              "birthUtcVerified": "2017-04-11T00:55:00Z",
+              "birthUtcDisplayed": "April 11, 2017, 00:55",
+              "personality": {
+                "sun": "42.1",
+                "earth": "32.1",
+                "moon": "57.4",
+                "northNode": "59.3",
+                "southNode": "55.3",
+                "mercury": "27.3",
+                "venus": "36.5",
+                "mars": "23.5",
+                "jupiter": "57.3",
+                "saturn": "11.6",
+                "uranus": "42.4",
+                "neptune": "63.2",
+                "pluto": "54.5"
+              },
+              "design": {
+                "sun": "61.3",
+                "earth": "62.3",
+                "moon": "31.4",
+                "northNode": "59.5",
+                "southNode": "55.5",
+                "mercury": "10.3",
+                "venus": "37.6",
+                "mars": "22.2",
+                "jupiter": "32.2",
+                "saturn": "11.1",
+                "uranus": "51.6",
+                "neptune": "37.5",
+                "pluto": "54.3"
+              },
+              "profile": "1/3",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Maya (42/32 | 61/62)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-05",
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:36:24.857Z",
+              "birthUtcVerified": "2017-10-02T21:59:00Z",
+              "birthUtcDisplayed": "October 2, 2017, 21:59",
+              "personality": {
+                "sun": "48.1",
+                "earth": "21.1",
+                "moon": "55.5",
+                "northNode": "4.5",
+                "southNode": "49.5",
+                "mercury": "18.2",
+                "venus": "64.5",
+                "mars": "47.1",
+                "jupiter": "50.3",
+                "saturn": "26.6",
+                "uranus": "3.1",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "design": {
+                "sun": "39.3",
+                "earth": "38.3",
+                "moon": "44.5",
+                "northNode": "29.1",
+                "southNode": "30.1",
+                "mercury": "62.6",
+                "venus": "8.5",
+                "mars": "53.5",
+                "jupiter": "48.5",
+                "saturn": "11.1",
+                "uranus": "3.2",
+                "neptune": "63.3",
+                "pluto": "54.4"
+              },
+              "profile": "1/3",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Tension (48/21 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:36:27.749Z",
+              "birthUtcVerified": "2017-10-02T21:59:00Z",
+              "birthUtcDisplayed": "October 2, 2017, 21:59",
+              "personality": {
+                "sun": "48.1",
+                "earth": "21.1",
+                "moon": "55.5",
+                "northNode": "4.5",
+                "southNode": "49.5",
+                "mercury": "18.2",
+                "venus": "64.5",
+                "mars": "47.1",
+                "jupiter": "50.3",
+                "saturn": "26.6",
+                "uranus": "3.1",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "design": {
+                "sun": "39.3",
+                "earth": "38.3",
+                "moon": "44.5",
+                "northNode": "29.1",
+                "southNode": "30.1",
+                "mercury": "62.6",
+                "venus": "8.5",
+                "mars": "53.5",
+                "jupiter": "48.5",
+                "saturn": "11.1",
+                "uranus": "3.2",
+                "neptune": "63.3",
+                "pluto": "54.4"
+              },
+              "profile": "1/3",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Tension (48/21 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-06",
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:43:40.189Z",
+              "birthUtcVerified": "2017-10-10T23:44:00Z",
+              "birthUtcDisplayed": "October 10, 2017, 23:44",
+              "personality": {
+                "sun": "57.3",
+                "earth": "51.3",
+                "moon": "12.6",
+                "northNode": "4.4",
+                "southNode": "49.4",
+                "mercury": "57.5",
+                "venus": "6.4",
+                "mars": "47.6",
+                "jupiter": "50.4",
+                "saturn": "11.1",
+                "uranus": "3.1",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "design": {
+                "sun": "53.6",
+                "earth": "54.6",
+                "moon": "49.4",
+                "northNode": "4.6",
+                "southNode": "49.6",
+                "mercury": "33.4",
+                "venus": "16.3",
+                "mars": "62.4",
+                "jupiter": "48.6",
+                "saturn": "11.1",
+                "uranus": "3.3",
+                "neptune": "63.3",
+                "pluto": "54.4"
+              },
+              "profile": "3/6",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Penetration (57/51 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:43:42.980Z",
+              "birthUtcVerified": "2017-10-10T23:44:00Z",
+              "birthUtcDisplayed": "October 10, 2017, 23:44",
+              "personality": {
+                "sun": "57.3",
+                "earth": "51.3",
+                "moon": "12.6",
+                "northNode": "4.4",
+                "southNode": "49.4",
+                "mercury": "57.5",
+                "venus": "6.4",
+                "mars": "47.6",
+                "jupiter": "50.4",
+                "saturn": "11.1",
+                "uranus": "3.1",
+                "neptune": "63.1",
+                "pluto": "54.2"
+              },
+              "design": {
+                "sun": "53.6",
+                "earth": "54.6",
+                "moon": "49.4",
+                "northNode": "4.6",
+                "southNode": "49.6",
+                "mercury": "33.4",
+                "venus": "16.3",
+                "mars": "62.4",
+                "jupiter": "48.6",
+                "saturn": "11.1",
+                "uranus": "3.3",
+                "neptune": "63.3",
+                "pluto": "54.4"
+              },
+              "profile": "3/6",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Penetration (57/51 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-07",
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:43:46.198Z",
+              "birthUtcVerified": "2022-04-06T14:48:00Z",
+              "birthUtcDisplayed": "April 6, 2022, 14:48",
+              "personality": {
+                "sun": "51.2",
+                "earth": "57.2",
+                "moon": "45.1",
+                "northNode": "23.5",
+                "southNode": "43.5",
+                "mercury": "51.6",
+                "venus": "55.1",
+                "mars": "49.6",
+                "jupiter": "22.6",
+                "saturn": "49.4",
+                "uranus": "24.6",
+                "neptune": "36.2",
+                "pluto": "60.3"
+              },
+              "design": {
+                "sun": "54.4",
+                "earth": "53.4",
+                "moon": "21.2",
+                "northNode": "20.1",
+                "southNode": "34.1",
+                "mercury": "19.1",
+                "venus": "54.4",
+                "mars": "26.3",
+                "jupiter": "55.3",
+                "saturn": "19.6",
+                "uranus": "24.4",
+                "neptune": "22.5",
+                "pluto": "61.6"
+              },
+              "profile": "2/4",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Penetration (51/57 | 54/53)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:43:49.227Z",
+              "birthUtcVerified": "2022-04-06T14:48:00Z",
+              "birthUtcDisplayed": "April 6, 2022, 14:48",
+              "personality": {
+                "sun": "51.2",
+                "earth": "57.2",
+                "moon": "45.1",
+                "northNode": "23.5",
+                "southNode": "43.5",
+                "mercury": "51.6",
+                "venus": "55.1",
+                "mars": "49.6",
+                "jupiter": "22.6",
+                "saturn": "49.4",
+                "uranus": "24.6",
+                "neptune": "36.2",
+                "pluto": "60.3"
+              },
+              "design": {
+                "sun": "54.4",
+                "earth": "53.4",
+                "moon": "21.2",
+                "northNode": "20.1",
+                "southNode": "34.1",
+                "mercury": "19.1",
+                "venus": "54.4",
+                "mars": "26.3",
+                "jupiter": "55.3",
+                "saturn": "19.6",
+                "uranus": "24.4",
+                "neptune": "22.5",
+                "pluto": "61.6"
+              },
+              "profile": "2/4",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Penetration (51/57 | 54/53)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-08",
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:43:52.566Z",
+              "birthUtcVerified": "2025-10-12T12:21:00Z",
+              "birthUtcDisplayed": "October 12, 2025, 12:21",
+              "personality": {
+                "sun": "57.5",
+                "earth": "51.5",
+                "moon": "15.6",
+                "northNode": "22.1",
+                "southNode": "47.1",
+                "mercury": "44.1",
+                "venus": "46.1",
+                "mars": "1.1",
+                "jupiter": "62.4",
+                "saturn": "36.5",
+                "uranus": "20.1",
+                "neptune": "25.3",
+                "pluto": "60.6"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "30.1",
+                "northNode": "22.3",
+                "southNode": "47.3",
+                "mercury": "7.2",
+                "venus": "16.5",
+                "mars": "64.5",
+                "jupiter": "52.5",
+                "saturn": "25.4",
+                "uranus": "20.1",
+                "neptune": "25.5",
+                "pluto": "41.1"
+              },
+              "profile": "5/1",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:43:55.696Z",
+              "birthUtcVerified": "2025-10-12T12:21:00Z",
+              "birthUtcDisplayed": "October 12, 2025, 12:21",
+              "personality": {
+                "sun": "57.5",
+                "earth": "51.5",
+                "moon": "15.6",
+                "northNode": "22.1",
+                "southNode": "47.1",
+                "mercury": "44.1",
+                "venus": "46.1",
+                "mars": "1.1",
+                "jupiter": "62.4",
+                "saturn": "36.5",
+                "uranus": "20.1",
+                "neptune": "25.3",
+                "pluto": "60.6"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "30.1",
+                "northNode": "22.3",
+                "southNode": "47.3",
+                "mercury": "7.2",
+                "venus": "16.5",
+                "mars": "64.5",
+                "jupiter": "52.5",
+                "saturn": "25.4",
+                "uranus": "20.1",
+                "neptune": "25.5",
+                "pluto": "41.1"
+              },
+              "profile": "5/1",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-09",
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:43:59.028Z",
+              "birthUtcVerified": "1980-10-01T19:30:00Z",
+              "birthUtcDisplayed": "October 1, 1980, 19:30",
+              "personality": {
+                "sun": "18.6",
+                "earth": "17.6",
+                "moon": "53.2",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "28.1",
+                "venus": "29.3",
+                "mars": "43.5",
+                "jupiter": "6.3",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "39.2",
+                "earth": "38.2",
+                "moon": "55.5",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.4",
+                "venus": "35.6",
+                "mars": "6.4",
+                "jupiter": "40.1",
+                "saturn": "47.5",
+                "uranus": "43.4",
+                "neptune": "26.5",
+                "pluto": "57.5"
+              },
+              "profile": "6/2",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Upheaval (18/17 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:02.160Z",
+              "birthUtcVerified": "1980-10-01T19:30:00Z",
+              "birthUtcDisplayed": "October 1, 1980, 19:30",
+              "personality": {
+                "sun": "18.6",
+                "earth": "17.6",
+                "moon": "53.2",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "28.1",
+                "venus": "29.3",
+                "mars": "43.5",
+                "jupiter": "6.3",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "39.2",
+                "earth": "38.2",
+                "moon": "55.5",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.4",
+                "venus": "35.6",
+                "mars": "6.4",
+                "jupiter": "40.1",
+                "saturn": "47.5",
+                "uranus": "43.4",
+                "neptune": "26.5",
+                "pluto": "57.5"
+              },
+              "profile": "6/2",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Upheaval (18/17 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-10",
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:44:23.603Z",
+              "birthUtcVerified": "1980-10-06T09:32:00Z",
+              "birthUtcDisplayed": "October 6, 1980, 09:32",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "64.3",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "44.1",
+                "venus": "59.2",
+                "mars": "14.2",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "24.4",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.2",
+                "venus": "35.5",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:26.531Z",
+              "birthUtcVerified": "1980-10-06T09:32:00Z",
+              "birthUtcDisplayed": "October 6, 1980, 09:32",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "64.3",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "44.1",
+                "venus": "59.2",
+                "mars": "14.2",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "24.4",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.2",
+                "venus": "35.5",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-11",
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:44:29.764Z",
+              "birthUtcVerified": "1986-03-31T09:25:00Z",
+              "birthUtcDisplayed": "March 31, 1986, 09:25",
+              "personality": {
+                "sun": "21.1",
+                "earth": "48.1",
+                "moon": "26.6",
+                "northNode": "3.4",
+                "southNode": "50.4",
+                "mercury": "22.2",
+                "venus": "3.2",
+                "mars": "10.4",
+                "jupiter": "37.4",
+                "saturn": "9.5",
+                "uranus": "26.6",
+                "neptune": "58.3",
+                "pluto": "28.5"
+              },
+              "design": {
+                "sun": "38.4",
+                "earth": "39.4",
+                "moon": "46.5",
+                "northNode": "27.6",
+                "southNode": "28.6",
+                "mercury": "11.4",
+                "venus": "58.5",
+                "mars": "44.5",
+                "jupiter": "13.6",
+                "saturn": "34.6",
+                "uranus": "26.3",
+                "neptune": "10.6",
+                "pluto": "28.6"
+              },
+              "profile": "1/4",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (21/48 | 38/39)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:32.827Z",
+              "birthUtcVerified": "1986-03-31T09:25:00Z",
+              "birthUtcDisplayed": "March 31, 1986, 09:25",
+              "personality": {
+                "sun": "21.1",
+                "earth": "48.1",
+                "moon": "26.6",
+                "northNode": "3.4",
+                "southNode": "50.4",
+                "mercury": "22.2",
+                "venus": "3.2",
+                "mars": "10.4",
+                "jupiter": "37.4",
+                "saturn": "9.5",
+                "uranus": "26.6",
+                "neptune": "58.3",
+                "pluto": "28.5"
+              },
+              "design": {
+                "sun": "38.4",
+                "earth": "39.4",
+                "moon": "46.5",
+                "northNode": "27.6",
+                "southNode": "28.6",
+                "mercury": "11.4",
+                "venus": "58.5",
+                "mars": "44.5",
+                "jupiter": "13.6",
+                "saturn": "34.6",
+                "uranus": "26.3",
+                "neptune": "10.6",
+                "pluto": "28.6"
+              },
+              "profile": "1/4",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (21/48 | 38/39)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-12",
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:44:36.029Z",
+              "birthUtcVerified": "1986-04-02T09:17:00Z",
+              "birthUtcDisplayed": "April 2, 1986, 09:17",
+              "personality": {
+                "sun": "21.4",
+                "earth": "48.4",
+                "moon": "54.5",
+                "northNode": "3.4",
+                "southNode": "50.4",
+                "mercury": "22.2",
+                "venus": "3.4",
+                "mars": "10.5",
+                "jupiter": "37.5",
+                "saturn": "9.5",
+                "uranus": "26.6",
+                "neptune": "58.3",
+                "pluto": "28.5"
+              },
+              "design": {
+                "sun": "38.6",
+                "earth": "39.6",
+                "moon": "50.4",
+                "northNode": "27.6",
+                "southNode": "28.6",
+                "mercury": "10.1",
+                "venus": "38.2",
+                "mars": "44.6",
+                "jupiter": "49.1",
+                "saturn": "34.6",
+                "uranus": "26.3",
+                "neptune": "10.6",
+                "pluto": "28.6"
+              },
+              "profile": "4/6",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (21/48 | 38/39)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:39.062Z",
+              "birthUtcVerified": "1986-04-02T09:17:00Z",
+              "birthUtcDisplayed": "April 2, 1986, 09:17",
+              "personality": {
+                "sun": "21.4",
+                "earth": "48.4",
+                "moon": "54.5",
+                "northNode": "3.4",
+                "southNode": "50.4",
+                "mercury": "22.2",
+                "venus": "3.4",
+                "mars": "10.5",
+                "jupiter": "37.5",
+                "saturn": "9.5",
+                "uranus": "26.6",
+                "neptune": "58.3",
+                "pluto": "28.5"
+              },
+              "design": {
+                "sun": "38.6",
+                "earth": "39.6",
+                "moon": "50.4",
+                "northNode": "27.6",
+                "southNode": "28.6",
+                "mercury": "10.1",
+                "venus": "38.2",
+                "mars": "44.6",
+                "jupiter": "49.1",
+                "saturn": "34.6",
+                "uranus": "26.3",
+                "neptune": "10.6",
+                "pluto": "28.6"
+              },
+              "profile": "4/6",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (21/48 | 38/39)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-13",
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:44:42.295Z",
+              "birthUtcVerified": "2025-12-09T18:15:00Z",
+              "birthUtcDisplayed": "December 9, 2025, 18:15",
+              "personality": {
+                "sun": "26.1",
+                "earth": "45.1",
+                "moon": "4.5",
+                "northNode": "63.2",
+                "southNode": "64.2",
+                "mercury": "14.4",
+                "venus": "9.6",
+                "mars": "11.4",
+                "jupiter": "62.4",
+                "saturn": "36.3",
+                "uranus": "8.5",
+                "neptune": "25.2",
+                "pluto": "41.1"
+              },
+              "design": {
+                "sun": "47.4",
+                "earth": "22.4",
+                "moon": "23.5",
+                "northNode": "22.2",
+                "southNode": "47.2",
+                "mercury": "47.3",
+                "venus": "4.3",
+                "mars": "32.3",
+                "jupiter": "53.6",
+                "saturn": "25.2",
+                "uranus": "20.2",
+                "neptune": "25.3",
+                "pluto": "60.6"
+              },
+              "profile": "1/4",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Rulership (26/45 | 47/22)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:45.360Z",
+              "birthUtcVerified": "2025-12-09T18:15:00Z",
+              "birthUtcDisplayed": "December 9, 2025, 18:15",
+              "personality": {
+                "sun": "26.1",
+                "earth": "45.1",
+                "moon": "4.5",
+                "northNode": "63.2",
+                "southNode": "64.2",
+                "mercury": "14.4",
+                "venus": "9.6",
+                "mars": "11.4",
+                "jupiter": "62.4",
+                "saturn": "36.3",
+                "uranus": "8.5",
+                "neptune": "25.2",
+                "pluto": "41.1"
+              },
+              "design": {
+                "sun": "47.4",
+                "earth": "22.4",
+                "moon": "23.5",
+                "northNode": "22.2",
+                "southNode": "47.2",
+                "mercury": "47.3",
+                "venus": "4.3",
+                "mars": "32.3",
+                "jupiter": "53.6",
+                "saturn": "25.2",
+                "uranus": "20.2",
+                "neptune": "25.3",
+                "pluto": "60.6"
+              },
+              "profile": "1/4",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of Rulership (26/45 | 47/22)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-14",
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:44:57.041Z",
+              "birthUtcVerified": "1994-10-07T09:31:00Z",
+              "birthUtcDisplayed": "October 7, 1994, 09:31",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "1.2",
+                "northNode": "1.2",
+                "southNode": "2.2",
+                "mercury": "28.5",
+                "venus": "1.5",
+                "mars": "56.6",
+                "jupiter": "1.4",
+                "saturn": "37.1",
+                "uranus": "61.2",
+                "neptune": "54.6",
+                "pluto": "14.2"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "52.6",
+                "northNode": "43.4",
+                "southNode": "23.4",
+                "mercury": "15.2",
+                "venus": "29.3",
+                "mars": "20.4",
+                "jupiter": "28.4",
+                "saturn": "63.1",
+                "uranus": "61.5",
+                "neptune": "61.2",
+                "pluto": "14.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:44:59.945Z",
+              "birthUtcVerified": "1994-10-07T09:31:00Z",
+              "birthUtcDisplayed": "October 7, 1994, 09:31",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "1.2",
+                "northNode": "1.2",
+                "southNode": "2.2",
+                "mercury": "28.5",
+                "venus": "1.5",
+                "mars": "56.6",
+                "jupiter": "1.4",
+                "saturn": "37.1",
+                "uranus": "61.2",
+                "neptune": "54.6",
+                "pluto": "14.2"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "52.6",
+                "northNode": "43.4",
+                "southNode": "23.4",
+                "mercury": "15.2",
+                "venus": "29.3",
+                "mars": "20.4",
+                "jupiter": "28.4",
+                "saturn": "63.1",
+                "uranus": "61.5",
+                "neptune": "61.2",
+                "pluto": "14.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-15",
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:03.108Z",
+              "birthUtcVerified": "2003-10-12T20:48:00Z",
+              "birthUtcDisplayed": "October 12, 2003, 20:48",
+              "personality": {
+                "sun": "57.5",
+                "earth": "51.5",
+                "moon": "2.5",
+                "northNode": "23.2",
+                "southNode": "43.2",
+                "mercury": "48.1",
+                "venus": "28.2",
+                "mars": "55.2",
+                "jupiter": "40.5",
+                "saturn": "39.4",
+                "uranus": "30.5",
+                "neptune": "19.3",
+                "pluto": "26.1"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "61.3",
+                "northNode": "8.5",
+                "southNode": "14.5",
+                "mercury": "56.5",
+                "venus": "39.2",
+                "mars": "37.4",
+                "jupiter": "4.2",
+                "saturn": "52.2",
+                "uranus": "55.3",
+                "neptune": "19.6",
+                "pluto": "26.1"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:05.994Z",
+              "birthUtcVerified": "2003-10-12T20:48:00Z",
+              "birthUtcDisplayed": "October 12, 2003, 20:48",
+              "personality": {
+                "sun": "57.5",
+                "earth": "51.5",
+                "moon": "2.5",
+                "northNode": "23.2",
+                "southNode": "43.2",
+                "mercury": "48.1",
+                "venus": "28.2",
+                "mars": "55.2",
+                "jupiter": "40.5",
+                "saturn": "39.4",
+                "uranus": "30.5",
+                "neptune": "19.3",
+                "pluto": "26.1"
+              },
+              "design": {
+                "sun": "62.1",
+                "earth": "61.1",
+                "moon": "61.3",
+                "northNode": "8.5",
+                "southNode": "14.5",
+                "mercury": "56.5",
+                "venus": "39.2",
+                "mars": "37.4",
+                "jupiter": "4.2",
+                "saturn": "52.2",
+                "uranus": "55.3",
+                "neptune": "19.6",
+                "pluto": "26.1"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-16",
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:09.267Z",
+              "birthUtcVerified": "2004-04-04T03:37:00Z",
+              "birthUtcDisplayed": "April 4, 2004, 03:37",
+              "personality": {
+                "sun": "21.6",
+                "earth": "48.6",
+                "moon": "6.6",
+                "northNode": "24.5",
+                "southNode": "44.5",
+                "mercury": "3.6",
+                "venus": "20.1",
+                "mars": "16.4",
+                "jupiter": "40.5",
+                "saturn": "52.4",
+                "uranus": "55.6",
+                "neptune": "13.2",
+                "pluto": "26.6"
+              },
+              "design": {
+                "sun": "54.2",
+                "earth": "53.2",
+                "moon": "53.3",
+                "northNode": "23.1",
+                "southNode": "43.1",
+                "mercury": "11.4",
+                "venus": "49.3",
+                "mars": "21.5",
+                "jupiter": "47.3",
+                "saturn": "52.6",
+                "uranus": "55.1",
+                "neptune": "19.5",
+                "pluto": "26.4"
+              },
+              "profile": "6/2",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of Endeavor (21/48 | 54/53)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:12.300Z",
+              "birthUtcVerified": "2004-04-04T03:37:00Z",
+              "birthUtcDisplayed": "April 4, 2004, 03:37",
+              "personality": {
+                "sun": "21.6",
+                "earth": "48.6",
+                "moon": "6.6",
+                "northNode": "24.5",
+                "southNode": "44.5",
+                "mercury": "3.6",
+                "venus": "20.1",
+                "mars": "16.4",
+                "jupiter": "40.5",
+                "saturn": "52.4",
+                "uranus": "55.6",
+                "neptune": "13.2",
+                "pluto": "26.6"
+              },
+              "design": {
+                "sun": "54.2",
+                "earth": "53.2",
+                "moon": "53.3",
+                "northNode": "23.1",
+                "southNode": "43.1",
+                "mercury": "11.4",
+                "venus": "49.3",
+                "mars": "21.5",
+                "jupiter": "47.3",
+                "saturn": "52.6",
+                "uranus": "55.1",
+                "neptune": "19.5",
+                "pluto": "26.4"
+              },
+              "profile": "6/2",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of Endeavor (21/48 | 54/53)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-17",
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:15.532Z",
+              "birthUtcVerified": "2004-10-12T22:58:00Z",
+              "birthUtcDisplayed": "October 12, 2004, 22:58",
+              "personality": {
+                "sun": "57.6",
+                "earth": "51.6",
+                "moon": "18.2",
+                "northNode": "27.1",
+                "southNode": "28.1",
+                "mercury": "32.5",
+                "venus": "40.6",
+                "mars": "48.2",
+                "jupiter": "46.6",
+                "saturn": "56.1",
+                "uranus": "55.4",
+                "neptune": "19.6",
+                "pluto": "26.4"
+              },
+              "design": {
+                "sun": "62.2",
+                "earth": "61.2",
+                "moon": "35.4",
+                "northNode": "24.2",
+                "southNode": "44.2",
+                "mercury": "7.3",
+                "venus": "35.2",
+                "mars": "33.6",
+                "jupiter": "64.5",
+                "saturn": "53.3",
+                "uranus": "37.1",
+                "neptune": "13.2",
+                "pluto": "26.4"
+              },
+              "profile": "6/2",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:18.591Z",
+              "birthUtcVerified": "2004-10-12T22:58:00Z",
+              "birthUtcDisplayed": "October 12, 2004, 22:58",
+              "personality": {
+                "sun": "57.6",
+                "earth": "51.6",
+                "moon": "18.2",
+                "northNode": "27.1",
+                "southNode": "28.1",
+                "mercury": "32.5",
+                "venus": "40.6",
+                "mars": "48.2",
+                "jupiter": "46.6",
+                "saturn": "56.1",
+                "uranus": "55.4",
+                "neptune": "19.6",
+                "pluto": "26.4"
+              },
+              "design": {
+                "sun": "62.2",
+                "earth": "61.2",
+                "moon": "35.4",
+                "northNode": "24.2",
+                "southNode": "44.2",
+                "mercury": "7.3",
+                "venus": "35.2",
+                "mars": "33.6",
+                "jupiter": "64.5",
+                "saturn": "53.3",
+                "uranus": "37.1",
+                "neptune": "13.2",
+                "pluto": "26.4"
+              },
+              "profile": "6/2",
+              "type": "Projector",
+              "incarnationCross": "Left Angle Cross of The Clarion (57/51 | 62/61)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-18",
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:43.130Z",
+              "birthUtcVerified": "1981-01-09T20:26:00Z",
+              "birthUtcDisplayed": "January 9, 1981, 20:26",
+              "personality": {
+                "sun": "54.5",
+                "earth": "53.5",
+                "moon": "55.4",
+                "northNode": "33.4",
+                "southNode": "19.4",
+                "mercury": "61.5",
+                "venus": "11.6",
+                "mars": "19.1",
+                "jupiter": "48.1",
+                "saturn": "48.1",
+                "uranus": "14.5",
+                "neptune": "11.1",
+                "pluto": "32.4"
+              },
+              "design": {
+                "sun": "32.1",
+                "earth": "42.1",
+                "moon": "11.1",
+                "northNode": "7.5",
+                "southNode": "13.5",
+                "mercury": "1.4",
+                "venus": "40.6",
+                "mars": "34.2",
+                "jupiter": "6.6",
+                "saturn": "46.5",
+                "uranus": "43.6",
+                "neptune": "26.4",
+                "pluto": "32.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Cycles (54/53 | 32/42)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:46.266Z",
+              "birthUtcVerified": "1981-01-09T20:26:00Z",
+              "birthUtcDisplayed": "January 9, 1981, 20:26",
+              "personality": {
+                "sun": "54.5",
+                "earth": "53.5",
+                "moon": "55.4",
+                "northNode": "33.4",
+                "southNode": "19.4",
+                "mercury": "61.5",
+                "venus": "11.6",
+                "mars": "19.1",
+                "jupiter": "48.1",
+                "saturn": "48.1",
+                "uranus": "14.5",
+                "neptune": "11.1",
+                "pluto": "32.4"
+              },
+              "design": {
+                "sun": "32.1",
+                "earth": "42.1",
+                "moon": "11.1",
+                "northNode": "7.5",
+                "southNode": "13.5",
+                "mercury": "1.4",
+                "venus": "40.6",
+                "mars": "34.2",
+                "jupiter": "6.6",
+                "saturn": "46.5",
+                "uranus": "43.6",
+                "neptune": "26.4",
+                "pluto": "32.2"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Cycles (54/53 | 32/42)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-19",
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:49.497Z",
+              "birthUtcVerified": "1981-02-02T08:05:00Z",
+              "birthUtcDisplayed": "February 2, 1981, 08:05",
+              "personality": {
+                "sun": "13.1",
+                "earth": "7.1",
+                "moon": "38.3",
+                "northNode": "33.4",
+                "southNode": "19.4",
+                "mercury": "55.2",
+                "venus": "60.2",
+                "mars": "30.2",
+                "jupiter": "48.1",
+                "saturn": "48.1",
+                "uranus": "14.6",
+                "neptune": "11.2",
+                "pluto": "32.4"
+              },
+              "design": {
+                "sun": "1.3",
+                "earth": "2.3",
+                "moon": "44.6",
+                "northNode": "7.3",
+                "southNode": "13.3",
+                "mercury": "28.5",
+                "venus": "48.1",
+                "mars": "26.3",
+                "jupiter": "46.5",
+                "saturn": "18.2",
+                "uranus": "14.1",
+                "neptune": "26.5",
+                "pluto": "32.3"
+              },
+              "profile": "1/3",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:52.409Z",
+              "birthUtcVerified": "1981-02-02T08:05:00Z",
+              "birthUtcDisplayed": "February 2, 1981, 08:05",
+              "personality": {
+                "sun": "13.1",
+                "earth": "7.1",
+                "moon": "38.3",
+                "northNode": "33.4",
+                "southNode": "19.4",
+                "mercury": "55.2",
+                "venus": "60.2",
+                "mars": "30.2",
+                "jupiter": "48.1",
+                "saturn": "48.1",
+                "uranus": "14.6",
+                "neptune": "11.2",
+                "pluto": "32.4"
+              },
+              "design": {
+                "sun": "1.3",
+                "earth": "2.3",
+                "moon": "44.6",
+                "northNode": "7.3",
+                "southNode": "13.3",
+                "mercury": "28.5",
+                "venus": "48.1",
+                "mars": "26.3",
+                "jupiter": "46.5",
+                "saturn": "18.2",
+                "uranus": "14.1",
+                "neptune": "26.5",
+                "pluto": "32.3"
+              },
+              "profile": "1/3",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of The Sphinx (13/7 | 1/2)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-20",
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:45:55.567Z",
+              "birthUtcVerified": "1983-06-18T01:23:00Z",
+              "birthUtcDisplayed": "June 18, 1983, 01:23",
+              "personality": {
+                "sun": "12.4",
+                "earth": "11.4",
+                "moon": "46.2",
+                "northNode": "12.3",
+                "southNode": "11.3",
+                "mercury": "20.6",
+                "venus": "33.5",
+                "mars": "45.6",
+                "jupiter": "34.4",
+                "saturn": "50.2",
+                "uranus": "9.1",
+                "neptune": "11.6",
+                "pluto": "50.1"
+              },
+              "design": {
+                "sun": "25.1",
+                "earth": "46.1",
+                "moon": "8.1",
+                "northNode": "15.2",
+                "southNode": "10.2",
+                "mercury": "22.5",
+                "venus": "3.4",
+                "mars": "51.3",
+                "jupiter": "9.6",
+                "saturn": "28.2",
+                "uranus": "9.4",
+                "neptune": "10.2",
+                "pluto": "50.3"
+              },
+              "profile": "4/1",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Juxtaposition Cross of Articulation (12/11 | 25/46)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:45:59.304Z",
+              "birthUtcVerified": "1983-06-18T01:23:00Z",
+              "birthUtcDisplayed": "June 18, 1983, 01:23",
+              "personality": {
+                "sun": "12.4",
+                "earth": "11.4",
+                "moon": "46.2",
+                "northNode": "12.3",
+                "southNode": "11.3",
+                "mercury": "20.6",
+                "venus": "33.5",
+                "mars": "45.6",
+                "jupiter": "34.4",
+                "saturn": "50.2",
+                "uranus": "9.1",
+                "neptune": "11.6",
+                "pluto": "50.1"
+              },
+              "design": {
+                "sun": "25.1",
+                "earth": "46.1",
+                "moon": "8.1",
+                "northNode": "15.2",
+                "southNode": "10.2",
+                "mercury": "22.5",
+                "venus": "3.4",
+                "mars": "51.3",
+                "jupiter": "9.6",
+                "saturn": "28.2",
+                "uranus": "9.4",
+                "neptune": "10.2",
+                "pluto": "50.3"
+              },
+              "profile": "4/1",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Juxtaposition Cross of Articulation (12/11 | 25/46)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-21",
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:46:02.538Z",
+              "birthUtcVerified": "1985-06-10T20:11:00Z",
+              "birthUtcDisplayed": "June 10, 1985, 20:11",
+              "personality": {
+                "sun": "45.4",
+                "earth": "26.4",
+                "moon": "36.3",
+                "northNode": "2.5",
+                "southNode": "1.5",
+                "mercury": "12.2",
+                "venus": "27.3",
+                "mars": "15.3",
+                "jupiter": "13.4",
+                "saturn": "43.5",
+                "uranus": "5.5",
+                "neptune": "10.5",
+                "pluto": "28.1"
+              },
+              "design": {
+                "sun": "22.6",
+                "earth": "47.6",
+                "moon": "9.1",
+                "northNode": "23.2",
+                "southNode": "43.2",
+                "mercury": "17.6",
+                "venus": "42.2",
+                "mars": "3.2",
+                "jupiter": "41.6",
+                "saturn": "14.4",
+                "uranus": "26.2",
+                "neptune": "10.6",
+                "pluto": "28.3"
+              },
+              "profile": "4/6",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Rulership (45/26 | 22/47)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:46:05.566Z",
+              "birthUtcVerified": "1985-06-10T20:11:00Z",
+              "birthUtcDisplayed": "June 10, 1985, 20:11",
+              "personality": {
+                "sun": "45.4",
+                "earth": "26.4",
+                "moon": "36.3",
+                "northNode": "2.5",
+                "southNode": "1.5",
+                "mercury": "12.2",
+                "venus": "27.3",
+                "mars": "15.3",
+                "jupiter": "13.4",
+                "saturn": "43.5",
+                "uranus": "5.5",
+                "neptune": "10.5",
+                "pluto": "28.1"
+              },
+              "design": {
+                "sun": "22.6",
+                "earth": "47.6",
+                "moon": "9.1",
+                "northNode": "23.2",
+                "southNode": "43.2",
+                "mercury": "17.6",
+                "venus": "42.2",
+                "mars": "3.2",
+                "jupiter": "41.6",
+                "saturn": "14.4",
+                "uranus": "26.2",
+                "neptune": "10.6",
+                "pluto": "28.3"
+              },
+              "profile": "4/6",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Rulership (45/26 | 22/47)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-22",
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:46:38.515Z",
+              "birthUtcVerified": "1987-07-31T05:12:00Z",
+              "birthUtcDisplayed": "July 31, 1987, 05:12",
+              "personality": {
+                "sun": "31.6",
+                "earth": "41.6",
+                "moon": "18.4",
+                "northNode": "25.6",
+                "southNode": "46.6",
+                "mercury": "53.5",
+                "venus": "56.6",
+                "mars": "7.3",
+                "jupiter": "3.3",
+                "saturn": "5.4",
+                "uranus": "11.1",
+                "neptune": "58.3",
+                "pluto": "28.6"
+              },
+              "design": {
+                "sun": "24.2",
+                "earth": "44.2",
+                "moon": "16.1",
+                "northNode": "21.2",
+                "southNode": "48.2",
+                "mercury": "3.6",
+                "venus": "17.6",
+                "mars": "35.6",
+                "jupiter": "21.5",
+                "saturn": "26.4",
+                "uranus": "11.5",
+                "neptune": "58.5",
+                "pluto": "44.1"
+              },
+              "profile": "6/2",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of The Alpha (31/41 | 24/44)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:46:41.578Z",
+              "birthUtcVerified": "1987-07-31T05:12:00Z",
+              "birthUtcDisplayed": "July 31, 1987, 05:12",
+              "personality": {
+                "sun": "31.6",
+                "earth": "41.6",
+                "moon": "18.4",
+                "northNode": "25.6",
+                "southNode": "46.6",
+                "mercury": "53.5",
+                "venus": "56.6",
+                "mars": "7.3",
+                "jupiter": "3.3",
+                "saturn": "5.4",
+                "uranus": "11.1",
+                "neptune": "58.3",
+                "pluto": "28.6"
+              },
+              "design": {
+                "sun": "24.2",
+                "earth": "44.2",
+                "moon": "16.1",
+                "northNode": "21.2",
+                "southNode": "48.2",
+                "mercury": "3.6",
+                "venus": "17.6",
+                "mars": "35.6",
+                "jupiter": "21.5",
+                "saturn": "26.4",
+                "uranus": "11.5",
+                "neptune": "58.5",
+                "pluto": "44.1"
+              },
+              "profile": "6/2",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of The Alpha (31/41 | 24/44)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-23",
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:46:44.819Z",
+              "birthUtcVerified": "1992-08-02T09:35:00Z",
+              "birthUtcDisplayed": "August 2, 1992, 09:35",
+              "personality": {
+                "sun": "33.3",
+                "earth": "19.3",
+                "moon": "46.3",
+                "northNode": "10.2",
+                "southNode": "15.2",
+                "mercury": "33.4",
+                "venus": "4.6",
+                "mars": "20.5",
+                "jupiter": "64.5",
+                "saturn": "13.3",
+                "uranus": "38.6",
+                "neptune": "54.2",
+                "pluto": "43.2"
+              },
+              "design": {
+                "sun": "24.6",
+                "earth": "44.6",
+                "moon": "24.2",
+                "northNode": "10.4",
+                "southNode": "15.4",
+                "mercury": "51.2",
+                "venus": "3.5",
+                "mars": "36.6",
+                "jupiter": "59.5",
+                "saturn": "13.6",
+                "uranus": "54.4",
+                "neptune": "54.5",
+                "pluto": "43.4"
+              },
+              "profile": "3/6",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of The Four Ways (33/19 | 24/44)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:46:47.887Z",
+              "birthUtcVerified": "1992-08-02T09:35:00Z",
+              "birthUtcDisplayed": "August 2, 1992, 09:35",
+              "personality": {
+                "sun": "33.3",
+                "earth": "19.3",
+                "moon": "46.3",
+                "northNode": "10.2",
+                "southNode": "15.2",
+                "mercury": "33.4",
+                "venus": "4.6",
+                "mars": "20.5",
+                "jupiter": "64.5",
+                "saturn": "13.3",
+                "uranus": "38.6",
+                "neptune": "54.2",
+                "pluto": "43.2"
+              },
+              "design": {
+                "sun": "24.6",
+                "earth": "44.6",
+                "moon": "24.2",
+                "northNode": "10.4",
+                "southNode": "15.4",
+                "mercury": "51.2",
+                "venus": "3.5",
+                "mars": "36.6",
+                "jupiter": "59.5",
+                "saturn": "13.6",
+                "uranus": "54.4",
+                "neptune": "54.5",
+                "pluto": "43.4"
+              },
+              "profile": "3/6",
+              "type": "Projector",
+              "incarnationCross": "Right Angle Cross of The Four Ways (33/19 | 24/44)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-24",
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:46:51.079Z",
+              "birthUtcVerified": "1995-01-26T03:23:00Z",
+              "birthUtcDisplayed": "January 26, 1995, 03:23",
+              "personality": {
+                "sun": "41.4",
+                "earth": "31.4",
+                "moon": "34.1",
+                "northNode": "44.4",
+                "southNode": "24.4",
+                "mercury": "49.3",
+                "venus": "26.3",
+                "mars": "29.5",
+                "jupiter": "9.4",
+                "saturn": "37.5",
+                "uranus": "60.1",
+                "neptune": "61.3",
+                "pluto": "34.1"
+              },
+              "design": {
+                "sun": "44.1",
+                "earth": "24.1",
+                "moon": "6.1",
+                "northNode": "1.2",
+                "southNode": "2.2",
+                "mercury": "32.1",
+                "venus": "44.5",
+                "mars": "7.1",
+                "jupiter": "43.3",
+                "saturn": "37.1",
+                "uranus": "61.3",
+                "neptune": "61.1",
+                "pluto": "14.3"
+              },
+              "profile": "4/1",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:46:54.089Z",
+              "birthUtcVerified": "1995-01-26T03:23:00Z",
+              "birthUtcDisplayed": "January 26, 1995, 03:23",
+              "personality": {
+                "sun": "41.4",
+                "earth": "31.4",
+                "moon": "34.1",
+                "northNode": "44.4",
+                "southNode": "24.4",
+                "mercury": "49.3",
+                "venus": "26.3",
+                "mars": "29.5",
+                "jupiter": "9.4",
+                "saturn": "37.5",
+                "uranus": "60.1",
+                "neptune": "61.3",
+                "pluto": "34.1"
+              },
+              "design": {
+                "sun": "44.1",
+                "earth": "24.1",
+                "moon": "6.1",
+                "northNode": "1.2",
+                "southNode": "2.2",
+                "mercury": "32.1",
+                "venus": "44.5",
+                "mars": "7.1",
+                "jupiter": "43.3",
+                "saturn": "37.1",
+                "uranus": "61.3",
+                "neptune": "61.1",
+                "pluto": "14.3"
+              },
+              "profile": "4/1",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Juxtaposition Cross of Fantasy (41/31 | 44/24)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-25",
+      "birthUtc": "1980-10-05T10:56:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:46:57.346Z",
+              "birthUtcVerified": "1980-10-05T10:56:00Z",
+              "birthUtcDisplayed": "October 5, 1980, 10:56",
+              "personality": {
+                "sun": "48.4",
+                "earth": "21.4",
+                "moon": "59.3",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "28.6",
+                "venus": "59.1",
+                "mars": "14.1",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "39.6",
+                "earth": "38.6",
+                "moon": "3.2",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.3",
+                "venus": "35.6",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "4/6",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (48/21 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:47:00.275Z",
+              "birthUtcVerified": "1980-10-05T10:56:00Z",
+              "birthUtcDisplayed": "October 5, 1980, 10:56",
+              "personality": {
+                "sun": "48.4",
+                "earth": "21.4",
+                "moon": "59.3",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "28.6",
+                "venus": "59.1",
+                "mars": "14.1",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "39.6",
+                "earth": "38.6",
+                "moon": "3.2",
+                "northNode": "4.3",
+                "southNode": "49.3",
+                "mercury": "62.3",
+                "venus": "35.6",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "4/6",
+              "type": "Generator",
+              "incarnationCross": "Right Angle Cross of Tension (48/21 | 39/38)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-26",
+      "birthUtc": "1980-10-06T14:21:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:47:26.456Z",
+              "birthUtcVerified": "1980-10-06T14:21:00Z",
+              "birthUtcDisplayed": "October 6, 1980, 14:21",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "64.5",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "44.1",
+                "venus": "59.2",
+                "mars": "14.2",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "2.1",
+                "northNode": "4.2",
+                "southNode": "49.2",
+                "mercury": "62.2",
+                "venus": "35.6",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:47:29.482Z",
+              "birthUtcVerified": "1980-10-06T14:21:00Z",
+              "birthUtcDisplayed": "October 6, 1980, 14:21",
+              "personality": {
+                "sun": "48.5",
+                "earth": "21.5",
+                "moon": "64.5",
+                "northNode": "4.1",
+                "southNode": "49.1",
+                "mercury": "44.1",
+                "venus": "59.2",
+                "mars": "14.2",
+                "jupiter": "6.4",
+                "saturn": "46.4",
+                "uranus": "43.5",
+                "neptune": "26.4",
+                "pluto": "32.1"
+              },
+              "design": {
+                "sun": "53.1",
+                "earth": "54.1",
+                "moon": "2.1",
+                "northNode": "4.2",
+                "southNode": "49.2",
+                "mercury": "62.2",
+                "venus": "35.6",
+                "mars": "6.6",
+                "jupiter": "40.2",
+                "saturn": "47.6",
+                "uranus": "43.4",
+                "neptune": "26.4",
+                "pluto": "57.5"
+              },
+              "profile": "5/1",
+              "type": "Generator",
+              "incarnationCross": "Left Angle Cross of Endeavor (48/21 | 53/54)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-27",
+      "birthUtc": "1984-08-20T06:46:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:47:32.818Z",
+              "birthUtcVerified": "1984-08-20T06:46:00Z",
+              "birthUtcDisplayed": "August 20, 1984, 06:46",
+              "personality": {
+                "sun": "29.4",
+                "earth": "30.4",
+                "moon": "20.3",
+                "northNode": "20.3",
+                "southNode": "34.3",
+                "mercury": "64.1",
+                "venus": "64.5",
+                "mars": "34.2",
+                "jupiter": "10.6",
+                "saturn": "44.4",
+                "uranus": "9.5",
+                "neptune": "10.1",
+                "pluto": "50.4"
+              },
+              "design": {
+                "sun": "8.6",
+                "earth": "14.6",
+                "moon": "60.6",
+                "northNode": "16.1",
+                "southNode": "9.1",
+                "mercury": "27.3",
+                "venus": "23.4",
+                "mars": "1.5",
+                "jupiter": "38.4",
+                "saturn": "44.5",
+                "uranus": "5.1",
+                "neptune": "10.3",
+                "pluto": "50.4"
+              },
+              "profile": "4/6",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Contagion (29/30 | 8/14)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:47:35.850Z",
+              "birthUtcVerified": "1984-08-20T06:46:00Z",
+              "birthUtcDisplayed": "August 20, 1984, 06:46",
+              "personality": {
+                "sun": "29.4",
+                "earth": "30.4",
+                "moon": "20.3",
+                "northNode": "20.3",
+                "southNode": "34.3",
+                "mercury": "64.1",
+                "venus": "64.5",
+                "mars": "34.2",
+                "jupiter": "10.6",
+                "saturn": "44.4",
+                "uranus": "9.5",
+                "neptune": "10.1",
+                "pluto": "50.4"
+              },
+              "design": {
+                "sun": "8.6",
+                "earth": "14.6",
+                "moon": "60.6",
+                "northNode": "16.1",
+                "southNode": "9.1",
+                "mercury": "27.3",
+                "venus": "23.4",
+                "mars": "1.5",
+                "jupiter": "38.4",
+                "saturn": "44.5",
+                "uranus": "5.1",
+                "neptune": "10.3",
+                "pluto": "50.4"
+              },
+              "profile": "4/6",
+              "type": "Manifesting Generator",
+              "incarnationCross": "Right Angle Cross of Contagion (29/30 | 8/14)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDD-28",
+      "birthUtc": "1988-03-05T23:22:00Z",
+      "observations": {
+        "Jovian": {
+          "captures": [
+            {
+              "repeat": 1,
+              "capturedAtUtc": "2026-10-03T14:47:39.181Z",
+              "birthUtcVerified": "1988-03-05T23:22:00Z",
+              "birthUtcDisplayed": "March 5, 1988, 23:22",
+              "personality": {
+                "sun": "63.5",
+                "earth": "64.5",
+                "moon": "48.2",
+                "northNode": "36.1",
+                "southNode": "6.1",
+                "mercury": "13.6",
+                "venus": "3.4",
+                "mars": "58.5",
+                "jupiter": "3.4",
+                "saturn": "10.4",
+                "uranus": "10.3",
+                "neptune": "38.1",
+                "pluto": "44.6"
+              },
+              "design": {
+                "sun": "26.1",
+                "earth": "45.1",
+                "moon": "33.5",
+                "northNode": "25.1",
+                "southNode": "46.1",
+                "mercury": "9.5",
+                "venus": "38.6",
+                "mars": "44.4",
+                "jupiter": "51.6",
+                "saturn": "11.1",
+                "uranus": "11.4",
+                "neptune": "58.4",
+                "pluto": "44.4"
+              },
+              "profile": "5/1",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of Dominion (63/64 | 26/45)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            },
+            {
+              "repeat": 2,
+              "capturedAtUtc": "2026-10-03T14:47:42.075Z",
+              "birthUtcVerified": "1988-03-05T23:22:00Z",
+              "birthUtcDisplayed": "March 5, 1988, 23:22",
+              "personality": {
+                "sun": "63.5",
+                "earth": "64.5",
+                "moon": "48.2",
+                "northNode": "36.1",
+                "southNode": "6.1",
+                "mercury": "13.6",
+                "venus": "3.4",
+                "mars": "58.5",
+                "jupiter": "3.4",
+                "saturn": "10.4",
+                "uranus": "10.3",
+                "neptune": "38.1",
+                "pluto": "44.6"
+              },
+              "design": {
+                "sun": "26.1",
+                "earth": "45.1",
+                "moon": "33.5",
+                "northNode": "25.1",
+                "southNode": "46.1",
+                "mercury": "9.5",
+                "venus": "38.6",
+                "mars": "44.4",
+                "jupiter": "51.6",
+                "saturn": "11.1",
+                "uranus": "11.4",
+                "neptune": "58.4",
+                "pluto": "44.4"
+              },
+              "profile": "5/1",
+              "type": "Manifestor",
+              "incarnationCross": "Left Angle Cross of Dominion (63/64 | 26/45)",
+              "designDateDisplayed": null,
+              "designDateTimezone": "UNKNOWN",
+              "fineStructure": "NOT OBSERVED",
+              "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+              "evidenceFile": "evidence/jovian-paired-dom.tsv"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
