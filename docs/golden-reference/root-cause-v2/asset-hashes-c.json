@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "assets": [
+    {
+      "id": "sepl_18.se1",
+      "type": "Swiss compressed DE441",
+      "source": "frozen TD-OHD 8787 installed ephemeris, read only; previous audit provenance retained",
+      "sourceProvenance": "../provenance/provenance.json",
+      "bytes": 484061,
+      "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "headerFirst150Bytes": "SWISSEPH  3\r\nsepl_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba\u0000\ufffdb\u0007\u0000\ufffd\u0001\u0000\u0000\u0000\u0000\u0000@\ufffd%BAL\ufffd\ufffd\ufffd\ufffd\ufffdCA\n\u0000\u0002\u0000\u0003\u0000",
+      "deNumber": 441
+    },
+    {
+      "id": "semo_18.se1",
+      "type": "Swiss compressed DE441",
+      "source": "frozen TD-OHD 8787 installed ephemeris, read only; previous audit provenance retained",
+      "sourceProvenance": "../provenance/provenance.json",
+      "bytes": 1304771,
+      "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "headerFirst150Bytes": "SWISSEPH  3\r\nsemo_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba\u0000\ufffd\ufffd\u0013\u0000\ufffd\u0001\u0000\u0000\u001dc\u0016\ufffd{%BAv\ufffd\ufffd:\ufffd\ufffdCA\u0001\u0000\u0001\u0000\ufffdc",
+      "deNumber": 441
+    },
+    {
+      "filename": "de441.eph",
+      "bytes": 2788676624,
+      "sha256": "476096486def4e41bfceb29aa27f50784da0bce318902bcf7b88caad058cd4da",
+      "md5": "4e3b924463d17b68ec9c4a18240300cd",
+      "hashSeconds": 4.443747043609619,
+      "id": "de441.eph",
+      "type": "raw NASA/JPL binary DE441",
+      "sourceUrl": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de441/linux_m13000p17000.441",
+      "renameOnly": "linux_m13000p17000.441 -> de441.eph, no byte transformation",
+      "headerTitle252Bytes": "JPL Planetary Ephemeris DE441/LE441                                                 Start Epoch: JED= -3100015.5-13200-AUG-15 00:00:00                                  Final Epoch: JED=  8000016.5 17191-MAR-15 00:00:00                                  ",
+      "binaryHeaderDenum": 441,
+      "binaryHeaderEffectiveJdRangeAndStep": [
+        -3027215.5,
+        7930192.5,
+        32.0
+      ],
+      "officialMD5": "4e3b924463d17b68ec9c4a18240300cd",
+      "officialMD5Source": "https://www.astro.com/swisseph-download/jplfiles/",
+      "md5MatchesOfficial": true,
+      "readmeDifferentMd5": "a7b2a5b8b2ebed52ea4da2304958053b",
+      "readmeMd5Note": "GitHub README lists a different de441.eph checksum. This downloaded NASA Linux file matches the dedicated Astrodienst JPL download page checksum; both are recorded rather than hiding the discrepancy."
+    },
+    {
+      "filename": "de431.eph",
+      "downloadSource": "https://ephe.scryr.io/jpl/de431.eph",
+      "primarySource": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de431/lnxm13000p17000.431",
+      "mirrorUsed": true,
+      "reusedVerifiedFile": true,
+      "bytes": 2788676624,
+      "sha256": "fe3d0323d26ada11f8d8228fda9ca590c7eb00cee8b22dff1839f74f5be71149",
+      "md5": "fad0f432ae18c330f9e14915fbf8960a",
+      "officialMd5": "fad0f432ae18c330f9e14915fbf8960a",
+      "officialMd5Source": "https://www.astro.com/swisseph-download/jplfiles/",
+      "md5Verified": true,
+      "mirrorListingSource": "https://github.com/aloistr/swisseph#jpl-files",
+      "id": "de431.eph",
+      "type": "raw JPL binary DE431",
+      "renameOnly": "mirror named de431.eph, byte identity confirmed by Astrodienst official MD5",
+      "headerTitle252Bytes": "JPL Planetary Ephemeris DE431/LE431                                                 Start Epoch: JED= -3100015.5-13200-AUG-15 00:00:00                                  Final Epoch: JED=  8000016.5 17191-MAR-15 00:00:00                                  ",
+      "binaryHeaderDenum": 431,
+      "binaryHeaderEffectiveJdRangeAndStep": [
+        -3027215.5,
+        7930192.5,
+        32.0
+      ],
+      "downloadNote": "NASA full request and range attempts were too slow, interrupted before completion. The same destination was overwritten from the mirror listed in official Swiss Ephemeris README. No incomplete kernel was used for calculation."
+    }
+  ]
+}

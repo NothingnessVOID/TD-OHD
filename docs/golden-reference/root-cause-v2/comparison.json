@@ -1,0 +1,683 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "productionModified": false,
+  "installationModified": false,
+  "comparisonMetric": "Personality Sun Gate.Line; Result 5 additionally compares longitude with clocks recorded. Sharp new groups measure Personality13 only; Design/Profile are not inferred. C groups independently measure26 at an88-degree Design root.",
+  "caseIds": [
+    "G1995-feb",
+    "G1995-jun",
+    "G2005-jul20",
+    "G2015-tight",
+    "G2015-feb",
+    "G2025-tight",
+    "G2025-mar",
+    "G1985-tight",
+    "G2005-jul11"
+  ],
+  "summary": {
+    "Sharp-se1-current": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "Sharp-JPL441-current": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "Sharp-se1-bias": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [
+        "G1995-jun",
+        "G2005-jul20"
+      ],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "Sharp-JPL441-bias": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [
+        "G1995-feb",
+        "G1995-jun",
+        "G2005-jul20"
+      ],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "A-SWISS": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [
+        "G1995-jun",
+        "G2005-jul20"
+      ],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "A-JPL441": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [
+        "G1995-feb",
+        "G1995-jun",
+        "G2005-jul20"
+      ],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    },
+    "A-JPL431": {
+      "measuredCases": 9,
+      "mismatchCaseMatchesJovian": [
+        "G1995-feb",
+        "G1995-jun",
+        "G2005-jul20"
+      ],
+      "negativeControlMatchesJovian": [
+        "G1985-tight",
+        "G2005-jul11"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "role": "mismatch",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "jovian": "55.4",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "55.3",
+      "sharpOfficialWebApp": "55.3",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "55.3",
+        "Sharp-JPL441-current": "55.3",
+        "Sharp-se1-bias": "55.3",
+        "Sharp-JPL441-bias": "55.4",
+        "A-SWISS": "55.3",
+        "A-JPL441": "55.4",
+        "A-JPL431": "55.4"
+      },
+      "resultCategories": [
+        2,
+        3,
+        5
+      ],
+      "result5GateLineDifferent": true,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G1995-jun",
+      "role": "mismatch",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "jovian": "15.3",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "15.2",
+      "sharpOfficialWebApp": "15.2",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "15.2",
+        "Sharp-JPL441-current": "15.2",
+        "Sharp-se1-bias": "15.3",
+        "Sharp-JPL441-bias": "15.3",
+        "A-SWISS": "15.3",
+        "A-JPL441": "15.3",
+        "A-JPL431": "15.3"
+      },
+      "resultCategories": [
+        1,
+        5
+      ],
+      "result5GateLineDifferent": true,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2005-jul20",
+      "role": "mismatch",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "jovian": "56.3",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "56.2",
+      "sharpOfficialWebApp": "56.2",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "56.2",
+        "Sharp-JPL441-current": "56.2",
+        "Sharp-se1-bias": "56.3",
+        "Sharp-JPL441-bias": "56.3",
+        "A-SWISS": "56.3",
+        "A-JPL441": "56.3",
+        "A-JPL431": "56.3"
+      },
+      "resultCategories": [
+        1,
+        5
+      ],
+      "result5GateLineDifferent": true,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2015-tight",
+      "role": "mismatch",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "jovian": "41.5",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "41.4",
+      "sharpOfficialWebApp": "41.4",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "41.4",
+        "Sharp-JPL441-current": "41.4",
+        "Sharp-se1-bias": "41.4",
+        "Sharp-JPL441-bias": "41.4",
+        "A-SWISS": "41.4",
+        "A-JPL441": "41.4",
+        "A-JPL431": "41.4"
+      },
+      "resultCategories": [
+        2,
+        4,
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2015-feb",
+      "role": "mismatch",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "jovian": "13.3",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "13.2",
+      "sharpOfficialWebApp": "13.2",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "13.2",
+        "Sharp-JPL441-current": "13.2",
+        "Sharp-se1-bias": "13.2",
+        "Sharp-JPL441-bias": "13.2",
+        "A-SWISS": "13.2",
+        "A-JPL441": "13.2",
+        "A-JPL431": "13.2"
+      },
+      "resultCategories": [
+        2,
+        4,
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2025-tight",
+      "role": "mismatch",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "jovian": "60.5",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "60.4",
+      "sharpOfficialWebApp": "60.4",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "60.4",
+        "Sharp-JPL441-current": "60.4",
+        "Sharp-se1-bias": "60.4",
+        "Sharp-JPL441-bias": "60.4",
+        "A-SWISS": "60.4",
+        "A-JPL441": "60.4",
+        "A-JPL431": "60.4"
+      },
+      "resultCategories": [
+        2,
+        4,
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2025-mar",
+      "role": "mismatch",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "jovian": "36.4",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "36.3",
+      "sharpOfficialWebApp": "36.3",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "36.3",
+        "Sharp-JPL441-current": "36.3",
+        "Sharp-se1-bias": "36.3",
+        "Sharp-JPL441-bias": "36.3",
+        "A-SWISS": "36.3",
+        "A-JPL441": "36.3",
+        "A-JPL431": "36.3"
+      },
+      "resultCategories": [
+        2,
+        4,
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G1985-tight",
+      "role": "negative-control",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "jovian": "41.4",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "41.4",
+      "sharpOfficialWebApp": "41.4",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "41.4",
+        "Sharp-JPL441-current": "41.4",
+        "Sharp-se1-bias": "41.4",
+        "Sharp-JPL441-bias": "41.4",
+        "A-SWISS": "41.4",
+        "A-JPL441": "41.4",
+        "A-JPL431": "41.4"
+      },
+      "resultCategories": [
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    },
+    {
+      "id": "G2005-jul11",
+      "role": "negative-control",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "jovian": "53.4",
+      "mmi": null,
+      "mmiStatus": "blocked",
+      "td8787": "53.4",
+      "sharpOfficialWebApp": "53.4",
+      "personalitySunGateLine": {
+        "Sharp-se1-current": "53.4",
+        "Sharp-JPL441-current": "53.4",
+        "Sharp-se1-bias": "53.4",
+        "Sharp-JPL441-bias": "53.4",
+        "A-SWISS": "53.4",
+        "A-JPL441": "53.4",
+        "A-JPL431": "53.4"
+      },
+      "resultCategories": [
+        5
+      ],
+      "result5GateLineDifferent": false,
+      "result6And7": "not classified; no MMI chart output"
+    }
+  ],
+  "numericalPairs": {
+    "SharpRawMinusCRaw": {
+      "cases": [
+        {
+          "id": "G1995-feb",
+          "longitudeDifferenceDegrees": -1.8848060676646128e-06,
+          "longitudeDifferenceMas": -6.785301843592606,
+          "speedDifferenceDegreesPerDay": -5.840859542693977e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1995-jun",
+          "longitudeDifferenceDegrees": -1.8848047318442696e-06,
+          "longitudeDifferenceMas": -6.78529703463937,
+          "speedDifferenceDegreesPerDay": -4.6116942409302197e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul20",
+          "longitudeDifferenceDegrees": -1.884947266717063e-06,
+          "longitudeDifferenceMas": -6.785810160181427,
+          "speedDifferenceDegreesPerDay": 9.49425000840165e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-tight",
+          "longitudeDifferenceDegrees": -1.885044923710666e-06,
+          "longitudeDifferenceMas": -6.786161725358397,
+          "speedDifferenceDegreesPerDay": 5.697557106110196e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-feb",
+          "longitudeDifferenceDegrees": -1.8850357719202293e-06,
+          "longitudeDifferenceMas": -6.7861287789128255,
+          "speedDifferenceDegreesPerDay": -2.5569846462403234e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-tight",
+          "longitudeDifferenceDegrees": -1.8851748109227628e-06,
+          "longitudeDifferenceMas": -6.786629319321946,
+          "speedDifferenceDegreesPerDay": -4.5660784020462586e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-mar",
+          "longitudeDifferenceDegrees": -1.8851806657949055e-06,
+          "longitudeDifferenceMas": -6.78665039686166,
+          "speedDifferenceDegreesPerDay": -1.3132344889310588e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1985-tight",
+          "longitudeDifferenceDegrees": -1.884645485006331e-06,
+          "longitudeDifferenceMas": -6.784723746022792,
+          "speedDifferenceDegreesPerDay": 4.0399769729582147e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul11",
+          "longitudeDifferenceDegrees": -1.8849204366233607e-06,
+          "longitudeDifferenceMas": -6.785713571844099,
+          "speedDifferenceDegreesPerDay": 3.8659090784154415e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        }
+      ],
+      "maxAbsLongitudeDifferenceMas": 6.78665039686166,
+      "maxAbsSpeedDifferenceDegreesPerDay": 5.840859542693977e-07
+    },
+    "SharpRawBiasMinusCRaw": {
+      "cases": [
+        {
+          "id": "G1995-feb",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -5.840777597132529e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1995-jun",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -4.611659359943232e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul20",
+          "longitudeDifferenceDegrees": -2.842170943040401e-14,
+          "longitudeDifferenceMas": -1.0231815394945443e-07,
+          "speedDifferenceDegreesPerDay": 9.497531427982153e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 5.69717353959831e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-feb",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -2.564597800791546e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -4.5661328140766955e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-mar",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -1.313279625048125e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1985-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 4.039624255103291e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul11",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 3.866234381533218e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        }
+      ],
+      "maxAbsLongitudeDifferenceMas": 1.0231815394945443e-07,
+      "maxAbsSpeedDifferenceDegreesPerDay": 5.840777597132529e-07
+    },
+    "SharpSe1BiasMinusCSe1": {
+      "cases": [
+        {
+          "id": "G1995-feb",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -5.840460932660108e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1995-jun",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -4.6117468510686876e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul20",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 9.502595899046895e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 5.698046907642862e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-feb",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -2.5576961215634242e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -4.5656821900941225e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-mar",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": -1.3134908183332072e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1985-tight",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 4.0413885793455506e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul11",
+          "longitudeDifferenceDegrees": 0.0,
+          "longitudeDifferenceMas": 0.0,
+          "speedDifferenceDegreesPerDay": 3.8655857637071023e-07,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        }
+      ],
+      "maxAbsLongitudeDifferenceMas": 0.0,
+      "maxAbsSpeedDifferenceDegreesPerDay": 5.840460932660108e-07
+    },
+    "CRaw441MinusCSe1": {
+      "cases": [
+        {
+          "id": "G1995-feb",
+          "longitudeDifferenceDegrees": 1.2028465334879002e-07,
+          "longitudeDifferenceMas": 0.43302475205564406,
+          "speedDifferenceDegreesPerDay": 3.141536697448544e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1995-jun",
+          "longitudeDifferenceDegrees": -1.9387675820325967e-07,
+          "longitudeDifferenceMas": -0.6979563295317348,
+          "speedDifferenceDegreesPerDay": 3.8594478724007786e-09,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul20",
+          "longitudeDifferenceDegrees": 1.1948839073738782e-07,
+          "longitudeDifferenceMas": 0.43015820665459614,
+          "speedDifferenceDegreesPerDay": -3.301522277787683e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-tight",
+          "longitudeDifferenceDegrees": 9.177597348752897e-09,
+          "longitudeDifferenceMas": 0.03303935045551043,
+          "speedDifferenceDegreesPerDay": 1.924201198377773e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2015-feb",
+          "longitudeDifferenceDegrees": 9.654468158259988e-08,
+          "longitudeDifferenceMas": 0.34756085369735956,
+          "speedDifferenceDegreesPerDay": -1.1231365171227026e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-tight",
+          "longitudeDifferenceDegrees": -1.4534066394844558e-08,
+          "longitudeDifferenceMas": -0.05232263902144041,
+          "speedDifferenceDegreesPerDay": 5.5874619819817894e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2025-mar",
+          "longitudeDifferenceDegrees": -1.3495650819095317e-07,
+          "longitudeDifferenceMas": -0.4858434294874314,
+          "speedDifferenceDegreesPerDay": 2.3840477592074194e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G1985-tight",
+          "longitudeDifferenceDegrees": 1.1625462548181531e-07,
+          "longitudeDifferenceMas": 0.4185166517345351,
+          "speedDifferenceDegreesPerDay": 2.354375516766538e-08,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        },
+        {
+          "id": "G2005-jul11",
+          "longitudeDifferenceDegrees": 3.078862960137485e-07,
+          "longitudeDifferenceMas": 1.1083906656494946,
+          "speedDifferenceDegreesPerDay": -7.510222665985111e-09,
+          "jdUtDifferenceDays": 0.0,
+          "deltaTDifferenceSeconds": 0.0,
+          "jdEtDifferenceDays": 0.0
+        }
+      ],
+      "maxAbsLongitudeDifferenceMas": 1.1083906656494946,
+      "maxAbsSpeedDifferenceDegreesPerDay": 5.5874619819817894e-08
+    }
+  },
+  "resultCategoryMeaning": {
+    "1": "C Swiss matches Jovian while Sharp differs (mismatch cases only)",
+    "2": "C Swiss = Sharp != Jovian",
+    "3": "C raw441 = Jovian while C Swiss = Sharp != Jovian; same DE controlled",
+    "4": "C Swiss = C raw441 = Sharp != Jovian",
+    "5": "Sharp raw441 longitude differs from C raw441; Gate.Line may still agree",
+    "6": "not testable without actual MMI output",
+    "7": "not testable without actual MMI output"
+  }
+}
