@@ -1,0 +1,243 @@
+{
+  "system": "Darwin",
+  "machine": "arm64",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+  "instrumentation": "read-only native_state.c, no modifications to historical default code",
+  "builds": [
+    {
+      "build": "176",
+      "sourceFilesSha256": {
+        "swedate.c": "b6134ff9fe192f0dfbff519f81a85b17b8034745cbef73b0fbd5647efe931ff7",
+        "sweph.c": "716352a06935f4ed0376b8bf406871e143ad2c5e16a0a5d64cf7186096dbd367",
+        "swephlib.c": "818968105ca31e8f5bc47bfe10d7ffd8c20d95a4dd9b906367e6e30987939d65",
+        "swejpl.c": "a44a4698a92e5c4276632bd281679c4979c07ee32191ed073365552f611f73b5",
+        "swemmoon.c": "462d7d181337924c3124160f0674cd650c2268aad9615cee570839f2859685b3",
+        "swemplan.c": "e299c010f5dde8071a4376529141923ed0e0d1584ccb57d82e5278875110e88b",
+        "swehouse.c": "02ce4c94d15c9b400bffd07ac8bb0da731b5dadd5e3c74ab34a4a9168e3e0af4",
+        "swecl.c": "3ff504e0775995efb24a7f435dd5c76f8d75f26c2b3635d65f3ba6753faf557b",
+        "swehel.c": "9d9507f44a950e3c88da7cf284a6161685a76155c13d7a0fd58fcd6b51d67125",
+        "sweph.h": "8113b204c46e95e46e5a058f956d135aaf468958b706d807d946678e2bfeae8e",
+        "swephlib.h": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09",
+        "swephexp.h": "28b62f3c1970cc06a647cd372fb1b9b98512bc080014cf7c398da40b15b9e8fd"
+      },
+      "librarySha256": "1c7f7959b78c03d89fddde2ca88f4ea252e8f7c201d17e10cf84c712b234a0fc",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "HISTORICAL STACK"
+    },
+    {
+      "build": "177",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "2b50d8e1ea9899c7ec91f3abceb62313ed9f58e6294c9d7c1583aa16144a5527",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "HISTORICAL STACK"
+    },
+    {
+      "build": "210",
+      "sourceFilesSha256": {
+        "swedate.c": "6790e989a003cb6422080d9aecf3c6567a25030f5b5647fd749e5b16422cfac7",
+        "sweph.c": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f",
+        "swephlib.c": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05",
+        "swejpl.c": "44014e260ae9ab2b1e8f413bb8a35fa270e369e3fb4907cd137ae103d2a8d0c2",
+        "swemmoon.c": "1d5f5ef9a95cf9a2f395b6334a58c63851ce0512d65bf08e49d3caf0a9fecb00",
+        "swemplan.c": "d13502ca7b92e3e32317b67ba7f012d92fabd1d358c3394c094d5515a3567caa",
+        "swehouse.c": "384c1d7b2a8bcef9f2cf16f7fbf02e7aa18f372bc11320874a5543b92aed95d9",
+        "swecl.c": "ab46bdc303978523c69d814d236432541ff48cb410b756ef78cc1e8d2b2be303",
+        "swehel.c": "7b4be28627afd22b059389abc4ef679b7259a0bcb9d0510e7ca3825901754b93",
+        "sweph.h": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a",
+        "swephlib.h": "29a151bb0c6adcb73fa73eff805b498c26bdffbb81e82d55e1b50f79218ea82a",
+        "swephexp.h": "dd8e74e2853915a316041397f31730219b7910333be6bba3934fd77130335f22"
+      },
+      "librarySha256": "ba5ac5bbbb9c9ce80f2f9b61ddd36fedcee99f07efec743a34159a12303001ee",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": null,
+      "classification": "MODERN REFERENCE"
+    },
+    {
+      "build": "177-pre1976",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "a6c3018c061fa0b8a5bfa54eff5d319d4dbe1a1e51f6875fd00449615a3665da",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "0dfb08442446f0a23927f26429c1384dd78a663eb282e58c4d363c7bcbc53a98",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    },
+    {
+      "build": "177-nut1980",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "328f759bdfd31409a90dae9d4c95d9d8b5938c0fc8b1e84e47584c3bcc9121ef",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "d3e399d81382b4a6592ed3c1417f091cf8b20c29f0176b9ee94edf6edda24440",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    },
+    {
+      "build": "177-nut2000a",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "161731cd63f855711bc23439ead55f8e494ea8ac7cd8440725f74afb776ad8fd",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "46d639bbf424c71137310a610d1abb7a5cea26b84ed060f1442f1af85d2b5339",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    },
+    {
+      "build": "177-no-bias",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "1c83f8347b73fac9b000b7d05238cfdf98808def28ddccc5dad9eadbb5c9d0f5",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "7e894f7dc8de6f094f136ec93aeab769cbe2d4b8a8412e0c7afef625fcef4f1e",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    },
+    {
+      "build": "177-pre1976-nut1980",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "55743b9450ce840e5d0d45144c19f8d377d8617d6b0f9270c678d47737ac19c1",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "8cce67b30a445f42a0fd486c34f85b3e0b46fc35636f7137c70e5dfd55b2a0bb",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    },
+    {
+      "build": "177-legacy-jpl-style",
+      "sourceFilesSha256": {
+        "swedate.c": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "sweph.c": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "swephlib.c": "1c83f8347b73fac9b000b7d05238cfdf98808def28ddccc5dad9eadbb5c9d0f5",
+        "swejpl.c": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "swemmoon.c": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "swemplan.c": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "swehouse.c": "0e4ea83fc54b16d2b57730c5c8374271caceb891485924273a7c2dac7026947d",
+        "swecl.c": "9ffba06f755f51db467d3bcab36ea4247a37e6f24f362da906051f988298fbb5",
+        "swehel.c": "a5fefa380de036f548e8fd285be34d92557d80b4e23e4b063d2cd0a7b29546f3",
+        "sweph.h": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "swephlib.h": "55743b9450ce840e5d0d45144c19f8d377d8617d6b0f9270c678d47737ac19c1",
+        "swephexp.h": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4"
+      },
+      "librarySha256": "a3a91f532e2a1033ead44de07e17f023a07a643d89d61c51a7e010a57a8f1075",
+      "compilerFlags": [
+        "-dynamiclib",
+        "-fPIC",
+        "-O2",
+        "-lm"
+      ],
+      "warningSummary": "swehel.c existing array-vs-NULL warning",
+      "classification": "ARTIFICIAL EXPERIMENT"
+    }
+  ],
+  "directJplSkipped": false
+}

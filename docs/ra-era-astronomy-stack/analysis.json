@@ -1,0 +1,1201 @@
+{
+  "units": "mas = milliarcseconds; 1000 mas = 1 arcsec",
+  "matrix": [
+    {
+      "stack": "176-de406-archived-utc",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "archived-utc",
+      "caseCount": 9,
+      "fiveSunMatches": 4,
+      "nineAll26Matches": 8,
+      "allCasesAll26Matches": 8,
+      "ABCDE": [
+        "56.2",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.5298529231367866,
+        103.16877653622214,
+        104.5438001256116,
+        665.0607017036236,
+        0.5386619022829109
+      ]
+    },
+    {
+      "stack": "176-de406-extended-utc-as-ut1",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 45,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 9,
+      "allCasesAll26Matches": 45,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        23.630715918443457,
+        103.16877653622214,
+        104.5438001256116,
+        665.0607017036236,
+        8.72635375799291
+      ]
+    },
+    {
+      "stack": "176-de406-tt",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.5298529231367866,
+        1.0543814141783514,
+        1.1286760582152056,
+        1.1318196811771486,
+        0.5386619022829109
+      ]
+    },
+    {
+      "stack": "176-de406-utc-as-ut1",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 9,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 9,
+      "allCasesAll26Matches": 9,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        23.630715918443457,
+        103.16877653622214,
+        104.5438001256116,
+        665.0607017036236,
+        8.72635375799291
+      ]
+    },
+    {
+      "stack": "177-de406-archived-utc",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "archived-utc",
+      "caseCount": 9,
+      "fiveSunMatches": 4,
+      "nineAll26Matches": 8,
+      "allCasesAll26Matches": 8,
+      "ABCDE": [
+        "56.2",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.5298529231367866,
+        58.198623673888505,
+        58.6191029924521,
+        545.3322703488084,
+        0.5386619022829109
+      ]
+    },
+    {
+      "stack": "177-de406-extended-utc-as-ut1",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 45,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 9,
+      "allCasesAll26Matches": 45,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        23.630715918443457,
+        58.198623673888505,
+        58.6191029924521,
+        545.3322703488084,
+        8.719535071577411
+      ]
+    },
+    {
+      "stack": "177-de406-tt",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.5298529231367866,
+        1.0543814141783514,
+        1.1286760582152056,
+        1.1318196811771486,
+        0.5386619022829109
+      ]
+    },
+    {
+      "stack": "177-de406-utc-as-ut1",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 9,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 9,
+      "allCasesAll26Matches": 9,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        23.630715918443457,
+        58.198623673888505,
+        58.6191029924521,
+        545.3322703488084,
+        8.719535071577411
+      ]
+    },
+    {
+      "stack": "177-de431-tt",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.2561896167208033,
+        0.3522656470522634,
+        0.39740984902891796,
+        0.36187250316288555,
+        0.003681816451717168
+      ]
+    },
+    {
+      "stack": "177-de441-tt",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.0013309545465745032,
+        0.007254766387632117,
+        0.007216499398055021,
+        0.018073887986247428,
+        0.0036904111766489223
+      ]
+    },
+    {
+      "stack": "177-jpl406-tt",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        1.171531096133549,
+        0.9648563036535052,
+        1.2725973874694319,
+        1.0191145975113614,
+        1.1843090987895266
+      ]
+    },
+    {
+      "stack": "177-jpl406-utc-as-ut1",
+      "classification": "HISTORICAL STACK",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 9,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 9,
+      "allCasesAll26Matches": 9,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        24.27239337521314,
+        58.1090995865452,
+        58.763023298524786,
+        545.2195947327709,
+        9.365182268084027
+      ]
+    },
+    {
+      "stack": "210-de406-archived-utc",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "archived-utc",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.528521968590212,
+        1.0471266477907193,
+        1.1214597634534584,
+        1.113745997827209,
+        0.534971491106262
+      ]
+    },
+    {
+      "stack": "210-de406-tt",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.528521968590212,
+        1.0471266477907193,
+        1.1214597634534584,
+        1.113745997827209,
+        0.534971491106262
+      ]
+    },
+    {
+      "stack": "210-de406-utc-as-ut1",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.3",
+        "41.4",
+        "13.2",
+        "60.4",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        23.466229868063238,
+        21.74921542064112,
+        22.21000727331557,
+        -6.9095486196602,
+        8.869268071975966
+      ]
+    },
+    {
+      "stack": "210-de431-tt",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.25485876449238276,
+        0.34501108530093916,
+        0.39019334963086294,
+        0.343798819812946,
+        -8.390088623855263e-06
+      ]
+    },
+    {
+      "stack": "210-de441-extended-tt",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "tt",
+      "caseCount": 45,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 36,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "stack": "210-de441-tt",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "stack": "210-jpl406-tt",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        1.17024976589164,
+        0.9575917147230939,
+        1.2653111070903833,
+        1.0010294545281795,
+        1.180559547719895
+      ]
+    },
+    {
+      "stack": "210-jpl406-utc-as-ut1",
+      "classification": "MODERN REFERENCE",
+      "timeMode": "utc-as-ut1",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.3",
+        "41.4",
+        "13.2",
+        "60.4",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        24.107956642183126,
+        21.659680692209804,
+        22.353858412316185,
+        -7.022264958322921,
+        9.5148561285896
+      ]
+    },
+    {
+      "stack": "experiment-j2000",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 0,
+      "nineAll26Matches": 1,
+      "allCasesAll26Matches": 1,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.4",
+        "41.5"
+      ],
+      "sunResidualVersusModernMas": [
+        -275217.0889943727,
+        -763165.7972667199,
+        -764652.3049391817,
+        -1260909.0525354985,
+        763170.0679122787
+      ]
+    },
+    {
+      "stack": "experiment-legacy-jpl-style",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 4,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        13.304823278303957,
+        40.5549929382687,
+        40.874291880754754,
+        65.8456795008533,
+        -49.09682654670178
+      ]
+    },
+    {
+      "stack": "experiment-no-bias",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 1,
+      "nineAll26Matches": 4,
+      "allCasesAll26Matches": 4,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.4",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        -6.255785956454929,
+        -5.731609030590334,
+        -5.6572816447442165,
+        -5.654638152918778,
+        -6.245890358513861
+      ]
+    },
+    {
+      "stack": "experiment-no-nutation",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 1,
+      "nineAll26Matches": 1,
+      "allCasesAll26Matches": 1,
+      "ABCDE": [
+        "56.3",
+        "41.4",
+        "13.2",
+        "60.4",
+        "41.5"
+      ],
+      "sunResidualVersusModernMas": [
+        3921.1203897139058,
+        -5405.96353980618,
+        -5621.121723197575,
+        -996.3264101997993,
+        12320.56813082636
+      ]
+    },
+    {
+      "stack": "experiment-nut1980",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        3.4002776146735414,
+        1.952672391780652,
+        2.1955748707114253,
+        -2.9742405786237214,
+        2.4099518668663222
+      ]
+    },
+    {
+      "stack": "experiment-nut2000a",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 2,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.4",
+        "13.2",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        -0.0021537971406360157,
+        1.0004791874962393,
+        1.4456114513450302,
+        0.8845654065225972,
+        1.142476730819908
+      ]
+    },
+    {
+      "stack": "experiment-pre1976",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 4,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.2",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        17.220036852449994,
+        46.44269138225354,
+        46.59334954340011,
+        76.73819739011378,
+        -44.18356506903365
+      ]
+    },
+    {
+      "stack": "experiment-pre1976-nut1980",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 7,
+      "allCasesAll26Matches": 7,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        20.09046154398675,
+        47.34098235985584,
+        47.66024815126002,
+        72.6321369256766,
+        -42.31227510445024
+      ]
+    },
+    {
+      "stack": "experiment-pre1976-nut1980-jpl406",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 5,
+      "nineAll26Matches": 7,
+      "allCasesAll26Matches": 7,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.4"
+      ],
+      "sunResidualVersusModernMas": [
+        20.732189341288176,
+        47.25144742678822,
+        47.804099494896946,
+        72.51942058701388,
+        -41.66668745710922
+      ]
+    },
+    {
+      "stack": "experiment-true",
+      "classification": "ARTIFICIAL EXPERIMENT",
+      "timeMode": "tt",
+      "caseCount": 9,
+      "fiveSunMatches": 4,
+      "nineAll26Matches": 6,
+      "allCasesAll26Matches": 6,
+      "ABCDE": [
+        "56.3",
+        "41.5",
+        "13.3",
+        "60.5",
+        "41.5"
+      ],
+      "sunResidualVersusModernMas": [
+        20156.51839014936,
+        20815.399343632635,
+        20779.169873571846,
+        20821.206099412848,
+        20817.08521816381
+      ]
+    }
+  ],
+  "measuredEffects": {
+    "DE406_minus_DE441_same_modern_code_TT": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 1.4681165794172557e-07,
+        "differenceArcsec": 0.0005285219685902121,
+        "differenceMas": 0.528521968590212
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 2.908685132751998e-07,
+        "differenceArcsec": 0.0010471266477907193,
+        "differenceMas": 1.0471266477907193
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 3.11516600959294e-07,
+        "differenceArcsec": 0.0011214597634534584,
+        "differenceMas": 1.1214597634534584
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": 3.0937388828533585e-07,
+        "differenceArcsec": 0.001113745997827209,
+        "differenceMas": 1.113745997827209
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 1.4860319197396166e-07,
+        "differenceArcsec": 0.000534971491106262,
+        "differenceMas": 0.534971491106262
+      }
+    ],
+    "DE431_minus_DE441_same_modern_code_TT": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 7.07941012478841e-08,
+        "differenceArcsec": 0.00025485876449238276,
+        "differenceMas": 0.25485876449238276
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 9.583641258359421e-08,
+        "differenceArcsec": 0.00034501108530093916,
+        "differenceMas": 0.34501108530093916
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 1.083870415641286e-07,
+        "differenceArcsec": 0.00039019334963086294,
+        "differenceMas": 0.39019334963086294
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": 9.549967217026278e-08,
+        "differenceArcsec": 0.000343798819812946,
+        "differenceMas": 0.343798819812946
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": -2.3305801732931286e-12,
+        "differenceArcsec": -8.390088623855263e-09,
+        "differenceMas": -8.390088623855263e-06
+      }
+    ],
+    "Historical_code_minus_modern_same_DE406_TT": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 3.6970959627069533e-10,
+        "differenceArcsec": 1.3309545465745032e-06,
+        "differenceMas": 0.0013309545465745032
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 2.0152128854533657e-09,
+        "differenceArcsec": 7.254766387632117e-06,
+        "differenceMas": 0.007254766387632117
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 2.004526322707534e-09,
+        "differenceArcsec": 7.216294761747122e-06,
+        "differenceMas": 0.007216294761747122
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": 5.020467597205425e-09,
+        "differenceArcsec": 1.807368334993953e-05,
+        "differenceMas": 0.01807368334993953
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 1.0251142157358117e-09,
+        "differenceArcsec": 3.6904111766489223e-06,
+        "differenceMas": 0.0036904111766489223
+      }
+    ],
+    "Direct_JPL406_minus_compressed406_same_historical_code_TT": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 1.7824396536525455e-07,
+        "differenceArcsec": 0.0006416782753149164,
+        "differenceMas": 0.6416782753149164
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": -2.4868086256901734e-08,
+        "differenceArcsec": -8.952511052484624e-05,
+        "differenceMas": -0.08952511052484624
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 3.997814701506286e-08,
+        "differenceArcsec": 0.0001439213292542263,
+        "differenceMas": 0.1439213292542263
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": -3.13069676849409e-08,
+        "differenceArcsec": -0.00011270508366578724,
+        "differenceMas": -0.11270508366578724
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 1.7934644347405992e-07,
+        "differenceArcsec": 0.0006456471965066157,
+        "differenceMas": 0.6456471965066157
+      }
+    ],
+    "UTC_numeric_as_UT1_minus_correct_TT_177": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 6.416906416006896e-06,
+        "differenceArcsec": 0.023100863097624824,
+        "differenceMas": 23.100863097624824
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 1.5873400627697265e-05,
+        "differenceArcsec": 0.057144242259710154,
+        "differenceMas": 57.144242259710154
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 1.5969563037288026e-05,
+        "differenceArcsec": 0.05749042693423689,
+        "differenceMas": 57.49042693423689
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": 0.00015116679185211979,
+        "differenceArcsec": 0.5442004506676312,
+        "differenceMas": 544.2004506676312
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 2.2724647692484723e-06,
+        "differenceArcsec": 0.0081808731692945,
+        "differenceMas": 8.1808731692945
+      }
+    ],
+    "IAU1976_minus_P03_ARTIFICIAL": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 4.636162202587002e-06,
+        "differenceArcsec": 0.016690183929313207,
+        "differenceMas": 16.690183929313207
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 1.2607863880020886e-05,
+        "differenceArcsec": 0.04538830996807519,
+        "differenceMas": 45.38830996807519
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 1.2629075968106918e-05,
+        "differenceArcsec": 0.0454646734851849,
+        "differenceMas": 45.4646734851849
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": 2.100177158581573e-05,
+        "differenceArcsec": 0.07560637770893663,
+        "differenceMas": 75.60637770893663
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": -1.242284082536571e-05,
+        "differenceArcsec": -0.04472222697131656,
+        "differenceMas": -44.72222697131656
+      }
+    ],
+    "IAU1980_minus_IAU2000B_ARTIFICIAL": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": 7.97340192093543e-07,
+        "differenceArcsec": 0.002870424691536755,
+        "differenceMas": 2.870424691536755
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": 2.4952527155619464e-07,
+        "differenceArcsec": 0.0008982909776023007,
+        "differenceMas": 0.8982909776023007
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 2.9636078124894993e-07,
+        "differenceArcsec": 0.0010668988124962198,
+        "differenceMas": 1.0668988124962198
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": -1.1405722943891305e-06,
+        "differenceArcsec": -0.00410606025980087,
+        "differenceMas": -4.10606025980087
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 5.198027679398365e-07,
+        "differenceArcsec": 0.0018712899645834113,
+        "differenceMas": 1.8712899645834113
+      }
+    ],
+    "IAU2000A_minus_IAU2000B_ARTIFICIAL": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": -1.4777961609979684e-07,
+        "differenceArcsec": -0.0005320066179592686,
+        "differenceMas": -0.5320066179592686
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": -1.4972840745031135e-08,
+        "differenceArcsec": -5.3902226682112087e-05,
+        "differenceMas": -0.05390222668211209
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": 8.803760920272907e-08,
+        "differenceArcsec": 0.00031693539312982466,
+        "differenceMas": 0.31693539312982466
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": -6.868174295959761e-08,
+        "differenceArcsec": -0.0002472542746545514,
+        "differenceMas": -0.2472542746545514
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": 1.6772634126027697e-07,
+        "differenceArcsec": 0.0006038148285369971,
+        "differenceMas": 0.6038148285369971
+      }
+    ],
+    "Bias_omitted_minus_enabled_ARTIFICIAL": [
+      {
+        "id": "G2005-jul20",
+        "differenceDegrees": -1.884899660353767e-06,
+        "differenceArcsec": -0.006785638777273562,
+        "differenceMas": -6.785638777273562
+      },
+      {
+        "id": "G2015-tight",
+        "differenceDegrees": -1.8849973457690794e-06,
+        "differenceArcsec": -0.006785990444768686,
+        "differenceMas": -6.785990444768686
+      },
+      {
+        "id": "G2015-feb",
+        "differenceDegrees": -1.8849882508220617e-06,
+        "differenceArcsec": -0.006785957702959422,
+        "differenceMas": -6.785957702959422
+      },
+      {
+        "id": "G2025-tight",
+        "differenceDegrees": -1.8851271761377575e-06,
+        "differenceArcsec": -0.006786457834095927,
+        "differenceMas": -6.786457834095927
+      },
+      {
+        "id": "G1985-tight",
+        "differenceDegrees": -1.8845978502213256e-06,
+        "differenceArcsec": -0.006784552260796772,
+        "differenceMas": -6.784552260796772
+      }
+    ]
+  },
+  "bestHistoricalCandidate": [
+    {
+      "case": "A",
+      "id": "G2005-jul20",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "ttJd": 2453572.4035273734,
+      "ut1JdModel": 2453572.402777778,
+      "deltaTSeconds": 64.76504802703857,
+      "correctTtOffsetSeconds": 64.184,
+      "effectiveTtMinusCorrectTtSeconds": 0.5810469388961792,
+      "personalitySun": {
+        "longitude": 118.25000107934271,
+        "gateLine": "56.3",
+        "speedDegreesPerDay": 0.9541753383481723
+      },
+      "personalityEarth": {
+        "longitude": 298.2500010793427,
+        "gateLine": "60.3",
+        "speedDegreesPerDay": 0.9541753383481723
+      },
+      "designSun": {
+        "longitude": 30.25000107898106,
+        "gateLine": "3.5",
+        "speedDegreesPerDay": 0.9760152093464246
+      },
+      "designEarth": {
+        "longitude": 210.25000107898106,
+        "gateLine": "50.5",
+        "speedDegreesPerDay": 0.9760152093464246
+      },
+      "profile": "3/5",
+      "designUtcFromTt": "2005-04-20T05:46:03.416648Z",
+      "sunMinusNearestBoundaryMas": 3.8856338051118655,
+      "sunResidualVersusModernMas": 23.630715918443457,
+      "officialLongitudeResidual": null,
+      "officialLongitudeResidualReason": "Jovian/myBodyGraph exact longitude is not disclosed in saved evidence; Gate.Line is an interval."
+    },
+    {
+      "case": "B",
+      "id": "G2015-tight",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "ttJd": 2457048.5563487587,
+      "ut1JdModel": 2457048.5555555555,
+      "deltaTSeconds": 68.53276044130325,
+      "correctTtOffsetSeconds": 67.184,
+      "effectiveTtMinusCorrectTtSeconds": 1.3487756252288818,
+      "personalitySun": {
+        "longitude": 305.7500091184792,
+        "gateLine": "41.5",
+        "speedDegreesPerDay": 1.0168192735184503
+      },
+      "personalityEarth": {
+        "longitude": 125.75000911847923,
+        "gateLine": "31.5",
+        "speedDegreesPerDay": 1.0168192735184503
+      },
+      "designSun": {
+        "longitude": 217.75000911853024,
+        "gateLine": "44.1",
+        "speedDegreesPerDay": 0.9997168880841801
+      },
+      "designEarth": {
+        "longitude": 37.750009118530215,
+        "gateLine": "24.1",
+        "speedDegreesPerDay": 0.9997168880841801
+      },
+      "profile": "5/1",
+      "designUtcFromTt": "2014-10-31T06:20:27.206983Z",
+      "sunMinusNearestBoundaryMas": 32.82652521647833,
+      "sunResidualVersusModernMas": 58.198623673888505,
+      "officialLongitudeResidual": null,
+      "officialLongitudeResidualReason": "Jovian/myBodyGraph exact longitude is not disclosed in saved evidence; Gate.Line is an interval."
+    },
+    {
+      "case": "C",
+      "id": "G2015-feb",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "ttJd": 2457057.789682233,
+      "ut1JdModel": 2457057.788888889,
+      "deltaTSeconds": 68.54491084814072,
+      "correctTtOffsetSeconds": 67.184,
+      "effectiveTtMinusCorrectTtSeconds": 1.3609260320663452,
+      "personalitySun": {
+        "longitude": 315.12500907002703,
+        "gateLine": "13.3",
+        "speedDegreesPerDay": 1.0138466315472725
+      },
+      "personalityEarth": {
+        "longitude": 135.12500907002703,
+        "gateLine": "7.3",
+        "speedDegreesPerDay": 1.0138466315472725
+      },
+      "designSun": {
+        "longitude": 227.12500906982692,
+        "gateLine": "1.5",
+        "speedDegreesPerDay": 1.0041625618918892
+      },
+      "designEarth": {
+        "longitude": 47.12500906982689,
+        "gateLine": "2.5",
+        "speedDegreesPerDay": 1.0041625618918892
+      },
+      "profile": "3/5",
+      "designUtcFromTt": "2014-11-09T14:55:42.229159Z",
+      "sunMinusNearestBoundaryMas": 32.65209732035146,
+      "sunResidualVersusModernMas": 58.6191029924521,
+      "officialLongitudeResidual": null,
+      "officialLongitudeResidualReason": "Jovian/myBodyGraph exact longitude is not disclosed in saved evidence; Gate.Line is an interval."
+    },
+    {
+      "case": "D",
+      "id": "G2025-tight",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "ttJd": 2460695.4571992834,
+      "ut1JdModel": 2460695.45625,
+      "deltaTSeconds": 82.01810270547867,
+      "correctTtOffsetSeconds": 69.184,
+      "effectiveTtMinusCorrectTtSeconds": 12.834088504314423,
+      "personalitySun": {
+        "longitude": 300.12515259004397,
+        "gateLine": "60.5",
+        "speedDegreesPerDay": 1.017666085655994
+      },
+      "personalityEarth": {
+        "longitude": 120.12515259004397,
+        "gateLine": "56.5",
+        "speedDegreesPerDay": 1.017666085655994
+      },
+      "designSun": {
+        "longitude": 212.12515258980054,
+        "gateLine": "28.1",
+        "speedDegreesPerDay": 0.9967138005986319
+      },
+      "designEarth": {
+        "longitude": 32.125152589800564,
+        "gateLine": "27.1",
+        "speedDegreesPerDay": 0.9967138005986319
+      },
+      "profile": "5/1",
+      "designUtcFromTt": "2024-10-25T01:27:03.937467Z",
+      "sunMinusNearestBoundaryMas": 549.3241582826158,
+      "sunResidualVersusModernMas": 545.3322703488084,
+      "officialLongitudeResidual": null,
+      "officialLongitudeResidualReason": "Jovian/myBodyGraph exact longitude is not disclosed in saved evidence; Gate.Line is an interval."
+    },
+    {
+      "case": "E",
+      "id": "G1985-tight",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "ttJd": 2446091.2742404756,
+      "ut1JdModel": 2446091.273611111,
+      "deltaTSeconds": 54.37709391117096,
+      "correctTtOffsetSeconds": 54.184,
+      "effectiveTtMinusCorrectTtSeconds": 0.19307881593704224,
+      "personalitySun": {
+        "longitude": 305.7499985912712,
+        "gateLine": "41.4",
+        "speedDegreesPerDay": 1.016894982896705
+      },
+      "personalityEarth": {
+        "longitude": 125.74999859127121,
+        "gateLine": "31.4",
+        "speedDegreesPerDay": 1.016894982896705
+      },
+      "designSun": {
+        "longitude": 217.7499985916628,
+        "gateLine": "44.1",
+        "speedDegreesPerDay": 1.000190561603483
+      },
+      "designEarth": {
+        "longitude": 37.7499985916628,
+        "gateLine": "24.1",
+        "speedDegreesPerDay": 1.000190561603483
+      },
+      "profile": "4/1",
+      "designUtcFromTt": "1984-10-31T00:04:08.039733Z",
+      "sunMinusNearestBoundaryMas": -5.071423652225349,
+      "sunResidualVersusModernMas": 8.719535071577411,
+      "officialLongitudeResidual": null,
+      "officialLongitudeResidualReason": "Jovian/myBodyGraph exact longitude is not disclosed in saved evidence; Gate.Line is an interval."
+    }
+  ],
+  "constantOffsetFeasibility": {
+    "reference": "2.10.03 + DE441 + correct TT",
+    "bounds": [
+      {
+        "id": "G2005-jul20",
+        "lowerInclusiveMas": 19.745082215649745,
+        "upperExclusiveMas": 3375019.745082216
+      },
+      {
+        "id": "G2015-tight",
+        "lowerInclusiveMas": 25.372098457410175,
+        "upperExclusiveMas": 3375025.3720984575
+      },
+      {
+        "id": "G2015-feb",
+        "lowerInclusiveMas": 25.96700567210064,
+        "upperExclusiveMas": 3375025.967005672
+      },
+      {
+        "id": "G2025-tight",
+        "lowerInclusiveMas": -3.9918879338074476,
+        "upperExclusiveMas": 3374996.0081120664
+      },
+      {
+        "id": "G1985-tight",
+        "lowerInclusiveMas": -3374986.209041276,
+        "upperExclusiveMas": 13.79095872380276
+      }
+    ],
+    "lowerInclusiveMas": 25.96700567210064,
+    "upperExclusiveMas": 13.79095872380276,
+    "feasible": false,
+    "purpose": "Analytical rejection only; no offset introduced."
+  }
+}

@@ -1,0 +1,1926 @@
+{
+  "stack": "210-jpl406-tt",
+  "classification": "MODERN REFERENCE",
+  "swissVersion": "2.10.03",
+  "runtimeDeNumbers": {
+    "runtime": 406,
+    "planet_file": 0,
+    "moon_file": 0
+  },
+  "requestedFlags": 257,
+  "returnedFlags": [
+    257
+  ],
+  "timeMode": "tt",
+  "tidalAcceleration": -25.826,
+  "ut1Meaning": "inverted library delta-T model, not measured IERS UT1",
+  "designUtcMeaning": "TT root independently converted to civil UTC with complete leap-second table",
+  "fiveSunMatches": 2,
+  "nineAll26Matches": 6,
+  "allCasesAll26Matches": 6,
+  "caseCount": 9,
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "utcJd": 2449770.547222222,
+      "ttMinusUtcSeconds": 61.184,
+      "archivedUtcResult": [
+        2449770.5479303706,
+        2449770.547225404
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2449770.5479303706,
+        "ut1JdModel": 2449770.547225404,
+        "deltaTSeconds": 60.909104347229004,
+        "sunBoundary": {
+          "gate": 55,
+          "line": 4,
+          "gateLine": "55.4",
+          "globalLineIndex": 351,
+          "lineStartLongitude": 332.9375,
+          "nextLineBoundaryLongitude": 333.875,
+          "nextLineBoundaryLongitudeUnwrapped": 333.875,
+          "distanceNextDegrees": 0.9374965540243352,
+          "distanceNextArcsec": 3374.9875944876067,
+          "distanceNextMas": 3374987.5944876065,
+          "equivalentSeconds": 80413.7810205102,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "55.4",
+          "expectedLineStartLongitude": 332.9375,
+          "signedLongitudeMinusExpectedStartDegrees": 3.4459756648175244e-06,
+          "signedLongitudeMinusExpectedStartMas": 12.405512393343088,
+          "signedSecondsPastExpectedStart": 0.2955786144739797
+        },
+        "nearestBoundaryLongitude": 332.9375,
+        "signedMinusNearestBoundaryDegrees": 3.4459756648175244e-06,
+        "signedMinusNearestBoundaryArcsec": 0.012405512393343088,
+        "signedMinusNearestBoundaryMas": 12.405512393343088,
+        "activations": {
+          "sun": {
+            "longitude": 332.93750344597566,
+            "gateLine": "55.4",
+            "speedDegreesPerDay": 1.00728632878291
+          },
+          "earth": {
+            "longitude": 152.9375034459756,
+            "gateLine": "59.4",
+            "speedDegreesPerDay": 1.00728632878291
+          },
+          "moon": {
+            "longitude": 236.43309354800772,
+            "gateLine": "14.3",
+            "speedDegreesPerDay": 14.081671147899426
+          },
+          "northNode": {
+            "longitude": 217.83167681038685,
+            "gateLine": "44.1",
+            "speedDegreesPerDay": 0.007136625186925852
+          },
+          "southNode": {
+            "longitude": 37.83167681038685,
+            "gateLine": "24.1",
+            "speedDegreesPerDay": 0.007136625186925852
+          },
+          "mercury": {
+            "longitude": 307.3944198442508,
+            "gateLine": "41.6",
+            "speedDegreesPerDay": 0.5682201834940996
+          },
+          "venus": {
+            "longitude": 289.6396151243912,
+            "gateLine": "54.5",
+            "speedDegreesPerDay": 1.1600394467212836
+          },
+          "mars": {
+            "longitude": 139.063705861244,
+            "gateLine": "4.1",
+            "speedDegreesPerDay": -0.3618276362725287
+          },
+          "jupiter": {
+            "longitude": 253.1647232111983,
+            "gateLine": "5.2",
+            "speedDegreesPerDay": 0.11089105255505738
+          },
+          "saturn": {
+            "longitude": 343.54044364636616,
+            "gateLine": "63.3",
+            "speedDegreesPerDay": 0.1214504414632652
+          },
+          "uranus": {
+            "longitude": 298.44382285552905,
+            "gateLine": "60.3",
+            "speedDegreesPerDay": 0.05118690951283339
+          },
+          "neptune": {
+            "longitude": 294.45314142499836,
+            "gateLine": "61.4",
+            "speedDegreesPerDay": 0.03137525158859765
+          },
+          "pluto": {
+            "longitude": 240.5747997488352,
+            "gateLine": "34.1",
+            "speedDegreesPerDay": 0.00600354325989581
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2449683.9289886365,
+        "ut1JdModel": 2449683.9282859797,
+        "deltaTSeconds": 60.709547996520996,
+        "sunBoundary": {
+          "gate": 34,
+          "line": 6,
+          "gateLine": "34.6",
+          "globalLineIndex": 257,
+          "lineStartLongitude": 244.8125,
+          "nextLineBoundaryLongitude": 245.75,
+          "nextLineBoundaryLongitudeUnwrapped": 245.75,
+          "distanceNextDegrees": 0.8124965538734727,
+          "distanceNextArcsec": 2924.987593944502,
+          "distanceNextMas": 2924987.593944502,
+          "equivalentSeconds": 69342.42214971391,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "34.6",
+          "expectedLineStartLongitude": 244.8125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12500344612652725,
+          "signedLongitudeMinusExpectedStartMas": 450012.4060554981,
+          "signedSecondsPastExpectedStart": 10668.404302948607
+        },
+        "nearestBoundaryLongitude": 244.8125,
+        "signedMinusNearestBoundaryDegrees": 0.12500344612652725,
+        "signedMinusNearestBoundaryArcsec": 450.0124060554981,
+        "signedMinusNearestBoundaryMas": 450012.4060554981,
+        "activations": {
+          "sun": {
+            "longitude": 244.93750344612653,
+            "gateLine": "34.6",
+            "speedDegreesPerDay": 1.012362996249298
+          },
+          "earth": {
+            "longitude": 64.93750344612653,
+            "gateLine": "20.6",
+            "speedDegreesPerDay": 1.012362996249298
+          },
+          "moon": {
+            "longitude": 169.0113266793916,
+            "gateLine": "47.3",
+            "speedDegreesPerDay": 13.648776259247494
+          },
+          "northNode": {
+            "longitude": 224.64796457982357,
+            "gateLine": "1.2",
+            "speedDegreesPerDay": 0.015431636730652504
+          },
+          "southNode": {
+            "longitude": 44.647964579823565,
+            "gateLine": "2.2",
+            "speedDegreesPerDay": 0.015431636730652504
+          },
+          "mercury": {
+            "longitude": 235.64931573570038,
+            "gateLine": "14.2",
+            "speedDegreesPerDay": 1.5739549430088122
+          },
+          "venus": {
+            "longitude": 212.75712296644224,
+            "gateLine": "28.1",
+            "speedDegreesPerDay": 0.14730093872374314
+          },
+          "mars": {
+            "longitude": 145.55953465112128,
+            "gateLine": "29.2",
+            "speedDegreesPerDay": 0.35006673476117955
+          },
+          "jupiter": {
+            "longitude": 237.36247262716336,
+            "gateLine": "14.4",
+            "speedDegreesPerDay": 0.22091117033245009
+          },
+          "saturn": {
+            "longitude": 335.96415301161034,
+            "gateLine": "37.1",
+            "speedDegreesPerDay": 0.03135166838469352
+          },
+          "uranus": {
+            "longitude": 293.6864377748796,
+            "gateLine": "61.4",
+            "speedDegreesPerDay": 0.04353013684766255
+          },
+          "neptune": {
+            "longitude": 291.4072041699378,
+            "gateLine": "61.1",
+            "speedDegreesPerDay": 0.028298107392020454
+          },
+          "pluto": {
+            "longitude": 238.24567001030582,
+            "gateLine": "14.4",
+            "speedDegreesPerDay": 0.039752610561000504
+          }
+        }
+      },
+      "designUtcFromTt": "1994-11-27T10:16:43.434174Z",
+      "solarArcDegrees": 87.99999999984914,
+      "profile": "4/6",
+      "all26Mismatches": []
+    },
+    {
+      "id": "G1995-jun",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "utcJd": 2449890.488194444,
+      "ttMinusUtcSeconds": 61.184,
+      "archivedUtcResult": [
+        2449890.4889025926,
+        2449890.4881943506
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2449890.4889025926,
+        "ut1JdModel": 2449890.4881943506,
+        "deltaTSeconds": 61.19210422039032,
+        "sunBoundary": {
+          "gate": 15,
+          "line": 3,
+          "gateLine": "15.3",
+          "globalLineIndex": 92,
+          "lineStartLongitude": 90.125,
+          "nextLineBoundaryLongitude": 91.0625,
+          "nextLineBoundaryLongitudeUnwrapped": 91.0625,
+          "distanceNextDegrees": 0.9374989252234371,
+          "distanceNextArcsec": 3374.996130804374,
+          "distanceNextMas": 3374996.130804374,
+          "equivalentSeconds": 84882.12662371383,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "15.3",
+          "expectedLineStartLongitude": 90.125,
+          "signedLongitudeMinusExpectedStartDegrees": 1.074776548648515e-06,
+          "signedLongitudeMinusExpectedStartMas": 3.869195575134654,
+          "signedSecondsPastExpectedStart": 0.09731138526141607
+        },
+        "nearestBoundaryLongitude": 90.125,
+        "signedMinusNearestBoundaryDegrees": 1.074776548648515e-06,
+        "signedMinusNearestBoundaryArcsec": 0.003869195575134654,
+        "signedMinusNearestBoundaryMas": 3.869195575134654,
+        "activations": {
+          "sun": {
+            "longitude": 90.12500107477656,
+            "gateLine": "15.3",
+            "speedDegreesPerDay": 0.9542634045725679
+          },
+          "earth": {
+            "longitude": 270.12500107477655,
+            "gateLine": "10.3",
+            "speedDegreesPerDay": 0.9542634045725679
+          },
+          "moon": {
+            "longitude": 23.99874631421179,
+            "gateLine": "42.4",
+            "speedDegreesPerDay": 12.184586229972249
+          },
+          "northNode": {
+            "longitude": 214.1648936204536,
+            "gateLine": "28.3",
+            "speedDegreesPerDay": 0.013506040237257483
+          },
+          "southNode": {
+            "longitude": 34.1648936204536,
+            "gateLine": "27.3",
+            "speedDegreesPerDay": 0.013506040237257483
+          },
+          "mercury": {
+            "longitude": 70.65969876211427,
+            "gateLine": "16.6",
+            "speedDegreesPerDay": 0.3620738799882285
+          },
+          "venus": {
+            "longitude": 73.7718305591949,
+            "gateLine": "35.3",
+            "speedDegreesPerDay": 1.2193842185102648
+          },
+          "mars": {
+            "longitude": 163.4913401588145,
+            "gateLine": "64.3",
+            "speedDegreesPerDay": 0.5305637046891651
+          },
+          "jupiter": {
+            "longitude": 248.0226833619455,
+            "gateLine": "9.3",
+            "speedDegreesPerDay": -0.10992764172049868
+          },
+          "saturn": {
+            "longitude": 354.57966938436243,
+            "gateLine": "36.3",
+            "speedDegreesPerDay": 0.02395663818480072
+          },
+          "uranus": {
+            "longitude": 299.6166521491548,
+            "gateLine": "60.4",
+            "speedDegreesPerDay": -0.03302728081524873
+          },
+          "neptune": {
+            "longitude": 294.8175482734441,
+            "gateLine": "61.5",
+            "speedDegreesPerDay": -0.023864477468791515
+          },
+          "pluto": {
+            "longitude": 238.39349884023193,
+            "gateLine": "14.5",
+            "speedDegreesPerDay": -0.022347018789481195
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2449799.734778582,
+        "ut1JdModel": 2449799.7340728156,
+        "deltaTSeconds": 60.978224873542786,
+        "sunBoundary": {
+          "gate": 25,
+          "line": 5,
+          "gateLine": "25.5",
+          "globalLineIndex": 382,
+          "lineStartLongitude": 2.0,
+          "nextLineBoundaryLongitude": 2.9375,
+          "nextLineBoundaryLongitudeUnwrapped": 362.9375,
+          "distanceNextDegrees": 0.8124989253115018,
+          "distanceNextArcsec": 2924.9961311214065,
+          "distanceNextMas": 2924996.1311214063,
+          "equivalentSeconds": 70755.39828401276,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "25.5",
+          "expectedLineStartLongitude": 2.0,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12500107468846977,
+          "signedLongitudeMinusExpectedStartMas": 450003.86887849116,
+          "signedSecondsPastExpectedStart": 10885.553875805355
+        },
+        "nearestBoundaryLongitude": 2.0,
+        "signedMinusNearestBoundaryDegrees": 0.12500107468846977,
+        "signedMinusNearestBoundaryArcsec": 450.0038688784912,
+        "signedMinusNearestBoundaryMas": 450003.86887849116,
+        "activations": {
+          "sun": {
+            "longitude": 2.1250010746884698,
+            "gateLine": "25.5",
+            "speedDegreesPerDay": 0.9921491341922879
+          },
+          "earth": {
+            "longitude": 182.12500107468847,
+            "gateLine": "46.5",
+            "speedDegreesPerDay": 0.9921491341922879
+          },
+          "moon": {
+            "longitude": 264.16497171001515,
+            "gateLine": "11.2",
+            "speedDegreesPerDay": 14.16624471386529
+          },
+          "northNode": {
+            "longitude": 216.058767940549,
+            "gateLine": "28.5",
+            "speedDegreesPerDay": 0.012151195563734141
+          },
+          "southNode": {
+            "longitude": 36.05876794054899,
+            "gateLine": "27.5",
+            "speedDegreesPerDay": 0.012151195563734141
+          },
+          "mercury": {
+            "longitude": 342.6507479263414,
+            "gateLine": "63.2",
+            "speedDegreesPerDay": 1.6098328817297194
+          },
+          "venus": {
+            "longitude": 324.0475169721934,
+            "gateLine": "49.6",
+            "speedDegreesPerDay": 1.1932313368938283
+          },
+          "mars": {
+            "longitude": 133.17873374098855,
+            "gateLine": "33.6",
+            "speedDegreesPerDay": -0.01828652993372606
+          },
+          "jupiter": {
+            "longitude": 255.24861973230384,
+            "gateLine": "5.5",
+            "speedDegreesPerDay": 0.029033825040137365
+          },
+          "saturn": {
+            "longitude": 347.10469081292376,
+            "gateLine": "22.1",
+            "speedDegreesPerDay": 0.12015731329586653
+          },
+          "uranus": {
+            "longitude": 299.71180922697977,
+            "gateLine": "60.4",
+            "speedDegreesPerDay": 0.034456713670163695
+          },
+          "neptune": {
+            "longitude": 295.2023053888025,
+            "gateLine": "61.5",
+            "speedDegreesPerDay": 0.019203480385683286
+          },
+          "pluto": {
+            "longitude": 240.50118129419135,
+            "gateLine": "34.1",
+            "speedDegreesPerDay": -0.010639108233159765
+          }
+        }
+      },
+      "designUtcFromTt": "1995-03-23T05:37:03.685478Z",
+      "solarArcDegrees": 88.0000000000881,
+      "profile": "3/5",
+      "all26Mismatches": []
+    },
+    {
+      "id": "G2005-jul20",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "utcJd": 2453572.402777778,
+      "ttMinusUtcSeconds": 64.184,
+      "archivedUtcResult": [
+        2453572.4035206484,
+        2453572.4027711004
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2453572.4035206484,
+        "ut1JdModel": 2453572.4027711004,
+        "deltaTSeconds": 64.76094424724579,
+        "sunBoundary": {
+          "gate": 56,
+          "line": 2,
+          "gateLine": "56.2",
+          "globalLineIndex": 121,
+          "lineStartLongitude": 117.3125,
+          "nextLineBoundaryLongitude": 118.25,
+          "nextLineBoundaryLongitudeUnwrapped": 118.25,
+          "distanceNextDegrees": 5.159675666277508e-06,
+          "distanceNextArcsec": 0.018574832398599028,
+          "distanceNextMas": 18.57483239859903,
+          "equivalentSeconds": 0.46720553033328555,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "56.3",
+          "expectedLineStartLongitude": 118.25,
+          "signedLongitudeMinusExpectedStartDegrees": -5.159675652066653e-06,
+          "signedLongitudeMinusExpectedStartMas": -18.57483234743995,
+          "signedSecondsPastExpectedStart": -0.46720552904650126
+        },
+        "nearestBoundaryLongitude": 118.25,
+        "signedMinusNearestBoundaryDegrees": -5.159675652066653e-06,
+        "signedMinusNearestBoundaryArcsec": -0.01857483234743995,
+        "signedMinusNearestBoundaryMas": -18.57483234743995,
+        "activations": {
+          "sun": {
+            "longitude": 118.24999484032433,
+            "gateLine": "56.2",
+            "speedDegreesPerDay": 0.9541753010679557
+          },
+          "earth": {
+            "longitude": 298.24999484032435,
+            "gateLine": "60.2",
+            "speedDegreesPerDay": 0.9541753010679557
+          },
+          "moon": {
+            "longitude": 290.2817086556489,
+            "gateLine": "54.6",
+            "speedDegreesPerDay": 15.259160166286724
+          },
+          "northNode": {
+            "longitude": 17.14313592248528,
+            "gateLine": "51.3",
+            "speedDegreesPerDay": -0.17583393561774235
+          },
+          "southNode": {
+            "longitude": 197.14313592248527,
+            "gateLine": "57.3",
+            "speedDegreesPerDay": -0.17583393561774235
+          },
+          "mercury": {
+            "longitude": 140.26781908898764,
+            "gateLine": "4.2",
+            "speedDegreesPerDay": 0.18060583687459167
+          },
+          "venus": {
+            "longitude": 147.42358388522462,
+            "gateLine": "29.4",
+            "speedDegreesPerDay": 1.204772248311265
+          },
+          "mars": {
+            "longitude": 25.624448408349554,
+            "gateLine": "42.6",
+            "speedDegreesPerDay": 0.6110573756418511
+          },
+          "jupiter": {
+            "longitude": 191.84486507820856,
+            "gateLine": "48.3",
+            "speedDegreesPerDay": 0.12081143002006119
+          },
+          "saturn": {
+            "longitude": 120.56543357190105,
+            "gateLine": "56.5",
+            "speedDegreesPerDay": 0.12921491995964512
+          },
+          "uranus": {
+            "longitude": 340.27105910131405,
+            "gateLine": "37.5",
+            "speedDegreesPerDay": -0.026208910319321065
+          },
+          "neptune": {
+            "longitude": 316.7032389665468,
+            "gateLine": "13.4",
+            "speedDegreesPerDay": -0.025363604014603164
+          },
+          "pluto": {
+            "longitude": 262.2897246484952,
+            "gateLine": "26.6",
+            "speedDegreesPerDay": -0.019876432885945695
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2453480.741053869,
+        "ut1JdModel": 2453480.740304745,
+        "deltaTSeconds": 64.7243320941925,
+        "sunBoundary": {
+          "gate": 3,
+          "line": 5,
+          "gateLine": "3.5",
+          "globalLineIndex": 28,
+          "lineStartLongitude": 30.125,
+          "nextLineBoundaryLongitude": 31.0625,
+          "nextLineBoundaryLongitudeUnwrapped": 31.0625,
+          "distanceNextDegrees": 0.8125051595746378,
+          "distanceNextArcsec": 2925.018574468696,
+          "distanceNextMas": 2925018.574468696,
+          "equivalentSeconds": 71925.56644869318,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "3.5",
+          "expectedLineStartLongitude": 30.125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12499484042535869,
+          "signedLongitudeMinusExpectedStartMas": 449981.4255312913,
+          "signedSecondsPastExpectedStart": 11064.944751199544
+        },
+        "nearestBoundaryLongitude": 30.125,
+        "signedMinusNearestBoundaryDegrees": 0.12499484042535869,
+        "signedMinusNearestBoundaryArcsec": 449.9814255312913,
+        "signedMinusNearestBoundaryMas": 449981.4255312913,
+        "activations": {
+          "sun": {
+            "longitude": 30.249994840425362,
+            "gateLine": "3.5",
+            "speedDegreesPerDay": 0.9760151953384328
+          },
+          "earth": {
+            "longitude": 210.24999484042536,
+            "gateLine": "50.5",
+            "speedDegreesPerDay": 0.9760151953384328
+          },
+          "moon": {
+            "longitude": 160.34317357560414,
+            "gateLine": "40.5",
+            "speedDegreesPerDay": 12.312582923645195
+          },
+          "northNode": {
+            "longitude": 22.776991573108614,
+            "gateLine": "42.3",
+            "speedDegreesPerDay": 0.013162879479487367
+          },
+          "southNode": {
+            "longitude": 202.7769915731086,
+            "gateLine": "32.3",
+            "speedDegreesPerDay": 0.013162879479487367
+          },
+          "mercury": {
+            "longitude": 4.298280288736515,
+            "gateLine": "17.1",
+            "speedDegreesPerDay": 0.6139068809947753
+          },
+          "venus": {
+            "longitude": 35.41834112283199,
+            "gateLine": "27.4",
+            "speedDegreesPerDay": 1.235909609341998
+          },
+          "mars": {
+            "longitude": 322.1011328274161,
+            "gateLine": "49.4",
+            "speedDegreesPerDay": 0.7259820877608253
+          },
+          "jupiter": {
+            "longitude": 191.89925911715667,
+            "gateLine": "48.3",
+            "speedDegreesPerDay": -0.11679123935184227
+          },
+          "saturn": {
+            "longitude": 111.16138686276358,
+            "gateLine": "62.1",
+            "speedDegreesPerDay": 0.05155662556440517
+          },
+          "uranus": {
+            "longitude": 339.55675249967095,
+            "gateLine": "37.5",
+            "speedDegreesPerDay": 0.04105890260284934
+          },
+          "neptune": {
+            "longitude": 317.36196244779785,
+            "gateLine": "13.5",
+            "speedDegreesPerDay": 0.016009435335103756
+          },
+          "pluto": {
+            "longitude": 264.3613812118033,
+            "gateLine": "11.2",
+            "speedDegreesPerDay": -0.012429681432314574
+          }
+        }
+      },
+      "designUtcFromTt": "2005-04-20T05:46:02.870282Z",
+      "solarArcDegrees": 87.99999999989898,
+      "profile": "2/5",
+      "all26Mismatches": [
+        {
+          "side": "personality",
+          "body": "sun",
+          "actual": "56.2",
+          "official": "56.3"
+        },
+        {
+          "side": "personality",
+          "body": "earth",
+          "actual": "60.2",
+          "official": "60.3"
+        }
+      ]
+    },
+    {
+      "id": "G2015-tight",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "utcJd": 2457048.5555555555,
+      "ttMinusUtcSeconds": 67.184,
+      "archivedUtcResult": [
+        2457048.556333148,
+        2457048.5555499
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2457048.556333148,
+        "ut1JdModel": 2457048.5555499,
+        "deltaTSeconds": 67.67261624336243,
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 6.781807428524189e-06,
+          "distanceNextArcsec": 0.02441450674268708,
+          "distanceNextMas": 24.41450674268708,
+          "equivalentSeconds": 0.5762559457580612,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.5",
+          "expectedLineStartLongitude": 305.75,
+          "signedLongitudeMinusExpectedStartDegrees": -6.781807428524189e-06,
+          "signedLongitudeMinusExpectedStartMas": -24.41450674268708,
+          "signedSecondsPastExpectedStart": -0.5762559457580612
+        },
+        "nearestBoundaryLongitude": 305.75,
+        "signedMinusNearestBoundaryDegrees": -6.781807428524189e-06,
+        "signedMinusNearestBoundaryArcsec": -0.02441450674268708,
+        "signedMinusNearestBoundaryMas": -24.41450674268708,
+        "activations": {
+          "sun": {
+            "longitude": 305.74999321819257,
+            "gateLine": "41.4",
+            "speedDegreesPerDay": 1.0168192903479352
+          },
+          "earth": {
+            "longitude": 125.74999321819257,
+            "gateLine": "31.4",
+            "speedDegreesPerDay": 1.0168192903479352
+          },
+          "moon": {
+            "longitude": 21.19843333243819,
+            "gateLine": "42.1",
+            "speedDegreesPerDay": 13.933434230790793
+          },
+          "northNode": {
+            "longitude": 192.45233926105266,
+            "gateLine": "48.4",
+            "speedDegreesPerDay": 0.007692875578616608
+          },
+          "southNode": {
+            "longitude": 12.452339261052657,
+            "gateLine": "21.4",
+            "speedDegreesPerDay": 0.007692875578616608
+          },
+          "mercury": {
+            "longitude": 315.25028435101257,
+            "gateLine": "13.3",
+            "speedDegreesPerDay": -0.8161712296423437
+          },
+          "venus": {
+            "longitude": 328.0448094303915,
+            "gateLine": "30.4",
+            "speedDegreesPerDay": 1.2463544998803042
+          },
+          "mars": {
+            "longitude": 340.6526909479641,
+            "gateLine": "37.6",
+            "speedDegreesPerDay": 0.7803877819180838
+          },
+          "jupiter": {
+            "longitude": 139.16402922215144,
+            "gateLine": "4.1",
+            "speedDegreesPerDay": -0.12641634617318329
+          },
+          "saturn": {
+            "longitude": 243.08542696930695,
+            "gateLine": "34.4",
+            "speedDegreesPerDay": 0.0742103994814769
+          },
+          "uranus": {
+            "longitude": 13.093557927891458,
+            "gateLine": "21.4",
+            "speedDegreesPerDay": 0.029162176235932955
+          },
+          "neptune": {
+            "longitude": 336.1256535515951,
+            "gateLine": "37.1",
+            "speedDegreesPerDay": 0.03374742352215253
+          },
+          "pluto": {
+            "longitude": 284.02503860886895,
+            "gateLine": "38.5",
+            "speedDegreesPerDay": 0.03289746057747512
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2456961.7649652995,
+        "ut1JdModel": 2456961.7641831334,
+        "deltaTSeconds": 67.5791546702385,
+        "sunBoundary": {
+          "gate": 44,
+          "line": 1,
+          "gateLine": "44.1",
+          "globalLineIndex": 228,
+          "lineStartLongitude": 217.625,
+          "nextLineBoundaryLongitude": 218.5625,
+          "nextLineBoundaryLongitudeUnwrapped": 218.5625,
+          "distanceNextDegrees": 0.8125067813610087,
+          "distanceNextArcsec": 2925.0244128996314,
+          "distanceNextMas": 2925024.4128996315,
+          "equivalentSeconds": 70220.46816366322,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "44.1",
+          "expectedLineStartLongitude": 217.625,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12499321863899127,
+          "signedLongitudeMinusExpectedStartMas": 449975.5871003686,
+          "signedSecondsPastExpectedStart": 10802.472707256451
+        },
+        "nearestBoundaryLongitude": 217.625,
+        "signedMinusNearestBoundaryDegrees": 0.12499321863899127,
+        "signedMinusNearestBoundaryArcsec": 449.97558710036856,
+        "signedMinusNearestBoundaryMas": 449975.5871003686,
+        "activations": {
+          "sun": {
+            "longitude": 217.749993218639,
+            "gateLine": "44.1",
+            "speedDegreesPerDay": 0.9997168595625748
+          },
+          "earth": {
+            "longitude": 37.74999321863902,
+            "gateLine": "24.1",
+            "speedDegreesPerDay": 0.9997168595625748
+          },
+          "moon": {
+            "longitude": 309.6861919150679,
+            "gateLine": "19.3",
+            "speedDegreesPerDay": 14.153142400467287
+          },
+          "northNode": {
+            "longitude": 199.13043334451478,
+            "gateLine": "57.5",
+            "speedDegreesPerDay": 0.0022633969467953496
+          },
+          "southNode": {
+            "longitude": 19.130433344514813,
+            "gateLine": "51.5",
+            "speedDegreesPerDay": 0.0022633969467953496
+          },
+          "mercury": {
+            "longitude": 199.2866411700431,
+            "gateLine": "57.5",
+            "speedDegreesPerDay": 0.8634114836653687
+          },
+          "venus": {
+            "longitude": 219.26761194615412,
+            "gateLine": "44.2",
+            "speedDegreesPerDay": 1.2536172155981204
+          },
+          "mars": {
+            "longitude": 273.5713110587849,
+            "gateLine": "10.6",
+            "speedDegreesPerDay": 0.7441437568806892
+          },
+          "jupiter": {
+            "longitude": 140.33112519831536,
+            "gateLine": "4.2",
+            "speedDegreesPerDay": 0.11331046351729936
+          },
+          "saturn": {
+            "longitude": 233.78846325643084,
+            "gateLine": "43.6",
+            "speedDegreesPerDay": 0.11612810670878762
+          },
+          "uranus": {
+            "longitude": 13.602630970654582,
+            "gateLine": "21.5",
+            "speedDegreesPerDay": -0.035821168807533235
+          },
+          "neptune": {
+            "longitude": 334.8702808758101,
+            "gateLine": "55.6",
+            "speedDegreesPerDay": -0.008824941517083454
+          },
+          "pluto": {
+            "longitude": 281.36654774746177,
+            "gateLine": "38.2",
+            "speedDegreesPerDay": 0.018973674570438692
+          }
+        }
+      },
+      "designUtcFromTt": "2014-10-31T06:20:25.817894Z",
+      "solarArcDegrees": 87.99999999955358,
+      "profile": "4/1",
+      "all26Mismatches": [
+        {
+          "side": "personality",
+          "body": "sun",
+          "actual": "41.4",
+          "official": "41.5"
+        },
+        {
+          "side": "personality",
+          "body": "earth",
+          "actual": "31.4",
+          "official": "31.5"
+        }
+      ]
+    },
+    {
+      "id": "G2015-feb",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "utcJd": 2457057.788888889,
+      "ttMinusUtcSeconds": 67.184,
+      "archivedUtcResult": [
+        2457057.7896664813,
+        2457057.788883111
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2457057.7896664813,
+        "ut1JdModel": 2457057.788883111,
+        "deltaTSeconds": 67.68319755792618,
+        "sunBoundary": {
+          "gate": 13,
+          "line": 2,
+          "gateLine": "13.2",
+          "globalLineIndex": 331,
+          "lineStartLongitude": 314.1875,
+          "nextLineBoundaryLongitude": 315.125,
+          "nextLineBoundaryLongitudeUnwrapped": 315.125,
+          "distanceNextDegrees": 6.86158182361396e-06,
+          "distanceNextArcsec": 0.024701694565010257,
+          "distanceNextMas": 24.701694565010257,
+          "equivalentSeconds": 0.5847439405970396,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "13.3",
+          "expectedLineStartLongitude": 315.125,
+          "signedLongitudeMinusExpectedStartDegrees": -6.86158182361396e-06,
+          "signedLongitudeMinusExpectedStartMas": -24.701694565010257,
+          "signedSecondsPastExpectedStart": -0.5847439405970396
+        },
+        "nearestBoundaryLongitude": 315.125,
+        "signedMinusNearestBoundaryDegrees": -6.86158182361396e-06,
+        "signedMinusNearestBoundaryArcsec": -0.024701694565010257,
+        "signedMinusNearestBoundaryMas": -24.701694565010257,
+        "activations": {
+          "sun": {
+            "longitude": 315.1249931384182,
+            "gateLine": "13.2",
+            "speedDegreesPerDay": 1.0138466231132546
+          },
+          "earth": {
+            "longitude": 135.12499313841818,
+            "gateLine": "7.2",
+            "speedDegreesPerDay": 1.0138466231132546
+          },
+          "moon": {
+            "longitude": 138.67644385635575,
+            "gateLine": "7.6",
+            "speedDegreesPerDay": 11.946926728517315
+          },
+          "northNode": {
+            "longitude": 191.42436704982782,
+            "gateLine": "48.3",
+            "speedDegreesPerDay": -0.16737935021484343
+          },
+          "southNode": {
+            "longitude": 11.424367049827822,
+            "gateLine": "21.3",
+            "speedDegreesPerDay": -0.16737935021484343
+          },
+          "mercury": {
+            "longitude": 304.8620064321648,
+            "gateLine": "41.4",
+            "speedDegreesPerDay": -0.9712753647998038
+          },
+          "venus": {
+            "longitude": 339.5320656283357,
+            "gateLine": "37.5",
+            "speedDegreesPerDay": 1.2416846849634826
+          },
+          "mars": {
+            "longitude": 347.843098279368,
+            "gateLine": "22.1",
+            "speedDegreesPerDay": 0.7769070378291386
+          },
+          "jupiter": {
+            "longitude": 137.96209922758166,
+            "gateLine": "7.6",
+            "speedDegreesPerDay": -0.13263023517756928
+          },
+          "saturn": {
+            "longitude": 243.71399632692473,
+            "gateLine": "34.4",
+            "speedDegreesPerDay": 0.06170986193428621
+          },
+          "uranus": {
+            "longitude": 13.393771306800218,
+            "gateLine": "21.5",
+            "speedDegreesPerDay": 0.03570782554844736
+          },
+          "neptune": {
+            "longitude": 336.44774124546416,
+            "gateLine": "37.1",
+            "speedDegreesPerDay": 0.035862896261586084
+          },
+          "pluto": {
+            "longitude": 284.3202622390944,
+            "gateLine": "38.6",
+            "speedDegreesPerDay": 0.03090949354229538
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2456971.122778426,
+        "ut1JdModel": 2456971.1219961476,
+        "deltaTSeconds": 67.58885085582733,
+        "sunBoundary": {
+          "gate": 1,
+          "line": 5,
+          "gateLine": "1.5",
+          "globalLineIndex": 238,
+          "lineStartLongitude": 227.0,
+          "nextLineBoundaryLongitude": 227.9375,
+          "nextLineBoundaryLongitudeUnwrapped": 227.9375,
+          "distanceNextDegrees": 0.8125068612403368,
+          "distanceNextArcsec": 2925.0247004652124,
+          "distanceNextMas": 2925024.7004652126,
+          "equivalentSeconds": 69909.59257326709,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "1.5",
+          "expectedLineStartLongitude": 227.0,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12499313875966322,
+          "signedLongitudeMinusExpectedStartMas": 449975.2995347876,
+          "signedSecondsPastExpectedStart": 10754.64075688237
+        },
+        "nearestBoundaryLongitude": 227.0,
+        "signedMinusNearestBoundaryDegrees": 0.12499313875966322,
+        "signedMinusNearestBoundaryArcsec": 449.9752995347876,
+        "signedMinusNearestBoundaryMas": 449975.2995347876,
+        "activations": {
+          "sun": {
+            "longitude": 227.12499313875966,
+            "gateLine": "1.5",
+            "speedDegreesPerDay": 1.0041625222975379
+          },
+          "earth": {
+            "longitude": 47.12499313875969,
+            "gateLine": "2.5",
+            "speedDegreesPerDay": 1.0041625222975379
+          },
+          "moon": {
+            "longitude": 80.51213908900539,
+            "gateLine": "45.4",
+            "speedDegreesPerDay": 12.983193000927155
+          },
+          "northNode": {
+            "longitude": 199.00293154132828,
+            "gateLine": "57.5",
+            "speedDegreesPerDay": -0.07952893585564706
+          },
+          "southNode": {
+            "longitude": 19.00293154132828,
+            "gateLine": "51.5",
+            "speedDegreesPerDay": -0.07952893585564706
+          },
+          "mercury": {
+            "longitude": 210.97116084811387,
+            "gateLine": "50.5",
+            "speedDegreesPerDay": 1.4862759166770998
+          },
+          "venus": {
+            "longitude": 231.0015573182922,
+            "gateLine": "43.3",
+            "speedDegreesPerDay": 1.2543215376797363
+          },
+          "mars": {
+            "longitude": 280.58216821669697,
+            "gateLine": "38.2",
+            "speedDegreesPerDay": 0.7540638162823701
+          },
+          "jupiter": {
+            "longitude": 141.2810206367901,
+            "gateLine": "4.3",
+            "speedDegreesPerDay": 0.08934179330930266
+          },
+          "saturn": {
+            "longitude": 234.88714283519397,
+            "gateLine": "14.1",
+            "speedDegreesPerDay": 0.11847843883015237
+          },
+          "uranus": {
+            "longitude": 13.286733312478223,
+            "gateLine": "21.5",
+            "speedDegreesPerDay": -0.03145560274924137
+          },
+          "neptune": {
+            "longitude": 334.81118567807994,
+            "gateLine": "55.5",
+            "speedDegreesPerDay": -0.003725142158240869
+          },
+          "pluto": {
+            "longitude": 281.5628816999646,
+            "gateLine": "38.3",
+            "speedDegreesPerDay": 0.022958285890610948
+          }
+        }
+      },
+      "designUtcFromTt": "2014-11-09T14:55:40.872015Z",
+      "solarArcDegrees": 87.99999999965851,
+      "profile": "2/5",
+      "all26Mismatches": [
+        {
+          "side": "personality",
+          "body": "sun",
+          "actual": "13.2",
+          "official": "13.3"
+        },
+        {
+          "side": "personality",
+          "body": "earth",
+          "actual": "7.2",
+          "official": "7.3"
+        }
+      ]
+    },
+    {
+      "id": "G2025-tight",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "utcJd": 2460695.45625,
+      "ttMinusUtcSeconds": 69.184,
+      "archivedUtcResult": [
+        2460695.4570507407,
+        2460695.45625219
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2460695.4570507407,
+        "ut1JdModel": 2460695.45625219,
+        "deltaTSeconds": 68.99479776620865,
+        "sunBoundary": {
+          "gate": 60,
+          "line": 5,
+          "gateLine": "60.5",
+          "globalLineIndex": 316,
+          "lineStartLongitude": 300.125,
+          "nextLineBoundaryLongitude": 301.0625,
+          "nextLineBoundaryLongitudeUnwrapped": 301.0625,
+          "distanceNextDegrees": 0.9374986130785032,
+          "distanceNextArcsec": 3374.9950070826117,
+          "distanceNextMas": 3374995.007082612,
+          "equivalentSeconds": 79593.76451463587,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "60.5",
+          "expectedLineStartLongitude": 300.125,
+          "signedLongitudeMinusExpectedStartDegrees": 1.3869214967598964e-06,
+          "signedLongitudeMinusExpectedStartMas": 4.992917388335627,
+          "signedSecondsPastExpectedStart": 0.11774983074470936
+        },
+        "nearestBoundaryLongitude": 300.125,
+        "signedMinusNearestBoundaryDegrees": 1.3869214967598964e-06,
+        "signedMinusNearestBoundaryArcsec": 0.004992917388335627,
+        "signedMinusNearestBoundaryMas": 4.992917388335627,
+        "activations": {
+          "sun": {
+            "longitude": 300.1250013869215,
+            "gateLine": "60.5",
+            "speedDegreesPerDay": 1.0176661534219587
+          },
+          "earth": {
+            "longitude": 120.1250013869215,
+            "gateLine": "56.5",
+            "speedDegreesPerDay": 1.0176661534219587
+          },
+          "moon": {
+            "longitude": 189.62772628474724,
+            "gateLine": "48.1",
+            "speedDegreesPerDay": 11.859063725600377
+          },
+          "northNode": {
+            "longitude": 359.1354335063546,
+            "gateLine": "25.1",
+            "speedDegreesPerDay": 0.014139379773671796
+          },
+          "southNode": {
+            "longitude": 179.13543350635462,
+            "gateLine": "46.1",
+            "speedDegreesPerDay": 0.014139379773671796
+          },
+          "mercury": {
+            "longitude": 287.09705825542216,
+            "gateLine": "54.3",
+            "speedDegreesPerDay": 1.5405463011621054
+          },
+          "venus": {
+            "longitude": 346.93701056959094,
+            "gateLine": "63.6",
+            "speedDegreesPerDay": 0.939787882527236
+          },
+          "mars": {
+            "longitude": 114.68644198065695,
+            "gateLine": "62.5",
+            "speedDegreesPerDay": -0.3906558565118267
+          },
+          "jupiter": {
+            "longitude": 71.68506591769825,
+            "gateLine": "35.1",
+            "speedDegreesPerDay": -0.052213231953626954
+          },
+          "saturn": {
+            "longitude": 346.17805720885696,
+            "gateLine": "63.6",
+            "speedDegreesPerDay": 0.0977749840330165
+          },
+          "uranus": {
+            "longitude": 53.311958854807436,
+            "gateLine": "23.5",
+            "speedDegreesPerDay": -0.009390172873317526
+          },
+          "neptune": {
+            "longitude": 357.6534300068741,
+            "gateLine": "36.6",
+            "speedDegreesPerDay": 0.023428960581241987
+          },
+          "pluto": {
+            "longitude": 301.66585067607286,
+            "gateLine": "60.6",
+            "speedDegreesPerDay": 0.03224491680570788
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2460608.561111237,
+        "ut1JdModel": 2460608.560312404,
+        "deltaTSeconds": 69.01917904615402,
+        "sunBoundary": {
+          "gate": 28,
+          "line": 1,
+          "gateLine": "28.1",
+          "globalLineIndex": 222,
+          "lineStartLongitude": 212.0,
+          "nextLineBoundaryLongitude": 212.9375,
+          "nextLineBoundaryLongitudeUnwrapped": 212.9375,
+          "distanceNextDegrees": 0.8124986130209777,
+          "distanceNextArcsec": 2924.9950068755197,
+          "distanceNextMas": 2924995.0068755196,
+          "equivalentSeconds": 70431.3398894833,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "28.1",
+          "expectedLineStartLongitude": 212.0,
+          "signedLongitudeMinusExpectedStartDegrees": 0.1250013869790223,
+          "signedLongitudeMinusExpectedStartMas": 450004.9931244803,
+          "signedSecondsPastExpectedStart": 10835.729479268713
+        },
+        "nearestBoundaryLongitude": 212.0,
+        "signedMinusNearestBoundaryDegrees": 0.1250013869790223,
+        "signedMinusNearestBoundaryArcsec": 450.0049931244803,
+        "signedMinusNearestBoundaryMas": 450004.9931244803,
+        "activations": {
+          "sun": {
+            "longitude": 212.12500138697902,
+            "gateLine": "28.1",
+            "speedDegreesPerDay": 0.9967136827890253
+          },
+          "earth": {
+            "longitude": 32.12500138697902,
+            "gateLine": "27.1",
+            "speedDegreesPerDay": 0.9967136827890253
+          },
+          "moon": {
+            "longitude": 130.49719593854087,
+            "gateLine": "33.4",
+            "speedDegreesPerDay": 12.426186127692896
+          },
+          "northNode": {
+            "longitude": 6.389147030386918,
+            "gateLine": "17.3",
+            "speedDegreesPerDay": 0.012383951175479673
+          },
+          "southNode": {
+            "longitude": 186.3891470303869,
+            "gateLine": "18.3",
+            "speedDegreesPerDay": 0.012383951175479673
+          },
+          "mercury": {
+            "longitude": 227.38451728279935,
+            "gateLine": "1.5",
+            "speedDegreesPerDay": 1.4884974530254242
+          },
+          "venus": {
+            "longitude": 248.75187616824053,
+            "gateLine": "9.4",
+            "speedDegreesPerDay": 1.2055046436123005
+          },
+          "mars": {
+            "longitude": 116.18877080269722,
+            "gateLine": "62.6",
+            "speedDegreesPerDay": 0.40974587124827927
+          },
+          "jupiter": {
+            "longitude": 80.92295005778998,
+            "gateLine": "45.5",
+            "speedDegreesPerDay": -0.052321077748676954
+          },
+          "saturn": {
+            "longitude": 343.0924298108679,
+            "gateLine": "63.2",
+            "speedDegreesPerDay": -0.03632241333076664
+          },
+          "uranus": {
+            "longitude": 56.16592219743499,
+            "gateLine": "8.2",
+            "speedDegreesPerDay": -0.03691833693374926
+          },
+          "neptune": {
+            "longitude": 357.64246454006945,
+            "gateLine": "36.6",
+            "speedDegreesPerDay": -0.021595236726006106
+          },
+          "pluto": {
+            "longitude": 299.6826881995935,
+            "gateLine": "60.4",
+            "speedDegreesPerDay": 0.0062625803889414505
+          }
+        }
+      },
+      "designUtcFromTt": "2024-10-25T01:26:50.826856Z",
+      "solarArcDegrees": 87.99999999994247,
+      "profile": "5/1",
+      "all26Mismatches": []
+    },
+    {
+      "id": "G2025-mar",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "utcJd": 2460750.288888889,
+      "ttMinusUtcSeconds": 69.184,
+      "archivedUtcResult": [
+        2460750.28968963,
+        2460750.288891248
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2460750.28968963,
+        "ut1JdModel": 2460750.288891248,
+        "deltaTSeconds": 68.98019313812256,
+        "sunBoundary": {
+          "gate": 36,
+          "line": 4,
+          "gateLine": "36.4",
+          "globalLineIndex": 375,
+          "lineStartLongitude": 355.4375,
+          "nextLineBoundaryLongitude": 356.375,
+          "nextLineBoundaryLongitudeUnwrapped": 356.375,
+          "distanceNextDegrees": 0.93749761952472,
+          "distanceNextArcsec": 3374.991430288992,
+          "distanceNextMas": 3374991.430288992,
+          "equivalentSeconds": 81343.10149571703,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "36.4",
+          "expectedLineStartLongitude": 355.4375,
+          "signedLongitudeMinusExpectedStartDegrees": 2.380475280006067e-06,
+          "signedLongitudeMinusExpectedStartMas": 8.56971100802184,
+          "signedSecondsPastExpectedStart": 0.20654478291661743
+        },
+        "nearestBoundaryLongitude": 355.4375,
+        "signedMinusNearestBoundaryDegrees": 2.380475280006067e-06,
+        "signedMinusNearestBoundaryArcsec": 0.00856971100802184,
+        "signedMinusNearestBoundaryMas": 8.56971100802184,
+        "activations": {
+          "sun": {
+            "longitude": 355.4375023804753,
+            "gateLine": "36.4",
+            "speedDegreesPerDay": 0.9957795171014067
+          },
+          "earth": {
+            "longitude": 175.43750238047528,
+            "gateLine": "6.4",
+            "speedDegreesPerDay": 0.9957795171014067
+          },
+          "moon": {
+            "longitude": 191.93382267851908,
+            "gateLine": "48.3",
+            "speedDegreesPerDay": 11.907336796189366
+          },
+          "northNode": {
+            "longitude": 357.3887013076146,
+            "gateLine": "36.6",
+            "speedDegreesPerDay": 0.0020273123428965786
+          },
+          "southNode": {
+            "longitude": 177.3887013076146,
+            "gateLine": "6.6",
+            "speedDegreesPerDay": 0.0020273123428965786
+          },
+          "mercury": {
+            "longitude": 9.570783090525595,
+            "gateLine": "21.1",
+            "speedDegreesPerDay": -0.07141161644523022
+          },
+          "venus": {
+            "longitude": 6.986202096723982,
+            "gateLine": "17.4",
+            "speedDegreesPerDay": -0.5299667242867165
+          },
+          "mars": {
+            "longitude": 109.20375236802461,
+            "gateLine": "53.5",
+            "speedDegreesPerDay": 0.20893549168151615
+          },
+          "jupiter": {
+            "longitude": 73.74736952159286,
+            "gateLine": "35.3",
+            "speedDegreesPerDay": 0.1189411683931864
+          },
+          "saturn": {
+            "longitude": 352.5101250316049,
+            "gateLine": "22.6",
+            "speedDegreesPerDay": 0.12333052683953022
+          },
+          "uranus": {
+            "longitude": 54.090241898728365,
+            "gateLine": "23.6",
+            "speedDegreesPerDay": 0.03597179301852079
+          },
+          "neptune": {
+            "longitude": 359.44359672580515,
+            "gateLine": "25.2",
+            "speedDegreesPerDay": 0.03782369944584976
+          },
+          "pluto": {
+            "longitude": 303.2483154180704,
+            "gateLine": "41.2",
+            "speedDegreesPerDay": 0.021933407702411496
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2460663.3728389693,
+        "ut1JdModel": 2460663.3720403174,
+        "deltaTSeconds": 69.00352835655212,
+        "sunBoundary": {
+          "gate": 11,
+          "line": 6,
+          "gateLine": "11.6",
+          "globalLineIndex": 281,
+          "lineStartLongitude": 267.3125,
+          "nextLineBoundaryLongitude": 268.25,
+          "nextLineBoundaryLongitudeUnwrapped": 268.25,
+          "distanceNextDegrees": 0.8124976198700438,
+          "distanceNextArcsec": 2924.9914315321575,
+          "distanceNextMas": 2924991.4315321576,
+          "equivalentSeconds": 68977.5029747274,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "11.6",
+          "expectedLineStartLongitude": 267.3125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12500238012995624,
+          "signedLongitudeMinusExpectedStartMas": 450008.5684678425,
+          "signedSecondsPastExpectedStart": 10612.156683783489
+        },
+        "nearestBoundaryLongitude": 267.3125,
+        "signedMinusNearestBoundaryDegrees": 0.12500238012995624,
+        "signedMinusNearestBoundaryArcsec": 450.00856846784245,
+        "signedMinusNearestBoundaryMas": 450008.5684678425,
+        "activations": {
+          "sun": {
+            "longitude": 267.43750238012996,
+            "gateLine": "11.6",
+            "speedDegreesPerDay": 1.0177201454000475
+          },
+          "earth": {
+            "longitude": 87.43750238012996,
+            "gateLine": "12.6",
+            "speedDegreesPerDay": 1.0177201454000475
+          },
+          "moon": {
+            "longitude": 131.65934550492594,
+            "gateLine": "33.5",
+            "speedDegreesPerDay": 12.969354952445551
+          },
+          "northNode": {
+            "longitude": 2.289996560880926,
+            "gateLine": "25.5",
+            "speedDegreesPerDay": -0.1298538854527573
+          },
+          "southNode": {
+            "longitude": 182.28999656088092,
+            "gateLine": "46.5",
+            "speedDegreesPerDay": -0.1298538854527573
+          },
+          "mercury": {
+            "longitude": 247.09026936411888,
+            "gateLine": "9.2",
+            "speedDegreesPerDay": 0.4428035157818667
+          },
+          "venus": {
+            "longitude": 313.2566668819154,
+            "gateLine": "13.1",
+            "speedDegreesPerDay": 1.1249894629524722
+          },
+          "mars": {
+            "longitude": 125.20340502171105,
+            "gateLine": "31.4",
+            "speedDegreesPerDay": -0.16392096690105
+          },
+          "jupiter": {
+            "longitude": 74.78237990523218,
+            "gateLine": "35.4",
+            "speedDegreesPerDay": -0.12961362069809235
+          },
+          "saturn": {
+            "longitude": 343.65414962249645,
+            "gateLine": "63.3",
+            "speedDegreesPerDay": 0.05653041401695184
+          },
+          "uranus": {
+            "longitude": 54.013298159500266,
+            "gateLine": "23.6",
+            "speedDegreesPerDay": -0.03270019357716603
+          },
+          "neptune": {
+            "longitude": 357.16556881189007,
+            "gateLine": "36.5",
+            "speedDegreesPerDay": 0.006320865517765963
+          },
+          "pluto": {
+            "longitude": 300.67891506955783,
+            "gateLine": "60.5",
+            "speedDegreesPerDay": 0.027940905384491833
+          }
+        }
+      },
+      "designUtcFromTt": "2024-12-18T20:55:44.102937Z",
+      "solarArcDegrees": 88.00000000034532,
+      "profile": "4/6",
+      "all26Mismatches": []
+    },
+    {
+      "id": "G1985-tight",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "utcJd": 2446091.273611111,
+      "ttMinusUtcSeconds": 54.184,
+      "archivedUtcResult": [
+        2446091.274238241,
+        2446091.2736088345
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2446091.274238241,
+        "ut1JdModel": 2446091.2736088345,
+        "deltaTSeconds": 54.380714893341064,
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 3.502888660023018e-06,
+          "distanceNextArcsec": 0.012610399176082865,
+          "distanceNextMas": 12.610399176082865,
+          "equivalentSeconds": 0.2976212684409282,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.4",
+          "expectedLineStartLongitude": 304.8125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.93749649711134,
+          "signedLongitudeMinusExpectedStartMas": 3374987.389600824,
+          "signedSecondsPastExpectedStart": 79653.94384741034
+        },
+        "nearestBoundaryLongitude": 305.75,
+        "signedMinusNearestBoundaryDegrees": -3.502888660023018e-06,
+        "signedMinusNearestBoundaryArcsec": -0.012610399176082865,
+        "signedMinusNearestBoundaryMas": -12.610399176082865,
+        "activations": {
+          "sun": {
+            "longitude": 305.74999649711134,
+            "gateLine": "41.4",
+            "speedDegreesPerDay": 1.0168950015279523
+          },
+          "earth": {
+            "longitude": 125.74999649711134,
+            "gateLine": "31.4",
+            "speedDegreesPerDay": 1.0168950015279523
+          },
+          "moon": {
+            "longitude": 359.24346884566955,
+            "gateLine": "25.2",
+            "speedDegreesPerDay": 11.964381658049131
+          },
+          "northNode": {
+            "longitude": 54.34969514599078,
+            "gateLine": "23.6",
+            "speedDegreesPerDay": -0.11824814329170508
+          },
+          "southNode": {
+            "longitude": 234.34969514599078,
+            "gateLine": "43.6",
+            "speedDegreesPerDay": -0.11824814329170508
+          },
+          "mercury": {
+            "longitude": 289.87157048197025,
+            "gateLine": "54.6",
+            "speedDegreesPerDay": 1.5098987991024084
+          },
+          "venus": {
+            "longitude": 352.7395996013356,
+            "gateLine": "36.1",
+            "speedDegreesPerDay": 0.9907487154879809
+          },
+          "mars": {
+            "longitude": 353.9964793865175,
+            "gateLine": "36.2",
+            "speedDegreesPerDay": 0.7572337268260141
+          },
+          "jupiter": {
+            "longitude": 297.25022967051245,
+            "gateLine": "60.1",
+            "speedDegreesPerDay": 0.2334110371625935
+          },
+          "saturn": {
+            "longitude": 236.74430444075156,
+            "gateLine": "14.3",
+            "speedDegreesPerDay": 0.0655906154992346
+          },
+          "uranus": {
+            "longitude": 256.64471838128776,
+            "gateLine": "5.6",
+            "speedDegreesPerDay": 0.045115431343170205
+          },
+          "neptune": {
+            "longitude": 272.3677983488121,
+            "gateLine": "10.5",
+            "speedDegreesPerDay": 0.032854210804108656
+          },
+          "pluto": {
+            "longitude": 214.71058900155145,
+            "gateLine": "28.3",
+            "speedDegreesPerDay": 0.006765359831029211
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2446004.503495775,
+        "ut1JdModel": 2446004.5028677657,
+        "deltaTSeconds": 54.2600154876709,
+        "sunBoundary": {
+          "gate": 44,
+          "line": 1,
+          "gateLine": "44.1",
+          "globalLineIndex": 228,
+          "lineStartLongitude": 217.625,
+          "nextLineBoundaryLongitude": 218.5625,
+          "nextLineBoundaryLongitudeUnwrapped": 218.5625,
+          "distanceNextDegrees": 0.8125035032464893,
+          "distanceNextArcsec": 2925.0126116873616,
+          "distanceNextMas": 2925012.6116873617,
+          "equivalentSeconds": 70186.92905875081,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "44.1",
+          "expectedLineStartLongitude": 217.625,
+          "signedLongitudeMinusExpectedStartDegrees": 0.12499649675351066,
+          "signedLongitudeMinusExpectedStartMas": 449987.3883126384,
+          "signedSecondsPastExpectedStart": 10797.639905768536
+        },
+        "nearestBoundaryLongitude": 217.625,
+        "signedMinusNearestBoundaryDegrees": 0.12499649675351066,
+        "signedMinusNearestBoundaryArcsec": 449.98738831263836,
+        "signedMinusNearestBoundaryMas": 449987.3883126384,
+        "activations": {
+          "sun": {
+            "longitude": 217.7499964967535,
+            "gateLine": "44.1",
+            "speedDegreesPerDay": 1.0001905429105564
+          },
+          "earth": {
+            "longitude": 37.74999649675351,
+            "gateLine": "24.1",
+            "speedDegreesPerDay": 1.0001905429105564
+          },
+          "moon": {
+            "longitude": 301.49673190323404,
+            "gateLine": "60.6",
+            "speedDegreesPerDay": 12.581131917754758
+          },
+          "northNode": {
+            "longitude": 57.61658774056826,
+            "gateLine": "8.4",
+            "speedDegreesPerDay": 0.007793566107877998
+          },
+          "southNode": {
+            "longitude": 237.61658774056826,
+            "gateLine": "14.4",
+            "speedDegreesPerDay": 0.007793566107877998
+          },
+          "mercury": {
+            "longitude": 230.2843626309008,
+            "gateLine": "43.2",
+            "speedDegreesPerDay": 1.51974115567338
+          },
+          "venus": {
+            "longitude": 253.08176894086685,
+            "gateLine": "5.2",
+            "speedDegreesPerDay": 1.213141486503859
+          },
+          "mars": {
+            "longitude": 288.33354755769636,
+            "gateLine": "54.4",
+            "speedDegreesPerDay": 0.7320406344147281
+          },
+          "jupiter": {
+            "longitude": 278.67077829928104,
+            "gateLine": "58.6",
+            "speedDegreesPerDay": 0.16465381654132832
+          },
+          "saturn": {
+            "longitude": 227.72315266780998,
+            "gateLine": "1.5",
+            "speedDegreesPerDay": 0.11858705320362731
+          },
+          "uranus": {
+            "longitude": 251.6988087900968,
+            "gateLine": "5.1",
+            "speedDegreesPerDay": 0.0533565744368775
+          },
+          "neptune": {
+            "longitude": 269.35117764034305,
+            "gateLine": "10.2",
+            "speedDegreesPerDay": 0.02615403182834045
+          },
+          "pluto": {
+            "longitude": 212.29944338912742,
+            "gateLine": "28.1",
+            "speedDegreesPerDay": 0.0403182718124156
+          }
+        }
+      },
+      "designUtcFromTt": "1984-10-31T00:04:07.850959Z",
+      "solarArcDegrees": 88.00000000035783,
+      "profile": "4/1",
+      "all26Mismatches": []
+    },
+    {
+      "id": "G2005-jul11",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "utcJd": 2453562.574305556,
+      "ttMinusUtcSeconds": 64.184,
+      "archivedUtcResult": [
+        2453562.575048426,
+        2453562.5742989276
+      ],
+      "archivedTtMinusCorrectTtSeconds": 0.0,
+      "directCalcUtSunDifferenceDegrees": null,
+      "effectiveTtMinusCorrectTtSeconds": 0.0,
+      "personality": {
+        "ttJd": 2453562.575048426,
+        "ut1JdModel": 2453562.5742989276,
+        "deltaTSeconds": 64.75667953491211,
+        "sunBoundary": {
+          "gate": 53,
+          "line": 4,
+          "gateLine": "53.4",
+          "globalLineIndex": 111,
+          "lineStartLongitude": 107.9375,
+          "nextLineBoundaryLongitude": 108.875,
+          "nextLineBoundaryLongitudeUnwrapped": 108.875,
+          "distanceNextDegrees": 6.4241738186865405e-06,
+          "distanceNextArcsec": 0.023127025747271546,
+          "distanceNextMas": 23.127025747271546,
+          "equivalentSeconds": 0.5819588023568198,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "53.4",
+          "expectedLineStartLongitude": 107.9375,
+          "signedLongitudeMinusExpectedStartDegrees": 0.9374935758261813,
+          "signedLongitudeMinusExpectedStartMas": 3374976.872974253,
+          "signedSecondsPastExpectedStart": 84926.506349818
+        },
+        "nearestBoundaryLongitude": 108.875,
+        "signedMinusNearestBoundaryDegrees": -6.4241738186865405e-06,
+        "signedMinusNearestBoundaryArcsec": -0.023127025747271546,
+        "signedMinusNearestBoundaryMas": -23.127025747271546,
+        "activations": {
+          "sun": {
+            "longitude": 108.87499357582618,
+            "gateLine": "53.4",
+            "speedDegreesPerDay": 0.9537592965115026
+          },
+          "earth": {
+            "longitude": 288.8749935758262,
+            "gateLine": "54.4",
+            "speedDegreesPerDay": 0.9537592965115026
+          },
+          "moon": {
+            "longitude": 158.8157497197204,
+            "gateLine": "40.4",
+            "speedDegreesPerDay": 11.89194465239586
+          },
+          "northNode": {
+            "longitude": 17.810930629455797,
+            "gateLine": "51.3",
+            "speedDegreesPerDay": -0.09463971417968645
+          },
+          "southNode": {
+            "longitude": 197.8109306294558,
+            "gateLine": "57.3",
+            "speedDegreesPerDay": -0.09463971417968645
+          },
+          "mercury": {
+            "longitude": 135.02602933290112,
+            "gateLine": "7.2",
+            "speedDegreesPerDay": 0.8468332060484075
+          },
+          "venus": {
+            "longitude": 135.55620793505145,
+            "gateLine": "7.3",
+            "speedDegreesPerDay": 1.2099566262773052
+          },
+          "mars": {
+            "longitude": 19.47011841858332,
+            "gateLine": "51.5",
+            "speedDegreesPerDay": 0.6404758648329401
+          },
+          "jupiter": {
+            "longitude": 190.7642987717987,
+            "gateLine": "48.2",
+            "speedDegreesPerDay": 0.09863160168623533
+          },
+          "saturn": {
+            "longitude": 119.30068133832357,
+            "gateLine": "56.4",
+            "speedDegreesPerDay": 0.12789901937881504
+          },
+          "uranus": {
+            "longitude": 340.4986858845173,
+            "gateLine": "37.6",
+            "speedDegreesPerDay": -0.019942493828784717
+          },
+          "neptune": {
+            "longitude": 316.942417101902,
+            "gateLine": "13.4",
+            "speedDegreesPerDay": -0.023145317200045173
+          },
+          "pluto": {
+            "longitude": 262.50047232492426,
+            "gateLine": "26.6",
+            "speedDegreesPerDay": -0.022871360421965532
+          }
+        }
+      },
+      "design": {
+        "ttJd": 2453471.1646520337,
+        "ut1JdModel": 2453471.16390295,
+        "deltaTSeconds": 64.72083181142807,
+        "sunBoundary": {
+          "gate": 42,
+          "line": 1,
+          "gateLine": "42.1",
+          "globalLineIndex": 18,
+          "lineStartLongitude": 20.75,
+          "nextLineBoundaryLongitude": 21.6875,
+          "nextLineBoundaryLongitudeUnwrapped": 21.6875,
+          "distanceNextDegrees": 0.8125064243920619,
+          "distanceNextArcsec": 2925.023127811423,
+          "distanceNextMas": 2925023.1278114226,
+          "equivalentSeconds": 71496.49855034226,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "42.1",
+          "expectedLineStartLongitude": 20.75,
+          "signedLongitudeMinusExpectedStartDegrees": 0.124993575607931,
+          "signedLongitudeMinusExpectedStartMas": 449976.87218855164,
+          "signedSecondsPastExpectedStart": 10998.809029653064
+        },
+        "nearestBoundaryLongitude": 20.75,
+        "signedMinusNearestBoundaryDegrees": 0.124993575607931,
+        "signedMinusNearestBoundaryArcsec": 449.9768721885516,
+        "signedMinusNearestBoundaryMas": 449976.87218855164,
+        "activations": {
+          "sun": {
+            "longitude": 20.874993575607938,
+            "gateLine": "42.1",
+            "speedDegreesPerDay": 0.9818740286707102
+          },
+          "earth": {
+            "longitude": 200.87499357560793,
+            "gateLine": "32.1",
+            "speedDegreesPerDay": 0.9818740286707102
+          },
+          "moon": {
+            "longitude": 43.336495948143636,
+            "gateLine": "2.1",
+            "speedDegreesPerDay": 13.116916643521987
+          },
+          "northNode": {
+            "longitude": 22.75586865205129,
+            "gateLine": "42.3",
+            "speedDegreesPerDay": 0.002374394228679949
+          },
+          "southNode": {
+            "longitude": 202.75586865205128,
+            "gateLine": "32.3",
+            "speedDegreesPerDay": 0.002374394228679949
+          },
+          "mercury": {
+            "longitude": 1.8682093620118754,
+            "gateLine": "25.4",
+            "speedDegreesPerDay": -0.1482761896929282
+          },
+          "venus": {
+            "longitude": 23.566859271853605,
+            "gateLine": "42.4",
+            "speedDegreesPerDay": 1.2391508075848379
+          },
+          "mars": {
+            "longitude": 315.1482300091975,
+            "gateLine": "13.3",
+            "speedDegreesPerDay": 0.7259835082453857
+          },
+          "jupiter": {
+            "longitude": 193.07118231152418,
+            "gateLine": "48.4",
+            "speedDegreesPerDay": -0.1267349309337621
+          },
+          "saturn": {
+            "longitude": 110.74351484904679,
+            "gateLine": "53.6",
+            "speedDegreesPerDay": 0.035449777295981456
+          },
+          "uranus": {
+            "longitude": 339.1379876499886,
+            "gateLine": "37.4",
+            "speedDegreesPerDay": 0.04622084626408429
+          },
+          "neptune": {
+            "longitude": 317.1853576846825,
+            "gateLine": "13.5",
+            "speedDegreesPerDay": 0.02077531384459585
+          },
+          "pluto": {
+            "longitude": 264.458099610032,
+            "gateLine": "11.2",
+            "speedDegreesPerDay": -0.007737381864224556
+          }
+        }
+      },
+      "designUtcFromTt": "2005-04-10T15:56:01.751711Z",
+      "solarArcDegrees": 88.00000000021825,
+      "profile": "4/1",
+      "all26Mismatches": []
+    }
+  ]
+}

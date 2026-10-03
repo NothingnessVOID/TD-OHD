@@ -1,0 +1,342 @@
+{
+  "date": "2026-10-03",
+  "crossCheck": {
+    "url": "https://codeload.github.com/aakara/swe4r/tar.gz/455b7f220aaf96ad417c8fe864f2f1b5b6c30456",
+    "archiveSha256": "31905bce96667c6118f62f9a7cd91e4e3c0582982faaea608c2f35200676cd09",
+    "fileComparisons": [
+      {
+        "file": "swedate.c",
+        "debianSha256": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "independentArchiveSha256": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0",
+        "equal": true
+      },
+      {
+        "file": "sweph.c",
+        "debianSha256": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "independentArchiveSha256": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7",
+        "equal": true
+      },
+      {
+        "file": "swephlib.c",
+        "debianSha256": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "independentArchiveSha256": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8",
+        "equal": true
+      },
+      {
+        "file": "sweph.h",
+        "debianSha256": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "independentArchiveSha256": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7",
+        "equal": true
+      },
+      {
+        "file": "swephlib.h",
+        "debianSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e",
+        "independentArchiveSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e",
+        "equal": true
+      },
+      {
+        "file": "swephexp.h",
+        "debianSha256": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4",
+        "independentArchiveSha256": "86d2bc01b4cb55fc03e0a750f4e95db3057f8a59ef17e228942d210589a0e7d4",
+        "equal": true
+      },
+      {
+        "file": "swemmoon.c",
+        "debianSha256": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "independentArchiveSha256": "0a8821f242d690d2f9ff5fb06b4d68d004286e6a067466407de7a332649116bd",
+        "equal": true
+      },
+      {
+        "file": "swejpl.c",
+        "debianSha256": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "independentArchiveSha256": "e024e40eddf9f9dd4bd44dbc5349d741b9ad58c8a009e6dd41e3da56e49211e7",
+        "equal": true
+      },
+      {
+        "file": "swemplan.c",
+        "debianSha256": "1d5728d4d87dd3aab737491fc6c02d29a7373e529c8a73997a9e801916370432",
+        "independentArchiveSha256": "d9efda8c4065a1a5fcb4103790ad7f06110114083a6a30cce3e43efc3bec4fe4",
+        "equal": false
+      }
+    ],
+    "differentMoshierFileNotUsed": "Strict flags reject fallback; all results use SWIEPH or JPL data."
+  },
+  "sourceLocators": [
+    {
+      "version": "1.76.00",
+      "file": "sweph.h",
+      "term": "SE_VERSION",
+      "lines": [
+        66
+      ],
+      "sourceFileSha256": "8113b204c46e95e46e5a058f956d135aaf468958b706d807d946678e2bfeae8e"
+    },
+    {
+      "version": "1.76.00",
+      "file": "sweph.h",
+      "term": "SE_TIDAL_DEFAULT",
+      "lines": [
+        130
+      ],
+      "sourceFileSha256": "8113b204c46e95e46e5a058f956d135aaf468958b706d807d946678e2bfeae8e"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.h",
+      "term": "PREC_IAU_2003",
+      "lines": [
+        77,
+        80
+      ],
+      "sourceFileSha256": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.h",
+      "term": "PREC_IAU_1976",
+      "lines": [
+        76,
+        78
+      ],
+      "sourceFileSha256": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.h",
+      "term": "NUT_IAU_2000B",
+      "lines": [
+        85
+      ],
+      "sourceFileSha256": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.h",
+      "term": "NUT_IAU_1980",
+      "lines": [
+        83
+      ],
+      "sourceFileSha256": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.h",
+      "term": "NUT_CORR_1987",
+      "lines": [
+        65
+      ],
+      "sourceFileSha256": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swedate.c",
+      "term": "20081231",
+      "lines": [
+        259
+      ],
+      "sourceFileSha256": "b6134ff9fe192f0dfbff519f81a85b17b8034745cbef73b0fbd5647efe931ff7"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swedate.c",
+      "term": "d - (double) nleap - 32.184 >= 1.0",
+      "lines": [
+        388
+      ],
+      "sourceFileSha256": "b6134ff9fe192f0dfbff519f81a85b17b8034745cbef73b0fbd5647efe931ff7"
+    },
+    {
+      "version": "1.76.00",
+      "file": "sweph.c",
+      "term": "return swe_calc(tjd_ut + swe_deltat(tjd_ut)",
+      "lines": [
+        400
+      ],
+      "sourceFileSha256": "716352a06935f4ed0376b8bf406871e143ad2c5e16a0a5d64cf7186096dbd367"
+    },
+    {
+      "version": "1.76.00",
+      "file": "sweph.c",
+      "term": "jpldenum >= 403",
+      "lines": [
+        2303,
+        3163,
+        3338,
+        3385,
+        4853,
+        5493
+      ],
+      "sourceFileSha256": "716352a06935f4ed0376b8bf406871e143ad2c5e16a0a5d64cf7186096dbd367"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.c",
+      "term": "#define TABEND",
+      "lines": [
+        1482
+      ],
+      "sourceFileSha256": "818968105ca31e8f5bc47bfe10d7ffd8c20d95a4dd9b906367e6e30987939d65"
+    },
+    {
+      "version": "1.76.00",
+      "file": "swephlib.c",
+      "term": "void swi_bias",
+      "lines": [
+        1290
+      ],
+      "sourceFileSha256": "818968105ca31e8f5bc47bfe10d7ffd8c20d95a4dd9b906367e6e30987939d65"
+    },
+    {
+      "version": "1.77.00",
+      "file": "sweph.h",
+      "term": "SE_VERSION",
+      "lines": [
+        66
+      ],
+      "sourceFileSha256": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7"
+    },
+    {
+      "version": "1.77.00",
+      "file": "sweph.h",
+      "term": "SE_TIDAL_DEFAULT",
+      "lines": [
+        134
+      ],
+      "sourceFileSha256": "3bdb22d8fc12285165f6ef5ae17a30e351c3f60ee28346302340eaa8d6c56dc7"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.h",
+      "term": "PREC_IAU_2003",
+      "lines": [
+        77,
+        80
+      ],
+      "sourceFileSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.h",
+      "term": "PREC_IAU_1976",
+      "lines": [
+        76,
+        78
+      ],
+      "sourceFileSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.h",
+      "term": "NUT_IAU_2000B",
+      "lines": [
+        85
+      ],
+      "sourceFileSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.h",
+      "term": "NUT_IAU_1980",
+      "lines": [
+        83
+      ],
+      "sourceFileSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.h",
+      "term": "NUT_CORR_1987",
+      "lines": [
+        65
+      ],
+      "sourceFileSha256": "9078eab0caca23e160b57771a728b740e07d71780891e3ff72cbdc6169e3993e"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swedate.c",
+      "term": "20081231",
+      "lines": [
+        308
+      ],
+      "sourceFileSha256": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swedate.c",
+      "term": "d - (double) nleap - 32.184 >= 1.0",
+      "lines": [
+        437
+      ],
+      "sourceFileSha256": "ff9aaeb47f10b4a502f78429d56487d3f52075b4bce99adf0f32c9b4035b26e0"
+    },
+    {
+      "version": "1.77.00",
+      "file": "sweph.c",
+      "term": "return swe_calc(tjd_ut + swe_deltat(tjd_ut)",
+      "lines": [
+        400
+      ],
+      "sourceFileSha256": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7"
+    },
+    {
+      "version": "1.77.00",
+      "file": "sweph.c",
+      "term": "jpldenum >= 403",
+      "lines": [
+        2303,
+        3163,
+        3338,
+        3385,
+        4855,
+        5510
+      ],
+      "sourceFileSha256": "96238078e597624e62d993b77c5fd2dd3452908cf1c8e70df847b9b02315b0d7"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.c",
+      "term": "#define TABEND",
+      "lines": [
+        1487
+      ],
+      "sourceFileSha256": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8"
+    },
+    {
+      "version": "1.77.00",
+      "file": "swephlib.c",
+      "term": "void swi_bias",
+      "lines": [
+        1294
+      ],
+      "sourceFileSha256": "3467d849f49dfea1e1f62616db87a6948c2f571a01b7232c959f899cb816f4b8"
+    }
+  ],
+  "excludedTags": [
+    {
+      "tag": "v1.76.02",
+      "commit": "4c0f8396f27bc36574d3311e03dfda59df68c071",
+      "url": "https://github.com/aloistr/swisseph/blob/4c0f8396f27bc36574d3311e03dfda59df68c071/sweph.h",
+      "headerBytes": 19093,
+      "headerSha256": "e6ad6edd3ffe71c3519fc5bf152a3edf8c42d971098c092efe8e3d09bbd8f072",
+      "containsSeVersionMacro": false,
+      "excluded": true,
+      "reason": "Root source dated 1998 lacks required historical version macro/model; not used for numerical results."
+    },
+    {
+      "tag": "v1.77",
+      "commit": "ba7a3d046f3f7ba8f16af558ee605efa9a74c535",
+      "url": "https://github.com/aloistr/swisseph/blob/ba7a3d046f3f7ba8f16af558ee605efa9a74c535/sweph.h",
+      "headerBytes": 19093,
+      "headerSha256": "e6ad6edd3ffe71c3519fc5bf152a3edf8c42d971098c092efe8e3d09bbd8f072",
+      "containsSeVersionMacro": false,
+      "excluded": true,
+      "reason": "Root source dated 1998 lacks required historical version macro/model; not used for numerical results."
+    }
+  ],
+  "unacquired": [
+    "Swiss 1.70 authenticated original release",
+    "2010/2011 Horizons implementation plus EOP dataset",
+    "SOFA 2009-12-31 original code"
+  ],
+  "signatureVerification": "DSC file SHA256 match only; PGP signature not independently verified"
+}

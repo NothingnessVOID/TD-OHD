@@ -1,0 +1,28 @@
+{
+  "status": "PASSED",
+  "base": "f5e2a80cb85adcbf18b4d7b763429178881aa5bf",
+  "stackCount": 30,
+  "caseEvaluations": 378,
+  "activationEvaluations": 9828,
+  "maxSolarArcErrorDegrees": 4.646949491871055e-10,
+  "checkCount": 26040,
+  "acquisitionHashesChecked": true,
+  "freshRerunExactEquality": true,
+  "productionChanges": false,
+  "limitations": [
+    "Swiss1.70 not acquired",
+    "authenticated historical Horizons/SOFA/EOP stack not reconstructed",
+    "official precise longitude unavailable",
+    "Linux build not tested"
+  ],
+  "checkGroups": [
+    "baseline identity",
+    "native flags and DE source",
+    "times and exact Design arc",
+    "all26 comparisons and counts",
+    "historical source provenance",
+    "archive integrity",
+    "fresh native rerun",
+    "scope and privacy"
+  ]
+}
