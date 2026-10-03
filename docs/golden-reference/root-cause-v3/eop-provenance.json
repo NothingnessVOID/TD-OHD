@@ -1,0 +1,278 @@
+{
+  "status": "verified",
+  "c04Series": "EOP IERS 14 C04 IAU1980, dPsi/dEps in arcseconds",
+  "c04FilenameInEphe": "eop_1962_today.txt",
+  "finalsFilenameInEphe": "eop_finals.txt",
+  "c04SourceUrl": "https://data.iers.org/products/eop/long-term/c04_14/iau1980/eopc04_14.62-now",
+  "c04Bytes": 3648337,
+  "c04Sha256": "40347f18a10eb72b15e4f84e647b5f1b7da4709534d935e2e1289697bdfa79df",
+  "c04Header": [
+    "               EARTH ORIENTATION PARAMETER (EOP) PRODUCT CENTER CENTER (PARIS OBSERVATORY)",
+    "                      INTERNATIONAL EARTH ROTATION AND REFERENCE SYSTEMS SERVICE",
+    "                                    EOP (IERS) 14 C04 TIME SERIES                 ",
+    "               Description: https://hpiers.obspm.fr/eoppc/eop/eopc04/C04.guide.pdf",
+    "                            contact: christian.bizouard@obspm.fr",
+    "",
+    "  ",
+    "             FORMAT(3(I4),I7,2(F11.6),2(F12.7),2(F11.6),2(F11.6),2(F11.7),2(F12.6))",
+    "##################################################################################",
+    "  ",
+    "      Date      MJD      x          y        UT1-UTC       LOD         dPsi      dEps       x Err     y Err   UT1-UTC Err  LOD Err    dPsi Err   dEpsilon Err",
+    "                         \"          \"           s           s            \"         \"        \"          \"          s           s            \"         \"",
+    "     (0h UTC)",
+    ""
+  ],
+  "c04ContinuousDailyRows": 23381,
+  "c04FirstDate": "1962-01-01",
+  "c04LastDate": "2026-01-05",
+  "c04MjdRange": [
+    37665,
+    61045
+  ],
+  "finalsSourceUrl": "https://maia.usno.navy.mil/ser7/finals.all",
+  "finalsBytes": 3769212,
+  "finalsSha256": "fa692f25c7dbeac3a800e645197b08547ff70a2e362371d0004178f5c9103f5f",
+  "finalsDut1DataMjdRange": [
+    41684,
+    61682
+  ],
+  "allNineBirthDatesCovered": true,
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "mjdUtc": 49770.0472222222,
+      "c04BracketingDays": [
+        {
+          "raw": "1995   2  22  49770  -0.080894   0.520281   0.2637927   0.0024637  -0.023654  -0.005478   0.000202   0.000144  0.0000046  0.0000066    0.000113    0.000053",
+          "date": "1995-02-22",
+          "ut1MinusUtcSeconds": 0.2637927,
+          "dpsiArcseconds": -0.023654,
+          "depsArcseconds": -0.005478
+        },
+        {
+          "raw": "1995   2  23  49771  -0.079261   0.521351   0.2613595   0.0024301  -0.024406  -0.005726   0.000203   0.000144  0.0000046  0.0000065    0.000113    0.000053",
+          "date": "1995-02-23",
+          "ut1MinusUtcSeconds": 0.2613595,
+          "dpsiArcseconds": -0.024406,
+          "depsArcseconds": -0.005726
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "95 222 49770.00 I -0.080493 0.000138  0.520348 0.000168  I 0.2637950 0.0000066  2.5099 0.0048  I   -23.905     .137    -5.384     .298  -.081000   .519800   .2637300   -23.500    -5.400  ",
+      "c04LinearInterpolatedDut1Seconds": 0.2636777988889392,
+      "swissInferredDut1Seconds": 0.2749130129814148,
+      "swissMinusC04Dut1Seconds": 0.011235214092475576,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G1995-jun",
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "mjdUtc": 49889.98819444422,
+      "c04BracketingDays": [
+        {
+          "raw": "1995   6  21  49889   0.269257   0.420758  -0.0472641   0.0020553  -0.026097  -0.008613   0.000122   0.000101  0.0000051  0.0000072    0.000113    0.000064",
+          "date": "1995-06-21",
+          "ut1MinusUtcSeconds": -0.0472641,
+          "dpsiArcseconds": -0.026097,
+          "depsArcseconds": -0.008613
+        },
+        {
+          "raw": "1995   6  22  49890   0.271012   0.417189  -0.0492573   0.0019135  -0.025925  -0.008663   0.000120   0.000099  0.0000050  0.0000071    0.000116    0.000064",
+          "date": "1995-06-22",
+          "ut1MinusUtcSeconds": -0.0492573,
+          "dpsiArcseconds": -0.025925,
+          "depsArcseconds": -0.008663
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "95 621 49889.00 I  0.269481 0.000126  0.421036 0.000161  I-0.0472689 0.0000186  2.0535 0.0155  I   -26.224     .324    -8.444     .298   .269200   .420100  -.0473600   -25.500    -8.000  ",
+      "c04LinearInterpolatedDut1Seconds": -0.0492337691662129,
+      "swissInferredDut1Seconds": -0.008086860179901123,
+      "swissMinusC04Dut1Seconds": 0.04114690898631178,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2005-jul20",
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "mjdUtc": 53571.902777777985,
+      "c04BracketingDays": [
+        {
+          "raw": "2005   7  20  53571  -0.018480   0.415361  -0.6048016  -0.0008374  -0.062043  -0.005186   0.000074   0.000069  0.0000175  0.0000227    0.000106    0.000042",
+          "date": "2005-07-20",
+          "ut1MinusUtcSeconds": -0.6048016,
+          "dpsiArcseconds": -0.062043,
+          "depsArcseconds": -0.005186
+        },
+        {
+          "raw": "2005   7  21  53572  -0.016930   0.415615  -0.6039853  -0.0007532  -0.061528  -0.005187   0.000074   0.000069  0.0000342  0.0000227    0.000106    0.000042",
+          "date": "2005-07-21",
+          "ut1MinusUtcSeconds": -0.6039853,
+          "dpsiArcseconds": -0.061528,
+          "depsArcseconds": -0.005187
+        }
+      ],
+      "usnoFinalsBirthDayRaw": " 5 720 53571.00 I -0.018372 0.000052  0.415455 0.000035  I-0.6048368 0.0000055 -0.8416 0.0050  I   -62.017     .363    -5.226     .340  -.018310   .415090  -.6048430   -62.000    -5.100  ",
+      "c04LinearInterpolatedDut1Seconds": -0.604064662499831,
+      "swissInferredDut1Seconds": -0.5769431591033936,
+      "swissMinusC04Dut1Seconds": 0.027121503396437485,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2015-tight",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "mjdUtc": 57048.055555555504,
+      "c04BracketingDays": [
+        {
+          "raw": "2015   1  26  57048   0.002781   0.302216  -0.4868111   0.0012869  -0.088167  -0.009466   0.000051   0.000054  0.0000242  0.0000094    0.000101    0.000040",
+          "date": "2015-01-26",
+          "ut1MinusUtcSeconds": -0.4868111,
+          "dpsiArcseconds": -0.088167,
+          "depsArcseconds": -0.009466
+        },
+        {
+          "raw": "2015   1  27  57049   0.002319   0.303047  -0.4880236   0.0011485  -0.088467  -0.009641   0.000051   0.000054  0.0000192  0.0000094    0.000101    0.000040",
+          "date": "2015-01-27",
+          "ut1MinusUtcSeconds": -0.4880236,
+          "dpsiArcseconds": -0.088467,
+          "depsArcseconds": -0.009641
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "15 126 57048.00 I  0.002891 0.000034  0.302202 0.000044  I-0.4867840 0.0000057  1.2554 0.0049  I   -88.275    0.151    -9.481    0.028  0.002890  0.302200 -0.4867861   -88.354    -9.514  ",
+      "c04LinearInterpolatedDut1Seconds": -0.4868784611110484,
+      "swissInferredDut1Seconds": -0.4886314272880554,
+      "swissMinusC04Dut1Seconds": -0.0017529661770070426,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2015-feb",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "mjdUtc": 57057.2888888889,
+      "c04BracketingDays": [
+        {
+          "raw": "2015   2   4  57057   0.003871   0.319825  -0.4955093   0.0011308  -0.088000  -0.010049   0.000049   0.000052  0.0000145  0.0000095    0.000098    0.000038",
+          "date": "2015-02-04",
+          "ut1MinusUtcSeconds": -0.4955093,
+          "dpsiArcseconds": -0.088,
+          "depsArcseconds": -0.010049
+        },
+        {
+          "raw": "2015   2   5  57058   0.003146   0.321302  -0.4966677   0.0011609  -0.087646  -0.010048   0.000049   0.000051  0.0000165  0.0000095    0.000098    0.000038",
+          "date": "2015-02-05",
+          "ut1MinusUtcSeconds": -0.4966677,
+          "dpsiArcseconds": -0.087646,
+          "depsArcseconds": -0.010048
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "15 2 4 57057.00 I  0.003793 0.000057  0.319766 0.000029  I-0.4955137 0.0000070  1.1070 0.0064  I   -88.007    0.300    -9.993    0.055  0.003887  0.319757 -0.4955034   -87.977   -10.040  ",
+      "c04LinearInterpolatedDut1Seconds": -0.4958439488889009,
+      "swissInferredDut1Seconds": -0.49921274185180664,
+      "swissMinusC04Dut1Seconds": -0.0033687929629057645,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2025-tight",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "mjdUtc": 60694.956249999814,
+      "c04BracketingDays": [
+        {
+          "raw": "2025   1  19  60694   0.120002   0.302529   0.0443353   0.0001596  -0.111327  -0.006307   0.000036   0.000022  0.0000039  0.0000072    0.000463    0.000171",
+          "date": "2025-01-19",
+          "ut1MinusUtcSeconds": 0.0443353,
+          "dpsiArcseconds": -0.111327,
+          "depsArcseconds": -0.006307
+        },
+        {
+          "raw": "2025   1  20  60695   0.120638   0.303131   0.0441827   0.0001277  -0.111607  -0.006322   0.000035   0.000022  0.0000039  0.0000077    0.000450    0.000168",
+          "date": "2025-01-20",
+          "ut1MinusUtcSeconds": 0.0441827,
+          "dpsiArcseconds": -0.111607,
+          "depsArcseconds": -0.006322
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "25 119 60694.00 I  0.120069 0.000013  0.302553 0.000018  I 0.0443484 0.0000141  0.1796 0.0112  I  -111.243    1.437    -6.164    0.079  0.120058  0.302553  0.0443556  -111.314    -6.126  ",
+      "c04LinearInterpolatedDut1Seconds": 0.044189376250028424,
+      "swissInferredDut1Seconds": 0.18921643495559692,
+      "swissMinusC04Dut1Seconds": 0.1450270587055685,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2025-mar",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "mjdUtc": 60749.7888888889,
+      "c04BracketingDays": [
+        {
+          "raw": "2025   3  15  60749   0.061192   0.348481   0.0428866   0.0005309  -0.109776  -0.008733   0.000026   0.000022  0.0000050  0.0000082    0.000415    0.000151",
+          "date": "2025-03-15",
+          "ut1MinusUtcSeconds": 0.0428866,
+          "dpsiArcseconds": -0.109776,
+          "depsArcseconds": -0.008733
+        },
+        {
+          "raw": "2025   3  16  60750   0.060440   0.350264   0.0423748   0.0004732  -0.109873  -0.008806   0.000027   0.000022  0.0000050  0.0000080    0.000422    0.000147",
+          "date": "2025-03-16",
+          "ut1MinusUtcSeconds": 0.0423748,
+          "dpsiArcseconds": -0.109873,
+          "depsArcseconds": -0.008806
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "25 315 60749.00 I  0.061245 0.000011  0.348507 0.000018  I 0.0428780 0.0000147  0.5318 0.0085  I  -110.079    1.453    -8.695    0.193  0.061222  0.348446  0.0428855  -109.770    -8.759  ",
+      "c04LinearInterpolatedDut1Seconds": 0.04248284666666137,
+      "swissInferredDut1Seconds": 0.203821063041687,
+      "swissMinusC04Dut1Seconds": 0.16133821637502566,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G1985-tight",
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "mjdUtc": 46090.7736111111,
+      "c04BracketingDays": [
+        {
+          "raw": "1985   1  25  46090  -0.043733   0.046911  -0.1970825   0.0016337   0.000919   0.004079   0.000405   0.000355  0.0000335  0.0000477    0.000593    0.000207",
+          "date": "1985-01-25",
+          "ut1MinusUtcSeconds": -0.1970825,
+          "dpsiArcseconds": 0.000919,
+          "depsArcseconds": 0.004079
+        },
+        {
+          "raw": "1985   1  26  46091  -0.048643   0.047120  -0.1987339   0.0016626   0.001132   0.004205   0.000406   0.000354  0.0000336  0.0000476    0.000588    0.000203",
+          "date": "1985-01-26",
+          "ut1MinusUtcSeconds": -0.1987339,
+          "dpsiArcseconds": 0.001132,
+          "depsArcseconds": 0.004205
+        }
+      ],
+      "usnoFinalsBirthDayRaw": "85 125 46090.00 I -0.044255 0.001357  0.046155 0.000554  I-0.1970843 0.0000741  1.6063 0.0486  I     1.226     .838     4.012     .283  -.041000   .040000  -.1971000      .000      .000  ",
+      "c04LinearInterpolatedDut1Seconds": -0.19836004138887178,
+      "swissInferredDut1Seconds": -0.19669979810714722,
+      "swissMinusC04Dut1Seconds": 0.001660243281724566,
+      "usedAsCalculationInput": false
+    },
+    {
+      "id": "G2005-jul11",
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "mjdUtc": 53562.07430555578,
+      "c04BracketingDays": [
+        {
+          "raw": "2005   7  11  53562  -0.027621   0.408829  -0.6080214  -0.0002651  -0.059281  -0.004678   0.000075   0.000070  0.0000064  0.0000226    0.000106    0.000043",
+          "date": "2005-07-11",
+          "ut1MinusUtcSeconds": -0.6080214,
+          "dpsiArcseconds": -0.059281,
+          "depsArcseconds": -0.004678
+        },
+        {
+          "raw": "2005   7  12  53563  -0.026801   0.409478  -0.6078418  -0.0001024  -0.059403  -0.004673   0.000075   0.000070  0.0000032  0.0000226    0.000106    0.000043",
+          "date": "2005-07-12",
+          "ut1MinusUtcSeconds": -0.6078418,
+          "dpsiArcseconds": -0.059403,
+          "depsArcseconds": -0.004673
+        }
+      ],
+      "usnoFinalsBirthDayRaw": " 5 711 53562.00 I -0.027648 0.000050  0.408860 0.000062  I-0.6079942 0.0000048 -0.2352 0.0036  I   -59.858     .311    -4.776     .340  -.027510   .408570  -.6080220   -59.200    -4.800  ",
+      "c04LinearInterpolatedDut1Seconds": -0.6080080547221813,
+      "swissInferredDut1Seconds": -0.5726784467697144,
+      "swissMinusC04Dut1Seconds": 0.03532960795246698,
+      "usedAsCalculationInput": false
+    }
+  ],
+  "inputPolicy": "Independent DUT1 comparison only. swe_utc_to_jd remains the sole TIME-B conversion; no external DUT1 override.",
+  "fullHorizonsPolicy": "Actual flags checked. This is Swiss compatibility mode with these EOP snapshots, not live Horizons or Jovian backend evidence."
+}

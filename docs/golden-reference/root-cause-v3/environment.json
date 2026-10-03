@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "startingAuditHead": "35034e7531754dfa0f45eb4e1ac0fc77c1027272",
+  "auditBranch": "audit/natal-golden-reference",
+  "capturedUtc": "2026-10-03T01:57:28.430418+00:00",
+  "os": "macOS-15.5-arm64-arm-64bit",
+  "architecture": "arm64",
+  "pythonVersion": "3.12.13",
+  "swissC": {
+    "version": "2.10.03",
+    "officialRepository": "https://github.com/aloistr/swisseph",
+    "sourceCommit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+    "sourcePatched": false,
+    "sourceFilesVerified": [
+      {
+        "filename": "sweph.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.c",
+        "bytes": 290642,
+        "sha256": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f",
+        "verifiedNowSha256": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f"
+      },
+      {
+        "filename": "swephlib.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.c",
+        "bytes": 164395,
+        "sha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05",
+        "verifiedNowSha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05"
+      },
+      {
+        "filename": "swejpl.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.c",
+        "bytes": 33480,
+        "sha256": "44014e260ae9ab2b1e8f413bb8a35fa270e369e3fb4907cd137ae103d2a8d0c2",
+        "verifiedNowSha256": "44014e260ae9ab2b1e8f413bb8a35fa270e369e3fb4907cd137ae103d2a8d0c2"
+      },
+      {
+        "filename": "swemplan.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemplan.c",
+        "bytes": 27880,
+        "sha256": "d13502ca7b92e3e32317b67ba7f012d92fabd1d358c3394c094d5515a3567caa",
+        "verifiedNowSha256": "d13502ca7b92e3e32317b67ba7f012d92fabd1d358c3394c094d5515a3567caa"
+      },
+      {
+        "filename": "swemmoon.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemmoon.c",
+        "bytes": 61388,
+        "sha256": "1d5f5ef9a95cf9a2f395b6334a58c63851ce0512d65bf08e49d3caf0a9fecb00",
+        "verifiedNowSha256": "1d5f5ef9a95cf9a2f395b6334a58c63851ce0512d65bf08e49d3caf0a9fecb00"
+      },
+      {
+        "filename": "swecl.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swecl.c",
+        "bytes": 225794,
+        "sha256": "ab46bdc303978523c69d814d236432541ff48cb410b756ef78cc1e8d2b2be303",
+        "verifiedNowSha256": "ab46bdc303978523c69d814d236432541ff48cb410b756ef78cc1e8d2b2be303"
+      },
+      {
+        "filename": "swehel.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehel.c",
+        "bytes": 123264,
+        "sha256": "7b4be28627afd22b059389abc4ef679b7259a0bcb9d0510e7ca3825901754b93",
+        "verifiedNowSha256": "7b4be28627afd22b059389abc4ef679b7259a0bcb9d0510e7ca3825901754b93"
+      },
+      {
+        "filename": "swehouse.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.c",
+        "bytes": 112151,
+        "sha256": "384c1d7b2a8bcef9f2cf16f7fbf02e7aa18f372bc11320874a5543b92aed95d9",
+        "verifiedNowSha256": "384c1d7b2a8bcef9f2cf16f7fbf02e7aa18f372bc11320874a5543b92aed95d9"
+      },
+      {
+        "filename": "swedate.c",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.c",
+        "bytes": 20063,
+        "sha256": "6790e989a003cb6422080d9aecf3c6567a25030f5b5647fd749e5b16422cfac7",
+        "verifiedNowSha256": "6790e989a003cb6422080d9aecf3c6567a25030f5b5647fd749e5b16422cfac7"
+      },
+      {
+        "filename": "sweph.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.h",
+        "bytes": 34361,
+        "sha256": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a",
+        "verifiedNowSha256": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a"
+      },
+      {
+        "filename": "swephlib.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.h",
+        "bytes": 7786,
+        "sha256": "29a151bb0c6adcb73fa73eff805b498c26bdffbb81e82d55e1b50f79218ea82a",
+        "verifiedNowSha256": "29a151bb0c6adcb73fa73eff805b498c26bdffbb81e82d55e1b50f79218ea82a"
+      },
+      {
+        "filename": "swejpl.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.h",
+        "bytes": 3995,
+        "sha256": "f61ae6173b150f456540afba68500989c642506822e0397cf99c2cb7f50aac0d",
+        "verifiedNowSha256": "f61ae6173b150f456540afba68500989c642506822e0397cf99c2cb7f50aac0d"
+      },
+      {
+        "filename": "swephexp.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephexp.h",
+        "bytes": 40932,
+        "sha256": "dd8e74e2853915a316041397f31730219b7910333be6bba3934fd77130335f22",
+        "verifiedNowSha256": "dd8e74e2853915a316041397f31730219b7910333be6bba3934fd77130335f22"
+      },
+      {
+        "filename": "sweodef.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweodef.h",
+        "bytes": 10838,
+        "sha256": "a2ace0fc0ea81ffbf9eb0a7f9fc1c1446d98f07d3a170a2c54b8ef4908325462",
+        "verifiedNowSha256": "a2ace0fc0ea81ffbf9eb0a7f9fc1c1446d98f07d3a170a2c54b8ef4908325462"
+      },
+      {
+        "filename": "swemptab.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemptab.h",
+        "bytes": 311984,
+        "sha256": "dc7595b81bd49e86a6204ed1e0a041c410a9de5c068fd1d90d350a82d604fb85",
+        "verifiedNowSha256": "dc7595b81bd49e86a6204ed1e0a041c410a9de5c068fd1d90d350a82d604fb85"
+      },
+      {
+        "filename": "swenut2000a.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swenut2000a.h",
+        "bytes": 68486,
+        "sha256": "83b0a2f569174b56c8e26971b00f85f5ae52265b34c1c53436c7122e0f1faad7",
+        "verifiedNowSha256": "83b0a2f569174b56c8e26971b00f85f5ae52265b34c1c53436c7122e0f1faad7"
+      },
+      {
+        "filename": "swehouse.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.h",
+        "bytes": 3702,
+        "sha256": "7a91a007a4de0900ed6d234d74da421b2372d245b09a2ba8b74d6e2e054a200c",
+        "verifiedNowSha256": "7a91a007a4de0900ed6d234d74da421b2372d245b09a2ba8b74d6e2e054a200c"
+      },
+      {
+        "filename": "swedate.h",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.h",
+        "bytes": 3191,
+        "sha256": "886b001815561f2c5f5e40418ce00d62377cb8962180c38062ac83bfdab77b38",
+        "verifiedNowSha256": "886b001815561f2c5f5e40418ce00d62377cb8962180c38062ac83bfdab77b38"
+      },
+      {
+        "filename": "LICENSE.TXT",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/LICENSE.TXT",
+        "bytes": 7,
+        "sha256": "c693279643b8cd5d248172d9c22cb7cf4ed163a3c98c8a3f69c2717edd3eacb7",
+        "verifiedNowSha256": "c693279643b8cd5d248172d9c22cb7cf4ed163a3c98c8a3f69c2717edd3eacb7"
+      },
+      {
+        "filename": "LICENSE",
+        "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/LICENSE",
+        "bytes": 2371,
+        "sha256": "b6345743292c516d07799dfad46f1a641e5270da2160cc4d6bd54594d6faa991",
+        "verifiedNowSha256": "b6345743292c516d07799dfad46f1a641e5270da2160cc4d6bd54594d6faa991"
+      }
+    ],
+    "librarySha256": "d9b29b34fe34270fd8c75a193bf17569640752f6c746f0dd93334e3e75d89cb8",
+    "buildCommand": [
+      "cc",
+      "-dynamiclib",
+      "-O2",
+      "-fPIC",
+      "-o",
+      "<outside-repo>/libswisseph21003.dylib",
+      "sweph.c",
+      "swephlib.c",
+      "swejpl.c",
+      "swemplan.c",
+      "swemmoon.c",
+      "swecl.c",
+      "swehel.c",
+      "swehouse.c",
+      "swedate.c",
+      "-lm"
+    ],
+    "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.5.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "coverageInstrumentation": false
+  },
+  "raw441": {
+    "filename": "de441.eph",
+    "bytes": 2788676624,
+    "sha256": "476096486def4e41bfceb29aa27f50784da0bce318902bcf7b88caad058cd4da",
+    "md5": "4e3b924463d17b68ec9c4a18240300cd",
+    "hashSeconds": 4.443747043609619,
+    "id": "de441.eph",
+    "type": "raw NASA/JPL binary DE441",
+    "sourceUrl": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de441/linux_m13000p17000.441",
+    "renameOnly": "linux_m13000p17000.441 -> de441.eph, no byte transformation",
+    "headerTitle252Bytes": "JPL Planetary Ephemeris DE441/LE441                                                 Start Epoch: JED= -3100015.5-13200-AUG-15 00:00:00                                  Final Epoch: JED=  8000016.5 17191-MAR-15 00:00:00                                  ",
+    "binaryHeaderDenum": 441,
+    "binaryHeaderEffectiveJdRangeAndStep": [
+      -3027215.5,
+      7930192.5,
+      32.0
+    ],
+    "officialMD5": "4e3b924463d17b68ec9c4a18240300cd",
+    "officialMD5Source": "https://www.astro.com/swisseph-download/jplfiles/",
+    "md5MatchesOfficial": true,
+    "readmeDifferentMd5": "a7b2a5b8b2ebed52ea4da2304958053b",
+    "readmeMd5Note": "GitHub README lists a different de441.eph checksum. This downloaded NASA Linux file matches the dedicated Astrodienst JPL download page checksum; both are recorded rather than hiding the discrepancy."
+  },
+  "goldenJsonSha256": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb",
+  "mappingSource": "../root-cause-v2/scripts/frozen_mapping.py",
+  "mappingSha256": "99208a832f88a4c055921be3df0cce7b9946485f35f1edb646d972ac8d280f04",
+  "installation8787": {
+    "assets": [
+      {
+        "path": "engine/_framework/dotnet.js",
+        "bytes": 45878,
+        "sha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+        "http8787Sha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+        "unchanged": true
+      },
+      {
+        "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+        "bytes": 9493,
+        "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+        "http8787Sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+        "unchanged": true
+      },
+      {
+        "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+        "bytes": 43797,
+        "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+        "http8787Sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+        "unchanged": true
+      },
+      {
+        "path": "engine/_framework/SharpAstrology.SwissEph.9e09zmgwb4.wasm",
+        "bytes": 401173,
+        "sha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+        "http8787Sha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+        "unchanged": true
+      },
+      {
+        "path": "engine/_framework/SharpChartEngine.2914v7b7y7.wasm",
+        "bytes": 16149,
+        "sha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+        "http8787Sha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+        "unchanged": true
+      },
+      {
+        "path": "engine/_framework/SharpTransitCore.p6tgwic1v4.wasm",
+        "bytes": 8981,
+        "sha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+        "http8787Sha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+        "unchanged": true
+      },
+      {
+        "path": "engine/ephe/sepl_18.se1",
+        "bytes": 484061,
+        "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "http8787Sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "unchanged": true
+      },
+      {
+        "path": "engine/ephe/semo_18.se1",
+        "bytes": 1304771,
+        "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+        "http8787Sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+        "unchanged": true
+      }
+    ],
+    "readOnly": true,
+    "unchanged": true
+  },
+  "productionDiffFromBaseline": [],
+  "productionModified": false,
+  "scope": "Personality Sun only. No new Design/Profile/Cross computations are inferred.",
+  "excludedBinaries": "Kernels, EOP full downloads and compiled C libraries remain outside Git."
+}

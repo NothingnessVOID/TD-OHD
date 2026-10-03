@@ -1,0 +1,374 @@
+{
+  "parsedFrom": "pinned official swephlib.c and swephexp.h, not hand-written presets",
+  "selectorOrder": [
+    "SE_MODEL_DELTAT",
+    "SE_MODEL_PREC_LONGTERM",
+    "SE_MODEL_PREC_SHORTTERM",
+    "SE_MODEL_NUT",
+    "SE_MODEL_BIAS",
+    "SE_MODEL_JPLHOR_MODE",
+    "SE_MODEL_JPLHORA_MODE",
+    "SE_MODEL_SIDT"
+  ],
+  "defaultSymbols": [
+    "SEMOD_DELTAT_DEFAULT",
+    "SEMOD_PREC_DEFAULT",
+    "SEMOD_PREC_DEFAULT_SHORT",
+    "SEMOD_NUT_DEFAULT",
+    "SEMOD_BIAS_DEFAULT",
+    "SEMOD_JPLHOR_DEFAULT",
+    "SEMOD_JPLHORA_DEFAULT",
+    "SEMOD_SIDT_DEFAULT"
+  ],
+  "presets": [
+    {
+      "preset": "SE1.00",
+      "sourceMacro": "AMODELS_SE_1_00",
+      "sourceLine": 4174,
+      "sourceSelectors": [
+        1,
+        3,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "effectiveSelectors": [
+        1,
+        3,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_MORRISON_1984",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_WILL_EPS_LASK",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_IAU_1976",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_1980",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_NONE",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_1976"
+      }
+    },
+    {
+      "preset": "SE1.64",
+      "sourceMacro": "AMODELS_SE_1_64",
+      "sourceLine": 4175,
+      "sourceSelectors": [
+        2,
+        3,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "effectiveSelectors": [
+        2,
+        3,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_1997",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_WILL_EPS_LASK",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_IAU_1976",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_1980",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_NONE",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_1976"
+      }
+    },
+    {
+      "preset": "SE1.70",
+      "sourceMacro": "AMODELS_SE_1_70",
+      "sourceLine": 4176,
+      "sourceSelectors": [
+        2,
+        8,
+        8,
+        4,
+        2,
+        0,
+        0,
+        2
+      ],
+      "effectiveSelectors": [
+        2,
+        8,
+        8,
+        4,
+        2,
+        1,
+        3,
+        2
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_1997",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2000",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_2006"
+      }
+    },
+    {
+      "preset": "SE1.72",
+      "sourceMacro": "AMODELS_SE_1_72",
+      "sourceLine": 4177,
+      "sourceSelectors": [
+        3,
+        8,
+        8,
+        4,
+        2,
+        0,
+        0,
+        2
+      ],
+      "effectiveSelectors": [
+        3,
+        8,
+        8,
+        4,
+        2,
+        1,
+        3,
+        2
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_MORRISON_2004",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2000",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_2006"
+      }
+    },
+    {
+      "preset": "SE1.77",
+      "sourceMacro": "AMODELS_SE_1_77",
+      "sourceLine": 4178,
+      "sourceSelectors": [
+        4,
+        8,
+        8,
+        4,
+        2,
+        0,
+        0,
+        2
+      ],
+      "effectiveSelectors": [
+        4,
+        8,
+        8,
+        4,
+        2,
+        1,
+        3,
+        2
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_ESPENAK_MEEUS_2006",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_IAU_2006",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2000",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_2006"
+      }
+    },
+    {
+      "preset": "SE1.78",
+      "sourceMacro": "AMODELS_SE_1_78",
+      "sourceLine": 4179,
+      "sourceSelectors": [
+        4,
+        9,
+        9,
+        4,
+        2,
+        0,
+        0,
+        2
+      ],
+      "effectiveSelectors": [
+        4,
+        9,
+        9,
+        4,
+        2,
+        1,
+        3,
+        2
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_ESPENAK_MEEUS_2006",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2000",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_2006"
+      }
+    },
+    {
+      "preset": "SE1.80",
+      "sourceMacro": "AMODELS_SE_1_80",
+      "sourceLine": 4180,
+      "sourceSelectors": [
+        4,
+        9,
+        9,
+        4,
+        3,
+        0,
+        0,
+        1
+      ],
+      "effectiveSelectors": [
+        4,
+        9,
+        9,
+        4,
+        3,
+        1,
+        3,
+        1
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_ESPENAK_MEEUS_2006",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2006",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_IAU_1976"
+      }
+    },
+    {
+      "preset": "SE2.00",
+      "sourceMacro": "AMODELS_SE_2_00",
+      "sourceLine": 4181,
+      "sourceSelectors": [
+        4,
+        9,
+        9,
+        4,
+        3,
+        0,
+        0,
+        4
+      ],
+      "effectiveSelectors": [
+        4,
+        9,
+        9,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_ESPENAK_MEEUS_2006",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2006",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_LONGTERM"
+      }
+    },
+    {
+      "preset": "SE2.06",
+      "sourceMacro": "AMODELS_SE_2_06",
+      "sourceLine": 4182,
+      "sourceSelectors": [
+        5,
+        9,
+        9,
+        4,
+        3,
+        0,
+        0,
+        4
+      ],
+      "effectiveSelectors": [
+        5,
+        9,
+        9,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_ETC_2016",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2006",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_LONGTERM"
+      }
+    },
+    {
+      "preset": "default",
+      "sourceMacro": null,
+      "sourceSelectors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "effectiveSelectors": [
+        5,
+        9,
+        9,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "modelNames": {
+        "SE_MODEL_DELTAT": "SEMOD_DELTAT_STEPHENSON_ETC_2016",
+        "SE_MODEL_PREC_LONGTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_PREC_SHORTTERM": "SEMOD_PREC_VONDRAK_2011",
+        "SE_MODEL_NUT": "SEMOD_NUT_IAU_2000B",
+        "SE_MODEL_BIAS": "SEMOD_BIAS_IAU2006",
+        "SE_MODEL_JPLHOR_MODE": "SEMOD_JPLHOR_LONG_AGREEMENT",
+        "SE_MODEL_JPLHORA_MODE": "SEMOD_JPLHORA_3",
+        "SE_MODEL_SIDT": "SEMOD_SIDT_LONGTERM"
+      }
+    }
+  ]
+}

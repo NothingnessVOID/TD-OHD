@@ -6,6 +6,8 @@
 
 **2026-10-03 root-cause v2：**[原版 Swiss C、raw JPL 与诊断 frame bias 报告](root-cause-v2/README.md)。三组 C 已真实执行并验证无 fallback：`.se1` 对齐 2/7，raw DE441/DE431 各 3/7；Sharp raw441 原版为 0/7，补 frame bias 后为 3/7且九例太阳黄经与 C raw441 数值对齐。四个 Golden 差异仍未解释；MMI 3.0 实际访问受阻，未填写推测结果。生产与 8787 未修改。
 
+**2026-10-03 root-cause v3：**[UTC 时间尺度、官方历史 preset 与 Horizons 实测](root-cause-v3/README.md)。正式 UTC→TT/UT1 使当前 C raw441 从 3/7 变为 4/7，两个负对照保持正确，但并未解释全部差异。十组完整历史 preset 均为 4/7；组件混合组最高 5/7；Horizons APPROX 与有可靠 EOP 数据的完整模式均为 0/7。未找到 7/7 + 2/2 的自然配置，没有修改生产或安装。
+
 ## 结论
 
 已通过两站实际浏览器操作复现 **7 个 Profile 不一致案例**，覆盖 1995、2005、2015、2025 年和 7 个不同 Personality Sun Gate。1985 年作为负对照也进行了官方核对。样本是主动构造的边界出生时刻，并非用户个人出生资料。
