@@ -22,3 +22,5 @@ _*.mjs
 
 /docs/moon-apparent-parity/scripts/moon-harness/bin/
 /docs/moon-apparent-parity/scripts/moon-harness/obj/
+/docs/true-node-parity/scripts/node-harness/bin/
+/docs/true-node-parity/scripts/node-harness/obj/
