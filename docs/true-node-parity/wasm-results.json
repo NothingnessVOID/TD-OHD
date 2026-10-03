@@ -1,0 +1,51 @@
+{
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G1995-jun",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2005-jul20",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2015-tight",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2015-feb",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2025-tight",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2025-mar",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G1985-tight",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    },
+    {
+      "id": "G2005-jul11",
+      "all26Activations": "PASS",
+      "mechanics": "PASS"
+    }
+  ],
+  "comparisons": 234,
+  "parity": "PASS"
+}
