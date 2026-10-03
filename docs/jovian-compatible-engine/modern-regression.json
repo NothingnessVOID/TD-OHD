@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "baselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "productionEngineSignature": "59b90e629033cc7faf95",
+  "signatureUnchanged": true,
+  "tests": [
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-test.log",
+      "logSha256": "88a38ab9573567edca5f6dbc7fb32832beb9615d1289bd26b54f399877b52cdf",
+      "counts": {
+        "total": 252,
+        "passed": 249,
+        "skipped": 3,
+        "failed": 0
+      }
+    },
+    {
+      "command": "npm run test:localization",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-localization.log",
+      "logSha256": "9811a40a7b3f526ca583b0a165ddda76b9825108cb715cf1e00cb98286c7e94d",
+      "counts": {
+        "total": 34,
+        "passed": 34,
+        "failed": 0
+      }
+    },
+    {
+      "command": "npm run test:timeline",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-timeline.log",
+      "logSha256": "6c50913cfb0d33c73b3b4319d7e75862c3d92e7497a3005d146ecf76bf373763",
+      "counts": {
+        "total": 61,
+        "passed": 61,
+        "failed": 0
+      }
+    },
+    {
+      "command": "npm run e2e:sharp",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-sharp.log",
+      "logSha256": "1567eb5266e85fe5466c2ecb4e85594288dca758335c0528a49b6805016cea57"
+    },
+    {
+      "command": "npm run e2e:reference",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-reference.log",
+      "logSha256": "9d4287af0b3d424cfea894ad641be72e469ee9c8d9837daf7729822424714ea2"
+    },
+    {
+      "command": "npm run e2e:chart-data-export",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-chart-data-export.log",
+      "logSha256": "c2a088d5ed44a280c85e2be99a62f179fe937eb95d8c00aa990eb42f4704d607"
+    },
+    {
+      "command": "npm run e2e:planet",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-planet.log",
+      "logSha256": "c06921035428d3cbb0f39019dff139cc459304d4f5c336dc23976470811f46ed"
+    },
+    {
+      "command": "npm run e2e:appearance",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-appearance.log",
+      "logSha256": "1f891e36ad98dbbf372a2728cedda5bb7a02380b780acbd7875082bee7c31f42"
+    },
+    {
+      "command": "npm run e2e:timeline",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "/tmp/jovian-modern-e2e-timeline.log",
+      "logSha256": "ec75d0b8218f16aac0b3cc9c0c2c3b5dbd74cf543eb13ce7ffc8cda169be0713"
+    }
+  ],
+  "sourceIntegrity": {
+    "format": "sha256 of canonical UTF-8 filename -> sha256 JSON with sorted keys and comma/colon separators",
+    "trackedFiles": 329,
+    "baselineTreeSha256": "bf7383823174b363f84ebee9c89b71aa8ce1aa3e0ecfbb73e94c48cd25144dc7",
+    "currentTreeSha256": "bf7383823174b363f84ebee9c89b71aa8ce1aa3e0ecfbb73e94c48cd25144dc7",
+    "changedFiles": [],
+    "scope": [
+      "engine-core",
+      "engine-wasm",
+      "third_party/SharpAstrology.SwissEph",
+      "src",
+      "public/ephe",
+      "scripts/build-sharp-engine.mjs",
+      "scripts/lib/engine-identity.mjs"
+    ]
+  },
+  "keyFileHashes": [
+    {
+      "path": "engine-wasm/Program.cs",
+      "baselineSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "currentSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "unchanged": true
+    },
+    {
+      "path": "engine-core/TransitCore.cs",
+      "baselineSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "currentSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "unchanged": true
+    },
+    {
+      "path": "engine-core/SharpTransitCore.csproj",
+      "baselineSha256": "caed6bf2c71f1b758996fa4bfaaea7c856fc81ffe8730b0e278ed812eae419a3",
+      "currentSha256": "caed6bf2c71f1b758996fa4bfaaea7c856fc81ffe8730b0e278ed812eae419a3",
+      "unchanged": true
+    },
+    {
+      "path": "engine-wasm/SharpChartEngine.csproj",
+      "baselineSha256": "8825497aaefa2d7425b72d42a8b97108839a30d031873ff7a50f7195653e7706",
+      "currentSha256": "8825497aaefa2d7425b72d42a8b97108839a30d031873ff7a50f7195653e7706",
+      "unchanged": true
+    },
+    {
+      "path": "engine-wasm/ephemeris-manifest.json",
+      "baselineSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "currentSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/chart-engine/engine-identity.js",
+      "baselineSha256": "9560d94338567c7a9af8849f2f3dc7b731e1cbfe471359bf64baa9976a3d2a37",
+      "currentSha256": "9560d94338567c7a9af8849f2f3dc7b731e1cbfe471359bf64baa9976a3d2a37",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-provider.js",
+      "baselineSha256": "727e4326759f2d2282d2fb45c701896918ddde7723a791d12e3a3b05321ef996",
+      "currentSha256": "727e4326759f2d2282d2fb45c701896918ddde7723a791d12e3a3b05321ef996",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-contract.js",
+      "baselineSha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "currentSha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "unchanged": true
+    },
+    {
+      "path": "src/features/transit-timeline/annual-signature.js",
+      "baselineSha256": "09c3d3bf3591336a816ea0f94dee2daa1b8573aa1782d9449ac0c197b2b7e668",
+      "currentSha256": "09c3d3bf3591336a816ea0f94dee2daa1b8573aa1782d9449ac0c197b2b7e668",
+      "unchanged": true
+    }
+  ],
+  "browserEnvironment": {
+    "url": "http://127.0.0.1:5199",
+    "server": "isolated Vite developer server",
+    "browser": "headless Playwright-launched test browser; fresh test contexts",
+    "touchesUserSession": false
+  },
+  "sharpParity": {
+    "instants": 52,
+    "planetsPerInstant": 13,
+    "fields": [
+      "gate",
+      "line",
+      "color",
+      "tone",
+      "base",
+      "longitude"
+    ],
+    "status": "PASS",
+    "missingEphemerisRejects": true
+  },
+  "limitations": [
+    "Three live online geocoding tests are skipped by the existing default test configuration.",
+    "Source comparison establishes byte integrity for 329 baseline tracked Modern implementation/data/build files; it does not claim identical nontracked build artifact bytes."
+  ],
+  "productionDefaultUnchanged": true,
+  "deployed": false,
+  "running8787Untouched": true
+}
