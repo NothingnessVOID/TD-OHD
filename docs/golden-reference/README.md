@@ -242,3 +242,9 @@ DE431情况下，单一Mandala offset约束仍无交集。原报告中32条早�
 - 公开副本中的机器绝对路径已替换为符号占位符。计算数字与官方 expected 未修改。
 
 公开的本地页面DOM摘录已隐去与审计无关的已保存图表名称；当前诊断案例、Gate.Line、Profile等证据保留原值。截图中的选择器仅显示当前人类图。
+
+## 2026-10-03：myBodyGraph 与 VOID 独立边界对照
+
+新增 [平台边界对照报告](platform-boundaries/README.md) 与 [五例完整样例 JSON](platform-boundaries/golden-cases.json)。myBodyGraph 五例完整130项 Gate.Line与已有 Jovian 证据一致；VOID 在 Codex 内置浏览器每例重复三次，A/B/C/E 与 Modern Swiss 一致，D 的人格 Sun/Earth 不同。采集与后续对照、未披露技术细节、脱敏规则均单独记录。
+
+此次仅追加公开审计资料。Modern Swiss 比较引用修复分支的不可变记录，不将修复代码合入本审计分支；不改8787，不合并main，不部署。隐私相关账户信息、图表关联标识、本机路径及认证信息不发布，获准公开的合成样例保留。

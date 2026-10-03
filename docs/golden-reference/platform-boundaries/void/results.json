@@ -1,0 +1,1752 @@
+{
+  "collectedBeforeExpectedRead": true,
+  "browser": "Codex IAB",
+  "cases": [
+    {
+      "case": "A",
+      "utc": "2005-07-20T21:40:00Z",
+      "input": [
+        {
+          "id": "birthday.year",
+          "value": "2005"
+        },
+        {
+          "id": "birthday.month",
+          "value": "7"
+        },
+        {
+          "id": "birthday.day",
+          "value": "20"
+        },
+        {
+          "id": "birthday.hour",
+          "value": "22"
+        },
+        {
+          "id": "birthday.minute",
+          "value": "40"
+        },
+        {
+          "id": "timezone",
+          "value": "1"
+        }
+      ],
+      "metadata": {
+        "Type": "生產者",
+        "Profile": "2/5",
+        "Definition": "三分人",
+        "Strategy": "等待回應",
+        "NotSelfTheme": "挫敗",
+        "InnerAuthority": "情緒型權威",
+        "IncarnationCross": "右角度交叉之律法2 (56/60 | 3/50)"
+      },
+      "activations": {
+        "personality": {
+          "sun": {
+            "gateLine": "56.2",
+            "gate": "56",
+            "line": "2",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "60.2",
+            "gate": "60",
+            "line": "2",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "54.6",
+            "gate": "54",
+            "line": "6",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "51.3",
+            "gate": "51",
+            "line": "3",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "57.3",
+            "gate": "57",
+            "line": "3",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "4.2",
+            "gate": "4",
+            "line": "2",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "29.4",
+            "gate": "29",
+            "line": "4",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "42.6",
+            "gate": "42",
+            "line": "6",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "48.3",
+            "gate": "48",
+            "line": "3",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "56.5",
+            "gate": "56",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "37.5",
+            "gate": "37",
+            "line": "5",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "13.4",
+            "gate": "13",
+            "line": "4",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "26.6",
+            "gate": "26",
+            "line": "6",
+            "color": "4",
+            "tone": null,
+            "base": null
+          }
+        },
+        "design": {
+          "sun": {
+            "gateLine": "3.5",
+            "gate": "3",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "50.5",
+            "gate": "50",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "40.5",
+            "gate": "40",
+            "line": "5",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "42.3",
+            "gate": "42",
+            "line": "3",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "32.3",
+            "gate": "32",
+            "line": "3",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "17.1",
+            "gate": "17",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "27.4",
+            "gate": "27",
+            "line": "4",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "49.4",
+            "gate": "49",
+            "line": "4",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "48.3",
+            "gate": "48",
+            "line": "3",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "62.1",
+            "gate": "62",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "37.5",
+            "gate": "37",
+            "line": "5",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "13.5",
+            "gate": "13",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "11.2",
+            "gate": "11",
+            "line": "2",
+            "color": "6",
+            "tone": null,
+            "base": null
+          }
+        }
+      },
+      "repeatedStable": true,
+      "repeats": 3,
+      "sourceFiles": [
+        "iab/A-repeat-1.json",
+        "iab/A-repeat-2.json",
+        "iab/A-repeat-3.json"
+      ],
+      "jovian": {
+        "caseId": "G2005-jul20",
+        "activations": {
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          },
+          "personality": {
+            "sun": "56.3",
+            "earth": "60.3",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          }
+        },
+        "profile": "3/5",
+        "differences": [
+          {
+            "side": "personality",
+            "body": "sun",
+            "void": "56.2",
+            "reference": "56.3"
+          },
+          {
+            "side": "personality",
+            "body": "earth",
+            "void": "60.2",
+            "reference": "60.3"
+          }
+        ]
+      },
+      "modernSwiss": {
+        "caseId": "G2005-jul20",
+        "activations": {
+          "personality": {
+            "sun": "56.2",
+            "earth": "60.2",
+            "moon": "54.6",
+            "northNode": "51.3",
+            "southNode": "57.3",
+            "mercury": "4.2",
+            "venus": "29.4",
+            "mars": "42.6",
+            "jupiter": "48.3",
+            "saturn": "56.5",
+            "uranus": "37.5",
+            "neptune": "13.4",
+            "pluto": "26.6"
+          },
+          "design": {
+            "sun": "3.5",
+            "earth": "50.5",
+            "moon": "40.5",
+            "northNode": "42.3",
+            "southNode": "32.3",
+            "mercury": "17.1",
+            "venus": "27.4",
+            "mars": "49.4",
+            "jupiter": "48.3",
+            "saturn": "62.1",
+            "uranus": "37.5",
+            "neptune": "13.5",
+            "pluto": "11.2"
+          }
+        },
+        "profile": "2 / 5",
+        "differences": []
+      },
+      "geneticMatrix": "NOT INDEPENDENTLY COMPARED"
+    },
+    {
+      "case": "B",
+      "utc": "2015-01-26T01:20:00Z",
+      "input": [
+        {
+          "id": "birthday.year",
+          "value": "2015"
+        },
+        {
+          "id": "birthday.month",
+          "value": "1"
+        },
+        {
+          "id": "birthday.day",
+          "value": "26"
+        },
+        {
+          "id": "birthday.hour",
+          "value": "1"
+        },
+        {
+          "id": "birthday.minute",
+          "value": "20"
+        },
+        {
+          "id": "timezone",
+          "value": "0"
+        }
+      ],
+      "metadata": {
+        "Type": "生產者",
+        "Profile": "4/1",
+        "Definition": "二分人",
+        "Strategy": "等待回應",
+        "NotSelfTheme": "挫敗",
+        "InnerAuthority": "情緒型權威",
+        "IncarnationCross": "並列交叉之幻想 (41/31 | 44/24)"
+      },
+      "activations": {
+        "personality": {
+          "sun": {
+            "gateLine": "41.4",
+            "gate": "41",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "31.4",
+            "gate": "31",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "42.1",
+            "gate": "42",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "48.4",
+            "gate": "48",
+            "line": "4",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "21.4",
+            "gate": "21",
+            "line": "4",
+            "color": "1",
+            "tone": "6",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "13.3",
+            "gate": "13",
+            "line": "3",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "30.4",
+            "gate": "30",
+            "line": "4",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "37.6",
+            "gate": "37",
+            "line": "6",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "4.1",
+            "gate": "4",
+            "line": "1",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "34.4",
+            "gate": "34",
+            "line": "4",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "21.4",
+            "gate": "21",
+            "line": "4",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "37.1",
+            "gate": "37",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "38.5",
+            "gate": "38",
+            "line": "5",
+            "color": "5",
+            "tone": null,
+            "base": null
+          }
+        },
+        "design": {
+          "sun": {
+            "gateLine": "44.1",
+            "gate": "44",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "24.1",
+            "gate": "24",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "19.3",
+            "gate": "19",
+            "line": "3",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "57.5",
+            "gate": "57",
+            "line": "5",
+            "color": "2",
+            "tone": "4",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "51.5",
+            "gate": "51",
+            "line": "5",
+            "color": "2",
+            "tone": "4",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "57.5",
+            "gate": "57",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "44.2",
+            "gate": "44",
+            "line": "2",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "10.6",
+            "gate": "10",
+            "line": "6",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "4.2",
+            "gate": "4",
+            "line": "2",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "43.6",
+            "gate": "43",
+            "line": "6",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "21.5",
+            "gate": "21",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "55.6",
+            "gate": "55",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "38.2",
+            "gate": "38",
+            "line": "2",
+            "color": "6",
+            "tone": null,
+            "base": null
+          }
+        }
+      },
+      "repeatedStable": true,
+      "repeats": 3,
+      "sourceFiles": [
+        "iab/B-repeat-1.json",
+        "iab/B-repeat-2.json",
+        "iab/B-repeat-3.json"
+      ],
+      "jovian": {
+        "caseId": "G2015-tight",
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          },
+          "personality": {
+            "sun": "41.5",
+            "earth": "31.5",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          }
+        },
+        "profile": "5/1",
+        "differences": [
+          {
+            "side": "personality",
+            "body": "sun",
+            "void": "41.4",
+            "reference": "41.5"
+          },
+          {
+            "side": "personality",
+            "body": "earth",
+            "void": "31.4",
+            "reference": "31.5"
+          }
+        ]
+      },
+      "modernSwiss": {
+        "caseId": "G2015-tight",
+        "activations": {
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "42.1",
+            "northNode": "48.4",
+            "southNode": "21.4",
+            "mercury": "13.3",
+            "venus": "30.4",
+            "mars": "37.6",
+            "jupiter": "4.1",
+            "saturn": "34.4",
+            "uranus": "21.4",
+            "neptune": "37.1",
+            "pluto": "38.5"
+          },
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "19.3",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "57.5",
+            "venus": "44.2",
+            "mars": "10.6",
+            "jupiter": "4.2",
+            "saturn": "43.6",
+            "uranus": "21.5",
+            "neptune": "55.6",
+            "pluto": "38.2"
+          }
+        },
+        "profile": "4 / 1",
+        "differences": []
+      },
+      "geneticMatrix": "NOT INDEPENDENTLY COMPARED"
+    },
+    {
+      "case": "C",
+      "utc": "2015-02-04T06:56:00Z",
+      "input": [
+        {
+          "id": "birthday.year",
+          "value": "2015"
+        },
+        {
+          "id": "birthday.month",
+          "value": "2"
+        },
+        {
+          "id": "birthday.day",
+          "value": "4"
+        },
+        {
+          "id": "birthday.hour",
+          "value": "6"
+        },
+        {
+          "id": "birthday.minute",
+          "value": "56"
+        },
+        {
+          "id": "timezone",
+          "value": "0"
+        }
+      ],
+      "metadata": {
+        "Type": "顯示生產者",
+        "Profile": "2/5",
+        "Definition": "二分人",
+        "Strategy": "等待回應",
+        "NotSelfTheme": "挫敗",
+        "InnerAuthority": "薦骨型權威",
+        "IncarnationCross": "右角度交叉之人面獅身 (13/7 | 1/2)"
+      },
+      "activations": {
+        "personality": {
+          "sun": {
+            "gateLine": "13.2",
+            "gate": "13",
+            "line": "2",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "7.2",
+            "gate": "7",
+            "line": "2",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "7.6",
+            "gate": "7",
+            "line": "6",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "48.3",
+            "gate": "48",
+            "line": "3",
+            "color": "1",
+            "tone": "2",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "21.3",
+            "gate": "21",
+            "line": "3",
+            "color": "1",
+            "tone": "2",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "41.4",
+            "gate": "41",
+            "line": "4",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "37.5",
+            "gate": "37",
+            "line": "5",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "22.1",
+            "gate": "22",
+            "line": "1",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "7.6",
+            "gate": "7",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "34.4",
+            "gate": "34",
+            "line": "4",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "21.5",
+            "gate": "21",
+            "line": "5",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "37.1",
+            "gate": "37",
+            "line": "1",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "38.6",
+            "gate": "38",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          }
+        },
+        "design": {
+          "sun": {
+            "gateLine": "1.5",
+            "gate": "1",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "2.5",
+            "gate": "2",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "45.4",
+            "gate": "45",
+            "line": "4",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "57.5",
+            "gate": "57",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "51.5",
+            "gate": "51",
+            "line": "5",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "50.5",
+            "gate": "50",
+            "line": "5",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "43.3",
+            "gate": "43",
+            "line": "3",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "38.2",
+            "gate": "38",
+            "line": "2",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "4.3",
+            "gate": "4",
+            "line": "3",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "14.1",
+            "gate": "14",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "21.5",
+            "gate": "21",
+            "line": "5",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "55.5",
+            "gate": "55",
+            "line": "5",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "38.3",
+            "gate": "38",
+            "line": "3",
+            "color": "2",
+            "tone": null,
+            "base": null
+          }
+        }
+      },
+      "repeatedStable": true,
+      "repeats": 3,
+      "sourceFiles": [
+        "iab/C-repeat-1.json",
+        "iab/C-repeat-2.json",
+        "iab/C-repeat-3.json"
+      ],
+      "jovian": {
+        "caseId": "G2015-feb",
+        "activations": {
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          },
+          "personality": {
+            "sun": "13.3",
+            "earth": "7.3",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          }
+        },
+        "profile": "3/5",
+        "differences": [
+          {
+            "side": "personality",
+            "body": "sun",
+            "void": "13.2",
+            "reference": "13.3"
+          },
+          {
+            "side": "personality",
+            "body": "earth",
+            "void": "7.2",
+            "reference": "7.3"
+          }
+        ]
+      },
+      "modernSwiss": {
+        "caseId": "G2015-feb",
+        "activations": {
+          "personality": {
+            "sun": "13.2",
+            "earth": "7.2",
+            "moon": "7.6",
+            "northNode": "48.3",
+            "southNode": "21.3",
+            "mercury": "41.4",
+            "venus": "37.5",
+            "mars": "22.1",
+            "jupiter": "7.6",
+            "saturn": "34.4",
+            "uranus": "21.5",
+            "neptune": "37.1",
+            "pluto": "38.6"
+          },
+          "design": {
+            "sun": "1.5",
+            "earth": "2.5",
+            "moon": "45.4",
+            "northNode": "57.5",
+            "southNode": "51.5",
+            "mercury": "50.5",
+            "venus": "43.3",
+            "mars": "38.2",
+            "jupiter": "4.3",
+            "saturn": "14.1",
+            "uranus": "21.5",
+            "neptune": "55.5",
+            "pluto": "38.3"
+          }
+        },
+        "profile": "2 / 5",
+        "differences": []
+      },
+      "geneticMatrix": "NOT INDEPENDENTLY COMPARED"
+    },
+    {
+      "case": "D",
+      "utc": "2025-01-19T22:57:00Z",
+      "input": [
+        {
+          "id": "birthday.year",
+          "value": "2025"
+        },
+        {
+          "id": "birthday.month",
+          "value": "1"
+        },
+        {
+          "id": "birthday.day",
+          "value": "19"
+        },
+        {
+          "id": "birthday.hour",
+          "value": "22"
+        },
+        {
+          "id": "birthday.minute",
+          "value": "57"
+        },
+        {
+          "id": "timezone",
+          "value": "0"
+        }
+      ],
+      "metadata": {
+        "Type": "顯示者",
+        "Profile": "4/1",
+        "Definition": "一分人",
+        "Strategy": "告知",
+        "NotSelfTheme": "憤怒",
+        "InnerAuthority": "情緒型權威",
+        "IncarnationCross": "並列交叉之限制 (60/56 | 28/27)"
+      },
+      "activations": {
+        "personality": {
+          "sun": {
+            "gateLine": "60.4",
+            "gate": "60",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "56.4",
+            "gate": "56",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "48.1",
+            "gate": "48",
+            "line": "1",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "25.1",
+            "gate": "25",
+            "line": "1",
+            "color": "6",
+            "tone": "5",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "46.1",
+            "gate": "46",
+            "line": "1",
+            "color": "6",
+            "tone": "5",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "54.3",
+            "gate": "54",
+            "line": "3",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "63.6",
+            "gate": "63",
+            "line": "6",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "62.5",
+            "gate": "62",
+            "line": "5",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "35.1",
+            "gate": "35",
+            "line": "1",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "63.6",
+            "gate": "63",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "23.5",
+            "gate": "23",
+            "line": "5",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "36.6",
+            "gate": "36",
+            "line": "6",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "60.6",
+            "gate": "60",
+            "line": "6",
+            "color": "4",
+            "tone": null,
+            "base": null
+          }
+        },
+        "design": {
+          "sun": {
+            "gateLine": "28.1",
+            "gate": "28",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "27.1",
+            "gate": "27",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "33.4",
+            "gate": "33",
+            "line": "4",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "17.3",
+            "gate": "17",
+            "line": "3",
+            "color": "5",
+            "tone": "1",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "18.3",
+            "gate": "18",
+            "line": "3",
+            "color": "5",
+            "tone": "1",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "1.5",
+            "gate": "1",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "9.4",
+            "gate": "9",
+            "line": "4",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "62.6",
+            "gate": "62",
+            "line": "6",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "45.5",
+            "gate": "45",
+            "line": "5",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "63.2",
+            "gate": "63",
+            "line": "2",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "8.2",
+            "gate": "8",
+            "line": "2",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "36.6",
+            "gate": "36",
+            "line": "6",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "60.4",
+            "gate": "60",
+            "line": "4",
+            "color": "4",
+            "tone": null,
+            "base": null
+          }
+        }
+      },
+      "repeatedStable": true,
+      "repeats": 3,
+      "sourceFiles": [
+        "iab/D-repeat-1.json",
+        "iab/D-repeat-2.json",
+        "iab/D-repeat-3.json"
+      ],
+      "jovian": {
+        "caseId": "G2025-tight",
+        "activations": {
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          },
+          "personality": {
+            "sun": "60.5",
+            "earth": "56.5",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          }
+        },
+        "profile": "5/1",
+        "differences": [
+          {
+            "side": "personality",
+            "body": "sun",
+            "void": "60.4",
+            "reference": "60.5"
+          },
+          {
+            "side": "personality",
+            "body": "earth",
+            "void": "56.4",
+            "reference": "56.5"
+          }
+        ]
+      },
+      "modernSwiss": {
+        "caseId": "G2025-tight",
+        "activations": {
+          "personality": {
+            "sun": "60.5",
+            "earth": "56.5",
+            "moon": "48.1",
+            "northNode": "25.1",
+            "southNode": "46.1",
+            "mercury": "54.3",
+            "venus": "63.6",
+            "mars": "62.5",
+            "jupiter": "35.1",
+            "saturn": "63.6",
+            "uranus": "23.5",
+            "neptune": "36.6",
+            "pluto": "60.6"
+          },
+          "design": {
+            "sun": "28.1",
+            "earth": "27.1",
+            "moon": "33.4",
+            "northNode": "17.3",
+            "southNode": "18.3",
+            "mercury": "1.5",
+            "venus": "9.4",
+            "mars": "62.6",
+            "jupiter": "45.5",
+            "saturn": "63.2",
+            "uranus": "8.2",
+            "neptune": "36.6",
+            "pluto": "60.4"
+          }
+        },
+        "profile": "5 / 1",
+        "differences": [
+          {
+            "side": "personality",
+            "body": "sun",
+            "void": "60.4",
+            "reference": "60.5"
+          },
+          {
+            "side": "personality",
+            "body": "earth",
+            "void": "56.4",
+            "reference": "56.5"
+          }
+        ]
+      },
+      "geneticMatrix": "NOT INDEPENDENTLY COMPARED"
+    },
+    {
+      "case": "E",
+      "utc": "1985-01-25T18:34:00Z",
+      "input": [
+        {
+          "id": "birthday.year",
+          "value": "1985"
+        },
+        {
+          "id": "birthday.month",
+          "value": "1"
+        },
+        {
+          "id": "birthday.day",
+          "value": "25"
+        },
+        {
+          "id": "birthday.hour",
+          "value": "18"
+        },
+        {
+          "id": "birthday.minute",
+          "value": "34"
+        },
+        {
+          "id": "timezone",
+          "value": "0"
+        }
+      ],
+      "metadata": {
+        "Type": "投射者",
+        "Profile": "4/1",
+        "Definition": "一分人",
+        "Strategy": "等待邀請",
+        "NotSelfTheme": "苦澀",
+        "InnerAuthority": "自我投射權威",
+        "IncarnationCross": "並列交叉之幻想 (41/31 | 44/24)"
+      },
+      "activations": {
+        "personality": {
+          "sun": {
+            "gateLine": "41.4",
+            "gate": "41",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "31.4",
+            "gate": "31",
+            "line": "4",
+            "color": "6",
+            "tone": "6",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "25.2",
+            "gate": "25",
+            "line": "2",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "23.6",
+            "gate": "23",
+            "line": "6",
+            "color": "6",
+            "tone": "1",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "43.6",
+            "gate": "43",
+            "line": "6",
+            "color": "6",
+            "tone": "1",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "54.6",
+            "gate": "54",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "36.1",
+            "gate": "36",
+            "line": "1",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "36.2",
+            "gate": "36",
+            "line": "2",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "60.1",
+            "gate": "60",
+            "line": "1",
+            "color": "6",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "14.3",
+            "gate": "14",
+            "line": "3",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "5.6",
+            "gate": "5",
+            "line": "6",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "10.5",
+            "gate": "10",
+            "line": "5",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "28.3",
+            "gate": "28",
+            "line": "3",
+            "color": "6",
+            "tone": null,
+            "base": null
+          }
+        },
+        "design": {
+          "sun": {
+            "gateLine": "44.1",
+            "gate": "44",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "earth": {
+            "gateLine": "24.1",
+            "gate": "24",
+            "line": "1",
+            "color": "1",
+            "tone": "5",
+            "base": null
+          },
+          "moon": {
+            "gateLine": "60.6",
+            "gate": "60",
+            "line": "6",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "northNode": {
+            "gateLine": "8.4",
+            "gate": "8",
+            "line": "4",
+            "color": "2",
+            "tone": "6",
+            "base": null
+          },
+          "southNode": {
+            "gateLine": "14.4",
+            "gate": "14",
+            "line": "4",
+            "color": "2",
+            "tone": "6",
+            "base": null
+          },
+          "mercury": {
+            "gateLine": "43.2",
+            "gate": "43",
+            "line": "2",
+            "color": "4",
+            "tone": null,
+            "base": null
+          },
+          "venus": {
+            "gateLine": "5.2",
+            "gate": "5",
+            "line": "2",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "mars": {
+            "gateLine": "54.4",
+            "gate": "54",
+            "line": "4",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "jupiter": {
+            "gateLine": "58.6",
+            "gate": "58",
+            "line": "6",
+            "color": "1",
+            "tone": null,
+            "base": null
+          },
+          "saturn": {
+            "gateLine": "1.5",
+            "gate": "1",
+            "line": "5",
+            "color": "5",
+            "tone": null,
+            "base": null
+          },
+          "uranus": {
+            "gateLine": "5.1",
+            "gate": "5",
+            "line": "1",
+            "color": "3",
+            "tone": null,
+            "base": null
+          },
+          "neptune": {
+            "gateLine": "10.2",
+            "gate": "10",
+            "line": "2",
+            "color": "2",
+            "tone": null,
+            "base": null
+          },
+          "pluto": {
+            "gateLine": "28.1",
+            "gate": "28",
+            "line": "1",
+            "color": "2",
+            "tone": null,
+            "base": null
+          }
+        }
+      },
+      "repeatedStable": true,
+      "repeats": 3,
+      "sourceFiles": [
+        "iab/E-repeat-1.json",
+        "iab/E-repeat-2.json",
+        "iab/E-repeat-3.json"
+      ],
+      "jovian": {
+        "caseId": "G1985-tight",
+        "activations": {
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "60.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "43.2",
+            "venus": "5.2",
+            "mars": "54.4",
+            "jupiter": "58.6",
+            "saturn": "1.5",
+            "uranus": "5.1",
+            "neptune": "10.2",
+            "pluto": "28.1"
+          },
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "25.2",
+            "northNode": "23.6",
+            "southNode": "43.6",
+            "mercury": "54.6",
+            "venus": "36.1",
+            "mars": "36.2",
+            "jupiter": "60.1",
+            "saturn": "14.3",
+            "uranus": "5.6",
+            "neptune": "10.5",
+            "pluto": "28.3"
+          }
+        },
+        "profile": "4/1",
+        "differences": []
+      },
+      "modernSwiss": {
+        "caseId": "G1985-tight",
+        "activations": {
+          "personality": {
+            "sun": "41.4",
+            "earth": "31.4",
+            "moon": "25.2",
+            "northNode": "23.6",
+            "southNode": "43.6",
+            "mercury": "54.6",
+            "venus": "36.1",
+            "mars": "36.2",
+            "jupiter": "60.1",
+            "saturn": "14.3",
+            "uranus": "5.6",
+            "neptune": "10.5",
+            "pluto": "28.3"
+          },
+          "design": {
+            "sun": "44.1",
+            "earth": "24.1",
+            "moon": "60.6",
+            "northNode": "8.4",
+            "southNode": "14.4",
+            "mercury": "43.2",
+            "venus": "5.2",
+            "mars": "54.4",
+            "jupiter": "58.6",
+            "saturn": "1.5",
+            "uranus": "5.1",
+            "neptune": "10.2",
+            "pluto": "28.1"
+          }
+        },
+        "profile": "4 / 1",
+        "differences": []
+      },
+      "geneticMatrix": "NOT INDEPENDENTLY COMPARED"
+    }
+  ],
+  "sources": {
+    "docs/golden-reference/golden-cases.json": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb",
+    "docs/moon-apparent-parity/results.json": "f9f56357d28e405636ae2f5ab4040faa46e59b9c0e6d6ced83c692017ec3262e"
+  },
+  "timezoneExperiment": true,
+  "noCodeChanges": true
+}

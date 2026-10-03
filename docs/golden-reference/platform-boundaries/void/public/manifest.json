@@ -1,0 +1,82 @@
+[
+  {
+    "url": "https://hd.void.com.hk/lite-youtube/lite-yt-embed.js",
+    "file": "lite-yt-embed.js",
+    "bytes": 7421,
+    "sha256": "f07999b2b64021f3dcddb51ad06ad7e63ab179e44f9779ad8c6b1f6b1b7c370b",
+    "retrievedAt": "2026-10-03T09:25:54.245079+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/ephemeris-0.1.0.min.js",
+    "file": "ephemeris-0.1.0.min.js",
+    "bytes": 224301,
+    "sha256": "b9bd657cdd02556734ec2e556479a8320f6b58597772eec8ac30f22a77994195",
+    "retrievedAt": "2026-10-03T09:25:54.724266+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/load.min.js",
+    "file": "load.min.js",
+    "bytes": 26466,
+    "sha256": "a81a64e1c34e976fc6efb22f63285dfb691983cd2d407a74c1165f998ca5f730",
+    "retrievedAt": "2026-10-03T09:25:55.114065+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/calculations.min.js",
+    "file": "calculations.min.js",
+    "bytes": 20569,
+    "sha256": "87c6d41d4242e41a53678fecca741fa7c34e8b1871819c16d8490513bfb9c230",
+    "retrievedAt": "2026-10-03T09:25:55.436127+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/chiron_ephemeris_12H.min.js",
+    "file": "chiron_ephemeris_12H.min.js",
+    "bytes": 2289470,
+    "sha256": "87fa3286710814b9876b696761c35ba0bd17c52211b5230375d409498e7a5b90",
+    "retrievedAt": "2026-10-03T09:25:56.073510+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/node_ephemeris_12H.min.js",
+    "file": "node_ephemeris_12H.min.js",
+    "bytes": 2310232,
+    "sha256": "b9748ef1d198fb9e6919b98959b0acdab79a6c7a62f5087ddb05da64cd4373d8",
+    "retrievedAt": "2026-10-03T09:25:56.690813+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/mars_ephemeris_12H.min.js",
+    "file": "mars_ephemeris_12H.min.js",
+    "bytes": 2314478,
+    "sha256": "d37812806cb9ce6a069b58fbcbff10eebdd4044b26c18971967a717eb3eed8a6",
+    "retrievedAt": "2026-10-03T09:25:57.371197+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/unblockButton.js",
+    "file": "unblockButton.js",
+    "bytes": 678,
+    "sha256": "8e96be137b2ea6a5c3d9e2f84ad2265f680fa886bf93e48ea91bff1e547d0e29",
+    "retrievedAt": "2026-10-03T09:25:57.692079+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/calculations/transit.min.js",
+    "file": "transit.min.js",
+    "bytes": 1152,
+    "sha256": "ab0e4d68e2bb8fb6e1726e954293a0462f3554f05bab57e46a4a0cfbff708cff",
+    "retrievedAt": "2026-10-03T09:25:58.006203+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  },
+  {
+    "url": "https://hd.void.com.hk/graph/graphs.min.js",
+    "file": "graphs.min.js",
+    "bytes": 72953,
+    "sha256": "e2507f17b133081ff7e5cb84d985a253be936d535519e08112a06bc8c46cbcd6",
+    "retrievedAt": "2026-10-03T09:25:58.441811+00:00",
+    "publication": "URL/hash only; raw script retained locally."
+  }
+]

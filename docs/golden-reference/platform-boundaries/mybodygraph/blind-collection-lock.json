@@ -1,0 +1,7 @@
+{
+  "file": "blind-results.json",
+  "sha256": "5eb004f97df605ff0782b3c16468324b6c11a2795f5ee79c572e30fa2a78f1da",
+  "originalBlindCollectionSha256": "1fa09a8d9b89dc92589097c328a857da63271724ad63a5399b4979634ae9f7c4",
+  "completedBeforeReferenceRead": true,
+  "note": "Published digest covers sanitized derivative; original blind lock retained locally."
+}

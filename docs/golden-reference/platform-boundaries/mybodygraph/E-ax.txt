@@ -1,0 +1,526 @@
+# Privacy-sanitized AX evidence: account header and account-linked identifiers removed.
+1 AXWebArea Single Chart, URL: app.mybodygraph.com/charts/[REDACTED_ID]
+	2 container app
+		140 container default-layout
+			154 container single-chart
+				155 container
+					156 container chart-settings-part
+						157 heading 边界 E, Value: 1
+							158 text 边界 E
+						159 button  特性, ID: show-chart-properties
+							160 text 
+							161 text  特性
+						162 container view-options-wrapper
+							163 container chart-mode-options
+								164 text 图表模式
+								165 button , Help: 标准
+								166 button , Help: 狂欢曼陀罗
+								167 button (disabled) , Help: 高级成像
+							168 container view-mode-options
+								169 text 查看模式
+								170 button 完全的
+								171 button 设计
+								172 button 性格
+								173 button 化身十字架
+							174 pop up button (collapsed) 其他选项, ID: other-options__BV_toggle_, Secondary Actions: Expand
+								175 text 其他选项
+					176 image complete-chart-canvas
+						177 text Design
+						178 container planet-0-0-0
+							179 container
+								180 text  44. 1
+							181 text 
+						182 container planet-0-1-0
+							183 container
+								184 text  24. 1
+							185 text 
+						186 container planet-0-2-0
+							187 container
+								188 text  60. 6
+							189 text 
+						190 container planet-0-3-0
+							191 container
+								192 text  8. 4
+							193 text 
+						194 container planet-0-4-0
+							195 container
+								196 text  14. 4
+							197 text 
+						198 container planet-0-5-0
+							199 container
+								200 text  43. 2
+							201 text 
+						202 container planet-0-6-0
+							203 container
+								204 text  5. 2
+							205 text 
+						206 container planet-0-7-0
+							207 container
+								208 text  54. 4
+							209 text 
+						210 container planet-0-8-0
+							211 container
+								212 text  58. 6
+							213 text 
+						214 container planet-0-9-0
+							215 container
+								216 text  1. 5
+							217 text 
+						218 container planet-0-10-0
+							219 container
+								220 text  5. 1
+							221 text 
+						222 container planet-0-11-0
+							223 container
+								224 text  10. 2
+							225 text 
+						226 container planet-0-12-0
+							227 container
+								228 text  28. 1
+							229 text 
+						230 text 
+						231 text 
+						232 text 
+						233 text 
+						234 container root
+							235 text 53
+							236 text 60
+							237 text 52
+							238 text 54
+							239 text 38
+							240 text 58
+							241 text 41
+							242 text 39
+							243 text 19
+						244 container sacral
+							245 text 59
+							246 text 27
+							247 text 34
+							248 text 5
+							249 text 14
+							250 text 29
+							251 text 42
+							252 text 3
+							253 text 9
+						254 container solar_plexus
+							255 text 49
+							256 text 55
+							257 text 30
+							258 text 6
+							259 text 37
+							260 text 22
+							261 text 36
+						262 container spleen
+							263 text 28
+							264 text 18
+							265 text 32
+							266 text 50
+							267 text 44
+							268 text 57
+							269 text 48
+						270 container heart
+							271 text 21
+							272 text 51
+							273 text 26
+							274 text 40
+						275 container g
+							276 text 10
+							277 text 25
+							278 text 15
+							279 text 46
+							280 text 2
+							281 text 7
+							282 text 13
+							283 text 1
+						284 container throat
+							285 text 62
+							286 text 23
+							287 text 56
+							288 text 31
+							289 text 8
+							290 text 33
+							291 text 20
+							292 text 16
+							293 text 35
+							294 text 12
+							295 text 45
+						296 container ajna
+							297 text 47
+							298 text 24
+							299 text 4
+							300 text 11
+							301 text 17
+							302 text 43
+						303 container head
+							304 text 64
+							305 text 61
+							306 text 63
+						307 text Personality
+						308 container planet-1-0-0
+							309 container
+								310 text  41. 4
+							311 text 
+						312 container planet-1-1-0
+							313 container
+								314 text  31. 4
+							315 text 
+						316 container planet-1-2-0
+							317 container
+								318 text  25. 2
+							319 text 
+						320 container planet-1-3-0
+							321 container
+								322 text  23. 6
+							323 text 
+						324 container planet-1-4-0
+							325 container
+								326 text  43. 6
+							327 text 
+						328 container planet-1-5-0
+							329 container
+								330 text  54. 6
+							331 text 
+						332 container planet-1-6-0
+							333 container
+								334 text  36. 1
+							335 text 
+						336 container planet-1-7-0
+							337 container
+								338 text  36. 2
+							339 text 
+						340 container planet-1-8-0
+							341 container
+								342 text  60. 1
+							343 text 
+						344 container planet-1-9-0
+							345 container
+								346 text  14. 3
+							347 text 
+						348 container planet-1-10-0
+							349 container
+								350 text  5. 6
+							351 text 
+						352 container planet-1-11-0
+							353 container
+								354 text  10. 5
+							355 text 
+						356 container planet-1-12-0
+							357 container
+								358 text  28. 3
+							359 text 
+				360 container analysis-part
+					361 container
+						362 tab group
+							363 tab (selected, settable, boolean)  基础
+基础, Value: 1
+
+5
+基础
+							364 tab (selectable, settable, boolean)  先进的
+先进的, Value: 0
+
+5
+先进的
+							365 tab (selectable, settable, boolean)  个人成功
+个人成功, Value: 0
+
+5
+个人成功
+						366 container  基础
+							367 container
+								368 container  介绍
+									369 container
+										370 heading 入门, Value: 1
+											371 text 入门
+										372 text 人类设计为您提供了一份全面的人生路线图，助您活出精彩人生。它揭示了您与生俱来的基因设计，以及您独特的内在指引系统如何运作。此外，它还为您提供了一种与您个人特质相契合的决策方法。踏上这段旅程，您将发现人生的真正意义，并获得关于未来幸福与满足的宝贵洞见。 myBodyGraph 是一款工具，它以简洁易懂的方式呈现您的人类图/身体图信息。它具有互动性——花些时间探索它，了解您独特的自我以及您在世界上的运作方式。
+										373 heading 你的人生用户手册, Value: 2
+											374 text 你的人生用户手册
+										375 text 充分了解自己、了解自己在世界上的运作方式以及如何与他人建立最佳关系，对你来说意味着什么？人类设计就像一本人生使用手册，一个实用的工具，它能让你深入了解自身的优势和需求，以及如何做出有利于个人成长的决策——它赋予你觉察人生、活出真我的力量。 你的人类图（或称人体图）是专属于你的。它基于你的出生数据，揭示你的天赋、挑战和成长过程。它也揭示了你不具备的特质，以及你容易受到他人影响的原因。 以下是一个简单的三步入门流程：
+										376 content list
+											377 container
+												378 AXListMarker 1.
+												379 text 我们将首先探索 类型 ，以及你的身体图谱显示你是四种类型中的哪一种。
+											380 container
+												381 AXListMarker 2.
+												382 text 类型决定你的 策略： 你如何应对人生。我们将探讨你特定体型图谱的策略及其对你的意义。
+											383 container
+												384 AXListMarker 3.
+												385 text 接下来，你将了解人类设计中的 内在权威方法： 你被设计成能够有效做出决策的方式。
+										386 heading 人体图, Value: 2
+											387 text 人体图
+										388 text 关于你的一切，以及人类图如何帮助你深入了解自己，都始于你的身体图。熟悉你的图表的最佳方法是仔细阅读接下来关于你的类型、策略和权威的详细信息。这将帮助你更深入地理解构成你图表的核心要素。 
+										389 heading 解锁基础分析, Value: 4
+											390 text 解锁基础分析
+										391 text 探索设计的力量，打造真实、有意义的生活
+										392 button 解锁图表
+										393 button (disabled) 以前的
+											394 image
+											395 text 以前的
+										396 button 下一个
+											397 text 下一个
+											398 image
+								399 tab group
+									400 tab (selected, settable, boolean)  介绍
+介绍, Value: 1
+
+5
+介绍
+									401 tab (selectable, settable, boolean)  类型、策略和权威
+类型、策略和权威, Value: 0
+
+5
+类型、策略和权威
+									402 tab (selectable, settable, boolean)  体能训练
+体能训练, Value: 0
+
+5
+体能训练
+									403 tab (selectable, settable, boolean)  生命力
+生命力, Value: 0
+
+5
+生命力
+									404 tab (selectable, settable, boolean)  印记
+印记, Value: 0
+
+5
+印记
+									405 tab (selectable, settable, boolean)  角色、目的和方向
+角色、目的和方向, Value: 0
+
+5
+角色、目的和方向
+					406 container chart-properties
+						407 heading 图表属性, Value: 4
+							408 text 图表属性
+						409 button 关闭房产 
+							410 text 关闭房产
+							411 text 
+						412 container
+							413 tab group
+								414 tab (selected, settable, boolean)  概括
+概括, Value: 1
+
+5
+概括
+								415 tab (selectable, settable, boolean)  行星激活
+行星激活, Value: 0
+
+5
+行星激活
+								416 tab (selectable, settable, boolean)  中心
+中心, Value: 0
+
+5
+中心
+								417 tab (selectable, settable, boolean)  盖茨
+盖茨, Value: 0
+
+5
+盖茨
+								418 tab (selectable, settable, boolean)  频道
+频道, Value: 0
+
+5
+频道
+							419 container  概括
+								420 container
+									421 tab group
+										422 tab (selected, settable, boolean) 概括, Value: 1
+概括
+										423 tab (selectable, settable, boolean) 统计数据, Value: 0
+统计数据
+									424 container 概括
+										425 container
+											426 text 图表名称
+											427 heading 边界 E, Value: 5
+												428 text 边界 E
+											429 text 
+											430 text 出生数据（本地）
+											431 text 1985年1月25日 18:34
+											432 text 
+											433 text 设计日期
+											434 text 1984年10月31日 00:04
+											435 text 
+											436 text 城市/国家
+											437 text 英国伦敦
+											438 text 
+											439 text 出生日期（UTC）
+											440 text 1985年1月25日 18:34
+										441 heading 基础属性, Value: 5
+											442 text 基础属性
+										443 container
+											444 text  类型 投影仪
+										445 container
+											446 text  战略 等待邀请
+										447 container
+											448 text  非我主题 苦味
+										449 container
+											450 text  签名 成功
+										451 container
+											452 text  定义 单身的
+										453 container
+											454 text  权威 自我投射
+										455 container
+											456 text  轮廓 4/1
+										457 container
+											458 text  化身十字架 奇幻的并置十字 (41/31 | 44/24)
+				459 container share-chart-side-panel-content
+					460 button 关闭
+						461 text 关闭
+						462 text 
+					463 heading 共享边界 E, Value: 4
+						464 text 共享边界 E
+					465 text 或者使用您的专属网址
+					466 button 复制
+					467 text field (disabled) https://app.mybodygraph.com/public/[REDACTED_ID]
+					468 button 分享至 MaiaMechanics.com
+						469 image
+						470 text 分享至 MaiaMechanics.com
+				471 container gift-chart-side-panel-content
+					472 text 
+					473 heading 礼品分析, Value: 1
+						474 text 礼品分析
+					475 button 关闭
+						476 text 关闭
+						477 text 
+					478 text 如果你要解锁别人的星盘分析，为什么不也和他们分享呢？
+					479 button 显示更多
+					480 container 基础分析
+						481 heading 基础分析, Value: 5
+							482 text 基础分析
+						483 text 这份综合分析汇集了Ra数百小时的教导，帮助你与自身独特的设计和谐共处，做出值得信赖的决定，并更轻松地驾驭人生。通过理解你的人类图，你将获得清晰的思路、明确的目标以及十足的自信，从而全然投入到你的人生旅程中。
+						484 button 解锁基础分析
+						485 text 49美元
+					486 container 高级分析
+						487 heading 高级分析, Value: 5
+							488 text 高级分析
+						489 text 这项强有力的分析揭示了你的身心如何通过四种转化（即变量）独特地运作，并引导你进行量身定制的转化性练习。挖掘你的全部潜能，体验彻底的转变。
+						490 button 解锁高级分析
+						491 text 99美元
+					492 container 个人成功分析
+						493 heading 个人成功分析, Value: 5
+							494 text 个人成功分析
+						495 text 通过这份面向企业主、经理和个体经营者的全面分析报告，释放您在职场中的成功潜能。发现您的优势，并学习如何利用这些优势实现职业发展。了解您在工作环境中展现的独特品质，以及如何优化您的绩效，从而获得更大的成功和更高的收入。
+						496 button 解锁个人成功分析
+						497 text 129美元
+				498 container edit-chart-side-panel-content
+					499 button 关闭
+						500 text 关闭
+						501 text 
+					502 heading 编辑边界 E, Value: 4
+						503 text 编辑边界 E
+					504 container new-personal-chart
+						505 text 图表名称
+						506 text field (settable) Boundary E
+						507 container
+							508 text 出生日期
+							509 date field (settable) 出生日期, Value: 1985-01-25
+								510 container
+									511 stepper
+									512 stepper
+									513 stepper
+								514 pop up button 显示日期选择器 显示日期选择器
+							515 button
+								516 image
+						517 text field (settable) 25/01/1985
+						518 text 1985年1月25日
+						519 container
+							520 text 出生时间
+							521 time field (settable) 出生时间, Value: 18:34
+								522 container
+									523 stepper
+									524 stepper
+								525 pop up button 显示时间选择器 显示时间选择器
+							526 button
+								527 image
+						528 text field (settable) 18:34
+						529 text 下午 6:34
+						530 text 出生地
+						531 search text field (settable) London (England), United Kingdom
+					532 container chart-tag-editor
+						533 text 图表标签
+						534 combo box 从列表中选择或在此处输入新标签…… 从列表中选择或在此处输入新标签……
+							535 container
+								536 text field (settable)
+								537 text 从列表中选择或在此处输入新标签……
+					538 button 删除图表
+				539 container download-image-chart-side-panel-content
+					540 button 关闭
+						541 text 关闭
+						542 text 
+					543 heading 下载图片 - 边界 E, Value: 4
+						544 text 下载图片 - 边界 E
+					545 text 图片名称
+					546 text field (settable) Boundary E
+					547 container
+						548 text 图片背景
+						549 pop up button (collapsed, settable) Value: 常规的, Secondary Actions: Expand
+							550 menu
+								551 (selected) 常规的
+								552 透明的
+					553 button 下载
+		19 container import-charts-side-panel-content
+			121 text 
+			21 heading 从 MMI 导入, Value: 1
+				122 text 从 MMI 导入
+			23 button 关闭
+				123 text 关闭
+				124 text 
+			125 text 将您的 .mmi 或 .s3db 文件拖放到此处，即可导入您的 MMI 图表或整个库。
+			27 container
+				126 text 点击上传 或拖放 .mmi、.s3db 文件已接受
+			127 text 选定的标签将应用于文件中的所有图表。
+			30 combo box 开始输入标签…… 开始输入标签……
+				31 container
+					32 text field (settable) import-tags-selector
+					128 text 开始输入标签……
+			34 button (disabled) 进口
+		35 container dictionary-side-panel-content
+			36 button 关闭
+				129 text 关闭
+				130 text 
+			131 text 
+			40 container
+				41 tab group
+					42 tab (selected, settable, boolean) 知识库, Value: 1
+知识库
+					43 tab (selectable, settable, boolean) 字典, Value: 0
+字典
+					44 tab (selectable, settable, boolean) 狂欢易经, Value: 0
+狂欢易经
+					45 tab (selectable, settable, boolean) 笔记, Value: 0
+笔记
+					46 tab (selectable, settable, boolean) 消息, Value: 0
+消息
+				47 container 知识库
+					48 container knowledge-base
+						49 button 
+						50 container
+							51 button 欢迎使用 myBodyGraph
+							52 button 人类设计系统简介
+							53 button 常见问题解答
+						54 heading 入门, Value: 5
+							132 text 入门
+						56 button myBodyGraph是什么？ 
+							57 container
+								133 text myBodyGraph是什么？ 
+						59 button myBodyGraph 的历史 
+							60 container
+								134 text myBodyGraph 的历史 
+						62 heading 分析与服务, Value: 5
+							135 text 分析与服务
+						64 button 基础分析 
+							65 container
+								136 text 基础分析 
+						67 button 高级分析 
+							68 container
+								137 text 高级分析 
+						70 button 合作关系分析 
+							71 container
+								138 text 合作关系分析 
+						73 button 运输工具 
+							74 container
+								139 text 运输工具 
+
+The focused UI element is 1 AXWebArea Single Chart, URL: app.mybodygraph.com/charts/[REDACTED_ID]

@@ -1,0 +1,18 @@
+[
+  {
+    "url": "https://app.mybodygraph.com/js/app.5623a478.js",
+    "timestamp": "2026-10-03T09:35:45.023324+00:00",
+    "bytes": 1606016,
+    "sha256": "f99ef95d584ef4abf4498c7bba86e2b4c38ac6fd88f1a48cafd8bcba8ddfbb05",
+    "downloadExitCode": 0,
+    "publication": "URL/hash/snippets only; complete bundle retained locally."
+  },
+  {
+    "url": "https://app.mybodygraph.com/js/477.2552f9ec.js",
+    "timestamp": "2026-10-03T09:35:45.899865+00:00",
+    "bytes": 5355,
+    "sha256": "e55a1b70dea75b91b4a6ee21f7a10faa5ab3fdcf254838c1eeaeacc30544b7fc",
+    "downloadExitCode": 0,
+    "publication": "URL/hash/snippets only; complete bundle retained locally."
+  }
+]

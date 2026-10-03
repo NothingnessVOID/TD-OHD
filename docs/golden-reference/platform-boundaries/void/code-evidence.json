@@ -1,0 +1,56 @@
+[
+  {
+    "file": "public/load.min.js",
+    "function": "update",
+    "utf8ByteOffset": 12586,
+    "code": "function update(){var t;var a=new Date;const e=document.getElementById(`timezone`);const n=parseInt(e.value);const i=cleanInput(\"\");if(!i)return;initializeCollapsible();calculatedOnce=true;buttonCal.innerHTML=\"重新計算\";const o=new Date(i.getTime()-n*60*60*1e3);t={year:o.getFullYear(),month:o.getMonth()+1,day:o.getDate(),hours:o.getHours(),minutes:o.getMinutes(),seconds:0};$processor.init();const u=[];const l=[];var s=calLongFromDate(t,$moshier.body.sun);var d=$julian.calc(t);calculatePlanetData(l,d,\"personality\");var r=calculateDesignDate(d,s);calculatePlanetData(u,r.julian,\"design\");const m=r.julian;const c=new Date(r.year,r.month-1,r.day,r.hours,r.minutes,r.seconds,0);$const.birthChart={planetsR:l,planetsL:u,personalityJul:d,personalityDate:o,personalityDateLocal:i,designDate:c,designJul:m};calculateText($const.birthChart);const g=[];const p=[62,20,8,12,1,15,42,27,5,38,53,19,28,50,57];r=calculateMoonDesignDate(d,l[2].longitude);calculatePlanetData(g,r.julian,\"design\");$const.dreamChart={planetsR:l.filter(t=>p.includes(t.Gate)),planetsL:g.filter(t=>p.includes(t.Gate)),personalityJul:d,personalityDate:o,personalityDateLocal:i,designDate:new Date(r.year,r.month-1,r.day,r.hours,r.minutes,r.seconds,0),designJul:r.julian};calculateDreamText($const.dreamChart);updateChart();const T=document.getElementsByClassName(\"collapsible\")[0];if(T.className===\"collapsible\")T.click();showSliderButton();updateCollapsible();if(nextDateCombine<=2){copyDate(\"\",`${nextDateCombine}`);nextDateCombine++}if(nextDateBG5<=pentaDates){copyDate(\"\",`Penta${nextDateBG5}`);nextDateBG5++}gtag(\"event\",\"generate_rave\",{type:$const.birthChart.type})}"
+  },
+  {
+    "file": "public/load.min.js",
+    "function": "cleanInput",
+    "utf8ByteOffset": 25416,
+    "code": "function cleanInput(t){const a=document.getElementById(`birthday${t}.year`);const e=document.getElementById(`birthday${t}.month`);const n=document.getElementById(`birthday${t}.day`);const i=document.getElementById(`birthday${t}.hour`);const o=document.getElementById(`birthday${t}.minute`);const u=parseFloat(a.value);const l=parseFloat(e.value);const s=parseFloat(n.value);const d=parseFloat(i.value||0);const r=parseFloat(o.value||0);if(isNaN(u)||u<1850||u>2040){alert(`出生年份必須為介於 1850 和 2040 之間`);return false}if(isNaN(l)||l<1||l>12){alert(`出生月份必須為介於 1 和 12 之間`);return false}if(isNaN(s)||s<1||s>31){alert(`出生日子必須為介於 1 和 31 之間`);return false}if(isNaN(d)||d<0||d>23){alert(`出生小時必須為介於 0 和 23 之間`);return false}if(isNaN(r)||r<0||r>59){alert(`出生分鐘必須為介於 0 和 59 之間`);return false}const m=new Date(u,l-1,s,d,r,0,0);a.value=m.getFullYear();e.value=m.getMonth()+1;n.value=m.getDate();i.value=m.getHours();o.value=m.getMinutes();return m}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "calLongFromDate",
+    "utf8ByteOffset": 356,
+    "code": "function calLongFromDate(e,t){$processor.calc(e,t);return $const.body.position.apparentLongitude}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "calLongFromJul",
+    "utf8ByteOffset": 453,
+    "code": "function calLongFromJul(e,t){if([\"chiron\",\"true_node\",\"mars\"].indexOf(t.key)!==-1){const o=t.key===\"chiron\"?chiron_ephemeris_interval:t.key===\"true_node\"?node_ephemeris_interval:mars_ephemeris_interval;const r=t.key===\"chiron\"?chiron_ephemeris_min:t.key===\"true_node\"?node_ephemeris_min:mars_ephemeris_min;const s=t.key===\"chiron\"?chiron_ephemeris_start:t.key===\"true_node\"?node_ephemeris_start:mars_ephemeris_start;const i=1/o;const l=Math.floor(e*i)/i;const c=Math.ceil(e*i)/i;const u=r[Math.round((l-s)/o)];const h=r[Math.round((c-s)/o)];const d=u+(e-l)*i*(h-u);return d}var n={julian:e};var a=$julian.toGregorian(n);return calLongFromDate(a,t)}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "calculateDesignDate",
+    "utf8ByteOffset": 2411,
+    "code": "function calculateDesignDate(e,t){var n=t-88;if(n<0)n+=360;var a=e-95;var o=0;var r=calLongFromJul(a,$moshier.body.sun);var s=n-r;if(r<n){while(r<n){if(s>1)a+=.1;else if(s>.1)a+=.05;else if(s>.01)a+=.005;else if(s>.001)a+=5e-4;else if(s>1e-4)a+=5e-5;else if(s>1e-5)a+=5e-6;else a+=5e-7;r=calLongFromJul(a,$moshier.body.sun);s=n-r}}else{s=360-r+n;while(r>n){if(s>1)a+=.1;else if(s>.1)a+=.05;else if(s>.01)a+=.005;else if(s>.001)a+=5e-4;else if(s>1e-4)a+=5e-5;else if(s>1e-5)a+=5e-6;else a+=5e-7;r=calLongFromJul(a,$moshier.body.sun);s=360-r+n}s=n-r;while(r<n){if(s>1)a+=.1;else if(s>.1)a+=.05;else if(s>.01)a+=.005;else if(s>.001)a+=5e-4;else if(s>1e-4)a+=5e-5;else if(s>1e-5)a+=5e-6;else a+=5e-7;r=calLongFromJul(a,$moshier.body.sun);s=n-r}}var i={julian:a};return $julian.toGregorian(i)}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "calculatePlanetData",
+    "utf8ByteOffset": 9517,
+    "code": "function calculatePlanetData(c,u,h){var e=Object.values(Planets);e.forEach((e,t)=>{if(t!=1&&t!=4){var n=getPlanetBody(e);var a={ID:t,activationType:h,enabled:true,name:e};if(t==13)a.enabled=false;var o=calLongFromJul(u,n);a.longitude=o;var r=getPosInHexagram(o);var s=Math.trunc(r);a.Gate=hexMap[Math.trunc(s)-1];a.GatePercent=Math.trunc(r%1*100);setPlanetSubHexData(a,r);c.push(a);if(t==0){var i={ID:1,activationType:h,enabled:true,name:\"earth\"};o+=180;if(o>360)o-=360;i.longitude=o;r=getPosInHexagram(o);s=Math.trunc(r);i.Gate=hexMap[Math.trunc(s)-1];i.GatePercent=Math.trunc(r%1*100);setPlanetSubHexData(i,r);c.push(i)}if(t==3){var l={ID:4,activationType:h,enabled:true,name:\"south_node\"};o+=180;if(o>360)o-=360;l.longitude=o;r=getPosInHexagram(o);s=Math.trunc(r);l.Gate=hexMap[Math.trunc(s)-1];l.GatePercent=Math.trunc(r%1*100);setPlanetSubHexData(l,r);c.push(l)}}})}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "getPosInHexagram",
+    "utf8ByteOffset": 10388,
+    "code": "function getPosInHexagram(e){var t=0;if(e>360)e-=360;var n;if(e<3.875){t=64;var a=(e+360-((64-1)*5.625+3.875))/5.625;n=t+a}else{for(var o=1;o<=64;o++){var r=3.875+5.625*o;if(r>e){t=o;break}}var a=(e-(3.875+(t-1)*5.625))/5.625;n=t+a}return n}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "setPlanetSubHexData",
+    "utf8ByteOffset": 10629,
+    "code": "function setPlanetSubHexData(e,t){var n=t%1*5.625;var a=n/.9375;e.Line=Math.floor(a)+1;e.LinePercent=Math.trunc(a%1*100);a-=Math.trunc(a);a=a*.9375/.15625;e.Color=Math.floor(a)+1;e.ColorPercent=Math.trunc(a%1*100);a-=Math.trunc(a);a=a*.15625/.0260416666666667;e.Tone=Math.floor(a)+1;e.TonePercent=Math.trunc(a%1*100);a-=Math.trunc(a);a=a*.0260416666666667/.00520833333333333;e.Base=Math.floor(a)+1;e.BasePercent=Math.trunc(a%1*100)}"
+  },
+  {
+    "file": "public/calculations.min.js",
+    "function": "calculateProfile",
+    "utf8ByteOffset": 12994,
+    "code": "function calculateProfile(e,t){return`${e[0].Line}/${t[0].Line}`}"
+  }
+]

@@ -1,0 +1,161 @@
+{
+  "comparedAt": "2026-10-03T09:32:35.549879+00:00",
+  "blindFileSha256": "5eb004f97df605ff0782b3c16468324b6c11a2795f5ee79c572e30fa2a78f1da",
+  "referenceFiles": [
+    {
+      "path": "docs/golden-reference/golden-cases.json",
+      "sha256": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb"
+    },
+    {
+      "path": "docs/moon-apparent-parity/results.json",
+      "sha256": "f9f56357d28e405636ae2f5ab4040faa46e59b9c0e6d6ced83c692017ec3262e",
+      "url": "https://github.com/NothingnessVOID/TD-OHD/blob/fb5743b87346e8d16810b7c4e15a3e5d01a0f3a9/docs/moon-apparent-parity/results.json"
+    }
+  ],
+  "cases": [
+    {
+      "case": "A",
+      "referenceId": "G2005-jul20",
+      "referenceBirthUtc": "2005-07-20T21:40:00Z",
+      "Jovian": {
+        "all26Match": true,
+        "profileMatch": true,
+        "mismatches": [],
+        "evidence": {
+          "json": "browser-evidence/G2005-jul20.json",
+          "dom": "browser-evidence/G2005-jul20.dom.txt",
+          "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+        }
+      },
+      "modernSwiss": {
+        "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+        "mismatches": [
+          {
+            "side": "personality",
+            "planet": "Sun",
+            "myBodyGraph": "56.3",
+            "ModernSwissCSharpParity": "56.2"
+          },
+          {
+            "side": "personality",
+            "planet": "Earth",
+            "myBodyGraph": "60.3",
+            "ModernSwissCSharpParity": "60.2"
+          }
+        ],
+        "profile": "2/5"
+      },
+      "GeneticMatrix": "NOT INDEPENDENTLY COMPARED: no matching stored evidence found"
+    },
+    {
+      "case": "B",
+      "referenceId": "G2015-tight",
+      "referenceBirthUtc": "2015-01-26T01:20:00Z",
+      "Jovian": {
+        "all26Match": true,
+        "profileMatch": true,
+        "mismatches": [],
+        "evidence": {
+          "json": "browser-evidence/G2015-tight.json",
+          "dom": "browser-evidence/G2015-tight.dom.txt",
+          "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+        }
+      },
+      "modernSwiss": {
+        "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+        "mismatches": [
+          {
+            "side": "personality",
+            "planet": "Sun",
+            "myBodyGraph": "41.5",
+            "ModernSwissCSharpParity": "41.4"
+          },
+          {
+            "side": "personality",
+            "planet": "Earth",
+            "myBodyGraph": "31.5",
+            "ModernSwissCSharpParity": "31.4"
+          }
+        ],
+        "profile": "4/1"
+      },
+      "GeneticMatrix": "NOT INDEPENDENTLY COMPARED: no matching stored evidence found"
+    },
+    {
+      "case": "C",
+      "referenceId": "G2015-feb",
+      "referenceBirthUtc": "2015-02-04T06:56:00Z",
+      "Jovian": {
+        "all26Match": true,
+        "profileMatch": true,
+        "mismatches": [],
+        "evidence": {
+          "json": "browser-evidence/G2015-feb.json",
+          "dom": "browser-evidence/G2015-feb.dom.txt",
+          "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+        }
+      },
+      "modernSwiss": {
+        "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+        "mismatches": [
+          {
+            "side": "personality",
+            "planet": "Sun",
+            "myBodyGraph": "13.3",
+            "ModernSwissCSharpParity": "13.2"
+          },
+          {
+            "side": "personality",
+            "planet": "Earth",
+            "myBodyGraph": "7.3",
+            "ModernSwissCSharpParity": "7.2"
+          }
+        ],
+        "profile": "2/5"
+      },
+      "GeneticMatrix": "NOT INDEPENDENTLY COMPARED: no matching stored evidence found"
+    },
+    {
+      "case": "D",
+      "referenceId": "G2025-tight",
+      "referenceBirthUtc": "2025-01-19T22:57:00Z",
+      "Jovian": {
+        "all26Match": true,
+        "profileMatch": true,
+        "mismatches": [],
+        "evidence": {
+          "json": "browser-evidence/G2025-tight.json",
+          "dom": "browser-evidence/G2025-tight.dom.txt",
+          "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+        }
+      },
+      "modernSwiss": {
+        "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+        "mismatches": [],
+        "profile": "5/1"
+      },
+      "GeneticMatrix": "NOT INDEPENDENTLY COMPARED: no matching stored evidence found"
+    },
+    {
+      "case": "E",
+      "referenceId": "G1985-tight",
+      "referenceBirthUtc": "1985-01-25T18:34:00Z",
+      "Jovian": {
+        "all26Match": true,
+        "profileMatch": true,
+        "mismatches": [],
+        "evidence": {
+          "json": "browser-evidence/G1985-tight.json",
+          "dom": "browser-evidence/G1985-tight.dom.txt",
+          "referenceUrl": "https://jovianarchive.com/pages/get-your-human-design-chart"
+        }
+      },
+      "modernSwiss": {
+        "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+        "mismatches": [],
+        "profile": "4/1"
+      },
+      "GeneticMatrix": "NOT INDEPENDENTLY COMPARED: no matching stored evidence found"
+    }
+  ]
+}

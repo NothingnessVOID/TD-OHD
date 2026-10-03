@@ -1,0 +1,822 @@
+- link "Void Logo":
+  - /url: https://void.com.hk
+  - img "Void Logo"
+- heading "人類圖生產器 Get Your Chart" [level=1]
+- separator
+- generic: 出生日期
+- textbox: "2025"
+- text: 年
+- textbox: "1"
+- text: 月
+- textbox: "19"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "57"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London" [selected]'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- button "重新計算" [active]
+- link "人類圖學習群組":
+  - /url: https://bit.ly/3SVrg3H
+  - button "人類圖學習群組"
+- button "你的人類圖 ▲":
+  - generic: 你的人類圖
+  - generic: ▲
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "類型 顯示者":
+      - cell
+      - cell "類型"
+      - cell "顯示者"
+      - cell
+    - row "人生角色 4/1":
+      - cell
+      - cell "人生角色"
+      - cell "4/1"
+      - cell
+    - row "定義 一分人":
+      - cell
+      - cell "定義"
+      - cell "一分人"
+      - cell
+    - row "策略 告知":
+      - cell
+      - cell "策略"
+      - cell "告知"
+      - cell
+    - row "非自己主題 憤怒":
+      - cell
+      - cell "非自己主題"
+      - cell "憤怒"
+      - cell
+    - row "內在權威 情緒型權威":
+      - cell
+      - cell "內在權威"
+      - cell "情緒型權威"
+      - cell
+    - row "輪迴交叉 並列交叉之限制 (60/56 | 28/27)":
+      - cell
+      - cell "輪迴交叉"
+      - cell "並列交叉之限制 (60/56 | 28/27)"
+      - cell
+    - row "一天的變化":
+      - cell "一天的變化":
+        - button "一天的變化"
+    - row "720":
+      - cell "720":
+        - slider [disabled]: "720"
+    - row "*計算一天的變化需時，請耐心等候 **如有錯誤盤，請重新載入":
+      - cell "*計算一天的變化需時，請耐心等候 **如有錯誤盤，請重新載入":
+        - text: "*計算一天的變化需時，請耐心等候"
+        - text: "**如有"
+        - link "錯誤盤":
+          - /url: https://s3.ap-southeast-1.amazonaws.com/hd.void.com.hk/image.jpeg
+        - text: ，請重新載入
+- button "Dream Rave ▼":
+  - generic: Dream Rave
+  - generic: ▼
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "類型 反映者":
+      - cell
+      - cell "類型"
+      - cell "反映者"
+      - cell
+- separator
+- heading "人類圖回歸" [level=2]
+- generic: 回歸年月
+- textbox: "2026"
+- text: 年 (太陽, 月亮回歸)
+- textbox: "10"
+- text: 月 (月亮回歸)
+- button "計算回歸"
+- link "人類圖學習群組":
+  - /url: https://bit.ly/3SVrg3H
+  - button "人類圖學習群組"
+- button "太陽回歸時間 (Solar Return) ▼":
+  - generic: 太陽回歸時間 (Solar Return)
+  - generic: ▼
+  - textbox [disabled]
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "學習通道":
+      - cell
+      - cell "學習通道"
+      - cell
+      - cell
+    - row "個人通道":
+      - cell
+      - cell "個人通道"
+      - cell
+      - cell
+    - row "先天通道":
+      - cell
+      - cell "先天通道"
+      - cell
+      - cell
+- button "土星回歸時間 (Saturn Return) ▼":
+  - generic: 土星回歸時間 (Saturn Return)
+  - generic: ▼
+  - textbox [disabled]
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- button "30"
+- button "60"
+- button "90"
+- table:
+  - rowgroup:
+    - row "輪迴交叉":
+      - cell
+      - cell "輪迴交叉"
+      - cell
+      - cell
+- button "月亮回歸時間 (Lunar Return) ▼":
+  - generic: 月亮回歸時間 (Lunar Return)
+  - generic: ▼
+  - textbox [disabled]
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- button "1"
+- button "2"
+- table:
+  - rowgroup:
+    - row "輪迴交叉":
+      - cell
+      - cell "輪迴交叉"
+      - cell
+      - cell
+    - row "學習通道":
+      - cell
+      - cell "學習通道"
+      - cell
+      - cell
+    - row "個人通道":
+      - cell
+      - cell "個人通道"
+      - cell
+      - cell
+    - row "先天通道":
+      - cell
+      - cell "先天通道"
+      - cell
+      - cell
+- button "天王星對分回歸時間 (Uranus Opposition Return) ▼":
+  - generic: 天王星對分回歸時間 (Uranus Opposition Return)
+  - generic: ▼
+  - textbox [disabled]
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "輪迴交叉":
+      - cell
+      - cell "輪迴交叉"
+      - cell
+      - cell
+- button "凱龍星回歸時間 (Kiron Return) ▼":
+  - generic: 凱龍星回歸時間 (Kiron Return)
+  - generic: ▼
+  - textbox [disabled]
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "輪迴交叉":
+      - cell
+      - cell "輪迴交叉"
+      - cell
+      - cell
+- separator
+- heading "人類圖合盤" [level=2]
+- generic: 出生日期一
+- textbox: "2005"
+- text: 年
+- textbox: "7"
+- text: 月
+- textbox: "20"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "0"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" [selected]
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- generic: 出生日期二
+- textbox: "2005"
+- text: 年
+- textbox: "7"
+- text: 月
+- textbox: "20"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "0"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" [selected]
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- button "計算合盤"
+- link "人類圖學習群組":
+  - /url: https://bit.ly/3SVrg3H
+  - button "人類圖學習群組"
+- button "合盤 ▼":
+  - generic: 合盤
+  - generic: ▼
+- textbox "閘門"
+- button "🔍"
+- button "Download"
+- table:
+  - rowgroup:
+    - row "主導通道":
+      - cell
+      - cell "主導通道"
+      - cell
+      - cell
+    - row "臣服通道":
+      - cell
+      - cell "臣服通道"
+      - cell
+      - cell
+    - row "互補通道":
+      - cell
+      - cell "互補通道"
+      - cell
+      - cell
+    - row "陪伴閘門/通道":
+      - cell
+      - cell "陪伴閘門/通道"
+      - cell
+      - cell
+- separator
+- heading "Penta (Family + BG5)" [level=2]
+- generic: 出生日期一
+- textbox: "2005"
+- text: 年
+- textbox: "7"
+- text: 月
+- textbox: "20"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "0"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" [selected]
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- generic: 出生日期二
+- textbox: "2005"
+- text: 年
+- textbox: "7"
+- text: 月
+- textbox: "20"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "0"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" [selected]
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- generic: 出生日期三
+- textbox: "2005"
+- text: 年
+- textbox: "7"
+- text: 月
+- textbox: "20"
+- text: 日
+- textbox: "22"
+- text: 時
+- textbox: "0"
+- text: 分
+- text: 時區
+- combobox:
+  - option "(GMT-12:00) International Date Line West"
+  - option "(GMT-11:00) Midway Island, Samoa"
+  - option "(GMT-10:00) Hawaii"
+  - option "(GMT-09:00) Alaska"
+  - option "(GMT-08:00) Pacific Time (US & Canada)"
+  - option "(GMT-08:00) Tijuana, Baja California"
+  - option "(GMT-07:00) Arizona"
+  - option "(GMT-07:00) Chihuahua, La Paz, Mazatlan"
+  - option "(GMT-07:00) Mountain Time (US & Canada)"
+  - option "(GMT-06:00) Central America"
+  - option "(GMT-06:00) Central Time (US & Canada)"
+  - option "(GMT-06:00) Guadalajara, Mexico City, Monterrey"
+  - option "(GMT-06:00) Saskatchewan"
+  - option "(GMT-05:00) Bogota, Lima, Quito, Rio Branco"
+  - option "(GMT-05:00) Eastern Time (US & Canada)"
+  - option "(GMT-05:00) Indiana (East)"
+  - option "(GMT-04:00) Atlantic Time (Canada)"
+  - option "(GMT-04:00) Caracas, La Paz"
+  - option "(GMT-04:00) Manaus"
+  - option "(GMT-04:00) Santiago"
+  - option "(GMT-03:30) Newfoundland"
+  - option "(GMT-03:00) Brasilia"
+  - option "(GMT-03:00) Buenos Aires, Georgetown"
+  - option "(GMT-03:00) Greenland"
+  - option "(GMT-03:00) Montevideo"
+  - option "(GMT-02:00) Mid-Atlantic"
+  - option "(GMT-01:00) Cape Verde Is."
+  - option "(GMT-01:00) Azores"
+  - option "(GMT+00:00) Casablanca, Monrovia, Reykjavik"
+  - 'option "(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London"'
+  - option "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" [selected]
+  - option "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+  - option "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+  - option "(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb"
+  - option "(GMT+01:00) West Central Africa"
+  - option "(GMT+02:00) Amman"
+  - option "(GMT+02:00) Athens, Bucharest, Istanbul"
+  - option "(GMT+02:00) Beirut"
+  - option "(GMT+02:00) Cairo"
+  - option "(GMT+02:00) Harare, Pretoria"
+  - option "(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius"
+  - option "(GMT+02:00) Jerusalem"
+  - option "(GMT+02:00) Minsk"
+  - option "(GMT+02:00) Windhoek"
+  - option "(GMT+03:00) Kuwait, Riyadh, Baghdad"
+  - option "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+  - option "(GMT+03:00) Nairobi"
+  - option "(GMT+03:00) Tbilisi"
+  - option "(GMT+03:30) Tehran"
+  - option "(GMT+04:00) Abu Dhabi, Muscat"
+  - option "(GMT+04:00) Baku"
+  - option "(GMT+04:00) Yerevan"
+  - option "(GMT+04:30) Kabul"
+  - option "(GMT+05:00) Yekaterinburg"
+  - option "(GMT+05:00) Islamabad, Karachi, Tashkent"
+  - option "(GMT+05:30) Sri Jayawardenapura"
+  - option "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+  - option "(GMT+05:45) Kathmandu"
+  - option "(GMT+06:00) Almaty, Novosibirsk"
+  - option "(GMT+06:00) Astana, Dhaka"
+  - option "(GMT+06:30) Yangon (Rangoon)"
+  - option "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+  - option "(GMT+07:00) Krasnoyarsk"
+  - option "(GMT+08:00) Hong Kong, Beijing, Chongqing, Urumqi"
+  - option "(GMT+08:00) Kuala Lumpur, Singapore"
+  - option "(GMT+08:00) Irkutsk, Ulaan Bataar"
+  - option "(GMT+08:00) Perth"
+  - option "(GMT+08:00) Taipei"
+  - option "(GMT+09:00) Osaka, Sapporo, Tokyo"
+  - option "(GMT+09:00) Seoul"
+  - option "(GMT+09:00) Yakutsk"
+  - option "(GMT+09:30) Adelaide"
+  - option "(GMT+09:30) Darwin"
+  - option "(GMT+10:00) Brisbane"
+  - option "(GMT+10:00) Canberra, Melbourne, Sydney"
+  - option "(GMT+10:00) Hobart"
+  - option "(GMT+10:00) Guam, Port Moresby"
+  - option "(GMT+10:00) Vladivostok"
+  - option "(GMT+11:00) Magadan, Solomon Is., New Caledonia"
+  - option "(GMT+12:00) Auckland, Wellington"
+  - option "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+  - option "(GMT+13:00) Nuku'alofa"
+- button "計算 Penta"
+- link "人類圖學習群組":
+  - /url: https://bit.ly/3SVrg3H
+  - button "人類圖學習群組"
+- button "Penta ▼":
+  - generic: Penta
+  - generic: ▼
+- button "Download"
+- button "Family"
+- button "BG5"
+- separator
+- heading "Current Transit (Now Chart)" [level=2]
+- separator
+- heading "人類圖免費學習群組" [level=2]
+- paragraph: 2＋2 小時免費教學把能量中心、類型全教給你。
+- link "立即加入人類圖群組":
+  - /url: https://bit.ly/3SVrg3H
+- separator
+- heading "人類圖教學Youtube Channel" [level=2]
+- paragraph: 我們也有制作人類圖的教學視頻，上傳在YouTube Channel 上給有興趣的朋友學習更多，喜歡的話請訂閱我們的頻道。
+- button "Play":
+  - generic: Play
+- link "人類圖教學":
+  - /url: https://www.youtube.com/embed/yMmojkaDhgU
+  - generic: 人類圖教學
+- separator
+- paragraph: Copyright © Without Limited 2022. All Rights Reserved
