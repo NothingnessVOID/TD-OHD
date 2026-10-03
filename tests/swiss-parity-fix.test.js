@@ -26,7 +26,13 @@ test('source and cache signature includes patch, time semantics and locked ephem
   assert.equal(actual.signature, ENGINE_SIGNATURE);
   assert.equal(ANNUAL_SIGNATURE, ENGINE_SIGNATURE);
   const manifest = JSON.parse(read('public/transit-data/manifest.json'));
-  assert.notEqual(ANNUAL_SIGNATURE, manifest.signature, 'published naive-UTC cache must be rejected');
+  assert.equal(ENGINE_SIGNATURE, '59b90e629033cc7faf95');
+  assert.equal(manifest.signature, ENGINE_SIGNATURE, 'published annual cache must use the current engine signature');
+  assert.deepEqual(Object.keys(manifest.years), Array.from({ length: 16 }, (_, index) => String(2021 + index)));
+  for (const entry of Object.values(manifest.years)) {
+    const data = JSON.parse(read(`public/transit-data/${entry.path}`));
+    assert.equal(data.signature, ENGINE_SIGNATURE);
+  }
   const cacheKey = sharpProvider.cacheKey({ birthDate: '2025-01-19', birthTime: '22:57', timezone: 0 });
   assert.ok(cacheKey.includes(ENGINE_SIGNATURE));
   assert.equal(JSON.parse(read('third_party/SharpAstrology.SwissEph/patch-manifest.json')).identity.patchedSourceSha256, actual.identity.patchedSourceSha256);
