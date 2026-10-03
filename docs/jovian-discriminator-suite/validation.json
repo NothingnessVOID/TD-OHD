@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "checks": [
+    "Sealed predictions, cases, and research model scripts unchanged",
+    "28 unique UTC, 26 valid activations per official chart",
+    "28/28 repeat confirmations for each platform",
+    "Stored records match independent fingerprints of all 56 original DOM capture pairs",
+    "Both displayed UTC sets checked against sealed cases",
+    "728/728 platform activations and 28/28 profiles identical",
+    "Collection timestamps all later than seal",
+    "Official records and predictions stored separately",
+    "Six fresh native processes reproduce 4368 activations with zero longitude residual",
+    "Direct swe_calc_ut matches utc-as-ut1 wrapper for C1/C2/C6",
+    "All 28 +/-1s and +/-5s classifications independently reproduced",
+    "All acquisition assets match historical manifest SHA256",
+    "C1/C2 same-TT diagnostic: zero maximum residual over 28 x 11 bodies"
+  ],
+  "nativeReproduction": {
+    "status": "passed",
+    "freshNativeProcesses": 6,
+    "differentUtc": 28,
+    "predictedActivationsVerified": 4368,
+    "models": {
+      "C1": {
+        "model": "C1",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": 0.0,
+        "returnedFlags": [
+          258
+        ]
+      },
+      "C2": {
+        "model": "C2",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": 0.0,
+        "returnedFlags": [
+          258
+        ]
+      },
+      "C3": {
+        "model": "C3",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": null,
+        "returnedFlags": [
+          258
+        ]
+      },
+      "C4": {
+        "model": "C4",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": null,
+        "returnedFlags": [
+          258
+        ]
+      },
+      "C5": {
+        "model": "C5",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": null,
+        "returnedFlags": [
+          258
+        ]
+      },
+      "C6": {
+        "model": "C6",
+        "cases": 28,
+        "activations": 728,
+        "maxReproductionResidualDegrees": 0.0,
+        "sweCalcUtEquivalentMaxDegrees": 0.0,
+        "returnedFlags": [
+          257
+        ]
+      }
+    },
+    "sensitivity": {
+      "JDS-01": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-02": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-03": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-04": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-05": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-06": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-07": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-08": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-09": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-10": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-11": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-12": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-13": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-14": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-15": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-16": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-17": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-18": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-19": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-20": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-21": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-22": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": true
+      },
+      "JDS-23": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-24": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-25": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-26": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-27": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      },
+      "JDS-28": {
+        "allModelsStable1s": true,
+        "allModelsStable5s": false
+      }
+    },
+    "acquisitionAssetsVerified": [
+      {
+        "name": "maitreya7.tar.bz2",
+        "sha256": "83a3414ab071958d1eb12768c36936074588c6eea87c4c35bb264f1602a589cc",
+        "bytes": 7904437
+      },
+      {
+        "name": "libswe-177.tar.bz2",
+        "sha256": "66a5101bca0a65adfc8b6754f09fd0d0321e32753b90ae6c769757d028787b25",
+        "bytes": 844528
+      },
+      {
+        "name": "modern.tar.gz",
+        "sha256": "3fc81e72be98d4de80e9bf56fa6c6d1368327ee23f99db7415341f3b60e5f466",
+        "bytes": 8288483
+      },
+      {
+        "name": "de406/sepl_18.se1",
+        "sha256": "20c69631d1e5d9af4a1eb7fca265bf777fe2d532bcd99e6b1660838edf5d0e11",
+        "bytes": 484065
+      },
+      {
+        "name": "de406/semo_18.se1",
+        "sha256": "fc8c8648b992c17408dfe572884e54c2e963410077222ccbd0e4b84f8312617c",
+        "bytes": 1305686
+      },
+      {
+        "name": "de431/sepl_18.se1",
+        "sha256": "0b7e416e3c1be9e6a0dd1d711dae7f7685793a0e7df13f76363a493dc27b6ea1",
+        "bytes": 484055
+      },
+      {
+        "name": "de431/semo_18.se1",
+        "sha256": "ecfa54dbf5bc0b5a9bc3e04ed28629a821e98625eacae38f4070593bba0e2980",
+        "bytes": 1304771
+      },
+      {
+        "name": "de441/sepl_18.se1",
+        "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+        "bytes": 484061
+      },
+      {
+        "name": "de441/semo_18.se1",
+        "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+        "bytes": 1304771
+      },
+      {
+        "name": "de406.eph",
+        "sha256": "b23009e208d625c5e830c4cb67e6313d7f9eadeffe17292a7471f33250c9342d",
+        "bytes": 199437056
+      },
+      {
+        "name": "libswe177.dsc",
+        "sha256": "3de29fd7d3e5fb4f963b4aa0514d8fb29b20d133c6bad29f673988224dae94dc",
+        "bytes": 1523
+      },
+      {
+        "name": "maitreya7.dsc",
+        "sha256": "7cfeb9a619ffb7230ae1a037f462e9c6ba7b52066cbb95750dcb2ab85e09fc59",
+        "bytes": 1415
+      },
+      {
+        "name": "de405.iom.pdf",
+        "sha256": "5c7a4407296a1eddeead66a3d1b0f064e5529ffc160e5324999bca401083cfe6",
+        "bytes": 948412
+      },
+      {
+        "name": "swisseph-2006.pdf",
+        "sha256": "12742d52e38d7f360f17bac9b342cfd5040ca2659741eaff5a3b0871328655fd",
+        "bytes": 898170
+      },
+      {
+        "name": "header.406",
+        "sha256": "a4cee2eb409a723edeba0c73e3afb2c38eef4fdecb66172c9705d4ea1d252a4f",
+        "bytes": 5962
+      }
+    ],
+    "C1C2CommonTtMaxResidualMas": 0.0
+  },
+  "researchOnly": true,
+  "productionTests": "NOT RUN: production code unchanged",
+  "limitations": [
+    "Repeated submissions verify stable outputs; backend cache/recalculation cannot be observed.",
+    "No exact official longitude or fine substructure obtained.",
+    "Official products may share a backend.",
+    "Designed boundary sample is not an unbiased population accuracy estimate."
+  ],
+  "officialEvidenceHashes": {
+    "evidence/capture-fingerprints.json": "85160ca797fdcbb7f1ff43c6cc2d5195e311a21fe78a62462aee066d3cc0a71a",
+    "evidence/jovian-JDS-28.pdf": "21e74b88f69738e1733a9a20a0056143489496a370fb2507d8dd2acaca8405c2",
+    "evidence/jovian-JDS-28.png": "cd8d98e10a97dffae55b5b5bdbba871f973b7f9b6668ae2a98cf1e22ebe65b74",
+    "evidence/jovian-blind-confirmations.tsv": "66bdf06d75243951f5e2441850fef799e1f59aafe2012a579378ff2d5f6eac07",
+    "evidence/mybodygraph-JDS-28.webp": "f700c35bd8c6f88e3856b39dca84170eb6fbe68e8b042553835cab905547c4f9",
+    "evidence/mybodygraph-blind-dom.tsv": "a5b9af6eed180d9f60756ca2ecc21034e0e3ea9e82ab1c205f524c038cabce1e"
+  }
+}

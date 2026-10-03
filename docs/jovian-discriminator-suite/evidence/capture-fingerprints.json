@@ -1,0 +1,193 @@
+{
+  "algorithm": "FNV-1a-32, ASCII transcription check only; not a cryptographic authenticity claim",
+  "origin": "Calculated from the 112 retained read-only DOM observations in the browser session after blind collection. No prediction data used.",
+  "myBodyGraphFields": [
+    "id",
+    "personality",
+    "design",
+    "profile",
+    "designDateDisplayed",
+    "firstCapturedUtc",
+    "secondCapturedUtc"
+  ],
+  "JovianFields": [
+    "id",
+    "personality",
+    "design",
+    "profile",
+    "utcDisplayed",
+    "firstCapturedUtc",
+    "secondCapturedUtc"
+  ],
+  "separator": "|",
+  "cases": [
+    {
+      "id": "JDS-01",
+      "myBodyGraph": "6d991f7b",
+      "Jovian": "cd40c83b",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-02",
+      "myBodyGraph": "101bb147",
+      "Jovian": "ea4f4046",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-03",
+      "myBodyGraph": "6b2a8dac",
+      "Jovian": "524b9d3a",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-04",
+      "myBodyGraph": "d4cfca40",
+      "Jovian": "5e96edf4",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-05",
+      "myBodyGraph": "3e480132",
+      "Jovian": "cb9805a5",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-06",
+      "myBodyGraph": "256bbaba",
+      "Jovian": "46f94142",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-07",
+      "myBodyGraph": "b8b8ccf0",
+      "Jovian": "d3cd961c",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-08",
+      "myBodyGraph": "f6d4cf69",
+      "Jovian": "9c77a0f5",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-09",
+      "myBodyGraph": "40a1c531",
+      "Jovian": "7a6e2c3d",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-10",
+      "myBodyGraph": "5b6acdb1",
+      "Jovian": "5d2ed28e",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-11",
+      "myBodyGraph": "d324ea9b",
+      "Jovian": "59e1aa67",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-12",
+      "myBodyGraph": "61193ed1",
+      "Jovian": "3d00364f",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-13",
+      "myBodyGraph": "1f30b0d1",
+      "Jovian": "ad9078b0",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-14",
+      "myBodyGraph": "92554bfd",
+      "Jovian": "85431344",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-15",
+      "myBodyGraph": "b5042ac2",
+      "Jovian": "8616f2d7",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-16",
+      "myBodyGraph": "dfba1985",
+      "Jovian": "5da48267",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-17",
+      "myBodyGraph": "52725b3f",
+      "Jovian": "481c1fcd",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-18",
+      "myBodyGraph": "cf3d0554",
+      "Jovian": "e0f0859e",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-19",
+      "myBodyGraph": "52ce82ba",
+      "Jovian": "cbaee1db",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-20",
+      "myBodyGraph": "10e6a818",
+      "Jovian": "7a549faa",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-21",
+      "myBodyGraph": "d81c0ad4",
+      "Jovian": "b3a8a0b9",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-22",
+      "myBodyGraph": "aff90b24",
+      "Jovian": "fce4d8f3",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-23",
+      "myBodyGraph": "f8f7668a",
+      "Jovian": "de376690",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-24",
+      "myBodyGraph": "422d1fe4",
+      "Jovian": "6cef206d",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-25",
+      "myBodyGraph": "b17edde4",
+      "Jovian": "50282fad",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-26",
+      "myBodyGraph": "51044244",
+      "Jovian": "74143ce8",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-27",
+      "myBodyGraph": "c7627368",
+      "Jovian": "14c4b146",
+      "repeatsEqual": true
+    },
+    {
+      "id": "JDS-28",
+      "myBodyGraph": "64204593",
+      "Jovian": "7af1f92e",
+      "repeatsEqual": true
+    }
+  ]
+}

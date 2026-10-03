@@ -1,0 +1,2445 @@
+{
+  "schemaVersion": 1,
+  "reference": "myBodyGraph; confirmed 28/28 same 26 activations and profiles on Jovian",
+  "differentUtcCount": 28,
+  "totalActivationsPerModel": 728,
+  "platformAgreement": {
+    "activations": 728,
+    "profiles": 28,
+    "repeatsIdentical": true
+  },
+  "totals": {
+    "C1": {
+      "matchedActivations": 721,
+      "totalActivations": 728,
+      "personalityMatched": 357,
+      "designMatched": 364,
+      "fullCharts": 22,
+      "profileMatched": 27,
+      "mismatchBodies": {
+        "neptune": 1,
+        "jupiter": 1,
+        "sun": 1,
+        "earth": 1,
+        "mars": 1,
+        "venus": 2
+      },
+      "activationPercent": 99.038462
+    },
+    "C2": {
+      "matchedActivations": 728,
+      "totalActivations": 728,
+      "personalityMatched": 364,
+      "designMatched": 364,
+      "fullCharts": 28,
+      "profileMatched": 28,
+      "mismatchBodies": {},
+      "activationPercent": 100.0
+    },
+    "C3": {
+      "matchedActivations": 719,
+      "totalActivations": 728,
+      "personalityMatched": 355,
+      "designMatched": 364,
+      "fullCharts": 20,
+      "profileMatched": 27,
+      "mismatchBodies": {
+        "moon": 2,
+        "neptune": 1,
+        "jupiter": 1,
+        "sun": 1,
+        "earth": 1,
+        "mars": 1,
+        "venus": 2
+      },
+      "activationPercent": 98.763736
+    },
+    "C4": {
+      "matchedActivations": 695,
+      "totalActivations": 728,
+      "personalityMatched": 331,
+      "designMatched": 364,
+      "fullCharts": 5,
+      "profileMatched": 27,
+      "mismatchBodies": {
+        "northNode": 9,
+        "southNode": 9,
+        "moon": 2,
+        "pluto": 2,
+        "neptune": 1,
+        "uranus": 2,
+        "saturn": 3,
+        "sun": 1,
+        "earth": 1,
+        "mars": 1,
+        "venus": 2
+      },
+      "activationPercent": 95.467033
+    },
+    "C5": {
+      "matchedActivations": 701,
+      "totalActivations": 728,
+      "personalityMatched": 337,
+      "designMatched": 364,
+      "fullCharts": 6,
+      "profileMatched": 27,
+      "mismatchBodies": {
+        "northNode": 4,
+        "southNode": 4,
+        "moon": 2,
+        "pluto": 2,
+        "neptune": 1,
+        "uranus": 2,
+        "saturn": 3,
+        "jupiter": 2,
+        "sun": 1,
+        "earth": 1,
+        "mercury": 2,
+        "mars": 1,
+        "venus": 2
+      },
+      "activationPercent": 96.291209
+    },
+    "C6": {
+      "matchedActivations": 703,
+      "totalActivations": 728,
+      "personalityMatched": 339,
+      "designMatched": 364,
+      "fullCharts": 13,
+      "profileMatched": 27,
+      "mismatchBodies": {
+        "northNode": 9,
+        "southNode": 9,
+        "neptune": 1,
+        "jupiter": 1,
+        "sun": 1,
+        "earth": 1,
+        "mars": 1,
+        "venus": 2
+      },
+      "activationPercent": 96.565934
+    }
+  },
+  "pairwiseDiscriminators": {
+    "C2": {
+      "discriminatingCases": [
+        "JDS-07",
+        "JDS-21",
+        "JDS-23",
+        "JDS-26",
+        "JDS-27",
+        "JDS-28"
+      ],
+      "C1Wins": [],
+      "otherWins": [
+        "JDS-07",
+        "JDS-21",
+        "JDS-23",
+        "JDS-26",
+        "JDS-27",
+        "JDS-28"
+      ],
+      "neitherWins": []
+    },
+    "C3": {
+      "discriminatingCases": [
+        "JDS-05",
+        "JDS-06"
+      ],
+      "C1Wins": [
+        "JDS-05",
+        "JDS-06"
+      ],
+      "otherWins": [],
+      "neitherWins": []
+    },
+    "C4": {
+      "discriminatingCases": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-05",
+        "JDS-06",
+        "JDS-07",
+        "JDS-08",
+        "JDS-09",
+        "JDS-10",
+        "JDS-11",
+        "JDS-12",
+        "JDS-13",
+        "JDS-14",
+        "JDS-15",
+        "JDS-16",
+        "JDS-17",
+        "JDS-18",
+        "JDS-19",
+        "JDS-20",
+        "JDS-21"
+      ],
+      "C1Wins": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-05",
+        "JDS-06",
+        "JDS-08",
+        "JDS-09",
+        "JDS-10",
+        "JDS-11",
+        "JDS-12",
+        "JDS-13",
+        "JDS-14",
+        "JDS-15",
+        "JDS-16",
+        "JDS-17",
+        "JDS-18",
+        "JDS-19",
+        "JDS-20"
+      ],
+      "otherWins": [
+        "JDS-07",
+        "JDS-21"
+      ],
+      "neitherWins": []
+    },
+    "C5": {
+      "discriminatingCases": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-05",
+        "JDS-06",
+        "JDS-07",
+        "JDS-13",
+        "JDS-14",
+        "JDS-15",
+        "JDS-16",
+        "JDS-17",
+        "JDS-18",
+        "JDS-19",
+        "JDS-20",
+        "JDS-22",
+        "JDS-24",
+        "JDS-25"
+      ],
+      "C1Wins": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-05",
+        "JDS-06",
+        "JDS-13",
+        "JDS-14",
+        "JDS-15",
+        "JDS-16",
+        "JDS-17",
+        "JDS-18",
+        "JDS-19",
+        "JDS-20",
+        "JDS-22",
+        "JDS-24",
+        "JDS-25"
+      ],
+      "otherWins": [
+        "JDS-07"
+      ],
+      "neitherWins": []
+    },
+    "C6": {
+      "discriminatingCases": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-08",
+        "JDS-09",
+        "JDS-10",
+        "JDS-11",
+        "JDS-12"
+      ],
+      "C1Wins": [
+        "JDS-01",
+        "JDS-02",
+        "JDS-03",
+        "JDS-04",
+        "JDS-08",
+        "JDS-09",
+        "JDS-10",
+        "JDS-11",
+        "JDS-12"
+      ],
+      "otherWins": [],
+      "neitherWins": []
+    }
+  },
+  "cases": [
+    {
+      "id": "JDS-01",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-02",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-03",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "27.6",
+              "prediction": "27.5"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "28.6",
+              "prediction": "28.5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-04",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "1.1",
+              "prediction": "1.2"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "2.1",
+              "prediction": "2.2"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "1.1",
+              "prediction": "1.2"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "2.1",
+              "prediction": "2.2"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "1.1",
+              "prediction": "1.2"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "2.1",
+              "prediction": "2.2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-05",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "42.5",
+              "prediction": "42.4"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "42.5",
+              "prediction": "42.4"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "42.5",
+              "prediction": "42.4"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-06",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "62.3",
+              "prediction": "62.2"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "62.3",
+              "prediction": "62.2"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "moon",
+              "official": "62.3",
+              "prediction": "62.2"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-07",
+      "models": {
+        "C1": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "neptune",
+              "official": "25.2",
+              "prediction": "25.1"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "neptune",
+              "official": "25.2",
+              "prediction": "25.1"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "neptune",
+              "official": "25.2",
+              "prediction": "25.1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-08",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "59.1",
+              "prediction": "29.6"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "55.1",
+              "prediction": "30.6"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "59.1",
+              "prediction": "29.6"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "55.1",
+              "prediction": "30.6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-09",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "8.3",
+              "prediction": "8.2"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "14.3",
+              "prediction": "14.2"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "8.3",
+              "prediction": "8.2"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "14.3",
+              "prediction": "14.2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-10",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "8.5",
+              "prediction": "8.4"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "14.5",
+              "prediction": "14.4"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "8.5",
+              "prediction": "8.4"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "14.5",
+              "prediction": "14.4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-11",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "23.1",
+              "prediction": "2.6"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "43.1",
+              "prediction": "1.6"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "23.1",
+              "prediction": "2.6"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "43.1",
+              "prediction": "1.6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-12",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "45.4",
+              "prediction": "45.3"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "26.4",
+              "prediction": "26.3"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "northNode",
+              "official": "45.4",
+              "prediction": "45.3"
+            },
+            {
+              "side": "personality",
+              "body": "southNode",
+              "official": "26.4",
+              "prediction": "26.3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-13",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "pluto",
+              "official": "57.6",
+              "prediction": "57.5"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "pluto",
+              "official": "57.6",
+              "prediction": "57.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-14",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "pluto",
+              "official": "32.3",
+              "prediction": "32.2"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "pluto",
+              "official": "32.3",
+              "prediction": "32.2"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-15",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "neptune",
+              "official": "10.2",
+              "prediction": "10.1"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "neptune",
+              "official": "10.2",
+              "prediction": "10.1"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-16",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "uranus",
+              "official": "10.5",
+              "prediction": "10.4"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "uranus",
+              "official": "10.5",
+              "prediction": "10.4"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-17",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "uranus",
+              "official": "58.2",
+              "prediction": "58.1"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "uranus",
+              "official": "58.2",
+              "prediction": "58.1"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-18",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "13.6",
+              "prediction": "13.5"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "13.6",
+              "prediction": "13.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-19",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "55.1",
+              "prediction": "30.6"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "55.1",
+              "prediction": "30.6"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-20",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "56.1",
+              "prediction": "56.2"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "saturn",
+              "official": "56.1",
+              "prediction": "56.2"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-21",
+      "models": {
+        "C1": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "jupiter",
+              "official": "57.3",
+              "prediction": "57.4"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "jupiter",
+              "official": "57.3",
+              "prediction": "57.4"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "jupiter",
+              "official": "57.3",
+              "prediction": "57.4"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "jupiter",
+              "official": "57.3",
+              "prediction": "57.4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-22",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "jupiter",
+              "official": "9.6",
+              "prediction": "9.5"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-23",
+      "models": {
+        "C1": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": false,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "sun",
+              "official": "39.4",
+              "prediction": "39.3"
+            },
+            {
+              "side": "personality",
+              "body": "earth",
+              "official": "38.4",
+              "prediction": "38.3"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": false,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "sun",
+              "official": "39.4",
+              "prediction": "39.3"
+            },
+            {
+              "side": "personality",
+              "body": "earth",
+              "official": "38.4",
+              "prediction": "38.3"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": false,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "sun",
+              "official": "39.4",
+              "prediction": "39.3"
+            },
+            {
+              "side": "personality",
+              "body": "earth",
+              "official": "38.4",
+              "prediction": "38.3"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": false,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "sun",
+              "official": "39.4",
+              "prediction": "39.3"
+            },
+            {
+              "side": "personality",
+              "body": "earth",
+              "official": "38.4",
+              "prediction": "38.3"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 24,
+          "personalityMatched": 11,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": false,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "sun",
+              "official": "39.4",
+              "prediction": "39.3"
+            },
+            {
+              "side": "personality",
+              "body": "earth",
+              "official": "38.4",
+              "prediction": "38.3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-24",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mercury",
+              "official": "12.5",
+              "prediction": "12.4"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-25",
+      "models": {
+        "C1": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C4": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mercury",
+              "official": "56.3",
+              "prediction": "56.2"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        }
+      }
+    },
+    {
+      "id": "JDS-26",
+      "models": {
+        "C1": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mars",
+              "official": "1.4",
+              "prediction": "1.3"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mars",
+              "official": "1.4",
+              "prediction": "1.3"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mars",
+              "official": "1.4",
+              "prediction": "1.3"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mars",
+              "official": "1.4",
+              "prediction": "1.3"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "mars",
+              "official": "1.4",
+              "prediction": "1.3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-27",
+      "models": {
+        "C1": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "59.4",
+              "prediction": "59.3"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "59.4",
+              "prediction": "59.3"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "59.4",
+              "prediction": "59.3"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "59.4",
+              "prediction": "59.3"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "59.4",
+              "prediction": "59.3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "JDS-28",
+      "models": {
+        "C1": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "9.2",
+              "prediction": "9.1"
+            }
+          ]
+        },
+        "C2": {
+          "matched": 26,
+          "personalityMatched": 13,
+          "designMatched": 13,
+          "fullChart": true,
+          "profileMatched": true,
+          "mismatches": []
+        },
+        "C3": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "9.2",
+              "prediction": "9.1"
+            }
+          ]
+        },
+        "C4": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "9.2",
+              "prediction": "9.1"
+            }
+          ]
+        },
+        "C5": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "9.2",
+              "prediction": "9.1"
+            }
+          ]
+        },
+        "C6": {
+          "matched": 25,
+          "personalityMatched": 12,
+          "designMatched": 13,
+          "fullChart": false,
+          "profileMatched": true,
+          "mismatches": [
+            {
+              "side": "personality",
+              "body": "venus",
+              "official": "9.2",
+              "prediction": "9.1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
