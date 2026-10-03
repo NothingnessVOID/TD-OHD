@@ -7,8 +7,9 @@ import { createHash } from 'node:crypto';
 import { BirthEnginePrototype } from './lib/birth-engine-prototype.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = path.join(root, 'docs/jovian-compatible-engine');
-const evidence = JSON.parse(readFileSync(path.join(out, 'official-evidence.json'), 'utf8'));
+const evidencePath = path.join(root, 'docs/jovian-compatible-engine/official-evidence.json');
+const out = process.env.JOVIAN_VALIDATION_OUTPUT ? path.resolve(process.env.JOVIAN_VALIDATION_OUTPUT) : path.join(root, 'docs/jovian-compatible-engine');
+const evidence = JSON.parse(readFileSync(evidencePath, 'utf8'));
 const researchRoot = process.env.JOVIAN_RESEARCH_ROOT || path.resolve(root,'../TD-OHD-jovian-discriminator-suite');
 const runtime = process.env.JOVIAN_REFERENCE_RUNTIME || '/tmp/ra-era-research';
 const python = process.env.PYTHON || 'python3';
@@ -172,7 +173,7 @@ try {
   let dstGapRejected=false;try{await prototype.calculate({date:'2024-03-31',time:'01:30',timeZone:'Europe/London'},{engine:'jovian-compatible'});}catch(error){dstGapRejected=error instanceof RangeError;}
   write('time-location-regression',{schemaVersion:1,scope:'Arbitrary UTC instants outside official fixtures; exact seconds, offsets, IANA zones, London DST spring transition, New York repeated hour folds; location does not modify celestial longitude',passed:timeRows.every(c=>c.passed)&&dstGapRejected,dstGapRejected,cases:timeRows});
   const hashes={};for(const source of evidence.sources){const actual=createHash('sha256').update(readFileSync(path.join(researchRoot,source.path))).digest('hex');if(actual!==source.sha256)throw new Error(`Source drift ${source.path}`);hashes[source.path]=actual;}
-  write('reference-integrity',{schemaVersion:1,passed:true,sourceHashes:hashes,fixtureSha256:createHash('sha256').update(readFileSync(path.join(out,'official-evidence.json'))).digest('hex')});
+  write('reference-integrity',{schemaVersion:1,passed:true,sourceHashes:hashes,fixtureSha256:createHash('sha256').update(readFileSync(evidencePath)).digest('hex')});
   const reports=['official-regression','c2-parity','boundary-regression','negative-controls','mechanics-regression','time-location-regression'].map(n=>[n,JSON.parse(readFileSync(path.join(out,`${n}.json`),'utf8'))]);
   console.log(JSON.stringify(Object.fromEntries(reports.map(([n,r])=>[n,{passed:r.passed,stats:r.stats,caseCount:r.caseCount,utcCount:r.utcCount,maxLongitudeResidualDegrees:r.maxLongitudeResidualDegrees} ])),null,2));
   if(reports.some(([,r])=>!r.passed))process.exitCode=1;
