@@ -1,0 +1,58 @@
+{
+  "engine": "jovian-compatible",
+  "compatibilityVersion": "v1",
+  "basis": "Swiss Ephemeris 1.76 compatible historical stack",
+  "ephemeris": "DE406",
+  "timeSemantics": "legacy utc-as-ut1 compatibility semantics",
+  "sourceVersion": "1.76.00",
+  "sourceHash": "83a3414ab071958d1eb12768c36936074588c6eea87c4c35bb264f1602a589cc",
+  "ephemerisHashes": {
+    "de406/sepl_18.se1": "20c69631d1e5d9af4a1eb7fca265bf777fe2d532bcd99e6b1660838edf5d0e11",
+    "de406/semo_18.se1": "fc8c8648b992c17408dfe572884e54c2e963410077222ccbd0e4b84f8312617c"
+  },
+  "buildIdentity": "015b338e10a81b3ff1dd314b73466b8e2bd158f1ff46d6c3d7d0845a1c25d8ad",
+  "librarySha256": "df6ba971b5d3e9d64880977a77a1d04acde54592b0ffe52763b147bc62352d9f",
+  "providerSha256": "cba963a5ef135acd4820f5f8b45b1037f216b16bd1e689969b654060c4fb69fe",
+  "engineSignature": "d528b371dcdf84791ee21fdfc969f478d07a73a99242b7c72908aefab1b9f23c",
+  "humanDesignVersion": "1.2.0",
+  "baseVersion": "0.14.0",
+  "contractVersion": "prototype-v1",
+  "sharedSourceHashes": {
+    "jovian-engine/mechanics/Program.cs": "1ab5eaf0f90a3cbe44fea11acae7bd05946b6ac4223a91cf9be384601bad3c7c",
+    "jovian-engine/mechanics/JovianMechanics.csproj": "e495d73ad2e123ee4fc98d220ffc504593c14ddb7332810e82b14a84d009a02c",
+    "engine-core/TransitCore.cs": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+    "src/lib/chart-engine/sharp-contract.js": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+    "scripts/lib/birth-engine-prototype.mjs": "9b0038714fcdbf80c82cb1415e880ad534560228bc33561942366b24e410603b"
+  },
+  "astronomySignature": "8eae65681c977c5ac533041bae903c82ce53527a38f1620fb260403d79924ed4",
+  "modernSignature": "59b90e629033cc7faf95",
+  "baselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "runtimeRange": "1800-2399; Design must also stay within pinned ephemeris coverage",
+  "officialInternalAlgorithmConfirmed": false,
+  "historicalSourceFileHashes": {
+    "swedate.c": "b6134ff9fe192f0dfbff519f81a85b17b8034745cbef73b0fbd5647efe931ff7",
+    "sweph.c": "716352a06935f4ed0376b8bf406871e143ad2c5e16a0a5d64cf7186096dbd367",
+    "swephlib.c": "818968105ca31e8f5bc47bfe10d7ffd8c20d95a4dd9b906367e6e30987939d65",
+    "swejpl.c": "a44a4698a92e5c4276632bd281679c4979c07ee32191ed073365552f611f73b5",
+    "swemmoon.c": "462d7d181337924c3124160f0674cd650c2268aad9615cee570839f2859685b3",
+    "swemplan.c": "e299c010f5dde8071a4376529141923ed0e0d1584ccb57d82e5278875110e88b",
+    "swehouse.c": "02ce4c94d15c9b400bffd07ac8bb0da731b5dadd5e3c74ab34a4a9168e3e0af4",
+    "swecl.c": "3ff504e0775995efb24a7f435dd5c76f8d75f26c2b3635d65f3ba6753faf557b",
+    "swehel.c": "9d9507f44a950e3c88da7cf284a6161685a76155c13d7a0fd58fcd6b51d67125",
+    "sweph.h": "8113b204c46e95e46e5a058f956d135aaf468958b706d807d946678e2bfeae8e",
+    "swephlib.h": "5c2da1c4910ecff868060d8c3802283309d8e3f404ec331b4e3862759cbfca09",
+    "swephexp.h": "28b62f3c1970cc06a647cd372fb1b9b98512bc080014cf7c398da40b15b9e8fd"
+  },
+  "build": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+    "compilerFlags": [
+      "-dynamiclib",
+      "-fPIC",
+      "-O2",
+      "-lm"
+    ],
+    "instrumentationSha256": "7dccbf74f7e3dab87a8f4eaf3411942c9b958fd760d8b034f4904bad718ff571"
+  }
+}

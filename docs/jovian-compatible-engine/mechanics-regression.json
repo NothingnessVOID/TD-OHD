@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "scope": "Same independent C2 longitudes pass through the shared SharpAstrology HumanDesignChart host; compares prototype and oracle activation pipelines",
+  "caseCount": 97,
+  "passed": true,
+  "cases": [
+    {
+      "birthUtc": "1980-01-03T12:56:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:10:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:56:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:21:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:52:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:35:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:40:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:55:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:46:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:33:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:53:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:32:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:53:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:15:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:22:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:05:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:47:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:19:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:52:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:03:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:07:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:09:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:42:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:44:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:22:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:33:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:39:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:41:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:06:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:19:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:21:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:55:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:57:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:41:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:58:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:42:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:44:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:06:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:11:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:30:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:50:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:56:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:58:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:55:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:57:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "passed": true,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "passed": true,
+      "mismatches": []
+    }
+  ]
+}

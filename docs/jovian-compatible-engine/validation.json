@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS_LOCAL_PROTOTYPE",
+  "baselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "researchReferenceCommit": "78e3b9e59c9c1cbbde80a51b1e8320b6952e8be3",
+  "branch": "feature/jovian-compatible-engine-v1",
+  "productionEngineSignature": "59b90e629033cc7faf95",
+  "prototypeEngineSignature": "d528b371dcdf84791ee21fdfc969f478d07a73a99242b7c72908aefab1b9f23c",
+  "reportHashes": {
+    "docs/jovian-compatible-engine/README.md": "c5e382638a4fdcbbd715698a16d4ce3a51586b7a495fa36a6eff0e79d5dc46be",
+    "docs/jovian-compatible-engine/architecture.md": "d4892776f747203e9d324bc033b7b2f58ef0b4a9855fa8db0844ea09c9fb542f",
+    "docs/jovian-compatible-engine/boundary-regression.json": "2d653cf371ef9b1c0dece0c255c8025514c8e07437c898b1f6510b85208a4d13",
+    "docs/jovian-compatible-engine/c2-parity.json": "7a41d84eaa9537715a122d5b8b3c596f11a4f87dce4bb02d1fe5ba162369df35",
+    "docs/jovian-compatible-engine/engine-identity.json": "440c525d358263b5f3fb2174098190538613cf120cee53666bb64069701d5695",
+    "docs/jovian-compatible-engine/license-audit.md": "08202eb3df51ad8912ea073d4b3c4f13ec0675effd2bfb874cebfc78dfe2a7ec",
+    "docs/jovian-compatible-engine/mechanics-regression.json": "4afd6e062d6175c9be86251bc39586fc79bea6e24058c24e080d250c93b4a2f5",
+    "docs/jovian-compatible-engine/modern-regression.json": "8690d519462b9243d457215a60ec2fe985a7007fb85d72561410bbd3ae6d6b1c",
+    "docs/jovian-compatible-engine/negative-controls.json": "637eb213c7665d3ce043eef04f787faa5acb8473de9d6967b109055f20293175",
+    "docs/jovian-compatible-engine/official-evidence.json": "ba0a252ade95f34f95ef59f5bb99c1c5c9df47dbea067066428b90c3b3bba8f0",
+    "docs/jovian-compatible-engine/official-regression.json": "c20f7331db62e37c281f9f9fc1edfdf4f321dfecaeefca3b1500a09328d8f867",
+    "docs/jovian-compatible-engine/reference-integrity.json": "af7e8cc90d68206fe15bf53b809bb8ab93bdbc29b9f133c460d4f952eab53d05",
+    "docs/jovian-compatible-engine/time-location-regression.json": "10f992911324178db41af6fa5f0d1c3d38e398747ceb1b0122c21e1f3f88caff"
+  },
+  "gates": {
+    "official-regression": true,
+    "c2-parity": true,
+    "boundary-regression": true,
+    "negative-controls": true,
+    "mechanics-regression": true,
+    "time-location-regression": true,
+    "reference-integrity": true,
+    "modern-regression": true
+  },
+  "official": {
+    "personality": {
+      "matched": 1261,
+      "total": 1261
+    },
+    "design": {
+      "matched": 1261,
+      "total": 1261
+    },
+    "all26": {
+      "matched": 97,
+      "total": 97
+    },
+    "profile": {
+      "matched": 97,
+      "total": 97
+    },
+    "type": {
+      "matched": 68,
+      "total": 68
+    },
+    "strategy": {
+      "matched": 40,
+      "total": 40
+    },
+    "authority": {
+      "matched": 40,
+      "total": 40
+    },
+    "definition": {
+      "matched": 40,
+      "total": 40
+    },
+    "incarnationCross": {
+      "matched": 68,
+      "total": 68
+    },
+    "channels": {
+      "matched": 0,
+      "total": 0
+    },
+    "centers": {
+      "matched": 0,
+      "total": 0
+    }
+  },
+  "perPlatform": {
+    "Jovian": {
+      "uniqueUtcCount": 97,
+      "stats": {
+        "personality": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "design": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "all26": {
+          "matched": 97,
+          "total": 97
+        },
+        "profile": {
+          "matched": 97,
+          "total": 97
+        },
+        "type": {
+          "matched": 68,
+          "total": 68
+        },
+        "strategy": {
+          "matched": 40,
+          "total": 40
+        },
+        "authority": {
+          "matched": 40,
+          "total": 40
+        },
+        "definition": {
+          "matched": 40,
+          "total": 40
+        },
+        "incarnationCross": {
+          "matched": 68,
+          "total": 68
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "passed": true
+    },
+    "myBodyGraph": {
+      "uniqueUtcCount": 33,
+      "stats": {
+        "personality": {
+          "matched": 429,
+          "total": 429
+        },
+        "design": {
+          "matched": 429,
+          "total": 429
+        },
+        "all26": {
+          "matched": 33,
+          "total": 33
+        },
+        "profile": {
+          "matched": 33,
+          "total": 33
+        },
+        "type": {
+          "matched": 5,
+          "total": 5
+        },
+        "strategy": {
+          "matched": 0,
+          "total": 0
+        },
+        "authority": {
+          "matched": 0,
+          "total": 0
+        },
+        "definition": {
+          "matched": 0,
+          "total": 0
+        },
+        "incarnationCross": {
+          "matched": 0,
+          "total": 0
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "passed": true
+    }
+  },
+  "numerical": {
+    "utcCount": 321,
+    "longitudePairs": 8346,
+    "maxLongitudeResidualDegrees": 0,
+    "maxDesignRootResidualDays": 0
+  },
+  "boundaries": {
+    "cases": 56,
+    "samples": 280,
+    "offsetSeconds": [
+      -5,
+      -1,
+      0,
+      1,
+      5
+    ]
+  },
+  "latestChecks": [
+    {
+      "command": "node --test tests/jovian-compatible-engine.test.js",
+      "status": "PASS",
+      "passed": 5,
+      "logSha256": "3ba567cc97edbefbe01546060f36eb2509ccfcb60f8bcbb099461581b5f3f0eb"
+    },
+    {
+      "command": "npm run build",
+      "status": "PASS",
+      "logSha256": "f57a09650486827749b318c7555bde3a0b2857eaafbbe899f2a393e159e8c11e"
+    },
+    {
+      "command": "npm run check:pages-bundle",
+      "status": "PASS",
+      "logSha256": "1ca6a4ee7407eed1d94f68694daeb68d984aa262b488e449183acd8d167c104d"
+    },
+    {
+      "command": "npm run test:jovian-compatible",
+      "status": "PASS",
+      "logSha256": "d2c1e37b3d25563cbeb315b72bd65d98b07d640eec85e63c27636ee0c28c8e35"
+    }
+  ],
+  "constraints": {
+    "productionLogicUnchanged": true,
+    "defaultModern": true,
+    "uiUnchanged": true,
+    "mainNotMerged": true,
+    "deployed": false,
+    "running8787Untouched": true,
+    "thirdPartySourceOrEphemerisOrBinaryCommitted": false,
+    "caseSpecificOffsetsOrEpsilon": false
+  },
+  "releaseReadiness": "Independent CLI/Node prototype; browser integration and license resolution still required before public product distribution",
+  "unverifiedOfficialFields": [
+    "longitude",
+    "color",
+    "tone",
+    "base",
+    "channels",
+    "centers",
+    "precise Design timestamp"
+  ],
+  "literalLabelDifferencesRetained": true,
+  "privacy": "Only sanitized synthetic or authorized sample calculation data; no account sessions, tokens, personal chart database or machine username."
+}
