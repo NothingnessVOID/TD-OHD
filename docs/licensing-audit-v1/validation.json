@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-10-04",
+  "baseline": "1add60c36b469e0d5dc84bd7ca38b0984a446363",
+  "status": "passed",
+  "validationScope": "license metadata/inventory consistency, static build, actual public HTTP artifacts; not a legal compliance certificate or algorithm test",
+  "counts": {
+    "tracked file": 959,
+    "npm dependency": 262,
+    "NuGet dependency": 5,
+    "generated build asset": 2,
+    "external prototype input": 3,
+    "external prototype output": 1,
+    "framework component": 1
+  },
+  "inventoryItems": 1233,
+  "requiredFieldsPerItem": [
+    "author_upstream",
+    "component",
+    "distributed",
+    "evidence",
+    "included_in_browser",
+    "included_in_build",
+    "known_compatibility_concern",
+    "license",
+    "modified",
+    "notice_required",
+    "origin",
+    "path",
+    "source_available",
+    "version"
+  ],
+  "checks": {
+    "fullTrackedBaselineCoverage": true,
+    "all959BaselineBytesUnchanged": true,
+    "uniqueInventoryPaths": true,
+    "completeNpmLockCoverage": true,
+    "restoredNuGetLicenseMetadataChecked": true,
+    "rootLicenseUnchangedAndAbsent": true,
+    "packageLicenseUnchangedAndAbsent": true,
+    "all8PatchedSourceHashesMatchManifest": true,
+    "staticBuildPassed": true,
+    "sourcemapBundleAnalysisPassed": true,
+    "live6WasmResourceHashesMatchManifest": true,
+    "liveDE441FilesMatchPinnedManifest": true,
+    "live4NoticeTextsMatchLocalDistribution": true,
+    "externalSourceAndDE406HashesMatchManifest": true,
+    "noTrackedRuntimeOrUIChange": true,
+    "gitDiffCheckPassed": true,
+    "privacyReview": "only public component metadata, filenames, hashes and audit prose; no credentials or account contents"
+  },
+  "buildWarnings": [
+    "Vite chunk-size advisory; build passed"
+  ],
+  "notCertified": [
+    "full legal compliance",
+    "ownership of all original candidates",
+    "complete live reproducible build",
+    "commercial license possession",
+    "independent compressed data permissive rights"
+  ],
+  "observedRemoteHeads": {
+    "refs/heads/main": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+    "refs/heads/pages": "13c70f2ce4dab5199a2438bfc08475f1cbd23549"
+  },
+  "evidenceHashes": [
+    {
+      "path": "evidence/browser-sources.json",
+      "sha256": "a2fc19a8afce0314468e04dfcef9e21b71f999cb3f26a446b888b773a113747b"
+    },
+    {
+      "path": "evidence/build-summary.json",
+      "sha256": "b2fda988199dc4f68175bcdb03f6a6701646cb3768ef133bfb9d1ae780010265"
+    },
+    {
+      "path": "evidence/external-asset-hashes.json",
+      "sha256": "64c4d7a7fb3358a5dff2b8837f0281163a011be3b71ec72f2f919fb9b3873aa0"
+    },
+    {
+      "path": "evidence/live-artifacts.json",
+      "sha256": "a533f58659f0f9f6d9fb43b5c5ffd50d923a6d9b2d5f0b6af33e907e27adea7a"
+    },
+    {
+      "path": "evidence/live-config.json",
+      "sha256": "a457d5c191e435f21fb0be7712de328b1ea0e74d3ea43848bad8dc28d1711ace"
+    },
+    {
+      "path": "evidence/local-config.json",
+      "sha256": "32129a7f2e33898e4272436d7bde504fee2941ebcb6c721f824ce0d8c783157d"
+    },
+    {
+      "path": "evidence/notices.json",
+      "sha256": "eae4dfc650f10ecbfb937ed00be39437fcac84cf18178b84902ee3601c9164d0"
+    },
+    {
+      "path": "evidence/open-human-design-paths.json",
+      "sha256": "6d63777628a29b8248dde616d11fa76ae6e115c6e5b75d88345816d674af96bd"
+    }
+  ]
+}

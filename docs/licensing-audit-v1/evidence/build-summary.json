@@ -1,0 +1,18 @@
+{
+  "auditDate": "2026-10-04",
+  "commands": [
+    "npm ci",
+    "DOTNET=/path/to/.NET10/dotnet npm run build:pages",
+    "vite build --mode static --sourcemap"
+  ],
+  "staticBuildExitCode": 0,
+  "engineBuildPassed": true,
+  "viteBuildPassed": true,
+  "dotnetBuildErrors": 0,
+  "dotnetBuildWarnings": 0,
+  "viteVersion": "5.4.21",
+  "sourceMapModuleSources": 99,
+  "warnings": [
+    "Vite chunk-size advisory"
+  ]
+}

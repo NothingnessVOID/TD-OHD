@@ -1,0 +1,66 @@
+[
+  {
+    "path": "SharpAstrology.Base.a50fa6ax0l.wasm",
+    "bytes": 9493,
+    "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+    "declaredHash": "sha256-frALQKAm6YBAs0zhYE8WQWrmwxV4fCYLhSUqkdqiTrA=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+    "bytes": 43797,
+    "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+    "declaredHash": "sha256-DYqbp4gHZL4Ldqk7NkjMd2nLsFPzVfooJ+BGKFE8eqw=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "SharpAstrology.SwissEph.pscds59khe.wasm",
+    "bytes": 406805,
+    "sha256": "09e2e9220bb526cd037b781220beb4761c0613d8387bad86337b1524808b40f1",
+    "declaredHash": "sha256-CeLpIgu1Js0De3gSIL60dhwGE9g4e62GM3sVJICLQPE=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "SharpChartEngine.c06llgb8z0.wasm",
+    "bytes": 16149,
+    "sha256": "54c96125e84c3e4180708b2eeaf31e959dc9a5f56865339d00792fde4d9f873f",
+    "declaredHash": "sha256-VMlhJehMPkGAcIsu6vMelZ3JpfVoZTOdAHkv3k2fhz8=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "SharpTransitCore.l31hhg0l77.wasm",
+    "bytes": 8981,
+    "sha256": "d150282dfba1deb74ed5c655010203ebd2fcdd3278c9c02499f3836b12c9e5a4",
+    "declaredHash": "sha256-0VAoLfuh3rdO1cZVAQID69L83TJ4ycAkmfODaxLJ5aQ=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+    "bytes": 8469,
+    "sha256": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+    "declaredHash": "sha256-Qsl1NXN9I6wlskaDt4SrnJQW6UPPoopMdrMh8zR/BDI=",
+    "matchesManifest": true,
+    "header": null
+  },
+  {
+    "path": "ephe/sepl_18.se1",
+    "bytes": 484061,
+    "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+    "declaredHash": null,
+    "matchesManifest": null,
+    "header": "SWISSEPH  3\r\nsepl_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba\u0000\u00ddb\u0007\u0000\u00b9\u0001\u0000\u0000\u0000\u0000\u0000@\u0080%BAL\u0085\u00f8\u00ad"
+  },
+  {
+    "path": "ephe/semo_18.se1",
+    "bytes": 1304771,
+    "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+    "declaredHash": null,
+    "matchesManifest": null,
+    "header": "SWISSEPH  3\r\nsemo_18.se1 \r\nCreated for Astrodienst in Switzerland 2026/05/26, based on JPL Ephemeris DE441.       \r\ncba\u0000\u00c3\u00e8\u0013\u0000\u00b9\u0001\u0000\u0000\u001dc\u0016\u00c7{%BAv\u00cd\u008d:"
+  }
+]

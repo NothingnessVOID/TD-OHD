@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "path": "engine/licenses/SharpAstrology.HumanDesign-MIT.txt",
+      "bytes": 1064,
+      "sha256": "9c5d3400ccfbd746e5fc48d6696bb0998c14935801aa669448cf5a564594b9c3",
+      "liveReachable": true,
+      "liveByteIdentical": true
+    },
+    {
+      "path": "engine/licenses/SharpAstrology.SwissEph-AGPL-3.0.txt",
+      "bytes": 34523,
+      "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "liveReachable": true,
+      "liveByteIdentical": true
+    },
+    {
+      "path": "engine/licenses/SharpAstrology.SwissEph-SwissEph.txt",
+      "bytes": 2366,
+      "sha256": "7491d821a58cfa08c32e93af69ee4facb0a1b3ea06ee26110a3c400cbe557714",
+      "liveReachable": true,
+      "liveByteIdentical": true
+    },
+    {
+      "path": "engine/licenses/Swiss-Ephemeris-LICENSE.txt",
+      "bytes": 2366,
+      "sha256": "7491d821a58cfa08c32e93af69ee4facb0a1b3ea06ee26110a3c400cbe557714",
+      "liveReachable": true,
+      "liveByteIdentical": true
+    }
+  ],
+  "BaseDedicatedNoticeHTTP": 404,
+  "rootLicensePresent": false,
+  "liveSourceLink": "https://github.com/NothingnessVOID/TD-OHD",
+  "liveEngineSignature": "59b90e629033cc7faf95",
+  "liveAppSha256": "0b8922b311b6bd5572978f30897b2b076a40cfc44f8fe803126f667f3aed9045",
+  "liveIndexSha256": "1c8c0e13579b270f411c2be7b23da8b57573e445a29067a60389e7d7efd2cef0",
+  "liveNoticesSha256": "87682d26fe48c7d77ece5a44d77c8e8d752692d201c4ff59a3e4c33c5c592d12"
+}
