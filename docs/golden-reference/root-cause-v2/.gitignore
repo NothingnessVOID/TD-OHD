@@ -1,0 +1,10 @@
+# Diagnostic sources and results only. Large/local execution assets stay outside Git.
+__pycache__/
+*.pyc
+bin/
+obj/
+*.eph
+*.se1
+*.dll
+*.dylib
+*.so

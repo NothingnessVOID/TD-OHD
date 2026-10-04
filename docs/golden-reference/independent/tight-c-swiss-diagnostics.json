@@ -1,0 +1,171 @@
+{
+  "cSwissVersion": "2.10.03",
+  "samples": [
+    {
+      "id": "G2015-tight",
+      "utc": "2015-01-26T01:20:00Z",
+      "target": 305.75,
+      "directCivilJd": 2457048.5555555555,
+      "cSwissLongitude": 305.7499987027751,
+      "deltaFromBoundaryDeg": -1.2972249123777146e-06,
+      "angularDistanceArcsec": -0.004670009684559773,
+      "float32Longitude": 305.75,
+      "float32HitsBoundary": true,
+      "cSwissRootUtc": "2015-01-26T01:20:00.110194Z",
+      "cSwissRootAfterExactMinuteSeconds": 0.11019855737686157,
+      "strictUtcToJdUT1": 2457048.5555499,
+      "strictUtcToJdTT": 2457048.556333148,
+      "ut1MinusDirectCivilSeconds": -0.4886314272880554,
+      "cSwissLongitudeWithUTCUT1Conversion": 305.7499929521949,
+      "cSwissWithUTCUT1DeltaFromBoundaryDeg": -7.047805127058382e-06,
+      "flagSensitivityTests": [
+        {
+          "name": "Swiss+Speed",
+          "flagsRequested": 258,
+          "flagsReturned": 258,
+          "longitude": 305.7499987027751,
+          "deltaFromBoundaryDeg": -1.2972249123777146e-06,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:20:00.110194Z",
+          "rootMinusExactMinuteSec": 0.11019855737686157
+        },
+        {
+          "name": "SwissNoSpeed",
+          "flagsRequested": 2,
+          "flagsReturned": 2,
+          "longitude": 305.7499987027751,
+          "deltaFromBoundaryDeg": -1.2972249123777146e-06,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:20:00.110194Z",
+          "rootMinusExactMinuteSec": 0.11019855737686157
+        },
+        {
+          "name": "Moshier+Speed",
+          "flagsRequested": 260,
+          "flagsReturned": 260,
+          "longitude": 305.74999932061326,
+          "deltaFromBoundaryDeg": -6.793867441956536e-07,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:20:00.057730Z",
+          "rootMinusExactMinuteSec": 0.057734549045562744
+        },
+        {
+          "name": "SwissNoNutation",
+          "flagsRequested": 322,
+          "flagsReturned": 322,
+          "longitude": 305.74849675344313,
+          "deltaFromBoundaryDeg": -0.0015032465568651787,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:22:07.730101Z",
+          "rootMinusExactMinuteSec": 127.73010581731796
+        },
+        {
+          "name": "SwissTruePosition",
+          "flagsRequested": 274,
+          "flagsReturned": 1810,
+          "longitude": 305.755780465229,
+          "deltaFromBoundaryDeg": 0.005780465229008769,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:11:48.829093Z",
+          "rootMinusExactMinuteSec": -491.1709025502205
+        },
+        {
+          "name": "SwissNoAberration",
+          "flagsRequested": 1282,
+          "flagsReturned": 1282,
+          "longitude": 305.75577839733376,
+          "deltaFromBoundaryDeg": 0.005778397333756402,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:11:49.004751Z",
+          "rootMinusExactMinuteSec": -490.9952446818352
+        },
+        {
+          "name": "SwissNoDeflection",
+          "flagsRequested": 770,
+          "flagsReturned": 770,
+          "longitude": 305.7499987027751,
+          "deltaFromBoundaryDeg": -1.2972249123777146e-06,
+          "rootUtcUsingDirectCivilJd": "2015-01-26T01:20:00.110194Z",
+          "rootMinusExactMinuteSec": 0.11019855737686157
+        }
+      ]
+    },
+    {
+      "id": "G2025-tight",
+      "utc": "2025-01-19T22:57:00Z",
+      "target": 300.125,
+      "directCivilJd": 2460695.45625,
+      "cSwissLongitude": 300.1249988801649,
+      "deltaFromBoundaryDeg": -1.1198350762242626e-06,
+      "angularDistanceArcsec": -0.004031406274407345,
+      "float32Longitude": 300.125,
+      "float32HitsBoundary": true,
+      "cSwissRootUtc": "2025-01-19T22:57:00.095095Z",
+      "cSwissRootAfterExactMinuteSeconds": 0.09511113166809082,
+      "strictUtcToJdUT1": 2460695.45625219,
+      "strictUtcToJdTT": 2460695.4570507407,
+      "ut1MinusDirectCivilSeconds": 0.18921643495559692,
+      "cSwissLongitudeWithUTCUT1Conversion": 300.12500110885776,
+      "cSwissWithUTCUT1DeltaFromBoundaryDeg": 1.1088577593909577e-06,
+      "flagSensitivityTests": [
+        {
+          "name": "Swiss+Speed",
+          "flagsRequested": 258,
+          "flagsReturned": 258,
+          "longitude": 300.1249988801649,
+          "deltaFromBoundaryDeg": -1.1198350762242626e-06,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:57:00.095095Z",
+          "rootMinusExactMinuteSec": 0.09511113166809082
+        },
+        {
+          "name": "SwissNoSpeed",
+          "flagsRequested": 2,
+          "flagsReturned": 2,
+          "longitude": 300.1249988801649,
+          "deltaFromBoundaryDeg": -1.1198350762242626e-06,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:57:00.095095Z",
+          "rootMinusExactMinuteSec": 0.09511113166809082
+        },
+        {
+          "name": "Moshier+Speed",
+          "flagsRequested": 260,
+          "flagsReturned": 260,
+          "longitude": 300.1249914503081,
+          "deltaFromBoundaryDeg": -8.549691926873493e-06,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:57:00.725870Z",
+          "rootMinusExactMinuteSec": 0.7258862257003784
+        },
+        {
+          "name": "SwissNoNutation",
+          "flagsRequested": 322,
+          "flagsReturned": 322,
+          "longitude": 300.1247218083897,
+          "deltaFromBoundaryDeg": -0.00027819161027764494,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:57:23.618041Z",
+          "rootMinusExactMinuteSec": 23.618057370185852
+        },
+        {
+          "name": "SwissTruePosition",
+          "flagsRequested": 274,
+          "flagsReturned": 1810,
+          "longitude": 300.1307822341347,
+          "deltaFromBoundaryDeg": 0.005782234134699138,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:48:49.087338Z",
+          "rootMinusExactMinuteSec": -490.91264605522156
+        },
+        {
+          "name": "SwissNoAberration",
+          "flagsRequested": 1282,
+          "flagsReturned": 1282,
+          "longitude": 300.13078072419563,
+          "deltaFromBoundaryDeg": 0.005780724195631137,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:48:49.215601Z",
+          "rootMinusExactMinuteSec": -490.7843828201294
+        },
+        {
+          "name": "SwissNoDeflection",
+          "flagsRequested": 770,
+          "flagsReturned": 770,
+          "longitude": 300.1249988801649,
+          "deltaFromBoundaryDeg": -1.1198350762242626e-06,
+          "rootUtcUsingDirectCivilJd": "2025-01-19T22:57:00.095095Z",
+          "rootMinusExactMinuteSec": 0.09511113166809082
+        }
+      ]
+    }
+  ]
+}

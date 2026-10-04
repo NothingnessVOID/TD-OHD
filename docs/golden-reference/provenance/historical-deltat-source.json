@@ -1,0 +1,12 @@
+{
+  "package": "pyswisseph",
+  "version": "2.08.00-1",
+  "metadataURL": "https://pypi.org/pypi/pyswisseph/2.08.00-1/json",
+  "sdistURL": "https://files.pythonhosted.org/packages/8d/63/a0373099b5e888a2ad42d3f1668893e42afb4655dbc5ba06e0b615005eb4/pyswisseph-2.08.00-1.tar.gz",
+  "sdistFilename": "pyswisseph-2.08.00-1.tar.gz",
+  "sdistSha256": "6b4818c0224d309c0b01f3c52df2432900dddcde345364408d99eafc9cdd1e71",
+  "sdistSha256VerifiedAgainstPyPI": true,
+  "sourceScope": "vendored Swiss Ephemeris libswe source from historical PyPI source distribution; incomplete official-repository v2.08.00a tree excluded",
+  "extractedSwephlibSha256": "0b21ed2288e798045d08d754c6401aecf4143b40424610401387b4ceb0f3b22b",
+  "modernSwephlibSha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05"
+}

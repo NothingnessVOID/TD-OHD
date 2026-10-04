@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "scope": "Fresh integration build, not a new legal audit",
+  "engineSignature": "59b90e629033cc7faf95",
+  "runtimeComponents": 17,
+  "licensingValidation": {
+    "passed": true,
+    "engineSignature": "59b90e629033cc7faf95",
+    "runtimeComponents": 17,
+    "protectedBaselineFiles": 357,
+    "calculationChanges": 0,
+    "annualChanges": 0,
+    "knowledgeChanges": 0,
+    "jovianBrowserArtifacts": 0
+  },
+  "artifactReports": {
+    "production-identity.json": "027472640bc36bf3543fb2ee0d84b92e1cb161e9cad3eddce9375650dea7efdb",
+    "release-components.json": "526632e91796ec36e7f38d6419a5702fe16d732749ac6b56b6bfb84aaa621fcd",
+    "artifact-evidence.json": "b6278fe5b0cd25774afc12d98295746d8c4089405a4a290b3fb61ae40bdd668e"
+  }
+}

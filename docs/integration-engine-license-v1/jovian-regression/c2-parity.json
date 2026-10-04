@@ -1,0 +1,2912 @@
+{
+  "schemaVersion": 1,
+  "reference": "Immutable original C2 Model.chart / Native.design 64-iteration bisection; separate native process",
+  "referenceBranch": "research/jovian-design-discriminator-suite-v1",
+  "referenceScripts": [
+    "docs/jovian-design-discriminator-suite/scripts/research_models.py",
+    "docs/jovian-discriminator-suite/scripts/models.py"
+  ],
+  "tolerances": {
+    "longitudeToleranceDegrees": 1e-10,
+    "rootToleranceDays": 1e-10
+  },
+  "utcCount": 321,
+  "passed": true,
+  "maxLongitudeResidualDegrees": 0,
+  "maxDesignRootResidualDays": 0,
+  "designDaysBeforeBirthRange": [
+    86.6189382453449,
+    92.010267179925
+  ],
+  "cases": [
+    {
+      "birthUtc": "1980-01-03T12:55:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9554136088117957e-10,
+      "daysBeforeBirth": 87.35036969510838,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-01-03T12:55:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.333298081997782e-10,
+      "daysBeforeBirth": 87.35036818124354,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-01-03T12:56:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.467448550509289e-10,
+      "daysBeforeBirth": 87.35036780266091,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-01-03T12:56:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.601599019020796e-10,
+      "daysBeforeBirth": 87.35036742407829,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-01-03T12:56:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.205968823749572e-11,
+      "daysBeforeBirth": 87.35036590928212,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:09:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.406697477563284e-11,
+      "daysBeforeBirth": 88.54945990862325,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:09:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.597495717462152e-10,
+      "daysBeforeBirth": 88.54946193424985,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:10:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.5697667044587433e-10,
+      "daysBeforeBirth": 88.54946244042367,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:10:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.5420376914553344e-10,
+      "daysBeforeBirth": 88.54946294659749,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:10:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.944489096989855e-10,
+      "daysBeforeBirth": 88.54946497175843,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:29:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.1159076974727213e-11,
+      "daysBeforeBirth": 91.28198681864887,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:29:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9667822925839573e-11,
+      "daysBeforeBirth": 91.28198532061651,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2446223485749215e-10,
+      "daysBeforeBirth": 91.28198494575918,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:30:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.191882231272757e-10,
+      "daysBeforeBirth": 91.28198457183316,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:30:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8985701899509877e-10,
+      "daysBeforeBirth": 91.2819830738008,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:55:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.233946361229755e-10,
+      "daysBeforeBirth": 91.16026533069089,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:55:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0948042472591624e-10,
+      "daysBeforeBirth": 91.16026373812929,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:56:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.117240213323385e-11,
+      "daysBeforeBirth": 91.16026333998889,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:56:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.2864379540551454e-11,
+      "daysBeforeBirth": 91.16026294184849,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-05T10:56:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.9960923459148034e-10,
+      "daysBeforeBirth": 91.16026134975255,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:31:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.532942744437605e-10,
+      "daysBeforeBirth": 91.12765174265951,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:31:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1038991942768916e-10,
+      "daysBeforeBirth": 91.12765012821183,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.013145371573046e-11,
+      "daysBeforeBirth": 91.12764972448349,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:32:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9053914002142847e-10,
+      "daysBeforeBirth": 91.12764932075515,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T09:32:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.319655661471188e-10,
+      "daysBeforeBirth": 91.12764770630747,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:20:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.446984919719398e-10,
+      "daysBeforeBirth": 91.12064384901896,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:20:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.2664713722188026e-10,
+      "daysBeforeBirth": 91.12064223038033,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:21:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.8767211663071066e-10,
+      "daysBeforeBirth": 91.12064182618633,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:21:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.424691724125296e-10,
+      "daysBeforeBirth": 91.12064142152667,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-10-06T14:21:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2578205971512944e-10,
+      "daysBeforeBirth": 91.12063980195671,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:51:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.695266397902742e-11,
+      "daysBeforeBirth": 89.77788798743859,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:51:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1425527191022411e-10,
+      "daysBeforeBirth": 89.77788582490757,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:52:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.3651303965598345e-10,
+      "daysBeforeBirth": 89.77788528474048,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:52:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.199147613486275e-10,
+      "daysBeforeBirth": 89.77788474410772,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1980-11-07T15:52:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.5295321393059567e-10,
+      "daysBeforeBirth": 89.7778825815767,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:25:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.923084245296195e-11,
+      "daysBeforeBirth": 87.13267477089539,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:25:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.001776687800884e-10,
+      "daysBeforeBirth": 87.1326734693721,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6641267797676846e-10,
+      "daysBeforeBirth": 87.13267314387485,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:26:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.327613740111701e-10,
+      "daysBeforeBirth": 87.13267281837761,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:26:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.519300323911011e-10,
+      "daysBeforeBirth": 87.132671515923,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:04:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.4860826164949685e-10,
+      "daysBeforeBirth": 86.67563938722014,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:04:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.412381819449365e-11,
+      "daysBeforeBirth": 86.67563890432939,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.3505996321327984e-10,
+      "daysBeforeBirth": 86.67563878372312,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:05:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4424374462105334e-10,
+      "daysBeforeBirth": 86.67563866311684,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-02-02T08:05:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.191882231272757e-10,
+      "daysBeforeBirth": 86.67563817929476,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:34:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.6830093702301383e-11,
+      "daysBeforeBirth": 91.1565807084553,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:34:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6845904105575755e-10,
+      "daysBeforeBirth": 91.1565822372213,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:35:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.460627340245992e-10,
+      "daysBeforeBirth": 91.1565826185979,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:35:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.417674866388552e-10,
+      "daysBeforeBirth": 91.15658300090581,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:35:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0122570276726037e-10,
+      "daysBeforeBirth": 91.15658452967182,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:39:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.3596945791505277e-10,
+      "daysBeforeBirth": 86.80494488310069,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:39:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.184812496532686e-10,
+      "daysBeforeBirth": 86.8049456961453,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:40:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.1172930903267115e-10,
+      "daysBeforeBirth": 86.80494589917362,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:40:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.6079760573338717e-10,
+      "daysBeforeBirth": 86.80494610173628,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:40:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.913793650805019e-10,
+      "daysBeforeBirth": 86.80494691478088,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:54:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.4428816181607544e-10,
+      "daysBeforeBirth": 86.99477865919471,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:54:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.936975190299563e-10,
+      "daysBeforeBirth": 86.9947797562927,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:55:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.8130565371830016e-10,
+      "daysBeforeBirth": 86.9947800305672,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:55:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.68913788406644e-10,
+      "daysBeforeBirth": 86.9947803048417,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:55:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4233592082746327e-10,
+      "daysBeforeBirth": 86.99478140240535,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:22:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3874235921539366e-11,
+      "daysBeforeBirth": 90.60264017479494,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:22:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.354205884737894e-10,
+      "daysBeforeBirth": 90.60264202719554,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4421175364986993e-10,
+      "daysBeforeBirth": 90.6026424895972,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:23:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.7910118660656735e-10,
+      "daysBeforeBirth": 90.60264295246452,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:23:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8121681932825595e-10,
+      "daysBeforeBirth": 90.60264480486512,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:45:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.701199264265597e-10,
+      "daysBeforeBirth": 92.010267179925,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:45:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.80168785341084e-10,
+      "daysBeforeBirth": 92.01026713848114,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:46:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.7394086171407253e-11,
+      "daysBeforeBirth": 92.01026712870225,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:46:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.150706445216201e-10,
+      "daysBeforeBirth": 92.01026711892337,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:46:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3248958314070478e-10,
+      "daysBeforeBirth": 92.01026707747951,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.455387170310132e-10,
+      "daysBeforeBirth": 87.35008135437965,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.431512934388593e-10,
+      "daysBeforeBirth": 87.35005841962993,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.048583938740194e-11,
+      "daysBeforeBirth": 87.2575304377824,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.58335624798201e-11,
+      "daysBeforeBirth": 87.25750878918916,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1896084945183247e-10,
+      "daysBeforeBirth": 87.25748714059591,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-05T12:33:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.673861546209082e-11,
+      "daysBeforeBirth": 87.25746549293399,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:52:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4719960240181535e-10,
+      "daysBeforeBirth": 87.20980018749833,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:52:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.5931967684300616e-10,
+      "daysBeforeBirth": 87.2097987937741,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:53:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.346940502524376e-10,
+      "daysBeforeBirth": 87.20979844592512,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:53:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.389644451905042e-12,
+      "daysBeforeBirth": 87.20979809714481,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:53:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 9.310952009400353e-11,
+      "daysBeforeBirth": 87.20979670342058,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6050096241524443e-10,
+      "daysBeforeBirth": 86.77074251556769,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:10:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.9312908484134823e-10,
+      "daysBeforeBirth": 90.3311223918572,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:10:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.3242031349800527e-10,
+      "daysBeforeBirth": 90.33112433133647,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0611423678928986e-10,
+      "daysBeforeBirth": 90.33112481608987,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:11:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.980816008057445e-11,
+      "daysBeforeBirth": 90.33112530084327,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-06-10T20:11:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.2518877307884395e-10,
+      "daysBeforeBirth": 90.33112723985687,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1464074961841106e-10,
+      "daysBeforeBirth": 88.96568000130355,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:31:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.645936885732226e-10,
+      "daysBeforeBirth": 87.35210026800632,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:31:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1645973902195692e-10,
+      "daysBeforeBirth": 87.35209876019508,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:32:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.3210410543251783e-10,
+      "daysBeforeBirth": 87.3520983834751,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:32:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.774847184307873e-11,
+      "daysBeforeBirth": 87.35209800675511,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-03T01:32:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.559783413540572e-10,
+      "daysBeforeBirth": 87.35209649940953,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:52:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.474962457199581e-10,
+      "daysBeforeBirth": 87.29033716768026,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:52:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.9262992029543966e-10,
+      "daysBeforeBirth": 87.2903357129544,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:53:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.2803094402188435e-10,
+      "daysBeforeBirth": 87.29033534927294,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:53:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.86757334228605e-11,
+      "daysBeforeBirth": 87.29033498605713,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:53:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.8967406251467764e-10,
+      "daysBeforeBirth": 87.2903335322626,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:14:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1805135475005955e-10,
+      "daysBeforeBirth": 87.26131898676977,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:14:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1368683772161603e-12,
+      "daysBeforeBirth": 87.26131755765527,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:15:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.832134775118902e-11,
+      "daysBeforeBirth": 87.26131720049307,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:15:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1539214028744027e-10,
+      "daysBeforeBirth": 87.26131684333086,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:15:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4287950256839395e-10,
+      "daysBeforeBirth": 87.26131541468203,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:24:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.822844180627726e-10,
+      "daysBeforeBirth": 87.32823754986748,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:24:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6544633985613473e-10,
+      "daysBeforeBirth": 87.32823899993673,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8474111129762605e-10,
+      "daysBeforeBirth": 87.32823936175555,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:25:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.142428456863854e-10,
+      "daysBeforeBirth": 87.32823972450569,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:25:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.7067593439132906e-10,
+      "daysBeforeBirth": 87.32824117410928,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:16:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9917933968827128e-10,
+      "daysBeforeBirth": 87.39178519230336,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:16:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1272049960098229e-10,
+      "daysBeforeBirth": 87.39178669359535,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.7507773009128869e-10,
+      "daysBeforeBirth": 87.39178706891835,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:17:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.219167072325945e-10,
+      "daysBeforeBirth": 87.39178744377568,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:17:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.816414265311323e-11,
+      "daysBeforeBirth": 87.39178894506767,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:11:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.7891823012614623e-10,
+      "daysBeforeBirth": 91.84973705373704,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:11:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.7562131183221936e-10,
+      "daysBeforeBirth": 91.84973778063431,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.353761712787673e-11,
+      "daysBeforeBirth": 91.84973796270788,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:12:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.0877345125190914e-10,
+      "daysBeforeBirth": 91.84973814478144,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:12:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.311946107307449e-10,
+      "daysBeforeBirth": 91.84973887121305,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:21:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.23325366480276e-10,
+      "daysBeforeBirth": 86.7437095027417,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:21:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.885371941374615e-10,
+      "daysBeforeBirth": 86.74371019005775,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:22:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.4442670110147446e-11,
+      "daysBeforeBirth": 86.74371036235243,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:22:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.2880718713859096e-10,
+      "daysBeforeBirth": 86.74371053418145,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:22:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0327206584624946e-10,
+      "daysBeforeBirth": 86.74371122242883,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:04:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.2596501619555056e-10,
+      "daysBeforeBirth": 90.63493884401396,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:04:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.9399416234809905e-10,
+      "daysBeforeBirth": 90.63493693247437,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:05:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.116351869422942e-11,
+      "daysBeforeBirth": 90.63493645424023,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:05:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.7143975128419697e-10,
+      "daysBeforeBirth": 90.63493597600609,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:05:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.128217602148652e-10,
+      "daysBeforeBirth": 90.63493406400084,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:46:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.589341991348192e-10,
+      "daysBeforeBirth": 88.02026809891686,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:46:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.928572939708829e-10,
+      "daysBeforeBirth": 88.02026616455987,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:47:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 9.868017514236271e-11,
+      "daysBeforeBirth": 88.0202656807378,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:47:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 9.526957001071423e-11,
+      "daysBeforeBirth": 88.02026519691572,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:47:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.985860530519858e-10,
+      "daysBeforeBirth": 88.02026326209307,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:18:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8781065591610968e-10,
+      "daysBeforeBirth": 90.85826296079904,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:18:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4299318940611556e-10,
+      "daysBeforeBirth": 90.8582646776922,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:19:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.992930265259929e-10,
+      "daysBeforeBirth": 90.85826510749757,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:19:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8098944565281272e-10,
+      "daysBeforeBirth": 90.85826553637162,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:19:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.348077370901592e-10,
+      "daysBeforeBirth": 90.85826725326478,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:34:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.4226665118476376e-10,
+      "daysBeforeBirth": 91.89100753841922,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:34:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.0445335141848773e-10,
+      "daysBeforeBirth": 91.8910081544891,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2650859793648124e-10,
+      "daysBeforeBirth": 91.89100830862299,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:35:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4845015761675313e-10,
+      "daysBeforeBirth": 91.89100846275687,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:35:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0459189070388675e-11,
+      "daysBeforeBirth": 91.89100907975808,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:51:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.099351720768027e-10,
+      "daysBeforeBirth": 89.61107775103301,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:51:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5287151806405745e-10,
+      "daysBeforeBirth": 89.61107983440161,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:52:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.0451019483734854e-10,
+      "daysBeforeBirth": 89.61108035547659,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:52:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.5580781109747477e-10,
+      "daysBeforeBirth": 89.61108087655157,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-05-25T11:52:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.127276381244883e-11,
+      "daysBeforeBirth": 89.61108296038583,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:02:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 9.663381206337363e-12,
+      "daysBeforeBirth": 91.10633037844673,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:02:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.601599019020796e-10,
+      "daysBeforeBirth": 91.10633195377886,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:03:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0732037480920553e-10,
+      "daysBeforeBirth": 91.10633234726265,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:03:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4551915228366852e-10,
+      "daysBeforeBirth": 91.10633274074644,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:03:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0679635781561956e-10,
+      "daysBeforeBirth": 91.10633431607857,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:30:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.980371836107224e-11,
+      "daysBeforeBirth": 91.11605943692848,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:30:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.9483438740717247e-10,
+      "daysBeforeBirth": 91.11605782620609,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6129677027929574e-10,
+      "daysBeforeBirth": 91.11605742340907,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:31:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2787283998914063e-10,
+      "daysBeforeBirth": 91.11605702061206,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:31:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9485923985484987e-10,
+      "daysBeforeBirth": 91.116055409424,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:22:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0804691303055733e-10,
+      "daysBeforeBirth": 86.77962686913088,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:22:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.042703949380666e-10,
+      "daysBeforeBirth": 86.77962609939277,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.637978807091713e-10,
+      "daysBeforeBirth": 86.77962590614334,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:23:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0054358174093068e-10,
+      "daysBeforeBirth": 86.77962571382523,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T03:23:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.821210263296962e-12,
+      "daysBeforeBirth": 86.77962494408712,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.7125679480377585e-10,
+      "daysBeforeBirth": 86.76571576669812,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.567741492181085e-10,
+      "daysBeforeBirth": 86.73573647579178,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:07:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.8985701899509877e-11,
+      "daysBeforeBirth": 86.6189382453449,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.319211489520967e-11,
+      "daysBeforeBirth": 86.61894172756001,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-02-22T01:09:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.4519765651784837e-10,
+      "daysBeforeBirth": 86.61894520977512,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2036950869951397e-10,
+      "daysBeforeBirth": 87.68380198674276,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:42:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4097167877480388e-10,
+      "daysBeforeBirth": 90.7540975031443,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2525804272154346e-10,
+      "daysBeforeBirth": 90.75412402069196,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:44:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.2573764252010733e-10,
+      "daysBeforeBirth": 90.75415053870529,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.646629582159221e-10,
+      "daysBeforeBirth": 88.0921373758465,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:21:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2794210963184014e-10,
+      "daysBeforeBirth": 91.47746928967535,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:21:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.899014361901209e-10,
+      "daysBeforeBirth": 91.47747054696083,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:22:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.057039066334255e-10,
+      "daysBeforeBirth": 91.4774708612822,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:22:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2150637707673013e-10,
+      "daysBeforeBirth": 91.47747117560357,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-07-13T22:22:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.321876521222293e-11,
+      "daysBeforeBirth": 91.47747243242338,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:47:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.4351720639970154e-10,
+      "daysBeforeBirth": 90.93450399581343,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:47:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.646629582159221e-10,
+      "daysBeforeBirth": 90.93450225377455,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6302692529279739e-10,
+      "daysBeforeBirth": 90.93450181838125,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:48:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.116351869422942e-11,
+      "daysBeforeBirth": 90.93450138298795,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:48:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.071765478234738e-11,
+      "daysBeforeBirth": 90.93449964094907,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:32:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.9756287151249126e-10,
+      "daysBeforeBirth": 87.22691635973752,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:32:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4233592082746327e-10,
+      "daysBeforeBirth": 87.22691495995969,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:33:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.5143086784519255e-10,
+      "daysBeforeBirth": 87.22691461024806,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:33:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.4508396968012676e-10,
+      "daysBeforeBirth": 87.22691426053643,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-01-07T16:33:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.512479113647714e-10,
+      "daysBeforeBirth": 87.22691286029294,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:36:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.489741746103391e-11,
+      "daysBeforeBirth": 87.46102372184396,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:36:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.733919922728091e-10,
+      "daysBeforeBirth": 87.46102527715266,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.6357050703372806e-10,
+      "daysBeforeBirth": 87.46102566504851,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:37:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.517026587156579e-10,
+      "daysBeforeBirth": 87.46102605387568,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:37:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.9547209123848006e-10,
+      "daysBeforeBirth": 87.46102760871872,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:57:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.5279510989785194e-10,
+      "daysBeforeBirth": 90.89629130996764,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:57:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.3087311496492475e-10,
+      "daysBeforeBirth": 90.89628954604268,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.1161562219494954e-10,
+      "daysBeforeBirth": 90.89628910413012,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:58:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.958131517516449e-10,
+      "daysBeforeBirth": 90.89628866361454,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-10-12T22:58:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.617018127348274e-12,
+      "daysBeforeBirth": 90.89628689875826,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T13:59:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.531361704110168e-10,
+      "daysBeforeBirth": 90.0239595733583,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T13:59:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1573320080060512e-10,
+      "daysBeforeBirth": 90.02395745040849,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2282620193436742e-10,
+      "daysBeforeBirth": 90.02395692002028,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.3003288990585133e-10,
+      "daysBeforeBirth": 90.02395638870075,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.333546606474556e-10,
+      "daysBeforeBirth": 90.0239542662166,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.9672264645341784e-10,
+      "daysBeforeBirth": 87.0649028820917,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9758772396016866e-10,
+      "daysBeforeBirth": 86.96975358668715,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.681179805425927e-10,
+      "daysBeforeBirth": 86.90695511782542,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5906745071988553e-10,
+      "daysBeforeBirth": 86.90694000618532,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0169287634198554e-10,
+      "daysBeforeBirth": 88.62155955517665,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.2960299500264227e-11,
+      "daysBeforeBirth": 91.41039688000455,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:39:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.49745130026713e-10,
+      "daysBeforeBirth": 91.66245164116845,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.616378307924606e-10,
+      "daysBeforeBirth": 91.66246718075126,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:41:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6200374375330284e-10,
+      "daysBeforeBirth": 91.66248271986842,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:05:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.3801582099404186e-10,
+      "daysBeforeBirth": 91.4691997137852,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:05:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5656634029001e-10,
+      "daysBeforeBirth": 91.46920097479597,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:06:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.730260793119669e-11,
+      "daysBeforeBirth": 91.469201289583,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:06:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4733814168721437e-10,
+      "daysBeforeBirth": 91.46920160483569,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2013-07-13T09:06:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.455387170310132e-10,
+      "daysBeforeBirth": 91.46920286491513,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.353761712787673e-10,
+      "daysBeforeBirth": 86.79347554873675,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:19:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.424247552175075e-10,
+      "daysBeforeBirth": 86.79137905221432,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.666400516522117e-10,
+      "daysBeforeBirth": 86.79136717133224,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:21:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.97859514830634e-11,
+      "daysBeforeBirth": 86.79135529184714,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:55:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.0517988963983953e-10,
+      "daysBeforeBirth": 86.66689467476681,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0913936421275139e-11,
+      "daysBeforeBirth": 86.66688797762617,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2015-02-04T06:57:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4551915228366852e-11,
+      "daysBeforeBirth": 86.66688128048554,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:25:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.177547114319168e-10,
+      "daysBeforeBirth": 91.13557814992964,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:25:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.36058292305097e-10,
+      "daysBeforeBirth": 91.13557655317709,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.921059033018537e-10,
+      "daysBeforeBirth": 91.13557615410537,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:26:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.4008174882037565e-10,
+      "daysBeforeBirth": 91.13557575596496,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2016-10-06T13:26:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1668711269740015e-10,
+      "daysBeforeBirth": 91.13557415967807,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:40:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.9763214115519077e-10,
+      "daysBeforeBirth": 87.67092866869643,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:40:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.6784618967212737e-10,
+      "daysBeforeBirth": 87.67093035345897,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:41:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5093884182279e-10,
+      "daysBeforeBirth": 87.67093077395111,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:41:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2151880330056883e-10,
+      "daysBeforeBirth": 87.67093119537458,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-10T08:41:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0452262106118724e-10,
+      "daysBeforeBirth": 87.67093288060278,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:54:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5207571020000614e-10,
+      "daysBeforeBirth": 87.69564837682992,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:54:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.5413449950283393e-10,
+      "daysBeforeBirth": 87.69565007602796,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.012701199622825e-11,
+      "daysBeforeBirth": 87.69565050117671,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:55:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.14217993238708e-10,
+      "daysBeforeBirth": 87.69565092632547,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:55:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.3780801206594333e-10,
+      "daysBeforeBirth": 87.69565262459219,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:58:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.122284735785797e-10,
+      "daysBeforeBirth": 91.26470811571926,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:58:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.657998265931383e-10,
+      "daysBeforeBirth": 91.26470663025975,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3032953322399408e-10,
+      "daysBeforeBirth": 91.26470625819638,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:59:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6143530956469476e-10,
+      "daysBeforeBirth": 91.26470588706434,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:59:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.1154635255225003e-10,
+      "daysBeforeBirth": 91.26470440113917,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:43:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.8535396268125623e-10,
+      "daysBeforeBirth": 90.9856094410643,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:43:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3874235921539366e-11,
+      "daysBeforeBirth": 90.98560772649944,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.396962711121887e-10,
+      "daysBeforeBirth": 90.98560729809105,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:44:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.9531398720573634e-10,
+      "daysBeforeBirth": 90.98560686921701,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2017-10-10T23:44:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.8176040106918663e-10,
+      "daysBeforeBirth": 90.98560515372083,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:57:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6211743059102446e-10,
+      "daysBeforeBirth": 87.32801135489717,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:57:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.141611498198472e-10,
+      "daysBeforeBirth": 87.32800986710936,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:58:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.23325366480276e-10,
+      "daysBeforeBirth": 87.32800949597731,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:58:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.4142642612569034e-10,
+      "daysBeforeBirth": 87.32800912391394,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-01-04T00:58:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1254996934439987e-10,
+      "daysBeforeBirth": 87.32800763612613,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:41:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.7407411329913884e-11,
+      "daysBeforeBirth": 91.442632811144,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:41:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6120793588925153e-10,
+      "daysBeforeBirth": 91.44263408519328,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:42:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.434035195619799e-10,
+      "daysBeforeBirth": 91.44263440323994,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:42:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.036131263594143e-10,
+      "daysBeforeBirth": 91.44263472175226,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:42:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.59383658785373e-12,
+      "daysBeforeBirth": 91.44263599580154,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:16:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.2086867324542254e-10,
+      "daysBeforeBirth": 91.28519486030564,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:16:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.787548383930698e-11,
+      "daysBeforeBirth": 91.28519337112084,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1532287064474076e-10,
+      "daysBeforeBirth": 91.28519299859181,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:17:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.878497854107991e-11,
+      "daysBeforeBirth": 91.28519262652844,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:17:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.197318048682064e-10,
+      "daysBeforeBirth": 91.28519113734365,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:43:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.5481662052916363e-10,
+      "daysBeforeBirth": 87.04713474400342,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:43:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6211743059102446e-10,
+      "daysBeforeBirth": 87.04713353421539,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:44:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.219114195322618e-11,
+      "daysBeforeBirth": 87.04713323153555,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:44:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.3223735701758415e-10,
+      "daysBeforeBirth": 87.04713292932138,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-13T20:44:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2509993868879974e-11,
+      "daysBeforeBirth": 87.04713171860203,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:05:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.2523319027386606e-11,
+      "daysBeforeBirth": 87.03483093436807,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:05:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.576143742771819e-10,
+      "daysBeforeBirth": 87.03482973948121,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:06:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.849436325253919e-10,
+      "daysBeforeBirth": 87.034829440061,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:06:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0300027497578412e-10,
+      "daysBeforeBirth": 87.03482914157212,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:06:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.5061020753346384e-10,
+      "daysBeforeBirth": 87.0348279462196,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:10:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4083313948940486e-10,
+      "daysBeforeBirth": 91.1605846839957,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:10:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0588686311384663e-10,
+      "daysBeforeBirth": 91.16058620903641,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:11:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.5724846131633967e-10,
+      "daysBeforeBirth": 91.16058658948168,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:11:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0179413695586845e-10,
+      "daysBeforeBirth": 91.16058697085828,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:11:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4651748137548566e-10,
+      "daysBeforeBirth": 91.16058849589899,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T14:59:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.021351974690333e-10,
+      "daysBeforeBirth": 90.95814675325528,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T14:59:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.227569322916679e-10,
+      "daysBeforeBirth": 90.95814501773566,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3874235921539366e-11,
+      "daysBeforeBirth": 90.958144584205,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T15:00:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.750084604485892e-10,
+      "daysBeforeBirth": 90.95814415067434,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2020-10-11T15:00:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.559783413540572e-10,
+      "daysBeforeBirth": 90.95814241515473,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:29:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.944933268940076e-11,
+      "daysBeforeBirth": 87.37998389359564,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:29:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.6939338820520788e-10,
+      "daysBeforeBirth": 87.37998235691339,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:30:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.0168045011814684e-10,
+      "daysBeforeBirth": 87.37998197274283,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:30:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.3385382519336417e-10,
+      "daysBeforeBirth": 87.37998158857226,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:30:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 8.208189683500677e-11,
+      "daysBeforeBirth": 87.37998005142435,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:47:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.944933268940076e-11,
+      "daysBeforeBirth": 87.52025392558426,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:47:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.686864147312008e-10,
+      "daysBeforeBirth": 87.52025550650433,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.483364707790315e-10,
+      "daysBeforeBirth": 87.52025590185076,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:48:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.2792968340800144e-10,
+      "daysBeforeBirth": 87.5202562971972,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:48:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.1145751816220582e-10,
+      "daysBeforeBirth": 87.52025787904859,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:49:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.893774191965349e-10,
+      "daysBeforeBirth": 91.1820862959139,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:49:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.957634468562901e-11,
+      "daysBeforeBirth": 91.18208780651912,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:50:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.0231815394945443e-11,
+      "daysBeforeBirth": 91.18208818417042,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:50:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.540208126651123e-10,
+      "daysBeforeBirth": 91.18208856228739,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:50:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.603872755775228e-11,
+      "daysBeforeBirth": 91.1820900728926,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:56:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.381490725791082e-10,
+      "daysBeforeBirth": 86.895950214006,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.8471625884994864e-10,
+      "daysBeforeBirth": 86.89593561645597,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:58:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.44648787076585e-11,
+      "daysBeforeBirth": 86.89592101797462,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.304183676140383e-10,
+      "daysBeforeBirth": 86.7627267986536,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:40:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.1152678780490533e-10,
+      "daysBeforeBirth": 86.78725241916254,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:40:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 6.434675015043467e-11,
+      "daysBeforeBirth": 86.78725318098441,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.297806637827307e-11,
+      "daysBeforeBirth": 86.78725337143987,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.160938260611147e-11,
+      "daysBeforeBirth": 86.78725356189534,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 4.685034582507797e-10,
+      "daysBeforeBirth": 86.78725432418287,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:55:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4083313948940486e-10,
+      "daysBeforeBirth": 86.91683945711702,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.4583536034915596e-10,
+      "daysBeforeBirth": 86.91685442812741,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:57:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.517026587156579e-10,
+      "daysBeforeBirth": 86.91686940006912,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:20:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.986109054996632e-10,
+      "daysBeforeBirth": 90.93086231127381,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:20:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.994511305587366e-10,
+      "daysBeforeBirth": 90.93086056737229,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.268745108973235e-10,
+      "daysBeforeBirth": 90.93086013197899,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:21:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.3446667657699436e-10,
+      "daysBeforeBirth": 90.93085969565436,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-10-12T12:21:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.718447937397286e-11,
+      "daysBeforeBirth": 90.93085795268416,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:14:55Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 3.1252511689672247e-10,
+      "daysBeforeBirth": 88.31955301435664,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:14:59Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 7.867129170335829e-11,
+      "daysBeforeBirth": 88.31955097196624,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 5.0249582272954285e-11,
+      "daysBeforeBirth": 88.3195504611358,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:15:01Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 1.7917045624926686e-10,
+      "daysBeforeBirth": 88.31954995030537,
+      "mismatches": []
+    },
+    {
+      "birthUtc": "2025-12-09T18:15:05Z",
+      "passed": true,
+      "maxLongitudeResidualDegrees": 0,
+      "designTtJdResidualDays": 0,
+      "solarArcResidualDegrees": 2.2237145458348095e-10,
+      "daysBeforeBirth": 88.3195479074493,
+      "mismatches": []
+    }
+  ]
+}

@@ -1,6 +1,7 @@
+import { writeEngineIdentity } from './lib/engine-identity.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import { writeFileSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -10,12 +11,16 @@ const target = path.join(root, 'public/engine');
 const ephe = path.join(target, 'ephe');
 const dotnet = process.env.DOTNET || 'dotnet';
 
+const computation = writeEngineIdentity();
+
 // Prepare the shared native audit tool before concurrent Node test processes start.
 execFileSync(dotnet, ['build', 'engine-tools/SharpTransitGenerator.csproj', '-c', 'Release', '-v', 'quiet'], {
   cwd: root, stdio: 'inherit', env: { ...process.env, DOTNET_CLI_TELEMETRY_OPTOUT: '1' }
 });
 
-execFileSync(dotnet, ['publish', 'engine-wasm/SharpChartEngine.csproj', '-c', 'Release', '-v', 'quiet'], {
+writeFileSync(path.join(root, 'engine-tools/bin/Release/net10.0/engine-signature.txt'), computation.signature);
+
+execFileSync(dotnet, ['publish', 'engine-wasm/SharpChartEngine.csproj', '-c', 'Release', '-v', 'quiet', '-m:1'], {
   cwd: root, stdio: 'inherit', env: { ...process.env, DOTNET_CLI_TELEMETRY_OPTOUT: '1' }
 });
 rmSync(path.join(target, '_framework'), { recursive: true, force: true });

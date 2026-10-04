@@ -1,0 +1,2 @@
+# A blank context line in a unified diff has one required space prefix.
+scripts/sharp-frame-bias-diagnostic.patch whitespace=-blank-at-eol

@@ -1,0 +1,12 @@
+{
+  "JPL_API_validation_only": {
+    "filename": "de441.eph",
+    "bytes": 2788676624,
+    "sha256": "476096486def4e41bfceb29aa27f50784da0bce318902bcf7b88caad058cd4da",
+    "selectedCSourceBit": 1,
+    "productionUsesThisFile": false
+  },
+  "productionManifest": "engine-wasm/ephemeris-manifest.json",
+  "SwissCProvenance": "../sharp-swiss-parity-fix/oracle-build.json",
+  "patchedSwissIdentity": "../../third_party/SharpAstrology.SwissEph/patch-manifest.json"
+}

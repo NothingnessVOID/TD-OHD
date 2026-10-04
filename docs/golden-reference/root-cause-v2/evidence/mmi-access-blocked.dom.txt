@@ -1,0 +1,20 @@
+- img "Jovian Archive"
+- button "Password"
+- button "Magic Link"
+- generic: Email Address *
+- textbox "Email Address *":
+  - /placeholder: Enter your email
+- generic: Password *
+- textbox "Password *":
+  - /placeholder: Enter your password
+- button "Forgot your password?"
+- button "Sign In"
+- paragraph:
+  - text: Don't have an account?
+  - button "Sign up here"
+- iframe [id="gsi_404756_309414"]:
+  - button "使用 Google 账号登录。在新标签页中打开":
+    - generic: 使用 Google 账号登录
+- paragraph: © 2026 Jovian Archive. All rights reserved.
+- region "Notifications alt+T":
+  - list

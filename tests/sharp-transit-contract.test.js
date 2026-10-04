@@ -27,7 +27,7 @@ test('Sharp transit contract requires all 13 official subdivision fields and bou
 });
 
 test('native Sharp single and batch transit responses agree including exact seconds and subdivisions', async () => {
-  const instants = ['2026-01-01T00:00:01Z', '2026-09-23T06:10:19Z', '2026-09-23T06:10:20Z', '2026-12-31T23:59:59Z'];
+  const instants = ['2026-01-01T00:00:01Z', '2026-09-23T06:10:48Z', '2026-09-23T06:10:49Z', '2026-12-31T23:59:59Z'];
   const values = await nativeClient().batch(instants);
   for (const [index, instant] of instants.entries()) {
     assert.deepEqual(values[index], await nativeClient().snapshot(instant));

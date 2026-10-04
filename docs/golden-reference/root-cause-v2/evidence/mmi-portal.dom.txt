@@ -1,0 +1,12 @@
+- banner:
+  - link "Jovian Archive Jovian Archive":
+    - /url: /
+    - img "Jovian Archive"
+    - img "Jovian Archive"
+  - text: Login
+- list:
+  - generic: Download
+  - generic: Purchase
+- paragraph: Explore the power of MMI with a 7-day free trial. Download MMI for Windows and experience Professional Edition capabilities before choosing your license.
+- button "Download Free Trial":
+  - generic: Download Free Trial

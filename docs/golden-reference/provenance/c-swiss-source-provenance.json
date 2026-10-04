@@ -1,0 +1,47 @@
+{
+  "officialRepository": "https://github.com/aloistr/swisseph",
+  "source21003Commit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+  "source21003VersionMacro": "sweph.h:65 SE_VERSION 2.10.03",
+  "source208TagCommitExcluded": "4e75b5bafbc9ff97ec1e7122249221c6bf000d14",
+  "source208Exclusion": "Tag label/commit message says June2019 version2.08, but fetched root swephlib.c/header actually dates1998 and table ends1999; not used as valid C2.08 evidence.",
+  "historicalDE431CandidateCommit": "b51a083390bf3cdc93a6ba466cbc83b846c4cfc4",
+  "historicalDE431SourceMessage": "reverted to de431 version for now",
+  "files": {
+    "commit-2.08.00a.json": {
+      "bytes": 1728,
+      "sha256": "3e7af17198eda85d02765d867b8e86aa32321836af16526509e0a5114948d9e5"
+    },
+    "sepl-history.json": {
+      "bytes": 30849,
+      "sha256": "f58b69534487a3bb725fd2805cbcc3bb521dc15ace8bc3f0766801fae8430109"
+    },
+    "sweph-2.10.03.c": {
+      "bytes": 290642,
+      "sha256": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f"
+    },
+    "sweph-2.10.03.h": {
+      "bytes": 34361,
+      "sha256": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a"
+    },
+    "swephexp-2.08.00a.h": {
+      "bytes": 14198,
+      "sha256": "53c135778d4a22642ee5b7c9a0d5dc3cd06bfe59761310fd4ab3dbe14c90c367"
+    },
+    "swephlib-2.08.00a.c": {
+      "bytes": 56024,
+      "sha256": "6a89cfba370ccc447e1dba9d5ec6a8da0446520bf450716d4bac6c05f61dc933"
+    },
+    "swephlib-2.10.03.c": {
+      "bytes": 164395,
+      "sha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05"
+    },
+    "tag-tree-2.10.03.json": {
+      "bytes": 40589,
+      "sha256": "28d346bf25a7224ed220ef8026dd885d499a03d82ee43a282da281960ae976b5"
+    },
+    "tree-2.08.00a.json": {
+      "bytes": 6542,
+      "sha256": "31a9f59ed8b8a5a5822e67071d71fdf7bd6c864d667030aac60a61c3b08dba29"
+    }
+  }
+}

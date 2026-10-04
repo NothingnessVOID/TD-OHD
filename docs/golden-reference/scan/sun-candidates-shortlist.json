@@ -1,0 +1,4369 @@
+{
+  "metadata": {
+    "generatedUtc": "2026-10-02T15:17:17.8497010Z",
+    "repoHead": "a2314f74e84293f88c6df232d643618556496c26",
+    "engine": "SharpAstrology.HumanDesign 1.2.0 \u002B SharpAstrology.SwissEph 0.5.1",
+    "hdOffsetDegrees": 3.875,
+    "diagnosticOnlyOffsetDegrees": 3.9375,
+    "ephemerisRoot": "<AUDIT_SOURCE_CHECKOUT>/public/engine/ephe",
+    "note": "London January GMT; minute inputs, exact native Sharp Sun boundaries; alternate offset is diagnostic only."
+  },
+  "candidates": [
+    {
+      "id": "1985-P38.6-to-54.1-before",
+      "position": "before",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1985-01-05",
+      "localTime": "12:30",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1985-01-05T12:30:00.0000000Z",
+      "boundaryUtc": "1985-01-05T12:31:42.7650562Z",
+      "boundaryDistanceSeconds": -102.7650562,
+      "personalitySun": {
+        "gate": 38,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 285.1237879563006
+      },
+      "designSun": {
+        "gate": 57,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 4,
+        "longitude": 197.12378795451014
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 38,
+          "line": 6,
+          "longitude": 285.1237879563006,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 57,
+          "line": 3,
+          "longitude": 197.12378795451014,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1984-10-10T06:19:09.4884744Z",
+      "solarArcDegrees": 88.00000000179045,
+      "solarArcResidualDegrees": 1.7904540072777309E-09,
+      "chart": {
+        "birthUtc": "1985-01-05T12:30:00.0000000Z",
+        "designUtc": "1984-10-10T06:19:09.4884744Z",
+        "type": "Manifestor",
+        "authority": "Emotional",
+        "profile": "6 / 3",
+        "definition": "SingleDefinition",
+        "incarnationCross": "LeftAngleCrossOfIndividualism2",
+        "personality": {
+          "sun": {
+            "gate": 38,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 285.1237879563006
+          },
+          "earth": {
+            "gate": 39,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 105.12378795630059
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 3,
+            "longitude": 56.54337734232827
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 3,
+            "longitude": 236.54337734232826
+          },
+          "moon": {
+            "gate": 12,
+            "line": 4,
+            "color": 2,
+            "tone": 6,
+            "base": 4,
+            "longitude": 85.74207086419669
+          },
+          "mercury": {
+            "gate": 26,
+            "line": 6,
+            "color": 5,
+            "tone": 5,
+            "base": 1,
+            "longitude": 262.42052456217846
+          },
+          "uranus": {
+            "gate": 5,
+            "line": 5,
+            "color": 4,
+            "tone": 1,
+            "base": 5,
+            "longitude": 255.61930290984324
+          },
+          "venus": {
+            "gate": 55,
+            "line": 2,
+            "color": 3,
+            "tone": 1,
+            "base": 3,
+            "longitude": 331.3898444099437
+          },
+          "mars": {
+            "gate": 37,
+            "line": 4,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 338.5920878316042
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 4,
+            "longitude": 271.65365468635156
+          },
+          "saturn": {
+            "gate": 14,
+            "line": 1,
+            "color": 5,
+            "tone": 1,
+            "base": 5,
+            "longitude": 235.1503016462635
+          },
+          "jupiter": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 2,
+            "base": 3,
+            "longitude": 292.5088985522971
+          },
+          "pluto": {
+            "gate": 28,
+            "line": 3,
+            "color": 4,
+            "tone": 5,
+            "base": 1,
+            "longitude": 214.45068367064223
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 57,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 197.12378795451014
+          },
+          "earth": {
+            "gate": 51,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 17.123787954510135
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 57.95752587259042
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 237.95752587259042
+          },
+          "moon": {
+            "gate": 51,
+            "line": 6,
+            "color": 2,
+            "tone": 2,
+            "base": 4,
+            "longitude": 20.010916786494743
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 3,
+            "longitude": 196.7775509528597
+          },
+          "uranus": {
+            "gate": 9,
+            "line": 6,
+            "color": 2,
+            "tone": 5,
+            "base": 1,
+            "longitude": 250.7016977125657
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 2,
+            "longitude": 227.8408285290796
+          },
+          "mars": {
+            "gate": 10,
+            "line": 6,
+            "color": 4,
+            "tone": 3,
+            "base": 4,
+            "longitude": 273.47711652388364
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 1,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 268.90647313770836
+          },
+          "saturn": {
+            "gate": 1,
+            "line": 3,
+            "color": 2,
+            "tone": 3,
+            "base": 1,
+            "longitude": 225.3371810993255
+          },
+          "jupiter": {
+            "gate": 58,
+            "line": 2,
+            "color": 6,
+            "tone": 5,
+            "base": 2,
+            "longitude": 275.70368587633254
+          },
+          "pluto": {
+            "gate": 50,
+            "line": 6,
+            "color": 3,
+            "tone": 4,
+            "base": 3,
+            "longitude": 211.46635834150624
+          }
+        },
+        "channels": [
+          "Key1Key8",
+          "Key10Key57",
+          "Key28Key38",
+          "Key39Key55"
+        ],
+        "centers": {
+          "Root": "FirstComparator",
+          "Sacral": "None",
+          "Emotions": "FirstComparator",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "Mixed",
+          "Mind": "None",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Throat": 1,
+          "Spleen": 1,
+          "Root": 1,
+          "Emotions": 1
+        }
+      }
+    },
+    {
+      "id": "1985-P38.6-to-54.1-after",
+      "position": "after",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1985-01-05",
+      "localTime": "12:33",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1985-01-05T12:33:00.0000000Z",
+      "boundaryUtc": "1985-01-05T12:31:42.7650562Z",
+      "boundaryDistanceSeconds": 77.2349438,
+      "personalitySun": {
+        "gate": 54,
+        "line": 1,
+        "color": 1,
+        "tone": 1,
+        "base": 1,
+        "longitude": 285.1259109450465
+      },
+      "designSun": {
+        "gate": 57,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 5,
+        "longitude": 197.12591094091658
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 38,
+          "line": 6,
+          "longitude": 285.1259109450465,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 57,
+          "line": 3,
+          "longitude": 197.12591094091658,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1984-10-10T06:22:15.0998997Z",
+      "solarArcDegrees": 88.0000000041299,
+      "solarArcResidualDegrees": 4.1299017539131455E-09,
+      "chart": {
+        "birthUtc": "1985-01-05T12:33:00.0000000Z",
+        "designUtc": "1984-10-10T06:22:15.0998997Z",
+        "type": "Projector",
+        "authority": "Splenic",
+        "profile": "1 / 3",
+        "definition": "SingleDefinition",
+        "incarnationCross": "RightAngleCrossOfPenetration4",
+        "personality": {
+          "sun": {
+            "gate": 54,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 285.1259109450465
+          },
+          "earth": {
+            "gate": 53,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 105.12591094504648
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 3,
+            "longitude": 56.543209603977196
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 3,
+            "longitude": 236.5432096039772
+          },
+          "moon": {
+            "gate": 12,
+            "line": 4,
+            "color": 3,
+            "tone": 1,
+            "base": 4,
+            "longitude": 85.76931001465657
+          },
+          "mercury": {
+            "gate": 26,
+            "line": 6,
+            "color": 5,
+            "tone": 5,
+            "base": 2,
+            "longitude": 262.42282253850385
+          },
+          "uranus": {
+            "gate": 5,
+            "line": 5,
+            "color": 4,
+            "tone": 1,
+            "base": 5,
+            "longitude": 255.61941820558053
+          },
+          "venus": {
+            "gate": 55,
+            "line": 2,
+            "color": 3,
+            "tone": 1,
+            "base": 4,
+            "longitude": 331.392146671539
+          },
+          "mars": {
+            "gate": 37,
+            "line": 4,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 338.5936780330485
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 4,
+            "longitude": 271.653731924799
+          },
+          "saturn": {
+            "gate": 14,
+            "line": 1,
+            "color": 5,
+            "tone": 1,
+            "base": 5,
+            "longitude": 235.1504903667215
+          },
+          "jupiter": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 2,
+            "base": 3,
+            "longitude": 292.5093844409155
+          },
+          "pluto": {
+            "gate": 28,
+            "line": 3,
+            "color": 4,
+            "tone": 5,
+            "base": 1,
+            "longitude": 214.45072258851607
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 57,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 197.12591094091658
+          },
+          "earth": {
+            "gate": 51,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 17.125910940916583
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 57.95731449873554
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 237.95731449873554
+          },
+          "moon": {
+            "gate": 51,
+            "line": 6,
+            "color": 2,
+            "tone": 3,
+            "base": 3,
+            "longitude": 20.03644619093907
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 4,
+            "longitude": 196.7812629636424
+          },
+          "uranus": {
+            "gate": 9,
+            "line": 6,
+            "color": 2,
+            "tone": 5,
+            "base": 1,
+            "longitude": 250.70178808150752
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 2,
+            "longitude": 227.8434500015992
+          },
+          "mars": {
+            "gate": 10,
+            "line": 6,
+            "color": 4,
+            "tone": 3,
+            "base": 4,
+            "longitude": 273.47861734722915
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 1,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 268.9065083321066
+          },
+          "saturn": {
+            "gate": 1,
+            "line": 3,
+            "color": 2,
+            "tone": 3,
+            "base": 1,
+            "longitude": 225.3374177510377
+          },
+          "jupiter": {
+            "gate": 58,
+            "line": 2,
+            "color": 6,
+            "tone": 5,
+            "base": 2,
+            "longitude": 275.70394273855294
+          },
+          "pluto": {
+            "gate": 50,
+            "line": 6,
+            "color": 3,
+            "tone": 4,
+            "base": 3,
+            "longitude": 211.46644286652372
+          }
+        },
+        "channels": [
+          "Key1Key8",
+          "Key10Key57"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "None",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "Mixed",
+          "Mind": "None",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Throat": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "1985-P38.6-to-54.1-offset-midpoint",
+      "position": "offset-discriminating-midpoint",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1985-01-05",
+      "localTime": "13:15",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1985-01-05T13:15:00.0000000Z",
+      "boundaryUtc": "1985-01-05T12:31:42.7650562Z",
+      "boundaryDistanceSeconds": 2597.2349438,
+      "personalitySun": {
+        "gate": 54,
+        "line": 1,
+        "color": 1,
+        "tone": 2,
+        "base": 1,
+        "longitude": 285.15563276797104
+      },
+      "designSun": {
+        "gate": 57,
+        "line": 3,
+        "color": 1,
+        "tone": 6,
+        "base": 5,
+        "longitude": 197.15563276471812
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 38,
+          "line": 6,
+          "longitude": 285.15563276797104,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 57,
+          "line": 3,
+          "longitude": 197.15563276471812,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1984-10-10T07:05:33.6308464Z",
+      "solarArcDegrees": 88.00000000325292,
+      "solarArcResidualDegrees": 3.2529214877285995E-09,
+      "chart": {
+        "birthUtc": "1985-01-05T13:15:00.0000000Z",
+        "designUtc": "1984-10-10T07:05:33.6308464Z",
+        "type": "Projector",
+        "authority": "Splenic",
+        "profile": "1 / 3",
+        "definition": "SingleDefinition",
+        "incarnationCross": "RightAngleCrossOfPenetration4",
+        "personality": {
+          "sun": {
+            "gate": 54,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 285.15563276797104
+          },
+          "earth": {
+            "gate": 53,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 105.15563276797104
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 2,
+            "longitude": 56.54084383875642
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 1,
+            "base": 2,
+            "longitude": 236.54084383875642
+          },
+          "moon": {
+            "gate": 12,
+            "line": 4,
+            "color": 5,
+            "tone": 4,
+            "base": 2,
+            "longitude": 86.15081435510079
+          },
+          "mercury": {
+            "gate": 26,
+            "line": 6,
+            "color": 5,
+            "tone": 6,
+            "base": 3,
+            "longitude": 262.45501422305733
+          },
+          "uranus": {
+            "gate": 5,
+            "line": 5,
+            "color": 4,
+            "tone": 2,
+            "base": 1,
+            "longitude": 255.6210321728785
+          },
+          "venus": {
+            "gate": 55,
+            "line": 2,
+            "color": 3,
+            "tone": 2,
+            "base": 5,
+            "longitude": 331.42437648600276
+          },
+          "mars": {
+            "gate": 37,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 1,
+            "longitude": 338.61594075965746
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 4,
+            "longitude": 271.6548132109762
+          },
+          "saturn": {
+            "gate": 14,
+            "line": 1,
+            "color": 5,
+            "tone": 2,
+            "base": 1,
+            "longitude": 235.15313197676053
+          },
+          "jupiter": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 2,
+            "base": 5,
+            "longitude": 292.51618698962653
+          },
+          "pluto": {
+            "gate": 28,
+            "line": 3,
+            "color": 4,
+            "tone": 5,
+            "base": 1,
+            "longitude": 214.45126719086437
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 57,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 197.15563276471812
+          },
+          "earth": {
+            "gate": 51,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 17.15563276471812
+          },
+          "northNode": {
+            "gate": 8,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 57.95436974166377
+          },
+          "southNode": {
+            "gate": 14,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 237.95436974166375
+          },
+          "moon": {
+            "gate": 51,
+            "line": 6,
+            "color": 4,
+            "tone": 5,
+            "base": 2,
+            "longitude": 20.393874509268528
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 2,
+            "color": 5,
+            "tone": 6,
+            "base": 3,
+            "longitude": 196.8332249053339
+          },
+          "uranus": {
+            "gate": 9,
+            "line": 6,
+            "color": 2,
+            "tone": 5,
+            "base": 1,
+            "longitude": 250.70305354675736
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 4,
+            "base": 4,
+            "longitude": 227.88015013364677
+          },
+          "mars": {
+            "gate": 10,
+            "line": 6,
+            "color": 4,
+            "tone": 4,
+            "base": 3,
+            "longitude": 273.4996295967229
+          },
+          "neptune": {
+            "gate": 10,
+            "line": 1,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 268.9070012991176
+          },
+          "saturn": {
+            "gate": 1,
+            "line": 3,
+            "color": 2,
+            "tone": 3,
+            "base": 2,
+            "longitude": 225.34073113141005
+          },
+          "jupiter": {
+            "gate": 58,
+            "line": 2,
+            "color": 6,
+            "tone": 5,
+            "base": 2,
+            "longitude": 275.7075399592803
+          },
+          "pluto": {
+            "gate": 50,
+            "line": 6,
+            "color": 3,
+            "tone": 4,
+            "base": 3,
+            "longitude": 211.46762627383478
+          }
+        },
+        "channels": [
+          "Key1Key8",
+          "Key10Key57"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "None",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "Mixed",
+          "Mind": "None",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Throat": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "1995-P54.6-to-61.1-before",
+      "position": "before",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1995-01-11",
+      "localTime": "10:57",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1995-01-11T10:57:00.0000000Z",
+      "boundaryUtc": "1995-01-11T10:58:10.6540361Z",
+      "boundaryDistanceSeconds": -70.6540361,
+      "personalitySun": {
+        "gate": 54,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 290.74916685376496
+      },
+      "designSun": {
+        "gate": 32,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 4,
+        "longitude": 202.7491668439558
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 54,
+          "line": 6,
+          "longitude": 290.74916685376496,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 32,
+          "line": 3,
+          "longitude": 202.7491668439558,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1994-10-16T08:26:01.8639216Z",
+      "solarArcDegrees": 88.00000000980913,
+      "solarArcResidualDegrees": 9.809127732296474E-09,
+      "chart": {
+        "birthUtc": "1995-01-11T10:57:00.0000000Z",
+        "designUtc": "1994-10-16T08:26:01.8639216Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "6 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "LeftAngleCrossOfCycles2",
+        "personality": {
+          "sun": {
+            "gate": 54,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 290.74916685376496
+          },
+          "earth": {
+            "gate": 53,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 110.74916685376496
+          },
+          "northNode": {
+            "gate": 44,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 222.457803384021
+          },
+          "southNode": {
+            "gate": 24,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 42.45780338402096
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 3,
+            "tone": 4,
+            "base": 5,
+            "longitude": 51.165941465839175
+          },
+          "mercury": {
+            "gate": 41,
+            "line": 6,
+            "color": 3,
+            "tone": 4,
+            "base": 2,
+            "longitude": 307.08457170741764
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 6,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 296.0823649252005
+          },
+          "venus": {
+            "gate": 34,
+            "line": 5,
+            "color": 1,
+            "tone": 2,
+            "base": 2,
+            "longitude": 243.90625643498086
+          },
+          "mars": {
+            "gate": 59,
+            "line": 3,
+            "color": 2,
+            "tone": 2,
+            "base": 1,
+            "longitude": 152.18732553016196
+          },
+          "neptune": {
+            "gate": 61,
+            "line": 3,
+            "color": 3,
+            "tone": 1,
+            "base": 5,
+            "longitude": 292.96185770029064
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 4,
+            "color": 3,
+            "tone": 2,
+            "base": 5,
+            "longitude": 338.9235238389562
+          },
+          "jupiter": {
+            "gate": 9,
+            "line": 2,
+            "color": 1,
+            "tone": 4,
+            "base": 1,
+            "longitude": 246.76905715367013
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 1,
+            "longitude": 239.84043786967072
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 32,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 202.7491668439558
+          },
+          "earth": {
+            "gate": 42,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 22.749166843955777
+          },
+          "northNode": {
+            "gate": 1,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 224.93461264488948
+          },
+          "southNode": {
+            "gate": 2,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 44.93461264488951
+          },
+          "moon": {
+            "gate": 22,
+            "line": 1,
+            "color": 3,
+            "tone": 4,
+            "base": 1,
+            "longitude": 347.394593279858
+          },
+          "mercury": {
+            "gate": 28,
+            "line": 2,
+            "color": 2,
+            "tone": 4,
+            "base": 1,
+            "longitude": 213.1721193027307
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 1,
+            "base": 2,
+            "longitude": 292.4754084819204
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 227.81685650790993
+          },
+          "mars": {
+            "gate": 31,
+            "line": 5,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 126.43323461996951
+          },
+          "neptune": {
+            "gate": 54,
+            "line": 6,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 290.625881141466
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 1,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 336.16943301629146
+          },
+          "jupiter": {
+            "gate": 1,
+            "line": 6,
+            "color": 2,
+            "tone": 4,
+            "base": 2,
+            "longitude": 228.18108540299096
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 4,
+            "base": 4,
+            "longitude": 236.62934118568603
+          }
+        },
+        "channels": [
+          "Key2Key14",
+          "Key24Key61",
+          "Key32Key54",
+          "Key42Key53"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "None",
+          "Mind": "Mixed",
+          "Crown": "Mixed"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Sacral": 1,
+          "Mind": 2,
+          "Crown": 2,
+          "Spleen": 1,
+          "Root": 1
+        }
+      }
+    },
+    {
+      "id": "1995-P54.6-to-61.1-after",
+      "position": "after",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1995-01-11",
+      "localTime": "11:00",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1995-01-11T11:00:00.0000000Z",
+      "boundaryUtc": "1995-01-11T10:58:10.6540361Z",
+      "boundaryDistanceSeconds": 109.3459639,
+      "personalitySun": {
+        "gate": 61,
+        "line": 1,
+        "color": 1,
+        "tone": 1,
+        "base": 1,
+        "longitude": 290.75128941607977
+      },
+      "designSun": {
+        "gate": 32,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 5,
+        "longitude": 202.7512894191321
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 54,
+          "line": 6,
+          "longitude": 290.75128941607977,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 32,
+          "line": 3,
+          "longitude": 202.7512894191321,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1994-10-16T08:29:06.8381345Z",
+      "solarArcDegrees": 87.99999999694768,
+      "solarArcResidualDegrees": -3.052321062568808E-09,
+      "chart": {
+        "birthUtc": "1995-01-11T11:00:00.0000000Z",
+        "designUtc": "1994-10-16T08:29:06.8381345Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "1 / 3",
+        "definition": "TripleSplit",
+        "incarnationCross": "RightAngleCrossOfMaya4",
+        "personality": {
+          "sun": {
+            "gate": 61,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 290.75128941607977
+          },
+          "earth": {
+            "gate": 62,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 110.75128941607977
+          },
+          "northNode": {
+            "gate": 44,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 222.4577648654724
+          },
+          "southNode": {
+            "gate": 24,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 42.45776486547243
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 3,
+            "tone": 5,
+            "base": 5,
+            "longitude": 51.19046640226939
+          },
+          "mercury": {
+            "gate": 41,
+            "line": 6,
+            "color": 3,
+            "tone": 4,
+            "base": 2,
+            "longitude": 307.0877308030167
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 6,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 296.08248766579203
+          },
+          "venus": {
+            "gate": 34,
+            "line": 5,
+            "color": 1,
+            "tone": 2,
+            "base": 2,
+            "longitude": 243.90834660560262
+          },
+          "mars": {
+            "gate": 59,
+            "line": 3,
+            "color": 2,
+            "tone": 2,
+            "base": 1,
+            "longitude": 152.1870895525837
+          },
+          "neptune": {
+            "gate": 61,
+            "line": 3,
+            "color": 3,
+            "tone": 1,
+            "base": 5,
+            "longitude": 292.9619367864998
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 4,
+            "color": 3,
+            "tone": 2,
+            "base": 5,
+            "longitude": 338.9237217131596
+          },
+          "jupiter": {
+            "gate": 9,
+            "line": 2,
+            "color": 1,
+            "tone": 4,
+            "base": 1,
+            "longitude": 246.76944993652435
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 1,
+            "longitude": 239.84049666353175
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 32,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 202.7512894191321
+          },
+          "earth": {
+            "gate": 42,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 22.751289419132092
+          },
+          "northNode": {
+            "gate": 1,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 224.93448173109704
+          },
+          "southNode": {
+            "gate": 2,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 44.93448173109704
+          },
+          "moon": {
+            "gate": 22,
+            "line": 1,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 347.4212488850641
+          },
+          "mercury": {
+            "gate": 28,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 213.17010409850448
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 1,
+            "base": 2,
+            "longitude": 292.47543453034143
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 227.81658868900968
+          },
+          "mars": {
+            "gate": 31,
+            "line": 5,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 126.43437818091923
+          },
+          "neptune": {
+            "gate": 54,
+            "line": 6,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 290.6258974195459
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 1,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 336.1693480305942
+          },
+          "jupiter": {
+            "gate": 1,
+            "line": 6,
+            "color": 2,
+            "tone": 4,
+            "base": 2,
+            "longitude": 228.18153298010452
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 4,
+            "base": 4,
+            "longitude": 236.62941503750147
+          }
+        },
+        "channels": [
+          "Key2Key14",
+          "Key24Key61",
+          "Key32Key54"
+        ],
+        "centers": {
+          "Root": "SecondComparator",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "SecondComparator",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "None",
+          "Mind": "Mixed",
+          "Crown": "Mixed"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Sacral": 1,
+          "Mind": 2,
+          "Crown": 2,
+          "Spleen": 3,
+          "Root": 3
+        }
+      }
+    },
+    {
+      "id": "1995-P54.6-to-61.1-offset-midpoint",
+      "position": "offset-discriminating-midpoint",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "1995-01-11",
+      "localTime": "11:42",
+      "timezoneOffsetMinutes": 0,
+      "utc": "1995-01-11T11:42:00.0000000Z",
+      "boundaryUtc": "1995-01-11T10:58:10.6540361Z",
+      "boundaryDistanceSeconds": 2629.3459639,
+      "personalitySun": {
+        "gate": 61,
+        "line": 1,
+        "color": 1,
+        "tone": 2,
+        "base": 1,
+        "longitude": 290.7810052208005
+      },
+      "designSun": {
+        "gate": 32,
+        "line": 3,
+        "color": 1,
+        "tone": 6,
+        "base": 5,
+        "longitude": 202.7810052249655
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 54,
+          "line": 6,
+          "longitude": 290.7810052208005,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 32,
+          "line": 3,
+          "longitude": 202.7810052249655,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "1994-10-16T09:12:16.4451706Z",
+      "solarArcDegrees": 87.99999999583503,
+      "solarArcResidualDegrees": -4.164974143350264E-09,
+      "chart": {
+        "birthUtc": "1995-01-11T11:42:00.0000000Z",
+        "designUtc": "1994-10-16T09:12:16.4451706Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "1 / 3",
+        "definition": "TripleSplit",
+        "incarnationCross": "RightAngleCrossOfMaya4",
+        "personality": {
+          "sun": {
+            "gate": 61,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 290.7810052208005
+          },
+          "earth": {
+            "gate": 62,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 110.78100522080052
+          },
+          "northNode": {
+            "gate": 44,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 222.45721145733305
+          },
+          "southNode": {
+            "gate": 24,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 42.457211457333074
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 6,
+            "tone": 1,
+            "base": 1,
+            "longitude": 51.53381521346891
+          },
+          "mercury": {
+            "gate": 41,
+            "line": 6,
+            "color": 3,
+            "tone": 6,
+            "base": 1,
+            "longitude": 307.1319449756163
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 6,
+            "color": 5,
+            "tone": 1,
+            "base": 5,
+            "longitude": 296.0842060683929
+          },
+          "venus": {
+            "gate": 34,
+            "line": 5,
+            "color": 1,
+            "tone": 3,
+            "base": 3,
+            "longitude": 243.93761223411113
+          },
+          "mars": {
+            "gate": 59,
+            "line": 3,
+            "color": 2,
+            "tone": 2,
+            "base": 1,
+            "longitude": 152.18377975291278
+          },
+          "neptune": {
+            "gate": 61,
+            "line": 3,
+            "color": 3,
+            "tone": 1,
+            "base": 5,
+            "longitude": 292.9630440128022
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 4,
+            "color": 3,
+            "tone": 2,
+            "base": 5,
+            "longitude": 338.9264924255006
+          },
+          "jupiter": {
+            "gate": 9,
+            "line": 2,
+            "color": 1,
+            "tone": 4,
+            "base": 2,
+            "longitude": 246.77494831067668
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 1,
+            "longitude": 239.84131958316675
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 32,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 202.7810052249655
+          },
+          "earth": {
+            "gate": 42,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 22.781005224965497
+          },
+          "northNode": {
+            "gate": 1,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 224.93264977737803
+          },
+          "southNode": {
+            "gate": 2,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 44.93264977737806
+          },
+          "moon": {
+            "gate": 22,
+            "line": 1,
+            "color": 6,
+            "tone": 1,
+            "base": 3,
+            "longitude": 347.79432493335173
+          },
+          "mercury": {
+            "gate": 28,
+            "line": 2,
+            "color": 2,
+            "tone": 2,
+            "base": 5,
+            "longitude": 213.14183406244172
+          },
+          "uranus": {
+            "gate": 61,
+            "line": 2,
+            "color": 6,
+            "tone": 1,
+            "base": 2,
+            "longitude": 292.47579960654394
+          },
+          "venus": {
+            "gate": 1,
+            "line": 5,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 227.8128197540871
+          },
+          "mars": {
+            "gate": 31,
+            "line": 5,
+            "color": 5,
+            "tone": 3,
+            "base": 5,
+            "longitude": 126.45038638614164
+          },
+          "neptune": {
+            "gate": 54,
+            "line": 6,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 290.6261255740866
+          },
+          "saturn": {
+            "gate": 37,
+            "line": 1,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 336.16815896244367
+          },
+          "jupiter": {
+            "gate": 1,
+            "line": 6,
+            "color": 2,
+            "tone": 4,
+            "base": 4,
+            "longitude": 228.18779930286178
+          },
+          "pluto": {
+            "gate": 14,
+            "line": 3,
+            "color": 2,
+            "tone": 4,
+            "base": 5,
+            "longitude": 236.63044908675445
+          }
+        },
+        "channels": [
+          "Key2Key14",
+          "Key24Key61",
+          "Key32Key54"
+        ],
+        "centers": {
+          "Root": "SecondComparator",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "SecondComparator",
+          "Heart": "None",
+          "Self": "Mixed",
+          "Throat": "None",
+          "Mind": "Mixed",
+          "Crown": "Mixed"
+        },
+        "connectedComponents": {
+          "Self": 1,
+          "Sacral": 1,
+          "Mind": 2,
+          "Crown": 2,
+          "Spleen": 3,
+          "Root": 3
+        }
+      }
+    },
+    {
+      "id": "2005-P60.3-to-60.4-before",
+      "position": "before",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2005-01-19",
+      "localTime": "04:10",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2005-01-19T04:10:00.0000000Z",
+      "boundaryUtc": "2005-01-19T04:11:55.5470608Z",
+      "boundaryDistanceSeconds": -115.5470608,
+      "personalitySun": {
+        "gate": 60,
+        "line": 3,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 299.1861388344133
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 6,
+        "color": 1,
+        "tone": 5,
+        "base": 4,
+        "longitude": 211.18613883290678
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 3,
+          "longitude": 299.1861388344133,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 6,
+          "longitude": 211.18613883290678,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2004-10-24T06:23:57.8022998Z",
+      "solarArcDegrees": 88.00000000150658,
+      "solarArcResidualDegrees": 1.5065779734868556E-09,
+      "chart": {
+        "birthUtc": "2005-01-19T04:10:00.0000000Z",
+        "designUtc": "2004-10-24T06:23:57.8022998Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "3 / 6",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfLaws4",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 3,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 299.1861388344133
+          },
+          "earth": {
+            "gate": 56,
+            "line": 3,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 119.18613883441333
+          },
+          "northNode": {
+            "gate": 3,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 27.545840903089104
+          },
+          "southNode": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 207.5458409030891
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 1,
+            "tone": 1,
+            "base": 5,
+            "longitude": 50.77339605770949
+          },
+          "mercury": {
+            "gate": 38,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 5,
+            "longitude": 282.90738380860023
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 3,
+            "longitude": 334.7230992419085
+          },
+          "venus": {
+            "gate": 38,
+            "line": 3,
+            "color": 4,
+            "tone": 1,
+            "base": 4,
+            "longitude": 281.86116458032484
+          },
+          "mars": {
+            "gate": 5,
+            "line": 6,
+            "color": 6,
+            "tone": 4,
+            "base": 5,
+            "longitude": 256.94709020339815
+          },
+          "neptune": {
+            "gate": 13,
+            "line": 2,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 314.486032414226
+          },
+          "saturn": {
+            "gate": 62,
+            "line": 3,
+            "color": 6,
+            "tone": 2,
+            "base": 4,
+            "longitude": 113.45048029797955
+          },
+          "jupiter": {
+            "gate": 57,
+            "line": 4,
+            "color": 4,
+            "tone": 6,
+            "base": 5,
+            "longitude": 198.55775316654908
+          },
+          "pluto": {
+            "gate": 11,
+            "line": 1,
+            "color": 5,
+            "tone": 4,
+            "base": 4,
+            "longitude": 263.3489502564972
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 6,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 211.18613883290678
+          },
+          "earth": {
+            "gate": 3,
+            "line": 6,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 31.18613883290675
+          },
+          "northNode": {
+            "gate": 27,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 32.148943176000856
+          },
+          "southNode": {
+            "gate": 28,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 212.14894317600084
+          },
+          "moon": {
+            "gate": 63,
+            "line": 4,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 344.3339650123658
+          },
+          "mercury": {
+            "gate": 44,
+            "line": 6,
+            "color": 6,
+            "tone": 2,
+            "base": 1,
+            "longitude": 223.12428805115155
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 333.0148923924791
+          },
+          "venus": {
+            "gate": 6,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 1,
+            "longitude": 174.26912688598563
+          },
+          "mars": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 3,
+            "base": 1,
+            "longitude": 198.14771731941894
+          },
+          "neptune": {
+            "gate": 19,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 2,
+            "longitude": 312.60667056265095
+          },
+          "saturn": {
+            "gate": 56,
+            "line": 1,
+            "color": 5,
+            "tone": 6,
+            "base": 1,
+            "longitude": 117.13221926651431
+          },
+          "jupiter": {
+            "gate": 18,
+            "line": 3,
+            "color": 3,
+            "tone": 5,
+            "base": 5,
+            "longitude": 186.18828990484357
+          },
+          "pluto": {
+            "gate": 26,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 260.32062715391453
+          }
+        },
+        "channels": [
+          "Key3Key60",
+          "Key11Key56",
+          "Key26Key44",
+          "Key27Key50",
+          "Key28Key38"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "SecondComparator",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Root": 1,
+          "Mind": 2,
+          "Throat": 2,
+          "Heart": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2005-P60.3-to-60.4-after",
+      "position": "after",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2005-01-19",
+      "localTime": "04:13",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2005-01-19T04:13:00.0000000Z",
+      "boundaryUtc": "2005-01-19T04:11:55.5470608Z",
+      "boundaryDistanceSeconds": 64.4529392,
+      "personalitySun": {
+        "gate": 60,
+        "line": 4,
+        "color": 1,
+        "tone": 1,
+        "base": 1,
+        "longitude": 299.1882592743478
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 6,
+        "color": 1,
+        "tone": 5,
+        "base": 5,
+        "longitude": 211.18825927577652
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 3,
+          "longitude": 299.1882592743478,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 6,
+          "longitude": 211.18825927577652,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2004-10-24T06:27:01.7193469Z",
+      "solarArcDegrees": 87.9999999985713,
+      "solarArcResidualDegrees": -1.4287024896475486E-09,
+      "chart": {
+        "birthUtc": "2005-01-19T04:13:00.0000000Z",
+        "designUtc": "2004-10-24T06:27:01.7193469Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "4 / 6",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfLaws4",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 4,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 299.1882592743478
+          },
+          "earth": {
+            "gate": 56,
+            "line": 4,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 119.18825927434779
+          },
+          "northNode": {
+            "gate": 3,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 27.54576519595876
+          },
+          "southNode": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 207.54576519595875
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 1,
+            "tone": 2,
+            "base": 5,
+            "longitude": 50.798860013516965
+          },
+          "mercury": {
+            "gate": 38,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 5,
+            "longitude": 282.91048303605334
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 3,
+            "longitude": 334.72320186122454
+          },
+          "venus": {
+            "gate": 38,
+            "line": 3,
+            "color": 4,
+            "tone": 1,
+            "base": 4,
+            "longitude": 281.86377437650265
+          },
+          "mars": {
+            "gate": 5,
+            "line": 6,
+            "color": 6,
+            "tone": 5,
+            "base": 1,
+            "longitude": 256.9485429756324
+          },
+          "neptune": {
+            "gate": 13,
+            "line": 2,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 314.48610933244646
+          },
+          "saturn": {
+            "gate": 62,
+            "line": 3,
+            "color": 6,
+            "tone": 2,
+            "base": 4,
+            "longitude": 113.4503099463736
+          },
+          "jupiter": {
+            "gate": 57,
+            "line": 4,
+            "color": 4,
+            "tone": 6,
+            "base": 5,
+            "longitude": 198.5578435697812
+          },
+          "pluto": {
+            "gate": 11,
+            "line": 1,
+            "color": 5,
+            "tone": 4,
+            "base": 5,
+            "longitude": 263.3490169800247
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 6,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 211.18825927577652
+          },
+          "earth": {
+            "gate": 3,
+            "line": 6,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 31.188259275776545
+          },
+          "northNode": {
+            "gate": 27,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 32.14893922198615
+          },
+          "southNode": {
+            "gate": 28,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 212.14893922198615
+          },
+          "moon": {
+            "gate": 63,
+            "line": 4,
+            "color": 2,
+            "tone": 1,
+            "base": 4,
+            "longitude": 344.3628146689868
+          },
+          "mercury": {
+            "gate": 44,
+            "line": 6,
+            "color": 6,
+            "tone": 2,
+            "base": 2,
+            "longitude": 223.12756324085524
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 333.01486013850104
+          },
+          "venus": {
+            "gate": 6,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 2,
+            "longitude": 174.2716814603914
+          },
+          "mars": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 3,
+            "base": 1,
+            "longitude": 198.14911438891411
+          },
+          "neptune": {
+            "gate": 19,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 2,
+            "longitude": 312.6066702929331
+          },
+          "saturn": {
+            "gate": 56,
+            "line": 1,
+            "color": 5,
+            "tone": 6,
+            "base": 1,
+            "longitude": 117.13227850742342
+          },
+          "jupiter": {
+            "gate": 18,
+            "line": 3,
+            "color": 3,
+            "tone": 5,
+            "base": 5,
+            "longitude": 186.18872754108565
+          },
+          "pluto": {
+            "gate": 26,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 260.32068498051814
+          }
+        },
+        "channels": [
+          "Key3Key60",
+          "Key11Key56",
+          "Key26Key44",
+          "Key27Key50",
+          "Key28Key38"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "SecondComparator",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Root": 1,
+          "Mind": 2,
+          "Throat": 2,
+          "Heart": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2005-P60.3-to-60.4-offset-midpoint",
+      "position": "offset-discriminating-midpoint",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2005-01-19",
+      "localTime": "04:56",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2005-01-19T04:56:00.0000000Z",
+      "boundaryUtc": "2005-01-19T04:11:55.5470608Z",
+      "boundaryDistanceSeconds": 2644.4529392,
+      "personalitySun": {
+        "gate": 60,
+        "line": 4,
+        "color": 1,
+        "tone": 2,
+        "base": 1,
+        "longitude": 299.21865214113535
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 6,
+        "color": 1,
+        "tone": 6,
+        "base": 5,
+        "longitude": 211.21865214479902
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 3,
+          "longitude": 299.21865214113535,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 6,
+          "longitude": 211.21865214479902,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2004-10-24T07:10:57.8292891Z",
+      "solarArcDegrees": 87.99999999633633,
+      "solarArcResidualDegrees": -3.663672032416798E-09,
+      "chart": {
+        "birthUtc": "2005-01-19T04:56:00.0000000Z",
+        "designUtc": "2004-10-24T07:10:57.8292891Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "4 / 6",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfLaws4",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 4,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 299.21865214113535
+          },
+          "earth": {
+            "gate": 56,
+            "line": 4,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 119.21865214113535
+          },
+          "northNode": {
+            "gate": 3,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 27.544662525675857
+          },
+          "southNode": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 207.54466252567585
+          },
+          "moon": {
+            "gate": 23,
+            "line": 3,
+            "color": 3,
+            "tone": 4,
+            "base": 5,
+            "longitude": 51.16373900195557
+          },
+          "mercury": {
+            "gate": 38,
+            "line": 4,
+            "color": 5,
+            "tone": 1,
+            "base": 4,
+            "longitude": 282.95491038964394
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 4,
+            "longitude": 334.72467295209174
+          },
+          "venus": {
+            "gate": 38,
+            "line": 3,
+            "color": 4,
+            "tone": 3,
+            "base": 2,
+            "longitude": 281.901181451992
+          },
+          "mars": {
+            "gate": 5,
+            "line": 6,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 256.96936626979937
+          },
+          "neptune": {
+            "gate": 13,
+            "line": 2,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 314.48721189762114
+          },
+          "saturn": {
+            "gate": 62,
+            "line": 3,
+            "color": 6,
+            "tone": 2,
+            "base": 3,
+            "longitude": 113.44786836894302
+          },
+          "jupiter": {
+            "gate": 57,
+            "line": 4,
+            "color": 4,
+            "tone": 6,
+            "base": 5,
+            "longitude": 198.5591379116451
+          },
+          "pluto": {
+            "gate": 11,
+            "line": 1,
+            "color": 5,
+            "tone": 4,
+            "base": 5,
+            "longitude": 263.349973209268
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 211.21865214479902
+          },
+          "earth": {
+            "gate": 3,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 31.218652144799023
+          },
+          "northNode": {
+            "gate": 27,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 32.14888348084601
+          },
+          "southNode": {
+            "gate": 28,
+            "line": 1,
+            "color": 1,
+            "tone": 6,
+            "base": 4,
+            "longitude": 212.148883480846
+          },
+          "moon": {
+            "gate": 63,
+            "line": 4,
+            "color": 4,
+            "tone": 5,
+            "base": 4,
+            "longitude": 344.7762172849169
+          },
+          "mercury": {
+            "gate": 44,
+            "line": 6,
+            "color": 6,
+            "tone": 4,
+            "base": 1,
+            "longitude": 223.17450246062623
+          },
+          "uranus": {
+            "gate": 55,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 333.0143982148926
+          },
+          "venus": {
+            "gate": 6,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 4,
+            "longitude": 174.30829736145054
+          },
+          "mars": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 3,
+            "base": 5,
+            "longitude": 198.16913899456043
+          },
+          "neptune": {
+            "gate": 19,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 2,
+            "longitude": 312.60666670174896
+          },
+          "saturn": {
+            "gate": 56,
+            "line": 1,
+            "color": 5,
+            "tone": 6,
+            "base": 1,
+            "longitude": 117.13312671435814
+          },
+          "jupiter": {
+            "gate": 18,
+            "line": 3,
+            "color": 3,
+            "tone": 6,
+            "base": 1,
+            "longitude": 186.19499989910136
+          },
+          "pluto": {
+            "gate": 26,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 260.32151400788376
+          }
+        },
+        "channels": [
+          "Key3Key60",
+          "Key11Key56",
+          "Key26Key44",
+          "Key27Key50",
+          "Key28Key38"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "SecondComparator",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Root": 1,
+          "Mind": 2,
+          "Throat": 2,
+          "Heart": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2015-P61.6-to-60.1-before",
+      "position": "before",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2015-01-16",
+      "localTime": "20:17",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2015-01-16T20:17:00.0000000Z",
+      "boundaryUtc": "2015-01-16T20:18:09.1730635Z",
+      "boundaryDistanceSeconds": -69.1730635,
+      "personalitySun": {
+        "gate": 61,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 296.374184433507
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 4,
+        "longitude": 208.3741844331047
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 61,
+          "line": 6,
+          "longitude": 296.374184433507,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 3,
+          "longitude": 208.3741844331047,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2014-10-21T20:45:08.8047131Z",
+      "solarArcDegrees": 88.00000000040234,
+      "solarArcResidualDegrees": 4.0233771869679913E-10,
+      "chart": {
+        "birthUtc": "2015-01-16T20:17:00.0000000Z",
+        "designUtc": "2014-10-21T20:45:08.8047131Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "6 / 3",
+        "definition": "SingleDefinition",
+        "incarnationCross": "LeftAngleCrossOfObscuration2",
+        "personality": {
+          "sun": {
+            "gate": 61,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 296.374184433507
+          },
+          "earth": {
+            "gate": 62,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 116.37418443350703
+          },
+          "northNode": {
+            "gate": 48,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 193.54073618155036
+          },
+          "southNode": {
+            "gate": 21,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 13.540736181550358
+          },
+          "moon": {
+            "gate": 9,
+            "line": 2,
+            "color": 2,
+            "tone": 1,
+            "base": 4,
+            "longitude": 246.86140456657137
+          },
+          "mercury": {
+            "gate": 13,
+            "line": 2,
+            "color": 6,
+            "tone": 4,
+            "base": 4,
+            "longitude": 315.0643594360008
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 4,
+            "color": 4,
+            "tone": 3,
+            "base": 5,
+            "longitude": 12.857436660174141
+          },
+          "venus": {
+            "gate": 13,
+            "line": 4,
+            "color": 4,
+            "tone": 1,
+            "base": 4,
+            "longitude": 316.5490422892996
+          },
+          "mars": {
+            "gate": 55,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 5,
+            "longitude": 333.4544628969988
+          },
+          "neptune": {
+            "gate": 37,
+            "line": 1,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 335.82710014183715
+          },
+          "saturn": {
+            "gate": 34,
+            "line": 3,
+            "color": 3,
+            "tone": 2,
+            "base": 3,
+            "longitude": 242.3490314870915
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 2,
+            "color": 3,
+            "tone": 6,
+            "base": 3,
+            "longitude": 140.26885887946253
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 5,
+            "color": 3,
+            "tone": 6,
+            "base": 5,
+            "longitude": 283.7151139487354
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 208.3741844331047
+          },
+          "earth": {
+            "gate": 3,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 28.374184433104688
+          },
+          "northNode": {
+            "gate": 57,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 199.29673500846388
+          },
+          "southNode": {
+            "gate": 51,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 19.296735008463884
+          },
+          "moon": {
+            "gate": 18,
+            "line": 2,
+            "color": 1,
+            "tone": 2,
+            "base": 4,
+            "longitude": 184.85621652111894
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 5,
+            "base": 4,
+            "longitude": 198.21530656596673
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 5,
+            "color": 5,
+            "tone": 4,
+            "base": 1,
+            "longitude": 13.954653108164742
+          },
+          "venus": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 1,
+            "base": 4,
+            "longitude": 207.488594074962
+          },
+          "mars": {
+            "gate": 11,
+            "line": 5,
+            "color": 2,
+            "tone": 4,
+            "base": 5,
+            "longitude": 266.6316237808591
+          },
+          "neptune": {
+            "gate": 55,
+            "line": 6,
+            "color": 2,
+            "tone": 1,
+            "base": 2,
+            "longitude": 334.9760190878669
+          },
+          "saturn": {
+            "gate": 43,
+            "line": 5,
+            "color": 1,
+            "tone": 4,
+            "base": 3,
+            "longitude": 232.71427439914555
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 1,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 139.16222891378203
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 2,
+            "color": 5,
+            "tone": 6,
+            "base": 4,
+            "longitude": 281.20847903089856
+          }
+        },
+        "channels": [
+          "Key34Key57"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "None",
+          "Mind": "None",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2015-P61.6-to-60.1-after",
+      "position": "after",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2015-01-16",
+      "localTime": "20:20",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2015-01-16T20:20:00.0000000Z",
+      "boundaryUtc": "2015-01-16T20:18:09.1730635Z",
+      "boundaryDistanceSeconds": 110.8269365,
+      "personalitySun": {
+        "gate": 60,
+        "line": 1,
+        "color": 1,
+        "tone": 1,
+        "base": 1,
+        "longitude": 296.37630668919286
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 5,
+        "longitude": 208.3763066927935
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 61,
+          "line": 6,
+          "longitude": 296.37630668919286,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 3,
+          "longitude": 208.3763066927935,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2014-10-21T20:48:13.0961296Z",
+      "solarArcDegrees": 87.99999999639937,
+      "solarArcResidualDegrees": -3.600632680900162E-09,
+      "chart": {
+        "birthUtc": "2015-01-16T20:20:00.0000000Z",
+        "designUtc": "2014-10-21T20:48:13.0961296Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "1 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfLaws4",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 296.37630668919286
+          },
+          "earth": {
+            "gate": 56,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 116.37630668919286
+          },
+          "northNode": {
+            "gate": 48,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 193.54049688027882
+          },
+          "southNode": {
+            "gate": 21,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 13.540496880278852
+          },
+          "moon": {
+            "gate": 9,
+            "line": 2,
+            "color": 2,
+            "tone": 2,
+            "base": 4,
+            "longitude": 246.88964017165688
+          },
+          "mercury": {
+            "gate": 13,
+            "line": 2,
+            "color": 6,
+            "tone": 4,
+            "base": 4,
+            "longitude": 315.0660085093315
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 4,
+            "color": 4,
+            "tone": 3,
+            "base": 5,
+            "longitude": 12.857482493792874
+          },
+          "venus": {
+            "gate": 13,
+            "line": 4,
+            "color": 4,
+            "tone": 1,
+            "base": 4,
+            "longitude": 316.5516455673292
+          },
+          "mars": {
+            "gate": 55,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 5,
+            "longitude": 333.4560927888311
+          },
+          "neptune": {
+            "gate": 37,
+            "line": 1,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 335.82716464585974
+          },
+          "saturn": {
+            "gate": 34,
+            "line": 3,
+            "color": 3,
+            "tone": 2,
+            "base": 3,
+            "longitude": 242.34920949143762
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 2,
+            "color": 3,
+            "tone": 6,
+            "base": 3,
+            "longitude": 140.26862510390865
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 5,
+            "color": 3,
+            "tone": 6,
+            "base": 5,
+            "longitude": 283.71518533298416
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 208.3763066927935
+          },
+          "earth": {
+            "gate": 3,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 28.37630669279349
+          },
+          "northNode": {
+            "gate": 57,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 199.29675366284354
+          },
+          "southNode": {
+            "gate": 51,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 1,
+            "longitude": 19.29675366284357
+          },
+          "moon": {
+            "gate": 18,
+            "line": 2,
+            "color": 1,
+            "tone": 3,
+            "base": 4,
+            "longitude": 184.88233565192317
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 5,
+            "base": 4,
+            "longitude": 198.21375902093516
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 5,
+            "color": 5,
+            "tone": 4,
+            "base": 1,
+            "longitude": 13.954570193667127
+          },
+          "venus": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 1,
+            "base": 5,
+            "longitude": 207.4912655586122
+          },
+          "mars": {
+            "gate": 11,
+            "line": 5,
+            "color": 2,
+            "tone": 4,
+            "base": 5,
+            "longitude": 266.6331852136301
+          },
+          "neptune": {
+            "gate": 55,
+            "line": 6,
+            "color": 2,
+            "tone": 1,
+            "base": 2,
+            "longitude": 334.97599002211956
+          },
+          "saturn": {
+            "gate": 43,
+            "line": 5,
+            "color": 1,
+            "tone": 4,
+            "base": 3,
+            "longitude": 232.7145135387976
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 1,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 139.16251670739152
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 2,
+            "color": 5,
+            "tone": 6,
+            "base": 4,
+            "longitude": 281.20851008361564
+          }
+        },
+        "channels": [
+          "Key3Key60",
+          "Key11Key56",
+          "Key34Key57"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Root": 1,
+          "Mind": 2,
+          "Throat": 2,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2015-P61.6-to-60.1-offset-midpoint",
+      "position": "offset-discriminating-midpoint",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2015-01-16",
+      "localTime": "21:02",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2015-01-16T21:02:00.0000000Z",
+      "boundaryUtc": "2015-01-16T20:18:09.1730635Z",
+      "boundaryDistanceSeconds": 2630.8269365,
+      "personalitySun": {
+        "gate": 60,
+        "line": 1,
+        "color": 1,
+        "tone": 2,
+        "base": 1,
+        "longitude": 296.4060182442121
+      },
+      "designSun": {
+        "gate": 50,
+        "line": 3,
+        "color": 1,
+        "tone": 6,
+        "base": 5,
+        "longitude": 208.4060182483596
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 61,
+          "line": 6,
+          "longitude": 296.4060182442121,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 50,
+          "line": 3,
+          "longitude": 208.4060182483596,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2014-10-21T21:31:13.1537104Z",
+      "solarArcDegrees": 87.99999999585248,
+      "solarArcResidualDegrees": -4.147523213759996E-09,
+      "chart": {
+        "birthUtc": "2015-01-16T21:02:00.0000000Z",
+        "designUtc": "2014-10-21T21:31:13.1537104Z",
+        "type": "Generator",
+        "authority": "Sacral",
+        "profile": "1 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfLaws4",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 296.4060182442121
+          },
+          "earth": {
+            "gate": 56,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 116.40601824421208
+          },
+          "northNode": {
+            "gate": 48,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 193.53712602793755
+          },
+          "southNode": {
+            "gate": 21,
+            "line": 5,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 13.537126027937575
+          },
+          "moon": {
+            "gate": 9,
+            "line": 2,
+            "color": 4,
+            "tone": 5,
+            "base": 5,
+            "longitude": 247.28516254272486
+          },
+          "mercury": {
+            "gate": 13,
+            "line": 2,
+            "color": 6,
+            "tone": 5,
+            "base": 4,
+            "longitude": 315.0890354661257
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 4,
+            "color": 4,
+            "tone": 3,
+            "base": 5,
+            "longitude": 12.858124538401883
+          },
+          "venus": {
+            "gate": 13,
+            "line": 4,
+            "color": 4,
+            "tone": 3,
+            "base": 1,
+            "longitude": 316.58809135219263
+          },
+          "mars": {
+            "gate": 55,
+            "line": 4,
+            "color": 4,
+            "tone": 3,
+            "base": 4,
+            "longitude": 333.4789112289011
+          },
+          "neptune": {
+            "gate": 37,
+            "line": 1,
+            "color": 1,
+            "tone": 3,
+            "base": 5,
+            "longitude": 335.82806786381326
+          },
+          "saturn": {
+            "gate": 34,
+            "line": 3,
+            "color": 3,
+            "tone": 2,
+            "base": 3,
+            "longitude": 242.35170104220788
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 2,
+            "color": 3,
+            "tone": 6,
+            "base": 2,
+            "longitude": 140.26535136634166
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 5,
+            "color": 3,
+            "tone": 6,
+            "base": 5,
+            "longitude": 283.7161846696327
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 50,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 208.4060182483596
+          },
+          "earth": {
+            "gate": 3,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 28.4060182483596
+          },
+          "northNode": {
+            "gate": 57,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 2,
+            "longitude": 199.29701208225748
+          },
+          "southNode": {
+            "gate": 51,
+            "line": 5,
+            "color": 3,
+            "tone": 5,
+            "base": 2,
+            "longitude": 19.29701208225748
+          },
+          "moon": {
+            "gate": 18,
+            "line": 2,
+            "color": 3,
+            "tone": 5,
+            "base": 4,
+            "longitude": 185.2480939527801
+          },
+          "mercury": {
+            "gate": 57,
+            "line": 4,
+            "color": 2,
+            "tone": 4,
+            "base": 4,
+            "longitude": 198.19217308013685
+          },
+          "uranus": {
+            "gate": 21,
+            "line": 5,
+            "color": 5,
+            "tone": 4,
+            "base": 1,
+            "longitude": 13.953409520494331
+          },
+          "venus": {
+            "gate": 50,
+            "line": 2,
+            "color": 2,
+            "tone": 3,
+            "base": 2,
+            "longitude": 207.52866597152473
+          },
+          "mars": {
+            "gate": 11,
+            "line": 5,
+            "color": 2,
+            "tone": 5,
+            "base": 4,
+            "longitude": 266.65504567641057
+          },
+          "neptune": {
+            "gate": 55,
+            "line": 6,
+            "color": 2,
+            "tone": 1,
+            "base": 2,
+            "longitude": 334.975583337653
+          },
+          "saturn": {
+            "gate": 43,
+            "line": 5,
+            "color": 1,
+            "tone": 4,
+            "base": 3,
+            "longitude": 232.71786170098238
+          },
+          "jupiter": {
+            "gate": 4,
+            "line": 1,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 139.16654474008504
+          },
+          "pluto": {
+            "gate": 38,
+            "line": 2,
+            "color": 5,
+            "tone": 6,
+            "base": 4,
+            "longitude": 281.2089450485723
+          }
+        },
+        "channels": [
+          "Key3Key60",
+          "Key11Key56",
+          "Key34Key57"
+        ],
+        "centers": {
+          "Root": "Mixed",
+          "Sacral": "Mixed",
+          "Emotions": "None",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Sacral": 1,
+          "Root": 1,
+          "Mind": 2,
+          "Throat": 2,
+          "Spleen": 1
+        }
+      }
+    },
+    {
+      "id": "2025-P60.6-to-41.1-before",
+      "position": "before",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2025-01-21",
+      "localTime": "19:09",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2025-01-21T19:09:00.0000000Z",
+      "boundaryUtc": "2025-01-21T19:10:22.5870338Z",
+      "boundaryDistanceSeconds": -82.5870338,
+      "personalitySun": {
+        "gate": 60,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 301.99902742925497
+      },
+      "designSun": {
+        "gate": 28,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 4,
+        "longitude": 213.99902743588498
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 6,
+          "longitude": 301.99902742925497,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 28,
+          "line": 3,
+          "longitude": 213.99902743588498,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2024-10-26T22:32:48.4921457Z",
+      "solarArcDegrees": 87.99999999337001,
+      "solarArcResidualDegrees": -6.629989002249204E-09,
+      "chart": {
+        "birthUtc": "2025-01-21T19:09:00.0000000Z",
+        "designUtc": "2024-10-26T22:32:48.4921457Z",
+        "type": "ManifestingGenerator",
+        "authority": "Emotional",
+        "profile": "6 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "LeftAngleCrossOfDistraction2",
+        "personality": {
+          "sun": {
+            "gate": 60,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 301.99902742925497
+          },
+          "earth": {
+            "gate": 56,
+            "line": 6,
+            "color": 6,
+            "tone": 6,
+            "base": 5,
+            "longitude": 121.99902742925497
+          },
+          "northNode": {
+            "gate": 25,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 359.1583457888184
+          },
+          "southNode": {
+            "gate": 46,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 179.15834578881845
+          },
+          "moon": {
+            "gate": 50,
+            "line": 6,
+            "color": 3,
+            "tone": 1,
+            "base": 2,
+            "longitude": 211.38533846124423
+          },
+          "mercury": {
+            "gate": 54,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 2,
+            "longitude": 289.9503455981427
+          },
+          "uranus": {
+            "gate": 23,
+            "line": 5,
+            "color": 5,
+            "tone": 2,
+            "base": 4,
+            "longitude": 53.29607263908777
+          },
+          "venus": {
+            "gate": 22,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 3,
+            "longitude": 348.6511079496044
+          },
+          "mars": {
+            "gate": 62,
+            "line": 4,
+            "color": 3,
+            "tone": 4,
+            "base": 5,
+            "longitude": 113.97429717023661
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 3,
+            "tone": 3,
+            "base": 4,
+            "longitude": 357.69742781588036
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 346.35981094924233
+          },
+          "jupiter": {
+            "gate": 35,
+            "line": 1,
+            "color": 2,
+            "tone": 3,
+            "base": 3,
+            "longitude": 71.59442345975751
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 3,
+            "longitude": 301.72513946052834
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 28,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 213.99902743588498
+          },
+          "earth": {
+            "gate": 27,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 4,
+            "longitude": 33.999027435884955
+          },
+          "northNode": {
+            "gate": 17,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 6.433753747810246
+          },
+          "southNode": {
+            "gate": 18,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 186.43375374781024
+          },
+          "moon": {
+            "gate": 59,
+            "line": 4,
+            "color": 3,
+            "tone": 5,
+            "base": 5,
+            "longitude": 153.37500898219736
+          },
+          "mercury": {
+            "gate": 43,
+            "line": 2,
+            "color": 3,
+            "tone": 2,
+            "base": 3,
+            "longitude": 230.1641932325651
+          },
+          "uranus": {
+            "gate": 8,
+            "line": 2,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 56.09576555108033
+          },
+          "venus": {
+            "gate": 9,
+            "line": 6,
+            "color": 4,
+            "tone": 5,
+            "base": 2,
+            "longitude": 251.01624724971043
+          },
+          "mars": {
+            "gate": 56,
+            "line": 1,
+            "color": 4,
+            "tone": 5,
+            "base": 1,
+            "longitude": 116.9479306450323
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 357.60253833204877
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 3,
+            "longitude": 343.02687925072513
+          },
+          "jupiter": {
+            "gate": 45,
+            "line": 5,
+            "color": 1,
+            "tone": 3,
+            "base": 4,
+            "longitude": 80.8189050344351
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 299.6951708637137
+          }
+        },
+        "channels": [
+          "Key17Key62",
+          "Key23Key43",
+          "Key27Key50",
+          "Key35Key36"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "Mixed",
+          "Emotions": "Mixed",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Mind": 1,
+          "Throat": 1,
+          "Sacral": 2,
+          "Spleen": 2,
+          "Emotions": 1
+        }
+      }
+    },
+    {
+      "id": "2025-P60.6-to-41.1-after",
+      "position": "after",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2025-01-21",
+      "localTime": "19:12",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2025-01-21T19:12:00.0000000Z",
+      "boundaryUtc": "2025-01-21T19:10:22.5870338Z",
+      "boundaryDistanceSeconds": 97.4129662,
+      "personalitySun": {
+        "gate": 41,
+        "line": 1,
+        "color": 1,
+        "tone": 1,
+        "base": 1,
+        "longitude": 302.0011471752125
+      },
+      "designSun": {
+        "gate": 28,
+        "line": 3,
+        "color": 1,
+        "tone": 5,
+        "base": 5,
+        "longitude": 214.00114717617828
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 6,
+          "longitude": 302.0011471752125,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 28,
+          "line": 3,
+          "longitude": 214.00114717617828,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2024-10-26T22:35:52.0336567Z",
+      "solarArcDegrees": 87.99999999903423,
+      "solarArcResidualDegrees": -9.657696864451282E-10,
+      "chart": {
+        "birthUtc": "2025-01-21T19:12:00.0000000Z",
+        "designUtc": "2024-10-26T22:35:52.0336567Z",
+        "type": "ManifestingGenerator",
+        "authority": "Emotional",
+        "profile": "1 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfTheUnexpected4",
+        "personality": {
+          "sun": {
+            "gate": 41,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 302.0011471752125
+          },
+          "earth": {
+            "gate": 31,
+            "line": 1,
+            "color": 1,
+            "tone": 1,
+            "base": 1,
+            "longitude": 122.00114717521251
+          },
+          "northNode": {
+            "gate": 25,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 359.1583487171148
+          },
+          "southNode": {
+            "gate": 46,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 179.1583487171148
+          },
+          "moon": {
+            "gate": 50,
+            "line": 6,
+            "color": 3,
+            "tone": 2,
+            "base": 2,
+            "longitude": 211.40996193619105
+          },
+          "mercury": {
+            "gate": 54,
+            "line": 6,
+            "color": 1,
+            "tone": 6,
+            "base": 3,
+            "longitude": 289.9535916796108
+          },
+          "uranus": {
+            "gate": 23,
+            "line": 5,
+            "color": 5,
+            "tone": 2,
+            "base": 4,
+            "longitude": 53.29605639343225
+          },
+          "venus": {
+            "gate": 22,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 3,
+            "longitude": 348.653027685729
+          },
+          "mars": {
+            "gate": 62,
+            "line": 4,
+            "color": 3,
+            "tone": 4,
+            "base": 4,
+            "longitude": 113.97350073334803
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 3,
+            "tone": 3,
+            "base": 4,
+            "longitude": 357.697478419079
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 346.3600184619332
+          },
+          "jupiter": {
+            "gate": 35,
+            "line": 1,
+            "color": 2,
+            "tone": 3,
+            "base": 3,
+            "longitude": 71.59432724915288
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 3,
+            "longitude": 301.72520668416223
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 28,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 214.00114717617828
+          },
+          "earth": {
+            "gate": 27,
+            "line": 3,
+            "color": 1,
+            "tone": 5,
+            "base": 5,
+            "longitude": 34.00114717617828
+          },
+          "northNode": {
+            "gate": 17,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 6.4338190162606645
+          },
+          "southNode": {
+            "gate": 18,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 186.43381901626066
+          },
+          "moon": {
+            "gate": 59,
+            "line": 4,
+            "color": 3,
+            "tone": 6,
+            "base": 4,
+            "longitude": 153.40043929494917
+          },
+          "mercury": {
+            "gate": 43,
+            "line": 2,
+            "color": 3,
+            "tone": 2,
+            "base": 4,
+            "longitude": 230.167315729944
+          },
+          "uranus": {
+            "gate": 8,
+            "line": 2,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 56.09568550443668
+          },
+          "venus": {
+            "gate": 9,
+            "line": 6,
+            "color": 4,
+            "tone": 5,
+            "base": 2,
+            "longitude": 251.0188059960547
+          },
+          "mars": {
+            "gate": 56,
+            "line": 1,
+            "color": 4,
+            "tone": 5,
+            "base": 1,
+            "longitude": 116.94877645362264
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 357.6024938192358
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 3,
+            "longitude": 343.02680825621167
+          },
+          "jupiter": {
+            "gate": 45,
+            "line": 5,
+            "color": 1,
+            "tone": 3,
+            "base": 4,
+            "longitude": 80.81878101108899
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 299.6951860414909
+          }
+        },
+        "channels": [
+          "Key17Key62",
+          "Key23Key43",
+          "Key27Key50",
+          "Key35Key36"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "Mixed",
+          "Emotions": "Mixed",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Mind": 1,
+          "Throat": 1,
+          "Sacral": 2,
+          "Spleen": 2,
+          "Emotions": 1
+        }
+      }
+    },
+    {
+      "id": "2025-P60.6-to-41.1-offset-midpoint",
+      "position": "offset-discriminating-midpoint",
+      "city": "London",
+      "country": "United Kingdom",
+      "timezone": "Europe/London",
+      "localDate": "2025-01-21",
+      "localTime": "19:54",
+      "timezoneOffsetMinutes": 0,
+      "utc": "2025-01-21T19:54:00.0000000Z",
+      "boundaryUtc": "2025-01-21T19:10:22.5870338Z",
+      "boundaryDistanceSeconds": 2617.4129662,
+      "personalitySun": {
+        "gate": 41,
+        "line": 1,
+        "color": 1,
+        "tone": 2,
+        "base": 1,
+        "longitude": 302.0308235715062
+      },
+      "designSun": {
+        "gate": 28,
+        "line": 3,
+        "color": 1,
+        "tone": 6,
+        "base": 5,
+        "longitude": 214.03082357523334
+      },
+      "diagnosticOffset39375": {
+        "personalitySun": {
+          "gate": 60,
+          "line": 6,
+          "longitude": 302.0308235715062,
+          "diagnosticOnlyOffset": 3.9375
+        },
+        "designSun": {
+          "gate": 28,
+          "line": 3,
+          "longitude": 214.03082357523334,
+          "diagnosticOnlyOffset": 3.9375
+        }
+      },
+      "designUtc": "2024-10-26T23:18:41.5868085Z",
+      "solarArcDegrees": 87.99999999627283,
+      "solarArcResidualDegrees": -3.727166131284321E-09,
+      "chart": {
+        "birthUtc": "2025-01-21T19:54:00.0000000Z",
+        "designUtc": "2024-10-26T23:18:41.5868085Z",
+        "type": "ManifestingGenerator",
+        "authority": "Emotional",
+        "profile": "1 / 3",
+        "definition": "SplitDefinition",
+        "incarnationCross": "RightAngleCrossOfTheUnexpected4",
+        "personality": {
+          "sun": {
+            "gate": 41,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 302.0308235715062
+          },
+          "earth": {
+            "gate": 31,
+            "line": 1,
+            "color": 1,
+            "tone": 2,
+            "base": 1,
+            "longitude": 122.03082357150618
+          },
+          "northNode": {
+            "gate": 25,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 359.15837988991524
+          },
+          "southNode": {
+            "gate": 46,
+            "line": 1,
+            "color": 6,
+            "tone": 5,
+            "base": 5,
+            "longitude": 179.1583798899153
+          },
+          "moon": {
+            "gate": 50,
+            "line": 6,
+            "color": 5,
+            "tone": 3,
+            "base": 3,
+            "longitude": 211.75471968469733
+          },
+          "mercury": {
+            "gate": 54,
+            "line": 6,
+            "color": 2,
+            "tone": 2,
+            "base": 1,
+            "longitude": 289.9990412140272
+          },
+          "uranus": {
+            "gate": 23,
+            "line": 5,
+            "color": 5,
+            "tone": 2,
+            "base": 4,
+            "longitude": 53.29582935144192
+          },
+          "venus": {
+            "gate": 22,
+            "line": 2,
+            "color": 5,
+            "tone": 5,
+            "base": 3,
+            "longitude": 348.6798993134709
+          },
+          "mars": {
+            "gate": 62,
+            "line": 4,
+            "color": 3,
+            "tone": 4,
+            "base": 2,
+            "longitude": 113.96235299747177
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 3,
+            "tone": 3,
+            "base": 5,
+            "longitude": 357.6981870757412
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 3,
+            "longitude": 346.3629240865178
+          },
+          "jupiter": {
+            "gate": 35,
+            "line": 1,
+            "color": 2,
+            "tone": 3,
+            "base": 2,
+            "longitude": 71.59298180465906
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 6,
+            "color": 5,
+            "tone": 2,
+            "base": 3,
+            "longitude": 301.7261478208151
+          }
+        },
+        "design": {
+          "sun": {
+            "gate": 28,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 214.03082357523334
+          },
+          "earth": {
+            "gate": 27,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 5,
+            "longitude": 34.03082357523334
+          },
+          "northNode": {
+            "gate": 17,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 6.434733725761514
+          },
+          "southNode": {
+            "gate": 18,
+            "line": 3,
+            "color": 5,
+            "tone": 3,
+            "base": 2,
+            "longitude": 186.4347337257615
+          },
+          "moon": {
+            "gate": 59,
+            "line": 4,
+            "color": 6,
+            "tone": 2,
+            "base": 3,
+            "longitude": 153.7563813509677
+          },
+          "mercury": {
+            "gate": 43,
+            "line": 2,
+            "color": 3,
+            "tone": 4,
+            "base": 2,
+            "longitude": 230.21102557578007
+          },
+          "uranus": {
+            "gate": 8,
+            "line": 2,
+            "color": 5,
+            "tone": 2,
+            "base": 2,
+            "longitude": 56.0945646769298
+          },
+          "venus": {
+            "gate": 9,
+            "line": 6,
+            "color": 4,
+            "tone": 6,
+            "base": 4,
+            "longitude": 251.05462789273616
+          },
+          "mars": {
+            "gate": 56,
+            "line": 1,
+            "color": 4,
+            "tone": 5,
+            "base": 3,
+            "longitude": 116.96061469212464
+          },
+          "neptune": {
+            "gate": 36,
+            "line": 6,
+            "color": 2,
+            "tone": 6,
+            "base": 1,
+            "longitude": 357.601870812172
+          },
+          "saturn": {
+            "gate": 63,
+            "line": 2,
+            "color": 5,
+            "tone": 4,
+            "base": 2,
+            "longitude": 343.0258150829038
+          },
+          "jupiter": {
+            "gate": 45,
+            "line": 5,
+            "color": 1,
+            "tone": 3,
+            "base": 3,
+            "longitude": 80.8170431844362
+          },
+          "pluto": {
+            "gate": 60,
+            "line": 4,
+            "color": 4,
+            "tone": 2,
+            "base": 3,
+            "longitude": 299.6953987519834
+          }
+        },
+        "channels": [
+          "Key17Key62",
+          "Key23Key43",
+          "Key27Key50",
+          "Key35Key36"
+        ],
+        "centers": {
+          "Root": "None",
+          "Sacral": "Mixed",
+          "Emotions": "Mixed",
+          "Spleen": "Mixed",
+          "Heart": "None",
+          "Self": "None",
+          "Throat": "Mixed",
+          "Mind": "Mixed",
+          "Crown": "None"
+        },
+        "connectedComponents": {
+          "Mind": 1,
+          "Throat": 1,
+          "Sacral": 2,
+          "Spleen": 2,
+          "Emotions": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1687 @@
+{
+  "schemaVersion": 1,
+  "caseCount": 49,
+  "c1DiscriminatorCount": 13,
+  "modernDiscriminatorCount": 47,
+  "detectsModernSubstitution": true,
+  "passed": true,
+  "cases": [
+    {
+      "id": "JDS-01",
+      "birthUtc": "1986-01-03T01:32:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "27.5",
+          "c2": "27.6",
+          "candidate": "27.6"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "28.5",
+          "c2": "28.6",
+          "candidate": "28.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-02",
+      "birthUtc": "1986-01-04T23:53:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "27.5",
+          "c2": "27.6",
+          "candidate": "27.6"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "28.5",
+          "c2": "28.6",
+          "candidate": "28.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-03",
+      "birthUtc": "1986-01-05T22:15:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "27.5",
+          "c2": "27.6",
+          "candidate": "27.6"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "28.5",
+          "c2": "28.6",
+          "candidate": "28.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-04",
+      "birthUtc": "2013-07-13T09:06:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "1.2",
+          "c2": "1.1",
+          "candidate": "1.1"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "2.2",
+          "c2": "2.1",
+          "candidate": "2.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-05",
+      "birthUtc": "2019-01-14T08:06:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "moon",
+          "modern": "42.4",
+          "c2": "42.5",
+          "candidate": "42.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-06",
+      "birthUtc": "2019-07-03T15:11:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "moon",
+          "modern": "62.2",
+          "c2": "62.3",
+          "candidate": "62.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-07",
+      "birthUtc": "2025-03-08T23:41:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "neptune",
+          "c1": "25.1",
+          "c2": "25.2",
+          "candidate": "25.2"
+        }
+      ],
+      "modernDifferences": [],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-08",
+      "birthUtc": "1980-01-03T12:56:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "29.6",
+          "c2": "59.1",
+          "candidate": "59.1"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "30.6",
+          "c2": "55.1",
+          "candidate": "55.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-09",
+      "birthUtc": "1985-01-07T01:53:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "8.2",
+          "c2": "8.3",
+          "candidate": "8.3"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "14.2",
+          "c2": "14.3",
+          "candidate": "14.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-10",
+      "birthUtc": "2003-07-13T22:22:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "8.4",
+          "c2": "8.5",
+          "candidate": "8.5"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "14.4",
+          "c2": "14.5",
+          "candidate": "14.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-11",
+      "birthUtc": "2004-01-07T16:33:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "2.6",
+          "c2": "23.1",
+          "candidate": "23.1"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "1.6",
+          "c2": "43.1",
+          "candidate": "43.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-12",
+      "birthUtc": "2021-01-02T05:30:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "northNode",
+          "modern": "45.3",
+          "c2": "45.4",
+          "candidate": "45.4"
+        },
+        {
+          "side": "personality",
+          "body": "southNode",
+          "modern": "26.3",
+          "c2": "26.4",
+          "candidate": "26.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-13",
+      "birthUtc": "1980-05-01T13:10:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "pluto",
+          "modern": "57.5",
+          "c2": "57.6",
+          "candidate": "57.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-14",
+      "birthUtc": "1980-11-07T15:52:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "pluto",
+          "modern": "32.2",
+          "c2": "32.3",
+          "candidate": "32.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-15",
+      "birthUtc": "1983-03-19T10:55:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "neptune",
+          "modern": "10.1",
+          "c2": "10.2",
+          "candidate": "10.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-16",
+      "birthUtc": "1989-10-19T19:05:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "uranus",
+          "modern": "10.4",
+          "c2": "10.5",
+          "candidate": "10.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-17",
+      "birthUtc": "1989-12-16T06:47:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "uranus",
+          "modern": "58.1",
+          "c2": "58.2",
+          "candidate": "58.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-18",
+      "birthUtc": "1992-06-23T22:19:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "saturn",
+          "modern": "13.5",
+          "c2": "13.6",
+          "candidate": "13.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-19",
+      "birthUtc": "1993-05-25T11:52:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "saturn",
+          "modern": "30.6",
+          "c2": "55.1",
+          "candidate": "55.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-20",
+      "birthUtc": "2004-11-02T14:00:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "saturn",
+          "modern": "56.2",
+          "c2": "56.1",
+          "candidate": "56.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-21",
+      "birthUtc": "2017-04-10T08:41:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "jupiter",
+          "c1": "57.4",
+          "c2": "57.3",
+          "candidate": "57.3"
+        }
+      ],
+      "modernDifferences": [],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-23",
+      "birthUtc": "2023-07-04T12:50:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "sun",
+          "c1": "39.3",
+          "c2": "39.4",
+          "candidate": "39.4"
+        },
+        {
+          "side": "personality",
+          "body": "earth",
+          "c1": "38.3",
+          "c2": "38.4",
+          "candidate": "38.4"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "sun",
+          "modern": "39.3",
+          "c2": "39.4",
+          "candidate": "39.4"
+        },
+        {
+          "side": "personality",
+          "body": "earth",
+          "modern": "38.3",
+          "c2": "38.4",
+          "candidate": "38.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-26",
+      "birthUtc": "2018-01-04T00:58:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "mars",
+          "c1": "1.3",
+          "c2": "1.4",
+          "candidate": "1.4"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "mars",
+          "modern": "1.3",
+          "c2": "1.4",
+          "candidate": "1.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-27",
+      "birthUtc": "2018-07-12T17:42:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "venus",
+          "c1": "59.3",
+          "c2": "59.4",
+          "candidate": "59.4"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "venus",
+          "modern": "59.3",
+          "c2": "59.4",
+          "candidate": "59.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDS-28",
+      "birthUtc": "2019-01-13T20:44:00Z",
+      "c1Differences": [
+        {
+          "side": "personality",
+          "body": "venus",
+          "c1": "9.1",
+          "c2": "9.2",
+          "candidate": "9.2"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "personality",
+          "body": "venus",
+          "modern": "9.1",
+          "c2": "9.2",
+          "candidate": "9.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-01",
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "sun",
+          "c1": "39.2",
+          "c2": "39.3",
+          "candidate": "39.3"
+        },
+        {
+          "side": "design",
+          "body": "earth",
+          "c1": "38.2",
+          "c2": "38.3",
+          "candidate": "38.3"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "sun",
+          "modern": "39.2",
+          "c2": "39.3",
+          "candidate": "39.3"
+        },
+        {
+          "side": "design",
+          "body": "earth",
+          "modern": "38.2",
+          "c2": "38.3",
+          "candidate": "38.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-02",
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "sun",
+          "c1": "53.6",
+          "c2": "62.1",
+          "candidate": "62.1"
+        },
+        {
+          "side": "design",
+          "body": "earth",
+          "c1": "54.6",
+          "c2": "61.1",
+          "candidate": "61.1"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "sun",
+          "modern": "53.6",
+          "c2": "62.1",
+          "candidate": "62.1"
+        },
+        {
+          "side": "design",
+          "body": "earth",
+          "modern": "54.6",
+          "c2": "61.1",
+          "candidate": "61.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-03",
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "mercury",
+          "c1": "53.1",
+          "c2": "53.2",
+          "candidate": "53.2"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "mercury",
+          "modern": "53.1",
+          "c2": "53.2",
+          "candidate": "53.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-04",
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "moon",
+          "c1": "31.3",
+          "c2": "31.4",
+          "candidate": "31.4"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "moon",
+          "modern": "31.3",
+          "c2": "31.4",
+          "candidate": "31.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-05",
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "moon",
+          "c1": "44.4",
+          "c2": "44.5",
+          "candidate": "44.5"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "moon",
+          "modern": "44.4",
+          "c2": "44.5",
+          "candidate": "44.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-06",
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "mercury",
+          "c1": "33.3",
+          "c2": "33.4",
+          "candidate": "33.4"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "mercury",
+          "modern": "33.3",
+          "c2": "33.4",
+          "candidate": "33.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-07",
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "c1Differences": [
+        {
+          "side": "design",
+          "body": "mars",
+          "c1": "26.2",
+          "c2": "26.3",
+          "candidate": "26.3"
+        }
+      ],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "mars",
+          "modern": "26.2",
+          "c2": "26.3",
+          "candidate": "26.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-08",
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "22.4",
+          "c2": "22.3",
+          "candidate": "22.3"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "47.4",
+          "c2": "47.3",
+          "candidate": "47.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-09",
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "4.2",
+          "c2": "4.3",
+          "candidate": "4.3"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "49.2",
+          "c2": "49.3",
+          "candidate": "49.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-10",
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "4.2",
+          "c2": "4.3",
+          "candidate": "4.3"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "49.2",
+          "c2": "49.3",
+          "candidate": "49.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-11",
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "27.5",
+          "c2": "27.6",
+          "candidate": "27.6"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "28.5",
+          "c2": "28.6",
+          "candidate": "28.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-12",
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "27.5",
+          "c2": "27.6",
+          "candidate": "27.6"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "28.5",
+          "c2": "28.6",
+          "candidate": "28.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-13",
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "neptune",
+          "modern": "25.4",
+          "c2": "25.3",
+          "candidate": "25.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-14",
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "43.5",
+          "c2": "43.4",
+          "candidate": "43.4"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "23.5",
+          "c2": "23.4",
+          "candidate": "23.4"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-15",
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "8.4",
+          "c2": "8.5",
+          "candidate": "8.5"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "14.4",
+          "c2": "14.5",
+          "candidate": "14.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-16",
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "2.6",
+          "c2": "23.1",
+          "candidate": "23.1"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "1.6",
+          "c2": "43.1",
+          "candidate": "43.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-17",
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "northNode",
+          "modern": "24.1",
+          "c2": "24.2",
+          "candidate": "24.2"
+        },
+        {
+          "side": "design",
+          "body": "southNode",
+          "modern": "44.1",
+          "c2": "44.2",
+          "candidate": "44.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-18",
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "pluto",
+          "modern": "32.1",
+          "c2": "32.2",
+          "candidate": "32.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-19",
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "pluto",
+          "modern": "32.2",
+          "c2": "32.3",
+          "candidate": "32.3"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-20",
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "neptune",
+          "modern": "10.1",
+          "c2": "10.2",
+          "candidate": "10.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-21",
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "uranus",
+          "modern": "26.1",
+          "c2": "26.2",
+          "candidate": "26.2"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-22",
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "uranus",
+          "modern": "11.4",
+          "c2": "11.5",
+          "candidate": "11.5"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-23",
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "saturn",
+          "modern": "13.5",
+          "c2": "13.6",
+          "candidate": "13.6"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    },
+    {
+      "id": "JDD-24",
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "c1Differences": [],
+      "modernDifferences": [
+        {
+          "side": "design",
+          "body": "saturn",
+          "modern": "55.6",
+          "c2": "37.1",
+          "candidate": "37.1"
+        }
+      ],
+      "passed": true,
+      "modernIdentity": {
+        "id": "modern",
+        "humanDesignVersion": "1.2.0",
+        "baseVersion": "0.14.0",
+        "swissUpstreamVersion": "0.5.1",
+        "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+        "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+        "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+        "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+        "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+        "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+        "signature": "59b90e629033cc7faf95",
+        "engineSignature": "59b90e629033cc7faf95"
+      }
+    }
+  ]
+}

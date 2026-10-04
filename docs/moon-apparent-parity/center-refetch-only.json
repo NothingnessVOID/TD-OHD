@@ -1,0 +1,659 @@
+{
+  "oracle": "unmodified Swiss C 2.10.03, production se1, proper UTC->TT/UT1; swe_calc(TT)==swe_calc_ut(UT1)",
+  "cCommit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+  "cLibrarySha256": "a7547dfc5695ffa2ce0fe6583879cb83a8cb37ae05d372ed9898a2f2ec391cfa",
+  "goldenSha256": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb",
+  "mechanicsOracle": "Both activation sets mapped/classified by unchanged HumanDesign 1.2.0; C astronomy and Design root independently calculated",
+  "summary": {
+    "targetedSwissParity": "PASS",
+    "sunMaxSameEpochResidualMas": 2.0463630789890885e-07,
+    "sunMaxOwnRootResidualMas": 0.006683319497824414,
+    "all13MaxResidualMas": 9.41854384564067,
+    "worstBody": {
+      "case": "G2015-feb",
+      "side": "personality",
+      "body": "northNode"
+    },
+    "nineFullChartMatches": 9,
+    "nineGateLineMatches": 9,
+    "nineMechanicsMatches": 9,
+    "allBodiesNumericalParity": false,
+    "sunMaxSpeedResidualDegreesPerDay": 5.88643430443625e-07,
+    "comparisons": 234,
+    "maxDesignRootDifferenceSeconds": 0.000161,
+    "remainingBodyDifferences": "Recorded, not repaired in this two-bug patch"
+  },
+  "note": "Intermediate Earth-center refetch-only experiment before the Moon-specific single-delay correction; full all26 results match 9/9, but lunar longitude retains ~1.30 mas.",
+  "cases": [
+    {
+      "id": "G1995-feb",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": 0.000121,
+      "moonComparisons": [
+        {
+          "case": "G1995-feb",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 236.43309465782468,
+            "speed": 14.081695146933143,
+            "gate": 14,
+            "line": 3,
+            "color": 1,
+            "tone": 3,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 236.4330945819167,
+            "speed": 14.081671033821976,
+            "gate": 14,
+            "line": 3,
+            "color": 1,
+            "tone": 3,
+            "base": 2
+          },
+          "longitudeResidualMas": 0.27326876761435415,
+          "longitudeResidualArcsec": 0.00027326876761435415,
+          "sameEpochResidualMas": 0.27326876761435415,
+          "speedResidualDegreesPerDay": 2.4113111166457202e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G1995-feb",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 169.01132721533156,
+            "speed": 13.648726485548146,
+            "gate": 47,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 169.01132730702,
+            "speed": 13.648776252881218,
+            "gate": 47,
+            "line": 3,
+            "color": 1,
+            "tone": 6,
+            "base": 2
+          },
+          "longitudeResidualMas": -0.33007836464094,
+          "longitudeResidualArcsec": -0.00033007836464094,
+          "sameEpochResidualMas": -0.3987187028542394,
+          "speedResidualDegreesPerDay": -4.976733307238135e-05,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G1995-jun",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": 0.00012,
+      "moonComparisons": [
+        {
+          "case": "G1995-jun",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 23.99874707879451,
+            "speed": 12.18455934427967,
+            "gate": 42,
+            "line": 4,
+            "color": 3,
+            "tone": 5,
+            "base": 4
+          },
+          "swissC": {
+            "longitude": 23.998747269690565,
+            "speed": 12.184586299755702,
+            "gate": 42,
+            "line": 4,
+            "color": 3,
+            "tone": 5,
+            "base": 4
+          },
+          "longitudeResidualMas": -0.6872258154544397,
+          "longitudeResidualArcsec": -0.0006872258154544397,
+          "sameEpochResidualMas": -0.6872258154544397,
+          "speedResidualDegreesPerDay": -2.6955476032597403e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G1995-jun",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 264.164974520821,
+            "speed": 14.16626689147073,
+            "gate": 11,
+            "line": 2,
+            "color": 4,
+            "tone": 6,
+            "base": 1
+          },
+          "swissC": {
+            "longitude": 264.16497441318387,
+            "speed": 14.166244703370609,
+            "gate": 11,
+            "line": 2,
+            "color": 4,
+            "tone": 6,
+            "base": 1
+          },
+          "longitudeResidualMas": 0.38749358282075264,
+          "longitudeResidualArcsec": 0.00038749358282075264,
+          "sameEpochResidualMas": 0.31624228995497106,
+          "speedResidualDegreesPerDay": 2.2188100121667276e-05,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2005-jul20",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": -4e-05,
+      "moonComparisons": [
+        {
+          "case": "G2005-jul20",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 290.2817103020242,
+            "speed": 15.259387936792617,
+            "gate": 54,
+            "line": 6,
+            "color": 4,
+            "tone": 1,
+            "base": 1
+          },
+          "swissC": {
+            "longitude": 290.28171030202293,
+            "speed": 15.259160230539043,
+            "gate": 54,
+            "line": 6,
+            "color": 4,
+            "tone": 1,
+            "base": 1
+          },
+          "longitudeResidualMas": 4.501998773775995e-06,
+          "longitudeResidualArcsec": 4.501998773775995e-09,
+          "sameEpochResidualMas": 4.501998773775995e-06,
+          "speedResidualDegreesPerDay": 0.00022770625357360075,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2005-jul20",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 160.3431728544897,
+            "speed": 12.312708789118053,
+            "gate": 40,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 160.3431732163866,
+            "speed": 12.31258287556664,
+            "gate": 40,
+            "line": 5,
+            "color": 6,
+            "tone": 3,
+            "base": 2
+          },
+          "longitudeResidualMas": -1.3028288208261074,
+          "longitudeResidualArcsec": -0.0013028288208261074,
+          "sameEpochResidualMas": -1.2821985137634329,
+          "speedResidualDegreesPerDay": 0.00012591355141289284,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2015-tight",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": -4e-05,
+      "moonComparisons": [
+        {
+          "case": "G2015-tight",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 21.19843573136329,
+            "speed": 13.933413608820231,
+            "gate": 42,
+            "line": 1,
+            "color": 3,
+            "tone": 6,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 21.198435612842122,
+            "speed": 13.933434196964303,
+            "gate": 42,
+            "line": 1,
+            "color": 3,
+            "tone": 6,
+            "base": 2
+          },
+          "longitudeResidualMas": 0.42667621755754226,
+          "longitudeResidualArcsec": 0.00042667621755754226,
+          "sameEpochResidualMas": 0.42667621755754226,
+          "speedResidualDegreesPerDay": -2.058814407135401e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2015-tight",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 309.68619601747235,
+            "speed": 14.153153090445086,
+            "gate": 19,
+            "line": 3,
+            "color": 2,
+            "tone": 2,
+            "base": 1
+          },
+          "swissC": {
+            "longitude": 309.68619605428285,
+            "speed": 14.153142541665042,
+            "gate": 19,
+            "line": 3,
+            "color": 2,
+            "tone": 2,
+            "base": 1
+          },
+          "longitudeResidualMas": -0.1325177663602517,
+          "longitudeResidualArcsec": -0.0001325177663602517,
+          "sameEpochResidualMas": -0.10876788110181224,
+          "speedResidualDegreesPerDay": 1.0548780043251327e-05,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2015-feb",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": 4e-05,
+      "moonComparisons": [
+        {
+          "case": "G2015-feb",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 138.6764457916389,
+            "speed": 11.947035810204508,
+            "gate": 7,
+            "line": 6,
+            "color": 5,
+            "tone": 5,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 138.6764456141555,
+            "speed": 11.946926668733303,
+            "gate": 7,
+            "line": 6,
+            "color": 5,
+            "tone": 5,
+            "base": 2
+          },
+          "longitudeResidualMas": 0.638940241515229,
+          "longitudeResidualArcsec": 0.000638940241515229,
+          "sameEpochResidualMas": 0.638940241515229,
+          "speedResidualDegreesPerDay": 0.00010914147120466566,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2015-feb",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 80.51213815946545,
+            "speed": 12.983258222260421,
+            "gate": 45,
+            "line": 4,
+            "color": 5,
+            "tone": 3,
+            "base": 5
+          },
+          "swissC": {
+            "longitude": 80.51213783936267,
+            "speed": 12.983193076227996,
+            "gate": 45,
+            "line": 4,
+            "color": 5,
+            "tone": 3,
+            "base": 5
+          },
+          "longitudeResidualMas": 1.1523700777615886,
+          "longitudeResidualArcsec": 0.0011523700777615886,
+          "sameEpochResidualMas": 1.1306158057777793,
+          "speedResidualDegreesPerDay": 6.514603242457895e-05,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2025-tight",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": 0.000161,
+      "moonComparisons": [
+        {
+          "case": "G2025-tight",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 189.62772867062233,
+            "speed": 11.85910201421973,
+            "gate": 48,
+            "line": 1,
+            "color": 1,
+            "tone": 5,
+            "base": 5
+          },
+          "swissC": {
+            "longitude": 189.6277284746055,
+            "speed": 11.859063827880885,
+            "gate": 48,
+            "line": 1,
+            "color": 1,
+            "tone": 5,
+            "base": 5
+          },
+          "longitudeResidualMas": 0.7056605795696669,
+          "longitudeResidualArcsec": 0.0007056605795696669,
+          "sameEpochResidualMas": 0.7056605795696669,
+          "speedResidualDegreesPerDay": 3.8186338844781176e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2025-tight",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 130.4971993765238,
+            "speed": 12.426179621149101,
+            "gate": 33,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 130.4971994217487,
+            "speed": 12.426186103962424,
+            "gate": 33,
+            "line": 4,
+            "color": 1,
+            "tone": 3,
+            "base": 2
+          },
+          "longitudeResidualMas": -0.16280956742775743,
+          "longitudeResidualArcsec": -0.00016280956742775743,
+          "sameEpochResidualMas": -0.24612887727926136,
+          "speedResidualDegreesPerDay": -6.482813322605807e-06,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2025-mar",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": 0.0,
+      "moonComparisons": [
+        {
+          "case": "G2025-mar",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 191.9338250900163,
+            "speed": 11.907438617499402,
+            "gate": 48,
+            "line": 3,
+            "color": 4,
+            "tone": 4,
+            "base": 3
+          },
+          "swissC": {
+            "longitude": 191.9338249215141,
+            "speed": 11.907336682625948,
+            "gate": 48,
+            "line": 3,
+            "color": 4,
+            "tone": 4,
+            "base": 3
+          },
+          "longitudeResidualMas": 0.6066080118216632,
+          "longitudeResidualArcsec": 0.0006066080118216632,
+          "sameEpochResidualMas": 0.6066080118216632,
+          "speedResidualDegreesPerDay": 0.00010193487345411256,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2025-mar",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 131.65935189046357,
+            "speed": 12.969406518041081,
+            "gate": 33,
+            "line": 5,
+            "color": 2,
+            "tone": 5,
+            "base": 5
+          },
+          "swissC": {
+            "longitude": 131.65935161860025,
+            "speed": 12.969354775226357,
+            "gate": 33,
+            "line": 5,
+            "color": 2,
+            "tone": 5,
+            "base": 5
+          },
+          "longitudeResidualMas": 0.9787079306988744,
+          "longitudeResidualArcsec": 0.0009787079306988744,
+          "sameEpochResidualMas": 0.9787079306988744,
+          "speedResidualDegreesPerDay": 5.174281472442033e-05,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G1985-tight",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": -4e-05,
+      "moonComparisons": [
+        {
+          "case": "G1985-tight",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 359.24346944392795,
+            "speed": 11.964326760116041,
+            "gate": 25,
+            "line": 2,
+            "color": 1,
+            "tone": 3,
+            "base": 1
+          },
+          "swissC": {
+            "longitude": 359.24346925032097,
+            "speed": 11.964381723654409,
+            "gate": 25,
+            "line": 2,
+            "color": 1,
+            "tone": 3,
+            "base": 1
+          },
+          "longitudeResidualMas": 0.6969851256144466,
+          "longitudeResidualArcsec": 0.0006969851256144466,
+          "sameEpochResidualMas": 0.6969851256144466,
+          "speedResidualDegreesPerDay": -5.496353836775825e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G1985-tight",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 301.4967317738599,
+            "speed": 12.581126232661543,
+            "gate": 60,
+            "line": 6,
+            "color": 3,
+            "tone": 5,
+            "base": 4
+          },
+          "swissC": {
+            "longitude": 301.4967317310969,
+            "speed": 12.581131931327807,
+            "gate": 60,
+            "line": 6,
+            "color": 3,
+            "tone": 5,
+            "base": 4
+          },
+          "longitudeResidualMas": 0.15394687125080964,
+          "longitudeResidualArcsec": 0.00015394687125080964,
+          "sameEpochResidualMas": 0.17502850369055523,
+          "speedResidualDegreesPerDay": -5.698666264208896e-06,
+          "activationMismatches": []
+        }
+      ]
+    },
+    {
+      "id": "G2005-jul11",
+      "SWISS_PARITY": {
+        "time": "PASS",
+        "sun": "PASS",
+        "designRoot": "PASS",
+        "mechanicsMismatches": [],
+        "activationMismatches": [],
+        "fullChartMatch": true
+      },
+      "designRootDifferenceSeconds": -0.000161,
+      "moonComparisons": [
+        {
+          "case": "G2005-jul11",
+          "side": "personality",
+          "body": "moon",
+          "sharp": {
+            "longitude": 158.8157512861307,
+            "speed": 11.891853705728037,
+            "gate": 40,
+            "line": 4,
+            "color": 2,
+            "tone": 4,
+            "base": 4
+          },
+          "swissC": {
+            "longitude": 158.81575097846053,
+            "speed": 11.8919447135509,
+            "gate": 40,
+            "line": 4,
+            "color": 2,
+            "tone": 4,
+            "base": 4
+          },
+          "longitudeResidualMas": 1.107612638406863,
+          "longitudeResidualArcsec": 0.001107612638406863,
+          "sameEpochResidualMas": 1.107612638406863,
+          "speedResidualDegreesPerDay": -9.100782286353137e-05,
+          "activationMismatches": []
+        },
+        {
+          "case": "G2005-jul11",
+          "side": "design",
+          "body": "moon",
+          "sharp": {
+            "longitude": 43.33649492001683,
+            "speed": 13.116845955887927,
+            "gate": 2,
+            "line": 1,
+            "color": 1,
+            "tone": 4,
+            "base": 2
+          },
+          "swissC": {
+            "longitude": 43.33649478713787,
+            "speed": 13.116916612596885,
+            "gate": 2,
+            "line": 1,
+            "color": 1,
+            "tone": 4,
+            "base": 2
+          },
+          "longitudeResidualMas": 0.47836427938818815,
+          "longitudeResidualArcsec": 0.00047836427938818815,
+          "sameEpochResidualMas": 0.5663206479766814,
+          "speedResidualDegreesPerDay": -7.065670895833875e-05,
+          "activationMismatches": []
+        }
+      ]
+    }
+  ]
+}

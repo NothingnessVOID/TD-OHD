@@ -1,0 +1,202 @@
+{
+  "method": "C swe_calc at default TT=UT+defaultDeltaT, perturbed by +/-0.002seconds. Design Sun target remains exactly88degrees preceding perturbed Personality Sun. This tests the documented maximum TT/TDB approximation effect alone; it does not identify Jovian flags/version.",
+  "defaultDTContext": "Independent C library2.10.03, source flags258, installedDE441 files, no user DeltaT override or supplemental DeltaT file loaded.",
+  "samples": [
+    {
+      "id": "G1995-feb",
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "currentDefaultDeltaTSeconds": 60.90908883864604,
+      "officialSun": {
+        "personality": "55.4",
+        "design": "34.6"
+      },
+      "baselineSun": {
+        "personality": "55.3",
+        "design": "34.6"
+      },
+      "ttPlusMinus2MillisecondProbes": [
+        {
+          "deltaTTSeconds": -0.002,
+          "personalityLongitude": 332.93749988995523,
+          "designLongitudeUsingExact88Arc": 244.93749988995523,
+          "personalityGateLine": "55.3",
+          "designGateLine": "34.6",
+          "deltaFromCalcUtDegrees": -2.3452685127267614e-08
+        },
+        {
+          "deltaTTSeconds": 0,
+          "personalityLongitude": 332.9374999134079,
+          "designLongitudeUsingExact88Arc": 244.93749991340792,
+          "personalityGateLine": "55.3",
+          "designGateLine": "34.6",
+          "deltaFromCalcUtDegrees": 0.0
+        },
+        {
+          "deltaTTSeconds": 0.002,
+          "personalityLongitude": 332.93749993686066,
+          "designLongitudeUsingExact88Arc": 244.93749993686066,
+          "personalityGateLine": "55.3",
+          "designGateLine": "34.6",
+          "deltaFromCalcUtDegrees": 2.3452741970686475e-08
+        }
+      ]
+    },
+    {
+      "id": "G2015-feb",
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "currentDefaultDeltaTSeconds": 67.68321575667953,
+      "officialSun": {
+        "personality": "13.3",
+        "design": "1.5"
+      },
+      "baselineSun": {
+        "personality": "13.2",
+        "design": "1.5"
+      },
+      "ttPlusMinus2MillisecondProbes": [
+        {
+          "deltaTTSeconds": -0.002,
+          "personalityLongitude": 315.12499862126737,
+          "designLongitudeUsingExact88Arc": 227.12499862126737,
+          "personalityGateLine": "13.2",
+          "designGateLine": "1.5",
+          "deltaFromCalcUtDegrees": -2.3605537080584327e-08
+        },
+        {
+          "deltaTTSeconds": 0,
+          "personalityLongitude": 315.1249986448729,
+          "designLongitudeUsingExact88Arc": 227.1249986448729,
+          "personalityGateLine": "13.2",
+          "designGateLine": "1.5",
+          "deltaFromCalcUtDegrees": 0.0
+        },
+        {
+          "deltaTTSeconds": 0.002,
+          "personalityLongitude": 315.1249986684784,
+          "designLongitudeUsingExact88Arc": 227.12499866847838,
+          "personalityGateLine": "13.2",
+          "designGateLine": "1.5",
+          "deltaFromCalcUtDegrees": 2.3605480237165466e-08
+        }
+      ]
+    },
+    {
+      "id": "G2015-tight",
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "currentDefaultDeltaTSeconds": 67.67261263190962,
+      "officialSun": {
+        "personality": "41.5",
+        "design": "44.1"
+      },
+      "baselineSun": {
+        "personality": "41.4",
+        "design": "44.1"
+      },
+      "ttPlusMinus2MillisecondProbes": [
+        {
+          "deltaTTSeconds": -0.002,
+          "personalityLongitude": 305.74999867910043,
+          "designLongitudeUsingExact88Arc": 217.74999867910043,
+          "personalityGateLine": "41.4",
+          "designGateLine": "44.1",
+          "deltaFromCalcUtDegrees": -2.367465867791907e-08
+        },
+        {
+          "deltaTTSeconds": 0,
+          "personalityLongitude": 305.7499987027751,
+          "designLongitudeUsingExact88Arc": 217.7499987027751,
+          "personalityGateLine": "41.4",
+          "designGateLine": "44.1",
+          "deltaFromCalcUtDegrees": 0.0
+        },
+        {
+          "deltaTTSeconds": 0.002,
+          "personalityLongitude": 305.7499987264498,
+          "designLongitudeUsingExact88Arc": 217.7499987264498,
+          "personalityGateLine": "41.4",
+          "designGateLine": "44.1",
+          "deltaFromCalcUtDegrees": 2.367471552133793e-08
+        }
+      ]
+    },
+    {
+      "id": "G2025-mar",
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "currentDefaultDeltaTSeconds": 68.9802019150298,
+      "officialSun": {
+        "personality": "36.4",
+        "design": "11.6"
+      },
+      "baselineSun": {
+        "personality": "36.3",
+        "design": "11.6"
+      },
+      "ttPlusMinus2MillisecondProbes": [
+        {
+          "deltaTTSeconds": -0.002,
+          "personalityLongitude": 355.4374998585571,
+          "designLongitudeUsingExact88Arc": 267.4374998585571,
+          "personalityGateLine": "36.3",
+          "designGateLine": "11.6",
+          "deltaFromCalcUtDegrees": -2.3184838937595487e-08
+        },
+        {
+          "deltaTTSeconds": 0,
+          "personalityLongitude": 355.4374998817419,
+          "designLongitudeUsingExact88Arc": 267.4374998817419,
+          "personalityGateLine": "36.3",
+          "designGateLine": "11.6",
+          "deltaFromCalcUtDegrees": 0.0
+        },
+        {
+          "deltaTTSeconds": 0.002,
+          "personalityLongitude": 355.43749990492665,
+          "designLongitudeUsingExact88Arc": 267.43749990492665,
+          "personalityGateLine": "36.3",
+          "designGateLine": "11.6",
+          "deltaFromCalcUtDegrees": 2.3184725250757765e-08
+        }
+      ]
+    },
+    {
+      "id": "G2025-tight",
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "currentDefaultDeltaTSeconds": 68.99478640185143,
+      "officialSun": {
+        "personality": "60.5",
+        "design": "28.1"
+      },
+      "baselineSun": {
+        "personality": "60.4",
+        "design": "28.1"
+      },
+      "ttPlusMinus2MillisecondProbes": [
+        {
+          "deltaTTSeconds": -0.002,
+          "personalityLongitude": 300.1249988564705,
+          "designLongitudeUsingExact88Arc": 212.12499885647048,
+          "personalityGateLine": "60.4",
+          "designGateLine": "28.1",
+          "deltaFromCalcUtDegrees": -2.369444018768263e-08
+        },
+        {
+          "deltaTTSeconds": 0,
+          "personalityLongitude": 300.1249988801649,
+          "designLongitudeUsingExact88Arc": 212.12499888016492,
+          "personalityGateLine": "60.4",
+          "designGateLine": "28.1",
+          "deltaFromCalcUtDegrees": 0.0
+        },
+        {
+          "deltaTTSeconds": 0.002,
+          "personalityLongitude": 300.12499890385925,
+          "designLongitudeUsingExact88Arc": 212.12499890385925,
+          "personalityGateLine": "60.4",
+          "designGateLine": "28.1",
+          "deltaFromCalcUtDegrees": 2.369432650084491e-08
+        }
+      ]
+    }
+  ],
+  "tdbStandaloneResolvesAnyResidual": false
+}

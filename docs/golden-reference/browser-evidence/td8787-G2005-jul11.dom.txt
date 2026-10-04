@@ -1,0 +1,366 @@
+- banner:
+  - link "◇ TD-OHD":
+    - /url: ./
+    - generic: ◇
+    - generic: TD-OHD
+  - navigation:
+    - button "我的图"
+    - button "行运"
+    - button "时间轴"
+    - button "关系"
+    - button "团队"
+    - button "资料库"
+  - combobox "已保存的人类图":
+    - option "当前人类图" [selected]
+    - option "[unrelated saved chart name omitted]"
+    - option "[unrelated saved chart name omitted]"
+    - option "＋ 新建人类图…"
+  - button "本机资料"
+  - generic "更多":
+- generic: 生产者
+- generic: 4/1 机会主义者／研究者 · 情绪权威 · 三分人定义
+- generic: 2005年7月11日 · 02:47 · London
+- generic: 策略： 等待回应
+- paragraph: 你拥有可持续的生命力。回应已经出现的事物，而非追逐尚未到来的事物，生活会运作得更顺畅。
+- generic: 设计
+- generic: 2005-04-10
+- button "设计太阳：第 42 闸门，第 1 爻":
+  - generic: ☉
+  - generic: "42.1"
+  - generic: ▲▼
+- button "设计地球：第 32 闸门，第 1 爻":
+  - generic: ⊕
+  - generic: "32.1"
+- button "设计北交点：第 42 闸门，第 3 爻":
+  - generic: ☊
+  - generic: "42.3"
+- button "设计南交点：第 32 闸门，第 3 爻":
+  - generic: ☋
+  - generic: "32.3"
+- button "设计月亮：第 2 闸门，第 1 爻":
+  - generic: ☽
+  - generic: "2.1"
+- button "设计水星：第 25 闸门，第 4 爻":
+  - generic: ☿
+  - generic: "25.4"
+- button "设计金星：第 42 闸门，第 4 爻":
+  - generic: ♀
+  - generic: "42.4"
+  - generic: ▼
+- button "设计火星：第 13 闸门，第 3 爻":
+  - generic: ♂
+  - generic: "13.3"
+- button "设计木星：第 48 闸门，第 4 爻":
+  - generic: ♃
+  - generic: "48.4"
+- button "设计土星：第 53 闸门，第 6 爻":
+  - generic: ♄
+  - generic: "53.6"
+- button "设计天王星：第 37 闸门，第 4 爻":
+  - generic: ♅
+  - generic: "37.4"
+  - generic: ▲
+- button "设计海王星：第 13 闸门，第 5 爻":
+  - generic: ♆
+  - generic: "13.5"
+  - generic: ▲
+- button "设计冥王星：第 11 闸门，第 2 爻":
+  - generic: ♇
+  - generic: "11.2"
+- 'generic "摄取: 右向 · 接收／开放"':
+  - generic: 摄取
+  - generic: →
+- 'generic "动机: 右向 · 接收／开放"':
+  - generic: 动机
+  - generic: →
+- img "人类图人体图。 类型：生产者。 人生角色 4/1。 情绪权威。 有定义中心：根部中心、骶骨中心、情绪中心（太阳神经丛）、直觉中心（脾脏）、意志力中心（心脏／自我）、G 中心（自我中心）、喉咙中心、逻辑中心（Ajna）。 已激活通道：11-56 好奇通道；25-51 启动通道；32-54 转化通道；37-40 社群通道；42-53 成熟通道。":
+  - button "头顶中心，未定义"
+  - button "逻辑中心（Ajna），已定义"
+  - button "喉咙中心，已定义"
+  - button "G 中心（自我中心），已定义"
+  - button "意志力中心（心脏／自我），已定义"
+  - button "直觉中心（脾脏），已定义"
+  - button "情绪中心（太阳神经丛），已定义"
+  - button "骶骨中心，已定义"
+  - button "根部中心，已定义"
+  - button "第 1 闸门 · 创造，未激活":
+    - generic: "1"
+  - button "第 2 闸门 · 接纳，已激活":
+    - generic: "2"
+  - button "第 3 闸门 · 秩序，未激活":
+    - generic: "3"
+  - button "第 4 闸门 · 形成答案，未激活":
+    - generic: "4"
+  - button "第 5 闸门 · 固定节奏，未激活":
+    - generic: "5"
+  - button "第 6 闸门 · 摩擦，未激活":
+    - generic: "6"
+  - button "第 7 闸门 · 自我角色，已激活":
+    - generic: "7"
+  - button "第 8 闸门 · 贡献，未激活":
+    - generic: "8"
+  - button "第 9 闸门 · 专注，未激活":
+    - generic: "9"
+  - button "第 10 闸门 · 自我行为，未激活":
+    - generic: "10"
+  - button "第 11 闸门 · 观念，已激活":
+    - generic: "11"
+  - button "第 12 闸门 · 谨慎，未激活":
+    - generic: "12"
+  - button "第 13 闸门 · 倾听者，已激活":
+    - generic: "13"
+  - button "第 14 闸门 · 力量技巧，未激活":
+    - generic: "14"
+  - button "第 15 闸门 · 极端，未激活":
+    - generic: "15"
+  - button "第 16 闸门 · 技能，未激活":
+    - generic: "16"
+  - button "第 17 闸门 · 意见，未激活":
+    - generic: "17"
+  - button "第 18 闸门 · 修正，未激活":
+    - generic: "18"
+  - button "第 19 闸门 · 需要，未激活":
+    - generic: "19"
+  - button "第 20 闸门 · 当下，未激活":
+    - generic: "20"
+  - button "第 21 闸门 · 猎人，未激活":
+    - generic: "21"
+  - button "第 22 闸门 · 开放，未激活":
+    - generic: "22"
+  - button "第 23 闸门 · 同化，未激活":
+    - generic: "23"
+  - button "第 24 闸门 · 合理化，未激活":
+    - generic: "24"
+  - button "第 25 闸门 · 纯真，已激活":
+    - generic: "25"
+  - button "第 26 闸门 · 巧术者，已激活":
+    - generic: "26"
+  - button "第 27 闸门 · 照顾，未激活":
+    - generic: "27"
+  - button "第 28 闸门 · 玩家，未激活":
+    - generic: "28"
+  - button "第 29 闸门 · 坚持，未激活":
+    - generic: "29"
+  - button "第 30 闸门 · 感受的辨认，未激活":
+    - generic: "30"
+  - button "第 31 闸门 · 领导，未激活":
+    - generic: "31"
+  - button "第 32 闸门 · 延续，已激活":
+    - generic: "32"
+  - button "第 33 闸门 · 隐私，未激活":
+    - generic: "33"
+  - button "第 34 闸门 · 力量，未激活":
+    - generic: "34"
+  - button "第 35 闸门 · 改变，未激活":
+    - generic: "35"
+  - button "第 36 闸门 · 危机，未激活":
+    - generic: "36"
+  - button "第 37 闸门 · 友谊，已激活":
+    - generic: "37"
+  - button "第 38 闸门 · 战士，未激活":
+    - generic: "38"
+  - button "第 39 闸门 · 挑衅，未激活":
+    - generic: "39"
+  - button "第 40 闸门 · 独处，已激活":
+    - generic: "40"
+  - button "第 41 闸门 · 收缩，未激活":
+    - generic: "41"
+  - button "第 42 闸门 · 成长，已激活":
+    - generic: "42"
+  - button "第 43 闸门 · 洞见，未激活":
+    - generic: "43"
+  - button "第 44 闸门 · 相遇，未激活":
+    - generic: "44"
+  - button "第 45 闸门 · 聚集，未激活":
+    - generic: "45"
+  - button "第 46 闸门 · 身体之爱，未激活":
+    - generic: "46"
+  - button "第 47 闸门 · 领悟，未激活":
+    - generic: "47"
+  - button "第 48 闸门 · 深度，已激活":
+    - generic: "48"
+  - button "第 49 闸门 · 原则，未激活":
+    - generic: "49"
+  - button "第 50 闸门 · 价值，未激活":
+    - generic: "50"
+  - button "第 51 闸门 · 震荡，已激活":
+    - generic: "51"
+  - button "第 52 闸门 · 静止，未激活":
+    - generic: "52"
+  - button "第 53 闸门 · 开始，已激活":
+    - generic: "53"
+  - button "第 54 闸门 · 野心，已激活":
+    - generic: "54"
+  - button "第 55 闸门 · 精神，未激活":
+    - generic: "55"
+  - button "第 56 闸门 · 刺激，已激活":
+    - generic: "56"
+  - button "第 57 闸门 · 直觉，已激活":
+    - generic: "57"
+  - button "第 58 闸门 · 活力，未激活":
+    - generic: "58"
+  - button "第 59 闸门 · 性，未激活":
+    - generic: "59"
+  - button "第 60 闸门 · 限制，未激活":
+    - generic: "60"
+  - button "第 61 闸门 · 神秘，未激活":
+    - generic: "61"
+  - button "第 62 闸门 · 细节，未激活":
+    - generic: "62"
+  - button "第 63 闸门 · 怀疑，未激活":
+    - generic: "63"
+  - button "第 64 闸门 · 困惑，未激活":
+    - generic: "64"
+- 'generic "环境: 右向 · 接收／开放"':
+  - generic: 环境
+  - generic: →
+- 'generic "视角: 左向 · 聚焦／主动"':
+  - generic: 视角
+  - generic: ←
+- generic: 人格
+- generic: 2005-07-11
+- button "人格太阳：第 53 闸门，第 4 爻":
+  - generic: ▼
+  - generic: "53.4"
+  - generic: ☉
+- button "人格地球：第 54 闸门，第 4 爻":
+  - generic: "?"
+  - generic: "54.4"
+  - generic: ⊕
+- button "人格北交点：第 51 闸门，第 3 爻":
+  - generic: "51.3"
+  - generic: ☊
+- button "人格南交点：第 57 闸门，第 3 爻":
+  - generic: "57.3"
+  - generic: ☋
+- button "人格月亮：第 40 闸门，第 4 爻":
+  - generic: ▲
+  - generic: "40.4"
+  - generic: ☽
+- button "人格水星：第 7 闸门，第 2 爻":
+  - generic: ▼
+  - generic: "7.2"
+  - generic: ☿
+- button "人格金星：第 7 闸门，第 3 爻":
+  - generic: ▼
+  - generic: "7.3"
+  - generic: ♀
+- button "人格火星：第 51 闸门，第 5 爻":
+  - generic: ▼
+  - generic: "51.5"
+  - generic: ♂
+- button "人格木星：第 48 闸门，第 2 爻":
+  - generic: "48.2"
+  - generic: ♃
+- button "人格土星：第 56 闸门，第 4 爻":
+  - generic: "56.4"
+  - generic: ♄
+- button "人格天王星：第 37 闸门，第 6 爻":
+  - generic: "37.6"
+  - generic: ♅
+- button "人格海王星：第 13 闸门，第 4 爻":
+  - generic: "13.4"
+  - generic: ♆
+- button "人格冥王星：第 26 闸门，第 6 爻":
+  - generic: "26.6"
+  - generic: ♇
+- generic: 基础信息
+- text: 你的图表整体稳定。只有一个细节，即你的
+- strong: 人生角色、四箭头
+- text: ，恰好落在分界线上，因此出生时间若相差 15 分钟以上，可能只会影响这一项。其他内容都不会改变。如果你的时间来自出生证明，连这一项也已确定。
+- generic: 类型
+- generic: 生产者
+- generic: 拥有生命力、回应生活所带来事物的人
+- generic: 策略
+- generic: 等待回应
+- generic: 标志： 满足 · 非自己主题： 挫败
+- generic: 内在权威
+- generic: 情绪权威
+- generic: 等待情绪随时间沉淀而清晰
+- generic: 人生角色
+- generic: 4/1 机会主义者／研究者
+- generic: 通过研究发挥影响
+- generic: 定义
+- generic: 三分人定义
+- generic: 8 个有定义中心, 5 条通道
+- generic: 主要回路
+- generic: 集体回路（2 条通道）
+- generic: 化身十字
+- text: 并列化身十字之开始
+- text: （53/54 | 42/32）
+- generic: 闸门 53 / 54 / 42 / 32
+- generic: 四箭头
+- generic: 标准写法： PRL DRR
+- text: 人格
+- generic: Personality
+- text: R
+- generic "Motivation": 动机
+- text: L
+- generic "Perspective": 视角
+- text: 设计
+- generic: Design
+- text: R
+- generic "Determination": 摄取
+- text: R
+- generic "Environment": 环境
+- button "能量中心"
+- button "通道"
+- button "闸门"
+- button "行星"
+- button "四箭头"
+- button "化身十字"
+- generic: 能量中心（8 个有定义 · 0 个未定义 · 1 个全开放）
+- paragraph: 有定义中心是你持续向外散发的能量。未定义与全开放中心会接收并放大周围的能量，也是你最深刻的学习所在。点击任一中心，在人体图上查看它。
+- button "根部中心，有定义":
+  - generic: 有定义
+  - generic: 根部中心
+  - paragraph: 你的肾上腺压力较稳定，会以自己可靠的方式应对压力。
+- button "骶骨中心，有定义":
+  - generic: 有定义
+  - generic: 骶骨中心
+  - paragraph: 你拥有可持续的生命力；回应热爱的事物时，能够持续工作。
+- button "情绪中心（太阳神经丛），有定义":
+  - generic: 有定义
+  - generic: 情绪中心（太阳神经丛）
+  - paragraph: 你的情绪波稳定存在，会通过周期性变化的感受体验生活。
+- button "直觉中心（脾脏），有定义":
+  - generic: 有定义
+  - generic: 直觉中心（脾脏）
+  - paragraph: 你的直觉觉察与免疫系统稳定，拥有可靠的本能。
+- button "意志力中心（心脏／自我），有定义":
+  - generic: 有定义
+  - generic: 意志力中心（心脏／自我）
+  - paragraph: 你的意志力与自我价值感稳定，能够可靠地作出并履行承诺。
+- button "G 中心（自我中心），有定义":
+  - generic: 有定义
+  - generic: G 中心（自我中心）
+  - paragraph: 你的身份感与方向感稳定，知道自己是谁、要往哪里去。
+- button "喉咙中心，有定义":
+  - generic: 有定义
+  - generic: 喉咙中心
+  - paragraph: 你的声音与表达方式稳定，能够稳定地沟通并使事情显现。
+- button "逻辑中心（Ajna），有定义":
+  - generic: 有定义
+  - generic: 逻辑中心（Ajna）
+  - paragraph: 你处理信息并形成概念的方式稳定，有可靠的思维框架。
+- button "头顶中心，全开放":
+  - generic: 全开放
+  - generic: 头顶中心
+  - paragraph: 你对各种形式的灵感完全敞开，也极易受到他人思维压力的影响。
+  - paragraph: 我是否正试图回答那些与自己无关的问题？
+- text: ⓘ ▸ ⓘ
+- contentinfo:
+  - link "探索人类图":
+    - /url: /human-design
+  - text: · 类型、能量中心、闸门与通道
+  - text: 开源项目 ·
+  - link "GitHub":
+    - /url: https://github.com/NothingnessVOID/TD-OHD
+  - text: 基于
+  - link "Open Human Design":
+    - /url: https://github.com/Unforced-Dev/open-human-design
+  - text: 由
+  - link "SharpAstrology + Swiss":
+    - /url: https://github.com/SharpAstrology
+  - text: 驱动
+  - generic: 本机密码保护 · 自动保存 · 同一台电脑跨浏览器共用

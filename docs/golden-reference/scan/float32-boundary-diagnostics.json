@@ -1,0 +1,408 @@
+{
+  "formula": "For a binary-exact HD target L, hypothetical nearest float32 reaches L when double Sun longitude \u003E= (L \u002B BitDecrementFloat32(L))/2; advance approximately ULP(L)/(2 * dLongitude/dSeconds). Tie rounding can choose either neighboring float based on even significand, so this is a diagnostic threshold, never a production correction.",
+  "records": [
+    {
+      "id": "1985-P41.4-to-41.5",
+      "nativeRootUtc": "1985-01-25T18:34:00.2890739Z",
+      "targetLongitude": 305.75,
+      "previousFloat32Longitude": 305.7499694824219,
+      "float32EffectiveTargetLongitude": 305.74998474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "1985-01-25T18:33:58.9930228Z",
+      "diagnosticFloat32AdvanceSeconds": 1.2960511,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1769621762406738E-05,
+      "firstOrderAdvanceSeconds": 1.2964553466992443,
+      "minuteUtc": "1985-01-25T18:34:00.0000000Z",
+      "minuteDoubleLongitude": 305.7499965996151,
+      "minuteFloat32Longitude": 305.75,
+      "minuteDoubleActivation": {
+        "gate": 41,
+        "line": 4,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 305.7499965996151
+      },
+      "minuteFloat32Activation": {
+        "gate": 41,
+        "line": 5,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 305.75
+      }
+    },
+    {
+      "id": "1985-P34.3-to-34.4",
+      "nativeRootUtc": "1985-11-25T06:36:00.3550490Z",
+      "targetLongitude": 242.9375,
+      "previousFloat32Longitude": 242.93748474121094,
+      "float32EffectiveTargetLongitude": 242.93749237060547,
+      "float32UlpDegrees": 1.52587890625E-05,
+      "diagnosticFloat32RootUtc": "1985-11-25T06:35:59.7040784Z",
+      "diagnosticFloat32AdvanceSeconds": 0.6509706,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1703754529198325E-05,
+      "firstOrderAdvanceSeconds": 0.6518758157663268,
+      "minuteUtc": "1985-11-25T06:36:00.0000000Z",
+      "minuteDoubleLongitude": 242.93749584579962,
+      "minuteFloat32Longitude": 242.9375,
+      "minuteDoubleActivation": {
+        "gate": 34,
+        "line": 3,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 242.93749584579962
+      },
+      "minuteFloat32Activation": {
+        "gate": 34,
+        "line": 4,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 242.9375
+      }
+    },
+    {
+      "id": "1995-P55.3-to-55.4",
+      "nativeRootUtc": "1995-02-22T01:08:00.1700232Z",
+      "targetLongitude": 332.9375,
+      "previousFloat32Longitude": 332.9374694824219,
+      "float32EffectiveTargetLongitude": 332.93748474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "1995-02-22T01:07:58.8610631Z",
+      "diagnosticFloat32AdvanceSeconds": 1.3089601,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1658402682238981E-05,
+      "firstOrderAdvanceSeconds": 1.3088232992454476,
+      "minuteUtc": "1995-02-22T01:08:00.0000000Z",
+      "minuteDoubleLongitude": 332.9374980286018,
+      "minuteFloat32Longitude": 332.9375,
+      "minuteDoubleActivation": {
+        "gate": 55,
+        "line": 3,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 332.9374980286018
+      },
+      "minuteFloat32Activation": {
+        "gate": 55,
+        "line": 4,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 332.9375
+      }
+    },
+    {
+      "id": "1995-P51.6-to-42.1",
+      "nativeRootUtc": "1995-04-11T02:30:00.3120747Z",
+      "targetLongitude": 20.75,
+      "previousFloat32Longitude": 20.749998092651367,
+      "float32EffectiveTargetLongitude": 20.749999046325684,
+      "float32UlpDegrees": 1.9073486328125E-06,
+      "diagnosticFloat32RootUtc": "1995-04-11T02:30:00.2280903Z",
+      "diagnosticFloat32AdvanceSeconds": 0.0839844,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1357390554215623E-05,
+      "firstOrderAdvanceSeconds": 0.08396949209889294,
+      "minuteUtc": "1995-04-11T02:30:00.0000000Z",
+      "minuteDoubleLongitude": 20.749996461526724,
+      "minuteFloat32Longitude": 20.749996185302734,
+      "minuteDoubleActivation": {
+        "gate": 51,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 20.749996461526724
+      },
+      "minuteFloat32Activation": {
+        "gate": 51,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 20.749996185302734
+      }
+    },
+    {
+      "id": "1995-P15.2-to-15.3",
+      "nativeRootUtc": "1995-06-21T23:43:00.0660429Z",
+      "targetLongitude": 90.125,
+      "previousFloat32Longitude": 90.12499237060547,
+      "float32EffectiveTargetLongitude": 90.12499618530273,
+      "float32UlpDegrees": 7.62939453125E-06,
+      "diagnosticFloat32RootUtc": "1995-06-21T23:42:59.7200345Z",
+      "diagnosticFloat32AdvanceSeconds": 0.3460084,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1044709300378485E-05,
+      "firstOrderAdvanceSeconds": 0.3453868419600936,
+      "minuteUtc": "1995-06-21T23:43:00.0000000Z",
+      "minuteDoubleLongitude": 90.12499928156265,
+      "minuteFloat32Longitude": 90.125,
+      "minuteDoubleActivation": {
+        "gate": 15,
+        "line": 2,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 90.12499928156265
+      },
+      "minuteFloat32Activation": {
+        "gate": 15,
+        "line": 3,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 90.125
+      }
+    },
+    {
+      "id": "1995-P26.6-to-11.1",
+      "nativeRootUtc": "1995-12-15T02:27:00.3480539Z",
+      "targetLongitude": 262.625,
+      "previousFloat32Longitude": 262.6249694824219,
+      "float32EffectiveTargetLongitude": 262.62498474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "1995-12-15T02:26:59.0520028Z",
+      "diagnosticFloat32AdvanceSeconds": 1.2960511,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1774254248564376E-05,
+      "firstOrderAdvanceSeconds": 1.2959452667127933,
+      "minuteUtc": "1995-12-15T02:27:00.0000000Z",
+      "minuteDoubleLongitude": 262.62499591045446,
+      "minuteFloat32Longitude": 262.625,
+      "minuteDoubleActivation": {
+        "gate": 26,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 262.62499591045446
+      },
+      "minuteFloat32Activation": {
+        "gate": 11,
+        "line": 1,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 262.625
+      }
+    },
+    {
+      "id": "2005-P24.6-to-2.1",
+      "nativeRootUtc": "2005-05-03T14:33:00.4210154Z",
+      "targetLongitude": 43.25,
+      "previousFloat32Longitude": 43.249996185302734,
+      "float32EffectiveTargetLongitude": 43.24999809265137,
+      "float32UlpDegrees": 3.814697265625E-06,
+      "diagnosticFloat32RootUtc": "2005-05-03T14:33:00.2510629Z",
+      "diagnosticFloat32AdvanceSeconds": 0.1699525,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1223023224301206E-05,
+      "firstOrderAdvanceSeconds": 0.16994962896294458,
+      "minuteUtc": "2005-05-03T14:33:00.0000000Z",
+      "minuteDoubleLongitude": 43.249995281926694,
+      "minuteFloat32Longitude": 43.249996185302734,
+      "minuteDoubleActivation": {
+        "gate": 24,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 43.249995281926694
+      },
+      "minuteFloat32Activation": {
+        "gate": 24,
+        "line": 6,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 43.249996185302734
+      }
+    },
+    {
+      "id": "2005-P53.4-to-53.5",
+      "nativeRootUtc": "2005-07-11T01:47:00.2270148Z",
+      "targetLongitude": 108.875,
+      "previousFloat32Longitude": 108.87499237060547,
+      "float32EffectiveTargetLongitude": 108.87499618530273,
+      "float32UlpDegrees": 7.62939453125E-06,
+      "diagnosticFloat32RootUtc": "2005-07-11T01:46:59.8810064Z",
+      "diagnosticFloat32AdvanceSeconds": 0.3460084,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1038884640986641E-05,
+      "firstOrderAdvanceSeconds": 0.34556908507416445,
+      "minuteUtc": "2005-07-11T01:47:00.0000000Z",
+      "minuteDoubleLongitude": 108.87499749948556,
+      "minuteFloat32Longitude": 108.875,
+      "minuteDoubleActivation": {
+        "gate": 53,
+        "line": 4,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 108.87499749948556
+      },
+      "minuteFloat32Activation": {
+        "gate": 53,
+        "line": 5,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 108.875
+      }
+    },
+    {
+      "id": "2005-P56.2-to-56.3",
+      "nativeRootUtc": "2005-07-20T21:40:00.0910249Z",
+      "targetLongitude": 118.25,
+      "previousFloat32Longitude": 118.24999237060547,
+      "float32EffectiveTargetLongitude": 118.24999618530273,
+      "float32UlpDegrees": 7.62939453125E-06,
+      "diagnosticFloat32RootUtc": "2005-07-20T21:39:59.7450165Z",
+      "diagnosticFloat32AdvanceSeconds": 0.3460084,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1043696434972125E-05,
+      "firstOrderAdvanceSeconds": 0.34541851888874636,
+      "minuteUtc": "2005-07-20T21:40:00.0000000Z",
+      "minuteDoubleLongitude": 118.24999900189322,
+      "minuteFloat32Longitude": 118.25,
+      "minuteDoubleActivation": {
+        "gate": 56,
+        "line": 2,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 118.24999900189322
+      },
+      "minuteFloat32Activation": {
+        "gate": 56,
+        "line": 3,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 118.25
+      }
+    },
+    {
+      "id": "2015-P41.4-to-41.5",
+      "nativeRootUtc": "2015-01-26T01:20:00.2710459Z",
+      "targetLongitude": 305.75,
+      "previousFloat32Longitude": 305.7499694824219,
+      "float32EffectiveTargetLongitude": 305.74998474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "2015-01-26T01:19:58.9740793Z",
+      "diagnosticFloat32AdvanceSeconds": 1.2969666,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1768747428201702E-05,
+      "firstOrderAdvanceSeconds": 1.2965516641078587,
+      "minuteUtc": "2015-01-26T01:20:00.0000000Z",
+      "minuteDoubleLongitude": 305.7499968177302,
+      "minuteFloat32Longitude": 305.75,
+      "minuteDoubleActivation": {
+        "gate": 41,
+        "line": 4,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 305.7499968177302
+      },
+      "minuteFloat32Activation": {
+        "gate": 41,
+        "line": 5,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 305.75
+      }
+    },
+    {
+      "id": "2015-P13.2-to-13.3",
+      "nativeRootUtc": "2015-02-04T06:56:00.2770056Z",
+      "targetLongitude": 315.125,
+      "previousFloat32Longitude": 315.1249694824219,
+      "float32EffectiveTargetLongitude": 315.12498474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "2015-02-04T06:55:58.9760106Z",
+      "diagnosticFloat32AdvanceSeconds": 1.300995,
+      "solarLongitudeSpeedDegreesPerSecond": 1.173433499938407E-05,
+      "firstOrderAdvanceSeconds": 1.3003539666543462,
+      "minuteUtc": "2015-02-04T06:56:00.0000000Z",
+      "minuteDoubleLongitude": 315.124996759837,
+      "minuteFloat32Longitude": 315.125,
+      "minuteDoubleActivation": {
+        "gate": 13,
+        "line": 2,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 315.124996759837
+      },
+      "minuteFloat32Activation": {
+        "gate": 13,
+        "line": 3,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 315.125
+      }
+    },
+    {
+      "id": "2025-P60.4-to-60.5",
+      "nativeRootUtc": "2025-01-19T22:57:00.2560274Z",
+      "targetLongitude": 300.125,
+      "previousFloat32Longitude": 300.1249694824219,
+      "float32EffectiveTargetLongitude": 300.12498474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "2025-01-19T22:56:58.9600679Z",
+      "diagnosticFloat32AdvanceSeconds": 1.2959595,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1778536804267029E-05,
+      "firstOrderAdvanceSeconds": 1.2954740742476751,
+      "minuteUtc": "2025-01-19T22:57:00.0000000Z",
+      "minuteDoubleLongitude": 300.1249969949901,
+      "minuteFloat32Longitude": 300.125,
+      "minuteDoubleActivation": {
+        "gate": 60,
+        "line": 4,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 300.1249969949901
+      },
+      "minuteFloat32Activation": {
+        "gate": 60,
+        "line": 5,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 300.125
+      }
+    },
+    {
+      "id": "2025-P36.3-to-36.4",
+      "nativeRootUtc": "2025-03-15T18:56:00.1740089Z",
+      "targetLongitude": 355.4375,
+      "previousFloat32Longitude": 355.4374694824219,
+      "float32EffectiveTargetLongitude": 355.43748474121094,
+      "float32UlpDegrees": 3.0517578125E-05,
+      "diagnosticFloat32RootUtc": "2025-03-15T18:55:58.8500342Z",
+      "diagnosticFloat32AdvanceSeconds": 1.3239747,
+      "solarLongitudeSpeedDegreesPerSecond": 1.1525223413855201E-05,
+      "firstOrderAdvanceSeconds": 1.3239473556891264,
+      "minuteUtc": "2025-03-15T18:56:00.0000000Z",
+      "minuteDoubleLongitude": 355.43749799656126,
+      "minuteFloat32Longitude": 355.4375,
+      "minuteDoubleActivation": {
+        "gate": 36,
+        "line": 3,
+        "color": 6,
+        "tone": 6,
+        "base": 5,
+        "longitude": 355.43749799656126
+      },
+      "minuteFloat32Activation": {
+        "gate": 36,
+        "line": 4,
+        "color": 1,
+        "tone": 1,
+        "base": 5,
+        "longitude": 355.4375
+      }
+    }
+  ]
+}

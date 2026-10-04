@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "sourcePolicy": "Official primary sources only; no production changes, no new Jovian or Sharp WebApp inference",
+  "sources": [
+    {
+      "id": "swiss-time-api",
+      "url": "https://www.astro.com/swisseph/swephprg.htm",
+      "role": "Official TT/UT1 API semantics; pinned source remains executable authority"
+    },
+    {
+      "id": "utc-converter",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.c#L375",
+      "role": "Actual UTC conversion, leap-second table and outdated-table fallback"
+    },
+    {
+      "id": "official-presets",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.c#L4174",
+      "role": "Automatically parsed official legacy definitions and setter; getter follows at line 4400"
+    },
+    {
+      "id": "model-symbols",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephexp.h#L504",
+      "role": "Automatically parsed selector indices, values and DEFAULT aliases"
+    },
+    {
+      "id": "delta-t-routing",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.c#L2578",
+      "role": "Modern dates share deltat_aa table across legacy model selectors"
+    },
+    {
+      "id": "horizons-files",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.h#L66",
+      "role": "IAU1980 EOP requirement; official USNO finals source"
+    },
+    {
+      "id": "horizons-fallback",
+      "url": "https://github.com/aloistr/swisseph/blob/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.c#L6119",
+      "role": "JPLHOR degradation to APPROX when EOP missing; full mode auto ICRS"
+    },
+    {
+      "id": "c04-data",
+      "url": "https://data.iers.org/products/eop/long-term/c04_14/iau1980/eopc04_14.62-now",
+      "role": "Downloaded official IERS 14 C04 IAU1980 snapshot; hashes/selected rows in eop-provenance.json"
+    },
+    {
+      "id": "c04-index",
+      "url": "https://data.iers.org/products/eop/long-term/c04_14/iau1980/",
+      "role": "Official directory identifies IAU1980 series"
+    },
+    {
+      "id": "finals-data",
+      "url": "https://maia.usno.navy.mil/ser7/finals.all",
+      "role": "Downloaded official USNO IAU1980 finals snapshot"
+    },
+    {
+      "id": "finals-format",
+      "url": "https://maia.usno.navy.mil/ser7/readme.finals",
+      "role": "DUT1/dPsi/dEpsilon units and fixed-width layout"
+    },
+    {
+      "id": "raw441",
+      "url": "https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de441/linux_m13000p17000.441",
+      "role": "Previously downloaded raw DE441, full hash verified again"
+    },
+    {
+      "id": "jovian",
+      "url": "https://jovianarchive.com/pages/get-your-human-design-chart",
+      "role": "Prior actual browser Golden observations retained; no claimed backend longitude/model access"
+    }
+  ],
+  "frozenJovianEvidence": "../golden-cases.json",
+  "previousAudit": "../root-cause-v2/README.md",
+  "eopSnapshotEvidence": "eop-provenance.json"
+}

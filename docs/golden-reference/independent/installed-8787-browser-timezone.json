@@ -1,0 +1,52 @@
+{
+  "url": "http://127.0.0.1:8787/",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+  "timezonePlatform": "Asia/Shanghai",
+  "dates": [
+    {
+      "date": "1985-01-05",
+      "time": "12:33",
+      "zone": "Europe/London",
+      "expectedUtc": "1985-01-05T12:33:00.0000000Z",
+      "offsetHours": 0,
+      "resolvedUtc": "1985-01-05T12:33:00.000Z",
+      "formattedUtcBackToZone": "05/01/1985, 12:33:00 GMT+0"
+    },
+    {
+      "date": "1995-01-11",
+      "time": "11:00",
+      "zone": "Europe/London",
+      "expectedUtc": "1995-01-11T11:00:00.0000000Z",
+      "offsetHours": 0,
+      "resolvedUtc": "1995-01-11T11:00:00.000Z",
+      "formattedUtcBackToZone": "11/01/1995, 11:00:00 GMT+0"
+    },
+    {
+      "date": "2005-01-19",
+      "time": "04:13",
+      "zone": "Europe/London",
+      "expectedUtc": "2005-01-19T04:13:00.0000000Z",
+      "offsetHours": 0,
+      "resolvedUtc": "2005-01-19T04:13:00.000Z",
+      "formattedUtcBackToZone": "19/01/2005, 04:13:00 GMT+0"
+    },
+    {
+      "date": "2015-01-16",
+      "time": "20:20",
+      "zone": "Europe/London",
+      "expectedUtc": "2015-01-16T20:20:00.0000000Z",
+      "offsetHours": 0,
+      "resolvedUtc": "2015-01-16T20:20:00.000Z",
+      "formattedUtcBackToZone": "16/01/2015, 20:20:00 GMT+0"
+    },
+    {
+      "date": "2025-01-21",
+      "time": "19:12",
+      "zone": "Europe/London",
+      "expectedUtc": "2025-01-21T19:12:00.0000000Z",
+      "offsetHours": 0,
+      "resolvedUtc": "2025-01-21T19:12:00.000Z",
+      "formattedUtcBackToZone": "21/01/2025, 19:12:00 GMT+0"
+    }
+  ]
+}

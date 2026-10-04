@@ -1,0 +1,138 @@
+{
+  "installation8787": [
+    {
+      "path": "engine/_framework/dotnet.js",
+      "sha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpAstrology.SwissEph.9e09zmgwb4.wasm",
+      "sha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpChartEngine.2914v7b7y7.wasm",
+      "sha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+      "unchanged": true
+    },
+    {
+      "path": "engine/_framework/SharpTransitCore.p6tgwic1v4.wasm",
+      "sha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+      "unchanged": true
+    },
+    {
+      "path": "engine/ephe/sepl_18.se1",
+      "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "unchanged": true
+    },
+    {
+      "path": "engine/ephe/semo_18.se1",
+      "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "unchanged": true
+    }
+  ],
+  "annualFiles": [
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2021.591ecf157b7aa3a7.json",
+      "sha256": "591ecf157b7aa3a7f30ca7546d6e764b26cb3d632034d51d70cbb8da26319ec2",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2022.372e3327533752d7.json",
+      "sha256": "372e3327533752d766192963f3fcd8243fb81b065c94df778df4d2d4c1f08cd9",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2023.6c35a1c86b130566.json",
+      "sha256": "6c35a1c86b130566e8eeee18e17f2e09b23808505883d86558cb15f03283f101",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2024.44f45e76bfcf8ba0.json",
+      "sha256": "44f45e76bfcf8ba0eb8ca966685a3bcc490728d25e942f668fd3adb72f54014d",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2025.84b380283c0e5072.json",
+      "sha256": "84b380283c0e507236dd2ba546547d1e67f2955ea6ba49bc0a45b047feec19c7",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2026.a5213a838e5ed601.json",
+      "sha256": "a5213a838e5ed6010636fb5221092ab02beaf0216124e2f7b750fa8294535d3a",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2027.8e6a16006c7478e6.json",
+      "sha256": "8e6a16006c7478e6de8586fb86407c7eab7670289c7f247e0d8cd0b513d7623b",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2028.e4e520a3dea5f478.json",
+      "sha256": "e4e520a3dea5f478c60155c0d058d39b26d62f73f64518db7f726f2d601d872a",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2029.6a824073b5270b3c.json",
+      "sha256": "6a824073b5270b3cddbfc590324b87904857c8064c626717b8d7cdeb24b38851",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2030.ded612868fa22d66.json",
+      "sha256": "ded612868fa22d6675d1a5538586fcc066c705f63daa63273bb8ab70a9a34b53",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2031.15aa746d8a393b20.json",
+      "sha256": "15aa746d8a393b20e1d69d101443aa77badffae9ec590d305db07fa892220d4d",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2032.53b8fec5e9d5d90f.json",
+      "sha256": "53b8fec5e9d5d90f65e439fde06902d7877ebeffd92a21fc58b3a5e87f4fc6bf",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2033.e7988f2218a7a29f.json",
+      "sha256": "e7988f2218a7a29ffc335723dea798cf216a0ce75cb9aec172eb30c1dc90f3a4",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2034.77b2f5a3824064c4.json",
+      "sha256": "77b2f5a3824064c47f7e59c7e7948ae44900545a168d483aea1f9ee740e0a51a",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2035.f0fafdb476fb43e4.json",
+      "sha256": "f0fafdb476fb43e4d398245a16c48ebfa297a661db7a36bd73a71bcebf76a53d",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/5da02472c5f378854648/2036.c3a222c43ac31fe8.json",
+      "sha256": "c3a222c43ac31fe8f7f6bff220a8ad3fbf06d46d2e677c986ce2e60d15661386",
+      "unchanged": true
+    },
+    {
+      "path": "public/transit-data/manifest.json",
+      "sha256": "1bb1204f0b508fc1f0e4accc7a602f2a985c819954e2ac7177c2a46cb38dc19f",
+      "unchanged": true
+    }
+  ],
+  "baseline": "fb5743b87346e8d16810b7c4e15a3e5d01a0f3a9",
+  "baselineWorktreeClean": true,
+  "originMain": "7734b942160497c1c28d46002de0edd91df53230",
+  "mainMerged": false,
+  "deployed": false,
+  "formalAnnualRegenerated": false,
+  "goldenSha256": "431dbbc6af5d14cade31538177a6677f692ba5001fda3d97d811cb3219b1d8bb"
+}

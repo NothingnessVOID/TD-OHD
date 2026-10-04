@@ -12,7 +12,7 @@ const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || '
 const native = new SharpNativeClient();
 const instants = Array.from({ length: 16 }, (_, index) => 2021 + index)
   .flatMap(year => [`${year}-01-01T00:00:01Z`, `${year}-06-15T12:30:25Z`, `${year}-12-31T23:59:59Z`]);
-instants.push('2026-09-23T06:10:19Z', '2026-09-23T06:10:20Z', '2026-11-01T05:30:25Z', '2026-11-01T06:30:25Z');
+instants.push('2026-09-23T06:10:48Z', '2026-09-23T06:10:49Z', '2026-11-01T05:30:25Z', '2026-11-01T06:30:25Z');
 const fields = ['gate', 'line', 'color', 'tone', 'base'];
 function sameActivations(actual, expected, label) {
   assert.deepEqual(Object.keys(actual).sort(), Object.keys(expected).sort(), `${label}: 13 planets`);
