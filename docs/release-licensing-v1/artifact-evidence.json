@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-04T04:36:29.882055+00:00",
+  "liveUrl": "https://td-ohd.netlify.app",
+  "http": "public GET without cookies/session/auth",
+  "liveArtifacts": [
+    {
+      "name": "dotnet.native.b6l13xorvf.js",
+      "resourceGroup": "jsModuleNative",
+      "sha256": "8d975da1b2c13360b795085843ad7149027f5aa0f779008edd1ce81c668e8f1d",
+      "path": "engine/_framework/dotnet.native.b6l13xorvf.js",
+      "bytes": 145050
+    },
+    {
+      "name": "dotnet.native.rw4kynp763.wasm",
+      "hash": "sha256-JTxXd17wbrHKV/375moHFUFc3a/ofVTPPqSTk6KwNj0=",
+      "cache": "force-cache",
+      "resourceGroup": "wasmNative",
+      "sha256": "253c57775ef06eb1ca57fdfbe66a0715415cddafe87d54cf3ea49393a2b0363d",
+      "path": "engine/_framework/dotnet.native.rw4kynp763.wasm",
+      "bytes": 3001422
+    },
+    {
+      "virtualPath": "icudt_CJK.dat",
+      "name": "icudt_CJK.tjcz0u77k5.dat",
+      "hash": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "sha256": "4992ed42745cd09930a8769bd155153fb4f7b813d2798cf1cc39e9c4fa549c79",
+      "path": "engine/_framework/icudt_CJK.tjcz0u77k5.dat",
+      "bytes": 956416
+    },
+    {
+      "virtualPath": "icudt_EFIGS.dat",
+      "name": "icudt_EFIGS.tptq2av103.dat",
+      "hash": "sha256-8fItetYY8kQ0ww6oxwTLiT3oXlBwHKumbeP2pRF4yTc=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "sha256": "f1f22d7ad618f24434c30ea8c704cb893de85e50701caba66de3f6a51178c937",
+      "path": "engine/_framework/icudt_EFIGS.tptq2av103.dat",
+      "bytes": 550832
+    },
+    {
+      "virtualPath": "icudt_no_CJK.dat",
+      "name": "icudt_no_CJK.lfu7j35m59.dat",
+      "hash": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "sha256": "2fbb15ecd1183f7eff42bd853c278fa39709a918135d1c061eec05e50fb435fb",
+      "path": "engine/_framework/icudt_no_CJK.lfu7j35m59.dat",
+      "bytes": 1107168
+    },
+    {
+      "virtualPath": "SharpAstrology.Base.wasm",
+      "name": "SharpAstrology.Base.a50fa6ax0l.wasm",
+      "hash": "sha256-frALQKAm6YBAs0zhYE8WQWrmwxV4fCYLhSUqkdqiTrA=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "bytes": 9493
+    },
+    {
+      "virtualPath": "SharpAstrology.HumanDesign.wasm",
+      "name": "SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "hash": "sha256-DYqbp4gHZL4Ldqk7NkjMd2nLsFPzVfooJ+BGKFE8eqw=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "bytes": 43797
+    },
+    {
+      "virtualPath": "SharpAstrology.SwissEph.wasm",
+      "name": "SharpAstrology.SwissEph.pscds59khe.wasm",
+      "hash": "sha256-CeLpIgu1Js0De3gSIL60dhwGE9g4e62GM3sVJICLQPE=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "09e2e9220bb526cd037b781220beb4761c0613d8387bad86337b1524808b40f1",
+      "path": "engine/_framework/SharpAstrology.SwissEph.pscds59khe.wasm",
+      "bytes": 406805
+    },
+    {
+      "virtualPath": "SharpChartEngine.wasm",
+      "name": "SharpChartEngine.c06llgb8z0.wasm",
+      "hash": "sha256-VMlhJehMPkGAcIsu6vMelZ3JpfVoZTOdAHkv3k2fhz8=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "54c96125e84c3e4180708b2eeaf31e959dc9a5f56865339d00792fde4d9f873f",
+      "path": "engine/_framework/SharpChartEngine.c06llgb8z0.wasm",
+      "bytes": 16149
+    },
+    {
+      "virtualPath": "SharpTransitCore.wasm",
+      "name": "SharpTransitCore.l31hhg0l77.wasm",
+      "hash": "sha256-0VAoLfuh3rdO1cZVAQID69L83TJ4ycAkmfODaxLJ5aQ=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "d150282dfba1deb74ed5c655010203ebd2fcdd3278c9c02499f3836b12c9e5a4",
+      "path": "engine/_framework/SharpTransitCore.l31hhg0l77.wasm",
+      "bytes": 8981
+    },
+    {
+      "virtualPath": "System.Numerics.Tensors.wasm",
+      "name": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+      "hash": "sha256-Qsl1NXN9I6wlskaDt4SrnJQW6UPPoopMdrMh8zR/BDI=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "sha256": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+      "path": "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm",
+      "bytes": 8469
+    }
+  ],
+  "localArtifacts": [
+    {
+      "name": "dotnet.native.b6l13xorvf.js",
+      "resourceGroup": "jsModuleNative",
+      "path": "engine/_framework/dotnet.native.b6l13xorvf.js",
+      "sha256": "8d975da1b2c13360b795085843ad7149027f5aa0f779008edd1ce81c668e8f1d",
+      "bytes": 145050
+    },
+    {
+      "name": "dotnet.runtime.v06hirbjsv.js",
+      "resourceGroup": "jsModuleRuntime",
+      "path": "engine/_framework/dotnet.runtime.v06hirbjsv.js",
+      "sha256": "41b9eaad9187b46abbc2e752d7bfc06043e91fd264a61aecc959650fa24799db",
+      "bytes": 198480
+    },
+    {
+      "name": "dotnet.native.rw4kynp763.wasm",
+      "hash": "sha256-JTxXd17wbrHKV/375moHFUFc3a/ofVTPPqSTk6KwNj0=",
+      "cache": "force-cache",
+      "resourceGroup": "wasmNative",
+      "path": "engine/_framework/dotnet.native.rw4kynp763.wasm",
+      "sha256": "253c57775ef06eb1ca57fdfbe66a0715415cddafe87d54cf3ea49393a2b0363d",
+      "bytes": 3001422
+    },
+    {
+      "virtualPath": "icudt_CJK.dat",
+      "name": "icudt_CJK.tjcz0u77k5.dat",
+      "hash": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "path": "engine/_framework/icudt_CJK.tjcz0u77k5.dat",
+      "sha256": "4992ed42745cd09930a8769bd155153fb4f7b813d2798cf1cc39e9c4fa549c79",
+      "bytes": 956416
+    },
+    {
+      "virtualPath": "icudt_EFIGS.dat",
+      "name": "icudt_EFIGS.tptq2av103.dat",
+      "hash": "sha256-8fItetYY8kQ0ww6oxwTLiT3oXlBwHKumbeP2pRF4yTc=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "path": "engine/_framework/icudt_EFIGS.tptq2av103.dat",
+      "sha256": "f1f22d7ad618f24434c30ea8c704cb893de85e50701caba66de3f6a51178c937",
+      "bytes": 550832
+    },
+    {
+      "virtualPath": "icudt_no_CJK.dat",
+      "name": "icudt_no_CJK.lfu7j35m59.dat",
+      "hash": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs=",
+      "cache": "force-cache",
+      "resourceGroup": "icu",
+      "path": "engine/_framework/icudt_no_CJK.lfu7j35m59.dat",
+      "sha256": "2fbb15ecd1183f7eff42bd853c278fa39709a918135d1c061eec05e50fb435fb",
+      "bytes": 1107168
+    },
+    {
+      "virtualPath": "System.Private.CoreLib.wasm",
+      "name": "System.Private.CoreLib.4gxizwg914.wasm",
+      "hash": "sha256-1Dx13Ac8/Y199oVXOo+V7np5TOOMcLAQ+q+5u3UcDH0=",
+      "cache": "force-cache",
+      "resourceGroup": "coreAssembly",
+      "path": "engine/_framework/System.Private.CoreLib.4gxizwg914.wasm",
+      "sha256": "d43c75dc073cfd8d7df685573a8f95ee7a794ce38c70b010faafb9bb751c0c7d",
+      "bytes": 1489173
+    },
+    {
+      "virtualPath": "System.Runtime.InteropServices.JavaScript.wasm",
+      "name": "System.Runtime.InteropServices.JavaScript.eo5cx15vhe.wasm",
+      "hash": "sha256-vhx/YQ40E5JtCGmm6vemHpxeDgzU5vAXUsL2fx+MHis=",
+      "cache": "force-cache",
+      "resourceGroup": "coreAssembly",
+      "path": "engine/_framework/System.Runtime.InteropServices.JavaScript.eo5cx15vhe.wasm",
+      "sha256": "be1c7f610e3413926d0869a6eaf7a61e9c5e0e0cd4e6f01752c2f67f1f8c1e2b",
+      "bytes": 43285
+    },
+    {
+      "virtualPath": "SharpAstrology.Base.wasm",
+      "name": "SharpAstrology.Base.a50fa6ax0l.wasm",
+      "hash": "sha256-frALQKAm6YBAs0zhYE8WQWrmwxV4fCYLhSUqkdqiTrA=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "bytes": 9493
+    },
+    {
+      "virtualPath": "SharpAstrology.HumanDesign.wasm",
+      "name": "SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "hash": "sha256-DYqbp4gHZL4Ldqk7NkjMd2nLsFPzVfooJ+BGKFE8eqw=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "bytes": 43797
+    },
+    {
+      "virtualPath": "SharpAstrology.SwissEph.wasm",
+      "name": "SharpAstrology.SwissEph.h1v7mqqujq.wasm",
+      "hash": "sha256-5TZs+AwrR0AcR3b+lvt6X0vErhXO38BB8bw44Pcb1pc=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/SharpAstrology.SwissEph.h1v7mqqujq.wasm",
+      "sha256": "e5366cf80c2b47401c4776fe96fb7a5f4bc4ae15cedfc041f1bc38e0f71bd697",
+      "bytes": 406805
+    },
+    {
+      "virtualPath": "SharpChartEngine.wasm",
+      "name": "SharpChartEngine.jeuiquxyk5.wasm",
+      "hash": "sha256-lXPb7XinCrzrKyLEmm6RWBvPGxsHyQDQM1hYGu3+C2s=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/SharpChartEngine.jeuiquxyk5.wasm",
+      "sha256": "9573dbed78a70abceb2b22c49a6e91581bcf1b1b07c900d03358581aedfe0b6b",
+      "bytes": 16149
+    },
+    {
+      "virtualPath": "SharpTransitCore.wasm",
+      "name": "SharpTransitCore.qwli9xpeh3.wasm",
+      "hash": "sha256-ahyAuh8ZyGRKzUbwAkDnuqQZp0dZufc4YdYKnLVk28I=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/SharpTransitCore.qwli9xpeh3.wasm",
+      "sha256": "6a1c80ba1f19c8644acd46f00240e7baa419a74759b9f73861d60a9cb564dbc2",
+      "bytes": 8981
+    },
+    {
+      "virtualPath": "System.Collections.Concurrent.wasm",
+      "name": "System.Collections.Concurrent.e8h90946dl.wasm",
+      "hash": "sha256-fkNpmdvmIMVtrgszWaALHVlOvHVNvkrnOlVNvZTypoM=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Collections.Concurrent.e8h90946dl.wasm",
+      "sha256": "7e436999dbe620c56dae0b3359a00b1d594ebc754dbe4ae73a554dbd94f2a683",
+      "bytes": 16661
+    },
+    {
+      "virtualPath": "System.Collections.wasm",
+      "name": "System.Collections.abxuss9tan.wasm",
+      "hash": "sha256-JmDI0cnLhIxLs3JSGXg4wslccyEzxewamR97BOkIwCs=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Collections.abxuss9tan.wasm",
+      "sha256": "2660c8d1c9cb848c4bb37252197838c2c95c732133c5ec1a991f7b04e908c02b",
+      "bytes": 7445
+    },
+    {
+      "virtualPath": "System.IO.Pipelines.wasm",
+      "name": "System.IO.Pipelines.v3l53zykpv.wasm",
+      "hash": "sha256-G2m3St8zKxtyFPCi6/2ftTpHzqCVQmUuKbYwOSeoefg=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.IO.Pipelines.v3l53zykpv.wasm",
+      "sha256": "1b69b74adf332b1b7214f0a2ebfd9fb53a47cea09542652e29b6303927a879f8",
+      "bytes": 8469
+    },
+    {
+      "virtualPath": "System.Linq.wasm",
+      "name": "System.Linq.dnpm8suwi1.wasm",
+      "hash": "sha256-WQO5OvMJ67luY/6KgG4htNcbOELvv9YOE4mcj8jwVZI=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Linq.dnpm8suwi1.wasm",
+      "sha256": "5903b93af309ebb96e63fe8a806e21b4d71b3842efbfd60e13899c8fc8f05592",
+      "bytes": 24853
+    },
+    {
+      "virtualPath": "System.Memory.wasm",
+      "name": "System.Memory.l1yhg1cfjc.wasm",
+      "hash": "sha256-mfqOST6QptAshSPdSkK/78rMzxM05JgBPz6UVN6FvzM=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Memory.l1yhg1cfjc.wasm",
+      "sha256": "99fa8e493e90a6d02c8523dd4a42bfefcacccf1334e498013f3e9454de85bf33",
+      "bytes": 15125
+    },
+    {
+      "virtualPath": "System.Net.Http.wasm",
+      "name": "System.Net.Http.olaucgdwqa.wasm",
+      "hash": "sha256-LC2xeTyxmaQ0MgjJbe3gdXPt8BXWnzIWIqnO9dHXAlI=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Net.Http.olaucgdwqa.wasm",
+      "sha256": "2c2db1793cb199a4343208c96dede07573edf015d69f321622a9cef5d1d70252",
+      "bytes": 134933
+    },
+    {
+      "virtualPath": "System.Net.Primitives.wasm",
+      "name": "System.Net.Primitives.ib2mzkdyxg.wasm",
+      "hash": "sha256-PtieOAN9/qc/n9XPjxEkLGTyAN7KCN+7ejDfzGv9K7A=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Net.Primitives.ib2mzkdyxg.wasm",
+      "sha256": "3ed89e38037dfea73f9fd5cf8f11242c64f200deca08dfbb7a30dfcc6bfd2bb0",
+      "bytes": 7445
+    },
+    {
+      "virtualPath": "System.Numerics.Tensors.wasm",
+      "name": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+      "hash": "sha256-Qsl1NXN9I6wlskaDt4SrnJQW6UPPoopMdrMh8zR/BDI=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm",
+      "sha256": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+      "bytes": 8469
+    },
+    {
+      "virtualPath": "System.Private.Uri.wasm",
+      "name": "System.Private.Uri.9auev6tvov.wasm",
+      "hash": "sha256-0XeXS99vMgt0m8115qIpX0j0T5eZoGC4L06IeYMXJYU=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Private.Uri.9auev6tvov.wasm",
+      "sha256": "d177974bdf6f320b749bcd75e6a2295f48f44f9799a060b82f4e887983172585",
+      "bytes": 65813
+    },
+    {
+      "virtualPath": "System.Security.Cryptography.wasm",
+      "name": "System.Security.Cryptography.p2nlielk9a.wasm",
+      "hash": "sha256-7/2Dg7jQ337smBzTrD7yH0TIWc8XFW5kfJFGh5NwMNI=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Security.Cryptography.p2nlielk9a.wasm",
+      "sha256": "effd8383b8d0df7eec981cd3ac3ef21f44c859cf17156e647c914687937030d2",
+      "bytes": 6933
+    },
+    {
+      "virtualPath": "System.Text.Encodings.Web.wasm",
+      "name": "System.Text.Encodings.Web.4cqqyda7xz.wasm",
+      "hash": "sha256-1B38vt6+oOwT1QJ14vCl3nW/Nd0Ku6G3r4f3Kre3K9s=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Text.Encodings.Web.4cqqyda7xz.wasm",
+      "sha256": "d41dfcbedebea0ec13d50275e2f0a5de75bf35dd0abba1b7af87f72ab7b72bdb",
+      "bytes": 26389
+    },
+    {
+      "virtualPath": "System.Text.Json.wasm",
+      "name": "System.Text.Json.reqys6dbzy.wasm",
+      "hash": "sha256-zUH+2CdL106NVSShEfXs+QxZYpXCnaJpNyfDX0bcnBM=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Text.Json.reqys6dbzy.wasm",
+      "sha256": "cd41fed8274bd74e8d5524a111f5ecf90c596295c29da2693727c35f46dc9c13",
+      "bytes": 81173
+    },
+    {
+      "virtualPath": "System.Text.RegularExpressions.wasm",
+      "name": "System.Text.RegularExpressions.sof6e81rme.wasm",
+      "hash": "sha256-7FIOh9bOI5YqMFkD8ipyCyoUgSwKQP8m4/lRjGGBH2o=",
+      "cache": "force-cache",
+      "resourceGroup": "assembly",
+      "path": "engine/_framework/System.Text.RegularExpressions.sof6e81rme.wasm",
+      "sha256": "ec520e87d6ce23962a305903f22a720b2a14812c0a40ff26e3f9518c61811f6a",
+      "bytes": 141589
+    }
+  ],
+  "browserNpmModuleSources": [
+    "node_modules/html-to-image/es/apply-style.js",
+    "node_modules/html-to-image/es/clone-node.js",
+    "node_modules/html-to-image/es/clone-pseudos.js",
+    "node_modules/html-to-image/es/dataurl.js",
+    "node_modules/html-to-image/es/embed-images.js",
+    "node_modules/html-to-image/es/embed-resources.js",
+    "node_modules/html-to-image/es/embed-webfonts.js",
+    "node_modules/html-to-image/es/index.js",
+    "node_modules/html-to-image/es/mimes.js",
+    "node_modules/html-to-image/es/util.js"
+  ]
+}
