@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "baselineCommit": "1add60c36b469e0d5dc84bd7ca38b0984a446363",
+  "productionBaselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "branch": "refactor/engine-architecture-v1",
+  "modernSignature": "59b90e629033cc7faf95",
+  "jovianAstronomySignature": "8eae65681c977c5ac533041bae903c82ce53527a38f1620fb260403d79924ed4",
+  "jovianIntegrationSignature": "5c29af3b606d0882a1a045a7ebaed2e563f5736dee14787f2213e140f0d2f223",
+  "integrationSignatureChangeExpected": "Provider/contract transport files extracted; astronomy source and outputs unchanged",
+  "algorithmSourceIntegrity": [
+    {
+      "path": "jovian-engine/native_backend.py",
+      "sha256": "cba963a5ef135acd4820f5f8b45b1037f216b16bd1e689969b654060c4fb69fe",
+      "unchanged": true
+    },
+    {
+      "path": "jovian-engine/native_state.c",
+      "sha256": "7dccbf74f7e3dab87a8f4eaf3411942c9b958fd760d8b034f4904bad718ff571",
+      "unchanged": true
+    },
+    {
+      "path": "jovian-engine/native-assets.json",
+      "sha256": "52755d8aeb1b8e0e78e1de314078b68a0933f2d985a3408278f20d4a9c00b021",
+      "unchanged": true
+    },
+    {
+      "path": "jovian-engine/prepare_native.py",
+      "sha256": "456b3f0ed6aa1ccb42db6f1bb36f616b02880b869a22ee39c160eebc5a2bb89e",
+      "unchanged": true
+    },
+    {
+      "path": "jovian-engine/mechanics/Program.cs",
+      "sha256": "1ab5eaf0f90a3cbe44fea11acae7bd05946b6ac4223a91cf9be384601bad3c7c",
+      "unchanged": true
+    },
+    {
+      "path": "jovian-engine/mechanics/JovianMechanics.csproj",
+      "sha256": "e495d73ad2e123ee4fc98d220ffc504593c14ddb7332810e82b14a84d009a02c",
+      "unchanged": true
+    },
+    {
+      "path": "engine-core/TransitCore.cs",
+      "sha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "unchanged": true
+    },
+    {
+      "path": "engine-wasm/Program.cs",
+      "sha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-contract.js",
+      "sha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-provider.js",
+      "sha256": "727e4326759f2d2282d2fb45c701896918ddde7723a791d12e3a3b05321ef996",
+      "unchanged": true
+    }
+  ],
+  "fullOutputRegression": {
+    "utcCount": 97,
+    "engineCalculationsCompared": 194,
+    "rawOutputChanges": 0,
+    "presentationChangesExceptIntegrationSignature": 0,
+    "defaultModern": true,
+    "bothIndependent": true
+  },
+  "c2Parity": {
+    "utcCount": 321,
+    "longitudePairs": 8346,
+    "maxLongitudeResidualDegrees": 0,
+    "maxDesignRootResidualDays": 0,
+    "passed": true
+  },
+  "boundaries": {
+    "cases": 56,
+    "samples": 280,
+    "offsetSeconds": [
+      -5,
+      -1,
+      0,
+      1,
+      5
+    ],
+    "passed": true
+  },
+  "negativeControls": {
+    "caseCount": 49,
+    "passed": true
+  },
+  "official": {
+    "Jovian": {
+      "uniqueUtcCount": 97,
+      "stats": {
+        "personality": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "design": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "all26": {
+          "matched": 97,
+          "total": 97
+        },
+        "profile": {
+          "matched": 97,
+          "total": 97
+        },
+        "type": {
+          "matched": 68,
+          "total": 68
+        },
+        "strategy": {
+          "matched": 40,
+          "total": 40
+        },
+        "authority": {
+          "matched": 40,
+          "total": 40
+        },
+        "definition": {
+          "matched": 40,
+          "total": 40
+        },
+        "incarnationCross": {
+          "matched": 68,
+          "total": 68
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "passed": true
+    },
+    "myBodyGraph": {
+      "uniqueUtcCount": 33,
+      "stats": {
+        "personality": {
+          "matched": 429,
+          "total": 429
+        },
+        "design": {
+          "matched": 429,
+          "total": 429
+        },
+        "all26": {
+          "matched": 33,
+          "total": 33
+        },
+        "profile": {
+          "matched": 33,
+          "total": 33
+        },
+        "type": {
+          "matched": 5,
+          "total": 5
+        },
+        "strategy": {
+          "matched": 0,
+          "total": 0
+        },
+        "authority": {
+          "matched": 0,
+          "total": 0
+        },
+        "definition": {
+          "matched": 0,
+          "total": 0
+        },
+        "incarnationCross": {
+          "matched": 0,
+          "total": 0
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "passed": true
+    }
+  },
+  "gates": {
+    "official-regression": true,
+    "c2-parity": true,
+    "boundary-regression": true,
+    "negative-controls": true,
+    "mechanics-regression": true,
+    "time-location-regression": true,
+    "reference-integrity": true,
+    "modern-existing-tests": true,
+    "before-after-full-chart": true
+  },
+  "build": {
+    "passed": true,
+    "command": "npm run build",
+    "logSha256": "9e1cdf0c98f7f27e06013e417f80c140060829d5cb6823d3035a14eb0babba9f"
+  },
+  "cli": {
+    "modernAndJovianBothPassed": true,
+    "command": "npm run research:birth-engine -- --engine both --utc 2005-07-20T21:40:00Z",
+    "modernSun": "56.2",
+    "jovianSun": "56.3",
+    "logSha256": "a2dca4a61fd855cff1cede46bbb6091d2688faad4f3efaf5e434b743743cf674"
+  },
+  "modernRegressionReport": "modern-regression.json",
+  "outputRegressionReport": "output-regression.json",
+  "constraints": {
+    "mainNotModified": true,
+    "knowledgeBranchesUntouched": true,
+    "uiUnchanged": true,
+    "browserJovianNotImplemented": true,
+    "productionDefaultModern": true,
+    "deployed": false,
+    "running8787Untouched": true
+  },
+  "reportHashes": {
+    "README.md": "4feca7805cc22eabab0a51597cad86b8f233e94bc9d2d25889d5b77ec2afbfea",
+    "current-engine-callgraph.md": "6d4be168bbf586d538f93836343606665f5e25c123aaa855f876ceefb96fb918",
+    "engine-contract.md": "1df331508a62a2084252175439c4344e0f0f00a06cc066ef7d9a38f85b3b0fa0",
+    "migration-notes.md": "bc3e688427501629a7b43e7250e598841a01fc78cba0fdeab218e935b749d974",
+    "modern-regression.json": "950d4c218ab5dcc2dcec619be3f2977dffa13fff298f6d24940bbe17dcdcbf15",
+    "output-regression.json": "8e822a1b61492567571258c051af65287224e8226e0882234328fe2fae442378",
+    "regression/boundary-regression.json": "2d653cf371ef9b1c0dece0c255c8025514c8e07437c898b1f6510b85208a4d13",
+    "regression/c2-parity.json": "7a41d84eaa9537715a122d5b8b3c596f11a4f87dce4bb02d1fe5ba162369df35",
+    "regression/mechanics-regression.json": "4afd6e062d6175c9be86251bc39586fc79bea6e24058c24e080d250c93b4a2f5",
+    "regression/negative-controls.json": "5f839296c20a37c2d20b6b42dc35935edd9f6c5c80b3725cf98c575234af0216",
+    "regression/official-regression.json": "c20f7331db62e37c281f9f9fc1edfdf4f321dfecaeefca3b1500a09328d8f867",
+    "regression/reference-integrity.json": "af7e8cc90d68206fe15bf53b809bb8ab93bdbc29b9f133c460d4f952eab53d05",
+    "regression/time-location-regression.json": "10f992911324178db41af6fa5f0d1c3d38e398747ceb1b0122c21e1f3f88caff",
+    "runtime-boundaries.md": "eb04da72690f3cd7e13a65c88e0a048f0eec15b699f11546bd48801d37f8392b",
+    "target-engine-callgraph.md": "fb85c644ab76bf505d72fecebe276766cf774e078945b05599c2b75643a98fa1"
+  }
+}

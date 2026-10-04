@@ -88,7 +88,7 @@ test('Sharp transit adapter and overlay preserve official activation fields at t
 });
 
 test('adjacent seconds can cross a transit gate boundary in the pinned Sharp engine', async () => {
-  const instants = ['2026-09-23T06:10:19.000Z', '2026-09-23T06:10:20.000Z'];
+  const instants = ['2026-09-23T06:10:48.000Z', '2026-09-23T06:10:49.000Z'];
   const moons = await Promise.all(instants.map(instant => calculateNativeTransit(instant)));
   assert.deepEqual(moons.map(value => `${value.gates.moon.gate}.${value.gates.moon.line}`), ['13.6', '49.1']);
 });

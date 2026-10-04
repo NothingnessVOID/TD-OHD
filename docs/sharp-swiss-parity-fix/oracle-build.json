@@ -1,0 +1,149 @@
+{
+  "officialRepository": "https://github.com/aloistr/swisseph",
+  "commit": "175e1fcb3108bcd5c0d146c803f51dcf23508012",
+  "version": "2.10.03",
+  "sourcePatched": false,
+  "sourceFiles": [
+    {
+      "filename": "sweph.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.c",
+      "bytes": 290642,
+      "sha256": "80761ccfae7cd7207a33559d8898b9c5386cced609cfaebbbbf050f7a80ddc4f"
+    },
+    {
+      "filename": "swephlib.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.c",
+      "bytes": 164395,
+      "sha256": "d41eb2f396163fedd574749de02a25e8547b4e1e4c66783d47ccc0c7e4885a05"
+    },
+    {
+      "filename": "swejpl.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.c",
+      "bytes": 33480,
+      "sha256": "44014e260ae9ab2b1e8f413bb8a35fa270e369e3fb4907cd137ae103d2a8d0c2"
+    },
+    {
+      "filename": "swemplan.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemplan.c",
+      "bytes": 27880,
+      "sha256": "d13502ca7b92e3e32317b67ba7f012d92fabd1d358c3394c094d5515a3567caa"
+    },
+    {
+      "filename": "swemmoon.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemmoon.c",
+      "bytes": 61388,
+      "sha256": "1d5f5ef9a95cf9a2f395b6334a58c63851ce0512d65bf08e49d3caf0a9fecb00"
+    },
+    {
+      "filename": "swecl.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swecl.c",
+      "bytes": 225794,
+      "sha256": "ab46bdc303978523c69d814d236432541ff48cb410b756ef78cc1e8d2b2be303"
+    },
+    {
+      "filename": "swehel.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehel.c",
+      "bytes": 123264,
+      "sha256": "7b4be28627afd22b059389abc4ef679b7259a0bcb9d0510e7ca3825901754b93"
+    },
+    {
+      "filename": "swehouse.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.c",
+      "bytes": 112151,
+      "sha256": "384c1d7b2a8bcef9f2cf16f7fbf02e7aa18f372bc11320874a5543b92aed95d9"
+    },
+    {
+      "filename": "swedate.c",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.c",
+      "bytes": 20063,
+      "sha256": "6790e989a003cb6422080d9aecf3c6567a25030f5b5647fd749e5b16422cfac7"
+    },
+    {
+      "filename": "sweph.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweph.h",
+      "bytes": 34361,
+      "sha256": "8e44b9c00d23a0b583581f17fc6798ea376649d2517abbb556ee1b1aff6a138a"
+    },
+    {
+      "filename": "swephlib.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephlib.h",
+      "bytes": 7786,
+      "sha256": "29a151bb0c6adcb73fa73eff805b498c26bdffbb81e82d55e1b50f79218ea82a"
+    },
+    {
+      "filename": "swejpl.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swejpl.h",
+      "bytes": 3995,
+      "sha256": "f61ae6173b150f456540afba68500989c642506822e0397cf99c2cb7f50aac0d"
+    },
+    {
+      "filename": "swephexp.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swephexp.h",
+      "bytes": 40932,
+      "sha256": "dd8e74e2853915a316041397f31730219b7910333be6bba3934fd77130335f22"
+    },
+    {
+      "filename": "sweodef.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/sweodef.h",
+      "bytes": 10838,
+      "sha256": "a2ace0fc0ea81ffbf9eb0a7f9fc1c1446d98f07d3a170a2c54b8ef4908325462"
+    },
+    {
+      "filename": "swemptab.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swemptab.h",
+      "bytes": 311984,
+      "sha256": "dc7595b81bd49e86a6204ed1e0a041c410a9de5c068fd1d90d350a82d604fb85"
+    },
+    {
+      "filename": "swenut2000a.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swenut2000a.h",
+      "bytes": 68486,
+      "sha256": "83b0a2f569174b56c8e26971b00f85f5ae52265b34c1c53436c7122e0f1faad7"
+    },
+    {
+      "filename": "swehouse.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swehouse.h",
+      "bytes": 3702,
+      "sha256": "7a91a007a4de0900ed6d234d74da421b2372d245b09a2ba8b74d6e2e054a200c"
+    },
+    {
+      "filename": "swedate.h",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/swedate.h",
+      "bytes": 3191,
+      "sha256": "886b001815561f2c5f5e40418ce00d62377cb8962180c38062ac83bfdab77b38"
+    },
+    {
+      "filename": "LICENSE.TXT",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/LICENSE.TXT",
+      "bytes": 7,
+      "sha256": "c693279643b8cd5d248172d9c22cb7cf4ed163a3c98c8a3f69c2717edd3eacb7"
+    },
+    {
+      "filename": "LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/aloistr/swisseph/175e1fcb3108bcd5c0d146c803f51dcf23508012/LICENSE",
+      "bytes": 2371,
+      "sha256": "b6345743292c516d07799dfad46f1a641e5270da2160cc4d6bd54594d6faa991"
+    }
+  ],
+  "librarySha256": "a7547dfc5695ffa2ce0fe6583879cb83a8cb37ae05d372ed9898a2f2ec391cfa",
+  "buildCommand": [
+    "cc",
+    "-dynamiclib",
+    "-O2",
+    "-fPIC",
+    "-o",
+    "<OUTSIDE_REPO>/oracle.dylib",
+    "sweph.c",
+    "swephlib.c",
+    "swejpl.c",
+    "swemplan.c",
+    "swemmoon.c",
+    "swecl.c",
+    "swehel.c",
+    "swehouse.c",
+    "swedate.c",
+    "-lm"
+  ],
+  "platform": "macOS arm64",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.5.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n"
+}

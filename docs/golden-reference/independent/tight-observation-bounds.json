@@ -1,0 +1,10 @@
+{
+  "observationalBoundOnly": true,
+  "assumptions": "Using same gate/line threshold and one common additive solar-longitude perturbation against C258 at these four instants; not evidence of Jovian internal configuration.",
+  "minimumCommonShiftDegreesToMatch2015And2025": 1.2972249123777146e-06,
+  "strictMaximumCommonShiftDegreesToPreserve1985And1995": 1.515739484148071e-06,
+  "nonemptyInterval": true,
+  "minimumShiftArcsec": 0.004670009684559773,
+  "strictMaximumShiftArcsec": 0.005456662142933055,
+  "conclusion": "Four displayed gate.line results allow a range of tiny numerical perturbations. They cannot uniquely identify external ephemeris version, time scale, source flags, or rounding policy."
+}

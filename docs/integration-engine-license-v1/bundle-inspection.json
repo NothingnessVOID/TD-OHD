@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "productionFilesInspected": 135,
+  "browserModuleSources": 99,
+  "modernOnly": true,
+  "historicalRuntimeArtifacts": 0,
+  "modernDataHashesUnchanged": true,
+  "productionProvider": "sharpProvider"
+}

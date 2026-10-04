@@ -1,0 +1,79 @@
+[
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "Utility/HumanDesignUtility.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-Utility-HumanDesignUtility.cs",
+    "sha256": "bc22a96b00f79735fc791362bca24a9adadf67d9c219496c20ef5233ed924720"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "Enums/Gates.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-Enums-Gates.cs",
+    "sha256": "d73d65fcf3c3a6997ffca7c948c86509632ec8839877f429191ee5a8fb0827c2"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "Enums/Lines.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-Enums-Lines.cs",
+    "sha256": "703fcad164ef959789785cd66228fe8707eb57079e74429903c6c64fd00d3952"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "DataModels/HumanDesignChart.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-DataModels-HumanDesignChart.cs",
+    "sha256": "185165672edb5a44c9a372a439ee5cf4c60e3e534e3b62434f92fe37497220ec"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "ExtensionMethods/HumanDesignPlanetPositionProviderExtensionMethods.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-ExtensionMethods-HumanDesignPlanetPositionProviderExtensionMethods.cs",
+    "sha256": "8d88a25746fc761ce9767dd7109cf5c9e29afd9455580f7ed7d8a7651b501b35"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/HumanDesign",
+    "commit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+    "sourceFile": "Mathematics/RootFinder.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/HumanDesign-Mathematics-RootFinder.cs",
+    "sha256": "a1f21fa820c8ef50a6883a1b31fe5ba80a320bd3daef449bd992436b9a9bf25c"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/Base",
+    "commit": "b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+    "sourceFile": "Utility/AstrologyUtility.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/Base-Utility-AstrologyUtility.cs",
+    "sha256": "6935abbbca1c31d903206f29f8fd5c8279a7e05caa88544f23396e14cd919c21"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/Base",
+    "commit": "b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+    "sourceFile": "ExtensionMethods/DateTimeExtensionMethods.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/Base-ExtensionMethods-DateTimeExtensionMethods.cs",
+    "sha256": "7837bb09fa2031f393140e09e197196410d93bd24e16cff75b9e9f69d0153690"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/SwissEph",
+    "commit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "sourceFile": "SwissEphemerides.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/SwissEph-SwissEphemerides.cs",
+    "sha256": "d733ff20d52e4a02ef6ce036c99c3e236ee8d977e9a296c00a3952c0c66496ef"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/SwissEph",
+    "commit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "sourceFile": "Domain/Time/JulianDay.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/SwissEph-Domain-Time-JulianDay.cs",
+    "sha256": "b70fe45cafa4e8d8406e083ed25bb7f2f4c23408c1b318b586deb7ed3220d29c"
+  },
+  {
+    "repo": "/tmp/td-ohd-sharp-audit/SwissEph",
+    "commit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "sourceFile": "Application/Calendar/CalendarService.cs",
+    "snapshot": "/tmp/td-ohd-golden-audit/pinned-sources/SwissEph-Application-Calendar-CalendarService.cs",
+    "sha256": "894e6cb767deab7a4d8998c9c90889362f545cf9aa60e594610b39ab6c921c92"
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "engineSignature": "59b90e629033cc7faf95",
+  "runtimeComponents": 17,
+  "protectedBaselineFiles": 357,
+  "calculationChanges": 0,
+  "annualChanges": 0,
+  "knowledgeChanges": 0,
+  "jovianBrowserArtifacts": 0,
+  "calculationBaselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "build": {
+    "npmCi": true,
+    "buildPages": true,
+    "warnings": [
+      "existing Vite chunk-size warning; no build error"
+    ]
+  },
+  "tests": {
+    "unit": {
+      "tests": 257,
+      "pass": 254,
+      "fail": 0,
+      "skipped": 3
+    },
+    "localization": {
+      "tests": 34,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0
+    },
+    "timeline": {
+      "tests": 61,
+      "pass": 61,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "licensingDistributionTests": {
+    "passed": true,
+    "cases": 5,
+    "missingFileNegativeControl": true,
+    "missingIdentityNegativeControl": true
+  },
+  "sourceCorrespondenceValidation": true,
+  "releaseManifestValidation": true,
+  "pagesBundleValidation": true,
+  "unchangedRootLicenseDecision": true,
+  "privacyScan": "No personal account data, cookies, tokens or absolute user paths in committed evidence",
+  "reports": {
+    "production-identity.json": "963e2e2ecb53f2236b70b4ec7341250166e10bf8aa1dd9fee91955a60ef58ea6",
+    "artifact-evidence.json": "0b29ad1177b54e66b90f0d8e7b8dda07d0660f435f54e6ecbadd93de9e67fcda",
+    "release-components.json": "a0aac6c7f2ca4e6f77974c4287dbd25b2249994dabd1ee7525006c955a4f4fd4"
+  },
+  "formatting": "Authored files pass git diff --check; third-party notices preserve upstream bytes, including CRLF/trailing whitespace."
+}

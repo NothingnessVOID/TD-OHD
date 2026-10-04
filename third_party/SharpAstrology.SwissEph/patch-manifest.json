@@ -1,0 +1,80 @@
+{
+  "identity": {
+    "humanDesignVersion": "1.2.0",
+    "baseVersion": "0.14.0",
+    "swissUpstreamVersion": "0.5.1",
+    "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+    "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+    "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+    "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+    "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1"
+  },
+  "signatureInput": {
+    "format": 1,
+    "humanDesignVersion": "1.2.0",
+    "baseVersion": "0.14.0",
+    "swissUpstreamVersion": "0.5.1",
+    "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+    "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+    "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+    "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+    "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1",
+    "swissCommit": "3186eed405bd2b4ff520c91d0b27bb25e9d75106",
+    "swissFiles": {
+      "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+    },
+    "transitAdapterSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+    "timeAdapterSha256": "5ec4f4b28e638b5659dc0b68e99e7b5b5902f6d14510d417dd4768a338a78af1",
+    "annualAlgorithmSha256": "1e144f805a5afb0bb61de6693a2fca55e82239424486c18bb1168d68457fbf60",
+    "scanStepMs": 60000,
+    "boundaryToleranceMs": 1000,
+    "points": 13,
+    "convention": "apparent tropical geocentric, proper UTC->UT1, file-based Swiss, no Moshier fallback"
+  },
+  "signature": "59b90e629033cc7faf95",
+  "changedFiles": [
+    {
+      "file": "Application/Bodies/BodyService.cs",
+      "upstreamSha256": "4767dc3e26bdbc60f46d6a73bac15ce950fddf4d72f617f002b7604bc3421a91",
+      "patchedSha256": "26a4b65176c8323181bfb6395f3cd99528ba9f29b07050c801f9028b04a6eddb"
+    },
+    {
+      "file": "Application/Bodies/BodyState.cs",
+      "upstreamSha256": "2b0047d185444e3c655ac699ea60b27b1c35db9b88689eccac8b8010b84de8c9",
+      "patchedSha256": "fe8ea74259baa362308a3a5af106a11e69d68469f0c72a3ce175f4bbb6deb77c"
+    },
+    {
+      "file": "Application/Bodies/CorrectionPipeline.cs",
+      "upstreamSha256": "7fb74e3f26a2e361cf5223f09e4dcfbc271793715b3e4c8d0b4e689ba4ef63bb",
+      "patchedSha256": "6c787705232e6d92a3fe7b7fe274fd7e66372e06ce62aca4f7b3d2c72dcb5842"
+    },
+    {
+      "file": "Application/Calendar/CalendarService.cs",
+      "upstreamSha256": "894e6cb767deab7a4d8998c9c90889362f545cf9aa60e594610b39ab6c921c92",
+      "patchedSha256": "ad3c935209eb069cdad021855434742cc53adb8f795135398610e0f3020b765b"
+    },
+    {
+      "file": "Infrastructure/Jpl/JplBodyPositionSource.cs",
+      "upstreamSha256": "cb9c7bcd40702f71864f106b3a2b31325462bb82d063a132b11876166d2f1133",
+      "patchedSha256": "eb9362d67a15e12fe9a8abd81359688a3e43e12e2347a8611931526f48a98266"
+    },
+    {
+      "file": "Infrastructure/SwissEph/SwissEphBodyPositionSource.cs",
+      "upstreamSha256": "de5ad32fc76f6abe08541b168894abb9ed785c8674be73d41dcd4ca9a8093c3a",
+      "patchedSha256": "0b352b14b95dac270ff36944e47edc45c7ed9996c6e85681585233528b587ace"
+    },
+    {
+      "file": "SharpAstrology.SwissEph.csproj",
+      "upstreamSha256": "0a0c97ced065ac436afcf21a4931f238d1e927fefc1c8b862092595bb8120f19",
+      "patchedSha256": "c920630982e7145ecd8b6afc73174a4d5e756bbba888170f428d9d135717ec5e"
+    },
+    {
+      "file": "SwissEphemerides.cs",
+      "upstreamSha256": "d733ff20d52e4a02ef6ce036c99c3e236ee8d977e9a296c00a3952c0c66496ef",
+      "patchedSha256": "708e4f0cb4b364b81d1a9236629bd16b7d9885e23e607e6edc56870fc273ba23"
+    }
+  ]
+}

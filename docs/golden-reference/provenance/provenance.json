@@ -1,0 +1,391 @@
+{
+  "installation": {
+    "commit": "7734b942160497c1c28d46002de0edd91df53230",
+    "mode": "desktop",
+    "updatedAt": "2026-10-01T21:35:30.870288"
+  },
+  "repoHead": "a2314f74e84293f88c6df232d643618556496c26",
+  "repoTree": "9c3659f05b8b96d8df20bc6926260d88ffe96d7e",
+  "remotes": "a2314f74e84293f88c6df232d643618556496c26\trefs/heads/feature/knowledge-access-v1\n7734b942160497c1c28d46002de0edd91df53230\trefs/heads/main\n13c70f2ce4dab5199a2438bfc08475f1cbd23549\trefs/heads/pages",
+  "packageProvenance": [
+    {
+      "package": "sharpastrology.humandesign",
+      "version": "1.2.0",
+      "repositoryCommit": "8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+      "nupkgSha256": "bb9ef47125b92877a632e657be37ab9699b437ae64fc1385659bd47500de8092"
+    },
+    {
+      "package": "sharpastrology.swisseph",
+      "version": "0.5.1",
+      "repositoryCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+      "nupkgSha256": "a6cdcabedbd5f6807d2131ab6c12033a7b84b02cb8173b41b398ea703a021e3a"
+    },
+    {
+      "package": "sharpastrology.base",
+      "version": "0.14.0",
+      "repositoryCommit": "b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+      "nupkgSha256": "9ccc39646dd278ece7cdf1a51e306a97e21e35ff188d65b7010807f1e43583a4"
+    }
+  ],
+  "ephemerisManifest": {
+    "source": "https://github.com/aloistr/swisseph",
+    "commit": "3186eed405bd2b4ff520c91d0b27bb25e9d75106",
+    "firstYear": 1800,
+    "lastYear": 2399,
+    "files": {
+      "sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+    }
+  },
+  "source": [
+    {
+      "path": "engine-core/SharpTransitCore.csproj",
+      "localSha256": "47986e347f8fd3bd04de9fb261858a5014f1351daf9a7c7797721025b04d5693",
+      "installedSha256": "47986e347f8fd3bd04de9fb261858a5014f1351daf9a7c7797721025b04d5693",
+      "same": true
+    },
+    {
+      "path": "engine-core/TransitCore.cs",
+      "localSha256": "96fb30c5a7e8f24b6ea9aafc2609023dba569718e57c764a63e92b47fa7cbfb9",
+      "installedSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "same": false
+    },
+    {
+      "path": "engine-wasm/SharpChartEngine.csproj",
+      "localSha256": "e1400431028c06e9bd7dbbabdc7c5ac04e41fbc19e0caa422677c0f8a47c85cb",
+      "installedSha256": "e1400431028c06e9bd7dbbabdc7c5ac04e41fbc19e0caa422677c0f8a47c85cb",
+      "same": true
+    },
+    {
+      "path": "engine-wasm/Program.cs",
+      "localSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "installedSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "same": true
+    },
+    {
+      "path": "engine-wasm/ephemeris-manifest.json",
+      "localSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "installedSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "same": true
+    },
+    {
+      "path": "src/lib/chart-engine/birth-time.js",
+      "localSha256": "2d013ad419666303ffdc2283aef02b19274a59884bbf6fd37147853c927f2835",
+      "installedSha256": "2d013ad419666303ffdc2283aef02b19274a59884bbf6fd37147853c927f2835",
+      "same": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-provider.js",
+      "localSha256": "45d45509a2c38e50d7703a710c5c877105e370666736190bacf365b4dca8fbe6",
+      "installedSha256": "a768e65584ad4bb291a04c3c76835a4fe15c65c001a509b1c5a2ef52be6e1244",
+      "same": false
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-contract.js",
+      "localSha256": "7d4e53d86ab18b58fd08934b5c1a7328e90a469395022f4a6b5016281086c07d",
+      "installedSha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "same": false
+    },
+    {
+      "path": "src/lib/chartdata.js",
+      "localSha256": "075987f0a6825fd81c8e2fdadd744aee5133daa17762207641b9cf6c18f0aafa",
+      "installedSha256": "075987f0a6825fd81c8e2fdadd744aee5133daa17762207641b9cf6c18f0aafa",
+      "same": true
+    },
+    {
+      "path": "src/lib/timezone.js",
+      "localSha256": "d42b94bb461afa49db3433beaefc6d58d112e252c766222560f37083e7758012",
+      "installedSha256": "d42b94bb461afa49db3433beaefc6d58d112e252c766222560f37083e7758012",
+      "same": true
+    }
+  ],
+  "activeAssets": [
+    {
+      "site": "local5196",
+      "path": "engine/_framework/dotnet.js",
+      "length": 45878,
+      "diskSha256": "6a60a3dca28e337ef26f8838bc866241c2e2b33629521163532940f6d92c7ec0",
+      "httpSha256": "6a60a3dca28e337ef26f8838bc866241c2e2b33629521163532940f6d92c7ec0",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "length": 9493,
+      "diskSha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "httpSha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "length": 43797,
+      "diskSha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "httpSha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/_framework/SharpAstrology.SwissEph.9e09zmgwb4.wasm",
+      "length": 401173,
+      "diskSha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "httpSha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/_framework/SharpChartEngine.t0h5s7z0ch.wasm",
+      "length": 16149,
+      "diskSha256": "93d2545582fd29cef4e0e47db2479f7c58fc4980cdabe8fc3c9d18428b25c3f8",
+      "httpSha256": "93d2545582fd29cef4e0e47db2479f7c58fc4980cdabe8fc3c9d18428b25c3f8",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/_framework/SharpTransitCore.vma8do45s1.wasm",
+      "length": 9493,
+      "diskSha256": "d7f41525fde2c70660efc7e8341a8f206db62d1f787abcc1e67dbe944bcc9267",
+      "httpSha256": "d7f41525fde2c70660efc7e8341a8f206db62d1f787abcc1e67dbe944bcc9267",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/ephe/sepl_18.se1",
+      "length": 484061,
+      "diskSha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "httpSha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "local5196",
+      "path": "engine/ephe/semo_18.se1",
+      "length": 1304771,
+      "diskSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "httpSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": null,
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/dotnet.js",
+      "length": 45878,
+      "diskSha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+      "httpSha256": "0854b833e6893efacec2cf34ce29e3a26bbb941fec0206f2a0a523b0cf3d6196",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+      "length": 9493,
+      "diskSha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "httpSha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+      "length": 43797,
+      "diskSha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "httpSha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/SharpAstrology.SwissEph.9e09zmgwb4.wasm",
+      "length": 401173,
+      "diskSha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "httpSha256": "bf7a3aa4c54db25c8fda7907fed39a199af3af184f608091223f771edb669f2e",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/SharpChartEngine.2914v7b7y7.wasm",
+      "length": 16149,
+      "diskSha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+      "httpSha256": "564a8f92b06c6091481ddae465c7cf160a30b5a4f7c458de5c580575be2c96ab",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/_framework/SharpTransitCore.p6tgwic1v4.wasm",
+      "length": 8981,
+      "diskSha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+      "httpSha256": "3f606ee758fc37fba856ae37c0432735f5228904d02713d9e30244afc2e1ce1d",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/ephe/sepl_18.se1",
+      "length": 484061,
+      "diskSha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "httpSha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    },
+    {
+      "site": "installed8787",
+      "path": "engine/ephe/semo_18.se1",
+      "length": 1304771,
+      "diskSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "httpSha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7",
+      "sameDiskHttp": true,
+      "status": 200,
+      "cacheControl": "no-store",
+      "etag": null
+    }
+  ],
+  "baseline": "installed8787; current user explicitly requested fixed comparison baseline, read only",
+  "mainCommitSourceMatches": [
+    {
+      "path": "engine-core/SharpTransitCore.csproj",
+      "remoteMainSha256": "47986e347f8fd3bd04de9fb261858a5014f1351daf9a7c7797721025b04d5693",
+      "installedSha256": "47986e347f8fd3bd04de9fb261858a5014f1351daf9a7c7797721025b04d5693",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "engine-core/TransitCore.cs",
+      "remoteMainSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "installedSha256": "8fa219d22c5a3218dc3531ff8f9583a9a8e2d4b1efecfeba83a3101f967d0fae",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "engine-wasm/SharpChartEngine.csproj",
+      "remoteMainSha256": "e1400431028c06e9bd7dbbabdc7c5ac04e41fbc19e0caa422677c0f8a47c85cb",
+      "installedSha256": "e1400431028c06e9bd7dbbabdc7c5ac04e41fbc19e0caa422677c0f8a47c85cb",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "engine-wasm/Program.cs",
+      "remoteMainSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "installedSha256": "eb80e07e0350b4ce05270c1de13539f2951e791392a6f799496e7df718843f44",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "engine-wasm/ephemeris-manifest.json",
+      "remoteMainSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "installedSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/chart-engine/birth-time.js",
+      "remoteMainSha256": "2d013ad419666303ffdc2283aef02b19274a59884bbf6fd37147853c927f2835",
+      "installedSha256": "2d013ad419666303ffdc2283aef02b19274a59884bbf6fd37147853c927f2835",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-provider.js",
+      "remoteMainSha256": "a768e65584ad4bb291a04c3c76835a4fe15c65c001a509b1c5a2ef52be6e1244",
+      "installedSha256": "a768e65584ad4bb291a04c3c76835a4fe15c65c001a509b1c5a2ef52be6e1244",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/chart-engine/sharp-contract.js",
+      "remoteMainSha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "installedSha256": "664979d8bfb4a9db96fabfd8595d52592d435cda3c2315fd4e2c23fc4a15f018",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/chartdata.js",
+      "remoteMainSha256": "075987f0a6825fd81c8e2fdadd744aee5133daa17762207641b9cf6c18f0aafa",
+      "installedSha256": "075987f0a6825fd81c8e2fdadd744aee5133daa17762207641b9cf6c18f0aafa",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/timezone.js",
+      "remoteMainSha256": "d42b94bb461afa49db3433beaefc6d58d112e252c766222560f37083e7758012",
+      "installedSha256": "d42b94bb461afa49db3433beaefc6d58d112e252c766222560f37083e7758012",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/views/entry.js",
+      "remoteMainSha256": "7c87264ba2d418470c838723ce599bee792905f9d27299a5b1e60e8a65c7398a",
+      "installedSha256": "7c87264ba2d418470c838723ce599bee792905f9d27299a5b1e60e8a65c7398a",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/main.js",
+      "remoteMainSha256": "0fd4d55b0eb3f41a1808e8eaf8eb018e66099d3a953f0115d2a80930517631cb",
+      "installedSha256": "0fd4d55b0eb3f41a1808e8eaf8eb018e66099d3a953f0115d2a80930517631cb",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/people.js",
+      "remoteMainSha256": "6b406d688e4410a86449114b36affab3ccee7098b0c051d6fd3dceb3cec44678",
+      "installedSha256": "6b406d688e4410a86449114b36affab3ccee7098b0c051d6fd3dceb3cec44678",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/local-store.js",
+      "remoteMainSha256": "8728946de3a27d471a1e5fa1dadaf5b59aec1ada8bb6f91a4c5736e7d53833c7",
+      "installedSha256": "8728946de3a27d471a1e5fa1dadaf5b59aec1ada8bb6f91a4c5736e7d53833c7",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/profile-storage.js",
+      "remoteMainSha256": "5d0a87781b6e2b508729849d3ccc8c1b642c3403d324436913547c967181cb05",
+      "installedSha256": "5d0a87781b6e2b508729849d3ccc8c1b642c3403d324436913547c967181cb05",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/lib/chart-data-export.js",
+      "remoteMainSha256": "f5caeefb7abe81f60004dbec853cd399dc3cd3c4b5fd8363b1e382192ba2fae5",
+      "installedSha256": "f5caeefb7abe81f60004dbec853cd399dc3cd3c4b5fd8363b1e382192ba2fae5",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/bodygraph.js",
+      "remoteMainSha256": "5197ebdb8fae4bd6af1087592ba3937ade960a990ba87952947af27e6bd6150a",
+      "installedSha256": "5197ebdb8fae4bd6af1087592ba3937ade960a990ba87952947af27e6bd6150a",
+      "sameMainInstalled": true
+    },
+    {
+      "path": "src/views/chart.js",
+      "remoteMainSha256": "ab7d925be7d9f27c5c293aaf866b460de6d85c9f4ff8f38daf34fc3f0277c7ab",
+      "installedSha256": "ab7d925be7d9f27c5c293aaf866b460de6d85c9f4ff8f38daf34fc3f0277c7ab",
+      "sameMainInstalled": true
+    }
+  ]
+}

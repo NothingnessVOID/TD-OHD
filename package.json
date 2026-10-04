@@ -28,7 +28,9 @@
     "generate:annual": "node scripts/generate-transit-events.mjs --all",
     "verify:annual": "node scripts/verify-transit-events.mjs --all",
     "e2e:knowledge-access": "node tests/knowledge-access-e2e.mjs",
-    "e2e:bodygraph-regression": "node tests/bodygraph-knowledge-regression-e2e.mjs"
+    "e2e:bodygraph-regression": "node tests/bodygraph-knowledge-regression-e2e.mjs",
+    "research:birth-engine": "node scripts/birth-engine-prototype.mjs",
+    "test:jovian-compatible": "node scripts/jovian-compatible-validation.mjs"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "^0.7.2",

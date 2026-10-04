@@ -1,0 +1,5581 @@
+{
+  "boundaries": [
+    {
+      "id": "1985-P38.2-to-38.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-01T20:13:01.4090518Z",
+      "designUtcAtBoundary": "1984-10-06T11:10:44.9821918Z",
+      "sideTargetLongitude": 281.375,
+      "personalityTargetLongitude": 281.375,
+      "boundarySideLongitude": 281.3750000010562,
+      "fromGate": 38,
+      "fromLine": 2,
+      "toGate": 38,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-01T21:41:19.6810527Z",
+      "offsetDelaySeconds": 5298.2720009,
+      "beforeSecond": {
+        "utc": "1985-01-01T20:13:00.4090518Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 281.37498820480545
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-01T20:13:02.4090518Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 281.37501179730697
+        }
+      }
+    },
+    {
+      "id": "1985-P38.3-to-38.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-02T18:17:36.9100585Z",
+      "designUtcAtBoundary": "1984-10-07T09:59:21.5482941Z",
+      "sideTargetLongitude": 282.3125,
+      "personalityTargetLongitude": 282.3125,
+      "boundarySideLongitude": 282.31250000192745,
+      "fromGate": 38,
+      "fromLine": 3,
+      "toGate": 38,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-02T19:45:55.3880679Z",
+      "offsetDelaySeconds": 5298.4780094,
+      "beforeSecond": {
+        "utc": "1985-01-02T18:17:35.9100585Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 282.31248820565963
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-02T18:17:37.9100585Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 282.3125117977207
+        }
+      }
+    },
+    {
+      "id": "1985-P38.4-to-38.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-03T16:22:15.5670331Z",
+      "designUtcAtBoundary": "1984-10-08T08:47:16.2979665Z",
+      "sideTargetLongitude": 283.25,
+      "personalityTargetLongitude": 283.25,
+      "boundarySideLongitude": 283.2500000072971,
+      "fromGate": 38,
+      "fromLine": 4,
+      "toGate": 38,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-03T17:50:34.2580549Z",
+      "offsetDelaySeconds": 5298.6910218,
+      "beforeSecond": {
+        "utc": "1985-01-03T16:22:14.5670331Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 283.2499882119801
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-03T16:22:16.5670331Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 283.2500118026141
+        }
+      }
+    },
+    {
+      "id": "1985-P38.5-to-38.6",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-04T14:26:57.4840179Z",
+      "designUtcAtBoundary": "1984-10-09T07:34:28.0199101Z",
+      "sideTargetLongitude": 284.1875,
+      "personalityTargetLongitude": 284.1875,
+      "boundarySideLongitude": 284.187500011209,
+      "fromGate": 38,
+      "fromLine": 5,
+      "toGate": 38,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1985-01-04T15:55:16.3970684Z",
+      "offsetDelaySeconds": 5298.9130505,
+      "beforeSecond": {
+        "utc": "1985-01-04T14:26:56.4840179Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 284.18748821591043
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-04T14:26:58.4840179Z",
+        "activation": {
+          "gate": 38,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 284.18751180603306
+        }
+      }
+    },
+    {
+      "id": "1985-P54.1-to-54.2",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-06T10:36:31.4900508Z",
+      "designUtcAtBoundary": "1984-10-11T05:06:37.3581880Z",
+      "sideTargetLongitude": 286.0625,
+      "personalityTargetLongitude": 286.0625,
+      "boundarySideLongitude": 286.0625000003203,
+      "fromGate": 54,
+      "fromLine": 1,
+      "toGate": 54,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1985-01-06T12:04:50.8630178Z",
+      "offsetDelaySeconds": 5299.372967,
+      "beforeSecond": {
+        "utc": "1985-01-06T10:36:30.4900508Z",
+        "activation": {
+          "gate": 54,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.0624882065178
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-06T10:36:32.4900508Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 286.06251179412294
+        }
+      }
+    },
+    {
+      "id": "1985-P54.2-to-54.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-07T08:41:23.7140408Z",
+      "designUtcAtBoundary": "1984-10-12T03:51:32.5294339Z",
+      "sideTargetLongitude": 287,
+      "personalityTargetLongitude": 287,
+      "boundarySideLongitude": 287.00000001079604,
+      "fromGate": 54,
+      "fromLine": 2,
+      "toGate": 54,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-07T10:09:43.3200655Z",
+      "offsetDelaySeconds": 5299.6060247,
+      "beforeSecond": {
+        "utc": "1985-01-07T08:41:22.7140408Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.9999882175137
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-07T08:41:24.7140408Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.0000118040783
+        }
+      }
+    },
+    {
+      "id": "1985-P54.3-to-54.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-08T06:46:19.4190017Z",
+      "designUtcAtBoundary": "1984-10-13T02:35:39.8940190Z",
+      "sideTargetLongitude": 287.9375,
+      "personalityTargetLongitude": 287.9375,
+      "boundarySideLongitude": 287.9375000000541,
+      "fromGate": 54,
+      "fromLine": 3,
+      "toGate": 54,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-08T08:14:39.2550250Z",
+      "offsetDelaySeconds": 5299.8360233,
+      "beforeSecond": {
+        "utc": "1985-01-08T06:46:18.4190017Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 287.93748820728183
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-08T06:46:20.4190017Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.93751179282646
+        }
+      }
+    },
+    {
+      "id": "1985-P54.4-to-54.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-09T04:51:18.4670142Z",
+      "designUtcAtBoundary": "1984-10-14T01:18:58.5604977Z",
+      "sideTargetLongitude": 288.875,
+      "personalityTargetLongitude": 288.875,
+      "boundarySideLongitude": 288.87500000776413,
+      "fromGate": 54,
+      "fromLine": 4,
+      "toGate": 54,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-09T06:19:38.5160499Z",
+      "offsetDelaySeconds": 5300.0490357,
+      "beforeSecond": {
+        "utc": "1985-01-09T04:51:17.4670142Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 288.8749882154689
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-09T04:51:19.4670142Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 288.8750118000595
+        }
+      }
+    },
+    {
+      "id": "1985-P54.5-to-54.6",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-10T02:56:20.5430529Z",
+      "designUtcAtBoundary": "1984-10-15T00:01:27.8547236Z",
+      "sideTargetLongitude": 289.8125,
+      "personalityTargetLongitude": 289.8125,
+      "boundarySideLongitude": 289.8125000113626,
+      "fromGate": 54,
+      "fromLine": 5,
+      "toGate": 54,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1985-01-10T04:24:40.7780517Z",
+      "offsetDelaySeconds": 5300.2349988,
+      "beforeSecond": {
+        "utc": "1985-01-10T02:56:19.5430529Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 289.81248821948424
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-10T02:56:21.5430529Z",
+        "activation": {
+          "gate": 54,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 289.8125118032409
+        }
+      }
+    },
+    {
+      "id": "1985-P61.1-to-61.2",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-11T23:06:31.7410789Z",
+      "designUtcAtBoundary": "1984-10-16T21:23:56.8801563Z",
+      "sideTargetLongitude": 291.6875,
+      "personalityTargetLongitude": 291.6875,
+      "boundarySideLongitude": 291.6875000114172,
+      "fromGate": 61,
+      "fromLine": 1,
+      "toGate": 61,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1985-01-12T00:34:52.2340110Z",
+      "offsetDelaySeconds": 5300.4929321,
+      "beforeSecond": {
+        "utc": "1985-01-11T23:06:30.7410789Z",
+        "activation": {
+          "gate": 61,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 291.68748822012014
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-11T23:06:32.7410789Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 291.6875118027142
+        }
+      }
+    },
+    {
+      "id": "1985-P61.2-to-61.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-12T21:11:39.7170654Z",
+      "designUtcAtBoundary": "1984-10-17T20:03:56.5343972Z",
+      "sideTargetLongitude": 292.625,
+      "personalityTargetLongitude": 292.625,
+      "boundarySideLongitude": 292.625000006521,
+      "fromGate": 61,
+      "fromLine": 2,
+      "toGate": 61,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-12T22:40:00.2880053Z",
+      "offsetDelaySeconds": 5300.5709399,
+      "beforeSecond": {
+        "utc": "1985-01-12T21:11:38.7170654Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 292.62498821539737
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-12T21:11:40.7170654Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 292.6250117981191
+        }
+      }
+    },
+    {
+      "id": "1985-P61.3-to-61.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-13T19:16:48.7250319Z",
+      "designUtcAtBoundary": "1984-10-18T18:43:06.6608441Z",
+      "sideTargetLongitude": 293.5625,
+      "personalityTargetLongitude": 293.5625,
+      "boundarySideLongitude": 293.56250000001614,
+      "fromGate": 61,
+      "fromLine": 3,
+      "toGate": 61,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-13T20:45:09.3600526Z",
+      "offsetDelaySeconds": 5300.6350207,
+      "beforeSecond": {
+        "utc": "1985-01-13T19:16:47.7250319Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 293.56248820903403
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-13T19:16:49.7250319Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 293.56251179099826
+        }
+      }
+    },
+    {
+      "id": "1985-P61.4-to-61.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-14T17:21:58.7520233Z",
+      "designUtcAtBoundary": "1984-10-19T17:21:27.8295198Z",
+      "sideTargetLongitude": 294.5,
+      "personalityTargetLongitude": 294.5,
+      "boundarySideLongitude": 294.5000000077084,
+      "fromGate": 61,
+      "fromLine": 4,
+      "toGate": 61,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-14T18:50:19.4650520Z",
+      "offsetDelaySeconds": 5300.7130287,
+      "beforeSecond": {
+        "utc": "1985-01-14T17:21:57.7520233Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 294.49998821689815
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-14T17:21:59.7520233Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 294.5000117989929
+        }
+      }
+    },
+    {
+      "id": "1985-P61.5-to-61.6",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-15T15:27:10.2510645Z",
+      "designUtcAtBoundary": "1984-10-20T15:59:00.7535970Z",
+      "sideTargetLongitude": 295.4375,
+      "personalityTargetLongitude": 295.4375,
+      "boundarySideLongitude": 295.43750000358483,
+      "fromGate": 61,
+      "fromLine": 5,
+      "toGate": 61,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1985-01-15T16:55:31.0910472Z",
+      "offsetDelaySeconds": 5300.8399827,
+      "beforeSecond": {
+        "utc": "1985-01-15T15:27:09.2510645Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 295.4374882130527
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-15T15:27:11.2510645Z",
+        "activation": {
+          "gate": 61,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 295.43751179459133
+        }
+      }
+    },
+    {
+      "id": "1985-P60.1-to-60.2",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-17T11:37:42.0870795Z",
+      "designUtcAtBoundary": "1984-10-22T13:11:45.0005883Z",
+      "sideTargetLongitude": 297.3125,
+      "personalityTargetLongitude": 297.3125,
+      "boundarySideLongitude": 297.3125000023823,
+      "fromGate": 60,
+      "fromLine": 1,
+      "toGate": 60,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1985-01-17T13:06:03.4640207Z",
+      "offsetDelaySeconds": 5301.3769412,
+      "beforeSecond": {
+        "utc": "1985-01-17T11:37:41.0870795Z",
+        "activation": {
+          "gate": 60,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 297.31248821302756
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-17T11:37:43.0870795Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 297.312511791737
+        }
+      }
+    },
+    {
+      "id": "1985-P60.2-to-60.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-18T09:43:05.8120050Z",
+      "designUtcAtBoundary": "1984-10-23T11:46:57.9801821Z",
+      "sideTargetLongitude": 298.25,
+      "personalityTargetLongitude": 298.25,
+      "boundarySideLongitude": 298.2500000071842,
+      "fromGate": 60,
+      "fromLine": 2,
+      "toGate": 60,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-18T11:11:27.6540151Z",
+      "offsetDelaySeconds": 5301.8420101,
+      "beforeSecond": {
+        "utc": "1985-01-18T09:43:04.8120050Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 298.24998821885214
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-18T09:43:06.8120050Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 298.25001179551623
+        }
+      }
+    },
+    {
+      "id": "1985-P60.3-to-60.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-19T07:48:37.5630388Z",
+      "designUtcAtBoundary": "1984-10-24T10:21:26.1925676Z",
+      "sideTargetLongitude": 299.1875,
+      "personalityTargetLongitude": 299.1875,
+      "boundarySideLongitude": 299.1875000001457,
+      "fromGate": 60,
+      "fromLine": 3,
+      "toGate": 60,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-19T09:17:00.0220279Z",
+      "offsetDelaySeconds": 5302.4589891,
+      "beforeSecond": {
+        "utc": "1985-01-19T07:48:36.5630388Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 299.1874882131734
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-19T07:48:38.5630388Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 299.18751178711796
+        }
+      }
+    },
+    {
+      "id": "1985-P60.4-to-60.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-20T05:54:19.6470681Z",
+      "designUtcAtBoundary": "1984-10-25T08:55:10.9886124Z",
+      "sideTargetLongitude": 300.125,
+      "personalityTargetLongitude": 300.125,
+      "boundarySideLongitude": 300.1250000025222,
+      "fromGate": 60,
+      "fromLine": 4,
+      "toGate": 60,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-20T07:22:42.8760734Z",
+      "offsetDelaySeconds": 5303.2290053,
+      "beforeSecond": {
+        "utc": "1985-01-20T05:54:18.6470681Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 300.1249882172512
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-20T05:54:20.6470681Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 300.12501178779314
+        }
+      }
+    },
+    {
+      "id": "1985-P60.5-to-60.6",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-21T04:00:14.3210111Z",
+      "designUtcAtBoundary": "1984-10-26T07:28:14.0642237Z",
+      "sideTargetLongitude": 301.0625,
+      "personalityTargetLongitude": 301.0625,
+      "boundarySideLongitude": 301.0625000028854,
+      "fromGate": 60,
+      "fromLine": 5,
+      "toGate": 60,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1985-01-21T05:28:38.4660661Z",
+      "offsetDelaySeconds": 5304.145055,
+      "beforeSecond": {
+        "utc": "1985-01-21T04:00:13.3210111Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 301.062488219639
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-21T04:00:15.3210111Z",
+        "activation": {
+          "gate": 60,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 301.06251178613167
+        }
+      }
+    },
+    {
+      "id": "1985-P41.1-to-41.2",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-23T00:12:49.5040134Z",
+      "designUtcAtBoundary": "1984-10-28T04:32:22.8480282Z",
+      "sideTargetLongitude": 302.9375,
+      "personalityTargetLongitude": 302.9375,
+      "boundarySideLongitude": 302.93750000566115,
+      "fromGate": 41,
+      "fromLine": 1,
+      "toGate": 41,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1985-01-23T01:41:15.8530132Z",
+      "offsetDelaySeconds": 5306.3489998,
+      "beforeSecond": {
+        "utc": "1985-01-23T00:12:48.5040134Z",
+        "activation": {
+          "gate": 41,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 302.93748822729185
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-23T00:12:50.5040134Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 302.9375117840305
+        }
+      }
+    },
+    {
+      "id": "1985-P41.2-to-41.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-23T22:19:33.3890351Z",
+      "designUtcAtBoundary": "1984-10-29T03:03:32.3030930Z",
+      "sideTargetLongitude": 303.875,
+      "personalityTargetLongitude": 303.875,
+      "boundarySideLongitude": 303.875000007921,
+      "fromGate": 41,
+      "fromLine": 2,
+      "toGate": 41,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-23T23:48:00.9890597Z",
+      "offsetDelaySeconds": 5307.6000246,
+      "beforeSecond": {
+        "utc": "1985-01-23T22:19:32.3890351Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 303.8749882323231
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-23T22:19:34.3890351Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 303.87501178351874
+        }
+      }
+    },
+    {
+      "id": "1985-P41.3-to-41.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-24T20:26:36.6200796Z",
+      "designUtcAtBoundary": "1984-10-30T01:34:07.1213311Z",
+      "sideTargetLongitude": 304.8125,
+      "personalityTargetLongitude": 304.8125,
+      "boundarySideLongitude": 304.8125000084846,
+      "fromGate": 41,
+      "fromLine": 3,
+      "toGate": 41,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-24T21:55:05.5510690Z",
+      "offsetDelaySeconds": 5308.9309894,
+      "beforeSecond": {
+        "utc": "1985-01-24T20:26:35.6200796Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 304.812488235833
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-24T20:26:37.6200796Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 304.8125117811362
+        }
+      }
+    },
+    {
+      "id": "1985-P41.4-to-41.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-25T18:34:00.2890739Z",
+      "designUtcAtBoundary": "1984-10-31T00:04:08.2649177Z",
+      "sideTargetLongitude": 305.75,
+      "personalityTargetLongitude": 305.75,
+      "boundarySideLongitude": 305.7500000009725,
+      "fromGate": 41,
+      "fromLine": 4,
+      "toGate": 41,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-25T20:02:30.6180070Z",
+      "offsetDelaySeconds": 5310.3289331,
+      "beforeSecond": {
+        "utc": "1985-01-25T18:33:59.2890739Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 305.7499882314139
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-25T18:34:01.2890739Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 305.75001177053116
+        }
+      }
+    },
+    {
+      "id": "1985-P41.5-to-41.6",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-26T16:41:45.3270130Z",
+      "designUtcAtBoundary": "1984-10-31T22:33:36.2925302Z",
+      "sideTargetLongitude": 306.6875,
+      "personalityTargetLongitude": 306.6875,
+      "boundarySideLongitude": 306.68750000137385,
+      "fromGate": 41,
+      "fromLine": 5,
+      "toGate": 41,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1985-01-26T18:10:17.1100008Z",
+      "offsetDelaySeconds": 5311.7829878,
+      "beforeSecond": {
+        "utc": "1985-01-26T16:41:44.3270130Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 306.68748823503375
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-26T16:41:46.3270130Z",
+        "activation": {
+          "gate": 41,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 306.68751176771383
+        }
+      }
+    },
+    {
+      "id": "1985-P19.1-to-19.2",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-28T12:58:22.6340690Z",
+      "designUtcAtBoundary": "1984-11-02T19:30:53.6260217Z",
+      "sideTargetLongitude": 308.5625,
+      "personalityTargetLongitude": 308.5625,
+      "boundarySideLongitude": 308.5625000092665,
+      "fromGate": 19,
+      "fromLine": 1,
+      "toGate": 19,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1985-01-28T14:26:57.4700724Z",
+      "offsetDelaySeconds": 5314.8360034,
+      "beforeSecond": {
+        "utc": "1985-01-28T12:58:21.6340690Z",
+        "activation": {
+          "gate": 19,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 308.56248824967963
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-28T12:58:23.6340690Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 308.56251176885337
+        }
+      }
+    },
+    {
+      "id": "1985-P19.2-to-19.3",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-29T11:07:16.2500308Z",
+      "designUtcAtBoundary": "1984-11-03T17:58:42.6310372Z",
+      "sideTargetLongitude": 309.5,
+      "personalityTargetLongitude": 309.5,
+      "boundarySideLongitude": 309.5000000051328,
+      "fromGate": 19,
+      "fromLine": 2,
+      "toGate": 19,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1985-01-29T12:35:52.6750128Z",
+      "offsetDelaySeconds": 5316.424982,
+      "beforeSecond": {
+        "utc": "1985-01-29T11:07:15.2500308Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 309.4999882490584
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-29T11:07:17.2500308Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 309.50001176120696
+        }
+      }
+    },
+    {
+      "id": "1985-P19.3-to-19.4",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-30T09:16:33.9660428Z",
+      "designUtcAtBoundary": "1984-11-04T16:25:58.0067440Z",
+      "sideTargetLongitude": 310.4375,
+      "personalityTargetLongitude": 310.4375,
+      "boundarySideLongitude": 310.43750000027995,
+      "fromGate": 19,
+      "fromLine": 3,
+      "toGate": 19,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1985-01-30T10:45:12.0180010Z",
+      "offsetDelaySeconds": 5318.0519582,
+      "beforeSecond": {
+        "utc": "1985-01-30T09:16:32.9660428Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 310.4374882477974
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-30T09:16:34.9660428Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 310.4375117527625
+        }
+      }
+    },
+    {
+      "id": "1985-P19.4-to-19.5",
+      "year": 1985,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1985-01-31T07:26:16.3090786Z",
+      "designUtcAtBoundary": "1984-11-05T14:52:39.1723367Z",
+      "sideTargetLongitude": 311.375,
+      "personalityTargetLongitude": 311.375,
+      "boundarySideLongitude": 311.37500000219325,
+      "fromGate": 19,
+      "fromLine": 4,
+      "toGate": 19,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1985-01-31T08:54:56.0200534Z",
+      "offsetDelaySeconds": 5319.7109748,
+      "beforeSecond": {
+        "utc": "1985-01-31T07:26:15.3090786Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 311.37498825337406
+        }
+      },
+      "afterSecond": {
+        "utc": "1985-01-31T07:26:17.3090786Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 311.3750117510123
+        }
+      }
+    },
+    {
+      "id": "1995-P38.1-to-38.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-01T08:10:50.7160572Z",
+      "designUtcAtBoundary": "1994-10-05T22:10:12.8964812Z",
+      "sideTargetLongitude": 280.4375,
+      "personalityTargetLongitude": 280.4375,
+      "boundarySideLongitude": 280.43750000456674,
+      "fromGate": 38,
+      "fromLine": 1,
+      "toGate": 38,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-01T09:39:06.1480548Z",
+      "offsetDelaySeconds": 5295.4319976,
+      "beforeSecond": {
+        "utc": "1995-01-01T08:10:49.7160572Z",
+        "activation": {
+          "gate": 38,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 280.437488201537
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-01T08:10:51.7160572Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 280.4375118071215
+        }
+      }
+    },
+    {
+      "id": "1995-P38.2-to-38.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-02T06:14:42.0100215Z",
+      "designUtcAtBoundary": "1994-10-06T20:58:42.1812709Z",
+      "sideTargetLongitude": 281.375,
+      "personalityTargetLongitude": 281.375,
+      "boundarySideLongitude": 281.37500001047283,
+      "fromGate": 38,
+      "fromLine": 2,
+      "toGate": 38,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-02T07:42:57.4450782Z",
+      "offsetDelaySeconds": 5295.4350567,
+      "beforeSecond": {
+        "utc": "1995-01-02T06:14:41.0100215Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 281.37498820791404
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-02T06:14:43.0100215Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 281.37501181350643
+        }
+      }
+    },
+    {
+      "id": "1995-P38.3-to-38.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-03T04:18:34.4980250Z",
+      "designUtcAtBoundary": "1994-10-07T19:46:28.2996484Z",
+      "sideTargetLongitude": 282.3125,
+      "personalityTargetLongitude": 282.3125,
+      "boundarySideLongitude": 282.312500003995,
+      "fromGate": 38,
+      "fromLine": 3,
+      "toGate": 38,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-03T05:46:50.0950548Z",
+      "offsetDelaySeconds": 5295.5970298,
+      "beforeSecond": {
+        "utc": "1995-01-03T04:18:33.4980250Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 282.3124882017845
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-03T04:18:35.4980250Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 282.3125118066802
+        }
+      }
+    },
+    {
+      "id": "1995-P38.4-to-38.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-04T02:22:30.3250566Z",
+      "designUtcAtBoundary": "1994-10-08T18:33:32.8781989Z",
+      "sideTargetLongitude": 283.25,
+      "personalityTargetLongitude": 283.25,
+      "boundarySideLongitude": 283.25000000214743,
+      "fromGate": 38,
+      "fromLine": 4,
+      "toGate": 38,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-04T03:50:46.2090009Z",
+      "offsetDelaySeconds": 5295.8839443,
+      "beforeSecond": {
+        "utc": "1995-01-04T02:22:29.3250566Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 283.2499882000919
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-04T02:22:31.3250566Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 283.25001180372806
+        }
+      }
+    },
+    {
+      "id": "1995-P38.5-to-38.6",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-05T00:26:31.1530671Z",
+      "designUtcAtBoundary": "1994-10-09T17:19:57.5414156Z",
+      "sideTargetLongitude": 284.1875,
+      "personalityTargetLongitude": 284.1875,
+      "boundarySideLongitude": 284.18750000567275,
+      "fromGate": 38,
+      "fromLine": 5,
+      "toGate": 38,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1995-01-05T01:54:47.4190006Z",
+      "offsetDelaySeconds": 5296.2659335,
+      "beforeSecond": {
+        "utc": "1995-01-05T00:26:30.1530671Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 284.18748820493863
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-05T00:26:32.1530671Z",
+        "activation": {
+          "gate": 38,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 284.1875118064068
+        }
+      }
+    },
+    {
+      "id": "1995-P54.1-to-54.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-06T20:34:52.4310294Z",
+      "designUtcAtBoundary": "1994-10-11T14:50:52.3362636Z",
+      "sideTargetLongitude": 286.0625,
+      "personalityTargetLongitude": 286.0625,
+      "boundarySideLongitude": 286.06250000383244,
+      "fromGate": 54,
+      "fromLine": 1,
+      "toGate": 54,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-06T22:03:09.6500442Z",
+      "offsetDelaySeconds": 5297.2190148,
+      "beforeSecond": {
+        "utc": "1995-01-06T20:34:51.4310294Z",
+        "activation": {
+          "gate": 54,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.0624882052134
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-06T20:34:53.4310294Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 286.06251180245147
+        }
+      }
+    },
+    {
+      "id": "1995-P54.2-to-54.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-07T18:39:14.4620630Z",
+      "designUtcAtBoundary": "1994-10-12T13:35:23.9591762Z",
+      "sideTargetLongitude": 287,
+      "personalityTargetLongitude": 287,
+      "boundarySideLongitude": 287.0000000061097,
+      "fromGate": 54,
+      "fromLine": 2,
+      "toGate": 54,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-07T20:07:32.2230276Z",
+      "offsetDelaySeconds": 5297.7609646,
+      "beforeSecond": {
+        "utc": "1995-01-07T18:39:13.4620630Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.9999882086956
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-07T18:39:15.4620630Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.00001180399835
+        }
+      }
+    },
+    {
+      "id": "1995-P54.3-to-54.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-08T16:43:44.8670604Z",
+      "designUtcAtBoundary": "1994-10-13T12:19:18.5583508Z",
+      "sideTargetLongitude": 287.9375,
+      "personalityTargetLongitude": 287.9375,
+      "boundarySideLongitude": 287.9375000110592,
+      "fromGate": 54,
+      "fromLine": 3,
+      "toGate": 54,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-08T18:12:03.2030616Z",
+      "offsetDelaySeconds": 5298.3360012,
+      "beforeSecond": {
+        "utc": "1995-01-08T16:43:43.8670604Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 287.9374882149243
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-08T16:43:45.8670604Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.93751180766867
+        }
+      }
+    },
+    {
+      "id": "1995-P54.4-to-54.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-09T14:48:24.1070132Z",
+      "designUtcAtBoundary": "1994-10-14T11:02:35.7080805Z",
+      "sideTargetLongitude": 288.875,
+      "personalityTargetLongitude": 288.875,
+      "boundarySideLongitude": 288.87500000328185,
+      "fromGate": 54,
+      "fromLine": 4,
+      "toGate": 54,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-09T16:16:43.0480789Z",
+      "offsetDelaySeconds": 5298.9410657,
+      "beforeSecond": {
+        "utc": "1995-01-09T14:48:23.1070132Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 288.87498820848936
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-09T14:48:25.1070132Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 288.8750117980744
+        }
+      }
+    },
+    {
+      "id": "1995-P54.5-to-54.6",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-10T12:53:12.5850568Z",
+      "designUtcAtBoundary": "1994-10-15T09:45:14.6698862Z",
+      "sideTargetLongitude": 289.8125,
+      "personalityTargetLongitude": 289.8125,
+      "boundarySideLongitude": 289.8125000116245,
+      "fromGate": 54,
+      "fromLine": 5,
+      "toGate": 54,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1995-01-10T14:21:32.1540499Z",
+      "offsetDelaySeconds": 5299.5689931,
+      "beforeSecond": {
+        "utc": "1995-01-10T12:53:11.5850568Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 289.81248821775534
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-10T12:53:13.5850568Z",
+        "activation": {
+          "gate": 54,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 289.81251180501926
+        }
+      }
+    },
+    {
+      "id": "1995-P61.1-to-61.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-12T09:03:18.6340460Z",
+      "designUtcAtBoundary": "1994-10-17T07:08:34.0058487Z",
+      "sideTargetLongitude": 291.6875,
+      "personalityTargetLongitude": 291.6875,
+      "boundarySideLongitude": 291.6875000043736,
+      "fromGate": 61,
+      "fromLine": 1,
+      "toGate": 61,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-12T10:31:39.5260340Z",
+      "offsetDelaySeconds": 5300.891988,
+      "beforeSecond": {
+        "utc": "1995-01-12T09:03:17.6340460Z",
+        "activation": {
+          "gate": 61,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 291.68748821391785
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-12T09:03:19.6340460Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 291.6875117948292
+        }
+      }
+    },
+    {
+      "id": "1995-P61.2-to-61.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-13T07:08:36.8060747Z",
+      "designUtcAtBoundary": "1994-10-18T05:49:12.1140351Z",
+      "sideTargetLongitude": 292.625,
+      "personalityTargetLongitude": 292.625,
+      "boundarySideLongitude": 292.6250000076573,
+      "fromGate": 61,
+      "fromLine": 2,
+      "toGate": 61,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-13T08:36:58.3860458Z",
+      "offsetDelaySeconds": 5301.5799711,
+      "beforeSecond": {
+        "utc": "1995-01-13T07:08:35.8060747Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 292.62498821873135
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-13T07:08:37.8060747Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 292.6250117965833
+        }
+      }
+    },
+    {
+      "id": "1995-P61.3-to-61.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-14T05:14:05.4030719Z",
+      "designUtcAtBoundary": "1994-10-19T04:29:07.6569726Z",
+      "sideTargetLongitude": 293.5625,
+      "personalityTargetLongitude": 293.5625,
+      "boundarySideLongitude": 293.56250000671946,
+      "fromGate": 61,
+      "fromLine": 3,
+      "toGate": 61,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-14T06:42:27.6850338Z",
+      "offsetDelaySeconds": 5302.2819619,
+      "beforeSecond": {
+        "utc": "1995-01-14T05:14:04.4030719Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 293.56248821935327
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-14T05:14:06.4030719Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 293.56251179408554
+        }
+      }
+    },
+    {
+      "id": "1995-P61.4-to-61.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-15T03:19:44.6000520Z",
+      "designUtcAtBoundary": "1994-10-20T03:08:19.5893239Z",
+      "sideTargetLongitude": 294.5,
+      "personalityTargetLongitude": 294.5,
+      "boundarySideLongitude": 294.5000000111498,
+      "fromGate": 61,
+      "fromLine": 4,
+      "toGate": 61,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-15T04:48:07.5920550Z",
+      "offsetDelaySeconds": 5302.992003,
+      "beforeSecond": {
+        "utc": "1995-01-15T03:19:43.6000520Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 294.49998822536367
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-15T03:19:45.6000520Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 294.5000117969358
+        }
+      }
+    },
+    {
+      "id": "1995-P61.5-to-61.6",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-16T01:25:34.4950227Z",
+      "designUtcAtBoundary": "1994-10-21T01:46:46.9934114Z",
+      "sideTargetLongitude": 295.4375,
+      "personalityTargetLongitude": 295.4375,
+      "boundarySideLongitude": 295.43750001047925,
+      "fromGate": 61,
+      "fromLine": 5,
+      "toGate": 61,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1995-01-16T02:53:58.2020579Z",
+      "offsetDelaySeconds": 5303.7070352,
+      "beforeSecond": {
+        "utc": "1995-01-16T01:25:33.4950227Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 295.43748822628106
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-16T01:25:35.4950227Z",
+        "activation": {
+          "gate": 61,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 295.4375117951516
+        }
+      }
+    },
+    {
+      "id": "1995-P60.1-to-60.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-17T21:37:46.2750540Z",
+      "designUtcAtBoundary": "1994-10-22T23:01:25.3106751Z",
+      "sideTargetLongitude": 297.3125,
+      "personalityTargetLongitude": 297.3125,
+      "boundarySideLongitude": 297.312500007205,
+      "fromGate": 60,
+      "fromLine": 1,
+      "toGate": 60,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-17T23:06:11.3910619Z",
+      "offsetDelaySeconds": 5305.1160079,
+      "beforeSecond": {
+        "utc": "1995-01-17T21:37:45.2750540Z",
+        "activation": {
+          "gate": 60,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 297.3124882261388
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-17T21:37:47.2750540Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 297.31251178827125
+        }
+      }
+    },
+    {
+      "id": "1995-P60.2-to-60.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-18T19:44:07.7920619Z",
+      "designUtcAtBoundary": "1994-10-23T21:37:35.1678925Z",
+      "sideTargetLongitude": 298.25,
+      "personalityTargetLongitude": 298.25,
+      "boundarySideLongitude": 298.25000000569867,
+      "fromGate": 60,
+      "fromLine": 2,
+      "toGate": 60,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-18T21:12:33.5850240Z",
+      "offsetDelaySeconds": 5305.7929621,
+      "beforeSecond": {
+        "utc": "1995-01-18T19:44:06.7920619Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 298.2499882261364
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-18T19:44:08.7920619Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 298.2500117857349
+        }
+      }
+    },
+    {
+      "id": "1995-P60.3-to-60.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-19T17:50:39.2510799Z",
+      "designUtcAtBoundary": "1994-10-24T20:12:58.3896357Z",
+      "sideTargetLongitude": 299.1875,
+      "personalityTargetLongitude": 299.1875,
+      "boundarySideLongitude": 299.18750001057026,
+      "fromGate": 60,
+      "fromLine": 3,
+      "toGate": 60,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-19T19:19:05.6890361Z",
+      "offsetDelaySeconds": 5306.4379562,
+      "beforeSecond": {
+        "utc": "1995-01-19T17:50:38.2510799Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 299.187488232444
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-19T17:50:40.2510799Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 299.18751178869644
+        }
+      }
+    },
+    {
+      "id": "1995-P60.4-to-60.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-20T15:57:20.1460556Z",
+      "designUtcAtBoundary": "1994-10-25T18:47:34.8339620Z",
+      "sideTargetLongitude": 300.125,
+      "personalityTargetLongitude": 300.125,
+      "boundarySideLongitude": 300.1250000024677,
+      "fromGate": 60,
+      "fromLine": 4,
+      "toGate": 60,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-20T17:25:47.1950336Z",
+      "offsetDelaySeconds": 5307.048978,
+      "beforeSecond": {
+        "utc": "1995-01-20T15:57:19.1460556Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 300.1249882252231
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-20T15:57:21.1460556Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 300.1250117792385
+        }
+      }
+    },
+    {
+      "id": "1995-P60.5-to-60.6",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-21T14:04:09.9210474Z",
+      "designUtcAtBoundary": "1994-10-26T17:21:24.4922214Z",
+      "sideTargetLongitude": 301.0625,
+      "personalityTargetLongitude": 301.0625,
+      "boundarySideLongitude": 301.0625000071446,
+      "fromGate": 60,
+      "fromLine": 5,
+      "toGate": 60,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1995-01-21T15:32:37.5410369Z",
+      "offsetDelaySeconds": 5307.6199895,
+      "beforeSecond": {
+        "utc": "1995-01-21T14:04:08.9210474Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 301.0624882316462
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-21T14:04:10.9210474Z",
+        "activation": {
+          "gate": 60,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 301.062511782643
+        }
+      }
+    },
+    {
+      "id": "1995-P41.1-to-41.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-23T10:18:14.1310462Z",
+      "designUtcAtBoundary": "1994-10-28T14:26:43.9631500Z",
+      "sideTargetLongitude": 302.9375,
+      "personalityTargetLongitude": 302.9375,
+      "boundarySideLongitude": 302.937500005677,
+      "fromGate": 41,
+      "fromLine": 1,
+      "toGate": 41,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-23T11:46:42.8140042Z",
+      "offsetDelaySeconds": 5308.682958,
+      "beforeSecond": {
+        "utc": "1995-01-23T10:18:13.1310462Z",
+        "activation": {
+          "gate": 41,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 302.93748823253856
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-23T10:18:15.1310462Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 302.9375117788155
+        }
+      }
+    },
+    {
+      "id": "1995-P41.2-to-41.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-24T08:25:28.0330448Z",
+      "designUtcAtBoundary": "1994-10-29T12:58:14.3049251Z",
+      "sideTargetLongitude": 303.875,
+      "personalityTargetLongitude": 303.875,
+      "boundarySideLongitude": 303.87500000724464,
+      "fromGate": 41,
+      "fromLine": 2,
+      "toGate": 41,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-24T09:53:57.2410468Z",
+      "offsetDelaySeconds": 5309.208002,
+      "beforeSecond": {
+        "utc": "1995-01-24T08:25:27.0330448Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 303.87498823526846
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-24T08:25:29.0330448Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 303.87501177922076
+        }
+      }
+    },
+    {
+      "id": "1995-P41.3-to-41.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-25T06:32:49.9860152Z",
+      "designUtcAtBoundary": "1994-10-30T11:28:58.9118045Z",
+      "sideTargetLongitude": 304.8125,
+      "personalityTargetLongitude": 304.8125,
+      "boundarySideLongitude": 304.8125000034648,
+      "fromGate": 41,
+      "fromLine": 3,
+      "toGate": 41,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-25T08:01:19.7510210Z",
+      "offsetDelaySeconds": 5309.7650058,
+      "beforeSecond": {
+        "utc": "1995-01-25T06:32:48.9860152Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 304.8124882322451
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-25T06:32:50.9860152Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 304.8125117742109
+        }
+      }
+    },
+    {
+      "id": "1995-P41.4-to-41.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-26T04:40:20.7070735Z",
+      "designUtcAtBoundary": "1994-10-31T09:58:58.3115664Z",
+      "sideTargetLongitude": 305.75,
+      "personalityTargetLongitude": 305.75,
+      "boundarySideLongitude": 305.75000000763316,
+      "fromGate": 41,
+      "fromLine": 4,
+      "toGate": 41,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-26T06:08:51.0940497Z",
+      "offsetDelaySeconds": 5310.3869762,
+      "beforeSecond": {
+        "utc": "1995-01-26T04:40:19.7070735Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 305.74998823826195
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-26T04:40:21.7070735Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 305.7500117770044
+        }
+      }
+    },
+    {
+      "id": "1995-P41.5-to-41.6",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-27T02:48:01.4520565Z",
+      "designUtcAtBoundary": "1994-11-01T08:28:13.1622237Z",
+      "sideTargetLongitude": 306.6875,
+      "personalityTargetLongitude": 306.6875,
+      "boundarySideLongitude": 306.687500005268,
+      "fromGate": 41,
+      "fromLine": 5,
+      "toGate": 41,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "1995-01-27T04:16:32.5660600Z",
+      "offsetDelaySeconds": 5311.1140035,
+      "beforeSecond": {
+        "utc": "1995-01-27T02:48:00.4520565Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 306.6874882370236
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-27T02:48:02.4520565Z",
+        "activation": {
+          "gate": 41,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 306.68751177303886
+        }
+      }
+    },
+    {
+      "id": "1995-P19.1-to-19.2",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-28T23:04:00.5150232Z",
+      "designUtcAtBoundary": "1994-11-03T05:24:33.0902329Z",
+      "sideTargetLongitude": 308.5625,
+      "personalityTargetLongitude": 308.5625,
+      "boundarySideLongitude": 308.5625000027037,
+      "fromGate": 19,
+      "fromLine": 1,
+      "toGate": 19,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "1995-01-29T00:32:33.5040343Z",
+      "offsetDelaySeconds": 5312.9890111,
+      "beforeSecond": {
+        "utc": "1995-01-28T23:03:59.5150232Z",
+        "activation": {
+          "gate": 19,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 308.56248823906424
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-28T23:04:01.5150232Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 308.5625117668163
+        }
+      }
+    },
+    {
+      "id": "1995-P19.2-to-19.3",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-29T21:12:23.3790294Z",
+      "designUtcAtBoundary": "1994-11-04T03:51:41.0668248Z",
+      "sideTargetLongitude": 309.5,
+      "personalityTargetLongitude": 309.5,
+      "boundarySideLongitude": 309.5000000069163,
+      "fromGate": 19,
+      "fromLine": 2,
+      "toGate": 19,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "1995-01-29T22:40:57.5430699Z",
+      "offsetDelaySeconds": 5314.1640405,
+      "beforeSecond": {
+        "utc": "1995-01-29T21:12:22.3790294Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 309.4999882458657
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-29T21:12:24.3790294Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 309.50001176796684
+        }
+      }
+    },
+    {
+      "id": "1995-P19.3-to-19.4",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-30T19:21:04.9400172Z",
+      "designUtcAtBoundary": "1994-11-05T02:18:10.3849259Z",
+      "sideTargetLongitude": 310.4375,
+      "personalityTargetLongitude": 310.4375,
+      "boundarySideLongitude": 310.4375000114943,
+      "fromGate": 19,
+      "fromLine": 3,
+      "toGate": 19,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "1995-01-30T20:49:40.4290651Z",
+      "offsetDelaySeconds": 5315.4890479,
+      "beforeSecond": {
+        "utc": "1995-01-30T19:21:03.9400172Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 310.4374882528937
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-30T19:21:05.9400172Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 310.4375117696218
+        }
+      }
+    },
+    {
+      "id": "1995-P19.4-to-19.5",
+      "year": 1995,
+      "side": "personality",
+      "kind": "line",
+      "utc": "1995-01-31T17:30:07.3440222Z",
+      "designUtcAtBoundary": "1994-11-06T00:44:03.4281885Z",
+      "sideTargetLongitude": 311.375,
+      "personalityTargetLongitude": 311.375,
+      "boundarySideLongitude": 311.37500000256836,
+      "fromGate": 19,
+      "fromLine": 4,
+      "toGate": 19,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "1995-01-31T18:58:44.2930015Z",
+      "offsetDelaySeconds": 5316.9489793,
+      "beforeSecond": {
+        "utc": "1995-01-31T17:30:06.3440222Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 311.3749882476577
+        }
+      },
+      "afterSecond": {
+        "utc": "1995-01-31T17:30:08.3440222Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 311.3750117579518
+        }
+      }
+    },
+    {
+      "id": "2005-P38.2-to-38.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-01T16:41:31.9720259Z",
+      "designUtcAtBoundary": "2004-10-06T07:18:08.9352991Z",
+      "sideTargetLongitude": 281.375,
+      "personalityTargetLongitude": 281.375,
+      "boundarySideLongitude": 281.3750000037611,
+      "fromGate": 38,
+      "fromLine": 2,
+      "toGate": 38,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-01T18:09:50.7710029Z",
+      "offsetDelaySeconds": 5298.798977,
+      "beforeSecond": {
+        "utc": "2005-01-01T16:41:30.9720259Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 281.3749882087266
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-01T16:41:32.9720259Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 281.3750117987955
+        }
+      }
+    },
+    {
+      "id": "2005-P38.3-to-38.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-02T14:46:11.2410269Z",
+      "designUtcAtBoundary": "2004-10-07T06:06:25.2295339Z",
+      "sideTargetLongitude": 282.3125,
+      "personalityTargetLongitude": 282.3125,
+      "boundarySideLongitude": 282.3125000027056,
+      "fromGate": 38,
+      "fromLine": 3,
+      "toGate": 38,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-02T16:14:29.6520573Z",
+      "offsetDelaySeconds": 5298.4110304,
+      "beforeSecond": {
+        "utc": "2005-01-02T14:46:10.2410269Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 282.31248820680827
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-02T14:46:12.2410269Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 282.3125117986029
+        }
+      }
+    },
+    {
+      "id": "2005-P38.4-to-38.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-03T12:50:44.6770278Z",
+      "designUtcAtBoundary": "2004-10-08T04:53:51.5536513Z",
+      "sideTargetLongitude": 283.25,
+      "personalityTargetLongitude": 283.25,
+      "boundarySideLongitude": 283.250000005768,
+      "fromGate": 38,
+      "fromLine": 4,
+      "toGate": 38,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-03T14:19:02.6950400Z",
+      "offsetDelaySeconds": 5298.0180122,
+      "beforeSecond": {
+        "utc": "2005-01-03T12:50:43.6770278Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 283.24998820899754
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-03T12:50:45.6770278Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 283.25001180253844
+        }
+      }
+    },
+    {
+      "id": "2005-P38.5-to-38.6",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-04T10:55:12.2410027Z",
+      "designUtcAtBoundary": "2004-10-09T03:40:28.3957198Z",
+      "sideTargetLongitude": 284.1875,
+      "personalityTargetLongitude": 284.1875,
+      "boundarySideLongitude": 284.1875000073974,
+      "fromGate": 38,
+      "fromLine": 5,
+      "toGate": 38,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2005-01-04T12:23:29.8730007Z",
+      "offsetDelaySeconds": 5297.631998,
+      "beforeSecond": {
+        "utc": "2005-01-04T10:55:11.2410027Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 284.18748820976606
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-04T10:55:13.2410027Z",
+        "activation": {
+          "gate": 38,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 284.18751180502863
+        }
+      }
+    },
+    {
+      "id": "2005-P54.1-to-54.2",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-06T07:03:50.6160358Z",
+      "designUtcAtBoundary": "2004-10-11T01:11:15.9835257Z",
+      "sideTargetLongitude": 286.0625,
+      "personalityTargetLongitude": 286.0625,
+      "boundarySideLongitude": 286.0625000104362,
+      "fromGate": 54,
+      "fromLine": 1,
+      "toGate": 54,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2005-01-06T08:32:07.5440304Z",
+      "offsetDelaySeconds": 5296.9279946,
+      "beforeSecond": {
+        "utc": "2005-01-06T07:03:49.6160358Z",
+        "activation": {
+          "gate": 54,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.06248821123154
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-06T07:03:51.6160358Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 286.06251180964085
+        }
+      }
+    },
+    {
+      "id": "2005-P54.2-to-54.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-07T05:08:02.6070514Z",
+      "designUtcAtBoundary": "2004-10-11T23:55:28.0450478Z",
+      "sideTargetLongitude": 287,
+      "personalityTargetLongitude": 287,
+      "boundarySideLongitude": 287.00000001078934,
+      "fromGate": 54,
+      "fromLine": 2,
+      "toGate": 54,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-07T06:36:19.2750196Z",
+      "offsetDelaySeconds": 5296.6679682,
+      "beforeSecond": {
+        "utc": "2005-01-07T05:08:01.6070514Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.9999882109996
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-07T05:08:03.6070514Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.0000118105789
+        }
+      }
+    },
+    {
+      "id": "2005-P54.3-to-54.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-08T03:12:11.4740446Z",
+      "designUtcAtBoundary": "2004-10-12T22:38:53.2303404Z",
+      "sideTargetLongitude": 287.9375,
+      "personalityTargetLongitude": 287.9375,
+      "boundarySideLongitude": 287.93750001144554,
+      "fromGate": 54,
+      "fromLine": 3,
+      "toGate": 54,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-08T04:40:28.0010511Z",
+      "offsetDelaySeconds": 5296.5270065,
+      "beforeSecond": {
+        "utc": "2005-01-08T03:12:10.4740446Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 287.93748821133045
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-08T03:12:12.4740446Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.93751181156057
+        }
+      }
+    },
+    {
+      "id": "2005-P54.4-to-54.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-09T01:16:19.3130008Z",
+      "designUtcAtBoundary": "2004-10-13T21:21:32.3122823Z",
+      "sideTargetLongitude": 288.875,
+      "personalityTargetLongitude": 288.875,
+      "boundarySideLongitude": 288.87500000837895,
+      "fromGate": 54,
+      "fromLine": 4,
+      "toGate": 54,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-09T02:44:35.8620652Z",
+      "offsetDelaySeconds": 5296.5490644,
+      "beforeSecond": {
+        "utc": "2005-01-09T01:16:18.3130008Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 288.8749882082997
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-09T01:16:20.3130008Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 288.87501180845834
+        }
+      }
+    },
+    {
+      "id": "2005-P54.5-to-54.6",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-09T23:20:28.8320121Z",
+      "designUtcAtBoundary": "2004-10-14T20:03:26.1758414Z",
+      "sideTargetLongitude": 289.8125,
+      "personalityTargetLongitude": 289.8125,
+      "boundarySideLongitude": 289.81250000844295,
+      "fromGate": 54,
+      "fromLine": 5,
+      "toGate": 54,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2005-01-10T00:48:45.6000462Z",
+      "offsetDelaySeconds": 5296.7680341,
+      "beforeSecond": {
+        "utc": "2005-01-09T23:20:27.8320121Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 289.81248820883565
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-09T23:20:29.8320121Z",
+        "activation": {
+          "gate": 54,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 289.8125118080503
+        }
+      }
+    },
+    {
+      "id": "2005-P61.1-to-61.2",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-11T19:29:05.0480547Z",
+      "designUtcAtBoundary": "2004-10-16T17:25:02.8234854Z",
+      "sideTargetLongitude": 291.6875,
+      "personalityTargetLongitude": 291.6875,
+      "boundarySideLongitude": 291.6875000068773,
+      "fromGate": 61,
+      "fromLine": 1,
+      "toGate": 61,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2005-01-11T20:57:22.8540207Z",
+      "offsetDelaySeconds": 5297.805966,
+      "beforeSecond": {
+        "utc": "2005-01-11T19:29:04.0480547Z",
+        "activation": {
+          "gate": 61,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 291.6874882090784
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-11T19:29:06.0480547Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 291.6875118042015
+        }
+      }
+    },
+    {
+      "id": "2005-P61.2-to-61.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-12T17:33:37.3230080Z",
+      "designUtcAtBoundary": "2004-10-17T16:04:48.5538831Z",
+      "sideTargetLongitude": 292.625,
+      "personalityTargetLongitude": 292.625,
+      "boundarySideLongitude": 292.6250000078171,
+      "fromGate": 61,
+      "fromLine": 2,
+      "toGate": 61,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-12T19:01:55.8930330Z",
+      "offsetDelaySeconds": 5298.570025,
+      "beforeSecond": {
+        "utc": "2005-01-12T17:33:36.3230080Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 292.62498821218395
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-12T17:33:38.3230080Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 292.62501180345026
+        }
+      }
+    },
+    {
+      "id": "2005-P61.3-to-61.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-13T15:38:21.8540202Z",
+      "designUtcAtBoundary": "2004-10-18T14:43:54.8607167Z",
+      "sideTargetLongitude": 293.5625,
+      "personalityTargetLongitude": 293.5625,
+      "boundarySideLongitude": 293.5625000028846,
+      "fromGate": 61,
+      "fromLine": 3,
+      "toGate": 61,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-13T17:06:41.2940466Z",
+      "offsetDelaySeconds": 5299.4400264,
+      "beforeSecond": {
+        "utc": "2005-01-13T15:38:20.8540202Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 293.5624882091821
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-13T15:38:22.8540202Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 293.5625117970614
+        }
+      }
+    },
+    {
+      "id": "2005-P61.4-to-61.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-14T13:43:19.9580024Z",
+      "designUtcAtBoundary": "2004-10-19T13:22:23.4892192Z",
+      "sideTargetLongitude": 294.5,
+      "personalityTargetLongitude": 294.5,
+      "boundarySideLongitude": 294.5000000091766,
+      "fromGate": 61,
+      "fromLine": 4,
+      "toGate": 61,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-14T15:11:40.3360560Z",
+      "offsetDelaySeconds": 5300.3780536,
+      "beforeSecond": {
+        "utc": "2005-01-14T13:43:18.9580024Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 294.4999882175584
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-14T13:43:20.9580024Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 294.5000118007947
+        }
+      }
+    },
+    {
+      "id": "2005-P61.5-to-61.6",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-15T11:48:32.4600558Z",
+      "designUtcAtBoundary": "2004-10-20T12:00:15.9262866Z",
+      "sideTargetLongitude": 295.4375,
+      "personalityTargetLongitude": 295.4375,
+      "boundarySideLongitude": 295.43750000694547,
+      "fromGate": 61,
+      "fromLine": 5,
+      "toGate": 61,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2005-01-15T13:16:53.8200109Z",
+      "offsetDelaySeconds": 5301.3599551,
+      "beforeSecond": {
+        "utc": "2005-01-15T11:48:31.4600558Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 295.4374882170327
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-15T11:48:33.4600558Z",
+        "activation": {
+          "gate": 61,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 295.43751179638394
+        }
+      }
+    },
+    {
+      "id": "2005-P60.1-to-60.2",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-17T07:59:42.6620666Z",
+      "designUtcAtBoundary": "2004-10-22T09:14:15.8078706Z",
+      "sideTargetLongitude": 297.3125,
+      "personalityTargetLongitude": 297.3125,
+      "boundarySideLongitude": 297.31250000284007,
+      "fromGate": 60,
+      "fromLine": 1,
+      "toGate": 60,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2005-01-17T09:28:06.0670527Z",
+      "offsetDelaySeconds": 5303.4049861,
+      "beforeSecond": {
+        "utc": "2005-01-17T07:59:41.6620666Z",
+        "activation": {
+          "gate": 60,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 297.31248821794463
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-17T07:59:43.6620666Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 297.31251178773545
+        }
+      }
+    },
+    {
+      "id": "2005-P60.2-to-60.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-18T06:05:41.1060152Z",
+      "designUtcAtBoundary": "2004-10-23T07:50:23.5801667Z",
+      "sideTargetLongitude": 298.25,
+      "personalityTargetLongitude": 298.25,
+      "boundarySideLongitude": 298.2500000062533,
+      "fromGate": 60,
+      "fromLine": 2,
+      "toGate": 60,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-18T07:34:05.5680125Z",
+      "offsetDelaySeconds": 5304.4619973,
+      "beforeSecond": {
+        "utc": "2005-01-18T06:05:40.1060152Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 298.24998822323005
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-18T06:05:42.1060152Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 298.2500117888025
+        }
+      }
+    },
+    {
+      "id": "2005-P60.3-to-60.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-19T04:11:55.5470608Z",
+      "designUtcAtBoundary": "2004-10-24T06:25:55.8638200Z",
+      "sideTargetLongitude": 299.1875,
+      "personalityTargetLongitude": 299.1875,
+      "boundarySideLongitude": 299.1875000037781,
+      "fromGate": 60,
+      "fromLine": 3,
+      "toGate": 60,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-19T05:40:21.0860342Z",
+      "offsetDelaySeconds": 5305.5389734,
+      "beforeSecond": {
+        "utc": "2005-01-19T04:11:54.5470608Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 299.18748822362016
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-19T04:11:56.5470608Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 299.18751178440993
+        }
+      }
+    },
+    {
+      "id": "2005-P60.4-to-60.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-20T02:18:26.2890437Z",
+      "designUtcAtBoundary": "2004-10-25T05:00:51.5841230Z",
+      "sideTargetLongitude": 300.125,
+      "personalityTargetLongitude": 300.125,
+      "boundarySideLongitude": 300.1250000102091,
+      "fromGate": 60,
+      "fromLine": 4,
+      "toGate": 60,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-20T03:46:52.9250387Z",
+      "offsetDelaySeconds": 5306.635995,
+      "beforeSecond": {
+        "utc": "2005-01-20T02:18:25.2890437Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 300.1249882324852
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-20T02:18:27.2890437Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 300.12501178793286
+        }
+      }
+    },
+    {
+      "id": "2005-P60.5-to-60.6",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-21T00:25:13.6190681Z",
+      "designUtcAtBoundary": "2004-10-26T03:35:09.4198197Z",
+      "sideTargetLongitude": 301.0625,
+      "personalityTargetLongitude": 301.0625,
+      "boundarySideLongitude": 301.062500008188,
+      "fromGate": 60,
+      "fromLine": 5,
+      "toGate": 60,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2005-01-21T01:53:41.3710029Z",
+      "offsetDelaySeconds": 5307.7519348,
+      "beforeSecond": {
+        "utc": "2005-01-21T00:25:12.6190681Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 301.0624882329387
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-21T00:25:14.6190681Z",
+        "activation": {
+          "gate": 60,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 301.0625117834373
+        }
+      }
+    },
+    {
+      "id": "2005-P41.1-to-41.2",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-22T20:39:39.0940490Z",
+      "designUtcAtBoundary": "2004-10-28T00:41:45.9329777Z",
+      "sideTargetLongitude": 302.9375,
+      "personalityTargetLongitude": 302.9375,
+      "boundarySideLongitude": 302.9375000063698,
+      "fromGate": 41,
+      "fromLine": 1,
+      "toGate": 41,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2005-01-22T22:08:09.1260046Z",
+      "offsetDelaySeconds": 5310.0319556,
+      "beforeSecond": {
+        "utc": "2005-01-22T20:39:38.0940490Z",
+        "activation": {
+          "gate": 41,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 302.9374882361741
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-22T20:39:40.0940490Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 302.9375117765656
+        }
+      }
+    },
+    {
+      "id": "2005-P41.2-to-41.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-23T18:47:17.6550165Z",
+      "designUtcAtBoundary": "2004-10-28T23:14:02.1845421Z",
+      "sideTargetLongitude": 303.875,
+      "personalityTargetLongitude": 303.875,
+      "boundarySideLongitude": 303.8750000100885,
+      "fromGate": 41,
+      "fromLine": 2,
+      "toGate": 41,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-23T20:15:48.8430027Z",
+      "offsetDelaySeconds": 5311.1879862,
+      "beforeSecond": {
+        "utc": "2005-01-23T18:47:16.6550165Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 303.8749882419809
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-23T18:47:18.6550165Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 303.8750117777227
+        }
+      }
+    },
+    {
+      "id": "2005-P41.3-to-41.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-24T16:55:13.5860768Z",
+      "designUtcAtBoundary": "2004-10-29T21:45:35.8758464Z",
+      "sideTargetLongitude": 304.8125,
+      "personalityTargetLongitude": 304.8125,
+      "boundarySideLongitude": 304.81250000672765,
+      "fromGate": 41,
+      "fromLine": 3,
+      "toGate": 41,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-24T18:23:45.9330723Z",
+      "offsetDelaySeconds": 5312.3469955,
+      "beforeSecond": {
+        "utc": "2005-01-24T16:55:12.5860768Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 304.81248824166096
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-24T16:55:14.5860768Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 304.81251177179416
+        }
+      }
+    },
+    {
+      "id": "2005-P41.4-to-41.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-25T15:03:26.8840113Z",
+      "designUtcAtBoundary": "2004-10-30T20:16:26.4286198Z",
+      "sideTargetLongitude": 305.75,
+      "personalityTargetLongitude": 305.75,
+      "boundarySideLongitude": 305.750000000292,
+      "fromGate": 41,
+      "fromLine": 4,
+      "toGate": 41,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-25T16:32:00.3860714Z",
+      "offsetDelaySeconds": 5313.5020601,
+      "beforeSecond": {
+        "utc": "2005-01-25T15:03:25.8840113Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 305.7499882377836
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-25T15:03:27.8840113Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 305.7500117628005
+        }
+      }
+    },
+    {
+      "id": "2005-P41.5-to-41.6",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-26T13:11:57.4390641Z",
+      "designUtcAtBoundary": "2004-10-31T18:46:33.5062720Z",
+      "sideTargetLongitude": 306.6875,
+      "personalityTargetLongitude": 306.6875,
+      "boundarySideLongitude": 306.68750000284336,
+      "fromGate": 41,
+      "fromLine": 5,
+      "toGate": 41,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2005-01-26T14:40:32.0850792Z",
+      "offsetDelaySeconds": 5314.6460151,
+      "beforeSecond": {
+        "utc": "2005-01-26T13:11:56.4390641Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 306.68748824286735
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-26T13:11:58.4390641Z",
+        "activation": {
+          "gate": 41,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 306.68751176329255
+        }
+      }
+    },
+    {
+      "id": "2005-P19.1-to-19.2",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-28T09:29:49.3020628Z",
+      "designUtcAtBoundary": "2004-11-02T15:44:36.8638551Z",
+      "sideTargetLongitude": 308.5625,
+      "personalityTargetLongitude": 308.5625,
+      "boundarySideLongitude": 308.56250000850554,
+      "fromGate": 19,
+      "fromLine": 1,
+      "toGate": 19,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2005-01-28T10:58:26.1700556Z",
+      "offsetDelaySeconds": 5316.8679928,
+      "beforeSecond": {
+        "utc": "2005-01-28T09:29:48.3020628Z",
+        "activation": {
+          "gate": 19,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 308.5624882534493
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-28T09:29:50.3020628Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 308.56251176403464
+        }
+      }
+    },
+    {
+      "id": "2005-P19.2-to-19.3",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-29T07:39:09.8290029Z",
+      "designUtcAtBoundary": "2004-11-03T14:12:33.3254787Z",
+      "sideTargetLongitude": 309.5,
+      "personalityTargetLongitude": 309.5,
+      "boundarySideLongitude": 309.5000000037969,
+      "fromGate": 19,
+      "fromLine": 2,
+      "toGate": 19,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2005-01-29T09:07:47.7630234Z",
+      "offsetDelaySeconds": 5317.9340205,
+      "beforeSecond": {
+        "utc": "2005-01-29T07:39:08.8290029Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 309.49998825109924
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-29T07:39:10.8290029Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 309.5000117564945
+        }
+      }
+    },
+    {
+      "id": "2005-P19.3-to-19.4",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-30T05:48:46.1040773Z",
+      "designUtcAtBoundary": "2004-11-04T12:39:46.6078554Z",
+      "sideTargetLongitude": 310.4375,
+      "personalityTargetLongitude": 310.4375,
+      "boundarySideLongitude": 310.43750001147424,
+      "fromGate": 19,
+      "fromLine": 3,
+      "toGate": 19,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2005-01-30T07:17:25.0690260Z",
+      "offsetDelaySeconds": 5318.9649487,
+      "beforeSecond": {
+        "utc": "2005-01-30T05:48:45.1040773Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 310.43748826105804
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-30T05:48:47.1040773Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 310.43751176189045
+        }
+      }
+    },
+    {
+      "id": "2005-P19.4-to-19.5",
+      "year": 2005,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2005-01-31T03:58:37.6150379Z",
+      "designUtcAtBoundary": "2004-11-05T11:06:17.0218669Z",
+      "sideTargetLongitude": 311.375,
+      "personalityTargetLongitude": 311.375,
+      "boundarySideLongitude": 311.37500000653665,
+      "fromGate": 19,
+      "fromLine": 4,
+      "toGate": 19,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2005-01-31T05:27:17.5790352Z",
+      "offsetDelaySeconds": 5319.9639973,
+      "beforeSecond": {
+        "utc": "2005-01-31T03:58:36.6150379Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 311.3749882583287
+        }
+      },
+      "afterSecond": {
+        "utc": "2005-01-31T03:58:38.6150379Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 311.3750117547445
+        }
+      }
+    },
+    {
+      "id": "2015-P38.1-to-38.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-01T04:52:36.2230196Z",
+      "designUtcAtBoundary": "2014-10-05T18:24:46.3455087Z",
+      "sideTargetLongitude": 280.4375,
+      "personalityTargetLongitude": 280.4375,
+      "boundarySideLongitude": 280.43750000753687,
+      "fromGate": 38,
+      "fromLine": 1,
+      "toGate": 38,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-01T06:20:55.6750411Z",
+      "offsetDelaySeconds": 5299.4520215,
+      "beforeSecond": {
+        "utc": "2015-01-01T04:52:35.2230196Z",
+        "activation": {
+          "gate": 38,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 280.4374882134479
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-01T04:52:37.2230196Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 280.4375118011513
+        }
+      }
+    },
+    {
+      "id": "2015-P38.2-to-38.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-02T02:57:28.7110195Z",
+      "designUtcAtBoundary": "2014-10-06T17:14:40.3291752Z",
+      "sideTargetLongitude": 281.375,
+      "personalityTargetLongitude": 281.375,
+      "boundarySideLongitude": 281.3750000032964,
+      "fromGate": 38,
+      "fromLine": 2,
+      "toGate": 38,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-02T04:25:48.2640729Z",
+      "offsetDelaySeconds": 5299.5530534,
+      "beforeSecond": {
+        "utc": "2015-01-02T02:57:27.7110195Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 281.37498820942966
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-02T02:57:29.7110195Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 281.3750117966885
+        }
+      }
+    },
+    {
+      "id": "2015-P38.3-to-38.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-03T01:02:22.6850703Z",
+      "designUtcAtBoundary": "2014-10-07T16:03:52.7332243Z",
+      "sideTargetLongitude": 282.3125,
+      "personalityTargetLongitude": 282.3125,
+      "boundarySideLongitude": 282.3125000108744,
+      "fromGate": 38,
+      "fromLine": 3,
+      "toGate": 38,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-03T02:30:42.3350500Z",
+      "offsetDelaySeconds": 5299.6499797,
+      "beforeSecond": {
+        "utc": "2015-01-03T01:02:21.6850703Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 282.3124882177002
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-03T01:02:23.6850703Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 282.31251180404854
+        }
+      }
+    },
+    {
+      "id": "2015-P38.4-to-38.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-03T23:07:18.1250558Z",
+      "designUtcAtBoundary": "2014-10-08T14:52:21.4143562Z",
+      "sideTargetLongitude": 283.25,
+      "personalityTargetLongitude": 283.25,
+      "boundarySideLongitude": 283.25000001084777,
+      "fromGate": 38,
+      "fromLine": 4,
+      "toGate": 38,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-04T00:35:37.8730082Z",
+      "offsetDelaySeconds": 5299.7479524,
+      "beforeSecond": {
+        "utc": "2015-01-03T23:07:17.1250558Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 283.2499882174178
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-03T23:07:19.1250558Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 283.2500118038033
+        }
+      }
+    },
+    {
+      "id": "2015-P38.5-to-38.6",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-04T21:12:15.0020078Z",
+      "designUtcAtBoundary": "2014-10-09T13:40:04.3260722Z",
+      "sideTargetLongitude": 284.1875,
+      "personalityTargetLongitude": 284.1875,
+      "boundarySideLongitude": 284.18750000150584,
+      "fromGate": 38,
+      "fromLine": 5,
+      "toGate": 38,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2015-01-04T22:40:34.8430223Z",
+      "offsetDelaySeconds": 5299.8410145,
+      "beforeSecond": {
+        "utc": "2015-01-04T21:12:14.0020078Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 284.18748820875595
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-04T21:12:16.0020078Z",
+        "activation": {
+          "gate": 38,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 284.1875117942558
+        }
+      }
+    },
+    {
+      "id": "2015-P54.1-to-54.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-06T17:22:12.6870111Z",
+      "designUtcAtBoundary": "2014-10-11T11:13:06.5574851Z",
+      "sideTargetLongitude": 286.0625,
+      "personalityTargetLongitude": 286.0625,
+      "boundarySideLongitude": 286.0625000023304,
+      "fromGate": 54,
+      "fromLine": 1,
+      "toGate": 54,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-06T18:50:32.6920114Z",
+      "offsetDelaySeconds": 5300.0050003,
+      "beforeSecond": {
+        "utc": "2015-01-06T17:22:11.6870111Z",
+        "activation": {
+          "gate": 54,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.06248820994733
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-06T17:22:13.6870111Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 286.0625117947136
+        }
+      }
+    },
+    {
+      "id": "2015-P54.2-to-54.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-07T15:27:13.2510081Z",
+      "designUtcAtBoundary": "2014-10-12T09:58:23.9504572Z",
+      "sideTargetLongitude": 287,
+      "personalityTargetLongitude": 287,
+      "boundarySideLongitude": 287.0000000002592,
+      "fromGate": 54,
+      "fromLine": 2,
+      "toGate": 54,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-07T16:55:33.3250804Z",
+      "offsetDelaySeconds": 5300.0740723,
+      "beforeSecond": {
+        "utc": "2015-01-07T15:27:12.2510081Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.9999882080285
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-07T15:27:14.2510081Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.00001179248983
+        }
+      }
+    },
+    {
+      "id": "2015-P54.3-to-54.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-08T13:32:14.7690132Z",
+      "designUtcAtBoundary": "2014-10-13T08:42:51.6278269Z",
+      "sideTargetLongitude": 287.9375,
+      "personalityTargetLongitude": 287.9375,
+      "boundarySideLongitude": 287.9375000032878,
+      "fromGate": 54,
+      "fromLine": 3,
+      "toGate": 54,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-08T15:00:34.9010480Z",
+      "offsetDelaySeconds": 5300.1320348,
+      "beforeSecond": {
+        "utc": "2015-01-08T13:32:13.7690132Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 287.9374882111879
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-08T13:32:15.7690132Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.9375117953879
+        }
+      }
+    },
+    {
+      "id": "2015-P54.4-to-54.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-09T11:37:17.1020612Z",
+      "designUtcAtBoundary": "2014-10-14T07:26:29.5378947Z",
+      "sideTargetLongitude": 288.875,
+      "personalityTargetLongitude": 288.875,
+      "boundarySideLongitude": 288.87500000736986,
+      "fromGate": 54,
+      "fromLine": 4,
+      "toGate": 54,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-09T13:05:37.2830421Z",
+      "offsetDelaySeconds": 5300.1809809,
+      "beforeSecond": {
+        "utc": "2015-01-09T11:37:16.1020612Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 288.8749882153816
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-09T11:37:18.1020612Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 288.8750117998324
+        }
+      }
+    },
+    {
+      "id": "2015-P54.5-to-54.6",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-10T09:42:20.1410399Z",
+      "designUtcAtBoundary": "2014-10-15T06:09:17.8207521Z",
+      "sideTargetLongitude": 289.8125,
+      "personalityTargetLongitude": 289.8125,
+      "boundarySideLongitude": 289.81250000073453,
+      "fromGate": 54,
+      "fromLine": 5,
+      "toGate": 54,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2015-01-10T11:10:40.3670224Z",
+      "offsetDelaySeconds": 5300.2259825,
+      "beforeSecond": {
+        "utc": "2015-01-10T09:42:19.1410399Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 289.81248820884554
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-10T09:42:21.1410399Z",
+        "activation": {
+          "gate": 54,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 289.8125117926236
+        }
+      }
+    },
+    {
+      "id": "2015-P61.1-to-61.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-12T05:52:28.1830176Z",
+      "designUtcAtBoundary": "2014-10-17T03:32:26.6906682Z",
+      "sideTargetLongitude": 291.6875,
+      "personalityTargetLongitude": 291.6875,
+      "boundarySideLongitude": 291.687500004539,
+      "fromGate": 61,
+      "fromLine": 1,
+      "toGate": 61,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-12T07:20:48.4990029Z",
+      "offsetDelaySeconds": 5300.3159853,
+      "beforeSecond": {
+        "utc": "2015-01-12T05:52:27.1830176Z",
+        "activation": {
+          "gate": 61,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 291.6874882123748
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-12T05:52:29.1830176Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 291.6875117962288
+        }
+      }
+    },
+    {
+      "id": "2015-P61.2-to-61.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-13T03:57:33.3100155Z",
+      "designUtcAtBoundary": "2014-10-18T02:12:48.0948212Z",
+      "sideTargetLongitude": 292.625,
+      "personalityTargetLongitude": 292.625,
+      "boundarySideLongitude": 292.6250000000509,
+      "fromGate": 61,
+      "fromLine": 2,
+      "toGate": 61,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-13T05:25:53.6850099Z",
+      "offsetDelaySeconds": 5300.3749944,
+      "beforeSecond": {
+        "utc": "2015-01-13T03:57:32.3100155Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 292.62498820801574
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-13T03:57:34.3100155Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 292.6250117916116
+        }
+      }
+    },
+    {
+      "id": "2015-P61.3-to-61.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-14T02:02:39.4510493Z",
+      "designUtcAtBoundary": "2014-10-19T00:52:21.4784743Z",
+      "sideTargetLongitude": 293.5625,
+      "personalityTargetLongitude": 293.5625,
+      "boundarySideLongitude": 293.56250000736196,
+      "fromGate": 61,
+      "fromLine": 3,
+      "toGate": 61,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-14T03:30:59.9050177Z",
+      "offsetDelaySeconds": 5300.4539684,
+      "beforeSecond": {
+        "utc": "2015-01-14T02:02:38.4510493Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 293.56248821597666
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-14T02:02:40.4510493Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 293.56251179874727
+        }
+      }
+    },
+    {
+      "id": "2015-P61.4-to-61.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-15T00:07:47.0080481Z",
+      "designUtcAtBoundary": "2014-10-19T23:31:07.4164787Z",
+      "sideTargetLongitude": 294.5,
+      "personalityTargetLongitude": 294.5,
+      "boundarySideLongitude": 294.5000000002488,
+      "fromGate": 61,
+      "fromLine": 4,
+      "toGate": 61,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-15T01:36:07.5770560Z",
+      "offsetDelaySeconds": 5300.5690079,
+      "beforeSecond": {
+        "utc": "2015-01-15T00:07:46.0080481Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 294.4999882091137
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-15T00:07:48.0080481Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 294.5000117913838
+        }
+      }
+    },
+    {
+      "id": "2015-P61.5-to-61.6",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-15T22:12:56.6080050Z",
+      "designUtcAtBoundary": "2014-10-20T22:09:06.5578750Z",
+      "sideTargetLongitude": 295.4375,
+      "personalityTargetLongitude": 295.4375,
+      "boundarySideLongitude": 295.43750000015905,
+      "fromGate": 61,
+      "fromLine": 5,
+      "toGate": 61,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2015-01-15T23:41:17.3420451Z",
+      "offsetDelaySeconds": 5300.7340401,
+      "beforeSecond": {
+        "utc": "2015-01-15T22:12:55.6080050Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 295.43748820938697
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-15T22:12:57.6080050Z",
+        "activation": {
+          "gate": 61,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 295.4375117909313
+        }
+      }
+    },
+    {
+      "id": "2015-P60.1-to-60.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-17T18:23:26.0070185Z",
+      "designUtcAtBoundary": "2014-10-22T19:22:47.4463615Z",
+      "sideTargetLongitude": 297.3125,
+      "personalityTargetLongitude": 297.3125,
+      "boundarySideLongitude": 297.31250000261974,
+      "fromGate": 60,
+      "fromLine": 1,
+      "toGate": 60,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-17T19:51:47.3220525Z",
+      "offsetDelaySeconds": 5301.315034,
+      "beforeSecond": {
+        "utc": "2015-01-17T18:23:25.0070185Z",
+        "activation": {
+          "gate": 60,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 297.3124882126505
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-17T18:23:27.0070185Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 297.31251179211466
+        }
+      }
+    },
+    {
+      "id": "2015-P60.2-to-60.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-18T16:28:48.8590458Z",
+      "designUtcAtBoundary": "2014-10-23T17:58:30.9654396Z",
+      "sideTargetLongitude": 298.25,
+      "personalityTargetLongitude": 298.25,
+      "boundarySideLongitude": 298.2500000071959,
+      "fromGate": 60,
+      "fromLine": 2,
+      "toGate": 60,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-18T17:57:10.6470380Z",
+      "offsetDelaySeconds": 5301.7879922,
+      "beforeSecond": {
+        "utc": "2015-01-18T16:28:47.8590458Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 298.2499882187447
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-18T16:28:49.8590458Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 298.250011795647
+        }
+      }
+    },
+    {
+      "id": "2015-P60.3-to-60.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-19T14:34:19.9040685Z",
+      "designUtcAtBoundary": "2014-10-24T16:33:31.2874477Z",
+      "sideTargetLongitude": 299.1875,
+      "personalityTargetLongitude": 299.1875,
+      "boundarySideLongitude": 299.18750000509425,
+      "fromGate": 60,
+      "fromLine": 3,
+      "toGate": 60,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-19T16:02:42.3250600Z",
+      "offsetDelaySeconds": 5302.4209915,
+      "beforeSecond": {
+        "utc": "2015-01-19T14:34:18.9040685Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 299.18748821803615
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-19T14:34:20.9040685Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 299.1875117921523
+        }
+      }
+    },
+    {
+      "id": "2015-P60.4-to-60.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-20T12:40:01.6250338Z",
+      "designUtcAtBoundary": "2014-10-25T15:07:49.6941733Z",
+      "sideTargetLongitude": 300.125,
+      "personalityTargetLongitude": 300.125,
+      "boundarySideLongitude": 300.1250000070515,
+      "fromGate": 60,
+      "fromLine": 4,
+      "toGate": 60,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-20T14:08:24.8490479Z",
+      "offsetDelaySeconds": 5303.2240141,
+      "beforeSecond": {
+        "utc": "2015-01-20T12:40:00.6250338Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 300.1249882217666
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-20T12:40:02.6250338Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 300.1250117923363
+        }
+      }
+    },
+    {
+      "id": "2015-P60.5-to-60.6",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-21T10:45:56.5900233Z",
+      "designUtcAtBoundary": "2014-10-26T13:41:27.6422167Z",
+      "sideTargetLongitude": 301.0625,
+      "personalityTargetLongitude": 301.0625,
+      "boundarySideLongitude": 301.0625000022932,
+      "fromGate": 60,
+      "fromLine": 5,
+      "toGate": 60,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2015-01-21T12:14:20.7860370Z",
+      "offsetDelaySeconds": 5304.1960137,
+      "beforeSecond": {
+        "utc": "2015-01-21T10:45:55.5900233Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 301.06248821915517
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-21T10:45:57.5900233Z",
+        "activation": {
+          "gate": 60,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 301.06251178590514
+        }
+      }
+    },
+    {
+      "id": "2015-P41.1-to-41.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-23T06:58:35.4940275Z",
+      "designUtcAtBoundary": "2014-10-28T10:46:48.6182668Z",
+      "sideTargetLongitude": 302.9375,
+      "personalityTargetLongitude": 302.9375,
+      "boundarySideLongitude": 302.93750000910165,
+      "fromGate": 41,
+      "fromLine": 1,
+      "toGate": 41,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-23T08:27:02.0500020Z",
+      "offsetDelaySeconds": 5306.5559745,
+      "beforeSecond": {
+        "utc": "2015-01-23T06:58:34.4940275Z",
+        "activation": {
+          "gate": 41,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 302.93748823118653
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-23T06:58:36.4940275Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 302.93751178701683
+        }
+      }
+    },
+    {
+      "id": "2015-P41.2-to-41.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-24T05:05:23.0440465Z",
+      "designUtcAtBoundary": "2014-10-29T09:18:34.9208083Z",
+      "sideTargetLongitude": 303.875,
+      "personalityTargetLongitude": 303.875,
+      "boundarySideLongitude": 303.8750000017373,
+      "fromGate": 41,
+      "fromLine": 2,
+      "toGate": 41,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-24T06:33:50.9300197Z",
+      "offsetDelaySeconds": 5307.8859732,
+      "beforeSecond": {
+        "utc": "2015-01-24T05:05:22.0440465Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 303.8749882267663
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-24T05:05:24.0440465Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 303.87501177670833
+        }
+      }
+    },
+    {
+      "id": "2015-P41.3-to-41.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-25T03:12:31.0170487Z",
+      "designUtcAtBoundary": "2014-10-30T07:49:47.0764016Z",
+      "sideTargetLongitude": 304.8125,
+      "personalityTargetLongitude": 304.8125,
+      "boundarySideLongitude": 304.81250000336956,
+      "fromGate": 41,
+      "fromLine": 3,
+      "toGate": 41,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-25T04:41:00.2970209Z",
+      "offsetDelaySeconds": 5309.2799722,
+      "beforeSecond": {
+        "utc": "2015-01-25T03:12:30.0170487Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 304.81248823148746
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-25T03:12:32.0170487Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 304.8125117752516
+        }
+      }
+    },
+    {
+      "id": "2015-P41.4-to-41.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-26T01:20:00.2710459Z",
+      "designUtcAtBoundary": "2014-10-31T06:20:26.2085571Z",
+      "sideTargetLongitude": 305.75,
+      "personalityTargetLongitude": 305.75,
+      "boundarySideLongitude": 305.75000000718336,
+      "fromGate": 41,
+      "fromLine": 4,
+      "toGate": 41,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-26T02:48:30.9950099Z",
+      "offsetDelaySeconds": 5310.723964,
+      "beforeSecond": {
+        "utc": "2015-01-26T01:19:59.2710459Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 305.74998823849904
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-26T01:20:01.2710459Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 305.7500117758676
+        }
+      }
+    },
+    {
+      "id": "2015-P41.5-to-41.6",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-26T23:27:51.4750346Z",
+      "designUtcAtBoundary": "2014-11-01T04:50:33.0018012Z",
+      "sideTargetLongitude": 306.6875,
+      "personalityTargetLongitude": 306.6875,
+      "boundarySideLongitude": 306.6875000055707,
+      "fromGate": 41,
+      "fromLine": 5,
+      "toGate": 41,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2015-01-27T00:56:23.6830005Z",
+      "offsetDelaySeconds": 5312.2079659,
+      "beforeSecond": {
+        "utc": "2015-01-26T23:27:50.4750346Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 306.68748824017166
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-26T23:27:52.4750346Z",
+        "activation": {
+          "gate": 41,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 306.6875117709698
+        }
+      }
+    },
+    {
+      "id": "2015-P19.1-to-19.2",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-28T19:44:41.8620441Z",
+      "designUtcAtBoundary": "2014-11-03T01:49:09.6643737Z",
+      "sideTargetLongitude": 308.5625,
+      "personalityTargetLongitude": 308.5625,
+      "boundarySideLongitude": 308.562500006883,
+      "fromGate": 19,
+      "fromLine": 1,
+      "toGate": 19,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2015-01-28T21:13:17.1340546Z",
+      "offsetDelaySeconds": 5315.2720105,
+      "beforeSecond": {
+        "utc": "2015-01-28T19:44:40.8620441Z",
+        "activation": {
+          "gate": 19,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 308.5624882482606
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-28T19:44:42.8620441Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 308.56251176550523
+        }
+      }
+    },
+    {
+      "id": "2015-P19.2-to-19.3",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-29T17:53:41.8820748Z",
+      "designUtcAtBoundary": "2014-11-04T00:17:38.2765371Z",
+      "sideTargetLongitude": 309.5,
+      "personalityTargetLongitude": 309.5,
+      "boundarySideLongitude": 309.50000001001774,
+      "fromGate": 19,
+      "fromLine": 2,
+      "toGate": 19,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2015-01-29T19:22:18.7200398Z",
+      "offsetDelaySeconds": 5316.837965,
+      "beforeSecond": {
+        "utc": "2015-01-29T17:53:40.8820748Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 309.4999882548597
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-29T17:53:42.8820748Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 309.50001176517577
+        }
+      }
+    },
+    {
+      "id": "2015-P19.3-to-19.4",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-30T16:03:05.5180707Z",
+      "designUtcAtBoundary": "2014-11-04T22:45:32.2557761Z",
+      "sideTargetLongitude": 310.4375,
+      "personalityTargetLongitude": 310.4375,
+      "boundarySideLongitude": 310.4375000012828,
+      "fromGate": 19,
+      "fromLine": 3,
+      "toGate": 19,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2015-01-30T17:31:43.9390570Z",
+      "offsetDelaySeconds": 5318.4209863,
+      "beforeSecond": {
+        "utc": "2015-01-30T16:03:04.5180707Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 310.4374882496201
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-30T16:03:06.5180707Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 310.43751175294534
+        }
+      }
+    },
+    {
+      "id": "2015-P19.4-to-19.5",
+      "year": 2015,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2015-01-31T14:12:52.9470579Z",
+      "designUtcAtBoundary": "2014-11-05T21:12:50.2735126Z",
+      "sideTargetLongitude": 311.375,
+      "personalityTargetLongitude": 311.375,
+      "boundarySideLongitude": 311.37500000602233,
+      "fromGate": 19,
+      "fromLine": 4,
+      "toGate": 19,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2015-01-31T15:41:32.9570228Z",
+      "offsetDelaySeconds": 5320.0099649,
+      "beforeSecond": {
+        "utc": "2015-01-31T14:12:51.9470579Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 311.3749882573985
+        }
+      },
+      "afterSecond": {
+        "utc": "2015-01-31T14:12:53.9470579Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 311.37501175417333
+        }
+      }
+    },
+    {
+      "id": "2025-P38.2-to-38.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-01T13:12:49.6370509Z",
+      "designUtcAtBoundary": "2024-10-06T03:28:34.8340703Z",
+      "sideTargetLongitude": 281.375,
+      "personalityTargetLongitude": 281.375,
+      "boundarySideLongitude": 281.3750000029888,
+      "fromGate": 38,
+      "fromLine": 2,
+      "toGate": 38,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-01T14:41:05.6190486Z",
+      "offsetDelaySeconds": 5295.9819977,
+      "beforeSecond": {
+        "utc": "2025-01-01T13:12:48.6370509Z",
+        "activation": {
+          "gate": 38,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 281.37498820164444
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-01T13:12:50.6370509Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 281.3750118043332
+        }
+      }
+    },
+    {
+      "id": "2025-P38.3-to-38.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-02T11:16:50.4610381Z",
+      "designUtcAtBoundary": "2024-10-07T02:16:56.3400649Z",
+      "sideTargetLongitude": 282.3125,
+      "personalityTargetLongitude": 282.3125,
+      "boundarySideLongitude": 282.31250000324906,
+      "fromGate": 38,
+      "fromLine": 3,
+      "toGate": 38,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-02T12:45:06.6240076Z",
+      "offsetDelaySeconds": 5296.1629695,
+      "beforeSecond": {
+        "utc": "2025-01-02T11:16:49.4610381Z",
+        "activation": {
+          "gate": 38,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 282.3124882022984
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-02T11:16:51.4610381Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 282.31251180419974
+        }
+      }
+    },
+    {
+      "id": "2025-P38.4-to-38.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-03T09:20:54.9150196Z",
+      "designUtcAtBoundary": "2024-10-08T01:04:36.3200327Z",
+      "sideTargetLongitude": 283.25,
+      "personalityTargetLongitude": 283.25,
+      "boundarySideLongitude": 283.2500000010015,
+      "fromGate": 38,
+      "fromLine": 4,
+      "toGate": 38,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-03T10:49:11.3860761Z",
+      "offsetDelaySeconds": 5296.4710565,
+      "beforeSecond": {
+        "utc": "2025-01-03T09:20:53.9150196Z",
+        "activation": {
+          "gate": 38,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 283.24998820025223
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-03T09:20:55.9150196Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 283.25001180127606
+        }
+      }
+    },
+    {
+      "id": "2025-P38.5-to-38.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-04T07:25:04.7690121Z",
+      "designUtcAtBoundary": "2024-10-08T23:51:35.7899406Z",
+      "sideTargetLongitude": 284.1875,
+      "personalityTargetLongitude": 284.1875,
+      "boundarySideLongitude": 284.18750001057805,
+      "fromGate": 38,
+      "fromLine": 5,
+      "toGate": 38,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-01-04T08:53:21.6510391Z",
+      "offsetDelaySeconds": 5296.882027,
+      "beforeSecond": {
+        "utc": "2025-01-04T07:25:03.7690121Z",
+        "activation": {
+          "gate": 38,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 284.1874882112147
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-04T07:25:05.7690121Z",
+        "activation": {
+          "gate": 38,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 284.18751180994144
+        }
+      }
+    },
+    {
+      "id": "2025-P54.1-to-54.2",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-06T03:33:45.4680720Z",
+      "designUtcAtBoundary": "2024-10-10T21:23:37.2481567Z",
+      "sideTargetLongitude": 286.0625,
+      "personalityTargetLongitude": 286.0625,
+      "boundarySideLongitude": 286.0625000064918,
+      "fromGate": 54,
+      "fromLine": 1,
+      "toGate": 54,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2025-01-06T05:02:03.3640410Z",
+      "offsetDelaySeconds": 5297.895969,
+      "beforeSecond": {
+        "utc": "2025-01-06T03:33:44.4680720Z",
+        "activation": {
+          "gate": 54,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.06248820937856
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-06T03:33:46.4680720Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 286.0625118036051
+        }
+      }
+    },
+    {
+      "id": "2025-P54.2-to-54.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-07T01:38:17.7720735Z",
+      "designUtcAtBoundary": "2024-10-11T20:08:41.0615605Z",
+      "sideTargetLongitude": 287,
+      "personalityTargetLongitude": 287,
+      "boundarySideLongitude": 287.00000000583873,
+      "fromGate": 54,
+      "fromLine": 2,
+      "toGate": 54,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-07T03:06:36.2240802Z",
+      "offsetDelaySeconds": 5298.4520067,
+      "beforeSecond": {
+        "utc": "2025-01-07T01:38:16.7720735Z",
+        "activation": {
+          "gate": 54,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 286.9999882099618
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-07T01:38:18.7720735Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.0000118017158
+        }
+      }
+    },
+    {
+      "id": "2025-P54.3-to-54.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-07T23:42:58.5160211Z",
+      "designUtcAtBoundary": "2024-10-12T18:53:07.8076538Z",
+      "sideTargetLongitude": 287.9375,
+      "personalityTargetLongitude": 287.9375,
+      "boundarySideLongitude": 287.9375000017742,
+      "fromGate": 54,
+      "fromLine": 3,
+      "toGate": 54,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-08T01:11:17.5370268Z",
+      "offsetDelaySeconds": 5299.0210057,
+      "beforeSecond": {
+        "utc": "2025-01-07T23:42:57.5160211Z",
+        "activation": {
+          "gate": 54,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 287.93748820716286
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-07T23:42:59.5160211Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 287.93751179686006
+        }
+      }
+    },
+    {
+      "id": "2025-P54.4-to-54.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-08T21:47:47.8480533Z",
+      "designUtcAtBoundary": "2024-10-13T17:36:57.6437080Z",
+      "sideTargetLongitude": 288.875,
+      "personalityTargetLongitude": 288.875,
+      "boundarySideLongitude": 288.8750000093882,
+      "fromGate": 54,
+      "fromLine": 4,
+      "toGate": 54,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-08T23:16:07.4440151Z",
+      "offsetDelaySeconds": 5299.5959618,
+      "beforeSecond": {
+        "utc": "2025-01-08T21:47:46.8480533Z",
+        "activation": {
+          "gate": 54,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 288.87498821605857
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-08T21:47:48.8480533Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 288.8750118027177
+        }
+      }
+    },
+    {
+      "id": "2025-P54.5-to-54.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-09T19:52:45.8680288Z",
+      "designUtcAtBoundary": "2024-10-14T16:20:10.0910693Z",
+      "sideTargetLongitude": 289.8125,
+      "personalityTargetLongitude": 289.8125,
+      "boundarySideLongitude": 289.8125000029121,
+      "fromGate": 54,
+      "fromLine": 5,
+      "toGate": 54,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-01-09T21:21:06.0480437Z",
+      "offsetDelaySeconds": 5300.1800149,
+      "beforeSecond": {
+        "utc": "2025-01-09T19:52:44.8680288Z",
+        "activation": {
+          "gate": 54,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 289.81248821087945
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-09T19:52:46.8680288Z",
+        "activation": {
+          "gate": 54,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 289.8125117949448
+        }
+      }
+    },
+    {
+      "id": "2025-P61.1-to-61.2",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-11T16:03:08.4720681Z",
+      "designUtcAtBoundary": "2024-10-16T13:44:37.2401823Z",
+      "sideTargetLongitude": 291.6875,
+      "personalityTargetLongitude": 291.6875,
+      "boundarySideLongitude": 291.68750000247616,
+      "fromGate": 61,
+      "fromLine": 1,
+      "toGate": 61,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2025-01-11T17:31:29.8460307Z",
+      "offsetDelaySeconds": 5301.3739626,
+      "beforeSecond": {
+        "utc": "2025-01-11T16:03:07.4720681Z",
+        "activation": {
+          "gate": 61,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 291.68748821309737
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-11T16:03:09.4720681Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 291.6875117918549
+        }
+      }
+    },
+    {
+      "id": "2025-P61.2-to-61.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-12T14:08:33.3270618Z",
+      "designUtcAtBoundary": "2024-10-17T12:25:47.7253408Z",
+      "sideTargetLongitude": 292.625,
+      "personalityTargetLongitude": 292.625,
+      "boundarySideLongitude": 292.62500000643365,
+      "fromGate": 61,
+      "fromLine": 2,
+      "toGate": 61,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-12T15:36:55.3090676Z",
+      "offsetDelaySeconds": 5301.9820058,
+      "beforeSecond": {
+        "utc": "2025-01-12T14:08:32.3270618Z",
+        "activation": {
+          "gate": 61,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 292.62498821840717
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-12T14:08:34.3270618Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 292.6250117949345
+        }
+      }
+    },
+    {
+      "id": "2025-P61.3-to-61.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-13T12:14:07.3100688Z",
+      "designUtcAtBoundary": "2024-10-18T11:06:13.1156721Z",
+      "sideTargetLongitude": 293.5625,
+      "personalityTargetLongitude": 293.5625,
+      "boundarySideLongitude": 293.5625000015291,
+      "fromGate": 61,
+      "fromLine": 3,
+      "toGate": 61,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-13T13:42:29.8990712Z",
+      "offsetDelaySeconds": 5302.5890024,
+      "beforeSecond": {
+        "utc": "2025-01-13T12:14:06.3100688Z",
+        "activation": {
+          "gate": 61,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 293.56248821485303
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-13T12:14:08.3100688Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 293.5625117882051
+        }
+      }
+    },
+    {
+      "id": "2025-P61.4-to-61.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-14T10:19:50.3390136Z",
+      "designUtcAtBoundary": "2024-10-19T09:45:51.5959785Z",
+      "sideTargetLongitude": 294.5,
+      "personalityTargetLongitude": 294.5,
+      "boundarySideLongitude": 294.50000000992776,
+      "fromGate": 61,
+      "fromLine": 4,
+      "toGate": 61,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-14T11:48:13.5240640Z",
+      "offsetDelaySeconds": 5303.1850504,
+      "beforeSecond": {
+        "utc": "2025-01-14T10:19:49.3390136Z",
+        "activation": {
+          "gate": 61,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 294.499988224578
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-14T10:19:51.3390136Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 294.50001179527754
+        }
+      }
+    },
+    {
+      "id": "2025-P61.5-to-61.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-15T08:25:42.1730605Z",
+      "designUtcAtBoundary": "2024-10-20T08:24:42.0293112Z",
+      "sideTargetLongitude": 295.4375,
+      "personalityTargetLongitude": 295.4375,
+      "boundarySideLongitude": 295.43750000000006,
+      "fromGate": 61,
+      "fromLine": 5,
+      "toGate": 61,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-01-15T09:54:05.9340331Z",
+      "offsetDelaySeconds": 5303.7609726,
+      "beforeSecond": {
+        "utc": "2025-01-15T08:25:41.1730605Z",
+        "activation": {
+          "gate": 61,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 295.4374882159303
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-15T08:25:43.1730605Z",
+        "activation": {
+          "gate": 61,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 295.4375117845439
+        }
+      }
+    },
+    {
+      "id": "2025-P60.1-to-60.2",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-17T04:37:50.7470742Z",
+      "designUtcAtBoundary": "2024-10-22T05:39:57.4585041Z",
+      "sideTargetLongitude": 297.3125,
+      "personalityTargetLongitude": 297.3125,
+      "boundarySideLongitude": 297.31250000188294,
+      "fromGate": 60,
+      "fromLine": 1,
+      "toGate": 60,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2025-01-17T06:06:15.5750405Z",
+      "offsetDelaySeconds": 5304.8279663,
+      "beforeSecond": {
+        "utc": "2025-01-17T04:37:49.7470742Z",
+        "activation": {
+          "gate": 60,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 297.312488220189
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-17T04:37:51.7470742Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 297.3125117835768
+        }
+      }
+    },
+    {
+      "id": "2025-P60.2-to-60.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-18T02:44:06.6630664Z",
+      "designUtcAtBoundary": "2024-10-23T04:16:22.8336015Z",
+      "sideTargetLongitude": 298.25,
+      "personalityTargetLongitude": 298.25,
+      "boundarySideLongitude": 298.2500000087376,
+      "fromGate": 60,
+      "fromLine": 2,
+      "toGate": 60,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-18T04:12:31.9860489Z",
+      "offsetDelaySeconds": 5305.3229825,
+      "beforeSecond": {
+        "utc": "2025-01-18T02:44:05.6630664Z",
+        "activation": {
+          "gate": 60,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 298.2499882281458
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-18T02:44:07.6630664Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 298.2500117893294
+        }
+      }
+    },
+    {
+      "id": "2025-P60.3-to-60.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-19T00:50:29.8880515Z",
+      "designUtcAtBoundary": "2024-10-24T02:52:00.5396354Z",
+      "sideTargetLongitude": 299.1875,
+      "personalityTargetLongitude": 299.1875,
+      "boundarySideLongitude": 299.1875000016294,
+      "fromGate": 60,
+      "fromLine": 3,
+      "toGate": 60,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-19T02:18:55.6920425Z",
+      "offsetDelaySeconds": 5305.803991,
+      "beforeSecond": {
+        "utc": "2025-01-19T00:50:28.8880515Z",
+        "activation": {
+          "gate": 60,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 299.1874882221033
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-19T00:50:30.8880515Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 299.1875117811554
+        }
+      }
+    },
+    {
+      "id": "2025-P60.4-to-60.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-19T22:57:00.2560274Z",
+      "designUtcAtBoundary": "2024-10-25T01:26:51.0683352Z",
+      "sideTargetLongitude": 300.125,
+      "personalityTargetLongitude": 300.125,
+      "boundarySideLongitude": 300.12500001033624,
+      "fromGate": 60,
+      "fromLine": 4,
+      "toGate": 60,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-20T00:25:26.5330570Z",
+      "offsetDelaySeconds": 5306.2770296,
+      "beforeSecond": {
+        "utc": "2025-01-19T22:56:59.2560274Z",
+        "activation": {
+          "gate": 60,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 300.1249882318626
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-19T22:57:01.2560274Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 300.1250117888099
+        }
+      }
+    },
+    {
+      "id": "2025-P60.5-to-60.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-20T21:03:37.7620050Z",
+      "designUtcAtBoundary": "2024-10-26T00:00:54.9377426Z",
+      "sideTargetLongitude": 301.0625,
+      "personalityTargetLongitude": 301.0625,
+      "boundarySideLongitude": 301.06250000264237,
+      "fromGate": 60,
+      "fromLine": 5,
+      "toGate": 60,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-01-20T22:32:04.5200433Z",
+      "offsetDelaySeconds": 5306.7580383,
+      "beforeSecond": {
+        "utc": "2025-01-20T21:03:36.7620050Z",
+        "activation": {
+          "gate": 60,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 301.0624882252338
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-20T21:03:38.7620050Z",
+        "activation": {
+          "gate": 60,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 301.06251178005095
+        }
+      }
+    },
+    {
+      "id": "2025-P41.1-to-41.2",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-22T17:17:15.1010172Z",
+      "designUtcAtBoundary": "2024-10-27T21:06:44.9563229Z",
+      "sideTargetLongitude": 302.9375,
+      "personalityTargetLongitude": 302.9375,
+      "boundarySideLongitude": 302.9375000034472,
+      "fromGate": 41,
+      "fromLine": 1,
+      "toGate": 41,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2025-01-22T18:45:42.8880515Z",
+      "offsetDelaySeconds": 5307.7870343,
+      "beforeSecond": {
+        "utc": "2025-01-22T17:17:14.1010172Z",
+        "activation": {
+          "gate": 41,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 302.9374882278449
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-22T17:17:16.1010172Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 302.9375117785759
+        }
+      }
+    },
+    {
+      "id": "2025-P41.2-to-41.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-23T15:24:15.8820246Z",
+      "designUtcAtBoundary": "2024-10-28T19:38:32.3250424Z",
+      "sideTargetLongitude": 303.875,
+      "personalityTargetLongitude": 303.875,
+      "boundarySideLongitude": 303.8750000059465,
+      "fromGate": 41,
+      "fromLine": 2,
+      "toGate": 41,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-23T16:52:44.2460277Z",
+      "offsetDelaySeconds": 5308.3640031,
+      "beforeSecond": {
+        "utc": "2025-01-23T15:24:14.8820246Z",
+        "activation": {
+          "gate": 41,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 303.87498823209387
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-23T15:24:16.8820246Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 303.8750117802727
+        }
+      }
+    },
+    {
+      "id": "2025-P41.3-to-41.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-24T13:31:25.7340751Z",
+      "designUtcAtBoundary": "2024-10-29T18:09:35.5002380Z",
+      "sideTargetLongitude": 304.8125,
+      "personalityTargetLongitude": 304.8125,
+      "boundarySideLongitude": 304.8125000054666,
+      "fromGate": 41,
+      "fromLine": 3,
+      "toGate": 41,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-24T14:59:54.7380006Z",
+      "offsetDelaySeconds": 5309.0039255,
+      "beforeSecond": {
+        "utc": "2025-01-24T13:31:24.7340751Z",
+        "activation": {
+          "gate": 41,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 304.8124882330269
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-24T13:31:26.7340751Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 304.8125117779062
+        }
+      }
+    },
+    {
+      "id": "2025-P41.4-to-41.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-25T11:38:45.7190016Z",
+      "designUtcAtBoundary": "2024-10-30T16:39:55.2593742Z",
+      "sideTargetLongitude": 305.75,
+      "personalityTargetLongitude": 305.75,
+      "boundarySideLongitude": 305.75000000412916,
+      "fromGate": 41,
+      "fromLine": 4,
+      "toGate": 41,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-25T13:07:15.4430311Z",
+      "offsetDelaySeconds": 5309.7240295,
+      "beforeSecond": {
+        "utc": "2025-01-25T11:38:44.7190016Z",
+        "activation": {
+          "gate": 41,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 305.74998823327974
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-25T11:38:46.7190016Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 305.75001177497865
+        }
+      }
+    },
+    {
+      "id": "2025-P41.5-to-41.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-26T09:46:17.1900055Z",
+      "designUtcAtBoundary": "2024-10-31T15:09:32.4935354Z",
+      "sideTargetLongitude": 306.6875,
+      "personalityTargetLongitude": 306.6875,
+      "boundarySideLongitude": 306.68750000413604,
+      "fromGate": 41,
+      "fromLine": 5,
+      "toGate": 41,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-01-26T11:14:47.7360567Z",
+      "offsetDelaySeconds": 5310.5460512,
+      "beforeSecond": {
+        "utc": "2025-01-26T09:46:16.1900055Z",
+        "activation": {
+          "gate": 41,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 306.6874882350991
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-26T09:46:18.1900055Z",
+        "activation": {
+          "gate": 41,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 306.68751177317296
+        }
+      }
+    },
+    {
+      "id": "2025-P19.1-to-19.2",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-28T06:02:01.5490488Z",
+      "designUtcAtBoundary": "2024-11-02T12:06:43.6260144Z",
+      "sideTargetLongitude": 308.5625,
+      "personalityTargetLongitude": 308.5625,
+      "boundarySideLongitude": 308.56250000430236,
+      "fromGate": 19,
+      "fromLine": 1,
+      "toGate": 19,
+      "toLine": 2,
+      "diagnosticOffset39375Utc": "2025-01-28T07:30:34.1210517Z",
+      "offsetDelaySeconds": 5312.5720029,
+      "beforeSecond": {
+        "utc": "2025-01-28T06:02:00.5490488Z",
+        "activation": {
+          "gate": 19,
+          "line": 1,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 308.56248823973516
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-28T06:02:02.5490488Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 308.5625117688695
+        }
+      }
+    },
+    {
+      "id": "2025-P19.2-to-19.3",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-29T04:10:18.5770778Z",
+      "designUtcAtBoundary": "2024-11-03T10:34:20.0080444Z",
+      "sideTargetLongitude": 309.5,
+      "personalityTargetLongitude": 309.5,
+      "boundarySideLongitude": 309.50000000011573,
+      "fromGate": 19,
+      "fromLine": 2,
+      "toGate": 19,
+      "toLine": 3,
+      "diagnosticOffset39375Utc": "2025-01-29T05:38:52.3830387Z",
+      "offsetDelaySeconds": 5313.8059609,
+      "beforeSecond": {
+        "utc": "2025-01-29T04:10:17.5770778Z",
+        "activation": {
+          "gate": 19,
+          "line": 2,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 309.4999882382673
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-29T04:10:19.5770778Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 309.5000117619641
+        }
+      }
+    },
+    {
+      "id": "2025-P19.3-to-19.4",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-30T02:18:55.1480302Z",
+      "designUtcAtBoundary": "2024-11-04T09:01:18.8297072Z",
+      "sideTargetLongitude": 310.4375,
+      "personalityTargetLongitude": 310.4375,
+      "boundarySideLongitude": 310.43750000459846,
+      "fromGate": 19,
+      "fromLine": 3,
+      "toGate": 19,
+      "toLine": 4,
+      "diagnosticOffset39375Utc": "2025-01-30T03:47:30.3350290Z",
+      "offsetDelaySeconds": 5315.1869988,
+      "beforeSecond": {
+        "utc": "2025-01-30T02:18:54.1480302Z",
+        "activation": {
+          "gate": 19,
+          "line": 3,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 310.4374882457958
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-30T02:18:56.1480302Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 310.43751176340095
+        }
+      }
+    },
+    {
+      "id": "2025-P19.4-to-19.5",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-31T00:27:53.4030333Z",
+      "designUtcAtBoundary": "2024-11-05T07:27:41.6693078Z",
+      "sideTargetLongitude": 311.375,
+      "personalityTargetLongitude": 311.375,
+      "boundarySideLongitude": 311.3750000090909,
+      "fromGate": 19,
+      "fromLine": 4,
+      "toGate": 19,
+      "toLine": 5,
+      "diagnosticOffset39375Utc": "2025-01-31T01:56:30.1050278Z",
+      "offsetDelaySeconds": 5316.7019945,
+      "beforeSecond": {
+        "utc": "2025-01-31T00:27:52.4030333Z",
+        "activation": {
+          "gate": 19,
+          "line": 4,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 311.3749882536317
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-31T00:27:54.4030333Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 311.37501176455004
+        }
+      }
+    },
+    {
+      "id": "2025-P19.5-to-19.6",
+      "year": 2025,
+      "side": "personality",
+      "kind": "line",
+      "utc": "2025-01-31T22:37:15.2130084Z",
+      "designUtcAtBoundary": "2024-11-06T05:53:30.1670712Z",
+      "sideTargetLongitude": 312.3125,
+      "personalityTargetLongitude": 312.3125,
+      "boundarySideLongitude": 312.3125000068207,
+      "fromGate": 19,
+      "fromLine": 5,
+      "toGate": 19,
+      "toLine": 6,
+      "diagnosticOffset39375Utc": "2025-02-01T00:05:53.5440723Z",
+      "offsetDelaySeconds": 5318.3310639,
+      "beforeSecond": {
+        "utc": "2025-01-31T22:37:14.2130084Z",
+        "activation": {
+          "gate": 19,
+          "line": 5,
+          "color": 6,
+          "tone": 6,
+          "base": 5,
+          "longitude": 312.3124882549532
+        }
+      },
+      "afterSecond": {
+        "utc": "2025-01-31T22:37:16.2130084Z",
+        "activation": {
+          "gate": 19,
+          "line": 6,
+          "color": 1,
+          "tone": 1,
+          "base": 1,
+          "longitude": 312.3125117586881
+        }
+      }
+    }
+  ]
+}

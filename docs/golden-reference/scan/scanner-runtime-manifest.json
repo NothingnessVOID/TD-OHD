@@ -1,0 +1,57 @@
+[
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/SharpAstrology.HumanDesign.dll",
+    "bytes": 111616,
+    "sha256": "2429793fb9736ecd389edfe4b98f9124663659f1c9ce6728550bdf98ac8489b9"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/System.Numerics.Tensors.dll",
+    "bytes": 518448,
+    "sha256": "3435f35393b22f69411589bf265c46796280f93db0fd987acbfd1349fb0c1299"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/SunBoundaryScan.dll",
+    "bytes": 65536,
+    "sha256": "1cee6841399624a28f6cbe5581f35dae03c0f8a67b9bc29de83c6217454475ec"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/SharpAstrology.SwissEph.dll",
+    "bytes": 748544,
+    "sha256": "7336ee5fe9df10ccbfb903e671ebd3a913d5d89dc82d894b0ff223a247354777"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/SharpAstrology.Base.dll",
+    "bytes": 28672,
+    "sha256": "bf7b5a47fe20b8238fb9c8e4d97cb05aaa8b65c6519c633ebb4e4d28c1edcb98"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/bin/Release/net10.0/SunBoundaryScan.deps.json",
+    "bytes": 2966,
+    "sha256": "cadcc53b1056168fdc8215fc43bee1e1e49ebaf939f1c770e03a5b8409376e99"
+  },
+  {
+    "path": "<AUDIT_SOURCE_CHECKOUT>/public/engine/ephe/sepl_18.se1",
+    "bytes": 484061,
+    "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66"
+  },
+  {
+    "path": "<AUDIT_SOURCE_CHECKOUT>/public/engine/ephe/semo_18.se1",
+    "bytes": 1304771,
+    "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/Program.cs",
+    "bytes": 19667,
+    "sha256": "3b7b5e43b051e81e9952d78dfa10f6fae3a4b2fa15d0730d317f2b988f6c4bf9"
+  },
+  {
+    "path": "/tmp/td-ohd-golden-audit/sun-boundary-scan/SunBoundaryScan.csproj",
+    "bytes": 557,
+    "sha256": "29d99c030c076aa170895e7c16b7efdd9689c535573041ceea3dd9eb30a617b4"
+  },
+  {
+    "path": "<AUDIT_SOURCE_CHECKOUT>/engine-core/TransitCore.cs",
+    "bytes": 5746,
+    "sha256": "96fb30c5a7e8f24b6ea9aafc2609023dba569718e57c764a63e92b47fa7cbfb9"
+  }
+]

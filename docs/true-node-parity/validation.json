@@ -1,0 +1,63 @@
+{
+  "baseline": "fb5743b87346e8d16810b7c4e15a3e5d01a0f3a9",
+  "branch": "fix/true-node-swiss-parity-v1",
+  "npmTest": {
+    "total": 252,
+    "passed": 249,
+    "failed": 0,
+    "skipped": 3,
+    "skipReason": "Existing opt-in online tests"
+  },
+  "localization": {
+    "passed": 34,
+    "failed": 0
+  },
+  "timeline": {
+    "passed": 61,
+    "failed": 0
+  },
+  "build": "PASS",
+  "differentialTrace": "PASS; instrumented C final exactly equals unmodified library in apparent and TRUEPOS controls",
+  "nativeNineCases": {
+    "fullActivations": "9/9",
+    "mechanics": "9/9",
+    "nodeComparisons": 36,
+    "nonNodeStatesExactlyUnchanged": 198
+  },
+  "nativeApi": {
+    "comparisons": 324,
+    "sourceSpyGuards": 24,
+    "unchangedControls": 144,
+    "result": "PASS; SPEED3 pre-existing estimator distinction documented"
+  },
+  "browserNineCases": {
+    "fullCharts": 9,
+    "activationComparisons": 234,
+    "result": "PASS"
+  },
+  "e2eSharp": {
+    "epochs": 52,
+    "points": 13,
+    "parity": "PASS",
+    "missingEphemeris": "PASS",
+    "fallback": "PASS",
+    "rapidTransitRequests": "PASS",
+    "ianaDstFold": "PASS",
+    "planetDetails": "PASS"
+  },
+  "formalAnnualCache": "NOT REGENERATED; 17 existing files hash-verified unchanged",
+  "deployment": "NONE",
+  "installation8787": "8 assets hash-verified unchanged",
+  "privacy": "Synthetic audit cases only; no login/account data, personal chart, cookies, response traces, or absolute user paths published",
+  "sourceIdentity": {
+    "humanDesignVersion": "1.2.0",
+    "baseVersion": "0.14.0",
+    "swissUpstreamVersion": "0.5.1",
+    "swissUpstreamRepository": "https://github.com/CReizner/SharpAstrology.SwissEph",
+    "swissUpstreamCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+    "patchRevision": "td-ohd-swiss-parity-v1-true-node-light-time",
+    "patchedSourceSha256": "2af6f9b5773b3b157c533f7e0e0ba4295999723bb5ee8467d69ee2cb7363b1e7",
+    "ephemerisManifestSha256": "4068e9f240b80d3374d3bb80178b92400ce4fee918f45f221ac8eaf4803d2d3d",
+    "utcSemanticsVersion": "utc-tt-ut1-swe-utc-to-jd-v1"
+  }
+}

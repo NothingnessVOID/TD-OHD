@@ -1,0 +1,6 @@
+{
+  "commandMode": "Sharp SwissEph factory configured with allowMoshierFallback:false; raw context DisableMoshier; empty ephemeris directory",
+  "returncode": 0,
+  "stdout": "{\"error\":\"Could not find file \\u0027/tmp/td-ohd-golden-independent/empty-ephe/sepl_18.se1\\u0027.\"}",
+  "stderr": ""
+}

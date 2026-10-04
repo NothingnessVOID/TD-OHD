@@ -1,0 +1,8 @@
+{
+  "evidenceChecksPassed": 1596,
+  "evidenceChecksFailed": 0,
+  "officialRecords": 45,
+  "uniqueOfficialUtc": 40,
+  "recordedProductionGoldenFailures": 7,
+  "scope": "Evidence consistency only; no engine fix or Golden success is claimed."
+}

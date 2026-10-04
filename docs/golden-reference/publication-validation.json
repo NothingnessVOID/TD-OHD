@@ -1,0 +1,18 @@
+{
+  "evidenceChecksPassed": 1596,
+  "officialGoldenFixtureUnchanged": true,
+  "portableIndependentCReproduction": {
+    "records": 47,
+    "DE441_C258_all26Matches": 39,
+    "DE431_C258_all26Matches": 40,
+    "historicalDeltaTTable_all26Matches": 42
+  },
+  "nativeScannerBuild": "passed, zero warnings/errors",
+  "nativeBirthProbe": "2015-01-26T01:20:00Z reproduced 41.4 / 44.1 / 4/1",
+  "productionGoldenFailuresRemain": 7,
+  "applicationChanges": false,
+  "scope": "Audit documentation and diagnostic tools only. Passing evidence tests does not mean engine Golden passes.",
+  "nativeDiagnosticBuild": "passed, zero warnings/errors",
+  "nativeDiagnosticSunProbe": "reproduced pinned personality and design longitudes",
+  "excludedBinaryAndBuildArtifacts": true
+}

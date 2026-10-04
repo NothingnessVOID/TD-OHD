@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "assertionChecks": 4873,
+  "diagnosticGroups": 23,
+  "caseRows": 207,
+  "sunApiCalculations": 621,
+  "ttUt1LongitudeResidualMaxMas": 0.0,
+  "failedChecks": 0,
+  "productionGoldenMismatchesFixed": false,
+  "fullJovianParityFound": false,
+  "npmAndE2E": "not run; no application changes",
+  "scope": "Harness/source/evidence integrity; not a production accuracy acceptance pass"
+}

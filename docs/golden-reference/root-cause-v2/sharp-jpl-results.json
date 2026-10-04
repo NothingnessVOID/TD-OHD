@@ -1,0 +1,4538 @@
+{
+  "schemaVersion": 1,
+  "diagnosticOnly": true,
+  "frozenCaseIds": [
+    "G1995-feb",
+    "G1995-jun",
+    "G2005-jul20",
+    "G2015-tight",
+    "G2015-feb",
+    "G2025-tight",
+    "G2025-mar",
+    "G1985-tight",
+    "G2005-jul11"
+  ],
+  "inputPolicy": "birthUtc only; no local-time reconversion",
+  "fixedVersions": {
+    "Base": "0.14.0",
+    "SwissEph": "0.5.1",
+    "HumanDesign": "1.2.0"
+  },
+  "sourceCommit": "342a57997c1b987e7949acc98897c8b73d05939a",
+  "groups": {
+    "Sharp-se1-current": [
+      {
+        "id": "G1995-feb",
+        "birthUtc": "1995-02-22T01:08:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2449770.547222222,
+        "deltaTSeconds": 60.90908883864604,
+        "julianDayEt": 2449770.5479271887,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 332.9374980286018,
+        "sunLongitudeDecimal12": "332.937498028602",
+        "sunLongitudeSpeedDegreesPerDay": 1.0072857139931068,
+        "nativeSunGateLine": "55.3",
+        "nativeEarthGateLine": "59.3",
+        "nativePersonalityActivationOracle": {
+          "sun": "55.3",
+          "earth": "59.3",
+          "moon": "14.3",
+          "northNode": "44.1",
+          "southNode": "24.1",
+          "mercury": "41.6",
+          "venus": "54.5",
+          "mars": "4.1",
+          "jupiter": "5.2",
+          "saturn": "63.3",
+          "uranus": "60.3",
+          "neptune": "61.4",
+          "pluto": "34.1"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 332.9374980286018,
+            "longitudeDecimal12": "332.937498028602",
+            "speedLongitude": 1.0072857139931068
+          },
+          "earth": {
+            "longitude": 152.9374980286018,
+            "longitudeDecimal12": "152.937498028602",
+            "speedLongitude": 1.0072857139931068
+          },
+          "moon": {
+            "longitude": 236.43362343615556,
+            "longitudeDecimal12": "236.433623436156",
+            "speedLongitude": 14.080387633449298
+          },
+          "northNode": {
+            "longitude": 217.8316809189428,
+            "longitudeDecimal12": "217.831680918943",
+            "speedLongitude": 0.007140844179668032
+          },
+          "southNode": {
+            "longitude": 37.831680918942766,
+            "longitudeDecimal12": "37.831680918943",
+            "speedLongitude": 0.007140844179668032
+          },
+          "mercury": {
+            "longitude": 307.394415769515,
+            "longitudeDecimal12": "307.394415769515",
+            "speedLongitude": 0.568219911929849
+          },
+          "venus": {
+            "longitude": 289.63960903522974,
+            "longitudeDecimal12": "289.639609035230",
+            "speedLongitude": 1.1600394258305657
+          },
+          "mars": {
+            "longitude": 139.06370537372152,
+            "longitudeDecimal12": "139.063705373722",
+            "speedLongitude": -0.3618276032886275
+          },
+          "jupiter": {
+            "longitude": 253.1647208669355,
+            "longitudeDecimal12": "253.164720866936",
+            "speedLongitude": 0.11089106073444335
+          },
+          "saturn": {
+            "longitude": 343.54043483610644,
+            "longitudeDecimal12": "343.540434836106",
+            "speedLongitude": 0.12145043763158293
+          },
+          "uranus": {
+            "longitude": 298.4438025213168,
+            "longitudeDecimal12": "298.443802521317",
+            "speedLongitude": 0.05118688837946979
+          },
+          "neptune": {
+            "longitude": 294.4531312000059,
+            "longitudeDecimal12": "294.453131200006",
+            "speedLongitude": 0.031375268313341746
+          },
+          "pluto": {
+            "longitude": 240.57478522497465,
+            "longitudeDecimal12": "240.574785224975",
+            "speedLongitude": 0.006003525397620899
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "55.3",
+          "earth": "59.3",
+          "moon": "14.3",
+          "northNode": "44.1",
+          "southNode": "24.1",
+          "mercury": "41.6",
+          "venus": "54.5",
+          "mars": "4.1",
+          "jupiter": "5.2",
+          "saturn": "63.3",
+          "uranus": "60.3",
+          "neptune": "61.4",
+          "pluto": "34.1"
+        },
+        "sunGateLine": "55.3",
+        "earthGateLine": "59.3",
+        "sunBoundary": {
+          "gate": 55,
+          "line": 3,
+          "gateLine": "55.3",
+          "globalLineIndex": 350,
+          "lineStartLongitude": 332.0,
+          "nextLineBoundaryLongitude": 332.9375,
+          "nextLineBoundaryLongitudeUnwrapped": 332.9375,
+          "distanceNextDegrees": 1.9713982055691304e-06,
+          "distanceNextArcsec": 0.007097033540048869,
+          "distanceNextMas": 7.097033540048869,
+          "equivalentSeconds": 0.16909681393767734,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "55.4",
+          "expectedLineStartLongitude": 332.9375,
+          "signedLongitudeMinusExpectedStartDegrees": -1.9713982055691304e-06,
+          "signedLongitudeMinusExpectedStartMas": -7.097033540048869,
+          "signedSecondsPastExpectedStart": -0.16909681393767734
+        },
+        "expectedJovianSun": "55.4",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "55.3",
+            "expected": "55.4"
+          },
+          {
+            "point": "earth",
+            "actual": "59.3",
+            "expected": "59.4"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G1995-jun",
+        "birthUtc": "1995-06-21T23:43:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2449890.488194444,
+        "deltaTSeconds": 61.19208895585703,
+        "julianDayEt": 2449890.488902686,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 90.12499928156265,
+        "sunLongitudeDecimal12": "90.124999281563",
+        "sunLongitudeSpeedDegreesPerDay": 0.9542629401682682,
+        "nativeSunGateLine": "15.2",
+        "nativeEarthGateLine": "10.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "15.2",
+          "earth": "10.2",
+          "moon": "42.4",
+          "northNode": "28.3",
+          "southNode": "27.3",
+          "mercury": "16.6",
+          "venus": "35.3",
+          "mars": "64.3",
+          "jupiter": "9.3",
+          "saturn": "36.3",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "14.5"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 90.12499928156265,
+            "longitudeDecimal12": "90.124999281563",
+            "speedLongitude": 0.9542629401682682
+          },
+          "earth": {
+            "longitude": 270.1249992815626,
+            "longitudeDecimal12": "270.124999281563",
+            "speedLongitude": 0.9542629401682682
+          },
+          "moon": {
+            "longitude": 23.99645983351401,
+            "longitudeDecimal12": "23.996459833514",
+            "speedLongitude": 12.183582593987062
+          },
+          "northNode": {
+            "longitude": 214.1648988612632,
+            "longitudeDecimal12": "214.164898861263",
+            "speedLongitude": 0.013506069856302032
+          },
+          "southNode": {
+            "longitude": 34.16489886126317,
+            "longitudeDecimal12": "34.164898861263",
+            "speedLongitude": 0.013506069856302032
+          },
+          "mercury": {
+            "longitude": 70.65969645931987,
+            "longitudeDecimal12": "70.659696459320",
+            "speedLongitude": 0.36207386536662484
+          },
+          "venus": {
+            "longitude": 73.77182865739196,
+            "longitudeDecimal12": "73.771828657392",
+            "speedLongitude": 1.2193842080999218
+          },
+          "mars": {
+            "longitude": 163.49133797542314,
+            "longitudeDecimal12": "163.491337975423",
+            "speedLongitude": 0.5305637015652678
+          },
+          "jupiter": {
+            "longitude": 248.0226815050013,
+            "longitudeDecimal12": "248.022681505001",
+            "speedLongitude": -0.1099276471251721
+          },
+          "saturn": {
+            "longitude": 354.57966112234584,
+            "longitudeDecimal12": "354.579661122346",
+            "speedLongitude": 0.02395663032536313
+          },
+          "uranus": {
+            "longitude": 299.6166299457419,
+            "longitudeDecimal12": "299.616629945742",
+            "speedLongitude": -0.03302728652333009
+          },
+          "neptune": {
+            "longitude": 294.8175376842021,
+            "longitudeDecimal12": "294.817537684202",
+            "speedLongitude": -0.02386448723608781
+          },
+          "pluto": {
+            "longitude": 238.39348544876958,
+            "longitudeDecimal12": "238.393485448770",
+            "speedLongitude": -0.022347001723022057
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "15.2",
+          "earth": "10.2",
+          "moon": "42.4",
+          "northNode": "28.3",
+          "southNode": "27.3",
+          "mercury": "16.6",
+          "venus": "35.3",
+          "mars": "64.3",
+          "jupiter": "9.3",
+          "saturn": "36.3",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "14.5"
+        },
+        "sunGateLine": "15.2",
+        "earthGateLine": "10.2",
+        "sunBoundary": {
+          "gate": 15,
+          "line": 2,
+          "gateLine": "15.2",
+          "globalLineIndex": 91,
+          "lineStartLongitude": 89.1875,
+          "nextLineBoundaryLongitude": 90.125,
+          "nextLineBoundaryLongitudeUnwrapped": 90.125,
+          "distanceNextDegrees": 7.184373487234552e-07,
+          "distanceNextArcsec": 0.0025863744554044388,
+          "distanceNextMas": 2.5863744554044388,
+          "equivalentSeconds": 0.06504809556867105,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "15.3",
+          "expectedLineStartLongitude": 90.125,
+          "signedLongitudeMinusExpectedStartDegrees": -7.184373487234552e-07,
+          "signedLongitudeMinusExpectedStartMas": -2.5863744554044388,
+          "signedSecondsPastExpectedStart": -0.06504809556867105
+        },
+        "expectedJovianSun": "15.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "15.2",
+            "expected": "15.3"
+          },
+          {
+            "point": "earth",
+            "actual": "10.2",
+            "expected": "10.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2005-jul20",
+        "birthUtc": "2005-07-20T21:40:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2453572.402777778,
+        "deltaTSeconds": 64.76092842230749,
+        "julianDayEt": 2453572.403527326,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 118.24999900189322,
+        "sunLongitudeDecimal12": "118.249999001893",
+        "sunLongitudeSpeedDegreesPerDay": 0.9541754295977576,
+        "nativeSunGateLine": "56.2",
+        "nativeEarthGateLine": "60.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "56.2",
+          "earth": "60.2",
+          "moon": "54.6",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "4.2",
+          "venus": "29.4",
+          "mars": "42.6",
+          "jupiter": "48.3",
+          "saturn": "56.5",
+          "uranus": "37.5",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 118.24999900189322,
+            "longitudeDecimal12": "118.249999001893",
+            "speedLongitude": 0.9541754295977576
+          },
+          "earth": {
+            "longitude": 298.24999900189323,
+            "longitudeDecimal12": "298.249999001893",
+            "speedLongitude": 0.9541754295977576
+          },
+          "moon": {
+            "longitude": 290.2873737104492,
+            "longitudeDecimal12": "290.287373710449",
+            "speedLongitude": 15.259617842906868
+          },
+          "northNode": {
+            "longitude": 17.143132087133726,
+            "longitudeDecimal12": "17.143132087134",
+            "speedLongitude": -0.1758298976550131
+          },
+          "southNode": {
+            "longitude": 197.14313208713372,
+            "longitudeDecimal12": "197.143132087134",
+            "speedLongitude": -0.1758298976550131
+          },
+          "mercury": {
+            "longitude": 140.26781779235102,
+            "longitudeDecimal12": "140.267817792351",
+            "speedLongitude": 0.18060534323544772
+          },
+          "venus": {
+            "longitude": 147.42358987567152,
+            "longitudeDecimal12": "147.423589875672",
+            "speedLongitude": 1.204772265395576
+          },
+          "mars": {
+            "longitude": 25.624450456652998,
+            "longitudeDecimal12": "25.624450456653",
+            "speedLongitude": 0.6110573573799044
+          },
+          "jupiter": {
+            "longitude": 191.84485956698938,
+            "longitudeDecimal12": "191.844859566989",
+            "speedLongitude": 0.12081145505203983
+          },
+          "saturn": {
+            "longitude": 120.5654655242498,
+            "longitudeDecimal12": "120.565465524250",
+            "speedLongitude": 0.12921492884899008
+          },
+          "uranus": {
+            "longitude": 340.27102485246166,
+            "longitudeDecimal12": "340.271024852462",
+            "speedLongitude": -0.026208924202936683
+          },
+          "neptune": {
+            "longitude": 316.7032374065149,
+            "longitudeDecimal12": "316.703237406515",
+            "speedLongitude": -0.025363630489484864
+          },
+          "pluto": {
+            "longitude": 262.28971228481157,
+            "longitudeDecimal12": "262.289712284812",
+            "speedLongitude": -0.019876402478401504
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "56.2",
+          "earth": "60.2",
+          "moon": "54.6",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "4.2",
+          "venus": "29.4",
+          "mars": "42.6",
+          "jupiter": "48.3",
+          "saturn": "56.5",
+          "uranus": "37.5",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "sunGateLine": "56.2",
+        "earthGateLine": "60.2",
+        "sunBoundary": {
+          "gate": 56,
+          "line": 2,
+          "gateLine": "56.2",
+          "globalLineIndex": 121,
+          "lineStartLongitude": 117.3125,
+          "nextLineBoundaryLongitude": 118.25,
+          "nextLineBoundaryLongitudeUnwrapped": 118.25,
+          "distanceNextDegrees": 9.981067847775194e-07,
+          "distanceNextArcsec": 0.0035931844251990697,
+          "distanceNextMas": 3.5931844251990697,
+          "equivalentSeconds": 0.09037795727053202,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "56.3",
+          "expectedLineStartLongitude": 118.25,
+          "signedLongitudeMinusExpectedStartDegrees": -9.981067705666646e-07,
+          "signedLongitudeMinusExpectedStartMas": -3.5931843740399927,
+          "signedSecondsPastExpectedStart": -0.09037795598374784
+        },
+        "expectedJovianSun": "56.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "56.2",
+            "expected": "56.3"
+          },
+          {
+            "point": "earth",
+            "actual": "60.2",
+            "expected": "60.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2015-tight",
+        "birthUtc": "2015-01-26T01:20:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2457048.5555555555,
+        "deltaTSeconds": 67.67261263190962,
+        "julianDayEt": 2457048.5563388034,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 305.7499968177302,
+        "sunLongitudeDecimal12": "305.749996817730",
+        "sunLongitudeSpeedDegreesPerDay": 1.016819839073308,
+        "nativeSunGateLine": "41.4",
+        "nativeEarthGateLine": "31.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "42.1",
+          "northNode": "48.4",
+          "southNode": "21.4",
+          "mercury": "13.3",
+          "venus": "30.4",
+          "mars": "37.6",
+          "jupiter": "4.1",
+          "saturn": "34.4",
+          "uranus": "21.4",
+          "neptune": "37.1",
+          "pluto": "38.5"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 305.7499968177302,
+            "longitudeDecimal12": "305.749996817730",
+            "speedLongitude": 1.016819839073308
+          },
+          "earth": {
+            "longitude": 125.74999681773022,
+            "longitudeDecimal12": "125.749996817730",
+            "speedLongitude": 1.016819839073308
+          },
+          "moon": {
+            "longitude": 21.197093462967633,
+            "longitudeDecimal12": "21.197093462968",
+            "speedLongitude": 13.93469447141528
+          },
+          "northNode": {
+            "longitude": 192.4523488111457,
+            "longitudeDecimal12": "192.452348811146",
+            "speedLongitude": 0.007693127771670249
+          },
+          "southNode": {
+            "longitude": 12.452348811145725,
+            "longitudeDecimal12": "12.452348811146",
+            "speedLongitude": 0.007693127771670249
+          },
+          "mercury": {
+            "longitude": 315.2502779065522,
+            "longitudeDecimal12": "315.250277906552",
+            "speedLongitude": -0.8161721485444073
+          },
+          "venus": {
+            "longitude": 328.0448145103953,
+            "longitudeDecimal12": "328.044814510395",
+            "speedLongitude": 1.2463544859292446
+          },
+          "mars": {
+            "longitude": 340.65269341379724,
+            "longitudeDecimal12": "340.652693413797",
+            "speedLongitude": 0.7803877846360209
+          },
+          "jupiter": {
+            "longitude": 139.16401497995886,
+            "longitudeDecimal12": "139.164014979959",
+            "speedLongitude": -0.12641634939740917
+          },
+          "saturn": {
+            "longitude": 243.08544145219005,
+            "longitudeDecimal12": "243.085441452190",
+            "speedLongitude": 0.07421040783742706
+          },
+          "uranus": {
+            "longitude": 13.09351760466343,
+            "longitudeDecimal12": "13.093517604663",
+            "speedLongitude": 0.02916220176899422
+          },
+          "neptune": {
+            "longitude": 336.12567307816914,
+            "longitudeDecimal12": "336.125673078169",
+            "speedLongitude": 0.03374744827499104
+          },
+          "pluto": {
+            "longitude": 284.02498761816406,
+            "longitudeDecimal12": "284.024987618164",
+            "speedLongitude": 0.032897378696984045
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "42.1",
+          "northNode": "48.4",
+          "southNode": "21.4",
+          "mercury": "13.3",
+          "venus": "30.4",
+          "mars": "37.6",
+          "jupiter": "4.1",
+          "saturn": "34.4",
+          "uranus": "21.4",
+          "neptune": "37.1",
+          "pluto": "38.5"
+        },
+        "sunGateLine": "41.4",
+        "earthGateLine": "31.4",
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 3.1822697792449617e-06,
+          "distanceNextArcsec": 0.011456171205281862,
+          "distanceNextMas": 11.456171205281862,
+          "equivalentSeconds": 0.270400024037043,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.5",
+          "expectedLineStartLongitude": 305.75,
+          "signedLongitudeMinusExpectedStartDegrees": -3.1822697792449617e-06,
+          "signedLongitudeMinusExpectedStartMas": -11.456171205281862,
+          "signedSecondsPastExpectedStart": -0.270400024037043
+        },
+        "expectedJovianSun": "41.5",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "41.4",
+            "expected": "41.5"
+          },
+          {
+            "point": "earth",
+            "actual": "31.4",
+            "expected": "31.5"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2015-feb",
+        "birthUtc": "2015-02-04T06:56:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2457057.788888889,
+        "deltaTSeconds": 67.68321575667953,
+        "julianDayEt": 2457057.7896722592,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 315.124996759837,
+        "sunLongitudeDecimal12": "315.124996759837",
+        "sunLongitudeSpeedDegreesPerDay": 1.0138466066125034,
+        "nativeSunGateLine": "13.2",
+        "nativeEarthGateLine": "7.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "13.2",
+          "earth": "7.2",
+          "moon": "7.6",
+          "northNode": "48.3",
+          "southNode": "21.3",
+          "mercury": "41.4",
+          "venus": "37.5",
+          "mars": "22.1",
+          "jupiter": "7.6",
+          "saturn": "34.4",
+          "uranus": "21.5",
+          "neptune": "37.1",
+          "pluto": "38.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 315.124996759837,
+            "longitudeDecimal12": "315.124996759837",
+            "speedLongitude": 1.0138466066125034
+          },
+          "earth": {
+            "longitude": 135.12499675983702,
+            "longitudeDecimal12": "135.124996759837",
+            "speedLongitude": 1.0138466066125034
+          },
+          "moon": {
+            "longitude": 138.68228218803492,
+            "longitudeDecimal12": "138.682282188035",
+            "speedLongitude": 11.94693323907708
+          },
+          "northNode": {
+            "longitude": 191.42437338426646,
+            "longitudeDecimal12": "191.424373384266",
+            "speedLongitude": -0.16737861135435883
+          },
+          "southNode": {
+            "longitude": 11.42437338426646,
+            "longitudeDecimal12": "11.424373384266",
+            "speedLongitude": -0.16737861135435883
+          },
+          "mercury": {
+            "longitude": 304.8619988315169,
+            "longitudeDecimal12": "304.861998831517",
+            "speedLongitude": -0.9712747188612376
+          },
+          "venus": {
+            "longitude": 339.5320708359305,
+            "longitudeDecimal12": "339.532070835930",
+            "speedLongitude": 1.2416847019435326
+          },
+          "mars": {
+            "longitude": 347.8431008717021,
+            "longitudeDecimal12": "347.843100871702",
+            "speedLongitude": 0.7769070470297159
+          },
+          "jupiter": {
+            "longitude": 137.9620849021799,
+            "longitudeDecimal12": "137.962084902180",
+            "speedLongitude": -0.13263022916327183
+          },
+          "saturn": {
+            "longitude": 243.71401077560648,
+            "longitudeDecimal12": "243.714010775606",
+            "speedLongitude": 0.06170986227197868
+          },
+          "uranus": {
+            "longitude": 13.393731222335003,
+            "longitudeDecimal12": "13.393731222335",
+            "speedLongitude": 0.03570784766353488
+          },
+          "neptune": {
+            "longitude": 336.4477610438672,
+            "longitudeDecimal12": "336.447761043867",
+            "speedLongitude": 0.03586291945781028
+          },
+          "pluto": {
+            "longitude": 284.32021049003623,
+            "longitudeDecimal12": "284.320210490036",
+            "speedLongitude": 0.030909407896825256
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "13.2",
+          "earth": "7.2",
+          "moon": "7.6",
+          "northNode": "48.3",
+          "southNode": "21.3",
+          "mercury": "41.4",
+          "venus": "37.5",
+          "mars": "22.1",
+          "jupiter": "7.6",
+          "saturn": "34.4",
+          "uranus": "21.5",
+          "neptune": "37.1",
+          "pluto": "38.6"
+        },
+        "sunGateLine": "13.2",
+        "earthGateLine": "7.2",
+        "sunBoundary": {
+          "gate": 13,
+          "line": 2,
+          "gateLine": "13.2",
+          "globalLineIndex": 331,
+          "lineStartLongitude": 314.1875,
+          "nextLineBoundaryLongitude": 315.125,
+          "nextLineBoundaryLongitudeUnwrapped": 315.125,
+          "distanceNextDegrees": 3.240162982365291e-06,
+          "distanceNextArcsec": 0.011664586736515048,
+          "distanceNextMas": 11.664586736515048,
+          "equivalentSeconds": 0.2761266643794758,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "13.3",
+          "expectedLineStartLongitude": 315.125,
+          "signedLongitudeMinusExpectedStartDegrees": -3.240162982365291e-06,
+          "signedLongitudeMinusExpectedStartMas": -11.664586736515048,
+          "signedSecondsPastExpectedStart": -0.2761266643794758
+        },
+        "expectedJovianSun": "13.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "13.2",
+            "expected": "13.3"
+          },
+          {
+            "point": "earth",
+            "actual": "7.2",
+            "expected": "7.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2025-tight",
+        "birthUtc": "2025-01-19T22:57:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2460695.45625,
+        "deltaTSeconds": 68.99478640185143,
+        "julianDayEt": 2460695.4570485507,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 300.1249969949901,
+        "sunLongitudeDecimal12": "300.124996994990",
+        "sunLongitudeSpeedDegreesPerDay": 1.0176656409002311,
+        "nativeSunGateLine": "60.4",
+        "nativeEarthGateLine": "56.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "60.4",
+          "earth": "56.4",
+          "moon": "48.1",
+          "northNode": "25.1",
+          "southNode": "46.1",
+          "mercury": "54.3",
+          "venus": "63.6",
+          "mars": "62.5",
+          "jupiter": "35.1",
+          "saturn": "63.6",
+          "uranus": "23.5",
+          "neptune": "36.6",
+          "pluto": "60.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 300.1249969949901,
+            "longitudeDecimal12": "300.124996994990",
+            "speedLongitude": 1.0176656409002311
+          },
+          "earth": {
+            "longitude": 120.12499699499011,
+            "longitudeDecimal12": "120.124996994990",
+            "speedLongitude": 1.0176656409002311
+          },
+          "moon": {
+            "longitude": 189.62970041028177,
+            "longitudeDecimal12": "189.629700410282",
+            "speedLongitude": 11.8580667865275
+          },
+          "northNode": {
+            "longitude": 359.1354409942104,
+            "longitudeDecimal12": "359.135440994210",
+            "speedLongitude": 0.014138870229828163
+          },
+          "southNode": {
+            "longitude": 179.1354409942104,
+            "longitudeDecimal12": "179.135440994210",
+            "speedLongitude": 0.014138870229828163
+          },
+          "mercury": {
+            "longitude": 287.0970527178035,
+            "longitudeDecimal12": "287.097052717803",
+            "speedLongitude": 1.540546232576841
+          },
+          "venus": {
+            "longitude": 346.93700637314794,
+            "longitudeDecimal12": "346.937006373148",
+            "speedLongitude": 0.9397877957722862
+          },
+          "mars": {
+            "longitude": 114.68644220685943,
+            "longitudeDecimal12": "114.686442206859",
+            "speedLongitude": -0.3906558185698709
+          },
+          "jupiter": {
+            "longitude": 71.68504706446774,
+            "longitudeDecimal12": "71.685047064468",
+            "speedLongitude": -0.052213180120550026
+          },
+          "saturn": {
+            "longitude": 346.17804937974506,
+            "longitudeDecimal12": "346.178049379745",
+            "speedLongitude": 0.09777500011180906
+          },
+          "uranus": {
+            "longitude": 53.311905232702735,
+            "longitudeDecimal12": "53.311905232703",
+            "speedLongitude": -0.009390132012467745
+          },
+          "neptune": {
+            "longitude": 357.6534864702632,
+            "longitudeDecimal12": "357.653486470263",
+            "speedLongitude": 0.023428963608693863
+          },
+          "pluto": {
+            "longitude": 301.66573426103133,
+            "longitudeDecimal12": "301.665734261031",
+            "speedLongitude": 0.032244792292691345
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "60.4",
+          "earth": "56.4",
+          "moon": "48.1",
+          "northNode": "25.1",
+          "southNode": "46.1",
+          "mercury": "54.3",
+          "venus": "63.6",
+          "mars": "62.5",
+          "jupiter": "35.1",
+          "saturn": "63.6",
+          "uranus": "23.5",
+          "neptune": "36.6",
+          "pluto": "60.6"
+        },
+        "sunGateLine": "60.4",
+        "earthGateLine": "56.4",
+        "sunBoundary": {
+          "gate": 60,
+          "line": 4,
+          "gateLine": "60.4",
+          "globalLineIndex": 315,
+          "lineStartLongitude": 299.1875,
+          "nextLineBoundaryLongitude": 300.125,
+          "nextLineBoundaryLongitudeUnwrapped": 300.125,
+          "distanceNextDegrees": 3.0050098871470254e-06,
+          "distanceNextArcsec": 0.010818035593729292,
+          "distanceNextMas": 10.818035593729292,
+          "equivalentSeconds": 0.2551258918595608,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "60.5",
+          "expectedLineStartLongitude": 300.125,
+          "signedLongitudeMinusExpectedStartDegrees": -3.0050098871470254e-06,
+          "signedLongitudeMinusExpectedStartMas": -10.818035593729292,
+          "signedSecondsPastExpectedStart": -0.2551258918595608
+        },
+        "expectedJovianSun": "60.5",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "60.4",
+            "expected": "60.5"
+          },
+          {
+            "point": "earth",
+            "actual": "56.4",
+            "expected": "56.5"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2025-mar",
+        "birthUtc": "2025-03-15T18:56:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2460750.288888889,
+        "deltaTSeconds": 68.9802019150298,
+        "julianDayEt": 2460750.2896872708,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 355.43749799656126,
+        "sunLongitudeDecimal12": "355.437497996561",
+        "sunLongitudeSpeedDegreesPerDay": 0.9957793632739338,
+        "nativeSunGateLine": "36.3",
+        "nativeEarthGateLine": "6.3",
+        "nativePersonalityActivationOracle": {
+          "sun": "36.3",
+          "earth": "6.3",
+          "moon": "48.3",
+          "northNode": "36.6",
+          "southNode": "6.6",
+          "mercury": "21.1",
+          "venus": "17.4",
+          "mars": "53.5",
+          "jupiter": "35.3",
+          "saturn": "22.6",
+          "uranus": "23.6",
+          "neptune": "25.2",
+          "pluto": "41.2"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 355.43749799656126,
+            "longitudeDecimal12": "355.437497996561",
+            "speedLongitude": 0.9957793632739338
+          },
+          "earth": {
+            "longitude": 175.4374979965612,
+            "longitudeDecimal12": "175.437497996561",
+            "speedLongitude": 0.9957793632739338
+          },
+          "moon": {
+            "longitude": 191.93925674025098,
+            "longitudeDecimal12": "191.939256740251",
+            "speedLongitude": 11.907094615435497
+          },
+          "northNode": {
+            "longitude": 357.38870776508145,
+            "longitudeDecimal12": "357.388707765081",
+            "speedLongitude": 0.0020278675387946977
+          },
+          "southNode": {
+            "longitude": 177.38870776508145,
+            "longitudeDecimal12": "177.388707765081",
+            "speedLongitude": 0.0020278675387946977
+          },
+          "mercury": {
+            "longitude": 9.570781677107016,
+            "longitudeDecimal12": "9.570781677107",
+            "speedLongitude": -0.07141126080837926
+          },
+          "venus": {
+            "longitude": 6.986201269397378,
+            "longitudeDecimal12": "6.986201269397",
+            "speedLongitude": -0.5299667384444028
+          },
+          "mars": {
+            "longitude": 109.20375035996805,
+            "longitudeDecimal12": "109.203750359968",
+            "speedLongitude": 0.20893546998143178
+          },
+          "jupiter": {
+            "longitude": 73.74735305258639,
+            "longitudeDecimal12": "73.747353052586",
+            "speedLongitude": 0.11894119962554746
+          },
+          "saturn": {
+            "longitude": 352.5101177727697,
+            "longitudeDecimal12": "352.510117772770",
+            "speedLongitude": 0.12333053997360138
+          },
+          "uranus": {
+            "longitude": 54.090190226275084,
+            "longitudeDecimal12": "54.090190226275",
+            "speedLongitude": 0.03597182385215363
+          },
+          "neptune": {
+            "longitude": 359.4436546695553,
+            "longitudeDecimal12": "359.443654669555",
+            "speedLongitude": 0.03782374624841419
+          },
+          "pluto": {
+            "longitude": 303.24819269024323,
+            "longitudeDecimal12": "303.248192690243",
+            "speedLongitude": 0.021933308341887302
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "36.3",
+          "earth": "6.3",
+          "moon": "48.3",
+          "northNode": "36.6",
+          "southNode": "6.6",
+          "mercury": "21.1",
+          "venus": "17.4",
+          "mars": "53.5",
+          "jupiter": "35.3",
+          "saturn": "22.6",
+          "uranus": "23.6",
+          "neptune": "25.2",
+          "pluto": "41.2"
+        },
+        "sunGateLine": "36.3",
+        "earthGateLine": "6.3",
+        "sunBoundary": {
+          "gate": 36,
+          "line": 3,
+          "gateLine": "36.3",
+          "globalLineIndex": 374,
+          "lineStartLongitude": 354.5,
+          "nextLineBoundaryLongitude": 355.4375,
+          "nextLineBoundaryLongitudeUnwrapped": 355.4375,
+          "distanceNextDegrees": 2.00343873757447e-06,
+          "distanceNextArcsec": 0.007212379455268092,
+          "distanceNextMas": 7.212379455268092,
+          "equivalentSeconds": 0.17383078351546044,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "36.4",
+          "expectedLineStartLongitude": 355.4375,
+          "signedLongitudeMinusExpectedStartDegrees": -2.00343873757447e-06,
+          "signedLongitudeMinusExpectedStartMas": -7.212379455268092,
+          "signedSecondsPastExpectedStart": -0.17383078351546044
+        },
+        "expectedJovianSun": "36.4",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "36.3",
+            "expected": "36.4"
+          },
+          {
+            "point": "earth",
+            "actual": "6.3",
+            "expected": "6.4"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G1985-tight",
+        "birthUtc": "1985-01-25T18:34:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2446091.273611111,
+        "deltaTSeconds": 54.38072542120087,
+        "julianDayEt": 2446091.2742405175,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 305.7499965996151,
+        "sunLongitudeDecimal12": "305.749996599615",
+        "sunLongitudeSpeedDegreesPerDay": 1.01689538140571,
+        "nativeSunGateLine": "41.4",
+        "nativeEarthGateLine": "31.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "25.2",
+          "northNode": "23.6",
+          "southNode": "43.6",
+          "mercury": "54.6",
+          "venus": "36.1",
+          "mars": "36.2",
+          "jupiter": "60.1",
+          "saturn": "14.3",
+          "uranus": "5.6",
+          "neptune": "10.5",
+          "pluto": "28.3"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 305.7499965996151,
+            "longitudeDecimal12": "305.749996599615",
+            "speedLongitude": 1.01689538140571
+          },
+          "earth": {
+            "longitude": 125.74999659961509,
+            "longitudeDecimal12": "125.749996599615",
+            "speedLongitude": 1.01689538140571
+          },
+          "moon": {
+            "longitude": 359.2400732824534,
+            "longitudeDecimal12": "359.240073282453",
+            "speedLongitude": 11.96524138506801
+          },
+          "northNode": {
+            "longitude": 54.34968382720879,
+            "longitudeDecimal12": "54.349683827209",
+            "speedLongitude": -0.11824806910187087
+          },
+          "southNode": {
+            "longitude": 234.3496838272088,
+            "longitudeDecimal12": "234.349683827209",
+            "speedLongitude": -0.11824806910187087
+          },
+          "mercury": {
+            "longitude": 289.8715719043573,
+            "longitudeDecimal12": "289.871571904357",
+            "speedLongitude": 1.5098988181683493
+          },
+          "venus": {
+            "longitude": 352.7395996621051,
+            "longitudeDecimal12": "352.739599662105",
+            "speedLongitude": 0.9907486538434879
+          },
+          "mars": {
+            "longitude": 353.9964788957019,
+            "longitudeDecimal12": "353.996478895702",
+            "speedLongitude": 0.7572337165706514
+          },
+          "jupiter": {
+            "longitude": 297.2502320000276,
+            "longitudeDecimal12": "297.250232000028",
+            "speedLongitude": 0.23341102861405302
+          },
+          "saturn": {
+            "longitude": 236.74431968451825,
+            "longitudeDecimal12": "236.744319684518",
+            "speedLongitude": 0.06559061995153745
+          },
+          "uranus": {
+            "longitude": 256.64471466123734,
+            "longitudeDecimal12": "256.644714661237",
+            "speedLongitude": 0.04511541016368758
+          },
+          "neptune": {
+            "longitude": 272.36779255409397,
+            "longitudeDecimal12": "272.367792554094",
+            "speedLongitude": 0.032854203381218736
+          },
+          "pluto": {
+            "longitude": 214.71053548555219,
+            "longitudeDecimal12": "214.710535485552",
+            "speedLongitude": 0.006765353978073601
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "25.2",
+          "northNode": "23.6",
+          "southNode": "43.6",
+          "mercury": "54.6",
+          "venus": "36.1",
+          "mars": "36.2",
+          "jupiter": "60.1",
+          "saturn": "14.3",
+          "uranus": "5.6",
+          "neptune": "10.5",
+          "pluto": "28.3"
+        },
+        "sunGateLine": "41.4",
+        "earthGateLine": "31.4",
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 3.400384912310983e-06,
+          "distanceNextArcsec": 0.012241385684319539,
+          "distanceNextMas": 12.241385684319539,
+          "equivalentSeconds": 0.288911978356655,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.4",
+          "expectedLineStartLongitude": 304.8125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.9374965996150877,
+          "signedLongitudeMinusExpectedStartMas": 3374987.7586143157,
+          "signedSecondsPastExpectedStart": 79653.92280056702
+        },
+        "expectedJovianSun": "41.4",
+        "personalitySunMatchesJovian": true,
+        "personality13MatchesJovian": true,
+        "personalityMismatches": [],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2005-jul11",
+        "birthUtc": "2005-07-11T01:47:00Z",
+        "mode": "swiss",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2453562.574305556,
+        "deltaTSeconds": 64.75668259218413,
+        "julianDayEt": 2453562.5750550544,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "sepl_18.se1",
+          "deNumber": 441,
+          "julianDayStart": 2378496.5,
+          "julianDayEnd": 2597651.3591467496,
+          "fileLength": 484061
+        },
+        "requestedFlags": 258,
+        "resolvedFlags": 258,
+        "runtimeSource": "SwissEph",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.SwissEph.SwissEphBodyPositionSource",
+        "runtimePreferredSource": "SwissEph",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 108.87499749948556,
+        "sunLongitudeDecimal12": "108.874997499486",
+        "sunLongitudeSpeedDegreesPerDay": 0.9537596899030674,
+        "nativeSunGateLine": "53.4",
+        "nativeEarthGateLine": "54.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "53.4",
+          "earth": "54.4",
+          "moon": "40.4",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "7.2",
+          "venus": "7.3",
+          "mars": "51.5",
+          "jupiter": "48.2",
+          "saturn": "56.4",
+          "uranus": "37.6",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 108.87499749948556,
+            "longitudeDecimal12": "108.874997499486",
+            "speedLongitude": 0.9537596899030674
+          },
+          "earth": {
+            "longitude": 288.8749974994856,
+            "longitudeDecimal12": "288.874997499486",
+            "speedLongitude": 0.9537596899030674
+          },
+          "moon": {
+            "longitude": 158.8122074096635,
+            "longitudeDecimal12": "158.812207409664",
+            "speedLongitude": 11.892654489355948
+          },
+          "northNode": {
+            "longitude": 17.81092949542535,
+            "longitudeDecimal12": "17.810929495425",
+            "speedLongitude": -0.09463877299891987
+          },
+          "southNode": {
+            "longitude": 197.81092949542534,
+            "longitudeDecimal12": "197.810929495425",
+            "speedLongitude": -0.09463877299891987
+          },
+          "mercury": {
+            "longitude": 135.026032408704,
+            "longitudeDecimal12": "135.026032408704",
+            "speedLongitude": 0.8468327987912149
+          },
+          "venus": {
+            "longitude": 135.5562139086562,
+            "longitudeDecimal12": "135.556213908656",
+            "speedLongitude": 1.2099565832520454
+          },
+          "mars": {
+            "longitude": 19.470120536067697,
+            "longitudeDecimal12": "19.470120536068",
+            "speedLongitude": 0.6404758216907929
+          },
+          "jupiter": {
+            "longitude": 190.76429299713578,
+            "longitudeDecimal12": "190.764292997136",
+            "speedLongitude": 0.09863162603824314
+          },
+          "saturn": {
+            "longitude": 119.30071317296262,
+            "longitudeDecimal12": "119.300713172963",
+            "speedLongitude": 0.12789902420938903
+          },
+          "uranus": {
+            "longitude": 340.4986518449753,
+            "longitudeDecimal12": "340.498651844975",
+            "speedLongitude": -0.019942526730349158
+          },
+          "neptune": {
+            "longitude": 316.9424156787532,
+            "longitudeDecimal12": "316.942415678753",
+            "speedLongitude": -0.023145333011403472
+          },
+          "pluto": {
+            "longitude": 262.5004596362787,
+            "longitudeDecimal12": "262.500459636279",
+            "speedLongitude": -0.022871329727100632
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "SwissEph",
+            "computedBody": "Sun",
+            "flags": 258,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "SwissEph",
+            "computedBody": "Moon",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "SwissEph",
+            "computedBody": "TrueNode",
+            "flags": 1810,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "SwissEph",
+            "computedBody": "Mercury",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "SwissEph",
+            "computedBody": "Venus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "SwissEph",
+            "computedBody": "Mars",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "SwissEph",
+            "computedBody": "Jupiter",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "SwissEph",
+            "computedBody": "Saturn",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "SwissEph",
+            "computedBody": "Uranus",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "SwissEph",
+            "computedBody": "Neptune",
+            "flags": 258,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "SwissEph",
+            "computedBody": "Pluto",
+            "flags": 258,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "53.4",
+          "earth": "54.4",
+          "moon": "40.4",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "7.2",
+          "venus": "7.3",
+          "mars": "51.5",
+          "jupiter": "48.2",
+          "saturn": "56.4",
+          "uranus": "37.6",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "sunGateLine": "53.4",
+        "earthGateLine": "54.4",
+        "sunBoundary": {
+          "gate": 53,
+          "line": 4,
+          "gateLine": "53.4",
+          "globalLineIndex": 111,
+          "lineStartLongitude": 107.9375,
+          "nextLineBoundaryLongitude": 108.875,
+          "nextLineBoundaryLongitudeUnwrapped": 108.875,
+          "distanceNextDegrees": 2.500514440839652e-06,
+          "distanceNextArcsec": 0.009001851987022746,
+          "distanceNextMas": 9.001851987022746,
+          "equivalentSeconds": 0.2265187446855748,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "53.4",
+          "expectedLineStartLongitude": 107.9375,
+          "signedLongitudeMinusExpectedStartDegrees": 0.9374974994855734,
+          "signedLongitudeMinusExpectedStartMas": 3374990.998148064,
+          "signedSecondsPastExpectedStart": 84926.8267605079
+        },
+        "expectedJovianSun": "53.4",
+        "personalitySunMatchesJovian": true,
+        "personality13MatchesJovian": true,
+        "personalityMismatches": [],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      }
+    ],
+    "Sharp-JPL441-current": [
+      {
+        "id": "G1995-feb",
+        "birthUtc": "1995-02-22T01:08:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2449770.547222222,
+        "deltaTSeconds": 60.90908883864604,
+        "julianDayEt": 2449770.5479271887,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 332.9374981488865,
+        "sunLongitudeDecimal12": "332.937498148887",
+        "sunLongitudeSpeedDegreesPerDay": 1.007285745365418,
+        "nativeSunGateLine": "55.3",
+        "nativeEarthGateLine": "59.3",
+        "nativePersonalityActivationOracle": {
+          "sun": "55.3",
+          "earth": "59.3",
+          "moon": "14.3",
+          "northNode": "44.1",
+          "southNode": "24.1",
+          "mercury": "41.6",
+          "venus": "54.5",
+          "mars": "4.1",
+          "jupiter": "5.2",
+          "saturn": "63.3",
+          "uranus": "60.3",
+          "neptune": "61.4",
+          "pluto": "34.1"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 332.9374981488865,
+            "longitudeDecimal12": "332.937498148887",
+            "speedLongitude": 1.007285745365418
+          },
+          "earth": {
+            "longitude": 152.93749814888656,
+            "longitudeDecimal12": "152.937498148887",
+            "speedLongitude": 1.007285745365418
+          },
+          "moon": {
+            "longitude": 236.43362342192486,
+            "longitudeDecimal12": "236.433623421925",
+            "speedLongitude": 14.08038775692561
+          },
+          "northNode": {
+            "longitude": 217.83168158970835,
+            "longitudeDecimal12": "217.831681589708",
+            "speedLongitude": 0.007136524739642984
+          },
+          "southNode": {
+            "longitude": 37.83168158970835,
+            "longitudeDecimal12": "37.831681589708",
+            "speedLongitude": 0.007136524739642984
+          },
+          "mercury": {
+            "longitude": 307.39441592294577,
+            "longitudeDecimal12": "307.394415922946",
+            "speedLongitude": 0.5682199475852461
+          },
+          "venus": {
+            "longitude": 289.63960917600394,
+            "longitudeDecimal12": "289.639609176004",
+            "speedLongitude": 1.1600394531288263
+          },
+          "mars": {
+            "longitude": 139.0637053897345,
+            "longitudeDecimal12": "139.063705389735",
+            "speedLongitude": -0.36182768138117105
+          },
+          "jupiter": {
+            "longitude": 253.1647209329831,
+            "longitudeDecimal12": "253.164720932983",
+            "speedLongitude": 0.11089105457530203
+          },
+          "saturn": {
+            "longitude": 343.5404349798804,
+            "longitudeDecimal12": "343.540434979880",
+            "speedLongitude": 0.1214504490716436
+          },
+          "uranus": {
+            "longitude": 298.4438025509406,
+            "longitudeDecimal12": "298.443802550941",
+            "speedLongitude": 0.051186888602581915
+          },
+          "neptune": {
+            "longitude": 294.45313121670637,
+            "longitudeDecimal12": "294.453131216706",
+            "speedLongitude": 0.03137527803169676
+          },
+          "pluto": {
+            "longitude": 240.57478525678368,
+            "longitudeDecimal12": "240.574785256784",
+            "speedLongitude": 0.006003550087920893
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "55.3",
+          "earth": "59.3",
+          "moon": "14.3",
+          "northNode": "44.1",
+          "southNode": "24.1",
+          "mercury": "41.6",
+          "venus": "54.5",
+          "mars": "4.1",
+          "jupiter": "5.2",
+          "saturn": "63.3",
+          "uranus": "60.3",
+          "neptune": "61.4",
+          "pluto": "34.1"
+        },
+        "sunGateLine": "55.3",
+        "earthGateLine": "59.3",
+        "sunBoundary": {
+          "gate": 55,
+          "line": 3,
+          "gateLine": "55.3",
+          "globalLineIndex": 350,
+          "lineStartLongitude": 332.0,
+          "nextLineBoundaryLongitude": 332.9375,
+          "nextLineBoundaryLongitudeUnwrapped": 332.9375,
+          "distanceNextDegrees": 1.8511134953769215e-06,
+          "distanceNextArcsec": 0.006664008583356917,
+          "distanceNextMas": 6.664008583356917,
+          "equivalentSeconds": 0.15877937986955742,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "55.4",
+          "expectedLineStartLongitude": 332.9375,
+          "signedLongitudeMinusExpectedStartDegrees": -1.8511134953769215e-06,
+          "signedLongitudeMinusExpectedStartMas": -6.664008583356917,
+          "signedSecondsPastExpectedStart": -0.15877937986955742
+        },
+        "expectedJovianSun": "55.4",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "55.3",
+            "expected": "55.4"
+          },
+          {
+            "point": "earth",
+            "actual": "59.3",
+            "expected": "59.4"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G1995-jun",
+        "birthUtc": "1995-06-21T23:43:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2449890.488194444,
+        "deltaTSeconds": 61.19208895585703,
+        "julianDayEt": 2449890.488902686,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 90.12499908768591,
+        "sunLongitudeDecimal12": "90.124999087686",
+        "sunLongitudeSpeedDegreesPerDay": 0.9542629440369533,
+        "nativeSunGateLine": "15.2",
+        "nativeEarthGateLine": "10.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "15.2",
+          "earth": "10.2",
+          "moon": "42.4",
+          "northNode": "28.3",
+          "southNode": "27.3",
+          "mercury": "16.6",
+          "venus": "35.3",
+          "mars": "64.3",
+          "jupiter": "9.3",
+          "saturn": "36.3",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "14.5"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 90.12499908768591,
+            "longitudeDecimal12": "90.124999087686",
+            "speedLongitude": 0.9542629440369533
+          },
+          "earth": {
+            "longitude": 270.1249990876859,
+            "longitudeDecimal12": "270.124999087686",
+            "speedLongitude": 0.9542629440369533
+          },
+          "moon": {
+            "longitude": 23.99645977933357,
+            "longitudeDecimal12": "23.996459779334",
+            "speedLongitude": 12.183582509406344
+          },
+          "northNode": {
+            "longitude": 214.1648983952969,
+            "longitudeDecimal12": "214.164898395297",
+            "speedLongitude": 0.013505898892439866
+          },
+          "southNode": {
+            "longitude": 34.16489839529686,
+            "longitudeDecimal12": "34.164898395297",
+            "speedLongitude": 0.013505898892439866
+          },
+          "mercury": {
+            "longitude": 70.65969626736364,
+            "longitudeDecimal12": "70.659696267364",
+            "speedLongitude": 0.3620738770552269
+          },
+          "venus": {
+            "longitude": 73.77182855998083,
+            "longitudeDecimal12": "73.771828559981",
+            "speedLongitude": 1.219384213528707
+          },
+          "mars": {
+            "longitude": 163.4913381892963,
+            "longitudeDecimal12": "163.491338189296",
+            "speedLongitude": 0.5305637043160167
+          },
+          "jupiter": {
+            "longitude": 248.02268152656026,
+            "longitudeDecimal12": "248.022681526560",
+            "speedLongitude": -0.10992765469048092
+          },
+          "saturn": {
+            "longitude": 354.57966126108727,
+            "longitudeDecimal12": "354.579661261087",
+            "speedLongitude": 0.023956630388359906
+          },
+          "uranus": {
+            "longitude": 299.6166299454967,
+            "longitudeDecimal12": "299.616629945497",
+            "speedLongitude": -0.033027296580711595
+          },
+          "neptune": {
+            "longitude": 294.8175376717944,
+            "longitudeDecimal12": "294.817537671794",
+            "speedLongitude": -0.023864496145118375
+          },
+          "pluto": {
+            "longitude": 238.3934855205253,
+            "longitudeDecimal12": "238.393485520525",
+            "speedLongitude": -0.02234699670740777
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "15.2",
+          "earth": "10.2",
+          "moon": "42.4",
+          "northNode": "28.3",
+          "southNode": "27.3",
+          "mercury": "16.6",
+          "venus": "35.3",
+          "mars": "64.3",
+          "jupiter": "9.3",
+          "saturn": "36.3",
+          "uranus": "60.4",
+          "neptune": "61.5",
+          "pluto": "14.5"
+        },
+        "sunGateLine": "15.2",
+        "earthGateLine": "10.2",
+        "sunBoundary": {
+          "gate": 15,
+          "line": 2,
+          "gateLine": "15.2",
+          "globalLineIndex": 91,
+          "lineStartLongitude": 89.1875,
+          "nextLineBoundaryLongitude": 90.125,
+          "nextLineBoundaryLongitudeUnwrapped": 90.125,
+          "distanceNextDegrees": 9.123140927158602e-07,
+          "distanceNextArcsec": 0.0032843307337770966,
+          "distanceNextMas": 3.2843307337770966,
+          "equivalentSeconds": 0.08260190558923967,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "15.3",
+          "expectedLineStartLongitude": 90.125,
+          "signedLongitudeMinusExpectedStartDegrees": -9.123140785050055e-07,
+          "signedLongitudeMinusExpectedStartMas": -3.2843306826180196,
+          "signedSecondsPastExpectedStart": -0.0826019043025735
+        },
+        "expectedJovianSun": "15.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "15.2",
+            "expected": "15.3"
+          },
+          {
+            "point": "earth",
+            "actual": "10.2",
+            "expected": "10.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2005-jul20",
+        "birthUtc": "2005-07-20T21:40:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2453572.402777778,
+        "deltaTSeconds": 64.76092842230749,
+        "julianDayEt": 2453572.403527326,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 118.24999912138159,
+        "sunLongitudeDecimal12": "118.249999121382",
+        "sunLongitudeSpeedDegreesPerDay": 0.9541753964775156,
+        "nativeSunGateLine": "56.2",
+        "nativeEarthGateLine": "60.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "56.2",
+          "earth": "60.2",
+          "moon": "54.6",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "4.2",
+          "venus": "29.4",
+          "mars": "42.6",
+          "jupiter": "48.3",
+          "saturn": "56.5",
+          "uranus": "37.5",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 118.24999912138159,
+            "longitudeDecimal12": "118.249999121382",
+            "speedLongitude": 0.9541753964775156
+          },
+          "earth": {
+            "longitude": 298.2499991213816,
+            "longitudeDecimal12": "298.249999121382",
+            "speedLongitude": 0.9541753964775156
+          },
+          "moon": {
+            "longitude": 290.2873737352581,
+            "longitudeDecimal12": "290.287373735258",
+            "speedLongitude": 15.259617833055097
+          },
+          "northNode": {
+            "longitude": 17.14313230040826,
+            "longitudeDecimal12": "17.143132300408",
+            "speedLongitude": -0.17583394767520721
+          },
+          "southNode": {
+            "longitude": 197.14313230040827,
+            "longitudeDecimal12": "197.143132300408",
+            "speedLongitude": -0.17583394767520721
+          },
+          "mercury": {
+            "longitude": 140.26781801709805,
+            "longitudeDecimal12": "140.267818017098",
+            "speedLongitude": 0.18060529212649207
+          },
+          "venus": {
+            "longitude": 147.42359000159635,
+            "longitudeDecimal12": "147.423590001596",
+            "speedLongitude": 1.204772231194124
+          },
+          "mars": {
+            "longitude": 25.624450419968923,
+            "longitudeDecimal12": "25.624450419969",
+            "speedLongitude": 0.6110573549450397
+          },
+          "jupiter": {
+            "longitude": 191.8448596429784,
+            "longitudeDecimal12": "191.844859642978",
+            "speedLongitude": 0.120811454293251
+          },
+          "saturn": {
+            "longitude": 120.5654655717427,
+            "longitudeDecimal12": "120.565465571743",
+            "speedLongitude": 0.12921492888774083
+          },
+          "uranus": {
+            "longitude": 340.27102482916433,
+            "longitudeDecimal12": "340.271024829164",
+            "speedLongitude": -0.026208930983731588
+          },
+          "neptune": {
+            "longitude": 316.70323738109533,
+            "longitudeDecimal12": "316.703237381095",
+            "speedLongitude": -0.02536361899261365
+          },
+          "pluto": {
+            "longitude": 262.2897122298335,
+            "longitudeDecimal12": "262.289712229834",
+            "speedLongitude": -0.019876402822094155
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "56.2",
+          "earth": "60.2",
+          "moon": "54.6",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "4.2",
+          "venus": "29.4",
+          "mars": "42.6",
+          "jupiter": "48.3",
+          "saturn": "56.5",
+          "uranus": "37.5",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "sunGateLine": "56.2",
+        "earthGateLine": "60.2",
+        "sunBoundary": {
+          "gate": 56,
+          "line": 2,
+          "gateLine": "56.2",
+          "globalLineIndex": 121,
+          "lineStartLongitude": 117.3125,
+          "nextLineBoundaryLongitude": 118.25,
+          "nextLineBoundaryLongitudeUnwrapped": 118.25,
+          "distanceNextDegrees": 8.786184082509862e-07,
+          "distanceNextArcsec": 0.0031630262697035505,
+          "distanceNextMas": 3.1630262697035505,
+          "equivalentSeconds": 0.07955836081408964,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "56.3",
+          "expectedLineStartLongitude": 118.25,
+          "signedLongitudeMinusExpectedStartDegrees": -8.786184082509862e-07,
+          "signedLongitudeMinusExpectedStartMas": -3.1630262697035505,
+          "signedSecondsPastExpectedStart": -0.07955836081408964
+        },
+        "expectedJovianSun": "56.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "56.2",
+            "expected": "56.3"
+          },
+          {
+            "point": "earth",
+            "actual": "60.2",
+            "expected": "60.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2015-tight",
+        "birthUtc": "2015-01-26T01:20:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2457048.5555555555,
+        "deltaTSeconds": 67.67261263190962,
+        "julianDayEt": 2457048.5563388034,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 305.74999682690776,
+        "sunLongitudeDecimal12": "305.749996826908",
+        "sunLongitudeSpeedDegreesPerDay": 1.0168198582972507,
+        "nativeSunGateLine": "41.4",
+        "nativeEarthGateLine": "31.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "42.1",
+          "northNode": "48.4",
+          "southNode": "21.4",
+          "mercury": "13.3",
+          "venus": "30.4",
+          "mars": "37.6",
+          "jupiter": "4.1",
+          "saturn": "34.4",
+          "uranus": "21.4",
+          "neptune": "37.1",
+          "pluto": "38.5"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 305.74999682690776,
+            "longitudeDecimal12": "305.749996826908",
+            "speedLongitude": 1.0168198582972507
+          },
+          "earth": {
+            "longitude": 125.74999682690776,
+            "longitudeDecimal12": "125.749996826908",
+            "speedLongitude": 1.0168198582972507
+          },
+          "moon": {
+            "longitude": 21.197093381189728,
+            "longitudeDecimal12": "21.197093381190",
+            "speedLongitude": 13.934694453117482
+          },
+          "northNode": {
+            "longitude": 192.4523484438982,
+            "longitudeDecimal12": "192.452348443898",
+            "speedLongitude": 0.0076929791092423165
+          },
+          "southNode": {
+            "longitude": 12.452348443898188,
+            "longitudeDecimal12": "12.452348443898",
+            "speedLongitude": 0.0076929791092423165
+          },
+          "mercury": {
+            "longitude": 315.25027792278007,
+            "longitudeDecimal12": "315.250277922780",
+            "speedLongitude": -0.8161720999312777
+          },
+          "venus": {
+            "longitude": 328.0448145632702,
+            "longitudeDecimal12": "328.044814563270",
+            "speedLongitude": 1.2463545173881403
+          },
+          "mars": {
+            "longitude": 340.6526933794052,
+            "longitudeDecimal12": "340.652693379405",
+            "speedLongitude": 0.7803877804262012
+          },
+          "jupiter": {
+            "longitude": 139.16401500456274,
+            "longitudeDecimal12": "139.164015004563",
+            "speedLongitude": -0.12641635363019185
+          },
+          "saturn": {
+            "longitude": 243.08544143459412,
+            "longitudeDecimal12": "243.085441434594",
+            "speedLongitude": 0.07421039797661247
+          },
+          "uranus": {
+            "longitude": 13.093517614651706,
+            "longitudeDecimal12": "13.093517614652",
+            "speedLongitude": 0.029162201096833113
+          },
+          "neptune": {
+            "longitude": 336.12567304231663,
+            "longitudeDecimal12": "336.125673042317",
+            "speedLongitude": 0.033747452193551845
+          },
+          "pluto": {
+            "longitude": 284.02498769569405,
+            "longitudeDecimal12": "284.024987695694",
+            "speedLongitude": 0.0328973755132373
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "42.1",
+          "northNode": "48.4",
+          "southNode": "21.4",
+          "mercury": "13.3",
+          "venus": "30.4",
+          "mars": "37.6",
+          "jupiter": "4.1",
+          "saturn": "34.4",
+          "uranus": "21.4",
+          "neptune": "37.1",
+          "pluto": "38.5"
+        },
+        "sunGateLine": "41.4",
+        "earthGateLine": "31.4",
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 3.1730922387396276e-06,
+          "distanceNextArcsec": 0.01142313205946266,
+          "distanceNextMas": 11.42313205946266,
+          "equivalentSeconds": 0.2696201959373605,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.5",
+          "expectedLineStartLongitude": 305.75,
+          "signedLongitudeMinusExpectedStartDegrees": -3.1730922387396276e-06,
+          "signedLongitudeMinusExpectedStartMas": -11.42313205946266,
+          "signedSecondsPastExpectedStart": -0.2696201959373605
+        },
+        "expectedJovianSun": "41.5",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "41.4",
+            "expected": "41.5"
+          },
+          {
+            "point": "earth",
+            "actual": "31.4",
+            "expected": "31.5"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2015-feb",
+        "birthUtc": "2015-02-04T06:56:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2457057.788888889,
+        "deltaTSeconds": 67.68321575667953,
+        "julianDayEt": 2457057.7896722592,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 315.1249968563818,
+        "sunLongitudeDecimal12": "315.124996856382",
+        "sunLongitudeSpeedDegreesPerDay": 1.0138465952994566,
+        "nativeSunGateLine": "13.2",
+        "nativeEarthGateLine": "7.2",
+        "nativePersonalityActivationOracle": {
+          "sun": "13.2",
+          "earth": "7.2",
+          "moon": "7.6",
+          "northNode": "48.3",
+          "southNode": "21.3",
+          "mercury": "41.4",
+          "venus": "37.5",
+          "mars": "22.1",
+          "jupiter": "7.6",
+          "saturn": "34.4",
+          "uranus": "21.5",
+          "neptune": "37.1",
+          "pluto": "38.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 315.1249968563818,
+            "longitudeDecimal12": "315.124996856382",
+            "speedLongitude": 1.0138465952994566
+          },
+          "earth": {
+            "longitude": 135.1249968563818,
+            "longitudeDecimal12": "135.124996856382",
+            "speedLongitude": 1.0138465952994566
+          },
+          "moon": {
+            "longitude": 138.6822821741598,
+            "longitudeDecimal12": "138.682282174160",
+            "speedLongitude": 11.946933282456493
+          },
+          "northNode": {
+            "longitude": 191.42437231335097,
+            "longitudeDecimal12": "191.424372313351",
+            "speedLongitude": -0.16737875176239378
+          },
+          "southNode": {
+            "longitude": 11.424372313351,
+            "longitudeDecimal12": "11.424372313351",
+            "speedLongitude": -0.16737875176239378
+          },
+          "mercury": {
+            "longitude": 304.86199890706627,
+            "longitudeDecimal12": "304.861998907066",
+            "speedLongitude": -0.9712747292736792
+          },
+          "venus": {
+            "longitude": 339.53207085448224,
+            "longitudeDecimal12": "339.532070854482",
+            "speedLongitude": 1.2416846869938485
+          },
+          "mars": {
+            "longitude": 347.84310077102873,
+            "longitudeDecimal12": "347.843100771029",
+            "speedLongitude": 0.7769070429452911
+          },
+          "jupiter": {
+            "longitude": 137.96208489716466,
+            "longitudeDecimal12": "137.962084897165",
+            "speedLongitude": -0.13263020900357583
+          },
+          "saturn": {
+            "longitude": 243.71401077542797,
+            "longitudeDecimal12": "243.714010775428",
+            "speedLongitude": 0.06170985532814112
+          },
+          "uranus": {
+            "longitude": 13.393731233640368,
+            "longitudeDecimal12": "13.393731233640",
+            "speedLongitude": 0.035707853119165564
+          },
+          "neptune": {
+            "longitude": 336.4477610126615,
+            "longitudeDecimal12": "336.447761012661",
+            "speedLongitude": 0.03586291926925324
+          },
+          "pluto": {
+            "longitude": 284.3202105719677,
+            "longitudeDecimal12": "284.320210571968",
+            "speedLongitude": 0.030909405260808747
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "13.2",
+          "earth": "7.2",
+          "moon": "7.6",
+          "northNode": "48.3",
+          "southNode": "21.3",
+          "mercury": "41.4",
+          "venus": "37.5",
+          "mars": "22.1",
+          "jupiter": "7.6",
+          "saturn": "34.4",
+          "uranus": "21.5",
+          "neptune": "37.1",
+          "pluto": "38.6"
+        },
+        "sunGateLine": "13.2",
+        "earthGateLine": "7.2",
+        "sunBoundary": {
+          "gate": 13,
+          "line": 2,
+          "gateLine": "13.2",
+          "globalLineIndex": 331,
+          "lineStartLongitude": 314.1875,
+          "nextLineBoundaryLongitude": 315.125,
+          "nextLineBoundaryLongitudeUnwrapped": 315.125,
+          "distanceNextDegrees": 3.1436181870958535e-06,
+          "distanceNextArcsec": 0.011317025473545073,
+          "distanceNextMas": 11.317025473545073,
+          "equivalentSeconds": 0.26789912066021937,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "13.3",
+          "expectedLineStartLongitude": 315.125,
+          "signedLongitudeMinusExpectedStartDegrees": -3.1436181870958535e-06,
+          "signedLongitudeMinusExpectedStartMas": -11.317025473545073,
+          "signedSecondsPastExpectedStart": -0.26789912066021937
+        },
+        "expectedJovianSun": "13.3",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "13.2",
+            "expected": "13.3"
+          },
+          {
+            "point": "earth",
+            "actual": "7.2",
+            "expected": "7.3"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2025-tight",
+        "birthUtc": "2025-01-19T22:57:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2460695.45625,
+        "deltaTSeconds": 68.99478640185143,
+        "julianDayEt": 2460695.4570485507,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 300.12499698045605,
+        "sunLongitudeDecimal12": "300.124996980456",
+        "sunLongitudeSpeedDegreesPerDay": 1.0176656967613644,
+        "nativeSunGateLine": "60.4",
+        "nativeEarthGateLine": "56.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "60.4",
+          "earth": "56.4",
+          "moon": "48.1",
+          "northNode": "25.1",
+          "southNode": "46.1",
+          "mercury": "54.3",
+          "venus": "63.6",
+          "mars": "62.5",
+          "jupiter": "35.1",
+          "saturn": "63.6",
+          "uranus": "23.5",
+          "neptune": "36.6",
+          "pluto": "60.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 300.12499698045605,
+            "longitudeDecimal12": "300.124996980456",
+            "speedLongitude": 1.0176656967613644
+          },
+          "earth": {
+            "longitude": 120.12499698045605,
+            "longitudeDecimal12": "120.124996980456",
+            "speedLongitude": 1.0176656967613644
+          },
+          "moon": {
+            "longitude": 189.62970046211007,
+            "longitudeDecimal12": "189.629700462110",
+            "speedLongitude": 11.858066644198319
+          },
+          "northNode": {
+            "longitude": 359.13544094263835,
+            "longitudeDecimal12": "359.135440942638",
+            "speedLongitude": 0.014139486592073569
+          },
+          "southNode": {
+            "longitude": 179.1354409426383,
+            "longitudeDecimal12": "179.135440942638",
+            "speedLongitude": 0.014139486592073569
+          },
+          "mercury": {
+            "longitude": 287.09705271776943,
+            "longitudeDecimal12": "287.097052717769",
+            "speedLongitude": 1.5405462917770978
+          },
+          "venus": {
+            "longitude": 346.93700632456023,
+            "longitudeDecimal12": "346.937006324560",
+            "speedLongitude": 0.9397878902042992
+          },
+          "mars": {
+            "longitude": 114.68644203086791,
+            "longitudeDecimal12": "114.686442030868",
+            "speedLongitude": -0.39065586438769034
+          },
+          "jupiter": {
+            "longitude": 71.68504700476723,
+            "longitudeDecimal12": "71.685047004767",
+            "speedLongitude": -0.05221318340936423
+          },
+          "saturn": {
+            "longitude": 346.1780494472249,
+            "longitudeDecimal12": "346.178049447225",
+            "speedLongitude": 0.09777500340625353
+          },
+          "uranus": {
+            "longitude": 53.31190516558767,
+            "longitudeDecimal12": "53.311905165588",
+            "speedLongitude": -0.009390124187853977
+          },
+          "neptune": {
+            "longitude": 357.6534864905872,
+            "longitudeDecimal12": "357.653486490587",
+            "speedLongitude": 0.023428964507120106
+          },
+          "pluto": {
+            "longitude": 301.6657342536674,
+            "longitudeDecimal12": "301.665734253667",
+            "speedLongitude": 0.03224481700740134
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "60.4",
+          "earth": "56.4",
+          "moon": "48.1",
+          "northNode": "25.1",
+          "southNode": "46.1",
+          "mercury": "54.3",
+          "venus": "63.6",
+          "mars": "62.5",
+          "jupiter": "35.1",
+          "saturn": "63.6",
+          "uranus": "23.5",
+          "neptune": "36.6",
+          "pluto": "60.6"
+        },
+        "sunGateLine": "60.4",
+        "earthGateLine": "56.4",
+        "sunBoundary": {
+          "gate": 60,
+          "line": 4,
+          "gateLine": "60.4",
+          "globalLineIndex": 315,
+          "lineStartLongitude": 299.1875,
+          "nextLineBoundaryLongitude": 300.125,
+          "nextLineBoundaryLongitudeUnwrapped": 300.125,
+          "distanceNextDegrees": 3.01954395354187e-06,
+          "distanceNextArcsec": 0.010870358232750732,
+          "distanceNextMas": 10.870358232750732,
+          "equivalentSeconds": 0.2563598226964647,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "60.5",
+          "expectedLineStartLongitude": 300.125,
+          "signedLongitudeMinusExpectedStartDegrees": -3.01954395354187e-06,
+          "signedLongitudeMinusExpectedStartMas": -10.870358232750732,
+          "signedSecondsPastExpectedStart": -0.2563598226964647
+        },
+        "expectedJovianSun": "60.5",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "60.4",
+            "expected": "60.5"
+          },
+          {
+            "point": "earth",
+            "actual": "56.4",
+            "expected": "56.5"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2025-mar",
+        "birthUtc": "2025-03-15T18:56:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2460750.288888889,
+        "deltaTSeconds": 68.9802019150298,
+        "julianDayEt": 2460750.2896872708,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 355.43749786160475,
+        "sunLongitudeDecimal12": "355.437497861605",
+        "sunLongitudeSpeedDegreesPerDay": 0.995779387137116,
+        "nativeSunGateLine": "36.3",
+        "nativeEarthGateLine": "6.3",
+        "nativePersonalityActivationOracle": {
+          "sun": "36.3",
+          "earth": "6.3",
+          "moon": "48.3",
+          "northNode": "36.6",
+          "southNode": "6.6",
+          "mercury": "21.1",
+          "venus": "17.4",
+          "mars": "53.5",
+          "jupiter": "35.3",
+          "saturn": "22.6",
+          "uranus": "23.6",
+          "neptune": "25.2",
+          "pluto": "41.2"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 355.43749786160475,
+            "longitudeDecimal12": "355.437497861605",
+            "speedLongitude": 0.995779387137116
+          },
+          "earth": {
+            "longitude": 175.4374978616047,
+            "longitudeDecimal12": "175.437497861605",
+            "speedLongitude": 0.995779387137116
+          },
+          "moon": {
+            "longitude": 191.9392567522582,
+            "longitudeDecimal12": "191.939256752258",
+            "speedLongitude": 11.90709468622976
+          },
+          "northNode": {
+            "longitude": 357.3887081179967,
+            "longitudeDecimal12": "357.388708117997",
+            "speedLongitude": 0.0020273266944239796
+          },
+          "southNode": {
+            "longitude": 177.38870811799666,
+            "longitudeDecimal12": "177.388708117997",
+            "speedLongitude": 0.0020273266944239796
+          },
+          "mercury": {
+            "longitude": 9.570781508542831,
+            "longitudeDecimal12": "9.570781508543",
+            "speedLongitude": -0.07141123600252355
+          },
+          "venus": {
+            "longitude": 6.986200672985887,
+            "longitudeDecimal12": "6.986200672986",
+            "speedLongitude": -0.5299666773266422
+          },
+          "mars": {
+            "longitude": 109.20375054583792,
+            "longitudeDecimal12": "109.203750545838",
+            "speedLongitude": 0.20893545430698685
+          },
+          "jupiter": {
+            "longitude": 73.74735299131291,
+            "longitudeDecimal12": "73.747352991313",
+            "speedLongitude": 0.11894119788097478
+          },
+          "saturn": {
+            "longitude": 352.5101178248865,
+            "longitudeDecimal12": "352.510117824886",
+            "speedLongitude": 0.1233305364492587
+          },
+          "uranus": {
+            "longitude": 54.09019019358892,
+            "longitudeDecimal12": "54.090190193589",
+            "speedLongitude": 0.03597181881648001
+          },
+          "neptune": {
+            "longitude": 359.4436546915219,
+            "longitudeDecimal12": "359.443654691522",
+            "speedLongitude": 0.037823746462864974
+          },
+          "pluto": {
+            "longitude": 303.2481926721273,
+            "longitudeDecimal12": "303.248192672127",
+            "speedLongitude": 0.021933294542159525
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "36.3",
+          "earth": "6.3",
+          "moon": "48.3",
+          "northNode": "36.6",
+          "southNode": "6.6",
+          "mercury": "21.1",
+          "venus": "17.4",
+          "mars": "53.5",
+          "jupiter": "35.3",
+          "saturn": "22.6",
+          "uranus": "23.6",
+          "neptune": "25.2",
+          "pluto": "41.2"
+        },
+        "sunGateLine": "36.3",
+        "earthGateLine": "6.3",
+        "sunBoundary": {
+          "gate": 36,
+          "line": 3,
+          "gateLine": "36.3",
+          "globalLineIndex": 374,
+          "lineStartLongitude": 354.5,
+          "nextLineBoundaryLongitude": 355.4375,
+          "nextLineBoundaryLongitudeUnwrapped": 355.4375,
+          "distanceNextDegrees": 2.138395245765423e-06,
+          "distanceNextArcsec": 0.007698222884755523,
+          "distanceNextMas": 7.698222884755523,
+          "equivalentSeconds": 0.18554044361704786,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "36.4",
+          "expectedLineStartLongitude": 355.4375,
+          "signedLongitudeMinusExpectedStartDegrees": -2.138395245765423e-06,
+          "signedLongitudeMinusExpectedStartMas": -7.698222884755523,
+          "signedSecondsPastExpectedStart": -0.18554044361704786
+        },
+        "expectedJovianSun": "36.4",
+        "personalitySunMatchesJovian": false,
+        "personality13MatchesJovian": false,
+        "personalityMismatches": [
+          {
+            "point": "sun",
+            "actual": "36.3",
+            "expected": "36.4"
+          },
+          {
+            "point": "earth",
+            "actual": "6.3",
+            "expected": "6.4"
+          }
+        ],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G1985-tight",
+        "birthUtc": "1985-01-25T18:34:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2446091.273611111,
+        "deltaTSeconds": 54.38072542120087,
+        "julianDayEt": 2446091.2742405175,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 305.74999671586966,
+        "sunLongitudeDecimal12": "305.749996715870",
+        "sunLongitudeSpeedDegreesPerDay": 1.0168954048975154,
+        "nativeSunGateLine": "41.4",
+        "nativeEarthGateLine": "31.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "25.2",
+          "northNode": "23.6",
+          "southNode": "43.6",
+          "mercury": "54.6",
+          "venus": "36.1",
+          "mars": "36.2",
+          "jupiter": "60.1",
+          "saturn": "14.3",
+          "uranus": "5.6",
+          "neptune": "10.5",
+          "pluto": "28.3"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 305.74999671586966,
+            "longitudeDecimal12": "305.749996715870",
+            "speedLongitude": 1.0168954048975154
+          },
+          "earth": {
+            "longitude": 125.74999671586966,
+            "longitudeDecimal12": "125.749996715870",
+            "speedLongitude": 1.0168954048975154
+          },
+          "moon": {
+            "longitude": 359.24007328565284,
+            "longitudeDecimal12": "359.240073285653",
+            "speedLongitude": 11.965241298855867
+          },
+          "northNode": {
+            "longitude": 54.34968482250704,
+            "longitudeDecimal12": "54.349684822507",
+            "speedLongitude": -0.11824731045304976
+          },
+          "southNode": {
+            "longitude": 234.34968482250704,
+            "longitudeDecimal12": "234.349684822507",
+            "speedLongitude": -0.11824731045304976
+          },
+          "mercury": {
+            "longitude": 289.8715719676397,
+            "longitudeDecimal12": "289.871571967640",
+            "speedLongitude": 1.5098988397534792
+          },
+          "venus": {
+            "longitude": 352.73959975783293,
+            "longitudeDecimal12": "352.739599757833",
+            "speedLongitude": 0.9907486927779939
+          },
+          "mars": {
+            "longitude": 353.9964790353985,
+            "longitudeDecimal12": "353.996479035399",
+            "speedLongitude": 0.7572337219723422
+          },
+          "jupiter": {
+            "longitude": 297.2502319549931,
+            "longitudeDecimal12": "297.250231954993",
+            "speedLongitude": 0.23341103277843617
+          },
+          "saturn": {
+            "longitude": 236.74431965502433,
+            "longitudeDecimal12": "236.744319655024",
+            "speedLongitude": 0.06559062290194259
+          },
+          "uranus": {
+            "longitude": 256.6447145817223,
+            "longitudeDecimal12": "256.644714581722",
+            "speedLongitude": 0.04511540996434286
+          },
+          "neptune": {
+            "longitude": 272.36779260852927,
+            "longitudeDecimal12": "272.367792608529",
+            "speedLongitude": 0.03285420549034274
+          },
+          "pluto": {
+            "longitude": 214.7105354013493,
+            "longitudeDecimal12": "214.710535401349",
+            "speedLongitude": 0.006765345533394516
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "41.4",
+          "earth": "31.4",
+          "moon": "25.2",
+          "northNode": "23.6",
+          "southNode": "43.6",
+          "mercury": "54.6",
+          "venus": "36.1",
+          "mars": "36.2",
+          "jupiter": "60.1",
+          "saturn": "14.3",
+          "uranus": "5.6",
+          "neptune": "10.5",
+          "pluto": "28.3"
+        },
+        "sunGateLine": "41.4",
+        "earthGateLine": "31.4",
+        "sunBoundary": {
+          "gate": 41,
+          "line": 4,
+          "gateLine": "41.4",
+          "globalLineIndex": 321,
+          "lineStartLongitude": 304.8125,
+          "nextLineBoundaryLongitude": 305.75,
+          "nextLineBoundaryLongitudeUnwrapped": 305.75,
+          "distanceNextDegrees": 3.2841303436725866e-06,
+          "distanceNextArcsec": 0.011822869237221312,
+          "distanceNextMas": 11.822869237221312,
+          "equivalentSeconds": 0.2790344614861429,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "41.4",
+          "expectedLineStartLongitude": 304.8125,
+          "signedLongitudeMinusExpectedStartDegrees": 0.9374967158696563,
+          "signedLongitudeMinusExpectedStartMas": 3374988.177130763,
+          "signedSecondsPastExpectedStart": 79653.93083795242
+        },
+        "expectedJovianSun": "41.4",
+        "personalitySunMatchesJovian": true,
+        "personality13MatchesJovian": true,
+        "personalityMismatches": [],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      },
+      {
+        "id": "G2005-jul11",
+        "birthUtc": "2005-07-11T01:47:00Z",
+        "mode": "jpl",
+        "bias": false,
+        "assembly": {
+          "swissAssembly": "SharpAstrology.SwissEph, Version=0.5.1.0, Culture=neutral, PublicKeyToken=null",
+          "swissInformationalVersion": "0.5.1+342a57997c1b987e7949acc98897c8b73d05939a",
+          "baseAssembly": "0.14.0+b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+          "hdAssembly": "1.2.0+8b78031ce9a4244b8eb0a4ce37e612b8d6782570"
+        },
+        "julianDayUt": 2453562.574305556,
+        "deltaTSeconds": 64.75668259218413,
+        "julianDayEt": 2453562.5750550544,
+        "sourceHeaderDeNumber": 441,
+        "actualSourceHeader": {
+          "fileName": "de441.eph",
+          "deNumber": 441,
+          "julianDayStart": -3027215.5,
+          "julianDayEnd": 7930192.5,
+          "fileLength": 2788676624
+        },
+        "requestedFlags": 257,
+        "resolvedFlags": 257,
+        "runtimeSource": "Jpl",
+        "runtimeSourceType": "SharpAstrology.SwissEphemerides.Infrastructure.Jpl.JplBodyPositionSource",
+        "runtimePreferredSource": "Jpl",
+        "moshierEnabled": false,
+        "adapterEqualsActualDirectSource": true,
+        "sunLongitude": 108.87499780737188,
+        "sunLongitudeDecimal12": "108.874997807372",
+        "sunLongitudeSpeedDegreesPerDay": 0.953759682505881,
+        "nativeSunGateLine": "53.4",
+        "nativeEarthGateLine": "54.4",
+        "nativePersonalityActivationOracle": {
+          "sun": "53.4",
+          "earth": "54.4",
+          "moon": "40.4",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "7.2",
+          "venus": "7.3",
+          "mars": "51.5",
+          "jupiter": "48.2",
+          "saturn": "56.4",
+          "uranus": "37.6",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "personalityRawPositions": {
+          "sun": {
+            "longitude": 108.87499780737188,
+            "longitudeDecimal12": "108.874997807372",
+            "speedLongitude": 0.953759682505881
+          },
+          "earth": {
+            "longitude": 288.87499780737187,
+            "longitudeDecimal12": "288.874997807372",
+            "speedLongitude": 0.953759682505881
+          },
+          "moon": {
+            "longitude": 158.8122074054155,
+            "longitudeDecimal12": "158.812207405416",
+            "speedLongitude": 11.892654432236965
+          },
+          "northNode": {
+            "longitude": 17.810928465266034,
+            "longitudeDecimal12": "17.810928465266",
+            "speedLongitude": -0.09463866258347971
+          },
+          "southNode": {
+            "longitude": 197.81092846526604,
+            "longitudeDecimal12": "197.810928465266",
+            "speedLongitude": -0.09463866258347971
+          },
+          "mercury": {
+            "longitude": 135.02603276413103,
+            "longitudeDecimal12": "135.026032764131",
+            "speedLongitude": 0.8468328110289961
+          },
+          "venus": {
+            "longitude": 135.55621405737438,
+            "longitudeDecimal12": "135.556214057374",
+            "speedLongitude": 1.2099566329761589
+          },
+          "mars": {
+            "longitude": 19.470120619072755,
+            "longitudeDecimal12": "19.470120619073",
+            "speedLongitude": 0.6404758458318502
+          },
+          "jupiter": {
+            "longitude": 190.76429307410444,
+            "longitudeDecimal12": "190.764293074104",
+            "speedLongitude": 0.09863162548539998
+          },
+          "saturn": {
+            "longitude": 119.3007132167351,
+            "longitudeDecimal12": "119.300713216735",
+            "speedLongitude": 0.12789901557606587
+          },
+          "uranus": {
+            "longitude": 340.4986518212506,
+            "longitudeDecimal12": "340.498651821251",
+            "speedLongitude": -0.019942510826414402
+          },
+          "neptune": {
+            "longitude": 316.9424156569471,
+            "longitudeDecimal12": "316.942415656947",
+            "speedLongitude": -0.023145325118235745
+          },
+          "pluto": {
+            "longitude": 262.50045958344987,
+            "longitudeDecimal12": "262.500459583450",
+            "speedLongitude": -0.022871331431612848
+          }
+        },
+        "runtimeSourceByPoint": {
+          "sun": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "earth": {
+            "source": "Jpl",
+            "computedBody": "Sun",
+            "flags": 257,
+            "derivedAntipode": true
+          },
+          "moon": {
+            "source": "Jpl",
+            "computedBody": "Moon",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "northNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": false
+          },
+          "southNode": {
+            "source": "Jpl",
+            "computedBody": "TrueNode",
+            "flags": 1809,
+            "derivedAntipode": true
+          },
+          "mercury": {
+            "source": "Jpl",
+            "computedBody": "Mercury",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "venus": {
+            "source": "Jpl",
+            "computedBody": "Venus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "mars": {
+            "source": "Jpl",
+            "computedBody": "Mars",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "jupiter": {
+            "source": "Jpl",
+            "computedBody": "Jupiter",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "saturn": {
+            "source": "Jpl",
+            "computedBody": "Saturn",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "uranus": {
+            "source": "Jpl",
+            "computedBody": "Uranus",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "neptune": {
+            "source": "Jpl",
+            "computedBody": "Neptune",
+            "flags": 257,
+            "derivedAntipode": false
+          },
+          "pluto": {
+            "source": "Jpl",
+            "computedBody": "Pluto",
+            "flags": 257,
+            "derivedAntipode": false
+          }
+        },
+        "earthMethod": "Sharp adapter apparent Sun antipode (+180 degrees); not zero-vector geocentric Earth",
+        "biasDeMetadataOrigin": "verified actual registered source reader Header, injected only into diagnostic AppContext",
+        "biasGuardTests": {},
+        "nativeMappingOracle": "SharpAstrology.HumanDesign 1.2.0 HumanDesignUtility.ActivationOf unchanged; official output fields added by shared frozen_mapping.py",
+        "personalityActivations": {
+          "sun": "53.4",
+          "earth": "54.4",
+          "moon": "40.4",
+          "northNode": "51.3",
+          "southNode": "57.3",
+          "mercury": "7.2",
+          "venus": "7.3",
+          "mars": "51.5",
+          "jupiter": "48.2",
+          "saturn": "56.4",
+          "uranus": "37.6",
+          "neptune": "13.4",
+          "pluto": "26.6"
+        },
+        "sunGateLine": "53.4",
+        "earthGateLine": "54.4",
+        "sunBoundary": {
+          "gate": 53,
+          "line": 4,
+          "gateLine": "53.4",
+          "globalLineIndex": 111,
+          "lineStartLongitude": 107.9375,
+          "nextLineBoundaryLongitude": 108.875,
+          "nextLineBoundaryLongitudeUnwrapped": 108.875,
+          "distanceNextDegrees": 2.192628116404194e-06,
+          "distanceNextArcsec": 0.007893461219055098,
+          "distanceNextMas": 7.893461219055098,
+          "equivalentSeconds": 0.19862767606152637,
+          "equivalentSecondsMeaning": "local linear estimate to next boundary, not root finding",
+          "expectedGateLine": "53.4",
+          "expectedLineStartLongitude": 107.9375,
+          "signedLongitudeMinusExpectedStartDegrees": 0.9374978073718694,
+          "signedLongitudeMinusExpectedStartMas": 3374992.1065387297,
+          "signedSecondsPastExpectedStart": 84926.85531025271
+        },
+        "expectedJovianSun": "53.4",
+        "personalitySunMatchesJovian": true,
+        "personality13MatchesJovian": true,
+        "personalityMismatches": [],
+        "mapping": "root-cause-v2/scripts/frozen_mapping.py; production oracle asserted identical"
+      }
+    ]
+  }
+}

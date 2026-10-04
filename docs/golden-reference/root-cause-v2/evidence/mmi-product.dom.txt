@@ -1,0 +1,560 @@
+- link "Skip to content":
+  - /url: "#main"
+- complementary:
+  - paragraph:
+    - link "Study Season | Ends Oct 4 →":
+      - /url: /collections/study-season
+  - paragraph:
+    - link "25% off Beginner & Intermediate lectures, $50 off Learning Paths":
+      - /url: /collections/study-season
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: Study Season | Ends Oct 4 →
+  - paragraph:
+    - link:
+      - /url: /collections/study-season
+      - text: 25% off Beginner & Intermediate lectures, $50 off Learning Paths
+- banner:
+  - navigation:
+    - list:
+      - button "Learn": Learn
+      - button "Shop": Shop
+      - generic "Services": Services
+      - button "About": About
+  - link "Jovian Archive":
+    - /url: /
+    - generic: Jovian Archive
+  - list:
+    - link "Free Human Design Chart":
+      - /url: /pages/get-your-human-design-chart
+    - button "Change country or currency":
+      - generic: USD $
+    - link "Search":
+      - /url: /search
+      - generic: Search
+    - generic: Login
+    - link "Cart 0 items":
+      - /url: /cart
+      - generic: Cart
+      - generic: 0 items
+      - text: "0"
+- main:
+  - heading "Maia Mechanics Imaging (MMI)" [level=1]
+  - paragraph: The Original Human Design Desktop Software—Now Rebuilt for Modern Devices
+  - generic: New Version
+  - generic: "3.0"
+  - generic: Fully Rebuilt 2025
+  - generic: Free Trial
+  - generic: 7 Days
+  - generic: Experience Pro Features
+  - paragraph
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - img "Maia Mechanics Imaging (MMI)"
+  - button "Zoom":
+    - generic: Zoom
+  - button "Go to item 1":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 2":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 3":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 4":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 5":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 6":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 7":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 8":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 9":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 10":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 11":
+    - img "Maia Mechanics Imaging (MMI)"
+  - button "Go to item 12":
+    - img "Maia Mechanics Imaging (MMI)"
+  - heading "Maia Mechanics Imaging (MMI)" [level=1]
+  - paragraph: Download the trial. Choose your edition. Add optional modules.
+  - link "Free 7-Day Trial":
+    - /url: https://mmi.jovianarchive.com/
+  - img "Maia Mechanics Imaging (MMI)"
+  - link "Basic Edition":
+    - /url: /products/maia-mechanics-imaging-mmi?variant=49439512887600
+  - generic: $89.00
+  - button "+ Add":
+    - generic: + Add
+  - img "Maia Mechanics Imaging (MMI)"
+  - link "Student Edition":
+    - /url: /products/maia-mechanics-imaging-mmi?variant=49439512920368
+  - generic: $299.00
+  - button "+ Add":
+    - generic: + Add
+  - img "Maia Mechanics Imaging (MMI)"
+  - link "Professional Edition":
+    - /url: /products/maia-mechanics-imaging-mmi?variant=49439512953136
+  - generic: $499.00
+  - button "+ Add":
+    - generic: + Add
+  - img "Maia Mechanics Imaging (MMI)"
+  - link "Professional Penta Edition":
+    - /url: /products/maia-mechanics-imaging-mmi?variant=49453222592816
+  - generic: $599.00
+  - button "+ Add":
+    - generic: + Add
+  - img "Maia Mechanics Imaging (MMI)"
+  - link "Business Analysis Edition":
+    - /url: /products/maia-mechanics-imaging-mmi?variant=49453222625584
+  - generic: $1,199.00
+  - link "Contact Us":
+    - /url: /pages/contact
+  - heading "Modules" [level=5]
+  - button "Next slide":
+  - button "Previous slide" [disabled]:
+  - group "1 / 2":
+    - img "MMAI - Advanced Imaging Extension"
+    - link "MMAI - Advanced Imaging Extension":
+      - /url: /products/mmi-desktop-advanced-imaging-extension
+    - generic: $299.00
+    - button "+ Add":
+      - generic: + Add
+  - group "2 / 2":
+    - img "MMI DreamRave Extension"
+    - link "MMI DreamRave Extension":
+      - /url: /products/mmi-desktop-dreamrave-extension
+    - generic: $199.00
+    - button "+ Add":
+      - generic: + Add
+  - paragraph:
+    - emphasis: Modules require Student Edition or higher.
+  - heading "Already Purchased MMI in the Past?" [level=2]
+  - paragraph: "We’ve rebuilt the software to ensure compatibility with modern devices, and we’ve preserved your previous purchases. To access your license keys, download the new app, and upgrade editions:"
+  - link "Login":
+    - /url: https://mmi.jovianarchive.com/
+  - heading "About Maia Mechanics Imaging (MMI)" [level=4]
+  - heading "The original desktop software for Human Design analysis, trusted by professionals, students, and enthusiasts since 2004. Now fully rebuilt from the ground up." [level=2]
+  - heading "Version" [level=5]:
+    - strong: Version
+  - paragraph: MMI 3.0 - Rebuilt 2025 Edition
+  - heading "Platform" [level=5]:
+    - strong: Platform
+  - paragraph: Windows (Mac via virtualization)
+  - heading "Installation" [level=5]:
+    - strong: Installation
+  - paragraph: Downloadable desktop application – works fully offline
+  - heading "Licensing" [level=5]:
+    - strong: Licensing
+  - paragraph: One-time purchase, activation key required
+  - heading "Editions" [level=5]:
+    - strong: Editions
+  - paragraph: Basic, Student, Professional, Pro Penta, BG5
+  - heading "Modules" [level=5]:
+    - strong: Modules
+  - paragraph: Advanced Imaging (MMAI), DreamRave
+  - heading "Languages" [level=5]:
+    - strong: Languages
+  - paragraph: English, German, French, Spanish
+  - heading "Chart Types" [level=5]:
+    - strong: Chart Types
+  - paragraph: Individual, Connection, Cycle, Transit, Penta, DreamRave, Ephemeris
+  - heading "Printing" [level=5]:
+    - strong: Printing
+  - paragraph: High-resolution export in multiple layouts
+  - heading "Accuracy" [level=5]:
+    - strong: Accuracy
+  - paragraph: Base-level calculation (Color, Tone, Base)
+  - heading "Trial" [level=5]:
+    - strong: Trial
+  - paragraph: Free 7-day trial (full Professional features)
+  - heading "Designed for Ra Uru Hu" [level=5]
+  - paragraph: Use the official Human Design software created and used by its founder.
+  - heading "Offline Access" [level=5]
+  - paragraph: Install on Windows and use it anytime—no internet connection needed.
+  - heading "One-Time Payment" [level=5]
+  - paragraph: Pay once, own it forever. No subscriptions or renewal fees.
+  - heading "Multilingual Support" [level=5]
+  - paragraph: Available in English, German, French, and Spanish.
+  - heading "Try MMI Free" [level=2]
+  - paragraph: Explore the power of MMI with a 7-day free trial. Download MMI for Windows and experience Professional Edition capabilities before choosing your license.
+  - link "7-Day Free Trial":
+    - /url: https://mmi.jovianarchive.com/
+  - heading "Features & Editions" [level=5]
+  - heading "Free" [level=5]
+  - generic: Free
+  - link "Download":
+    - /url: https://mmi.jovianarchive.com/
+  - img "Maia Mechanics Imaging (MMI)"
+  - heading "Basic" [level=5]
+  - generic: $89
+  - button "Buy":
+    - generic: Buy
+  - img "Maia Mechanics Imaging (MMI)"
+  - heading "Student" [level=5]
+  - generic: $299
+  - button "Buy":
+    - generic: Buy
+  - img "Maia Mechanics Imaging (MMI)"
+  - heading "Professional" [level=5]
+  - generic: $499
+  - button "Buy":
+    - generic: Buy
+  - img "Maia Mechanics Imaging (MMI)"
+  - heading "Professional Penta" [level=5]
+  - generic: $599
+  - button "Buy":
+    - generic: Buy
+  - img "Maia Mechanics Imaging (MMI)"
+  - heading "Business Analysis" [level=5]
+  - generic: $1,199
+  - link "Contact Us":
+    - /url: ""
+  - heading "Chart Creation" [level=5]:
+    - strong: Chart Creation
+  - heading "Creating Rave Charts" [level=5]
+  - heading "Creating Connection Charts" [level=5]
+  - heading "Creating Cycle Charts" [level=5]
+  - heading "Creating Transit Charts" [level=5]
+  - heading "Creating Transit Watch Chart sequences" [level=5]
+  - heading "Creating Family Penta Charts" [level=5]
+  - heading "Creating BG5 Business Analysis Penta Charts" [level=5]
+  - heading "Information Display" [level=5]:
+    - strong: Information Display
+  - heading "Sub Line Planetary Data" [level=5]
+  - heading "Rave I'Ching Support" [level=5]
+  - heading "Bodygraph highlight support" [level=5]
+  - heading "Chart Statistics" [level=5]
+  - heading "Printing & Imaging" [level=5]:
+    - strong: Printing & Imaging
+  - heading "Printing Charts" [level=5]
+  - heading "Exporting Chart Images" [level=5]
+  - heading "Chart Management" [level=5]:
+    - strong: Chart Management
+  - heading "Importing Charts" [level=5]
+  - heading "Exporting Charts" [level=5]
+  - heading "Sending Charts by Email" [level=5]
+  - heading "Miscellaneous" [level=5]:
+    - strong: Miscellaneous
+  - heading "Configurable User Preferences" [level=5]
+  - heading "Rave Time" [level=5]
+  - heading "Rave Ephemeris Browser" [level=5]
+  - heading "Career Design Language" [level=5]
+  - generic: View all
+  - group "1 / 2":
+    - img "MMAI - Advanced Imaging Extension"
+    - button "Zoom":
+      - generic: Zoom
+    - heading "MMAI - Advanced Imaging Extension" [level=1]
+    - generic: Sale price
+    - text: $299.00
+    - paragraph: Unlock the substructure of a chart in the “box” view, and insights used in Primary Health System and Rave Psychology. View Color, Tone, and Base values with their keynotes, see the “Magic Square” used in Holistic Analysis, and display the Variable arrows.
+    - button "Add to cart":
+      - generic: Add to cart
+    - paragraph:
+      - emphasis: Requires Student Edition or higher.
+  - group "2 / 2":
+    - img "MMI DreamRave Extension"
+    - button "Zoom":
+      - generic: Zoom
+    - heading "MMI DreamRave Extension" [level=1]
+    - generic: Sale price
+    - text: $199.00
+    - paragraph: Explore the mechanics of the dream state. The DreamRave module lets you generate DreamRave charts and view corresponding keynotes. This tool is designed for those studying or working with sleep-state and unconscious mechanics in Human Design.
+    - button "Add to cart":
+      - generic: Add to cart
+    - paragraph:
+      - emphasis: Requires Student Edition or higher.
+  - button "Previous slide" [disabled]:
+    - generic: Previous
+  - button "Next slide":
+    - generic: Next
+  - heading "Explore the Full Power of MMI" [level=2]
+  - paragraph: From precise chart creation to advanced imaging, MMI offers a comprehensive suite of tools for Human Design professionals and students. Feature availability depends on your selected edition.
+  - generic "Chart Creation & Accuracy" [active]:
+    - generic: Chart Creation & Accuracy
+  - paragraph:
+    - text: Create charts in seconds using an entry form and built-in
+    - strong: Find Place
+    - text: tool for birth locations.
+  - paragraph:
+    - text: MMI uses the
+    - strong: JPL planetary database
+    - text: to generate highly accurate charts—right down to the Base level.
+  - 'generic "Chart Types: Individual, Partnership, Cycle, Penta & More"':
+    - generic: "Chart Types: Individual, Partnership, Cycle, Penta & More"
+  - generic "Rave I’Ching Integration":
+    - generic: Rave I’Ching Integration
+  - generic "Planetary Data & Fixing":
+    - generic: Planetary Data & Fixing
+  - generic "Multiple View Modes":
+    - generic: Multiple View Modes
+  - generic "High-Quality Imaging & Printing":
+    - generic: High-Quality Imaging & Printing
+  - generic "Chart Library & Management":
+    - generic: Chart Library & Management
+  - generic "Chart Comments & Notes":
+    - generic: Chart Comments & Notes
+  - generic "What analysis tools are included?":
+    - generic: What analysis tools are included?
+  - generic "Information Pods & Quick Access":
+    - generic: Information Pods & Quick Access
+  - generic "Rave Ephemeris Browser":
+    - generic: Rave Ephemeris Browser
+  - generic "Transit Watch":
+    - generic: Transit Watch
+  - generic "Rave Time Widget":
+    - generic: Rave Time Widget
+  - generic "Multilingual Support":
+    - generic: Multilingual Support
+  - heading "The Original Human Design Software" [level=2]
+  - paragraph: Explore the power of MMI, now rebuilt for modern devices.
+  - link "7-Day Free Trial":
+    - /url: https://mmi.jovianarchive.com/
+  - link "Purchase Options":
+    - /url: "#editions"
+  - heading "Questions about MMI?" [level=2]
+  - paragraph: We've got you covered.
+  - generic "What can I do with the free trial version?":
+    - generic: What can I do with the free trial version?
+  - generic "Can I use MMI on a Mac?":
+    - generic: Can I use MMI on a Mac?
+  - generic "Will MMI run on the latest Windows hardware?":
+    - generic: Will MMI run on the latest Windows hardware?
+  - generic "How do I access my activation key after purchase?":
+    - generic: How do I access my activation key after purchase?
+  - generic "How do I upgrade?":
+    - generic: How do I upgrade?
+  - generic "After updating, my activation key doesn’t work. What should I do?":
+    - generic: After updating, my activation key doesn’t work. What should I do?
+  - generic "How many devices can I use the app on?":
+    - generic: How many devices can I use the app on?
+  - generic "Which editions and extensions are available?":
+    - generic: Which editions and extensions are available?
+  - generic "What chart types does MMI support?":
+    - generic: What chart types does MMI support?
+  - generic "What analysis tools are included?":
+    - generic: What analysis tools are included?
+  - generic "What is the BG5 Business Edition, and how do I gain access?":
+    - generic: What is the BG5 Business Edition, and how do I gain access?
+  - generic "Can I create custom chart sequences?":
+    - generic: Can I create custom chart sequences?
+  - generic "Can I print or export charts?":
+    - generic: Can I print or export charts?
+  - generic "Does MMI support multiple languages?":
+    - generic: Does MMI support multiple languages?
+  - generic "Can I manage and comment on my charts?":
+    - generic: Can I manage and comment on my charts?
+  - generic "Is the software offline?":
+    - generic: Is the software offline?
+  - generic "What are Extension Modules and how do they work?":
+    - generic: What are Extension Modules and how do they work?
+  - generic "Does my endowment discount apply?":
+    - generic: Does my endowment discount apply?
+  - paragraph: Looking for a Web-Based Alternative?
+  - paragraph:
+    - text: Explore
+    - link "MaiaMechanics.com":
+      - /url: https://www.maiamechanics.com/
+    - text: — our cross-platform, browser-based Human Design software. No downloads, automatic updates, and accessible anywhere.
+  - paragraph: Why choose MaiaMechanics.com?
+  - paragraph:
+    - text: 🌍 — Works on any device or browser
+    - text: 💳 — Available for a low monthly fee
+    - text: 🗣️ — Supports 13 languages
+    - text: ⏱️ — Includes Birth Time Reliability Score
+    - text: 🎨 — Switch between Classic and Rounded BodyGraph views
+    - text: 🔄 — Automatically updated—no installation required
+  - paragraph: Both platforms offer free trials—try them out and see which fits your workflow best.
+  - link "14-Day Free Trial":
+    - /url: https://www.maiamechanics.com/
+  - paragraph: Stay updated with new insights, tools, and exclusive offers
+  - checkbox "Verified" [checked]
+  - generic: Verified
+  - link:
+    - /url: https://altcha.org/
+  - textbox "Name":
+    - /placeholder: " "
+  - generic: Name
+  - textbox "E-mail":
+    - /placeholder: " "
+  - generic: E-mail
+  - button "Subscribe":
+    - generic: Subscribe
+  - img "Jovian Logo"
+  - paragraph: The official source of the Human Design System and the complete teachings of Ra Uru Hu.
+  - list:
+    - link "About Jovian Archive":
+      - /url: /pages/about-jovian-archive
+      - text: About Jovian Archive
+    - link "About Ra Uru Hu":
+      - /url: /pages/about-ra-uru-hu
+      - text: About Ra Uru Hu
+    - link "About Human Design":
+      - /url: /pages/about-human-design
+      - text: About Human Design
+  - link:
+    - /url: https://www.instagram.com/humandesignsystem/
+  - link:
+    - /url: https://www.facebook.com/JovianArchive
+  - link:
+    - /url: https://www.youtube.com/@JovianArchiveMedia
+  - button "Change country or currency":
+    - generic: USD $
+  - paragraph: Explore Human Design
+  - list:
+    - link "Free Human Design Chart":
+      - /url: /pages/get-your-human-design-chart
+      - text: Free Human Design Chart
+    - link "Beginner Hub":
+      - /url: /pages/beginner
+      - text: Beginner Hub
+    - link "Intermediate Hub":
+      - /url: /pages/intermediate
+      - text: Intermediate Hub
+    - link "Advanced Hub":
+      - /url: /pages/advanced
+      - text: Advanced Hub
+    - link "Extended Hub":
+      - /url: /pages/extended
+      - text: Extended Hub
+    - link "Human Design Dictionary":
+      - /url: /pages/human-design-dictionary
+      - text: Human Design Dictionary
+    - link "Human Design Statistics":
+      - /url: /pages/human-design-statistics
+      - text: Human Design Statistics
+    - link "Blog":
+      - /url: /blogs/human-design-basics
+      - text: Blog
+  - paragraph: Shop & Services
+  - list:
+    - link "All Teachings":
+      - /url: /collections/all
+      - text: All Teachings
+    - link "Learning Paths":
+      - /url: /collections/learning-paths
+      - text: Learning Paths
+    - link "AI Ra":
+      - /url: /pages/ai-ra
+      - text: AI Ra
+    - link "MMI for Windows":
+      - /url: /products/maia-mechanics-imaging-mmi
+      - text: MMI for Windows
+    - link "myBodyGraph":
+      - /url: https://mybodygraph.com
+      - text: myBodyGraph
+    - link "Maia Mechanics Online":
+      - /url: https://maiamechanics.com
+      - text: Maia Mechanics Online
+    - link "Ra.TV":
+      - /url: https://ra.tv
+      - text: Ra.TV
+    - link "Human Design Mastery":
+      - /url: https://humandesignmastery.com
+      - text: Human Design Mastery
+    - link "Affiliate Partner Program":
+      - /url: https://affiliate.jovianarchive.com/
+      - text: Affiliate Partner Program
+  - paragraph: Support & Legal
+  - list:
+    - link "Contact":
+      - /url: /pages/contact
+      - text: Contact
+    - link "FAQs":
+      - /url: /pages/faq
+      - text: FAQs
+    - link "Terms & Conditions":
+      - /url: /pages/terms-and-conditions
+      - text: Terms & Conditions
+    - link "Privacy Policy":
+      - /url: /pages/privacy-policy
+      - text: Privacy Policy
+    - link "Cookies Policy":
+      - /url: /pages/cookies-policy
+      - text: Cookies Policy
+  - list:
+    - img "American Express"
+    - img "Apple Pay"
+    - img "Google Pay"
+    - img "Mastercard"
+    - img "PayPal"
+    - img "Shop Pay"
+    - img "Union Pay"
+    - img "Visa"
+  - paragraph: © 2026, Jovian Archive Media Pte. Ltd. All Rights Reserved. The Rave BodyGraph™ and Rave Mandala™ are registered trademarks.

@@ -1,0 +1,347 @@
+{
+  "unified45FixtureAgreement": [
+    {
+      "id": "D1985-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "D1985-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "D1995-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "D2005-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "D2015-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "D2025-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-1230",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-1231",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-1232",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-nov",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-repeatA",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-repeatB",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1985-tight",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-apr",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-dec",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-feb-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-feb-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-feb",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-jun-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-jun-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-jun",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G1995-tight",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-0411",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-0412",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-jul11",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-jul20-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-jul20-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-jul20",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-may",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2005-tight",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-feb-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-feb-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-feb",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-final-proof",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-repeatA",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-repeatB",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-tight-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-tight-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2015-tight",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-mar-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-mar-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-mar",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-tight-after",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-tight-before",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    },
+    {
+      "id": "G2025-tight",
+      "birthUtcAgrees": true,
+      "officialAll26Agrees": true,
+      "officialProfileAgrees": true
+    }
+  ],
+  "freshProcessG1995Feb": [
+    {
+      "path": "/tmp/td-ohd-golden-independent/ephe-de431",
+      "jdTimestamp": 2449770.547222222,
+      "jdJulday": 2449770.547222222,
+      "jdUlpSeconds": 4.023313522338867e-05,
+      "results": [
+        {
+          "flagsRequested": 258,
+          "flagsReturned": 258,
+          "longitude": 332.9375000022579,
+          "degreesBeyondBoundary332_9375": 2.257877440570155e-09,
+          "secondsBeyondBoundaryLocalLinear": 0.00019366947720608963,
+          "loadedFile": [
+            "/tmp/td-ohd-golden-independent/ephe-de431/sepl_18.se1",
+            2378496.5,
+            2597651.3591467496,
+            431
+          ]
+        },
+        {
+          "flagsRequested": 131330,
+          "flagsReturned": 131330,
+          "longitude": 332.9374981174518,
+          "degreesBeyondBoundary332_9375": -1.8825481902240426e-06,
+          "secondsBeyondBoundaryLocalLinear": -0.16147560415183512,
+          "loadedFile": [
+            "/tmp/td-ohd-golden-independent/ephe-de431/sepl_18.se1",
+            2378496.5,
+            2597651.3591467496,
+            431
+          ]
+        }
+      ],
+      "ephemeris": "DE431"
+    },
+    {
+      "path": "<LOCAL_INSTALL>/dist/engine/ephe",
+      "jdTimestamp": 2449770.547222222,
+      "jdJulday": 2449770.547222222,
+      "jdUlpSeconds": 4.023313522338867e-05,
+      "results": [
+        {
+          "flagsRequested": 258,
+          "flagsReturned": 258,
+          "longitude": 332.9374999134079,
+          "degreesBeyondBoundary332_9375": -8.659208106109872e-08,
+          "secondsBeyondBoundaryLocalLinear": -0.0074274372819985515,
+          "loadedFile": [
+            "<LOCAL_INSTALL>/dist/engine/ephe/sepl_18.se1",
+            2378496.5,
+            2597651.3591467496,
+            441
+          ]
+        },
+        {
+          "flagsRequested": 131330,
+          "flagsReturned": 131330,
+          "longitude": 332.93749802860185,
+          "degreesBeyondBoundary332_9375": -1.9713981487257115e-06,
+          "secondsBeyondBoundaryLocalLinear": -0.16909671101694637,
+          "loadedFile": [
+            "<LOCAL_INSTALL>/dist/engine/ephe/sepl_18.se1",
+            2378496.5,
+            2597651.3591467496,
+            441
+          ]
+        }
+      ],
+      "ephemeris": "DE441"
+    }
+  ],
+  "result": "All45 UTC, expected all26, and profile inputs agree; fresh-process outputs exactly agree with earlier switched-path results."
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "file": "sepl_18.se1",
+    "path": "/tmp/td-ohd-golden-independent/ephe-de431/sepl_18.se1",
+    "bytes": 484055,
+    "sha256": "0b7e416e3c1be9e6a0dd1d711dae7f7685793a0e7df13f76363a493dc27b6ea1",
+    "header": "SWISSEPH  1\r\nsepl_18.se1 \r\nCopyright Astrodienst AG, Switzerland, 2014. Ephemeris based on JPL Ephemeris DE431.   \r\ncba",
+    "sourceCommit": "b51a083390bf3cdc93a6ba466cbc83b846c4cfc4",
+    "sourceURL": "https://raw.githubusercontent.com/aloistr/swisseph/b51a083390bf3cdc93a6ba466cbc83b846c4cfc4/ephe/sepl_18.se1"
+  },
+  {
+    "file": "semo_18.se1",
+    "path": "/tmp/td-ohd-golden-independent/ephe-de431/semo_18.se1",
+    "bytes": 1304771,
+    "sha256": "ecfa54dbf5bc0b5a9bc3e04ed28629a821e98625eacae38f4070593bba0e2980",
+    "header": "SWISSEPH  1\r\nsemo_18.se1 \r\nCopyright Astrodienst AG, Switzerland, 2014. Ephemeris based on JPL Ephemeris DE431.   \r\ncba",
+    "sourceCommit": "b51a083390bf3cdc93a6ba466cbc83b846c4cfc4",
+    "sourceURL": "https://raw.githubusercontent.com/aloistr/swisseph/b51a083390bf3cdc93a6ba466cbc83b846c4cfc4/ephe/semo_18.se1"
+  }
+]

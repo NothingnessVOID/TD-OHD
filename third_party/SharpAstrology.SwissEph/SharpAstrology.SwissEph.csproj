@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <RootNamespace>SharpAstrology.SwissEphemerides</RootNamespace>
+    <AssemblyName>SharpAstrology.SwissEph</AssemblyName>
+    <PackageId>SharpAstrology.SwissEph</PackageId>
+    <Version>0.5.1</Version>
+    <InformationalVersion>0.5.1+td-ohd.swiss-parity-v1</InformationalVersion>
+    <Authors>Christian Reizner</Authors>
+    <Description>Swiss Ephemeris ported to idiomatic C# (.NET 10). Drop-in successor of SharpAstrology.SwissEph 0.3.0: same SwissEphemeridesService/IEphemerides surface, no native dependencies. Implements SharpAstrology.Base.IEphemerides.</Description>
+    <PackageReleaseNotes>0.5.0: EphType.Jpl now really computes from the JPL kernel through IEphemerides. The adapter used to leave the source unnamed, so the SwissEph default took over and a JPL-configured service silently returned SwissEph or Moshier values. New EphemerisContextBuilder.UsePreferredSource for the same choice at the low level. Bodies a DE kernel never contains, asteroids above all, are served from the .se1 files as in the C library. New SwissEphemeridesService constructor parameter allowMoshierFallback: pass false to turn a missing .se1 file into a FileNotFoundException instead of a silent fall back to Moshier. UnsupportedBodyException now names the source the caller asked for instead of the last one tried. All additions are opt-in, existing behaviour is unchanged.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/CReizner/SharpAstrology.SwissEph</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CReizner/SharpAstrology.SwissEph</RepositoryUrl>
+    <PackageTags>Astrology;SwissEphemeris;Ephemeris;IEphemerides</PackageTags>
+    <PackageLicenseFile>LICENSE.AGPL-3.0.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Tensors" Version="10.0.7" />
+  </ItemGroup>
+
+  <!-- The floor is only used in a clone of this repository alone, where the sibling project
+       is missing. Packing from the full working copy takes the version of the referenced
+       project instead, so the floor is kept at the version that project currently has.
+       Both ways then produce the same dependency. -->
+  <PropertyGroup>
+    <SharpAstrologyBaseVersion>[0.14.0]</SharpAstrologyBaseVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('../SharpAstrology.Base/SharpAstrology.Base.csproj')">
+    <ProjectReference Include="../SharpAstrology.Base/SharpAstrology.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('../SharpAstrology.Base/SharpAstrology.Base.csproj')">
+    <PackageReference Include="SharpAstrology.Base" Version="$(SharpAstrologyBaseVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE.AGPL-3.0.txt" Pack="true" PackagePath="\" Condition="Exists('LICENSE.AGPL-3.0.txt')" />
+    <None Include="LICENSE.SwissEph.txt" Pack="true" PackagePath="\" Condition="Exists('LICENSE.SwissEph.txt')" />
+    <None Include="README.md" Pack="true" PackagePath="\" Condition="Exists('README.md')" />
+    <InternalsVisibleTo Include="SharpAstrology.SwissEphemerides.UnitTests" />
+    <InternalsVisibleTo Include="SharpAstrology.SwissEphemerides.GoldenTests" />
+    <InternalsVisibleTo Include="SharpAstrology.SwissEphemerides.IntegrationTests" />
+    <InternalsVisibleTo Include="SharpAstrology.SwissEphemerides.Benchmarks" />
+  </ItemGroup>
+
+</Project>

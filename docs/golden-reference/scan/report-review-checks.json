@@ -1,0 +1,155 @@
+{
+  "checkedFilesSha256": {
+    "README.md": "99eba80135ac5054a0404d7a8906067c9ecbbe1f58cffdbe7ee2a73a054f87fa",
+    "golden-cases.json": "9ee911b519e92ee729f26d0fbdfd900732c3b277d8dbc5b4094c101fc608dd23"
+  },
+  "sevenMismatchCases": [
+    {
+      "id": "G1995-feb",
+      "P_native": "55.3",
+      "P_official": "55.4",
+      "D_shared": "34.6",
+      "nativeProfile": "3/6",
+      "officialProfile": "4/6",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "1995-02-22T01:08:00.170Z",
+      "bracketValid": true,
+      "nativeRootRaw": "1995-02-22T01:08:00.1700232Z"
+    },
+    {
+      "id": "G1995-jun",
+      "P_native": "15.2",
+      "P_official": "15.3",
+      "D_shared": "25.5",
+      "nativeProfile": "2/5",
+      "officialProfile": "3/5",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "1995-06-21T23:43:00.066Z",
+      "bracketValid": true,
+      "nativeRootRaw": "1995-06-21T23:43:00.0660429Z"
+    },
+    {
+      "id": "G2005-jul20",
+      "P_native": "56.2",
+      "P_official": "56.3",
+      "D_shared": "3.5",
+      "nativeProfile": "2/5",
+      "officialProfile": "3/5",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "2005-07-20T21:40:00.091Z",
+      "bracketValid": true,
+      "nativeRootRaw": "2005-07-20T21:40:00.0910249Z"
+    },
+    {
+      "id": "G2015-tight",
+      "P_native": "41.4",
+      "P_official": "41.5",
+      "D_shared": "44.1",
+      "nativeProfile": "4/1",
+      "officialProfile": "5/1",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "2015-01-26T01:20:00.271Z",
+      "bracketValid": true,
+      "nativeRootRaw": "2015-01-26T01:20:00.2710459Z"
+    },
+    {
+      "id": "G2015-feb",
+      "P_native": "13.2",
+      "P_official": "13.3",
+      "D_shared": "1.5",
+      "nativeProfile": "2/5",
+      "officialProfile": "3/5",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "2015-02-04T06:56:00.277Z",
+      "bracketValid": true,
+      "nativeRootRaw": "2015-02-04T06:56:00.2770056Z"
+    },
+    {
+      "id": "G2025-tight",
+      "P_native": "60.4",
+      "P_official": "60.5",
+      "D_shared": "28.1",
+      "nativeProfile": "4/1",
+      "officialProfile": "5/1",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "2025-01-19T22:57:00.256Z",
+      "bracketValid": true,
+      "nativeRootRaw": "2025-01-19T22:57:00.2560274Z"
+    },
+    {
+      "id": "G2025-mar",
+      "P_native": "36.3",
+      "P_official": "36.4",
+      "D_shared": "11.6",
+      "nativeProfile": "3/6",
+      "officialProfile": "4/6",
+      "diffs": [
+        "personality.sun",
+        "personality.earth"
+      ],
+      "rootMs": "2025-03-15T18:56:00.174Z",
+      "bracketValid": true,
+      "nativeRootRaw": "2025-03-15T18:56:00.1740089Z"
+    }
+  ],
+  "errors": [],
+  "recordCount": 5473,
+  "uniqueRecordedUtcCount": 5339,
+  "officialFixtureCount": 45,
+  "officialUniqueUtcCount": 40,
+  "officialRoleCounts": {
+    "control-or-repeat": 24,
+    "neighbor": 14,
+    "mismatch": 7
+  },
+  "profileMismatchIds": [],
+  "recordFileCounts": {
+    "sun-candidates.json": 90,
+    "design-sun-candidates.json": 150,
+    "personality-pure-line-candidates.json": 120,
+    "near-minute-candidates.json": 20,
+    "full-year-personality-near-half-second-candidates.json": 39,
+    "window-2015-01-26-01-20-00-minutes.jsonl": 121,
+    "window-2025-03-15-18-56-00-minutes.jsonl": 121,
+    "window-2025-01-19-22-57-00-seconds.jsonl": 601,
+    "window-2015-02-04-06-56-00-seconds.jsonl": 601,
+    "window-1985-11-25-06-36-00-minutes.jsonl": 121,
+    "window-1985-01-25-18-34-00-seconds.jsonl": 601,
+    "window-1995-04-11-02-30-00-seconds.jsonl": 601,
+    "window-1995-04-11-02-30-00-minutes.jsonl": 121,
+    "window-2025-01-19-22-57-00-minutes.jsonl": 121,
+    "window-2025-03-15-18-56-00-seconds.jsonl": 601,
+    "window-2015-01-26-01-20-00-seconds.jsonl": 601,
+    "window-1985-01-25-18-34-00-minutes.jsonl": 121,
+    "window-1985-11-25-06-36-00-seconds.jsonl": 601,
+    "window-2015-02-04-06-56-00-minutes.jsonl": 121
+  },
+  "additionalTableErrors": [
+    "G1995-feb Earth README",
+    "G1995-jun Earth README",
+    "G2005-jul20 Earth README",
+    "G2015-tight Earth README",
+    "G2015-feb Earth README",
+    "G2025-tight Earth README",
+    "G2025-mar Earth README"
+  ],
+  "officialSameUtcExpectedConflicts": []
+}
