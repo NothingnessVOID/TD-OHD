@@ -35,7 +35,7 @@
 - Knowledge：npm test 296 passed、0 failed、3 existing online skipped；localization、timeline、Knowledge 专项、engine contract、许可验证及 build:pages 通过。
 - 实际浏览器 bundle 无 Jovian provider、DE406、Python 或历史 native runtime，生产入口仍是 sharpProvider。
 - 浏览器对照采用已发布 Knowledge HEAD 源码的临时副本，并明确使用相同当前 Modern WASM 和年度缓存身份。这样比较既有 Knowledge 的 DOM/文本/几何；天文准确性另由上面的独立 main native 对照验证。
-- 12 组 Foundation/Variable 文本与几何对照、44 组 BodyGraph DOM/文本/几何对照、详情 timing 和 owner transitions、复制数据 E2E 通过。
+- 12 组 Foundation/Variable 文本与几何对照、24 组 BodyGraph DOM/文本/几何对照、详情 timing 和 owner transitions、复制数据 E2E 通过。
 - 首次测试服务未就绪、构建热更新影响模块状态，以及旧基线缓存身份造成一分钟 timing 差异，均保留记录；稳定服务与对齐缓存身份后重新运行，未放宽测试断言。
 
 最终机器结果见 validation.json、modern-regression.json 和 browser reports。构建/测试临时文件、浏览器会话和本机绝对路径没有加入报告。
