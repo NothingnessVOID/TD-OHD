@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "scope": "Arbitrary UTC instants outside official fixtures; exact seconds, offsets, IANA zones, London DST spring transition, New York repeated hour folds; location does not modify celestial longitude",
+  "passed": true,
+  "dstGapRejected": true,
+  "cases": [
+    {
+      "utc": "1994-07-12T04:56:37Z",
+      "passed": true,
+      "samples": [
+        {
+          "input": {
+            "birthUtc": "1994-07-12T04:56:37Z"
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "1994-07-12",
+            "time": "12:56:37",
+            "timezone": 8
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "1994-07-11",
+            "time": "23:56:37",
+            "timezone": -5
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "1994-07-12",
+            "time": "12:56:37",
+            "timeZone": "Asia/Shanghai",
+            "location": "Shanghai"
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "1994-07-12",
+            "time": "12:56:37",
+            "timeZone": "Asia/Singapore",
+            "location": "Singapore"
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "1994-07-12",
+            "time": "05:56:37",
+            "timeZone": "Europe/London",
+            "location": "London"
+          },
+          "resolvedUtc": "1994-07-12T04:56:37.000Z",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "utc": "2024-11-03T05:30:00Z",
+      "passed": true,
+      "samples": [
+        {
+          "input": {
+            "utc": "2024-11-03T05:30:00Z"
+          },
+          "resolvedUtc": "2024-11-03T05:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-11-03",
+            "time": "01:30:00",
+            "timeZone": "America/New_York",
+            "fold": 0
+          },
+          "resolvedUtc": "2024-11-03T05:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-11-03",
+            "time": "13:30:00",
+            "timezone": 8
+          },
+          "resolvedUtc": "2024-11-03T05:30:00.000Z",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "utc": "2024-11-03T06:30:00Z",
+      "passed": true,
+      "samples": [
+        {
+          "input": {
+            "utc": "2024-11-03T06:30:00Z"
+          },
+          "resolvedUtc": "2024-11-03T06:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-11-03",
+            "time": "01:30:00",
+            "timeZone": "America/New_York",
+            "fold": 1
+          },
+          "resolvedUtc": "2024-11-03T06:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-11-03",
+            "time": "01:30:00",
+            "timezone": -5
+          },
+          "resolvedUtc": "2024-11-03T06:30:00.000Z",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "utc": "2024-03-31T01:30:00Z",
+      "passed": true,
+      "samples": [
+        {
+          "input": {
+            "utc": "2024-03-31T01:30:00Z"
+          },
+          "resolvedUtc": "2024-03-31T01:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-03-31",
+            "time": "02:30:00",
+            "timeZone": "Europe/London"
+          },
+          "resolvedUtc": "2024-03-31T01:30:00.000Z",
+          "passed": true
+        },
+        {
+          "input": {
+            "date": "2024-03-31",
+            "time": "09:30:00",
+            "timezone": 8
+          },
+          "resolvedUtc": "2024-03-31T01:30:00.000Z",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

@@ -26,7 +26,9 @@
     "test:sharp": "node --test tests/sharp-transit-contract.test.js tests/no-*engine.test.js",
     "e2e:sharp": "node tests/sharp-transit-e2e.mjs",
     "generate:annual": "node scripts/generate-transit-events.mjs --all",
-    "verify:annual": "node scripts/verify-transit-events.mjs --all"
+    "verify:annual": "node scripts/verify-transit-events.mjs --all",
+    "research:birth-engine": "node scripts/birth-engine-prototype.mjs",
+    "test:jovian-compatible": "node scripts/jovian-compatible-validation.mjs"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "^0.7.2",
