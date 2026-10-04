@@ -1,0 +1,263 @@
+[
+  {
+    "branch": "audit/content-sources-phase-1",
+    "sha": "23a40328897d04c72bcf0377fda26d8fb7e78b93",
+    "ahead": 1,
+    "behind": 16,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "audit/licensing-v1",
+    "sha": "890330e77a5ea810b5ab553d2f8d072ffc5d4b1d",
+    "ahead": 1,
+    "behind": 7,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "audit/natal-golden-reference",
+    "sha": "f5e2a80cb85adcbf18b4d7b763429178881aa5bf",
+    "ahead": 1,
+    "behind": 12,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "docs/update-platform-sharp-engine",
+    "sha": "1424c8a7dbed8509142d912783451f4fd956bd49",
+    "ahead": 0,
+    "behind": 22,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/appearance-skin-foundation",
+    "sha": "b81d2e1a7f3fb19b5ac19b90d6bb3c70a10f7bea",
+    "ahead": 0,
+    "behind": 29,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/chart-contract-boundary-v2",
+    "sha": "c3ad5b08284d5a4b081f51cd571d82cdb1225eec",
+    "ahead": 2,
+    "behind": 16,
+    "classification": "DIVERGED",
+    "recommendedAction": "保留，先审查独立提交，禁止自动合并/删除",
+    "reason": "存在 main 尚未吸收的独立提交"
+  },
+  {
+    "branch": "feature/copy-chart-data",
+    "sha": "75267b1b7dabf77496639bc3dccdccd6abe8b2f0",
+    "ahead": 0,
+    "behind": 17,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/knowledge-access-v1",
+    "sha": "df06686baa855b01a8bbfb3d77cf85b34eaf4717",
+    "ahead": 8,
+    "behind": 0,
+    "classification": "ACTIVE",
+    "recommendedAction": "保留，继续在此基线开发",
+    "reason": "唯一继续使用的 Knowledge 开发基线，已同步稳定 main"
+  },
+  {
+    "branch": "feature/knowledge-content-v1",
+    "sha": "ae11ffe27b329dceee1cb679e0b381283fc3e400",
+    "ahead": 4,
+    "behind": 16,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "已被 knowledge-access 包含的阶段历史，本轮严格保留"
+  },
+  {
+    "branch": "feature/knowledge-layer-v1",
+    "sha": "4c80a69f28dfe6794e884f53699714cbc52ca6e9",
+    "ahead": 3,
+    "behind": 16,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "已被 knowledge-access 包含的阶段历史，本轮严格保留"
+  },
+  {
+    "branch": "feature/knowledge-workspace",
+    "sha": "b7e1a7ced2f4d2b469e7d4d45cdf191d6cccb9ad",
+    "ahead": 16,
+    "behind": 104,
+    "classification": "DIVERGED",
+    "recommendedAction": "保留，先审查独立提交，禁止自动合并/删除",
+    "reason": "旧 Knowledge 分叉线，不作为继续开发基线"
+  },
+  {
+    "branch": "feature/reference-timeline-v1",
+    "sha": "13c70f2ce4dab5199a2438bfc08475f1cbd23549",
+    "ahead": 0,
+    "behind": 43,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/sharp-engine-complete",
+    "sha": "8a32f12d5f4b14af1745b9071e14802ba0b3a9da",
+    "ahead": 0,
+    "behind": 24,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/swiss-engine-migration-prep",
+    "sha": "e85cc0918222b47144ee0abd5284013accdb1dc9",
+    "ahead": 0,
+    "behind": 41,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/timeline-localization",
+    "sha": "b55e480c9b46b41e6b3b194d0f4a0429d6b4e523",
+    "ahead": 0,
+    "behind": 112,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/timeline-mobile-workspace",
+    "sha": "d6b12e68b1606936fa759ad4d78f49038a0bcd70",
+    "ahead": 2,
+    "behind": 107,
+    "classification": "DIVERGED",
+    "recommendedAction": "保留，先审查独立提交，禁止自动合并/删除",
+    "reason": "存在 main 尚未吸收的独立提交"
+  },
+  {
+    "branch": "feature/transit-chart-modes",
+    "sha": "021a4cc8ae33b446868f72c5acb9f67a5d3bb777",
+    "ahead": 0,
+    "behind": 130,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/transit-time-timezone",
+    "sha": "feff501966b34adc2b26434a5ca4065f6371a9d2",
+    "ahead": 0,
+    "behind": 128,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "feature/transit-timeline",
+    "sha": "db54f15618a700351bdcb3ea5e8941d8fc0fac1b",
+    "ahead": 2,
+    "behind": 119,
+    "classification": "DIVERGED",
+    "recommendedAction": "保留，先审查独立提交，禁止自动合并/删除",
+    "reason": "存在 main 尚未吸收的独立提交"
+  },
+  {
+    "branch": "fix/chart-ui-polish",
+    "sha": "3695bdcb6cec7ebb84b50e1bf3dd23e823a010fd",
+    "ahead": 0,
+    "behind": 27,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "fix/gene-keys-sequence-line-breaks",
+    "sha": "8557b064ca6e46de3291e170323290df9b33864a",
+    "ahead": 0,
+    "behind": 20,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "fix/shared-bodygraph",
+    "sha": "eef0e32ad2502a236e28e36f13a755adddc1ce21",
+    "ahead": 0,
+    "behind": 132,
+    "classification": "MERGED-CANDIDATE",
+    "recommendedAction": "仅报告，等待单独授权",
+    "reason": "全部提交可从 main 到达，但不在本轮删除名单"
+  },
+  {
+    "branch": "main",
+    "sha": "2bc308b7a9037a10bae92fff6c9ff536a276b8ae",
+    "ahead": 0,
+    "behind": 0,
+    "classification": "ACTIVE",
+    "recommendedAction": "保留，继续在此基线开发",
+    "reason": "正式主线"
+  },
+  {
+    "branch": "pages",
+    "sha": "13c70f2ce4dab5199a2438bfc08475f1cbd23549",
+    "ahead": 0,
+    "behind": 43,
+    "classification": "SPECIAL",
+    "recommendedAction": "保持，不随普通功能分支清理",
+    "reason": "独立发布分支"
+  },
+  {
+    "branch": "personal/custom",
+    "sha": "45ecec65ff4282afdc47e328dab6ca19c70036dd",
+    "ahead": 0,
+    "behind": 125,
+    "classification": "SPECIAL",
+    "recommendedAction": "保持，不随普通功能分支清理",
+    "reason": "个人定制分支，独立用途"
+  },
+  {
+    "branch": "prep/sharp-swiss-upstream-v1",
+    "sha": "91a59ace2b80af41d5f99141891fe800a5989b62",
+    "ahead": 1,
+    "behind": 8,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "research/jovian-design-discriminator-suite-v1",
+    "sha": "78e3b9e59c9c1cbbde80a51b1e8320b6952e8be3",
+    "ahead": 6,
+    "behind": 12,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "research/jovian-discriminator-suite-v1",
+    "sha": "d3693d4942a23e043fa75efd84287f7393656f78",
+    "ahead": 4,
+    "behind": 12,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  },
+  {
+    "branch": "research/ra-era-astronomy-stack",
+    "sha": "70ec9f3c15fb98a55cb57baa2ed6adb2de753678",
+    "ahead": 2,
+    "behind": 12,
+    "classification": "KEEP-HISTORY",
+    "recommendedAction": "保留历史与证据",
+    "reason": "研究、审计或上游准备证据"
+  }
+]

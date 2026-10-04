@@ -1,0 +1,65 @@
+{
+  "main": "2bc308b7a9037a10bae92fff6c9ff536a276b8ae",
+  "deleted": [
+    {
+      "branch": "integration/engine-license-v1",
+      "sha": "64a522bbd184893319e916d7e987562fba442f90",
+      "ahead": 0,
+      "behind": 1,
+      "reachableFromMain": true
+    },
+    {
+      "branch": "chore/release-licensing-cleanup-v1",
+      "sha": "198b2245a2560ff5228120219d6da7eae5dd1a76",
+      "ahead": 0,
+      "behind": 6,
+      "reachableFromMain": true
+    },
+    {
+      "branch": "refactor/engine-architecture-v1",
+      "sha": "633d7f0853e07dfd1522b389e890184a4d622c63",
+      "ahead": 0,
+      "behind": 6,
+      "reachableFromMain": true
+    },
+    {
+      "branch": "feature/jovian-compatible-engine-v1",
+      "sha": "1add60c36b469e0d5dc84bd7ca38b0984a446363",
+      "ahead": 0,
+      "behind": 7,
+      "reachableFromMain": true
+    },
+    {
+      "branch": "fix/sharp-swiss-parity-v1",
+      "sha": "fb5743b87346e8d16810b7c4e15a3e5d01a0f3a9",
+      "ahead": 0,
+      "behind": 10,
+      "reachableFromMain": true
+    },
+    {
+      "branch": "fix/true-node-swiss-parity-v1",
+      "sha": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+      "ahead": 0,
+      "behind": 8,
+      "reachableFromMain": true
+    }
+  ],
+  "allTargetWorktreesClean": true,
+  "dirtyWorktreesDeleted": 0,
+  "remainingRemoteBranchesBeforeAuditPush": 29,
+  "remainingRemoteBranchesAfterAuditPush": 30,
+  "upstreamPr": {
+    "number": 3,
+    "state": "OPEN",
+    "head": "052835c94c43650b2a9985110cbb9f404d346600",
+    "base": "342a57997c1b987e7949acc98897c8b73d05939a"
+  },
+  "oldRemainingRefsUnchanged": true,
+  "calculationChanges": 0,
+  "knowledgeContentChanges": 0,
+  "deployRequested": false,
+  "installation8787Modified": false,
+  "netlifyPublishedDeploy": "6ac0eaf1429158875f2ec893",
+  "netlifyState": "ready",
+  "netlifyGitBuildLinked": false
+}
