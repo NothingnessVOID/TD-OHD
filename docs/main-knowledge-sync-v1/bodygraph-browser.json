@@ -1,0 +1,174 @@
+{
+  "bodygraphComparisons": [
+    {
+      "width": 1224,
+      "scenario": "birth-gate",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "birth-center",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "birth-planet",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "gate-lens-hd",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "gate-lens-iching",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "gate-lens-gk",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "gate-lens-meridian",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "transit-gate",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "transit-channel",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "transit-center",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "timeline-gate-timing",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 1224,
+      "scenario": "timeline-full-range-fixture",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "birth-gate",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "birth-center",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "birth-planet",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "gate-lens-hd",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "gate-lens-iching",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "gate-lens-gk",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "gate-lens-meridian",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "transit-gate",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "transit-channel",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "transit-center",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "timeline-gate-timing",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    },
+    {
+      "width": 390,
+      "scenario": "timeline-full-range-fixture",
+      "domEqual": true,
+      "textEqual": true,
+      "geometryTolerance": 1
+    }
+  ],
+  "ownerTransitions": true,
+  "timelineTimingSemantics": true
+}
