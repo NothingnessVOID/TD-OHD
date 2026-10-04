@@ -1,0 +1,3801 @@
+{
+  "schemaVersion": 1,
+  "scope": "Headline: Jovian observations only, deduplicated by absolute UTC. perPlatformRegression independently compares every saved official platform; agreement does not establish independent backends",
+  "comparisonPolicy": {
+    "type": "Saved myBodyGraph Chinese display labels explicitly translated to canonical HD type, original observed and predicted labels retained",
+    "activations": "Exact Gate.Line; no official longitude or color/tone/base observations claimed",
+    "incarnationCross": "Angle + name + ordered four gates; Sharp variant suffix omitted because Jovian does not display it; Endeavour/Endeavor and optional article The normalized",
+    "authority": "Lunar and Lunar Cycle denote same authority",
+    "strategy": "Strategy family comparison. Projector Recognition and Invitation / Invitation mapped together. MG Wait to Respond / Wait to Respond then Inform mapped to response family. Additional Inform text remains a literal display difference and is not claimed to be exact Jovian wording",
+    "other": "Case/punctuation-insensitive labels"
+  },
+  "uniqueUtcCount": 97,
+  "stats": {
+    "personality": {
+      "matched": 1261,
+      "total": 1261
+    },
+    "design": {
+      "matched": 1261,
+      "total": 1261
+    },
+    "all26": {
+      "matched": 97,
+      "total": 97
+    },
+    "profile": {
+      "matched": 97,
+      "total": 97
+    },
+    "type": {
+      "matched": 68,
+      "total": 68
+    },
+    "strategy": {
+      "matched": 40,
+      "total": 40
+    },
+    "authority": {
+      "matched": 40,
+      "total": 40
+    },
+    "definition": {
+      "matched": 40,
+      "total": 40
+    },
+    "incarnationCross": {
+      "matched": 68,
+      "total": 68
+    },
+    "channels": {
+      "matched": 0,
+      "total": 0
+    },
+    "centers": {
+      "matched": 0,
+      "total": 0
+    }
+  },
+  "literalLabelStats": {
+    "profile": {
+      "matched": 97,
+      "total": 97
+    },
+    "type": {
+      "matched": 68,
+      "total": 68
+    },
+    "strategy": {
+      "matched": 25,
+      "total": 40
+    },
+    "authority": {
+      "matched": 39,
+      "total": 40
+    },
+    "definition": {
+      "matched": 40,
+      "total": 40
+    },
+    "incarnationCross": {
+      "matched": 23,
+      "total": 68
+    },
+    "channels": {
+      "matched": 0,
+      "total": 0
+    },
+    "centers": {
+      "matched": 0,
+      "total": 0
+    }
+  },
+  "literalLabelsAllMatched": false,
+  "unobservedFields": [
+    "channels",
+    "centers"
+  ],
+  "passed": true,
+  "perPlatformRegression": {
+    "Jovian": {
+      "uniqueUtcCount": 97,
+      "stats": {
+        "personality": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "design": {
+          "matched": 1261,
+          "total": 1261
+        },
+        "all26": {
+          "matched": 97,
+          "total": 97
+        },
+        "profile": {
+          "matched": 97,
+          "total": 97
+        },
+        "type": {
+          "matched": 68,
+          "total": 68
+        },
+        "strategy": {
+          "matched": 40,
+          "total": 40
+        },
+        "authority": {
+          "matched": 40,
+          "total": 40
+        },
+        "definition": {
+          "matched": 40,
+          "total": 40
+        },
+        "incarnationCross": {
+          "matched": 68,
+          "total": 68
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "literalLabelStats": {
+        "profile": {
+          "matched": 97,
+          "total": 97
+        },
+        "type": {
+          "matched": 68,
+          "total": 68
+        },
+        "strategy": {
+          "matched": 25,
+          "total": 40
+        },
+        "authority": {
+          "matched": 39,
+          "total": 40
+        },
+        "definition": {
+          "matched": 40,
+          "total": 40
+        },
+        "incarnationCross": {
+          "matched": 23,
+          "total": 68
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "literalLabelsAllMatched": false,
+      "unobservedFields": [
+        "channels",
+        "centers"
+      ],
+      "passed": true,
+      "cases": [
+        {
+          "birthUtc": "1980-01-03T12:56:00Z",
+          "ids": [
+            "JDS-08"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1980-05-01T13:10:00Z",
+          "ids": [
+            "JDS-13"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1980-10-01T19:30:00Z",
+          "ids": [
+            "JDD-09"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Upheaval 2 (18/17 | 39/38)",
+              "expected": [
+                "Left Angle Cross of Upheaval (18/17 | 39/38)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1980-10-05T10:56:00Z",
+          "ids": [
+            "JDD-25"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Tension 3 (48/21 | 39/38)",
+              "expected": [
+                "Right Angle Cross of Tension (48/21 | 39/38)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1980-10-06T09:32:00Z",
+          "ids": [
+            "JDD-10"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+              "expected": [
+                "Left Angle Cross of Endeavor (48/21 | 53/54)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1980-10-06T14:21:00Z",
+          "ids": [
+            "JDD-26"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+              "expected": [
+                "Left Angle Cross of Endeavor (48/21 | 53/54)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1980-11-07T15:52:00Z",
+          "ids": [
+            "JDS-14"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1981-01-09T20:26:00Z",
+          "ids": [
+            "JDD-18"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Cycles 2 (54/53 | 32/42)",
+              "expected": [
+                "Left Angle Cross of Cycles (54/53 | 32/42)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1981-02-02T08:05:00Z",
+          "ids": [
+            "JDD-19"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1981-07-02T12:35:00Z",
+          "ids": [
+            "JDS-24"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1983-03-10T06:40:00Z",
+          "ids": [
+            "JDS-22"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1983-03-19T10:55:00Z",
+          "ids": [
+            "JDS-15"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1983-06-18T01:23:00Z",
+          "ids": [
+            "JDD-20"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1984-08-20T06:46:00Z",
+          "ids": [
+            "JDD-27"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Contagion 3 (29/30 | 8/14)",
+              "expected": [
+                "Right Angle Cross of Contagion (29/30 | 8/14)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-02T15:20:00Z",
+          "ids": [
+            "D1985-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait for the Invitation",
+              "expected": [
+                "Wait for Recognition and the Invitation"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Tension 4 (38/39 | 48/21)",
+              "expected": [
+                "Right Angle Cross of Tension (38/39 | 48/21)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-02T15:21:00Z",
+          "ids": [
+            "D1985-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait for the Invitation",
+              "expected": [
+                "Wait for Recognition and the Invitation"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Tension 4 (38/39 | 48/21)",
+              "expected": [
+                "Right Angle Cross of Tension (38/39 | 48/21)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-05T12:30:00Z",
+          "ids": [
+            "G1985-1230"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Individualism 2 (38/39 | 57/51)",
+              "expected": [
+                "Left Angle Cross of Individualism (38/39 | 57/51)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-05T12:31:00Z",
+          "ids": [
+            "G1985-1231"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Individualism 2 (38/39 | 57/51)",
+              "expected": [
+                "Left Angle Cross of Individualism (38/39 | 57/51)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-05T12:32:00Z",
+          "ids": [
+            "G1985-1232"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait for the Invitation",
+              "expected": [
+                "Wait for Recognition and the Invitation"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Penetration 4 (54/53 | 57/51)",
+              "expected": [
+                "Right Angle Cross of Penetration (54/53 | 57/51)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-01-05T12:33:00Z",
+          "ids": [
+            "G1985-1233-raw"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1985-01-07T01:53:00Z",
+          "ids": [
+            "JDS-09"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "ids": [
+            "G1985-repeatA",
+            "G1985-repeatB",
+            "G1985-tight"
+          ],
+          "officialObservationCount": 14,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait for the Invitation",
+              "expected": [
+                "Wait for Recognition and the Invitation"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-06-10T20:11:00Z",
+          "ids": [
+            "JDD-21"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Rulership 2 (45/26 | 22/47)",
+              "expected": [
+                "Right Angle Cross of Rulership (45/26 | 22/47)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1985-11-25T06:36:00Z",
+          "ids": [
+            "G1985-nov"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Sleeping Phoenix 4 (34/20 | 59/55)",
+              "expected": [
+                "Right Angle Cross of The Sleeping Phoenix (34/20 | 59/55)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1986-01-03T01:32:00Z",
+          "ids": [
+            "JDS-01"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-01-04T23:53:00Z",
+          "ids": [
+            "JDS-02"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-01-05T22:15:00Z",
+          "ids": [
+            "JDS-03"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-03-31T09:25:00Z",
+          "ids": [
+            "JDD-11"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-04-02T09:17:00Z",
+          "ids": [
+            "JDD-12"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1987-07-31T05:12:00Z",
+          "ids": [
+            "JDD-22"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1988-03-05T23:22:00Z",
+          "ids": [
+            "JDD-28"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1989-10-19T19:05:00Z",
+          "ids": [
+            "JDS-16"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1989-12-16T06:47:00Z",
+          "ids": [
+            "JDS-17"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1992-06-23T22:19:00Z",
+          "ids": [
+            "JDS-18"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1992-08-02T09:35:00Z",
+          "ids": [
+            "JDD-23"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Four Ways 2 (33/19 | 24/44)",
+              "expected": [
+                "Right Angle Cross of The Four Ways (33/19 | 24/44)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1993-05-25T11:52:00Z",
+          "ids": [
+            "JDS-19"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1993-07-01T05:03:00Z",
+          "ids": [
+            "JDS-25"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1994-10-07T09:31:00Z",
+          "ids": [
+            "JDD-14"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+              "expected": [
+                "Left Angle Cross of Endeavor (48/21 | 53/54)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-01-26T03:23:00Z",
+          "ids": [
+            "JDD-24"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1995-01-26T23:51:00Z",
+          "ids": [
+            "D1995-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+              "expected": [
+                "Left Angle Cross of The Alpha (41/31 | 44/24)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-01-28T23:04:00Z",
+          "ids": [
+            "G1995-tight"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Four Ways 4 (19/33 | 44/24)",
+              "expected": [
+                "Right Angle Cross of The Four Ways (19/33 | 44/24)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-02-22T01:07:00Z",
+          "ids": [
+            "G1995-feb-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-02-22T01:08:00Z",
+          "ids": [
+            "G1995-feb"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-02-22T01:09:00Z",
+          "ids": [
+            "G1995-feb-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-04-11T02:30:00Z",
+          "ids": [
+            "G1995-apr"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1995-06-21T23:42:00Z",
+          "ids": [
+            "G1995-jun-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+              "expected": [
+                "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-06-21T23:43:00Z",
+          "ids": [
+            "G1995-jun"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+              "expected": [
+                "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-06-21T23:44:00Z",
+          "ids": [
+            "G1995-jun-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            },
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+              "expected": [
+                "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1995-12-15T02:27:00Z",
+          "ids": [
+            "G1995-dec"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Confrontation 2 (26/45 | 6/36)",
+              "expected": [
+                "Left Angle Cross of Confrontation (26/45 | 6/36)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2003-07-13T22:22:00Z",
+          "ids": [
+            "JDS-10"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2003-10-12T20:48:00Z",
+          "ids": [
+            "JDD-15"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+              "expected": [
+                "Left Angle Cross of The Clarion (57/51 | 62/61)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2004-01-07T16:33:00Z",
+          "ids": [
+            "JDS-11"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2004-04-04T03:37:00Z",
+          "ids": [
+            "JDD-16"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Endeavour (21/48 | 54/53)",
+              "expected": [
+                "Left Angle Cross of Endeavor (21/48 | 54/53)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2004-10-12T22:58:00Z",
+          "ids": [
+            "JDD-17"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+              "expected": [
+                "Left Angle Cross of The Clarion (57/51 | 62/61)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2004-11-02T14:00:00Z",
+          "ids": [
+            "JDS-20"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2005-01-12T14:37:00Z",
+          "ids": [
+            "D2005-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Maya 4 (61/62 | 32/42)",
+              "expected": [
+                "Right Angle Cross of Maya (61/62 | 32/42)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-01-16T09:54:00Z",
+          "ids": [
+            "G2005-tight"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+              "expected": [
+                "Right Angle Cross of Laws (60/56 | 50/3)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-01-19T04:11:00Z",
+          "ids": [
+            "G2005-0411"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+              "expected": [
+                "Right Angle Cross of Laws (60/56 | 50/3)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-01-19T04:12:00Z",
+          "ids": [
+            "G2005-0412"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+              "expected": [
+                "Right Angle Cross of Laws (60/56 | 50/3)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-05-03T14:33:00Z",
+          "ids": [
+            "G2005-may"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "authority",
+              "actual": "Lunar",
+              "expected": [
+                "Lunar Cycle"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-07-11T01:47:00Z",
+          "ids": [
+            "G2005-jul11"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2005-07-20T21:39:00Z",
+          "ids": [
+            "G2005-jul20-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+              "expected": [
+                "Right Angle Cross of Laws (56/60 | 3/50)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "ids": [
+            "G2005-jul20"
+          ],
+          "officialObservationCount": 6,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+              "expected": [
+                "Right Angle Cross of Laws (56/60 | 3/50)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2005-07-20T21:41:00Z",
+          "ids": [
+            "G2005-jul20-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+              "expected": [
+                "Right Angle Cross of Laws (56/60 | 3/50)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2013-07-13T09:06:00Z",
+          "ids": [
+            "JDS-04"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2015-01-25T22:23:00Z",
+          "ids": [
+            "D2015-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2015-01-26T01:19:00Z",
+          "ids": [
+            "G2015-tight-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "ids": [
+            "G2015-final-proof",
+            "G2015-repeatA",
+            "G2015-repeatB",
+            "G2015-tight"
+          ],
+          "officialObservationCount": 18,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+              "expected": [
+                "Left Angle Cross of The Alpha (41/31 | 44/24)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2015-01-26T01:21:00Z",
+          "ids": [
+            "G2015-tight-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+              "expected": [
+                "Left Angle Cross of The Alpha (41/31 | 44/24)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2015-02-04T06:55:00Z",
+          "ids": [
+            "G2015-feb-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "ids": [
+            "G2015-feb"
+          ],
+          "officialObservationCount": 6,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2015-02-04T06:57:00Z",
+          "ids": [
+            "G2015-feb-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "strategy",
+              "actual": "Wait to Respond, then Inform",
+              "expected": [
+                "Wait to Respond"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2016-10-06T13:26:00Z",
+          "ids": [
+            "JDD-03"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+              "expected": [
+                "Left Angle Cross of Endeavor (48/21 | 53/54)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2017-04-10T08:41:00Z",
+          "ids": [
+            "JDS-21"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2017-04-11T00:55:00Z",
+          "ids": [
+            "JDD-04"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2017-10-02T21:59:00Z",
+          "ids": [
+            "JDD-05"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Tension 3 (48/21 | 39/38)",
+              "expected": [
+                "Right Angle Cross of Tension (48/21 | 39/38)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2017-10-10T23:44:00Z",
+          "ids": [
+            "JDD-06"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Penetration 3 (57/51 | 53/54)",
+              "expected": [
+                "Right Angle Cross of Penetration (57/51 | 53/54)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2018-01-04T00:58:00Z",
+          "ids": [
+            "JDS-26"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2018-07-12T17:42:00Z",
+          "ids": [
+            "JDS-27"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2018-10-02T15:17:00Z",
+          "ids": [
+            "JDD-01"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Upheaval 2 (18/17 | 39/38)",
+              "expected": [
+                "Left Angle Cross of Upheaval (18/17 | 39/38)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2019-01-13T20:44:00Z",
+          "ids": [
+            "JDS-28"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2019-01-14T08:06:00Z",
+          "ids": [
+            "JDS-05"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2019-07-03T15:11:00Z",
+          "ids": [
+            "JDS-06"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2020-10-11T15:00:00Z",
+          "ids": [
+            "JDD-02"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2021-01-02T05:30:00Z",
+          "ids": [
+            "JDS-12"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2022-04-06T14:48:00Z",
+          "ids": [
+            "JDD-07"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2023-07-04T12:50:00Z",
+          "ids": [
+            "JDS-23"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2025-01-19T22:56:00Z",
+          "ids": [
+            "G2025-tight-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "ids": [
+            "G2025-tight"
+          ],
+          "officialObservationCount": 6,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Distraction 2 (60/56 | 28/27)",
+              "expected": [
+                "Left Angle Cross of Distraction (60/56 | 28/27)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-01-19T22:58:00Z",
+          "ids": [
+            "G2025-tight-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of Distraction 2 (60/56 | 28/27)",
+              "expected": [
+                "Left Angle Cross of Distraction (60/56 | 28/27)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-01-27T04:57:00Z",
+          "ids": [
+            "D2025-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+              "expected": [
+                "Left Angle Cross of The Alpha (41/31 | 44/24)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-03-08T23:41:00Z",
+          "ids": [
+            "JDS-07"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2025-03-15T18:55:00Z",
+          "ids": [
+            "G2025-mar-before"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+              "expected": [
+                "Right Angle Cross of Eden (36/6 | 11/12)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-03-15T18:56:00Z",
+          "ids": [
+            "G2025-mar"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+              "expected": [
+                "Right Angle Cross of Eden (36/6 | 11/12)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-03-15T18:57:00Z",
+          "ids": [
+            "G2025-mar-after"
+          ],
+          "officialObservationCount": 4,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+              "expected": [
+                "Right Angle Cross of Eden (36/6 | 11/12)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-10-12T12:21:00Z",
+          "ids": [
+            "JDD-08"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+              "expected": [
+                "Left Angle Cross of The Clarion (57/51 | 62/61)"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-12-09T18:15:00Z",
+          "ids": [
+            "JDD-13"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "incarnationCross",
+              "actual": "Right Angle Cross of Rulership 4 (26/45 | 47/22)",
+              "expected": [
+                "Right Angle Cross of Rulership (26/45 | 47/22)"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "myBodyGraph": {
+      "uniqueUtcCount": 33,
+      "stats": {
+        "personality": {
+          "matched": 429,
+          "total": 429
+        },
+        "design": {
+          "matched": 429,
+          "total": 429
+        },
+        "all26": {
+          "matched": 33,
+          "total": 33
+        },
+        "profile": {
+          "matched": 33,
+          "total": 33
+        },
+        "type": {
+          "matched": 5,
+          "total": 5
+        },
+        "strategy": {
+          "matched": 0,
+          "total": 0
+        },
+        "authority": {
+          "matched": 0,
+          "total": 0
+        },
+        "definition": {
+          "matched": 0,
+          "total": 0
+        },
+        "incarnationCross": {
+          "matched": 0,
+          "total": 0
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "literalLabelStats": {
+        "profile": {
+          "matched": 33,
+          "total": 33
+        },
+        "type": {
+          "matched": 0,
+          "total": 5
+        },
+        "strategy": {
+          "matched": 0,
+          "total": 0
+        },
+        "authority": {
+          "matched": 0,
+          "total": 0
+        },
+        "definition": {
+          "matched": 0,
+          "total": 0
+        },
+        "incarnationCross": {
+          "matched": 0,
+          "total": 0
+        },
+        "channels": {
+          "matched": 0,
+          "total": 0
+        },
+        "centers": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "literalLabelsAllMatched": false,
+      "unobservedFields": [
+        "strategy",
+        "authority",
+        "definition",
+        "incarnationCross",
+        "channels",
+        "centers"
+      ],
+      "passed": true,
+      "cases": [
+        {
+          "birthUtc": "1980-01-03T12:56:00Z",
+          "ids": [
+            "JDS-08"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1980-05-01T13:10:00Z",
+          "ids": [
+            "JDS-13"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1980-11-07T15:52:00Z",
+          "ids": [
+            "JDS-14"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1981-07-02T12:35:00Z",
+          "ids": [
+            "JDS-24"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1983-03-10T06:40:00Z",
+          "ids": [
+            "JDS-22"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1983-03-19T10:55:00Z",
+          "ids": [
+            "JDS-15"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1985-01-07T01:53:00Z",
+          "ids": [
+            "JDS-09"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1985-01-25T18:34:00Z",
+          "ids": [
+            "G1985-repeatA",
+            "G1985-repeatB",
+            "G1985-tight"
+          ],
+          "officialObservationCount": 3,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "type",
+              "actual": "Projector",
+              "expected": [
+                "投影仪"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "1986-01-03T01:32:00Z",
+          "ids": [
+            "JDS-01"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-01-04T23:53:00Z",
+          "ids": [
+            "JDS-02"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1986-01-05T22:15:00Z",
+          "ids": [
+            "JDS-03"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1989-10-19T19:05:00Z",
+          "ids": [
+            "JDS-16"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1989-12-16T06:47:00Z",
+          "ids": [
+            "JDS-17"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1992-06-23T22:19:00Z",
+          "ids": [
+            "JDS-18"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1993-05-25T11:52:00Z",
+          "ids": [
+            "JDS-19"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "1993-07-01T05:03:00Z",
+          "ids": [
+            "JDS-25"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2003-07-13T22:22:00Z",
+          "ids": [
+            "JDS-10"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2004-01-07T16:33:00Z",
+          "ids": [
+            "JDS-11"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2004-11-02T14:00:00Z",
+          "ids": [
+            "JDS-20"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2005-07-20T21:40:00Z",
+          "ids": [
+            "G2005-jul20"
+          ],
+          "officialObservationCount": 3,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "type",
+              "actual": "Generator",
+              "expected": [
+                "发电机"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2013-07-13T09:06:00Z",
+          "ids": [
+            "JDS-04"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2015-01-26T01:20:00Z",
+          "ids": [
+            "G2015-final-proof",
+            "G2015-repeatA",
+            "G2015-repeatB",
+            "G2015-tight"
+          ],
+          "officialObservationCount": 3,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "type",
+              "actual": "Generator",
+              "expected": [
+                "发电机"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2015-02-04T06:56:00Z",
+          "ids": [
+            "G2015-feb"
+          ],
+          "officialObservationCount": 3,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "type",
+              "actual": "Manifesting Generator",
+              "expected": [
+                "显化生成器"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2017-04-10T08:41:00Z",
+          "ids": [
+            "JDS-21"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2018-01-04T00:58:00Z",
+          "ids": [
+            "JDS-26"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2018-07-12T17:42:00Z",
+          "ids": [
+            "JDS-27"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2019-01-13T20:44:00Z",
+          "ids": [
+            "JDS-28"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2019-01-14T08:06:00Z",
+          "ids": [
+            "JDS-05"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2019-07-03T15:11:00Z",
+          "ids": [
+            "JDS-06"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2021-01-02T05:30:00Z",
+          "ids": [
+            "JDS-12"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2023-07-04T12:50:00Z",
+          "ids": [
+            "JDS-23"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        },
+        {
+          "birthUtc": "2025-01-19T22:57:00Z",
+          "ids": [
+            "G2025-tight"
+          ],
+          "officialObservationCount": 3,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": [
+            {
+              "field": "type",
+              "actual": "Manifestor",
+              "expected": [
+                "显化者"
+              ]
+            }
+          ]
+        },
+        {
+          "birthUtc": "2025-03-08T23:41:00Z",
+          "ids": [
+            "JDS-07"
+          ],
+          "officialObservationCount": 1,
+          "activationFieldsCompared": 26,
+          "passed": true,
+          "mismatches": [],
+          "labelDifferences": []
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "birthUtc": "1980-01-03T12:56:00Z",
+      "ids": [
+        "JDS-08"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1980-05-01T13:10:00Z",
+      "ids": [
+        "JDS-13"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1980-10-01T19:30:00Z",
+      "ids": [
+        "JDD-09"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Upheaval 2 (18/17 | 39/38)",
+          "expected": [
+            "Left Angle Cross of Upheaval (18/17 | 39/38)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1980-10-05T10:56:00Z",
+      "ids": [
+        "JDD-25"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Tension 3 (48/21 | 39/38)",
+          "expected": [
+            "Right Angle Cross of Tension (48/21 | 39/38)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1980-10-06T09:32:00Z",
+      "ids": [
+        "JDD-10"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+          "expected": [
+            "Left Angle Cross of Endeavor (48/21 | 53/54)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1980-10-06T14:21:00Z",
+      "ids": [
+        "JDD-26"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+          "expected": [
+            "Left Angle Cross of Endeavor (48/21 | 53/54)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1980-11-07T15:52:00Z",
+      "ids": [
+        "JDS-14"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1981-01-09T20:26:00Z",
+      "ids": [
+        "JDD-18"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Cycles 2 (54/53 | 32/42)",
+          "expected": [
+            "Left Angle Cross of Cycles (54/53 | 32/42)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1981-02-02T08:05:00Z",
+      "ids": [
+        "JDD-19"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1981-07-02T12:35:00Z",
+      "ids": [
+        "JDS-24"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1983-03-10T06:40:00Z",
+      "ids": [
+        "JDS-22"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1983-03-19T10:55:00Z",
+      "ids": [
+        "JDS-15"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1983-06-18T01:23:00Z",
+      "ids": [
+        "JDD-20"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1984-08-20T06:46:00Z",
+      "ids": [
+        "JDD-27"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Contagion 3 (29/30 | 8/14)",
+          "expected": [
+            "Right Angle Cross of Contagion (29/30 | 8/14)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-02T15:20:00Z",
+      "ids": [
+        "D1985-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait for the Invitation",
+          "expected": [
+            "Wait for Recognition and the Invitation"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Tension 4 (38/39 | 48/21)",
+          "expected": [
+            "Right Angle Cross of Tension (38/39 | 48/21)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-02T15:21:00Z",
+      "ids": [
+        "D1985-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait for the Invitation",
+          "expected": [
+            "Wait for Recognition and the Invitation"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Tension 4 (38/39 | 48/21)",
+          "expected": [
+            "Right Angle Cross of Tension (38/39 | 48/21)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-05T12:30:00Z",
+      "ids": [
+        "G1985-1230"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Individualism 2 (38/39 | 57/51)",
+          "expected": [
+            "Left Angle Cross of Individualism (38/39 | 57/51)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-05T12:31:00Z",
+      "ids": [
+        "G1985-1231"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Individualism 2 (38/39 | 57/51)",
+          "expected": [
+            "Left Angle Cross of Individualism (38/39 | 57/51)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-05T12:32:00Z",
+      "ids": [
+        "G1985-1232"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait for the Invitation",
+          "expected": [
+            "Wait for Recognition and the Invitation"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Penetration 4 (54/53 | 57/51)",
+          "expected": [
+            "Right Angle Cross of Penetration (54/53 | 57/51)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-01-05T12:33:00Z",
+      "ids": [
+        "G1985-1233-raw"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1985-01-07T01:53:00Z",
+      "ids": [
+        "JDS-09"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1985-01-25T18:34:00Z",
+      "ids": [
+        "G1985-repeatA",
+        "G1985-repeatB",
+        "G1985-tight"
+      ],
+      "officialObservationCount": 14,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait for the Invitation",
+          "expected": [
+            "Wait for Recognition and the Invitation"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-06-10T20:11:00Z",
+      "ids": [
+        "JDD-21"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Rulership 2 (45/26 | 22/47)",
+          "expected": [
+            "Right Angle Cross of Rulership (45/26 | 22/47)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1985-11-25T06:36:00Z",
+      "ids": [
+        "G1985-nov"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Sleeping Phoenix 4 (34/20 | 59/55)",
+          "expected": [
+            "Right Angle Cross of The Sleeping Phoenix (34/20 | 59/55)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1986-01-03T01:32:00Z",
+      "ids": [
+        "JDS-01"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1986-01-04T23:53:00Z",
+      "ids": [
+        "JDS-02"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1986-01-05T22:15:00Z",
+      "ids": [
+        "JDS-03"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1986-03-31T09:25:00Z",
+      "ids": [
+        "JDD-11"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1986-04-02T09:17:00Z",
+      "ids": [
+        "JDD-12"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1987-07-31T05:12:00Z",
+      "ids": [
+        "JDD-22"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1988-03-05T23:22:00Z",
+      "ids": [
+        "JDD-28"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1989-10-19T19:05:00Z",
+      "ids": [
+        "JDS-16"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1989-12-16T06:47:00Z",
+      "ids": [
+        "JDS-17"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1992-06-23T22:19:00Z",
+      "ids": [
+        "JDS-18"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1992-08-02T09:35:00Z",
+      "ids": [
+        "JDD-23"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Four Ways 2 (33/19 | 24/44)",
+          "expected": [
+            "Right Angle Cross of The Four Ways (33/19 | 24/44)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1993-05-25T11:52:00Z",
+      "ids": [
+        "JDS-19"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1993-07-01T05:03:00Z",
+      "ids": [
+        "JDS-25"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1994-10-07T09:31:00Z",
+      "ids": [
+        "JDD-14"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+          "expected": [
+            "Left Angle Cross of Endeavor (48/21 | 53/54)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-01-26T03:23:00Z",
+      "ids": [
+        "JDD-24"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1995-01-26T23:51:00Z",
+      "ids": [
+        "D1995-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+          "expected": [
+            "Left Angle Cross of The Alpha (41/31 | 44/24)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-01-28T23:04:00Z",
+      "ids": [
+        "G1995-tight"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Four Ways 4 (19/33 | 44/24)",
+          "expected": [
+            "Right Angle Cross of The Four Ways (19/33 | 44/24)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-02-22T01:07:00Z",
+      "ids": [
+        "G1995-feb-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-02-22T01:08:00Z",
+      "ids": [
+        "G1995-feb"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-02-22T01:09:00Z",
+      "ids": [
+        "G1995-feb-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-04-11T02:30:00Z",
+      "ids": [
+        "G1995-apr"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "1995-06-21T23:42:00Z",
+      "ids": [
+        "G1995-jun-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+          "expected": [
+            "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-06-21T23:43:00Z",
+      "ids": [
+        "G1995-jun"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+          "expected": [
+            "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-06-21T23:44:00Z",
+      "ids": [
+        "G1995-jun-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        },
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Vessel Of Love 2 (15/10 | 25/46)",
+          "expected": [
+            "Right Angle Cross of The Vessel of Love (15/10 | 25/46)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "1995-12-15T02:27:00Z",
+      "ids": [
+        "G1995-dec"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Confrontation 2 (26/45 | 6/36)",
+          "expected": [
+            "Left Angle Cross of Confrontation (26/45 | 6/36)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2003-07-13T22:22:00Z",
+      "ids": [
+        "JDS-10"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2003-10-12T20:48:00Z",
+      "ids": [
+        "JDD-15"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+          "expected": [
+            "Left Angle Cross of The Clarion (57/51 | 62/61)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2004-01-07T16:33:00Z",
+      "ids": [
+        "JDS-11"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2004-04-04T03:37:00Z",
+      "ids": [
+        "JDD-16"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Endeavour (21/48 | 54/53)",
+          "expected": [
+            "Left Angle Cross of Endeavor (21/48 | 54/53)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2004-10-12T22:58:00Z",
+      "ids": [
+        "JDD-17"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+          "expected": [
+            "Left Angle Cross of The Clarion (57/51 | 62/61)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2004-11-02T14:00:00Z",
+      "ids": [
+        "JDS-20"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2005-01-12T14:37:00Z",
+      "ids": [
+        "D2005-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Maya 4 (61/62 | 32/42)",
+          "expected": [
+            "Right Angle Cross of Maya (61/62 | 32/42)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-01-16T09:54:00Z",
+      "ids": [
+        "G2005-tight"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+          "expected": [
+            "Right Angle Cross of Laws (60/56 | 50/3)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-01-19T04:11:00Z",
+      "ids": [
+        "G2005-0411"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+          "expected": [
+            "Right Angle Cross of Laws (60/56 | 50/3)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-01-19T04:12:00Z",
+      "ids": [
+        "G2005-0412"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 4 (60/56 | 50/3)",
+          "expected": [
+            "Right Angle Cross of Laws (60/56 | 50/3)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-05-03T14:33:00Z",
+      "ids": [
+        "G2005-may"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "authority",
+          "actual": "Lunar",
+          "expected": [
+            "Lunar Cycle"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-07-11T01:47:00Z",
+      "ids": [
+        "G2005-jul11"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2005-07-20T21:39:00Z",
+      "ids": [
+        "G2005-jul20-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+          "expected": [
+            "Right Angle Cross of Laws (56/60 | 3/50)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-07-20T21:40:00Z",
+      "ids": [
+        "G2005-jul20"
+      ],
+      "officialObservationCount": 6,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+          "expected": [
+            "Right Angle Cross of Laws (56/60 | 3/50)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2005-07-20T21:41:00Z",
+      "ids": [
+        "G2005-jul20-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Laws 2 (56/60 | 3/50)",
+          "expected": [
+            "Right Angle Cross of Laws (56/60 | 3/50)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2013-07-13T09:06:00Z",
+      "ids": [
+        "JDS-04"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2015-01-25T22:23:00Z",
+      "ids": [
+        "D2015-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:19:00Z",
+      "ids": [
+        "G2015-tight-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2015-01-26T01:20:00Z",
+      "ids": [
+        "G2015-final-proof",
+        "G2015-repeatA",
+        "G2015-repeatB",
+        "G2015-tight"
+      ],
+      "officialObservationCount": 18,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+          "expected": [
+            "Left Angle Cross of The Alpha (41/31 | 44/24)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2015-01-26T01:21:00Z",
+      "ids": [
+        "G2015-tight-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+          "expected": [
+            "Left Angle Cross of The Alpha (41/31 | 44/24)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2015-02-04T06:55:00Z",
+      "ids": [
+        "G2015-feb-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2015-02-04T06:56:00Z",
+      "ids": [
+        "G2015-feb"
+      ],
+      "officialObservationCount": 6,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2015-02-04T06:57:00Z",
+      "ids": [
+        "G2015-feb-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "strategy",
+          "actual": "Wait to Respond, then Inform",
+          "expected": [
+            "Wait to Respond"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2016-10-06T13:26:00Z",
+      "ids": [
+        "JDD-03"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Endeavour 2 (48/21 | 53/54)",
+          "expected": [
+            "Left Angle Cross of Endeavor (48/21 | 53/54)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2017-04-10T08:41:00Z",
+      "ids": [
+        "JDS-21"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2017-04-11T00:55:00Z",
+      "ids": [
+        "JDD-04"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2017-10-02T21:59:00Z",
+      "ids": [
+        "JDD-05"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Tension 3 (48/21 | 39/38)",
+          "expected": [
+            "Right Angle Cross of Tension (48/21 | 39/38)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2017-10-10T23:44:00Z",
+      "ids": [
+        "JDD-06"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Penetration 3 (57/51 | 53/54)",
+          "expected": [
+            "Right Angle Cross of Penetration (57/51 | 53/54)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2018-01-04T00:58:00Z",
+      "ids": [
+        "JDS-26"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2018-07-12T17:42:00Z",
+      "ids": [
+        "JDS-27"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2018-10-02T15:17:00Z",
+      "ids": [
+        "JDD-01"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Upheaval 2 (18/17 | 39/38)",
+          "expected": [
+            "Left Angle Cross of Upheaval (18/17 | 39/38)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2019-01-13T20:44:00Z",
+      "ids": [
+        "JDS-28"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2019-01-14T08:06:00Z",
+      "ids": [
+        "JDS-05"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2019-07-03T15:11:00Z",
+      "ids": [
+        "JDS-06"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2020-10-11T15:00:00Z",
+      "ids": [
+        "JDD-02"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2021-01-02T05:30:00Z",
+      "ids": [
+        "JDS-12"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2022-04-06T14:48:00Z",
+      "ids": [
+        "JDD-07"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2023-07-04T12:50:00Z",
+      "ids": [
+        "JDS-23"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:56:00Z",
+      "ids": [
+        "G2025-tight-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2025-01-19T22:57:00Z",
+      "ids": [
+        "G2025-tight"
+      ],
+      "officialObservationCount": 6,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Distraction 2 (60/56 | 28/27)",
+          "expected": [
+            "Left Angle Cross of Distraction (60/56 | 28/27)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-01-19T22:58:00Z",
+      "ids": [
+        "G2025-tight-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of Distraction 2 (60/56 | 28/27)",
+          "expected": [
+            "Left Angle Cross of Distraction (60/56 | 28/27)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-01-27T04:57:00Z",
+      "ids": [
+        "D2025-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Alpha 2 (41/31 | 44/24)",
+          "expected": [
+            "Left Angle Cross of The Alpha (41/31 | 44/24)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-03-08T23:41:00Z",
+      "ids": [
+        "JDS-07"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": []
+    },
+    {
+      "birthUtc": "2025-03-15T18:55:00Z",
+      "ids": [
+        "G2025-mar-before"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+          "expected": [
+            "Right Angle Cross of Eden (36/6 | 11/12)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-03-15T18:56:00Z",
+      "ids": [
+        "G2025-mar"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+          "expected": [
+            "Right Angle Cross of Eden (36/6 | 11/12)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-03-15T18:57:00Z",
+      "ids": [
+        "G2025-mar-after"
+      ],
+      "officialObservationCount": 4,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of The Eden (36/6 | 11/12)",
+          "expected": [
+            "Right Angle Cross of Eden (36/6 | 11/12)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-10-12T12:21:00Z",
+      "ids": [
+        "JDD-08"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Left Angle Cross of The Clarion 2 (57/51 | 62/61)",
+          "expected": [
+            "Left Angle Cross of The Clarion (57/51 | 62/61)"
+          ]
+        }
+      ]
+    },
+    {
+      "birthUtc": "2025-12-09T18:15:00Z",
+      "ids": [
+        "JDD-13"
+      ],
+      "officialObservationCount": 1,
+      "activationFieldsCompared": 26,
+      "passed": true,
+      "mismatches": [],
+      "labelDifferences": [
+        {
+          "field": "incarnationCross",
+          "actual": "Right Angle Cross of Rulership 4 (26/45 | 47/22)",
+          "expected": [
+            "Right Angle Cross of Rulership (26/45 | 47/22)"
+          ]
+        }
+      ]
+    }
+  ]
+}

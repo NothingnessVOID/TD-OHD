@@ -1,0 +1,632 @@
+{
+  "schemaVersion": 1,
+  "calculationBaselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+  "runtimeComponentCount": 17,
+  "semantics": "Component/provenance groups overlap; count is not unique assemblies or packages. Runtime-only inventory, not all devDependencies.",
+  "components": [
+    {
+      "component": "TD-OHD browser app",
+      "version": "production@4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+      "upstream": "https://github.com/NothingnessVOID/TD-OHD",
+      "license": "NOASSERTION",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "src/",
+        "index.html",
+        "package-lock.json"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "assets/index-7DvTWcPj.js": "12cfb162956b595b721149b0ec5020bbea63d10f924f5b1cdc8f1640183f8ea7",
+        "assets/index-fG3zFZlf.js": "396772c38c0f40df4f9f994a3668e21377f6f34b53f4d8002e76723740b4197e",
+        "assets/timeline.worker-CvOwonrR.js": "ecc920cb7c38737869b14eb3326423295cc75497846fc843d6e4965dfe981e1a"
+      },
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Root/combined-release license not selected; inherited sources have separate notices. Vite is build tooling, not its entire npm dependency graph in runtime."
+    },
+    {
+      "component": "SharpChartEngine",
+      "version": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+      "upstream": "https://github.com/NothingnessVOID/TD-OHD",
+      "license": "NOASSERTION",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "engine-wasm/Program.cs",
+        "engine-wasm/SharpChartEngine.csproj"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpChartEngine.luero3xi34.wasm"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpChartEngine.luero3xi34.wasm": "13e8c0f60002b503b06dc4860a135fe32f2556056a15f40bd2c687734babd255"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpChartEngine.wasm",
+          "name": "SharpChartEngine.c06llgb8z0.wasm",
+          "hash": "sha256-VMlhJehMPkGAcIsu6vMelZ3JpfVoZTOdAHkv3k2fhz8=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "54c96125e84c3e4180708b2eeaf31e959dc9a5f56865339d00792fde4d9f873f",
+          "path": "engine/_framework/SharpChartEngine.c06llgb8z0.wasm",
+          "bytes": 16149
+        }
+      ],
+      "scope": "runtime",
+      "notes": "TD-OHD bridge/source snapshot; no new root license grant."
+    },
+    {
+      "component": "SharpTransitCore",
+      "version": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
+      "upstream": "https://github.com/NothingnessVOID/TD-OHD",
+      "license": "NOASSERTION",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "engine-core/TransitCore.cs",
+        "engine-core/SharpTransitCore.csproj"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpTransitCore.jqkirvjrkm.wasm"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpTransitCore.jqkirvjrkm.wasm": "85ff99cb2b07e43dedc306d90889dca2e35a68bbde088a0afd3c1e78e5f2fd17"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpTransitCore.wasm",
+          "name": "SharpTransitCore.l31hhg0l77.wasm",
+          "hash": "sha256-0VAoLfuh3rdO1cZVAQID69L83TJ4ycAkmfODaxLJ5aQ=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "d150282dfba1deb74ed5c655010203ebd2fcdd3278c9c02499f3836b12c9e5a4",
+          "path": "engine/_framework/SharpTransitCore.l31hhg0l77.wasm",
+          "bytes": 8981
+        }
+      ],
+      "scope": "runtime",
+      "notes": "TD-OHD bridge/source snapshot; no new root license grant."
+    },
+    {
+      "component": "SharpAstrology.Base",
+      "version": "0.14.0",
+      "upstream": "https://github.com/CReizner/SharpAstrology.Base/tree/b029ea0a57fabf84b0d0209aa8d6871b6e64a41c",
+      "license": "MIT",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "NuGet/SharpAstrology.Base/0.14.0"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm"
+      ],
+      "noticeLocation": [
+        "engine/licenses/SharpAstrology.Base-MIT.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpAstrology.Base.wasm",
+          "name": "SharpAstrology.Base.a50fa6ax0l.wasm",
+          "hash": "sha256-frALQKAm6YBAs0zhYE8WQWrmwxV4fCYLhSUqkdqiTrA=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "7eb00b40a026e98040b34ce1604f16416ae6c315787c260b85252a91daa24eb0",
+          "path": "engine/_framework/SharpAstrology.Base.a50fa6ax0l.wasm",
+          "bytes": 9493
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": "SharpAstrology.HumanDesign",
+      "version": "1.2.0",
+      "upstream": "https://github.com/CReizner/SharpAstrology.HumanDesign/tree/8b78031ce9a4244b8eb0a4ce37e612b8d6782570",
+      "license": "MIT",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "NuGet/SharpAstrology.HumanDesign/1.2.0"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm"
+      ],
+      "noticeLocation": [
+        "engine/licenses/SharpAstrology.HumanDesign-MIT.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpAstrology.HumanDesign.wasm",
+          "name": "SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+          "hash": "sha256-DYqbp4gHZL4Ldqk7NkjMd2nLsFPzVfooJ+BGKFE8eqw=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "0d8a9ba7880764be0b76a93b3648cc7769cbb053f355fa2827e04628513c7aac",
+          "path": "engine/_framework/SharpAstrology.HumanDesign.h3tnzd0x1m.wasm",
+          "bytes": 43797
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": "SharpAstrology.SwissEph",
+      "version": "0.5.1@342a57997c1b987e7949acc98897c8b73d05939a",
+      "upstream": "https://github.com/CReizner/SharpAstrology.SwissEph",
+      "license": "AGPL-3.0 with Swiss Ephemeris notices",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "third_party/SharpAstrology.SwissEph/"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm"
+      ],
+      "noticeLocation": [
+        "engine/licenses/SharpAstrology.SwissEph-AGPL-3.0.txt",
+        "engine/licenses/SharpAstrology.SwissEph-SwissEph.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm": "5a086e5fd17874563c485c6fbf246d2dbc5e98fb55e2d63ef703be612061be90"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpAstrology.SwissEph.wasm",
+          "name": "SharpAstrology.SwissEph.pscds59khe.wasm",
+          "hash": "sha256-CeLpIgu1Js0De3gSIL60dhwGE9g4e62GM3sVJICLQPE=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "09e2e9220bb526cd037b781220beb4761c0613d8387bad86337b1524808b40f1",
+          "path": "engine/_framework/SharpAstrology.SwissEph.pscds59khe.wasm",
+          "bytes": 406805
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": "TD-OHD SwissEph parity patch",
+      "version": "td-ohd-swiss-parity-v1-true-node-light-time",
+      "upstream": "https://github.com/NothingnessVOID/TD-OHD",
+      "license": "AGPL-3.0 modified-port boundary",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "third_party/SharpAstrology.SwissEph/patch-manifest.json"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm": "5a086e5fd17874563c485c6fbf246d2dbc5e98fb55e2d63ef703be612061be90"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "SharpAstrology.SwissEph.wasm",
+          "name": "SharpAstrology.SwissEph.pscds59khe.wasm",
+          "hash": "sha256-CeLpIgu1Js0De3gSIL60dhwGE9g4e62GM3sVJICLQPE=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "09e2e9220bb526cd037b781220beb4761c0613d8387bad86337b1524808b40f1",
+          "path": "engine/_framework/SharpAstrology.SwissEph.pscds59khe.wasm",
+          "bytes": 406805
+        }
+      ],
+      "scope": "runtime",
+      "notes": "Provenance view of same assembly, not additional code payload; UTC/UT1, frame bias, Moon, True Node."
+    },
+    {
+      "component": "System.Numerics.Tensors",
+      "version": "10.0.7",
+      "upstream": "https://github.com/dotnet/dotnet/tree/b16286c2284fecf303dbc12a0bb152476d662e44",
+      "license": "MIT plus package third-party notices",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "NuGet/System.Numerics.Tensors/10.0.7"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm"
+      ],
+      "noticeLocation": [
+        "engine/licenses/System.Numerics.Tensors-MIT.txt",
+        "engine/licenses/System.Numerics.Tensors-THIRD-PARTY-NOTICES.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "System.Numerics.Tensors.wasm",
+          "name": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+          "hash": "sha256-Qsl1NXN9I6wlskaDt4SrnJQW6UPPoopMdrMh8zR/BDI=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+          "path": "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm",
+          "bytes": 8469
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": ".NET WebAssembly runtime and framework",
+      "version": "10.0.12",
+      "upstream": "https://github.com/dotnet/dotnet/tree/95017c711e6afc1085133d440e42b4bd78155701",
+      "license": "MIT plus package third-party notices",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "Microsoft.NETCore.App.Runtime.Mono.browser-wasm/10.0.12"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/dotnet.native.b6l13xorvf.js",
+        "engine/_framework/dotnet.runtime.v06hirbjsv.js",
+        "engine/_framework/dotnet.native.rw4kynp763.wasm",
+        "engine/_framework/System.Private.CoreLib.4gxizwg914.wasm",
+        "engine/_framework/System.Runtime.InteropServices.JavaScript.eo5cx15vhe.wasm",
+        "engine/_framework/System.Collections.Concurrent.e8h90946dl.wasm",
+        "engine/_framework/System.Collections.abxuss9tan.wasm",
+        "engine/_framework/System.IO.Pipelines.v3l53zykpv.wasm",
+        "engine/_framework/System.Linq.dnpm8suwi1.wasm",
+        "engine/_framework/System.Memory.l1yhg1cfjc.wasm",
+        "engine/_framework/System.Net.Http.olaucgdwqa.wasm",
+        "engine/_framework/System.Net.Primitives.ib2mzkdyxg.wasm",
+        "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm",
+        "engine/_framework/System.Private.Uri.9auev6tvov.wasm",
+        "engine/_framework/System.Security.Cryptography.p2nlielk9a.wasm",
+        "engine/_framework/System.Text.Encodings.Web.4cqqyda7xz.wasm",
+        "engine/_framework/System.Text.Json.reqys6dbzy.wasm",
+        "engine/_framework/System.Text.RegularExpressions.sof6e81rme.wasm"
+      ],
+      "noticeLocation": [
+        "engine/licenses/dotnet-runtime-MIT.txt",
+        "engine/licenses/dotnet-runtime-THIRD-PARTY-NOTICES.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {
+        "engine/_framework/dotnet.native.b6l13xorvf.js": "8d975da1b2c13360b795085843ad7149027f5aa0f779008edd1ce81c668e8f1d",
+        "engine/_framework/dotnet.runtime.v06hirbjsv.js": "41b9eaad9187b46abbc2e752d7bfc06043e91fd264a61aecc959650fa24799db",
+        "engine/_framework/dotnet.native.rw4kynp763.wasm": "253c57775ef06eb1ca57fdfbe66a0715415cddafe87d54cf3ea49393a2b0363d",
+        "engine/_framework/System.Private.CoreLib.4gxizwg914.wasm": "d43c75dc073cfd8d7df685573a8f95ee7a794ce38c70b010faafb9bb751c0c7d",
+        "engine/_framework/System.Runtime.InteropServices.JavaScript.eo5cx15vhe.wasm": "be1c7f610e3413926d0869a6eaf7a61e9c5e0e0cd4e6f01752c2f67f1f8c1e2b",
+        "engine/_framework/System.Collections.Concurrent.e8h90946dl.wasm": "7e436999dbe620c56dae0b3359a00b1d594ebc754dbe4ae73a554dbd94f2a683",
+        "engine/_framework/System.Collections.abxuss9tan.wasm": "2660c8d1c9cb848c4bb37252197838c2c95c732133c5ec1a991f7b04e908c02b",
+        "engine/_framework/System.IO.Pipelines.v3l53zykpv.wasm": "1b69b74adf332b1b7214f0a2ebfd9fb53a47cea09542652e29b6303927a879f8",
+        "engine/_framework/System.Linq.dnpm8suwi1.wasm": "5903b93af309ebb96e63fe8a806e21b4d71b3842efbfd60e13899c8fc8f05592",
+        "engine/_framework/System.Memory.l1yhg1cfjc.wasm": "99fa8e493e90a6d02c8523dd4a42bfefcacccf1334e498013f3e9454de85bf33",
+        "engine/_framework/System.Net.Http.olaucgdwqa.wasm": "2c2db1793cb199a4343208c96dede07573edf015d69f321622a9cef5d1d70252",
+        "engine/_framework/System.Net.Primitives.ib2mzkdyxg.wasm": "3ed89e38037dfea73f9fd5cf8f11242c64f200deca08dfbb7a30dfcc6bfd2bb0",
+        "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+        "engine/_framework/System.Private.Uri.9auev6tvov.wasm": "d177974bdf6f320b749bcd75e6a2295f48f44f9799a060b82f4e887983172585",
+        "engine/_framework/System.Security.Cryptography.p2nlielk9a.wasm": "effd8383b8d0df7eec981cd3ac3ef21f44c859cf17156e647c914687937030d2",
+        "engine/_framework/System.Text.Encodings.Web.4cqqyda7xz.wasm": "d41dfcbedebea0ec13d50275e2f0a5de75bf35dd0abba1b7af87f72ab7b72bdb",
+        "engine/_framework/System.Text.Json.reqys6dbzy.wasm": "cd41fed8274bd74e8d5524a111f5ecf90c596295c29da2693727c35f46dc9c13",
+        "engine/_framework/System.Text.RegularExpressions.sof6e81rme.wasm": "ec520e87d6ce23962a305903f22a720b2a14812c0a40ff26e3f9518c61811f6a"
+      },
+      "liveArtifacts": [
+        {
+          "name": "dotnet.native.b6l13xorvf.js",
+          "resourceGroup": "jsModuleNative",
+          "sha256": "8d975da1b2c13360b795085843ad7149027f5aa0f779008edd1ce81c668e8f1d",
+          "path": "engine/_framework/dotnet.native.b6l13xorvf.js",
+          "bytes": 145050
+        },
+        {
+          "name": "dotnet.native.rw4kynp763.wasm",
+          "hash": "sha256-JTxXd17wbrHKV/375moHFUFc3a/ofVTPPqSTk6KwNj0=",
+          "cache": "force-cache",
+          "resourceGroup": "wasmNative",
+          "sha256": "253c57775ef06eb1ca57fdfbe66a0715415cddafe87d54cf3ea49393a2b0363d",
+          "path": "engine/_framework/dotnet.native.rw4kynp763.wasm",
+          "bytes": 3001422
+        },
+        {
+          "virtualPath": "System.Numerics.Tensors.wasm",
+          "name": "System.Numerics.Tensors.i8lnq9q5s0.wasm",
+          "hash": "sha256-Qsl1NXN9I6wlskaDt4SrnJQW6UPPoopMdrMh8zR/BDI=",
+          "cache": "force-cache",
+          "resourceGroup": "assembly",
+          "sha256": "42c97535737d23ac25b24683b784ab9c9416e943cfa28a4c76b321f3347f0432",
+          "path": "engine/_framework/System.Numerics.Tensors.i8lnq9q5s0.wasm",
+          "bytes": 8469
+        }
+      ],
+      "scope": "runtime",
+      "notes": "Framework grouping overlaps Tensors provenance. Full package notices retained conservatively; not every listed dependency is asserted present."
+    },
+    {
+      "component": "ICU/globalization data",
+      "version": "ICU 68.2.0.9 / runtime-pack 10.0.12",
+      "upstream": "https://github.com/dotnet/dotnet/tree/95017c711e6afc1085133d440e42b4bd78155701",
+      "license": "Unicode/ICU and nested terms in pinned ICU LICENSE",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "runtime-pack icudt*.dat"
+      ],
+      "distributedArtifact": [
+        "engine/_framework/icudt_CJK.tjcz0u77k5.dat",
+        "engine/_framework/icudt_EFIGS.tptq2av103.dat",
+        "engine/_framework/icudt_no_CJK.lfu7j35m59.dat"
+      ],
+      "noticeLocation": [
+        "engine/licenses/ICU-LICENSE.txt",
+        "engine/licenses/dotnet-runtime-THIRD-PARTY-NOTICES.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": true,
+      "sha256": {
+        "engine/_framework/icudt_CJK.tjcz0u77k5.dat": "4992ed42745cd09930a8769bd155153fb4f7b813d2798cf1cc39e9c4fa549c79",
+        "engine/_framework/icudt_EFIGS.tptq2av103.dat": "f1f22d7ad618f24434c30ea8c704cb893de85e50701caba66de3f6a51178c937",
+        "engine/_framework/icudt_no_CJK.lfu7j35m59.dat": "2fbb15ecd1183f7eff42bd853c278fa39709a918135d1c061eec05e50fb435fb"
+      },
+      "liveArtifacts": [
+        {
+          "virtualPath": "icudt_CJK.dat",
+          "name": "icudt_CJK.tjcz0u77k5.dat",
+          "hash": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
+          "cache": "force-cache",
+          "resourceGroup": "icu",
+          "sha256": "4992ed42745cd09930a8769bd155153fb4f7b813d2798cf1cc39e9c4fa549c79",
+          "path": "engine/_framework/icudt_CJK.tjcz0u77k5.dat",
+          "bytes": 956416
+        },
+        {
+          "virtualPath": "icudt_EFIGS.dat",
+          "name": "icudt_EFIGS.tptq2av103.dat",
+          "hash": "sha256-8fItetYY8kQ0ww6oxwTLiT3oXlBwHKumbeP2pRF4yTc=",
+          "cache": "force-cache",
+          "resourceGroup": "icu",
+          "sha256": "f1f22d7ad618f24434c30ea8c704cb893de85e50701caba66de3f6a51178c937",
+          "path": "engine/_framework/icudt_EFIGS.tptq2av103.dat",
+          "bytes": 550832
+        },
+        {
+          "virtualPath": "icudt_no_CJK.dat",
+          "name": "icudt_no_CJK.lfu7j35m59.dat",
+          "hash": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs=",
+          "cache": "force-cache",
+          "resourceGroup": "icu",
+          "sha256": "2fbb15ecd1183f7eff42bd853c278fa39709a918135d1c061eec05e50fb435fb",
+          "path": "engine/_framework/icudt_no_CJK.lfu7j35m59.dat",
+          "bytes": 1107168
+        }
+      ],
+      "scope": "runtime",
+      "notes": "ICU source pin f3ce4639f5ad59da714912bb6209369d3fb2f5cd from dotnet runtime Version.Details.xml; bundled shard hashes match the runtime package."
+    },
+    {
+      "component": "Modern sepl_18.se1",
+      "version": "compressed DE441; 1800–2399",
+      "upstream": "https://github.com/aloistr/swisseph/tree/3186eed405bd2b4ff520c91d0b27bb25e9d75106/ephe",
+      "license": "Swiss Ephemeris data notice; applicable AGPL/Professional route not selected here",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "engine-wasm/ephemeris-manifest.json"
+      ],
+      "distributedArtifact": [
+        "engine/ephe/sepl_18.se1"
+      ],
+      "noticeLocation": [
+        "engine/licenses/Swiss-Ephemeris-LICENSE.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": true,
+      "sha256": {
+        "engine/ephe/sepl_18.se1": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66"
+      },
+      "liveArtifacts": [
+        {
+          "path": "engine/ephe/sepl_18.se1",
+          "sha256": "ca1393ceab3a44fbc895887cf789c68819ae6a1cbc9b22225872dbe4ccd99a66"
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": "Modern semo_18.se1",
+      "version": "compressed DE441; 1800–2399",
+      "upstream": "https://github.com/aloistr/swisseph/tree/3186eed405bd2b4ff520c91d0b27bb25e9d75106/ephe",
+      "license": "Swiss Ephemeris data notice; applicable AGPL/Professional route not selected here",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "engine-wasm/ephemeris-manifest.json"
+      ],
+      "distributedArtifact": [
+        "engine/ephe/semo_18.se1"
+      ],
+      "noticeLocation": [
+        "engine/licenses/Swiss-Ephemeris-LICENSE.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": true,
+      "sha256": {
+        "engine/ephe/semo_18.se1": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+      },
+      "liveArtifacts": [
+        {
+          "path": "engine/ephe/semo_18.se1",
+          "sha256": "1ca07bd67c24374d77226180c20a4f9996cba013697894810518e7eb582ca4f7"
+        }
+      ],
+      "scope": "runtime",
+      "notes": ""
+    },
+    {
+      "component": "html-to-image",
+      "version": "1.11.13",
+      "upstream": "https://github.com/bubkoo/html-to-image",
+      "license": "MIT",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "node_modules/html-to-image",
+        "package-lock.json"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/licenses/html-to-image-MIT.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {},
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Measured in static sourcemaps; ten ES modules. Compiled into TD-OHD app JS, not a separate file."
+    },
+    {
+      "component": "Vite generated browser helpers",
+      "version": "5.4.21",
+      "upstream": "https://github.com/vitejs/vite",
+      "license": "MIT core; complete package notices retained",
+      "modifiedByTdOhd": false,
+      "sourceLocation": [
+        "node_modules/vite/dist/node/chunks: modulePreloadPolyfillPlugin / polyfill"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/licenses/Vite-generated-helpers-LICENSE.txt"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {},
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Observed modulepreload polyfill emitted into app JS. Only generated browser helper is a runtime component; Vite executable and its dependency graph are build tooling."
+    },
+    {
+      "component": "OpenHumanDesign inherited application",
+      "version": "upstream lineage; exact whole-app revision needs confirmation",
+      "upstream": "https://github.com/Unforced-Dev/open-human-design",
+      "license": "MIT upstream attribution; later additions not blanket relicensed",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "THIRD_PARTY_NOTICES.md",
+        "src/lib/human-design/"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {},
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Inherited material compiled into app; origin view overlaps app grouping. Ownership/content rights remain separate."
+    },
+    {
+      "component": "NatalEngine static data/adaptations",
+      "version": "1.6.0 static lineage; no runtime astronomy package",
+      "upstream": "https://github.com/Unforced-Dev/natalengine",
+      "license": "MIT upstream attribution; later additions not blanket relicensed",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "THIRD_PARTY_NOTICES.md",
+        "src/lib/human-design/"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {},
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Inherited material compiled into app; origin view overlaps app grouping. Ownership/content rights remain separate."
+    },
+    {
+      "component": "hdkit geometry",
+      "version": "via NatalEngine; exact geometry source revision needs confirmation",
+      "upstream": "https://github.com/jdempcy/hdkit",
+      "license": "MIT upstream attribution; later additions not blanket relicensed",
+      "modifiedByTdOhd": true,
+      "sourceLocation": [
+        "THIRD_PARTY_NOTICES.md",
+        "src/lib/human-design/"
+      ],
+      "distributedArtifact": [
+        "assets/index-7DvTWcPj.js",
+        "assets/index-fG3zFZlf.js",
+        "assets/timeline.worker-CvOwonrR.js"
+      ],
+      "noticeLocation": [
+        "engine/THIRD_PARTY_NOTICES.md"
+      ],
+      "includedInBrowser": true,
+      "includedAtRuntime": true,
+      "dataAsset": false,
+      "sha256": {},
+      "liveArtifacts": [],
+      "scope": "runtime",
+      "notes": "Inherited material compiled into app; origin view overlaps app grouping. Ownership/content rights remain separate."
+    }
+  ]
+}
