@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "1.76.00",
+  "flags": 258,
+  "ephemeris": "compressed DE406",
+  "assets": [
+    {
+      "name": "maitreya7.tar.bz2",
+      "url": "https://archive.debian.org/debian/pool/main/m/maitreya/maitreya_7.0.7.orig.tar.bz2",
+      "bytes": 7904437,
+      "sha256": "83a3414ab071958d1eb12768c36936074588c6eea87c4c35bb264f1602a589cc",
+      "kind": "source-archive",
+      "redistributed": false,
+      "versionMacro": "1.76.00",
+      "sourceSubdir": "maitreya-7.0.7/src/swe",
+      "dscSha256Verified": true
+    },
+    {
+      "name": "de406/sepl_18.se1",
+      "url": "https://raw.githubusercontent.com/arcanous/astrosonnet/92ecd816bcec2816c2e794369acd7743e927ab1a/eph/sepl_18.se1",
+      "bytes": 484065,
+      "sha256": "20c69631d1e5d9af4a1eb7fca265bf777fe2d532bcd99e6b1660838edf5d0e11",
+      "kind": "compressed-ephemeris",
+      "redistributed": false,
+      "deNumber": 406,
+      "upstreamCopyright": "Astrodienst",
+      "mirrorCommit": "92ecd816bcec2816c2e794369acd7743e927ab1a"
+    },
+    {
+      "name": "de406/semo_18.se1",
+      "url": "https://raw.githubusercontent.com/arcanous/astrosonnet/92ecd816bcec2816c2e794369acd7743e927ab1a/eph/semo_18.se1",
+      "bytes": 1305686,
+      "sha256": "fc8c8648b992c17408dfe572884e54c2e963410077222ccbd0e4b84f8312617c",
+      "kind": "compressed-ephemeris",
+      "redistributed": false,
+      "deNumber": 406,
+      "upstreamCopyright": "Astrodienst",
+      "mirrorCommit": "92ecd816bcec2816c2e794369acd7743e927ab1a"
+    }
+  ]
+}
