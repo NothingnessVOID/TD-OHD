@@ -69,11 +69,11 @@ test('terms follow the current vocabulary, reject unknown IDs, and escape rich H
 test('one reusable renderer keeps knowledge, context, missing content and shared Cross separate',()=>{
  withLanguages(()=>{
   const q=query('authority','sacral'),bare=renderKnowledgeDetail(q),contextual=renderKnowledgeDetail(q,{contextText:'<img src=x onerror=x>'});
-  assert.equal(contextual.slice(contextual.indexOf('<article')),bare);assert.doesNotMatch(contextual,/<img/);
+  assert.equal(contextual.replace(/<aside class="knowledge-context">.*?<\/aside>/s,''),bare);assert.doesNotMatch(contextual,/<img/);
   assert.match(bare,/data-knowledge-id="hd.authority.sacral"/);assert.match(bare,/knowledge-term/);
   assert.match(renderKnowledgeDetail(query('cognition','taste')),/knowledge-missing/);
   const cross=renderKnowledgeDetail(query('cross','RightAngleCrossOfExplanation2'));
-  assert.match(cross,/knowledge-body/);assert.match(cross,/knowledge-missing/);assert.equal(getKnowledgeDetail(query('cross','RightAngleCrossOfExplanation2')),null);
+  assert.match(cross,/knowledge-body/);assert.doesNotMatch(cross,/knowledge-missing/);assert.equal(getKnowledgeDetail(query('cross','RightAngleCrossOfExplanation2')),null);
  });
 });
 

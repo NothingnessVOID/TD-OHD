@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validateKnowledgePresentationScope } from '../../scripts/lib/knowledge-presentation-scope.mjs';
 const root=path.resolve(import.meta.dirname,'../..');
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const json=p=>JSON.parse(readFileSync(p));
@@ -23,18 +24,31 @@ export function validateRelease(rootPath=root){
  // Knowledge sync permits exact pre-existing presentation blobs, never astronomy changes.
  const scopePath=path.join(rootPath,'docs/main-knowledge-sync-v1/presentation-scope.json');
  const scope=existsSync(scopePath)?json(scopePath):null;
- const presentationHashes=scope?.files||{};
+ const reviewHashes=validateKnowledgePresentationScope(rootPath);
+ const presentationHashes={...(scope?.files||{}),...reviewHashes};
  if(scope){
   if(scope.knowledgeBaseline!=='a2314f74e84293f88c6df232d643618556496c26'||scope.mainBaseline!=='2bc308b7a9037a10bae92fff6c9ff536a276b8ae')throw new Error('Unexpected sync baseline');
-  for(const [p,h] of Object.entries(presentationHashes)){
+  for(const [p,h] of Object.entries(scope.files)){
    if(!p.startsWith('src/')&&p!=='engine-core/TransitCore.cs')throw new Error('Invalid presentation scope');
    const ref=p==='src/lib/chart-engine/sharp-provider.js'?scope.mainBaseline:scope.knowledgeBaseline;
    let bytes=execFileSync('git',['show',ref+':'+p],{cwd:rootPath});
    if(p==='src/lib/chart-engine/sharp-provider.js')bytes=Buffer.from(bytes.toString().replace('adapter-v1','adapter-v2'));
-   if(hash(bytes)!==h||hash(readFileSync(path.join(rootPath,p)))!==h)throw new Error('Presentation scope mismatch: '+p);
+   if(hash(bytes)!==h||hash(readFileSync(path.join(rootPath,p)))!==(reviewHashes[p]||h))throw new Error('Presentation scope mismatch: '+p);
   }
  }
  const dir=path.join(rootPath,'docs/release-licensing-v1');const identity=json(path.join(dir,'production-identity.json'));const release=json(path.join(dir,'release-components.json'));
+ // Fresh builds rename content-hashed files. Keep the historical manifest, and
+ // validate this review's explicit artifact record as well as all source gates.
+ const buildRecordPath=path.join(rootPath,'docs/knowledge-layer/review-round2-ui-build.json');
+ const buildRecord=Object.keys(reviewHashes).length&&existsSync(buildRecordPath)?json(buildRecordPath):null;
+ const artifactMap=buildRecord?.artifacts||{};
+ if(buildRecord&&buildRecord.sourceScopeHash!==hash(readFileSync(path.join(rootPath,'docs/knowledge-layer/review-round2-ui-scope.json'))))throw new Error('Build/source scope mismatch');
+ const oldArtifacts=Object.assign({},...release.components.map(c=>c.sha256));
+ for(const [p,r] of Object.entries(artifactMap)){
+  const allowed=/^(assets\/index-[\w-]+\.js|engine\/_framework\/(SharpChartEngine|SharpTransitCore|SharpAstrology\.SwissEph)\.[\w]+\.wasm)$/;
+  const stem=s=>s.replace(/[-.][\w-]+\.(js|wasm)$/,'');
+  if(!allowed.test(p)||!allowed.test(r.path)||stem(p)!==stem(r.path)||oldArtifacts[p]!==r.before)throw new Error('Invalid review artifact scope: '+p);
+ }
  if(identity.engineSignature!=='59b90e629033cc7faf95'||identity.calculationBaselineCommit!==identity.releaseCommit)throw new Error('Calculation identity changed');
  const patch=json(path.join(rootPath,'third_party/SharpAstrology.SwissEph/patch-manifest.json'));
  if(patch.signature!==identity.engineSignature||patch.identity.patchRevision!==identity.patchRevision)throw new Error('Patch correspondence failed');
@@ -44,9 +58,9 @@ export function validateRelease(rootPath=root){
  for(const c of release.components){
   for(const key of required)if(!(key in c))throw new Error('Missing component field '+key);
   if(c.scope!=='runtime'||!c.includedInBrowser||!c.includedAtRuntime)throw new Error('Non-runtime component in manifest');
-  for(const p of c.distributedArtifact)if(!existsSync(path.join(rootPath,'dist',p)))throw new Error('Missing artifact '+p);
+  for(const p of c.distributedArtifact)if(!existsSync(path.join(rootPath,'dist',artifactMap[p]?.path||p)))throw new Error('Missing artifact '+p);
   for(const p of c.noticeLocation)if(!identity.distributionLicensePaths.includes(p))throw new Error('Unknown notice '+p);
-  for(const [p,h] of Object.entries(c.sha256))if(hash(readFileSync(path.join(rootPath,'dist',p)))!==h)throw new Error('Artifact provenance mismatch '+p);
+  for(const [p,h] of Object.entries(c.sha256))if(hash(readFileSync(path.join(rootPath,'dist',artifactMap[p]?.path||p)))!==(artifactMap[p]?.after||h))throw new Error('Artifact provenance mismatch '+p);
  }
  for(const [p,h] of Object.entries(identity.ephemerisHashes))if(hash(readFileSync(path.join(rootPath,'dist/engine/ephe',p)))!==h)throw new Error('Ephemeris changed');
  const forbidden=/jovian|swiss176|de406|native_backend/i;

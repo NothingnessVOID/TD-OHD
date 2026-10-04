@@ -26,7 +26,9 @@ try {
  for(const width of [1224,903,664,390])for(const locale of ['en','zh-CN','zh-Hant']) {
   console.log(`Checking layout ${width}/${locale}`);
   const old=await open(baseline,width,locale),current=await open(base,width,locale),page=current.page;
-  const before=await snapshot(old.page);assert.deepEqual(await snapshot(page),before,`${width}/${locale}: clicks do not change cards`);
+  const before=await snapshot(old.page);
+  // Only the approved HD terminology differs; Foundation geometry remains exact.
+  for (const card of before.cards) card.text=card.text.replaceAll('非自己主题','非我主题').replaceAll('非自己主題','非我主題');assert.deepEqual(await snapshot(page),before,`${width}/${locale}: clicks do not change cards`);
   for(const [index,kind]of ['type','authority','profile','definition'].entries()) {
    const trigger=page.locator(`[data-knowledge-object="${kind}"]`);
    assert.equal(await trigger.getAttribute('role'),'button');assert.equal(await trigger.getAttribute('tabindex'),'0');
@@ -54,7 +56,7 @@ try {
   await page.locator('[data-knowledge-object="cross"]').click();
   assert.match(await page.locator('#gate-detail .knowledge-detail').getAttribute('data-knowledge-id'),/CrossOfExplanation2$/);
   assert.equal(await page.locator('#gate-detail .knowledge-missing').count(),0);
-  assert.match(await page.locator('#gate-detail .knowledge-facts').innerText(),/23 \/ 43 \/ 49 \/ 4/);
+  assert.match(await page.locator('#gate-detail .knowledge-cross-meta').innerText(),/23 \/ 43 \/ 49 \/ 4/);
   await page.locator('.knowledge-library-link').click();assert.match(page.url(),/#library\/knowledge\/hd.cross.introduction$/);
   await page.locator('#reference-detail .knowledge-detail').waitFor();pure(await page.locator('#reference-detail').innerText(),locale);
   if(width<=640)await page.locator('[data-reference-back]').click();

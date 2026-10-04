@@ -1,0 +1,38 @@
+{
+  "baseline": "df06686baa855b01a8bbfb3d77cf85b34eaf4717",
+  "task": "Knowledge Review Round 2A — approved presentation and terminology only",
+  "files": {
+    "src/lib/knowledge/detail-access.css": {
+      "before": "34af3890e634160a9f155c0023bf4c395ae82a9fdeebb7271d798dd7e3074e42",
+      "after": "f66ca4c338f920940be878a4e56dcee924817d90757bc7e93baae6a82cce16f5"
+    },
+    "src/lib/knowledge/detail-controller.js": {
+      "before": "0fdb3122344ebf585b892bb5e1a1d24d7d2a8eadc3b37bf4bb46c5aadc38927a",
+      "after": "9e767a764db38ffa72ac737e8ade3075f669080ad13d54776712bc2ae2ec3b73"
+    },
+    "src/lib/knowledge/detail-renderer.js": {
+      "before": "e39554256d8d40dbc364f3c59ef50348d7686a2b50626958b78680f7c8755e32",
+      "after": "a10071a3d632e189fd48fd47a133a378e6e0e9725574174697dbf8c55e1f9b79"
+    },
+    "src/locales/zh-CN/ui-chart.json": {
+      "before": "e74000a347c83fe6e0ae7664a21ec2b003357a63631753c30889f133abba7267",
+      "after": "abc6e36c68ed8e6ee59da39432c5ce8801c69a401f132ed0274ff6d4918fe2d6"
+    },
+    "src/locales/zh-CN/ui-views.json": {
+      "before": "0a2d93c3e04429f5d9b90fb01242544bc5804336b6e2d34606c9217ea68269f5",
+      "after": "f48e5af2fd03a48fa03c1ebc862b915bff0830ba277bf40af060ab4fcc283fb2"
+    },
+    "src/locales/zh-Hant/ui-chart.json": {
+      "before": "c9c6b02404548bd79528046ca2a67bb98dde8662c32ca3f9e44ab3f9ef404ca7",
+      "after": "817f2e406094a8d9601d970692f0aca623b154b4e1660b350746e4ba8a4cff8f"
+    },
+    "src/locales/zh-Hant/ui-views.json": {
+      "before": "56fbfb1a6ad45180fac7b1a113deb3ce9c80c994ec6521d649f034048110ae2d",
+      "after": "61d8e161a76f34b449c7e67911d4ecf281d93452aa823cd398534aaac822f76f"
+    },
+    "src/views/reference.js": {
+      "before": "2ae2a6cc4bae474f36f6a02d39c9e2249250a557b08bf684c5d25a80a723816d",
+      "after": "26518bbb83965af977637534f7e5f61b21cf33d8a610632f841931ce64eaa0da"
+    }
+  }
+}

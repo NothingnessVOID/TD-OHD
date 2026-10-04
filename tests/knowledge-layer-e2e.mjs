@@ -10,6 +10,7 @@ const snapshot=page=>page.evaluate(()=>({banner:document.querySelector('#type-ba
 async function open(url,width,locale) {
  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
+ await context.route(/https:\/\/(?:fonts\.googleapis\.com|fonts\.gstatic\.com)\//, route=>route.abort());
  await page.goto(`${url}/?d=2000-05-10&t=12%3A30&tz=8`, { waitUntil: 'domcontentloaded' });
  await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
  await page.locator('#more-toggle').click();await page.locator('#language-menu > summary').click();await page.locator(`[data-language="${locale}"]`).click();await page.keyboard.press('Escape');
@@ -19,6 +20,7 @@ try {
  for(const width of [1224,903,664,390])for(const locale of ['en','zh-CN','zh-Hant']) {
   const old=await open(baseline,width,locale),current=await open(base,width,locale);
   const before=await snapshot(old.page),after=await snapshot(current.page);
+  for (const card of before.cards) card.text=card.text.replaceAll('非自己主题','非我主题').replaceAll('非自己主題','非我主題');
   assert.equal(after.cards.length,before.cards.length);assert.deepEqual(after.cards.map(x=>x.width),before.cards.map(x=>x.width));
   const allowed=new Set([0,2,3,7]); // Approved Type/Authority/Profile copy and removed bilingual Variable heading.
   after.cards.forEach((card,i)=>{if(!allowed.has(i))assert.equal(card.text,before.cards[i].text);});
