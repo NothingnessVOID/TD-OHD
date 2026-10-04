@@ -50,5 +50,6 @@
     "production-identity.json": "963e2e2ecb53f2236b70b4ec7341250166e10bf8aa1dd9fee91955a60ef58ea6",
     "artifact-evidence.json": "0b29ad1177b54e66b90f0d8e7b8dda07d0660f435f54e6ecbadd93de9e67fcda",
     "release-components.json": "a0aac6c7f2ca4e6f77974c4287dbd25b2249994dabd1ee7525006c955a4f4fd4"
-  }
+  },
+  "formatting": "Authored files pass git diff --check; third-party notices preserve upstream bytes, including CRLF/trailing whitespace."
 }
