@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const root=path.resolve(import.meta.dirname,'../..');
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const json=p=>JSON.parse(readFileSync(p));
+const jsonFromGit=(ref,p,cwd)=>JSON.parse(execFileSync('git',['show',ref+':'+p],{cwd,encoding:'utf8'}));
 export function validateDistribution(dist=path.join(root,'dist'),identity=json(path.join(root,'docs/release-licensing-v1/production-identity.json'))){
  const required=['SharpAstrology.Base-MIT.txt','SharpAstrology.HumanDesign-MIT.txt','SharpAstrology.SwissEph-AGPL-3.0.txt','SharpAstrology.SwissEph-SwissEph.txt','Swiss-Ephemeris-LICENSE.txt','dotnet-runtime-MIT.txt','dotnet-runtime-THIRD-PARTY-NOTICES.txt','System.Numerics.Tensors-MIT.txt','System.Numerics.Tensors-THIRD-PARTY-NOTICES.txt','ICU-LICENSE.txt','html-to-image-MIT.txt','Vite-generated-helpers-LICENSE.txt'];
  for(const name of required)if(!identity.distributionLicensePaths.includes('engine/licenses/'+name))throw new Error('Required notice missing from identity: '+name);
@@ -39,7 +40,14 @@ export function validateRelease(rootPath=root){
  if(evidence.localArtifacts.some(x=>forbidden.test(x.name)))throw new Error('Historical runtime in browser');
  const tree=execFileSync('git',['ls-tree','-r','--name-only',identity.calculationBaselineCommit],{cwd:rootPath,encoding:'utf8'}).trim().split('\n');
  const protectedPaths=tree.filter(p=>p.startsWith('src/')||p.startsWith('public/transit-data/')||p.startsWith('third_party/')||p.startsWith('engine-core/')||p.startsWith('engine-tools/')||p.startsWith('jovian-engine/')||p==='package.json'||p==='package-lock.json');
- for(const p of protectedPaths){const original=execFileSync('git',['show',identity.calculationBaselineCommit+':'+p],{cwd:rootPath});if(hash(original)!==hash(readFileSync(path.join(rootPath,p))))throw new Error('Protected baseline changed: '+p);}
+ const baselinePackage=jsonFromGit(identity.calculationBaselineCommit,'package.json',rootPath);
+ const currentPackage=json(path.join(rootPath,'package.json'));
+ // Integration permits only the two local research commands, never dependency/build changes.
+ for(const [name,command] of Object.entries({'research:birth-engine':'node scripts/birth-engine-prototype.mjs','test:jovian-compatible':'node scripts/jovian-compatible-validation.mjs'})){
+  if(name in currentPackage.scripts){if(currentPackage.scripts[name]!==command)throw new Error('Unexpected research command '+name);delete currentPackage.scripts[name];}
+ }
+ if(JSON.stringify(currentPackage)!==JSON.stringify(baselinePackage))throw new Error('Production package configuration changed');
+ for(const p of protectedPaths.filter(p=>p!=='package.json')){const original=execFileSync('git',['show',identity.calculationBaselineCommit+':'+p],{cwd:rootPath});if(hash(original)!==hash(readFileSync(path.join(rootPath,p))))throw new Error('Protected baseline changed: '+p);}
  return {passed:true,engineSignature:identity.engineSignature,runtimeComponents:release.components.length,protectedBaselineFiles:protectedPaths.length,calculationChanges:0,annualChanges:0,knowledgeChanges:0,jovianBrowserArtifacts:0};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){validateDistribution();console.log(JSON.stringify(validateRelease(),null,2));}

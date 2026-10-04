@@ -46,7 +46,7 @@
         "engine-wasm/SharpChartEngine.csproj"
       ],
       "distributedArtifact": [
-        "engine/_framework/SharpChartEngine.jeuiquxyk5.wasm"
+        "engine/_framework/SharpChartEngine.luero3xi34.wasm"
       ],
       "noticeLocation": [
         "engine/THIRD_PARTY_NOTICES.md"
@@ -55,7 +55,7 @@
       "includedAtRuntime": true,
       "dataAsset": false,
       "sha256": {
-        "engine/_framework/SharpChartEngine.jeuiquxyk5.wasm": "9573dbed78a70abceb2b22c49a6e91581bcf1b1b07c900d03358581aedfe0b6b"
+        "engine/_framework/SharpChartEngine.luero3xi34.wasm": "13e8c0f60002b503b06dc4860a135fe32f2556056a15f40bd2c687734babd255"
       },
       "liveArtifacts": [
         {
@@ -83,7 +83,7 @@
         "engine-core/SharpTransitCore.csproj"
       ],
       "distributedArtifact": [
-        "engine/_framework/SharpTransitCore.qwli9xpeh3.wasm"
+        "engine/_framework/SharpTransitCore.jqkirvjrkm.wasm"
       ],
       "noticeLocation": [
         "engine/THIRD_PARTY_NOTICES.md"
@@ -92,7 +92,7 @@
       "includedAtRuntime": true,
       "dataAsset": false,
       "sha256": {
-        "engine/_framework/SharpTransitCore.qwli9xpeh3.wasm": "6a1c80ba1f19c8644acd46f00240e7baa419a74759b9f73861d60a9cb564dbc2"
+        "engine/_framework/SharpTransitCore.jqkirvjrkm.wasm": "85ff99cb2b07e43dedc306d90889dca2e35a68bbde088a0afd3c1e78e5f2fd17"
       },
       "liveArtifacts": [
         {
@@ -191,7 +191,7 @@
         "third_party/SharpAstrology.SwissEph/"
       ],
       "distributedArtifact": [
-        "engine/_framework/SharpAstrology.SwissEph.h1v7mqqujq.wasm"
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm"
       ],
       "noticeLocation": [
         "engine/licenses/SharpAstrology.SwissEph-AGPL-3.0.txt",
@@ -201,7 +201,7 @@
       "includedAtRuntime": true,
       "dataAsset": false,
       "sha256": {
-        "engine/_framework/SharpAstrology.SwissEph.h1v7mqqujq.wasm": "e5366cf80c2b47401c4776fe96fb7a5f4bc4ae15cedfc041f1bc38e0f71bd697"
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm": "5a086e5fd17874563c485c6fbf246d2dbc5e98fb55e2d63ef703be612061be90"
       },
       "liveArtifacts": [
         {
@@ -228,7 +228,7 @@
         "third_party/SharpAstrology.SwissEph/patch-manifest.json"
       ],
       "distributedArtifact": [
-        "engine/_framework/SharpAstrology.SwissEph.h1v7mqqujq.wasm"
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm"
       ],
       "noticeLocation": [
         "engine/THIRD_PARTY_NOTICES.md"
@@ -237,7 +237,7 @@
       "includedAtRuntime": true,
       "dataAsset": false,
       "sha256": {
-        "engine/_framework/SharpAstrology.SwissEph.h1v7mqqujq.wasm": "e5366cf80c2b47401c4776fe96fb7a5f4bc4ae15cedfc041f1bc38e0f71bd697"
+        "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm": "5a086e5fd17874563c485c6fbf246d2dbc5e98fb55e2d63ef703be612061be90"
       },
       "liveArtifacts": [
         {

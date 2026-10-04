@@ -4,7 +4,7 @@
   "releaseCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
   "calculationBaselineCommit": "4cc718f2ba6aaadc74b3c4036a0191fa9791d657",
   "licensingMetadataCommit": null,
-  "licensingMetadataRef": "chore/release-licensing-cleanup-v1",
+  "licensingMetadataRef": "integration/engine-license-v1",
   "licensingMetadataCommitResolution": "git log -1 --format=%H -- docs/release-licensing-v1/production-identity.json; self-referential commit SHA cannot be embedded in its own commit",
   "engineSignature": "59b90e629033cc7faf95",
   "humanDesignVersion": "1.2.0",
