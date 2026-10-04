@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-04T05:18:56.065312+00:00",
+  "checkedAt": "2026-10-04T06:28:50.915394+00:00",
   "liveUrl": "https://td-ohd.netlify.app",
   "http": "public GET without cookies/session/auth",
   "liveArtifacts": [
@@ -207,33 +207,33 @@
     },
     {
       "virtualPath": "SharpAstrology.SwissEph.wasm",
-      "name": "SharpAstrology.SwissEph.6x7xeli87a.wasm",
-      "hash": "sha256-WghuX9F4dFY8SFxvvyRtLbxemPtV4tY+9wO+YSBhvpA=",
+      "name": "SharpAstrology.SwissEph.aez48hs5xc.wasm",
+      "hash": "sha256-MngT7GexIrB2bML/XyM79YP9ehIZH0DHXjgPm/db1Ss=",
       "cache": "force-cache",
       "resourceGroup": "assembly",
-      "path": "engine/_framework/SharpAstrology.SwissEph.6x7xeli87a.wasm",
-      "sha256": "5a086e5fd17874563c485c6fbf246d2dbc5e98fb55e2d63ef703be612061be90",
+      "path": "engine/_framework/SharpAstrology.SwissEph.aez48hs5xc.wasm",
+      "sha256": "327813ec67b122b0766cc2ff5f233bf583fd7a12191f40c75e380f9bf75bd52b",
       "bytes": 406805
     },
     {
       "virtualPath": "SharpChartEngine.wasm",
-      "name": "SharpChartEngine.luero3xi34.wasm",
-      "hash": "sha256-E+jA9gACtQOwbcSGChNf4y8lVgVqFfQL0saHc0ur0lU=",
+      "name": "SharpChartEngine.tio4o4bwph.wasm",
+      "hash": "sha256-Ja3fk4o9gXxZQVLfsxCuNPaw4cx6byiuZ3XSzdc7rHw=",
       "cache": "force-cache",
       "resourceGroup": "assembly",
-      "path": "engine/_framework/SharpChartEngine.luero3xi34.wasm",
-      "sha256": "13e8c0f60002b503b06dc4860a135fe32f2556056a15f40bd2c687734babd255",
+      "path": "engine/_framework/SharpChartEngine.tio4o4bwph.wasm",
+      "sha256": "25addf938a3d817c594152dfb310ae34f6b0e1cc7a6f28ae6775d2cdd73bac7c",
       "bytes": 16149
     },
     {
       "virtualPath": "SharpTransitCore.wasm",
-      "name": "SharpTransitCore.jqkirvjrkm.wasm",
-      "hash": "sha256-hf+ZyysH5D3twwbZCIncouNaaLveCIoK/TweeOXy/Rc=",
+      "name": "SharpTransitCore.ywf23bow0c.wasm",
+      "hash": "sha256-EixlGPP4gXl1kHsC5VvQe5BPnNo0B4mHOqVSsakqas0=",
       "cache": "force-cache",
       "resourceGroup": "assembly",
-      "path": "engine/_framework/SharpTransitCore.jqkirvjrkm.wasm",
-      "sha256": "85ff99cb2b07e43dedc306d90889dca2e35a68bbde088a0afd3c1e78e5f2fd17",
-      "bytes": 8981
+      "path": "engine/_framework/SharpTransitCore.ywf23bow0c.wasm",
+      "sha256": "122c6518f3f8817975907b02e55bd07b904f9cda340789873aa552b1a92a6acd",
+      "bytes": 9493
     },
     {
       "virtualPath": "System.Collections.Concurrent.wasm",
