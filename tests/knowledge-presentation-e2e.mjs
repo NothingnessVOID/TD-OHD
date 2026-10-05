@@ -54,14 +54,14 @@ try {
       assert.equal(geometry.fits,true,`${width}/${locale}/${name}: horizontal overflow`);
       assert.equal(geometry.titleAvoidsClose,true,`${width}/${locale}/${name}: close overlap`);
       assert.equal(geometry.titleFont,'22px');
-      assert.deepEqual(geometry.headingOrder.slice(0,2),['detail-label','detail-name']);assert.ok(geometry.headingOrder.some(cls=>cls.includes('knowledge-summary-callout')));
+      assert.deepEqual(geometry.headingOrder.slice(0,2),['detail-label','detail-name']);assert.equal(geometry.headingOrder.some(cls=>cls.includes('knowledge-summary-callout')),name!=='cross');
       if (['determination','environment','perspective','motivation'].includes(name)) {
         assert.equal(await article.locator('.knowledge-context').count(),1);
         assert.equal(await article.locator('.knowledge-type-properties').count(),0);
         assert.ok(await article.locator('.knowledge-context-badges').count());
         const palette = await article.evaluate(node => {
           const css = getComputedStyle(node), direction = getComputedStyle(node.querySelector('.knowledge-direction'));
-          const sample = document.createElement('span');sample.style.color = `var(--hd-${node.dataset.source})`;node.append(sample);
+          const sample = document.createElement('span');sample.style.color = 'var(--accent)';node.append(sample);
           const expected = getComputedStyle(sample).color;sample.remove();
           return {label:getComputedStyle(node.querySelector('.detail-label')).color,direction:direction.color,expected};
         });
@@ -76,7 +76,7 @@ try {
       await page.locator('#gate-detail .knowledge-library-link').click();
       const library = page.locator('#reference-detail .knowledge-detail'); await library.waitFor();
       if (name !== 'cross') assert.equal(await bodyWithoutContext(library),body);
-      else assert.equal(await library.locator('.knowledge-body').innerHTML(),reading);
+      else { assert.equal(await library.locator('.knowledge-jump-card').count(),0);assert.equal(await library.locator('.knowledge-summary-callout').count(),1); }
       assert.equal(await library.locator('.knowledge-context,.knowledge-facts,.knowledge-yours').count(),0);
       assert.equal(await library.locator('.detail-name').evaluate(n=>getComputedStyle(n).fontSize),'22px');
       const fit = await library.evaluate(n=>({fits:n.scrollWidth<=n.clientWidth+1,containerFits:n.parentElement.scrollWidth<=n.parentElement.clientWidth+1}));

@@ -222,7 +222,29 @@ export default {
     "detail": "1 爻需要把基礎弄清楚，會研究、調查並深入理解一件事的底層結構，直到自己有足夠穩固的立足點。\n\n3 爻則必須和現實直接碰撞，透過嘗試、失敗、調整再繼續，才真正知道什麼行得通、什麼行不通。\n\n1/3 因此不會只停在理論。研究提供起點，實際經驗持續修正理解，最後形成真正經過現實檢驗的知識。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 1,
+          "start": 0,
+          "end": 48
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 3,
+          "start": 48,
+          "end": 93
+        },
+        {
+          "kind": "prose",
+          "start": 93,
+          "end": 143
+        }
+      ]
     }
   },
   "profile.1/4": {
@@ -230,7 +252,29 @@ export default {
     "detail": "1 爻需要深入研究，建立自己真正信得過的基礎。4 爻的機會與影響力則主要透過朋友、熟人與既有關係網絡展開。\n\n因此 1/4 常是先把內容弄深、弄穩，再透過已經有信任的人把知識、觀點與能力帶出去。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 1,
+          "start": 0,
+          "end": 23
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 4,
+          "start": 23,
+          "end": 53
+        },
+        {
+          "kind": "prose",
+          "start": 53,
+          "end": 97
+        }
+      ]
     }
   },
   "profile.2/4": {
@@ -239,11 +283,25 @@ export default {
     "presentation": {
       "kind": "profile",
       "geometry": "右角度 · 個人命運",
-      "layout": "process",
+      "layout": "lines",
       "blocks": [
         {
-          "kind": "prose",
+          "kind": "line",
+          "index": 0,
+          "line": 2,
           "start": 0,
+          "end": 62
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 4,
+          "start": 62,
+          "end": 92
+        },
+        {
+          "kind": "prose",
+          "start": 92,
           "end": 94
         },
         {
@@ -287,7 +345,29 @@ export default {
     "detail": "2 爻需要自己的空間，也帶著不一定需要刻意訓練才會出現的自然能力。\n\n5 爻則帶有明顯的投射場。別人可能先假定 2/5 能處理問題、提出辦法，甚至在關鍵時刻救場。\n\n當期待和真實能力吻合時，2/5 可以產生很強的實際影響；當投射超過真正能做到的範圍，誤解與失望也容易跟著出現。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 2,
+          "start": 0,
+          "end": 35
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 5,
+          "start": 35,
+          "end": 81
+        },
+        {
+          "kind": "prose",
+          "start": 81,
+          "end": 138
+        }
+      ]
     }
   },
   "profile.3/5": {
@@ -295,7 +375,29 @@ export default {
     "detail": "3 爻透過實際嘗試學習，會碰撞、失敗、調整，再繼續測試。\n\n5 爻則容易被期待提供可用的答案。3/5 的實際價值，常常正來自「自己已經踩過這個坑」。\n\n當試錯累積成有效方法，原本屬於個人的經驗就能被整理成其他人也能使用的解方。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 3,
+          "start": 0,
+          "end": 30
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 5,
+          "start": 30,
+          "end": 74
+        },
+        {
+          "kind": "prose",
+          "start": 74,
+          "end": 113
+        }
+      ]
     }
   },
   "profile.3/6": {
@@ -304,45 +406,61 @@ export default {
     "presentation": {
       "kind": "profile",
       "geometry": "右角度 · 個人命運",
-      "layout": "timeline",
+      "layout": "lines",
       "blocks": [
         {
-          "kind": "prose",
+          "kind": "line",
+          "index": 0,
+          "line": 3,
           "start": 0,
-          "end": 32
+          "end": 14
         },
         {
-          "kind": "timeline",
-          "stages": [
+          "kind": "line",
+          "index": 1,
+          "line": 6,
+          "start": 14,
+          "end": 118,
+          "blocks": [
             {
-              "label": {
-                "start": 32,
-                "end": 42
-              },
-              "body": {
-                "start": 42,
-                "end": 56
-              }
+              "kind": "prose",
+              "start": 14,
+              "end": 32
             },
             {
-              "label": {
-                "start": 56,
-                "end": 70
-              },
-              "body": {
-                "start": 70,
-                "end": 91
-              }
-            },
-            {
-              "label": {
-                "start": 91,
-                "end": 100
-              },
-              "body": {
-                "start": 100,
-                "end": 118
-              }
+              "kind": "timeline",
+              "stages": [
+                {
+                  "label": {
+                    "start": 32,
+                    "end": 42
+                  },
+                  "body": {
+                    "start": 42,
+                    "end": 56
+                  }
+                },
+                {
+                  "label": {
+                    "start": 56,
+                    "end": 70
+                  },
+                  "body": {
+                    "start": 70,
+                    "end": 91
+                  }
+                },
+                {
+                  "label": {
+                    "start": 91,
+                    "end": 100
+                  },
+                  "body": {
+                    "start": 100,
+                    "end": 118
+                  }
+                }
+              ]
             }
           ]
         },
@@ -359,7 +477,29 @@ export default {
     "detail": "4 爻的機會與影響力主要來自朋友、熟人與穩定的人際網絡。\n\n6 爻則會經過體驗、拉開距離觀察，最後走向實際活出自身理解的三階段歷程。\n\n因此 4/6 的影響力常是在長期關係中慢慢累積。別人不只聽他說什麼，也會看他長期怎麼生活、怎麼選擇，以及是否真的活出了自己的理解。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 4,
+          "start": 0,
+          "end": 30
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 6,
+          "start": 30,
+          "end": 66
+        },
+        {
+          "kind": "prose",
+          "start": 66,
+          "end": 133
+        }
+      ]
     }
   },
   "profile.4/1": {
@@ -367,7 +507,29 @@ export default {
     "detail": "4 爻透過信任關係與熟悉網絡產生影響；1 爻則需要建立可靠的知識基礎。\n\n4/1 是唯一的並列人生角色，位在右角度與左角度之間。它的幾何稱為固定宿命：當基礎與方向成形之後，人生通常沿著相對固定的軌道展開，並透過熟悉的人際網絡把這份基礎帶出去。",
     "presentation": {
       "kind": "profile",
-      "geometry": "並列 · 固定宿命"
+      "geometry": "並列 · 固定宿命",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 4,
+          "start": 0,
+          "end": 19
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 1,
+          "start": 19,
+          "end": 35
+        },
+        {
+          "kind": "prose",
+          "start": 35,
+          "end": 121
+        }
+      ]
     }
   },
   "profile.5/1": {
@@ -375,7 +537,29 @@ export default {
     "detail": "5 爻容易承接別人「你應該能處理」的投射，也有把解方帶向更廣泛人群的潛力。\n\n1 爻提供深入調查與穩固基礎。對 5/1 而言，影響力不只來自別人期待他解決問題，而是來自真的把問題研究透，並提出能在現實中運作的方式。",
     "presentation": {
       "kind": "profile",
-      "geometry": "左角度 · 超個人業力"
+      "geometry": "左角度 · 超個人業力",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 5,
+          "start": 0,
+          "end": 39
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 1,
+          "start": 39,
+          "end": 107
+        },
+        {
+          "kind": "prose",
+          "start": 107,
+          "end": 107
+        }
+      ]
     }
   },
   "profile.5/2": {
@@ -383,7 +567,29 @@ export default {
     "detail": "5 爻使別人很容易先期待 5/2 是「可以解決問題的人」，2 爻則需要自己的空間，也帶著自然能力。\n\n因此本人可能想維持自己的節奏，外界卻會因為看見某種能力而把問題與期待帶過來。\n\n當投射與實際能力吻合時，5/2 可以有很大的實際影響；不吻合時，投射本身就可能變成誤解來源。",
     "presentation": {
       "kind": "profile",
-      "geometry": "左角度 · 超個人業力"
+      "geometry": "左角度 · 超個人業力",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 5,
+          "start": 0,
+          "end": 29
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 2,
+          "start": 29,
+          "end": 49
+        },
+        {
+          "kind": "prose",
+          "start": 49,
+          "end": 137
+        }
+      ]
     }
   },
   "profile.6/2": {
@@ -391,7 +597,29 @@ export default {
     "detail": "6 爻經歷體驗、觀察與最後的實際體現；2 爻則帶著天然能力、獨處需求與被別人召喚的主題。\n\n6/2 不需要刻意塑造「典範」形象。隨著生命經驗成熟，自然能力與更完整的觀察視角會結合，最後由生活本身成為別人看得見的例子。",
     "presentation": {
       "kind": "profile",
-      "geometry": "左角度 · 超個人業力"
+      "geometry": "左角度 · 超個人業力",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 6,
+          "start": 0,
+          "end": 19
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 2,
+          "start": 19,
+          "end": 44
+        },
+        {
+          "kind": "prose",
+          "start": 44,
+          "end": 108
+        }
+      ]
     }
   },
   "profile.6/3": {
@@ -399,7 +627,29 @@ export default {
     "detail": "6 爻有三階段成熟歷程，而 3 爻始終透過實際試驗與調整來學習。\n\n這使 6/3 和現實經驗的關係特別深。早期可能有很密集的嘗試、改變、失敗與重新開始；之後雖然逐漸增加觀察距離，3 爻仍會讓學習持續和現實發生接觸。\n\n最後形成的智慧，不只是理論，而是真正知道哪些方法能運作、哪些不能，以及理論碰到生活時會發生什麼。",
     "presentation": {
       "kind": "profile",
-      "geometry": "左角度 · 超個人業力"
+      "geometry": "左角度 · 超個人業力",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 6,
+          "start": 0,
+          "end": 12
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 3,
+          "start": 12,
+          "end": 32
+        },
+        {
+          "kind": "prose",
+          "start": 32,
+          "end": 157
+        }
+      ]
     }
   },
   "cross.introduction": {

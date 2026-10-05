@@ -51,7 +51,7 @@ const cognitionIds = ['smell', 'taste', 'outerVision', 'innerVision', 'feeling',
 for (const [index, id] of cognitionIds.entries()) foundationRecords.push(entry('cognition', id,
   ref(() => cognition(cognitionNames[index]), variableFile, `cognitionNames[${index}]`, 'td-ohd-variable')));
 
-foundationRecords.push(entry('cross','introduction',ref(()=>t('Incarnation Cross'),'src/locales/ui-contexts.json','Incarnation Cross','td-ohd-presentation'),reviewedRef('cross.introduction','summary'),{detail:reviewedRef('cross.introduction','detail'),reviewStatus:'reviewed',version:2}));
+foundationRecords.push(entry('cross','introduction',ref(()=>t('Incarnation Cross Basics'),'src/locales/ui-contexts.json','Incarnation Cross Basics','td-ohd-presentation'),reviewedRef('cross.introduction','summary'),{detail:reviewedRef('cross.introduction','detail'),reviewStatus:'reviewed',version:2}));
 
 // Dynamic identity, not a generated set of empty Cross articles.
 export function crossRecord(query) {
@@ -60,7 +60,7 @@ export function crossRecord(query) {
   const cross = query.cross;
   if (cross?.rawId && cross.rawId !== rawId) throw new TypeError('Cross identity mismatch');
   return entry('cross', rawId,
-    ref(() => cross ? crossName(cross) : rawId, 'src/lib/chart-engine/sharp-contract.js', 'incarnationCross', 'td-ohd-presentation'), reviewedRef('cross.introduction','summary'), {
+    ref(() => cross ? crossName(cross) : rawId, 'src/lib/chart-engine/sharp-contract.js', 'incarnationCross', 'td-ohd-presentation'), null, {
       identitySource: ref(null, 'engine-core/TransitCore.cs', 'incarnationCross', 'sharp-identity'),
       properties: () => ({ rawId, introductionKnowledgeId:'hd.cross.introduction', ...(cross ? { gates: [...cross.gates], angle: cross.angle } : {}) }),
       propertySource: ref(null, 'src/lib/chart-engine/sharp-contract.js', 'derived.cross', 'td-ohd-presentation')

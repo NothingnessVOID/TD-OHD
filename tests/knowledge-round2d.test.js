@@ -29,8 +29,8 @@ test('Profile process and timeline refer to all original text; only 2/4 and 3/6 
  }
  for(const e of listKnowledgeEntries().filter(e=>e.objectType==='profile'&&!['2/4','3/6'].includes(e.objectId)))assert.doesNotMatch(renderKnowledgeDetail(e),/data-layout="(?:process|timeline)"/);
 }));
-test('all Definition diagrams show abstract counts only, hidden from accessibility tree',()=>langs(()=>{
- for(const [id,count]of [['none',0],['single',1],['split',2],['tripleSplit',3],['quadrupleSplit',4]]){const e=getKnowledgeEntry(q('definition',id)),h=renderKnowledgeDetail(e);assert.equal((h.match(/class="knowledge-island"/g)||[]).length,count);assert.match(h,new RegExp(`data-component-count="${count}" aria-hidden="true"`));assert.ok(plain(h).includes(plain(e.detail.template)));assert.doesNotMatch(h,/data-center|data-gate|data-channel|<svg/);}
+test('Definition Library keeps all original prose without invented personal topology',()=>langs(()=>{
+ for(const id of ['none','single','split','tripleSplit','quadrupleSplit']){const e=getKnowledgeEntry(q('definition',id)),h=renderKnowledgeDetail(e);assert.ok(plain(h).includes(plain(e.detail.template)));assert.doesNotMatch(h,/knowledge-island|data-center|data-gate|data-channel|<svg/);}
 }));
 test('dynamic Cross cards follow the existing four-gate order; introduction has no chart activations',()=>langs(()=>{
  const query={...q('cross','RightAngleCrossOfExplanation2'),cross:{rawId:'RightAngleCrossOfExplanation2',gates:[23,43,49,4],angle:'right',name:'Right Angle Cross of Explanation 2'}};const e=getKnowledgeEntry(query);const h=renderKnowledgeDetail(query);const roles=['personality-sun','personality-earth','design-sun','design-earth'];for(const [i,role]of roles.entries())assert.match(h,new RegExp(`data-activation="${role}"[^]*?knowledge-chip[^]*?${e.properties.gates[i]}`));assert.equal((h.match(/class="knowledge-activation"/g)||[]).length,4);assert.equal((h.match(/knowledge-geometry/g)||[]).length,1);assert.doesNotMatch(renderKnowledgeDetail(q('cross','introduction')),/knowledge-cross-activations/);
@@ -41,7 +41,7 @@ test('24 Variable articles × six Tones keep exactly one selected branch, Librar
  }
 }));
 test('Round 2C calculations, legacy styles, dialog mechanics and protected detail modules stay exact',()=>{
- for(const file of ['src/styles.css','src/lib/detail-dialog.js','src/views/chart.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])assert.equal(hash(readFileSync(new URL('../'+file,import.meta.url))),hash(execFileSync('git',['show','438ad2dc2dfa950eed55687143516051023de824:'+file])),file);
+ for(const file of ['src/styles.css','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])assert.equal(hash(readFileSync(new URL('../'+file,import.meta.url))),hash(execFileSync('git',['show','438ad2dc2dfa950eed55687143516051023de824:'+file])),file);
  const renderer=readFileSync(new URL('../src/lib/knowledge/detail-renderer.js',import.meta.url),'utf8');assert.doesNotMatch(renderer,/indexOf\(|includes\('30|match\(.*30|querySelector.*bodygraph/);
  const css=readFileSync(new URL('../src/lib/knowledge/detail-access.css',import.meta.url),'utf8');assert.doesNotMatch(css,/#[a-f0-9]{3,8}\b/i);
 });

@@ -52,7 +52,7 @@ test('missing content is explicit and neither slot fabricates the other',()=>{
 test('real Cross enums have dynamic identities, structural properties, and no manufactured prose',()=>{
  for(const sample of fixtures.samples){const c=adaptSharpChart(sample.raw,{timezone:0});const e=getKnowledgeEntry(query('cross',c.incarnationCross.rawId,{cross:c.incarnationCross}));
   assert.equal(e.id,`hd.cross.${sample.raw.incarnationCross}`);assert.equal(e.name,crossName(c.incarnationCross));
-  assert.deepEqual(e.properties.gates,c.incarnationCross.gates);assert.ok(e.summary);assert.equal(e.detail,null);
+  assert.deepEqual(e.properties.gates,c.incarnationCross.gates);assert.equal(e.summary,null);assert.equal(e.detail,null);
  }
  assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='cross').length,1);
  assert.throws(()=>getKnowledgeEntry(query('cross',fixtures.samples[0].raw.incarnationCross,{cross:{rawId:'Different'}})),/mismatch/);

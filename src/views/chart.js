@@ -273,7 +273,7 @@ function wireKnowledgeTargets(container, chart) {
     target.setAttribute('role', 'button');
     target.tabIndex = 0;
     target.classList.add('knowledge-trigger');
-    const open = () => { target.focus({ preventScroll: true }); openKnowledgeDetail(query, kind ? { variable: chart.variable[kind] } : null); };
+    const open = () => { target.focus({ preventScroll: true }); openKnowledgeDetail(query, kind ? { variable: chart.variable[kind] } : query.objectType === 'definition' ? { definitionComponents: chart.definitionComponents } : null); };
     target.addEventListener('click', open);
     target.addEventListener('keydown', event => {
       if (event.key !== 'Enter' && event.key !== ' ') return;

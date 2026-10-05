@@ -1,5 +1,5 @@
 /** Knowledge owns its selection; BodyGraph history/context remain in chart.js. */
-import { getKnowledgeEntry } from './registry.js';
+import { getKnowledgeEntry, getKnowledgeEntryById } from './registry.js';
 import { renderKnowledgeDetail } from './detail-renderer.js';
 import { openDetailDialog, prepareDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../detail-dialog.js';
 import { t } from '../i18n.js';
@@ -9,6 +9,7 @@ let currentQuery = null;
 let currentContext = null;
 let currentLibraryId = null;
 let currentTrigger = null;
+const knowledgeDetailHistory = [];
 const clearState = () => {
   // Locale redraw replaces chart cards. Restore the equivalent new trigger if needed.
   let replacement = null;
@@ -18,14 +19,30 @@ const clearState = () => {
       : `[data-knowledge-object="${currentTrigger.dataset.knowledgeObject}"]`;
     replacement = document.querySelector(selector);
   }
+  knowledgeDetailHistory.length = 0;
   currentQuery = null; currentContext = null; currentLibraryId = null; currentTrigger = null;
   replacement?.focus({ preventScroll: true });
 };
-export const getKnowledgeDetailState = () => currentQuery ? { query: currentQuery, context: currentContext, libraryId: currentLibraryId } : null;
+export const getKnowledgeDetailState = () => currentQuery ? { query: currentQuery, context: currentContext, libraryId: currentLibraryId, historyDepth: knowledgeDetailHistory.length } : null;
 
 function render() {
   const detail = document.getElementById('gate-detail');
-  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons"><span></span><button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
+  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons">${knowledgeDetailHistory.length ? `<button type="button" class="knowledge-back">← ${esc(t('Back'))}</button>` : '<span></span>'}<button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable, definitionComponents: currentContext?.definitionComponents })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
+  detail.querySelector('.knowledge-back')?.addEventListener('click', () => {
+    const previous = knowledgeDetailHistory.pop();
+    currentQuery = previous.query; currentContext = previous.context; currentLibraryId = previous.libraryId;
+    render();
+    detail.querySelector('.knowledge-jump-card')?.focus({preventScroll:true});
+  });
+  detail.querySelector('[data-knowledge-jump]')?.addEventListener('click', event => {
+    const entry = getKnowledgeEntryById(event.currentTarget.dataset.knowledgeJump);
+    if (!entry) return;
+    knowledgeDetailHistory.push({query:currentQuery,context:currentContext,libraryId:currentLibraryId});
+    currentQuery = {objectType:entry.objectType,objectId:entry.objectId};
+    currentContext = null; currentLibraryId = entry.id;
+    render();
+    detail.querySelector('.knowledge-back')?.focus({preventScroll:true});
+  });
   detail.querySelector('.knowledge-library-link').addEventListener('click', () => {
     const id = currentLibraryId;
     closeDetailDialog();
@@ -40,9 +57,10 @@ export function openKnowledgeDetail(query, context = null) {
   if (!entry || entry.objectType === 'cognition') return false;
   prepareDetailDialog(document.getElementById('gate-detail'), 'knowledge');
   if (!currentQuery) currentTrigger = document.activeElement;
+  knowledgeDetailHistory.length = 0;
   currentQuery = query;
   currentContext = context;
-  currentLibraryId = entry.objectType === 'cross' ? 'hd.cross.introduction' : entry.id;
+  currentLibraryId = entry.properties.introductionKnowledgeId ?? entry.id;
   render();
   return true;
 }

@@ -13,14 +13,7 @@
 .knowledge-type-properties dt, .knowledge-secondary { color: var(--text-secondary); }
 .knowledge-type-properties dd { margin: 0; overflow-wrap: anywhere; }
 .knowledge-secondary { font-size: 0.875rem; line-height: 1.7; margin: 0 0 16px; }
-.knowledge-detail[data-source="design"] { --knowledge-accent: var(--hd-design); }
-.knowledge-detail[data-source="personality"] { --knowledge-accent: var(--hd-personality); }
-.knowledge-detail[data-knowledge-id="hd.type.generator"] { --knowledge-accent: var(--hd-type-generator); }
-.knowledge-detail[data-knowledge-id="hd.type.manifestingGenerator"] { --knowledge-accent: var(--hd-type-manifesting-generator); }
-.knowledge-detail[data-knowledge-id="hd.type.manifestor"] { --knowledge-accent: var(--hd-type-manifestor); }
-.knowledge-detail[data-knowledge-id="hd.type.projector"] { --knowledge-accent: var(--hd-type-projector); }
-.knowledge-detail[data-knowledge-id="hd.type.reflector"] { --knowledge-accent: var(--hd-type-reflector); }
-.knowledge-detail .detail-label, .knowledge-direction { color: var(--knowledge-accent, var(--accent)); }
+.knowledge-detail .detail-label, .knowledge-direction { color: var(--accent); }
 .knowledge-body p { font-size: 0.875rem; line-height: 1.8; margin: 0 0 14px; }
 .knowledge-term { font-weight: 600; }
 .knowledge-context { font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; }
@@ -28,11 +21,11 @@
 .knowledge-result-summary { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .knowledge-section h3 { font-size: 0.9375rem; line-height: 1.6; margin: 20px 0 10px; }
-.knowledge-yours { display: inline-block; margin-inline-start: 10px; font-size: 0.75rem; font-weight: 400; color: var(--knowledge-accent, var(--accent)); }
+.knowledge-yours { display: inline-block; margin-inline-start: 10px; font-size: 0.75rem; font-weight: 400; color: var(--accent); }
 .knowledge-value { font-weight: 600; }
 
 /* Knowledge uses the existing detail palette; no old BodyGraph business classes. */
-.knowledge-detail { --knowledge-color: var(--knowledge-accent, var(--accent)); }
+.knowledge-detail { --knowledge-color: var(--accent); }
 .knowledge-summary-callout { margin: 18px 0 22px; padding: 14px 16px; background: var(--bg-sunken); border-inline-start: 3px solid var(--knowledge-color); border-radius: var(--radius); }
 .knowledge-summary-label { margin-bottom: 7px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--knowledge-color); }
 .knowledge-summary-callout .knowledge-summary { margin: 0; font-size: 14px; line-height: 1.75; }
@@ -62,9 +55,6 @@
 .knowledge-timeline-stage { position: relative; padding: 0 0 20px 8px; }
 .knowledge-timeline-stage::before { content: ''; position: absolute; inset-inline-start: -23px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--knowledge-color); }
 .knowledge-timeline-stage h3 { font-size: 13px; line-height: 1.6; margin: 0 0 7px; color: var(--knowledge-color); }
-.knowledge-structure { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; padding: 20px 16px; margin-bottom: 22px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: var(--radius); }
-.knowledge-island { width: 36px; height: 36px; border: 2px solid var(--knowledge-color); border-radius: 50%; background: var(--accent-soft); }
-.knowledge-empty-structure { width: 36px; height: 36px; border: 2px dashed var(--border); border-radius: 50%; }
 .knowledge-cross-activations { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin: 18px 0; }
 .knowledge-activation { min-width: 0; padding: 12px; background: var(--bg-sunken); border: 1px solid var(--border-subtle); border-radius: var(--radius); }
 .knowledge-activation-label { color: var(--text-secondary); font-size: 11px; line-height: 1.6; margin-bottom: 8px; overflow-wrap: anywhere; }
@@ -84,3 +74,23 @@
   .knowledge-process { flex-direction: column; }
   .knowledge-process-separator { transform: rotate(90deg); }
 }
+
+/* Round 2E: product-theme accents and actual center membership display. */
+.knowledge-profile-identity, .knowledge-definition-islands { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin: 18px 0 22px; }
+.knowledge-line-identity { min-width: 0; padding: 12px 14px; border: 1px solid var(--border-subtle); border-radius: var(--radius); background: var(--bg-sunken); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.knowledge-line-identity strong { font-size: 14px; overflow-wrap: anywhere; }
+.knowledge-line-badge { color: var(--knowledge-color); background: var(--accent-soft); }
+.knowledge-line-section > .knowledge-line-badge { margin-bottom: 8px; }
+.knowledge-island-card, .knowledge-no-definition { min-width: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius); background: var(--bg-sunken); padding: 14px; }
+.knowledge-island-card h3 { margin: 0; font-size: 13px; color: var(--knowledge-color); }
+.knowledge-definition-islands[data-component-count="1"] { grid-template-columns: minmax(0,1fr); }
+.knowledge-mini-centers { display: block; width: 100%; max-width: 150px; height: auto; margin: 12px auto; }
+.knowledge-mini-centers path { fill: var(--bg-elevated); stroke: var(--border-subtle); stroke-width: 8; }
+.knowledge-mini-centers path[data-highlighted="true"] { fill: var(--accent-soft); stroke: var(--accent); }
+.knowledge-center-names { color: var(--text-secondary); }
+.knowledge-no-definition { grid-column: 1 / -1; }
+.knowledge-jump-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 18px; margin: 18px 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-sunken); color: var(--text); text-align: start; cursor: pointer; }
+.knowledge-jump-card:hover { border-color: var(--knowledge-color); background: var(--accent-soft); }
+.knowledge-jump-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@container (max-width: 460px) { .knowledge-definition-islands { grid-template-columns: minmax(0,1fr); } }
+@media (max-width: 640px) { .knowledge-definition-islands { grid-template-columns: minmax(0,1fr); } }

@@ -222,7 +222,29 @@ export default {
     "detail": "The 1st Line needs a reliable foundation. It investigates, studies, and looks underneath a subject until there is enough understanding to stand on.\n\nThe 3rd Line learns through direct contact with reality. It experiments, meets what works and what does not, adapts, and tries again.\n\nTogether, the 1/3 does not stop at theory. Investigation builds the starting point; lived experimentation tests and revises it until the knowledge is grounded in what has actually been experienced.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 1,
+          "start": 0,
+          "end": 149
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 3,
+          "start": 149,
+          "end": 282
+        },
+        {
+          "kind": "prose",
+          "start": 282,
+          "end": 481
+        }
+      ]
     }
   },
   "profile.1/4": {
@@ -230,7 +252,29 @@ export default {
     "detail": "The 1st Line investigates until it has something dependable to stand on. The 4th Line influences through friendship, trust, and existing social networks.\n\nThe 1/4 therefore tends to build depth first and externalize it through people who already know and trust them. The foundation determines what can be shared; the network determines where that influence can travel.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 1,
+          "start": 0,
+          "end": 73
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 4,
+          "start": 73,
+          "end": 153
+        },
+        {
+          "kind": "prose",
+          "start": 153,
+          "end": 368
+        }
+      ]
     }
   },
   "profile.2/4": {
@@ -239,11 +283,25 @@ export default {
     "presentation": {
       "kind": "profile",
       "geometry": "Right Angle · Personal Destiny",
-      "layout": "process",
+      "layout": "lines",
       "blocks": [
         {
-          "kind": "prose",
+          "kind": "line",
+          "index": 0,
+          "line": 2,
           "start": 0,
+          "end": 216
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 4,
+          "start": 216,
+          "end": 385
+        },
+        {
+          "kind": "prose",
+          "start": 385,
           "end": 387
         },
         {
@@ -287,7 +345,29 @@ export default {
     "detail": "The 2nd Line needs privacy and carries natural talent that may be more visible to others than to itself.\n\nThe 5th Line carries a projection field. Others may expect the 2/5 to solve a problem, provide a practical answer, or step in when something needs to be handled.\n\nWhen the projected expectation matches the actual ability, the 2/5 can have strong practical impact. When the projection exceeds what is really there, misunderstanding and disappointment can follow.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 2,
+          "start": 0,
+          "end": 106
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 5,
+          "start": 106,
+          "end": 267
+        },
+        {
+          "kind": "prose",
+          "start": 267,
+          "end": 467
+        }
+      ]
     }
   },
   "profile.3/5": {
@@ -295,7 +375,29 @@ export default {
     "detail": "The 3rd Line learns by trying, discovering what fails, adapting, and testing again.\n\nThe 5th Line draws projections that it can provide a useful solution. This makes the 3/5 especially capable of turning hard-won experience into something practical.\n\nIts value often comes from having already encountered the problem in reality. When that experience produces a workable solution, it can be universalized beyond the original situation.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 3,
+          "start": 0,
+          "end": 85
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 5,
+          "start": 85,
+          "end": 249
+        },
+        {
+          "kind": "prose",
+          "start": 249,
+          "end": 434
+        }
+      ]
     }
   },
   "profile.3/6": {
@@ -304,45 +406,61 @@ export default {
     "presentation": {
       "kind": "profile",
       "geometry": "Right Angle · Personal Destiny",
-      "layout": "timeline",
+      "layout": "lines",
       "blocks": [
         {
-          "kind": "prose",
+          "kind": "line",
+          "index": 0,
+          "line": 3,
           "start": 0,
-          "end": 99
+          "end": 51
         },
         {
-          "kind": "timeline",
-          "stages": [
+          "kind": "line",
+          "index": 1,
+          "line": 6,
+          "start": 51,
+          "end": 364,
+          "blocks": [
             {
-              "label": {
-                "start": 99,
-                "end": 117
-              },
-              "body": {
-                "start": 118,
-                "end": 175
-              }
+              "kind": "prose",
+              "start": 51,
+              "end": 99
             },
             {
-              "label": {
-                "start": 176,
-                "end": 197
-              },
-              "body": {
-                "start": 198,
-                "end": 272
-              }
-            },
-            {
-              "label": {
-                "start": 273,
-                "end": 288
-              },
-              "body": {
-                "start": 289,
-                "end": 364
-              }
+              "kind": "timeline",
+              "stages": [
+                {
+                  "label": {
+                    "start": 99,
+                    "end": 117
+                  },
+                  "body": {
+                    "start": 118,
+                    "end": 175
+                  }
+                },
+                {
+                  "label": {
+                    "start": 176,
+                    "end": 197
+                  },
+                  "body": {
+                    "start": 198,
+                    "end": 272
+                  }
+                },
+                {
+                  "label": {
+                    "start": 273,
+                    "end": 288
+                  },
+                  "body": {
+                    "start": 289,
+                    "end": 364
+                  }
+                }
+              ]
             }
           ]
         },
@@ -359,7 +477,29 @@ export default {
     "detail": "The 4th Line builds opportunity and influence through friendship, trust, and stable networks.\n\nThe 6th Line changes perspective across its three life stages, moving from experience to observation and eventually to embodiment.\n\nFor the 4/6, influence tends to accumulate through long-standing relationships. Over time, people do not only hear what the 4/6 says; they also see how that person lives, chooses, and carries experience.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 4,
+          "start": 0,
+          "end": 95
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 6,
+          "start": 95,
+          "end": 225
+        },
+        {
+          "kind": "prose",
+          "start": 225,
+          "end": 430
+        }
+      ]
     }
   },
   "profile.4/1": {
@@ -367,7 +507,29 @@ export default {
     "detail": "The 4th Line influences through trusted relationships and familiar networks. The 1st Line needs a secure foundation of knowledge and understanding.\n\nThe 4/1 is the only Juxtaposition Profile, sitting between the Right and Left Angle geometries. Its trajectory is described as Fixed Fate: a more fixed direction built from a stable foundation and the network through which that foundation is expressed.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Juxtaposition · Fixed Fate"
+      "geometry": "Juxtaposition · Fixed Fate",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 4,
+          "start": 0,
+          "end": 77
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 1,
+          "start": 77,
+          "end": 147
+        },
+        {
+          "kind": "prose",
+          "start": 147,
+          "end": 401
+        }
+      ]
     }
   },
   "profile.5/1": {
@@ -375,7 +537,29 @@ export default {
     "detail": "The 5th Line attracts projections that it can solve problems and provide something broadly useful.\n\nThe 1st Line supplies the investigative foundation. The 5/1 is strongest when the promise of a solution is supported by real depth, research, and practical understanding.\n\nWhen the foundation is sound, the solution can travel well beyond the original relationship or situation.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Left Angle · Transpersonal Karma"
+      "geometry": "Left Angle · Transpersonal Karma",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 5,
+          "start": 0,
+          "end": 100
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 1,
+          "start": 100,
+          "end": 270
+        },
+        {
+          "kind": "prose",
+          "start": 270,
+          "end": 377
+        }
+      ]
     }
   },
   "profile.5/2": {
@@ -383,7 +567,29 @@ export default {
     "detail": "The 5th Line attracts expectations that it can handle what needs to be solved. The 2nd Line carries natural ability and a strong need for its own space.\n\nThis can create a recurring tension: the person may prefer to remain in their own rhythm while the outside world keeps noticing something useful and calling it out.\n\nWhen the projection matches the actual gift, the 5/2 can have substantial practical influence. When it does not, the projection itself becomes the source of misunderstanding.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Left Angle · Transpersonal Karma"
+      "geometry": "Left Angle · Transpersonal Karma",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 5,
+          "start": 0,
+          "end": 79
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 2,
+          "start": 79,
+          "end": 152
+        },
+        {
+          "kind": "prose",
+          "start": 152,
+          "end": 494
+        }
+      ]
     }
   },
   "profile.6/2": {
@@ -391,7 +597,29 @@ export default {
     "detail": "The 6th Line moves through experience, observation, and eventual embodiment. The 2nd Line contributes natural talent, privacy, and the theme of being called out by others.\n\nThe 6/2 does not need to manufacture a role-model identity. Over time, natural gifts combine with a matured perspective, and the person's way of living can become the example others recognize.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Left Angle · Transpersonal Karma"
+      "geometry": "Left Angle · Transpersonal Karma",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 6,
+          "start": 0,
+          "end": 77
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 2,
+          "start": 77,
+          "end": 171
+        },
+        {
+          "kind": "prose",
+          "start": 171,
+          "end": 365
+        }
+      ]
     }
   },
   "profile.6/3": {
@@ -399,7 +627,29 @@ export default {
     "detail": "The 6th Line carries its three-stage maturation process, while the 3rd Line continues to learn through direct experimentation and adaptation.\n\nThis makes the 6/3 deeply tied to lived reality. Early life can contain especially dense cycles of trying, changing, failing, and beginning again. Later, greater observational distance develops, but the experimental relationship with life remains.\n\nThe eventual wisdom comes from knowing through experience what works, what does not, and how reality behaves when theory meets life.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Left Angle · Transpersonal Karma"
+      "geometry": "Left Angle · Transpersonal Karma",
+      "layout": "lines",
+      "blocks": [
+        {
+          "kind": "line",
+          "index": 0,
+          "line": 6,
+          "start": 0,
+          "end": 57
+        },
+        {
+          "kind": "line",
+          "index": 1,
+          "line": 3,
+          "start": 57,
+          "end": 141
+        },
+        {
+          "kind": "prose",
+          "start": 141,
+          "end": 524
+        }
+      ]
     }
   },
   "cross.introduction": {
