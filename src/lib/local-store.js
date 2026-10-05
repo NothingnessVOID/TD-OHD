@@ -4,7 +4,7 @@
 import { t } from './i18n.js';
 import { PROFILE_STORAGE_KEY } from './profile-storage.js';
 
-export const localMode = import.meta.env.VITE_OHD_LOCAL === 'true';
+export const localMode = import.meta.env?.VITE_OHD_LOCAL === 'true';
 const CACHE = PROFILE_STORAGE_KEY;
 const OUTBOX = 'ohd-local-op-';
 let cache = [];

@@ -1,6 +1,7 @@
 /** Phone-only workspace regression; run against a local Vite server. */
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
+import { writeFileSync } from 'node:fs';
 
 const base = process.env.E2E_URL || 'http://127.0.0.1:5173';
 const browser = await chromium.launch(process.env.CHROME_PATH
@@ -11,6 +12,7 @@ try {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true,
     hasTouch: true, locale: 'zh-CN' });
   const page = await context.newPage();
+  await page.clock.setFixedTime(new Date('2026-10-01T06:07:53Z'));
   await page.goto(`${base}/?d=1990-06-15&t=14:30&tz=8&n=Mobile%20Demo&view=timeline`);
   const root = page.locator('#timeline-view');
   const table = root.locator('.tl-table');
@@ -32,50 +34,101 @@ try {
   assert.notEqual(Number(await table.getAttribute('data-selected')), beforeMouseDrag,
     'mouse dragging the date ruler still selects a time');
 
-  for (const [width, height] of [[390, 844], [375, 667], [320, 568]]) {
+  const trigger = root.locator('[data-action="mobile-controls"]');
+  const panel = root.locator('.tl-mobile-controls-panel');
+  const geometry = [];
+  const paneGeometry = () => page.evaluate(() => {
+    const box = selector => {
+      const r = document.querySelector(`#timeline-view ${selector}`).getBoundingClientRect();
+      return { x: r.x, y: r.y, width: r.width, height: r.height };
+    };
+    return { stage: box('.tl-stage'), graph: box('.tl-graph-panel'),
+      svg: box('.bodygraph-svg'), tracks: box('.tl-tracks-panel') };
+  });
+  for (const [width, height, scale] of [[390, 844, .94], [375, 667, .90], [360, 640, .86], [320, 568, .78]]) {
     await page.setViewportSize({ width, height });
-    const layout = await page.evaluate(() => {
-      const box = selector => {
-        const rect = document.querySelector(selector).getBoundingClientRect();
-        return { top: rect.top, bottom: rect.bottom, height: rect.height };
+    const panes = await paneGeometry();
+    assert.ok(Math.abs(panes.stage.height / height - .6) < .002 &&
+      Math.abs(panes.tracks.height / height - .4) < .002, `60/40 split at ${width}px`);
+    assert.ok(Math.abs(panes.graph.height - (panes.stage.height - 2)) < .1,
+      'graph fills the entire original pane, with only the two border pixels excluded');
+    assert.equal(panes.svg.width, width - 8, 'original SVG layout width');
+    assert.ok(Math.abs(panes.svg.height - (panes.stage.height - 12)) < .1,
+      'original SVG layout height: no toolbar reservation');
+    assert.equal(await page.locator('.header').evaluate(el => getComputedStyle(el).display), 'none');
+    assert.equal(await root.locator('.tl-mobile-control-bar').count(), 0);
+    const guards = await page.evaluate(() => {
+      const q = s => document.querySelector(`#timeline-view ${s}`);
+      const box = el => {
+        const r = el.getBoundingClientRect();
+        return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
       };
-      return { header: getComputedStyle(document.querySelector('.header')).display,
-        root: box('#timeline-view'), workspace: box('#timeline-view .tl-workspace'),
-        toolbar: box('#timeline-view .tl-toolbar'),
-        stage: box('#timeline-view .tl-stage'), tracks: box('#timeline-view .tl-tracks-panel'),
-        scrollWidth: document.documentElement.scrollWidth, viewport: innerWidth };
+      const overlaps = (a,b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+      const controls = ['.tl-mobile-controls-trigger', '.tl-mobile-range',
+        '.tl-mobile-event-nav button:first-child', '.tl-mobile-event-nav button:last-child'].map(s => box(q(s)));
+      const columns = ['.tl-transit-column', '.tl-birth-column'].map(s => box(q(s)));
+      // The actual nine SVG center polygons are protected. The full SVG viewport
+      // includes empty margins where floating controls are deliberately allowed.
+      const centers = [...q('.bodygraph-svg').querySelectorAll('.bg-centers .bg-center')].map(box);
+      return { controls, columns, centers,
+        controlColumnCollisions: controls.flatMap((c,i) => columns.filter(p => overlaps(c,p)).map(() => i)),
+        controlCollisions: controls.flatMap((c,i) => controls.slice(i+1).filter(p => overlaps(c,p)).map(() => i)),
+        centerCollisions: columns.flatMap((c,i) => centers.filter(p => overlaps(c,p)).map(() => i)),
+        controlCenterCollisions: controls.flatMap((c,i) => centers.filter(p => overlaps(c,p)).map(() => i)),
+        positions: ['.tl-mobile-controls-trigger','.tl-mobile-range','.tl-mobile-event-nav','.tl-mobile-controls-panel'].map(s => getComputedStyle(q(s)).position),
+        scale: Number(getComputedStyle(q('.tl-transit-column')).transform.match(/matrix\(([^,]+)/)[1]),
+        birthScale: Number(getComputedStyle(q('.tl-birth-column')).transform.match(/matrix\(([^,]+)/)[1]),
+        scrollWidth: document.documentElement.scrollWidth };
     });
-    assert.equal(layout.header, 'none', 'phone timeline hides the desktop header');
-    assert.ok(Math.abs(layout.stage.height / height - .6) < .02 &&
-      Math.abs(layout.tracks.height / height - .4) < .02,
-      `chart and timeline use a 60/40 phone split: ${JSON.stringify(layout)}`);
-    assert.ok(Math.abs(layout.tracks.top - layout.stage.bottom) < 3 && layout.tracks.bottom <= height + 2,
-      `both panes remain visible together: ${JSON.stringify(layout)}`);
-    assert.ok(layout.scrollWidth <= layout.viewport, `no page overflow at ${width}px`);
-    const lanes = await page.evaluate(() => {
-      const rect = selector => document.querySelector(`#timeline-view ${selector}`).getBoundingClientRect();
-      const transit = rect('.tl-transit-column');
-      const planetRows = rect('.tl-transit-column .tl-planets');
-      const birth = rect('.tl-birth-column');
-      const controls = rect('.tl-mobile-controls-trigger');
-      return { transitLeft: transit.left, planetRowsBottom: planetRows.bottom, birthLeft: birth.left,
-        controlLeft: controls.left, controlTop: controls.top, controlRight: controls.right, controlBottom: controls.bottom,
-        stageBottom: rect('.tl-stage').bottom };
-    });
-    assert.ok(Math.abs(lanes.transitLeft - lanes.controlLeft) < 2 &&
-      lanes.controlTop >= lanes.planetRowsBottom && lanes.controlRight < lanes.birthLeft &&
-      lanes.stageBottom - lanes.controlBottom <= 12,
-      `floating control stays at the chart bottom, left-aligned with transit at ${width}px: ${JSON.stringify(lanes)}`);
-    assert.ok(lanes.controlBottom <= lanes.stageBottom,
-      `floating control stays inside chart pane at ${width}px`);
+    assert.deepEqual(guards.controlColumnCollisions, [], `controls clear the planet columns at ${width}px`);
+    assert.deepEqual(guards.controlCollisions, [], `floating controls do not collide at ${width}px`);
+    assert.deepEqual(guards.centerCollisions, [], `planet columns clear all nine centers at ${width}px`);
+    assert.deepEqual(guards.controlCenterCollisions, [], `floating controls clear all nine centers at ${width}px`);
+    assert.equal(guards.scale, scale);
+    assert.equal(guards.birthScale, scale);
+    assert.ok(guards.scrollWidth <= width);
+    assert.ok(guards.positions.slice(0,3).every(p => p === 'absolute'), 'all collapsed controls are overlays');
+    const [control, range, previous, next] = guards.controls;
+    assert.ok(range.bottom < previous.top, 'range floats above event navigation');
+    assert.ok(Math.abs(range.right-next.right) < .1, 'range and event navigation share the right edge');
+    assert.ok(previous.top-range.bottom >= 2 && previous.top-range.bottom <= 8, 'range and arrows retain a compact gap');
+    assert.ok(previous.right < next.left && next.right >= width-12, 'event arrows stay at lower right');
+    assert.ok(Math.abs(previous.bottom - next.bottom) < .1);
+    assert.ok(guards.controls.every(c => c.top > panes.stage.height*.8 && c.bottom < panes.stage.height),
+      'all collapsed controls float inside the bottom of the graph pane');
+    if (process.env.MOBILE_SCREENSHOT_DIR) await page.screenshot({ path: `${process.env.MOBILE_SCREENSHOT_DIR}/timeline-${width}.png` });
+    const navBefore = await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    }));
+    await trigger.click();
+    assert.deepEqual(await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    })), navBefore, 'opening the unchanged panel never shifts range or arrows');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.deepEqual(await paneGeometry(), panes, 'opening controls never changes either pane or SVG layout size');
+    const panelBox = await panel.boundingBox();
+    assert.ok(panelBox.x >= 0 && panelBox.x+panelBox.width <= width && panelBox.y >= 0 &&
+      panelBox.y+panelBox.height < control.top, 'panel opens upward inside the graph pane');
+    assert.equal(await panel.evaluate(el => getComputedStyle(el).position), 'absolute');
+    const inputs = await panel.locator('.tl-toolbar > label > input').evaluateAll(nodes => nodes.map(el => {
+      const r = el.getBoundingClientRect(); return { left:r.left,right:r.right,top:r.top,bottom:r.bottom };
+    }));
+    assert.ok(inputs[0].right <= inputs[1].left, 'date and time inputs do not overlap in the compact floating panel');
+    if (process.env.MOBILE_SCREENSHOT_DIR) await page.screenshot({ path: `${process.env.MOBILE_SCREENSHOT_DIR}/panel-${width}.png` });
+    await panel.locator('.tl-advanced summary').click();
+    assert.deepEqual(await paneGeometry(), panes, 'expanding advanced details never changes either pane or SVG');
+    await panel.locator('.tl-advanced summary').click();
+    await trigger.click();
+    assert.deepEqual(await paneGeometry(), panes, 'closing controls never changes either pane or SVG');
+    assert.deepEqual(await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    })), navBefore, 'closing the unchanged panel never shifts range or arrows');
+    geometry.push({ width,height,scale,panes,controls:guards.controls,columns:guards.columns,centers:guards.centers,panel:panelBox });
   }
+  if (process.env.MOBILE_SCREENSHOT_DIR) writeFileSync(`${process.env.MOBILE_SCREENSHOT_DIR}/validation-geometry.json`, JSON.stringify(geometry,null,2)+'\n');
   await page.setViewportSize({ width: 390, height: 844 });
   if (process.env.MOBILE_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_SCREENSHOT });
-
-  const trigger = root.locator('[data-action="mobile-controls"]');
   await trigger.click();
-  const panel = root.locator('.tl-mobile-controls-panel');
-  assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
   if (process.env.MOBILE_PANEL_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_PANEL_SCREENSHOT });
   for (const field of ['date', 'time', 'zone', 'kind', 'search', 'changes'])
     assert.ok(await panel.locator(`[data-field="${field}"]`).count(), `${field} stays available in the floating controls`);
@@ -158,7 +211,35 @@ try {
   await page.locator('.nav-link[data-view="chart"]').click();
   assert.equal(await page.locator('#chart-view').isVisible(), true);
   await context.close();
-  console.log('Mobile timeline split layout, controls, hour ruler and touch highlight passed.');
+  // Existing long range labels must still fit the compact overlay in other locales.
+  for (const locale of ['en', 'zh-Hant']) {
+    const other = await browser.newContext({ viewport:{width:390,height:844}, isMobile:true,hasTouch:true });
+    const localPage = await other.newPage();
+    await localPage.addInitScript(locale => localStorage.setItem('ohd-language',locale),locale);
+    await localPage.clock.setFixedTime(new Date('2026-10-01T06:07:53Z'));
+    await localPage.goto(`${base}/?d=1990-06-15&t=14:30&tz=8&n=Mobile%20Demo&view=timeline`);
+    await localPage.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null,{timeout:120000});
+    await localPage.locator('#timeline-view .tl-mobile-range select').selectOption('past-year');
+    await localPage.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null,{timeout:120000});
+    for (const [width,height] of [[390,844],[375,667],[360,640],[320,568]]) {
+      await localPage.setViewportSize({width,height});
+      const clear = await localPage.evaluate(() => {
+        const root=document.querySelector('#timeline-view');
+        const box=s=>root.querySelector(s).getBoundingClientRect();
+        const overlaps=(a,b)=>a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
+        const trigger=box('.tl-mobile-controls-trigger'), range=box('.tl-mobile-range'),nav=box('.tl-mobile-event-nav');
+        const columns=['.tl-transit-column','.tl-birth-column'].map(box);
+        const centers=[...root.querySelectorAll('.bg-centers .bg-center')].map(el=>el.getBoundingClientRect());
+        return range.bottom+2<=nav.top && Math.abs(range.right-nav.right)<.1 &&
+          [trigger,range,nav].every(c=>columns.every(p=>!overlaps(c,p)) && centers.every(p=>!overlaps(c,p))) &&
+          document.documentElement.scrollWidth<=innerWidth;
+      });
+      assert.ok(clear, `${locale} long range and floating controls remain clear at ${width}px`);
+      if (process.env.MOBILE_SCREENSHOT_DIR) await localPage.screenshot({path:`${process.env.MOBILE_SCREENSHOT_DIR}/range-${locale}-${width}.png`});
+    }
+    await other.close();
+  }
+  console.log('Mobile 60/40 layout, scaled columns, floating controls, stable advanced panel, three locales, hour ruler and touch passed.');
 } finally {
   await browser.close();
 }

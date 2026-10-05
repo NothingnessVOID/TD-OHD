@@ -1,0 +1,40 @@
+{
+  "frontendPr": 15,
+  "releasedMain": "bc9b217fab260b1017bfb1478141f864e402289e",
+  "knowledgeParent": "df06686baa855b01a8bbfb3d77cf85b34eaf4717",
+  "mergeConflicts": [],
+  "engineSignature": "59b90e629033cc7faf95",
+  "production": {
+    "deployId": "6ac37ca09b82e263c9b27f6f",
+    "state": "ready",
+    "url": "https://td-ohd.netlify.app",
+    "smoke": "passed",
+    "knowledgeDeployed": false
+  },
+  "main": {
+    "tests": 276,
+    "passed": 273,
+    "failed": 0,
+    "skipped": 3,
+    "build": "passed",
+    "localizationPassed": 34,
+    "timelineUnitPassed": 63,
+    "e2e": "runtime, place search, timeline/mobile, appearance, reference, planet, chart-data-export passed"
+  },
+  "knowledge": {
+    "tests": 306,
+    "passed": 303,
+    "failed": 0,
+    "skipped": 3,
+    "build": "passed",
+    "localizationPassed": 34,
+    "timelineUnitPassed": 63,
+    "e2e": "knowledge-access, bodygraph-regression, runtime, reference, timeline/mobile, chart-data-export passed",
+    "layoutComparisons": 12,
+    "bodygraphComparisons": 24,
+    "knowledgeProseChanges": 0,
+    "calculationChanges": 0
+  },
+  "knowledgeMergedIntoMain": false,
+  "local8787Modified": false
+}

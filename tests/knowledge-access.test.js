@@ -45,6 +45,7 @@ test('ID and chart query use identical Knowledge body; dynamic Cross missing sta
  }}finally{setLocale(old,{persist:false});}
 });
 test('same DOM owner transition closes and cleans the previous controller; default BodyGraph label stays',()=>{
+ const oldLocale=getLocale();setLocale('en',{persist:false});
  const oldDocument=globalThis.document;
  const classes=new Set(),focus=[];
  const trigger={isConnected:true,focus:()=>focus.push('trigger')};
@@ -61,7 +62,7 @@ test('same DOM owner transition closes and cleans the previous controller; defau
   openDetailDialog(element,()=>assert.fail('same owner must preserve lifecycle'),{owner:'knowledge',label:'Knowledge details'});
   openDetailDialog(element,()=>bodyClosed++);assert.equal(knowledgeClosed,1);assert.equal(bodyClosed,1);
   closeDetailDialog();assert.equal(bodyClosed,2);assert.equal(element.dataset.detailOwner,undefined);assert.equal(classes.has('modal-open'),false);assert.equal(focus.at(-1),'trigger');
- }finally{closeDetailDialog();globalThis.document=oldDocument;}
+ }finally{closeDetailDialog();globalThis.document=oldDocument;setLocale(oldLocale,{persist:false});}
 });
 test('shared sheet fitting retains limits and previous-height animation',()=>{
  const old=globalThis.window;globalThis.window={innerWidth:390,innerHeight:800};

@@ -74,7 +74,13 @@ const store = localMode ? { list: localList, get: localGet, save: localSave, del
 export const listPeople = (...args) => store.list(...args);
 export const getPerson = (...args) => store.get(...args);
 export const deletePerson = (...args) => store.delete(...args);
-export const savePerson = (...args) => store.save(...args);
+const peopleListeners = new Set();
+export function onPeopleChange(listener) { peopleListeners.add(listener); return () => peopleListeners.delete(listener); }
+export function savePerson(...args) {
+  const saved = store.save(...args);
+  for (const listener of peopleListeners) listener();
+  return saved;
+}
 
 /** Profile (storage shape) → birth data (app shape). */
 export function birthFromPerson(p) {

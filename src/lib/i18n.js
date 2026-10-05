@@ -1,23 +1,12 @@
 /** Locale state and source-keyed UI messages. English is the upstream fallback. */
 import { localeResources } from '../locales/index.js';
 export const LOCALES = Object.freeze(Object.values(localeResources).map(({code,label}) => ({code,label})));
-export const LOCALE_STORAGE_KEY = 'ohd-language';
+export { LOCALE_STORAGE_KEY, resolveLocale } from './initial-locale.js';
+import { LOCALE_STORAGE_KEY, readInitialLocale } from './initial-locale.js';
 const catalogs = new Map(Object.entries(localeResources).map(([code, resources]) => [code, resources.messages]));
 const listeners = new Set();
 const messageParams = new WeakMap();
-
-export function resolveLocale(saved, languages = []) {
-  if (LOCALES.some(item => item.code === saved)) return saved;
-  for (const language of languages) {
-    const match = Object.values(localeResources).find(resources => resources.matches(language));
-    if (match) return match.code;
-  }
-  return 'en';
-}
-
-let initialPreference;
-try { if (typeof window !== 'undefined') initialPreference = globalThis.localStorage?.getItem(LOCALE_STORAGE_KEY); } catch { /* Private storage may be disabled. */ }
-let locale = resolveLocale(initialPreference, globalThis.navigator?.languages || []);
+let locale = readInitialLocale();
 export const getLocale = () => locale;
 export const getLocaleResources = () => localeResources[locale] || localeResources.en;
 export const formatDisplay = (kind, ...args) => (getLocaleResources().format[kind] || localeResources.en.format[kind])(...args);

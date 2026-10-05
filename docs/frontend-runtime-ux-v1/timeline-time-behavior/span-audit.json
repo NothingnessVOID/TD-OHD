@@ -1,0 +1,27 @@
+{
+  "tzif_version": "# version 2026c-rearguard",
+  "zones": 598,
+  "explicit_transition_period": "1800-01-01 through 2201-01-01 exclusive",
+  "search_horizon_days": 370,
+  "largest_backward_offset_change_seconds": 86400,
+  "offset_change_witness": {
+    "zone": "America/Adak",
+    "before": [
+      -3225223728,
+      44002
+    ],
+    "after": [
+      -3225223727,
+      -42398
+    ]
+  },
+  "range_witness": {
+    "zone": "Pacific/Apia",
+    "start_local": "1891-08-01T00:00:00+12:33:04",
+    "end_local_exclusive": "1892-08-02T00:00:00-11:26:56",
+    "start_utc": "1891-07-31T11:26:56+00:00",
+    "end_utc_exclusive": "1892-08-02T11:26:56+00:00",
+    "elapsed_days": 368.0
+  },
+  "scope": "Installed TZif explicit transitions; future POSIX recurrences are not enumerated. JS/ICU range witness and finite cap are independently asserted by timeline-presets.test.js."
+}
