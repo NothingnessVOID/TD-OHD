@@ -3,6 +3,8 @@ import { resolveKnowledgeText } from './terms.js';
 import { t } from '../i18n.js';
 import { variableDirection } from '../variable-arrows.js';
 import { esc } from '../format.js';
+import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
+import { centerName } from '../vocabulary.js';
 
 const categoryLabels = { type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
 const variableLabels = { determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
@@ -41,23 +43,41 @@ function renderProcess(slot, block) {
 function renderTimeline(slot, block) {
   return `<ol class="knowledge-timeline" data-layout="timeline">${block.stages.map(stage=>`<li class="knowledge-timeline-stage"><h3>${esc(slice(slot,stage.label))}</h3>${renderProse(slot,stage.body)}</li>`).join('')}</ol>`;
 }
-function renderProfile(entry) {
-  const slot=entry.detail,blocks=slot?.presentation?.blocks;
-  return `<div class="knowledge-reading">${blocks?blocks.map(block=>block.kind==='process'?renderProcess(slot,block):block.kind==='timeline'?renderTimeline(slot,block):renderProse(slot,block)).join(''):renderProse(slot)}</div>`;
+function profileLines(entry) {
+  // Display-only split of the existing localized name; no parallel archetype vocabulary.
+  const names=entry.name.split(/\s*[/／]\s*/);
+  return entry.objectId.split('/').map((line,index)=>({line:Number(line),name:names[index]??''}));
 }
-function renderDefinition(entry) {
-  const count=entry.properties.componentCount;
-  // Abstract component count only: no centers, gates, channels or inferred topology.
-  const structure=Number.isInteger(count)?`<div class="knowledge-structure" data-component-count="${count}" aria-hidden="true">${count?Array.from({length:count},()=>'<span class="knowledge-island"></span>').join(''):'<span class="knowledge-empty-structure"></span>'}</div>`:'';
-  return structure+`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`;
+function renderProfileIdentity(entry) {
+  return `<div class="knowledge-profile-identity">${profileLines(entry).map(({line,name})=>`<div class="knowledge-line-identity">${badge(t('Line {line}',{line}),'knowledge-line-badge')}<strong>${esc(name)}</strong></div>`).join('')}</div>`;
+}
+function renderProfile(entry) {
+  const slot=entry.detail,blocks=slot?.presentation?.blocks,lines=profileLines(entry);
+  const render=block=>{
+    if(block.kind==='process')return renderProcess(slot,block);
+    if(block.kind==='timeline')return renderTimeline(slot,block);
+    if(block.kind==='line')return `<section class="knowledge-surface knowledge-line-section" data-line="${block.line}">${badge(t('Line {line}',{line:block.line}),'knowledge-line-badge')}<h3>${esc(lines[block.index].name)}</h3>${block.blocks?block.blocks.map(render).join(''):renderProse(slot,block)}</section>`;
+    return renderProse(slot,block);
+  };
+  return `<div class="knowledge-reading">${blocks?blocks.map(render).join(''):renderProse(slot)}</div>`;
+}
+const definitionShapeKeys={head:'Head',ajna:'Ajna',throat:'Throat',g:'G',heart:'Ego',spleen:'Spleen',solar:'SolarPlexus',sacral:'Sacral',root:'Root'};
+function renderMiniCenters(component) {
+  return `<svg class="knowledge-mini-centers" viewBox="-12 -12 880 1340" aria-hidden="true">${Object.entries(definitionShapeKeys).map(([key,shape])=>`<path data-center="${key}" data-highlighted="${component.includes(key)}" d="${esc(CENTER_SHAPES[shape].path)}"/>`).join('')}</svg>`;
+}
+function renderDefinition(entry, components) {
+  // Read the existing Sharp components only. Library has no personal topology.
+  const visual=Array.isArray(components)?`<div class="knowledge-definition-islands" data-component-count="${components.length}">${components.length?components.map((component,index)=>`<section class="knowledge-island-card" data-component="${index}"><h3>${esc(t('Definition island {index}',{index:index+1}))}</h3>${renderMiniCenters(component)}<p class="knowledge-center-names">${esc(component.map(centerName).join(' · '))}</p></section>`).join(''):`<div class="knowledge-no-definition">${renderMiniCenters([])}</div>`}</div>`:'';
+  return visual+`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`;
 }
 function renderCrossActivations(entry) {
   const p=entry.properties;
   const activations=p.gates?.length===4?`<div class="knowledge-cross-activations">${p.gates.map((gate,index)=>`<div class="knowledge-activation" data-activation="${['personality-sun','personality-earth','design-sun','design-earth'][index]}"><div class="knowledge-activation-label">${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index]))}</div>${chips([t('Gate {gate}',{gate})])}</div>`).join('')}</div>`:'';
   return activations;
 }
-function renderCross(entry, shared) {
-  const slot=shared?.detail??entry.detail;
+function renderCross(entry) {
+  if(entry.objectId!=='introduction')return `<button type="button" class="knowledge-jump-card" data-knowledge-jump="${esc(entry.properties.introductionKnowledgeId)}"><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>`;
+  const slot=entry.detail;
   return (slot?.presentation?.sections?slot.presentation.sections.map(section=>surface(slice(slot,section.title),renderProse(slot,section),section.id)).join(''):`<div class="knowledge-reading">${renderProse(slot)}</div>`);
 }
 function renderVariable(entry, context) {
@@ -81,11 +101,10 @@ function renderGeometry(entry) {
   return '';
 }
 /** One shared article renderer; object identity and explicit metadata select the visual structure. */
-export function renderKnowledgeDetail(query,{variableContext=null,contextText=''}={}) {
+export function renderKnowledgeDetail(query,{variableContext=null,definitionComponents=null,contextText=''}={}) {
   const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
-  const shared=entry.objectType==='cross'&&entry.objectId!=='introduction'?getKnowledgeEntry({objectType:'cross',objectId:'introduction'}):null;
-  const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry),cross:()=>renderCross(entry,shared),variable:()=>renderVariable(entry,variableContext)};
+  const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
   const source=entry.objectType==='variable'?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
-  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${renderers[entry.objectType]?.()??renderProse(entry.detail)}</section></article>`;
+  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${renderers[entry.objectType]?.()??renderProse(entry.detail)}</section></article>`;
 }
