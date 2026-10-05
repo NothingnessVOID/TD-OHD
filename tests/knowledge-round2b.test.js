@@ -1,3 +1,4 @@
+import {assertContentBoundary, targetIds} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -23,10 +24,10 @@ test('protected BodyGraph detail functions are byte-identical to the latest base
  const before=extract(original('src/views/chart.js').toString()),after=extract(bytes('src/views/chart.js').toString());
  for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail',]){assert.ok(before.has(name),name);assert.equal(after.get(name),before.get(name),name);}
 });
-test('all 55 zh-CN supplied articles, including long Profiles, keep exact approved text hashes',()=>{
+test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F editorial ranges',()=>{
  const hashes=JSON.parse(bytes('tests/fixtures/knowledge-round2b-content.json'));
- assert.equal(Object.keys(hashes).length,55);
- for(const [key,record]of Object.entries(knowledgeContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
+ assert.equal(Object.keys(hashes).length,55);assertContentBoundary();
+ for(const [key,record]of Object.entries(knowledgeContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
  setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,55);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable').length,24);
  assert.match(knowledgeContent['zh-CN']['authority.sacral'].detail,/嗯哼／呃呃/);assert.match(knowledgeContent['zh-CN']['definition.quadrupleSplit'].detail,/8 个或 9 个/);
 });

@@ -1002,7 +1002,7 @@ export default {
   },
   "variable.perspective:survival": {
     "summary": "自然注意什麼能維持安全、穩定與基本生存。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看見具體風險、基礎條件與關鍵需求。\n\nTone 4–6 · Right · 周邊\n\n會從較寬廣的場域接收整體的穩定、安全與生存條件。\n\nDistraction（分心）— 慾望 Wanting\n\n分心時，注意力可能從「真正維持生活需要什麼」轉向「還少了什麼、還想得到什麼」。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看見具體風險、基礎條件與關鍵需求。\n\nTone 4–6 · Right · 周邊\n\n會從較寬廣的場域接收整體的穩定、安全與生存條件。\n\nDistraction（分心）— 慾望 Wanting\n\n當 Survival（生存）視角偏離時，會產生 Distraction（分心），注意力轉向 Want（渴望）。\n\n原本關注的是「真正維持生存需要什麼」、基礎是否穩定、安全條件是否足夠；偏離後，則容易愈來愈被「我還想得到什麼」吸引，開始關注那些並非真正必要、只是想要的東西。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1025,16 +1025,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 慾望 Wanting",
+          "title": "偏離狀態",
           "start": 122,
-          "end": 161
+          "end": 258,
+          "kind": "deviation",
+          "sourceValue": "survival",
+          "targetValue": "wanting",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:possibility": {
     "summary": "自然看見尚未發生的可能、潛力與不同發展方向。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n較容易集中在某一個值得發展的可能方向。\n\nTone 4–6 · Right · 周邊\n\n較容易同時接收多個可能方向，而不急著立刻選出一個。\n\nDistraction（分心）— 機率 Probability\n\n分心時，開放的可能性容易縮成不斷計算「到底有多大機率會發生」。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n較容易集中在某一個值得發展的可能方向。\n\nTone 4–6 · Right · 周邊\n\n較容易同時接收多個可能方向，而不急著立刻選出一個。\n\nDistraction（分心）— 機率 Probability\n\n當 Possibility（可能性）視角偏離時，會產生 Distraction（分心），注意力轉向 Probability（機率）。\n\n原本自然看見的是尚未發生的可能、隱藏的潛力與新的發展方向；偏離後，則容易不斷計算「這件事到底有多大機率能成」，因為過度強調現實勝算而看不見原本存在的可能性。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1057,16 +1061,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 機率 Probability",
+          "title": "偏離狀態",
           "start": 126,
-          "end": 157
+          "end": 272,
+          "kind": "deviation",
+          "sourceValue": "possibility",
+          "targetValue": "probability",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:power": {
     "summary": "自然注意力量、資源、影響力，以及誰真正掌握局面。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中觀察明確的權力關係與關鍵控制點。\n\nTone 4–6 · Right · 周邊\n\n比較容易從整體關係網絡看見力量與資源如何分布。\n\nDistraction（分心）— 個人 Personal\n\n分心時，可能從實際權力結構轉向過度用自身位置與個人感受解讀整個局面。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中觀察明確的權力關係與關鍵控制點。\n\nTone 4–6 · Right · 周邊\n\n比較容易從整體關係網絡看見力量與資源如何分布。\n\nDistraction（分心）— 個人 Personal\n\n當 Power（力量）視角偏離時，會產生 Distraction（分心），注意力轉向 Personal（個人）。\n\n原本能夠觀察真實存在的力量、資源與權力結構；偏離後，則容易退回個人立場和自身感受中，試圖置身於真實的力量關係之外，反而看不清實際正在發生的權力動態。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1089,16 +1097,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 個人 Personal",
+          "title": "偏離狀態",
           "start": 121,
-          "end": 155
+          "end": 253,
+          "kind": "deviation",
+          "sourceValue": "power",
+          "targetValue": "personal",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:wanting": {
     "summary": "自然看見什麼還缺少、什麼沒有被滿足，以及哪裡存在需求。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看到一個具體缺口或尚未被滿足的需要。\n\nTone 4–6 · Right · 周邊\n\n會從更大的場域感受到多個缺口、需求與尚未被填補的部分。\n\nDistraction（分心）— 生存 Survival\n\n分心時，可能從看見外界的缺口，縮回對自身安全與生存的過度關注。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看到一個具體缺口或尚未被滿足的需要。\n\nTone 4–6 · Right · 周邊\n\n會從更大的場域感受到多個缺口、需求與尚未被填補的部分。\n\nDistraction（分心）— 生存 Survival\n\n當 Want（渴望）視角偏離時，會產生 Distraction（分心），注意力轉向 Survival（生存）。\n\n原本能夠看見外界「還缺什麼」、哪裡存在需求與空白；偏離後，則容易把注意力收縮到自己的基本生存問題上，為安全、生計或基礎條件產生過度擔憂。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1121,16 +1133,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 生存 Survival",
+          "title": "偏離狀態",
           "start": 127,
-          "end": 158
+          "end": 252,
+          "kind": "deviation",
+          "sourceValue": "wanting",
+          "targetValue": "survival",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:probability": {
     "summary": "自然判斷在現實條件下，什麼結果最可能發生。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中分析具體條件、資料與可能結果。\n\nTone 4–6 · Right · 周邊\n\n會從整體走勢與模式中接收哪些結果比較有可能出現。\n\nDistraction（分心）— 可能性 Possibility\n\n分心時，實際的機率判斷可能被太多「也許還可以這樣」的可能性拉散。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中分析具體條件、資料與可能結果。\n\nTone 4–6 · Right · 周邊\n\n會從整體走勢與模式中接收哪些結果比較有可能出現。\n\nDistraction（分心）— 可能性 Possibility\n\n當 Probability（機率）視角偏離時，會產生 Distraction（分心），注意力轉向 Possibility（可能性）。\n\n原本關注現實條件、可行性以及最可能發生的結果；偏離後，則容易忽略實際條件，沉浸在各種「也許還有可能」的想像中，把注意力放到缺乏現實基礎的可能性上。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1153,16 +1169,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 可能性 Possibility",
+          "title": "偏離狀態",
           "start": 125,
-          "end": 157
+          "end": 266,
+          "kind": "deviation",
+          "sourceValue": "probability",
+          "targetValue": "possibility",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:personal": {
     "summary": "從自身的位置與經驗出發，觀看世界與自己之間的關係。",
-    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看見某個具體事件和自身經驗之間的關聯。\n\nTone 4–6 · Right · 周邊\n\n會從較大的整體場景中，以自身作為參考點接收世界。\n\nDistraction（分心）— 權力 Power\n\n分心時，個人視角可能被拉向輸贏、控制、地位或權力關係。",
+    "detail": "Tone 1–3 · Left · 聚焦\n\n會集中看見某個具體事件和自身經驗之間的關聯。\n\nTone 4–6 · Right · 周邊\n\n會從較大的整體場景中，以自身作為參考點接收世界。\n\nDistraction（分心）— 權力 Power\n\n當 Personal（個人）視角偏離時，會產生 Distraction（分心），注意力轉向 Power（力量）。\n\n原本可以從自身位置與經驗出發，以較為抽離的方式觀察世界；偏離後，則容易被捲入輸贏、資源與權力關係，開始過度關注誰佔優勢、誰掌控局面以及利益如何分配。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1185,16 +1205,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）— 權力 Power",
+          "title": "偏離狀態",
           "start": 122,
-          "end": 149
+          "end": 254,
+          "kind": "deviation",
+          "sourceValue": "personal",
+          "targetValue": "power",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.motivation:fear": {
     "summary": "心智自然被未知、風險與尚未理解的部分吸引。",
-    "detail": "這裡的 Fear 不是一般所說的膽小，而是想了解未知、辨識風險並把事情弄清楚的心智方向。\n\nTone 1–3 · Left · 策略型\n\n較傾向用聚焦、結構化、策略性的方式研究與理解。\n\nTone 4–6 · Right · 接收型\n\n比較讓理解從接收到的資訊與經驗中逐漸形成。\n\nTransference（轉移）— Need（需要）\n\n轉移時，心智可能從理解未知，變成被「現在到底必須做什麼」的急迫感拉走。",
+    "detail": "這裡的 Fear 不是一般所說的膽小，而是想了解未知、辨識風險並把事情弄清楚的心智方向。\n\nTone 1–3 · Left · 策略型\n\n較傾向用聚焦、結構化、策略性的方式研究與理解。\n\nTone 4–6 · Right · 接收型\n\n比較讓理解從接收到的資訊與經驗中逐漸形成。\n\nTransference（轉移）— Need（需要）\n\n當 Fear（恐懼）動機偏離時，會發生 Transference（轉移），轉向 Need（需求）。\n\n原本的動力是理解未知、建立基礎並獲得充分的資訊；在焦慮或迷失時，則容易放棄原本需要的研究過程，變成「我必須馬上做點什麼」，在基礎尚未建立之前就急於行動。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1217,16 +1241,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Need（需要）",
+          "title": "偏離狀態",
           "start": 169,
-          "end": 204
+          "end": 296,
+          "kind": "deviation",
+          "sourceValue": "fear",
+          "targetValue": "need",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:hope": {
     "summary": "心智自然傾向觀察、等待，讓事情在適合的時間逐漸顯現。",
-    "detail": "Tone 1–3 · Left · 策略型\n\n會更聚焦地觀察條件與時機。\n\nTone 4–6 · Right · 接收型\n\n更容易保持開放，讓事情自己展開並顯示下一步。\n\nTransference（轉移）— Guilt（責任）\n\n轉移時，希望可能變成「是不是我非得去處理、修正或負責」的壓力。",
+    "detail": "Tone 1–3 · Left · 策略型\n\n會更聚焦地觀察條件與時機。\n\nTone 4–6 · Right · 接收型\n\n更容易保持開放，讓事情自己展開並顯示下一步。\n\nTransference（轉移）— Guilt（責任）\n\n當 Hope（希望）動機偏離時，會發生 Transference（轉移），轉向 Guilt（內疚／責任）。\n\n原本的動力是觀察、等待，並相信事情會在合適的時機顯現；在焦慮或迷失時，則容易覺得「是不是我必須去解決這件事」，開始過度介入、干預或承擔原本不需要承擔的責任。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1249,16 +1277,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Guilt（責任）",
+          "title": "偏離狀態",
           "start": 115,
-          "end": 146
+          "end": 248,
+          "kind": "deviation",
+          "sourceValue": "hope",
+          "targetValue": "guilt",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:desire": {
     "summary": "心智自然被推動、影響與組織現實的可能性吸引。",
-    "detail": "Tone 1–3 · Left · 策略型\n\n較傾向用明確的方向、規劃與組織去推進。\n\nTone 4–6 · Right · 接收型\n\n仍有推動性，但比較會從眼前的開口與機會自然進入行動。\n\nTransference（轉移）— Innocence（純真）\n\n轉移時，清楚的慾望可能變成表面「沒有任何企圖」，但真正的想要仍然沒有被看見。",
+    "detail": "Tone 1–3 · Left · 策略型\n\n較傾向用明確的方向、規劃與組織去推進。\n\nTone 4–6 · Right · 接收型\n\n仍有推動性，但比較會從眼前的開口與機會自然進入行動。\n\nTransference（轉移）— Innocence（純真）\n\n當 Desire（慾望）動機偏離時，會發生 Transference（轉移），轉向 Innocence（純真）。\n\n原本真實存在著目標、企圖和推動現實的慾望；偏離後，卻可能表現成「我什麼都不想要」「無所謂」「順其自然」，表面看似沒有目的，實際上仍然被未曾承認的慾望推動。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1281,16 +1313,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Innocence（純真）",
+          "title": "偏離狀態",
           "start": 129,
-          "end": 167
+          "end": 264,
+          "kind": "deviation",
+          "sourceValue": "desire",
+          "targetValue": "innocence",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:need": {
     "summary": "心智自然辨識什麼是真正必要、不可缺少與值得優先處理的部分。",
-    "detail": "Tone 1–3 · Left · 策略型\n\n會聚焦找出眼前具體需要處理的核心。\n\nTone 4–6 · Right · 接收型\n\n比較從整體狀況中感受到什麼才是真正有必要的。\n\nTransference（轉移）— Fear（恐懼）\n\n轉移時，對必要性的辨識可能變成過度研究、擔心與不斷蒐集更多資訊。",
+    "detail": "Tone 1–3 · Left · 策略型\n\n會聚焦找出眼前具體需要處理的核心。\n\nTone 4–6 · Right · 接收型\n\n比較從整體狀況中感受到什麼才是真正有必要的。\n\nTransference（轉移）— Fear（恐懼）\n\n當 Need（需求）動機偏離時，會發生 Transference（轉移），轉向 Fear（恐懼）。\n\n原本只是辨認什麼是真正必要、當下需要處理的問題；偏離後，則容易開始過度擔憂、過度研究和不斷蒐集更多資訊，反而遲遲無法處理眼前真正必要的事情。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1313,16 +1349,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Fear（恐懼）",
+          "title": "偏離狀態",
           "start": 118,
-          "end": 150
+          "end": 239,
+          "kind": "deviation",
+          "sourceValue": "need",
+          "targetValue": "fear",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:guilt": {
     "summary": "心智自然看見哪裡出了問題，以及有哪些部分可以修正或改善。",
-    "detail": "這裡的 Guilt 更接近「我看得到這裡可以被修好」的修正與責任感，不是一般道德上的罪惡感。\n\nTone 1–3 · Left · 策略型\n\n會集中找出具體問題並建立修正方式。\n\nTone 4–6 · Right · 接收型\n\n比較從整體運作中感受到哪裡不對，再讓適合的修正方向浮現。\n\nTransference（轉移）— Hope（希望）\n\n轉移時，原本可以修正的問題可能變成只是期待它自己會變好。",
+    "detail": "這裡的 Guilt 更接近「我看得到這裡可以被修好」的修正與責任感，不是一般道德上的罪惡感。\n\nTone 1–3 · Left · 策略型\n\n會集中找出具體問題並建立修正方式。\n\nTone 4–6 · Right · 接收型\n\n比較從整體運作中感受到哪裡不對，再讓適合的修正方向浮現。\n\nTransference（轉移）— Hope（希望）\n\n當 Guilt（內疚／責任）動機偏離時，會發生 Transference（轉移），轉向 Hope（希望）。\n\n原本能夠看見哪裡出了問題，並產生修復、糾正和讓事情回到正軌的動力；在壓力或迷失時，則可能開始期待事情自己變好，迴避本來已經看見、也能夠處理的問題。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1345,16 +1385,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Hope（希望）",
+          "title": "偏離狀態",
           "start": 172,
-          "end": 200
+          "end": 300,
+          "kind": "deviation",
+          "sourceValue": "guilt",
+          "targetValue": "hope",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:innocence": {
     "summary": "心智能在較少個人企圖與預設的情況下觀看、理解與表達。",
-    "detail": "純真動機的特別之處，是不需要一個強烈的個人目的來驅動心智。它比較能直接經驗眼前正在發生的事情。\n\nTone 1–3 · Left · 策略型\n\n即使沒有強烈個人企圖，注意力仍可以是集中、清楚而有方向的。\n\nTone 4–6 · Right · 接收型\n\n比較維持廣角、接收與不主動操控結果的狀態。\n\nTransference（轉移）— Desire（慾望）\n\n轉移時，原本沒有企圖的觀看可能被拉進想控制、帶領或得到特定結果的慾望。",
+    "detail": "純真動機的特別之處，是不需要一個強烈的個人目的來驅動心智。它比較能直接經驗眼前正在發生的事情。\n\nTone 1–3 · Left · 策略型\n\n即使沒有強烈個人企圖，注意力仍可以是集中、清楚而有方向的。\n\nTone 4–6 · Right · 接收型\n\n比較維持廣角、接收與不主動操控結果的狀態。\n\nTransference（轉移）— Desire（慾望）\n\n當 Innocence（純真）動機偏離時，會發生 Transference（轉移），轉向 Desire（慾望）。\n\n原本較少個人議程，不急於控制結果，而是直接經歷和觀察正在發生的事情；偏離後，則容易產生愈來愈強的目的性，開始想掌控結果、達成特定目標，或讓事情按照自己的意圖發展。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1377,9 +1421,13 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（轉移）— Desire（慾望）",
+          "title": "偏離狀態",
           "start": 180,
-          "end": 215
+          "end": 319,
+          "kind": "deviation",
+          "sourceValue": "innocence",
+          "targetValue": "desire",
+          "terminology": "transference"
         }
       ]
     }

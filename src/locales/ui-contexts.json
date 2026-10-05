@@ -2,7 +2,15 @@
   "en": {
     "connection.heading": "Connection",
     "connection.namePlaceholder": "Person B",
-    "footer.poweredSuffix": ""
+    "footer.poweredSuffix": "",
+    "Off-track State": "Off-track State",
+    "Correct perspective": "Correct perspective",
+    "Correct motivation": "Correct motivation",
+    "Possible off-track direction": "Possible off-track direction",
+    "When the perspective moves off its correct state, attention can be drawn toward its paired perspective. This describes a possible off-track direction, not a second fixed trait.": "When the perspective moves off its correct state, attention can be drawn toward its paired perspective. This describes a possible off-track direction, not a second fixed trait.",
+    "In anxiety, pressure or confusion, motivation can shift toward its paired motivation. This describes a possible off-track state, not a second motivation.": "In anxiety, pressure or confusion, motivation can shift toward its paired motivation. This describes a possible off-track state, not a second motivation.",
+    "Variable Distraction": "Distraction",
+    "Variable Transference": "Transference"
   },
   "zh-CN": {
     "connection.heading": "关系合图",

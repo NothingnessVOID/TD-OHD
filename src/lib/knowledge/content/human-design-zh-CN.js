@@ -954,7 +954,7 @@ export default {
   },
   "variable.perspective:survival": {
     "summary": "自然注意安全、稳定以及维持持续存在所需的基础条件。",
-    "detail": "Survival（生存）视角容易先看到事物的基础条件和安全性。\n\n面对一个环境、系统或事件，会自然注意它是否稳定、资源是否足够、哪些地方可能带来风险，以及什么能够维持持续运作。\n\nTone 1–3 · Left\n\n会更聚焦地寻找具体风险、基础条件和关键细节。\n\nTone 4–6 · Right\n\n会更广泛地接收环境整体的稳定感、安全感与生存条件。\n\nDistraction（分心）\n\nSurvival 的分心方向是 Wanting（渴望）。\n\n原本关注“真正维持生存需要什么”，偏离时可能越来越被“还想得到什么”吸引。",
+    "detail": "Survival（生存）视角容易先看到事物的基础条件和安全性。\n\n面对一个环境、系统或事件，会自然注意它是否稳定、资源是否足够、哪些地方可能带来风险，以及什么能够维持持续运作。\n\nTone 1–3 · Left\n\n会更聚焦地寻找具体风险、基础条件和关键细节。\n\nTone 4–6 · Right\n\n会更广泛地接收环境整体的稳定感、安全感与生存条件。\n\nDistraction（分心）\n\n当 Survival（生存）视角偏离时，会产生 Distraction（分心），注意力转向 Want（渴望）。\n\n原本关注的是“真正维持生存需要什么”、基础是否稳定、安全条件是否足够；偏离后，则容易越来越被“我还想得到什么”吸引，开始关注那些并非真正必要、只是想要的东西。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -977,16 +977,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 193,
-          "end": 260
+          "end": 329,
+          "kind": "deviation",
+          "sourceValue": "survival",
+          "targetValue": "wanting",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:possibility": {
     "summary": "自然看到尚未发生的可能、潜力和另一种发展方向。",
-    "detail": "Possibility（可能性）不会只停留在眼前已经发生的事实，而会自然注意：\n\n“还有什么可能？”\n\n“事情还能变成什么样？”\n\nTone 1–3 · Left\n\n更容易集中注意某一个值得发展的可能方向。\n\nTone 4–6 · Right\n\n更容易同时看到多个潜在方向，让可能性自然浮现出来。\n\nDistraction（分心）\n\n对应 Probability（概率）。\n\n偏离时可能从“有什么可能”转成过度计算“这个到底有多少概率能成”。",
+    "detail": "Possibility（可能性）不会只停留在眼前已经发生的事实，而会自然注意：\n\n“还有什么可能？”\n\n“事情还能变成什么样？”\n\nTone 1–3 · Left\n\n更容易集中注意某一个值得发展的可能方向。\n\nTone 4–6 · Right\n\n更容易同时看到多个潜在方向，让可能性自然浮现出来。\n\nDistraction（分心）\n\n当 Possibility（可能性）视角偏离时，会产生 Distraction（分心），注意力转向 Probability（概率）。\n\n原本自然看到的是尚未发生的可能、隐藏的潜力与新的发展方向；偏离后，则容易不断计算“这件事到底有多大概率能成”，因为过度强调现实胜算而看不见原本存在的可能性。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1009,16 +1013,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 167,
-          "end": 221
+          "end": 313,
+          "kind": "deviation",
+          "sourceValue": "possibility",
+          "targetValue": "probability",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:power": {
     "summary": "自然注意力量、资源、影响力以及谁在掌握局面。",
-    "detail": "Power（力量）容易看到关系和系统里的权力结构。\n\n谁有资源？\n谁能够影响结果？\n力量正流向哪里？\n\nTone 1–3 · Left\n\n会更聚焦于明确的力量关系和关键控制点。\n\nTone 4–6 · Right\n\n更容易从整体关系网络中感受到权力、资源和影响力如何分布。\n\nDistraction（分心）\n\n对应 Personal（个人）。\n\n偏离时可能从观察真实的力量结构，转向过度以自身位置和个人感受解释局面。",
+    "detail": "Power（力量）容易看到关系和系统里的权力结构。\n\n谁有资源？\n谁能够影响结果？\n力量正流向哪里？\n\nTone 1–3 · Left\n\n会更聚焦于明确的力量关系和关键控制点。\n\nTone 4–6 · Right\n\n更容易从整体关系网络中感受到权力、资源和影响力如何分布。\n\nDistraction（分心）\n\n当 Power（力量）视角偏离时，会产生 Distraction（分心），注意力转向 Personal（个人）。\n\n原本能够观察真实存在的力量、资源与权力结构；偏离后，则容易退回到个人立场和自身感受中，试图置身于真实的力量关系之外，反而看不清实际正在发生的权力动态。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1041,16 +1049,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 155,
-          "end": 208
+          "end": 288,
+          "kind": "deviation",
+          "sourceValue": "power",
+          "targetValue": "personal",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:wanting": {
     "summary": "自然看到什么还缺少、什么尚未满足，以及哪里存在需求。",
-    "detail": "Wanting（渴望）很容易看到空缺。\n\n面对产品、关系、环境或系统，会自然发现：\n\n“这里还少什么？”\n\nTone 1–3 · Left\n\n更聚焦于一个具体缺口或需要解决的问题。\n\nTone 4–6 · Right\n\n更容易从整体环境中感受到尚未满足的需求和空白。\n\nDistraction（分心）\n\n对应 Survival（生存）。\n\n偏离时可能从观察外界真正缺少什么，转向过度担心自身最基础的安全和生存。",
+    "detail": "Wanting（渴望）很容易看到空缺。\n\n面对产品、关系、环境或系统，会自然发现：\n\n“这里还少什么？”\n\nTone 1–3 · Left\n\n更聚焦于一个具体缺口或需要解决的问题。\n\nTone 4–6 · Right\n\n更容易从整体环境中感受到尚未满足的需求和空白。\n\nDistraction（分心）\n\n当 Want（渴望）视角偏离时，会产生 Distraction（分心），注意力转向 Survival（生存）。\n\n原本能够看到外界“还缺什么”、哪里存在需求与空白；偏离后，则容易把注意力收缩到自己的基本生存问题上，为安全、生计或基础条件产生过度担忧。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1073,16 +1085,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 152,
-          "end": 205
+          "end": 277,
+          "kind": "deviation",
+          "sourceValue": "wanting",
+          "targetValue": "survival",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:probability": {
     "summary": "自然判断现实条件下，什么结果最有可能发生。",
-    "detail": "Probability（概率）关注现实、条件和可行性。\n\n它会自然观察：\n\n“照现在这样发展，什么最可能发生？”\n\nTone 1–3 · Left\n\n更倾向集中分析具体条件、数据与结果。\n\nTone 4–6 · Right\n\n更容易通过观察整体态势，感知不同结果出现的可能程度。\n\nDistraction（分心）\n\n对应 Possibility（可能性）。\n\n偏离时可能放下现实条件，过度沉浸在“也许还可能这样”的想象里。",
+    "detail": "Probability（概率）关注现实、条件和可行性。\n\n它会自然观察：\n\n“照现在这样发展，什么最可能发生？”\n\nTone 1–3 · Left\n\n更倾向集中分析具体条件、数据与结果。\n\nTone 4–6 · Right\n\n更容易通过观察整体态势，感知不同结果出现的可能程度。\n\nDistraction（分心）\n\n当 Probability（概率）视角偏离时，会产生 Distraction（分心），注意力转向 Possibility（可能性）。\n\n原本关注现实条件、可行性以及最可能发生的结果；偏离后，则容易忽略实际条件，沉浸在各种“也许还有可能”的想象中，把注意力放到缺乏现实基础的可能性上。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1105,16 +1121,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 158,
-          "end": 211
+          "end": 299,
+          "kind": "deviation",
+          "sourceValue": "probability",
+          "targetValue": "possibility",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.perspective:personal": {
     "summary": "从自身的位置和经验出发，观察一切与“我”之间的关系。",
-    "detail": "Personal（个人）视角更容易看到：\n\n这件事与我有什么关系？\n我在其中处在什么位置？\n这个经历对我意味着什么？\n\nTone 1–3 · Left\n\n更聚焦于自己与某个具体对象或问题之间的关系。\n\nTone 4–6 · Right\n\n更像站在较宽广的位置，从整体经验中观察自己与世界之间的关系。\n\nDistraction（分心）\n\n对应 Power（力量）。\n\n偏离时可能从个人观察位置，被拉进输赢、资源和权力关系的纠缠。",
+    "detail": "Personal（个人）视角更容易看到：\n\n这件事与我有什么关系？\n我在其中处在什么位置？\n这个经历对我意味着什么？\n\nTone 1–3 · Left\n\n更聚焦于自己与某个具体对象或问题之间的关系。\n\nTone 4–6 · Right\n\n更像站在较宽广的位置，从整体经验中观察自己与世界之间的关系。\n\nDistraction（分心）\n\n当 Personal（个人）视角偏离时，会产生 Distraction（分心），注意力转向 Power（力量）。\n\n原本可以从自身位置与经验出发，以较为抽离的方式观察世界；偏离后，则容易被卷入输赢、资源与权力关系，开始过度关注谁占优势、谁掌控局面以及利益如何分配。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1137,16 +1157,20 @@ export default {
         },
         {
           "id": "distraction",
-          "title": "Distraction（分心）",
+          "title": "偏离状态",
           "start": 168,
-          "end": 213
+          "end": 300,
+          "kind": "deviation",
+          "sourceValue": "personal",
+          "targetValue": "power",
+          "terminology": "distraction"
         }
       ]
     }
   },
   "variable.motivation:fear": {
     "summary": "被未知和不确定吸引，想把事情真正弄明白。",
-    "detail": "这里的 Fear（恐惧）不是“胆小”。\n\n它更像一种面对未知时产生的认知动力：想知道这是怎么回事、风险在哪里、自己还缺什么信息。\n\nTone 1–3 · Left\n\n更倾向主动研究、分析、建立清楚的理解结构。\n\nTone 4–6 · Right\n\n更倾向接收信息，让理解在观察和经验中逐渐形成。\n\nTransference（转移）\n\nFear 会转向 Need（需求）。\n\n偏离时可能从“我需要理解这个东西”，变成“我必须赶紧做点什么”。",
+    "detail": "这里的 Fear（恐惧）不是“胆小”。\n\n它更像一种面对未知时产生的认知动力：想知道这是怎么回事、风险在哪里、自己还缺什么信息。\n\nTone 1–3 · Left\n\n更倾向主动研究、分析、建立清楚的理解结构。\n\nTone 4–6 · Right\n\n更倾向接收信息，让理解在观察和经验中逐渐形成。\n\nTransference（转移）\n\n当 Fear（恐惧）动机偏离时，会发生 Transference（转移），转向 Need（需求）。\n\n原本的动力是理解未知、建立基础并获得充分的信息；在焦虑或迷失时，则容易放弃原本需要的研究过程，变成“我必须马上做点什么”，在基础尚未建立之前就急于行动。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1169,16 +1193,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 167,
-          "end": 219
+          "end": 294,
+          "kind": "deviation",
+          "sourceValue": "fear",
+          "targetValue": "need",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:hope": {
     "summary": "倾向观察和等待，让事情在合适的时机自然显现。",
-    "detail": "Hope（希望）的动力不是马上介入，而是相信过程会逐渐显现答案。\n\nTone 1–3 · Left\n\n会更有意识地观察局面，判断什么时候值得继续等待。\n\nTone 4–6 · Right\n\n更容易保持接收和观察，让事情自己展开。\n\nTransference（转移）\n\nHope 会转向 Guilt（内疚／责任）。\n\n偏离时可能从等待和观察，变成觉得：\n\n“是不是我必须去解决这个？”",
+    "detail": "Hope（希望）的动力不是马上介入，而是相信过程会逐渐显现答案。\n\nTone 1–3 · Left\n\n会更有意识地观察局面，判断什么时候值得继续等待。\n\nTone 4–6 · Right\n\n更容易保持接收和观察，让事情自己展开。\n\nTransference（转移）\n\n当 Hope（希望）动机偏离时，会发生 Transference（转移），转向 Guilt（内疚／责任）。\n\n原本的动力是观察、等待，并相信事情会在合适的时机显现；在焦虑或迷失时，则容易觉得“是不是我必须去解决这件事”，开始过度介入、干预或承担原本并不需要承担的责任。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1201,16 +1229,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 134,
-          "end": 191
+          "end": 268,
+          "kind": "deviation",
+          "sourceValue": "hope",
+          "targetValue": "guilt",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:desire": {
     "summary": "被改变、推动和组织现实的可能吸引。",
-    "detail": "Desire（欲望）带有明显的推动和影响现实的动力。\n\n它容易看到：\n\n什么可以变得更好？\n什么可以推进？\n我可以如何影响结果？\n\nTone 1–3 · Left\n\n更容易主动规划目标、步骤和推进方式。\n\nTone 4–6 · Right\n\n更倾向接收当下的机会，再自然参与变化和推动。\n\nTransference（转移）\n\nDesire 会转向 Innocence（纯真）。\n\n偏离时可能表面上表现得“我什么都不想要”，实际上仍然被隐藏的欲望推动。",
+    "detail": "Desire（欲望）带有明显的推动和影响现实的动力。\n\n它容易看到：\n\n什么可以变得更好？\n什么可以推进？\n我可以如何影响结果？\n\nTone 1–3 · Left\n\n更容易主动规划目标、步骤和推进方式。\n\nTone 4–6 · Right\n\n更倾向接收当下的机会，再自然参与变化和推动。\n\nTransference（转移）\n\n当 Desire（欲望）动机偏离时，会发生 Transference（转移），转向 Innocence（纯真）。\n\n原本真实存在着目标、企图和推动现实的欲望；偏离后，却可能表现成“我什么都不想要”“无所谓”“顺其自然”，表面看似没有目的，实际上仍然被没有承认的欲望推动。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1233,16 +1265,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 163,
-          "end": 225
+          "end": 298,
+          "kind": "deviation",
+          "sourceValue": "desire",
+          "targetValue": "innocence",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:need": {
     "summary": "自然辨认什么是真正必要、必须优先处理的部分。",
-    "detail": "Need（需求）关注必要性。\n\n它会从大量可能性里筛出：\n\n哪件事真的需要处理？\n什么只是多余？\n什么才是当前最关键的？\n\nTone 1–3 · Left\n\n更聚焦于分析问题并找到具体需要处理的事项。\n\nTone 4–6 · Right\n\n更容易从整体局面中感受到什么才是真正必要的。\n\nTransference（转移）\n\nNeed 会转向 Fear（恐惧）。\n\n偏离时可能从处理真正必要的问题，转成不断研究、担心和收集越来越多信息。",
+    "detail": "Need（需求）关注必要性。\n\n它会从大量可能性里筛出：\n\n哪件事真的需要处理？\n什么只是多余？\n什么才是当前最关键的？\n\nTone 1–3 · Left\n\n更聚焦于分析问题并找到具体需要处理的事项。\n\nTone 4–6 · Right\n\n更容易从整体局面中感受到什么才是真正必要的。\n\nTransference（转移）\n\n当 Need（需求）动机偏离时，会发生 Transference（转移），转向 Fear（恐惧）。\n\n原本只是辨认什么是真正必要、当前需要处理的问题；偏离后，则容易开始过度担忧、过度研究和不断收集更多信息，反而迟迟无法处理眼前真正必要的事情。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1265,16 +1301,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 162,
-          "end": 217
+          "end": 283,
+          "kind": "deviation",
+          "sourceValue": "need",
+          "targetValue": "fear",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:guilt": {
     "summary": "自然发现哪里出了问题，并寻找可以修正和改善的方法。",
-    "detail": "这里的 Guilt 更接近一种“需要修正”的动力。\n\n它容易看到：\n\n什么坏了？\n哪里需要改？\n怎么让系统恢复正常？\n\nTone 1–3 · Left\n\n更容易主动分析问题并制定修复方案。\n\nTone 4–6 · Right\n\n更容易从整体运行中察觉哪里不对，再自然产生修正方向。\n\nTransference（转移）\n\nGuilt 会转向 Hope（希望）。\n\n偏离时可能从“这个问题可以怎么修”，转成只期待：\n\n“它也许自己会好。”",
+    "detail": "这里的 Guilt 更接近一种“需要修正”的动力。\n\n它容易看到：\n\n什么坏了？\n哪里需要改？\n怎么让系统恢复正常？\n\nTone 1–3 · Left\n\n更容易主动分析问题并制定修复方案。\n\nTone 4–6 · Right\n\n更容易从整体运行中察觉哪里不对，再自然产生修正方向。\n\nTransference（转移）\n\n当 Guilt（内疚／责任）动机偏离时，会发生 Transference（转移），转向 Hope（希望）。\n\n原本能够看到哪里出了问题，并产生修复、纠正和让事情回到正轨的动力；在压力或迷失时，则可能开始期待事情自己变好，回避本来已经看见、也能够处理的问题。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1297,16 +1337,20 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 160,
-          "end": 217
+          "end": 288,
+          "kind": "deviation",
+          "sourceValue": "guilt",
+          "targetValue": "hope",
+          "terminology": "transference"
         }
       ]
     }
   },
   "variable.motivation:innocence": {
     "summary": "以较少预设和个人议程的方式观察、理解和表达。",
-    "detail": "Innocence（纯真）最特别的地方，是它并不需要一个明确的个人目标来推动心智。\n\n它更偏向直接体验正在发生的事情，不急着通过恐惧、责任或欲望去控制结果。\n\nTone 1–3 · Left\n\n即便具有较少个人议程，观察方式仍然可以更集中和明确。\n\nTone 4–6 · Right\n\n则更容易保持开放、接收和自然流动，让体验本身带来理解。\n\nTransference（转移）\n\nInnocence 会转向 Desire（欲望）。\n\n偏离时可能从没有明确议程的观察状态，进入越来越强的“我要控制结果、得到某个结果”。",
+    "detail": "Innocence（纯真）最特别的地方，是它并不需要一个明确的个人目标来推动心智。\n\n它更偏向直接体验正在发生的事情，不急着通过恐惧、责任或欲望去控制结果。\n\nTone 1–3 · Left\n\n即便具有较少个人议程，观察方式仍然可以更集中和明确。\n\nTone 4–6 · Right\n\n则更容易保持开放、接收和自然流动，让体验本身带来理解。\n\nTransference（转移）\n\n当 Innocence（纯真）动机偏离时，会发生 Transference（转移），转向 Desire（欲望）。\n\n原本较少个人议程，不急于控制结果，而是直接经历和观察正在发生的事情；偏离后，则容易产生越来越强的目的性，开始想掌控结果、获得特定目标，或让事情按照自己的意图发展。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -1329,9 +1373,13 @@ export default {
         },
         {
           "id": "transference",
-          "title": "Transference（转移）",
+          "title": "偏离状态",
           "start": 190,
-          "end": 258
+          "end": 329,
+          "kind": "deviation",
+          "sourceValue": "innocence",
+          "targetValue": "desire",
+          "terminology": "transference"
         }
       ]
     }

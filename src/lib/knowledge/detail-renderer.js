@@ -80,11 +80,23 @@ function renderCross(entry) {
   const slot=entry.detail;
   return (slot?.presentation?.sections?slot.presentation.sections.map(section=>surface(slice(slot,section.title),renderProse(slot,section),section.id)).join(''):`<div class="knowledge-reading">${renderProse(slot)}</div>`);
 }
+function renderDeviation(entry, slot, section) {
+  // Stable metadata defines the pair; the existing registry supplies localized names.
+  const kind=entry.properties.kind;
+  const name=value=>getKnowledgeEntry({objectType:'variable',objectId:`${kind}:${value}`})?.name ?? '';
+  const perspective=kind==='perspective';
+  const mechanism=perspective
+    ? 'When the perspective moves off its correct state, attention can be drawn toward its paired perspective. This describes a possible off-track direction, not a second fixed trait.'
+    : 'In anxiety, pressure or confusion, motivation can shift toward its paired motivation. This describes a possible off-track state, not a second motivation.';
+  const node=(value,label)=>`<div class="knowledge-deviation-node" data-value="${esc(value)}"><span class="knowledge-deviation-label">${esc(t(label))}</span><strong>${esc(name(value))}</strong></div>`;
+  return `<section class="knowledge-section knowledge-surface knowledge-information knowledge-deviation" data-section="${esc(section.id)}" data-terminology="${esc(section.terminology)}"><h3 class="knowledge-deviation-heading">${esc(t('Off-track State'))}</h3><div class="knowledge-deviation-term">${esc(t(section.terminology==='distraction'?'Variable Distraction':'Variable Transference'))}</div><p class="knowledge-deviation-mechanism">${esc(t(mechanism))}</p><div class="knowledge-deviation-flow">${node(section.sourceValue,perspective?'Correct perspective':'Correct motivation')}<span class="knowledge-deviation-arrow" aria-hidden="true">↓</span>${node(section.targetValue,'Possible off-track direction')}</div>${renderProse(slot,section)}</section>`;
+}
 function renderVariable(entry, context) {
   const slot=entry.detail,sections=slot?.presentation?.sections;
   if(!sections)return renderProse(slot);
   const tone=Number(context?.tone),selected=tone>=1&&tone<=3?'tone1to3':tone>=4&&tone<=6?'tone4to6':null;
   const render=section=>{
+    if(section.kind==='deviation')return renderDeviation(entry,slot,section);
     const branch=section.id==='tone1to3'||section.id==='tone4to6';
     return `<section class="knowledge-section${branch?' knowledge-surface knowledge-branch':section.id==='intro'?' knowledge-reading':' knowledge-surface knowledge-information'}"${branch?` data-selected="${selected===section.id}"`:''} data-section="${section.id}">${section.title?`<h3>${esc(section.title)}${selected===section.id?`<span class="knowledge-yours">${esc(t('Yours'))}</span>`:''}</h3>`:''}${renderProse(slot,section)}</section>`;
   };
