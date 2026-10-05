@@ -193,10 +193,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-workspace"><div class="tl-stage">
       <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       ${graphPanelMarkup({ labels: Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, t(key)])), locale })}
-      <div class="tl-mobile-control-bar"><button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
+      <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
       <div class="tl-mobile-range"></div>
       <div class="tl-mobile-event-nav">${button('previous-gate', '←', t('previous'))}${button('next-gate', '→', t('next'))}</div>
-      </div><div class="tl-mobile-controls-panel" id="tl-mobile-controls" hidden></div>
+      <div class="tl-mobile-controls-panel" id="tl-mobile-controls" hidden></div>
     </div>
     <div class="tl-explorer"><section class="tl-tracks-panel" aria-label="${esc(t('tracks'))}">
       <div class="tl-table" aria-busy="true" tabindex="0" role="region" aria-label="${esc(t('scrub'))}" aria-describedby="tl-gesture-help" title="${esc(t('timelineHelp'))}">

@@ -14,7 +14,7 @@
 | Connection 手动人物不保存 | 只有 `localMode` 才调用保存 | 成功计算比较后，具名有效人物调用共享 `saveTemporaryBirth()`。仍由 PeopleStore 保存，保存通知立即更新 header / Connection 列表。默认 Person B、空姓名不自动保存。 |
 | Team Quick Add 不保存 | 同样只有 localMode，且保存发生在完整团队结果之前 | 先收集成功计算的具名出生资料，团队至少两人且分析成功后才保存。复用同一个 helper；不会保存未成功参与的孤立成员。 |
 | 地点搜索分叉与真实城市失败 | Entry 和其他页面各有一套控制器；GeoNames 中文索引名称不同；PPLA4 被过滤 | Entry 复用 `createPlaceSearch()`，保留原 DOM ID。通用中文市/区/县后缀重试，允许有效 PPLA3/PPLA4 行政驻地，不新增城市映射。无结果/网络故障给附近城市、上级城市及手动时差入口。 |
-| 手机控制遮挡行星 | range / previous / next / trigger 绝对定位于图内 | 独立 52px 底栏，Bodygraph 仍与轨道同屏。展开控制面板位于图外、轨道区上方；没有缩小行星字体。四种尺寸以 bounding boxes 检查不重叠。 |
+| 手机控制遮挡行星 | 辅助控件和行星列尺寸未随窄屏协调；上一轮 52px 底栏又挤压图表 | 已撤销底栏，恢复原图表完整 pane 和 60/40 比例。控件浮动，range 横排于左下按钮右侧，箭头右下，行星列整体缩放。高级面板向上浮动。详见 [手机修正](mobile-floating/README.md)。 |
 | 范围面向过去与未来居中 | 天数预设按中心分配，一年按前后半年 | 1 天保留；N 天改成前一天＋未来 N 个自然日；一年改为选中时刻到下一年周年。过去一年保留原语义。 |
 
 ### 保存身份与数据
@@ -87,12 +87,14 @@ build 不保证跨不同工作目录字节完全相同；更新 review hashes �
 
 ## 手机截图
 
+此处四张为上一轮快照。最新浮层修正及 main 原设计 / 上一版 / 修正后三方对照见 [修正报告](mobile-floating/README.md) 与 [对照页面](mobile-floating/comparison.html)。
+
 * [390×844](timeline-390.png)
 * [375×667](timeline-375.png)
 * [360×640](timeline-360.png)
 * [320×568](timeline-320.png)
 
-范围 selector、前后事件按钮、控制 trigger 与 `.tl-transit-column` / `.tl-birth-column` 在四种尺寸中均不重叠，Bodygraph 与轨道保持同屏。
+最新版本检查控件与两列不重叠、两列避开实际 SVG 九个中心，以及打开面板前后的 pane/SVG 尺寸一致；允许浮层使用图表的空白区域。
 
 ## 已知边界
 
