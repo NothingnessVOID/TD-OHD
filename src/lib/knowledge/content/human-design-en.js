@@ -238,7 +238,48 @@ export default {
     "detail": "The 2nd Line has natural abilities that can feel ordinary to the person who carries them. It needs periods of privacy and space to operate naturally, and other people often notice the gift before the 2nd Line does.\n\nThe 4th Line brings the social network. Calls, opportunities, and recognition are especially likely to come through friends, familiar circles, and trusted relationships.\n\nA common 2/4 movement is: natural ability develops in private, someone recognizes it, and the network calls it outward.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "process",
+      "blocks": [
+        {
+          "kind": "prose",
+          "start": 0,
+          "end": 387
+        },
+        {
+          "kind": "process",
+          "lead": {
+            "start": 387,
+            "end": 413
+          },
+          "steps": [
+            {
+              "start": 413,
+              "end": 449
+            },
+            {
+              "start": 450,
+              "end": 472
+            },
+            {
+              "start": 473,
+              "end": 506
+            }
+          ],
+          "separators": [
+            {
+              "start": 449,
+              "end": 450,
+              "decorativeArrow": true
+            },
+            {
+              "start": 472,
+              "end": 473,
+              "decorativeArrow": true
+            }
+          ]
+        }
+      ]
     }
   },
   "profile.2/5": {
@@ -262,7 +303,55 @@ export default {
     "detail": "The 3rd Line learns through lived experimentation. The 6th Line adds its three-part life process.\n\nRoughly before 30, life is highly experiential and trial-and-error oriented. From around 30 to 50, the 6th Line gains distance, observes, and integrates what has been lived. After about 50, the emphasis shifts toward embodying what has actually proven true in life.\n\nThe role-model quality is not a performance; it grows from experience that has been lived, observed, and integrated.",
     "presentation": {
       "kind": "profile",
-      "geometry": "Right Angle · Personal Destiny"
+      "geometry": "Right Angle · Personal Destiny",
+      "layout": "timeline",
+      "blocks": [
+        {
+          "kind": "prose",
+          "start": 0,
+          "end": 99
+        },
+        {
+          "kind": "timeline",
+          "stages": [
+            {
+              "label": {
+                "start": 99,
+                "end": 117
+              },
+              "body": {
+                "start": 118,
+                "end": 175
+              }
+            },
+            {
+              "label": {
+                "start": 176,
+                "end": 197
+              },
+              "body": {
+                "start": 198,
+                "end": 272
+              }
+            },
+            {
+              "label": {
+                "start": 273,
+                "end": 288
+              },
+              "body": {
+                "start": 289,
+                "end": 364
+              }
+            }
+          ]
+        },
+        {
+          "kind": "prose",
+          "start": 364,
+          "end": 482
+        }
+      ]
     }
   },
   "profile.4/6": {
@@ -315,7 +404,39 @@ export default {
   },
   "cross.introduction": {
     "summary": "Formed by the four Sun/Earth activations of Personality and Design, the Incarnation Cross describes an overarching theme that runs through a life.",
-    "detail": "### Composition\n\n- Personality Sun\n- Personality Earth\n- Design Sun\n- Design Earth\n\nThe Gates in these four positions form the specific Incarnation Cross and establish its recurring life theme and direction.\n\n### Geometry\n\n- Right Angle — Personal Destiny\n- Juxtaposition — Fixed Fate\n- Left Angle — Transpersonal Karma\n\nThe geometry changes how the theme unfolds: primarily through one's own personal trajectory, through a fixed path, or through transpersonal encounters and relationships.\n\n### Life theme\n\nThe Incarnation Cross is not a mission for the mind to plan and complete. Its theme becomes visible through the course of a life as the person lives their Design."
+    "detail": "### Composition\n\n- Personality Sun\n- Personality Earth\n- Design Sun\n- Design Earth\n\nThe Gates in these four positions form the specific Incarnation Cross and establish its recurring life theme and direction.\n\n### Geometry\n\n- Right Angle — Personal Destiny\n- Juxtaposition — Fixed Fate\n- Left Angle — Transpersonal Karma\n\nThe geometry changes how the theme unfolds: primarily through one's own personal trajectory, through a fixed path, or through transpersonal encounters and relationships.\n\n### Life theme\n\nThe Incarnation Cross is not a mission for the mind to plan and complete. Its theme becomes visible through the course of a life as the person lives their Design.",
+    "presentation": {
+      "kind": "cross",
+      "sections": [
+        {
+          "id": "composition",
+          "title": {
+            "start": 4,
+            "end": 15
+          },
+          "start": 17,
+          "end": 209
+        },
+        {
+          "id": "geometry",
+          "title": {
+            "start": 213,
+            "end": 221
+          },
+          "start": 223,
+          "end": 492
+        },
+        {
+          "id": "theme",
+          "title": {
+            "start": 496,
+            "end": 506
+          },
+          "start": 508,
+          "end": 670
+        }
+      ]
+    }
   },
   "variable.determination:appetite": {
     "summary": "Favors simple, separated intake, keeping what is taken in relatively distinct.",

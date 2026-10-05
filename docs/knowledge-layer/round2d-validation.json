@@ -1,0 +1,76 @@
+{
+  "baseline": "438ad2dc2dfa950eed55687143516051023de824",
+  "branch": "feature/knowledge-visual-unification-v1",
+  "editorialChanges": 0,
+  "contentHashes": {
+    "locales": [
+      "en",
+      "zh-CN",
+      "zh-Hant"
+    ],
+    "reviewedPerLocale": 55,
+    "matched": 165,
+    "fixture": "tests/fixtures/knowledge-round2c-content.json"
+  },
+  "metadataEntries": [
+    "profile.2/4",
+    "profile.3/6",
+    "cross.introduction"
+  ],
+  "renderedReviewedEntries": 55,
+  "variableEntries": 24,
+  "cognitionNameOnly": 6,
+  "protectedCalculationsChanged": false,
+  "protectedBodygraphChanged": false,
+  "legacyStylesChanged": false,
+  "tests": {
+    "unit": {
+      "passed": 323,
+      "failed": 0,
+      "skipped": 3
+    },
+    "knowledgeFocused": {
+      "passed": 42,
+      "failed": 0
+    },
+    "localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "timelineUnit": {
+      "passed": 63,
+      "failed": 0
+    },
+    "visualE2E": {
+      "passed": 96
+    },
+    "presentationE2E": {
+      "passed": 132
+    },
+    "knowledgeAccessE2E": "passed",
+    "homeIsolationE2E": "passed",
+    "bodygraphComparisons": {
+      "passed": 24
+    },
+    "timelineE2E": "passed",
+    "referenceE2E": "passed",
+    "chartDataExportE2E": "passed",
+    "productionBuild": "passed"
+  },
+  "widths": [
+    1224,
+    903,
+    664,
+    390
+  ],
+  "locales": [
+    "en",
+    "zh-CN",
+    "zh-Hant"
+  ],
+  "homeGeometryChanges": 0,
+  "newDependencies": 0,
+  "unresolvedImplementationItems": [],
+  "mergedMain": false,
+  "deployed": false
+}

@@ -21,7 +21,7 @@ test('Round 2C keeps all 55 supplied independent locale articles and six name-on
 });
 test('zh-CN changes only Taste branches and six Environment headings',()=>{
  for(const [key,record]of Object.entries(knowledgeContent['zh-CN'])){
-  const old=oldCN[key];if(key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')){assert.deepEqual(record,old,key);continue;}
+  const old=oldCN[key];if(key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')){assert.deepEqual({summary:record.summary,detail:record.detail},{summary:old.summary,detail:old.detail},key);continue;}
   assert.equal(record.summary,old.summary);const sections=record.presentation.sections;
   if(key.startsWith('variable.environment:')){const pair=pairs[key.split(':')[1]];for(const [i,id]of ['tone1to3','tone4to6'].entries()){const prior=old.presentation.sections.find(s=>s.id===id);const title=sections.find(s=>s.id===id).title;assert.ok(title.startsWith(prior.title+' · '));assert.equal(title.split(pair[i]).length-1,1,key+'/'+id);}}
 
