@@ -215,7 +215,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <div class="value">${esc(typeName(chart.type.name))}</div>
         <div class="detail">${esc(foundationSummary(chart, 'type'))}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="strategy">
         <div class="label">${t('Strategy')}</div>
         <div class="value">${esc(strategy(chart.type.name))}</div>
         <div class="detail">${t('Signature:')} ${esc(signature(chart.type.name))} · ${t('Not-Self:')} ${esc(notSelf(chart.type.name))}</div>

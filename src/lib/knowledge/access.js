@@ -3,6 +3,8 @@ import { TYPES } from '../human-design/catalog.js';
 export function chartKnowledgeQuery(chart, objectType, variableKind = null) {
   if (!chart) return null;
   const domain = 'human-design';
+  // Strategy is another Type surface, never a separate knowledge identity.
+  if (objectType === 'strategy') objectType = 'type';
   if (objectType === 'variable') {
     const slot = chart.variable?.[variableKind];
     return slot?.valueId ? { domain, objectType, objectId: `${variableKind}:${slot.valueId}` } : null;

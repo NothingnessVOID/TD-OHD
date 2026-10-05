@@ -98,7 +98,7 @@ test('reviewed regional terminology is independent of Simplified and English', (
   }
   setLocale('zh-CN', { persist: false });
   assert.equal(terms.authorityName('Sacral Authority'), '骶骨权威');
-  assert.equal(terms.profileName('1/3'), '研究者／实验者');
+  assert.equal(terms.profileName('1/3'), '研究者／实践家');
   assert.equal(content.GATE_DESCRIPTIONS[60].description, cn.GATE_DESCRIPTIONS[60].description);
   setLocale('en', { persist: false });
   assert.equal(terms.authorityName('Sacral Authority'), 'Sacral Authority');

@@ -17,7 +17,7 @@ const entry = (objectType, objectId, name, summary = null, extra = {}) => ({
   reviewStatus: 'unreviewed', version: 1, ...extra
 });
 // Independent slots resolve only their own locale resource and terms.
-const reviewedRef = (key, slot) => ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`, 'reviewed-hd-content', { reviewStatus:'reviewed',version:2, templateRead:()=>knowledgeContent[getLocale()][key][slot] });
+const reviewedRef = (key, slot) => ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`, 'reviewed-hd-content', { reviewStatus:'reviewed',version:2, templateRead:()=>knowledgeContent[getLocale()][key][slot], presentationRead:()=>slot === 'detail' ? knowledgeContent[getLocale()][key].presentation : undefined });
 export const foundationRecords = [];
 for (const [id, type] of Object.entries(TYPES)) foundationRecords.push(entry('type', id,
   ref(() => typeName(type.name), catalogFile, `TYPES.${id}.name`),

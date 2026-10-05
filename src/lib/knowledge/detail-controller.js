@@ -4,7 +4,6 @@ import { renderKnowledgeDetail } from './detail-renderer.js';
 import { openDetailDialog, prepareDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../detail-dialog.js';
 import { t } from '../i18n.js';
 import { esc } from '../format.js';
-import { variableDirection } from '../variable-arrows.js';
 
 let currentQuery = null;
 let currentContext = null;
@@ -24,13 +23,9 @@ const clearState = () => {
 };
 export const getKnowledgeDetailState = () => currentQuery ? { query: currentQuery, context: currentContext, libraryId: currentLibraryId } : null;
 
-function contextText() {
-  const slot = currentContext?.variable;
-  return slot ? `${t(variableDirection(slot) === 'left' ? 'Left — focused' : 'Right — receptive')} · ${t('Color {color} · Tone {tone} · Base {base}', slot)}` : '';
-}
 function render() {
   const detail = document.getElementById('gate-detail');
-  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons"><span></span><button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { contextText: contextText(), showSpecificMissing: false })}<button type="button" class="reference-link knowledge-library-link">${esc(t(currentQuery.objectType === 'cross' && currentQuery.objectId !== 'introduction' ? 'View Cross introduction in the library' : 'View in the library'))}</button></div></div>`;
+  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons"><span></span><button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
   detail.querySelector('.knowledge-library-link').addEventListener('click', () => {
     const id = currentLibraryId;
     closeDetailDialog();

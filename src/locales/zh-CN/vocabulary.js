@@ -37,18 +37,18 @@ export const AUTHORITY_ZH = {
 };
 
 export const PROFILE_ZH = {
-  "1/3": "研究者／实验者",
+  "1/3": "研究者／实践家",
   "1/4": "研究者／机会主义者",
   "2/4": "隐士／机会主义者",
   "2/5": "隐士／异端者",
-  "3/5": "实验者／异端者",
-  "3/6": "实验者／榜样",
+  "3/5": "实践家／异端者",
+  "3/6": "实践家／榜样",
   "4/6": "机会主义者／榜样",
   "4/1": "机会主义者／研究者",
   "5/1": "异端者／研究者",
   "5/2": "异端者／隐士",
   "6/2": "榜样／隐士",
-  "6/3": "榜样／实验者"
+  "6/3": "榜样／实践家"
 };
 
 export const DEFINITION_ZH = {
@@ -108,11 +108,11 @@ export const CHANNEL_ZH = CHANNEL_ROWS;
 export const CIRCUIT_ZH = { individual: '个体回路', collective: '集体回路', tribal: '家族回路', integration: '整合回路', knowing: '知晓回路', logic: '逻辑回路', sensing: '感知回路', ego: '自我回路', defense: '防御回路', centering: '中心化回路' };
 
 export const PLANET_ZH = { sun:'太阳', earth:'地球', moon:'月亮', northNode:'北交点', southNode:'南交点', mercury:'水星', venus:'金星', mars:'火星', jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };
-export const LINE_ZH = { 1:'研究者', 2:'隐士', 3:'实验者', 4:'机会主义者', 5:'异端者', 6:'榜样' };
+export const LINE_ZH = { 1:'研究者', 2:'隐士', 3:'实践家', 4:'机会主义者', 5:'异端者', 6:'榜样' };
 
 export const VARIABLE_ZH = {
   "Appetite": "食欲型",
-  "Taste": "口味型",
+  "Taste": "味觉型",
   "Thirst": "温度型",
   "Touch": "触觉型",
   "Sound": "声音型",
@@ -120,9 +120,9 @@ export const VARIABLE_ZH = {
   "Caves": "洞穴环境",
   "Markets": "市场环境",
   "Kitchens": "厨房环境",
-  "Mountains": "高地环境",
+  "Mountains": "高山环境",
   "Valleys": "山谷环境",
-  "Shores": "岸边环境",
+  "Shores": "海岸环境",
   "Survival": "生存视角",
   "Possibility": "可能性视角",
   "Power": "权力视角",
