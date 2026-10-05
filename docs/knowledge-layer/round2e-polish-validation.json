@@ -1,0 +1,89 @@
+{
+  "baseline": "686a5966bd5c36f37dd4a80f5c51786c4f847a31",
+  "branch": "fix/knowledge-ui-polish-v1",
+  "contentHashes": {
+    "reviewedLocaleEntries": 165,
+    "unchanged": true
+  },
+  "tests": {
+    "npm test": {
+      "total": 338,
+      "passed": 335,
+      "failed": 0,
+      "skipped": 3
+    },
+    "test:localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "test:timeline": {
+      "passed": 63,
+      "failed": 0
+    },
+    "knowledge unit": {
+      "passed": 54,
+      "failed": 0
+    },
+    "knowledge-polish-e2e": {
+      "passed": true,
+      "contexts": 12,
+      "hoverAndGeometryChecks": 132,
+      "keyboardSourceGateReturnChecks": 24,
+      "sourcePlanetIdentityVerified": true
+    },
+    "knowledge-refinement-e2e": {
+      "passed": true,
+      "scenes": 252
+    },
+    "knowledge-presentation-e2e": {
+      "passed": true,
+      "cases": 132
+    },
+    "e2e:bodygraph-regression": {
+      "passed": true,
+      "comparisons": 24
+    },
+    "e2e:timeline": {
+      "passed": true,
+      "main": true,
+      "gestures": true,
+      "touch": true,
+      "mobileLayout": true
+    },
+    "e2e:reference": {
+      "passed": true,
+      "desktop": true,
+      "mobile": true
+    },
+    "e2e:planet": {
+      "passed": true,
+      "chartTransitTimeline": true,
+      "desktopMobile": true
+    },
+    "e2e:appearance": {
+      "passed": true,
+      "skin": true,
+      "controls": true
+    },
+    "productionBuild": {
+      "passed": true,
+      "warning": "existing large chunk advisory"
+    }
+  },
+  "protected": {
+    "engineChanged": false,
+    "adapterChanged": false,
+    "calculationChanged": false,
+    "bodygraphRenderFunctionsChanged": false,
+    "geometryChanged": false,
+    "knowledgeProseChanged": false
+  },
+  "navigationChanges": [
+    "shared Back class",
+    "Cross panel Basics card",
+    "Cross activation button navigation event",
+    "synthetic Knowledge return in goBack"
+  ],
+  "preview": "http://127.0.0.1:5209/?d=2000-05-10&t=12%3A30&tz=8",
+  "unresolved": []
+}

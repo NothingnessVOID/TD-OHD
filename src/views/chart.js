@@ -368,11 +368,24 @@ function showTransitChannelDetail(id, pushHistory = true) {
 function goBack() {
   const prev = detailHistory.pop();
   if (!prev) return closeDetailDialog();
-  if (prev.kind === 'planet') showPlanetDetail(prev, false);
+  if (prev.kind === 'knowledge') {
+    openKnowledgeDetail(prev.query, prev.context);
+    document.querySelector(`#gate-detail [data-activation="${prev.activation}"]`)?.focus({ preventScroll: true });
+  }
+  else if (prev.kind === 'planet') showPlanetDetail(prev, false);
   else if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.source);
   else if (prev.kind === 'channel') showTransitChannelDetail(prev.id, false);
   else showCenterDetail(prev.id, false);
 }
+
+// Thin Knowledge → Gate bridge. Release the Knowledge owner before building BodyGraph history.
+window.addEventListener('ohd-open-knowledge-gate', event => {
+  const { gate, source, returnKnowledge } = event.detail || {};
+  if (!current || !Number.isInteger(gate) || gate < 1 || gate > 64 || !returnKnowledge) return;
+  prepareDetailDialog(document.getElementById('gate-detail'));
+  detailHistory = [{ kind: 'knowledge', ...returnKnowledge }];
+  showGateDetail(gate, false, source);
+});
 
 function detailNav() {
   const backBtn = detailHistory.length > 0
@@ -842,7 +855,6 @@ function renderCrossPanel(container) {
     <div class="panel-title">${t('Incarnation Cross')}</div>
     <div class="panel-heading">${esc(crossName(cross))}</div>
     <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
-    <p class="panel-intro" style="margin-top:8px">${esc(getKnowledgeSummary({objectType:'cross',objectId:'introduction'})?.content ?? '')}</p>
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `
@@ -854,8 +866,10 @@ function renderCrossPanel(container) {
         `).join('')}
       </div>
     </div>
+    <button type="button" class="knowledge-jump-card" data-cross-basics><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>
     ${geneKeysHtml}
   `;
+  container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
   container.querySelectorAll('.foundation-clickable').forEach(item => {
     item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
     wireRowHover(item, parseInt(item.dataset.gate));

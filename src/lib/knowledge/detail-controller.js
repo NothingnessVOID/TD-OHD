@@ -27,8 +27,8 @@ export const getKnowledgeDetailState = () => currentQuery ? { query: currentQuer
 
 function render() {
   const detail = document.getElementById('gate-detail');
-  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons">${knowledgeDetailHistory.length ? `<button type="button" class="knowledge-back">← ${esc(t('Back'))}</button>` : '<span></span>'}<button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable, definitionComponents: currentContext?.definitionComponents })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
-  detail.querySelector('.knowledge-back')?.addEventListener('click', () => {
+  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons">${knowledgeDetailHistory.length ? `<button type="button" class="gate-detail-back">← ${esc(t('Back'))}</button>` : '<span></span>'}<button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable, definitionComponents: currentContext?.definitionComponents })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
+  detail.querySelector('.gate-detail-back')?.addEventListener('click', () => {
     const previous = knowledgeDetailHistory.pop();
     currentQuery = previous.query; currentContext = previous.context; currentLibraryId = previous.libraryId;
     render();
@@ -41,8 +41,16 @@ function render() {
     currentQuery = {objectType:entry.objectType,objectId:entry.objectId};
     currentContext = null; currentLibraryId = entry.id;
     render();
-    detail.querySelector('.knowledge-back')?.focus({preventScroll:true});
+    detail.querySelector('.gate-detail-back')?.focus({preventScroll:true});
   });
+  detail.querySelectorAll('[data-knowledge-gate]').forEach(button => button.addEventListener('click', () => {
+    // Navigation only: chart owns the existing Gate renderer and its return stack.
+    window.dispatchEvent(new CustomEvent('ohd-open-knowledge-gate', { detail: {
+      gate: Number(button.dataset.knowledgeGate),
+      source: { side: button.dataset.sourceSide, planet: button.dataset.sourcePlanet },
+      returnKnowledge: { query: currentQuery, context: currentContext, activation: button.dataset.activation }
+    } }));
+  }));
   detail.querySelector('.knowledge-library-link').addEventListener('click', () => {
     const id = currentLibraryId;
     closeDetailDialog();

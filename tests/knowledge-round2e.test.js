@@ -53,5 +53,6 @@ test('protected calculation, geometry and BodyGraph functions stay byte-identica
  for(const p of ['src/lib/human-design/bodygraph-geometry.js','src/bodygraph.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),execFileSync('git',['show',base+':'+p]),p);
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
  const old=extract(execFileSync('git',['show',base+':src/views/chart.js']).toString()),now=extract(readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8'));
- for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail','detailNav','goBack'])assert.equal(now.get(name),old.get(name));
+ // goBack's additive Knowledge return branch is guarded in knowledge-polish.test.js.
+ for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail','detailNav'])assert.equal(now.get(name),old.get(name));
 });

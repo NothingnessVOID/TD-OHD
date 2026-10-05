@@ -1383,6 +1383,7 @@ body.modal-open { overflow: hidden; }
 .gate-detail-body > .detail-label, .gate-detail-body > .detail-name { padding-right: 82px; }
 .gate-detail-body > .channel-detail-heading { padding-right: 82px; }
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .detail-name,
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .knowledge-detail > .detail-name,
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .channel-detail-heading { padding-right: 142px; }
 
 .gate-detail-back {
@@ -2458,9 +2459,6 @@ input[aria-invalid="true"] { border-color: var(--status-error) !important; }
 .planet-detail-card .gate-detail-body { padding: 25px 30px 29px; }
 .planet-detail-card .tl-detail-header { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
 .planet-detail-card .detail-label { margin-bottom: 10px; }
-.planet-detail-card .gate-detail-body[data-source="design"] .detail-label { color: var(--hd-design); }
-.planet-detail-card .gate-detail-body[data-source="personality"] .detail-label { color: var(--hd-personality); }
-.planet-detail-card .gate-detail-body[data-source="transit"] .detail-label { color: var(--hd-transit-text); }
 .planet-detail-card .planet-detail-title {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);

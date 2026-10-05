@@ -1,6 +1,6 @@
 /* Access affordances preserve the existing card box model and palette. */
-.knowledge-trigger { cursor: pointer; }
-.knowledge-trigger:hover { background-color: var(--bg-sunken); }
+.knowledge-trigger { cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease; }
+.knowledge-trigger:hover { background-color: var(--accent-soft); }
 .knowledge-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .knowledge-detail { color: var(--text); min-width: 0; }
 .knowledge-detail .detail-name { margin-top: 0; overflow-wrap: anywhere; }
@@ -94,3 +94,7 @@
 .knowledge-jump-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @container (max-width: 460px) { .knowledge-definition-islands { grid-template-columns: minmax(0,1fr); } }
 @media (max-width: 640px) { .knowledge-definition-islands { grid-template-columns: minmax(0,1fr); } }
+
+.knowledge-activation-link { color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease; }
+.knowledge-activation-link:hover { background: var(--accent-soft); border-color: var(--accent); }
+.knowledge-activation-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
