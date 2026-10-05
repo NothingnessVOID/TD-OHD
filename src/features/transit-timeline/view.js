@@ -856,7 +856,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (action === 'mobile-exit') { showMobileControls(false); document.getElementById('mobile-menu-toggle')?.click(); return; }
     if (action === 'mobile-controls') { showMobileControls(controlPanel.hidden); return; }
     if (!controlPanel.hidden && !controlPanel.contains(event.target)) showMobileControls(false);
-    if (action === 'now') selectTime(Date.now(), { recenter: true });
+    if (action === 'now') {
+      const now = Date.now();
+      // Reuse completed intervals; selectTime only recenters an offscreen cursor.
+      const covered = result && result.start <= now && now < result.end;
+      selectTime(now, { recenter: !covered });
+    }
     if (action === 'previous-gate' || action === 'next-gate') jumpGate(action === 'next-gate' ? 1 : -1);
     if (action === 'expand-gate') {
       const gate = Number(event.target.closest('[data-gate]').dataset.gate);

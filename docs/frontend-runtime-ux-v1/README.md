@@ -15,7 +15,7 @@
 | Team Quick Add 不保存 | 同样只有 localMode，且保存发生在完整团队结果之前 | 先收集成功计算的具名出生资料，团队至少两人且分析成功后才保存。复用同一个 helper；不会保存未成功参与的孤立成员。 |
 | 地点搜索分叉与真实城市失败 | Entry 和其他页面各有一套控制器；GeoNames 中文索引名称不同；PPLA4 被过滤 | Entry 复用 `createPlaceSearch()`，保留原 DOM ID。通用中文市/区/县后缀重试，允许有效 PPLA3/PPLA4 行政驻地，不新增城市映射。无结果/网络故障给附近城市、上级城市及手动时差入口。 |
 | 手机控制遮挡行星 | 辅助控件和行星列尺寸未随窄屏协调；上一轮 52px 底栏又挤压图表 | 已撤销底栏，恢复原图表完整 pane 和 60/40 比例。控件浮动，range 位于右下箭头上方并右对齐，箭头右下，行星列整体缩放。高级面板向上浮动。详见 [最新 Range 定位](range-event-navigation/README.md) 与 [手机浮层恢复](mobile-floating/README.md)。 |
-| 范围面向过去与未来居中 | 天数预设按中心分配，一年按前后半年 | 1 天保留；N 天改成前一天＋未来 N 个自然日；一年改为选中时刻到下一年周年。过去一年保留原语义。 |
+| 范围面向过去与未来居中 | 天数预设按中心分配，一年按前后半年 | 1 天保留；N 天改成前一天＋未来 N 个自然日；未来一年／过去一年均改为完整当地自然日。详见 [时间行为修正](timeline-time-behavior/README.md)。 |
 
 ### 保存身份与数据
 
@@ -47,8 +47,9 @@ API 行为说明：[Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geo
 
 * 1 天：选中当地日期的开始至下一个当地日期的开始。
 * N = 3/7/30/90/180：start 为前一个当地日期开始；end 为选中当地日期加 N 的开始。总共 N+1 个日期，前一天是上下文。例如选中 10 月 5 日、7 天范围为 `[10 月 4 日 00:00, 10 月 12 日 00:00)`。
-* 一年：选中时刻至未来一个 calendar year 的当地周年时刻。Feb 29 钳制到 Feb 28，DST gap 取下一个有效分钟，fold 优先保留原 UTC offset。
-* 过去一年：过去一个当地周年时刻至选中秒的结束（原 exclusive end = selected + 1000ms）。
+* 一年：选中当地日期开始至一年后的对应日期的次日开始（exclusive）。Feb 29 对应日期钳制到 Feb 28。
+* 过去一年：一年前对应当地日期开始至当前日期的次日开始（exclusive），两端日期完整包含。
+* 现在：已完成结果包含当前时刻时只移动游标／视口，保留计算范围和缩放跨度；超出结果才按当前 preset 重新计算。
 
 日期边界由 IANA timezone 定位；没有将 N×24 小时当作当地自然日。3 天预设跨纽约春季 DST 为 95 小时，秋季为 97 小时；Apia 跳过日期继续正确解析。
 
@@ -56,9 +57,9 @@ API 行为说明：[Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geo
 
 | 验证项 | 最终结果 |
 |---|---|
-| npm test | 274 项：271 passed，0 failed，3 skipped（原项目默认的在线 MCP/地点测试）。 |
+| npm test | 276 项：273 passed，0 failed，3 skipped（原项目默认的在线 MCP/地点测试）。 |
 | test:localization | 34 passed，0 failed。 |
-| test:timeline | 61 passed，0 failed。 |
+| test:timeline | 63 passed，0 failed。 |
 | profile / location / temporary birth / boot config | 18 passed，0 failed；也包含于主测试。 |
 | npm run build | passed；引擎签名仍为 `59b90e629033cc7faf95`。 |
 | place-search-e2e | Entry / Connection / Team，IME、stale response、网络错误、无结果、手动 fallback passed。 |
