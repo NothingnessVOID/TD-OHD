@@ -72,7 +72,7 @@ function renderDefinition(entry, components) {
 }
 function renderCrossActivations(entry) {
   const p=entry.properties;
-  const activations=p.gates?.length===4?`<div class="knowledge-cross-activations">${p.gates.map((gate,index)=>`<div class="knowledge-activation" data-activation="${['personality-sun','personality-earth','design-sun','design-earth'][index]}"><div class="knowledge-activation-label">${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index]))}</div>${chips([t('Gate {gate}',{gate})])}</div>`).join('')}</div>`:'';
+  const activations=p.gates?.length===4?`<div class="knowledge-cross-activations">${p.gates.map((gate,index)=>`<button type="button" class="knowledge-activation knowledge-activation-link" data-knowledge-gate="${gate}" data-source-side="${index<2?'personality':'design'}" data-source-planet="${index%2?'earth':'sun'}" aria-label="${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index])+' · '+t('Gate {gate}',{gate}))}" data-activation="${['personality-sun','personality-earth','design-sun','design-earth'][index]}"><div class="knowledge-activation-label">${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index]))}</div>${chips([t('Gate {gate}',{gate})])}</button>`).join('')}</div>`:'';
   return activations;
 }
 function renderCross(entry) {
