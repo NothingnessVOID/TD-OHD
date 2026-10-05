@@ -1,5 +1,7 @@
 # 手机 Timeline 浮层修正
 
+本文件保留 `1d6bbda` 阶段的左下 Range 历史记录。最新 Range 已恢复到右下箭头上方，见 [后续小调整](../range-event-navigation/README.md)。
+
 分支：`fix/frontend-runtime-ux-v1`。修正前 HEAD：`9ebdbbaaa1fe7bac78cccfa3850ee0c25a34ae2e`。
 原手机设计的对照基线：`main` / `2bc308b7a9037a10bae92fff6c9ff536a276b8ae`。
 
