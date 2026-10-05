@@ -32,15 +32,15 @@ test('localized navigation keeps Timeline after Transits with stable translation
     ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'Team'], ['library', 'Reference Library']]);
 });
 
-test('locale preference, supported browser languages and unsupported-language fallback', () => {
+test('locale preference, saved preference and Chinese default independent of browser languages', () => {
   assert.deepEqual(LOCALES.map(l => l.code), ['en', 'zh-CN', 'zh-Hant']);
   assert.equal(resolveLocale('zh-CN', ['en-US']), 'zh-CN');
-  assert.equal(resolveLocale(null, ['en-GB', 'zh-CN']), 'en');
+  assert.equal(resolveLocale(null, ['en-GB', 'zh-CN']), 'zh-CN');
   assert.equal(resolveLocale(null, ['zh-Hans-CN']), 'zh-CN');
   assert.equal(resolveLocale(null, ['zh-SG']), 'zh-CN');
-  assert.equal(resolveLocale('unknown', ['fr-FR']), 'en');
+  assert.equal(resolveLocale('unknown', ['fr-FR']), 'zh-CN');
   for (const language of ['zh-TW', 'zh-HK', 'zh-MO', 'zh-Hant', 'zh-Hant-TW', 'zh-Hant-HK']) {
-    assert.equal(resolveLocale(null, [language]), 'zh-Hant');
+    assert.equal(resolveLocale(null, [language]), 'zh-CN');
   }
   assert.equal(resolveLocale('zh-Hant', ['zh-CN']), 'zh-Hant');
   assert.equal(resolveLocale('zh-CN', ['zh-TW']), 'zh-CN');

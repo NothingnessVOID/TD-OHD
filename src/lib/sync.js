@@ -14,13 +14,14 @@
 import { getProfiles, saveProfile, deleteProfile } from './profile-storage.js';
 import { getAiAccess, setAiAccess } from './people.js';
 
-const API = import.meta.env.VITE_OHD_API_BASE; // undefined = sync disabled
+import { isSyncAvailable } from './sync-config.js';
+const API = import.meta.env?.VITE_OHD_API_BASE; // undefined = sync disabled
 const CURSOR_KEY = 'ohd-sync-cursor';
 const DIRTY_KEY = 'ohd-sync-dirty';     // ids with unpushed local edits
 const DELETES_KEY = 'ohd-sync-deletes'; // tombstones awaiting push
 
-export const syncAvailable = API !== undefined;
-const base = API || ''; // '' = same origin
+export const syncAvailable = isSyncAvailable(API, import.meta.env?.VITE_OHD_SYNC_ENABLED);
+const base = API?.trim() || ''; // '' = same origin
 
 let syncing = false;
 let onChange = null; // callback: remote changes were applied → re-render
@@ -74,6 +75,7 @@ export async function getSessionUser() {
 }
 
 export async function requestMagicLink(email) {
+  if (!syncAvailable) throw new Error('Sync is not configured');
   return api('/api/auth/sign-in/magic-link', {
     method: 'POST',
     body: JSON.stringify({ email, callbackURL: '/' })
@@ -81,6 +83,7 @@ export async function requestMagicLink(email) {
 }
 
 export async function signOut() {
+  if (!syncAvailable) return;
   try { await api('/api/auth/sign-out', { method: 'POST', body: '{}' }); } catch { /* best effort */ }
 }
 

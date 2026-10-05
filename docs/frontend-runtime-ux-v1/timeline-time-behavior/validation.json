@@ -1,0 +1,51 @@
+{
+  "baseline": "d1e2e8bae92f2f5dd1466025e1fa976033b2f93d",
+  "branch": "fix/frontend-runtime-ux-v1",
+  "unit": {
+    "npm_test": {
+      "total": 276,
+      "passed": 273,
+      "failed": 0,
+      "skipped": 3
+    },
+    "timeline": {
+      "passed": 63,
+      "failed": 0
+    },
+    "localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "presets": {
+      "passed": 10,
+      "failed": 0
+    }
+  },
+  "build": "passed",
+  "browser": {
+    "timeline-e2e": "passed",
+    "timeline-gestures-e2e": "passed",
+    "timeline-mobile-touch-e2e": "passed",
+    "timeline-mobile-layout-e2e": "passed"
+  },
+  "now_checks": {
+    "visible_zero_calculation": true,
+    "panned_180_day_result_reused": true,
+    "two_zoom_levels_span_retained": true,
+    "inclusive_start_reused": true,
+    "exclusive_end_recalculated": true,
+    "beyond_end_recalculated": true
+  },
+  "ceiling_days": 368,
+  "mobile_ui_changes": false,
+  "engine_changes": false,
+  "deploy": false,
+  "installation_8787_changes": false,
+  "release_guard": {
+    "passed": true,
+    "engine_signature": "59b90e629033cc7faf95",
+    "reviewed_frontend_files": 21,
+    "protected_baseline_files": 380
+  },
+  "clean_rebuild_and_retest": "passed"
+}

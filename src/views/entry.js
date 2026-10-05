@@ -6,7 +6,7 @@
  * A manual UTC-offset fallback hides under "Enter UTC offset manually".
  */
 
-import { searchPlaces, offsetForZone, formatOffset } from '../lib/location.js';
+import { createPlaceSearch } from '../lib/placesearch.js';
 import { listPeople, birthFromPerson } from '../lib/people.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
@@ -25,17 +25,12 @@ export function setupEntryView({ onSubmit }) {
   const manualWrap = document.getElementById('manual-tz-wrap');
   const manualOffset = document.getElementById('manual-tz');
 
-  let selectedPlace = null;
-  let manualMode = false;
-  let searchSeq = 0;
-  let debounceTimer = null;
-  let searchController = null;
-  let composing = false;
-  const searchStatus = document.createElement('p');
-  searchStatus.className = 'field-error hidden';
-  searchStatus.setAttribute('role', 'status');
-  placeResults.after(searchStatus);
-
+  const placeSearch = createPlaceSearch(form, {
+    placeholder: 'City…',
+    getDateTime: () => ({ date: dateInput.value, time: timeUnknown.checked ? '12:00' : timeInput.value }),
+    elements: { place: document.getElementById('place-group'), input: placeInput, results: placeResults,
+      manual: manualOffset, manualWrap, toggle: manualToggle, chip: tzChip }
+  });
   // --- Saved people quick-pick ---
   function renderQuickPick() {
     const wrap = document.getElementById('saved-people');
@@ -55,127 +50,12 @@ export function setupEntryView({ onSubmit }) {
     });
   }
 
-  // --- Place autocomplete ---
-  let resultPlaces = [];
-  let activeIndex = -1;
-
-  function clearResults() {
-    placeResults.innerHTML = '';
-    placeResults.classList.add('hidden');
-    resultPlaces = [];
-    activeIndex = -1;
-  }
-
-  function selectPlace(place) {
-    selectedPlace = place;
-    placeInput.value = place.label;
-    clearResults();
-    updateTzChip();
-  }
-
-  function setActive(index) {
-    const items = placeResults.querySelectorAll('.place-result');
-    if (!items.length) return;
-    activeIndex = ((index % items.length) + items.length) % items.length;
-    items.forEach((el, i) => el.classList.toggle('active', i === activeIndex));
-    items[activeIndex].scrollIntoView({ block: 'nearest' });
-  }
-
-  function updateTzChip() {
-    if (manualMode) { tzChip.classList.add('hidden'); return; }
-    if (!selectedPlace) { tzChip.classList.add('hidden'); return; }
-    const date = dateInput.value || new Date().toISOString().split('T')[0];
-    const time = timeUnknown.checked ? '12:00' : (timeInput.value || '12:00');
-    try {
-      const offset = offsetForZone(date, time, selectedPlace.timezone);
-      tzChip.textContent = `${selectedPlace.label} · ${t('{offset} at birth', { offset: formatOffset(offset) })} · ${selectedPlace.timezone}`;
-      tzChip.classList.remove('hidden');
-    } catch {
-      tzChip.classList.add('hidden');
-    }
-  }
-
-  placeInput.addEventListener('compositionstart', () => { composing = true; });
-  placeInput.addEventListener('compositionend', () => { composing = false; placeInput.dispatchEvent(new Event('input')); });
-  placeInput.addEventListener('input', () => {
-    if (composing) return;
-    const seq = ++searchSeq;
-    searchController?.abort();
-    searchController = null;
-    searchStatus.classList.add('hidden');
-    placeInput.removeAttribute('aria-invalid');
-    document.getElementById('place-error')?.classList.add('hidden');
-    selectedPlace = null;
-    updateTzChip();
-    const q = placeInput.value.trim();
-    clearTimeout(debounceTimer);
-    if (q.length < 2) { clearResults(); return; }
-    debounceTimer = setTimeout(async () => {
-      searchController = new AbortController();
-      try {
-        const places = await searchPlaces(q, 8, { signal: searchController.signal });
-        if (seq !== searchSeq) return; // stale response
-        if (!places.length) {
-          clearResults(); searchStatus.textContent = t('No matching place found.');
-          searchStatus.classList.remove('hidden'); return;
-        }
-        placeResults.innerHTML = places.map((p, i) =>
-          `<button type="button" class="place-result" data-i="${i}">${esc(p.label)}</button>`
-        ).join('');
-        placeResults.classList.remove('hidden');
-        resultPlaces = places;
-        activeIndex = -1;
-        placeResults.querySelectorAll('.place-result').forEach(btn => {
-          btn.addEventListener('click', () => selectPlace(places[parseInt(btn.dataset.i)]));
-        });
-      } catch (error) {
-        if (seq !== searchSeq || error.name === 'AbortError') return;
-        clearResults();
-        searchStatus.textContent = t('Place search is unavailable. Try again or enter a UTC offset manually.');
-        searchStatus.classList.remove('hidden');
-      }
-    }, 250);
-  });
-
-  // Keyboard navigation: arrows move through results; Enter commits the
-  // highlighted (or first) result instead of submitting the form.
-  placeInput.addEventListener('keydown', (e) => {
-    const open = !placeResults.classList.contains('hidden') && resultPlaces.length;
-    if (!open) return;
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setActive(activeIndex + 1);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setActive(activeIndex - 1);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      selectPlace(resultPlaces[activeIndex >= 0 ? activeIndex : 0]);
-    } else if (e.key === 'Escape') {
-      clearResults();
-    }
-  });
-
-  // Close dropdown on outside click
-  document.addEventListener('click', (e) => {
-    if (!placeResults.contains(e.target) && e.target !== placeInput) clearResults();
-  });
-
-  dateInput.addEventListener('change', updateTzChip);
-  timeInput.addEventListener('change', updateTzChip);
-
+  dateInput.addEventListener('change', placeSearch.updateDateTime);
+  timeInput.addEventListener('change', placeSearch.updateDateTime);
   timeUnknown.addEventListener('change', () => {
     timeInput.disabled = timeUnknown.checked;
     if (timeUnknown.checked) timeInput.value = '12:00';
-    updateTzChip();
-  });
-
-  manualToggle.addEventListener('click', () => {
-    manualMode = !manualMode;
-    manualWrap.classList.toggle('hidden', !manualMode);
-    document.getElementById('place-group').classList.toggle('hidden', manualMode);
-    manualToggle.textContent = manualMode ? t('Search birth place instead') : t('Enter UTC offset manually');
-    updateTzChip();
+    placeSearch.updateDateTime();
   });
 
   form.addEventListener('submit', (e) => {
@@ -185,43 +65,10 @@ export function setupEntryView({ onSubmit }) {
     const birthTime = timeUnknown.checked ? '12:00' : timeInput.value;
     if (!birthTime) { timeInput.focus(); timeInput.setAttribute('aria-invalid', 'true'); return; }
 
-    let timezone = 0;
-    let location = null;
-    if (manualMode) {
-      // Require an explicit offset — silently defaulting to UTC produces
-      // confidently wrong charts.
-      const raw = manualOffset.value.trim();
-      const parsed = Number(raw);
-      if (raw === '' || !Number.isFinite(parsed) || parsed < -14 || parsed > 14 || Math.round(parsed * 4) !== parsed * 4) {
-        manualOffset.focus();
-        manualOffset.setAttribute('aria-invalid', 'true');
-        return;
-      }
-      manualOffset.removeAttribute('aria-invalid');
-      timezone = parsed;
-    } else if (selectedPlace) {
-      try {
-        timezone = offsetForZone(birthDate, birthTime, selectedPlace.timezone);
-      } catch {
-        placeInput.focus(); placeInput.setAttribute('aria-invalid', 'true');
-        const error = document.getElementById('place-error');
-        if (error) { error.textContent = t('Could not resolve the offset for this date and place.'); error.classList.remove('hidden'); }
-        return;
-      }
-      location = {
-        lat: selectedPlace.latitude,
-        lon: selectedPlace.longitude,
-        timezone,
-        iana: selectedPlace.timezone,
-        name: selectedPlace.label
-      };
-    } else {
-      // No place selected — make the reason visible, not just a placeholder
-      placeInput.focus();
-      placeInput.setAttribute('aria-invalid', 'true');
-      document.getElementById('place-error')?.classList.remove('hidden');
-      return;
-    }
+    const resolved = placeSearch.getBirthLocation(birthDate, birthTime);
+    if (!resolved) { placeSearch.flagMissing(); return; }
+    const timezone = resolved.timezone;
+    const location = resolved.lat != null ? { ...resolved, timezone } : null;
 
     onSubmit({
       name: nameInput.value.trim() || null,
@@ -236,8 +83,7 @@ export function setupEntryView({ onSubmit }) {
 
   function refreshLanguage() {
     renderQuickPick();
-    manualToggle.textContent = manualMode ? t('Search birth place instead') : t('Enter UTC offset manually');
-    updateTzChip();
+    placeSearch.refreshLanguage();
   }
 
   refreshLanguage();

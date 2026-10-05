@@ -1,3 +1,4 @@
+import runtimeMessages from './ui-runtime.json' with { type: 'json' };
 import * as zh from './vocabulary.js';
 import * as readings from './content.js';
 import contexts from '../ui-contexts.json' with { type: 'json' };
@@ -10,7 +11,7 @@ import viewMessages from './ui-views.json' with { type: 'json' };
 import transitMessages from './ui-transits.json' with { type: 'json' };
 import timelineMessages from './timeline.json' with { type: 'json' };
 const messages = {
-  ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
+  ...runtimeMessages, ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
   ...mainMessages, ...staticMessages, ...viewMessages, ...contexts['zh-Hant']
 };
 export default {

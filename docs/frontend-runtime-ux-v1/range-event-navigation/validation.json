@@ -1,0 +1,73 @@
+{
+  "baseline": "1d6bbdab0d5127cd056f4df7545772e0db23f6d0",
+  "geometryComparison": [
+    {
+      "width": 390,
+      "unchanged": {
+        "panes": true,
+        "panel": true,
+        "scale": true,
+        "columns": true,
+        "centers": true,
+        "leftTrigger": true,
+        "controlSizes": true
+      },
+      "rangeArrowGap": 2.0,
+      "rightEdgeDifference": 0
+    },
+    {
+      "width": 375,
+      "unchanged": {
+        "panes": true,
+        "panel": true,
+        "scale": true,
+        "columns": true,
+        "centers": true,
+        "leftTrigger": true,
+        "controlSizes": true
+      },
+      "rangeArrowGap": 2.0,
+      "rightEdgeDifference": 0
+    },
+    {
+      "width": 360,
+      "unchanged": {
+        "panes": true,
+        "panel": true,
+        "scale": true,
+        "columns": true,
+        "centers": true,
+        "leftTrigger": true,
+        "controlSizes": true
+      },
+      "rangeArrowGap": 2,
+      "rightEdgeDifference": 0
+    },
+    {
+      "width": 320,
+      "unchanged": {
+        "panes": true,
+        "panel": true,
+        "scale": true,
+        "columns": true,
+        "centers": true,
+        "leftTrigger": true,
+        "controlSizes": true
+      },
+      "rangeArrowGap": 2.0,
+      "rightEdgeDifference": 0
+    }
+  ],
+  "mobileE2E": "passed in dev and production",
+  "locales": [
+    "zh-CN",
+    "en",
+    "zh-Hant"
+  ],
+  "unitTests": {
+    "passed": 271,
+    "failed": 0,
+    "skipped": 3
+  },
+  "scope": "mobile range positioning only"
+}

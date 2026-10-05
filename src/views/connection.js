@@ -1,3 +1,4 @@
+import { saveTemporaryBirth } from '../lib/temporary-birth.js';
 /**
  * Connection view — how two designs interact. Person A is the current
  * chart; Person B comes from saved people or a quick manual entry.
@@ -8,8 +9,8 @@ import { compareHumanDesign } from '../lib/human-design/connection.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph } from '../bodygraph.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson, getSharedGuest, savePerson } from '../lib/people.js';
-import { localMode, reportSaveFailure } from '../lib/local-store.js';
+import { listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
+import { reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
 import { typeName, authorityName, centerName, graphCenter, gateName, channelName, circuitName, profileName } from '../lib/vocabulary.js';
@@ -37,6 +38,7 @@ export function setupConnectionView() {
       time: document.getElementById('conn-time').value
     })
   });
+  for (const id of ['conn-date', 'conn-time']) document.getElementById(id).addEventListener('change', placeB.updateDateTime);
 }
 
 /** Refresh the saved-people picker each time the view opens. */
@@ -88,7 +90,8 @@ async function runComparison() {
   } else {
     const date = document.getElementById('conn-date').value;
     if (!date) return;
-    const time = document.getElementById('conn-time').value || '12:00';
+    const time = document.getElementById('conn-time').value;
+    if (!time) { document.getElementById('conn-time').focus(); return; }
     const loc = placeB?.getBirthLocation(date, time);
     if (!loc) { placeB?.flagMissing(); return; } // no silent UTC=0
     const enteredName = document.getElementById('conn-name').value.trim();
@@ -110,10 +113,10 @@ async function runComparison() {
     return;
   }
   b.defaultDisplayName = defaultName;
-  if (localMode && !select.value) {
-    try { savePerson(birthB); } catch (e) { reportSaveFailure(e); }
-  }
   const comparison = compareHumanDesign(current.chart, b.chart);
+  if (!select.value && !defaultName) {
+    try { saveTemporaryBirth(birthB); } catch (e) { reportSaveFailure(e); }
+  }
   renderConnectionContent(comparison, current, b);
 }
 
