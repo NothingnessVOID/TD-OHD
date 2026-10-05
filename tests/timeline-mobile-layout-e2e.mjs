@@ -74,6 +74,7 @@ try {
         controlColumnCollisions: controls.flatMap((c,i) => columns.filter(p => overlaps(c,p)).map(() => i)),
         controlCollisions: controls.flatMap((c,i) => controls.slice(i+1).filter(p => overlaps(c,p)).map(() => i)),
         centerCollisions: columns.flatMap((c,i) => centers.filter(p => overlaps(c,p)).map(() => i)),
+        controlCenterCollisions: controls.flatMap((c,i) => centers.filter(p => overlaps(c,p)).map(() => i)),
         positions: ['.tl-mobile-controls-trigger','.tl-mobile-range','.tl-mobile-event-nav','.tl-mobile-controls-panel'].map(s => getComputedStyle(q(s)).position),
         scale: Number(getComputedStyle(q('.tl-transit-column')).transform.match(/matrix\(([^,]+)/)[1]),
         birthScale: Number(getComputedStyle(q('.tl-birth-column')).transform.match(/matrix\(([^,]+)/)[1]),
@@ -82,20 +83,27 @@ try {
     assert.deepEqual(guards.controlColumnCollisions, [], `controls clear the planet columns at ${width}px`);
     assert.deepEqual(guards.controlCollisions, [], `floating controls do not collide at ${width}px`);
     assert.deepEqual(guards.centerCollisions, [], `planet columns clear all nine centers at ${width}px`);
+    assert.deepEqual(guards.controlCenterCollisions, [], `floating controls clear all nine centers at ${width}px`);
     assert.equal(guards.scale, scale);
     assert.equal(guards.birthScale, scale);
     assert.ok(guards.scrollWidth <= width);
     assert.ok(guards.positions.slice(0,3).every(p => p === 'absolute'), 'all collapsed controls are overlays');
     const [control, range, previous, next] = guards.controls;
-    assert.ok(range.left > control.right && range.left - control.right <= 7, 'range immediately right of trigger');
-    assert.ok(Math.abs((range.top+range.bottom-control.top-control.bottom)/2) <= 1.1,
-      `trigger and range share a visual baseline: ${JSON.stringify({width,control,range})}`);
+    assert.ok(range.bottom < previous.top, 'range floats above event navigation');
+    assert.ok(Math.abs(range.right-next.right) < .1, 'range and event navigation share the right edge');
+    assert.ok(previous.top-range.bottom >= 2 && previous.top-range.bottom <= 8, 'range and arrows retain a compact gap');
     assert.ok(previous.right < next.left && next.right >= width-12, 'event arrows stay at lower right');
     assert.ok(Math.abs(previous.bottom - next.bottom) < .1);
     assert.ok(guards.controls.every(c => c.top > panes.stage.height*.8 && c.bottom < panes.stage.height),
       'all collapsed controls float inside the bottom of the graph pane');
     if (process.env.MOBILE_SCREENSHOT_DIR) await page.screenshot({ path: `${process.env.MOBILE_SCREENSHOT_DIR}/timeline-${width}.png` });
+    const navBefore = await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    }));
     await trigger.click();
+    assert.deepEqual(await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    })), navBefore, 'opening the unchanged panel never shifts range or arrows');
     assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
     assert.deepEqual(await paneGeometry(), panes, 'opening controls never changes either pane or SVG layout size');
     const panelBox = await panel.boundingBox();
@@ -112,6 +120,9 @@ try {
     await panel.locator('.tl-advanced summary').click();
     await trigger.click();
     assert.deepEqual(await paneGeometry(), panes, 'closing controls never changes either pane or SVG');
+    assert.deepEqual(await root.locator('.tl-mobile-range, .tl-mobile-event-nav').evaluateAll(nodes => nodes.map(el => {
+      const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+    })), navBefore, 'closing the unchanged panel never shifts range or arrows');
     geometry.push({ width,height,scale,panes,controls:guards.controls,columns:guards.columns,centers:guards.centers,panel:panelBox });
   }
   if (process.env.MOBILE_SCREENSHOT_DIR) writeFileSync(`${process.env.MOBILE_SCREENSHOT_DIR}/validation-geometry.json`, JSON.stringify(geometry,null,2)+'\n');
@@ -218,8 +229,10 @@ try {
         const overlaps=(a,b)=>a.left<b.right && a.right>b.left && a.top<b.bottom && a.bottom>b.top;
         const trigger=box('.tl-mobile-controls-trigger'), range=box('.tl-mobile-range'),nav=box('.tl-mobile-event-nav');
         const columns=['.tl-transit-column','.tl-birth-column'].map(box);
-        return range.left>=trigger.right && range.right<nav.left &&
-          [trigger,range,nav].every(c=>columns.every(p=>!overlaps(c,p)));
+        const centers=[...root.querySelectorAll('.bg-centers .bg-center')].map(el=>el.getBoundingClientRect());
+        return range.bottom+2<=nav.top && Math.abs(range.right-nav.right)<.1 &&
+          [trigger,range,nav].every(c=>columns.every(p=>!overlaps(c,p)) && centers.every(p=>!overlaps(c,p))) &&
+          document.documentElement.scrollWidth<=innerWidth;
       });
       assert.ok(clear, `${locale} long range and floating controls remain clear at ${width}px`);
       if (process.env.MOBILE_SCREENSHOT_DIR) await localPage.screenshot({path:`${process.env.MOBILE_SCREENSHOT_DIR}/range-${locale}-${width}.png`});

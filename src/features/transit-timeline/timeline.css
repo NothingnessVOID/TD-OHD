@@ -310,6 +310,8 @@
     --tl-mobile-range-width: 70px;
     --tl-mobile-range-font: 11px;
     --tl-mobile-edge: 10px;
+    --tl-mobile-event-bottom: calc(var(--tl-mobile-edge) - 1px);
+    --tl-mobile-event-gap: 2px;
   }
   body.timeline-active .tl-graph-panel { height: 100%; max-width: none; }
   /* Scale the entire columns (titles, glyphs, marks, rows and gaps) together. */
@@ -351,7 +353,7 @@
   }
   body.timeline-active #timeline-view .tl-mobile-event-nav {
     position: absolute; z-index: 8; display: flex; gap: 6px;
-    right: max(var(--tl-mobile-edge), env(safe-area-inset-right)); bottom: 9px;
+    right: max(var(--tl-mobile-edge), env(safe-area-inset-right)); bottom: var(--tl-mobile-event-bottom);
   }
   body.timeline-active #timeline-view .tl-mobile-event-nav button {
     width: var(--tl-mobile-arrow-size); height: var(--tl-mobile-arrow-size);
@@ -361,8 +363,8 @@
   }
   body.timeline-active #timeline-view .tl-mobile-range {
     position: absolute; z-index: 8; display: block;
-    left: calc(max(var(--tl-mobile-edge), env(safe-area-inset-left)) + var(--tl-mobile-control-size) + 6px);
-    bottom: calc(9px + (var(--tl-mobile-control-size) - var(--tl-mobile-range-height)) / 2);
+    right: max(var(--tl-mobile-edge), env(safe-area-inset-right));
+    bottom: calc(var(--tl-mobile-event-bottom) + var(--tl-mobile-arrow-size) + var(--tl-mobile-event-gap));
     width: var(--tl-mobile-range-width); height: var(--tl-mobile-range-height); border: 1px solid var(--tl-line); border-radius: 8px;
     background: var(--tl-surface); box-shadow: var(--shadow-lg);
   }
@@ -458,6 +460,8 @@
 @media (max-width: 320px) {
   body.timeline-active #timeline-view {
     --tl-mobile-planet-scale: .78;
+    /* Keep the unchanged 28px range clear of the outer center at 320px. */
+    --tl-mobile-event-bottom: calc(var(--tl-mobile-edge) - 6px);
     --tl-mobile-control-size: 34px;
     --tl-mobile-control-icon: 17px;
     --tl-mobile-arrow-size: 32px;
