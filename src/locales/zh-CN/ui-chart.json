@@ -31,8 +31,8 @@
   "None": "无",
   "Foundation": "基础信息",
   "Strategy": "策略",
-  "Signature:": "标志：",
-  "Not-Self:": "非自己主题：",
+  "Signature:": "正向反馈：",
+  "Not-Self:": "非我主题：",
   "{count} defined centers": "{count} 个有定义中心",
   "Dominant Circuit": "主要回路",
   "No defined channels": "没有已定义通道",
@@ -127,8 +127,8 @@
   "Transit data is not ready yet": "行运数据尚未准备好",
   "Human Design data": "Human Design（人类图）数据",
   "Basic structure": "基础结构",
-  "Signature": "签名",
-  "Not-Self Theme": "非自己主题",
+  "Signature": "正向反馈",
+  "Not-Self Theme": "非我主题",
   "Gate combination": "闸门组合",
   "Completely open": "完全开放",
   "Planetary activations": "行星激活",
@@ -158,5 +158,10 @@
   "Knowledge details": "知识详情",
   "View in the library": "在资料库中查看",
   "View Cross introduction in the library": "在资料库查看化身十字说明",
-  "Basic knowledge": "基础"
+  "Basic knowledge": "基础",
+  "Right Angle · Personal destiny": "右角 · 个人命运",
+  "Juxtaposition · Fixed destiny": "并列 · 固定命运",
+  "Left Angle · Transpersonal destiny": "左角 · 跨个人命运",
+  "Aura": "气场",
+  "Yours": "你的"
 }

@@ -2,8 +2,8 @@ import { foundationRecords, crossRecord } from './human-design-foundation.js';
 import { validateKnowledgeEntry } from './schema.js';
 import { getLocale } from '../i18n.js';
 const key = query => `${query.domain ?? 'human-design'}:${query.objectType}:${query.objectId}`;
-const metadata = ({ read, templateRead, ...source }) => ({...source,...(source.file?{file:source.file.replace('{locale}',getLocale())}:{})});
-const resolve = reference => reference == null ? null : ({ ...metadata(reference), content: reference.read(), ...(reference.templateRead ? { template:reference.templateRead() } : {}), locale: getLocale() });
+const metadata = ({ read, templateRead, presentationRead, ...source }) => ({...source,...(source.file?{file:source.file.replace('{locale}',getLocale())}:{})});
+const resolve = reference => reference == null ? null : ({ ...metadata(reference), content: reference.read(), ...(reference.templateRead ? { template:reference.templateRead() } : {}), ...(reference.presentationRead?.() ? { presentation: reference.presentationRead() } : {}), locale: getLocale() });
 
 /** A small reference reader. Summary lookup never resolves Detail. */
 export function createKnowledgeReader(records, dynamic = () => null) {

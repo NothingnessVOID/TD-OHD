@@ -111,8 +111,7 @@ function renderDetail() {
   }
   if (entry.kind === 'knowledge') {
     article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
-      <div class="detail-label">${t(labels[entry.category])}</div>
-      <div class="reference-detail-body">${renderKnowledgeDetail(entry.id, { showSpecificMissing: false })}</div>`;
+      <div class="reference-detail-body">${renderKnowledgeDetail(entry.id)}</div>`;
     article.scrollTop = 0;
     clearTimeout(lineHighlightTimer);
     return;

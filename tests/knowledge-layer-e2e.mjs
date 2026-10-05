@@ -20,7 +20,7 @@ try {
   const old=await open(baseline,width,locale),current=await open(base,width,locale);
   const before=await snapshot(old.page),after=await snapshot(current.page);
   assert.equal(after.cards.length,before.cards.length);assert.deepEqual(after.cards.map(x=>x.width),before.cards.map(x=>x.width));
-  const allowed=new Set([0,2,3,7]); // Approved Type/Authority/Profile copy and removed bilingual Variable heading.
+  const allowed=new Set([0,1,2,3,7]); // Approved Type/Authority/Profile copy and removed bilingual Variable heading.
   after.cards.forEach((card,i)=>{if(!allowed.has(i))assert.equal(card.text,before.cards[i].text);});
   const expected=await current.page.evaluate(async()=>{
    const {getKnowledgeSummary}=await import('/src/lib/knowledge/registry.js');

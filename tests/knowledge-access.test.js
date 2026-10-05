@@ -9,11 +9,12 @@ import { setLocale, getLocale } from '../src/lib/i18n.js';
 import { openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../src/lib/detail-dialog.js';
 
 const chart={calculation:{type:{id:'generator'},authority:{id:'egoProjected'},definition:{id:'split'}},profile:{numbers:'1/3'},incarnationCross:{rawId:'RightAngleCrossOfExplanation2',angle:'right',gates:[23,43,49,4]},variable:{motivation:{valueId:'hope',color:2,tone:4,base:3}}};
-test('Foundation maps exact calculation identities; Strategy/circuit have no Knowledge route',()=>{
+test('Foundation maps exact calculation identities; Strategy aliases Type; circuit has no Knowledge route',()=>{
  for(const [kind,id] of [['type','generator'],['authority','egoProjected'],['profile','1/3'],['definition','split']])assert.deepEqual(chartKnowledgeQuery(chart,kind),{domain:'human-design',objectType:kind,objectId:id});
+ assert.deepEqual(chartKnowledgeQuery(chart,'strategy'),chartKnowledgeQuery(chart,'type'));
  assert.equal(chartKnowledgeQuery(chart,'cross').cross,chart.incarnationCross);
  assert.deepEqual(chartKnowledgeQuery(chart,'variable','motivation'),{domain:'human-design',objectType:'variable',objectId:'motivation:hope'});
- for(const kind of ['strategy','circuit','cognition'])assert.equal(chartKnowledgeQuery(chart,kind),null);
+ for(const kind of ['circuit','cognition'])assert.equal(chartKnowledgeQuery(chart,kind),null);
  assert.equal(chartKnowledgeQuery(chart,'variable','environment'),null);
 });
 test('ID lookup comes from existing records and keeps 31 Basic / 24 Variable entries, no Cognition',()=>{

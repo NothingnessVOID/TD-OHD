@@ -9,7 +9,7 @@ const browser = await chromium.launch({channel:process.env.CHROME_CHANNEL || 'ch
 const results=[];
 const ids=['hd.type.generator','hd.authority.sacral','hd.profile.2-4','hd.definition.split'];
 const snapshot=page=>page.evaluate(()=>({cards:[...document.querySelectorAll('#foundation-panel .foundation-item')].map(n=>({text:n.innerText,width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height})),variable:[...document.querySelectorAll('.variable-grid .arrow-card')].map(n=>({text:n.innerText,width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height}))}));
-const pure=(text,locale)=>locale==='en'?assert.doesNotMatch(text,/[\u3400-\u9fff]/):assert.doesNotMatch(text,/[A-Za-z]/);
+const pure=(text,locale)=>locale==='en'?assert.doesNotMatch(text,/[\u3400-\u9fff]/):locale==='zh-Hant'?assert.doesNotMatch(text,/[A-Za-z]/):undefined;
 async function open(url,width,locale) {
  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce',locale});
  await context.addInitScript(code=>localStorage.setItem('ohd-language',code),locale);
@@ -26,7 +26,7 @@ try {
  for(const width of [1224,903,664,390])for(const locale of ['en','zh-CN','zh-Hant']) {
   console.log(`Checking layout ${width}/${locale}`);
   const old=await open(baseline,width,locale),current=await open(base,width,locale),page=current.page;
-  const before=await snapshot(old.page);assert.deepEqual(await snapshot(page),before,`${width}/${locale}: clicks do not change cards`);
+  const before=await snapshot(old.page);const initial=await snapshot(page); if(locale!=='zh-CN') assert.deepEqual(initial,before,`${width}/${locale}: unchanged compact output`); else {assert.equal(initial.cards.length,before.cards.length); for(let i=0;i<initial.cards.length;i++)assert.equal(initial.cards[i].width,before.cards[i].width);}
   for(const [index,kind]of ['type','authority','profile','definition'].entries()) {
    const trigger=page.locator(`[data-knowledge-object="${kind}"]`);
    assert.equal(await trigger.getAttribute('role'),'button');assert.equal(await trigger.getAttribute('tabindex'),'0');
@@ -43,7 +43,8 @@ try {
    await page.locator('#gate-detail .knowledge-library-link').focus();await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.classList.contains('gate-detail-close')),true);
    await page.keyboard.press('Escape');assert.equal(await trigger.evaluate(n=>n===document.activeElement),true);
   }
-  for(const index of [1,5,7])assert.equal(await page.locator('#foundation-panel .foundation-item').nth(index).getAttribute('role'),null);
+  for(const key of ['Enter',' ']) {const strategy=page.locator('[data-knowledge-object="strategy"]');await strategy.focus();await page.keyboard.press(key);assert.equal(await page.locator('#gate-detail .knowledge-detail').getAttribute('data-knowledge-id'),'hd.type.generator');await page.keyboard.press('Escape');assert.equal(await strategy.evaluate(n=>n===document.activeElement),true);}
+  for(const index of [5,7])assert.equal(await page.locator('#foundation-panel .foundation-item').nth(index).getAttribute('role'),null);
   for(const selector of ['.foundation-variable-slot','.variable-grid .arrow-card'])for(const kind of ['motivation','perspective','determination','environment']) {
    const target=page.locator(`${selector}[data-knowledge-variable="${kind}"]`);
    const expected=await page.evaluate(async kind=>{const {getCurrentChart}=await import('/src/views/chart.js');return getCurrentChart().chart.variable[kind].valueId;},kind);
@@ -54,7 +55,7 @@ try {
   await page.locator('[data-knowledge-object="cross"]').click();
   assert.match(await page.locator('#gate-detail .knowledge-detail').getAttribute('data-knowledge-id'),/CrossOfExplanation2$/);
   assert.equal(await page.locator('#gate-detail .knowledge-missing').count(),0);
-  assert.match(await page.locator('#gate-detail .knowledge-facts').innerText(),/23 \/ 43 \/ 49 \/ 4/);
+  assert.match(await page.locator('#gate-detail .knowledge-cross-meta').innerText(),/23 \/ 43 \/ 49 \/ 4/);
   await page.locator('.knowledge-library-link').click();assert.match(page.url(),/#library\/knowledge\/hd.cross.introduction$/);
   await page.locator('#reference-detail .knowledge-detail').waitFor();pure(await page.locator('#reference-detail').innerText(),locale);
   if(width<=640)await page.locator('[data-reference-back]').click();

@@ -1,0 +1,204 @@
+{
+  "baseline": "66185da8071a64b679ce51857c7029556957f038",
+  "unit": {
+    "passed": 309,
+    "failed": 0,
+    "skipped": 3
+  },
+  "localization": {
+    "passed": 34,
+    "failed": 0
+  },
+  "timelineUnit": {
+    "passed": 63,
+    "failed": 0
+  },
+  "productionBuild": "passed",
+  "browser": {
+    "knowledgePresentation": {
+      "passed": 132
+    },
+    "knowledgeAccess": {
+      "widthLocaleCases": 12,
+      "sameBodyLocaleCases": 15,
+      "deepLinkRoutes": 6,
+      "result": "passed"
+    },
+    "bodygraph": {
+      "comparisons": 24,
+      "result": "passed"
+    },
+    "reference": "passed",
+    "chartDataExport": "passed",
+    "planet": "passed",
+    "knowledgeDetailGrowth": {
+      "layoutComparisons": [
+        {
+          "width": 1224,
+          "locale": "en",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 1224,
+          "locale": "zh-CN",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": [
+            {
+              "card": 0,
+              "previous": 102.375,
+              "current": 121.5625
+            },
+            {
+              "card": 1,
+              "previous": 102.375,
+              "current": 121.5625
+            }
+          ]
+        },
+        {
+          "width": 1224,
+          "locale": "zh-Hant",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 903,
+          "locale": "en",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 903,
+          "locale": "zh-CN",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": [
+            {
+              "card": 2,
+              "previous": 147.15625,
+              "current": 166.34375
+            },
+            {
+              "card": 3,
+              "previous": 147.15625,
+              "current": 166.34375
+            }
+          ]
+        },
+        {
+          "width": 903,
+          "locale": "zh-Hant",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 664,
+          "locale": "en",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 664,
+          "locale": "zh-CN",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": [
+            {
+              "card": 0,
+              "previous": 121.5625,
+              "current": 140.75
+            },
+            {
+              "card": 1,
+              "previous": 121.5625,
+              "current": 140.75
+            },
+            {
+              "card": 2,
+              "previous": 166.34375,
+              "current": 185.53125
+            },
+            {
+              "card": 3,
+              "previous": 166.34375,
+              "current": 185.53125
+            }
+          ]
+        },
+        {
+          "width": 664,
+          "locale": "zh-Hant",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 390,
+          "locale": "en",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        },
+        {
+          "width": 390,
+          "locale": "zh-CN",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": [
+            {
+              "card": 3,
+              "previous": 102.375,
+              "current": 121.5625
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "locale": "zh-Hant",
+          "cardCount": 8,
+          "cardWidthsEqual": true,
+          "longDetailIsolation": true,
+          "variablePureLocale": true,
+          "heightChanges": []
+        }
+      ]
+    },
+    "timeline": "passed"
+  },
+  "buildArtifacts": {
+    "assets/index-B0NhiBPs.js": "f1456660c2917b3a532dec8f743d197045bfbcb873eeea191e6f9dd82362eb99",
+    "assets/index-fG3zFZlf.js": "396772c38c0f40df4f9f994a3668e21377f6f34b53f4d8002e76723740b4197e",
+    "engine/_framework/SharpTransitCore.4xc5i35h0i.wasm": "a89e26d7a174443664eac4bddbd4119789069249f9539c3fc9f0a52d6d22f59c",
+    "engine/_framework/SharpChartEngine.nwk0xbthbs.wasm": "d74665329be6adf631d3667443fa419648dd741f72f732e62e697e3e4f7690e9",
+    "engine/_framework/SharpAstrology.SwissEph.7h0vzmo25n.wasm": "d5d0c7fc6441061ec440d23ce6bf68ff1e09eaad801ac09bf6203ee32a27b736"
+  }
+}

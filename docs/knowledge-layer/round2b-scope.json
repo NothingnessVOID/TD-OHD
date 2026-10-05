@@ -1,0 +1,17 @@
+{
+  "baseline": "66185da8071a64b679ce51857c7029556957f038",
+  "files": {
+    "src/lib/knowledge/access.js": "a9085e69ff5cb603ab7d3fbe27a161f6f27272b6b2f75a8ded271193f5e0f903",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "86f7c27c4644c1b9ec6f1a2af1549a27c2ab02896b68ef39fcb556a24369c06f",
+    "src/lib/knowledge/detail-access.css": "5467d8766b90f85a1799b9e3977c0fe0a5559953522c150da16dfc8451a38b13",
+    "src/lib/knowledge/detail-controller.js": "9e767a764db38ffa72ac737e8ade3075f669080ad13d54776712bc2ae2ec3b73",
+    "src/lib/knowledge/detail-renderer.js": "960b615d2c226e6633aa88a7a1f1865c2cdf0f4596545ca6484658016a72c66d",
+    "src/lib/knowledge/human-design-foundation.js": "6d38f089fc8b56137012200fc8432af98e8f9b46808c8902053955d99306c5fb",
+    "src/lib/knowledge/registry.js": "e1f56239bdc846911b6643e77b32f68d69170e5d4beebbf93a83a79319774fbe",
+    "src/locales/zh-CN/ui-chart.json": "7becd1ae4af794f0a59dfe3ca2084fe285c2dc351d0ff9ca56d2c052999ab2d9",
+    "src/locales/zh-CN/vocabulary.js": "8b831af58b6298944d4b0b124e9e7b35e5fad49856d84d308af24d70cea1f3bf",
+    "src/locales/zh-Hant/ui-chart.json": "affe8ac4d7273753f49d63b8f837e252d1f66cbf9f1f522643934fec86b84e34",
+    "src/views/chart.js": "e1ef929a60f59e179c7e59ee19b1141322ff2a76f12dd063e84461681d22953c",
+    "src/views/reference.js": "26518bbb83965af977637534f7e5f61b21cf33d8a610632f841931ce64eaa0da"
+  }
+}
