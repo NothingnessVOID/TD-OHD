@@ -85,5 +85,25 @@
     "synthetic Knowledge return in goBack"
   ],
   "preview": "http://127.0.0.1:5209/?d=2000-05-10&t=12%3A30&tz=8",
-  "unresolved": []
+  "unresolved": [],
+  "activationAlignmentFollowup": {
+    "cssOnly": true,
+    "sharedGlyphFontSize": "1em",
+    "sharedGlyphLineHeight": "inherit",
+    "wrappedRowAlignment": "first line",
+    "browserVerified": [
+      "birth Gate 52 Sun and Mercury",
+      "transit Gate 48 Sun",
+      "timeline interval Gate 48 Sun"
+    ],
+    "equalLineBoxHeightPx": 21.4453125,
+    "fullTests": {
+      "total": 338,
+      "passed": 335,
+      "failed": 0,
+      "skipped": 3,
+      "concurrency": 1
+    },
+    "productionBuild": "passed"
+  }
 }
