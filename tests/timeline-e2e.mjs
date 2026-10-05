@@ -250,11 +250,15 @@ try {
   });
 
   await run('Now keeps the selected overall range', async () => {
+    const beforeNow = await calculatedRange();
+    const now = Date.now();
     await page.click(action('now'));
     await ready();
     assert.equal(await page.locator(field('span')).inputValue(), '7');
     const range = await calculatedRange();
-    assert.deepEqual([range.start, range.end], Object.values(await expectedLocalRange(page, 7)));
+    const expected = beforeNow.start <= now && now < beforeNow.end
+      ? [beforeNow.start, beforeNow.end] : Object.values(await expectedLocalRange(page, 7));
+    assert.deepEqual([range.start, range.end], expected);
     const natal = page.locator(`${tl} .tl-bar[data-source="natal"]`).first();
     await natal.click();
     assert.equal(await page.locator(timing).count(), 0, 'natal detail has no transit timing');
@@ -633,7 +637,107 @@ try {
     }
   });
 
-  if (!process.env.SKIP_TIMELINE_YEAR) await run('forward and past year calculate local anniversaries with monthly ruler and detail', async () => {
+  await run('Now reuses completed intervals, recenters a panned viewport and preserves zoom', async () => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'en-GB' });
+    await context.addInitScript(() => {
+      localStorage.setItem('ohd-language', 'en');
+      window.__timelineCalculations = 0;
+      window.__timelineRequests = [];
+      // Count even cache-hit calculations, whose loading state may last one microtask.
+      const setAttribute = Element.prototype.setAttribute;
+      Element.prototype.setAttribute = function(name, value) {
+        if (name === 'aria-busy' && value === 'true' && this.classList.contains('tl-table'))
+          window.__timelineCalculations++;
+        return setAttribute.call(this, name, value);
+      };
+      const postMessage = Worker.prototype.postMessage;
+      Worker.prototype.postMessage = function(message, ...args) {
+        if (Array.isArray(message?.segments) && Number.isFinite(message.start))
+          window.__timelineRequests.push({ start: message.start, end: message.end });
+        return postMessage.call(this, message, ...args);
+      };
+    });
+    const nowPage = await context.newPage();
+    nowPage.on('pageerror', error => errors.push(error.message));
+    const now = Date.parse('2026-10-05T08:42:15Z');
+    await nowPage.clock.setFixedTime(now);
+    const state = () => nowPage.locator(`${tl} .tl-table`).evaluate(table => ({
+      start: Number(table.dataset.calculatedStart), end: Number(table.dataset.calculatedEnd),
+      viewStart: Number(table.dataset.start), viewEnd: Number(table.dataset.end), selected: Number(table.dataset.selected),
+      calls: window.__timelineCalculations, requests: window.__timelineRequests.length,
+    }));
+    const complete = () => nowPage.waitForFunction(() =>
+      document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 180000 });
+    const clickNow = async target => {
+      await nowPage.clock.setFixedTime(target);
+      await nowPage.click(action('now'));
+      await complete();
+      await nowPage.waitForFunction(target => Number(document.querySelector('#timeline-view .tl-table')?.dataset.selected) === target, target);
+      await moonMatches(nowPage);
+      return state();
+    };
+    const noCalculation = (before, after) => {
+      assert.deepEqual([after.start, after.end], [before.start, before.end], 'calculated bounds and intervals stay fixed');
+      assert.equal(after.calls, before.calls, 'Now does not invoke calculation, including cache hits');
+      assert.equal(after.requests, before.requests, 'Now sends zero new timeline worker requests');
+      assert.equal(after.viewEnd - after.viewStart, before.viewEnd - before.viewStart, 'viewport span and zoom are preserved');
+      assert.ok(after.viewStart <= after.selected && after.selected < after.viewEnd, 'Now is visible');
+    };
+    try {
+      await nowPage.goto(entry);
+      await complete();
+      await nowPage.selectOption(field('span'), '180');
+      await complete();
+      const original = await state();
+      assert.ok(original.requests > 0, 'instrumentation observed real calculations');
+      // Within the visible viewport: move the cursor only.
+      await nowPage.locator(`${tl} .tl-table`).focus();
+      await nowPage.keyboard.press('ArrowUp');
+      const beforeVisible = await state();
+      const visible = await clickNow(now);
+      noCalculation(beforeVisible, visible);
+      assert.deepEqual([visible.viewStart, visible.viewEnd], [beforeVisible.viewStart, beforeVisible.viewEnd]);
+      // Full 180-day calculation stays fixed while zoom/pan explore a subsection.
+      for (let level = 0; level < 2; level++) {
+        const beforeZoom = await state();
+        await nowPage.locator(`${tl} .tl-table`).focus();
+        await nowPage.keyboard.press('=');
+        await nowPage.waitForFunction(span => {
+          const table = document.querySelector('#timeline-view .tl-table');
+          return Number(table.dataset.end) - Number(table.dataset.start) < span;
+        }, beforeZoom.viewEnd - beforeZoom.viewStart);
+        const zoomed = await state();
+        const width = await nowPage.locator(`${tl} .tl-ticks`).evaluate(node => node.getBoundingClientRect().width);
+        await nowPage.locator(`${tl} .tl-table`).dispatchEvent('wheel', { deltaX: width * .75, deltaY: 0 });
+        await nowPage.waitForFunction(start => Number(document.querySelector('#timeline-view .tl-table').dataset.start) !== start, zoomed.viewStart);
+        const panned = await state();
+        assert.ok(now < panned.viewStart || now >= panned.viewEnd, 'pan moved Now offscreen');
+        assert.deepEqual([panned.start, panned.end], [original.start, original.end]);
+        const returned = await clickNow(now);
+        noCalculation(panned, returned);
+        assert.equal(await nowPage.locator(field('span')).inputValue(), '180');
+      }
+      // Start is inclusive; end is exclusive, and both sides are tested exactly.
+      let before = await state();
+      noCalculation(before, await clickNow(before.start));
+      before = await state();
+      let after = await clickNow(before.end);
+      assert.equal(after.calls, before.calls + 1, 'exclusive end invokes a new calculation');
+      assert.equal(after.requests, before.requests + 1, 'exclusive end sends a real calculation request');
+      assert.notDeepEqual([after.start, after.end], [before.start, before.end]);
+      assert.deepEqual([after.start, after.end], Object.values(await expectedLocalRange(nowPage, 180)));
+      assert.deepEqual([after.viewStart, after.viewEnd], [after.start, after.end]);
+      before = after;
+      after = await clickNow(before.end + 86400000);
+      assert.equal(after.calls, before.calls + 1, 'beyond the completed range also recalculates');
+      assert.equal(after.requests, before.requests + 1);
+      assert.deepEqual([after.start, after.end], Object.values(await expectedLocalRange(nowPage, 180)));
+    } finally {
+      await context.close();
+    }
+  });
+
+  if (!process.env.SKIP_TIMELINE_YEAR) await run('forward and past year include complete local anniversary dates with monthly ruler and detail', async () => {
     await page.setViewportSize({ width: 927, height: 800 });
     const zone = await page.locator(field('zone')).evaluate(node => node.value);
     await page.fill(field('date'), '2025-03-15');
@@ -641,19 +745,20 @@ try {
     await ready();
     const expected = await page.evaluate(async zone => {
       const { transitInstants } = await import('/src/lib/transit-time.js');
-      const at = date => transitInstants(date, '12:00:00', zone)[0].instant;
-      return { past: at('2024-03-15'), selected: at('2025-03-15'), future: at('2026-03-15') };
+      const at = date => transitInstants(date, '00:00:00', zone)[0].instant;
+      return { past: at('2024-03-15'), start: at('2025-03-15'), end: at('2025-03-16'),
+        selected: transitInstants('2025-03-15', '12:00:00', zone)[0].instant, future: at('2026-03-16') };
     }, zone);
     assert.equal(await instant(), expected.selected);
     for (const [preset, start, end] of [
-      ['year', expected.selected, expected.future],
-      ['past-year', expected.past, expected.selected + 1000],
+      ['year', expected.start, expected.future],
+      ['past-year', expected.past, expected.end],
     ]) {
       assert.equal(await instant(), expected.selected, `${preset} starts from the same selected moment`);
       await page.selectOption(field('span'), preset);
       await ready(180000);
       const range = await calculatedRange();
-      assert.deepEqual([range.start, range.end], [start, end], `${preset} uses local anniversaries`);
+      assert.deepEqual([range.start, range.end], [start, end], `${preset} uses complete local dates with a next-day exclusive end`);
       assert.deepEqual([range.viewStart, range.viewEnd], [start, end], `${preset} initially shows its full calculation`);
       assert.equal(await page.locator(field('span')).inputValue(), preset);
       const cells = await page.locator(`${tl} .tl-date-cell[data-date]`).evaluateAll(nodes => nodes.map(node => node.dataset.date));

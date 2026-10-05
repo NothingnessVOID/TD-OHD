@@ -12,9 +12,18 @@ const files = dir => readdirSync(dir, { withFileTypes: true }).flatMap(e =>
 export function validateFrontendRelease() {
   const review = json('docs/frontend-runtime-ux-v1/review-hashes.json');
   const identity = json('docs/release-licensing-v1/production-identity.json');
-  const allowedFrontend = /^(?:src\/main\.js|src\/views\/(?:entry|connection|team)\.js|src\/lib\/(?:i18n|initial-locale|local-store|location|people|placesearch|sync|sync-config|temporary-birth)\.js|src\/locales\/(?:zh-CN|zh-Hant)\/(?:index\.js|ui-runtime\.json)|src\/features\/transit-timeline\/(?:presets\.js|view\.js|timeline\.css))$/;
+  const allowedFrontend = /^(?:src\/main\.js|src\/views\/(?:entry|connection|team)\.js|src\/lib\/(?:i18n|initial-locale|local-store|location|people|placesearch|sync|sync-config|temporary-birth)\.js|src\/locales\/(?:zh-CN|zh-Hant)\/(?:index\.js|ui-runtime\.json)|src\/features\/transit-timeline\/(?:presets\.js|view\.js|timeline\.css|core\.js))$/;
   for (const file of Object.keys(review.frontendSources))
     if (!allowedFrontend.test(file)) throw new Error(`Outside frontend review scope: ${file}`);
+  // This task authorizes only the calendar-range ceiling change in core.js.
+  // Keep every calculation statement byte-identical to the integration baseline.
+  const timelineCore = 'src/features/transit-timeline/core.js';
+  const originalCore = execFileSync('git', ['show', `${review.baseline}:${timelineCore}`], { cwd: root, encoding: 'utf8' });
+  const expectedCore = originalCore.replace(
+    '// A 366-day local calendar span may gain an hour across a daylight-saving fold.\nexport const MAX_TIMELINE_SPAN = 367 * DAY;',
+    '// An inclusive calendar year can cover 367 dates plus a historical 24h rollback\n// (Pacific/Apia, 1891-08-01 through 1892-08-01): exactly 368 elapsed days.\nexport const MAX_TIMELINE_SPAN = 368 * DAY;');
+  if (readFileSync(path.join(root, timelineCore), 'utf8') !== expectedCore)
+    throw new Error('Timeline core change exceeds the reviewed span ceiling');
   validateDistribution();
   // All computation source checks remain pinned to the previously licensed release.
   for (const [file, expected] of Object.entries(identity.relevantSourceHashes))
