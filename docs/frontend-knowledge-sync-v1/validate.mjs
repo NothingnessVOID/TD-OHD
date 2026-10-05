@@ -50,12 +50,16 @@ export function validateSyncedRelease(rootPath = root) {
   const localeReview = existsSync(localePath) ? JSON.parse(readFileSync(localePath)) : null;
   const localeAllowed = new Set(['src/lib/knowledge/content/human-design-en.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/content/human-design-zh-Hant.js','src/lib/knowledge/detail-renderer.js','src/locales/zh-Hant/ui-chart.json']);
   if (localeReview && (localeReview.baseline !== '292edc9b5aa8f7c6b1fa5e3055c4c76cba8c52b3' || Object.keys(localeReview.files).length !== 5 || Object.keys(localeReview.files).some(file => !localeAllowed.has(file)))) throw new Error('Invalid Round 2C editorial scope');
+  const visualPath = path.join(rootPath, 'docs/knowledge-layer/round2d-scope.json');
+  const visualReview = existsSync(visualPath) ? JSON.parse(readFileSync(visualPath)) : null;
+  const visualAllowed = new Set(['src/lib/knowledge/content/human-design-en.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/content/human-design-zh-Hant.js','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-access.css','src/locales/zh-CN/ui-chart.json','src/locales/zh-Hant/ui-chart.json']);
+  if (visualReview && (visualReview.baseline !== '438ad2dc2dfa950eed55687143516051023de824' || Object.keys(visualReview.files).length !== 7 || Object.keys(visualReview.files).some(file => !visualAllowed.has(file)))) throw new Error('Invalid Round 2D visual scope');
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE)])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

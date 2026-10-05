@@ -238,7 +238,48 @@ export default {
     "detail": "2 爻帶著自然的能力，本人不一定覺得那有什麼特別，也需要獨處與不被打擾的空間。\n\n很多時候，是別人先看見這份能力並發出召喚。4 爻讓這些召喚與機會特別容易從朋友、熟人和信任網絡裡出現。\n\n常見的 2/4 路徑是：先自在地做自己會做的事，被別人看見，再透過人際網絡走向外界。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "process",
+      "blocks": [
+        {
+          "kind": "prose",
+          "start": 0,
+          "end": 94
+        },
+        {
+          "kind": "process",
+          "lead": {
+            "start": 94,
+            "end": 106
+          },
+          "steps": [
+            {
+              "start": 106,
+              "end": 118
+            },
+            {
+              "start": 118,
+              "end": 124
+            },
+            {
+              "start": 124,
+              "end": 136
+            }
+          ],
+          "separators": [
+            {
+              "start": 118,
+              "end": 118,
+              "decorativeArrow": true
+            },
+            {
+              "start": 124,
+              "end": 124,
+              "decorativeArrow": true
+            }
+          ]
+        }
+      ]
     }
   },
   "profile.2/5": {
@@ -262,7 +303,55 @@ export default {
     "detail": "3 爻需要透過實際經驗學習；6 爻則有明顯的三階段人生歷程。\n\n大約 30 歲以前，生活帶著很強的試錯與體驗性。約 30 到 50 歲之間，逐漸拉開距離、觀察、整理並消化先前的經驗。約 50 歲之後，重點轉向真正活出已經經過驗證的理解。\n\n人生典範不是刻意演出來的角色，而是經驗被活過、看過、整合之後自然形成的狀態。",
     "presentation": {
       "kind": "profile",
-      "geometry": "右角度 · 個人命運"
+      "geometry": "右角度 · 個人命運",
+      "layout": "timeline",
+      "blocks": [
+        {
+          "kind": "prose",
+          "start": 0,
+          "end": 32
+        },
+        {
+          "kind": "timeline",
+          "stages": [
+            {
+              "label": {
+                "start": 32,
+                "end": 42
+              },
+              "body": {
+                "start": 42,
+                "end": 56
+              }
+            },
+            {
+              "label": {
+                "start": 56,
+                "end": 70
+              },
+              "body": {
+                "start": 70,
+                "end": 91
+              }
+            },
+            {
+              "label": {
+                "start": 91,
+                "end": 100
+              },
+              "body": {
+                "start": 100,
+                "end": 118
+              }
+            }
+          ]
+        },
+        {
+          "kind": "prose",
+          "start": 118,
+          "end": 158
+        }
+      ]
     }
   },
   "profile.4/6": {
@@ -315,7 +404,39 @@ export default {
   },
   "cross.introduction": {
     "summary": "由個性與設計兩側的太陽、地球四個啟動組成，是貫穿生命的一條核心主題線。",
-    "detail": "### 構成\n\n- 個性太陽\n- 個性地球\n- 設計太陽\n- 設計地球\n\n這四個位置的閘門共同形成特定的輪迴交叉，帶出反覆出現在生命中的主題與方向。\n\n### 幾何\n\n- 右角度 — 個人命運\n- 並列 — 固定宿命\n- 左角度 — 超個人業力\n\n不同幾何描述同一類生命主題是比較透過個人歷程展開、沿著固定軌跡展開，或透過與他人的相遇與交換展開。\n\n### 生命主題\n\n輪迴交叉不是頭腦要規劃並完成的一項任務。當一個人按照自己的設計生活，這條主題會在生命歷程中逐漸變得可見。"
+    "detail": "### 構成\n\n- 個性太陽\n- 個性地球\n- 設計太陽\n- 設計地球\n\n這四個位置的閘門共同形成特定的輪迴交叉，帶出反覆出現在生命中的主題與方向。\n\n### 幾何\n\n- 右角度 — 個人命運\n- 並列 — 固定宿命\n- 左角度 — 超個人業力\n\n不同幾何描述同一類生命主題是比較透過個人歷程展開、沿著固定軌跡展開，或透過與他人的相遇與交換展開。\n\n### 生命主題\n\n輪迴交叉不是頭腦要規劃並完成的一項任務。當一個人按照自己的設計生活，這條主題會在生命歷程中逐漸變得可見。",
+    "presentation": {
+      "kind": "cross",
+      "sections": [
+        {
+          "id": "composition",
+          "title": {
+            "start": 4,
+            "end": 6
+          },
+          "start": 8,
+          "end": 76
+        },
+        {
+          "id": "geometry",
+          "title": {
+            "start": 80,
+            "end": 82
+          },
+          "start": 84,
+          "end": 175
+        },
+        {
+          "id": "theme",
+          "title": {
+            "start": 179,
+            "end": 183
+          },
+          "start": 185,
+          "end": 237
+        }
+      ]
+    }
   },
   "variable.determination:appetite": {
     "summary": "偏向簡單、分開的攝取方式，讓不同內容保持相對獨立。",

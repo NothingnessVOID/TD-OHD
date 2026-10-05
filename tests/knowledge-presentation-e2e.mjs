@@ -8,7 +8,7 @@ const browser = await chromium.launch({channel:process.env.CHROME_CHANNEL || 'ch
 const results = [];
 const sceneNames = ['type','authority','profile-right','profile-fixed','profile-left','definition','determination','environment','perspective','motivation','cross'];
 const bodyWithoutContext = locator => locator.evaluate(node => {
-  const copy = node.cloneNode(true); copy.querySelector('.knowledge-context')?.remove(); copy.querySelectorAll('.knowledge-yours').forEach(n=>n.remove()); return copy.innerHTML;
+  const copy = node.cloneNode(true); copy.querySelector('.knowledge-context')?.remove(); copy.querySelectorAll('.knowledge-yours').forEach(n=>n.remove()); copy.querySelectorAll('[data-selected]').forEach(n=>n.removeAttribute('data-selected')); return copy.innerHTML;
 });
 try {
   for (const width of [1224,903,664,390]) for (const locale of ['en','zh-CN','zh-Hant']) {
@@ -54,11 +54,11 @@ try {
       assert.equal(geometry.fits,true,`${width}/${locale}/${name}: horizontal overflow`);
       assert.equal(geometry.titleAvoidsClose,true,`${width}/${locale}/${name}: close overlap`);
       assert.equal(geometry.titleFont,'22px');
-      assert.deepEqual(geometry.headingOrder.slice(0,3),['detail-label','detail-name','knowledge-summary']);
+      assert.deepEqual(geometry.headingOrder.slice(0,2),['detail-label','detail-name']);assert.ok(geometry.headingOrder.some(cls=>cls.includes('knowledge-summary-callout')));
       if (['determination','environment','perspective','motivation'].includes(name)) {
         assert.equal(await article.locator('.knowledge-context').count(),1);
         assert.equal(await article.locator('.knowledge-type-properties').count(),0);
-        assert.ok(geometry.headingOrder.indexOf('knowledge-context')>geometry.headingOrder.indexOf('knowledge-summary'));
+        assert.ok(await article.locator('.knowledge-context-badges').count());
         const palette = await article.evaluate(node => {
           const css = getComputedStyle(node), direction = getComputedStyle(node.querySelector('.knowledge-direction'));
           const sample = document.createElement('span');sample.style.color = `var(--hd-${node.dataset.source})`;node.append(sample);

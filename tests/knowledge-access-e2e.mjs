@@ -55,7 +55,7 @@ try {
   await page.locator('[data-knowledge-object="cross"]').click();
   assert.match(await page.locator('#gate-detail .knowledge-detail').getAttribute('data-knowledge-id'),/CrossOfExplanation2$/);
   assert.equal(await page.locator('#gate-detail .knowledge-missing').count(),0);
-  assert.match(await page.locator('#gate-detail .knowledge-cross-meta').innerText(),/23 \/ 43 \/ 49 \/ 4/);
+  assert.deepEqual((await page.locator('#gate-detail .knowledge-activation .knowledge-chip').allInnerTexts()).map(text=>Number(text.match(/\d+/)[0])),[23,43,49,4]);
   await page.locator('.knowledge-library-link').click();assert.match(page.url(),/#library\/knowledge\/hd.cross.introduction$/);
   await page.locator('#reference-detail .knowledge-detail').waitFor();pure(await page.locator('#reference-detail').innerText(),locale);
   if(width<=640)await page.locator('[data-reference-back]').click();
