@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-05T08:21:56.317215+00:00",
+  "baseline": "2bc308b7a9037a10bae92fff6c9ff536a276b8ae",
+  "branch": "fix/frontend-runtime-ux-v1",
+  "engineSignature": "59b90e629033cc7faf95",
+  "build": "passed",
+  "unit": {
+    "total": 274,
+    "passed": 271,
+    "failed": 0,
+    "skipped": 3
+  },
+  "localization": {
+    "passed": 34,
+    "failed": 0
+  },
+  "timeline": {
+    "passed": 61,
+    "failed": 0
+  },
+  "focused": {
+    "passed": 18,
+    "failed": 0
+  },
+  "e2e": {
+    "placeSearch": "passed",
+    "startupAndPeopleDevelopment": "passed",
+    "startupAndPeopleProduction": "passed",
+    "timeline": "passed",
+    "chartDataExport": "passed",
+    "appearance": "passed",
+    "reference": "passed",
+    "planet": "passed"
+  },
+  "mobileViewports": [
+    [
+      390,
+      844
+    ],
+    [
+      375,
+      667
+    ],
+    [
+      360,
+      640
+    ],
+    [
+      320,
+      568
+    ]
+  ],
+  "privateDataUsed": false,
+  "productionCalculationsChanged": false,
+  "knowledgeContentChanged": false,
+  "annualDataChanged": false,
+  "deployed": false,
+  "installation8787Modified": false
+}

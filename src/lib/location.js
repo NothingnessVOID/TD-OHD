@@ -12,11 +12,11 @@ import { getLocale } from './i18n.js';
 
 // GeoNames PPL also includes villages. Keep administrative seats and populated
 // places large enough to serve as city-level timezone choices.
-const CITY_CODES = new Set(['PPLC', 'PPLA', 'PPLA2', 'PPLG']);
+const CITY_CODES = new Set(['PPLC', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLG']);
 export function isCityPlace(item) {
   if (!item?.timezone || !Number.isFinite(item.latitude) || !Number.isFinite(item.longitude)) return false;
   return CITY_CODES.has(item.feature_code) ||
-    ['PPL', 'PPLA3'].includes(item.feature_code) && Number(item.population) >= 15_000;
+    item.feature_code === 'PPL' && Number(item.population) >= 15_000;
 }
 
 /** Search the same Open-Meteo endpoint as the engine with the query language. */
@@ -28,9 +28,16 @@ export async function searchPlaces(query, count = 8, { signal } = {}) {
       : /[\u0400-\u04ff]/u.test(query) ? ['ru', 'en']
         : /[\u0600-\u06ff]/u.test(query) ? ['ar', 'en']
           : [locale.startsWith('zh') ? 'zh' : 'en', 'en'];
-  for (const language of [...new Set(languages)]) {
+  // GeoNames indexes some Chinese names with 市, others without administrative
+  // suffixes. Retry generic name variants, never a list of special-case cities.
+  const terms = [term.trim()];
+  if (/^[\u3400-\u9fff]{2,}$/u.test(term.trim())) {
+    const stem = term.trim().replace(/[市区县]$/u, '');
+    if (stem.length >= 2) terms.push(stem, `${stem}市`);
+  }
+  for (const name of [...new Set(terms)]) for (const language of [...new Set(languages)]) {
     const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
-    url.search = new URLSearchParams({ name: term, count: String(Math.min(100, Math.max(count * 4, 20))), language, format: 'json' });
+    url.search = new URLSearchParams({ name, count: String(Math.min(100, Math.max(count * 4, 20))), language, format: 'json' });
     const response = await fetch(url, { signal });
     if (!response.ok) throw new Error(`Geocoding HTTP ${response.status}`);
     const data = await response.json();

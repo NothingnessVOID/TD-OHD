@@ -9,7 +9,7 @@
 import { closeDetailDialog } from './lib/detail-dialog.js';
 import { computeChart, sensitivityCheck } from './lib/chartdata.js';
 import { esc } from './lib/format.js';
-import { listPeople, getPerson, savePerson, deletePerson, birthFromPerson, getLastPersonId, setLastPersonId, enableSync, setAiAccess, getAiAccess, setSharedGuest } from './lib/people.js';
+import { listPeople, getPerson, savePerson, deletePerson, birthFromPerson, getLastPersonId, setLastPersonId, enableSync, setAiAccess, getAiAccess, setSharedGuest, onPeopleChange } from './lib/people.js';
 import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } from './lib/sync.js';
 import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
@@ -56,6 +56,7 @@ function setupLanguageSwitcher() {
     menu.querySelector('summary').focus();
   });
   translatePage();
+  document.documentElement.removeAttribute('data-booting');
   onLocaleChange(() => {
     select.value = getLocale();
     refreshChoices();
@@ -469,7 +470,7 @@ async function init() {
       }
       renderPeopleSwitcher(); entryApi?.renderQuickPick();
     });
-  } else setupSync();
+  } else if (syncAvailable) setupSync();
 
   entryApi = setupEntryView({
     onSubmit: async (birth, { savedPerson = false } = {}) => {
@@ -481,6 +482,10 @@ async function init() {
         compareWithGuest();
       }
     }
+  });
+  onPeopleChange(() => {
+    renderPeopleSwitcher(); entryApi?.renderQuickPick();
+    renderConnectionView(); renderTeamView();
   });
   initialized = true;
 
@@ -569,7 +574,7 @@ async function init() {
     }
   }
   renderPeopleSwitcher();
-  if (libraryLink) showView('library');
+  showView(libraryLink ? 'library' : 'chart');
 }
 
 async function boot() {
@@ -581,7 +586,7 @@ async function boot() {
     if (!(await localAccountUi.unlockLocal())) return;
   }
   document.getElementById('app').hidden = false;
-  await init();
+  try { await init(); } finally { document.getElementById('boot-status').hidden = true; }
 }
 boot().catch(error => {
   console.error('Could not open local library:', error.message);

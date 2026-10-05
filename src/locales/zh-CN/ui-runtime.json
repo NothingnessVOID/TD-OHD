@@ -1,0 +1,5 @@
+{
+  "Restoring chart…": "正在恢复图表…",
+  "No matching place found. Search a nearby or parent city in the same timezone, or enter a UTC offset.": "未找到该具体地点。可搜索同一时区的附近城市或上级城市，或手动输入 UTC 时差。",
+  "Birth place determines the historical timezone, without solar-time correction. If your district is missing, choose a nearby city in the same timezone, or enter a UTC offset.": "出生地点用于确定出生时的历史时区，不使用真太阳时。若找不到具体区县，可选择同一时区的附近城市或上级城市，或手动输入 UTC 时差。"
+}

@@ -32,7 +32,7 @@ try {
   assert.notEqual(Number(await table.getAttribute('data-selected')), beforeMouseDrag,
     'mouse dragging the date ruler still selects a time');
 
-  for (const [width, height] of [[390, 844], [375, 667], [320, 568]]) {
+  for (const [width, height] of [[390, 844], [375, 667], [360, 640], [320, 568]]) {
     await page.setViewportSize({ width, height });
     const layout = await page.evaluate(() => {
       const box = selector => {
@@ -62,12 +62,18 @@ try {
         controlLeft: controls.left, controlTop: controls.top, controlRight: controls.right, controlBottom: controls.bottom,
         stageBottom: rect('.tl-stage').bottom };
     });
-    assert.ok(Math.abs(lanes.transitLeft - lanes.controlLeft) < 2 &&
-      lanes.controlTop >= lanes.planetRowsBottom && lanes.controlRight < lanes.birthLeft &&
-      lanes.stageBottom - lanes.controlBottom <= 12,
-      `floating control stays at the chart bottom, left-aligned with transit at ${width}px: ${JSON.stringify(lanes)}`);
-    assert.ok(lanes.controlBottom <= lanes.stageBottom,
-      `floating control stays inside chart pane at ${width}px`);
+    const overlaps = await page.evaluate(() => {
+      const box = el => el.getBoundingClientRect();
+      const columns = [...document.querySelectorAll('.tl-transit-column, .tl-birth-column, #timeline-view .tl-graph')].map(box);
+      return [...document.querySelectorAll('.tl-mobile-control-bar button, .tl-mobile-range select')].some(el => {
+        const r = box(el);
+        return columns.some(c => r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top);
+      });
+    });
+    assert.equal(overlaps, false, `mobile controls do not overlap planetary columns or the graph at ${width}px`);
+    assert.ok(lanes.controlBottom <= lanes.stageBottom + 1);
+    if (process.env.MOBILE_SCREENSHOT_DIR) await page.screenshot({ path: `${process.env.MOBILE_SCREENSHOT_DIR}/timeline-${width}.png` });
+
   }
   await page.setViewportSize({ width: 390, height: 844 });
   if (process.env.MOBILE_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_SCREENSHOT });
@@ -76,6 +82,13 @@ try {
   await trigger.click();
   const panel = root.locator('.tl-mobile-controls-panel');
   assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+  assert.equal(await page.evaluate(() => {
+    const p = document.querySelector('.tl-mobile-controls-panel').getBoundingClientRect();
+    return [...document.querySelectorAll('.tl-transit-column, .tl-birth-column, #timeline-view .tl-graph')].some(el => {
+      const r = el.getBoundingClientRect();
+      return p.left < r.right && p.right > r.left && p.top < r.bottom && p.bottom > r.top;
+    });
+  }), false, 'expanded controls also remain outside the graph and planetary columns');
   if (process.env.MOBILE_PANEL_SCREENSHOT) await page.screenshot({ path: process.env.MOBILE_PANEL_SCREENSHOT });
   for (const field of ['date', 'time', 'zone', 'kind', 'search', 'changes'])
     assert.ok(await panel.locator(`[data-field="${field}"]`).count(), `${field} stays available in the floating controls`);

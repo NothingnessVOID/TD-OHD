@@ -12,6 +12,7 @@ const chrome = process.env.CHROME_PATH
 const entry = `${base}/?d=1990-06-15&t=14:30&tz=8&n=Timeline%20Demo&view=timeline`;
 const browser = await chromium.launch({ ...chrome, headless: true });
 const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'en-GB' });
+await desktopContext.addInitScript(() => localStorage.setItem('ohd-language', 'en'));
 const page = await desktopContext.newPage();
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
@@ -35,8 +36,8 @@ const expectedLocalRange = (targetPage, days) => targetPage.evaluate(async days 
   const date = `${parts.year}-${parts.month}-${parts.day}`;
   const addDays = offset => new Date(Date.parse(`${date}T00:00:00Z`) + offset * 86400000).toISOString().slice(0, 10);
   const { transitInstants } = await import('/src/lib/transit-time.js');
-  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : days / 2;
-  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : days / 2;
+  const before = days === 1 ? 0 : 1;
+  const after = days;
   return { start: transitInstants(addDays(-before), '00:00:00', zone)[0].instant,
     end: transitInstants(addDays(after), '00:00:00', zone)[0].instant };
 }, days);
@@ -632,7 +633,7 @@ try {
     }
   });
 
-  if (!process.env.SKIP_TIMELINE_YEAR) await run('centered and past year calculate local anniversaries with monthly ruler and detail', async () => {
+  if (!process.env.SKIP_TIMELINE_YEAR) await run('forward and past year calculate local anniversaries with monthly ruler and detail', async () => {
     await page.setViewportSize({ width: 927, height: 800 });
     const zone = await page.locator(field('zone')).evaluate(node => node.value);
     await page.fill(field('date'), '2025-03-15');
@@ -641,11 +642,11 @@ try {
     const expected = await page.evaluate(async zone => {
       const { transitInstants } = await import('/src/lib/transit-time.js');
       const at = date => transitInstants(date, '12:00:00', zone)[0].instant;
-      return { past: at('2024-03-15'), halfPast: at('2024-09-15'), selected: at('2025-03-15'), halfFuture: at('2025-09-15') };
+      return { past: at('2024-03-15'), selected: at('2025-03-15'), future: at('2026-03-15') };
     }, zone);
     assert.equal(await instant(), expected.selected);
     for (const [preset, start, end] of [
-      ['year', expected.halfPast, expected.halfFuture],
+      ['year', expected.selected, expected.future],
       ['past-year', expected.past, expected.selected + 1000],
     ]) {
       assert.equal(await instant(), expected.selected, `${preset} starts from the same selected moment`);
