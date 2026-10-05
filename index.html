@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" translate="no" data-booting>
 <head>
   <meta charset="UTF-8">
+  <style>html[data-booting] #app { visibility: hidden; }</style>
+  <script>
+    try {
+      const saved = localStorage.getItem('ohd-language');
+      document.documentElement.lang = ['en', 'zh-CN', 'zh-Hant'].includes(saved) ? saved : 'zh-CN';
+    } catch { document.documentElement.lang = 'zh-CN'; }
+  </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Cpath d=%27M16 3 29 16 16 29 3 16Z%27 fill=%27none%27 stroke=%27%23c8781d%27 stroke-width=%272%27/%3E%3C/svg%3E">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="TD Open Human Design — Interactive Charts">TD Open Human Design — Interactive Charts</title>
@@ -21,7 +28,8 @@
   <link rel="stylesheet" href="/src/lib/language-switcher.css">
 </head>
 <body>
-  <div id="app">
+  <div id="app" translate="no">
+    <p id="boot-status" role="status" data-i18n="Restoring chart…">正在恢复图表…</p>
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
@@ -96,7 +104,7 @@
     </dialog>
 
     <!-- Birth Data Entry -->
-    <section id="birth-entry" class="birth-entry">
+    <section id="birth-entry" class="hidden birth-entry">
       <div class="entry-container">
         <div id="entry-invite" class="entry-invite hidden"></div>
         <h1 class="entry-title" data-i18n="Discover Your Design">Discover Your Design</h1>

@@ -44,7 +44,7 @@ try {
   assert.equal(requested.at(-1), 'Tokyo');
 
   await input.fill('noresults');
-  await page.locator('#place-group [role="status"]').filter({ hasText: /No matching|没有|無/ }).waitFor();
+  await page.locator('#place-group [role="status"]').filter({ hasText: /No matching|没有|未找到|無/ }).waitFor();
   await input.fill('offline');
   await page.locator('#place-group [role="status"]').filter({ hasText: /unavailable|不可用|無法/ }).waitFor();
   assert.equal(await page.locator('#place-results .place-result').count(), 0);
@@ -53,6 +53,8 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor();
   for (const [view, scope] of [['connection', '#conn-place'], ['team', '#team-members .team-member-row:first-child .team-place']]) {
     await page.locator(`.nav-link[data-view="${view}"]`).click();
+    await page.locator(view === 'connection' ? '#conn-date' : '.team-date').first().fill('1985-01-01');
+    await page.locator(view === 'connection' ? '#conn-time' : '.team-time').first().fill('12:00');
     const place = page.locator(`${scope} .ps-input`);
     await place.fill('Tokyo');
     await page.locator(`${scope} .ps-result`).first().click();

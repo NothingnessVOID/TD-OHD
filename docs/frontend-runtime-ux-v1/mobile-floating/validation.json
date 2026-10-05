@@ -1,0 +1,65 @@
+{
+  "scope": "mobile Timeline layout only",
+  "branch": "fix/frontend-runtime-ux-v1",
+  "previousHead": "9ebdbbaaa1fe7bac78cccfa3850ee0c25a34ae2e",
+  "mainBaseline": "2bc308b7a9037a10bae92fff6c9ff536a276b8ae",
+  "engineSignature": "59b90e629033cc7faf95",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      375,
+      667
+    ],
+    [
+      360,
+      640
+    ],
+    [
+      320,
+      568
+    ]
+  ],
+  "locales": [
+    "zh-CN",
+    "en",
+    "zh-Hant"
+  ],
+  "geometryRestoredToMain": true,
+  "panelOpenCloseAndAdvancedGeometryUnchanged": true,
+  "tests": {
+    "npm test": {
+      "passed": 271,
+      "failed": 0,
+      "skipped": 3
+    },
+    "test:localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "test:timeline": {
+      "passed": 61,
+      "failed": 0
+    },
+    "e2e:timeline": "passed",
+    "production-mobile-layout": "passed after clean rebuild",
+    "frontend-runtime-e2e": "passed",
+    "build": "passed after clean rebuild",
+    "distribution-and-source-hash-guard": "passed"
+  },
+  "preserved": [
+    "Sync",
+    "initial locale / prepaint",
+    "saved person restoration",
+    "Connection / Team saving",
+    "place search",
+    "Timeline future ranges",
+    "calculation / Knowledge / annual data"
+  ],
+  "deployment": false,
+  "merge": false,
+  "installation8787Changed": false,
+  "screenshots": "synthetic birth data only"
+}

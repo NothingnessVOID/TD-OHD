@@ -5,8 +5,7 @@
  * moment on demand. A small "UTC offset" fallback keeps obscure places from
  * dead-ending. No shared DOM ids.
  *
- * (entry.js predates this and keeps its own copy for the primary form; it can
- * be migrated onto this later.)
+ * Entry, Connection and Team use this same controller.
  */
 
 import { searchPlaces, offsetForZone, formatOffset } from './location.js';
@@ -14,9 +13,9 @@ import { esc } from './format.js';
 import { t, onLocaleChange } from './i18n.js';
 
 
-export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateTime } = {}) {
+export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateTime, elements } = {}) {
   mount.classList.add('place-search');
-  mount.innerHTML = `
+  if (!elements) mount.innerHTML = `
     <div class="ps-place">
       <input type="text" class="ps-input" placeholder="${esc(t(placeholder))}" autocomplete="off" aria-label="${esc(t(placeholder))}">
       <div class="ps-results hidden"></div>
@@ -26,13 +25,24 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     <div class="ps-chip hidden"></div>
     <div class="ps-status field-error hidden" role="status"></div>
   `;
-  const place = mount.querySelector('.ps-place');
-  const input = mount.querySelector('.ps-input');
-  const results = mount.querySelector('.ps-results');
-  const manual = mount.querySelector('.ps-manual');
-  const toggle = mount.querySelector('.ps-toggle');
-  const chip = mount.querySelector('.ps-chip');
-  const status = mount.querySelector('.ps-status');
+  const place = elements?.place || mount.querySelector('.ps-place');
+  const input = elements?.input || mount.querySelector('.ps-input');
+  const results = elements?.results || mount.querySelector('.ps-results');
+  const manual = elements?.manual || mount.querySelector('.ps-manual');
+  const manualWrap = elements?.manualWrap || manual;
+  manual.disabled = true; // Inactive fallback must not block Entry form validity.
+  const toggle = elements?.toggle || mount.querySelector('.ps-toggle');
+  const chip = elements?.chip || mount.querySelector('.ps-chip');
+  let status = elements?.status || mount.querySelector('.ps-status');
+  if (!status) {
+    status = document.createElement('p');
+    status.className = 'ps-status field-error hidden'; status.setAttribute('role', 'status');
+    results.after(status);
+  }
+  const help = document.createElement('p');
+  help.className = 'place-help label-soft';
+  help.dataset.i18n = 'Birth place determines the historical timezone, without solar-time correction. If your district is missing, choose a nearby city in the same timezone, or enter a UTC offset.';
+  toggle.after(help);
 
   let selected = null;
   let found = [];
@@ -64,8 +74,13 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     }
     if (!selected) { chip.classList.add('hidden'); return; }
     const { date, time } = dateTime();
-    const d = date || new Date().toISOString().split('T')[0];
-    const birthTime = time || '12:00';
+    if (!date || !time) {
+      chip.textContent = `${selected.label} · ${selected.timezone}`;
+      chip.classList.remove('hidden');
+      return;
+    }
+    const d = date;
+    const birthTime = time;
     try {
       const off = offsetForZone(d, birthTime, selected.timezone);
       chip.textContent = `${selected.label} · ${t('{offset} at birth', { offset: formatOffset(off) })}`;
@@ -110,10 +125,10 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
         const places = await searchPlaces(q, 8, { signal: controller.signal });
         if (seq !== seqCounter) return; // stale response
         if (!places.length) {
-          clearResults(); status.textContent = t('No matching place found.'); status.classList.remove('hidden'); return;
+          clearResults(); status.textContent = t('No matching place found. Search a nearby or parent city in the same timezone, or enter a UTC offset.'); status.classList.remove('hidden'); return;
         }
         results.innerHTML = places.map((p, i) =>
-          `<button type="button" class="ps-result" data-i="${i}">${esc(p.label)}</button>`).join('');
+          `<button type="button" class="ps-result place-result" data-i="${i}">${esc(p.label)}</button>`).join('');
         results.classList.remove('hidden');
         found = places;
         activeIndex = -1;
@@ -144,14 +159,17 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
 
   toggle.addEventListener('click', () => {
     manualMode = !manualMode;
+    manual.disabled = !manualMode;
     place.classList.toggle('hidden', manualMode);
-    manual.classList.toggle('hidden', !manualMode);
+    manualWrap.classList.toggle('hidden', !manualMode);
     toggle.textContent = manualMode ? t('Search birth place') : t('Enter UTC offset');
+    ++seqCounter; controller?.abort(); clearTimeout(debounce);
     clearResults();
     updateChip();
   });
 
   function refreshLanguage() {
+    help.textContent = t(help.dataset.i18n);
     const placeLabel = t(placeholder);
     input.placeholder = placeLabel;
     input.setAttribute('aria-label', placeLabel);
@@ -162,11 +180,15 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
   }
   const unsubscribeLanguage = onLocaleChange(refreshLanguage);
 
+  refreshLanguage();
   return {
     refreshLanguage,
+    updateDateTime: updateChip,
     hasInput: () => manualMode ? manual.value.trim() !== '' : !!selected,
     flagMissing: () => {
       const el = manualMode ? manual : input;
+      status.textContent = t('Pick a place from the list — or enter a UTC offset manually below.');
+      status.classList.remove('hidden');
       el.setAttribute('aria-invalid', 'true');
       el.focus();
     },
@@ -190,7 +212,7 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     destroy() {
       document.removeEventListener('click', onDocClick);
       unsubscribeLanguage?.();
-      clearTimeout(debounce);
+      ++seqCounter; controller?.abort(); clearTimeout(debounce);
     }
   };
 }

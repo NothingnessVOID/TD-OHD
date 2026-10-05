@@ -1,3 +1,4 @@
+import { saveTemporaryBirth } from '../lib/temporary-birth.js';
 /**
  * Team view — Penta/group analysis. Members come from saved people
  * (checkboxes) plus optional quick-add rows.
@@ -5,8 +6,8 @@
 
 import { analyzePenta } from '../lib/human-design/penta.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson, savePerson } from '../lib/people.js';
-import { localMode, reportSaveFailure } from '../lib/local-store.js';
+import { listPeople, birthFromPerson } from '../lib/people.js';
+import { reportSaveFailure } from '../lib/local-store.js';
 import { contentText } from '../lib/content.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
@@ -63,6 +64,7 @@ function addMemberRow() {
     getDateTime: () => ({ date: row.querySelector('.team-date').value, time: row.querySelector('.team-time').value })
   });
   row._placeSearch = ps;
+  for (const field of ['.team-date', '.team-time']) row.querySelector(field).addEventListener('change', ps.updateDateTime);
   row.querySelector('.remove-member').addEventListener('click', () => { ps.destroy(); row.remove(); });
   membersContainer.appendChild(row);
 }
@@ -72,6 +74,7 @@ async function runTeamAnalysis() {
   const charts = [];
   const names = [];
   const generatedNames = new Map();
+  const pendingBirths = [];
   try {
     // Saved people (checkboxes)
     const people = listPeople();
@@ -93,7 +96,8 @@ async function runTeamAnalysis() {
     for (const row of document.querySelectorAll('#team-members .team-member-row')) {
       const date = row.querySelector('.team-date').value;
       if (!date) continue;
-      const time = row.querySelector('.team-time').value || '12:00';
+      const time = row.querySelector('.team-time').value;
+      if (!time) { row.querySelector('.team-time').focus(); continue; }
       const loc = row._placeSearch?.getBirthLocation(date, time);
       if (!loc) { row._placeSearch?.flagMissing(); continue; } // skip rather than chart at UTC=0
       const enteredName = row.querySelector('.team-name').value.trim();
@@ -101,10 +105,7 @@ async function runTeamAnalysis() {
       const name = enteredName || t('Person {number}', { number });
       if (!enteredName) generatedNames.set(name, number);
       const data = await computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
-      if (localMode) {
-        try { savePerson({ name, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null }); }
-        catch (e) { reportSaveFailure(e); }
-      }
+      if (enteredName) pendingBirths.push({ name: enteredName, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
       charts.push(data.chart);
       names.push(name);
     }
@@ -117,6 +118,9 @@ async function runTeamAnalysis() {
     }
 
     const result = analyzePenta(charts, names);
+    for (const birth of pendingBirths) {
+      try { saveTemporaryBirth(birth); } catch (e) { reportSaveFailure(e); }
+    }
     latestTeamState = { kind: 'result', result, generatedNames };
     renderTeamContent(result, generatedNames);
   } catch (error) {
