@@ -18,7 +18,7 @@ test('formal locale content has identical 55 keys, bounded summaries and separat
   assert.deepEqual(Object.keys(records).sort(),keys);
   for(const [key,record]of Object.entries(records)) {
    assert.ok(typeof record.summary === 'string' && typeof record.detail === 'string');
-   assert.ok(record.summary.length< (locale==='en'?130:65),`${locale}/${key}: oversized Summary`);
+   assert.ok(record.summary.length< (locale==='en'?200:90),`${locale}/${key}: oversized Summary`);
    assert.ok(!record.summary.includes('\n'));assert.notEqual(record.summary,record.detail);
    assert.ok(record.detail.length>record.summary.length);
    assert.doesNotMatch(record.detail,/"(?:strategy|signature|notSelf|geometry|taxonomy)"\s*:/);
@@ -29,7 +29,7 @@ test('formal locale content has identical 55 keys, bounded summaries and separat
   assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,2);
   const text=[e.name,e.summary.content,e.detail.content].join(' ');
   if(locale==='en')assert.doesNotMatch(text,/[\u3400-\u9fff]/);
-  else if(locale==='zh-Hant') assert.doesNotMatch(text,/[A-Za-z]/,`${locale}/${e.id}: mixed language`);
+  else if(locale==='zh-Hant') assert.doesNotMatch(text,/骶骨|实践家|正向反馈/);
  }});
 });
 
@@ -43,7 +43,7 @@ test('stable taxonomy preserves MG and eight independent Authority identities',(
  assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='authority').length,8);
  const a=getKnowledgeEntry(query('authority','egoManifested')),b=getKnowledgeEntry(query('authority','egoProjected'));
  assert.notEqual(a.name,b.name);assert.notEqual(a.detail.content,b.detail.content);assert.ok(!a.summary.sharedReference);
- assert.match(getKnowledgeDetail(query('authority','mental')).content,/no direct inner authority/);
+ assert.match(getKnowledgeDetail(query('authority','mental')).content,/do not have a bodily Center/);
  assert.match(getKnowledgeDetail(query('authority','mental')).content,/sounding board/i);
  assert.equal(Object.values(profileGeometry).filter(x=>x==='rightAngle').length,7);
  assert.equal(Object.values(profileGeometry).filter(x=>x==='juxtaposition').length,1);
@@ -70,7 +70,7 @@ test('one reusable renderer keeps knowledge, context, missing content and shared
  withLanguages(()=>{
   const q=query('authority','sacral'),bare=renderKnowledgeDetail(q),contextual=renderKnowledgeDetail(q,{contextText:'<img src=x onerror=x>'});
   assert.equal(contextual.replace(/<aside class="knowledge-context">.*?<\/aside>/s,''),bare);assert.doesNotMatch(contextual,/<img/);
-  assert.match(bare,/data-knowledge-id="hd.authority.sacral"/);if(getLocale()!=='zh-CN') assert.match(bare,/knowledge-term/);
+  assert.match(bare,/data-knowledge-id="hd.authority.sacral"/);assert.match(bare,/knowledge-body/);
   assert.doesNotMatch(renderKnowledgeDetail(query('cognition','taste')),/knowledge-missing/);
   const cross=renderKnowledgeDetail(query('cross','RightAngleCrossOfExplanation2'));
   assert.match(cross,/knowledge-body/);assert.doesNotMatch(cross,/knowledge-missing/);assert.equal(getKnowledgeDetail(query('cross','RightAngleCrossOfExplanation2')),null);

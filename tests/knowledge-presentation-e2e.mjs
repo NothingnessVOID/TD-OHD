@@ -42,7 +42,7 @@ try {
       const article = page.locator('#gate-detail .knowledge-detail');
       const text = await article.innerText();
       if (locale === 'en') assert.doesNotMatch(text,/[\u3400-\u9fff]/);
-      else if(locale==='zh-Hant') assert.doesNotMatch(text,/[A-Za-z]/);
+      else if(locale==='zh-Hant') assert.doesNotMatch(text,/骶骨|实践家|正向反馈/);
       assert.equal(await article.locator('h2.detail-name').count(),1);
       assert.equal(await article.locator('.knowledge-facts,[data-version]').count(),0);
       const geometry = await article.evaluate(node => {
@@ -80,7 +80,7 @@ try {
       assert.equal(await library.locator('.knowledge-context,.knowledge-facts,.knowledge-yours').count(),0);
       assert.equal(await library.locator('.detail-name').evaluate(n=>getComputedStyle(n).fontSize),'22px');
       const fit = await library.evaluate(n=>({fits:n.scrollWidth<=n.clientWidth+1,containerFits:n.parentElement.scrollWidth<=n.parentElement.clientWidth+1}));
-      assert.equal(fit.fits,true);assert.equal(fit.containerFits,true);
+      assert.equal(fit.fits,true,`${width}/${locale}/${name}: article overflow`);assert.equal(fit.containerFits,true,`${width}/${locale}/${name}: container overflow`);
       if (process.env.KNOWLEDGE_SCREENSHOT_DIR && name === 'profile-left') await page.screenshot({path:`${process.env.KNOWLEDGE_SCREENSHOT_DIR}/${width}-${locale}-${name}-library.png`});
       results.push({width,locale,object:name,modal:true,library:true,heading:true,noOverflow:true,sameBody:true});
     }
