@@ -293,7 +293,7 @@ export default {
   },
   "variable.determination:taste": {
     "summary": "通过自身的口味与辨识，筛选真正适合摄取的内容。",
-    "detail": "Taste（味觉型）具有明显的筛选机制，会自然形成“这个适合我／这个不适合我”的辨识。\n\nTone 1–3 · Closed（封闭）\n\n更偏向熟悉、已经确认过的内容，一旦找到适合自己的东西，可能长期保持稳定选择。\n\nTone 4–6 · Open（开放）\n\n更愿意接触和尝试新的内容，再从其中形成阶段性的偏好和选择。",
+    "detail": "Taste（味觉型）具有明显的筛选机制，会自然形成“这个适合我／这个不适合我”的辨识。\n\nTone 1–3 · Open（开放）\n\n更偏向接触和尝试眼前出现的内容，再辨识哪些真正适合自己。\n\nTone 4–6 · Closed（封闭）\n\n更偏向已经辨识、熟悉和接受的内容，选择范围通常更集中。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -304,15 +304,15 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Closed（封闭）",
-          "start": 68,
-          "end": 106
+          "title": "Tone 1–3 · Open（开放）",
+          "start": 66,
+          "end": 94
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Open（开放）",
-          "start": 129,
-          "end": 158
+          "title": "Tone 4–6 · Closed（封闭）",
+          "start": 119,
+          "end": 146
         }
       ]
     }
@@ -423,7 +423,7 @@ export default {
   },
   "variable.environment:caves": {
     "summary": "适合边界清楚、入口明确，并能掌握人员进出的空间。",
-    "detail": "Caves（洞穴）的核心是安全、私密和入口控制。\n\n它并不等于真的住在洞穴里。独立房间、私人空间、背后有依靠并能看到入口的位置，都可能具有这种性质。\n\nTone 1–3 · Left\n\n更偏向主动掌握空间，知道谁进来、谁离开，并保持对环境的控制感。\n\nTone 4–6 · Right\n\n更偏向在安全边界已经成立后放松下来，让自己自然融入这个受保护的空间。",
+    "detail": "Caves（洞穴）的核心是安全、私密和入口控制。\n\n它并不等于真的住在洞穴里。独立房间、私人空间、背后有依靠并能看到入口的位置，都可能具有这种性质。\n\nTone 1–3 · Left · Selective（选择型）\n\n更偏向主动掌握空间，知道谁进来、谁离开，并保持对环境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全边界已经成立后放松下来，让自己自然融入这个受保护的空间。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -434,22 +434,22 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 93,
-          "end": 124
+          "title": "Tone 1–3 · Left · Selective（选择型）",
+          "start": 110,
+          "end": 141
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 144,
-          "end": 178
+          "title": "Tone 4–6 · Right · Blending（融合型）",
+          "start": 177,
+          "end": 211
         }
       ]
     }
   },
   "variable.environment:markets": {
     "summary": "适合资源、人员、商品和信息不断交换流动的环境。",
-    "detail": "Markets（市场）的核心是交换、选择和动态流动。\n\n真正的市场、商业区、咖啡馆、共享空间，甚至任何人和信息持续进出的地方，都可能具有 Markets 的性质。\n\nTone 1–3 · Left\n\n更主动参与交换、观察选择，并进入环境中的人与资源流动。\n\nTone 4–6 · Right\n\n更适合处在这种流动环境里，让机会、信息和选择自然进入自己的感知。",
+    "detail": "Markets（市场）的核心是交换、选择和动态流动。\n\n真正的市场、商业区、咖啡馆、共享空间，甚至任何人和信息持续进出的地方，都可能具有 Markets 的性质。\n\nTone 1–3 · Left · Internal（内部型）\n\n更主动参与交换、观察选择，并进入环境中的人与资源流动。\n\nTone 4–6 · Right · External（外部型）\n\n更适合处在这种流动环境里，让机会、信息和选择自然进入自己的感知。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -460,22 +460,22 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 100,
-          "end": 127
+          "title": "Tone 1–3 · Left · Internal（内部型）",
+          "start": 116,
+          "end": 143
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 147,
-          "end": 179
+          "title": "Tone 4–6 · Right · External（外部型）",
+          "start": 179,
+          "end": 211
         }
       ]
     }
   },
   "variable.environment:kitchens": {
     "summary": "适合不同材料、资源或想法被组合、加工和转化的环境。",
-    "detail": "Kitchens（厨房）的核心是转化。\n\n它可以是真实厨房，也可以是工作室、实验室、研发空间、工厂，或者任何“原料进入之后变成另一种东西”的地方。\n\nTone 1–3 · Left\n\n更容易主动进入转化过程，参与组合、制作和推动变化。\n\nTone 4–6 · Right\n\n更偏向身处转化正在发生的环境里，自然接收变化、碰撞与创造带来的刺激。",
+    "detail": "Kitchens（厨房）的核心是转化。\n\n它可以是真实厨房，也可以是工作室、实验室、研发空间、工厂，或者任何“原料进入之后变成另一种东西”的地方。\n\nTone 1–3 · Left · Wet（湿）\n\n更容易主动进入转化过程，参与组合、制作和推动变化。\n\nTone 4–6 · Right · Dry（干）\n\n更偏向身处转化正在发生的环境里，自然接收变化、碰撞与创造带来的刺激。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -486,22 +486,22 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 92,
-          "end": 117
+          "title": "Tone 1–3 · Left · Wet（湿）",
+          "start": 101,
+          "end": 126
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 137,
-          "end": 171
+          "title": "Tone 4–6 · Right · Dry（干）",
+          "start": 155,
+          "end": 189
         }
       ]
     }
   },
   "variable.environment:mountains": {
     "summary": "适合较高、能够拉开距离并获得更开阔视野的位置。",
-    "detail": "Mountains（高山）的核心是高度、距离与视野。\n\n它不一定是山，也可以是高楼、顶层、高处座位，或者任何能够暂时离开密集人流、从较高位置观察整体的空间。\n\nTone 1–3 · Left\n\n更偏向主动利用高度和距离观察周围，掌握全局。\n\nTone 4–6 · Right\n\n更偏向放松地处在较高位置，让整体环境和更大的视野自然进入感知。",
+    "detail": "Mountains（高山）的核心是高度、距离与视野。\n\n它不一定是山，也可以是高楼、顶层、高处座位，或者任何能够暂时离开密集人流、从较高位置观察整体的空间。\n\nTone 1–3 · Left · Active（主动）\n\n更偏向主动利用高度和距离观察周围，掌握全局。\n\nTone 4–6 · Right · Passive（被动）\n\n更偏向放松地处在较高位置，让整体环境和更大的视野自然进入感知。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -512,22 +512,22 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 97,
-          "end": 119
+          "title": "Tone 1–3 · Left · Active（主动）",
+          "start": 110,
+          "end": 132
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 139,
-          "end": 170
+          "title": "Tone 4–6 · Right · Passive（被动）",
+          "start": 166,
+          "end": 197
         }
       ]
     }
   },
   "variable.environment:valleys": {
     "summary": "适合处在流动通道中，接收人与信息不断经过和交换的环境。",
-    "detail": "Valleys（山谷）的核心是通道、交流和信息流动。\n\n街道、一楼、走廊、公共区域以及人们不断经过、交流的地方，都可能体现这种环境性质。\n\nTone 1–3 · Left\n\n更主动进入流动，观察、参与和连接正在发生的交流。\n\nTone 4–6 · Right\n\n更偏向让自己待在信息流中，通过周围的声音、人群和变化自然接收环境。",
+    "detail": "Valleys（山谷）的核心是通道、交流和信息流动。\n\n街道、一楼、走廊、公共区域以及人们不断经过、交流的地方，都可能体现这种环境性质。\n\nTone 1–3 · Left · Narrow（狭窄）\n\n更主动进入流动，观察、参与和连接正在发生的交流。\n\nTone 4–6 · Right · Wide（宽广）\n\n更偏向让自己待在信息流中，通过周围的声音、人群和变化自然接收环境。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -538,22 +538,22 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 87,
-          "end": 111
+          "title": "Tone 1–3 · Left · Narrow（狭窄）",
+          "start": 100,
+          "end": 124
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 131,
-          "end": 164
+          "title": "Tone 4–6 · Right · Wide（宽广）",
+          "start": 155,
+          "end": 188
         }
       ]
     }
   },
   "variable.environment:shores": {
     "summary": "适合处在两个不同空间、领域或状态交界的过渡地带。",
-    "detail": "Shores（海岸）的核心是边界与过渡。\n\n海与陆、室内与室外、城市与郊区、一个部门与另一个部门之间，都可以形成类似性质。\n\nTone 1–3 · Left\n\n更主动在两个领域之间移动、连接或观察边界两侧的差异。\n\nTone 4–6 · Right\n\n更适合停留在交界处，同时接收来自两个不同领域的信息和体验。",
+    "detail": "Shores（海岸）的核心是边界与过渡。\n\n海与陆、室内与室外、城市与郊区、一个部门与另一个部门之间，都可以形成类似性质。\n\nTone 1–3 · Left · Natural（自然）\n\n更主动在两个领域之间移动、连接或观察边界两侧的差异。\n\nTone 4–6 · Right · Artificial（人工）\n\n更适合停留在交界处，同时接收来自两个不同领域的信息和体验。",
     "presentation": {
       "kind": "variable",
       "sections": [
@@ -564,15 +564,15 @@ export default {
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 80,
-          "end": 106
+          "title": "Tone 1–3 · Left · Natural（自然）",
+          "start": 94,
+          "end": 120
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 126,
-          "end": 155
+          "title": "Tone 4–6 · Right · Artificial（人工）",
+          "start": 157,
+          "end": 186
         }
       ]
     }

@@ -10,9 +10,11 @@ const snapshot=page=>page.evaluate(()=>({banner:document.querySelector('#type-ba
 async function open(url,width,locale) {
  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
+ await context.route(/https:\/\/(?:fonts\.googleapis\.com|fonts\.gstatic\.com)\//,route=>route.abort());
  await page.goto(`${url}/?d=2000-05-10&t=12%3A30&tz=8`, { waitUntil: 'domcontentloaded' });
  await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
  await page.locator('#more-toggle').click();await page.locator('#language-menu > summary').click();await page.locator(`[data-language="${locale}"]`).click();await page.keyboard.press('Escape');
+ await page.evaluate(async()=>{await document.fonts.ready;});
  return {context,page,errors};
 }
 try {

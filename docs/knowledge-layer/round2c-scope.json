@@ -1,0 +1,10 @@
+{
+  "baseline": "292edc9b5aa8f7c6b1fa5e3055c4c76cba8c52b3",
+  "files": {
+    "src/lib/knowledge/content/human-design-en.js": "ef25c9ba75e89db89b150199b036a5562219802195cd3c6135857b42f302c55c",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "d6bc8366e28a774d1ded24124ab5e6d9788cbc8b24e44170036d700f21b96eb2",
+    "src/lib/knowledge/content/human-design-zh-Hant.js": "1b5892bbb934afdd9168a571d9ba35e6b10b98c4be494a94cc815e7243ec5fb8",
+    "src/lib/knowledge/detail-renderer.js": "3cd94b3d0521068f0088ac518146f99cf12fcad2d2d6e7eea91ba19dee099628",
+    "src/locales/zh-Hant/ui-chart.json": "727317d66730e6f956ffa7a7808fd1231295e74d6ba5fa21f4cdb88bbc636133"
+  }
+}

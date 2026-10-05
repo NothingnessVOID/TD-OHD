@@ -33,7 +33,7 @@ function coreInformation(entry) {
     const facts = [['Strategy', p.strategy], ['Signature', p.signature], ['Not-Self Theme', p.notSelf]];
     return `<dl class="knowledge-type-properties">${facts.map(([label, value]) => `<dt>${esc(t(label))}</dt><dd>${esc(value)}</dd>`).join('')}</dl>`;
   }
-  if (entry.objectType === 'profile') return `<p class="knowledge-secondary">${esc(t(profileLabels[p.geometry]))}</p>`;
+  if (entry.objectType === 'profile') return `<p class="knowledge-secondary">${esc(entry.detail?.presentation?.geometry ?? t(profileLabels[p.geometry]))}</p>`;
   if (entry.objectType === 'cross' && (p.angle || p.gates)) {
     return `<p class="knowledge-secondary knowledge-cross-meta">${[p.angle && esc(t(angleLabels[p.angle])), p.gates && `${esc(t('Gates'))} ${esc(p.gates.join(' / '))}`].filter(Boolean).join(' · ')}</p>`;
   }
@@ -56,10 +56,10 @@ function paragraphs(slot) {
 // Semantic ranges point into the sole locale body, without copying prose or matching visible headings.
 function structuredBody(slot, variableContext) {
   const presentation = slot?.presentation;
-  if (!presentation) return paragraphs(slot);
+  if (!presentation || presentation.kind === 'profile') return paragraphs(slot);
   const text = slot.template ?? slot.content;
   const range = value => text.slice(value.start, value.end);
-  const prose = value => range(value).split(/\n\n+/).map(p => `<p>${esc(p).replaceAll('\n','<br>')}</p>`).join('');
+  const prose = value => range(value) ? range(value).split(/\n\n+/).map(p => `<p>${esc(p).replaceAll('\n','<br>')}</p>`).join('') : '';
   if (presentation.kind === 'type') {
     const f = presentation.fields;
     return `<section class="knowledge-section"><h3>${esc(t('Strategy'))}</h3><p class="knowledge-value">${esc(range(f.strategyValue))}</p>${prose(f.strategyDetail)}</section><section class="knowledge-section"><h3>${esc(t('Aura'))}</h3><p class="knowledge-value">${esc(range(f.auraKeywords))}</p>${prose(f.auraDetail)}</section><dl class="knowledge-type-properties"><dt>${esc(t('Signature'))}</dt><dd>${esc(range(f.signature))}</dd><dt>${esc(t('Not-Self Theme'))}</dt><dd>${esc(range(f.notSelf))}</dd></dl>`;
