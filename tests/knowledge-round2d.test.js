@@ -1,3 +1,4 @@
+import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync}from'node:fs';
@@ -7,13 +8,12 @@ import {knowledgeContent}from'../src/lib/knowledge/content/index.js';
 import {listKnowledgeEntries,getKnowledgeEntry}from'../src/lib/knowledge/registry.js';
 import {renderKnowledgeDetail}from'../src/lib/knowledge/detail-renderer.js';
 import {setLocale}from'../src/lib/i18n.js';
-const fixture=JSON.parse(readFileSync(new URL('./fixtures/knowledge-round2c-content.json',import.meta.url)));
 const q=(objectType,objectId)=>({objectType,objectId});
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const plain=s=>s.replace(/<[^>]*>/g,'').replaceAll('&amp;','&').replaceAll('&#39;',"'").replaceAll('&quot;','"').replace(/\s+/g,'');
 const langs=fn=>{for(const l of ['en','zh-CN','zh-Hant']){setLocale(l,{persist:false});fn(l);}};
-test('Round 2D zero editorial change: all 165 Summary/Detail hashes match immutable Round 2C fixture',()=>{
- for(const [l,records]of Object.entries(knowledgeContent))for(const [id,r]of Object.entries(records))assert.equal(hash(r.summary+'\n'+r.detail),fixture.articles[l][id],l+'/'+id);
+test('Round 2D historical content guard permits only the approved Round 2F deviation ranges',()=>{
+ assertContentBoundary();
 });
 test('all 55 reviewed entries render; Cognition remains six name-only entries',()=>langs(()=>{
  const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,55);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);

@@ -163,5 +163,13 @@
   "Yours": "你的",
   "Overview": "概要",
   "Incarnation Cross Basics": "化身十字基础说明",
-  "Definition island {index}": "定义岛 {index}"
+  "Definition island {index}": "定义岛 {index}",
+  "Off-track State": "偏离状态",
+  "Correct perspective": "正确视角",
+  "Correct motivation": "正确动机",
+  "Possible off-track direction": "可能的偏离方向",
+  "When the perspective moves off its correct state, attention can be drawn toward its paired perspective. This describes a possible off-track direction, not a second fixed trait.": "当视角偏离正确状态时，注意力会被拉向对应的另一种视角。这里描述的不是你的另一项特质，而是偏离自身正确视角时容易出现的观察方向。",
+  "In anxiety, pressure or confusion, motivation can shift toward its paired motivation. This describes a possible off-track state, not a second motivation.": "当处于焦虑、压力或迷失状态时，原本正确的动机可能发生转移，跑向与它对应的另一种动机。这里描述的不是你的另一项动机，而是偏离自身正确动机时可能出现的状态。",
+  "Variable Distraction": "Distraction · 分心",
+  "Variable Transference": "Transference · 转移"
 }

@@ -62,12 +62,16 @@ export function validateSyncedRelease(rootPath = root) {
   const polish = existsSync(polishPath) ? JSON.parse(readFileSync(polishPath)) : null;
   const polishAllowed = new Set(['src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/views/chart.js','src/styles.css','src/locales/zh-CN/ui-chart.json','src/locales/zh-Hant/ui-chart.json']);
   if (polish && (polish.baseline !== '686a5966bd5c36f37dd4a80f5c51786c4f847a31' || Object.keys(polish.files).length !== 7 || Object.keys(polish.files).some(file => !polishAllowed.has(file)))) throw new Error('Invalid Round 2E polish scope');
+  const deviationPath = path.join(rootPath, 'docs/knowledge-layer/round2f-scope.json');
+  const deviation = existsSync(deviationPath) ? JSON.parse(readFileSync(deviationPath)) : null;
+  const deviationAllowed = new Set([...visualAllowed,'src/locales/ui-contexts.json']);
+  if (deviation && (deviation.baseline !== 'fa1d6afba38ebe0128b517a565123c827340554d' || Object.keys(deviation.files).length !== 8 || Object.keys(deviation.files).some(file => !deviationAllowed.has(file)))) throw new Error('Invalid Round 2F deviation scope');
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE)])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

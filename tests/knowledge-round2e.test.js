@@ -1,3 +1,4 @@
+import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -5,18 +6,15 @@ import {execFileSync} from 'node:child_process';
 import {parseAst} from 'rollup/parseAst';
 import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';
 import {getKnowledgeEntry,listKnowledgeEntries} from '../src/lib/knowledge/registry.js';
-import {knowledgeContent} from '../src/lib/knowledge/content/index.js';
 import {CENTER_SHAPES} from '../src/lib/human-design/bodygraph-geometry.js';
 import {setLocale} from '../src/lib/i18n.js';
 import {adaptSharpChart} from '../src/lib/chart-engine/sharp-contract.js';
-import {createHash} from 'node:crypto';
 const q=(objectType,objectId)=>({objectType,objectId});
 const locales=fn=>{for(const l of ['en','zh-CN','zh-Hant']){setLocale(l,{persist:false});fn(l);}};
 const plain=s=>s.replace(/<[^>]*>/g,'').replaceAll('&amp;','&').replaceAll('&#39;',"'").replaceAll('&quot;','"').replace(/\s+/g,'');
 const maps={head:'Head',ajna:'Ajna',throat:'Throat',g:'G',heart:'Ego',spleen:'Spleen',solar:'SolarPlexus',sacral:'Sacral',root:'Root'};
-test('Round 2E preserves all 165 reviewed Summary/Detail hashes',()=>{
- const fixture=JSON.parse(readFileSync(new URL('./fixtures/knowledge-round2c-content.json',import.meta.url)));
- for(const[l,records]of Object.entries(knowledgeContent))for(const[id,r]of Object.entries(records))assert.equal(createHash('sha256').update(r.summary+'\n'+r.detail).digest('hex'),fixture.articles[l][id]);
+test('Round 2E historical content guard permits only the approved Round 2F deviation ranges',()=>{
+  assertContentBoundary();
 });
 test('all 12 Profiles in three locales have two line identities and complete original ordered text',()=>locales(()=>{
  for(const e of listKnowledgeEntries().filter(e=>e.objectType==='profile')){

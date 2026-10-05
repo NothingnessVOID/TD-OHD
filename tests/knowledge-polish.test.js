@@ -1,3 +1,4 @@
+import {uiKeys} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -15,7 +16,7 @@ test('Cross Panel uses one Basics button while preserving Gate wiring and no inl
  const s=file('src/views/chart.js').split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.doesNotMatch(s,/getKnowledgeSummary|\.summary|\.detail/);assert.match(s,/wireRowHover\(item, parseInt\(item.dataset.gate\)\)/);
 });
 test('only confirmed dead Cross UI keys are removed in each independent locale',()=>{
- const keys=['Shared Cross introduction','Specific Cross detail is unavailable.','View Cross introduction in the library'];for(const l of ['zh-CN','zh-Hant']){const p=`src/locales/${l}/ui-chart.json`,before=JSON.parse(execFileSync('git',['show',base+':'+p]));for(const k of keys)delete before[k];assert.deepEqual(JSON.parse(file(p)),before);}
+ const keys=['Shared Cross introduction','Specific Cross detail is unavailable.','View Cross introduction in the library'];for(const l of ['zh-CN','zh-Hant']){const p=`src/locales/${l}/ui-chart.json`,before=JSON.parse(execFileSync('git',['show',base+':'+p]));for(const k of keys)delete before[k];const now=JSON.parse(file(p));for(const k of uiKeys){assert.ok(now[k]);delete now[k];}assert.deepEqual(now,before);}
 });
 test('Knowledge hover uses accent-soft with no box-model changes',()=>{
  const css=file('src/lib/knowledge/detail-access.css');assert.match(css,/\.knowledge-trigger:hover \{ background-color: var\(--accent-soft\); \}/);assert.match(css,/\.knowledge-trigger:focus-visible \{ outline: 2px solid var\(--accent\)/);

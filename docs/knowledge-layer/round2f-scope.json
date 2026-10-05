@@ -1,0 +1,14 @@
+{
+  "baseline": "fa1d6afba38ebe0128b517a565123c827340554d",
+  "purpose": "Round 2F: 12 directed Variable deviation states, approved 36 Detail ranges only",
+  "files": {
+    "src/lib/knowledge/content/human-design-en.js": "3f00a7beaee70b873226b38c25dbc88fb40f4e4b8780a29de61ee03c5bfd23ae",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "5f99b7d414de8407db1a08f06a350bd5320aabdfe2dbf5d360f4e3715b3f3291",
+    "src/lib/knowledge/content/human-design-zh-Hant.js": "64231136cabaeaaf5e0fec9a7339aeec76ef2d04f2fd4c72864ed5119040fd89",
+    "src/lib/knowledge/detail-renderer.js": "cfd6e1543b16e55703cb879ee945daff9682b281f92b98a1031fbb2f263a8050",
+    "src/lib/knowledge/detail-access.css": "0cfe715ba02857bd0f1829316da0e98df808f8891b2ce6a1fd2b046d9369d78c",
+    "src/locales/ui-contexts.json": "c6b47d99c138632ce3aa67f1c1b994570df3aaa3eed76c6054eda75c38b3ce0c",
+    "src/locales/zh-CN/ui-chart.json": "90ad65c601d4463f18fe60f186d7e513afd9ce3ebfa17659b8c5642d628daa57",
+    "src/locales/zh-Hant/ui-chart.json": "96c6c7d32a60f6aaa234cf5db525f4cdfbfb8856e5f7ace9d90b2cc4aa94acb4"
+  }
+}

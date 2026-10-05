@@ -1,0 +1,116 @@
+{
+  "baseline": "fa1d6afba38ebe0128b517a565123c827340554d",
+  "branch": "fix/variable-deviation-state-v1",
+  "engineChanged": false,
+  "variableCalculationChanged": false,
+  "content": {
+    "changedDetailRanges": 36,
+    "unchangedSummaries": 165,
+    "unchangedOtherEntries": 129,
+    "historicalRound2CFixtureUnchanged": true,
+    "locales": [
+      "en",
+      "zh-CN",
+      "zh-Hant"
+    ]
+  },
+  "tests": {
+    "npm test": {
+      "passed": 341,
+      "failed": 0,
+      "skipped": 3
+    },
+    "npm run test:localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "npm run test:timeline": {
+      "passed": 63,
+      "failed": 0
+    },
+    "knowledge focused final": {
+      "passed": 32,
+      "failed": 0
+    },
+    "npm run build": "passed; existing large chunk advisory"
+  },
+  "browser": {
+    "deviationBothSurfaces": 72,
+    "homeExactComparisons": [
+      {
+        "width": 1224,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-Hant",
+        "identical": true
+      }
+    ],
+    "knowledgePresentationBothSurfaces": 132,
+    "bodygraphDomTextGeometryComparisons": 24,
+    "chartDataExport": "passed: clipboard, three locales, natal, Transit and Timeline"
+  },
+  "skips": [
+    "online multilingual city search",
+    "online compute_chart geocoding",
+    "online unknown-place error"
+  ],
+  "executionNotes": [
+    "First localization/timeline invocation lacked the temporary .NET SDK in PATH; rerun with configured SDK passed.",
+    "A BodyGraph run initially pointed to inactive default baseline 5195; rerun against actual Round 2E polish 5209 passed.",
+    "A deviation E2E was interrupted by a concurrent Vite build reload; rerun after build completion passed."
+  ],
+  "unresolved": []
+}
