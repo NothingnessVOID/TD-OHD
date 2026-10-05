@@ -76,3 +76,9 @@ showGateDetail / showTransitChannelDetail / showCenterDetail / showPlanetDetail 
 ## 10. 未解决项
 
 本轮范围内无。三个可选在线测试因未启用 OHD_ONLINE_TESTS 跳过，不涉及本轮 UI 验收。生产构建现有 chunk-size 提示保留，不扩大范围拆包。
+
+## 追加 UI 修复：闸门顶部激活行对齐
+
+用户反馈行星符号与激活文字垂直错位。共享 `.tl-activation-glyph` 原为 1.08em / line-height:1；现改为 1em / line-height:inherit，并 align-self:start，长文字换行时仍对齐第一行。只改 CSS，不改详情 DOM、来源色、计算或正文。
+
+浏览器实测：出生图 Gate 52 的太阳、水星，以及行运和时间轴 Gate 48 的太阳，glyph/identity/value 均同一 y，行高和高度均 21.45px。全量测试并行首次出现两个 C# harness build 失败，单独构建及串行运行同一全量测试后通过：338 total / 335 passed / 0 failed / 3 skipped。生产构建通过。

@@ -1491,7 +1491,7 @@ body.modal-open { overflow: hidden; }
   column-gap: 8px;
   font-weight: 600;
 }
-.tl-activation-glyph { text-align: center; font-size: 1.08em; line-height: 1; }
+.tl-activation-glyph { align-self: start; text-align: center; font-size: 1em; line-height: inherit; }
 .tl-activation-identity, .tl-activation-value { min-width: 0; overflow-wrap: anywhere; }
 .tl-activation-value { font-variant-numeric: tabular-nums; }
 .tl-activation-transit { color: var(--hd-transit-text); }
