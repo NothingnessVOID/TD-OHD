@@ -53,8 +53,8 @@ export function presetWindow(instant, preset, zone, resolveTime) {
     throw new RangeError('Invalid timeline preset');
   }
   if (preset === 'year') return {
-    start: calendarShift(instant, -6, zone, resolveTime),
-    end: calendarShift(instant, 6, zone, resolveTime)
+    start: instant,
+    end: calendarShift(instant, 12, zone, resolveTime)
   };
   if (preset === 'past-year') {
     const end = instant + 1000; // Include the selected second in the exclusive range.
@@ -65,8 +65,10 @@ export function presetWindow(instant, preset, zone, resolveTime) {
     start: localDayBoundary(currentDate, zone),
     end: localDayBoundary(shiftDate(currentDate, 1), zone)
   };
-  const daysBefore = { '3': 1, '7': 3, '30': 15, '90': 45, '180': 90 }[preset];
-  const daysAfter = Number(preset) - daysBefore;
+  // [previous local midnight, selected local date + N midnight).
+  // N future-facing dates plus one context date; DST days need not be 24h.
+  const daysBefore = 1;
+  const daysAfter = Number(preset);
   return {
     start: localDayBoundary(shiftDate(currentDate, -daysBefore), zone),
     end: localDayBoundary(shiftDate(currentDate, daysAfter), zone)

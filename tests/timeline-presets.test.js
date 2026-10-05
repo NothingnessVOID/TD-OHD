@@ -21,16 +21,12 @@ test('the one-day preset covers the selected local calendar date', () => {
   assert.deepEqual(fall, { start: at('2026-11-01T04:00:00Z'), end: at('2026-11-02T05:00:00Z') });
 });
 
-test('3, 7, 30, 90 and 180 days use complete Shanghai calendar dates around the selected date', () => {
+test('3, 7, 30, 90 and 180 days use complete Shanghai calendar dates with one context day and N forward dates', () => {
   const morning = resolve('2026-09-24', '09:50:00', 'Asia/Shanghai');
   const evening = resolve('2026-09-24', '23:30:00', 'Asia/Shanghai');
-  const expected = {
-    '3': ['2026-09-22T16:00:00Z', '2026-09-25T16:00:00Z'],
-    '7': ['2026-09-20T16:00:00Z', '2026-09-27T16:00:00Z'],
-    '30': ['2026-09-08T16:00:00Z', '2026-10-08T16:00:00Z'],
-    '90': ['2026-08-09T16:00:00Z', '2026-11-07T16:00:00Z'],
-    '180': ['2026-06-25T16:00:00Z', '2026-12-22T16:00:00Z']
-  };
+  const expected = Object.fromEntries([3,7,30,90,180].map(n => [n, [
+    '2026-09-22T16:00:00Z', new Date(at('2026-09-23T16:00:00Z') + n * DAY).toISOString()
+  ]]));
   for (const [preset, [start, end]] of Object.entries(expected)) {
     const window = { start: at(start), end: at(end) };
     assert.deepEqual(presetWindow(morning, preset, 'Asia/Shanghai', transitInstants), window);
@@ -41,25 +37,25 @@ test('3, 7, 30, 90 and 180 days use complete Shanghai calendar dates around the 
 test('natural-day windows include 23- and 25-hour New York DST dates', () => {
   const spring = resolve('2026-03-08', '03:30:00', 'America/New_York');
   const springWindow = presetWindow(spring, '3', 'America/New_York', transitInstants);
-  assert.deepEqual(springWindow, { start: at('2026-03-07T05:00:00Z'), end: at('2026-03-10T04:00:00Z') });
-  assert.equal((springWindow.end - springWindow.start) / 3_600_000, 71);
+  assert.deepEqual(springWindow, { start: at('2026-03-07T05:00:00Z'), end: at('2026-03-11T04:00:00Z') });
+  assert.equal((springWindow.end - springWindow.start) / 3_600_000, 95);
   const fall = resolve('2026-11-01', '01:30:00', 'America/New_York');
   const fallWindow = presetWindow(fall, '3', 'America/New_York', transitInstants);
-  assert.deepEqual(fallWindow, { start: at('2026-10-31T04:00:00Z'), end: at('2026-11-03T05:00:00Z') });
-  assert.equal((fallWindow.end - fallWindow.start) / 3_600_000, 73);
+  assert.deepEqual(fallWindow, { start: at('2026-10-31T04:00:00Z'), end: at('2026-11-04T05:00:00Z') });
+  assert.equal((fallWindow.end - fallWindow.start) / 3_600_000, 97);
 });
 
 test('a skipped local date resolves to the next existing day boundary', () => {
   const instant = resolve('2011-12-31', '12:00:00', 'Pacific/Apia');
   const window = presetWindow(instant, '3', 'Pacific/Apia', transitInstants);
   assert.equal(wallTime(window.start, 'Pacific/Apia').date, '2011-12-31');
-  assert.equal(wallTime(window.end, 'Pacific/Apia').date, '2012-01-02');
+  assert.equal(wallTime(window.end, 'Pacific/Apia').date, '2012-01-03');
 });
 
-test('centered and past calendar years handle February 29 and exclusive end', () => {
+test('forward and past calendar years handle February 29 and exclusive end', () => {
   const leap = at('2024-02-29T12:34:56Z');
   const future = presetWindow(leap, 'year', 'UTC', transitInstants);
-  assert.deepEqual(future, { start: at('2023-08-29T12:34:56Z'), end: at('2024-08-29T12:34:56Z') });
+  assert.deepEqual(future, { start: leap, end: at('2025-02-28T12:34:56Z') });
   const past = presetWindow(leap, 'past-year', 'UTC', transitInstants);
   assert.deepEqual(past, { start: at('2023-02-28T12:34:56Z'), end: leap + 1000 });
   assert.ok(past.start <= leap && leap < past.end);
@@ -68,20 +64,20 @@ test('centered and past calendar years handle February 29 and exclusive end', ()
   const leapMidnight = presetWindow(at('2024-02-29T23:59:59Z'), 'past-year', 'UTC', transitInstants);
   assert.equal(leapMidnight.start, at('2023-02-28T23:59:59Z'));
   const ordinary = presetWindow(at('2026-09-24T09:50:00Z'), 'year', 'UTC', transitInstants);
-  assert.equal(ordinary.start, at('2026-03-24T09:50:00Z'));
-  assert.equal(ordinary.end, at('2027-03-24T09:50:00Z'));
+  assert.equal(ordinary.start, at('2026-09-24T09:50:00Z'));
+  assert.equal(ordinary.end, at('2027-09-24T09:50:00Z'));
 });
 
-test('centered year moves through an IANA DST gap to the next valid minute', () => {
-  const instant = resolve('2025-09-08', '02:30:00', 'America/New_York');
+test('forward year moves through an IANA DST gap to the next valid minute', () => {
+  const instant = resolve('2025-03-08', '02:30:00', 'America/New_York');
   const window = presetWindow(instant, 'year', 'America/New_York', transitInstants);
   assert.deepEqual(wallTime(window.start, 'America/New_York'), { date: '2025-03-08', time: '02:30:00' });
   assert.deepEqual(wallTime(window.end, 'America/New_York'), { date: '2026-03-08', time: '03:00:00' });
   assert.equal(window.end, at('2026-03-08T07:00:00Z'));
 });
 
-test('centered year chooses the matching offset in an IANA DST fold', () => {
-  const source = resolve('2026-05-01', '01:30:00', 'America/New_York');
+test('forward year chooses the matching offset in an IANA DST fold', () => {
+  const source = resolve('2025-11-01', '01:30:00', 'America/New_York');
   const window = presetWindow(source, 'year', 'America/New_York', transitInstants);
   const matches = transitInstants('2026-11-01', '01:30:00', 'America/New_York');
   assert.equal(matches.length, 2);

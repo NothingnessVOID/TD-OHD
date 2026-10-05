@@ -92,3 +92,26 @@ test('place search handles no results and network failure without fallback candi
     await assert.rejects(searchPlaces('Shanghai'), /network unavailable/);
   } finally { globalThis.fetch = previous; }
 });
+
+test('Chinese administrative suffix variants use the live index evidence without city hardcodes', async () => {
+  const previous = globalThis.fetch;
+  const evidence = JSON.parse((await import('node:fs')).readFileSync(new URL('../docs/frontend-runtime-ux-v1/location-evidence.json', import.meta.url)));
+  const calls = [];
+  globalThis.fetch = async url => {
+    const u = new URL(url), query = u.searchParams.get('name'), language = u.searchParams.get('language');
+    calls.push(query);
+    const item = evidence.requests.find(r => r.query === query && r.language === language);
+    return { ok: true, json: async () => item?.response || {} };
+  };
+  try {
+    for (const query of ['温州', '温州市', 'Wenzhou', '上海', 'Shanghai', '瑞安市', '永嘉县']) {
+      const places = await searchPlaces(query);
+      assert.equal(places[0]?.timezone, 'Asia/Shanghai', query);
+    }
+    assert.ok(calls.includes('温州市'));
+    assert.deepEqual(await searchPlaces('鹿城区'), []);
+  } finally { globalThis.fetch = previous; }
+  assert.equal(isCityPlace({ feature_code: 'PPLA4', latitude: 1, longitude: 1, timezone: 'UTC' }), true);
+  assert.equal(offsetForZone('1990-06-15', '12:00', 'Asia/Shanghai'), 9);
+  assert.equal(offsetForZone('2000-06-15', '12:00', 'Asia/Shanghai'), 8);
+});

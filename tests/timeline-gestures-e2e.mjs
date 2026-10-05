@@ -32,8 +32,8 @@ const expectedLocalRange = (page, days) => page.evaluate(async days => {
   const date = `${parts.year}-${parts.month}-${parts.day}`;
   const addDays = offset => new Date(Date.parse(`${date}T00:00:00Z`) + offset * 86400000).toISOString().slice(0, 10);
   const { transitInstants } = await import('/src/lib/transit-time.js');
-  const before = days === 1 ? 0 : days === 3 ? 1 : days === 7 ? 3 : days / 2;
-  const after = days === 1 ? 1 : days === 3 ? 2 : days === 7 ? 4 : days / 2;
+  const before = days === 1 ? 0 : 1;
+  const after = days;
   return { start: transitInstants(addDays(-before), '00:00:00', zone)[0].instant,
     end: transitInstants(addDays(after), '00:00:00', zone)[0].instant };
 }, days);
@@ -429,9 +429,11 @@ try {
     const before = await state(page);
     await page.locator(tableSelector).focus();
     await page.keyboard.press('=');
+    await page.waitForFunction(span => { const table = document.querySelector('#timeline-view .tl-table'); return Number(table.dataset.end) - Number(table.dataset.start) < span; }, before.end - before.start);
     const zoomed = await state(page);
     assert.ok(zoomed.end - zoomed.start < before.end - before.start);
     await page.keyboard.press('-');
+    await page.waitForFunction(span => { const table = document.querySelector('#timeline-view .tl-table'); return Math.abs(Number(table.dataset.end) - Number(table.dataset.start) - span) < 1000; }, before.end - before.start);
     const restored = await state(page);
     assert.ok(Math.abs((restored.end - restored.start) - (before.end - before.start)) < 1000);
   });
