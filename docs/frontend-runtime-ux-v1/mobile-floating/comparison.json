@@ -1,0 +1,126 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "originalPane": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 506.390625
+    },
+    "originalSvg": {
+      "x": -7.460000038146973,
+      "y": 9,
+      "width": 382,
+      "height": 494.390625
+    },
+    "previousWrongSvg": {
+      "x": 40.58781433105469,
+      "y": 9,
+      "width": 291.34375,
+      "height": 442.390625
+    },
+    "restoredSvg": {
+      "x": -7.460000038146973,
+      "y": 9,
+      "width": 382,
+      "height": 494.390625
+    },
+    "exactOriginalGeometry": true
+  },
+  {
+    "viewport": [
+      375,
+      667
+    ],
+    "originalPane": {
+      "x": 0,
+      "y": 0,
+      "width": 375,
+      "height": 400.1875
+    },
+    "originalSvg": {
+      "x": -7.010000228881836,
+      "y": 9,
+      "width": 367,
+      "height": 388.1875
+    },
+    "previousWrongSvg": {
+      "x": 70.15515899658203,
+      "y": 9,
+      "width": 221.390625,
+      "height": 336.1875
+    },
+    "restoredSvg": {
+      "x": -7.010000228881836,
+      "y": 9,
+      "width": 367,
+      "height": 388.1875
+    },
+    "exactOriginalGeometry": true
+  },
+  {
+    "viewport": [
+      360,
+      640
+    ],
+    "originalPane": {
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 384
+    },
+    "originalSvg": {
+      "x": -6.560000419616699,
+      "y": 9,
+      "width": 352,
+      "height": 372
+    },
+    "previousWrongSvg": {
+      "x": 68.30297088623047,
+      "y": 9,
+      "width": 210.734375,
+      "height": 320
+    },
+    "restoredSvg": {
+      "x": -6.560000419616699,
+      "y": 9,
+      "width": 352,
+      "height": 372
+    },
+    "exactOriginalGeometry": true
+  },
+  {
+    "viewport": [
+      320,
+      568
+    ],
+    "originalPane": {
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 340.796875
+    },
+    "originalSvg": {
+      "x": -5.359999656677246,
+      "y": 9,
+      "width": 312,
+      "height": 328.796875
+    },
+    "previousWrongSvg": {
+      "x": 63.39093780517578,
+      "y": 9,
+      "width": 182.28125,
+      "height": 276.796875
+    },
+    "restoredSvg": {
+      "x": -5.359999656677246,
+      "y": 9,
+      "width": 312,
+      "height": 328.796875
+    },
+    "exactOriginalGeometry": true
+  }
+]

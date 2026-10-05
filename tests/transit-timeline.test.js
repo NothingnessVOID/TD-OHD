@@ -145,7 +145,7 @@ test('calendar-year spans fit while the calculation cap remains finite', () => {
   };
   const length = 366 * DAY + 60 * MINUTE;
   const result = calculateTimeline({ ...options, end: length });
-  assert.equal(MAX_TIMELINE_SPAN, 367 * DAY);
+  assert.equal(MAX_TIMELINE_SPAN, 368 * DAY);
   const beyondOldCap = calculateTimeline({ ...options, end: 29 * DAY, scanStep: undefined });
   assert.equal(beyondOldCap.scanStep, MINUTE);
   assert.equal(result.end, length);

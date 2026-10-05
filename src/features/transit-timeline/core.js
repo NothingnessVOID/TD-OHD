@@ -1,8 +1,9 @@
 /** Time-domain calculation only. No DOM, language, theme or engine imports. */
 export const MINUTE = 60_000;
 export const DAY = 86_400_000;
-// A 366-day local calendar span may gain an hour across a daylight-saving fold.
-export const MAX_TIMELINE_SPAN = 367 * DAY;
+// An inclusive calendar year can cover 367 dates plus a historical 24h rollback
+// (Pacific/Apia, 1891-08-01 through 1892-08-01): exactly 368 elapsed days.
+export const MAX_TIMELINE_SPAN = 368 * DAY;
 
 /**
  * Scan each planet independently, then merge its transitions into chart states.

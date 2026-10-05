@@ -1,3 +1,4 @@
+import { setLocale } from '../src/lib/i18n.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CHANNELS } from '../src/lib/human-design/catalog.js';
@@ -6,6 +7,7 @@ import { calculateNativeTransit } from '../scripts/lib/sharp-native-client.mjs';
 import { buildTransitGraph } from '../src/lib/transit-graph.js';
 import { renderTransitSummary } from '../src/views/transit-presentation.js';
 
+setLocale('en', { persist: false });
 const natal = {
   gates: { all: [11, 12, 22, 13, 33, 7, 21, 41, 55] },
   centers: { definedNames: ['throat', 'g', 'solar'] }, channels: [],
