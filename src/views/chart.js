@@ -446,6 +446,24 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
+// Shared channel navigation for Gate and Center details.
+function renderChannelJump(channel, chart, model = null) {
+  const key = channel.gates.join('-');
+  const active = (model?.channels || chart.channels).some(ch => ch.gates.join('-') === key);
+  const group = channelCircuit(channel).group;
+  const source = model && active ? model.channelSource(channel) : active ? 'defined' : 'inactive';
+  const statusLabel = model
+    ? t(active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view')
+    : t(active ? 'Defined' : 'Not defined in this view');
+  return `
+    <div class="gate-detail-channel">
+      <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
+      <span class="circuit-badge ${group}">${esc(circuitName(group))}</span>
+      <span class="circuit-badge transit-source-badge ${source}">${statusLabel}</span>
+    </div>
+  `;
+}
+
 export function showGateDetail(gateNum, pushHistory = true, source = null) {
   prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current) return;
@@ -473,17 +491,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     .map(([planet, g]) => `<span>${PLANET_GLYPHS[planet] || ''} ${t('Transit')} ${esc(planetName(planet))} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
 
   const inChannels = channelsForGate(gateNum);
-  const channelHtml = inChannels.map(ch => {
-    const key = ch.gates.join('-');
-    const channelActive = (detailContext?.model?.channels || chart.channels).some(active => active.gates.join('-') === key);
-    return `
-      <div class="gate-detail-channel">
-        <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(ch.gates))}</button>
-        <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
-        ${detailContext?.model ? `<span class="circuit-badge transit-source-badge ${channelActive ? detailContext.model.channelSource(ch) : 'inactive'}">${t(channelActive ? TRANSIT_SOURCE_LABELS[detailContext.model.channelSource(ch)] : 'No complete channel in this view')}</span>` : `<span class="circuit-badge transit-source-badge ${channelActive ? 'defined' : 'inactive'}">${t(channelActive ? 'Defined' : 'Not defined in this view')}</span>`}
-      </div>
-    `;
-  }).join('');
+  const channelHtml = inChannels.map(ch => renderChannelJump(ch, chart, detailContext?.model)).join('');
 
   detail.innerHTML = `
     <div class="gate-detail-card">
@@ -550,17 +558,12 @@ export function showCenterDetail(centerKey, pushHistory = true) {
     `<button class="gate-chip ${activeSet.has(g) ? model?.gateSource(g) === 'transit' ? 'transit-active' : 'active' : ''}" data-gate="${g}" title="${t('Gate {gate}', { gate: g })}${GATES[g]?.name ? ' — ' + esc(gateName(g)) : ''}">${g}</button>`).join('');
 
   // Channels touching this center, marked defined when they're active in the chart.
-  const definedKeys = new Set((model?.channels || chart.channels).map(ch => ch.gates.join('-')));
   const touching = CHANNELS.filter(ch => ch.centers?.includes(centerKey));
   const channelHtml = touching.length ? `
     <div class="center-detail-section">
       <span class="cd-label">${t('Channels through here')}</span>
-      <div class="cd-channels">
-        ${touching.map(ch => {
-          const key = ch.gates.join('-');
-          const on = definedKeys.has(key);
-          return `<button type="button" class="cd-channel ${on ? 'on' : ''}" data-center-channel="${key}">${esc(channelName(ch.gates))} <span class="cd-channel-gates">${key}</span></button>`;
-        }).join('')}
+      <div class="center-channel-links">
+        ${touching.map(ch => renderChannelJump(ch, chart, model)).join('')}
       </div>
     </div>` : '';
 
@@ -590,7 +593,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
   fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'center', id: centerKey });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
-  detail.querySelectorAll('[data-center-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.centerChannel)));
+  detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
   detail.querySelectorAll('.gate-chip[data-gate]').forEach(btn => {
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
     wireRowHover(btn, parseInt(btn.dataset.gate));
