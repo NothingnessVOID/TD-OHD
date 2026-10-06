@@ -1,3 +1,4 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 /**
  * Chart view — bodygraph + foundation + tabbed detail panels.
  */
@@ -347,7 +348,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
     <div class="gate-detail-body">
       <div class="detail-label">${t('Channel {channel}', { channel: id })}</div>
       <div class="channel-detail-heading"><div class="detail-name">${esc(channelName(channel.gates))}</div>
-        <span class="circuit-badge ${channelCircuit(channel).group}">${esc(circuitName(channelCircuit(channel).group))}</span></div>
+        ${renderChannelCircuitBadges(channel)}</div>
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${channelReading(id)}
@@ -450,7 +451,6 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
 function renderChannelJump(channel, chart, model = null) {
   const key = channel.gates.join('-');
   const active = (model?.channels || chart.channels).some(ch => ch.gates.join('-') === key);
-  const group = channelCircuit(channel).group;
   const source = model && active ? model.channelSource(channel) : active ? 'defined' : 'inactive';
   const statusLabel = model
     ? t(active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view')
@@ -458,7 +458,7 @@ function renderChannelJump(channel, chart, model = null) {
   return `
     <div class="gate-detail-channel">
       <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
-      <span class="circuit-badge ${group}">${esc(circuitName(group))}</span>
+      ${renderChannelCircuitBadges(channel)}
       <span class="circuit-badge transit-source-badge ${source}">${statusLabel}</span>
     </div>
   `;
@@ -678,7 +678,7 @@ function renderChannelsPanel(container) {
       <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
         <div class="channel-name">
           ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
-          <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
+          ${renderChannelCircuitBadges(ch)}
         </div>
         <div class="channel-meta">${esc(contentText(ch.theme))} · ${esc(formatDisplay('channelCenters', ch.centers, ch.centers.map(centerName)))}</div>
         ${desc ? `<div class="gate-description">${esc(desc.description)}<br><br><em>${esc(desc.whenDefined)}</em></div>` : ''}

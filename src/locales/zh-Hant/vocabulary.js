@@ -105,7 +105,7 @@ const CHANNEL_ROWS = {
 };
 export const CHANNEL_ZH = CHANNEL_ROWS;
 
-export const CIRCUIT_ZH = { individual: '個體人迴路', collective: '社會人迴路', tribal: '家族人迴路', integration: '整合迴路', knowing: '知曉迴路', logic: '邏輯迴路', sensing: '感知迴路', ego: '自我迴路', defense: '防禦迴路', centering: '向心迴路' };
+export const CIRCUIT_ZH = { individual: '個體迴路', collective: '集體迴路', tribal: '部落迴路', integration: '整合通道', knowing: '知曉迴路', logic: '邏輯迴路', sensing: '感知迴路', ego: '自我迴路', defense: '防禦迴路', centering: '向心迴路' };
 
 export const PLANET_ZH = { sun:'太陽', earth:'地球', moon:'月亮', northNode:'北交點', southNode:'南交點', mercury:'水星', venus:'金星', mars:'火星', jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };
 export const LINE_ZH = { 1:'探究者', 2:'隱士', 3:'烈士', 4:'機會主義者', 5:'異端者', 6:'人生典範' };
@@ -162,3 +162,5 @@ export const zhLine = value => LINE_ZH[value] || value;
 export const zhVariable = slot => [VARIABLE_ZH[slot?.name] || slot?.name || '—', slot?.description || ''];
 // Taste and Touch have different labels in determination and cognition.
 export const zhCognition = name => ({ Smell:'嗅覺', Taste:'味覺', 'Outer Vision':'外在視覺', 'Inner Vision':'內在視覺', Feeling:'感覺', Touch:'觸覺' })[name] || name || '—';
+
+export const zhCircuitGroup = value => `${zhCircuit(value)}組`;

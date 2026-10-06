@@ -12,6 +12,7 @@ const TYPE_PLAIN = {
   Projector: "You're here to guide others and see systems clearly. Your gifts land when they're recognized and invited, not pushed.",
   Reflector: 'You mirror the health of your community. Take a full lunar cycle before big decisions and choose your environments carefully.'
 };
+const CIRCUITS = { individual: 'Individual Circuit', collective: 'Collective Circuit', tribal: 'Tribal Circuit', integration: 'Integration Channels', knowing: 'Knowing Circuit', centering: 'Centering Circuit', logic: 'Logic Circuit', sensing: 'Sensing Circuit', ego: 'Ego Circuit', defense: 'Defense Circuit' };
 const english = {
   typeName: name => name || '—',
   strategy: name => typeFacts[typeIdByName[name]]?.strategy || '—',
@@ -24,7 +25,8 @@ const english = {
   gateName: n => engine.GATES[n]?.name || `Gate ${n}`,
   hexagramName: n => engine.HEXAGRAM_DESCRIPTIONS[n]?.name || `Hexagram ${n}`,
   channelName: gates => CHANNELS[Array.isArray(gates) ? gates.join('-') : gates] || String(gates),
-  circuitName: value => value || '—',
+  circuitName: value => CIRCUITS[String(value).replace(/\s+Circuit$/i, '').toLowerCase()] || value || '—',
+  circuitGroupName: value => `${CIRCUITS[value]} Group`,
   planetName: value => PLANETS[value] || value,
   lineName: value => engine.LINE_NAMES[value] || value,
   variable: slot => [slot?.name || '—', slot?.description || ''],
