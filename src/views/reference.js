@@ -8,6 +8,7 @@ import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
 import { planetReference, planetDetailReference, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
+import { circuitReference } from '../lib/reference-supplements.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
 const categories = ['all', 'basic', 'center', 'channel', 'gate', 'variable', 'planet', 'group'];
@@ -81,7 +82,7 @@ function circuitDetail(entry) {
   const channels = circuitChannels(entry.kind, entry.id);
   return CIRCUIT_GROUPS[entry.id].map(id => {
     const title = id === 'integration' ? t('Integration Channels') : circuitName(id);
-    return `<h3>${esc(title)}</h3><div class="reference-links">${channels.filter(ch => channelCircuit(ch).circuit === id)
+    return `<h3>${esc(title)}</h3><p class="gate-detail-desc">${esc(circuitReference(id)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n', '<br>')}</p><div class="reference-links">${channels.filter(ch => channelCircuit(ch).circuit === id)
       .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
   }).join('');
 }

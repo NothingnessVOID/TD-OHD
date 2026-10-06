@@ -105,7 +105,7 @@ const CHANNEL_ROWS = {
 };
 export const CHANNEL_ZH = CHANNEL_ROWS;
 
-export const CIRCUIT_ZH = { individual: '個體人迴路', collective: '社會人迴路', tribal: '家族人迴路', integration: '整合迴路', knowing: '知曉迴路', logic: '邏輯迴路', sensing: '感知迴路', ego: '自我迴路', defense: '防禦迴路', centering: '中心化迴路' };
+export const CIRCUIT_ZH = { individual: '個體人迴路', collective: '社會人迴路', tribal: '家族人迴路', integration: '整合迴路', knowing: '知曉迴路', logic: '邏輯迴路', sensing: '感知迴路', ego: '自我迴路', defense: '防禦迴路', centering: '向心迴路' };
 
 export const PLANET_ZH = { sun:'太陽', earth:'地球', moon:'月亮', northNode:'北交點', southNode:'南交點', mercury:'水星', venus:'金星', mars:'火星', jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星' };
 export const LINE_ZH = { 1:'探究者', 2:'隱士', 3:'烈士', 4:'機會主義者', 5:'異端者', 6:'人生典範' };

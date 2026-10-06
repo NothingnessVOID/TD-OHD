@@ -6,6 +6,16 @@ import { t } from './i18n.js';
 import { esc } from './format.js';
 import { hexagramName } from './vocabulary.js';
 import { gateMeridianAcupoint } from './gate-meridian-data.js';
+import { centerSupplement, channelSupplement, referenceSupplementLabels, gateLineReadingNote } from './reference-supplements.js';
+
+const supplementText = text => esc(text).replaceAll('\n', '<br>');
+function renderGateLineNote() {
+  const note = gateLineReadingNote();
+  return `<div class="lens-note"><strong>${esc(referenceSupplementLabels().lineNote)}</strong>${note.split(/\n\n+/).map(part =>
+    part.split('\n').every(line => line.startsWith('- '))
+      ? `<ul>${part.split('\n').map(line => `<li>${esc(line.slice(2))}</li>`).join('')}</ul>`
+      : `<p>${esc(part)}</p>`).join('')}</div>`;
+}
 
 export const channelsForGate = gate => CHANNELS.filter(channel => channel.gates.includes(Number(gate)));
 export const channelsForCenter = center => CHANNELS.filter(channel => channel.centers.includes(center));
@@ -58,22 +68,27 @@ export function gateReading(gate, lens = 'hd', { selectedLine = null, activeLine
     return item ? `<div class="${lineClass(line)}" data-line="${line}"><strong>${t('Line {line}', { line })} · ${esc(item.keynote)}</strong><p>${esc(item.description)}</p></div>` : '';
   }).join('');
   return `${description ? `<div class="gate-detail-keynote">${esc(description.keynote)}</div><p class="gate-detail-desc">${esc(description.description)}</p>` : ''}
-    <div class="gate-detail-lines">${lineHtml}</div>`;
+    <div class="gate-detail-lines">${lineHtml}</div>${renderGateLineNote()}`;
 }
 
 export function channelReading(id) {
   const channel = channelById(id);
   if (!channel) return '';
-  const description = CHANNEL_DESCRIPTIONS[channel.gates.join('-')];
+  const canonicalId = channel.gates.join('-');
+  const description = CHANNEL_DESCRIPTIONS[canonicalId];
+  const supplement = channelSupplement(canonicalId), labels = referenceSupplementLabels();
+  const extra = supplement ? `<h3>${esc(labels.furtherReading)}</h3>${['designArchetype','mechanism','alignedState','notSelfShadow'].map(field =>
+    `<p class="gate-detail-desc"><strong>${esc(labels[field])}</strong><br>${supplementText(supplement[field])}</p>`).join('')}` : '';
   return `${description?.description ? `<p class="gate-detail-desc transit-channel-description">${esc(contentText(description.description))}</p>` : ''}
-    ${description?.whenDefined ? `<p class="gate-detail-desc">${esc(contentText(description.whenDefined))}</p>` : ''}`;
+    ${description?.whenDefined ? `<p class="gate-detail-desc">${esc(contentText(description.whenDefined))}</p>` : ''}${extra}`;
 }
 
 export function centerReading(id, { status = null, includeTheme = true } = {}) {
   const center = CENTERS[id];
   if (!center) return '';
+  const supplement = centerSupplement(id), labels = referenceSupplementLabels();
   const readings = status ? [[status, center[`${status}Meaning`] || (status === 'defined' ? center.pressure : '')]]
     : [['defined', center.definedMeaning || center.pressure], ['undefined', center.undefinedMeaning], ['open', center.openMeaning]];
   return `${includeTheme ? `<p class="gate-detail-desc">${esc(contentText(center.theme || ''))}${center.biological ? ` · ${esc(contentText(center.biological))}` : ''}</p>` : ''}
-    ${readings.map(([state, text]) => text ? `<div class="center-reading-state">${status ? '' : `<strong>${esc(t(({ defined: 'Defined', undefined: 'Undefined', open: 'Open' })[state]))}</strong>`}<p class="gate-detail-desc">${esc(contentText(text))}</p></div>` : '').join('')}`;
+    ${readings.map(([state, text]) => text ? `<div class="center-reading-state">${status ? '' : `<strong>${esc(t(({ defined: 'Defined', undefined: 'Undefined', open: 'Open' })[state]))}</strong>`}<p class="gate-detail-desc">${esc(contentText(text))}</p>${state === 'open' && supplement ? `<p class="gate-detail-desc">${esc(supplement.openSupplement)}</p>` : ''}</div>` : '').join('')}${supplement ? ['notSelf','wisdom'].map(field => `<div class="center-reading-state"><strong>${esc(labels[field])}</strong><p class="gate-detail-desc">${esc(supplement[field])}</p></div>`).join('') : ''}`;
 }
