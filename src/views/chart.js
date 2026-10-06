@@ -33,7 +33,7 @@ import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailShee
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference } from '../lib/planet-reference.js';
+import { planetReference, planetDetailReference, renderActivationReference } from '../lib/planet-reference.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
 
@@ -429,6 +429,7 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
       <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
       <p class="gate-detail-desc planet-detail-description">${esc(planetReference(planet, getLocale()))}</p>
+      <div class="reference-reading planet-detail-reading">${renderActivationReference(planetDetailReference(planet, getLocale()))}</div>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
         aria-label="${esc(gateLine)}">
         <strong>${esc(gateLine)}</strong>

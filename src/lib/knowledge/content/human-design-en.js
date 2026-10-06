@@ -1,8 +1,8 @@
 // Independent en editorial copy supplied for Round 2C; internal notes excluded.
 export default {
   "type.generator": {
-    "summary": "A builder with sustainable Sacral life-force energy.",
-    "detail": "Wait to Respond\n\nLet life bring you something concrete to respond to — a person, question, opportunity, object, or situation — and let the Sacral response open the way before committing your energy.\n\nOpen · Enveloping\n\nThe Generator aura is open and enveloping. It takes in what is present and allows life to make contact with the Sacral, where a response can arise.\n\nSatisfaction\n\nFrustration",
+    "summary": "Builders of the world, with sustained Sacral life force.",
+    "detail": "Wait to respond\n\nWhen specific people, questions, opportunities, or events arrive in front of you, first allow the body to produce a Sacral Response, then decide whether to invest your life force.\n\nWaiting to respond does not mean passively doing nothing. It means not letting the mind first decide, out of thin air, what you should initiate. A Generator's body needs contact with a real stimulus before the Sacral produces a response of moving closer, engaging, excitement, or withdrawing, lack of energy, and refusal.\n\nOpen · Enveloping · Immersive\n\nThe Generator aura opens outward like a field continuously receiving the surrounding environment. Once people, things, and opportunities enter the aura, the Sacral has something concrete to respond to.\n\nWhen the response is genuine, life force is naturally mobilized. Bypassing response and forcing initiation through the mind makes resistance and frustration more likely.\n\nSatisfaction\n\nFrustration",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -12,30 +12,30 @@ export default {
         },
         "strategyDetail": {
           "start": 17,
-          "end": 198
+          "end": 519
         },
         "auraKeywords": {
-          "start": 200,
-          "end": 217
+          "start": 521,
+          "end": 550
         },
         "auraDetail": {
-          "start": 219,
-          "end": 366
+          "start": 552,
+          "end": 924
         },
         "signature": {
-          "start": 368,
-          "end": 380
+          "start": 926,
+          "end": 938
         },
         "notSelf": {
-          "start": 382,
-          "end": 393
+          "start": 940,
+          "end": 951
         }
       }
     }
   },
   "type.manifestingGenerator": {
-    "summary": "A Generator with manifesting potential, able to move quickly once there is a correct response.",
-    "detail": "Wait to Respond\n\nLike every Generator, the Manifesting Generator begins with response. When something concrete reaches the Sacral and there is energy for it, movement can begin.\n\nOpen · Enveloping\n\nManifesting Generators share the Generator aura. After a correct response, their motor-to-Throat configuration can bring speed, efficiency, skipped steps, and later adjustments without changing the underlying Generator strategy.\n\nSatisfaction\n\nFrustration",
+    "summary": "Builders of the world, with sustained life force and the ability to act quickly after responding.",
+    "detail": "Wait to respond\n\nA Manifesting Generator is first of all still a Generator with a defined Sacral Center, so action still begins with an external stimulus and a bodily response.\n\nFirst allow specific people, questions, opportunities, or events to arrive in front of you. Wait for a genuine Sacral response, then move into action. Acting very quickly does not mean response can be skipped.\n\nOpen · Enveloping · Immersive\n\nManifesting Generators share the open, enveloping aura mechanism of Generators, receiving people and things from outside and producing a Sacral response.\n\nThe difference is that after responding, Manifesting Generators often move more quickly and less linearly. They may handle several steps at once, or skip a step because they are moving too fast, then return to correct it, complete it, or readjust the path.\n\nThis process of moving ahead, discovering something is wrong, and returning to correct it can itself be part of a Manifesting Generator's normal rhythm.\n\nSatisfaction\n\nFrustration",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -45,30 +45,30 @@ export default {
         },
         "strategyDetail": {
           "start": 17,
-          "end": 177
+          "end": 387
         },
         "auraKeywords": {
-          "start": 179,
-          "end": 196
+          "start": 389,
+          "end": 418
         },
         "auraDetail": {
-          "start": 198,
-          "end": 426
+          "start": 420,
+          "end": 985
         },
         "signature": {
-          "start": 428,
-          "end": 440
+          "start": 987,
+          "end": 999
         },
         "notSelf": {
-          "start": 442,
-          "end": 453
+          "start": 1001,
+          "end": 1012
         }
       }
     }
   },
   "type.manifestor": {
-    "summary": "An initiator designed to set things in motion and make an impact.",
-    "detail": "Inform\n\nOnce Authority has made the decision, inform the people who will be affected before acting. Informing is not asking permission; it reduces resistance created by the impact of the action.\n\nClosed · Repelling\n\nThe Manifestor aura is closed and repelling. It protects independence and can make others uncertain about what is coming next, which is why timely informing can reduce unnecessary resistance.\n\nPeace\n\nAnger",
+    "summary": "Independent initiators, with the energy to get things started.",
+    "detail": "Inform\n\nA Manifestor's basic ability is to initiate.\n\nBefore acting, inform the people who will be directly affected, so they know what is about to happen.\n\nInforming is neither asking permission nor handing over the decision to someone else. Its purpose is to reduce the vigilance, control, interference, and resistance of those around you, making it easier to carry out an action that has already been decided.\n\nClosed · Pushing away · Repelling\n\nThe Manifestor aura is relatively closed and has an outward-pushing, protective quality. This structure helps Manifestors maintain independence, clear resistance, and initiate new things.\n\nBecause others cannot easily read what a Manifestor is thinking or planning to do next, they may instinctively become defensive and even try to obstruct or control.\n\nInforming in advance lets others know about the coming change, reducing this friction.\n\nPeace\n\nAnger",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -78,30 +78,30 @@ export default {
         },
         "strategyDetail": {
           "start": 8,
-          "end": 194
+          "end": 412
         },
         "auraKeywords": {
-          "start": 196,
-          "end": 214
+          "start": 414,
+          "end": 447
         },
         "auraDetail": {
-          "start": 216,
-          "end": 407
+          "start": 449,
+          "end": 890
         },
         "signature": {
-          "start": 409,
-          "end": 414
+          "start": 892,
+          "end": 897
         },
         "notSelf": {
-          "start": 416,
-          "end": 421
+          "start": 899,
+          "end": 904
         }
       }
     }
   },
   "type.projector": {
-    "summary": "A guide designed to see deeply into people, energy, and systems.",
-    "detail": "Wait for Recognition and Invitation\n\nFor major relationships, work, collaboration, and life direction, recognition comes first. The right invitation gives the Projector a place where their seeing and guidance can actually be received.\n\nFocused · Absorbing\n\nThe Projector aura focuses into the other. This one-to-one quality supports a deep reading of how another person or system is operating.\n\nSuccess\n\nBitterness",
+    "summary": "Natural guides, adept at seeing how people and systems operate.",
+    "detail": "Wait for recognition and invitation\n\nIn important relationships, work, collaboration, choices about where to live, and other major life choices, Projectors need to be truly seen and recognized before entering an invitation that suits them.\n\nThe point goes beyond someone asking you to do something: does that person truly recognize your abilities, role, and value?\n\nWhen recognition and invitation are present, a Projector's observations and guidance are more easily received correctly. Forcing entry, guiding, or trying to prove yourself without being seen makes rejection more likely.\n\nFocused · Penetrating · Attentive\n\nThe Projector aura focuses on a specific person or system, like a concentrated beam of light, observing their energy, structure, and operation in depth.\n\nThis penetrating quality makes it easy for Projectors to see problems, potential, and patterns that others have not noticed themselves, making them well suited to guidance, observation, and calibration.\n\nYet the same penetrating quality can make others feel scrutinized or interfered with if it enters their field without invitation or recognition.\n\nSuccess\n\nBitterness",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -111,56 +111,56 @@ export default {
         },
         "strategyDetail": {
           "start": 37,
-          "end": 234
+          "end": 586
         },
         "auraKeywords": {
-          "start": 236,
-          "end": 255
+          "start": 588,
+          "end": 621
         },
         "auraDetail": {
-          "start": 257,
-          "end": 393
+          "start": 623,
+          "end": 1125
         },
         "signature": {
-          "start": 395,
-          "end": 402
+          "start": 1127,
+          "end": 1134
         },
         "notSelf": {
-          "start": 404,
-          "end": 414
+          "start": 1136,
+          "end": 1146
         }
       }
     }
   },
   "type.reflector": {
-    "summary": "A mirror of the environment, sampling and reflecting the field around it.",
-    "detail": "Wait a Lunar Cycle\n\nFor major decisions, allow a full lunar cycle — about 29.5 days — so the decision can be experienced through changing temporary activations and contexts before clarity is formed.\n\nResistant · Sampling\n\nThe Reflector aura samples without fixed definition. With no consistently defined Centers, the Reflector is highly sensitive to the quality of people, groups, and environments and can mirror what is happening in the field.\n\nSurprise\n\nDisappointment",
+    "summary": "Mirrors of the environment, experiencing the world by sampling the people and fields around them.",
+    "detail": "Wait a complete lunar cycle\n\nFor major decisions, avoid reaching a conclusion at one particular instant. Let the matter unfold through a complete lunar cycle, observing your experience across different days, temporary activations, and states.\n\nResistant · Sampling · Mirroring\n\nReflectors have no fixed definition in any of their nine Centers, but their aura does not simply absorb all outside energy. It experiences the surrounding people and environment through sampling.\n\nReflectors are highly sensitive to the quality of a field. A healthy, suitable environment produces a very different experience. When an environment is out of balance, chaotic, or persistently draining, Reflectors can readily reflect that state.\n\nReflectors therefore experience an environment and often act as a mirror of the current health of a group or field.\n\nSurprise\n\nDisappointment",
     "presentation": {
       "kind": "type",
       "fields": {
         "strategyValue": {
           "start": 0,
-          "end": 18
+          "end": 27
         },
         "strategyDetail": {
-          "start": 20,
-          "end": 198
+          "start": 29,
+          "end": 242
         },
         "auraKeywords": {
-          "start": 200,
-          "end": 220
+          "start": 244,
+          "end": 276
         },
         "auraDetail": {
-          "start": 222,
-          "end": 444
+          "start": 278,
+          "end": 837
         },
         "signature": {
-          "start": 446,
-          "end": 454
+          "start": 839,
+          "end": 847
         },
         "notSelf": {
-          "start": 456,
-          "end": 470
+          "start": 849,
+          "end": 863
         }
       }
     }
@@ -195,7 +195,7 @@ export default {
   },
   "authority.lunar": {
     "summary": "For major decisions, wait through a full lunar cycle.",
-    "detail": "Lunar Authority belongs to Reflectors. With no fixed Center definition, the Reflector experiences changing temporary activations as the Moon moves through the Gates.\n\nFor major decisions, allow a full lunar cycle of about 29.5 days. Notice how the same question feels across different days, activations, people, and environments, and let a stable direction emerge across the cycle."
+    "detail": "Lunar Authority belongs to Reflectors. With no fixed Center definition, the Reflector experiences changing temporary activations as the Moon moves through the Gates.\n\nFor major decisions, allow a complete lunar cycle. Notice how the same question feels across different days, activations, people, and environments, and let a stable direction emerge across the cycle."
   },
   "definition.single": {
     "summary": "All defined Centers form one connected whole, allowing internal energy and information to move through a single region.",
@@ -1792,5 +1792,37 @@ export default {
       ]
     },
     "name": "Motivation"
+  },
+  "type.introduction": {
+    "name": "Type",
+    "summary": "Type describes how your aura and life energy interact with the world, together with the corresponding Strategy, Signature, and Not-Self Theme.",
+    "detail": "### Core mechanism\n\nType is a basic aura mechanism arising from the defined structure of the BodyGraph, rather than a set of personality labels. It describes how a person's energy makes contact with the world, how they enter appropriate interactions, and the circumstances in which resistance is more likely.\n\nHuman Design usually understands the overall mechanism through four main types:\n\n- Generator / Manifesting Generator\n- Manifestor\n- Projector\n- Reflector\n\nThe website continues to display Generator and Manifesting Generator separately for readability. Both belong to the Generator family with a defined Sacral Center and share the basic mechanism of responding first.\n\n### Strategy\n\nStrategy is a Type's basic way of interacting with the world:\n\n- Generator / Manifesting Generator: wait to respond\n- Manifestor: inform before acting\n- Projector: wait for recognition and invitation in important relationships, work, and choices about direction\n- Reflector: wait a complete lunar cycle for major decisions\n\nStrategy allows the body to enter interactions according to its own aura mechanism, rather than being a technique planned by the mind.\n\n### Signature and Not-Self Theme\n\nSignature can be understood as an experience more likely to arise when the structure operates smoothly:\n\n- Generator / Manifesting Generator: satisfaction\n- Manifestor: peace\n- Projector: success\n- Reflector: surprise\n\nThe Not-Self Theme acts like a warning light, suggesting that the current way of interacting may have moved away from one's own mechanism:\n\n- Generator / Manifesting Generator: frustration\n- Manifestor: anger\n- Projector: bitterness\n- Reflector: disappointment",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "authority.introduction": {
+    "name": "Inner Authority",
+    "summary": "Inner Authority is the body's decision-making mechanism. Strategy determines how to enter an interaction; Authority determines how to form your own decision.",
+    "detail": "### Core mechanism\n\nIf Strategy describes how to enter something correctly, Inner Authority describes:\n\n**Where a decision should come from once something has actually arrived in front of you.**\n\nA basic principle of Human Design is that the Mind can analyze, compare, understand, and express, but is not used as one's own final decision-making authority.\n\nDifferent charts form different Authorities according to their Center definition.\n\n### Relationship with Strategy\n\nStrategy and Authority do not replace each other.\n\nA more natural sequence is:\n\n**First enter the appropriate interaction through Strategy → then form a decision through your own Authority.**\n\nFor example:\n\n- A Generator first waits for a concrete stimulus to respond to, then listens to Sacral or Emotional Authority;\n- A Projector first waits for recognition and invitation in important matters, then uses their specific Authority to determine whether the invitation is suitable;\n- A Manifestor first confirms an action through their Authority, then informs those who will be affected;\n- A Reflector lets major decisions unfold through a complete lunar cycle.\n\n### Authorities supported by this website\n\n- Emotional Authority\n- Sacral Authority\n- Splenic Authority\n- Ego Manifested Authority\n- Ego Projected Authority\n- Self-Projected Authority\n- Mental / Environmental Authority\n- Lunar Authority",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "profile.introduction": {
+    "name": "Profile",
+    "summary": "Profile combines the Personality and Design Lines. It describes the basic role structure through which a person experiences themselves, interacts with others, and enters life's experiences.",
+    "detail": "### How Profile is formed\n\nA Profile consists of two Lines.\n\nThe first number comes from the Line of the Personality Sun / Earth; the second comes from the Line of the Design Sun / Earth.\n\nFor example:\n\n**1/3 = Personality Line 1 + Design Line 3**\n\nThese are two Line mechanisms operating together in one person's life, rather than two independent personalities joined together.\n\n### Lower and upper trigrams\n\nThe six Lines can be divided into two groups:\n\n**Lines 1–3: the lower trigram**\n\nThese tend toward exploration, learning, and firsthand experience within the individual. The emphasis first lies in how I understand, try things, and establish a foundation for myself.\n\n**Lines 4–6: the upper trigram**\n\nThese tend toward interaction with the outside world, relationships, projection, social influence, and perspectives that extend beyond personal experience.\n\n### The six-Line house model\n\nHuman Design often uses a house with two floors and a roof to understand the six Lines.\n\n#### Line 1 — The foundation\n\nLine 1 resembles the foundation and basement of the house.\n\nIt needs to research, investigate, and dig down until it knows the foundation is solid enough. Security comes from having understood what lies underneath.\n\n#### Line 2 — A ground-floor room with the curtains drawn\n\nLine 2 resembles someone staying in their room, naturally doing what they are good at.\n\nIt usually needs space for solitude and may not recognize its own natural abilities. Often, the outside world sees those abilities first and calls Line 2 out.\n\n#### Line 3 — The stairs\n\nLine 3 resembles the stairs connecting the lower and upper floors.\n\nStairs imply collisions, missed steps, and readjustment. Line 3 comes to know reality through Trial and Error: by personally discovering what works and what does not, rather than using theory to avoid every mistake in advance.\n\n#### Line 4 — The balcony / terrace\n\nLine 4 leaves the room and stands on a balcony where it can interact with familiar people.\n\nIts opportunities, resources, and influence depend strongly on networks, trust, and familiar interpersonal connections. Stable relationships are often more important than forcing expansion in unfamiliar settings.\n\n#### Line 5 — The second-floor window facing the street\n\nFrom outside, Line 5 looks like someone who can solve problems.\n\nOthers readily project expectations, fantasies, the ability to rescue a situation, or solutions onto Line 5. If it can offer practical, usable solutions, it can have a powerful influence. When the gap between projection and actual ability is too large, disappointment and pressure on its reputation can also arise.\n\n#### Line 6 — The roof\n\nLine 6 stands on the roof, observing the whole house and the surrounding world from a higher, more distant perspective.\n\nIt usually unfolds in three phases:\n\n- Before about age 30: closer to Line 3, accumulating experience through real-world collisions and trial and error;\n- Around ages 30–50: gradually stepping back to observe, organize, and integrate what has already been experienced;\n- After about age 50: naturally expressing experience that has truly been lived, becoming a Role Model.\n\n### The 12 Profiles and Geometry\n\nThe 12 Profiles belong to three Geometries:\n\n**Right Angle · Personal destiny**\n- 1/3\n- 1/4\n- 2/4\n- 2/5\n- 3/5\n- 3/6\n- 4/6\n\n**Juxtaposition · Fixed destiny**\n- 4/1\n\n**Left Angle · Transpersonal destiny**\n- 5/1\n- 5/2\n- 6/2\n- 6/3\n\nGeometry describes whether the unfolding of a life theme leans toward an individual journey, a fixed trajectory, or relationships and interactions with other people.",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "definition.introduction": {
+    "name": "Definition",
+    "summary": "Definition describes how many interconnected defined regions are formed within the body when all Defined Centers are linked through complete Channels.",
+    "detail": "### Core mechanism\n\nDefinition looks beyond how many Centers are lit up and asks:\n\n**Are these Defined Centers connected to one another through complete Channels as a single whole?**\n\nA fully interconnected group of Defined Centers can be understood as a Definition Island.\n\nTherefore:\n\n- Single Definition = 1 Definition Island\n- Split Definition = 2 Definition Islands\n- Triple Split Definition = 3 Definition Islands\n- Quadruple Split Definition = 4 Definition Islands\n- No Definition = no fixed Definition Islands; this occurs only in Reflectors\n\n### Bridging\n\nWhen a chart has multiple Definition Islands, there are unconnected positions between the islands.\n\nOther people's Gates, complete Channels, or temporary Transit activations can sometimes fill these positions and temporarily connect regions that were originally separate.\n\nThese positions are what is often meant by Bridging when discussing Split Definition.\n\nBridging can bring a noticeable sense of connection, but is not inherently good or bad. A person who can bridge you may help your internal operation run more smoothly for a time, and may also become a powerful source of Conditioning.\n\n### Definition does not indicate completeness\n\nSingle Definition does not mean being more complete than Split Definition, and Triple or Quadruple Split does not mean having an inferior structure.\n\nDefinition describes internal connection and the pathways through which information is integrated. It does not rank people's value, maturity, or ability.",
+    "presentation": {
+      "kind": "overview"
+    }
   }
 };

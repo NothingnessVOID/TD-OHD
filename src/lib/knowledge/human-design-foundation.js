@@ -17,7 +17,17 @@ const entry = (objectType, objectId, name, summary = null, extra = {}) => ({
   reviewStatus: 'unreviewed', version: 1, ...extra
 });
 // Independent slots resolve only their own locale resource and terms.
-const reviewedRef = (key, slot) => ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`, key.startsWith('variable.') ? 'variable-final-content' : 'reviewed-hd-content', { reviewStatus:'reviewed',version:key.startsWith('variable.') ? 3 : 2, templateRead:()=>knowledgeContent[getLocale()][key][slot], presentationRead:()=>slot === 'detail' ? knowledgeContent[getLocale()][key].presentation : undefined });
+const restorationKeys = new Set(['authority.introduction','profile.introduction','definition.introduction']);
+const reviewedRef = (key, slot) => {
+  const variable = key.startsWith('variable.');
+  const restored = key.startsWith('type.') || restorationKeys.has(key) || (key === 'authority.lunar' && slot === 'detail');
+  return ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`,
+    variable ? 'variable-final-content' : restored ? 'knowledge-restoration-phase2' : 'reviewed-hd-content', {
+      reviewStatus:'reviewed', version:variable || restored ? 3 : 2,
+      templateRead:()=>knowledgeContent[getLocale()][key][slot],
+      presentationRead:()=>slot === 'detail' ? knowledgeContent[getLocale()][key].presentation : undefined
+    });
+};
 export const foundationRecords = [];
 for (const [id, type] of Object.entries(TYPES)) foundationRecords.push(entry('type', id,
   ref(() => typeName(type.name), catalogFile, `TYPES.${id}.name`),
@@ -56,6 +66,16 @@ for (const kind of ['overview', 'determination', 'environment', 'perspective', '
     reviewedRef(key, 'summary'), {
       detail: reviewedRef(key, 'detail'), reviewStatus:'reviewed', version:3,
       properties: () => ({kind, publicOverview:true})
+    }));
+}
+// Object-level pages use their own titles and never enter chart calculation or home summaries.
+for (const objectType of ['type', 'authority', 'profile', 'definition']) {
+  const key = `${objectType}.introduction`;
+  foundationRecords.push(entry(objectType, 'introduction',
+    ref(() => knowledgeContent[getLocale()][key].name, 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.name`, 'knowledge-restoration-phase2', {reviewStatus:'reviewed',version:1}),
+    reviewedRef(key, 'summary'), {
+      detail: reviewedRef(key, 'detail'), reviewStatus:'reviewed', version:1,
+      properties: () => ({publicOverview:true})
     }));
 }
 const cognitionIds = ['smell', 'taste', 'outerVision', 'innerVision', 'feeling', 'touch'];

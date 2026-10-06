@@ -5,7 +5,7 @@ import { gateName, channelName, centerName, circuitName, hexagramName } from '..
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { planetReference, planetDetailReference, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
@@ -88,11 +88,11 @@ function circuitDetail(entry) {
 
 function planetDetail(entry) {
   const locale = getLocale();
-  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p></div>`;
+  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p>${renderActivationReference(planetDetailReference(entry.id, locale))}</div>`;
 }
 
 function conceptDetail(entry) {
-  return `<div class="reference-reading"><p>${esc(activationConceptReference(entry.id, getLocale()))}</p></div>`;
+  return `<div class="reference-reading">${renderActivationReference(activationConceptReference(entry.id, getLocale()))}</div>`;
 }
 
 function renderDetail() {
