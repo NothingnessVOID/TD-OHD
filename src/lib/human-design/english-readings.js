@@ -2102,7 +2102,7 @@ export const CHANNEL_DESCRIPTIONS = {
     "whenDefined": "You naturally express self-love and authenticity. Your presence awakens others to their own self-acceptance when you embody who you truly are."
   },
   "10-34": {
-    "description": "The Channel of Exploration connects the G Center to the Sacral. Part of the Integration circuit, this is the power to follow your own convictions. Responding to what empowers you, exploring life on your own terms.",
+    "description": "The Channel of Exploration connects the G Center to the Sacral. This is the power to follow your own convictions. Responding to what empowers you, exploring life on your own terms.",
     "energyType": "Generated",
     "whenDefined": "You have powerful sacral energy aligned with self-direction. You are designed to explore life by following your convictions and responding to what resonates."
   },
@@ -2152,7 +2152,7 @@ export const CHANNEL_DESCRIPTIONS = {
     "whenDefined": "You have charismatic power — the ability to transform thought into action through your sacral response. Your busyness is magnetic when authentic."
   },
   "20-57": {
-    "description": "The Channel of the Brainwave connects the Throat to the Spleen. Part of the Integration circuit, this is intuitive penetrating awareness expressed in the moment. Survival intelligence that speaks and acts from instinct.",
+    "description": "The Channel of the Brainwave connects the Throat to the Spleen. This is intuitive penetrating awareness expressed in the moment. Survival intelligence that speaks and acts from instinct.",
     "energyType": "Projected",
     "whenDefined": "You have penetrating intuitive awareness that can be expressed instantly. Your splenic knowing speaks through you in the present moment."
   },

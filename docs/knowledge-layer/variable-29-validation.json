@@ -1,0 +1,95 @@
+{
+  "baseline": "efe59fdc863f409a66eb0c0eaaea73f09f324119",
+  "branch": "fix/variable-copy-localization-v1",
+  "sourceSha256": "1e182d176f64e4df889ae0c87a7e99f81b0e98716addd996cbaa336a28c401ad",
+  "coverage": {
+    "public": 5,
+    "determination": 6,
+    "environment": 6,
+    "perspective": 6,
+    "motivation": 6,
+    "total": 29,
+    "localeRecords": 87
+  },
+  "unit": {
+    "npmTest": {
+      "passed": 353,
+      "failed": 0,
+      "skipped": 3,
+      "skipReason": "opt-in online location/MCP tests"
+    },
+    "knowledge": 66,
+    "variable29": 6,
+    "localization": 34,
+    "timeline": 63
+  },
+  "e2e": {
+    "variableFullContent": 348,
+    "homeDetailIsolation": 12,
+    "knowledgePresentation": 132,
+    "knowledgeAccessLayout": 12,
+    "knowledgeAccessSameBodyLocale": 15,
+    "knowledgeDeepLinks": 6,
+    "copyData": {
+      "passed": true,
+      "locales": 3,
+      "realClipboard": true,
+      "natalTransitTimeline": true
+    },
+    "reference": {
+      "passed": true,
+      "desktopAndMobile": true
+    },
+    "bodygraph": {
+      "passed": true,
+      "comparisons": 24,
+      "ownerTransitions": true,
+      "timelineTimingSemantics": true
+    }
+  },
+  "responsive": {
+    "widths": [
+      1224,
+      903,
+      664,
+      390
+    ],
+    "locales": [
+      "en",
+      "zh-CN",
+      "zh-Hant"
+    ],
+    "horizontalOverflow": false,
+    "foundationTextAndDimensionsUnchanged": true,
+    "detailGrowthChangesHome": false,
+    "approvedVariableSubtitleSummariesChanged": true
+  },
+  "build": {
+    "passed": true,
+    "existingLargeChunkAdvisory": true
+  },
+  "sourceGuard": {
+    "passed": true,
+    "engineSignature": "59b90e629033cc7faf95",
+    "protectedFiles": 429,
+    "main": "bc9b217fab260b1017bfb1478141f864e402289e",
+    "knowledge": "df06686baa855b01a8bbfb3d77cf85b34eaf4717"
+  },
+  "unchanged": {
+    "calculation": true,
+    "colorToneBase": true,
+    "arrows": true,
+    "variableNotation": true,
+    "sourceMapping": true,
+    "exportImplementation": true,
+    "nonVariableKnowledge": true,
+    "relationshipAndTeam": true
+  },
+  "unresolved": [
+    "Taste source mapping conflict deferred by explicit instruction",
+    "Reported right-side Variable position source conflict deferred by explicit instruction"
+  ],
+  "mergedMain": false,
+  "deployed": false,
+  "local8787Changed": false
+}

@@ -1,0 +1,12 @@
+{
+  "baseline": "686a5966bd5c36f37dd4a80f5c51786c4f847a31",
+  "files": {
+    "src/lib/knowledge/detail-controller.js": "a695ea54495a90b49ffd122a298e98e40f0658218c4b26d59d3925345b5b812c",
+    "src/lib/knowledge/detail-access.css": "67ccfc8d1e627d8e80b85711982ec79726388f3ffab6acaf5e8954a4ff57a2cb",
+    "src/views/chart.js": "24962ded2ef9de42875f7a99d44584741a2fb49f534c8a753e73f6606c531b7f",
+    "src/styles.css": "91113d1cdcc103e05da71a9d5560dcdb8eeef6d911a71b83b8025eb7894b5dbc",
+    "src/locales/zh-CN/ui-chart.json": "50bfe4b3b98dfb086fd529b1b2df2306e529466943a2b8849b38537548c9713f",
+    "src/locales/zh-Hant/ui-chart.json": "7f8bc96e7d968a1c5c1d8239e2139767bd8610bf8172a6fc5a896e8dd2a2962a",
+    "src/lib/knowledge/detail-renderer.js": "7726b78e82a6ef567deed722e2fbc7129573ebf0be4df8fde57f3b28735d0131"
+  }
+}

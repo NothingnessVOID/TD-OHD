@@ -1,6 +1,7 @@
 // TD-OHD local structural analysis. Source attribution and MIT terms: THIRD_PARTY_NOTICES.md.
 // See THIRD_PARTY_NOTICES.md. No astronomical position calculation occurs here.
-import { GATES, GENE_KEY_SPECTRUM } from './human-design/catalog.js';
+import { GATES } from './human-design/catalog.js';
+import { geneKeySpectrum } from './human-design/gene-key-spectrum.js';
 
 export function calculateGeneKeys(humanDesignResult) {
   const { personality, design } = humanDesignResult.gates;
@@ -9,16 +10,17 @@ export function calculateGeneKeys(humanDesignResult) {
   const createSphere = (gateData, sphereName) => {
     const gate = gateData?.gate || gateData;
     const line = gateData?.line || null;
+    const spectrum = geneKeySpectrum(gate);
     return {
       key: gate,
       line: line,
       keyLine: line ? `${gate}.${line}` : String(gate),
       name: GATES[gate]?.name || `Gate ${gate}`,
       sphere: sphereName,
-      shadow: GENE_KEY_SPECTRUM[gate]?.[0] || 'Shadow',
-      gift: GENE_KEY_SPECTRUM[gate]?.[1] || 'Gift',
-      siddhi: GENE_KEY_SPECTRUM[gate]?.[2] || 'Siddhi',
-      spectrum: GENE_KEY_SPECTRUM[gate] || ['Shadow', 'Gift', 'Siddhi']
+      shadow: spectrum[0],
+      gift: spectrum[1],
+      siddhi: spectrum[2],
+      spectrum: spectrum
     };
   };
 

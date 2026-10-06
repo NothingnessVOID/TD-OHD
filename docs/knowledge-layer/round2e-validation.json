@@ -1,0 +1,95 @@
+{
+  "baseline": "7d9f7df080dbbb997f7db6eeac6b04327fd5b2db",
+  "branch": "feature/knowledge-ui-refinement-v1",
+  "contentHashes": {
+    "fixture": "tests/fixtures/knowledge-round2c-content.json",
+    "matched": 165,
+    "changed": 0
+  },
+  "knowledgeAccent": "--accent",
+  "sourcePaletteCoupling": false,
+  "definitionGeometry": "CENTER_SHAPES",
+  "geometryChanged": false,
+  "definitionComponents": "existing chart.definitionComponents",
+  "definitionFixtureCount": 5,
+  "libraryDefinitionHasDiagram": false,
+  "dynamicCrossSummary": null,
+  "dynamicCrossDetail": null,
+  "crossBasicsId": "hd.cross.introduction",
+  "crossBasicsNames": {
+    "en": "Incarnation Cross Basics",
+    "zh-CN": "化身十字基础说明",
+    "zh-Hant": "輪迴交叉基礎說明"
+  },
+  "crossInternalNavigation": {
+    "sameModal": true,
+    "keyboard": true,
+    "back": true,
+    "localeRefresh": true,
+    "closeClearsHistory": true,
+    "libraryTarget": "introductionKnowledgeId"
+  },
+  "crossGateLinks": "optional, not implemented",
+  "profileCount": 12,
+  "profileLocales": 3,
+  "profileSourceCoverage": "every non-whitespace character exactly once",
+  "processProfile": "2/4",
+  "timelineProfile": "3/6",
+  "engineChanged": false,
+  "definitionCalculationChanged": false,
+  "crossCalculationChanged": false,
+  "protectedBodygraphChanged": false,
+  "tests": {
+    "unit": {
+      "total": 332,
+      "passed": 329,
+      "failed": 0,
+      "skipped": 3
+    },
+    "knowledgeFocused": {
+      "passed": 48,
+      "failed": 0
+    },
+    "localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "timelineUnit": {
+      "passed": 63,
+      "failed": 0
+    },
+    "refinementBrowser": {
+      "passed": 252
+    },
+    "presentationBrowser": {
+      "passed": 132
+    },
+    "visualBrowser": {
+      "passed": 96
+    },
+    "accessBrowser": "passed, 12 layouts / 15 same-body comparisons / 6 routes",
+    "bodygraphBrowser": {
+      "comparisonsPassed": 24
+    },
+    "timelineBrowser": "passed, including gestures/touch/mobile layout",
+    "referenceBrowser": "passed, desktop and mobile",
+    "productionBuild": "passed"
+  },
+  "widths": [
+    1224,
+    903,
+    664,
+    390
+  ],
+  "locales": [
+    "en",
+    "zh-CN",
+    "zh-Hant"
+  ],
+  "homeLayoutChanged": false,
+  "newAssets": 0,
+  "newDependencies": 0,
+  "unresolvedRequiredItems": [],
+  "mergedMain": false,
+  "deployed": false
+}

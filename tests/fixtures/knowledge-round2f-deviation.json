@@ -1,0 +1,44 @@
+{
+  "en": {
+    "variable.perspective:survival": "4c2bda390056a62ea218e45c25ff933450e536472e8240c5b64d9bab406f20cc",
+    "variable.perspective:possibility": "94e85bc3d9105a2b34dc14446d686410580400ceb26b3d9ef48730abdd9d4528",
+    "variable.perspective:power": "e5bdfe53f68359cba9d073b4a607aa63d359fa3c7aa2aeef1ebf067e113aafd3",
+    "variable.perspective:wanting": "1ff9f0f7dcf6e5f9bad2da720b83d52a131fb3eec10d230df977239b9aaaa844",
+    "variable.perspective:probability": "25ec13283531db43250008b53eeaef415d0c986a4b8141b18e634a81a8e21839",
+    "variable.perspective:personal": "b28c70f903a47a0a22ea57143d3b82a5745e89cb009e1778ec99486321ec386e",
+    "variable.motivation:fear": "acb2450e686e848f935c055ce48d87d6960d3b64e5ce159041e349dba00f092d",
+    "variable.motivation:hope": "9e0ef29721174e7da0ba636005ca83b7d55c4938c74f44aa65919492d5ce9c64",
+    "variable.motivation:desire": "d4273c16870a1793315f1ec8614f2981c671b8b153d45106132f4b9edae94784",
+    "variable.motivation:need": "f07683827247cc1e8086ccee46eb51af91971476445c58a7e424e469bae95083",
+    "variable.motivation:guilt": "3f132660b2aea9546c3d8eda1796a19d85827c5cce3a23cd4188295f8655af04",
+    "variable.motivation:innocence": "004104cf4300f0fb48c37c8cac90656ef2e7673fddf3522440bd5dbf4816fb07"
+  },
+  "zh-CN": {
+    "variable.perspective:survival": "061efdc4dc54367cbe47e05dadbe4f603b87d546bd1d818bc3b24609409d6324",
+    "variable.perspective:possibility": "63e4be3173a83794ae8b8745c7aef823c7fa521e360938b3ae0ff1e48ab7ceb3",
+    "variable.perspective:power": "c58239f60026983e85e0dacdcc0aaf37f50b1404b278874f325bb5349e940927",
+    "variable.perspective:wanting": "cf3c5eb3ec886ee489101fab1f9a3942652f8fb19710dd2659a835043269f1f7",
+    "variable.perspective:probability": "bef1dac4e1b46ca33f00fb14c3f0dc081b1829a3388215098d4f4d6800952273",
+    "variable.perspective:personal": "39d5a2ec2fd0fda3921a39178c8f66818021433a09a65d4ba51a01d0e4d39271",
+    "variable.motivation:fear": "527ba1e017acd4044feaedee6df0f55ac11a28b64daa6ac1bf53faaab64ef057",
+    "variable.motivation:hope": "80efdc02ada09cfecc5e3bb4ede9f73e5349b108d435816bfed75285ec585805",
+    "variable.motivation:desire": "a5182dd6800250c19f0c81c93757442d827e3f392d65ba2dab58f295c627b792",
+    "variable.motivation:need": "45d43f6d7889970b5999707dc6cc61ff090cbaa5428dcdc32c87528e1cc14f55",
+    "variable.motivation:guilt": "c3e32a0c738902a8ef8e8812f27c7ade8ce7bb52a4050ec17962506211c60e83",
+    "variable.motivation:innocence": "a77cd0bcb4846b4ca27b6dda066fdf0c96ac175da0ab4cd6681641ae77d59f93"
+  },
+  "zh-Hant": {
+    "variable.perspective:survival": "7cabeac4a9f65937421e12e547b30c8faad97ac3cedc8998429dc9d51b26216a",
+    "variable.perspective:possibility": "04d9838c0026ebf2308eb9f858f5b2bbe19cb12aaae0024b48493f7ab3168ba6",
+    "variable.perspective:power": "c425d88dd39f6eb1b88f6fcc1d2a39378ebd1e7b38e23648ee26c164adc1198e",
+    "variable.perspective:wanting": "db43761f9dd5e2a1fb49d897084d88e86dc992bcbd93a38521a7015cf8be51fb",
+    "variable.perspective:probability": "df4d137195f1a5b0e9ac0ca2c2f97f27b661801db79eeab5b004adcdaae8137f",
+    "variable.perspective:personal": "5ec561396a2651bb929be73f338593c8d64b93271b0986799c6e1172a72a89cd",
+    "variable.motivation:fear": "55dedad1222468602fea3580a8640f70bd719b524c873d8dac398989e4f046fe",
+    "variable.motivation:hope": "6bebc2fcda7d235a3f9b08ee0cfdab7f89c7b88a17b2d85a222fb5ee1a62d3d3",
+    "variable.motivation:desire": "0928c03390fc8d05c5628cb9cb0cc2abfc5fdfbf62d6f45201c9f7c8944d1bb7",
+    "variable.motivation:need": "baf36d42cc433abd4ddbf6eafc98e32454132622799fe432b46fc054f3d24eac",
+    "variable.motivation:guilt": "6be5ed020a032e0dcb1d675f1718d883481630083aa0a9f971a0d603acc03357",
+    "variable.motivation:innocence": "de7a9730e6414b5c8cb9a251b1366854ec6360ea1f2eb99e60a12fe28739ef28"
+  }
+}

@@ -1,0 +1,440 @@
+{
+  "mainHead": "2bc308b7a9037a10bae92fff6c9ff536a276b8ae",
+  "pr": "https://github.com/NothingnessVOID/TD-OHD/pull/14",
+  "knowledgeOriginalHead": "a2314f74e84293f88c6df232d643618556496c26",
+  "knowledgeMergeCommit": "674615bd80696d0df8142b516c5663a92825f438",
+  "conflicts": [
+    "package.json",
+    "src/lib/chart-engine/sharp-provider.js"
+  ],
+  "engineSignature": "59b90e629033cc7faf95",
+  "automaticDeploymentTriggered": false,
+  "deploymentEvidence": {
+    "githubPagesTrigger": "push pages only",
+    "netlifyRepositoryProvider": null,
+    "netlifyRepositoryUrl": null,
+    "netlifyPublishedDeploy": "6ac0eaf1429158875f2ec893"
+  },
+  "mainTests": [
+    {
+      "test": "build",
+      "exitCode": 0
+    },
+    {
+      "test": "unit",
+      "exitCode": 0
+    },
+    {
+      "test": "localization",
+      "exitCode": 0
+    },
+    {
+      "test": "timeline",
+      "exitCode": 0
+    },
+    {
+      "test": "contract",
+      "exitCode": 0
+    },
+    {
+      "test": "licensing",
+      "exitCode": 0
+    },
+    {
+      "test": "bundle",
+      "exitCode": 0
+    }
+  ],
+  "knowledgeTests": {
+    "unit-final": {
+      "tests": 299,
+      "pass": 296,
+      "fail": 0,
+      "skipped": 3
+    },
+    "localization": {
+      "tests": 34,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0
+    },
+    "timeline": {
+      "tests": 61,
+      "pass": 61,
+      "fail": 0,
+      "skipped": 0
+    },
+    "knowledge": {
+      "tests": 22,
+      "pass": 22,
+      "fail": 0,
+      "skipped": 0
+    },
+    "contract": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "initialFailures": [
+    "Build process/file-copy wait recovered by isolated publish and standard rebuild",
+    "Browser initial readiness/HMR interference; reran after stable servers",
+    "Old definition fixtures predated merged Swiss parity fixes; refreshed same five UTC inputs",
+    "Historical Knowledge cache identity caused baseline timing mismatch; browser baseline aligned with current generated annual identity",
+    "Initial licensing check rejected known presentation migration; exact audited source hashes now checked"
+  ],
+  "scope": "No Knowledge content development, no root license changes, no browser Jovian exposure, no main/pages deployment, 8787 untouched",
+  "mainLicensing": {
+    "passed": true,
+    "engineSignature": "59b90e629033cc7faf95",
+    "runtimeComponents": 17,
+    "protectedBaselineFiles": 357,
+    "calculationChanges": 0,
+    "annualChanges": 0,
+    "knowledgeChanges": 0,
+    "jovianBrowserArtifacts": 0
+  },
+  "knowledgeLicensing": {
+    "passed": true,
+    "engineSignature": "59b90e629033cc7faf95",
+    "runtimeComponents": 17,
+    "protectedBaselineFiles": 357,
+    "calculationChanges": 0,
+    "annualChanges": 0,
+    "knowledgeChanges": "existing Knowledge migration retained",
+    "presentationFilesTracked": 33,
+    "jovianBrowserArtifacts": 0
+  },
+  "knowledgeBundle": {
+    "passed": true,
+    "productionFilesInspected": 147,
+    "browserModuleSources": 115,
+    "modernOnly": true,
+    "historicalRuntimeArtifacts": 0,
+    "modernDataHashesUnchanged": true,
+    "productionProvider": "sharpProvider"
+  },
+  "modernRegression": {
+    "passed": true,
+    "utcCount": 97,
+    "birthCalculationChangesExcludingAdditiveConnectedComponents": 0,
+    "transitCalculationChanges": 0,
+    "birthContractAddition": "connectedComponents",
+    "personalityAndDesignAllSubdivisionAndLongitudeFieldsEqual": true
+  },
+  "deploymentAfterMerge": {
+    "provider": null,
+    "repo_url": null,
+    "repo_branch": null,
+    "publishedDeploy": "6ac0eaf1429158875f2ec893",
+    "state": "ready",
+    "newDeployment": false
+  },
+  "browserBaselineRuntimePolicy": "Prior Knowledge source archive, same current Modern WASM, engine identity and annual cache signature; native calculation comparison independent.",
+  "mainAnnualCachesChanged": false,
+  "knowledgeAnnualCachesChanged": false,
+  "browser": {
+    "knowledgeAccess": {
+      "layoutComparisons": [
+        {
+          "width": 1224,
+          "locale": "en",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 1224,
+          "locale": "zh-CN",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 1224,
+          "locale": "zh-Hant",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 903,
+          "locale": "en",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 903,
+          "locale": "zh-CN",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 903,
+          "locale": "zh-Hant",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 664,
+          "locale": "en",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 664,
+          "locale": "zh-CN",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 664,
+          "locale": "zh-Hant",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 390,
+          "locale": "en",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 390,
+          "locale": "zh-CN",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        },
+        {
+          "width": 390,
+          "locale": "zh-Hant",
+          "foundationExact": true,
+          "variableExact": true,
+          "keyboard": true,
+          "modal": true,
+          "library": true,
+          "pureLocale": true
+        }
+      ],
+      "sameBodyLanguages": 15,
+      "routes": 6
+    },
+    "bodygraph": {
+      "bodygraphComparisons": [
+        {
+          "width": 1224,
+          "scenario": "birth-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "birth-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "birth-planet",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-hd",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-iching",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-gk",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-meridian",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-channel",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "timeline-gate-timing",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "timeline-full-range-fixture",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-planet",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-hd",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-iching",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-gk",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-meridian",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-channel",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "timeline-gate-timing",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "timeline-full-range-fixture",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        }
+      ],
+      "ownerTransitions": true,
+      "timelineTimingSemantics": true
+    },
+    "chartDataExport": "passed"
+  }
+}

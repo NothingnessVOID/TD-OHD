@@ -1,17 +1,21 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
-import { gateReading, channelReading, centerReading, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
+import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderPlanetReading, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
+import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
+import { circuitReference } from '../lib/reference-supplements.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
-const categories = ['all', 'concept', 'center', 'channel', 'gate', 'planet', 'group'];
-const labels = { all: 'All entries', concept: 'Core concepts', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
+const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable'];
+const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
 let category = 'all';
+let filtersExpanded = false;
 let query = '';
 let limit = 60;
 let lens = 'hd';
@@ -65,33 +69,35 @@ function channelDetail(entry) {
   return `${channelReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}
     <h3>${t('Related gates')}</h3><div class="reference-links">${channel.gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3><div class="reference-links">${channel.centers.map(center => link('center', center, centerName(center))).join('')}</div>
-    <h3>${t('Circuit groups')}</h3>${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}`;
+    <h3>${t('Circuit groups')}</h3><div class="reference-links">${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}${link('circuit', channelCircuit(channel).circuit, circuitName(channelCircuit(channel).circuit))}</div>`;
 }
 
 function centerDetail(entry) {
   const gates = Object.keys(GATES).map(Number).filter(gate => GATES[gate].center === entry.id);
   const channels = channelsForCenter(entry.id);
-  return `<section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}</section>
+  return `<section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}</section>${centerInsights(entry.id)}
     <h3>${t('Related gates')}</h3><div class="reference-links">${gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
 
 function circuitDetail(entry) {
+  if (entry.kind === 'group') {
+    return `<div class="reference-links">${CIRCUIT_GROUPS[entry.id].map(id =>
+      link('circuit', id, circuitName(id))).join('')}</div>`;
+  }
   const channels = circuitChannels(entry.kind, entry.id);
-  return CIRCUIT_GROUPS[entry.id].map(id => {
-    const title = id === 'integration' ? t('Integration Channels') : circuitName(id);
-    return `<h3>${esc(title)}</h3><div class="reference-links">${channels.filter(ch => channelCircuit(ch).circuit === id)
-      .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
-  }).join('');
+  return `<p class="gate-detail-desc">${esc(circuitReference(entry.id)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n', '<br>')}</p>
+    <h3>${t('Included channels ({count})', { count: channels.length })}</h3>
+    <div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
 
 function planetDetail(entry) {
   const locale = getLocale();
-  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p></div>`;
+  return `<div class="reference-reading">${renderPlanetReading(entry.id, locale)}</div>`;
 }
 
 function conceptDetail(entry) {
-  return `<div class="reference-reading"><p>${esc(activationConceptReference(entry.id, getLocale()))}</p></div>`;
+  return `<div class="reference-reading">${renderActivationReference(activationConceptReference(entry.id, getLocale()))}</div>`;
 }
 
 function renderDetail() {
@@ -108,6 +114,13 @@ function renderDetail() {
     article.innerHTML = `<p class="reference-empty">${t('Invalid reference address.')}</p>`;
     return;
   }
+  if (entry.kind === 'knowledge') {
+    article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
+      <div class="reference-detail-body">${renderKnowledgeDetail(entry.id)}</div>`;
+    article.scrollTop = 0;
+    clearTimeout(lineHighlightTimer);
+    return;
+  }
   const body = entry.kind === 'gate' ? gateDetail(entry)
     : entry.kind === 'channel' ? channelDetail(entry)
       : entry.kind === 'center' ? centerDetail(entry)
@@ -115,10 +128,9 @@ function renderDetail() {
           : entry.kind === 'concept' ? conceptDetail(entry) : circuitDetail(entry);
   const heading = entry.kind === 'channel' ? (() => {
     const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
-    const group = channelCircuit(channel).group;
-    return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2><span class="circuit-badge ${group}">${esc(circuitName(group))}</span></div>`;
+    return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2>${renderChannelCircuitBadges(channel)}</div>`;
   })() : `<h2>${entry.kind === 'planet' ? `${esc(PLANET_GLYPHS[entry.id])} ` : ''}${esc(entry.name)}</h2>`;
-  article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
+  article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
     <div class="detail-label">${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</div>
     ${heading}
     ${entry.kind === 'gate' ? `<p class="label-soft">${esc(hexagramName(Number(entry.id)))}</p>` : ''}
@@ -138,10 +150,19 @@ function renderResults() {
   const results = document.getElementById('reference-results');
   const matches = searchReference(query, category);
   results.innerHTML = matches.slice(0, limit).map(entry => `<button type="button" class="reference-result" data-reference-kind="${entry.kind}" data-reference-id="${esc(entry.id)}">
-    <small>${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</small><strong>${esc(entry.name)}</strong></button>`).join('')
+    <small>${t(labels[entry.category ?? entry.kind] || 'Circuit groups')}${entry.kind === 'knowledge' ? '' : ` · ${esc(entry.id)}`}</small><strong>${esc(entry.name)}</strong>${entry.kind === 'knowledge' && entry.summary ? `<span class="knowledge-result-summary">${esc(entry.summary)}</span>` : ''}</button>`).join('')
     + (matches.length > limit ? `<button type="button" class="reference-more" data-reference-more>${t('Show more')}</button>` : '')
     || `<p>${t('No matching reference.')}</p>`;
   document.getElementById('reference-count').textContent = t('{count} results', { count: matches.length });
+}
+
+function renderFilters() {
+  const toggle = document.querySelector('.reference-filter-toggle');
+  toggle.setAttribute('aria-expanded', String(filtersExpanded));
+  toggle.querySelector('.reference-filter-chevron').textContent = filtersExpanded ? '∧' : '∨';
+  document.querySelector('.reference-filter-current').textContent = t(labels[category]);
+  document.getElementById('reference-filter-panel').hidden = !filtersExpanded;
+  document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
 }
 
 function build() {
@@ -149,7 +170,9 @@ function build() {
   mount.innerHTML = `<div class="view-container-wide"><header class="reference-heading"><h1>${t('Reference Library')}</h1></header>
     <div class="reference-layout"><aside class="reference-sidebar"><label for="reference-search">${t('Search reference')}</label>
       <input id="reference-search" type="search" autocomplete="off" placeholder="${t('Search by number or name')}" value="${esc(query)}">
-      <div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div>
+      <button type="button" class="reference-filter-toggle" data-reference-filter-toggle aria-expanded="false" aria-controls="reference-filter-panel"><span>${t('Categories')}</span><span class="reference-filter-chevron" aria-hidden="true">∨</span></button>
+      <div class="reference-filter-current">${t(labels[category])}</div>
+      <div id="reference-filter-panel" class="reference-filter-panel" hidden><div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div></div>
       <p id="reference-count"></p><div id="reference-results" class="reference-results"></div></aside>
       <article id="reference-detail" class="reference-detail" role="region"></article></div></div>`;
   built = true;
@@ -162,7 +185,7 @@ export function renderReferenceView({ languageChange = false } = {}) {
   if (!built || languageChange) build();
   renderResults();
   renderDetail();
-  document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
+  renderFilters();
   if (previousScroll) document.querySelector('.reference-results').scrollTop = previousScroll;
   if (focused) document.getElementById('reference-search').focus({ preventScroll: true });
   else if (returning && lastResult) document.querySelector(`.reference-result[data-reference-kind="${lastResult.kind}"][data-reference-id="${lastResult.id}"]`)
@@ -184,8 +207,9 @@ export function setupReferenceView() {
       openReference(target.dataset.referenceKind, target.dataset.referenceId);
       return;
     }
+    if (event.target.closest('[data-reference-filter-toggle]')) { filtersExpanded = !filtersExpanded; renderFilters(); return; }
     const filter = event.target.closest('[data-reference-filter]');
-    if (filter) { category = filter.dataset.referenceFilter; limit = 60; renderReferenceView(); return; }
+    if (filter) { category = filter.dataset.referenceFilter; limit = 60; filtersExpanded = false; renderReferenceView(); return; }
     const selectedLens = event.target.closest('[data-reference-lens]');
     if (selectedLens) { lens = selectedLens.dataset.referenceLens; renderDetail(); return; }
     if (event.target.closest('[data-reference-more]')) { limit += 60; renderResults(); }

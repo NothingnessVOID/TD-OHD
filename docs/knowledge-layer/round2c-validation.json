@@ -1,0 +1,455 @@
+{
+  "baseline": "292edc9b5aa8f7c6b1fa5e3055c4c76cba8c52b3",
+  "branch": "feature/knowledge-review-round2-locales",
+  "counts": {
+    "reviewedPerLocale": 55,
+    "variablePerLocale": 24,
+    "cognitionNameOnly": 6
+  },
+  "unit": {
+    "passed": 315,
+    "failed": 0,
+    "skipped": 3,
+    "skipReason": "Optional live city/geocoding tests disabled by default"
+  },
+  "localization": {
+    "passed": 34,
+    "failed": 0
+  },
+  "timelineUnit": {
+    "passed": 63,
+    "failed": 0
+  },
+  "productionBuild": "passed; existing large-chunk advisory only",
+  "knowledgePresentation": {
+    "passed": 132,
+    "failed": 0
+  },
+  "knowledgeAccess": {
+    "layoutCombinations": 12,
+    "sameBodyCombinations": 15,
+    "reloadRoutes": 6
+  },
+  "timelineE2E": "passed: main, gestures, mobile-touch, mobile-layout",
+  "appearanceE2E": "passed: semantic skin, desktop and mobile controls",
+  "protectedFunctions": "byte-identical",
+  "calculationAndArrows": "byte-identical",
+  "automaticTranslation": false,
+  "simplifiedTraditionalConversion": false,
+  "crossLanguageFallback": false,
+  "zhCNModifiedRecords": [
+    "variable.determination:taste",
+    "variable.environment:caves",
+    "variable.environment:markets",
+    "variable.environment:kitchens",
+    "variable.environment:mountains",
+    "variable.environment:valleys",
+    "variable.environment:shores"
+  ],
+  "files": [
+    "docs/frontend-knowledge-sync-v1/validate.mjs",
+    "docs/knowledge-layer/review-round2-locales.md",
+    "docs/knowledge-layer/round2c-scope.json",
+    "docs/knowledge-layer/round2c-validation.json",
+    "src/lib/knowledge/content/human-design-en.js",
+    "src/lib/knowledge/content/human-design-zh-CN.js",
+    "src/lib/knowledge/content/human-design-zh-Hant.js",
+    "src/lib/knowledge/detail-renderer.js",
+    "src/locales/zh-Hant/ui-chart.json",
+    "tests/fixtures/knowledge-round2c-content.json",
+    "tests/knowledge-access-e2e.mjs",
+    "tests/knowledge-content.test.js",
+    "tests/knowledge-layer-e2e.mjs",
+    "tests/knowledge-presentation-e2e.mjs",
+    "tests/knowledge-round2b.test.js",
+    "tests/knowledge-round2c.test.js"
+  ],
+  "layout": {
+    "layoutComparisons": [
+      {
+        "width": 1224,
+        "locale": "en",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 2,
+            "previous": 121.5625,
+            "current": 140.75
+          },
+          {
+            "card": 3,
+            "previous": 121.5625,
+            "current": 140.75
+          }
+        ]
+      },
+      {
+        "width": 1224,
+        "locale": "zh-CN",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": []
+      },
+      {
+        "width": 1224,
+        "locale": "zh-Hant",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 102.375,
+            "current": 121.5625
+          },
+          {
+            "card": 1,
+            "previous": 102.375,
+            "current": 121.5625
+          }
+        ]
+      },
+      {
+        "width": 903,
+        "locale": "en",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 159.9375,
+            "current": 140.75
+          },
+          {
+            "card": 1,
+            "previous": 159.9375,
+            "current": 140.75
+          }
+        ]
+      },
+      {
+        "width": 903,
+        "locale": "zh-CN",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": []
+      },
+      {
+        "width": 903,
+        "locale": "zh-Hant",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 121.5625,
+            "current": 140.75
+          },
+          {
+            "card": 1,
+            "previous": 121.5625,
+            "current": 140.75
+          },
+          {
+            "card": 2,
+            "previous": 147.15625,
+            "current": 185.53125
+          },
+          {
+            "card": 3,
+            "previous": 147.15625,
+            "current": 185.53125
+          }
+        ]
+      },
+      {
+        "width": 664,
+        "locale": "en",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 179.125,
+            "current": 159.9375
+          },
+          {
+            "card": 1,
+            "previous": 179.125,
+            "current": 159.9375
+          }
+        ]
+      },
+      {
+        "width": 664,
+        "locale": "zh-CN",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": []
+      },
+      {
+        "width": 664,
+        "locale": "zh-Hant",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 121.5625,
+            "current": 159.9375
+          },
+          {
+            "card": 1,
+            "previous": 121.5625,
+            "current": 159.9375
+          },
+          {
+            "card": 2,
+            "previous": 166.34375,
+            "current": 204.71875
+          },
+          {
+            "card": 3,
+            "previous": 166.34375,
+            "current": 204.71875
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "locale": "en",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": []
+      },
+      {
+        "width": 390,
+        "locale": "zh-CN",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": []
+      },
+      {
+        "width": 390,
+        "locale": "zh-Hant",
+        "cardCount": 8,
+        "cardWidthsEqual": true,
+        "longDetailIsolation": true,
+        "variablePureLocale": true,
+        "heightChanges": [
+          {
+            "card": 0,
+            "previous": 102.375,
+            "current": 121.5625
+          },
+          {
+            "card": 3,
+            "previous": 102.375,
+            "current": 121.5625
+          }
+        ]
+      }
+    ]
+  },
+  "bodygraph": {
+    "bodygraphComparisons": [
+      {
+        "width": 1224,
+        "scenario": "birth-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "birth-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "birth-planet",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-hd",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-iching",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-gk",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "gate-lens-meridian",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-channel",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "transit-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "timeline-gate-timing",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 1224,
+        "scenario": "timeline-full-range-fixture",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "birth-planet",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-hd",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-iching",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-gk",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "gate-lens-meridian",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-gate",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-channel",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "transit-center",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "timeline-gate-timing",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      },
+      {
+        "width": 390,
+        "scenario": "timeline-full-range-fixture",
+        "domEqual": true,
+        "textEqual": true,
+        "geometryTolerance": 1
+      }
+    ],
+    "ownerTransitions": true,
+    "timelineTimingSemantics": true
+  },
+  "environmentRecovery": "iCloud dataless files blocked original checkout; isolated non-iCloud clone restored Git/dependency reads. Old preview HMR module duplication removed by restart. Duplicate headings during transfer regenerated from immutable baseline; single occurrence regression added. Final source has no CSS changes.",
+  "referenceE2E": "passed: desktop and mobile",
+  "chartDataExportE2E": "passed: clipboard, three locales, natal, Transit, Timeline",
+  "planetE2E": "passed: chart, Transit, Timeline; desktop and mobile",
+  "unresolvedItems": []
+}

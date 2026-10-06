@@ -21,7 +21,7 @@ export default {
   vocabulary: { typeName: zh.zhType, strategy: zh.zhStrategy, notSelf: zh.zhNotSelf, signature: zh.zhSignature,
     authorityName: zh.zhAuthority, profileName: zh.zhProfile, definitionName: zh.zhDefinition,
     centerName: zh.zhCenter, gateName: zh.zhGate, channelName: zh.zhChannel,
-    circuitName: zh.zhCircuit, planetName: zh.zhPlanet, lineName: zh.zhLine,
+    circuitName: zh.zhCircuit, circuitGroupName: zh.zhCircuitGroup, planetName: zh.zhPlanet, lineName: zh.zhLine,
     variable: zh.zhVariable, cognition: zh.zhCognition,
     typeDescription: name => zh.TYPE_PLAIN_ZH[name] || '', hexagramName: n => zh.HEXAGRAM_ZH[n] || `第 ${n} 卦`, graphCenter: zh.zhCenter },
   content: { data: readings, text: readings.zhText, cross: readings.zhCross, bilingualGeneKeys: true },

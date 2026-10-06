@@ -1,0 +1,66 @@
+{
+  "version": 2,
+  "phase": "4C",
+  "entries": 61,
+  "counts": [
+    {
+      "objectType": "type",
+      "count": 5,
+      "summary": 5,
+      "detail": 5,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "authority",
+      "count": 8,
+      "summary": 8,
+      "detail": 8,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "profile",
+      "count": 12,
+      "summary": 12,
+      "detail": 12,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "definition",
+      "count": 5,
+      "summary": 5,
+      "detail": 5,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "variable",
+      "count": 24,
+      "summary": 24,
+      "detail": 24,
+      "missingDetail": 0
+    },
+    {
+      "objectType": "cognition",
+      "count": 6,
+      "summary": 0,
+      "detail": 0,
+      "missingDetail": 6
+    },
+    {
+      "objectType": "cross",
+      "count": 1,
+      "summary": 1,
+      "detail": 1,
+      "missingDetail": 0
+    }
+  ],
+  "cross": {
+    "identity": "dynamic Sharp raw enum",
+    "sharedIntroduction": "hd.cross.introduction",
+    "specificArticles": 0,
+    "specificDetailStatus": "missing"
+  },
+  "entryReviewStatuses": {
+    "reviewed": 55,
+    "unreviewed": 6
+  }
+}

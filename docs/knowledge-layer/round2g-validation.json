@@ -1,0 +1,304 @@
+{
+  "baseline": "e731e69b91ea1ce083a4a8b023d2dd660c08735e",
+  "branch": "fix/variable-copy-localization-v1",
+  "content": {
+    "exactApprovedDetails": {
+      "zh-CN": 12,
+      "zh-Hant": 12,
+      "en": 12
+    },
+    "unchangedSummaries": 165,
+    "unchangedOtherEntries": 129,
+    "pairingChanged": false,
+    "determinationChanged": false,
+    "environmentChanged": false,
+    "ranges": "all 144 section bodies match approved exact strings",
+    "Need": {
+      "zh-CN": "需求动机",
+      "zh-Hant": "需求動機"
+    },
+    "ChineseEnglishParenthesizedNames": false
+  },
+  "engineChanged": false,
+  "variableCalculationChanged": false,
+  "tests": {
+    "npm test": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 3
+    },
+    "npm run test:localization": {
+      "passed": 34,
+      "failed": 0
+    },
+    "npm run test:timeline": {
+      "passed": 63,
+      "failed": 0
+    },
+    "knowledge focused": {
+      "passed": 44,
+      "failed": 0
+    },
+    "source distribution guard": {
+      "passed": true,
+      "protectedFiles": 429,
+      "engineSignature": "59b90e629033cc7faf95"
+    },
+    "npm run build": "passed; existing >500kB chunk advisory"
+  },
+  "browser": {
+    "deviationCases": 72,
+    "deviationSurfaces": [
+      "modal",
+      "library"
+    ],
+    "homeExactComparisons": [
+      {
+        "width": 1224,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 1224,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 903,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 664,
+        "locale": "zh-Hant",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "en",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-CN",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "locale": "zh-Hant",
+        "identical": true
+      }
+    ],
+    "knowledgePresentationBothSurfaces": 132,
+    "bodygraph": {
+      "bodygraphComparisons": [
+        {
+          "width": 1224,
+          "scenario": "birth-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "birth-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "birth-planet",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-hd",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-iching",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-gk",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "gate-lens-meridian",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-channel",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "transit-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "timeline-gate-timing",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 1224,
+          "scenario": "timeline-full-range-fixture",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "birth-planet",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-hd",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-iching",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-gk",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "gate-lens-meridian",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-gate",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-channel",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "transit-center",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "timeline-gate-timing",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        },
+        {
+          "width": 390,
+          "scenario": "timeline-full-range-fixture",
+          "domEqual": true,
+          "textEqual": true,
+          "geometryTolerance": 1
+        }
+      ],
+      "ownerTransitions": true,
+      "timelineTimingSemantics": true
+    },
+    "chartDataExport": "passed: real clipboard, three locales, natal, Transit, Timeline, loading guard, no added calculation",
+    "timeline": "all four scripts passed: timeline, gestures, mobile touch, mobile layout"
+  },
+  "skips": [
+    "online multilingual city search",
+    "online compute_chart geocoding",
+    "online unknown-place error"
+  ],
+  "executionNotes": [
+    "The first BodyGraph comparison timed out when the older baseline Vite service held stale hot-update module state. Restarted that same baseline service without source changes; all 24 comparisons then passed."
+  ],
+  "unresolved": []
+}

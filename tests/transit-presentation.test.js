@@ -1,3 +1,4 @@
+import {renderChannelCircuitBadges} from '../src/lib/channel-badges.js';
 import { setLocale } from '../src/lib/i18n.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -39,7 +40,7 @@ test('overlay states structural completions without claiming a ranked strongest 
   assert.ok(overlay.channelCompletions.some(c => !c.natalGate));
   for (const c of overlay.channelCompletions) {
     assert.ok(html.includes(`${c.channel} (${c.gates.join('-')})`));
-    assert.ok(html.includes(`circuit-badge ${c.circuit}">${c.circuit}</span>`));
+    assert.ok(html.includes(renderChannelCircuitBadges(c)));
     assert.ok(html.includes(c.natalGate
       ? `Your Gate ${c.natalGate} is completed by transit Gate ${c.transitGate} (${c.transitPlanet}).`
       : 'Pure transit channel — both gates carried by the planets at the selected time.'));
@@ -67,7 +68,7 @@ test('sky-only summary keeps circuit and center descriptions without natal claim
   const channels = buildTransitGraph(natal, overlay.transitGates, 'transit-only').channels;
   assert.ok(html.includes(`Transit channels (${channels.length})`));
   assert.ok(channels.length > 0);
-  for (const c of channels) assert.ok(html.includes(`circuit-badge ${c.circuit}">${c.circuit}</span>`));
+  for (const c of channels) assert.ok(html.includes(renderChannelCircuitBadges(c)));
   assert.ok(html.includes('defined by a complete channel in the selected transits.'));
   assert.doesNotMatch(html, /your natal|your chart|Reinforced Gates|Temporarily Defined|strongest theme/);
 });

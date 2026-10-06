@@ -20,11 +20,25 @@ export function validateDistribution(dist=path.join(root,'dist'),identity=json(p
  return true;
 }
 export function validateRelease(rootPath=root){
+ // Knowledge sync permits exact pre-existing presentation blobs, never astronomy changes.
+ const scopePath=path.join(rootPath,'docs/main-knowledge-sync-v1/presentation-scope.json');
+ const scope=existsSync(scopePath)?json(scopePath):null;
+ const presentationHashes=scope?.files||{};
+ if(scope){
+  if(scope.knowledgeBaseline!=='a2314f74e84293f88c6df232d643618556496c26'||scope.mainBaseline!=='2bc308b7a9037a10bae92fff6c9ff536a276b8ae')throw new Error('Unexpected sync baseline');
+  for(const [p,h] of Object.entries(presentationHashes)){
+   if(!p.startsWith('src/')&&p!=='engine-core/TransitCore.cs')throw new Error('Invalid presentation scope');
+   const ref=p==='src/lib/chart-engine/sharp-provider.js'?scope.mainBaseline:scope.knowledgeBaseline;
+   let bytes=execFileSync('git',['show',ref+':'+p],{cwd:rootPath});
+   if(p==='src/lib/chart-engine/sharp-provider.js')bytes=Buffer.from(bytes.toString().replace('adapter-v1','adapter-v2'));
+   if(hash(bytes)!==h||hash(readFileSync(path.join(rootPath,p)))!==h)throw new Error('Presentation scope mismatch: '+p);
+  }
+ }
  const dir=path.join(rootPath,'docs/release-licensing-v1');const identity=json(path.join(dir,'production-identity.json'));const release=json(path.join(dir,'release-components.json'));
  if(identity.engineSignature!=='59b90e629033cc7faf95'||identity.calculationBaselineCommit!==identity.releaseCommit)throw new Error('Calculation identity changed');
  const patch=json(path.join(rootPath,'third_party/SharpAstrology.SwissEph/patch-manifest.json'));
  if(patch.signature!==identity.engineSignature||patch.identity.patchRevision!==identity.patchRevision)throw new Error('Patch correspondence failed');
- for(const [p,h] of Object.entries(identity.relevantSourceHashes))if(hash(readFileSync(path.join(rootPath,p)))!==h)throw new Error('Production source changed: '+p);
+ for(const [p,h] of Object.entries(identity.relevantSourceHashes))if(hash(readFileSync(path.join(rootPath,p)))!==(presentationHashes[p]||h))throw new Error('Production source changed: '+p);
  if(release.runtimeComponentCount!==release.components.length||new Set(release.components.map(x=>x.component)).size!==release.components.length)throw new Error('Component identity/count invalid');
  const required=['component','version','upstream','license','modifiedByTdOhd','sourceLocation','distributedArtifact','noticeLocation','includedInBrowser','includedAtRuntime','dataAsset','sha256','notes'];
  for(const c of release.components){
@@ -43,11 +57,11 @@ export function validateRelease(rootPath=root){
  const baselinePackage=jsonFromGit(identity.calculationBaselineCommit,'package.json',rootPath);
  const currentPackage=json(path.join(rootPath,'package.json'));
  // Integration permits only the two local research commands, never dependency/build changes.
- for(const [name,command] of Object.entries({'research:birth-engine':'node scripts/birth-engine-prototype.mjs','test:jovian-compatible':'node scripts/jovian-compatible-validation.mjs'})){
+ for(const [name,command] of Object.entries({'research:birth-engine':'node scripts/birth-engine-prototype.mjs','test:jovian-compatible':'node scripts/jovian-compatible-validation.mjs',...(scope?{'e2e:knowledge-access':'node tests/knowledge-access-e2e.mjs','e2e:bodygraph-regression':'node tests/bodygraph-knowledge-regression-e2e.mjs'}:{})})){
   if(name in currentPackage.scripts){if(currentPackage.scripts[name]!==command)throw new Error('Unexpected research command '+name);delete currentPackage.scripts[name];}
  }
  if(JSON.stringify(currentPackage)!==JSON.stringify(baselinePackage))throw new Error('Production package configuration changed');
- for(const p of protectedPaths.filter(p=>p!=='package.json')){const original=execFileSync('git',['show',identity.calculationBaselineCommit+':'+p],{cwd:rootPath});if(hash(original)!==hash(readFileSync(path.join(rootPath,p))))throw new Error('Protected baseline changed: '+p);}
- return {passed:true,engineSignature:identity.engineSignature,runtimeComponents:release.components.length,protectedBaselineFiles:protectedPaths.length,calculationChanges:0,annualChanges:0,knowledgeChanges:0,jovianBrowserArtifacts:0};
+ for(const p of protectedPaths.filter(p=>p!=='package.json')){const original=execFileSync('git',['show',identity.calculationBaselineCommit+':'+p],{cwd:rootPath});if((presentationHashes[p]||hash(original))!==hash(readFileSync(path.join(rootPath,p))))throw new Error('Protected baseline changed: '+p);}
+ return {passed:true,engineSignature:identity.engineSignature,runtimeComponents:release.components.length,protectedBaselineFiles:protectedPaths.length,calculationChanges:0,annualChanges:0,knowledgeChanges:scope?'existing Knowledge migration retained':0,presentationFilesTracked:Object.keys(presentationHashes).length,jovianBrowserArtifacts:0};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){validateDistribution();console.log(JSON.stringify(validateRelease(),null,2));}

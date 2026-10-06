@@ -1,0 +1,166 @@
+import { getKnowledgeEntry, getKnowledgeEntryById } from './registry.js';
+import { resolveKnowledgeText } from './terms.js';
+import { t } from '../i18n.js';
+import { variableDirection } from '../variable-arrows.js';
+import { esc } from '../format.js';
+import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
+import { centerName } from '../vocabulary.js';
+
+const categoryLabels = { type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
+const variableLabels = { overview:'Variable', determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
+const profileLabels = { rightAngle:'Right Angle · Personal destiny', juxtaposition:'Juxtaposition · Fixed destiny', leftAngle:'Left Angle · Transpersonal destiny' };
+const angleLabels = { right:profileLabels.rightAngle, left:profileLabels.leftAngle, juxtaposition:profileLabels.juxtaposition };
+const textOf = slot => slot?.template ?? slot?.content ?? '';
+const slice = (slot, range) => textOf(slot).slice(range.start, range.end);
+const badge = (text, extra='') => `<span class="knowledge-badge${extra ? ' '+extra : ''}">${esc(text)}</span>`;
+const chips = values => `<div class="knowledge-chips">${values.map(value=>`<span class="knowledge-chip">${esc(value)}</span>`).join('')}</div>`;
+const surface = (title, body, id='') => `<section class="knowledge-surface"${id ? ` data-section="${id}"` : ''}>${title ? `<h3>${esc(title)}</h3>` : ''}${body}</section>`;
+function renderProse(slot, range=null) {
+  const text=range?slice(slot,range):textOf(slot);
+  return text.split(/\n\n+/).filter(part=>part.trim()).map(part=>`<p>${resolveKnowledgeText(part,{rich:true}).replaceAll('\n','<br>')}</p>`).join('');
+}
+// Small, escaped formatting for the supplied Variable paragraphs and lists only.
+function renderVariableProse(slot, range) {
+  const inline = text => resolveKnowledgeText(text, {rich:true}).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n','<br>');
+  return slice(slot,range).split(/\n\n+/).filter(part=>part.trim()).map(part=>
+    part.split('\n').every(line=>line.startsWith('- '))
+      ? `<ul class="knowledge-prose-list">${part.split('\n').map(line=>`<li>${inline(line.slice(2))}</li>`).join('')}</ul>`
+      : `<p>${inline(part)}</p>`).join('');
+}
+const variableActionLabels = {overview:'Learn about Variables', determination:'Learn about Determination', environment:'Learn about Environment', perspective:'Learn about Perspective', motivation:'Learn about Motivation'};
+function renderVariableLinks(entry) {
+  const kind=entry.properties.kind;
+  const ids=entry.properties.publicOverview
+    ? kind==='overview' ? ['determination','environment','perspective','motivation'].map(value=>`hd.variable.${value}.introduction`) : ['hd.variable.introduction']
+    : [`hd.variable.${kind}.introduction`];
+  return `<nav class="knowledge-variable-links">${ids.map(id=>{const target=getKnowledgeEntryById(id);return target?`<button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(t(variableActionLabels[target.properties.kind]))}</span><span aria-hidden="true">→</span></button>`:'';}).join('')}</nav>`;
+}
+const foundationActionLabels = {type:'Learn about Types', authority:'Learn about Inner Authority', profile:'Learn about Profiles', definition:'Learn about Definition'};
+function renderFoundationLink(entry) {
+  const label = foundationActionLabels[entry.objectType];
+  if (!label || entry.properties.publicOverview) return '';
+  const id = `hd.${entry.objectType}.introduction`;
+  return `<nav class="knowledge-variable-links"><button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(t(label))}</span><span aria-hidden="true">→</span></button></nav>`;
+}
+// Source headings and lists are presentation only; no per-object components.
+function renderOverview(entry) {
+  return `<div class="knowledge-reading">${textOf(entry.detail).split(/\n\n+/).filter(Boolean).map(part => {
+    const inline = text => resolveKnowledgeText(text,{rich:true}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    if (/^#{3,4} /.test(part)) return `<h3>${inline(part.replace(/^#{3,4} /,''))}</h3>`;
+    const lines = part.split('\n'), listStart = lines.findIndex(line=>line.startsWith('- '));
+    if (listStart >= 0 && lines.slice(listStart).every(line=>line.startsWith('- '))) {
+      return (listStart ? `<p>${inline(lines.slice(0,listStart).join('\n'))}</p>` : '') + `<ul>${lines.slice(listStart).map(line=>`<li>${inline(line.slice(2))}</li>`).join('')}</ul>`;
+    }
+    return `<p>${inline(part).replaceAll('\n','<br>')}</p>`;
+  }).join('')}</div>`;
+}
+function renderHeader(entry) {
+  const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
+  const name=entry.objectType==='profile'&&!entry.properties.publicOverview?`${entry.objectId} ${entry.name}`:entry.name;
+  return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>`;
+}
+function renderSummary(entry) {
+  return entry.summary?`<aside class="knowledge-summary-callout"><div class="knowledge-summary-label">${esc(t('Overview'))}</div><p class="knowledge-summary knowledge-summary-text">${esc(entry.summary.content)}</p></aside>`:'';
+}
+function renderMetadata(rows) {
+  return `<dl class="knowledge-meta knowledge-type-properties">${rows.map(([label,value])=>`<dt>${esc(t(label))}</dt><dd>${esc(value)}</dd>`).join('')}</dl>`;
+}
+function renderType(entry) {
+  const slot=entry.detail,fields=slot?.presentation?.fields;
+  if(!fields)return renderMetadata([['Strategy',entry.properties.strategy],['Signature',entry.properties.signature],['Not-Self Theme',entry.properties.notSelf]])+renderProse(slot);
+  return surface(t('Strategy'),`<p class="knowledge-value">${esc(slice(slot,fields.strategyValue))}</p>${renderProse(slot,fields.strategyDetail)}`,'strategy')
+    +surface(t('Aura'),chips(slice(slot,fields.auraKeywords).split('·').map(value=>value.trim()))+renderProse(slot,fields.auraDetail),'aura')
+    +renderMetadata([['Signature',slice(slot,fields.signature)],['Not-Self Theme',slice(slot,fields.notSelf)]]);
+}
+function renderProcess(slot, block) {
+  return `<section class="knowledge-process-section" data-layout="process"><p class="knowledge-process-lead">${esc(slice(slot,block.lead))}</p><div class="knowledge-process">${block.steps.map((step,index)=>`<div class="knowledge-process-step">${esc(slice(slot,step))}</div>${block.separators[index]?`<span class="knowledge-process-separator">${esc(slice(slot,block.separators[index]))}${block.separators[index].decorativeArrow?'<span aria-hidden="true">→</span>':''}</span>`:''}`).join('')}</div></section>`;
+}
+function renderTimeline(slot, block) {
+  return `<ol class="knowledge-timeline" data-layout="timeline">${block.stages.map(stage=>`<li class="knowledge-timeline-stage"><h3>${esc(slice(slot,stage.label))}</h3>${renderProse(slot,stage.body)}</li>`).join('')}</ol>`;
+}
+function profileLines(entry) {
+  // Display-only split of the existing localized name; no parallel archetype vocabulary.
+  const names=entry.name.split(/\s*[/／]\s*/);
+  return entry.objectId.split('/').map((line,index)=>({line:Number(line),name:names[index]??''}));
+}
+function renderProfileIdentity(entry) {
+  return `<div class="knowledge-profile-identity">${profileLines(entry).map(({line,name})=>`<div class="knowledge-line-identity">${badge(t('Line {line}',{line}),'knowledge-line-badge')}<strong>${esc(name)}</strong></div>`).join('')}</div>`;
+}
+function renderProfile(entry) {
+  const slot=entry.detail,blocks=slot?.presentation?.blocks,lines=profileLines(entry);
+  const render=block=>{
+    if(block.kind==='process')return renderProcess(slot,block);
+    if(block.kind==='timeline')return renderTimeline(slot,block);
+    if(block.kind==='line')return `<section class="knowledge-surface knowledge-line-section" data-line="${block.line}">${badge(t('Line {line}',{line:block.line}),'knowledge-line-badge')}<h3>${esc(lines[block.index].name)}</h3>${block.blocks?block.blocks.map(render).join(''):renderProse(slot,block)}</section>`;
+    return renderProse(slot,block);
+  };
+  return `<div class="knowledge-reading">${blocks?blocks.map(render).join(''):renderProse(slot)}</div>`;
+}
+const definitionShapeKeys={head:'Head',ajna:'Ajna',throat:'Throat',g:'G',heart:'Ego',spleen:'Spleen',solar:'SolarPlexus',sacral:'Sacral',root:'Root'};
+function renderMiniCenters(component) {
+  return `<svg class="knowledge-mini-centers" viewBox="-12 -12 880 1340" aria-hidden="true">${Object.entries(definitionShapeKeys).map(([key,shape])=>`<path data-center="${key}" data-highlighted="${component.includes(key)}" d="${esc(CENTER_SHAPES[shape].path)}"/>`).join('')}</svg>`;
+}
+function renderDefinition(entry, components) {
+  // Read the existing Sharp components only. Library has no personal topology.
+  const visual=Array.isArray(components)?`<div class="knowledge-definition-islands" data-component-count="${components.length}">${components.length?components.map((component,index)=>`<section class="knowledge-island-card" data-component="${index}"><h3>${esc(t('Definition island {index}',{index:index+1}))}</h3>${renderMiniCenters(component)}<p class="knowledge-center-names">${esc(component.map(centerName).join(' · '))}</p></section>`).join(''):`<div class="knowledge-no-definition">${renderMiniCenters([])}</div>`}</div>`:'';
+  return visual+`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`;
+}
+function renderCrossActivations(entry) {
+  const p=entry.properties;
+  const activations=p.gates?.length===4?`<div class="knowledge-cross-activations">${p.gates.map((gate,index)=>`<button type="button" class="knowledge-activation knowledge-activation-link" data-knowledge-gate="${gate}" data-source-side="${index<2?'personality':'design'}" data-source-planet="${index%2?'earth':'sun'}" aria-label="${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index])+' · '+t('Gate {gate}',{gate}))}" data-activation="${['personality-sun','personality-earth','design-sun','design-earth'][index]}"><div class="knowledge-activation-label">${esc(t(['Personality Sun','Personality Earth','Design Sun','Design Earth'][index]))}</div>${chips([t('Gate {gate}',{gate})])}</button>`).join('')}</div>`:'';
+  return activations;
+}
+function renderCross(entry) {
+  if(entry.objectId!=='introduction')return `<button type="button" class="knowledge-jump-card" data-knowledge-jump="${esc(entry.properties.introductionKnowledgeId)}"><span>${esc(t('Learn about the Incarnation Cross'))}</span><span aria-hidden="true">→</span></button>`;
+  const slot=entry.detail;
+  return (slot?.presentation?.sections?slot.presentation.sections.map(section=>surface(slice(slot,section.title),renderProse(slot,section),section.id)).join(''):`<div class="knowledge-reading">${renderProse(slot)}</div>`);
+}
+function renderDeviation(entry, slot, section) {
+  // Stable metadata defines the pair; the existing registry supplies localized names.
+  const kind=entry.properties.kind;
+  const name=value=>getKnowledgeEntry({objectType:'variable',objectId:`${kind}:${value}`})?.name ?? '';
+  const perspective=kind==='perspective';
+  const mechanism=perspective
+    ? 'Distraction describes what can happen when a perspective moves off its correct state and attention shifts toward its paired perspective.'
+    : 'Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.';
+  const node=(value,label)=>`<div class="knowledge-deviation-node" data-value="${esc(value)}"><span class="knowledge-deviation-label">${esc(t(label))}</span><strong>${esc(name(value))}</strong></div>`;
+  return `<section class="knowledge-section knowledge-surface knowledge-information knowledge-deviation" data-section="${esc(section.id)}" data-terminology="${esc(section.terminology)}"><h3 class="knowledge-deviation-heading">${esc(t('Off-track State'))}</h3><div class="knowledge-deviation-term">${esc(t(section.terminology==='distraction'?'Variable Distraction':'Variable Transference'))}</div><div class="knowledge-deviation-flow">${node(section.sourceValue,perspective?'Correct perspective':'Correct motivation')}<div class="knowledge-deviation-transition"><span class="knowledge-deviation-arrow" aria-hidden="true">↓</span><span class="knowledge-deviation-label">${esc(t('When off track'))}</span></div>${node(section.targetValue,'Possible off-track direction')}</div>${renderVariableProse(slot,section)}<p class="knowledge-deviation-mechanism knowledge-secondary">${esc(t(mechanism))}</p></section>`;
+}
+function renderVariable(entry, context) {
+  const slot=entry.detail,sections=slot?.presentation?.sections;
+  if(!sections)return renderProse(slot);
+  const tone=Number(context?.tone),selected=tone>=1&&tone<=3?'tone1to3':tone>=4&&tone<=6?'tone4to6':null;
+  const render=section=>{
+    if(section.kind==='deviation')return renderDeviation(entry,slot,section);
+    const branch=section.id==='tone1to3'||section.id==='tone4to6';
+    return `<section class="knowledge-section${branch?' knowledge-surface knowledge-branch':['intro','core'].includes(section.id)?' knowledge-reading':' knowledge-surface knowledge-information'}"${branch?` data-selected="${selected===section.id}"`:''} data-section="${section.id}">${section.title?`<h3>${esc(section.title)}${selected===section.id?`<span class="knowledge-yours">${esc(t('Yours'))}</span>`:''}</h3>`:''}${renderVariableProse(slot,section)}</section>`;
+  };
+  // Metadata order is authoritative: core -> Tone pair -> remaining material.
+  let branchesRendered=false;
+  return sections.map(section=>{
+    if(['tone1to3','tone4to6'].includes(section.id)) {
+      if(branchesRendered)return '';
+      branchesRendered=true;
+      return `<div class="knowledge-branches">${sections.filter(part=>['tone1to3','tone4to6'].includes(part.id)).map(render).join('')}</div>`;
+    }
+    return render(section);
+  }).join('')+renderVariableLinks(entry);
+}
+function renderContext(entry, slot) {
+  if(entry.objectType!=='variable'||entry.properties.publicOverview||!slot)return '';
+  const direction=variableDirection(slot);
+  return `<aside class="knowledge-context knowledge-context-badges">${direction?badge(`${direction==='left'?'←':'→'} ${t(direction==='left'?'Left — focused':'Right — receptive')}`,'knowledge-direction'):''}${badge(t('Color {color} · Tone {tone} · Base {base}',slot),'knowledge-substructure')}</aside>`;
+}
+function renderGeometry(entry) {
+  if(entry.objectType==='profile'&&!entry.properties.publicOverview)return badge(entry.detail?.presentation?.geometry??t(profileLabels[entry.properties.geometry]),'knowledge-geometry');
+  if(entry.objectType==='cross'&&entry.properties.angle)return `<div class="knowledge-cross-meta">${badge(t(angleLabels[entry.properties.angle]),'knowledge-geometry')}</div>`;
+  return '';
+}
+/** One shared article renderer; object identity and explicit metadata select the visual structure. */
+export function renderKnowledgeDetail(query,{variableContext=null,definitionComponents=null,contextText=''}={}) {
+  const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
+  if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
+  const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
+  const source=entry.objectType==='variable'&&!entry.properties.publicOverview?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
+  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'&&!entry.properties.publicOverview?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${entry.properties.publicOverview&&entry.objectType!=='variable'?renderOverview(entry):renderers[entry.objectType]?.()??renderProse(entry.detail)}${renderFoundationLink(entry)}</section></article>`;
+}

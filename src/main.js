@@ -6,7 +6,10 @@
  * persistence in src/lib/people.js (backed by local birth profiles).
  */
 
+import { syncPopoverHeading, setupSyncPopoverDismiss } from './lib/sync-popover-ui.js';
 import { closeDetailDialog } from './lib/detail-dialog.js';
+import { refreshKnowledgeDetail } from './lib/knowledge/detail-controller.js';
+import './lib/knowledge/detail-access.css';
 import { computeChart, sensitivityCheck } from './lib/chartdata.js';
 import { esc } from './lib/format.js';
 import { listPeople, getPerson, savePerson, deletePerson, birthFromPerson, getLastPersonId, setLastPersonId, enableSync, setAiAccess, getAiAccess, setSharedGuest, onPeopleChange } from './lib/people.js';
@@ -64,6 +67,7 @@ function setupLanguageSwitcher() {
     if (!initialized) return;
     const chartVisible = !document.getElementById('chart-view').classList.contains('hidden');
     if (currentData) refreshChartLanguage();
+    refreshKnowledgeDetail();
     document.getElementById('chart-view').classList.toggle('hidden', !chartVisible);
     renderPeopleSwitcher();
     entryApi?.refreshLanguage();
@@ -380,7 +384,7 @@ async function setupSync() {
 
     const mcpUrl = `${window.location.origin}/mcp`;
     popover.innerHTML = `
-      <div class="panel-title" data-i18n="Account">${t('Account')}</div>
+      ${syncPopoverHeading('Account')}
       <p class="panel-intro" id="sync-account-intro"></p>
 
       <div class="panel-title" style="margin-top:14px" data-i18n="Connect your AI">${t('Connect your AI')}</div>
@@ -439,6 +443,7 @@ async function setupSync() {
 // Boot
 // ==========================================
 async function init() {
+  setupSyncPopoverDismiss();
   onAppearanceChange(refreshAppearanceGraphs);
   setupAppearanceControls();
   setupNavigation();
@@ -592,3 +597,6 @@ boot().catch(error => {
   console.error('Could not open local library:', error.message);
   setMessage(document.getElementById('local-auth-status'), 'The library could not be opened. Refresh to try again.');
 });
+
+// Knowledge uses the existing Reference route/view infrastructure.
+window.addEventListener('ohd-open-knowledge-reference', event => openReference('knowledge', event.detail.id));

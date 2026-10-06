@@ -27,6 +27,8 @@
     "e2e:sharp": "node tests/sharp-transit-e2e.mjs",
     "generate:annual": "node scripts/generate-transit-events.mjs --all",
     "verify:annual": "node scripts/verify-transit-events.mjs --all",
+    "e2e:knowledge-access": "node tests/knowledge-access-e2e.mjs",
+    "e2e:bodygraph-regression": "node tests/bodygraph-knowledge-regression-e2e.mjs",
     "research:birth-engine": "node scripts/birth-engine-prototype.mjs",
     "test:jovian-compatible": "node scripts/jovian-compatible-validation.mjs"
   },

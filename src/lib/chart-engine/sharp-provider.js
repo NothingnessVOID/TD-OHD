@@ -4,7 +4,7 @@ import { adaptSharpTransit } from './sharp-transit-contract.js';
 import { adaptSharpChart } from './sharp-contract.js';
 import { toDecimalHour } from './birth-time.js';
 
-const cacheRule = `sharp:${ENGINE_SIGNATURE}:adapter-v1`;
+const cacheRule = `sharp:${ENGINE_SIGNATURE}:adapter-v2`;
 const effectiveTime = birth => birth.timeUnknown ? '12:00' : birth.birthTime;
 let initialization;
 

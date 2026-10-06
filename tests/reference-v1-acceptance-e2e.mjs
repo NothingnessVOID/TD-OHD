@@ -74,17 +74,19 @@ try {
     const checkSourceColors = async () => {
       const colors = await page.evaluate(() => {
         const probe = document.createElement('span');
-        document.body.append(probe);
-        probe.style.color = 'var(--transit-source)';
+        document.querySelector('#timeline-view').append(probe);
+        probe.style.color = 'var(--tl-transit)';
         const expected = getComputedStyle(probe).color;
-        probe.style.color = 'var(--transit-source-text)';
+        probe.style.color = 'var(--hd-transit)';
+        const expectedRing = getComputedStyle(probe).color;
+        probe.style.color = 'var(--hd-transit-text)';
         const expectedText = getComputedStyle(probe).color;
         probe.remove();
         const bar = document.querySelector('#timeline-view .tl-bar[data-source="transit"]');
         const legend = document.querySelector('#timeline-view .tl-legend [data-source="transit"] i');
         const ring = document.querySelector('#timeline-view .tl-graph .bg-transit-ring');
         const planet = document.querySelector('#timeline-view .tl-transit-column .bg-planet-act');
-        return { expected, expectedText, bar: bar && getComputedStyle(bar).backgroundColor,
+        return { expected, expectedRing, expectedText, bar: bar && getComputedStyle(bar).backgroundColor,
           legend: legend && getComputedStyle(legend).backgroundColor,
           ring: ring && getComputedStyle(ring).stroke,
           planetText: planet && getComputedStyle(planet).color };
@@ -92,7 +94,7 @@ try {
       assert.ok(colors.bar && colors.legend && colors.ring, JSON.stringify(colors));
       assert.equal(colors.bar, colors.expected);
       assert.equal(colors.legend, colors.expected);
-      assert.equal(colors.ring, colors.expected);
+      assert.equal(colors.ring, colors.expectedRing);
       assert.equal(colors.planetText, colors.expectedText);
     };
     await checkSourceColors();

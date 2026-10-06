@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync,cpSync,rmSync,readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { validateFrontendRelease } from '../docs/frontend-runtime-ux-v1/validate.mjs';
+import { validateSyncedRelease } from '../docs/frontend-knowledge-sync-v1/validate.mjs';
 import { validateDistribution } from '../docs/release-licensing-v1/validate.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 test('required full notices are copied into the actual static distribution',()=>{assert.equal(validateDistribution(),true);});
@@ -11,7 +11,7 @@ test('distribution check rejects an omitted Base license',()=>{
  const temp=mkdtempSync(path.join(tmpdir(),'release-notice-test-'));
  try{cpSync(path.join(root,'dist/engine'),path.join(temp,'engine'),{recursive:true});rmSync(path.join(temp,'engine/licenses/SharpAstrology.Base-MIT.txt'));assert.throws(()=>validateDistribution(temp),/Missing distribution notice/);}finally{rmSync(temp,{recursive:true,force:true});}
 });
-test('reviewed frontend build preserves licensed calculation baseline and notices',()=>{assert.equal(validateFrontendRelease().passed,true);});
+test('synced frontend and Knowledge build preserves both reviewed source parents and notices',()=>{assert.equal(validateSyncedRelease().passed,true);});
 test('manifest retains unresolved root license and distinct metadata provenance',()=>{
  const id=JSON.parse(readFileSync(path.join(root,'docs/release-licensing-v1/production-identity.json')));
  assert.equal(id.calculationBaselineCommit,'4cc718f2ba6aaadc74b3c4036a0191fa9791d657');assert.equal(id.licensingMetadataCommit,null);

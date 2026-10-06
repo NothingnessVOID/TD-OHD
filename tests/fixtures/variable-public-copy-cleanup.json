@@ -1,0 +1,77 @@
+{
+  "baseline": "00bc3e02340b3ff1d0eb16b7a7e0a6a619b8a755",
+  "keys": [
+    "variable.determination:thirst",
+    "variable.determination:touch",
+    "variable.determination:sound",
+    "variable.determination:light"
+  ],
+  "replacements": {
+    "zh-CN": [
+      [
+        "教材进一步描述为食物和饮料的温度高于体温",
+        "食物和饮料的温度高于体温"
+      ],
+      [
+        "教材举例包括",
+        "例如"
+      ],
+      [
+        "教材认为温度条件不合适时",
+        "温度条件不合适时"
+      ],
+      [
+        "教材描述为尽量不要",
+        "尽量不要"
+      ],
+      [
+        "教材把这一分支描述为更接近日间运作",
+        "这一分支更接近日间运作"
+      ]
+    ],
+    "zh-Hant": [
+      [
+        "教材進一步描述為食物和飲料的溫度高於體溫",
+        "食物和飲料的溫度高於體溫"
+      ],
+      [
+        "教材舉例包括",
+        "例如"
+      ],
+      [
+        "教材認為溫度條件不合適時",
+        "溫度條件不合適時"
+      ],
+      [
+        "教材描述為盡量不要",
+        "盡量不要"
+      ],
+      [
+        "教材把這一分支描述為更接近日間運作",
+        "這一分支更接近日間運作"
+      ]
+    ],
+    "en": [
+      [
+        "The supplied material further describes this as food and drink warmer than body temperature",
+        "Food and drink are warmer than body temperature"
+      ],
+      [
+        "Examples in the supplied material include",
+        "Examples include"
+      ],
+      [
+        "The supplied material holds that unsuitable temperature conditions may make",
+        "Unsuitable temperature conditions may make"
+      ],
+      [
+        "The supplied material describes avoiding reading",
+        "Avoid reading"
+      ],
+      [
+        "The supplied material describes this branch as operating more like a daytime pattern",
+        "This branch operates more like a daytime pattern"
+      ]
+    ]
+  }
+}
