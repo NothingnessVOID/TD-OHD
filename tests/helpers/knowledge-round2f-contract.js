@@ -1,3 +1,4 @@
+import {approvedContent} from './knowledge-release-contract.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -14,7 +15,6 @@ export const copyBaseline='e731e69b91ea1ce083a4a8b023d2dd660c08735e';
 export const round2FContent=Object.fromEntries(Object.keys(knowledgeContent).map(locale=>[locale,JSON.parse(execFileSync('git',['show',`${copyBaseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''))]));
 export const restorationBaseline='efe59fdc863f409a66eb0c0eaaea73f09f324119';
 export const round2GContent=Object.fromEntries(Object.keys(knowledgeContent).map(locale=>[locale,JSON.parse(execFileSync('git',['show',`${restorationBaseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''))]));
-const restored=JSON.parse(readFileSync(new URL('../fixtures/variable-29-content.json',import.meta.url))).records;
 const approvedCopy=JSON.parse(readFileSync(new URL('../fixtures/knowledge-round2g-copy.json',import.meta.url))).details;
 /** Preserve the historical Round 2F range proof, then permit only exact Round 2G target copies. */
 export function assertContentBoundary() {
@@ -48,8 +48,8 @@ export function assertContentBoundary() {
  }
  assert.deepEqual(readFileSync(new URL('../fixtures/knowledge-round2f-deviation.json',import.meta.url)),execFileSync('git',['show',copyBaseline+':tests/fixtures/knowledge-round2f-deviation.json']));
  for(const [locale,records] of Object.entries(knowledgeContent)) {
-  assert.equal(Object.keys(records).length,60);
-  for(const [id,record] of Object.entries(records))assert.deepEqual(record,id.startsWith('variable.')?restored[locale][id]:round2GContent[locale][id],`${locale}/${id}: Variable 29 content boundary`);
+  assert.equal(Object.keys(records).length,64);
+  assert.deepEqual(records,approvedContent[locale],`${locale}: final approved RC content boundary`);
  }
  return {changed,unchanged};
 }

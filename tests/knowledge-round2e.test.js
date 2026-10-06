@@ -1,3 +1,4 @@
+import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,7 +18,7 @@ test('Round 2E historical content guard permits only the approved Round 2F devia
   assertContentBoundary();
 });
 test('all 12 Profiles in three locales have two line identities and complete original ordered text',()=>locales(()=>{
- for(const e of listKnowledgeEntries().filter(e=>e.objectType==='profile')){
+ for(const e of listKnowledgeEntries().filter(e=>e.objectType==='profile'&&e.objectId!=='introduction')){
   const h=renderKnowledgeDetail(e);assert.equal((h.match(/class="knowledge-line-identity"/g)||[]).length,2);assert.equal((h.match(/knowledge-line-section/g)||[]).length,2);assert.match(h,/knowledge-geometry/);
   const text=e.detail.template,p=e.detail.presentation;
   const ranges=[];const walk=b=>{if(b.blocks)b.blocks.forEach(walk);else if(b.kind==='timeline')b.stages.forEach(s=>ranges.push(s.label,s.body));else if(b.kind==='process'){ranges.push(b.lead,...b.steps,...b.separators);}else ranges.push(b);};p.blocks.forEach(walk);
@@ -39,7 +40,7 @@ test('Definition contexts use canonical CENTER_SHAPES and exact provided members
  }
 }));
 test('Cross Basics is independent and dynamic Cross carries identity, cards and jump only',()=>locales(l=>{
- const intro=getKnowledgeEntry(q('cross','introduction'));assert.equal(intro.name,{en:'Incarnation Cross Basics','zh-CN':'化身十字基础说明','zh-Hant':'輪迴交叉基礎說明'}[l]);
+ const intro=getKnowledgeEntry(q('cross','introduction'));assert.equal(intro.name,{en:'Incarnation Cross','zh-CN':'Incarnation Cross（化身十字）','zh-Hant':'Incarnation Cross（化身十字）'}[l]);
  const query={...q('cross','RightAngleCrossOfExplanation2'),cross:{rawId:'RightAngleCrossOfExplanation2',gates:[23,43,49,4],angle:'right',name:'Right Angle Cross of Explanation 2'}};
  const e=getKnowledgeEntry(query),h=renderKnowledgeDetail(query);assert.equal(e.summary,null);assert.equal(e.detail,null);assert.match(h,/data-knowledge-jump="hd.cross.introduction"/);assert.doesNotMatch(h,/knowledge-summary-callout|data-section="composition"|knowledge-missing/);assert.equal((h.match(/data-activation=/g)||[]).length,4);
 }));
@@ -48,9 +49,9 @@ test('Knowledge theme colors have no activation/type palette coupling',()=>{
 });
 test('protected calculation, geometry and BodyGraph functions stay byte-identical to Round 2D',()=>{
  const base='7d9f7df080dbbb997f7db6eeac6b04327fd5b2db';
- for(const p of ['src/lib/human-design/bodygraph-geometry.js','src/bodygraph.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),execFileSync('git',['show',base+':'+p]),p);
+ for(const p of ['src/lib/human-design/bodygraph-geometry.js','src/bodygraph.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),preservedSource(p,base),p);
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
- const old=extract(execFileSync('git',['show',base+':src/views/chart.js']).toString()),now=extract(readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8'));
+ const old=extract(preservedSource('src/views/chart.js',base).toString()),now=extract(readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8'));
  // goBack's additive Knowledge return branch is guarded in knowledge-polish.test.js.
  for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail','detailNav'])assert.equal(now.get(name),old.get(name));
 });

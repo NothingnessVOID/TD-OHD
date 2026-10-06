@@ -34,7 +34,8 @@ try {
    assert.ok(fit.fits,`${width}/${locale}/${objectId}: modal overflow`);
    assert.equal(await article.locator('.knowledge-context').count(),isPublic?0:1);
    const body=await article.locator('.knowledge-body').innerHTML();
-   await page.locator('#gate-detail .knowledge-library-link').click();
+   await page.locator('#gate-detail .knowledge-library-link').focus();
+   await page.keyboard.press('Enter');
    const library=page.locator('#reference-detail .knowledge-detail');await library.waitFor();
    assert.equal(await library.getAttribute('data-knowledge-id'),expected);
    const libraryText=clean(await library.innerText());

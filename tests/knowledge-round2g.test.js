@@ -1,3 +1,4 @@
+import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -51,14 +52,14 @@ test('all public UI labels and mechanisms exactly match finalized wording; arrow
   for(const id of targetIds){const html=renderKnowledgeDetail(q(id));assert.match(html,/<div class="knowledge-deviation-transition"><span class="knowledge-deviation-arrow" aria-hidden="true">↓<\/span><span class="knowledge-deviation-label">/);assert.ok(html.includes(t('When off track')));}
  }
 });
-test('only the approved Need vocabulary field changes; names resolve through the existing registry',()=>{
+test('approved vocabulary preserves the finalized Need label; names resolve through the existing registry',()=>{
  for(const [locale,before,after] of [['zh-CN','需要动机','需求动机'],['zh-Hant','需要動機','需求動機']]){
-  const file=`src/locales/${locale}/vocabulary.js`,old=execFileSync('git',['show',copyBaseline+':'+file]).toString();
-  assert.equal(readFileSync(new URL('../'+file,import.meta.url),'utf8'),old.replace(`"Need": "${before}"`,`"Need": "${after}"`));
+  const file=`src/locales/${locale}/vocabulary.js`,old=preservedSource(file,copyBaseline).toString();
+  assert.equal(readFileSync(new URL('../'+file,import.meta.url),'utf8'),old);
   setLocale(locale,{persist:false});assert.equal(getKnowledgeEntry(q('variable.motivation:need')).name,after);
  }
  setLocale('en',{persist:false});assert.equal(getKnowledgeEntry(q('variable.motivation:need')).name,'Need');
 });
 test('engines, mapping, compact rendering and export stay exact to actual Round 2F baseline',()=>{
- for(const p of ['src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/human-design/variable-data.js','src/bodygraph.js','src/views/chart.js','src/views/team.js','src/views/connection.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/knowledge/content/index.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),execFileSync('git',['show',copyBaseline+':'+p]),p);
+ for(const p of ['src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/human-design/variable-data.js','src/bodygraph.js','src/views/chart.js','src/views/team.js','src/views/connection.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/knowledge/content/index.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),preservedSource(p,copyBaseline),p);
 });

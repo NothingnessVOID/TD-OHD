@@ -12,8 +12,8 @@ import * as vocabulary from '../src/lib/vocabulary.js';
 const query=(objectType,objectId)=>({objectType,objectId});
 const withLanguages=fn=>{const previous=getLocale();try{for(const locale of ['en','zh-CN','zh-Hant']){setLocale(locale,{persist:false});fn(locale);}}finally{setLocale(previous,{persist:false});}};
 
-test('formal locale content has identical 60 keys, bounded summaries and separate bodies',()=>{
- const keys=Object.keys(knowledgeContent.en).sort();assert.equal(keys.length,60);
+test('formal locale content has identical 64 keys, bounded summaries and separate bodies',()=>{
+ const keys=Object.keys(knowledgeContent.en).sort();assert.equal(keys.length,64);
  for(const [locale,records]of Object.entries(knowledgeContent)) {
   assert.deepEqual(Object.keys(records).sort(),keys);
   for(const [key,record]of Object.entries(records)) {
@@ -26,7 +26,7 @@ test('formal locale content has identical 60 keys, bounded summaries and separat
  }
  withLanguages(locale=>{for(const e of listKnowledgeEntries()) {
   if(e.objectType==='cognition'){assert.equal(e.summary,null);assert.equal(e.detail,null);continue;}
-  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,e.objectType==='variable'?3:2);
+  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,(e.objectType==='variable'||e.objectType==='type'||e.objectId==='introduction'&&e.objectType!=='cross')?3:2);
   const text=[e.name,e.summary.content,e.detail.content].join(' ');
   if(locale==='en')assert.doesNotMatch(text,/[\u3400-\u9fff]/);
   else if(locale==='zh-Hant') assert.doesNotMatch(text,/骶骨|实践家|正向反馈/);
@@ -40,7 +40,7 @@ test('stable taxonomy preserves MG and eight independent Authority identities',(
  assert.deepEqual(typeFacts.manifestingGenerator,{family:'generator',taxonomy:'subtype',strategy:'Wait to Respond',signature:'Satisfaction',notSelf:'Frustration'});
  assert.equal(mg.properties.strategy,'Wait to Respond');assert.equal(mg.properties.notSelf,'Frustration');
  assert.equal(mg.provenance.properties.reviewStatus,'verified');
- assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='authority').length,8);
+ assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='authority'&&e.objectId!=='introduction').length,8);
  const a=getKnowledgeEntry(query('authority','egoManifested')),b=getKnowledgeEntry(query('authority','egoProjected'));
  assert.notEqual(a.name,b.name);assert.notEqual(a.detail.content,b.detail.content);assert.ok(!a.summary.sharedReference);
  assert.match(getKnowledgeDetail(query('authority','mental')).content,/do not have a bodily Center/);

@@ -83,7 +83,7 @@ test('reviewed regional terminology is independent of Simplified and English', (
   assert.equal(terms.profileName('1/3'), '探究者／烈士');
   assert.equal(terms.profileName('3/6'), '烈士／人生典範');
   assert.equal(terms.lineName(6), '人生典範');
-  assert.equal(terms.circuitName('collective'), '社會人迴路');
+  assert.equal(terms.circuitName('collective'), '集體迴路');
   assert.equal(terms.definitionName('Split Definition'), '二分人');
   assert.equal(terms.channelName([27, 50]), '保存通道', 'preservation is not the UI action Save');
   assert.equal(t('Save'), '儲存');

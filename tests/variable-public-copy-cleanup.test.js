@@ -1,22 +1,21 @@
+import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
 import {knowledgeContent} from '../src/lib/knowledge/content/index.js';
 import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';
 import {setLocale} from '../src/lib/i18n.js';
 const cleanup=JSON.parse(readFileSync(new URL('./fixtures/variable-public-copy-cleanup.json',import.meta.url)));
 const finalRecords=JSON.parse(readFileSync(new URL('./fixtures/variable-29-content.json',import.meta.url))).records;
-const navigationScope=JSON.parse(readFileSync(new URL('../docs/knowledge-layer/variable-29-scope.json',import.meta.url))).files;
 const apply=(text,locale)=>cleanup.replacements[locale].reduce((s,[a,b])=>s.replaceAll(a,b),text);
 test('only seven public voice phrases per locale change; every other field and section identity stays exact',()=>{
  for(const [locale,records]of Object.entries(knowledgeContent)){
   const raw=execFileSync('git',['show',`${cleanup.baseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString();
   const original=JSON.parse(raw.split('export default ')[1].trim().replace(/;$/,''));
   let edits=0;
-  assert.deepEqual(Object.keys(records),Object.keys(original));
-  for(const [key,r]of Object.entries(original)){
+  assert.deepEqual(Object.keys(records).filter(key=>key.startsWith('variable.')),Object.keys(original).filter(key=>key.startsWith('variable.')));
+  for(const [key,r]of Object.entries(original).filter(([key])=>key.startsWith('variable.'))){
    const expected=structuredClone(r);
    if(cleanup.keys.includes(key)){
     for(const [before]of cleanup.replacements[locale])edits+=r.detail.split(before).length-1;
@@ -48,9 +47,6 @@ test('all 29 public Variable articles and rendered bodies contain zero internal 
 test('conflict records, source evidence, calculations, Tone mapping and all renderer behavior remain byte-identical',()=>{
  for(const path of ['docs/knowledge-layer/variable-29-conflicts.md','tests/fixtures/variable-29-source-zh-CN.md','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs']){
   const bytes=readFileSync(new URL('../'+path,import.meta.url));
-  if(['src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js'].includes(path)) {
-   // Navigation label edits have an exact source guard; no longer compare to pre-navigation code.
-   assert.equal(createHash('sha256').update(bytes).digest('hex'),navigationScope[path],path);
-  } else assert.deepEqual(bytes,execFileSync('git',['show',cleanup.baseline+':'+path]),path);
+  assert.deepEqual(bytes,preservedSource(path,cleanup.baseline),path);
  }
 });

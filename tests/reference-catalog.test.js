@@ -18,7 +18,7 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(new Set(partners).size, partners.length);
   }
   assert.equal(entries.filter(entry => entry.kind === 'group').length, 3);
-  assert.equal(entries.length, 188);
+  assert.equal(entries.length, 199);
   for (const id of ['hd.variable.introduction', ...['determination', 'environment', 'perspective', 'motivation'].map(kind => `hd.variable.${kind}.introduction`)]) {
     assert.ok(entries.some(entry => entry.kind === 'knowledge' && entry.id === id), id);
   }
@@ -33,10 +33,10 @@ test('the reference catalog covers the engine topology without top-level lines',
   for (const query of ['太阳', 'Sun', '北交点']) {
     assert.ok(searchReference(query, 'planet').length > 0, `${query} finds a planetary point`);
   }
-  assert.equal(entries.filter(entry => entry.kind === 'circuit').length, 0);
+  assert.equal(entries.filter(entry => entry.kind === 'circuit').length, 7);
   assert.ok(circuitChannels('group', 'individual').some(ch => channelCircuit(ch).circuit === 'integration'));
   for (const query of ['Integration', '整合']) {
-    assert.ok(searchReference(query).some(entry => entry.kind === 'group' && entry.id === 'individual'));
+    assert.ok(searchReference(query).some(entry => entry.kind === 'circuit' && entry.id === 'integration'));
   }
 });
 
@@ -45,9 +45,9 @@ test('reversed and typographic channel IDs resolve while invalid gate and line I
   assert.equal(referenceEntry('channel', '60-3')?.id, '3-60');
   assert.ok(searchReference('14').some(entry => entry.kind === 'gate' && entry.id === '14'));
   for (const value of ['14.', '14.2', '14.0', '14.7', '14.foo', '14.1.extra']) assert.deepEqual(searchReference(value), []);
-  assert.equal(searchReference('', 'group').length, 3);
-  assert.deepEqual(searchReference('', 'circuit'), []);
-  assert.equal(referenceEntry('circuit', 'logic')?.id, 'collective', 'old circuit links open their parent group');
+  assert.equal(searchReference('', 'group').length, 10);
+  assert.equal(searchReference('', 'circuit').length, 7);
+  assert.equal(referenceEntry('circuit', 'logic')?.id, 'logic', 'circuit links open their independent page');
   assert.equal(referenceEntry('gate', '65'), null);
   assert.equal(referenceEntry('channel', '1-2'), null);
 });

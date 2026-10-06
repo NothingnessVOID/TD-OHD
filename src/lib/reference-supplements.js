@@ -2,7 +2,7 @@
  * Reference prose only; no topology or calculation data is changed.
  * zh-CN source, faithful Traditional conversion and complete English translation.
  */
-import data from './reference-supplements.json';
+import data from './reference-supplements.json' with { type: 'json' };
 import { getLocale } from './i18n.js';
 const localized = () => data[getLocale()];
 export const referenceSupplementLabels = () => localized().labels;
