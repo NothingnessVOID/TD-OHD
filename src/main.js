@@ -6,6 +6,7 @@
  * persistence in src/lib/people.js (backed by local birth profiles).
  */
 
+import { syncPopoverHeading, setupSyncPopoverDismiss } from './lib/sync-popover-ui.js';
 import { closeDetailDialog } from './lib/detail-dialog.js';
 import { refreshKnowledgeDetail } from './lib/knowledge/detail-controller.js';
 import './lib/knowledge/detail-access.css';
@@ -383,7 +384,7 @@ async function setupSync() {
 
     const mcpUrl = `${window.location.origin}/mcp`;
     popover.innerHTML = `
-      <div class="panel-title" data-i18n="Account">${t('Account')}</div>
+      ${syncPopoverHeading('Account')}
       <p class="panel-intro" id="sync-account-intro"></p>
 
       <div class="panel-title" style="margin-top:14px" data-i18n="Connect your AI">${t('Connect your AI')}</div>
@@ -442,6 +443,7 @@ async function setupSync() {
 // Boot
 // ==========================================
 async function init() {
+  setupSyncPopoverDismiss();
   onAppearanceChange(refreshAppearanceGraphs);
   setupAppearanceControls();
   setupNavigation();

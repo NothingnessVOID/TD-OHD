@@ -111,7 +111,7 @@ function renderDetail() {
     return;
   }
   if (entry.kind === 'knowledge') {
-    article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
+    article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
       <div class="reference-detail-body">${renderKnowledgeDetail(entry.id)}</div>`;
     article.scrollTop = 0;
     clearTimeout(lineHighlightTimer);
@@ -127,7 +127,7 @@ function renderDetail() {
     const group = channelCircuit(channel).group;
     return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2><span class="circuit-badge ${group}">${esc(circuitName(group))}</span></div>`;
   })() : `<h2>${entry.kind === 'planet' ? `${esc(PLANET_GLYPHS[entry.id])} ` : ''}${esc(entry.name)}</h2>`;
-  article.innerHTML = `<button type="button" class="reference-back" data-reference-back>← ${t('Back')}</button>
+  article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
     <div class="detail-label">${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</div>
     ${heading}
     ${entry.kind === 'gate' ? `<p class="label-soft">${esc(hexagramName(Number(entry.id)))}</p>` : ''}

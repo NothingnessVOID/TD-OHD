@@ -33,7 +33,7 @@
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
-        <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open navigation" data-i18n-aria-label="Open navigation" aria-controls="primary-nav" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle ui-icon-button" type="button" aria-label="Open navigation" data-i18n-aria-label="Open navigation" aria-controls="primary-nav" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <a href="./" class="logo">
           <span class="logo-mark">◇</span>
           <span class="logo-text">TD-OHD</span>
@@ -73,7 +73,7 @@
           </details>
         </div>
         <div id="sync-popover" class="sync-popover hidden">
-          <div class="panel-title" data-i18n="Sync &amp; connect your AI">Sync &amp; connect your AI</div>
+          <div class="sync-popover-header"><div class="panel-title" data-i18n="Sync &amp; connect your AI">Sync &amp; connect your AI</div><button type="button" class="ui-icon-button sync-popover-close" data-sync-close aria-label="Close" data-i18n-aria-label="Close">×</button></div>
           <p class="panel-intro" data-i18n="Your charts stay on this device by default. Sign in (free) to sync them across devices — and to let your AI assistant pull up charts by name. We store only birth data, never sell it, never train on it.">Your charts stay on this device by default. Sign in (free) to sync them across devices — and to let your AI assistant pull up charts by name. We store only birth data, never sell it, never train on it.</p>
           <form id="sync-form">
             <input type="email" id="sync-email" placeholder="you@example.com" required>
@@ -86,7 +86,7 @@
 
 
     <dialog id="skin-settings" class="skin-settings" aria-labelledby="skin-settings-title">
-      <div class="skin-settings-header"><div><p class="skin-eyebrow" data-i18n="Appearance">Appearance</p><h2 id="skin-settings-title" data-i18n="Skin">Skin</h2></div><button id="skin-settings-close" class="theme-toggle" aria-label="Close" data-i18n-aria-label="Close">×</button></div>
+      <div class="skin-settings-header"><div><p class="skin-eyebrow" data-i18n="Appearance">Appearance</p><h2 id="skin-settings-title" data-i18n="Skin">Skin</h2></div><button id="skin-settings-close" class="ui-icon-button skin-settings-close" aria-label="Close" data-i18n-aria-label="Close">×</button></div>
       <div class="skin-presets" role="group" aria-label="Skin" data-i18n-aria-label="Skin">
         <button type="button" data-skin-preset="classic"><span class="skin-swatch classic-swatch" aria-hidden="true"></span><span data-i18n="Classic">Classic</span></button>
         <button type="button" data-skin-preset="chakra"><span class="skin-swatch chakra-swatch" aria-hidden="true"></span><span data-i18n="Chakra">Chakra</span></button>

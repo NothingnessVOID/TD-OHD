@@ -191,7 +191,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     <div class="tl-time-error" role="status"></div>
     <label class="tl-fold" hidden>${esc(t('chooseOffset'))}<select data-field="fold"></select></label>
     <div class="tl-workspace"><div class="tl-stage">
-      <button type="button" class="tl-mobile-exit" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <button type="button" class="tl-mobile-exit ui-icon-button" data-action="mobile-exit" aria-label="${esc(t('openNavigation'))}" title="${esc(t('openNavigation'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       ${graphPanelMarkup({ labels: Object.fromEntries(['selected', 'legend', 'natal', 'transit', 'completed', 'both', 'design', 'personality'].map(key => [key, t(key)])), locale })}
       <button type="button" class="tl-mobile-controls-trigger" data-action="mobile-controls" aria-controls="tl-mobile-controls" aria-expanded="false" aria-label="${esc(t('mobileControls'))}" title="${esc(t('mobileControls'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="11" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button>
       <div class="tl-mobile-range"></div>
