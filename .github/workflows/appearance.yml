@@ -10,6 +10,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -20,8 +22,9 @@ jobs:
       - run: npm ci
       - name: Prepare pinned Sharp runtime and Swiss files for native tests
         run: npm run build:engine
-      - run: npm test
+      # Distribution/license tests inspect dist; build it in this clean checkout first.
       - run: npm run build
+      - run: npm test
       - run: npx playwright-core install --with-deps chromium
       - name: Start browser test server
         run: |

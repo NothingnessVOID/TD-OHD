@@ -1,53 +1,16 @@
 // TD-OHD's stable chart contract. Local modules supply descriptive catalogs;
 // every planetary activation and the 88-degree design date come from SharpAstrology.
 import { GATES, CHANNELS, CENTERS, TYPES, PROFILES, AUTHORITIES, CIRCUIT_GROUPS } from '../human-design/catalog.js';
+import { variablePresentation, variableValueId } from '../human-design/variable-data.js';
+import { channelCircuit } from '../circuit-topology.js';
 
 const centerKeys = { Root: 'root', Sacral: 'sacral', Emotions: 'solar', Spleen: 'spleen', Heart: 'heart', Self: 'g', Throat: 'throat', Mind: 'ajna', Crown: 'head' };
 const typeKeys = { Manifestor: 'manifestor', ManifestingGenerator: 'manifestingGenerator', Generator: 'generator', Projector: 'projector', Reflector: 'reflector' };
+const authorityIds = { Emotional: 'emotional', Sacral: 'sacral', Splenic: 'splenic', EgoManifested: 'egoManifested', EgoProjected: 'egoProjected', SelfProjected: 'selfProjected', Mental: 'mental', Lunar: 'lunar' };
+import { definitionIds, definitionNames } from '../human-design/identities.js';
+export { definitionIds, definitionNames } from '../human-design/identities.js';
 const authorityKeys = { Emotional: 'emotional', Sacral: 'sacral', Splenic: 'splenic', EgoManifested: 'ego', EgoProjected: 'ego', SelfProjected: 'self', Mental: 'mental', Lunar: 'lunar' };
-const definitionNames = { Empty: 'No Definition', SingleDefinition: 'Single Definition', SplitDefinition: 'Split Definition', TripleSplit: 'Triple Split Definition', QuadrupleSplit: 'Quadruple Split Definition' };
 const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-const variableNames = {
-  determination: ['Appetite', 'Taste', 'Thirst', 'Touch', 'Sound', 'Light'],
-  environment: ['Caves', 'Markets', 'Kitchens', 'Mountains', 'Valleys', 'Shores'],
-  motivation: ['Fear', 'Hope', 'Desire', 'Need', 'Guilt', 'Innocence'],
-  perspective: ['Survival', 'Possibility', 'Power', 'Wanting', 'Probability', 'Personal']
-};
-const cognitionNames = ['Smell', 'Taste', 'Outer Vision', 'Inner Vision', 'Feeling', 'Touch'];
-const variableDescriptions = {
-  determination: [
-    'Eat simple, one thing at a time. Consecutive diet.',
-    'Sensitive palate. Open or closed taste preferences.',
-    'Temperature sensitivity. Hot or cold food and drink.',
-    'Environment affects digestion. Calm surroundings needed.',
-    'Acoustic environment matters. Sound affects metabolism.',
-    'Light conditions affect eating. Direct or indirect light.'
-  ],
-  environment: [
-    'Enclosed, protected, selective spaces. Privacy and shelter.',
-    'Places of exchange and gathering. Commercial, busy spaces.',
-    'Transformative spaces where things are heated and prepared.',
-    'Elevated spaces with views and room to see.',
-    'Acoustically rich environments. Sounds and resonance.',
-    'Transitional spaces. Edges, boundaries, thresholds.'
-  ],
-  motivation: [
-    'Motivated to understand the unknown. Natural researcher and learner.',
-    'Motivated by patience and trust. Waits and observes before acting.',
-    'Motivated to move and organize. Initiates with purpose.',
-    'Motivated by service. Identifies what must be done for the collective.',
-    'Motivated by deep responsibility. Driven to fix and manage.',
-    'Motivated by non-doing. Shows up without agenda or expectation.'
-  ],
-  perspective: [
-    'Awareness focused on security and self-preservation.',
-    'Open, optimistic view. Sees potential everywhere.',
-    'Focused on influence and impact. Sees dynamics of control.',
-    'Driven by desire. Sees what is needed or missing.',
-    'Analytical, practical view. Calculates odds and outcomes.',
-    'Introspective, self-reflective, deeply personal lens.'
-  ]
-};
 
 const pad = n => String(n).padStart(2, '0');
 const dateOnly = iso => iso.slice(0, 10);
@@ -74,9 +37,11 @@ function activation([planet, data]) {
 }
 function variableItem(kind, data) {
   const { color, tone, base } = data;
-  return { arrow: tone <= 3 ? 'left' : 'right', color, tone, base,
-    name: variableNames[kind][color - 1], description: variableDescriptions[kind][color - 1],
-    ...(kind === 'determination' ? { cognition: { name: cognitionNames[tone - 1] } } : {}) };
+  // Deterministic TD-OHD derivation from Sharp activations.
+  const display = variablePresentation(kind, color, tone);
+  return { kind, valueId: variableValueId(kind, color),
+    direction: tone <= 3 ? 'left' : 'right', arrow: tone <= 3 ? 'left' : 'right', color, tone, base,
+    ...display }; // Legacy presentation fields remain compatible.
 }
 function makeVariable(personality, design) {
   const determination = variableItem('determination', design.sun);
@@ -99,33 +64,71 @@ export function adaptSharpChart(raw, birth) {
     const match = /^Key(\d+)Key(\d+)$/.exec(id);
     const channel = match && CHANNELS.find(c => c.gates[0] === +match[1] && c.gates[1] === +match[2]);
     if (!channel) throw new Error(`Unknown SharpAstrology channel: ${id}`);
+    // Preserve legacy metadata for relationship/team compatibility; effective taxonomy uses channelCircuit.
     return channel;
   });
+  for (const [center, state] of Object.entries(raw.centers)) {
+    if (!centerKeys[center] || !['None', 'FirstComparator', 'SecondComparator', 'Mixed'].includes(state))
+      throw new Error(`Unknown SharpAstrology center activation: ${center}/${state}`);
+  }
   const definedNames = Object.entries(raw.centers).filter(([, v]) => v !== 'None').map(([k]) => centerKeys[k]);
   if (definedNames.includes(undefined)) throw new Error('Unknown SharpAstrology center');
   const undefinedNames = Object.keys(CENTERS).filter(key => !definedNames.includes(key) && all.some(g => GATES[g].center === key));
   const openNames = Object.keys(CENTERS).filter(key => !definedNames.includes(key) && !undefinedNames.includes(key));
   const detail = (key, status) => ({ ...CENTERS[key], key,
     ...(status === 'defined' ? {} : { status, activatedGates: all.filter(g => GATES[g].center === key) }) });
+  // Raw Sharp component numbers are provenance, not a presentation order.
+  const componentGroups = new Map();
+  for (const [center, component] of Object.entries(raw.connectedComponents ?? {})) {
+    const key = centerKeys[center];
+    if (!key || !Number.isInteger(component)) throw new Error(`Invalid SharpAstrology component: ${center}/${component}`);
+    if (!componentGroups.has(component)) componentGroups.set(component, []);
+    componentGroups.get(component).push(key);
+  }
+  const definitionComponents = [...componentGroups.values()].map(group => group.sort()).sort((a,b) => a[0].localeCompare(b[0]));
+  const centerStates = Object.fromEntries(Object.entries(raw.centers).map(([key, value]) => [centerKeys[key], { rawId: key, rawActivation: value, defined: value !== 'None' }]));
   const profileNumbers = raw.profile.replaceAll(' ', '');
   const crossGates = [personality.sun.gate, personality.earth.gate, design.sun.gate, design.earth.gate];
   const angle = profileNumbers === '4/1' ? 'juxtaposition' : ['5/1', '5/2', '6/2', '6/3'].includes(profileNumbers) ? 'left' : 'right';
   const angleName = { right: 'Right Angle', left: 'Left Angle', juxtaposition: 'Juxtaposition' }[angle];
   const crossName = raw.incarnationCross.replace(/^(RightAngle|LeftAngle|Juxtaposition)CrossOf/, '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Za-z])(\d+)$/, '$1 $2');
-  const cross = { angle, angleName, name: crossName,
+  const cross = { rawId: raw.incarnationCross, angle, angleName, name: crossName,
     fullName: `${angleName} Cross of ${crossName} (${crossGates[0]}/${crossGates[1]} | ${crossGates[2]}/${crossGates[3]})`,
     gates: crossGates, gateNames: crossGates.map(g => GATES[g].name) };
   const circuitAnalysis = Object.fromEntries(Object.keys(CIRCUIT_GROUPS).map(key => [key, {
-    channels: activeChannels.filter(c => c.circuit === key).length,
-    names: activeChannels.filter(c => c.circuit === key).map(c => c.name)
+    channels: activeChannels.filter(c => channelCircuit(c).group === key).length,
+    names: activeChannels.filter(c => channelCircuit(c).group === key).map(c => c.name)
   }]));
   const dominantEntry = Object.entries(circuitAnalysis).sort((a, b) => b[1].channels - a[1].channels)[0];
   circuitAnalysis.dominant = dominantEntry?.[1].channels ? { name: dominantEntry[0], ...CIRCUIT_GROUPS[dominantEntry[0]], channelCount: dominantEntry[1].channels } : null;
-  const type = TYPES[typeKeys[raw.type]];
-  const authority = AUTHORITIES[authorityKeys[raw.authority]];
+  const typeData = TYPES[typeKeys[raw.type]];
+  const type = typeData && { ...typeData, id: typeKeys[raw.type], rawId: raw.type };
+  const authorityData = AUTHORITIES[authorityKeys[raw.authority]];
+  const authority = authorityData && { ...authorityData, id: authorityIds[raw.authority], rawId: raw.authority, family: authorityKeys[raw.authority] };
   if (!type || !authority) throw new Error(`Unknown SharpAstrology type or authority: ${raw.type}/${raw.authority}`);
+  const variable = makeVariable(personality, design);
   return {
-    type, authority, profile: { numbers: profileNumbers, ...PROFILES[profileNumbers] },
+    contractVersion: 'adapter-v2',
+    // Preserve compact raw identifiers and timestamps for provenance.
+    raw: { type: raw.type, authority: raw.authority, profile: raw.profile, definition: raw.definition,
+      incarnationCross: raw.incarnationCross, channels: [...raw.channels], centers: { ...raw.centers },
+      connectedComponents: { ...(raw.connectedComponents ?? {}) }, birthUtc: raw.birthUtc, designUtc: raw.designUtc },
+    // Calculation identity is distinct from the legacy local presentation objects below.
+    calculation: { type: { id: type.id, rawId: raw.type },
+      authority: { id: authority.id, rawId: raw.authority, family: authority.family },
+      profile: { id: profileNumbers, rawId: raw.profile },
+      definition: { id: definitionIds[raw.definition] ?? raw.definition, rawId: raw.definition,
+        componentCount: raw.connectedComponents == null ? null : definitionComponents.length },
+      incarnationCross: { rawId: raw.incarnationCross },
+      channels: activeChannels.map((c, index) => ({ rawId: raw.channels[index], gates: [...c.gates] })), centerStates },
+    // Derived mechanics contain no knowledge prose. Components normalize Sharp's island map.
+    derived: { definitionComponents, variable: Object.fromEntries(Object.entries(variable)
+      .filter(([, item]) => item && typeof item === 'object' && 'color' in item)
+      .map(([kind, item]) => [kind, { kind, valueId: item.valueId, color: item.color, tone: item.tone, base: item.base, direction: item.direction }])),
+      cross: { gates: crossGates, angle }, circuits: Object.fromEntries(activeChannels.map(c => [c.gates.join('-'), channelCircuit(c)])) },
+    definitionComponents, centerStates,
+    // Local presentation metadata; not returned by SharpAstrology. Compatibility facade.
+    type, authority, profile: { numbers: profileNumbers, ...PROFILES[profileNumbers], id: profileNumbers, rawId: raw.profile },
     definition: definitionNames[raw.definition] ?? raw.definition,
     incarnationCross: cross,
     centers: {
@@ -136,7 +139,7 @@ export function adaptSharpChart(raw, birth) {
       allUndefinedNames: [...undefinedNames, ...openNames]
     },
     gates: { personality, design, all }, channels: activeChannels, circuitAnalysis,
-    variable: makeVariable(personality, design),
+    variable,
     positions: {
       personality: { date: dateOnly(raw.birthUtc), ...Object.fromEntries(Object.entries(raw.personality).map(([k, v]) => [k, position(v)])) },
       design: { date: dateOnly(raw.designUtc), dateTime: localDateTime(raw.designUtc, birth.timezone ?? 0),

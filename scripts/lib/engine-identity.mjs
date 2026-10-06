@@ -11,6 +11,18 @@ export function sourceFiles(directory = vendor) {
     .flatMap(entry => entry.isDirectory() ? ['bin', 'obj', '.git'].includes(entry.name) ? [] : sourceFiles(resolve(directory, entry.name))
       : /\.(cs|csproj)$/.test(entry.name) ? [resolve(directory, entry.name)] : []);
 }
+// Only the reviewed additive birth JSON contract is outside the annual calculation identity.
+// Every other byte still contributes to the signature; full serialization source is recorded below.
+export function transitCalculationSource(source) {
+  return source.replace('// Shared birth contract preserves Sharp identifiers for browser and native consumers.',
+    '// Existing birth serialization is shared unchanged so native audits can use the browser contract.')
+    .replace(`        // Raw Sharp center -> component number mapping. Keep source labels intact.
+        writer.WriteStartObject("connectedComponents");
+        foreach (var (center, component) in chart.ConnectedComponents)
+            writer.WriteNumber(center.ToString(), component);
+        writer.WriteEndObject();
+`, '');
+}
 export function engineIdentity() {
   const upstreamFiles = JSON.parse(readFileSync(resolve(vendor, 'upstream-files.json')));
   const patchedFiles = Object.fromEntries(sourceFiles().map(file => [relative(vendor, file).replaceAll('\\', '/'), hash(readFileSync(file))]));
@@ -25,7 +37,7 @@ export function engineIdentity() {
   };
   const signatureInput = {
     format: 1, ...identity, swissCommit: ephe.commit, swissFiles: ephe.files,
-    transitAdapterSha256: hash(readFileSync(resolve(root, 'engine-core/TransitCore.cs'))),
+    transitAdapterSha256: hash(transitCalculationSource(readFileSync(resolve(root, 'engine-core/TransitCore.cs'), 'utf8'))),
     timeAdapterSha256: hash(readFileSync(resolve(root, 'src/lib/transit-time.js'))),
     annualAlgorithmSha256: hash(generateAnnualEventsAsync.toString()),
     scanStepMs: 60000, boundaryToleranceMs: 1000, points: 13,
@@ -33,11 +45,12 @@ export function engineIdentity() {
   };
   const changedFiles = Object.keys(patchedFiles).filter(file => patchedFiles[file] !== upstreamFiles[file])
     .map(file => ({ file, upstreamSha256: upstreamFiles[file] ?? null, patchedSha256: patchedFiles[file] }));
-  return { identity, signatureInput, signature: hash(JSON.stringify(signatureInput)).slice(0, 20), changedFiles };
+  return { serializationSourceSha256: hash(readFileSync(resolve(root, 'engine-core/TransitCore.cs'))), identity, signatureInput, signature: hash(JSON.stringify(signatureInput)).slice(0, 20), changedFiles };
 }
 export function writeEngineIdentity() {
   const data = engineIdentity();
-  writeFileSync(resolve(vendor, 'patch-manifest.json'), JSON.stringify(data, null, 2) + '\n');
+  const { serializationSourceSha256, ...calculationManifest } = data;
+  writeFileSync(resolve(vendor, 'patch-manifest.json'), JSON.stringify(calculationManifest, null, 2) + '\n');
   writeFileSync(resolve(root, 'src/lib/chart-engine/engine-identity.js'),
     '// Generated from pinned source and ephemeris hashes by scripts/lib/engine-identity.mjs.\n' +
     `export const ENGINE_IDENTITY = Object.freeze(${JSON.stringify(data.identity, null, 2)});\n` +

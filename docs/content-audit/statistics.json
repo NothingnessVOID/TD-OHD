@@ -1,0 +1,40 @@
+{
+  "assetRecords": 4479,
+  "byDomain": {
+    "human-design": 711,
+    "team-analysis": 89,
+    "vocabulary": 742,
+    "relationship-analysis": 188,
+    "gene-keys": 327,
+    "unknown": 428,
+    "ui": 1229,
+    "iching": 471,
+    "td-ohd-extension": 294
+  },
+  "objects": {
+    "types": 5,
+    "authorities": 7,
+    "profiles": 12,
+    "definitions": 5,
+    "centers": 9,
+    "channels": 36,
+    "gates": 64,
+    "gateLines": 384,
+    "iching": 64,
+    "ichingLines": 384,
+    "geneKeys": 64,
+    "meridian": 64
+  },
+  "uiKeys": 657,
+  "vocabularyRecords": 742,
+  "relationshipRecords": 188,
+  "teamRecords": 89,
+  "unknownSourceRecords": 314,
+  "hardcodedCandidates": 1121,
+  "exactDuplicateCandidates": 353,
+  "quarterDifferences": 41,
+  "unreviewed": 4479,
+  "translationLayerRecords": 1871,
+  "confirmedInformationLossIssues": 3,
+  "confirmedIndependentDuplicateIssues": 4
+}

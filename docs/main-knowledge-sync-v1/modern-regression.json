@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "utcCount": 97,
+  "birthCalculationChangesExcludingAdditiveConnectedComponents": 0,
+  "transitCalculationChanges": 0,
+  "birthContractAddition": "connectedComponents",
+  "personalityAndDesignAllSubdivisionAndLongitudeFieldsEqual": true
+}

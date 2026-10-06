@@ -1,0 +1,126 @@
+{
+  "layoutComparisons": [
+    {
+      "width": 1224,
+      "locale": "en",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 1224,
+      "locale": "zh-CN",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 1224,
+      "locale": "zh-Hant",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 903,
+      "locale": "en",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 903,
+      "locale": "zh-CN",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 903,
+      "locale": "zh-Hant",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 664,
+      "locale": "en",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 664,
+      "locale": "zh-CN",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 664,
+      "locale": "zh-Hant",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-Hant",
+      "foundationExact": true,
+      "variableExact": true,
+      "keyboard": true,
+      "modal": true,
+      "library": true,
+      "pureLocale": true
+    }
+  ],
+  "sameBodyLanguages": 15,
+  "routes": 6
+}

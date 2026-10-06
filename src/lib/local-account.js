@@ -1,3 +1,4 @@
+import { syncPopoverHeading } from './sync-popover-ui.js';
 import { localApi, initializeLocal, lockLocal, flushLocal, getLocalSaveNotice } from './local-store.js';
 import { LOCALES, getLocale, setLocale, onLocaleChange, registerMessages, translatePage, setMessage } from './i18n.js';
 import localMessages from '../locales/zh-CN/ui-local.json' with { type: 'json' };
@@ -102,7 +103,7 @@ export function setupLocalAccount() {
   const button = document.getElementById('sync-button');
   const popover = document.getElementById('sync-popover');
   button.classList.remove('hidden'); setMessage(button, 'Local data');
-  popover.innerHTML = `<div class="panel-title" data-i18n="Your local library">Your local library</div>
+  popover.innerHTML = `${syncPopoverHeading('Your local library')}
     <p class="panel-intro" data-i18n="Generated charts are saved automatically. Enter the same password in another browser to see them there.">Generated charts are saved automatically. Enter the same password in another browser to see them there.</p>
     <p class="local-storage-status" id="local-save-detail" role="status" aria-live="polite"></p>
     <div class="local-account-actions"><button id="local-retry" class="btn-secondary btn-small" data-i18n="Sync now">Sync now</button>

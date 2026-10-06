@@ -66,7 +66,9 @@ test('proper UTC, fractional ticks, inverse, DE/ICRS/Moshier/J2000 and speed gua
         const reference = fixture.sharp[side][body];
         for (const field of ['gate', 'line', 'color', 'tone', 'base']) assert.equal(value[field], reference[field]);
         assert.ok(Math.abs(value.longitude - reference.longitude) < 1e-10);
-        assert.ok(Math.abs(value.speed - reference.speed) < 1e-10);
+        // Match the existing independent-C speed bound; finite differences amplify platform rounding.
+        const speedDelta=Math.abs(value.speed-reference.speed);
+        assert.ok(speedDelta<1e-8,`${fixture.id}/${side}/${body}: speed delta ${speedDelta}`);
       }
       const epoch = side === 'personality' ? result.personality : result.sharpAtOracleDesign;
       assert.ok(Math.abs(epoch.sun.longitude - fixture.oracle[side].sun.longitude) * 3600000 < .001);

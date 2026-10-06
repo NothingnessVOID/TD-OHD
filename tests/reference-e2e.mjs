@@ -13,9 +13,10 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /128/);
+    assert.match(await page.locator('#reference-count').innerText(), /199/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
-    await page.locator('[data-reference-filter="planet"]').click();
+    await page.locator('.reference-filter-toggle').click();
+  await page.locator('[data-reference-filter="planet"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /13/);
     assert.equal(await page.locator('#reference-results .reference-result').count(), 13);
     for (const [query, id] of [['太阳', 'sun'], ['Sun', 'sun'], ['北交点', 'northNode']]) {
@@ -47,7 +48,8 @@ try {
     await page.locator('#language-switcher').selectOption('zh-CN');
     await page.goto(`${base}/#library`);
     await page.locator('#reference-search').fill('');
-    await page.locator('[data-reference-filter="all"]').click();
+    await page.locator('.reference-filter-toggle').click();
+  await page.locator('[data-reference-filter="all"]').click();
     if (viewport.width > 600) {
       await page.locator('#reference-results').evaluate(node => { node.scrollTop = 150; });
       assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
@@ -58,7 +60,8 @@ try {
     await page.locator('#reference-detail .reference-back').click();
     assert.match(await page.locator('#reference-detail .reference-empty').innerText(), /选择条目|Select an entry/);
     if (viewport.width > 600) assert.equal(await page.evaluate(() => window.scrollY), 0);
-    await page.locator('[data-reference-filter="channel"]').click();
+    await page.locator('.reference-filter-toggle').click();
+  await page.locator('[data-reference-filter="channel"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /36/);
     await page.locator('#reference-search').fill('60–3');
     assert.equal(await page.locator('.reference-result').count(), 1);

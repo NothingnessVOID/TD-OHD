@@ -1,3 +1,4 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 /**
  * Chart view — bodygraph + foundation + tabbed detail panels.
  */
@@ -8,26 +9,32 @@ import {
   LINE_NAMES
 } from '../lib/human-design/catalog.js';
 import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
-import { gateReading, channelReading, centerReading, channelsForGate, channelById } from '../lib/reference-content.js';
+import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelById } from '../lib/reference-content.js';
 import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
   definitionName, centerName, gateName, channelName, circuitName,
-  planetName, lineName, variable, cognition, typeDescription, hexagramName
+  planetName, lineName, variable, cognition, hexagramName
 } from '../lib/vocabulary.js';
 
 
 const humanList = items => formatDisplay('list', items);
 
+import { authorityNames } from '../lib/human-design/identities.js';
+const authorityLabel = chart => authorityName(authorityNames[chart.calculation?.authority?.id ?? chart.authority?.id] ?? chart.authority.name);
+import { foundationSummary } from '../lib/knowledge/foundation-summary.js';
+import { getKnowledgeSummary } from '../lib/knowledge/registry.js';
+import { chartKnowledgeQuery } from '../lib/knowledge/access.js';
+import { openKnowledgeDetail } from '../lib/knowledge/detail-controller.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
-import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
+import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference } from '../lib/planet-reference.js';
+import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
 
@@ -89,10 +96,10 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   banner.innerHTML = `
     <div class="type-name">${who.replace(' — ', '')}</div>
     <div><span class="type-badge">${esc(typeName(chart.type.name))}</span></div>
-    <div class="type-detail">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))} · ${esc(authorityName(chart.authority.name))} · ${esc(definitionName(chart.definition))}</div>
+    <div class="type-detail">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))} · ${esc(authorityLabel(chart))} · ${esc(definitionName(chart.definition))}</div>
     <div class="type-birthline">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${t('time unknown — chart uses noon')}</em>` : ''}</div>
     <div class="type-strategy">${t('Strategy:')} ${esc(strategy(chart.type.name))}</div>
-    <p class="type-plain">${esc(typeDescription(chart.type.name))}</p>
+    <p class="type-plain">${esc(foundationSummary(chart, 'type', 'hero'))}</p>
   `;
   // --- Bodygraph ---
   rerenderBodygraph();
@@ -204,27 +211,27 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
     <div class="panel-title">${t('Foundation')}</div>
     ${reliabilityHtml}
     <div class="foundation-grid">
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="type">
         <div class="label">${t('Type')}</div>
         <div class="value">${esc(typeName(chart.type.name))}</div>
-        <div class="detail">${esc(contentText(chart.type.description))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'type'))}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="strategy">
         <div class="label">${t('Strategy')}</div>
         <div class="value">${esc(strategy(chart.type.name))}</div>
         <div class="detail">${t('Signature:')} ${esc(signature(chart.type.name))} · ${t('Not-Self:')} ${esc(notSelf(chart.type.name))}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="authority">
         <div class="label">${t('Authority')}</div>
-        <div class="value">${esc(authorityName(chart.authority.name))}</div>
-        <div class="detail">${esc(contentText(chart.authority.description))}</div>
+        <div class="value">${esc(authorityLabel(chart))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'authority'))}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="profile">
         <div class="label">${t('Profile')}</div>
         <div class="value">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))}</div>
-        <div class="detail">${esc(contentText(chart.profile.theme))}</div>
+        <div class="detail">${esc(foundationSummary(chart, 'profile'))}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="definition">
         <div class="label">${t('Definition')}</div>
         <div class="value">${esc(definitionName(chart.definition))}</div>
         <div class="detail">${countLabel(chart.centers.definedNames.length, '{count} defined center', '{count} defined centers')}, ${countLabel(chart.channels.length, '{count} channel', '{count} channels')}</div>
@@ -234,7 +241,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <div class="value">${esc(circuitText)}</div>
         <div class="detail">${circuitDominant ? esc(contentText(circuitDominant.theme || '')) : t('No defined channels')}</div>
       </div>
-      <div class="foundation-item">
+      <div class="foundation-item" data-knowledge-object="cross">
         <div class="label">${t('Incarnation Cross')}</div>
         <div class="value">${crossDisplayHtml}</div>
         <div class="detail">${t('Gates')} ${chart.incarnationCross?.gates?.join(' / ') || '—'}</div>
@@ -246,16 +253,34 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
           { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
           { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
         ].map(group => `<div class="foundation-variable-group" data-source="${group.source}">
-          <div class="foundation-variable-heading">${esc(t(group.label))}${getLocale() !== 'en' ? `<small>${group.label}</small>` : ''}</div>
+          <div class="foundation-variable-heading">${esc(t(group.label))}</div>
           <div class="foundation-variable-pair">${group.keys.map(key => {
             const item = variableArrows(chart.variable).find(item => item.key === key);
             const label = { motivation: 'Motivation', perspective: 'Perspective', determination: 'Determination', environment: 'Environment' }[key];
-            return `<div class="foundation-variable-slot"><span data-variable="${key}" data-source="${group.source}" aria-label="${esc(t(label))}">${item ? (item.direction === 'left' ? 'L' : 'R') : '—'}</span><div class="foundation-variable-caption" title="${label}">${esc(t(label))}</div></div>`;
+            return `<div class="foundation-variable-slot" data-knowledge-variable="${key}"><span data-variable="${key}" data-source="${group.source}" aria-label="${esc(t(label))}">${item ? (item.direction === 'left' ? 'L' : 'R') : '—'}</span><div class="foundation-variable-caption" title="${esc(t(label))}">${esc(t(label))}</div></div>`;
           }).join('')}</div>
         </div>`).join('')}</div>
       </div>
     </div>
   `;
+  wireKnowledgeTargets(panel, chart);
+}
+
+function wireKnowledgeTargets(container, chart) {
+  container.querySelectorAll('[data-knowledge-object], [data-knowledge-variable]').forEach(target => {
+    const kind = target.dataset.knowledgeVariable;
+    const query = chartKnowledgeQuery(chart, kind ? 'variable' : target.dataset.knowledgeObject, kind);
+    if (!query) return;
+    target.setAttribute('role', 'button');
+    target.tabIndex = 0;
+    target.classList.add('knowledge-trigger');
+    const open = () => { target.focus({ preventScroll: true }); openKnowledgeDetail(query, kind ? { variable: chart.variable[kind] } : query.objectType === 'definition' ? { definitionComponents: chart.definitionComponents } : null); };
+    target.addEventListener('click', open);
+    target.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault(); open();
+    });
+  });
 }
 
 // ==========================================
@@ -309,6 +334,7 @@ export function refreshTransitDetail(context) {
 }
 
 function showTransitChannelDetail(id, pushHistory = true) {
+  prepareDetailDialog(document.getElementById('gate-detail'));
   const model = detailContext?.model;
   const channel = channelById(id);
   if (!channel || !current) return;
@@ -322,7 +348,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
     <div class="gate-detail-body">
       <div class="detail-label">${t('Channel {channel}', { channel: id })}</div>
       <div class="channel-detail-heading"><div class="detail-name">${esc(channelName(channel.gates))}</div>
-        <span class="circuit-badge ${channelCircuit(channel).group}">${esc(circuitName(channelCircuit(channel).group))}</span></div>
+        ${renderChannelCircuitBadges(channel)}</div>
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${channelReading(id)}
@@ -334,7 +360,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
-  fitSheetHeight(detail.querySelector('.gate-detail-card'));
+  fitDetailSheetHeight(detail.querySelector('.gate-detail-card'));
   detailGraph()?.setPinned?.({ kind: 'channel', id });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   detail.querySelectorAll('[data-channel-gate]').forEach(button => button.addEventListener('click', () => showGateDetail(Number(button.dataset.channelGate))));
@@ -343,11 +369,24 @@ function showTransitChannelDetail(id, pushHistory = true) {
 function goBack() {
   const prev = detailHistory.pop();
   if (!prev) return closeDetailDialog();
-  if (prev.kind === 'planet') showPlanetDetail(prev, false);
+  if (prev.kind === 'knowledge') {
+    openKnowledgeDetail(prev.query, prev.context);
+    document.querySelector(`#gate-detail [data-activation="${prev.activation}"]`)?.focus({ preventScroll: true });
+  }
+  else if (prev.kind === 'planet') showPlanetDetail(prev, false);
   else if (prev.kind === 'gate') showGateDetail(prev.id, false, prev.source);
   else if (prev.kind === 'channel') showTransitChannelDetail(prev.id, false);
   else showCenterDetail(prev.id, false);
 }
+
+// Thin Knowledge → Gate bridge. Release the Knowledge owner before building BodyGraph history.
+window.addEventListener('ohd-open-knowledge-gate', event => {
+  const { gate, source, returnKnowledge } = event.detail || {};
+  if (!current || !Number.isInteger(gate) || gate < 1 || gate > 64 || !returnKnowledge) return;
+  prepareDetailDialog(document.getElementById('gate-detail'));
+  detailHistory = [{ kind: 'knowledge', ...returnKnowledge }];
+  showGateDetail(gate, false, source);
+});
 
 function detailNav() {
   const backBtn = detailHistory.length > 0
@@ -361,24 +400,10 @@ function detailNav() {
     </div>`;
 }
 
-function fitSheetHeight(card, prevH = null) {
-  if (window.innerWidth > PHONE_MAX_WIDTH) return;
-  const maxH = window.innerHeight * 0.82;
-  const minH = window.innerHeight * 0.35;
-  const navH = card.querySelector('.gate-detail-nav')?.offsetHeight ?? 0;
-  const bodyH = card.querySelector('.gate-detail-body')?.scrollHeight ?? card.scrollHeight;
-  const targetH = Math.min(Math.max(navH + bodyH + 20, minH), maxH);
-  if (prevH != null) {
-    card.style.transition = 'none';
-    card.style.height = prevH + 'px';
-    card.offsetHeight; // force reflow
-    card.style.transition = 'height 260ms cubic-bezier(0.4, 0, 0.2, 1)';
-  }
-  card.style.height = targetH + 'px';
-}
 
 /** A planetary point is a separate detail from the gate it currently activates. */
 export function showPlanetDetail({ source, planet, activation } = {}, pushHistory = true) {
+  prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current || !['design', 'personality', 'transit'].includes(source) || !planet) return;
   const resolved = source === 'transit'
     ? detailContext?.transitGates?.[planet]
@@ -404,16 +429,17 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
       <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
-      <p class="gate-detail-desc planet-detail-description">${esc(planetReference(planet, getLocale()))}</p>
+      ${renderPlanetReading(planet, getLocale())}
+      <section class="planet-activation"><div class="planet-activation-label">${esc(t('Current activation'))}</div>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
         aria-label="${esc(gateLine)}">
         <strong>${esc(gateLine)}</strong>
         <span class="transit-detail-action">${esc(t('View gate details'))}<span aria-hidden="true"> ↗</span></span>
-      </button>${substructure}
+      </button>${substructure}</section>
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
-  fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
+  fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   detail.querySelector('[data-planet-gate]')?.addEventListener('click', () => showGateDetail(activation.gate, true,
@@ -421,7 +447,25 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
+// Shared channel navigation for Gate and Center details.
+function renderChannelJump(channel, chart, model = null) {
+  const key = channel.gates.join('-');
+  const active = (model?.channels || chart.channels).some(ch => ch.gates.join('-') === key);
+  const source = model && active ? model.channelSource(channel) : active ? 'defined' : 'inactive';
+  const statusLabel = model
+    ? t(active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view')
+    : t(active ? 'Defined' : 'Not defined in this view');
+  return `
+    <div class="gate-detail-channel">
+      <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
+      ${renderChannelCircuitBadges(channel)}
+      <span class="circuit-badge transit-source-badge ${source}">${statusLabel}</span>
+    </div>
+  `;
+}
+
 export function showGateDetail(gateNum, pushHistory = true, source = null) {
+  prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current) return;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   currentDetail = { kind: 'gate', id: gateNum, source };
@@ -447,17 +491,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     .map(([planet, g]) => `<span>${PLANET_GLYPHS[planet] || ''} ${t('Transit')} ${esc(planetName(planet))} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
 
   const inChannels = channelsForGate(gateNum);
-  const channelHtml = inChannels.map(ch => {
-    const key = ch.gates.join('-');
-    const channelActive = (detailContext?.model?.channels || chart.channels).some(active => active.gates.join('-') === key);
-    return `
-      <div class="gate-detail-channel">
-        <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(ch.gates))}</button>
-        <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
-        ${detailContext?.model ? `<span class="circuit-badge transit-source-badge ${channelActive ? detailContext.model.channelSource(ch) : 'inactive'}">${t(channelActive ? TRANSIT_SOURCE_LABELS[detailContext.model.channelSource(ch)] : 'No complete channel in this view')}</span>` : `<span class="circuit-badge transit-source-badge ${channelActive ? 'defined' : 'inactive'}">${t(channelActive ? 'Defined' : 'Not defined in this view')}</span>`}
-      </div>
-    `;
-  }).join('');
+  const channelHtml = inChannels.map(ch => renderChannelJump(ch, chart, detailContext?.model)).join('');
 
   detail.innerHTML = `
     <div class="gate-detail-card">
@@ -475,7 +509,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
   `;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
-  fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
+  fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: gateNum });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   detail.querySelectorAll('.lens-switch button').forEach(btn => btn.addEventListener('click', () => {
@@ -501,6 +535,7 @@ function centerObjects() {
 }
 
 export function showCenterDetail(centerKey, pushHistory = true) {
+  prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current) return;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   currentDetail = { kind: 'center', id: centerKey };
@@ -523,17 +558,12 @@ export function showCenterDetail(centerKey, pushHistory = true) {
     `<button class="gate-chip ${activeSet.has(g) ? model?.gateSource(g) === 'transit' ? 'transit-active' : 'active' : ''}" data-gate="${g}" title="${t('Gate {gate}', { gate: g })}${GATES[g]?.name ? ' — ' + esc(gateName(g)) : ''}">${g}</button>`).join('');
 
   // Channels touching this center, marked defined when they're active in the chart.
-  const definedKeys = new Set((model?.channels || chart.channels).map(ch => ch.gates.join('-')));
   const touching = CHANNELS.filter(ch => ch.centers?.includes(centerKey));
   const channelHtml = touching.length ? `
     <div class="center-detail-section">
       <span class="cd-label">${t('Channels through here')}</span>
-      <div class="cd-channels">
-        ${touching.map(ch => {
-          const key = ch.gates.join('-');
-          const on = definedKeys.has(key);
-          return `<button type="button" class="cd-channel ${on ? 'on' : ''}" data-center-channel="${key}">${esc(channelName(ch.gates))} <span class="cd-channel-gates">${key}</span></button>`;
-        }).join('')}
+      <div class="center-channel-links">
+        ${touching.map(ch => renderChannelJump(ch, chart, model)).join('')}
       </div>
     </div>` : '';
 
@@ -548,7 +578,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
           <span class="center-detail-theme">${t('Center theme')}: ${esc(contentText(c.theme || ''))}${c.biological ? ` · ${t('Biological association')}: ${esc(contentText(c.biological))}` : ''}</span>
         </div>
         <section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>
-          ${centerReading(centerKey, { status: definedHere || status === 'defined' ? 'defined' : status === 'open' ? 'open' : 'undefined', includeTheme: false })}</section>
+          ${centerReading(centerKey, { status: definedHere || status === 'defined' ? 'defined' : status === 'open' ? 'open' : 'undefined', includeTheme: false })}</section>${centerInsights(centerKey)}
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>
@@ -560,10 +590,10 @@ export function showCenterDetail(centerKey, pushHistory = true) {
   `;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
-  fitSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
+  fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'center', id: centerKey });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
-  detail.querySelectorAll('[data-center-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.centerChannel)));
+  detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
   detail.querySelectorAll('.gate-chip[data-gate]').forEach(btn => {
     btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
     wireRowHover(btn, parseInt(btn.dataset.gate));
@@ -648,7 +678,7 @@ function renderChannelsPanel(container) {
       <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
         <div class="channel-name">
           ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
-          <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
+          ${renderChannelCircuitBadges(ch)}
         </div>
         <div class="channel-meta">${esc(contentText(ch.theme))} · ${esc(formatDisplay('channelCenters', ch.centers, ch.centers.map(centerName)))}</div>
         ${desc ? `<div class="gate-description">${esc(desc.description)}<br><br><em>${esc(desc.whenDefined)}</em></div>` : ''}
@@ -772,14 +802,14 @@ function renderVariablePanel(container) {
     if (!slot) return '';
     const direction = variableDirection(slot);
     const [name] = variable(slot);
-    const originalTerm = formatDisplay('originalTerm', slot.name);
+    const knowledgeSummary = slot.valueId ? getKnowledgeSummary({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
     return `
-    <div class="arrow-card" data-variable="${key}">
+    <div class="arrow-card" data-variable="${key}" data-knowledge-variable="${key}">
       <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
       <div class="arrow-label">${label}</div>
-      <div class="arrow-type">${esc(name)}${originalTerm ? `<br><span class="label-soft">${esc(originalTerm)}</span>` : ''}</div>
-      <div class="arrow-desc">${esc(contentText(slot.description))}</div>
-      <div class="arrow-meta">${t('Color {color} · Tone {tone}', { color: slot.color, tone: slot.tone })}</div>
+      <div class="arrow-type">${esc(name)}</div>
+      <div class="arrow-desc">${esc(knowledgeSummary?.content ?? '')}</div>
+      <div class="arrow-meta">${t('Color {color} · Tone {tone} · Base {base}', { color: slot.color, tone: slot.tone, base: slot.base })}</div>
       ${sub || ''}
     </div>
   `; };
@@ -793,6 +823,7 @@ function renderVariablePanel(container) {
       ${card('perspective', v.perspective, t('Perspective'))}
     </div>
   `;
+  wireKnowledgeTargets(container, current.chart);
 }
 
 function renderCrossPanel(container) {
@@ -815,7 +846,7 @@ function renderCrossPanel(container) {
             <div class="foundation-item">
               <div class="label">${esc(contentText(s.sphere))}</div>
               <div class="value">${t('Key {key}', { key: esc(s.keyLine || s.key) })}</div>
-              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field) || s[field])).join(' →<br>')}</div>
+              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field, { bilingual:false }) || s[field])).join(' →<br>')}</div>
             </div>
           ` : '';
         }).join('')}
@@ -828,7 +859,6 @@ function renderCrossPanel(container) {
     <div class="panel-title">${t('Incarnation Cross')}</div>
     <div class="panel-heading">${esc(crossName(cross))}</div>
     <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
-    <p class="panel-intro" style="margin-top:8px">${t("Your cross is the life theme carried by your four primary gates — roughly 70% of the chart's energy. It unfolds over a lifetime; you don't have to do anything to live it.")}</p>
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `
@@ -840,8 +870,10 @@ function renderCrossPanel(container) {
         `).join('')}
       </div>
     </div>
+    <button type="button" class="knowledge-jump-card" data-cross-basics><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>
     ${geneKeysHtml}
   `;
+  container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
   container.querySelectorAll('.foundation-clickable').forEach(item => {
     item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
     wireRowHover(item, parseInt(item.dataset.gate));

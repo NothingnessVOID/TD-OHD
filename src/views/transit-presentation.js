@@ -1,8 +1,9 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { CENTERS } from '../lib/human-design/catalog.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { contentText } from '../lib/content.js';
-import { gateName, channelName, circuitName, centerName } from '../lib/vocabulary.js';
+import { gateName, channelName, centerName } from '../lib/vocabulary.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 
 export function renderTransitLegend(mode) {
@@ -56,7 +57,7 @@ export function renderTransitSummary(overlay, model) {
       <span class="completion-detail">${ch.natalGate
         ? esc(t('Your Gate {natalGate} is completed by transit Gate {transitGate} ({planet}).', { ...ch, planet: contentText(ch.transitPlanet) }))
         : esc(t('Pure transit channel — both gates carried by the planets at the selected time.'))}
-        <span class="circuit-badge ${channelCircuit(ch).group}">${esc(circuitName(channelCircuit(ch).group))}</span>
+        ${renderChannelCircuitBadges(ch)}
       </span>
     </button>`).join('') : `<p class="panel-intro">${esc(t(only ? 'No complete channels at this time.' : 'No channel completions from these transits.'))}</p>`}
     ${centers.length ? `<div class="panel-title" style="margin-top:20px">${esc(t(only ? 'Transit-defined centers ({count})' : 'Temporarily Defined Centers ({count})', { count: centers.length }))}</div>

@@ -1,0 +1,485 @@
+{
+  "zh-CN": {
+    "labels": {
+      "notSelf": "非我警讯",
+      "wisdom": "潜在智慧",
+      "lineNote": "六爻阅读提示",
+      "furtherReading": "深入解析",
+      "designArchetype": "设计原型",
+      "mechanism": "运作机制",
+      "alignedState": "高阶状态",
+      "notSelfShadow": "非我阴影"
+    },
+    "centers": {
+      "head": {
+        "notSelf": "试图解决所有与自己无关的问题，脑子停不下来。",
+        "wisdom": "辨识哪些灵感和问题真正有价值，懂得享受头脑的开放与不同视角。",
+        "openSupplement": "完全开放时，更像一个“思维鉴赏家”：可以看见各种灵感与问题经过头脑，同时逐渐分辨真正有启发性的内容与纯粹的思维噪音，不必对每一个问题都产生“必须回答”的执念。"
+      },
+      "ajna": {
+        "notSelf": "害怕显得不确定或无知，因此拼命假装确定、固执于某些观点。",
+        "wisdom": "保持心智开放，看见不同观点和思维方式的优劣，而不必执着于其中一种。",
+        "openSupplement": "完全开放时，没有固定的思考框架需要维护，可以理解并比较非常不同的认知体系。成熟以后，这种开放更适合用来观察和诊断思维模式，而不是证明“我一定是对的”。"
+      },
+      "throat": {
+        "notSelf": "试图主动开口、行动或制造动静来吸引注意、证明自己的存在。",
+        "wisdom": "学会辨识正确的表达时机；不急着争取注意时，反而更容易知道什么时候应该说、以什么方式说。",
+        "openSupplement": "完全开放时，表达方式可以随场域和对象高度变化。它并不需要固定一种“我的声音”，也可以安住于沉默；重点是让表达在适合的时机自然出现。"
+      },
+      "g": {
+        "notSelf": "执着于寻找“真正的自己”、固定的人生方向，或持续向外寻找爱与认可。",
+        "wisdom": "对环境和人群非常敏锐，能够体验多种身份、方向与爱的形式，并看见环境如何影响一个人的生命方向。",
+        "openSupplement": "完全开放时，身份与方向具有很高的流动性。重点不是逼自己找到一个永远固定的“我是谁”，而是观察：身处什么地方、和什么人在一起时，生命自然呈现出怎样的方向和关系。"
+      },
+      "heart": {
+        "notSelf": "因为觉得自己“不够有价值”，不断承诺、竞争或过度承担，用表现证明自己的价值。",
+        "wisdom": "理解人的价值不需要持续通过意志力证明，也更容易辨识什么承诺真实可兑现、什么只是逞强。",
+        "openSupplement": "完全开放时，不需要建立固定的“我值多少”或“我必须证明自己”的标准。成熟以后，更容易客观看见物质价值、承诺能力和他人的意志力，而不是把这些东西变成自我价值考试。"
+      },
+      "solar": {
+        "notSelf": "为了避免冲突、不让别人不高兴而隐藏真实感受，或把别人的情绪压力当成自己的责任。",
+        "wisdom": "成为情绪的观察者，能感受到他人的情绪变化，同时逐渐分辨哪些情绪属于自己、哪些只是经过自己的场域。",
+        "openSupplement": "完全开放时，可以像一面很清澈的情绪镜子，敏锐感受到场域中的情绪温度和变化。重点是保持观察，而不是自动认同、放大或承担这些情绪。"
+      },
+      "sacral": {
+        "notSelf": "不知道什么时候已经“够了”，容易持续工作、持续投入，直到精力耗尽。",
+        "wisdom": "学习辨识生命力如何被使用，知道什么时候继续投入、什么时候停止和休息，也更容易观察别人是否把稳定生命力用在真正有回应的事情上。",
+        "openSupplement": "完全开放时，没有固定的荐骨议程和持续生命力。成熟以后，可以非常敏锐地观察不同人的工作能量、耐力和投入是否真正滋养生命，而不需要自己跟着外界节奏持续运转。"
+      },
+      "spleen": {
+        "notSelf": "因为害怕失去安全感，紧抓已经不健康、不适合的人、事、环境或习惯不放。",
+        "wisdom": "对健康、风险、环境安全和本能反应形成细腻观察力，逐渐知道哪些恐惧来自自己、哪些来自周围场域。",
+        "openSupplement": "完全开放时，可以像一个敏感的环境雷达，对安全、不安全、舒适、不舒适的差异非常敏锐。重点不是服从每一个恐惧，而是观察这些信号经过身体时真正带来了什么信息。"
+      },
+      "root": {
+        "notSelf": "为了尽快摆脱压力而急着把所有事情做完，结果反而让身体持续处于紧绷和催促中。",
+        "wisdom": "辨识哪些压力真正需要回应、哪些只是来自环境；即使周围很急，也能逐渐保持自己的节奏。",
+        "openSupplement": "完全开放时，对各种压力来源都很敏感。成熟以后，可以观察压力如何进入、停留和离开，而不是把每一股压力都理解成“现在必须马上行动”的命令。"
+      }
+    },
+    "channels": {
+      "10-20": {
+        "designArchetype": "承诺更高原则的设计（A Design of Commitment to Higher Principles）",
+        "mechanism": "Gate 10 的自我行为、爱与身份，直接连接到 Gate 20 的当下表达。核心不是向外证明“我已经觉醒”，而是在每一个当下真实地成为自己。一个人越能接纳自身行为与本性，这种临在越自然地从表达和行动中显现。",
+        "alignedState": "减少对过去和未来的心智拉扯，安住在当下，以自然、从容的方式表达真实的自己。",
+        "notSelfShadow": "为了外界期待而扮演别人，或者把自己的觉察变成“我要去唤醒别人”的任务。整合主题首先指向自我生存与自我赋能，而不是主动改造他人。"
+      },
+      "20-34": {
+        "designArchetype": "念头必须化为行动的设计（A Design where thoughts must become deeds）",
+        "mechanism": "Gate 34 的荐骨生命力直接连接 Gate 20 的当下显化。真正的力量来自回应之后立即进入行动，而不是头脑先决定“我现在应该做什么”。当生命力真正投入到有回应的事情中，会呈现出非常忙碌、高效、全神贯注的状态，这种投入本身就是它的魅力来源。",
+        "alignedState": "先有真实的荐骨回应，再把生命力快速投入行动；忙碌来自真正想做的事情，而不是为了证明效率。",
+        "notSelfShadow": "未经回应就从头脑主动发起，陷入“为了忙而忙”，不断行动却缺少真正的满足感。"
+      },
+      "34-57": {
+        "designArchetype": "原型的设计（A Design of an Archetype）",
+        "mechanism": "Gate 57 的即时生存直觉与 Gate 34 的荐骨力量连接在一起。这里强调的是身体层面的快速本能：当环境真正需要反应时，身体可以在头脑来不及分析之前感知风险，并调动生命力。",
+        "alignedState": "信任身体当下出现的细微直觉，让力量在真正需要的时候被调用，而不是持续紧张或过度使用能量。",
+        "notSelfShadow": "用头脑长期否定身体的即时感觉，或在明显不适合自己的环境和节奏里持续透支生命力。"
+      },
+      "10-57": {
+        "designArchetype": "求生的设计（A Design of Survival）",
+        "mechanism": "Gate 57 的直觉警觉与 Gate 10 的行为、自我和爱结合，形成一种通过行为方式、姿态与环境适应来保护自己的本能。它更像“身体知道怎样行动才安全、自然、合适”，而不是依靠蛮力生存。",
+        "alignedState": "根据即时直觉自然调整行为和生活方式，在复杂环境里找到既安全又符合自身本性的行动形式。",
+        "notSelfShadow": "因为对生存和未来过度焦虑，把这种敏感变成神经质式的完美主义，对环境、声音或别人行为过度挑剔。"
+      },
+      "3-60": {
+        "designArchetype": "能量波动与启动的设计（A Design of Energy which Fluctuates and Initiates, Pulse）",
+        "mechanism": "Gate 60 的限制与 Gate 3 的新秩序形成一条脉冲式突变通道。它不是稳定、线性的进步，而更像长时间静止、蓄力、受限之后，在未知时刻发生突然跃迁。",
+        "alignedState": "接受限制和停滞也是突变周期的一部分，不强迫变化发生；当真正的 Pulse 到来时，再让新的秩序自然出现。",
+        "notSelfShadow": "无法忍受停滞，试图用头脑强迫突破限制，结果不断撞墙、制造更多挫败。"
+      },
+      "2-14": {
+        "designArchetype": "掌钥者的设计（A Design of Being the Keeper of the Keys）",
+        "mechanism": "Gate 14 的荐骨资源与生命动力连接 Gate 2 的方向。核心不是“为了钱努力”，而是当荐骨真正回应某件事时，力量、资源和方向开始在同一条轨道上运作。",
+        "alignedState": "把生命力投入真正有回应、有方向感的事情，让资源服务于正确方向。",
+        "notSelfShadow": "只为了金钱、安全感或外界标准消耗生命力，长期把能量投入并不符合自身方向的事情。"
+      },
+      "1-8": {
+        "designArchetype": "创意榜样的设计（A Design of a Creative Role Model）",
+        "mechanism": "Gate 1 的独特创造性经由 Gate 8 的贡献和表达进入外界。这条通道更适合“示范”而不是说服：通过作品、风格、选择和实际存在方式展现独特性，让真正共鸣的人受到启发。",
+        "alignedState": "允许自己以独特方式创造和贡献，不强迫所有人理解，以实际作品和生活方式成为范例。",
+        "notSelfShadow": "把独特性变成对关注和认可的追逐；当外界没有立即理解时，陷入孤立、怨恨或过度证明。"
+      },
+      "23-43": {
+        "designArchetype": "从天才到怪人的设计（A Design of Individuality - Genius to Freak）",
+        "mechanism": "Gate 43 的内在洞见连接 Gate 23 的简化表达。突变性的知晓往往先在内部突然出现，再需要经过正确的时机和语言，把复杂洞见变成别人能够理解的表达。",
+        "alignedState": "保持内省，让洞见成熟，等待适合的表达时机，以简洁、精准的方式说出核心。",
+        "notSelfShadow": "急于把尚未成熟或别人尚未准备接收的洞见强行说出去，导致表达被视为难懂、突兀或格格不入。"
+      },
+      "24-61": {
+        "designArchetype": "思考者的设计（A Design of a Thinker）",
+        "mechanism": "Gate 61 带来对内在真理、未知与奥秘的精神压力，Gate 24 则不断回返、反刍、尝试理解这些灵感。这种思考不是线性推导，也不能靠意志力强迫答案出现。",
+        "alignedState": "允许自己思考未知、神秘和生命问题，同时接受“暂时不知道”；洞见出现时再自然形成理解。",
+        "notSelfShadow": "把这套思考机制拿来强迫解决自己的现实决定，陷入持续反刍，误以为所有未知都必须被头脑想通。"
+      },
+      "28-38": {
+        "designArchetype": "顽固的设计（A Design of Stubbornness）",
+        "mechanism": "Gate 38 的压力与 Gate 28 对风险、意义和生存价值的直觉结合，使这条通道天然会问：什么事情真正值得我为它奋斗？\n\n重点不是消除挑战，而是辨认哪些挑战具有真正意义。",
+        "alignedState": "把韧性用在真正重要、值得投入的目标上，在困难中确认生命意义。",
+        "notSelfShadow": "为了反抗而反抗，把大量力量耗在没有意义的冲突、争执和对抗中。"
+      },
+      "20-57": {
+        "designArchetype": "穿透性觉知的设计（A Design of Penetrating Awareness）",
+        "mechanism": "Gate 57 的即时直觉直接连接 Gate 20 的当下表达。感知往往在一瞬间发生，表达也可能非常快速、直接，甚至先于头脑解释。",
+        "alignedState": "信任当下真正出现的直觉，同时尊重正确的表达时机，让穿透性的观察在适合的时候被说出来。",
+        "notSelfShadow": "因为对未来的恐惧而焦虑发声，或者在不适合的时机把过于快速、尖锐的判断直接丢向别人。"
+      },
+      "39-55": {
+        "designArchetype": "喜怒无常的设计（A Design of Moodiness）",
+        "mechanism": "Gate 39 的挑衅压力连接 Gate 55 的精神、丰盛与情绪波。它带有很强的情绪化学变化：高低起伏并不一定有一个可以被头脑解释清楚的外部原因，忧郁与情绪深度也可能成为创造、音乐、艺术或精神体验的土壤。",
+        "alignedState": "允许情绪有自己的波动，不在低谷时强迫自己快乐，也不急着给所有情绪找逻辑原因；让情绪在合适时成为创造和体验的一部分。",
+        "notSelfShadow": "低谷时急着做重大决定，或通过挑衅、制造戏剧冲突来获得情绪体验和回应。"
+      },
+      "12-22": {
+        "designArchetype": "社交存在的设计（A Design of a Social Being）",
+        "mechanism": "Gate 22 的情绪开放与优雅连接 Gate 12 的谨慎表达。社交和表达具有明显的 mood dependent（依赖情绪状态）特征：有些时刻声音、气质和表达极有感染力，有些时刻则自然想关闭和保持距离。",
+        "alignedState": "尊重情绪波和自己的开放程度，在真正适合表达的时刻进入社交与表达。",
+        "notSelfShadow": "在明显不适合的情绪状态下强迫自己社交、发声；或者因为害怕情绪表现而长期彻底封闭自己。"
+      },
+      "10-34": {
+        "designArchetype": "遵从自身信念的设计（A Design of Following One's Convictions）",
+        "mechanism": "Gate 34 的荐骨生命力进入 Gate 10 的行为、自我与爱。核心是把生命力投入到真正符合自身体验和本性的事情里，以实际生活方式探索“什么对我是真实的”。",
+        "alignedState": "遵循荐骨回应，把力量投入真实偏好和自身成长，以实际行动活出自尊、自爱和本真。",
+        "notSelfShadow": "把个人生活方式变成需要向外辩护或推销的信念，或者因为害怕“不合群／太自我”而持续向外界妥协。"
+      },
+      "25-51": {
+        "designArchetype": "渴望成为第一的设计（A Design of Needing to be First）",
+        "mechanism": "Gate 51 的意志力、竞争和 Shock（震荡）连接 Gate 25 的 Innocence（天真／无条件之爱）。这里的“成为第一”不仅可以表现为竞争，也可以表现为敢于率先进入未知、经历冲击后重新理解自己与生命。",
+        "alignedState": "把生命中的冲击和意外视为重新校准的契机，有勇气进入未知，同时让竞争更多指向突破过去的自己，而不是持续和别人比较。",
+        "notSelfShadow": "陷入好胜、抢风头和证明力量，为了“赢过别人”不断制造竞争或用冲击性行为证明自己。"
+      }
+    },
+    "circuits": {
+      "integration": "聚焦于 Now（当下）的个人生存、自我保护、自我赋能与独立性。它首先关心的是个体怎样在当下凭直觉、力量和真实行为保持自身完整，而不是服务集体规则或部落契约。\n\n经典 Integration 核心通道为：\n- 10-20\n- 20-34\n- 10-57\n- 34-57",
+      "knowing": "核心是 Individual Mutation（个体突变）、Knowing（知晓）与独特性的显化。\n\n共同机制：\n- Knowing：有时会先“知道”，却无法立即用逻辑解释为什么；\n- Pulse：能量以开／关方式出现，不是稳定线性输出；\n- Melancholy：脉冲关闭期可能出现忧郁、空白或疏离感；\n- Deafness：个体性会过滤不共鸣的外界声音，以保护自身独特频率。\n\n重点不是说服大众，而是允许独特性成熟；真正的突变被活出来以后，才可能自然赋能别人。",
+      "centering": "核心是自爱、向内聚焦、忠于自身信念，以及通过进入未知产生的个体蜕变。\n\n它不是 Integration 的纯生理求生，也不是 Knowing 的突变性知晓；更像把力量重新拉回自己的生命中心：\n- 10-34：以生命力探索和活出自身信念；\n- 25-51：通过 Shock、竞争与进入未知发生发起和转化。",
+      "defense": "关注亲密、繁衍、照顾与养育，是部落延续最直接的生存机制。它处理“如何建立足够亲密的连接，以及如何照顾和保护下一代／自己人”。",
+      "ego": "关注物质资源、商业交换、承诺、契约、支持与利益分配。\n\n它重视：\n- 交换是否公平；\n- 承诺是否兑现；\n- 谁属于“自己人”；\n- 资源如何被管理和分配。\n\n部落的支持往往通过非常具体的照顾、物质、协议和责任发生。",
+      "logic": "通过观察模式、怀疑、测试和修正，寻找可以重复验证的规律，并把这些规律分享给集体，以帮助未来变得更安全、更可预测。\n\n核心过程：\n**怀疑 → 假设 → 测试 → 修正 → 形成可共享模式**",
+      "sensing": "关注生命经验本身。它收集体验、感受和故事，在事情发生之后回看、整理、理解经历的意义，再把经验分享给集体。\n\n它不以“证明对错”为核心，更关注：\n**这段经历发生了什么，它让我们理解了什么。**"
+    },
+    "gateLineNote": "同一个 Gate（闸门）的六个 Line（爻）都围绕这个闸门的核心主题展开，但会以不同阶段和关系方式表现。\n\n- Line 1–3 更偏向个人内部的建立、天然状态与亲身试错；\n- Line 4–6 更偏向关系、投射、社会互动与更远的观察视角。\n\nLine 之间没有“高低等级”。它们不是从低级爬到高级，而是同一个 Gate 主题的不同表达位置。"
+  },
+  "zh-Hant": {
+    "labels": {
+      "notSelf": "非我警訊",
+      "wisdom": "潛在智慧",
+      "lineNote": "六爻閱讀提示",
+      "furtherReading": "深入解析",
+      "designArchetype": "設計原型",
+      "mechanism": "運作機制",
+      "alignedState": "高階狀態",
+      "notSelfShadow": "非我陰影"
+    },
+    "centers": {
+      "head": {
+        "notSelf": "試圖解決所有與自己無關的問題，腦子停不下來。",
+        "wisdom": "辨識哪些靈感和問題真正有價值，懂得享受頭腦的開放與不同視角。",
+        "openSupplement": "完全開放時，更像一個“思維鑑賞家”：可以看見各種靈感與問題經過頭腦，同時逐漸分辨真正有啟發性的內容與純粹的思維噪音，不必對每一個問題都產生“必須回答”的執念。"
+      },
+      "ajna": {
+        "notSelf": "害怕顯得不確定或無知，因此拼命假裝確定、固執於某些觀點。",
+        "wisdom": "保持心智開放，看見不同觀點和思維方式的優劣，而不必執著於其中一種。",
+        "openSupplement": "完全開放時，沒有固定的思考框架需要維護，可以理解並比較非常不同的認知體系。成熟以後，這種開放更適合用來觀察和診斷思維模式，而不是證明“我一定是對的”。"
+      },
+      "throat": {
+        "notSelf": "試圖主動開口、行動或製造動靜來吸引注意、證明自己的存在。",
+        "wisdom": "學會辨識正確的表達時機；不急著爭取注意時，反而更容易知道什麼時候應該說、以什麼方式說。",
+        "openSupplement": "完全開放時，表達方式可以隨場域和對象高度變化。它並不需要固定一種“我的聲音”，也可以安住於沉默；重點是讓表達在適合的時機自然出現。"
+      },
+      "g": {
+        "notSelf": "執著於尋找“真正的自己”、固定的人生方向，或持續向外尋找愛與認可。",
+        "wisdom": "對環境和人群非常敏銳，能夠體驗多種身份、方向與愛的形式，並看見環境如何影響一個人的生命方向。",
+        "openSupplement": "完全開放時，身份與方向具有很高的流動性。重點不是逼自己找到一個永遠固定的“我是誰”，而是觀察：身處什麼地方、和什麼人在一起時，生命自然呈現出怎樣的方向和關係。"
+      },
+      "heart": {
+        "notSelf": "因為覺得自己“不夠有價值”，不斷承諾、競爭或過度承擔，用表現證明自己的價值。",
+        "wisdom": "理解人的價值不需要持續通過意志力證明，也更容易辨識什麼承諾真實可兌現、什麼只是逞強。",
+        "openSupplement": "完全開放時，不需要建立固定的“我值多少”或“我必須證明自己”的標準。成熟以後，更容易客觀看見物質價值、承諾能力和他人的意志力，而不是把這些東西變成自我價值考試。"
+      },
+      "solar": {
+        "notSelf": "為了避免衝突、不讓別人不高興而隱藏真實感受，或把別人的情緒壓力當成自己的責任。",
+        "wisdom": "成為情緒的觀察者，能感受到他人的情緒變化，同時逐漸分辨哪些情緒屬於自己、哪些只是經過自己的場域。",
+        "openSupplement": "完全開放時，可以像一面很清澈的情緒鏡子，敏銳感受到場域中的情緒溫度和變化。重點是保持觀察，而不是自動認同、放大或承擔這些情緒。"
+      },
+      "sacral": {
+        "notSelf": "不知道什麼時候已經“夠了”，容易持續工作、持續投入，直到精力耗盡。",
+        "wisdom": "學習辨識生命力如何被使用，知道什麼時候繼續投入、什麼時候停止和休息，也更容易觀察別人是否把穩定生命力用在真正有回應的事情上。",
+        "openSupplement": "完全開放時，沒有固定的薦骨議程和持續生命力。成熟以後，可以非常敏銳地觀察不同人的工作能量、耐力和投入是否真正滋養生命，而不需要自己跟著外界節奏持續運轉。"
+      },
+      "spleen": {
+        "notSelf": "因為害怕失去安全感，緊抓已經不健康、不適合的人、事、環境或習慣不放。",
+        "wisdom": "對健康、風險、環境安全和本能反應形成細膩觀察力，逐漸知道哪些恐懼來自自己、哪些來自周圍場域。",
+        "openSupplement": "完全開放時，可以像一個敏感的環境雷達，對安全、不安全、舒適、不舒適的差異非常敏銳。重點不是服從每一個恐懼，而是觀察這些信號經過身體時真正帶來了什麼信息。"
+      },
+      "root": {
+        "notSelf": "為了儘快擺脫壓力而急著把所有事情做完，結果反而讓身體持續處於緊繃和催促中。",
+        "wisdom": "辨識哪些壓力真正需要回應、哪些只是來自環境；即使周圍很急，也能逐漸保持自己的節奏。",
+        "openSupplement": "完全開放時，對各種壓力來源都很敏感。成熟以後，可以觀察壓力如何進入、停留和離開，而不是把每一股壓力都理解成“現在必須馬上行動”的命令。"
+      }
+    },
+    "channels": {
+      "10-20": {
+        "designArchetype": "承諾更高原則的設計（A Design of Commitment to Higher Principles）",
+        "mechanism": "Gate 10 的自我行為、愛與身份，直接連接到 Gate 20 的當下表達。核心不是向外證明“我已經覺醒”，而是在每一個當下真實地成為自己。一個人越能接納自身行為與本性，這種臨在越自然地從表達和行動中顯現。",
+        "alignedState": "減少對過去和未來的心智拉扯，安住在當下，以自然、從容的方式表達真實的自己。",
+        "notSelfShadow": "為了外界期待而扮演別人，或者把自己的覺察變成“我要去喚醒別人”的任務。整合主題首先指向自我生存與自我賦能，而不是主動改造他人。"
+      },
+      "20-34": {
+        "designArchetype": "念頭必須化為行動的設計（A Design where thoughts must become deeds）",
+        "mechanism": "Gate 34 的薦骨生命力直接連接 Gate 20 的當下顯化。真正的力量來自回應之後立即進入行動，而不是頭腦先決定“我現在應該做什麼”。當生命力真正投入到有回應的事情中，會呈現出非常忙碌、高效、全神貫注的狀態，這種投入本身就是它的魅力來源。",
+        "alignedState": "先有真實的薦骨回應，再把生命力快速投入行動；忙碌來自真正想做的事情，而不是為了證明效率。",
+        "notSelfShadow": "未經回應就從頭腦主動發起，陷入“為了忙而忙”，不斷行動卻缺少真正的滿足感。"
+      },
+      "34-57": {
+        "designArchetype": "原型的設計（A Design of an Archetype）",
+        "mechanism": "Gate 57 的即時生存直覺與 Gate 34 的薦骨力量連接在一起。這裡強調的是身體層面的快速本能：當環境真正需要反應時，身體可以在頭腦來不及分析之前感知風險，並調動生命力。",
+        "alignedState": "信任身體當下出現的細微直覺，讓力量在真正需要的時候被調用，而不是持續緊張或過度使用能量。",
+        "notSelfShadow": "用頭腦長期否定身體的即時感覺，或在明顯不適合自己的環境和節奏裡持續透支生命力。"
+      },
+      "10-57": {
+        "designArchetype": "求生的設計（A Design of Survival）",
+        "mechanism": "Gate 57 的直覺警覺與 Gate 10 的行為、自我和愛結合，形成一種通過行為方式、姿態與環境適應來保護自己的本能。它更像“身體知道怎樣行動才安全、自然、合適”，而不是依靠蠻力生存。",
+        "alignedState": "根據即時直覺自然調整行為和生活方式，在複雜環境裡找到既安全又符合自身本性的行動形式。",
+        "notSelfShadow": "因為對生存和未來過度焦慮，把這種敏感變成神經質式的完美主義，對環境、聲音或別人行為過度挑剔。"
+      },
+      "3-60": {
+        "designArchetype": "能量波動與啟動的設計（A Design of Energy which Fluctuates and Initiates, Pulse）",
+        "mechanism": "Gate 60 的限制與 Gate 3 的新秩序形成一條脈衝式突變通道。它不是穩定、線性的進步，而更像長時間靜止、蓄力、受限之後，在未知時刻發生突然躍遷。",
+        "alignedState": "接受限制和停滯也是突變週期的一部分，不強迫變化發生；當真正的 Pulse 到來時，再讓新的秩序自然出現。",
+        "notSelfShadow": "無法忍受停滯，試圖用頭腦強迫突破限制，結果不斷撞牆、製造更多挫敗。"
+      },
+      "2-14": {
+        "designArchetype": "掌鑰者的設計（A Design of Being the Keeper of the Keys）",
+        "mechanism": "Gate 14 的薦骨資源與生命動力連接 Gate 2 的方向。核心不是“為了錢努力”，而是當薦骨真正回應某件事時，力量、資源和方向開始在同一條軌道上運作。",
+        "alignedState": "把生命力投入真正有回應、有方向感的事情，讓資源服務於正確方向。",
+        "notSelfShadow": "只為了金錢、安全感或外界標準消耗生命力，長期把能量投入並不符合自身方向的事情。"
+      },
+      "1-8": {
+        "designArchetype": "創意榜樣的設計（A Design of a Creative Role Model）",
+        "mechanism": "Gate 1 的獨特創造性經由 Gate 8 的貢獻和表達進入外界。這條通道更適合“示範”而不是說服：通過作品、風格、選擇和實際存在方式展現獨特性，讓真正共鳴的人受到啟發。",
+        "alignedState": "允許自己以獨特方式創造和貢獻，不強迫所有人理解，以實際作品和生活方式成為範例。",
+        "notSelfShadow": "把獨特性變成對關注和認可的追逐；當外界沒有立即理解時，陷入孤立、怨恨或過度證明。"
+      },
+      "23-43": {
+        "designArchetype": "從天才到怪人的設計（A Design of Individuality - Genius to Freak）",
+        "mechanism": "Gate 43 的內在洞見連接 Gate 23 的簡化表達。突變性的知曉往往先在內部突然出現，再需要經過正確的時機和語言，把複雜洞見變成別人能夠理解的表達。",
+        "alignedState": "保持內省，讓洞見成熟，等待適合的表達時機，以簡潔、精準的方式說出核心。",
+        "notSelfShadow": "急於把尚未成熟或別人尚未準備接收的洞見強行說出去，導致表達被視為難懂、突兀或格格不入。"
+      },
+      "24-61": {
+        "designArchetype": "思考者的設計（A Design of a Thinker）",
+        "mechanism": "Gate 61 帶來對內在真理、未知與奧秘的精神壓力，Gate 24 則不斷回返、反芻、嘗試理解這些靈感。這種思考不是線性推導，也不能靠意志力強迫答案出現。",
+        "alignedState": "允許自己思考未知、神秘和生命問題，同時接受“暫時不知道”；洞見出現時再自然形成理解。",
+        "notSelfShadow": "把這套思考機制拿來強迫解決自己的現實決定，陷入持續反芻，誤以為所有未知都必須被頭腦想通。"
+      },
+      "28-38": {
+        "designArchetype": "頑固的設計（A Design of Stubbornness）",
+        "mechanism": "Gate 38 的壓力與 Gate 28 對風險、意義和生存價值的直覺結合，使這條通道天然會問：什麼事情真正值得我為它奮鬥？\n\n重點不是消除挑戰，而是辨認哪些挑戰具有真正意義。",
+        "alignedState": "把韌性用在真正重要、值得投入的目標上，在困難中確認生命意義。",
+        "notSelfShadow": "為了反抗而反抗，把大量力量耗在沒有意義的衝突、爭執和對抗中。"
+      },
+      "20-57": {
+        "designArchetype": "穿透性覺知的設計（A Design of Penetrating Awareness）",
+        "mechanism": "Gate 57 的即時直覺直接連接 Gate 20 的當下表達。感知往往在一瞬間發生，表達也可能非常快速、直接，甚至先於頭腦解釋。",
+        "alignedState": "信任當下真正出現的直覺，同時尊重正確的表達時機，讓穿透性的觀察在適合的時候被說出來。",
+        "notSelfShadow": "因為對未來的恐懼而焦慮發聲，或者在不適合的時機把過於快速、尖銳的判斷直接丟向別人。"
+      },
+      "39-55": {
+        "designArchetype": "喜怒無常的設計（A Design of Moodiness）",
+        "mechanism": "Gate 39 的挑釁壓力連接 Gate 55 的精神、豐盛與情緒波。它帶有很強的情緒化學變化：高低起伏並不一定有一個可以被頭腦解釋清楚的外部原因，憂鬱與情緒深度也可能成為創造、音樂、藝術或精神體驗的土壤。",
+        "alignedState": "允許情緒有自己的波動，不在低谷時強迫自己快樂，也不急著給所有情緒找邏輯原因；讓情緒在合適時成為創造和體驗的一部分。",
+        "notSelfShadow": "低谷時急著做重大決定，或通過挑釁、製造戲劇衝突來獲得情緒體驗和回應。"
+      },
+      "12-22": {
+        "designArchetype": "社交存在的設計（A Design of a Social Being）",
+        "mechanism": "Gate 22 的情緒開放與優雅連接 Gate 12 的謹慎表達。社交和表達具有明顯的 mood dependent（依賴情緒狀態）特徵：有些時刻聲音、氣質和表達極有感染力，有些時刻則自然想關閉和保持距離。",
+        "alignedState": "尊重情緒波和自己的開放程度，在真正適合表達的時刻進入社交與表達。",
+        "notSelfShadow": "在明顯不適合的情緒狀態下強迫自己社交、發聲；或者因為害怕情緒表現而長期徹底封閉自己。"
+      },
+      "10-34": {
+        "designArchetype": "遵從自身信念的設計（A Design of Following One's Convictions）",
+        "mechanism": "Gate 34 的薦骨生命力進入 Gate 10 的行為、自我與愛。核心是把生命力投入到真正符合自身體驗和本性的事情裡，以實際生活方式探索“什麼對我是真實的”。",
+        "alignedState": "遵循薦骨回應，把力量投入真實偏好和自身成長，以實際行動活出自尊、自愛和本真。",
+        "notSelfShadow": "把個人生活方式變成需要向外辯護或推銷的信念，或者因為害怕“不合群／太自我”而持續向外界妥協。"
+      },
+      "25-51": {
+        "designArchetype": "渴望成為第一的設計（A Design of Needing to be First）",
+        "mechanism": "Gate 51 的意志力、競爭和 Shock（震盪）連接 Gate 25 的 Innocence（天真／無條件之愛）。這裡的“成為第一”不僅可以表現為競爭，也可以表現為敢於率先進入未知、經歷衝擊後重新理解自己與生命。",
+        "alignedState": "把生命中的衝擊和意外視為重新校準的契機，有勇氣進入未知，同時讓競爭更多指向突破過去的自己，而不是持續和別人比較。",
+        "notSelfShadow": "陷入好勝、搶風頭和證明力量，為了“贏過別人”不斷製造競爭或用衝擊性行為證明自己。"
+      }
+    },
+    "circuits": {
+      "integration": "聚焦於 Now（當下）的個人生存、自我保護、自我賦能與獨立性。它首先關心的是個體怎樣在當下憑直覺、力量和真實行為保持自身完整，而不是服務集體規則或部落契約。\n\n經典 Integration 核心通道為：\n- 10-20\n- 20-34\n- 10-57\n- 34-57",
+      "knowing": "核心是 Individual Mutation（個體突變）、Knowing（知曉）與獨特性的顯化。\n\n共同機制：\n- Knowing：有時會先“知道”，卻無法立即用邏輯解釋為什麼；\n- Pulse：能量以開／關方式出現，不是穩定線性輸出；\n- Melancholy：脈衝關閉期可能出現憂鬱、空白或疏離感；\n- Deafness：個體性會過濾不共鳴的外界聲音，以保護自身獨特頻率。\n\n重點不是說服大眾，而是允許獨特性成熟；真正的突變被活出來以後，才可能自然賦能別人。",
+      "centering": "核心是自愛、向內聚焦、忠於自身信念，以及通過進入未知產生的個體蛻變。\n\n它不是 Integration 的純生理求生，也不是 Knowing 的突變性知曉；更像把力量重新拉回自己的生命中心：\n- 10-34：以生命力探索和活出自身信念；\n- 25-51：通過 Shock、競爭與進入未知發生發起和轉化。",
+      "defense": "關注親密、繁衍、照顧與養育，是部落延續最直接的生存機制。它處理“如何建立足夠親密的連接，以及如何照顧和保護下一代／自己人”。",
+      "ego": "關注物質資源、商業交換、承諾、契約、支持與利益分配。\n\n它重視：\n- 交換是否公平；\n- 承諾是否兌現；\n- 誰屬於“自己人”；\n- 資源如何被管理和分配。\n\n部落的支持往往通過非常具體的照顧、物質、協議和責任發生。",
+      "logic": "通過觀察模式、懷疑、測試和修正，尋找可以重複驗證的規律，並把這些規律分享給集體，以幫助未來變得更安全、更可預測。\n\n核心過程：\n**懷疑 → 假設 → 測試 → 修正 → 形成可共享模式**",
+      "sensing": "關注生命經驗本身。它收集體驗、感受和故事，在事情發生之後回看、整理、理解經歷的意義，再把經驗分享給集體。\n\n它不以“證明對錯”為核心，更關注：\n**這段經歷發生了什麼，它讓我們理解了什麼。**"
+    },
+    "gateLineNote": "同一個 Gate（閘門）的六個 Line（爻）都圍繞這個閘門的核心主題展開，但會以不同階段和關係方式表現。\n\n- Line 1–3 更偏向個人內部的建立、天然狀態與親身試錯；\n- Line 4–6 更偏向關係、投射、社會互動與更遠的觀察視角。\n\nLine 之間沒有“高低等級”。它們不是從低級爬到高級，而是同一個 Gate 主題的不同表達位置。"
+  },
+  "en": {
+    "labels": {
+      "notSelf": "Not-Self reminder",
+      "wisdom": "Potential wisdom",
+      "lineNote": "Reading the six Lines",
+      "furtherReading": "Further reading",
+      "designArchetype": "Design archetype",
+      "mechanism": "Operating mechanism",
+      "alignedState": "Aligned state",
+      "notSelfShadow": "Not-Self shadow"
+    },
+    "centers": {
+      "head": {
+        "notSelf": "Trying to solve every question that has nothing to do with you, with a mind that never stops.",
+        "wisdom": "Discerning which inspirations and questions have real value, and learning to enjoy the openness of the mind and different perspectives.",
+        "openSupplement": "When completely open, this Center is more like a connoisseur of thought: it can see many inspirations and questions passing through the mind, gradually distinguishing genuinely illuminating content from mere mental noise, without feeling compelled to answer every question."
+      },
+      "ajna": {
+        "notSelf": "Being afraid of appearing uncertain or ignorant, then desperately pretending to be certain and clinging to particular views.",
+        "wisdom": "Keeping the mind open, seeing the strengths and weaknesses of different viewpoints and ways of thinking without having to cling to any one of them.",
+        "openSupplement": "When completely open, there is no fixed framework of thought to maintain, allowing very different systems of understanding to be comprehended and compared. With maturity, this openness is better used to observe and diagnose patterns of thought than to prove that you must be right."
+      },
+      "throat": {
+        "notSelf": "Trying to speak, act, or make a stir to attract attention and prove that you exist.",
+        "wisdom": "Learning to recognize the right moment for expression. When you are not rushing to win attention, it becomes easier to know when to speak and how to do so.",
+        "openSupplement": "When completely open, ways of expressing can vary greatly with the setting and the people present. There is no need to establish a fixed voice of your own, and silence can also be comfortable. The emphasis is on allowing expression to arise naturally at a suitable moment."
+      },
+      "g": {
+        "notSelf": "Clinging to the search for your true self or a fixed life direction, or continually seeking love and recognition outside yourself.",
+        "wisdom": "Being highly sensitive to environments and groups, experiencing many forms of identity, direction, and love, and seeing how the environment influences a person's life direction.",
+        "openSupplement": "When completely open, identity and direction are highly fluid. The emphasis is on observing what direction and relationships life naturally expresses in different places and with different people, rather than forcing yourself to find a permanently fixed answer to who you are."
+      },
+      "heart": {
+        "notSelf": "Feeling that you are not valuable enough, then continually promising, competing, or taking on too much to prove your worth through performance.",
+        "wisdom": "Understanding that a person's value does not need to be continually proven through willpower, and more readily discerning which promises can genuinely be fulfilled and which are merely overreaching.",
+        "openSupplement": "When completely open, there is no need to establish a fixed standard of how much you are worth or what you must do to prove yourself. With maturity, it becomes easier to see material value, the ability to keep commitments, and other people's willpower objectively, without turning them into a test of self-worth."
+      },
+      "solar": {
+        "notSelf": "Hiding genuine feelings to avoid conflict or keep others happy, or treating other people's emotional pressure as your own responsibility.",
+        "wisdom": "Becoming an observer of emotions, sensing changes in other people's feelings while gradually distinguishing your own emotions from those merely passing through your field.",
+        "openSupplement": "When completely open, this Center can act like a very clear emotional mirror, sensitively perceiving the emotional temperature and changes in a field. The emphasis is on remaining observant, rather than automatically identifying with, amplifying, or taking responsibility for those emotions."
+      },
+      "sacral": {
+        "notSelf": "Not knowing when enough is enough, and readily continuing to work and invest energy until exhausted.",
+        "wisdom": "Learning to discern how life force is being used, knowing when to continue and when to stop and rest, and more readily observing whether others use their consistent life force on things they genuinely respond to.",
+        "openSupplement": "When completely open, there is no fixed Sacral agenda or sustained life force. With maturity, it becomes possible to observe very sensitively whether different people's work energy, endurance, and investment genuinely nourish life, without having to keep running at the pace of the outside world yourself."
+      },
+      "spleen": {
+        "notSelf": "Holding tightly to people, things, environments, or habits that are already unhealthy or unsuitable, out of fear of losing a sense of security.",
+        "wisdom": "Developing a nuanced ability to observe health, risk, environmental safety, and instinctive reactions, gradually recognizing which fears arise from yourself and which come from the surrounding field.",
+        "openSupplement": "When completely open, this Center can resemble a sensitive environmental radar, keenly noticing differences between safety and danger, comfort and discomfort. The emphasis is on observing what information these signals actually bring as they pass through the body, rather than obeying every fear."
+      },
+      "root": {
+        "notSelf": "Rushing to finish everything in order to escape pressure as quickly as possible, leaving the body continually tense and hurried instead.",
+        "wisdom": "Discerning which pressures genuinely require a response and which simply come from the environment, gradually maintaining your own rhythm even when everyone around you is in a hurry.",
+        "openSupplement": "When completely open, this Center is sensitive to many sources of pressure. With maturity, it becomes possible to observe how pressure enters, stays, and leaves, rather than interpreting every pressure as a command to act immediately."
+      }
+    },
+    "gateLineNote": "The six Lines of the same Gate all unfold around that Gate's core theme, but express it through different phases and ways of relating.\n\n- Lines 1–3 tend toward building within the individual, natural states, and firsthand trial and error;\n- Lines 4–6 tend toward relationships, projection, social interaction, and more distant perspectives of observation.\n\nThere is no hierarchy of higher and lower Lines. They are different positions of expression within the same Gate theme, rather than a climb from an inferior to a superior level.",
+    "channels": {
+      "10-20": {
+        "designArchetype": "A Design of Commitment to Higher Principles",
+        "mechanism": "Gate 10's themes of behavior, love, and identity connect directly to Gate 20's expression in the now. The core is to truly be yourself in every moment, rather than proving to others that you are awakened. The more a person accepts their own behavior and nature, the more naturally this presence appears in expression and action.",
+        "alignedState": "Reducing the mind's pull toward the past and future, resting in the present, and expressing your true self naturally and calmly.",
+        "notSelfShadow": "Playing someone else to meet outside expectations, or turning your own awareness into a mission to awaken others. Integration themes first concern one's own survival and self-empowerment, rather than actively changing other people."
+      },
+      "20-34": {
+        "designArchetype": "A Design where thoughts must become deeds",
+        "mechanism": "Gate 34's Sacral life force connects directly to Gate 20's manifestation in the now. Real power comes from moving immediately into action after responding, rather than the mind first deciding what you should do now. When life force is genuinely invested in something you respond to, a very busy, efficient, and absorbed state can appear. That engagement itself is the source of its charisma.",
+        "alignedState": "First having a genuine Sacral response, then quickly investing life force in action. Being busy comes from things you truly want to do, rather than proving efficiency.",
+        "notSelfShadow": "Initiating from the mind without responding, becoming busy merely for the sake of being busy, and acting continually without genuine satisfaction."
+      },
+      "34-57": {
+        "designArchetype": "A Design of an Archetype",
+        "mechanism": "Gate 57's immediate survival intuition connects with Gate 34's Sacral power. The emphasis is on quick bodily instinct: when the environment genuinely calls for a response, the body can sense risk and mobilize life force before the mind has time to analyze.",
+        "alignedState": "Trusting the subtle intuition that appears in the body in the moment, allowing power to be called upon when truly needed, rather than remaining continually tense or overusing energy.",
+        "notSelfShadow": "Persistently using the mind to deny the body's immediate feelings, or continually exhausting life force in environments and rhythms that are clearly unsuitable."
+      },
+      "10-57": {
+        "designArchetype": "A Design of Survival",
+        "mechanism": "Gate 57's intuitive alertness combines with Gate 10's behavior, self, and love, forming an instinct to protect oneself through ways of behaving, posture, and adaptation to the environment. It is more like the body knowing how to act safely, naturally, and appropriately than surviving through brute force.",
+        "alignedState": "Naturally adjusting behavior and ways of living through immediate intuition, finding forms of action in complex environments that are both safe and true to your own nature.",
+        "notSelfShadow": "Excessive anxiety about survival and the future turns this sensitivity into neurotic perfectionism, becoming overly critical of environments, sounds, or other people's behavior."
+      },
+      "3-60": {
+        "designArchetype": "A Design of Energy which Fluctuates and Initiates, Pulse",
+        "mechanism": "Gate 60's limitation and Gate 3's new order form a pulsing Channel of mutation. Rather than steady, linear progress, it resembles a sudden leap at an unknown moment after a long period of stillness, gathering energy, and restriction.",
+        "alignedState": "Accepting limitation and stagnation as parts of the mutation cycle without forcing change. When the real Pulse arrives, allowing a new order to emerge naturally.",
+        "notSelfShadow": "Being unable to tolerate stagnation and trying to force a breakthrough through the mind, repeatedly hitting walls and creating more frustration."
+      },
+      "2-14": {
+        "designArchetype": "A Design of Being the Keeper of the Keys",
+        "mechanism": "Gate 14's Sacral resources and life drive connect with Gate 2's direction. The core is that when the Sacral genuinely responds to something, power, resources, and direction begin to operate along the same track, rather than simply working hard for money.",
+        "alignedState": "Investing life force in things that genuinely evoke a response and a sense of direction, allowing resources to serve the correct direction.",
+        "notSelfShadow": "Using up life force solely for money, security, or external standards, and persistently investing energy in things that do not fit your own direction."
+      },
+      "1-8": {
+        "designArchetype": "A Design of a Creative Role Model",
+        "mechanism": "Gate 1's unique creativity reaches the world through Gate 8's contribution and expression. This Channel is better suited to demonstrating than persuading: showing uniqueness through work, style, choices, and the way one actually lives, inspiring those who genuinely resonate.",
+        "alignedState": "Allowing yourself to create and contribute in a unique way without forcing everyone to understand, becoming an example through actual work and ways of living.",
+        "notSelfShadow": "Turning uniqueness into a pursuit of attention and recognition, then becoming isolated, resentful, or overly intent on proving yourself when others do not immediately understand."
+      },
+      "23-43": {
+        "designArchetype": "A Design of Individuality - Genius to Freak",
+        "mechanism": "Gate 43's inner insight connects with Gate 23's simplified expression. Mutative knowing often first appears suddenly within, then needs the right timing and language to turn complex insight into expression that others can understand.",
+        "alignedState": "Remaining introspective, allowing insights to mature, waiting for an appropriate moment to express them, and stating the core simply and precisely.",
+        "notSelfShadow": "Rushing to force out insights that have not matured or that others are not ready to receive, so the expression is seen as difficult to understand, abrupt, or out of place."
+      },
+      "24-61": {
+        "designArchetype": "A Design of a Thinker",
+        "mechanism": "Gate 61 brings mental pressure concerning inner truth, the unknown, and mysteries. Gate 24 continually returns, ruminates, and tries to understand these inspirations. This thinking is not linear deduction, and answers cannot be forced through willpower.",
+        "alignedState": "Allowing yourself to think about the unknown, mystery, and life's questions while accepting that you do not yet know. Understanding can form naturally when insight appears.",
+        "notSelfShadow": "Using this thinking mechanism to force solutions to your own practical decisions, becoming caught in continual rumination and believing that the mind must figure out every unknown."
+      },
+      "28-38": {
+        "designArchetype": "A Design of Stubbornness",
+        "mechanism": "Gate 38's pressure combines with Gate 28's intuition about risk, meaning, and the value of survival, so this Channel naturally asks: what is truly worth fighting for?\n\nThe emphasis is on recognizing which challenges have genuine meaning, rather than eliminating challenge.",
+        "alignedState": "Applying resilience to goals that are truly important and worth investing in, confirming life's meaning through difficulty.",
+        "notSelfShadow": "Rebelling for the sake of rebellion, spending great amounts of strength on meaningless conflicts, arguments, and opposition."
+      },
+      "20-57": {
+        "designArchetype": "A Design of Penetrating Awareness",
+        "mechanism": "Gate 57's immediate intuition connects directly to Gate 20's expression in the now. Perception often happens in an instant, and expression may also be very quick and direct, even preceding explanation by the mind.",
+        "alignedState": "Trusting intuition that genuinely appears in the moment while respecting the right time for expression, allowing penetrating observations to be spoken when appropriate.",
+        "notSelfShadow": "Speaking anxiously out of fear of the future, or throwing overly quick, sharp judgments at others at an unsuitable moment."
+      },
+      "39-55": {
+        "designArchetype": "A Design of Moodiness",
+        "mechanism": "Gate 39's provoking pressure connects with Gate 55's spirit, abundance, and emotional wave. It carries strong changes in emotional chemistry: highs and lows do not necessarily have an external cause that the mind can clearly explain. Melancholy and emotional depth can also become fertile ground for creativity, music, art, or spiritual experience.",
+        "alignedState": "Allowing emotions their own fluctuations, without forcing yourself to be happy in a low phase or rushing to find logical reasons for every feeling. Letting emotions become part of creativity and experience when appropriate.",
+        "notSelfShadow": "Rushing into major decisions in a low phase, or provoking and creating dramatic conflict to obtain emotional experiences and responses."
+      },
+      "12-22": {
+        "designArchetype": "A Design of a Social Being",
+        "mechanism": "Gate 22's emotional openness and grace connect with Gate 12's cautious expression. Social interaction and expression are distinctly mood dependent: at some moments the voice, presence, and expression are highly compelling; at others, closing down and keeping a distance arise naturally.",
+        "alignedState": "Respecting the emotional wave and your own degree of openness, entering social interaction and expression at a truly suitable moment.",
+        "notSelfShadow": "Forcing yourself to socialize or speak in an obviously unsuitable emotional state, or remaining completely closed off for long periods out of fear of emotional expression."
+      },
+      "10-34": {
+        "designArchetype": "A Design of Following One's Convictions",
+        "mechanism": "Gate 34's Sacral life force enters Gate 10's behavior, self, and love. The core is to invest life force in things that truly fit your own experience and nature, exploring what is real for you through the way you actually live.",
+        "alignedState": "Following Sacral response, investing power in genuine preferences and personal growth, and living self-respect, self-love, and authenticity through action.",
+        "notSelfShadow": "Turning your personal way of living into convictions that need to be defended or sold to others, or continually compromising with the outside world out of fear of not fitting in or being too self-focused."
+      },
+      "25-51": {
+        "designArchetype": "A Design of Needing to be First",
+        "mechanism": "Gate 51's willpower, competition, and Shock connect with Gate 25's Innocence and unconditional love. Being first can appear as competition, but also as daring to enter the unknown first and gaining a renewed understanding of yourself and life after experiencing a shock.",
+        "alignedState": "Seeing shocks and unexpected events in life as opportunities for recalibration, having the courage to enter the unknown, and directing competition more toward moving beyond your former self than continually comparing yourself with others.",
+        "notSelfShadow": "Becoming caught in competitiveness, seeking the spotlight, and proving strength, continually creating competition to beat others or using shocking behavior to prove yourself."
+      }
+    },
+    "circuits": {
+      "integration": "Focuses on individual survival, self-protection, self-empowerment, and independence in the Now. Its first concern is how an individual maintains their own integrity in the moment through intuition, power, and authentic behavior, rather than serving collective rules or tribal agreements.\n\nThe classic core Integration Channels are:\n- 10-20\n- 20-34\n- 10-57\n- 34-57",
+      "knowing": "Its core is Individual Mutation, Knowing, and the manifestation of uniqueness.\n\nShared mechanisms:\n- Knowing: sometimes knowing comes first, without being able to explain why logically right away;\n- Pulse: energy appears in an on/off pattern, rather than as steady linear output;\n- Melancholy: when the pulse is off, melancholy, emptiness, or a sense of separation may arise;\n- Deafness: individuality filters out external sounds that do not resonate, protecting its unique frequency.\n\nThe emphasis is on allowing uniqueness to mature rather than persuading the crowd. Once genuine mutation is lived, it may naturally empower others.",
+      "centering": "Its core is self-love, inward focus, fidelity to one's own convictions, and individual transformation through entering the unknown.\n\nIt differs from Integration's purely physical survival and Knowing's mutative knowing. It is more like drawing power back to the center of your own life:\n- 10-34: exploring and living your own convictions through life force;\n- 25-51: initiation and transformation through Shock, competition, and entering the unknown.",
+      "defense": "Concerns intimacy, reproduction, care, and nurturing, the most direct survival mechanism for the continuation of the tribe. It addresses how to establish sufficiently intimate connections and how to care for and protect the next generation and one's own people.",
+      "ego": "Concerns material resources, commercial exchange, commitments, agreements, support, and the distribution of benefits.\n\nIt values:\n- Whether exchange is fair;\n- Whether commitments are fulfilled;\n- Who belongs among one's own people;\n- How resources are managed and distributed.\n\nTribal support often takes the form of very concrete care, material resources, agreements, and responsibilities.",
+      "logic": "Through observing patterns, doubting, testing, and correcting, it seeks regularities that can be repeatedly verified and shares them with the collective to help the future become safer and more predictable.\n\nThe core process:\n**Doubt → Hypothesis → Testing → Correction → A shareable pattern**",
+      "sensing": "Concerns life experience itself. It gathers experiences, feelings, and stories, looking back after events to organize and understand their meaning, then sharing that experience with the collective.\n\nIts central concern goes beyond proving right and wrong, to asking:\n**What happened in this experience, and what did it help us understand?**"
+    }
+  }
+}
