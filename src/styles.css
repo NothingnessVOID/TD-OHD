@@ -1251,7 +1251,7 @@ body {
    ============================================= */
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
-.mobile-menu-toggle { display: none; }
+.mobile-menu-toggle.ui-icon-button { display: none; }
 .chart-share-menu { position: relative; }
 .chart-share-menu summary { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; list-style: none; color: var(--text); }
 .chart-share-menu summary svg { width: 16px; height: 16px; }
@@ -1386,7 +1386,8 @@ body.modal-open { overflow: hidden; }
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .knowledge-detail > .detail-name,
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .channel-detail-heading { padding-right: 142px; }
 
-.gate-detail-back {
+/* Shared navigation primitives; feature selectors keep their positioning. */
+.ui-back-button, .gate-detail-back {
   display: flex;
   align-items: center;
   min-height: 32px;
@@ -1400,24 +1401,23 @@ body.modal-open { overflow: hidden; }
   cursor: pointer;
   padding: 5px 12px;
 }
-.gate-detail-back:hover { color: var(--text); border-color: var(--text-secondary); }
+.ui-back-button:hover, .gate-detail-back:hover { color: var(--text); border-color: var(--text-secondary); }
 
-.gate-detail-close {
+.ui-icon-button, .gate-detail-close {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  background: var(--bg-sunken);
-  border: 1px solid var(--border);
+  background: var(--ui-icon-background, var(--bg-sunken));
+  border: 1px solid var(--ui-icon-border, var(--border));
   border-radius: 50%;
   font-size: 17px;
   line-height: 1;
-  color: var(--text-tertiary);
+  color: var(--ui-icon-color, var(--text-tertiary));
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
 }
-.gate-detail-close:hover { color: var(--text); border-color: var(--text-secondary); }
+.gate-detail-close, .skin-settings-close, .sync-popover-close { width: 32px; height: 32px; }
+.ui-icon-button:hover, .gate-detail-close:hover { color: var(--text); border-color: var(--text-secondary); }
 
 /* Title hierarchy: accent label + large name */
 .detail-label {
@@ -1641,7 +1641,7 @@ body.modal-open { overflow: hidden; }
 .reference-detail h2 { font-size: 24px; margin: 7px 0 12px; }
 .reference-detail h3 { font-size: 15px; margin: 22px 0 9px; }
 .reference-detail-body { max-width: 780px; }
-.reference-back { position: sticky; top: -1px; z-index: 2; border: 0; background: var(--bg-elevated); color: var(--accent-hover); cursor: pointer; padding: 3px 10px 12px 0; }
+.reference-back { display: inline-flex; position: sticky; top: -1px; z-index: 2; margin-bottom: 9px; }
 .reference-empty, .reference-note { color: var(--text-secondary); }
 .reference-reading { margin-top: 16px; }
 .reference-line-target { border-color: var(--accent); background: var(--accent-soft); }
@@ -1665,7 +1665,7 @@ body.modal-open { overflow: hidden; }
   .reference-layout:not(.has-detail) .reference-detail { display: none; }
   .reference-layout.has-detail::before { content: ''; position: fixed; inset: 0; z-index: 190; background: var(--modal-backdrop); }
   .reference-layout.has-detail .reference-detail { position: fixed; z-index: 191; inset: auto 0 0; max-height: min(86dvh, 800px); border-radius: 14px 14px 0 0; padding-bottom: max(22px, env(safe-area-inset-bottom)); box-shadow: var(--shadow-lg); }
-  .reference-detail .reference-back { position: static; display: block; }
+  .reference-detail .reference-back { position: static; }
   body:has(#library-view:not(.hidden) .reference-layout.has-detail) { overflow: hidden; }
 }
 
@@ -2177,6 +2177,9 @@ body.modal-open { overflow: hidden; }
   padding: 18px;
 }
 
+.sync-popover-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sync-popover-header .panel-title { margin-bottom: 0; }
+
 .sync-popover #sync-email {
   width: 100%;
   padding: 9px 12px;
@@ -2350,7 +2353,7 @@ body.modal-open { overflow: hidden; }
 
   .logo { gap: 4px; flex-shrink: 0; margin-right: auto; }
   .logo-text { display: inline; }
-  .mobile-menu-toggle { display: grid; place-items: center; flex: none; width: 36px; height: 36px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--bg-elevated); color: var(--text); font-size: 17px; cursor: pointer; }
+  .mobile-menu-toggle.ui-icon-button { display: grid; width: 36px; height: 36px; background: var(--bg-elevated); color: var(--text); }
   .mobile-menu-toggle svg { display: block; width: 18px; height: 18px; }
 
   .nav {
