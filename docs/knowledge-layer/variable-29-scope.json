@@ -1,0 +1,13 @@
+{
+  "baseline": "efe59fdc863f409a66eb0c0eaaea73f09f324119",
+  "files": {
+    "src/lib/knowledge/content/human-design-en.js": "d72d8af286f1661b4000e47acaa1b6edea6b40392dae2f2b97b71993be252601",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "e990fe0c96b22044960c1712547a3be8c52804ffc3dffe85979b34d4894f035c",
+    "src/lib/knowledge/content/human-design-zh-Hant.js": "359d813bf81e54b728aea023756abc26e56fe97a6b81cf7cfb4e11157f93f903",
+    "src/lib/knowledge/detail-access.css": "3795ff2fc6457abf60b90aef4cd63c815dfbe6310378c245b6fb22dad537f604",
+    "src/lib/knowledge/detail-controller.js": "516f89aaa03b1607c5bab7fc8d0d21d1aef02f69ed3c4cc9ea222a67fc0e6bc1",
+    "src/lib/knowledge/detail-renderer.js": "9ef5ecefa85c5a6e99dd5886ff8faf215d407bbeebb36b179157ddbd11d5eb0c",
+    "src/lib/knowledge/human-design-foundation.js": "983366c138310062e41e14afcc6c3e64756f370a463ba18976521f11251111dc",
+    "src/lib/knowledge/sources.js": "b1950f7a76f5cc85e4b5fa6b2f0bdccc8724243f6b11211f2eb1e21b599a5e41"
+  }
+}

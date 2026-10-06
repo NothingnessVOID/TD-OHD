@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
-import {knowledgeContent} from '../src/lib/knowledge/content/index.js';
+import {round2GContent as knowledgeContent} from './helpers/knowledge-round2f-contract.js';
 import {setLocale,t} from '../src/lib/i18n.js';
 import {getKnowledgeEntry} from '../src/lib/knowledge/registry.js';
 import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';

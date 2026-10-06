@@ -17,11 +17,11 @@ test('Foundation maps exact calculation identities; Strategy aliases Type; circu
  for(const kind of ['circuit','cognition'])assert.equal(chartKnowledgeQuery(chart,kind),null);
  assert.equal(chartKnowledgeQuery(chart,'variable','environment'),null);
 });
-test('ID lookup comes from existing records and keeps 31 Basic / 24 Variable entries, no Cognition',()=>{
+test('ID lookup comes from existing records and keeps 31 Basic / 29 Variable entries, no Cognition',()=>{
  for(const e of listKnowledgeEntries())assert.deepEqual(getKnowledgeEntryById(e.id),getKnowledgeEntry(e));
  assert.equal(getKnowledgeEntryById('hd.profile.1/3'),null);assert.equal(getKnowledgeEntryById('constructor'),null);
  const entries=referenceEntries().filter(e=>e.kind==='knowledge');
- assert.equal(entries.filter(e=>e.category==='basic').length,31);assert.equal(entries.filter(e=>e.category==='variable').length,24);
+ assert.equal(entries.filter(e=>e.category==='basic').length,31);assert.equal(entries.filter(e=>e.category==='variable').length,29);
  assert.equal(entries.filter(e=>e.objectType==='cross').length,1);assert.equal(entries.some(e=>e.objectType==='cognition'),false);
  for(const entry of entries)assert.equal(referenceEntry('knowledge',entry.id).id,entry.id);
 });

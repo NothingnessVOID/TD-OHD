@@ -108,3 +108,9 @@
 .knowledge-activation-link { color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease; }
 .knowledge-activation-link:hover { background: var(--accent-soft); border-color: var(--accent); }
 .knowledge-activation-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Supplied Variable lists retain readable spacing on long mobile articles. */
+.knowledge-prose-list { padding-inline-start: 22px; margin: 0 0 18px; font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.knowledge-prose-list li + li { margin-top: 6px; }
+.knowledge-variable-links { margin-top: 22px; }
+.knowledge-variable-links .knowledge-jump-card { padding: 13px 16px; }

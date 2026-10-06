@@ -13,7 +13,7 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /183/);
+    assert.match(await page.locator('#reference-count').innerText(), /188/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
     await page.locator('[data-reference-filter="planet"]').click();
     assert.match(await page.locator('#reference-count').innerText(), /13/);

@@ -18,7 +18,10 @@ test('the reference catalog covers the engine topology without top-level lines',
     assert.equal(new Set(partners).size, partners.length);
   }
   assert.equal(entries.filter(entry => entry.kind === 'group').length, 3);
-  assert.equal(entries.length, 183);
+  assert.equal(entries.length, 188);
+  for (const id of ['hd.variable.introduction', ...['determination', 'environment', 'perspective', 'motivation'].map(kind => `hd.variable.${kind}.introduction`)]) {
+    assert.ok(entries.some(entry => entry.kind === 'knowledge' && entry.id === id), id);
+  }
   assert.deepEqual(entries.filter(entry => entry.kind === 'concept').map(entry => entry.id),
     ['design', 'personality', 'transit']);
   assert.equal(referenceEntry('concept', 'transit')?.id, 'transit');
