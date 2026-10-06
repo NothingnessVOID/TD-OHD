@@ -41,7 +41,14 @@ test('real Sharp fixtures cover five definitions, preserve IDs, and agree with b
   assert.deepEqual(fixture.samples.map(s=>s.raw.definition).sort(),['Empty','SingleDefinition','SplitDefinition','TripleSplit','QuadrupleSplit'].sort());
   for(const sample of fixture.samples) {
     const fresh=await nativeClient().birth(sample.instant);
-    assert.deepEqual(fresh,sample.raw,'fixture must match the pinned native calculation');
+    const expected=structuredClone(sample.raw), comparable=structuredClone(fresh);
+    // Native ARM/x64 transcendental rounding affects only continuous longitude, not subdivisions.
+    for(const side of ['personality','design'])for(const point of Object.keys(expected[side])) {
+      const delta=Math.abs(comparable[side][point].longitude-expected[side][point].longitude);
+      assert.ok(delta<1e-10,`${sample.instant}/${side}/${point}: longitude delta ${delta}`);
+      comparable[side][point].longitude=expected[side][point].longitude;
+    }
+    assert.deepEqual(comparable,expected,'all discrete fields and timestamps must exactly match the pinned calculation');
     const c=adapt(fresh);assert.deepEqual(c.definitionComponents,natalIslands(c));
     assert.equal(c.calculation.definition.componentCount,c.definitionComponents.length);
     assert.deepEqual(c.raw.connectedComponents,fresh.connectedComponents);

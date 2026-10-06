@@ -21,6 +21,8 @@ Earlier Round 2 tests compared current files against milestones that predated th
 3. Appearance CI fetches the history needed by immutable provenance tests and builds `dist` before tests that inspect distribution notices. The previous CI failed because the distribution was absent.
 4. Browser tests open the now-collapsed category control before selecting a filter, use final categories/titles, and retain modal, focus, navigation and layout assertions. Variable's library action is exercised via keyboard to avoid the test runner waiting on an already-detached navigation button.
 
+5. Linux CI exposed ARM/x64 floating-point fixture differences (one reported longitude delta ~8e-14 degrees). Native chart comparison permits only longitude differences below 1e-10 degrees and retains exact timestamps, subdivisions, identities, channels, centers and components. Swiss fixture speed uses the existing independent-C 1e-8 degrees/day bound; unchanged node vectors use a 1e-14 absolute bound. Golden fixtures and all calculation source remain unchanged. These are continuous-number portability assertions, not a calculation or fixture rewrite.
+
 ## Local validation
 
 - `npm ci`: passed.
