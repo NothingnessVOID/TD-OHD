@@ -1661,7 +1661,7 @@ export default {
     }
   },
   "variable.introduction": {
-    "summary": "Variable（四箭頭）總說明",
+    "summary": "四箭頭描述身體與心智在攝取、環境、視角與動機上的運作傾向。",
     "detail": "核心說明\n\nVariable（四箭頭）建立在更細的 Human Design 子結構之上：\n\n**Gate（閘門） → Line（爻線） → Color（基色） → Tone（基調） → Base（基質）**\n\n箭頭方向由 Tone 決定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四個 Variable 的數據來源關係：\n\n- Design Sun / Earth（設計太陽／地球）→ Determination（攝取）\n- Design Nodes（設計南北交點）→ Environment（環境）\n- Personality Nodes（人格南北交點）→ Perspective（視角）\n- Personality Sun / Earth（人格太陽／地球）→ Motivation（動機）\n\n左右方向描述的是同一個 Color 在不同 Tone 區間下的運作傾向。Color 決定“是哪一種主題”，Tone 進一步決定這個主題更偏 Left 還是 Right 的方式運行。",
     "presentation": {
       "kind": "variable",
@@ -1675,10 +1675,10 @@ export default {
         }
       ]
     },
-    "name": "Variable（四箭頭）總說明"
+    "name": "Variable（四箭頭）"
   },
   "variable.determination:introduction": {
-    "summary": "Determination（攝取）公共說明",
+    "summary": "描述身體與大腦如何攝取、消化食物、資訊與生活經驗。",
     "detail": "核心說明\n\nDetermination 描述身體如何消化食物，也涉及大腦如何吸收信息、學習和處理生活經驗。\n\nTone 1–3 · Left\n\n左向偏主動、規律與結構化。大腦較主動地處理輸入，更適合清楚的節奏、框架與專注的攝取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然與隨順。不需要過度強迫自己按照固定結構吸收，身體和大腦更適合在自然狀態下接收食物、信息和經驗。",
     "presentation": {
       "kind": "variable",
@@ -1704,10 +1704,10 @@ export default {
         }
       ]
     },
-    "name": "Determination（攝取）公共說明"
+    "name": "Determination（攝取）"
   },
   "variable.environment:introduction": {
-    "summary": "Environment（環境）公共說明",
+    "summary": "描述身體更容易放鬆、獲得滋養並與周圍環境互動的場域。",
     "detail": "核心說明\n\nEnvironment 描述什麼樣的物理環境更容易讓身體感到舒適和被滋養，也關係到一個人在什麼場域中更容易以較小阻力遇到適合的人、事與機會。\n\nTone 1–3 · Left\n\n左向偏主動觀察與參與。人在環境中更容易保持活力、主動使用空間，並對周圍發生的事情保持較明確的參與感。\n\nTone 4–6 · Right\n\n右向偏放鬆、融入與接收。環境合適時，身體不需要持續掌控，可以卸下防備，讓場域中的人、信息和體驗自然進入感知。",
     "presentation": {
       "kind": "variable",
@@ -1733,10 +1733,10 @@ export default {
         }
       ]
     },
-    "name": "Environment（環境）公共說明"
+    "name": "Environment（環境）"
   },
   "variable.perspective:introduction": {
-    "summary": "Perspective（視角）公共說明",
+    "summary": "描述注意力自然看向哪裡，以及看待世界時最自然的觀察濾鏡。",
     "detail": "核心說明\n\nPerspective 是看待世界的濾鏡。\n\n當身體處在合適的 Environment 中，Perspective 描述眼睛和注意力天然會看向哪裡、被什麼吸引，以及一個人最自然的觀察角度。\n\n當視角處於正確狀態時，會比較清晰地看見世界；當視角偏離時，會出現 **Distraction（分心）**，注意力轉向對應的另一種 Perspective。\n\nTone 1–3 · Left · Active（聚焦型視角）\n\n觀察方式偏聚焦，需要相對明確的目標。像使用望遠鏡一樣，一次盯住一個點深入觀察，並過濾背景雜音。\n\nTone 4–6 · Right · Passive（廣角型視角）\n\n觀察方式偏周邊／廣角。不需要死死盯住一個目標，更像廣角鏡頭，在放鬆狀態下通過余光和整體氛圍捕捉信息。",
     "presentation": {
       "kind": "variable",
@@ -1762,10 +1762,10 @@ export default {
         }
       ]
     },
-    "name": "Perspective（視角）公共說明"
+    "name": "Perspective（視角）"
   },
   "variable.motivation:introduction": {
-    "summary": "Motivation（動機）公共說明",
+    "summary": "描述心智處理資訊、思考與行動時的底層驅動力。",
     "detail": "核心說明\n\nMotivation 描述頭腦處理信息時的底層驅動力：為什麼會去思考、表達或推動某件事，心智真正從什麼動機出發。\n\n當 Motivation 處在正確狀態時，心智較清明；當焦慮或迷失時，動機可能發生 **Transference（動機轉移）**，偏向對應的另一種 Motivation。\n\nTone 1–3 · Left · Active（戰略性心智）\n\n心智偏聚焦、邏輯和戰略性。更容易通過分析、計劃、目標和結構處理問題，在思考中主動過濾無關信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏發散、全景與接收性。不適合過度死磕細節或制定僵硬計劃，更容易在放鬆狀態下接收信息，讓不同線索自然連接成整體理解。",
     "presentation": {
       "kind": "variable",
@@ -1791,6 +1791,6 @@ export default {
         }
       ]
     },
-    "name": "Motivation（動機）公共說明"
+    "name": "Motivation（動機）"
   }
 };

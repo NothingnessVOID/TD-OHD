@@ -5,7 +5,7 @@
   "records": {
     "zh-CN": {
       "variable.introduction": {
-        "summary": "Variable（四箭头）总说明",
+        "summary": "四箭头描述身体与心智在摄取、环境、视角与动机上的运作倾向。",
         "detail": "核心说明\n\nVariable（四箭头）建立在更细的 Human Design 子结构之上：\n\n**Gate（闸门） → Line（爻线） → Color（基色） → Tone（基调） → Base（基质）**\n\n箭头方向由 Tone 决定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四个 Variable 的数据来源关系：\n\n- Design Sun / Earth（设计太阳／地球）→ Determination（摄取）\n- Design Nodes（设计南北交点）→ Environment（环境）\n- Personality Nodes（人格南北交点）→ Perspective（视角）\n- Personality Sun / Earth（人格太阳／地球）→ Motivation（动机）\n\n左右方向描述的是同一个 Color 在不同 Tone 区间下的运作倾向。Color 决定“是哪一种主题”，Tone 进一步决定这个主题更偏 Left 还是 Right 的方式运行。",
         "presentation": {
           "kind": "variable",
@@ -19,10 +19,10 @@
             }
           ]
         },
-        "name": "Variable（四箭头）总说明"
+        "name": "Variable（四箭头）"
       },
       "variable.determination:introduction": {
-        "summary": "Determination（摄取）公共说明",
+        "summary": "描述身体与大脑如何摄取、消化食物、信息与生活经验。",
         "detail": "核心说明\n\nDetermination 描述身体如何消化食物，也涉及大脑如何吸收信息、学习和处理生活经验。\n\nTone 1–3 · Left\n\n左向偏主动、规律与结构化。大脑较主动地处理输入，更适合清楚的节奏、框架与专注的摄取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然与随顺。不需要过度强迫自己按照固定结构吸收，身体和大脑更适合在自然状态下接收食物、信息和经验。",
         "presentation": {
           "kind": "variable",
@@ -48,10 +48,10 @@
             }
           ]
         },
-        "name": "Determination（摄取）公共说明"
+        "name": "Determination（摄取）"
       },
       "variable.environment:introduction": {
-        "summary": "Environment（环境）公共说明",
+        "summary": "描述身体更容易放松、获得滋养并与周围环境互动的场域。",
         "detail": "核心说明\n\nEnvironment 描述什么样的物理环境更容易让身体感到舒适和被滋养，也关系到一个人在什么场域中更容易以较小阻力遇到适合的人、事与机会。\n\nTone 1–3 · Left\n\n左向偏主动观察与参与。人在环境中更容易保持活力、主动使用空间，并对周围发生的事情保持较明确的参与感。\n\nTone 4–6 · Right\n\n右向偏放松、融入与接收。环境合适时，身体不需要持续掌控，可以卸下防备，让场域中的人、信息和体验自然进入感知。",
         "presentation": {
           "kind": "variable",
@@ -77,10 +77,10 @@
             }
           ]
         },
-        "name": "Environment（环境）公共说明"
+        "name": "Environment（环境）"
       },
       "variable.perspective:introduction": {
-        "summary": "Perspective（视角）公共说明",
+        "summary": "描述注意力自然看向哪里，以及看待世界时最自然的观察滤镜。",
         "detail": "核心说明\n\nPerspective 是看待世界的滤镜。\n\n当身体处在合适的 Environment 中，Perspective 描述眼睛和注意力天然会看向哪里、被什么吸引，以及一个人最自然的观察角度。\n\n当视角处于正确状态时，会比较清晰地看见世界；当视角偏离时，会出现 **Distraction（分心）**，注意力转向对应的另一种 Perspective。\n\nTone 1–3 · Left · Active（聚焦型视角）\n\n观察方式偏聚焦，需要相对明确的目标。像使用望远镜一样，一次盯住一个点深入观察，并过滤背景杂音。\n\nTone 4–6 · Right · Passive（广角型视角）\n\n观察方式偏周边／广角。不需要死死盯住一个目标，更像广角镜头，在放松状态下通过余光和整体氛围捕捉信息。",
         "presentation": {
           "kind": "variable",
@@ -106,10 +106,10 @@
             }
           ]
         },
-        "name": "Perspective（视角）公共说明"
+        "name": "Perspective（视角）"
       },
       "variable.motivation:introduction": {
-        "summary": "Motivation（动机）公共说明",
+        "summary": "描述心智处理信息、思考与行动时的底层驱动力。",
         "detail": "核心说明\n\nMotivation 描述头脑处理信息时的底层驱动力：为什么会去思考、表达或推动某件事，心智真正从什么动机出发。\n\n当 Motivation 处在正确状态时，心智较清明；当焦虑或迷失时，动机可能发生 **Transference（动机转移）**，偏向对应的另一种 Motivation。\n\nTone 1–3 · Left · Active（战略性心智）\n\n心智偏聚焦、逻辑和战略性。更容易通过分析、计划、目标和结构处理问题，在思考中主动过滤无关信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏发散、全景与接收性。不适合过度死磕细节或制定僵硬计划，更容易在放松状态下接收信息，让不同线索自然连接成整体理解。",
         "presentation": {
           "kind": "variable",
@@ -135,7 +135,7 @@
             }
           ]
         },
-        "name": "Motivation（动机）公共说明"
+        "name": "Motivation（动机）"
       },
       "variable.determination:appetite": {
         "summary": "追求极简与单一",
@@ -1112,7 +1112,7 @@
     },
     "zh-Hant": {
       "variable.introduction": {
-        "summary": "Variable（四箭頭）總說明",
+        "summary": "四箭頭描述身體與心智在攝取、環境、視角與動機上的運作傾向。",
         "detail": "核心說明\n\nVariable（四箭頭）建立在更細的 Human Design 子結構之上：\n\n**Gate（閘門） → Line（爻線） → Color（基色） → Tone（基調） → Base（基質）**\n\n箭頭方向由 Tone 決定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四個 Variable 的數據來源關係：\n\n- Design Sun / Earth（設計太陽／地球）→ Determination（攝取）\n- Design Nodes（設計南北交點）→ Environment（環境）\n- Personality Nodes（人格南北交點）→ Perspective（視角）\n- Personality Sun / Earth（人格太陽／地球）→ Motivation（動機）\n\n左右方向描述的是同一個 Color 在不同 Tone 區間下的運作傾向。Color 決定“是哪一種主題”，Tone 進一步決定這個主題更偏 Left 還是 Right 的方式運行。",
         "presentation": {
           "kind": "variable",
@@ -1126,10 +1126,10 @@
             }
           ]
         },
-        "name": "Variable（四箭頭）總說明"
+        "name": "Variable（四箭頭）"
       },
       "variable.determination:introduction": {
-        "summary": "Determination（攝取）公共說明",
+        "summary": "描述身體與大腦如何攝取、消化食物、資訊與生活經驗。",
         "detail": "核心說明\n\nDetermination 描述身體如何消化食物，也涉及大腦如何吸收信息、學習和處理生活經驗。\n\nTone 1–3 · Left\n\n左向偏主動、規律與結構化。大腦較主動地處理輸入，更適合清楚的節奏、框架與專注的攝取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然與隨順。不需要過度強迫自己按照固定結構吸收，身體和大腦更適合在自然狀態下接收食物、信息和經驗。",
         "presentation": {
           "kind": "variable",
@@ -1155,10 +1155,10 @@
             }
           ]
         },
-        "name": "Determination（攝取）公共說明"
+        "name": "Determination（攝取）"
       },
       "variable.environment:introduction": {
-        "summary": "Environment（環境）公共說明",
+        "summary": "描述身體更容易放鬆、獲得滋養並與周圍環境互動的場域。",
         "detail": "核心說明\n\nEnvironment 描述什麼樣的物理環境更容易讓身體感到舒適和被滋養，也關係到一個人在什麼場域中更容易以較小阻力遇到適合的人、事與機會。\n\nTone 1–3 · Left\n\n左向偏主動觀察與參與。人在環境中更容易保持活力、主動使用空間，並對周圍發生的事情保持較明確的參與感。\n\nTone 4–6 · Right\n\n右向偏放鬆、融入與接收。環境合適時，身體不需要持續掌控，可以卸下防備，讓場域中的人、信息和體驗自然進入感知。",
         "presentation": {
           "kind": "variable",
@@ -1184,10 +1184,10 @@
             }
           ]
         },
-        "name": "Environment（環境）公共說明"
+        "name": "Environment（環境）"
       },
       "variable.perspective:introduction": {
-        "summary": "Perspective（視角）公共說明",
+        "summary": "描述注意力自然看向哪裡，以及看待世界時最自然的觀察濾鏡。",
         "detail": "核心說明\n\nPerspective 是看待世界的濾鏡。\n\n當身體處在合適的 Environment 中，Perspective 描述眼睛和注意力天然會看向哪裡、被什麼吸引，以及一個人最自然的觀察角度。\n\n當視角處於正確狀態時，會比較清晰地看見世界；當視角偏離時，會出現 **Distraction（分心）**，注意力轉向對應的另一種 Perspective。\n\nTone 1–3 · Left · Active（聚焦型視角）\n\n觀察方式偏聚焦，需要相對明確的目標。像使用望遠鏡一樣，一次盯住一個點深入觀察，並過濾背景雜音。\n\nTone 4–6 · Right · Passive（廣角型視角）\n\n觀察方式偏周邊／廣角。不需要死死盯住一個目標，更像廣角鏡頭，在放鬆狀態下通過余光和整體氛圍捕捉信息。",
         "presentation": {
           "kind": "variable",
@@ -1213,10 +1213,10 @@
             }
           ]
         },
-        "name": "Perspective（視角）公共說明"
+        "name": "Perspective（視角）"
       },
       "variable.motivation:introduction": {
-        "summary": "Motivation（動機）公共說明",
+        "summary": "描述心智處理資訊、思考與行動時的底層驅動力。",
         "detail": "核心說明\n\nMotivation 描述頭腦處理信息時的底層驅動力：為什麼會去思考、表達或推動某件事，心智真正從什麼動機出發。\n\n當 Motivation 處在正確狀態時，心智較清明；當焦慮或迷失時，動機可能發生 **Transference（動機轉移）**，偏向對應的另一種 Motivation。\n\nTone 1–3 · Left · Active（戰略性心智）\n\n心智偏聚焦、邏輯和戰略性。更容易通過分析、計劃、目標和結構處理問題，在思考中主動過濾無關信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏發散、全景與接收性。不適合過度死磕細節或制定僵硬計劃，更容易在放鬆狀態下接收信息，讓不同線索自然連接成整體理解。",
         "presentation": {
           "kind": "variable",
@@ -1242,7 +1242,7 @@
             }
           ]
         },
-        "name": "Motivation（動機）公共說明"
+        "name": "Motivation（動機）"
       },
       "variable.determination:appetite": {
         "summary": "追求極簡與單一",
@@ -2219,7 +2219,7 @@
     },
     "en": {
       "variable.introduction": {
-        "summary": "Variable (the four arrows) overview",
+        "summary": "The four arrows describe how the body and mind tend to operate through Determination, Environment, Perspective and Motivation.",
         "detail": "Core explanation\n\nVariable (the four arrows) is based on the finer substructure of Human Design:\n\n**Gate → Line → Color → Tone → Base**\n\nArrow direction is determined by Tone:\n\n- Tones 1, 2 and 3 → Left\n- Tones 4, 5 and 6 → Right\n\nThe data sources of the four Variables are:\n\n- Design Sun / Earth → Determination\n- Design Nodes → Environment\n- Personality Nodes → Perspective\n- Personality Sun / Earth → Motivation\n\nLeft and Right describe how the same Color operates in different Tone ranges. Color determines the theme; Tone further determines whether that theme operates in a more Left or Right way.",
         "presentation": {
           "kind": "variable",
@@ -2233,10 +2233,10 @@
             }
           ]
         },
-        "name": "Variable (the four arrows) overview"
+        "name": "Variable"
       },
       "variable.determination:introduction": {
-        "summary": "Determination overview",
+        "summary": "Describes how the body and brain take in and digest food, information and everyday experiences.",
         "detail": "Core explanation\n\nDetermination describes how the body digests food. It also concerns how the brain absorbs information, learns and processes life experiences.\n\nTone 1–3 · Left\n\nLeft tends toward active, regular and structured intake. The brain processes input more actively and is better suited to a clear rhythm, a framework and focused intake.\n\nTone 4–6 · Right\n\nRight tends toward reception, a natural approach and going with the flow. There is no need to force intake into a fixed structure; the body and brain are better suited to receiving food, information and experience in a natural state.",
         "presentation": {
           "kind": "variable",
@@ -2262,10 +2262,10 @@
             }
           ]
         },
-        "name": "Determination overview"
+        "name": "Determination"
       },
       "variable.environment:introduction": {
-        "summary": "Environment overview",
+        "summary": "Describes the settings where the body can more easily relax, feel nourished and interact with its surroundings.",
         "detail": "Core explanation\n\nEnvironment describes the physical surroundings in which the body can more easily feel comfortable and nourished. It also concerns the settings in which a person can encounter suitable people, events and opportunities with less resistance.\n\nTone 1–3 · Left\n\nLeft tends toward active observation and participation. A person can more easily stay energized, actively use the space and maintain a clear sense of participation in what is happening around them.\n\nTone 4–6 · Right\n\nRight tends toward relaxation, blending in and reception. In a suitable environment, the body does not need to remain in control. It can lower its defenses and allow people, information and experiences in that setting to enter awareness naturally.",
         "presentation": {
           "kind": "variable",
@@ -2291,10 +2291,10 @@
             }
           ]
         },
-        "name": "Environment overview"
+        "name": "Environment"
       },
       "variable.perspective:introduction": {
-        "summary": "Perspective overview",
+        "summary": "Describes where attention naturally turns and the most natural lens through which you observe the world.",
         "detail": "Core explanation\n\nPerspective is the filter through which you see the world.\n\nWhen the body is in a suitable Environment, Perspective describes where the eyes and attention naturally turn, what attracts them and a person's most natural angle of observation.\n\nWhen the perspective is in its correct state, the world can be seen more clearly. When it moves off track, **Distraction** can occur: attention shifts toward the paired Perspective.\n\nTone 1–3 · Left · Active · Focused perspective\n\nObservation tends to be focused and needs a relatively clear target. Like looking through a telescope, it examines one point in depth at a time and filters out background noise.\n\nTone 4–6 · Right · PassiveWide-angle perspective\n\nObservation tends to be peripheral or wide-angle. There is no need to stare fixedly at one target. It is more like a wide-angle lens, picking up information through peripheral vision and the overall atmosphere in a relaxed state.",
         "presentation": {
           "kind": "variable",
@@ -2320,10 +2320,10 @@
             }
           ]
         },
-        "name": "Perspective overview"
+        "name": "Perspective"
       },
       "variable.motivation:introduction": {
-        "summary": "Motivation overview",
+        "summary": "Describes the underlying drive behind how the mind processes information, thinks and acts.",
         "detail": "Core explanation\n\nMotivation describes the underlying drive behind how the mind processes information: why it thinks, expresses itself or moves something forward, and the motivation from which it truly operates.\n\nWhen Motivation is in its correct state, the mind is clearer. In anxiety or confusion, **Transference** may occur: motivation shifts toward its paired Motivation.\n\nTone 1–3 · Left · Active · Strategic mind\n\nThe mind tends toward focus, logic and strategy. It can more easily handle problems through analysis, plans, goals and structure, actively filtering out irrelevant information while thinking.\n\nTone 4–6 · Right · PassiveReceptive mind\n\nThe mind tends toward a broad, panoramic and receptive mode. It is less suited to getting stuck on details or making rigid plans. In a relaxed state, it can more easily receive information and let different clues connect naturally into an overall understanding.",
         "presentation": {
           "kind": "variable",
@@ -2349,7 +2349,7 @@
             }
           ]
         },
-        "name": "Motivation overview"
+        "name": "Motivation"
       },
       "variable.determination:appetite": {
         "summary": "Seeking simplicity and one thing at a time",

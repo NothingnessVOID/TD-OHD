@@ -27,12 +27,13 @@ function renderVariableProse(slot, range) {
       ? `<ul class="knowledge-prose-list">${part.split('\n').map(line=>`<li>${inline(line.slice(2))}</li>`).join('')}</ul>`
       : `<p>${inline(part)}</p>`).join('');
 }
+const variableActionLabels = {overview:'Learn about Variables', determination:'Learn about Determination', environment:'Learn about Environment', perspective:'Learn about Perspective', motivation:'Learn about Motivation'};
 function renderVariableLinks(entry) {
   const kind=entry.properties.kind;
   const ids=entry.properties.publicOverview
     ? kind==='overview' ? ['determination','environment','perspective','motivation'].map(value=>`hd.variable.${value}.introduction`) : ['hd.variable.introduction']
     : [`hd.variable.${kind}.introduction`];
-  return `<nav class="knowledge-variable-links">${ids.map(id=>{const target=getKnowledgeEntryById(id);return target?`<button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(target.name)}</span><span aria-hidden="true">→</span></button>`:'';}).join('')}</nav>`;
+  return `<nav class="knowledge-variable-links">${ids.map(id=>{const target=getKnowledgeEntryById(id);return target?`<button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(t(variableActionLabels[target.properties.kind]))}</span><span aria-hidden="true">→</span></button>`:'';}).join('')}</nav>`;
 }
 function renderHeader(entry) {
   const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
@@ -91,7 +92,7 @@ function renderCrossActivations(entry) {
   return activations;
 }
 function renderCross(entry) {
-  if(entry.objectId!=='introduction')return `<button type="button" class="knowledge-jump-card" data-knowledge-jump="${esc(entry.properties.introductionKnowledgeId)}"><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>`;
+  if(entry.objectId!=='introduction')return `<button type="button" class="knowledge-jump-card" data-knowledge-jump="${esc(entry.properties.introductionKnowledgeId)}"><span>${esc(t('Learn about the Incarnation Cross'))}</span><span aria-hidden="true">→</span></button>`;
   const slot=entry.detail;
   return (slot?.presentation?.sections?slot.presentation.sections.map(section=>surface(slice(slot,section.title),renderProse(slot,section),section.id)).join(''):`<div class="knowledge-reading">${renderProse(slot)}</div>`);
 }

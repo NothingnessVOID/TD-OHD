@@ -11,16 +11,37 @@
     "Variable Transference": "Transference",
     "When off track": "When off track",
     "Distraction describes what can happen when a perspective moves off its correct state and attention shifts toward its paired perspective.": "Distraction describes what can happen when a perspective moves off its correct state and attention shifts toward its paired perspective.",
-    "Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.": "Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation."
+    "Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.": "Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.",
+    "Learn about Variables": "Learn about Variables",
+    "Learn about Determination": "Learn about Determination",
+    "Learn about Environment": "Learn about Environment",
+    "Learn about Perspective": "Learn about Perspective",
+    "Learn about Motivation": "Learn about Motivation",
+    "Learn about the Incarnation Cross": "Learn about the Incarnation Cross",
+    "Incarnation Cross overview title": "Incarnation Cross"
   },
   "zh-CN": {
     "connection.heading": "关系合图",
     "connection.namePlaceholder": "另一位的姓名",
-    "footer.poweredSuffix": "驱动"
+    "footer.poweredSuffix": "驱动",
+    "Learn about Variables": "了解四箭头",
+    "Learn about Determination": "了解摄取",
+    "Learn about Environment": "了解环境",
+    "Learn about Perspective": "了解视角",
+    "Learn about Motivation": "了解动机",
+    "Learn about the Incarnation Cross": "了解化身十字",
+    "Incarnation Cross overview title": "Incarnation Cross（化身十字）"
   },
   "zh-Hant": {
     "connection.heading": "關係合圖",
     "connection.namePlaceholder": "另一位的姓名",
-    "footer.poweredSuffix": "提供技術支援"
+    "footer.poweredSuffix": "提供技術支援",
+    "Learn about Variables": "了解四箭頭",
+    "Learn about Determination": "了解攝取",
+    "Learn about Environment": "了解環境",
+    "Learn about Perspective": "了解視角",
+    "Learn about Motivation": "了解動機",
+    "Learn about the Incarnation Cross": "了解化身十字",
+    "Incarnation Cross overview title": "Incarnation Cross（化身十字）"
   }
 }

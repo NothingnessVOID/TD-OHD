@@ -1,13 +1,14 @@
 {
   "baseline": "efe59fdc863f409a66eb0c0eaaea73f09f324119",
   "files": {
-    "src/lib/knowledge/content/human-design-en.js": "9ca24956462c7c29d4ed3ef1b7c076f764bfecca82e9a8ded1a8ba96cd789355",
-    "src/lib/knowledge/content/human-design-zh-CN.js": "b858cefab1cf57e4c29a51e8f621cc93c4a6924fe58e528891699d9a7325ee65",
-    "src/lib/knowledge/content/human-design-zh-Hant.js": "bf0c3afb1ea5aafb92b41fe1a293819b3c1d69be0663059c0c8187b1327b7a26",
+    "src/lib/knowledge/content/human-design-en.js": "188b3a90683adede929a1f9644ed4183f67b455c37355d7890288cdc8dffa22d",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "1fb88a9f9eac847f197b026acf3b5e5153332335608daf8bf0698d891957c53e",
+    "src/lib/knowledge/content/human-design-zh-Hant.js": "7c4b4a0e014b72cf29d0bf272c5150bf0be7d83c203a286b32c1cb517786d197",
     "src/lib/knowledge/detail-access.css": "3795ff2fc6457abf60b90aef4cd63c815dfbe6310378c245b6fb22dad537f604",
     "src/lib/knowledge/detail-controller.js": "516f89aaa03b1607c5bab7fc8d0d21d1aef02f69ed3c4cc9ea222a67fc0e6bc1",
-    "src/lib/knowledge/detail-renderer.js": "9ef5ecefa85c5a6e99dd5886ff8faf215d407bbeebb36b179157ddbd11d5eb0c",
-    "src/lib/knowledge/human-design-foundation.js": "983366c138310062e41e14afcc6c3e64756f370a463ba18976521f11251111dc",
-    "src/lib/knowledge/sources.js": "b1950f7a76f5cc85e4b5fa6b2f0bdccc8724243f6b11211f2eb1e21b599a5e41"
+    "src/lib/knowledge/detail-renderer.js": "a2b7839edcf69b115c836ab887f4d4f67fa2ee3c68c6de0a4b01200ea530ede4",
+    "src/lib/knowledge/human-design-foundation.js": "1d3670a755f6e06926f32e756ef3fb47822858c85ade4ad27f247da6184d47ff",
+    "src/lib/knowledge/sources.js": "b1950f7a76f5cc85e4b5fa6b2f0bdccc8724243f6b11211f2eb1e21b599a5e41",
+    "src/locales/ui-contexts.json": "eba2940b584249d54f31989cc499073cad0bab524ad0d3176df7151ccb54b888"
   }
 }

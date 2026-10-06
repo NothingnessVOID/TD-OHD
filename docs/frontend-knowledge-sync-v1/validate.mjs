@@ -72,8 +72,8 @@ export function validateSyncedRelease(rootPath = root) {
   if (copy && (copy.baseline !== 'e731e69b91ea1ce083a4a8b023d2dd660c08735e' || Object.keys(copy.files).length !== 10 || Object.keys(copy.files).some(file => !copyAllowed.has(file)))) throw new Error('Invalid Round 2G exact copy scope');
   const restorationPath = path.join(rootPath, 'docs/knowledge-layer/variable-29-scope.json');
   const restoration = existsSync(restorationPath) ? JSON.parse(readFileSync(restorationPath)) : null;
-  const restorationAllowed = new Set(['src/lib/knowledge/content/human-design-en.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/content/human-design-zh-Hant.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js']);
-  if (restoration && (restoration.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119' || Object.keys(restoration.files).length !== 8 || Object.keys(restoration.files).some(file => !restorationAllowed.has(file)))) throw new Error('Invalid Variable 29 final content scope');
+  const restorationAllowed = new Set(['src/lib/knowledge/content/human-design-en.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/content/human-design-zh-Hant.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js','src/locales/ui-contexts.json']);
+  if (restoration && (restoration.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119' || Object.keys(restoration.files).length !== 9 || Object.keys(restoration.files).some(file => !restorationAllowed.has(file)))) throw new Error('Invalid Variable 29 final content scope');
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE)])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
