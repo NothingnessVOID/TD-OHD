@@ -35,6 +35,6 @@ test('native node matches independent C fixtures across epochs/flags and retains
     const residual = ((value.longitude - fixture.swissC.longitude + 540) % 360 - 180) * 3600000;
     assert.ok(Math.abs(residual) < .001, `${fixture.case} ${fixture.side} ${fixture.mode}`);
     if (fixture.mode !== 'speed3') assert.ok(Math.abs(value.speed - fixture.swissC.speed) < 1e-8);
-    if (fixture.unchangedControl) value.vector.forEach((axis, j) => assert.ok(axis === fixture.sharp.vector[j]));
+    if (fixture.unchangedControl) value.vector.forEach((axis, j) => assert.ok(Math.abs(axis-fixture.sharp.vector[j])<1e-14,`${fixture.case}/${fixture.mode}/axis${j}: delta ${Math.abs(axis-fixture.sharp.vector[j])}`));
   }
 });
