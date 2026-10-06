@@ -1,3 +1,4 @@
+import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {assertContentBoundary, targetIds, round2GContent} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,12 +13,12 @@ const baseline='292edc9b5aa8f7c6b1fa5e3055c4c76cba8c52b3';
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const oldCN=JSON.parse(execFileSync('git',['show',baseline+':src/lib/knowledge/content/human-design-zh-CN.js']).toString().split('export default ')[1].trim().replace(/;$/,''));
 const pairs={caves:['Selective','Blending'],markets:['Internal','External'],kitchens:['Wet','Dry'],mountains:['Active','Passive'],valleys:['Narrow','Wide'],shores:['Natural','Artificial']};
-test('Round 2C historical copies remain protected; 60 current articles and six name-only Cognitions resolve',()=>{
+test('Round 2C historical copies remain protected; 64 current articles and six name-only Cognitions resolve',()=>{
  assertContentBoundary();
  for(const [locale,records]of Object.entries(knowledgeContent)){
-  assert.deepEqual(Object.keys(records).sort(),Object.keys(knowledgeContent.en).sort());assert.equal(Object.keys(records).length,60);
+  assert.deepEqual(Object.keys(records).sort(),Object.keys(knowledgeContent.en).sort());assert.equal(Object.keys(records).length,64);
   for(const [key,record]of Object.entries(records)){assert.doesNotMatch(record.detail,/Internal editorial notes|內部編輯備註|sourceId|reviewStatus|internal audit|https?:\/\//i);}
-  setLocale(locale,{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasSummary&&e.hasDetail).length,60);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail&&!e.hasSummary).length,6);
+  setLocale(locale,{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasSummary&&e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail&&!e.hasSummary).length,6);
  }
 });
 test('historical zh-CN Taste/Environment changes stay exact in the immutable historical records',()=>{
@@ -47,9 +48,9 @@ test('24 articles select exactly one branch for all six Tones; Library never mar
  }}
 });
 test('native Type terminology and authored Profile geometry use the shared renderer',()=>{
- for(const locale of ['en','zh-Hant']){setLocale(locale,{persist:false});for(const e of listKnowledgeEntries().filter(e=>e.objectType==='type')){const html=renderKnowledgeDetail(e);assert.match(html,locale==='en'?/Signature/:/標誌/);assert.match(html,locale==='en'?/Not-Self Theme/:/非我主題/);assert.doesNotMatch(html,/Positive Feedback/);for(const range of Object.values(e.detail.presentation.fields))assert.ok(e.detail.template.slice(range.start,range.end));}
- const geometry=listKnowledgeEntries().filter(e=>e.objectType==='profile').map(e=>renderKnowledgeDetail(e)).join(' ');for(const phrase of locale==='en'?['Personal Destiny','Fixed Fate','Transpersonal Karma']:['個人命運','固定宿命','超個人業力'])assert.ok(geometry.includes(phrase));}
+ for(const locale of ['en','zh-Hant']){setLocale(locale,{persist:false});for(const e of listKnowledgeEntries().filter(e=>e.objectType==='type'&&e.objectId!=='introduction')){const html=renderKnowledgeDetail(e);assert.match(html,locale==='en'?/Signature/:/標誌/);assert.match(html,locale==='en'?/Not-Self Theme/:/非我主題/);assert.doesNotMatch(html,/Positive Feedback/);for(const range of Object.values(e.detail.presentation.fields))assert.ok(e.detail.template.slice(range.start,range.end));}
+ const geometry=listKnowledgeEntries().filter(e=>e.objectType==='profile'&&e.objectId!=='introduction').map(e=>renderKnowledgeDetail(e)).join(' ');for(const phrase of locale==='en'?['Personal Destiny','Fixed Fate','Transpersonal Karma']:['個人命運','固定宿命','超個人業力'])assert.ok(geometry.includes(phrase));}
 });
 test('locale loader, calculations and arrow mapping remain byte-identical to Round 2B',()=>{
- for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(readFileSync(new URL('../'+path,import.meta.url))),hash(execFileSync('git',['show',baseline+':'+path])),path);
+ for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(readFileSync(new URL('../'+path,import.meta.url))),hash(preservedSource(path,baseline)),path);
 });

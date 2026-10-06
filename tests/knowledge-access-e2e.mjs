@@ -59,8 +59,10 @@ try {
   await page.locator('.knowledge-library-link').click();assert.match(page.url(),/#library\/knowledge\/hd.cross.introduction$/);
   await page.locator('#reference-detail .knowledge-detail').waitFor();pure(await page.locator('#reference-detail').innerText(),locale);
   if(width<=640)await page.locator('[data-reference-back]').click();
-  await page.locator('[data-reference-filter="basic"]').click();assert.equal(await page.locator('.reference-result[data-reference-kind="knowledge"]').count(),31);
+  await page.locator('.reference-filter-toggle').click();
+  await page.locator('[data-reference-filter="basic"]').click();assert.equal(await page.locator('.reference-result[data-reference-kind="knowledge"]').count(),0);
   assert.equal(await page.locator('.reference-result[data-reference-kind="concept"]').count(),3);
+  await page.locator('.reference-filter-toggle').click();
   await page.locator('[data-reference-filter="variable"]').click();assert.equal(await page.locator('.reference-result').count(),29);
   await page.locator('#reference-search').fill('hope');assert.equal(await page.locator('.reference-result').getAttribute('data-reference-id'),'hd.variable.motivation.hope');
   assert.deepEqual(current.errors,[]);assert.deepEqual(old.errors,[]);

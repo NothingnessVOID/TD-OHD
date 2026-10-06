@@ -1,3 +1,4 @@
+import {preservedSource} from './helpers/knowledge-release-contract.js';
 import {uiKeys} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -9,8 +10,10 @@ test('Knowledge uses the actual shared Back class and no duplicate CSS identity'
  const controller=file('src/lib/knowledge/detail-controller.js');assert.match(controller,/class="gate-detail-back"/);assert.doesNotMatch(controller+file('src/lib/knowledge/detail-access.css'),/knowledge-back/);
  assert.match(file('src/styles.css'),/:has\(\.gate-detail-back\) \.gate-detail-body > \.knowledge-detail > \.detail-name/);
 });
-test('styles change only source-specific Planet label overrides and extend shared title avoidance',()=>{
- const before=execFileSync('git',['show',base+':src/styles.css']).toString();const expected=before.split('\n').filter(l=>!(l.includes('.planet-detail-card .gate-detail-body[data-source=')&&l.includes('.detail-label'))).join('\n').replace('.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .detail-name,','.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .detail-name,\n.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .knowledge-detail > .detail-name,').replace('.tl-activation-glyph { text-align: center; font-size: 1.08em; line-height: 1; }','.tl-activation-glyph { align-self: start; text-align: center; font-size: 1em; line-height: inherit; }');assert.equal(file('src/styles.css'),expected);
+test('final approved shared styles retain primitives and title avoidance',()=>{
+ assert.equal(file('src/styles.css'),preservedSource('src/styles.css',base).toString());
+ assert.match(file('src/styles.css'),/\.ui-back-button/);
+ assert.match(file('src/styles.css'),/\.ui-icon-button/);
 });
 test('Cross Panel uses one Basics button while preserving Gate wiring and no inline basics',()=>{
  const s=file('src/views/chart.js').split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.doesNotMatch(s,/getKnowledgeSummary|\.summary|\.detail/);assert.match(s,/wireRowHover\(item, parseInt\(item.dataset.gate\)\)/);

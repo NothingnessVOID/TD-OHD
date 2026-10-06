@@ -74,12 +74,29 @@ export function validateSyncedRelease(rootPath = root) {
   const restoration = existsSync(restorationPath) ? JSON.parse(readFileSync(restorationPath)) : null;
   const restorationAllowed = new Set(['src/lib/knowledge/content/human-design-en.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/content/human-design-zh-Hant.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js','src/locales/ui-contexts.json']);
   if (restoration && (restoration.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119' || Object.keys(restoration.files).length !== 9 || Object.keys(restoration.files).some(file => !restorationAllowed.has(file)))) throw new Error('Invalid Variable 29 final content scope');
-  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE)])].filter(protectedPath);
+  // Later content/UI rounds were explicitly approved after the historical sync scopes.
+  // Pin their immutable RC blobs; astronomy, topology and annual data keep the old guards.
+  const finalScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/knowledge-layer/release-candidate-scope.json')));
+  if (finalScope.releaseCandidate !== '7b133bdcbe600bb6f0e0fa8925da890ea39c9978'
+      || finalScope.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119') throw new Error('Invalid release candidate baseline');
+  const authorized = git('diff', '--name-only', finalScope.baseline, finalScope.releaseCandidate, '--', 'src', 'index.html').toString().trim().split('\n');
+  if (Object.keys(finalScope.files).sort().join('\n') !== authorized.sort().join('\n')) throw new Error('Invalid final presentation scope');
+  for (const [file, digest] of Object.entries(finalScope.files))
+    if (hash(git('show', `${finalScope.releaseCandidate}:${file}`)) !== digest) throw new Error(`RC scope hash differs: ${file}`);
+  const fixFile = 'src/lib/reference-supplements.js';
+  const fixedImport = Buffer.from(git('show', `${finalScope.releaseCandidate}:${fixFile}`).toString()
+    .replace("from './reference-supplements.json';", "from './reference-supplements.json' with { type: 'json' };"));
+  if (Object.keys(finalScope.releaseFixes).sort().join() !== '.env.production,.env.static,src/lib/reference-supplements.js' || hash(fixedImport) !== finalScope.releaseFixes[fixFile]) throw new Error('Unreviewed release fix');
+  const productionEnv = Buffer.from(git('show', `${finalScope.releaseCandidate}:.env.production`).toString() + 'VITE_OHD_LOCAL=false\n');
+  const staticEnv = Buffer.from('# Static hosted sites do not include the password-protected local installation.\nVITE_OHD_LOCAL=false\nVITE_OHD_API_BASE=\nVITE_OHD_SYNC_ENABLED=false\n');
+  for (const [file, bytes] of [['.env.production', productionEnv], ['.env.static', staticEnv]])
+    if (hash(bytes) !== finalScope.releaseFixes[file] || hash(readFileSync(path.join(rootPath, file))) !== hash(bytes)) throw new Error(`Static feature switch differs: ${file}`);
+  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files)])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (finalScope.releaseFixes[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

@@ -1,3 +1,4 @@
+import {preservedSource,approvedContent} from './helpers/knowledge-release-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -72,8 +73,8 @@ test('all 24 Color pages select exactly one numeric Tone branch; source subtitle
 });
 test('all non-Variable knowledge, calculation, snapshots, sources, positions, exports and BodyGraph remain exact',()=>{
  for(const [locale,records] of Object.entries(knowledgeContent)){
-  const old=JSON.parse(execFileSync('git',['show',fixture.baseline+`:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''));
+  const old=approvedContent[locale];
   for(const [key,r]of Object.entries(records).filter(([key])=>!key.startsWith('variable.')))assert.deepEqual(r,old[key]);
  }
- for(const path of ['src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/views/chart.js','src/bodygraph.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js','tests/fixtures/sharp-definition-components.json'])assert.deepEqual(readFileSync(new URL('../'+path,import.meta.url)),execFileSync('git',['show',fixture.baseline+':'+path]),path);
+ for(const path of ['src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/views/chart.js','src/bodygraph.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js','tests/fixtures/sharp-definition-components.json'])assert.deepEqual(readFileSync(new URL('../'+path,import.meta.url)),preservedSource(path,fixture.baseline),path);
 });
