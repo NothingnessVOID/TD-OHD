@@ -1628,6 +1628,10 @@ body.modal-open { overflow: hidden; }
 .reference-sidebar { padding: 14px; display: flex; flex-direction: column; min-height: 0; }
 .reference-sidebar label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
 .reference-sidebar input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+.reference-filter-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 13px; padding: 8px 0; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--text-secondary); font: inherit; cursor: pointer; }
+.reference-filter-toggle:hover { color: var(--text); border-color: var(--text-secondary); }
+.reference-filter-current { margin: 8px 0 13px; color: var(--text-secondary); font-size: 13px; }
+.reference-filter-panel[hidden] { display: none; }
 .reference-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 13px 0; }
 .reference-filters button, .reference-more { padding: 7px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text-secondary); cursor: pointer; }
 .reference-filters button.active { border-color: var(--accent); color: var(--accent-hover); background: var(--accent-soft); }
