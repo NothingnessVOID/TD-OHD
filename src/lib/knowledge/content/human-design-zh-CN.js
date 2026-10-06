@@ -1649,7 +1649,7 @@ export default {
     }
   },
   "variable.introduction": {
-    "summary": "Variable（四箭头）总说明",
+    "summary": "四箭头描述身体与心智在摄取、环境、视角与动机上的运作倾向。",
     "detail": "核心说明\n\nVariable（四箭头）建立在更细的 Human Design 子结构之上：\n\n**Gate（闸门） → Line（爻线） → Color（基色） → Tone（基调） → Base（基质）**\n\n箭头方向由 Tone 决定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四个 Variable 的数据来源关系：\n\n- Design Sun / Earth（设计太阳／地球）→ Determination（摄取）\n- Design Nodes（设计南北交点）→ Environment（环境）\n- Personality Nodes（人格南北交点）→ Perspective（视角）\n- Personality Sun / Earth（人格太阳／地球）→ Motivation（动机）\n\n左右方向描述的是同一个 Color 在不同 Tone 区间下的运作倾向。Color 决定“是哪一种主题”，Tone 进一步决定这个主题更偏 Left 还是 Right 的方式运行。",
     "presentation": {
       "kind": "variable",
@@ -1663,10 +1663,10 @@ export default {
         }
       ]
     },
-    "name": "Variable（四箭头）总说明"
+    "name": "Variable（四箭头）"
   },
   "variable.determination:introduction": {
-    "summary": "Determination（摄取）公共说明",
+    "summary": "描述身体与大脑如何摄取、消化食物、信息与生活经验。",
     "detail": "核心说明\n\nDetermination 描述身体如何消化食物，也涉及大脑如何吸收信息、学习和处理生活经验。\n\nTone 1–3 · Left\n\n左向偏主动、规律与结构化。大脑较主动地处理输入，更适合清楚的节奏、框架与专注的摄取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然与随顺。不需要过度强迫自己按照固定结构吸收，身体和大脑更适合在自然状态下接收食物、信息和经验。",
     "presentation": {
       "kind": "variable",
@@ -1692,10 +1692,10 @@ export default {
         }
       ]
     },
-    "name": "Determination（摄取）公共说明"
+    "name": "Determination（摄取）"
   },
   "variable.environment:introduction": {
-    "summary": "Environment（环境）公共说明",
+    "summary": "描述身体更容易放松、获得滋养并与周围环境互动的场域。",
     "detail": "核心说明\n\nEnvironment 描述什么样的物理环境更容易让身体感到舒适和被滋养，也关系到一个人在什么场域中更容易以较小阻力遇到适合的人、事与机会。\n\nTone 1–3 · Left\n\n左向偏主动观察与参与。人在环境中更容易保持活力、主动使用空间，并对周围发生的事情保持较明确的参与感。\n\nTone 4–6 · Right\n\n右向偏放松、融入与接收。环境合适时，身体不需要持续掌控，可以卸下防备，让场域中的人、信息和体验自然进入感知。",
     "presentation": {
       "kind": "variable",
@@ -1721,10 +1721,10 @@ export default {
         }
       ]
     },
-    "name": "Environment（环境）公共说明"
+    "name": "Environment（环境）"
   },
   "variable.perspective:introduction": {
-    "summary": "Perspective（视角）公共说明",
+    "summary": "描述注意力自然看向哪里，以及看待世界时最自然的观察滤镜。",
     "detail": "核心说明\n\nPerspective 是看待世界的滤镜。\n\n当身体处在合适的 Environment 中，Perspective 描述眼睛和注意力天然会看向哪里、被什么吸引，以及一个人最自然的观察角度。\n\n当视角处于正确状态时，会比较清晰地看见世界；当视角偏离时，会出现 **Distraction（分心）**，注意力转向对应的另一种 Perspective。\n\nTone 1–3 · Left · Active（聚焦型视角）\n\n观察方式偏聚焦，需要相对明确的目标。像使用望远镜一样，一次盯住一个点深入观察，并过滤背景杂音。\n\nTone 4–6 · Right · Passive（广角型视角）\n\n观察方式偏周边／广角。不需要死死盯住一个目标，更像广角镜头，在放松状态下通过余光和整体氛围捕捉信息。",
     "presentation": {
       "kind": "variable",
@@ -1750,10 +1750,10 @@ export default {
         }
       ]
     },
-    "name": "Perspective（视角）公共说明"
+    "name": "Perspective（视角）"
   },
   "variable.motivation:introduction": {
-    "summary": "Motivation（动机）公共说明",
+    "summary": "描述心智处理信息、思考与行动时的底层驱动力。",
     "detail": "核心说明\n\nMotivation 描述头脑处理信息时的底层驱动力：为什么会去思考、表达或推动某件事，心智真正从什么动机出发。\n\n当 Motivation 处在正确状态时，心智较清明；当焦虑或迷失时，动机可能发生 **Transference（动机转移）**，偏向对应的另一种 Motivation。\n\nTone 1–3 · Left · Active（战略性心智）\n\n心智偏聚焦、逻辑和战略性。更容易通过分析、计划、目标和结构处理问题，在思考中主动过滤无关信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏发散、全景与接收性。不适合过度死磕细节或制定僵硬计划，更容易在放松状态下接收信息，让不同线索自然连接成整体理解。",
     "presentation": {
       "kind": "variable",
@@ -1779,6 +1779,6 @@ export default {
         }
       ]
     },
-    "name": "Motivation（动机）公共说明"
+    "name": "Motivation（动机）"
   }
 };

@@ -62,7 +62,7 @@ const cognitionIds = ['smell', 'taste', 'outerVision', 'innerVision', 'feeling',
 for (const [index, id] of cognitionIds.entries()) foundationRecords.push(entry('cognition', id,
   ref(() => cognition(cognitionNames[index]), variableFile, `cognitionNames[${index}]`, 'td-ohd-variable')));
 
-foundationRecords.push(entry('cross','introduction',ref(()=>t('Incarnation Cross Basics'),'src/locales/ui-contexts.json','Incarnation Cross Basics','td-ohd-presentation'),reviewedRef('cross.introduction','summary'),{detail:reviewedRef('cross.introduction','detail'),reviewStatus:'reviewed',version:2}));
+foundationRecords.push(entry('cross','introduction',ref(()=>t('Incarnation Cross overview title'),'src/locales/ui-contexts.json','Incarnation Cross overview title','td-ohd-presentation'),reviewedRef('cross.introduction','summary'),{detail:reviewedRef('cross.introduction','detail'),reviewStatus:'reviewed',version:2}));
 
 // Dynamic identity, not a generated set of empty Cross articles.
 export function crossRecord(query) {

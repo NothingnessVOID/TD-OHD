@@ -1661,7 +1661,7 @@ export default {
     }
   },
   "variable.introduction": {
-    "summary": "Variable (the four arrows) overview",
+    "summary": "The four arrows describe how the body and mind tend to operate through Determination, Environment, Perspective and Motivation.",
     "detail": "Core explanation\n\nVariable (the four arrows) is based on the finer substructure of Human Design:\n\n**Gate → Line → Color → Tone → Base**\n\nArrow direction is determined by Tone:\n\n- Tones 1, 2 and 3 → Left\n- Tones 4, 5 and 6 → Right\n\nThe data sources of the four Variables are:\n\n- Design Sun / Earth → Determination\n- Design Nodes → Environment\n- Personality Nodes → Perspective\n- Personality Sun / Earth → Motivation\n\nLeft and Right describe how the same Color operates in different Tone ranges. Color determines the theme; Tone further determines whether that theme operates in a more Left or Right way.",
     "presentation": {
       "kind": "variable",
@@ -1675,10 +1675,10 @@ export default {
         }
       ]
     },
-    "name": "Variable (the four arrows) overview"
+    "name": "Variable"
   },
   "variable.determination:introduction": {
-    "summary": "Determination overview",
+    "summary": "Describes how the body and brain take in and digest food, information and everyday experiences.",
     "detail": "Core explanation\n\nDetermination describes how the body digests food. It also concerns how the brain absorbs information, learns and processes life experiences.\n\nTone 1–3 · Left\n\nLeft tends toward active, regular and structured intake. The brain processes input more actively and is better suited to a clear rhythm, a framework and focused intake.\n\nTone 4–6 · Right\n\nRight tends toward reception, a natural approach and going with the flow. There is no need to force intake into a fixed structure; the body and brain are better suited to receiving food, information and experience in a natural state.",
     "presentation": {
       "kind": "variable",
@@ -1704,10 +1704,10 @@ export default {
         }
       ]
     },
-    "name": "Determination overview"
+    "name": "Determination"
   },
   "variable.environment:introduction": {
-    "summary": "Environment overview",
+    "summary": "Describes the settings where the body can more easily relax, feel nourished and interact with its surroundings.",
     "detail": "Core explanation\n\nEnvironment describes the physical surroundings in which the body can more easily feel comfortable and nourished. It also concerns the settings in which a person can encounter suitable people, events and opportunities with less resistance.\n\nTone 1–3 · Left\n\nLeft tends toward active observation and participation. A person can more easily stay energized, actively use the space and maintain a clear sense of participation in what is happening around them.\n\nTone 4–6 · Right\n\nRight tends toward relaxation, blending in and reception. In a suitable environment, the body does not need to remain in control. It can lower its defenses and allow people, information and experiences in that setting to enter awareness naturally.",
     "presentation": {
       "kind": "variable",
@@ -1733,10 +1733,10 @@ export default {
         }
       ]
     },
-    "name": "Environment overview"
+    "name": "Environment"
   },
   "variable.perspective:introduction": {
-    "summary": "Perspective overview",
+    "summary": "Describes where attention naturally turns and the most natural lens through which you observe the world.",
     "detail": "Core explanation\n\nPerspective is the filter through which you see the world.\n\nWhen the body is in a suitable Environment, Perspective describes where the eyes and attention naturally turn, what attracts them and a person's most natural angle of observation.\n\nWhen the perspective is in its correct state, the world can be seen more clearly. When it moves off track, **Distraction** can occur: attention shifts toward the paired Perspective.\n\nTone 1–3 · Left · Active · Focused perspective\n\nObservation tends to be focused and needs a relatively clear target. Like looking through a telescope, it examines one point in depth at a time and filters out background noise.\n\nTone 4–6 · Right · PassiveWide-angle perspective\n\nObservation tends to be peripheral or wide-angle. There is no need to stare fixedly at one target. It is more like a wide-angle lens, picking up information through peripheral vision and the overall atmosphere in a relaxed state.",
     "presentation": {
       "kind": "variable",
@@ -1762,10 +1762,10 @@ export default {
         }
       ]
     },
-    "name": "Perspective overview"
+    "name": "Perspective"
   },
   "variable.motivation:introduction": {
-    "summary": "Motivation overview",
+    "summary": "Describes the underlying drive behind how the mind processes information, thinks and acts.",
     "detail": "Core explanation\n\nMotivation describes the underlying drive behind how the mind processes information: why it thinks, expresses itself or moves something forward, and the motivation from which it truly operates.\n\nWhen Motivation is in its correct state, the mind is clearer. In anxiety or confusion, **Transference** may occur: motivation shifts toward its paired Motivation.\n\nTone 1–3 · Left · Active · Strategic mind\n\nThe mind tends toward focus, logic and strategy. It can more easily handle problems through analysis, plans, goals and structure, actively filtering out irrelevant information while thinking.\n\nTone 4–6 · Right · PassiveReceptive mind\n\nThe mind tends toward a broad, panoramic and receptive mode. It is less suited to getting stuck on details or making rigid plans. In a relaxed state, it can more easily receive information and let different clues connect naturally into an overall understanding.",
     "presentation": {
       "kind": "variable",
@@ -1791,6 +1791,6 @@ export default {
         }
       ]
     },
-    "name": "Motivation overview"
+    "name": "Motivation"
   }
 };

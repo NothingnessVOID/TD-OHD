@@ -2,10 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {knowledgeContent} from '../src/lib/knowledge/content/index.js';
 import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';
 import {setLocale} from '../src/lib/i18n.js';
 const cleanup=JSON.parse(readFileSync(new URL('./fixtures/variable-public-copy-cleanup.json',import.meta.url)));
+const finalRecords=JSON.parse(readFileSync(new URL('./fixtures/variable-29-content.json',import.meta.url))).records;
+const navigationScope=JSON.parse(readFileSync(new URL('../docs/knowledge-layer/variable-29-scope.json',import.meta.url))).files;
 const apply=(text,locale)=>cleanup.replacements[locale].reduce((s,[a,b])=>s.replaceAll(a,b),text);
 test('only seven public voice phrases per locale change; every other field and section identity stays exact',()=>{
  for(const [locale,records]of Object.entries(knowledgeContent)){
@@ -21,6 +24,10 @@ test('only seven public voice phrases per locale change; every other field and s
     expected.presentation.sections=expected.presentation.sections.map(section=>({...section,
      start:apply(r.detail.slice(0,section.start),locale).length,
      end:apply(r.detail.slice(0,section.end),locale).length}));
+   }
+   // Subsequent approved navigation work changes only the five overview names/summaries.
+   if(key==='variable.introduction'||key.endsWith(':introduction')) {
+    expected.name=finalRecords[locale][key].name;expected.summary=finalRecords[locale][key].summary;
    }
    assert.deepEqual(records[key],expected,`${locale}/${key}: unauthorized change`);
   }
@@ -40,6 +47,10 @@ test('all 29 public Variable articles and rendered bodies contain zero internal 
 });
 test('conflict records, source evidence, calculations, Tone mapping and all renderer behavior remain byte-identical',()=>{
  for(const path of ['docs/knowledge-layer/variable-29-conflicts.md','tests/fixtures/variable-29-source-zh-CN.md','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs']){
-  assert.deepEqual(readFileSync(new URL('../'+path,import.meta.url)),execFileSync('git',['show',cleanup.baseline+':'+path]),path);
+  const bytes=readFileSync(new URL('../'+path,import.meta.url));
+  if(['src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js'].includes(path)) {
+   // Navigation label edits have an exact source guard; no longer compare to pre-navigation code.
+   assert.equal(createHash('sha256').update(bytes).digest('hex'),navigationScope[path],path);
+  } else assert.deepEqual(bytes,execFileSync('git',['show',cleanup.baseline+':'+path]),path);
  }
 });
