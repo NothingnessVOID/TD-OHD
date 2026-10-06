@@ -1002,32 +1002,32 @@ export default {
   },
   "variable.perspective:survival": {
     "summary": "Naturally sees what supports continuity, safety, and basic survival.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view is more targeted, noticing specific risks, needs, and supporting conditions.\n\nTone 4–6 · Right · Peripheral\n\nThe view receives the broader field of stability, security, and survival conditions.\n\nDistraction — Wanting\n\nWhen the Survival perspective moves off its correct state, Distraction draws attention toward Wanting. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe original focus is on what is genuinely needed to sustain life: a stable foundation and adequate safety. Off track, attention can become increasingly absorbed in “What else do I want?” and in things that are desired rather than necessary.",
+    "detail": "The Survival perspective naturally notices basic conditions and security.\n\nWhen looking at an environment, system or event, it tends to notice whether things are stable, whether resources are sufficient, where risks may appear, and what is required for continuity.\n\nTone 1–3 · Left\n\nMore focused on identifying specific risks, basic conditions and critical details.\n\nTone 4–6 · Right\n\nMore receptive to the overall sense of stability, security and survival conditions in the environment.\n\nThe Survival perspective is originally concerned with what is genuinely required to sustain life, whether the foundation is stable and whether basic conditions are secure. When it shifts toward the Wanting perspective, attention can become increasingly absorbed in what else is desired, including things that are wanted rather than truly necessary.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 264
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 112
+          "title": "Tone 1–3 · Left",
+          "start": 283,
+          "end": 365
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 145,
-          "end": 229
+          "title": "Tone 4–6 · Right",
+          "start": 385,
+          "end": 487
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 254,
-          "end": 711,
+          "start": 489,
+          "end": 837,
           "kind": "deviation",
           "sourceValue": "survival",
           "targetValue": "wanting",
@@ -1038,32 +1038,32 @@ export default {
   },
   "variable.perspective:possibility": {
     "summary": "Naturally sees potential, openings, and what could happen.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view concentrates on a particular possibility that can be explored.\n\nTone 4–6 · Right · Peripheral\n\nThe view takes in many possible directions without needing to select one immediately.\n\nDistraction — Probability\n\nWhen the Possibility perspective moves off its correct state, Distraction draws attention toward Probability. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe natural focus is on unrealized possibilities, hidden potential and new directions for development. Off track, attention can become preoccupied with “What are the odds that this will work?” An excessive focus on realistic chances can obscure possibilities that were visible before.",
+    "detail": "The Possibility perspective does not stop at what has already happened. It naturally notices unrealized possibilities, hidden potential and new directions for development.\n\nIt tends to ask: “What else could happen?” and “What else could this become?”\n\nTone 1–3 · Left\n\nMore likely to focus on one particular possibility worth developing.\n\nTone 4–6 · Right\n\nMore likely to notice several potential directions at once and allow possibilities to emerge naturally.\n\nThe Possibility perspective is originally oriented toward unrealized possibilities, hidden potential and new directions. When it shifts toward the Probability perspective, attention can become preoccupied with calculating how likely something is to succeed, allowing realistic odds to obscure possibilities that were previously visible.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 250
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 98
+          "title": "Tone 1–3 · Left",
+          "start": 269,
+          "end": 337
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 131,
-          "end": 216
+          "title": "Tone 4–6 · Right",
+          "start": 357,
+          "end": 460
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 245,
-          "end": 752,
+          "start": 462,
+          "end": 798,
           "kind": "deviation",
           "sourceValue": "possibility",
           "targetValue": "probability",
@@ -1074,32 +1074,32 @@ export default {
   },
   "variable.perspective:power": {
     "summary": "Naturally sees influence, leverage, resources, and who or what holds power in a situation.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view concentrates on specific control points and direct power relationships.\n\nTone 4–6 · Right · Peripheral\n\nThe view receives the broader pattern of how influence and resources are distributed.\n\nDistraction — Personal\n\nWhen the Power perspective moves off its correct state, Distraction draws attention toward Personal. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe original perspective observes the forces, resources and power structures that are actually present. Off track, attention can retreat into a personal position and personal feelings, as though standing outside those relationships, making the power dynamics at work harder to see.",
+    "detail": "The Power perspective naturally notices structures of power within relationships and systems.\n\nIt sees who has resources, who can influence an outcome, and where power is moving.\n\nTone 1–3 · Left\n\nMore focused on explicit power relationships and critical points of control.\n\nTone 4–6 · Right\n\nMore receptive to how power, resources and influence are distributed across the wider network.\n\nThe Power perspective is originally able to observe real structures of power, resources and influence. When it shifts toward the Personal perspective, attention can retreat into personal position and subjective experience, making the actual power dynamics harder to see clearly.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 178
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 107
+          "title": "Tone 1–3 · Left",
+          "start": 197,
+          "end": 273
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 140,
-          "end": 225
+          "title": "Tone 4–6 · Right",
+          "start": 293,
+          "end": 387
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 251,
-          "end": 746,
+          "start": 389,
+          "end": 667,
           "kind": "deviation",
           "sourceValue": "power",
           "targetValue": "personal",
@@ -1110,32 +1110,32 @@ export default {
   },
   "variable.perspective:wanting": {
     "summary": "Naturally sees what is missing, wanted, or still needs to be filled.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view concentrates on a particular gap or unmet need.\n\nTone 4–6 · Right · Peripheral\n\nThe view receives a wider field of missing pieces, needs, and wants.\n\nDistraction — Survival\n\nWhen the Wanting perspective moves off its correct state, Distraction draws attention toward Survival. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe original focus notices what is missing in the world and where there are needs or gaps. Off track, attention can narrow to personal survival concerns, with excessive worry about safety, livelihood or basic conditions.",
+    "detail": "The Wanting perspective naturally notices what is missing and what remains unmet.\n\nWhen looking at a product, relationship, environment or system, it tends to ask: “What is still missing here?”\n\nTone 1–3 · Left\n\nMore focused on one specific gap or problem that needs to be addressed.\n\nTone 4–6 · Right\n\nMore receptive to unmet needs and gaps across the wider environment.\n\nThe Wanting perspective is originally able to notice what is missing in the outside world and where needs or gaps exist. When it shifts toward the Survival perspective, attention can contract around personal survival concerns, creating excessive worry about security, livelihood or basic conditions.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 193
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 83
+          "title": "Tone 1–3 · Left",
+          "start": 212,
+          "end": 283
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 116,
-          "end": 184
+          "title": "Tone 4–6 · Right",
+          "start": 303,
+          "end": 371
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 210,
-          "end": 646,
+          "start": 373,
+          "end": 672,
           "kind": "deviation",
           "sourceValue": "wanting",
           "targetValue": "survival",
@@ -1146,32 +1146,32 @@ export default {
   },
   "variable.perspective:probability": {
     "summary": "Naturally sees what is realistically most likely to happen.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view analyzes specific conditions and likely outcomes.\n\nTone 4–6 · Right · Peripheral\n\nThe view receives the overall pattern and senses which outcomes carry the greatest likelihood.\n\nDistraction — Possibility\n\nWhen the Probability perspective moves off its correct state, Distraction draws attention toward Possibility. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe original focus is on actual conditions, feasibility and the most likely outcome. Off track, attention can overlook those conditions and dwell on imagined possibilities, giving weight to what might happen without a realistic basis.",
+    "detail": "The Probability perspective is concerned with real conditions and feasibility.\n\nIt naturally asks: “Given the way things are developing, what outcome is most likely?”\n\nTone 1–3 · Left\n\nMore inclined to focus on specific conditions, data and outcomes.\n\nTone 4–6 · Right\n\nMore receptive to the overall situation and the relative likelihood of different outcomes.\n\nThe Probability perspective is originally concerned with real conditions, feasibility and the outcome most likely to occur. When it shifts toward the Possibility perspective, attention can move away from actual conditions and become absorbed in imagined possibilities that have little realistic foundation.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 166
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 85
+          "title": "Tone 1–3 · Left",
+          "start": 185,
+          "end": 250
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 118,
-          "end": 212
+          "title": "Tone 4–6 · Right",
+          "start": 270,
+          "end": 360
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 241,
-          "end": 698,
+          "start": 362,
+          "end": 668,
           "kind": "deviation",
           "sourceValue": "probability",
           "targetValue": "possibility",
@@ -1182,32 +1182,32 @@ export default {
   },
   "variable.perspective:personal": {
     "summary": "Naturally sees the world through the relationship between experience and the self.",
-    "detail": "Tone 1–3 · Left · Focused\n\nThe view concentrates on how a specific situation relates to one's own experience.\n\nTone 4–6 · Right · Peripheral\n\nThe view receives the larger scene through a personal point of reference without fixing on one object.\n\nDistraction — Power\n\nWhen the Personal perspective moves off its correct state, Distraction draws attention toward Power. This is not a second trait; it describes the direction attention can take when this perspective goes off track.\n\nThe original perspective observes the world from its own position and experience with a degree of detachment. Off track, attention can become caught up in winning and losing, resources and power: who has the advantage, who is in control and how benefits are distributed.",
+    "detail": "The Personal perspective naturally observes experience from one’s own position, noticing how something relates to oneself, where one stands within it, and what the experience means personally.\n\nTone 1–3 · Left\n\nMore focused on the relationship between oneself and a specific person, object or issue.\n\nTone 4–6 · Right\n\nMore able to observe the relationship between oneself and the world from a broader field of experience.\n\nThe Personal perspective is originally able to observe the world from one’s own position and experience with a certain degree of distance. When it shifts toward the Power perspective, attention can become entangled in competition, resources and power dynamics, increasingly focusing on who has the advantage, who controls the situation and how interests are distributed.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 192
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Focused",
-          "start": 27,
-          "end": 109
+          "title": "Tone 1–3 · Left",
+          "start": 211,
+          "end": 299
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Peripheral",
-          "start": 142,
-          "end": 244
+          "title": "Tone 4–6 · Right",
+          "start": 319,
+          "end": 422
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 267,
-          "end": 751,
+          "start": 424,
+          "end": 794,
           "kind": "deviation",
           "sourceValue": "personal",
           "targetValue": "power",
@@ -1218,32 +1218,32 @@ export default {
   },
   "variable.motivation:fear": {
     "summary": "The mind is naturally drawn toward the unknown, risk, and what has not yet been understood.",
-    "detail": "Fear Motivation is not ordinary fearfulness. It is the mental pull to investigate uncertainty and understand what is not yet known.\n\nTone 1–3 · Left · Strategic\n\nThe mind tends to investigate in a focused, structured, strategic way.\n\nTone 4–6 · Right · Receptive\n\nThe mind is more receptive and allows understanding to form through what it encounters.\n\nTransference — Need\n\nWhen Fear motivation moves off its correct state, Transference can shift it toward Need. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThe original drive is to understand the unknown, establish a foundation and gather sufficient information. In anxiety or confusion, that process of inquiry can be abandoned in favor of “I have to do something right now,” prompting action before the foundation is in place.",
+    "detail": "“Fear” here does not mean being timid.\n\nIt is closer to a cognitive drive that arises in the face of the unknown: wanting to understand what is happening, where the risks are, and what information is still missing.\n\nTone 1–3 · Left\n\nMore inclined to actively research, analyze and build a clear structure of understanding.\n\nTone 4–6 · Right\n\nMore inclined to receive information and allow understanding to form gradually through observation and experience.\n\nFear motivation originally reduces uncertainty by understanding the unknown, gathering information and building a solid foundation. When it shifts toward Need motivation, it can turn into “I have to do something right now,” leading to action before the necessary foundation has been established.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 131
+          "end": 214
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 162,
-          "end": 232
+          "title": "Tone 1–3 · Left",
+          "start": 233,
+          "end": 322
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 264,
-          "end": 351
+          "title": "Tone 4–6 · Right",
+          "start": 342,
+          "end": 456
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 374,
-          "end": 840,
+          "start": 458,
+          "end": 753,
           "kind": "deviation",
           "sourceValue": "fear",
           "targetValue": "need",
@@ -1254,32 +1254,32 @@ export default {
   },
   "variable.motivation:hope": {
     "summary": "The mind is naturally oriented toward waiting, observing, and allowing what is possible to reveal itself.",
-    "detail": "Tone 1–3 · Left · Strategic\n\nThe mind can observe timing and conditions in a more focused, deliberate way.\n\nTone 4–6 · Right · Receptive\n\nThe mind more readily stays open and lets events reveal themselves.\n\nTransference — Guilt\n\nWhen Hope motivation moves off its correct state, Transference can shift it toward Guilt. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThe original drive is to observe, wait and trust that things will reveal themselves at the appropriate time. In anxiety or confusion, it can turn into “Is it my responsibility to fix this?” and lead to excessive intervention or taking on responsibilities that do not need to be carried.",
+    "detail": "Hope is not driven by immediate intervention. Its drive is to trust the process, observe, and wait for an answer to reveal itself at the appropriate time.\n\nTone 1–3 · Left\n\nMore consciously observes the situation and evaluates when continued waiting is appropriate.\n\nTone 4–6 · Right\n\nMore able to remain receptive and observant, allowing events to unfold on their own.\n\nHope motivation originally observes, waits and trusts that things will reveal themselves at the right time. When it shifts toward Guilt motivation, it can begin to feel, “Do I have to fix this?” and become overly involved, interfering or taking responsibility that was not actually necessary.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 154
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 29,
-          "end": 106
+          "title": "Tone 1–3 · Left",
+          "start": 173,
+          "end": 265
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 138,
-          "end": 205
+          "title": "Tone 4–6 · Right",
+          "start": 285,
+          "end": 369
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 229,
-          "end": 710,
+          "start": 371,
+          "end": 663,
           "kind": "deviation",
           "sourceValue": "hope",
           "targetValue": "guilt",
@@ -1290,32 +1290,32 @@ export default {
   },
   "variable.motivation:desire": {
     "summary": "The mind is naturally drawn toward directing, influencing, and moving things toward a result.",
-    "detail": "Tone 1–3 · Left · Strategic\n\nDesire expresses with more focused planning, direction, and organization.\n\nTone 4–6 · Right · Receptive\n\nDesire remains present but responds more fluidly to openings and opportunities in the field.\n\nTransference — Innocence\n\nWhen Desire motivation moves off its correct state, Transference can shift it toward Innocence. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThere are real goals, ambitions and a desire to move things forward. Off track, this can be presented as “I want nothing,” “It does not matter” or “I will just let it happen.” The appearance of having no agenda can conceal desires that are still driving behavior but have not been acknowledged.",
+    "detail": "Desire carries a clear drive to move things forward.\n\nIt naturally notices what could become better, what can be advanced, and how one might influence the outcome.\n\nTone 1–3 · Left\n\nMore inclined to actively plan goals, steps and methods of moving things forward.\n\nTone 4–6 · Right\n\nMore inclined to receive opportunities as they arise and then participate naturally in change and movement.\n\nDesire motivation originally contains genuine goals, ambition and the drive to affect reality. When it shifts toward Innocence motivation, it may present itself as “I don’t want anything,” “I don’t care,” or “I’ll just go with the flow,” while unacknowledged desire is still driving the process underneath.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 163
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 29,
-          "end": 102
+          "title": "Tone 1–3 · Left",
+          "start": 182,
+          "end": 263
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 134,
-          "end": 226
+          "title": "Tone 4–6 · Right",
+          "start": 283,
+          "end": 390
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 254,
-          "end": 749,
+          "start": 392,
+          "end": 698,
           "kind": "deviation",
           "sourceValue": "desire",
           "targetValue": "innocence",
@@ -1326,32 +1326,32 @@ export default {
   },
   "variable.motivation:need": {
     "summary": "The mind is naturally drawn toward what is necessary, essential, and actually required.",
-    "detail": "Tone 1–3 · Left · Strategic\n\nThe mind focuses on identifying the specific thing that is needed.\n\nTone 4–6 · Right · Receptive\n\nThe mind receives the wider situation and recognizes what is genuinely necessary within it.\n\nTransference — Fear\n\nWhen Need motivation moves off its correct state, Transference can shift it toward Fear. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThe original drive identifies what is truly necessary and what needs attention now. Off track, it can become excessive worry, research and continual information gathering, delaying the handling of what is actually needed in the present.",
+    "detail": "Need is concerned with necessity.\n\nIt sorts through many possibilities by asking: What truly needs to be handled? What is unnecessary? What is most important right now?\n\nTone 1–3 · Left\n\nMore focused on analyzing the problem and identifying the specific matter that needs attention.\n\nTone 4–6 · Right\n\nMore receptive to sensing what is genuinely necessary within the overall situation.\n\nNeed motivation originally identifies what is truly necessary and what requires attention now. When it shifts toward Fear motivation, it can become excessive worry, over-research and endless information gathering, making it harder to act on what actually needs to be done.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 168
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 29,
-          "end": 95
+          "title": "Tone 1–3 · Left",
+          "start": 187,
+          "end": 282
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 127,
-          "end": 218
+          "title": "Tone 4–6 · Right",
+          "start": 302,
+          "end": 385
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 241,
-          "end": 671,
+          "start": 387,
+          "end": 659,
           "kind": "deviation",
           "sourceValue": "need",
           "targetValue": "fear",
@@ -1362,32 +1362,32 @@ export default {
   },
   "variable.motivation:guilt": {
     "summary": "The mind is naturally drawn toward what can be corrected, repaired, or made to work better.",
-    "detail": "Tone 1–3 · Left · Strategic\n\nThe mind identifies a specific problem and develops a focused correction.\n\nTone 4–6 · Right · Receptive\n\nThe mind notices what is off in the larger field and allows an appropriate correction to emerge.\n\nTransference — Hope\n\nWhen Guilt motivation moves off its correct state, Transference can shift it toward Hope. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThe original drive notices what has gone wrong and seeks to repair, correct and restore things. Under pressure or in confusion, it can turn into waiting for things to improve on their own, avoiding problems that have already been recognized and could be addressed.",
+    "detail": "“Guilt” here is closer to a drive to correct what is wrong.\n\nIt naturally notices what has gone wrong, what needs adjustment, and how something can be brought back into proper functioning.\n\nTone 1–3 · Left\n\nMore inclined to actively analyze the problem and develop a corrective solution.\n\nTone 4–6 · Right\n\nMore able to notice what is not working within the whole system and allow a corrective direction to emerge.\n\nGuilt motivation originally sees what is wrong and generates the drive to repair, correct and restore things to proper functioning. When it shifts toward Hope motivation, it can begin to wait for the problem to resolve itself and avoid something that has already been recognized and could actually be addressed.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 188
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 29,
-          "end": 102
+          "title": "Tone 1–3 · Left",
+          "start": 207,
+          "end": 287
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 134,
-          "end": 230
+          "title": "Tone 4–6 · Right",
+          "start": 307,
+          "end": 414
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 253,
-          "end": 712,
+          "start": 416,
+          "end": 727,
           "kind": "deviation",
           "sourceValue": "guilt",
           "targetValue": "hope",
@@ -1398,32 +1398,32 @@ export default {
   },
   "variable.motivation:innocence": {
     "summary": "The mind is naturally capable of awareness without a personal agenda attached to the outcome.",
-    "detail": "Tone 1–3 · Left · Strategic\n\nEven without a personal agenda, attention can still operate in a more focused and deliberate way.\n\nTone 4–6 · Right · Receptive\n\nAwareness remains broad, receptive, and less invested in directing the outcome.\n\nTransference — Desire\n\nWhen Innocence motivation moves off its correct state, Transference can shift it toward Desire. This is not a second motivation; it describes the direction motivation can take when it goes off track.\n\nThe original motivation carries little personal agenda and experiences or observes what is happening without rushing to control the outcome. Off track, a stronger sense of purpose can emerge: wanting to control results, obtain a particular goal or make events follow a personal intention.",
+    "detail": "The distinctive quality of Innocence is that it does not require a fixed personal goal to drive the mind.\n\nIt is more oriented toward directly experiencing what is happening without trying to control the result through fear, responsibility or desire.\n\nTone 1–3 · Left\n\nEven with less personal agenda, observation can still be more concentrated and explicit.\n\nTone 4–6 · Right\n\nMore able to remain open, receptive and naturally flowing, allowing experience itself to produce understanding.\n\nInnocence motivation originally carries less personal agenda and does not need to control the outcome, allowing experience to unfold directly. When it shifts toward Desire motivation, increasingly strong personal aims can appear, along with the urge to control the result, obtain a specific outcome or make events follow one’s intended direction.",
     "presentation": {
       "kind": "variable",
       "sections": [
         {
           "id": "intro",
           "start": 0,
-          "end": 0
+          "end": 250
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Strategic",
-          "start": 29,
-          "end": 126
+          "title": "Tone 1–3 · Left",
+          "start": 269,
+          "end": 357
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Receptive",
-          "start": 158,
-          "end": 237
+          "title": "Tone 4–6 · Right",
+          "start": 377,
+          "end": 488
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 262,
-          "end": 751,
+          "start": 490,
+          "end": 836,
           "kind": "deviation",
           "sourceValue": "innocence",
           "targetValue": "desire",

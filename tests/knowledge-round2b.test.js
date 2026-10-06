@@ -16,7 +16,7 @@ const original=p=>execFileSync('git',['show',base+':'+p]);
 const q=(objectType,objectId)=>({objectType,objectId});
 
 test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
- for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])assert.deepEqual(bytes(path),original(path),path);
+ for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])assert.deepEqual(bytes(path),path==='src/locales/zh-Hant/vocabulary.js'?Buffer.from(original(path).toString().replace('\"Need\": \"需要動機\"','\"Need\": \"需求動機\"')):original(path),path);
 });
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));

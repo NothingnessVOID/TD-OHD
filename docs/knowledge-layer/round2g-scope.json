@@ -1,0 +1,16 @@
+{
+  "baseline": "e731e69b91ea1ce083a4a8b023d2dd660c08735e",
+  "purpose": "Round 2G: exact product-approved Variable Detail copy, deviation UI labels and Need localization",
+  "files": {
+    "src/lib/knowledge/content/human-design-en.js": "225f8c8a792e10a451aa12cae47109abc40760255dd8242b72489bb51969045e",
+    "src/lib/knowledge/content/human-design-zh-CN.js": "bfade24fa47705c1f900b1f3baff7baa6a2f351b47e17067de7471ea0913e1cd",
+    "src/lib/knowledge/content/human-design-zh-Hant.js": "47761e494810399b0a552257520f1f62062cb76bf18507832fa97649e9ad473f",
+    "src/lib/knowledge/detail-renderer.js": "f43b606e8b338029dfdd92c85b14d0fb54bfa5d0d4370ee7e9ce7732fa54ccfd",
+    "src/lib/knowledge/detail-access.css": "50979fb768cf55e56a6719136d2cc6706489432b294f27a70a7399289fd00232",
+    "src/locales/ui-contexts.json": "110dfb4bf8ff4c7c4fdd533a7314a851c395b7fad3340f15204b0c3d2242c615",
+    "src/locales/zh-CN/ui-chart.json": "682da2ac6bd5d46adb02f462027bfc29dbd92cbe3c88b60b2b1c9af144e441e6",
+    "src/locales/zh-Hant/ui-chart.json": "1f2b9f481f7d26819ce6f32de8749be9da1a4fbd2eabf716d8512d210396e362",
+    "src/locales/zh-CN/vocabulary.js": "586b461e909e7671a9e2f624275369cfc43aeae4ca162c37a9b054bee0783455",
+    "src/locales/zh-Hant/vocabulary.js": "3db712df53358c9fd745b77b9ca963a2f3430ccfe6686ddeeb4d00326097103f"
+  }
+}

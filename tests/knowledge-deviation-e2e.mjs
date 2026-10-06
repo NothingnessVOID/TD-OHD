@@ -2,8 +2,8 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdirSync,writeFileSync} from 'node:fs';
-const base=process.env.E2E_URL||'http://127.0.0.1:5210';
-const baseline=process.env.BASELINE_E2E_URL||'http://127.0.0.1:5209';
+const base=process.env.E2E_URL||'http://127.0.0.1:5211';
+const baseline=process.env.BASELINE_E2E_URL||'http://127.0.0.1:5210';
 const cases=['perspective:survival','perspective:power','perspective:personal','motivation:fear','motivation:desire','motivation:innocence'];
 const results=[],layouts=[];
 const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL||'chrome',headless:true});
@@ -34,7 +34,12 @@ async function check(block,width,locale,id){
  });
  assert.equal(data.fits,true,`${width}/${locale}/${id}: overflow`);assert.equal(data.vertical,true);assert.equal(data.heading,data.accent);
  const mechanism=await block.locator('.knowledge-deviation-mechanism').innerText();
- assert.match(mechanism,locale==='en'?/not a second/:locale==='zh-CN'?/不是你的另一项/:/並非你的另一項/);
+ assert.match(mechanism,locale==='en'?/moves off its correct state/:locale==='zh-CN'?/偏离正确状态/:/偏離正確狀態/);
+ assert.equal(await block.locator('.knowledge-deviation-transition .knowledge-deviation-label').innerText(),{en:'When off track','zh-CN':'偏离时','zh-Hant':'偏離時'}[locale]);
+ const names=await block.locator('.knowledge-deviation-node strong').allTextContents();
+ if(locale!=='en')for(const name of names)assert.match(name,id.startsWith('perspective:')?/視角|视角/:/動機|动机/);
+ if(id==='motivation:fear'&&locale==='zh-CN')assert.deepEqual(names,['恐惧动机','需求动机']);
+ if(id==='perspective:survival'&&locale==='zh-CN')assert.deepEqual(names,['生存视角','欲望视角']);
 }
 try{
  for(const width of [1224,903,664,390])for(const locale of ['en','zh-CN','zh-Hant']){

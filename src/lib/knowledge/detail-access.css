@@ -55,6 +55,7 @@
 .knowledge-deviation-node { display: flex; flex-direction: column; gap: 5px; width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid var(--border-subtle); border-radius: var(--radius); background: var(--accent-soft); text-align: center; overflow-wrap: anywhere; }
 .knowledge-deviation-label { color: var(--text-secondary); font-size: 12px; line-height: 1.6; }
 .knowledge-deviation-node strong { font-size: 14px; line-height: 1.6; }
+.knowledge-deviation-transition { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .knowledge-deviation-arrow { color: var(--accent); font-size: 20px; line-height: 1; }
 .knowledge-process { display: flex; align-items: stretch; gap: 8px; margin: 12px 0 20px; }
 .knowledge-process-step { flex: 1; min-width: 0; padding: 13px; border: 1px solid var(--border-subtle); border-radius: var(--radius); background: var(--bg-sunken); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }

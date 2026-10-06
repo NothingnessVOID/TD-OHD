@@ -7,10 +7,10 @@ import {knowledgeContent} from '../src/lib/knowledge/content/index.js';
 import {getKnowledgeEntry} from '../src/lib/knowledge/registry.js';
 import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';
 import {setLocale,t} from '../src/lib/i18n.js';
-import {assertContentBoundary,baseline,pairs,targetIds,uiKeys} from './helpers/knowledge-round2f-contract.js';
+import {assertContentBoundary,baseline,pairs,targetIds,uiKeys,round2FContent} from './helpers/knowledge-round2f-contract.js';
 const q=id=>({objectType:'variable',objectId:id.replace('variable.','')});
 const plain=s=>s.replace(/<[^>]*>/g,'').replaceAll('&#39;',"'").replaceAll('&quot;','"').replaceAll('&amp;','&');
-test('only 12 × 3 approved deviation Detail ranges change; all 165 summaries and 129 other articles stay exact',()=>assert.deepEqual(assertContentBoundary(),{changed:36,unchanged:129}));
+test('historical Round 2F range proof and exact Round 2G copy preserve all 165 summaries and 129 other articles',()=>assert.deepEqual(assertContentBoundary(),{changed:36,unchanged:129}));
 test('12 exact directed pairs are stable metadata in each independent locale',()=>{
  const approved=JSON.parse(readFileSync(new URL('./fixtures/knowledge-round2f-deviation.json',import.meta.url)));
  for(const [locale,records] of Object.entries(knowledgeContent))for(const [kind,values] of Object.entries(pairs))for(const [source,target] of Object.entries(values)){
@@ -19,8 +19,9 @@ test('12 exact directed pairs are stable metadata in each independent locale',()
   assert.equal(s.id,kind==='perspective'?'distraction':'transference');assert.equal(s.terminology,s.id);
   assert.equal(s.title,{en:'Off-track State','zh-CN':'偏离状态','zh-Hant':'偏離狀態'}[locale]);
   assert.ok(Number.isInteger(s.start)&&Number.isInteger(s.end)&&s.end<=r.detail.length&&s.end>s.start);
-  assert.equal(createHash('sha256').update(r.detail.slice(s.start,s.end)).digest('hex'),approved[locale][`variable.${kind}:${source}`]);
-  if(locale==='en')assert.match(r.detail.slice(s.start,s.end),kind==='perspective'?/not a second trait/:/not a second motivation/);
+  const historical=round2FContent[locale][`variable.${kind}:${source}`],range=historical.presentation.sections.find(p=>p.id===s.id);
+  assert.equal(createHash('sha256').update(historical.detail.slice(range.start,range.end)).digest('hex'),approved[locale][`variable.${kind}:${source}`]);
+  if(locale==='en')assert.match(historical.detail.slice(range.start,range.end),kind==='perspective'?/not a second trait/:/not a second motivation/);
  }
 });
 test('all 36 sections render metadata-driven localized A ↓ B in order on Library and Chart surfaces',()=>{
