@@ -14,6 +14,7 @@ export const gateName = display('gateName');
 export const hexagramName = display('hexagramName');
 export const channelName = display('channelName');
 export const circuitName = display('circuitName');
+export const circuitGroupName = display('circuitGroupName');
 export const planetName = display('planetName');
 export const lineName = display('lineName');
 export const variable = display('variable');

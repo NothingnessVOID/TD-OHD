@@ -1,3 +1,4 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { saveTemporaryBirth } from '../lib/temporary-birth.js';
 /**
  * Connection view — how two designs interact. Person A is the current
@@ -13,11 +14,10 @@ import { listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
 import { reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
-import { typeName, authorityName, centerName, graphCenter, gateName, channelName, circuitName, profileName } from '../lib/vocabulary.js';
+import { typeName, authorityName, centerName, graphCenter, gateName, channelName, profileName } from '../lib/vocabulary.js';
 import { contentText } from '../lib/content.js';
 import { t } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
-import { channelCircuit } from '../lib/circuit-topology.js';
 
 
 let placeB = null;
@@ -176,8 +176,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
   const stats = comparison.stats || {};
 
   const circuitBadge = channel => {
-    const group = channelCircuit(channel).group;
-    return `<span class="circuit-badge ${group}">${esc(circuitName(group))}</span>`;
+    return renderChannelCircuitBadges(channel);
   };
 
   const connSection = ([key, label, color, blurb]) => {

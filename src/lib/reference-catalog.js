@@ -3,7 +3,7 @@ import { GATES, CHANNELS, CENTERS } from './human-design/catalog.js';
 import { localeResources } from '../locales/index.js';
 import { getLocale } from './i18n.js';
 import { listKnowledgeEntries } from './knowledge/registry.js';
-import { gateName, channelName, centerName, circuitName, hexagramName, planetName } from './vocabulary.js';
+import { gateName, channelName, centerName, circuitName, circuitGroupName, hexagramName, planetName } from './vocabulary.js';
 import { PLANET_ORDER, PLANET_NAMES, ACTIVATION_CONCEPT_IDS, activationConceptName, activationConceptAliases } from './planet-reference.js';
 import { channelById } from './reference-content.js';
 import { CIRCUIT_GROUPS, channelCircuit } from './circuit-topology.js';
@@ -30,19 +30,16 @@ export function referenceEntries() {
       aliases: [GATES[id].name, GATES[id].iching, hexagramName(id), ...names('gateName', id), ...names('hexagramName', id)] })),
     ...PLANET_ORDER.map(id => ({ kind: 'planet', id, name: planetName(id),
       aliases: [PLANET_NAMES[id], ...names('planetName', id)] })),
-    ...groupIds.map(id => ({ kind: 'group', id, name: circuitName(id), aliases: [
-      ...names('circuitName', id), ...(id === 'individual' ? ['Integration', 'Integration Channels', ...names('circuitName', 'integration')] : [])
-    ] }))
+    ...groupIds.map(id => ({ kind: 'group', id, name: circuitGroupName(id), aliases: [
+      ...names('circuitGroupName', id), ...names('circuitName', id)
+    ] })),
+    ...Object.values(CIRCUIT_GROUPS).flat().map(id => ({ kind: 'circuit', category: 'group', id,
+      name: circuitName(id), aliases: names('circuitName', id) }))
   ];
 }
 
 export function referenceEntry(kind, id) {
   if (typeof id !== 'string' || !id) return null;
-  // Previously shared circuit links continue at their parent group.
-  if (kind === 'circuit') {
-    const group = Object.entries(CIRCUIT_GROUPS).find(([, circuits]) => circuits.includes(id))?.[0];
-    return group ? referenceEntry('group', group) : null;
-  }
   let canonical = id;
   if (kind === 'channel') {
     if (!/^\d{1,2}-\d{1,2}$/.test(normalized(id))) return null;

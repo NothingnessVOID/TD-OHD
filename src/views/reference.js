@@ -1,3 +1,4 @@
+import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
 import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
@@ -67,7 +68,7 @@ function channelDetail(entry) {
   return `${channelReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}
     <h3>${t('Related gates')}</h3><div class="reference-links">${channel.gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3><div class="reference-links">${channel.centers.map(center => link('center', center, centerName(center))).join('')}</div>
-    <h3>${t('Circuit groups')}</h3>${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}`;
+    <h3>${t('Circuit groups')}</h3><div class="reference-links">${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}${link('circuit', channelCircuit(channel).circuit, circuitName(channelCircuit(channel).circuit))}</div>`;
 }
 
 function centerDetail(entry) {
@@ -79,12 +80,14 @@ function centerDetail(entry) {
 }
 
 function circuitDetail(entry) {
+  if (entry.kind === 'group') {
+    return `<div class="reference-links">${CIRCUIT_GROUPS[entry.id].map(id =>
+      link('circuit', id, circuitName(id))).join('')}</div>`;
+  }
   const channels = circuitChannels(entry.kind, entry.id);
-  return CIRCUIT_GROUPS[entry.id].map(id => {
-    const title = id === 'integration' ? t('Integration Channels') : circuitName(id);
-    return `<h3>${esc(title)}</h3><p class="gate-detail-desc">${esc(circuitReference(id)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n', '<br>')}</p><div class="reference-links">${channels.filter(ch => channelCircuit(ch).circuit === id)
-      .map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
-  }).join('');
+  return `<p class="gate-detail-desc">${esc(circuitReference(entry.id)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n', '<br>')}</p>
+    <h3>${t('Included channels ({count})', { count: channels.length })}</h3>
+    <div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
 
 function planetDetail(entry) {
@@ -124,8 +127,7 @@ function renderDetail() {
           : entry.kind === 'concept' ? conceptDetail(entry) : circuitDetail(entry);
   const heading = entry.kind === 'channel' ? (() => {
     const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
-    const group = channelCircuit(channel).group;
-    return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2><span class="circuit-badge ${group}">${esc(circuitName(group))}</span></div>`;
+    return `<div class="channel-detail-heading"><h2>${esc(entry.name)}</h2>${renderChannelCircuitBadges(channel)}</div>`;
   })() : `<h2>${entry.kind === 'planet' ? `${esc(PLANET_GLYPHS[entry.id])} ` : ''}${esc(entry.name)}</h2>`;
   article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
     <div class="detail-label">${t(labels[entry.kind] || 'Circuit groups')} · ${esc(entry.id)}</div>
