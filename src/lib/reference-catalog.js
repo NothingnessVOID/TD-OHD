@@ -18,7 +18,7 @@ export function referenceEntries() {
     ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', category: 'basic', id,
       name: activationConceptName(id, getLocale()), aliases: activationConceptAliases(id) })),
     ...listKnowledgeEntries().filter(entry => entry.objectType !== 'cognition').map(entry => ({
-      kind: 'knowledge', category: entry.objectType === 'variable' ? 'variable' : 'basic',
+      kind: 'knowledge', category: entry.objectType,
       id: entry.id, name: entry.name, summary: entry.summary?.content ?? '', hasDetail: entry.hasDetail,
       objectType: entry.objectType, objectId: entry.objectId, aliases: [entry.objectId, entry.id]
     })),

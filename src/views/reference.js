@@ -12,9 +12,10 @@ import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { circuitReference } from '../lib/reference-supplements.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 
-const categories = ['all', 'basic', 'center', 'channel', 'gate', 'variable', 'planet', 'group'];
-const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Planetary Points', group: 'Circuit groups' };
+const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable'];
+const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
 let category = 'all';
+let filtersExpanded = false;
 let query = '';
 let limit = 60;
 let lens = 'hd';
@@ -155,12 +156,23 @@ function renderResults() {
   document.getElementById('reference-count').textContent = t('{count} results', { count: matches.length });
 }
 
+function renderFilters() {
+  const toggle = document.querySelector('.reference-filter-toggle');
+  toggle.setAttribute('aria-expanded', String(filtersExpanded));
+  toggle.querySelector('.reference-filter-chevron').textContent = filtersExpanded ? '∧' : '∨';
+  document.querySelector('.reference-filter-current').textContent = t(labels[category]);
+  document.getElementById('reference-filter-panel').hidden = !filtersExpanded;
+  document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
+}
+
 function build() {
   const mount = document.getElementById('library-view');
   mount.innerHTML = `<div class="view-container-wide"><header class="reference-heading"><h1>${t('Reference Library')}</h1></header>
     <div class="reference-layout"><aside class="reference-sidebar"><label for="reference-search">${t('Search reference')}</label>
       <input id="reference-search" type="search" autocomplete="off" placeholder="${t('Search by number or name')}" value="${esc(query)}">
-      <div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div>
+      <button type="button" class="reference-filter-toggle" data-reference-filter-toggle aria-expanded="false" aria-controls="reference-filter-panel"><span>${t('Categories')}</span><span class="reference-filter-chevron" aria-hidden="true">∨</span></button>
+      <div class="reference-filter-current">${t(labels[category])}</div>
+      <div id="reference-filter-panel" class="reference-filter-panel" hidden><div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div></div>
       <p id="reference-count"></p><div id="reference-results" class="reference-results"></div></aside>
       <article id="reference-detail" class="reference-detail" role="region"></article></div></div>`;
   built = true;
@@ -173,7 +185,7 @@ export function renderReferenceView({ languageChange = false } = {}) {
   if (!built || languageChange) build();
   renderResults();
   renderDetail();
-  document.querySelectorAll('[data-reference-filter]').forEach(button => button.classList.toggle('active', button.dataset.referenceFilter === category));
+  renderFilters();
   if (previousScroll) document.querySelector('.reference-results').scrollTop = previousScroll;
   if (focused) document.getElementById('reference-search').focus({ preventScroll: true });
   else if (returning && lastResult) document.querySelector(`.reference-result[data-reference-kind="${lastResult.kind}"][data-reference-id="${lastResult.id}"]`)
@@ -195,8 +207,9 @@ export function setupReferenceView() {
       openReference(target.dataset.referenceKind, target.dataset.referenceId);
       return;
     }
+    if (event.target.closest('[data-reference-filter-toggle]')) { filtersExpanded = !filtersExpanded; renderFilters(); return; }
     const filter = event.target.closest('[data-reference-filter]');
-    if (filter) { category = filter.dataset.referenceFilter; limit = 60; renderReferenceView(); return; }
+    if (filter) { category = filter.dataset.referenceFilter; limit = 60; filtersExpanded = false; renderReferenceView(); return; }
     const selectedLens = event.target.closest('[data-reference-lens]');
     if (selectedLens) { lens = selectedLens.dataset.referenceLens; renderDetail(); return; }
     if (event.target.closest('[data-reference-more]')) { limit += 60; renderResults(); }
