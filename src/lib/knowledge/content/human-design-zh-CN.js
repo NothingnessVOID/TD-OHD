@@ -1,8 +1,8 @@
 // zh-CN reviewed copy supplied for Round 2B. Other locale resources are independent.
 export default {
   "type.generator": {
-    "summary": "世界的建造者，拥有持续的骶骨生命力。",
-    "detail": "等待回应\n\n外界的人、事物或机会来到面前时，等待身体产生骶骨回应，再决定是否投入生命力。\n\n开放 · 包容 · 沉浸\n\n生产者的气场向外开放，会自然接收周围的人、事物与环境。外界进入场域后，骶骨由此产生回应。\n\n满足\n\n挫败",
+    "summary": "世界的建造者，拥有持续的荐骨生命力。",
+    "detail": "等待回应\n\n外界具体的人、问题、机会或事件来到面前时，先让身体产生 Sacral Response（荐骨回应），再决定是否投入生命力。\n\n“等待回应”不是消极地什么都不做，而是不让头脑先凭空决定“我应该去发起什么”。生产者的身体需要先接触到真实刺激，再通过荐骨出现靠近、投入、兴奋，或退开、无力、拒绝的反应。\n\n开放 · 包容 · 沉浸\n\n生产者的气场向外开放，像一个持续接收周围环境的场域。人、事物和机会进入气场以后，荐骨才有具体对象可以回应。\n\n当回应是真实的，生命力会自然被调动起来；如果绕过回应、仅凭头脑强行发起，往往更容易撞上阻力，并出现挫败感。\n\n满足\n\n挫败",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -12,30 +12,30 @@ export default {
         },
         "strategyDetail": {
           "start": 6,
-          "end": 44
+          "end": 154
         },
         "auraKeywords": {
-          "start": 46,
-          "end": 58
+          "start": 156,
+          "end": 168
         },
         "auraDetail": {
-          "start": 60,
-          "end": 104
+          "start": 170,
+          "end": 278
         },
         "signature": {
-          "start": 106,
-          "end": 108
+          "start": 280,
+          "end": 282
         },
         "notSelf": {
-          "start": 110,
-          "end": 112
+          "start": 284,
+          "end": 286
         }
       }
     }
   },
   "type.manifestingGenerator": {
     "summary": "世界的建造者，拥有持续的生命力，并能在回应后快速行动。",
-    "detail": "等待回应\n\n与生产者一样，显示生产者先等待外界出现可以回应的人、事物或机会，由身体的骶骨回应开启行动。\n\n开放 · 包容 · 沉浸\n\n显示生产者与生产者共享开放包容的气场机制，接收外界刺激并产生回应。回应之后，行动节奏通常更快，也可能在过程中跳过步骤、返回修正或重新调整。\n\n满足\n\n挫败",
+    "detail": "等待回应\n\n显示生产者首先仍然是拥有定义 Sacral Center（荐骨中心）的生产者，因此行动的起点仍然是外界刺激与身体回应。\n\n先让具体的人、问题、机会或事件来到面前，等待荐骨出现真实回应，再进入行动。行动速度很快，并不等于可以跳过回应。\n\n开放 · 包容 · 沉浸\n\n显示生产者与生产者共享开放、包容的气场机制，会接收外界的人事物并由荐骨产生回应。\n\n区别在于回应之后，显示生产者往往推进得更快、更非线性：可能同时处理多个步骤，也可能因为速度过快而跳过某一步，之后再返回修正、补做或重新调整路径。\n\n这种“往前冲—发现不对—返回修正”的过程，本身可以是显示生产者正常的运作节奏。\n\n满足\n\n挫败",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -45,30 +45,30 @@ export default {
         },
         "strategyDetail": {
           "start": 6,
-          "end": 51
+          "end": 122
         },
         "auraKeywords": {
-          "start": 53,
-          "end": 65
-        },
-        "auraDetail": {
-          "start": 67,
+          "start": 124,
           "end": 136
         },
-        "signature": {
+        "auraDetail": {
           "start": 138,
-          "end": 140
+          "end": 293
+        },
+        "signature": {
+          "start": 295,
+          "end": 297
         },
         "notSelf": {
-          "start": 142,
-          "end": 144
+          "start": 299,
+          "end": 301
         }
       }
     }
   },
   "type.manifestor": {
     "summary": "独立的发起者，拥有推动事情开始的能量。",
-    "detail": "告知\n\n在行动之前，先告知会受到这个行动影响的人，让对方知道即将发生什么，从而减少戒备、干预和阻力。\n\n封闭 · 推开 · 排斥\n\n显示者的气场具有封闭与推开的特质，使其能够保持独立性并发起行动。因为他人较难直接进入或读懂这个气场，行动前的告知能够减少周围人的防备与阻拦。\n\n平和\n\n愤怒",
+    "detail": "告知\n\n显示者的基础能力是发起。\n\n行动之前，先告知那些会直接受到这个行动影响的人，让对方知道“接下来会发生什么”。\n\n告知不是请求许可，也不是把决定权交给别人；它的作用是减少周围人的戒备、控制、干预和阻力，让已经决定的行动更容易推进。\n\n封闭 · 推开 · 排斥\n\n显示者的气场比较封闭，并带有向外推开的保护性质。这种结构帮助显示者保持独立性、清除阻力并发起新的事情。\n\n因为旁人不容易直接读懂显示者正在想什么、下一步准备做什么，周围的人容易本能地产生防备，甚至试图阻拦或控制。\n\n提前告知能够让外界知道即将发生的变化，从而减少这种摩擦。\n\n平和\n\n愤怒",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -78,30 +78,30 @@ export default {
         },
         "strategyDetail": {
           "start": 4,
-          "end": 50
+          "end": 118
         },
         "auraKeywords": {
-          "start": 52,
-          "end": 64
+          "start": 120,
+          "end": 132
         },
         "auraDetail": {
-          "start": 66,
-          "end": 136
+          "start": 134,
+          "end": 270
         },
         "signature": {
-          "start": 138,
-          "end": 140
+          "start": 272,
+          "end": 274
         },
         "notSelf": {
-          "start": 142,
-          "end": 144
+          "start": 276,
+          "end": 278
         }
       }
     }
   },
   "type.projector": {
     "summary": "天生的引导者，善于看见人与系统的运作。",
-    "detail": "等待认可与邀请\n\n在重要关系、工作、合作和方向性选择中，等待自身能力被真正看见，并收到适合的邀请，再进入其中发挥引导作用。\n\n聚焦 · 穿透 · 专注\n\n投射者的气场会聚焦在特定的人或系统上，深入观察对方的能量与运作方式，因此具有看见、理解和引导的能力。\n\n成功\n\n苦涩",
+    "detail": "等待认可与邀请\n\n在重要关系、工作、合作、居住方向和其他重要人生选择中，投射者需要先被真正看见和认可，再进入适合自己的邀请。\n\n重点不只是“有人叫你去做”，而是对方是否真正识别到你的能力、角色和价值。\n\n当认可与邀请成立时，投射者的观察和引导更容易被正确接收；如果在没有被看见的情况下强行介入、指导或证明自己，则更容易遭遇排斥。\n\n聚焦 · 穿透 · 专注\n\n投射者的气场会聚焦于具体的人或系统，像一束集中的光，深入观察对方的能量、结构与运作方式。\n\n这种穿透力使投射者很容易看到别人自己没有注意到的问题、潜力和运作模式，也因此非常适合引导、观察和校准。\n\n但同一种穿透力如果在没有邀请、没有认可的情况下进入别人场域，也可能让对方感到被审视或被干涉。\n\n成功\n\n苦涩",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -111,30 +111,30 @@ export default {
         },
         "strategyDetail": {
           "start": 9,
-          "end": 61
+          "end": 164
         },
         "auraKeywords": {
-          "start": 63,
-          "end": 75
+          "start": 166,
+          "end": 178
         },
         "auraDetail": {
-          "start": 77,
-          "end": 127
+          "start": 180,
+          "end": 325
         },
         "signature": {
-          "start": 129,
-          "end": 131
+          "start": 327,
+          "end": 329
         },
         "notSelf": {
-          "start": 133,
-          "end": 135
+          "start": 331,
+          "end": 333
         }
       }
     }
   },
   "type.reflector": {
     "summary": "环境的镜子，通过采样周围的人与场域体验世界。",
-    "detail": "等待一个完整的月亮周期\n\n面对重大决定时，让决定经过一个完整的月亮周期展开，在不同时间和状态中观察自己的体验与清晰度，周期约为 29.5 天。\n\n抗拒 · 采样 · 镜面反射\n\n反映者的气场以采样的方式体验周围的人和环境。九个中心没有固定定义，因此反映者对环境与群体的状态十分敏感，并能映照所处场域。\n\n惊喜\n\n失望",
+    "detail": "等待一个完整的月亮周期\n\n面对重大决定，不急着在某一个瞬间定论，而是让这件事经过一个完整的月亮周期，在不同日期、不同临时激活和不同状态中观察自己的体验。\n\n抗拒 · 采样 · 镜面反射\n\n反映者的九个中心没有固定定义，但气场并不是简单把所有外界能量全部吸收进去，而是以“采样”的方式体验周围的人与环境。\n\n反映者对场域质量非常敏感。一个健康、适合的环境会呈现出完全不同的体验；当环境失衡、混乱或长期消耗时，反映者也很容易把这种状态反映出来。\n\n因此反映者不仅体验环境，也常常像一面镜子一样呈现一个群体或场域当前的健康程度。\n\n惊喜\n\n失望",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -144,23 +144,23 @@ export default {
         },
         "strategyDetail": {
           "start": 13,
-          "end": 71
+          "end": 76
         },
         "auraKeywords": {
-          "start": 73,
-          "end": 87
+          "start": 78,
+          "end": 92
         },
         "auraDetail": {
-          "start": 89,
-          "end": 150
+          "start": 94,
+          "end": 261
         },
         "signature": {
-          "start": 152,
-          "end": 154
+          "start": 263,
+          "end": 265
         },
         "notSelf": {
-          "start": 156,
-          "end": 158
+          "start": 267,
+          "end": 269
         }
       }
     }
@@ -195,7 +195,7 @@ export default {
   },
   "authority.lunar": {
     "summary": "重大决定，等待一个完整的月亮周期。",
-    "detail": "月亮权威只属于反映者。由于反映者没有固定定义的中心，随着月亮经过不同闸门，会不断体验到不同的临时激活和状态。\n\n面对重大决定，需要给自己一个完整的月亮周期，约 29.5 天。在这个过程中观察自己对同一件事的感受如何变化，哪些感觉只是暂时出现，哪些方向经过整个周期之后仍然保持稳定，再逐渐形成决定。"
+    "detail": "月亮权威只属于反映者。由于反映者没有固定定义的中心，随着月亮经过不同闸门，会不断体验到不同的临时激活和状态。\n\n面对重大决定，需要给自己一个完整的月亮周期。在这个过程中观察自己对同一件事的感受如何变化，哪些感觉只是暂时出现，哪些方向经过整个周期之后仍然保持稳定，再逐渐形成决定。"
   },
   "definition.single": {
     "summary": "所有定义中心连成一个整体，内部能量可以自行流通和整合。",
@@ -1780,5 +1780,37 @@ export default {
       ]
     },
     "name": "Motivation（动机）"
+  },
+  "type.introduction": {
+    "name": "Type（类型）",
+    "summary": "类型描述你的气场与生命能量如何和外界互动，并对应各自的 Strategy（策略）、Signature（签名）与 Not-Self Theme（非自己主题）。",
+    "detail": "### 核心机制\n\nType（类型）不是一组性格标签，而是根据 BodyGraph（人体图）的定义结构产生的基础气场机制。它描述一个人的能量如何与外界接触、如何进入正确的互动，以及在什么情况下更容易遇到阻力。\n\nHuman Design 中通常以四大类型理解整体机制：\n\n- Generator / Manifesting Generator（生产者／显示生产者）\n- Manifestor（显示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n网站继续把 Generator 与 Manifesting Generator 分开显示，便于阅读，但两者都属于具有定义 Sacral Center（荐骨中心）的生产者家族，并共享“先回应”的基础机制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在与外界互动时的基础操作方式：\n\n- Generator / Manifesting Generator：等待回应\n- Manifestor：行动前告知\n- Projector：在重要关系、工作与方向性选择中等待认可与邀请\n- Reflector：重大决定等待一个完整的月亮周期\n\nStrategy 不是头脑规划出来的技巧，而是让身体按照自身气场机制进入互动的方式。\n\n### Signature 与 Not-Self Theme\n\nSignature（签名）可以理解为结构运作顺畅时比较容易出现的体验：\n\n- Generator / Manifesting Generator：满足\n- Manifestor：平和\n- Projector：成功\n- Reflector：惊喜\n\nNot-Self Theme（非自己主题）则像一个“报警灯”，提醒当前的互动方式可能偏离了自身机制：\n\n- Generator / Manifesting Generator：挫败\n- Manifestor：愤怒\n- Projector：苦涩\n- Reflector：失望",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "authority.introduction": {
+    "name": "Inner Authority（内在权威）",
+    "summary": "内在权威是身体的决策机制；Strategy（策略）决定如何进入互动，Authority（权威）决定如何形成自己的决定。",
+    "detail": "### 核心机制\n\n如果说 Strategy（策略）描述“怎样正确进入一件事”，Inner Authority（内在权威）描述的就是：\n\n**当事情真正来到面前以后，决定应该从哪里产生。**\n\nHuman Design 的基础原则是：Mind（头脑）可以分析、比较、理解和表达，但不被用作自己的最终决策权威。\n\n不同图表会根据中心定义结构形成不同的 Authority。\n\n### 与 Strategy 的关系\n\nStrategy 与 Authority 不是互相替代的两套方法。\n\n更自然的顺序是：\n\n**先按照 Strategy 进入正确的互动 → 再按照自己的 Authority 形成决定。**\n\n例如：\n\n- 生产者先等待可以回应的具体刺激，再听荐骨或情绪权威；\n- 投射者在重要事项上先等待认可与邀请，再按照自己的具体 Authority 判断这个邀请是否适合；\n- 显示者先依据自己的 Authority 确认行动，再告知会受到影响的人；\n- 反映者面对重大决定，让决定经过完整月亮周期。\n\n### 当前网站支持的 Authority\n\n- Emotional Authority（情绪权威）\n- Sacral Authority（荐骨权威）\n- Splenic Authority（直觉／脾权威）\n- Ego Manifested Authority（意志力显化权威）\n- Ego Projected Authority（意志力投射权威）\n- Self-Projected Authority（自我投射权威）\n- Mental / Environmental Authority（环境／心智权威）\n- Lunar Authority（月亮权威）",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "profile.introduction": {
+    "name": "Profile（人生角色）",
+    "summary": "人生角色由 Personality 与 Design 的爻线组合而成，描述一个人体验自己、与他人互动及进入人生经验时的基本角色结构。",
+    "detail": "### Profile 如何形成\n\nProfile 由两条 Line（爻线）组成。\n\n第一位数字来自 Personality Sun / Earth（人格太阳／地球）的爻线，第二位数字来自 Design Sun / Earth（设计太阳／地球）的爻线。\n\n例如：\n\n**1/3 = Personality Line 1 + Design Line 3**\n\n它不是两个独立人格拼在一起，而是两种爻线机制同时作用在一个人的生命中。\n\n### 下卦与上卦\n\n六个爻可以分成两组：\n\n**1–3 爻：下卦**\n\n更偏向个人内部的探索、学习与亲身经验。重点先发生在“我自己怎么理解、怎么试、怎么建立基础”。\n\n**4–6 爻：上卦**\n\n更偏向人与外界的互动、关系、投射、社会影响与超越个人经验的视角。\n\n### 六爻的房屋模型\n\nHuman Design 常用一栋“有两层楼和屋顶的房子”理解六个爻。\n\n#### Line 1（第一爻）—— 地基\n\n1 爻像房子的地基和地下室。\n\n它需要不断研究、调查、向下挖，直到确认基础足够牢固。安全感来自“我已经把底层弄清楚了”。\n\n#### Line 2（第二爻）—— 一楼拉着窗帘的房间\n\n2 爻像待在房间里自然做自己擅长事情的人。\n\n它通常需要独处空间，而且未必意识到自己的天然能力。很多时候是外界先看见这份能力，再把 2 爻“叫出来”。\n\n#### Line 3（第三爻）—— 楼梯\n\n3 爻像连接上下层的楼梯。\n\n楼梯意味着碰撞、踩空、重新调整。3 爻通过 Trial and Error（试错）认识现实：不是靠理论提前避免所有错误，而是亲自发现什么行得通、什么行不通。\n\n#### Line 4（第四爻）—— 阳台／露台\n\n4 爻走出房间，站到能与熟人互动的阳台。\n\n它的机会、资源和影响力高度依赖关系网络、信任与熟悉的人际连接。稳定关系往往比陌生环境中的强行拓展更重要。\n\n#### Line 5（第五爻）—— 二楼临街的窗户\n\n5 爻从外界看起来像一个“可以解决问题的人”。\n\n别人很容易把期待、幻想、救场能力或解决方案投射到 5 爻身上。如果能够提供现实、可用的方案，5 爻会产生很强的影响；如果投射与真实能力差距过大，也容易出现失望和声誉压力。\n\n#### Line 6（第六爻）—— 屋顶\n\n6 爻站在屋顶，以更高、更远的视角观察整栋房子和周围世界。\n\n它通常以三阶段展开：\n\n- 约 30 岁前：更接近 3 爻，通过现实碰撞和试错积累经验；\n- 约 30～50 岁：逐渐拉开距离，观察、整理和整合已经经历的事情；\n- 约 50 岁以后：把真正活过的经验自然呈现出来，成为 Role Model（榜样）。\n\n### 12 个 Profile 与 Geometry\n\n12 种 Profile 分成三类 Geometry：\n\n**Right Angle（右角）·个人命运**\n- 1/3\n- 1/4\n- 2/4\n- 2/5\n- 3/5\n- 3/6\n- 4/6\n\n**Juxtaposition（并列）·固定命运**\n- 4/1\n\n**Left Angle（左角）·跨个人命运**\n- 5/1\n- 5/2\n- 6/2\n- 6/3\n\nGeometry 描述生命主题展开时更偏个人历程、固定轨迹，还是通过与他人的关系和互动展开。",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "definition.introduction": {
+    "name": "Definition（定义）",
+    "summary": "Definition 描述所有 Defined Centers（有定义中心）通过完整 Channel（通道）连接后，在体内形成多少个彼此连通的定义区域。",
+    "detail": "### 核心机制\n\nDefinition 看的不是“有几个中心被点亮”，而是：\n\n**这些有定义中心是否通过完整通道彼此连接成一个整体。**\n\n一组内部完全连通的定义中心，可以理解成一个 Definition Island（定义岛）。\n\n因此：\n\n- Single Definition（一分定义）= 1 个定义岛\n- Split Definition（二分定义）= 2 个定义岛\n- Triple Split Definition（三分定义）= 3 个定义岛\n- Quadruple Split Definition（四分定义）= 4 个定义岛\n- No Definition（无定义）= 没有固定定义岛，只出现在 Reflector（反映者）\n\n### Bridge（桥接）\n\n当图中存在多个 Definition Island 时，岛与岛之间会存在没有接通的位置。\n\n其他人的闸门、完整通道，或 Transit（行运）的临时激活，有时会补上这些位置，让原本分开的区域暂时连通。\n\n这种位置就是理解 Split Definition 时常说的 Bridging（桥接）。\n\n桥接会带来明显的连接感，但它本身没有“好／坏”之分。一个能够桥接你的人，既可能让内部运作暂时更顺，也可能成为很强的 Conditioning（制约）来源。\n\n### Definition 不代表完整与否\n\nSingle Definition 并不表示“比 Split 更完整”，Triple / Quadruple Split 也不表示结构更差。\n\nDefinition 只描述内部连接方式与信息整合路径，不给人的价值、成熟度或能力排等级。",
+    "presentation": {
+      "kind": "overview"
+    }
   }
 };

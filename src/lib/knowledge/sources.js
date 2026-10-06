@@ -10,6 +10,7 @@ export const SOURCES = Object.freeze({
   'td-ohd-variable': { type: 'td-ohd', lineage: ['td-ohd', 'unknown'], evidence: 'phase 2 moved existing text unchanged; original sentence source unresolved', reviewed: false },
   'sharp-identity': { type: 'sharpastrology', lineage: ['sharpastrology'], evidence: 'engine-core/TransitCore.cs', reviewed: false },
   unknown: { type: 'unknown', lineage: ['unknown'], evidence: null, reviewed: false },
+  'knowledge-restoration-phase2': {type:'td-ohd',lineage:['td-ohd'],reviewed:true,evidence:'User-approved TD-OHD-new-knowledge-restoration-phase2.md; zh-CN source, faithful Traditional conversion and English translation. No independent external content verification.'},
   'variable-final-content': { type:'td-ohd', lineage:['td-ohd'], reviewed:true, evidence:'User-approved TD-OHD-Variable-29-final-content-zh-CN.md; zh-Hant faithful conversion and English faithful translation. Original course material was not requested or independently verified.' },
   'teacher-material': { type: 'teacher-material', lineage: ['teacher-material'], evidence: null, reserved: true },
   'teacher-extension': { type: 'teacher-extension', lineage: ['teacher-extension'], evidence: null, reserved: true },

@@ -35,9 +35,28 @@ function renderVariableLinks(entry) {
     : [`hd.variable.${kind}.introduction`];
   return `<nav class="knowledge-variable-links">${ids.map(id=>{const target=getKnowledgeEntryById(id);return target?`<button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(t(variableActionLabels[target.properties.kind]))}</span><span aria-hidden="true">→</span></button>`:'';}).join('')}</nav>`;
 }
+const foundationActionLabels = {type:'Learn about Types', authority:'Learn about Inner Authority', profile:'Learn about Profiles', definition:'Learn about Definition'};
+function renderFoundationLink(entry) {
+  const label = foundationActionLabels[entry.objectType];
+  if (!label || entry.properties.publicOverview) return '';
+  const id = `hd.${entry.objectType}.introduction`;
+  return `<nav class="knowledge-variable-links"><button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(t(label))}</span><span aria-hidden="true">→</span></button></nav>`;
+}
+// Source headings and lists are presentation only; no per-object components.
+function renderOverview(entry) {
+  return `<div class="knowledge-reading">${textOf(entry.detail).split(/\n\n+/).filter(Boolean).map(part => {
+    const inline = text => resolveKnowledgeText(text,{rich:true}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    if (/^#{3,4} /.test(part)) return `<h3>${inline(part.replace(/^#{3,4} /,''))}</h3>`;
+    const lines = part.split('\n'), listStart = lines.findIndex(line=>line.startsWith('- '));
+    if (listStart >= 0 && lines.slice(listStart).every(line=>line.startsWith('- '))) {
+      return (listStart ? `<p>${inline(lines.slice(0,listStart).join('\n'))}</p>` : '') + `<ul>${lines.slice(listStart).map(line=>`<li>${inline(line.slice(2))}</li>`).join('')}</ul>`;
+    }
+    return `<p>${inline(part).replaceAll('\n','<br>')}</p>`;
+  }).join('')}</div>`;
+}
 function renderHeader(entry) {
   const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
-  const name=entry.objectType==='profile'?`${entry.objectId} ${entry.name}`:entry.name;
+  const name=entry.objectType==='profile'&&!entry.properties.publicOverview?`${entry.objectId} ${entry.name}`:entry.name;
   return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>`;
 }
 function renderSummary(entry) {
@@ -133,7 +152,7 @@ function renderContext(entry, slot) {
   return `<aside class="knowledge-context knowledge-context-badges">${direction?badge(`${direction==='left'?'←':'→'} ${t(direction==='left'?'Left — focused':'Right — receptive')}`,'knowledge-direction'):''}${badge(t('Color {color} · Tone {tone} · Base {base}',slot),'knowledge-substructure')}</aside>`;
 }
 function renderGeometry(entry) {
-  if(entry.objectType==='profile')return badge(entry.detail?.presentation?.geometry??t(profileLabels[entry.properties.geometry]),'knowledge-geometry');
+  if(entry.objectType==='profile'&&!entry.properties.publicOverview)return badge(entry.detail?.presentation?.geometry??t(profileLabels[entry.properties.geometry]),'knowledge-geometry');
   if(entry.objectType==='cross'&&entry.properties.angle)return `<div class="knowledge-cross-meta">${badge(t(angleLabels[entry.properties.angle]),'knowledge-geometry')}</div>`;
   return '';
 }
@@ -143,5 +162,5 @@ export function renderKnowledgeDetail(query,{variableContext=null,definitionComp
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
   const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
   const source=entry.objectType==='variable'&&!entry.properties.publicOverview?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
-  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${renderers[entry.objectType]?.()??renderProse(entry.detail)}</section></article>`;
+  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'&&!entry.properties.publicOverview?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${entry.properties.publicOverview&&entry.objectType!=='variable'?renderOverview(entry):renderers[entry.objectType]?.()??renderProse(entry.detail)}${renderFoundationLink(entry)}</section></article>`;
 }

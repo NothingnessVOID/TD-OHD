@@ -18,7 +18,11 @@
     "Learn about Perspective": "Learn about Perspective",
     "Learn about Motivation": "Learn about Motivation",
     "Learn about the Incarnation Cross": "Learn about the Incarnation Cross",
-    "Incarnation Cross overview title": "Incarnation Cross"
+    "Incarnation Cross overview title": "Incarnation Cross",
+    "Learn about Types": "Learn about Types",
+    "Learn about Inner Authority": "Learn about Inner Authority",
+    "Learn about Profiles": "Learn about Profiles",
+    "Learn about Definition": "Learn about Definition"
   },
   "zh-CN": {
     "connection.heading": "关系合图",
@@ -30,7 +34,11 @@
     "Learn about Perspective": "了解视角",
     "Learn about Motivation": "了解动机",
     "Learn about the Incarnation Cross": "了解化身十字",
-    "Incarnation Cross overview title": "Incarnation Cross（化身十字）"
+    "Incarnation Cross overview title": "Incarnation Cross（化身十字）",
+    "Learn about Types": "了解类型",
+    "Learn about Inner Authority": "了解内在权威",
+    "Learn about Profiles": "了解人生角色",
+    "Learn about Definition": "了解定义"
   },
   "zh-Hant": {
     "connection.heading": "關係合圖",
@@ -42,6 +50,10 @@
     "Learn about Perspective": "了解視角",
     "Learn about Motivation": "了解動機",
     "Learn about the Incarnation Cross": "了解化身十字",
-    "Incarnation Cross overview title": "Incarnation Cross（化身十字）"
+    "Incarnation Cross overview title": "Incarnation Cross（化身十字）",
+    "Learn about Types": "了解類型",
+    "Learn about Inner Authority": "了解內在權威",
+    "Learn about Profiles": "了解人生角色",
+    "Learn about Definition": "了解定義"
   }
 }

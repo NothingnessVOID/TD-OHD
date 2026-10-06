@@ -1,8 +1,8 @@
 // Independent zh-Hant editorial copy supplied for Round 2C; internal notes excluded.
 export default {
   "type.generator": {
-    "summary": "以穩定的薦骨生命力回應生活，是能夠持續投入與建造的類型。",
-    "detail": "等待回應\n\n讓具體的人、問題、機會、物件或情境先來到面前，再聽薦骨是否有回應。回應出現之後，才知道生命力是否真的願意投入。\n\n開放 · 包覆\n\n生產者的能量場是開放且包覆的，會把周遭的人事物帶進自身的場域，讓生活有機會碰觸薦骨並產生回應。\n\n滿足\n\n挫敗",
+    "summary": "世界的建造者，擁有持續的薦骨生命力。",
+    "detail": "等待回應\n\n外界具體的人、問題、機會或事件來到面前時，先讓身體產生 Sacral Response（薦骨回應），再決定是否投入生命力。\n\n“等待回應”不是消極地什麼都不做，而是不讓頭腦先憑空決定“我應該去發起什麼”。生產者的身體需要先接觸到真實刺激，再通過薦骨出現靠近、投入、興奮，或退開、無力、拒絕的反應。\n\n開放 · 包容 · 沉浸\n\n生產者的氣場向外開放，像一個持續接收周圍環境的場域。人、事物和機會進入氣場以後，薦骨纔有具體對象可以回應。\n\n當回應是真實的，生命力會自然被調動起來；如果繞過回應、僅憑頭腦強行發起，往往更容易撞上阻力，並出現挫敗感。\n\n滿足\n\n挫敗",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -12,30 +12,30 @@ export default {
         },
         "strategyDetail": {
           "start": 6,
-          "end": 61
+          "end": 154
         },
         "auraKeywords": {
-          "start": 63,
-          "end": 70
+          "start": 156,
+          "end": 168
         },
         "auraDetail": {
-          "start": 72,
-          "end": 119
+          "start": 170,
+          "end": 278
         },
         "signature": {
-          "start": 121,
-          "end": 123
+          "start": 280,
+          "end": 282
         },
         "notSelf": {
-          "start": 125,
-          "end": 127
+          "start": 284,
+          "end": 286
         }
       }
     }
   },
   "type.manifestingGenerator": {
-    "summary": "帶著薦骨回應與顯化速度的生產者，正確回應後可以快速行動並調整路徑。",
-    "detail": "等待回應\n\n顯示生產者仍然從薦骨回應開始。當具體的人事物來到面前，薦骨有能量回應之後，行動才有真正的起點。\n\n開放 · 包覆\n\n顯示生產者和生產者共享相同的能量場與策略。不同之處在於，回應之後能量可以更快地進入行動，也常在過程中跳過步驟、回頭修正或重新調整。\n\n滿足\n\n挫敗",
+    "summary": "世界的建造者，擁有持續的生命力，並能在回應後快速行動。",
+    "detail": "等待回應\n\n顯示生產者首先仍然是擁有定義 Sacral Center（薦骨中心）的生產者，因此行動的起點仍然是外界刺激與身體回應。\n\n先讓具體的人、問題、機會或事件來到面前，等待薦骨出現真實回應，再進入行動。行動速度很快，並不等於可以跳過回應。\n\n開放 · 包容 · 沉浸\n\n顯示生產者與生產者共享開放、包容的氣場機制，會接收外界的人事物並由薦骨產生回應。\n\n區別在於回應之後，顯示生產者往往推進得更快、更非線性：可能同時處理多個步驟，也可能因爲速度過快而跳過某一步，之後再返回修正、補做或重新調整路徑。\n\n這種“往前衝—發現不對—返回修正”的過程，本身可以是顯示生產者正常的運作節奏。\n\n滿足\n\n挫敗",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -45,63 +45,63 @@ export default {
         },
         "strategyDetail": {
           "start": 6,
-          "end": 53
+          "end": 122
         },
         "auraKeywords": {
-          "start": 55,
-          "end": 62
+          "start": 124,
+          "end": 136
         },
         "auraDetail": {
-          "start": 64,
-          "end": 129
+          "start": 138,
+          "end": 293
         },
         "signature": {
-          "start": 131,
-          "end": 133
+          "start": 295,
+          "end": 297
         },
         "notSelf": {
-          "start": 135,
-          "end": 137
+          "start": 299,
+          "end": 301
         }
       }
     }
   },
   "type.manifestor": {
-    "summary": "天生具備發起行動的能力，是用來啟動事情並帶來影響的類型。",
-    "detail": "行動前告知\n\n當內在權威已經做出決定，在行動之前先告知會受到影響的人。告知不是請求允許，而是讓他人知道即將發生什麼，減少不必要的阻力。\n\n封閉 · 反抗\n\n顯示者的能量場是封閉的，會把外界往外推，保護自身的獨立性。別人不容易直接讀懂顯示者下一步會做什麼，因此事前告知能降低周圍的戒備與干預。\n\n平和\n\n憤怒",
+    "summary": "獨立的發起者，擁有推動事情開始的能量。",
+    "detail": "告知\n\n顯示者的基礎能力是發起。\n\n行動之前，先告知那些會直接受到這個行動影響的人，讓對方知道“接下來會發生什麼”。\n\n告知不是請求許可，也不是把決定權交給別人；它的作用是減少周圍人的戒備、控制、干預和阻力，讓已經決定的行動更容易推進。\n\n封閉 · 推開 · 排斥\n\n顯示者的氣場比較封閉，並帶有向外推開的保護性質。這種結構幫助顯示者保持獨立性、清除阻力併發起新的事情。\n\n因爲旁人不容易直接讀懂顯示者正在想什麼、下一步準備做什麼，周圍的人容易本能地產生防備，甚至試圖阻攔或控制。\n\n提前告知能夠讓外界知道即將發生的變化，從而減少這種摩擦。\n\n平和\n\n憤怒",
     "presentation": {
       "kind": "type",
       "fields": {
         "strategyValue": {
           "start": 0,
-          "end": 5
+          "end": 2
         },
         "strategyDetail": {
-          "start": 7,
-          "end": 67
+          "start": 4,
+          "end": 118
         },
         "auraKeywords": {
-          "start": 69,
-          "end": 76
+          "start": 120,
+          "end": 132
         },
         "auraDetail": {
-          "start": 78,
-          "end": 145
+          "start": 134,
+          "end": 270
         },
         "signature": {
-          "start": 147,
-          "end": 149
+          "start": 272,
+          "end": 274
         },
         "notSelf": {
-          "start": 151,
-          "end": 153
+          "start": 276,
+          "end": 278
         }
       }
     }
   },
   "type.projector": {
-    "summary": "擅長深入看見他人與系統如何運作，是等待被認可與邀請的引導者。",
-    "detail": "等待認可與邀請\n\n在重要關係、工作、合作與人生方向上，先讓自己的能力被真正看見，再等待適合的邀請。正確的邀請會提供一個能讓投射者的洞察被接收的位置。\n\n聚焦 · 吸收\n\n投射者的能量場會聚焦在對方，形成很強的一對一閱讀能力，因此能深入理解一個人或系統的能量如何運作。\n\n成功\n\n苦澀",
+    "summary": "天生的引導者，善於看見人與系統的運作。",
+    "detail": "等待認可與邀請\n\n在重要關係、工作、合作、居住方向和其他重要人生選擇中，投射者需要先被真正看見和認可，再進入適合自己的邀請。\n\n重點不只是“有人叫你去做”，而是對方是否真正識別到你的能力、角色和價值。\n\n當認可與邀請成立時，投射者的觀察和引導更容易被正確接收；如果在沒有被看見的情況下強行介入、指導或證明自己，則更容易遭遇排斥。\n\n聚焦 · 穿透 · 專注\n\n投射者的氣場會聚焦於具體的人或系統，像一束集中的光，深入觀察對方的能量、結構與運作方式。\n\n這種穿透力使投射者很容易看到別人自己沒有注意到的問題、潛力和運作模式，也因此非常適合引導、觀察和校準。\n\n但同一種穿透力如果在沒有邀請、沒有認可的情況下進入別人場域，也可能讓對方感到被審視或被幹涉。\n\n成功\n\n苦澀",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -111,56 +111,56 @@ export default {
         },
         "strategyDetail": {
           "start": 9,
-          "end": 74
+          "end": 164
         },
         "auraKeywords": {
-          "start": 76,
-          "end": 83
+          "start": 166,
+          "end": 178
         },
         "auraDetail": {
-          "start": 85,
-          "end": 133
+          "start": 180,
+          "end": 325
         },
         "signature": {
-          "start": 135,
-          "end": 137
+          "start": 327,
+          "end": 329
         },
         "notSelf": {
-          "start": 139,
-          "end": 141
+          "start": 331,
+          "end": 333
         }
       }
     }
   },
   "type.reflector": {
-    "summary": "沒有固定定義，透過環境與月亮週期採樣並映照周遭的狀態。",
-    "detail": "等待完整的月亮週期\n\n面對重大決定時，給自己約 29.5 天的完整月亮週期，讓同一個問題在不同時間、不同暫時啟動與不同環境中被反覆經驗，再讓清晰逐漸浮現。\n\n抵抗 · 取樣\n\n反映者的能量場會取樣周遭，而不是固定吸收成自己的定義。九個中心沒有固定定義，使反映者對人群與環境的品質非常敏感，也能映照一個場域正在發生什麼。\n\n驚喜\n\n失望",
+    "summary": "環境的鏡子，通過採樣周圍的人與場域體驗世界。",
+    "detail": "等待一個完整的月亮週期\n\n面對重大決定，不急着在某一個瞬間定論，而是讓這件事經過一個完整的月亮週期，在不同日期、不同臨時啟動和不同狀態中觀察自己的體驗。\n\n抗拒 · 採樣 · 鏡面反射\n\n反映者的九個中心沒有固定定義，但氣場並不是簡單把所有外界能量全部吸收進去，而是以“採樣”的方式體驗周圍的人與環境。\n\n反映者對場域質量非常敏感。一個健康、適合的環境會呈現出完全不同的體驗；當環境失衡、混亂或長期消耗時，反映者也很容易把這種狀態反映出來。\n\n因此反映者不僅體驗環境，也常常像一面鏡子一樣呈現一個羣體或場域當前的健康程度。\n\n驚喜\n\n失望",
     "presentation": {
       "kind": "type",
       "fields": {
         "strategyValue": {
           "start": 0,
-          "end": 9
+          "end": 11
         },
         "strategyDetail": {
-          "start": 11,
-          "end": 77
+          "start": 13,
+          "end": 76
         },
         "auraKeywords": {
-          "start": 79,
-          "end": 86
+          "start": 78,
+          "end": 92
         },
         "auraDetail": {
-          "start": 88,
-          "end": 159
+          "start": 94,
+          "end": 261
         },
         "signature": {
-          "start": 161,
-          "end": 163
+          "start": 263,
+          "end": 265
         },
         "notSelf": {
-          "start": 165,
-          "end": 167
+          "start": 267,
+          "end": 269
         }
       }
     }
@@ -195,7 +195,7 @@ export default {
   },
   "authority.lunar": {
     "summary": "重大決定，等待一個完整的月亮週期。",
-    "detail": "月亮權威只屬於反映者。因為沒有固定定義的中心，月亮移經不同閘門時，會帶來不同的暫時啟動與經驗。\n\n重大決定可以放進約 29.5 天的完整月亮週期中觀察。看看同一個問題在不同日子、人物、環境與暫時啟動下如何改變，讓經過整個週期後仍然穩定的方向逐漸浮現。"
+    "detail": "月亮權威只屬於反映者。因為沒有固定定義的中心，月亮移經不同閘門時，會帶來不同的暫時啟動與經驗。\n\n重大決定可以放進一個完整的月亮週期中觀察。看看同一個問題在不同日子、人物、環境與暫時啟動下如何改變，讓經過整個週期後仍然穩定的方向逐漸浮現。"
   },
   "definition.single": {
     "summary": "所有已定義中心連成一個整體，內在運作可以在同一個連通區域中完成。",
@@ -1792,5 +1792,37 @@ export default {
       ]
     },
     "name": "Motivation（動機）"
+  },
+  "type.introduction": {
+    "name": "Type（類型）",
+    "summary": "類型描述你的氣場與生命能量如何和外界互動，並對應各自的 Strategy（策略）、Signature（簽名）與 Not-Self Theme（非自己主題）。",
+    "detail": "### 核心機制\n\nType（類型）不是一組性格標籤，而是根據 BodyGraph（人體圖）的定義結構產生的基礎氣場機制。它描述一個人的能量如何與外界接觸、如何進入正確的互動，以及在什麼情況下更容易遇到阻力。\n\nHuman Design 中通常以四大類型理解整體機制：\n\n- Generator / Manifesting Generator（生產者／顯示生產者）\n- Manifestor（顯示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n網站繼續把 Generator 與 Manifesting Generator 分開顯示，便於閱讀，但兩者都屬於具有定義 Sacral Center（薦骨中心）的生產者家族，並共享“先回應”的基礎機制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在與外界互動時的基礎操作方式：\n\n- Generator / Manifesting Generator：等待回應\n- Manifestor：行動前告知\n- Projector：在重要關係、工作與方向性選擇中等待認可與邀請\n- Reflector：重大決定等待一個完整的月亮週期\n\nStrategy 不是頭腦規劃出來的技巧，而是讓身體按照自身氣場機制進入互動的方式。\n\n### Signature 與 Not-Self Theme\n\nSignature（簽名）可以理解爲結構運作順暢時比較容易出現的體驗：\n\n- Generator / Manifesting Generator：滿足\n- Manifestor：平和\n- Projector：成功\n- Reflector：驚喜\n\nNot-Self Theme（非自己主題）則像一個“報警燈”，提醒當前的互動方式可能偏離了自身機制：\n\n- Generator / Manifesting Generator：挫敗\n- Manifestor：憤怒\n- Projector：苦澀\n- Reflector：失望",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "authority.introduction": {
+    "name": "Inner Authority（內在權威）",
+    "summary": "內在權威是身體的決策機制；Strategy（策略）決定如何進入互動，Authority（權威）決定如何形成自己的決定。",
+    "detail": "### 核心機制\n\n如果說 Strategy（策略）描述“怎樣正確進入一件事”，Inner Authority（內在權威）描述的就是：\n\n**當事情真正來到面前以後，決定應該從哪裏產生。**\n\nHuman Design 的基礎原則是：Mind（頭腦）可以分析、比較、理解和表達，但不被用作自己的最終決策權威。\n\n不同圖表會根據中心定義結構形成不同的 Authority。\n\n### 與 Strategy 的關係\n\nStrategy 與 Authority 不是互相替代的兩套方法。\n\n更自然的順序是：\n\n**先按照 Strategy 進入正確的互動 → 再按照自己的 Authority 形成決定。**\n\n例如：\n\n- 生產者先等待可以回應的具體刺激，再聽薦骨或情緒權威；\n- 投射者在重要事項上先等待認可與邀請，再按照自己的具體 Authority 判斷這個邀請是否適合；\n- 顯示者先依據自己的 Authority 確認行動，再告知會受到影響的人；\n- 反映者面對重大決定，讓決定經過完整月亮週期。\n\n### 當前網站支持的 Authority\n\n- Emotional Authority（情緒權威）\n- Sacral Authority（薦骨權威）\n- Splenic Authority（直覺／脾權威）\n- Ego Manifested Authority（意志力顯化權威）\n- Ego Projected Authority（意志力投射權威）\n- Self-Projected Authority（自我投射權威）\n- Mental / Environmental Authority（環境／心智權威）\n- Lunar Authority（月亮權威）",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "profile.introduction": {
+    "name": "Profile（人生角色）",
+    "summary": "人生角色由 Personality 與 Design 的爻線組合而成，描述一個人體驗自己、與他人互動及進入人生經驗時的基本角色結構。",
+    "detail": "### Profile 如何形成\n\nProfile 由兩條 Line（爻線）組成。\n\n第一位數字來自 Personality Sun / Earth（人格太陽／地球）的爻線，第二位數字來自 Design Sun / Earth（設計太陽／地球）的爻線。\n\n例如：\n\n**1/3 = Personality Line 1 + Design Line 3**\n\n它不是兩個獨立人格拼在一起，而是兩種爻線機制同時作用在一個人的生命中。\n\n### 下卦與上卦\n\n六個爻可以分成兩組：\n\n**1–3 爻：下卦**\n\n更偏向個人內部的探索、學習與親身經驗。重點先發生在“我自己怎麼理解、怎麼試、怎麼建立基礎”。\n\n**4–6 爻：上卦**\n\n更偏向人與外界的互動、關係、投射、社會影響與超越個人經驗的視角。\n\n### 六爻的房屋模型\n\nHuman Design 常用一棟“有兩層樓和屋頂的房子”理解六個爻。\n\n#### Line 1（第一爻）—— 地基\n\n1 爻像房子的地基和地下室。\n\n它需要不斷研究、調查、向下挖，直到確認基礎足夠牢固。安全感來自“我已經把底層弄清楚了”。\n\n#### Line 2（第二爻）—— 一樓拉着窗簾的房間\n\n2 爻像待在房間裏自然做自己擅長事情的人。\n\n它通常需要獨處空間，而且未必意識到自己的天然能力。很多時候是外界先看見這份能力，再把 2 爻“叫出來”。\n\n#### Line 3（第三爻）—— 樓梯\n\n3 爻像連接上下層的樓梯。\n\n樓梯意味着碰撞、踩空、重新調整。3 爻通過 Trial and Error（試錯）認識現實：不是靠理論提前避免所有錯誤，而是親自發現什麼行得通、什麼行不通。\n\n#### Line 4（第四爻）—— 陽臺／露臺\n\n4 爻走出房間，站到能與熟人互動的陽臺。\n\n它的機會、資源和影響力高度依賴關係網絡、信任與熟悉的人際連接。穩定關係往往比陌生環境中的強行拓展更重要。\n\n#### Line 5（第五爻）—— 二樓臨街的窗戶\n\n5 爻從外界看起來像一個“可以解決問題的人”。\n\n別人很容易把期待、幻想、救場能力或解決方案投射到 5 爻身上。如果能夠提供現實、可用的方案，5 爻會產生很強的影響；如果投射與真實能力差距過大，也容易出現失望和聲譽壓力。\n\n#### Line 6（第六爻）—— 屋頂\n\n6 爻站在屋頂，以更高、更遠的視角觀察整棟房子和周圍世界。\n\n它通常以三階段展開：\n\n- 約 30 歲前：更接近 3 爻，通過現實碰撞和試錯積累經驗；\n- 約 30～50 歲：逐漸拉開距離，觀察、整理和整合已經經歷的事情；\n- 約 50 歲以後：把真正活過的經驗自然呈現出來，成爲 Role Model（榜樣）。\n\n### 12 個 Profile 與 Geometry\n\n12 種 Profile 分成三類 Geometry：\n\n**Right Angle（右角）·個人命運**\n- 1/3\n- 1/4\n- 2/4\n- 2/5\n- 3/5\n- 3/6\n- 4/6\n\n**Juxtaposition（並列）·固定命運**\n- 4/1\n\n**Left Angle（左角）·跨個人命運**\n- 5/1\n- 5/2\n- 6/2\n- 6/3\n\nGeometry 描述生命主題展開時更偏個人歷程、固定軌跡，還是通過與他人的關係和互動展開。",
+    "presentation": {
+      "kind": "overview"
+    }
+  },
+  "definition.introduction": {
+    "name": "Definition（定義）",
+    "summary": "Definition 描述所有 Defined Centers（有定義中心）通過完整 Channel（通道）連接後，在體內形成多少個彼此連通的定義區域。",
+    "detail": "### 核心機制\n\nDefinition 看的不是“有幾個中心被點亮”，而是：\n\n**這些有定義中心是否通過完整通道彼此連接成一個整體。**\n\n一組內部完全連通的定義中心，可以理解成一個 Definition Island（定義島）。\n\n因此：\n\n- Single Definition（一分定義）= 1 個定義島\n- Split Definition（二分定義）= 2 個定義島\n- Triple Split Definition（三分定義）= 3 個定義島\n- Quadruple Split Definition（四分定義）= 4 個定義島\n- No Definition（無定義）= 沒有固定定義島，只出現在 Reflector（反映者）\n\n### Bridge（橋接）\n\n當圖中存在多個 Definition Island 時，島與島之間會存在沒有接通的位置。\n\n其他人的閘門、完整通道，或 Transit（行運）的臨時啟動，有時會補上這些位置，讓原本分開的區域暫時連通。\n\n這種位置就是理解 Split Definition 時常說的 Bridging（橋接）。\n\n橋接會帶來明顯的連接感，但它本身沒有“好／壞”之分。一個能夠橋接你的人，既可能讓內部運作暫時更順，也可能成爲很強的 Conditioning（制約）來源。\n\n### Definition 不代表完整與否\n\nSingle Definition 並不表示“比 Split 更完整”，Triple / Quadruple Split 也不表示結構更差。\n\nDefinition 只描述內部連接方式與信息整合路徑，不給人的價值、成熟度或能力排等級。",
+    "presentation": {
+      "kind": "overview"
+    }
   }
 };

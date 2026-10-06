@@ -10,7 +10,7 @@ const TYPE_PLAIN = {
   'Manifesting Generator': 'You have powerful, fast-moving energy for many things at once. Respond first, then move and adjust as needed.',
   Manifestor: "You're here to initiate. You don't need to wait for anyone — but informing people before you act keeps the path clear.",
   Projector: "You're here to guide others and see systems clearly. Your gifts land when they're recognized and invited, not pushed.",
-  Reflector: 'You mirror the health of your community. Take a full lunar cycle (~29.5 days) before big decisions and choose your environments carefully.'
+  Reflector: 'You mirror the health of your community. Take a full lunar cycle before big decisions and choose your environments carefully.'
 };
 const english = {
   typeName: name => name || '—',
