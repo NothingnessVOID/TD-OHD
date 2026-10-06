@@ -138,6 +138,11 @@ export function planetDetailReference(planet, locale = 'en') {
   return details[planet]?.[localeIndex(locale)] || '';
 }
 
+// Planet knowledge only; each surface owns its activation/context controls.
+export function renderPlanetReading(planet, locale = 'en') {
+  return `<p class="planet-reading-lead">${esc(planetReference(planet, locale))}</p><div class="planet-reading-body">${renderActivationReference(planetDetailReference(planet, locale))}</div>`;
+}
+
 // Shared escaped paragraph/list rendering for planet and activation concept Detail.
 export function renderActivationReference(text) {
   const inline = value => esc(value).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');

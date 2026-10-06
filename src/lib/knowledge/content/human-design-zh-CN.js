@@ -1783,8 +1783,8 @@ export default {
   },
   "type.introduction": {
     "name": "Type（类型）",
-    "summary": "类型描述你的气场与生命能量如何和外界互动，并对应各自的 Strategy（策略）、Signature（签名）与 Not-Self Theme（非自己主题）。",
-    "detail": "### 核心机制\n\nType（类型）不是一组性格标签，而是根据 BodyGraph（人体图）的定义结构产生的基础气场机制。它描述一个人的能量如何与外界接触、如何进入正确的互动，以及在什么情况下更容易遇到阻力。\n\nHuman Design 中通常以四大类型理解整体机制：\n\n- Generator / Manifesting Generator（生产者／显示生产者）\n- Manifestor（显示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n网站继续把 Generator 与 Manifesting Generator 分开显示，便于阅读，但两者都属于具有定义 Sacral Center（荐骨中心）的生产者家族，并共享“先回应”的基础机制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在与外界互动时的基础操作方式：\n\n- Generator / Manifesting Generator：等待回应\n- Manifestor：行动前告知\n- Projector：在重要关系、工作与方向性选择中等待认可与邀请\n- Reflector：重大决定等待一个完整的月亮周期\n\nStrategy 不是头脑规划出来的技巧，而是让身体按照自身气场机制进入互动的方式。\n\n### Signature 与 Not-Self Theme\n\nSignature（签名）可以理解为结构运作顺畅时比较容易出现的体验：\n\n- Generator / Manifesting Generator：满足\n- Manifestor：平和\n- Projector：成功\n- Reflector：惊喜\n\nNot-Self Theme（非自己主题）则像一个“报警灯”，提醒当前的互动方式可能偏离了自身机制：\n\n- Generator / Manifesting Generator：挫败\n- Manifestor：愤怒\n- Projector：苦涩\n- Reflector：失望",
+    "summary": "类型描述你的气场与生命能量如何和外界互动，并对应各自的 Strategy（策略）、Signature（签名）与 Not-Self Theme（非我主题）。",
+    "detail": "### 核心机制\n\nType（类型）不是一组性格标签，而是根据 BodyGraph（人体图）的定义结构产生的基础气场机制。它描述一个人的能量如何与外界接触、如何进入正确的互动，以及在什么情况下更容易遇到阻力。\n\nHuman Design 中通常以四大类型理解整体机制：\n\n- Generator / Manifesting Generator（生产者／显示生产者）\n- Manifestor（显示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n网站继续把 Generator 与 Manifesting Generator 分开显示，便于阅读，但两者都属于具有定义 Sacral Center（荐骨中心）的生产者家族，并共享“先回应”的基础机制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在与外界互动时的基础操作方式：\n\n- Generator / Manifesting Generator：等待回应\n- Manifestor：行动前告知\n- Projector：在重要关系、工作与方向性选择中等待认可与邀请\n- Reflector：重大决定等待一个完整的月亮周期\n\nStrategy 不是头脑规划出来的技巧，而是让身体按照自身气场机制进入互动的方式。\n\n### Signature 与 Not-Self Theme\n\nSignature（签名）可以理解为结构运作顺畅时比较容易出现的体验：\n\n- Generator / Manifesting Generator：满足\n- Manifestor：平和\n- Projector：成功\n- Reflector：惊喜\n\nNot-Self Theme（非我主题）则像一个“报警灯”，提醒当前的互动方式可能偏离了自身机制：\n\n- Generator / Manifesting Generator：挫败\n- Manifestor：愤怒\n- Projector：苦涩\n- Reflector：失望",
     "presentation": {
       "kind": "overview"
     }

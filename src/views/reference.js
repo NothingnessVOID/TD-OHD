@@ -1,11 +1,11 @@
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
-import { gateReading, channelReading, centerReading, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
+import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, planetDetailReference, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderPlanetReading, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { circuitReference } from '../lib/reference-supplements.js';
@@ -73,7 +73,7 @@ function channelDetail(entry) {
 function centerDetail(entry) {
   const gates = Object.keys(GATES).map(Number).filter(gate => GATES[gate].center === entry.id);
   const channels = channelsForCenter(entry.id);
-  return `<section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}</section>
+  return `<section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>${centerReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}</section>${centerInsights(entry.id)}
     <h3>${t('Related gates')}</h3><div class="reference-links">${gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>`;
 }
@@ -89,7 +89,7 @@ function circuitDetail(entry) {
 
 function planetDetail(entry) {
   const locale = getLocale();
-  return `<div class="reference-reading"><p>${esc(planetReference(entry.id, locale))}</p>${renderActivationReference(planetDetailReference(entry.id, locale))}</div>`;
+  return `<div class="reference-reading">${renderPlanetReading(entry.id, locale)}</div>`;
 }
 
 function conceptDetail(entry) {

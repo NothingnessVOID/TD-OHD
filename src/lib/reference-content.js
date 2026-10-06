@@ -77,8 +77,11 @@ export function channelReading(id) {
   const canonicalId = channel.gates.join('-');
   const description = CHANNEL_DESCRIPTIONS[canonicalId];
   const supplement = channelSupplement(canonicalId), labels = referenceSupplementLabels();
-  const extra = supplement ? `<h3>${esc(labels.furtherReading)}</h3>${['designArchetype','mechanism','alignedState','notSelfShadow'].map(field =>
-    `<p class="gate-detail-desc"><strong>${esc(labels[field])}</strong><br>${supplementText(supplement[field])}</p>`).join('')}` : '';
+  const archetype = supplement?.designArchetype.match(/^(.*?)（(A Design.*?)）$/);
+  const extra = supplement ? `<section class="channel-analysis"><div class="channel-analysis-label">${esc(labels.furtherReading)}</div>
+    <div class="channel-archetype"><div class="channel-archetype-label">${esc(labels.designArchetype)}</div><strong>${esc(archetype ? archetype[1] : supplement.designArchetype)}</strong>${archetype ? `<span class="channel-archetype-english">${esc(archetype[2])}</span>` : ''}</div>
+    <section class="channel-mechanism"><div class="channel-mechanism-label">${esc(labels.mechanism)}</div><p class="gate-detail-desc">${supplementText(supplement.mechanism)}</p></section>
+    <div class="channel-state-grid">${['alignedState','notSelfShadow'].map(field => `<section class="channel-state"><div class="channel-state-label">${esc(labels[field])}</div><p class="gate-detail-desc">${supplementText(supplement[field])}</p></section>`).join('')}</div></section>` : '';
   return `${description?.description ? `<p class="gate-detail-desc transit-channel-description">${esc(contentText(description.description))}</p>` : ''}
     ${description?.whenDefined ? `<p class="gate-detail-desc">${esc(contentText(description.whenDefined))}</p>` : ''}${extra}`;
 }
@@ -86,9 +89,15 @@ export function channelReading(id) {
 export function centerReading(id, { status = null, includeTheme = true } = {}) {
   const center = CENTERS[id];
   if (!center) return '';
-  const supplement = centerSupplement(id), labels = referenceSupplementLabels();
+  const supplement = centerSupplement(id);
   const readings = status ? [[status, center[`${status}Meaning`] || (status === 'defined' ? center.pressure : '')]]
     : [['defined', center.definedMeaning || center.pressure], ['undefined', center.undefinedMeaning], ['open', center.openMeaning]];
   return `${includeTheme ? `<p class="gate-detail-desc">${esc(contentText(center.theme || ''))}${center.biological ? ` · ${esc(contentText(center.biological))}` : ''}</p>` : ''}
-    ${readings.map(([state, text]) => text ? `<div class="center-reading-state">${status ? '' : `<strong>${esc(t(({ defined: 'Defined', undefined: 'Undefined', open: 'Open' })[state]))}</strong>`}<p class="gate-detail-desc">${esc(contentText(text))}</p>${state === 'open' && supplement ? `<p class="gate-detail-desc">${esc(supplement.openSupplement)}</p>` : ''}</div>` : '').join('')}${supplement ? ['notSelf','wisdom'].map(field => `<div class="center-reading-state"><strong>${esc(labels[field])}</strong><p class="gate-detail-desc">${esc(supplement[field])}</p></div>`).join('') : ''}`;
+    ${readings.map(([state, text]) => text ? `<div class="center-reading-state">${status ? '' : `<strong>${esc(t(({ defined: 'Defined', undefined: 'Undefined', open: 'Open' })[state]))}</strong>`}<p class="gate-detail-desc">${esc(contentText(text))}</p>${state === 'open' && supplement ? `<p class="gate-detail-desc">${esc(supplement.openSupplement)}</p>` : ''}</div>` : '').join('')}`;
+}
+
+// Shared insights stay outside the Center state-reading container.
+export function centerInsights(id) {
+  const supplement = centerSupplement(id), labels = referenceSupplementLabels();
+  return supplement ? `<div class="center-insights">${['notSelf','wisdom'].map(field => `<section class="center-insight"><div class="center-insight-label">${esc(labels[field])}</div><p class="gate-detail-desc">${esc(supplement[field])}</p></section>`).join('')}</div>` : '';
 }
