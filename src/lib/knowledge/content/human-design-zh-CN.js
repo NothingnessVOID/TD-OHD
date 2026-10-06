@@ -1,8 +1,8 @@
 // zh-CN reviewed copy supplied for Round 2B. Other locale resources are independent.
 export default {
   "type.generator": {
-    "summary": "世界的建造者，拥有持续的荐骨生命力。",
-    "detail": "等待回应\n\n外界具体的人、问题、机会或事件来到面前时，先让身体产生 Sacral Response（荐骨回应），再决定是否投入生命力。\n\n“等待回应”不是消极地什么都不做，而是不让头脑先凭空决定“我应该去发起什么”。生产者的身体需要先接触到真实刺激，再通过荐骨出现靠近、投入、兴奋，或退开、无力、拒绝的反应。\n\n开放 · 包容 · 沉浸\n\n生产者的气场向外开放，像一个持续接收周围环境的场域。人、事物和机会进入气场以后，荐骨才有具体对象可以回应。\n\n当回应是真实的，生命力会自然被调动起来；如果绕过回应、仅凭头脑强行发起，往往更容易撞上阻力，并出现挫败感。\n\n满足\n\n挫败",
+    "summary": "世界的建造者，拥有持续的骶骨生命力。",
+    "detail": "等待回应\n\n外界具体的人、问题、机会或事件来到面前时，先让身体产生 Sacral Response（骶骨回应），再决定是否投入生命力。\n\n“等待回应”不是消极地什么都不做，而是不让头脑先凭空决定“我应该去发起什么”。生产者的身体需要先接触到真实刺激，再通过骶骨出现靠近、投入、兴奋，或退开、无力、拒绝的反应。\n\n开放 · 包容 · 沉浸\n\n生产者的气场向外开放，像一个持续接收周围环境的场域。人、事物和机会进入气场以后，骶骨才有具体对象可以回应。\n\n当回应是真实的，生命力会自然被调动起来；如果绕过回应、仅凭头脑强行发起，往往更容易撞上阻力，并出现挫败感。\n\n满足\n\n挫败",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -35,7 +35,7 @@ export default {
   },
   "type.manifestingGenerator": {
     "summary": "世界的建造者，拥有持续的生命力，并能在回应后快速行动。",
-    "detail": "等待回应\n\n显示生产者首先仍然是拥有定义 Sacral Center（荐骨中心）的生产者，因此行动的起点仍然是外界刺激与身体回应。\n\n先让具体的人、问题、机会或事件来到面前，等待荐骨出现真实回应，再进入行动。行动速度很快，并不等于可以跳过回应。\n\n开放 · 包容 · 沉浸\n\n显示生产者与生产者共享开放、包容的气场机制，会接收外界的人事物并由荐骨产生回应。\n\n区别在于回应之后，显示生产者往往推进得更快、更非线性：可能同时处理多个步骤，也可能因为速度过快而跳过某一步，之后再返回修正、补做或重新调整路径。\n\n这种“往前冲—发现不对—返回修正”的过程，本身可以是显示生产者正常的运作节奏。\n\n满足\n\n挫败",
+    "detail": "等待回应\n\n显示生产者首先仍然是拥有定义 Sacral Center（骶骨中心）的生产者，因此行动的起点仍然是外界刺激与身体回应。\n\n先让具体的人、问题、机会或事件来到面前，等待骶骨出现真实回应，再进入行动。行动速度很快，并不等于可以跳过回应。\n\n开放 · 包容 · 沉浸\n\n显示生产者与生产者共享开放、包容的气场机制，会接收外界的人事物并由骶骨产生回应。\n\n区别在于回应之后，显示生产者往往推进得更快、更非线性：可能同时处理多个步骤，也可能因为速度过快而跳过某一步，之后再返回修正、补做或重新调整路径。\n\n这种“往前冲—发现不对—返回修正”的过程，本身可以是显示生产者正常的运作节奏。\n\n满足\n\n挫败",
     "presentation": {
       "kind": "type",
       "fields": {
@@ -1784,7 +1784,7 @@ export default {
   "type.introduction": {
     "name": "Type（类型）",
     "summary": "类型描述你的气场与生命能量如何和外界互动，并对应各自的 Strategy（策略）、Signature（签名）与 Not-Self Theme（非我主题）。",
-    "detail": "### 核心机制\n\nType（类型）不是一组性格标签，而是根据 BodyGraph（人体图）的定义结构产生的基础气场机制。它描述一个人的能量如何与外界接触、如何进入正确的互动，以及在什么情况下更容易遇到阻力。\n\nHuman Design 中通常以四大类型理解整体机制：\n\n- Generator / Manifesting Generator（生产者／显示生产者）\n- Manifestor（显示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n网站继续把 Generator 与 Manifesting Generator 分开显示，便于阅读，但两者都属于具有定义 Sacral Center（荐骨中心）的生产者家族，并共享“先回应”的基础机制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在与外界互动时的基础操作方式：\n\n- Generator / Manifesting Generator：等待回应\n- Manifestor：行动前告知\n- Projector：在重要关系、工作与方向性选择中等待认可与邀请\n- Reflector：重大决定等待一个完整的月亮周期\n\nStrategy 不是头脑规划出来的技巧，而是让身体按照自身气场机制进入互动的方式。\n\n### Signature 与 Not-Self Theme\n\nSignature（签名）可以理解为结构运作顺畅时比较容易出现的体验：\n\n- Generator / Manifesting Generator：满足\n- Manifestor：平和\n- Projector：成功\n- Reflector：惊喜\n\nNot-Self Theme（非我主题）则像一个“报警灯”，提醒当前的互动方式可能偏离了自身机制：\n\n- Generator / Manifesting Generator：挫败\n- Manifestor：愤怒\n- Projector：苦涩\n- Reflector：失望",
+    "detail": "### 核心机制\n\nType（类型）不是一组性格标签，而是根据 BodyGraph（人体图）的定义结构产生的基础气场机制。它描述一个人的能量如何与外界接触、如何进入正确的互动，以及在什么情况下更容易遇到阻力。\n\nHuman Design 中通常以四大类型理解整体机制：\n\n- Generator / Manifesting Generator（生产者／显示生产者）\n- Manifestor（显示者）\n- Projector（投射者）\n- Reflector（反映者）\n\n网站继续把 Generator 与 Manifesting Generator 分开显示，便于阅读，但两者都属于具有定义 Sacral Center（骶骨中心）的生产者家族，并共享“先回应”的基础机制。\n\n### Strategy（策略）\n\nStrategy 是 Type 在与外界互动时的基础操作方式：\n\n- Generator / Manifesting Generator：等待回应\n- Manifestor：行动前告知\n- Projector：在重要关系、工作与方向性选择中等待认可与邀请\n- Reflector：重大决定等待一个完整的月亮周期\n\nStrategy 不是头脑规划出来的技巧，而是让身体按照自身气场机制进入互动的方式。\n\n### Signature 与 Not-Self Theme\n\nSignature（签名）可以理解为结构运作顺畅时比较容易出现的体验：\n\n- Generator / Manifesting Generator：满足\n- Manifestor：平和\n- Projector：成功\n- Reflector：惊喜\n\nNot-Self Theme（非我主题）则像一个“报警灯”，提醒当前的互动方式可能偏离了自身机制：\n\n- Generator / Manifesting Generator：挫败\n- Manifestor：愤怒\n- Projector：苦涩\n- Reflector：失望",
     "presentation": {
       "kind": "overview"
     }
@@ -1792,7 +1792,7 @@ export default {
   "authority.introduction": {
     "name": "Inner Authority（内在权威）",
     "summary": "内在权威是身体的决策机制；Strategy（策略）决定如何进入互动，Authority（权威）决定如何形成自己的决定。",
-    "detail": "### 核心机制\n\n如果说 Strategy（策略）描述“怎样正确进入一件事”，Inner Authority（内在权威）描述的就是：\n\n**当事情真正来到面前以后，决定应该从哪里产生。**\n\nHuman Design 的基础原则是：Mind（头脑）可以分析、比较、理解和表达，但不被用作自己的最终决策权威。\n\n不同图表会根据中心定义结构形成不同的 Authority。\n\n### 与 Strategy 的关系\n\nStrategy 与 Authority 不是互相替代的两套方法。\n\n更自然的顺序是：\n\n**先按照 Strategy 进入正确的互动 → 再按照自己的 Authority 形成决定。**\n\n例如：\n\n- 生产者先等待可以回应的具体刺激，再听荐骨或情绪权威；\n- 投射者在重要事项上先等待认可与邀请，再按照自己的具体 Authority 判断这个邀请是否适合；\n- 显示者先依据自己的 Authority 确认行动，再告知会受到影响的人；\n- 反映者面对重大决定，让决定经过完整月亮周期。\n\n### 当前网站支持的 Authority\n\n- Emotional Authority（情绪权威）\n- Sacral Authority（荐骨权威）\n- Splenic Authority（直觉／脾权威）\n- Ego Manifested Authority（意志力显化权威）\n- Ego Projected Authority（意志力投射权威）\n- Self-Projected Authority（自我投射权威）\n- Mental / Environmental Authority（环境／心智权威）\n- Lunar Authority（月亮权威）",
+    "detail": "### 核心机制\n\n如果说 Strategy（策略）描述“怎样正确进入一件事”，Inner Authority（内在权威）描述的就是：\n\n**当事情真正来到面前以后，决定应该从哪里产生。**\n\nHuman Design 的基础原则是：Mind（头脑）可以分析、比较、理解和表达，但不被用作自己的最终决策权威。\n\n不同图表会根据中心定义结构形成不同的 Authority。\n\n### 与 Strategy 的关系\n\nStrategy 与 Authority 不是互相替代的两套方法。\n\n更自然的顺序是：\n\n**先按照 Strategy 进入正确的互动 → 再按照自己的 Authority 形成决定。**\n\n例如：\n\n- 生产者先等待可以回应的具体刺激，再听骶骨或情绪权威；\n- 投射者在重要事项上先等待认可与邀请，再按照自己的具体 Authority 判断这个邀请是否适合；\n- 显示者先依据自己的 Authority 确认行动，再告知会受到影响的人；\n- 反映者面对重大决定，让决定经过完整月亮周期。\n\n### 当前网站支持的 Authority\n\n- Emotional Authority（情绪权威）\n- Sacral Authority（骶骨权威）\n- Splenic Authority（直觉／脾权威）\n- Ego Manifested Authority（意志力显化权威）\n- Ego Projected Authority（意志力投射权威）\n- Self-Projected Authority（自我投射权威）\n- Mental / Environmental Authority（环境／心智权威）\n- Lunar Authority（月亮权威）",
     "presentation": {
       "kind": "overview"
     }
