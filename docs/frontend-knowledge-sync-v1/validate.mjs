@@ -66,12 +66,16 @@ export function validateSyncedRelease(rootPath = root) {
   const deviation = existsSync(deviationPath) ? JSON.parse(readFileSync(deviationPath)) : null;
   const deviationAllowed = new Set([...visualAllowed,'src/locales/ui-contexts.json']);
   if (deviation && (deviation.baseline !== 'fa1d6afba38ebe0128b517a565123c827340554d' || Object.keys(deviation.files).length !== 8 || Object.keys(deviation.files).some(file => !deviationAllowed.has(file)))) throw new Error('Invalid Round 2F deviation scope');
+  const copyPath = path.join(rootPath, 'docs/knowledge-layer/round2g-scope.json');
+  const copy = existsSync(copyPath) ? JSON.parse(readFileSync(copyPath)) : null;
+  const copyAllowed = new Set([...deviationAllowed,'src/locales/zh-CN/vocabulary.js','src/locales/zh-Hant/vocabulary.js']);
+  if (copy && (copy.baseline !== 'e731e69b91ea1ce083a4a8b023d2dd660c08735e' || Object.keys(copy.files).length !== 10 || Object.keys(copy.files).some(file => !copyAllowed.has(file)))) throw new Error('Invalid Round 2G exact copy scope');
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE)])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

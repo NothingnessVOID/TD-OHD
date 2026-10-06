@@ -165,11 +165,12 @@
   "Incarnation Cross Basics": "輪迴交叉基礎說明",
   "Definition island {index}": "定義島 {index}",
   "Off-track State": "偏離狀態",
-  "Correct perspective": "正確視角",
-  "Correct motivation": "正確動機",
-  "Possible off-track direction": "可能的偏離方向",
-  "When the perspective moves off its correct state, attention can be drawn toward its paired perspective. This describes a possible off-track direction, not a second fixed trait.": "當視角偏離正確狀態時，注意力會被拉向對應的另一種視角。這裡描述的並非你的另一項特質，而是偏離自身正確視角時容易出現的觀察方向。",
-  "In anxiety, pressure or confusion, motivation can shift toward its paired motivation. This describes a possible off-track state, not a second motivation.": "當處於焦慮、壓力或迷失狀態時，原本正確的動機可能發生轉移，轉向與它對應的另一種動機。這裡描述的並非你的另一項動機，而是偏離自身正確動機時可能出現的狀態。",
-  "Variable Distraction": "Distraction · 分心",
-  "Variable Transference": "Transference · 轉移"
+  "Correct perspective": "原本視角",
+  "Correct motivation": "原本動機",
+  "Possible off-track direction": "可能轉向",
+  "Variable Distraction": "分心",
+  "Variable Transference": "動機轉移",
+  "When off track": "偏離時",
+  "Distraction describes what can happen when a perspective moves off its correct state and attention shifts toward its paired perspective.": "這裡的「分心」指的是：當原本的視角偏離正確狀態時，注意力可能會轉向與它對應的另一種視角。",
+  "Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.": "這裡的「動機轉移」指的是：當原本的動機偏離正確狀態時，可能會轉向與它對應的另一種動機。"
 }

@@ -132,7 +132,7 @@ export const VARIABLE_ZH = {
   "Fear": "恐惧动机",
   "Hope": "希望动机",
   "Desire": "欲望动机",
-  "Need": "需要动机",
+  "Need": "需求动机",
   "Guilt": "责任动机",
   "Innocence": "纯真动机",
   "Smell": "嗅觉认知",
