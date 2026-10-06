@@ -710,7 +710,7 @@ export default {
   },
   "variable.determination:thirst": {
     "summary": "追求温度的绝对值",
-    "detail": "核心特质\n\n你的消化系统对食物进入体内时的“温度”非常敏感。\n\nTone 1–3 · Left · Hot（热食）\n\n偏向温度较高的食物和饮料。教材进一步描述为食物和饮料的温度高于体温，即使天气炎热，也可能更适合热饮和热食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向温度较低的摄取条件。教材举例包括冷盘、沙拉，或把食物放凉以后再吃。\n\n生活建议\n\n观察并遵守自己对应的温度条件。教材认为温度条件不合适时，身体可能更容易感到沉重，大脑也容易昏沉。",
+    "detail": "核心特质\n\n你的消化系统对食物进入体内时的“温度”非常敏感。\n\nTone 1–3 · Left · Hot（热食）\n\n偏向温度较高的食物和饮料。食物和饮料的温度高于体温，即使天气炎热，也可能更适合热饮和热食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向温度较低的摄取条件。例如冷盘、沙拉，或把食物放凉以后再吃。\n\n生活建议\n\n观察并遵守自己对应的温度条件。温度条件不合适时，身体可能更容易感到沉重，大脑也容易昏沉。",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -725,26 +725,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Hot（热食）",
           "start": 59,
-          "end": 112
+          "end": 104
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Cold（冷食）",
-          "start": 143,
-          "end": 178
+          "start": 135,
+          "end": 166
         },
         {
           "id": "lifeAdvice",
           "title": "生活建议",
-          "start": 186,
-          "end": 234
+          "start": 174,
+          "end": 218
         }
       ]
     }
   },
   "variable.determination:touch": {
     "summary": "追求进食时的外在氛围",
-    "detail": "核心特质\n\n吃什么未必是最关键的，在什么状态下吃反而更重要。这个 Color 强调神经系统对进食或摄取时外部刺激状态的敏感。\n\nTone 1–3 · Left · Calm（平静）\n\n偏向放松、安静、干扰少的环境。教材描述为尽量不要一边进食一边看书、看手机，或讨论过度严肃、紧张的工作内容。\n\nTone 4–6 · Right · Nervous（兴奋／忙碌／刺激）\n\n偏向有活动、有动静和刺激的环境。可以是在交谈、移动、观看内容或周围比较活跃的情况下进食。\n\n生活建议\n\n观察自己在哪一种氛围下吃完以后身体更有能量。如果是 Calm 分支，而环境突然进入争吵或高度紧张状态，可以暂停进食，等身体重新放松。",
+    "detail": "核心特质\n\n吃什么未必是最关键的，在什么状态下吃反而更重要。这个 Color 强调神经系统对进食或摄取时外部刺激状态的敏感。\n\nTone 1–3 · Left · Calm（平静）\n\n偏向放松、安静、干扰少的环境。尽量不要一边进食一边看书、看手机，或讨论过度严肃、紧张的工作内容。\n\nTone 4–6 · Right · Nervous（兴奋／忙碌／刺激）\n\n偏向有活动、有动静和刺激的环境。可以是在交谈、移动、观看内容或周围比较活跃的情况下进食。\n\n生活建议\n\n观察自己在哪一种氛围下吃完以后身体更有能量。如果是 Calm 分支，而环境突然进入争吵或高度紧张状态，可以暂停进食，等身体重新放松。",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -759,26 +759,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Calm（平静）",
           "start": 92,
-          "end": 145
+          "end": 140
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Nervous（兴奋／忙碌／刺激）",
-          "start": 185,
-          "end": 229
+          "start": 180,
+          "end": 224
         },
         {
           "id": "lifeAdvice",
           "title": "生活建议",
-          "start": 237,
-          "end": 303
+          "start": 232,
+          "end": 298
         }
       ]
     }
   },
   "variable.determination:sound": {
     "summary": "追求进食时的声学频率",
-    "detail": "核心特质\n\n消化与摄取状态会受到听觉环境影响。背景声音和音量会改变身体吸收食物、信息和经验时的状态。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景声音、活动感或较明显声响的环境。教材举例包括较热闹的餐厅、音乐、电视或其他持续背景声。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向声音刺激较低、相对安静的环境。对细小杂音也可能比较敏感，例如周围人的咀嚼声。\n\n生活建议\n\nHigh 分支独处进食时，可以主动创造适合自己的背景声音；Low 分支则尽量选择安静空间或减少不必要的声音刺激。",
+    "detail": "核心特质\n\n消化与摄取状态会受到听觉环境影响。背景声音和音量会改变身体吸收食物、信息和经验时的状态。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景声音、活动感或较明显声响的环境。例如较热闹的餐厅、音乐、电视或其他持续背景声。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向声音刺激较低、相对安静的环境。对细小杂音也可能比较敏感，例如周围人的咀嚼声。\n\n生活建议\n\nHigh 分支独处进食时，可以主动创造适合自己的背景声音；Low 分支则尽量选择安静空间或减少不必要的声音刺激。",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -793,26 +793,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · High（高音量）",
           "start": 81,
-          "end": 130
+          "end": 126
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Low（低音量）",
-          "start": 161,
-          "end": 201
+          "start": 157,
+          "end": 197
         },
         {
           "id": "lifeAdvice",
           "title": "生活建议",
-          "start": 209,
-          "end": 265
+          "start": 205,
+          "end": 261
         }
       ]
     }
   },
   "variable.determination:light": {
     "summary": "追求日夜与光照的节律",
-    "detail": "核心特质\n\n消化与大脑活跃状态会受到光线条件和昼夜节律影响。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向较明亮、直接的光照。教材把这一分支描述为更接近日间运作，需要在光线充足的条件下摄取。\n\nTone 4–6 · Right · Indirect（间接）\n\n偏向较弱、间接、昏暗或偏晚间的光线条件。教材举例包括黄昏以后、拉上窗帘的室内或夜间环境。\n\n生活建议\n\n顺应自己的光线条件，而不是只服从传统“早中晚三餐”的时间表。重点是身体对光照条件的反应，而不是机械套用固定作息。",
+    "detail": "核心特质\n\n消化与大脑活跃状态会受到光线条件和昼夜节律影响。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向较明亮、直接的光照。这一分支更接近日间运作，需要在光线充足的条件下摄取。\n\nTone 4–6 · Right · Indirect（间接）\n\n偏向较弱、间接、昏暗或偏晚间的光线条件。例如黄昏以后、拉上窗帘的室内或夜间环境。\n\n生活建议\n\n顺应自己的光线条件，而不是只服从传统“早中晚三餐”的时间表。重点是身体对光照条件的反应，而不是机械套用固定作息。",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -827,19 +827,19 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Direct（直接）",
           "start": 62,
-          "end": 106
+          "end": 100
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Indirect（间接）",
-          "start": 141,
-          "end": 185
+          "start": 135,
+          "end": 175
         },
         {
           "id": "lifeAdvice",
           "title": "生活建议",
-          "start": 193,
-          "end": 249
+          "start": 183,
+          "end": 239
         }
       ]
     }

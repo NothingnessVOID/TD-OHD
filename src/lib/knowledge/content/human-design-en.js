@@ -758,7 +758,7 @@ export default {
   },
   "variable.determination:thirst": {
     "summary": "Seeking a definite temperature",
-    "detail": "Core traits\n\nYour digestive system is very sensitive to the temperature of food as it enters the body.\n\nTone 1–3 · Left · Hot\n\nThere is a preference for foods and drinks at a higher temperature. The supplied material further describes this as food and drink warmer than body temperature; even in hot weather, hot drinks and food may be more suitable.\n\nTone 4–6 · Right · Cold\n\nThere is a preference for cooler intake conditions. Examples in the supplied material include cold dishes, salads or letting food cool before eating it.\n\nEveryday guidance\n\nObserve and follow the temperature conditions that correspond to your branch. The supplied material holds that unsuitable temperature conditions may make the body feel heavier and the brain more foggy.",
+    "detail": "Core traits\n\nYour digestive system is very sensitive to the temperature of food as it enters the body.\n\nTone 1–3 · Left · Hot\n\nThere is a preference for foods and drinks at a higher temperature. Food and drink are warmer than body temperature; even in hot weather, hot drinks and food may be more suitable.\n\nTone 4–6 · Right · Cold\n\nThere is a preference for cooler intake conditions. Examples include cold dishes, salads or letting food cool before eating it.\n\nEveryday guidance\n\nObserve and follow the temperature conditions that correspond to your branch. Unsuitable temperature conditions may make the body feel heavier and the brain more foggy.",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -773,26 +773,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Hot",
           "start": 127,
-          "end": 350
+          "end": 306
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Cold",
-          "start": 377,
-          "end": 529
+          "start": 333,
+          "end": 460
         },
         {
           "id": "lifeAdvice",
           "title": "Everyday guidance",
-          "start": 550,
-          "end": 751
+          "start": 481,
+          "end": 649
         }
       ]
     }
   },
   "variable.determination:touch": {
     "summary": "Seeking the surrounding atmosphere while eating",
-    "detail": "Core traits\n\nWhat you eat may not be the most important factor; the state in which you eat may matter more. This Color emphasizes the nervous system's sensitivity to external stimulation during eating or intake.\n\nTone 1–3 · Left · Calm\n\nThere is a preference for a relaxed, quiet environment with little interference. The supplied material describes avoiding reading, looking at a phone or discussing overly serious or stressful work matters while eating.\n\nTone 4–6 · Right · Nervous\n\nThere is a preference for an environment with activity, movement and stimulation. Eating may take place while talking, moving, watching content or amid active surroundings.\n\nEveryday guidance\n\nObserve which atmosphere leaves your body with more energy after eating. If your branch is Calm and the environment suddenly becomes argumentative or highly stressful, you can pause eating and wait until the body relaxes again.",
+    "detail": "Core traits\n\nWhat you eat may not be the most important factor; the state in which you eat may matter more. This Color emphasizes the nervous system's sensitivity to external stimulation during eating or intake.\n\nTone 1–3 · Left · Calm\n\nThere is a preference for a relaxed, quiet environment with little interference. Avoid reading, looking at a phone or discussing overly serious or stressful work matters while eating.\n\nTone 4–6 · Right · Nervous\n\nThere is a preference for an environment with activity, movement and stimulation. Eating may take place while talking, moving, watching content or amid active surroundings.\n\nEveryday guidance\n\nObserve which atmosphere leaves your body with more energy after eating. If your branch is Calm and the environment suddenly becomes argumentative or highly stressful, you can pause eating and wait until the body relaxes again.",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -807,26 +807,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Calm",
           "start": 237,
-          "end": 455
+          "end": 420
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Nervous",
-          "start": 485,
-          "end": 657
+          "start": 450,
+          "end": 622
         },
         {
           "id": "lifeAdvice",
           "title": "Everyday guidance",
-          "start": 678,
-          "end": 905
+          "start": 643,
+          "end": 870
         }
       ]
     }
   },
   "variable.determination:sound": {
     "summary": "Seeking the acoustic conditions of eating",
-    "detail": "Core traits\n\nDigestion and intake can be affected by the auditory environment. Background sounds and volume can change the body's state when absorbing food, information and experience.\n\nTone 1–3 · Left · High\n\nThere is a preference for an environment with background sounds, activity or more noticeable noise. Examples in the supplied material include lively restaurants, music, television or other continuous background sound.\n\nTone 4–6 · Right · Low\n\nThere is a preference for less auditory stimulation and a relatively quiet environment. Even small noises may feel significant, such as the sound of other people chewing.\n\nEveryday guidance\n\nWhen eating alone, the High branch can actively create suitable background sound. The Low branch can try to choose a quiet space or reduce unnecessary auditory stimulation.",
+    "detail": "Core traits\n\nDigestion and intake can be affected by the auditory environment. Background sounds and volume can change the body's state when absorbing food, information and experience.\n\nTone 1–3 · Left · High\n\nThere is a preference for an environment with background sounds, activity or more noticeable noise. Examples include lively restaurants, music, television or other continuous background sound.\n\nTone 4–6 · Right · Low\n\nThere is a preference for less auditory stimulation and a relatively quiet environment. Even small noises may feel significant, such as the sound of other people chewing.\n\nEveryday guidance\n\nWhen eating alone, the High branch can actively create suitable background sound. The Low branch can try to choose a quiet space or reduce unnecessary auditory stimulation.",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -841,26 +841,26 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · High",
           "start": 210,
-          "end": 427
+          "end": 402
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Low",
-          "start": 453,
-          "end": 623
+          "start": 428,
+          "end": 598
         },
         {
           "id": "lifeAdvice",
           "title": "Everyday guidance",
-          "start": 644,
-          "end": 816
+          "start": 619,
+          "end": 791
         }
       ]
     }
   },
   "variable.determination:light": {
     "summary": "Seeking the rhythm of day, night and light",
-    "detail": "Core traits\n\nDigestion and brain activity can be affected by lighting conditions and the rhythm of day and night.\n\nTone 1–3 · Left · Direct\n\nThere is a preference for brighter, direct light. The supplied material describes this branch as operating more like a daytime pattern, with intake in well-lit conditions.\n\nTone 4–6 · Right · Indirect\n\nThere is a preference for weaker, indirect, dimmer or more evening-oriented light. Examples in the supplied material include after dusk, indoors with curtains drawn or nighttime surroundings.\n\nEveryday guidance\n\nFollow your lighting conditions rather than only a traditional schedule of breakfast, lunch and dinner. The emphasis is on the body's response to light rather than mechanically following a fixed routine.",
+    "detail": "Core traits\n\nDigestion and brain activity can be affected by lighting conditions and the rhythm of day and night.\n\nTone 1–3 · Left · Direct\n\nThere is a preference for brighter, direct light. This branch operates more like a daytime pattern, with intake in well-lit conditions.\n\nTone 4–6 · Right · Indirect\n\nThere is a preference for weaker, indirect, dimmer or more evening-oriented light. Examples include after dusk, indoors with curtains drawn or nighttime surroundings.\n\nEveryday guidance\n\nFollow your lighting conditions rather than only a traditional schedule of breakfast, lunch and dinner. The emphasis is on the body's response to light rather than mechanically following a fixed routine.",
     "presentation": {
       "kind": "variable",
       "format": "variable-29-v1",
@@ -875,19 +875,19 @@ export default {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Direct",
           "start": 141,
-          "end": 312
+          "end": 276
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Indirect",
-          "start": 343,
-          "end": 534
+          "start": 307,
+          "end": 473
         },
         {
           "id": "lifeAdvice",
           "title": "Everyday guidance",
-          "start": 555,
-          "end": 758
+          "start": 494,
+          "end": 697
         }
       ]
     }

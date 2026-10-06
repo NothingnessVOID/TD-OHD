@@ -11,6 +11,9 @@ import {renderKnowledgeDetail} from '../src/lib/knowledge/detail-renderer.js';
 import {referenceEntry} from '../src/lib/reference-catalog.js';
 const fixture=JSON.parse(readFileSync(new URL('./fixtures/variable-29-content.json',import.meta.url)));
 const source=readFileSync(new URL('./fixtures/variable-29-source-zh-CN.md',import.meta.url),'utf8');
+const cleanup=JSON.parse(readFileSync(new URL('./fixtures/variable-public-copy-cleanup.json',import.meta.url)));
+// The original attachment stays immutable; only the approved public voice edits differ.
+const publicSource=cleanup.replacements['zh-CN'].reduce((text,[before,after])=>text.replaceAll(before,after),source);
 const q=key=>({objectType:'variable',objectId:key.replace('variable.','')});
 const plain=text=>text.replace(/<[^>]*>/g,'').replaceAll('&quot;','"').replaceAll('&#39;',"'").replaceAll('&amp;','&').replaceAll('&gt;','>').replaceAll('&lt;','<').replaceAll('**','').replace(/^- /gm,'').replace(/\s+/g,'');
 const order={determination:['core','tone1to3','tone4to6','lifeAdvice'],environment:['core','tone1to3','tone4to6','physicalEnvironment','lifeAdvice','businessScenario'],perspective:['core','tone1to3','tone4to6','distraction'],motivation:['core','tone1to3','tone4to6','correctState','transference']};
@@ -23,7 +26,7 @@ test('87 complete locale records equal the approved final sections; source packa
  }
  for(const [key,r] of Object.entries(fixture.records['zh-CN']))for(const s of r.presentation.sections){
   if(key==='variable.determination:taste'&&s.id.startsWith('tone'))continue;
-  const body=r.detail.slice(s.start,s.end);assert.ok(source.includes(body),`source text lost or rewritten: ${body.slice(0,45)}`);
+  const body=r.detail.slice(s.start,s.end);assert.ok(publicSource.includes(body),`source text lost or rewritten: ${body.slice(0,45)}`);
  }
 });
 test('29 identities open through the same registry and reference routes; five common articles are reused, not copied',()=>{
