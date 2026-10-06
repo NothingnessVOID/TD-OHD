@@ -1,7 +1,7 @@
 {
   "zh-CN": {
     "labels": {
-      "notSelf": "非自己提醒",
+      "notSelf": "非我",
       "wisdom": "潜在智慧",
       "lineNote": "六爻阅读提示",
       "furtherReading": "深入解析",
@@ -162,7 +162,7 @@
   },
   "zh-Hant": {
     "labels": {
-      "notSelf": "非自己提醒",
+      "notSelf": "非我",
       "wisdom": "潛在智慧",
       "lineNote": "六爻閱讀提示",
       "furtherReading": "深入解析",

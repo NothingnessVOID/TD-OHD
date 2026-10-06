@@ -8,7 +8,7 @@ import {
   LINE_NAMES
 } from '../lib/human-design/catalog.js';
 import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
-import { gateReading, channelReading, centerReading, channelsForGate, channelById } from '../lib/reference-content.js';
+import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelById } from '../lib/reference-content.js';
 import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
@@ -33,7 +33,7 @@ import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailShee
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { planetReference, planetDetailReference, renderActivationReference } from '../lib/planet-reference.js';
+import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderGateLensSwitch } from '../lib/gate-lenses.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
 
@@ -428,13 +428,13 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
       <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
-      <p class="gate-detail-desc planet-detail-description">${esc(planetReference(planet, getLocale()))}</p>
-      <div class="reference-reading planet-detail-reading">${renderActivationReference(planetDetailReference(planet, getLocale()))}</div>
+      ${renderPlanetReading(planet, getLocale())}
+      <section class="planet-activation"><div class="planet-activation-label">${esc(t('Current activation'))}</div>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
         aria-label="${esc(gateLine)}">
         <strong>${esc(gateLine)}</strong>
         <span class="transit-detail-action">${esc(t('View gate details'))}<span aria-hidden="true"> ↗</span></span>
-      </button>${substructure}
+      </button>${substructure}</section>
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
@@ -575,7 +575,7 @@ export function showCenterDetail(centerKey, pushHistory = true) {
           <span class="center-detail-theme">${t('Center theme')}: ${esc(contentText(c.theme || ''))}${c.biological ? ` · ${t('Biological association')}: ${esc(contentText(c.biological))}` : ''}</span>
         </div>
         <section class="center-reading" aria-label="${esc(t('Center reading'))}"><div class="center-reading-label">${t('Center reading')}</div>
-          ${centerReading(centerKey, { status: definedHere || status === 'defined' ? 'defined' : status === 'open' ? 'open' : 'undefined', includeTheme: false })}</section>
+          ${centerReading(centerKey, { status: definedHere || status === 'defined' ? 'defined' : status === 'open' ? 'open' : 'undefined', includeTheme: false })}</section>${centerInsights(centerKey)}
         ${!model && status !== 'defined' && c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
         <div class="center-detail-section">
           <span class="cd-label">${t('Gates here')}</span>
