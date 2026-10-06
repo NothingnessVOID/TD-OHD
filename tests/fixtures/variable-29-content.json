@@ -1,0 +1,3328 @@
+{
+  "baseline": "efe59fdc863f409a66eb0c0eaaea73f09f324119",
+  "source": "TD-OHD-Variable-29-final-content-zh-CN.md",
+  "sourceSha256": "1e182d176f64e4df889ae0c87a7e99f81b0e98716addd996cbaa336a28c401ad",
+  "records": {
+    "zh-CN": {
+      "variable.introduction": {
+        "summary": "Variable（四箭头）总说明",
+        "detail": "核心说明\n\nVariable（四箭头）建立在更细的 Human Design 子结构之上：\n\n**Gate（闸门） → Line（爻线） → Color（基色） → Tone（基调） → Base（基质）**\n\n箭头方向由 Tone 决定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四个 Variable 的数据来源关系：\n\n- Design Sun / Earth（设计太阳／地球）→ Determination（摄取）\n- Design Nodes（设计南北交点）→ Environment（环境）\n- Personality Nodes（人格南北交点）→ Perspective（视角）\n- Personality Sun / Earth（人格太阳／地球）→ Motivation（动机）\n\n左右方向描述的是同一个 Color 在不同 Tone 区间下的运作倾向。Color 决定“是哪一种主题”，Tone 进一步决定这个主题更偏 Left 还是 Right 的方式运行。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心说明",
+              "start": 6,
+              "end": 470
+            }
+          ]
+        },
+        "name": "Variable（四箭头）总说明"
+      },
+      "variable.determination:introduction": {
+        "summary": "Determination（摄取）公共说明",
+        "detail": "核心说明\n\nDetermination 描述身体如何消化食物，也涉及大脑如何吸收信息、学习和处理生活经验。\n\nTone 1–3 · Left\n\n左向偏主动、规律与结构化。大脑较主动地处理输入，更适合清楚的节奏、框架与专注的摄取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然与随顺。不需要过度强迫自己按照固定结构吸收，身体和大脑更适合在自然状态下接收食物、信息和经验。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心说明",
+              "start": 6,
+              "end": 53
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 72,
+              "end": 116
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 136,
+              "end": 191
+            }
+          ]
+        },
+        "name": "Determination（摄取）公共说明"
+      },
+      "variable.environment:introduction": {
+        "summary": "Environment（环境）公共说明",
+        "detail": "核心说明\n\nEnvironment 描述什么样的物理环境更容易让身体感到舒适和被滋养，也关系到一个人在什么场域中更容易以较小阻力遇到适合的人、事与机会。\n\nTone 1–3 · Left\n\n左向偏主动观察与参与。人在环境中更容易保持活力、主动使用空间，并对周围发生的事情保持较明确的参与感。\n\nTone 4–6 · Right\n\n右向偏放松、融入与接收。环境合适时，身体不需要持续掌控，可以卸下防备，让场域中的人、信息和体验自然进入感知。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心说明",
+              "start": 6,
+              "end": 76
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 95,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 165,
+              "end": 219
+            }
+          ]
+        },
+        "name": "Environment（环境）公共说明"
+      },
+      "variable.perspective:introduction": {
+        "summary": "Perspective（视角）公共说明",
+        "detail": "核心说明\n\nPerspective 是看待世界的滤镜。\n\n当身体处在合适的 Environment 中，Perspective 描述眼睛和注意力天然会看向哪里、被什么吸引，以及一个人最自然的观察角度。\n\n当视角处于正确状态时，会比较清晰地看见世界；当视角偏离时，会出现 **Distraction（分心）**，注意力转向对应的另一种 Perspective。\n\nTone 1–3 · Left · Active（聚焦型视角）\n\n观察方式偏聚焦，需要相对明确的目标。像使用望远镜一样，一次盯住一个点深入观察，并过滤背景杂音。\n\nTone 4–6 · Right · Passive（广角型视角）\n\n观察方式偏周边／广角。不需要死死盯住一个目标，更像广角镜头，在放松状态下通过余光和整体氛围捕捉信息。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心说明",
+              "start": 6,
+              "end": 179
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（聚焦型视角）",
+              "start": 214,
+              "end": 261
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（广角型视角）",
+              "start": 298,
+              "end": 348
+            }
+          ]
+        },
+        "name": "Perspective（视角）公共说明"
+      },
+      "variable.motivation:introduction": {
+        "summary": "Motivation（动机）公共说明",
+        "detail": "核心说明\n\nMotivation 描述头脑处理信息时的底层驱动力：为什么会去思考、表达或推动某件事，心智真正从什么动机出发。\n\n当 Motivation 处在正确状态时，心智较清明；当焦虑或迷失时，动机可能发生 **Transference（动机转移）**，偏向对应的另一种 Motivation。\n\nTone 1–3 · Left · Active（战略性心智）\n\n心智偏聚焦、逻辑和战略性。更容易通过分析、计划、目标和结构处理问题，在思考中主动过滤无关信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏发散、全景与接收性。不适合过度死磕细节或制定僵硬计划，更容易在放松状态下接收信息，让不同线索自然连接成整体理解。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心说明",
+              "start": 6,
+              "end": 149
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（战略性心智）",
+              "start": 184,
+              "end": 231
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（接受性心智）",
+              "start": 268,
+              "end": 327
+            }
+          ]
+        },
+        "name": "Motivation（动机）公共说明"
+      },
+      "variable.determination:appetite": {
+        "summary": "追求极简与单一",
+        "detail": "核心特质\n\n你的消化系统非常原始，一次只能处理一种信息或一种食物。饮食越简单，你的大脑运转越清晰。\n\nTone 1–3 · Left · Consecutive（连续）\n\n每次只吃一种食材，吃完再吃下一种，例如先吃完所有的肉，再吃所有的菜。\n\nTone 4–6 · Right · Alternating（交替）\n\n可以几样食材交替吃，但仍强调彼此分开，不把不同内容全部混合在一起咀嚼或摄取。\n\n生活建议\n\n避免复杂的调味和一锅炖的混合菜式。在吸收信息时，也需要一次只专注一件事，不要多线操作。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 49
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Consecutive（连续）",
+              "start": 86,
+              "end": 120
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Alternating（交替）",
+              "start": 158,
+              "end": 196
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 204,
+              "end": 247
+            }
+          ]
+        }
+      },
+      "variable.determination:taste": {
+        "summary": "追求符合直觉的挑剔",
+        "detail": "核心特质\n\n重点在于“吃你认识、且直觉认为对的东西”。这种设计表现为对食物成分极其敏感和挑剔。\n\n比如点一碗面条时，大脑可能发出非常清晰的指令：不要辣椒、不要麻、不要花生、不要葱和香菜、不要内脏，或者对饮料的冰量和零糖有非常明确的要求。\n\n这在外界看来可能叫“挑食”，但在人类图的这套描述里，它强调的是身体对适合摄取内容的精细筛选。\n\nTone 1–3 · Open（开放）\n\n更偏向接触和尝试眼前出现的内容，再辨识哪些真正适合自己。\n\nTone 4–6 · Closed（封闭）\n\n更偏向已经辨识、熟悉和接受的内容，选择范围通常更集中。\n\n生活建议\n\n相信你的味蕾和挑剔感。不想吃的成分不要为了迎合别人或所谓“营养均衡”而强迫自己摄取。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 166
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Open（开放）",
+              "start": 189,
+              "end": 217
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Closed（封闭）",
+              "start": 242,
+              "end": 269
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 277,
+              "end": 319
+            }
+          ]
+        }
+      },
+      "variable.determination:thirst": {
+        "summary": "追求温度的绝对值",
+        "detail": "核心特质\n\n你的消化系统对食物进入体内时的“温度”非常敏感。\n\nTone 1–3 · Left · Hot（热食）\n\n偏向温度较高的食物和饮料。教材进一步描述为食物和饮料的温度高于体温，即使天气炎热，也可能更适合热饮和热食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向温度较低的摄取条件。教材举例包括冷盘、沙拉，或把食物放凉以后再吃。\n\n生活建议\n\n观察并遵守自己对应的温度条件。教材认为温度条件不合适时，身体可能更容易感到沉重，大脑也容易昏沉。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 30
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Hot（热食）",
+              "start": 59,
+              "end": 112
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Cold（冷食）",
+              "start": 143,
+              "end": 178
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 186,
+              "end": 234
+            }
+          ]
+        }
+      },
+      "variable.determination:touch": {
+        "summary": "追求进食时的外在氛围",
+        "detail": "核心特质\n\n吃什么未必是最关键的，在什么状态下吃反而更重要。这个 Color 强调神经系统对进食或摄取时外部刺激状态的敏感。\n\nTone 1–3 · Left · Calm（平静）\n\n偏向放松、安静、干扰少的环境。教材描述为尽量不要一边进食一边看书、看手机，或讨论过度严肃、紧张的工作内容。\n\nTone 4–6 · Right · Nervous（兴奋／忙碌／刺激）\n\n偏向有活动、有动静和刺激的环境。可以是在交谈、移动、观看内容或周围比较活跃的情况下进食。\n\n生活建议\n\n观察自己在哪一种氛围下吃完以后身体更有能量。如果是 Calm 分支，而环境突然进入争吵或高度紧张状态，可以暂停进食，等身体重新放松。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 62
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Calm（平静）",
+              "start": 92,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Nervous（兴奋／忙碌／刺激）",
+              "start": 185,
+              "end": 229
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 237,
+              "end": 303
+            }
+          ]
+        }
+      },
+      "variable.determination:sound": {
+        "summary": "追求进食时的声学频率",
+        "detail": "核心特质\n\n消化与摄取状态会受到听觉环境影响。背景声音和音量会改变身体吸收食物、信息和经验时的状态。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景声音、活动感或较明显声响的环境。教材举例包括较热闹的餐厅、音乐、电视或其他持续背景声。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向声音刺激较低、相对安静的环境。对细小杂音也可能比较敏感，例如周围人的咀嚼声。\n\n生活建议\n\nHigh 分支独处进食时，可以主动创造适合自己的背景声音；Low 分支则尽量选择安静空间或减少不必要的声音刺激。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 50
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · High（高音量）",
+              "start": 81,
+              "end": 130
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Low（低音量）",
+              "start": 161,
+              "end": 201
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 209,
+              "end": 265
+            }
+          ]
+        }
+      },
+      "variable.determination:light": {
+        "summary": "追求日夜与光照的节律",
+        "detail": "核心特质\n\n消化与大脑活跃状态会受到光线条件和昼夜节律影响。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向较明亮、直接的光照。教材把这一分支描述为更接近日间运作，需要在光线充足的条件下摄取。\n\nTone 4–6 · Right · Indirect（间接）\n\n偏向较弱、间接、昏暗或偏晚间的光线条件。教材举例包括黄昏以后、拉上窗帘的室内或夜间环境。\n\n生活建议\n\n顺应自己的光线条件，而不是只服从传统“早中晚三餐”的时间表。重点是身体对光照条件的反应，而不是机械套用固定作息。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 30
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Direct（直接）",
+              "start": 62,
+              "end": 106
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Indirect（间接）",
+              "start": 141,
+              "end": 185
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 193,
+              "end": 249
+            }
+          ]
+        }
+      },
+      "variable.environment:caves": {
+        "summary": "适合边界清楚、入口明确，并能掌握人员进出的空间。",
+        "detail": "核心特质\n\n强调安全感、专属感与出入控制。\n\nTone 1–3 · Left · Selective（选择型）\n\n更偏向主动掌握空间，知道谁进来、谁离开，并保持对环境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全边界已经成立后放松下来，让自己自然融入这个受保护的空间。\n\n物理环境\n\n只有一个出入口的房间、背靠墙壁的座位、舒适封闭的私人书房或卧室，甚至车内，都可能具有 Caves 的性质。\n\n生活建议\n\n在外就餐或工作时，尽量选择背靠墙壁、能看到大门或主要出入口的位置。如果缺乏安全感，身体系统可能持续处于紧绷状态。\n\n理想商业场景\n\n需要一个能够较好掌控的私人空间，例如独立办公室、居家办公的专属书房，或只有一个主要出入口、能清楚感知人员进出的工位。\n\n在不容易受到外界无预警打扰的“庇护所”中，更容易稳定工作并产出高质量成果。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 21
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Selective（选择型）",
+              "start": 57,
+              "end": 88
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Blending（融合型）",
+              "start": 124,
+              "end": 158
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 166,
+              "end": 219
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 227,
+              "end": 283
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 293,
+              "end": 390
+            }
+          ]
+        }
+      },
+      "variable.environment:markets": {
+        "summary": "适合资源、人员、商品和信息不断交换流动的环境。",
+        "detail": "核心特质\n\n强调资源交换、人脉流动与动态活力。\n\nTone 1–3 · Left · Internal（内部型）\n\n更主动参与交换、观察选择，并进入环境中的人与资源流动。\n\nTone 4–6 · Right · External（外部型）\n\n更适合处在这种流动环境里，让机会、信息和选择自然进入自己的感知。\n\n物理环境\n\n城市中心、商业街、人多的咖啡馆、热闹的办公区域、市集，以及其他持续发生人员、商品、资源或信息交换的地方。\n\n生活建议\n\n即使不与人直接交谈，身处充满活力、资源和交换的环境，也可能让身体感觉更充沛。太长时间待在过度孤立、缺少流动的地方，可能更容易失去活力。\n\n理想商业场景\n\n繁华、充满交易与信息流动的场所，例如共享办公空间、人来人往的咖啡馆、交易大厅或商业核心区。\n\n这里的重要条件是拥有选择权，并能够持续接触人脉、资源与信息交换。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 23
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Internal（内部型）",
+              "start": 58,
+              "end": 85
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · External（外部型）",
+              "start": 121,
+              "end": 153
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 161,
+              "end": 213
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 221,
+              "end": 288
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 298,
+              "end": 377
+            }
+          ]
+        }
+      },
+      "variable.environment:kitchens": {
+        "summary": "适合不同材料、资源或想法被组合、加工和转化的环境。",
+        "detail": "核心特质\n\n强调转化、融合与创造，也可以理解为“炼金术”式的环境主题。\n\n重点在于“事物的发生与蜕变”。它不仅指真实厨房，也代表把原料、资源、人才或想法组合、加工并转化成新成果的场所。\n\nTone 1–3 · Left · Wet（湿）\n\n更容易主动进入转化过程，参与组合、制作和推动变化。\n\nTone 4–6 · Right · Dry（干）\n\n更偏向身处转化正在发生的环境里，自然接收变化、碰撞与创造带来的刺激。\n\n物理环境\n\n真实厨房、餐馆后厨、工厂、充满创造力的工作室、实验室、研发空间、制造空间或合署办公场所，都可能呈现 Kitchens 的性质。\n\n生活建议\n\n适合处在“东西正在被做出来”的地方。与其待在完全静态、没有变化的空间，更需要感受到材料、信息、人或想法正在被加工和转化。\n\n理想商业场景\n\n能够把不同元素——资源、人才、想法——聚集到一起产生新事物的空间。\n\n例如研发中心、创意工作室、头脑风暴会议室或制造车间。商业价值来自把原始材料转化成更高价值的产品、服务或成果。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 92
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Wet（湿）",
+              "start": 120,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Dry（干）",
+              "start": 174,
+              "end": 208
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 216,
+              "end": 279
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 287,
+              "end": 347
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 357,
+              "end": 446
+            }
+          ]
+        }
+      },
+      "variable.environment:mountains": {
+        "summary": "适合较高、能够拉开距离并获得更开阔视野的位置。",
+        "detail": "核心特质\n\n强调视野、全局观与制高点。\n\nTone 1–3 · Left · Active（主动）\n\n更偏向主动利用高度和距离观察周围，掌握全局。\n\nTone 4–6 · Right · Passive（被动）\n\n更偏向放松地处在较高位置，让整体环境和更大的视野自然进入感知。\n\n物理环境\n\n高楼层公寓、山上的房子、视野开阔的顶楼、高处座位、瞭望台，或其他能够与密集人流拉开距离、获得更宽视野的位置。\n\n生活建议\n\n当需要理清思绪或恢复状态时，可以往更高、更开阔的位置移动。在办公室或餐厅，也可以观察自己是否更喜欢能俯瞰整体或视野较宽的位置。\n\n理想商业场景\n\n适合处于能够观察全局的位置，例如高楼层办公室、战略与高层视角岗位，或能够暂时远离日常繁杂执行、从更大尺度观察行业和系统的独立空间。\n\n重要的是“退一步、站得更高”以后更容易看清长期趋势，而不是持续被局部事务淹没。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 19
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（主动）",
+              "start": 51,
+              "end": 73
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（被动）",
+              "start": 107,
+              "end": 138
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 146,
+              "end": 200
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 208,
+              "end": 271
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 281,
+              "end": 387
+            }
+          ]
+        }
+      },
+      "variable.environment:valleys": {
+        "summary": "适合处在流动通道中，接收人与信息不断经过和交换的环境。",
+        "detail": "核心特质\n\n强调信息汇聚、交流与声学连接。\n\nTone 1–3 · Left · Narrow（狭窄）\n\n更主动进入流动，观察、参与和连接正在发生的交流。\n\nTone 4–6 · Right · Wide（宽广）\n\n更偏向让自己待在信息流中，通过周围的声音、人群和变化自然接收环境。\n\n物理环境\n\n一楼的房子、建筑底层大厅、街道旁的座位、走廊、公共区域、交谊空间，以及人们持续经过和交流的信息通道。\n\n生活建议\n\n需要能够“听到周围在发生什么”的地方。重点不是站得高，而是处在信息能够流经自己的平面或通道。\n\n人们路过、交流、分享消息的场所，更容易带来合适的信息与机会。\n\n理想商业场景\n\n信息交汇的通道，例如一楼门面、人流必经的开放办公区、前台、公关或信息中心。\n\n商业价值往往来自听见不同方向的声音、掌握最新信息，并对这些信息进行处理和传递。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 21
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Narrow（狭窄）",
+              "start": 53,
+              "end": 77
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Wide（宽广）",
+              "start": 108,
+              "end": 141
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 149,
+              "end": 199
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 207,
+              "end": 285
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 295,
+              "end": 373
+            }
+          ]
+        }
+      },
+      "variable.environment:shores": {
+        "summary": "适合处在两个不同空间、领域或状态交界的过渡地带。",
+        "detail": "核心特质\n\n强调边界、过渡地带与连接不同世界。\n\nTone 1–3 · Left · Natural（自然）\n\n更主动在两个领域之间移动、连接或观察边界两侧的差异。\n\nTone 4–6 · Right · Artificial（人工）\n\n更适合停留在交界处，同时接收来自两个不同领域的信息和体验。\n\n物理环境\n\n真正的海滩是海与陆的交界；类似性质也可以出现在城市与郊区之间、室内与室外之间、靠窗位置、两个部门之间、两种空间或系统之间。\n\n生活建议\n\n身体可能喜欢一种“随时可以离开，又随时可以进入”的过渡状态。\n\n靠窗、城市边缘、空间边界等位置，能够同时感知两个不同区域，更容易产生舒适感。\n\n理想商业场景\n\n适合处在两个状态、系统或领域的交界，例如跨部门桥梁岗位、混合办公、需要频繁跨区域移动的工作，或对接不同市场的国际业务。\n\n价值在于打破边界，把一种信息、资源或模式带入另一个领域。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特质",
+              "start": 6,
+              "end": 23
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Natural（自然）",
+              "start": 56,
+              "end": 82
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Artificial（人工）",
+              "start": 119,
+              "end": 148
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理环境",
+              "start": 156,
+              "end": 217
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建议",
+              "start": 225,
+              "end": 295
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商业场景",
+              "start": 305,
+              "end": 394
+            }
+          ]
+        }
+      },
+      "variable.perspective:survival": {
+        "summary": "关注基础与底线",
+        "detail": "核心视角\n\n你的眼睛天然会关注“生存”。\n\n看待人、事、环境或系统时，会自然问：\n\n- 这安全吗？\n- 这能保障基本生活吗？\n- 基础打得牢不牢？\n\n你往往很快注意到事物中最核心、最关乎持续存在和生存底线的部分。\n\nTone 1–3 · Left\n\n更聚焦地寻找具体风险、基础条件和关键细节。\n\nTone 4–6 · Right\n\n更广泛地接收环境整体的稳定感、安全感与生存条件。\n\n偏离状态\n\n当你分心时，注意力会从踏实的生存基础转向“渴望／想要”。你不再只看真正维持生活所需要的条件，而可能越来越盯着那些其实并非必要、只是“想要”的东西。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 106
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 125,
+              "end": 146
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 166,
+              "end": 190
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 198,
+              "end": 271,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "survival",
+              "targetValue": "wanting"
+            }
+          ]
+        }
+      },
+      "variable.perspective:possibility": {
+        "summary": "关注未知与潜力",
+        "detail": "核心视角\n\n你看世界的滤镜是：\n\n**“如果……会怎样？”**\n\n你的注意力不会只停留在已经发生的现状，而会自然看向尚未发生的事情、隐藏的潜能，或别人暂时还没有看到的另一种可能。\n\nTone 1–3 · Left\n\n更容易集中注意某一个值得发展的可能方向。\n\nTone 4–6 · Right\n\n更容易同时看到多个潜在方向，让可能性自然浮现出来。\n\n偏离状态\n\n当你分心时，可能开始过度关注“这件事到底有多大概率能成”，变得过度精打细算和现实，因为害怕失败而扼杀原本存在的潜力与可能性。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 89
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 108,
+              "end": 128
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 148,
+              "end": 173
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 181,
+              "end": 243,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "possibility",
+              "targetValue": "probability"
+            }
+          ]
+        }
+      },
+      "variable.perspective:power": {
+        "summary": "关注胜败与阶级",
+        "detail": "核心视角\n\n你的视角会自然观察人际关系、组织和社会结构里的“权力动态”。\n\n你会注意：\n\n- 谁在掌控局面？\n- 谁是赢家？\n- 谁是输家？\n- 资源和能量正在流向哪里？\n- 谁真正能够影响结果？\n\n这并不是坏事，而是一种看清现实力量结构的观察天赋。\n\nTone 1–3 · Left\n\n更聚焦于明确的力量关系和关键控制点。\n\nTone 4–6 · Right\n\n更容易从整体关系网络中感受到权力、资源和影响力如何分布。\n\n偏离状态\n\n当你分心时，可能会试图假装超脱，把自己放到“只是个人／旁观者”的位置，不愿正视现实中已经存在的权力关系。\n\n当真实的力量、资源和利益动态被忽略时，反而更容易在现实互动中判断失准或吃亏。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 125
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 144,
+              "end": 162
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 182,
+              "end": 210
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 218,
+              "end": 310,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "power",
+              "targetValue": "personal"
+            }
+          ]
+        }
+      },
+      "variable.perspective:wanting": {
+        "summary": "关注缺乏与需求",
+        "detail": "核心视角\n\n你能敏锐地看到：\n\n**“这个世界还缺什么？”**\n\n你的视角会寻找空白、尚未满足的需求和缺口——无论是市场上的痛点、系统中的不足，还是别人内在尚未被满足的需要。\n\n因此，这是一种天然的需求发现视角。\n\nTone 1–3 · Left\n\n更聚焦于一个具体缺口或需要解决的问题。\n\nTone 4–6 · Right\n\n更容易从整体环境中感受到尚未满足的需求和空白。\n\n偏离状态\n\n当你分心时，注意力会从外界的需求和空白收缩到自己的基本生存问题上，开始为安全、生计或基础条件产生过度担忧与恐惧。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 106
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 125,
+              "end": 144
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 164,
+              "end": 187
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 195,
+              "end": 251,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "wanting",
+              "targetValue": "survival"
+            }
+          ]
+        }
+      },
+      "variable.perspective:probability": {
+        "summary": "关注现实与可行性",
+        "detail": "核心视角\n\n你的眼睛像一个非常务实的测量仪。\n\n你会自然观察：\n\n**“这件事真正做成的几率有多大？”**\n\n你关注结果、实用性、效率、现实条件，以及事情如何真正成功落地。\n\nTone 1–3 · Left\n\n更倾向集中分析具体条件、数据与结果。\n\nTone 4–6 · Right\n\n更容易通过观察整体态势，感知不同结果出现的可能程度。\n\n偏离状态\n\n当你分心时，可能忽略现实条件，陷入各种缺乏落地基础的“也许还有可能”，甚至开始相信毫无现实支撑的画大饼，把时间浪费在几乎无法发生的事情上。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 86
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 105,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 169
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 177,
+              "end": 246,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "probability",
+              "targetValue": "possibility"
+            }
+          ]
+        }
+      },
+      "variable.perspective:personal": {
+        "summary": "关注自身的觉察与全景",
+        "detail": "核心视角\n\n你看世界的角度就像在看一场电影，而你既是观众也是主角。\n\n你会自然关注：\n\n**“这一切对我个人有什么意义？”**\n\n你可以用一种相对超然、抽离的方式观察世界的运作，觉察正在发生的事情，同时不必马上深陷其中。\n\nTone 1–3 · Left\n\n更聚焦于自己与某个具体对象、事件或问题之间的关系。\n\nTone 4–6 · Right\n\n更像站在一个较宽广的位置，从整体经验中观察自己与世界之间的关系。\n\n偏离状态\n\n当你分心时，可能突然被卷入输赢、利益、资源和权力关系。\n\n原本能够保持一定距离观察世界，却开始为了谁赢谁输、谁掌控局面而“近身肉搏”，这种卷入容易带来明显的疲惫和挫败。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心视角",
+              "start": 6,
+              "end": 110
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 129,
+              "end": 154
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 174,
+              "end": 206
+            },
+            {
+              "id": "distraction",
+              "title": "偏离状态",
+              "start": 214,
+              "end": 298,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "personal",
+              "targetValue": "power"
+            }
+          ]
+        }
+      },
+      "variable.motivation:fear": {
+        "summary": "追求基础与安全",
+        "detail": "核心动机\n\n这里的“恐惧”并不是指胆小，而是指为了求生和了解未知而产生的驱动力。\n\n你的动机是把事情弄清楚、打好基础、掌握充分的信息，从而减少和消除不确定性。\n\nTone 1–3 · Left\n\n更倾向主动研究、分析，并建立清楚的理解结构。\n\nTone 4–6 · Right\n\n更倾向接收信息，让理解在观察和经验中逐渐形成。\n\n正确状态\n\n在做决定前，你需要深入研究、收集数据，直到你觉得：\n\n**“我准备好了。”**  \n**“我懂了。”**\n\n这种建立在理解、信息和基础之上的踏实感，是你继续前进的动力。\n\n偏离状态\n\n当你感到焦虑时，可能放弃原本的研究与理解过程，转而觉得：\n\n**“我必须马上行动。”**\n\n于是，在基础还没有建立、信息还不足的时候急于求成。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 79
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 98,
+              "end": 120
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 140,
+              "end": 163
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 171,
+              "end": 255
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 263,
+              "end": 334,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "fear",
+              "targetValue": "need"
+            }
+          ]
+        }
+      },
+      "variable.motivation:hope": {
+        "summary": "追求顺其自然与信念",
+        "detail": "核心动机\n\n你的驱动力来自对未来的信任与等待。\n\n你不需要强求所有事情马上发生，而是更容易抱持一种“事情会自然展开、时机会到来”的信念。\n\nTone 1–3 · Left\n\n会更有意识地观察局面，并判断什么时候值得继续等待、什么时候条件正在形成。\n\nTone 4–6 · Right\n\n更容易保持接收和观察，让事情自己展开，在过程中自然看见时机。\n\n正确状态\n\n你更像一个纯粹的观察者。\n\n当遇到问题时，你的动机可以是：\n\n**“看看接下来会发生什么。”**\n\n在正确时机真正出现之前，不必急着介入，而是保持观察和信任。\n\n偏离状态\n\n当你陷入焦虑时，可能失去原本的信任，转而觉得自己必须插手、干预、解决甚至拯救别人。\n\n如果事情最终没有被“修好”，还可能产生强烈的责任压力或负罪感。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 68
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 87,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 173
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 181,
+              "end": 260
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 268,
+              "end": 342,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "hope",
+              "targetValue": "guilt"
+            }
+          ]
+        }
+      },
+      "variable.motivation:desire": {
+        "summary": "追求成就与领导",
+        "detail": "核心动机\n\n这是非常具有推动力的 Motivation。\n\n你的动机可以是渴望更好、渴望拥有、渴望成功，或渴望带领事情向某个方向前进。\n\n这种纯粹的“想要”，本身就是推动你前进的燃料。\n\nTone 1–3 · Left\n\n更容易主动规划目标、步骤和推进方式。\n\nTone 4–6 · Right\n\n更倾向接收当下出现的机会，再自然参与变化和推动。\n\n正确状态\n\n承认自己的野心与欲望。\n\n当你真心渴望某个目标——无论是物质、地位、事业还是精神成长——真实承认“我想要”，反而会让推动力变得清楚。\n\n偏离状态\n\n当你迷失时，可能开始伪装成“我什么都不想要”“无所谓”“顺其自然”。\n\n表面看起来没有目的，内心实际上仍然非常想要某个结果。\n\n这种没有被承认的欲望，会让表达与行动变得别扭、压抑。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 92
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 111,
+              "end": 129
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 149,
+              "end": 173
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 181,
+              "end": 247
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 255,
+              "end": 345,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "desire",
+              "targetValue": "innocence"
+            }
+          ]
+        }
+      },
+      "variable.motivation:need": {
+        "summary": "追求必要性与效率",
+        "detail": "核心动机\n\n你的驱动力是判断：\n\n**“这件事是不是绝对必需的？”**\n\n你不会为了做而做。真正需要解决某个问题，或者缺少某个关键资源时，行动的必要性才会变得清楚。\n\nTone 1–3 · Left\n\n更聚焦于分析问题，并找到具体需要处理的事项。\n\nTone 4–6 · Right\n\n更容易从整体局面中感受到什么才是真正必要的。\n\n正确状态\n\n非常务实。\n\n动机围绕“满足当下真正的实际需要”展开，不需要多余装饰，也不需要为了证明什么增加无关步骤。\n\n重点是解决真实存在的痛点和必要问题。\n\n偏离状态\n\n当你迷失时，本来只需要解决眼前的问题，却可能开始过度担忧、过度研究、疯狂收集更多并不相关的信息。\n\n结果反而迟迟无法处理当前真正必要的事情。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 82
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 101,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 165
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 173,
+              "end": 245
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 253,
+              "end": 323,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "need",
+              "targetValue": "fear"
+            }
+          ]
+        }
+      },
+      "variable.motivation:guilt": {
+        "summary": "追求修复与提供解决方案",
+        "detail": "核心动机\n\n这里的“内疚／责任”不是一般意义上的自我责备，而更接近一种：\n\n**“如果不去做，我会觉得这件事没有被处理。”**\n\n你的动机是纠正错误、修复系统，并在自己确实能够提供帮助时解决现实问题。\n\nTone 1–3 · Left\n\n更容易主动分析问题并制定修复方案。\n\nTone 4–6 · Right\n\n更容易从整体运行中察觉哪里不对，再自然产生修正方向。\n\n正确状态\n\n你像一个天然的“修理工”或“救火队员”。\n\n当你看到问题，而且知道自己确实有能力解决时，那种想让事情重新回到正常轨道的责任心，会成为非常强的动力。\n\n偏离状态\n\n当压力过大或进入迷失状态时，可能开始对已经看见的问题视而不见，幻想：\n\n**“它自己会好起来的。”**\n\n或者期待其他人来处理本来已经能够看见、也有能力解决的问题。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 100
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 119,
+              "end": 136
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 156,
+              "end": 182
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 190,
+              "end": 263
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 271,
+              "end": 353,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "guilt",
+              "targetValue": "hope"
+            }
+          ]
+        }
+      },
+      "variable.motivation:innocence": {
+        "summary": "追求无为与纯粹的体验",
+        "detail": "核心动机\n\n这个 Motivation 最特别的地方，是它的最高状态接近：\n\n**“没有动机。”**\n\n不是被恐惧、欲望或责任驱使，也不是为了达到特定结果而行动，而是单纯进入当下的体验。\n\nTone 1–3 · Left\n\n即使较少个人议程，观察和表达方式仍然可以更集中、明确。\n\nTone 4–6 · Right\n\n更容易保持开放、接收和自然流动，让体验本身带来理解。\n\n正确状态\n\n保持不带目的性的纯真。\n\n不急着控制结果，只是作为一个纯粹的存在去经历、观察和感受。\n\n当没有隐藏议程、不试图操纵事情必须走向某个结果时，反而更容易自然地产生影响。\n\n偏离状态\n\n当你迷失时，可能突然出现越来越强的目的性：\n\n- 想控制结果\n- 想获得特定金钱或权力目标\n- 想让事情按照自己的意图发展\n- 行动越来越充满策略、心机和个人议程\n\n这会让原本自然、无为的状态消失。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心动机",
+              "start": 6,
+              "end": 93
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 112,
+              "end": 139
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 159,
+              "end": 185
+            },
+            {
+              "id": "correctState",
+              "title": "正确状态",
+              "start": 193,
+              "end": 275
+            },
+            {
+              "id": "transference",
+              "title": "偏离状态",
+              "start": 283,
+              "end": 382,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "innocence",
+              "targetValue": "desire"
+            }
+          ]
+        }
+      }
+    },
+    "zh-Hant": {
+      "variable.introduction": {
+        "summary": "Variable（四箭頭）總說明",
+        "detail": "核心說明\n\nVariable（四箭頭）建立在更細的 Human Design 子結構之上：\n\n**Gate（閘門） → Line（爻線） → Color（基色） → Tone（基調） → Base（基質）**\n\n箭頭方向由 Tone 決定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四個 Variable 的數據來源關係：\n\n- Design Sun / Earth（設計太陽／地球）→ Determination（攝取）\n- Design Nodes（設計南北交點）→ Environment（環境）\n- Personality Nodes（人格南北交點）→ Perspective（視角）\n- Personality Sun / Earth（人格太陽／地球）→ Motivation（動機）\n\n左右方向描述的是同一個 Color 在不同 Tone 區間下的運作傾向。Color 決定“是哪一種主題”，Tone 進一步決定這個主題更偏 Left 還是 Right 的方式運行。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心說明",
+              "start": 6,
+              "end": 470
+            }
+          ]
+        },
+        "name": "Variable（四箭頭）總說明"
+      },
+      "variable.determination:introduction": {
+        "summary": "Determination（攝取）公共說明",
+        "detail": "核心說明\n\nDetermination 描述身體如何消化食物，也涉及大腦如何吸收信息、學習和處理生活經驗。\n\nTone 1–3 · Left\n\n左向偏主動、規律與結構化。大腦較主動地處理輸入，更適合清楚的節奏、框架與專注的攝取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然與隨順。不需要過度強迫自己按照固定結構吸收，身體和大腦更適合在自然狀態下接收食物、信息和經驗。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心說明",
+              "start": 6,
+              "end": 53
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 72,
+              "end": 116
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 136,
+              "end": 191
+            }
+          ]
+        },
+        "name": "Determination（攝取）公共說明"
+      },
+      "variable.environment:introduction": {
+        "summary": "Environment（環境）公共說明",
+        "detail": "核心說明\n\nEnvironment 描述什麼樣的物理環境更容易讓身體感到舒適和被滋養，也關係到一個人在什麼場域中更容易以較小阻力遇到適合的人、事與機會。\n\nTone 1–3 · Left\n\n左向偏主動觀察與參與。人在環境中更容易保持活力、主動使用空間，並對周圍發生的事情保持較明確的參與感。\n\nTone 4–6 · Right\n\n右向偏放鬆、融入與接收。環境合適時，身體不需要持續掌控，可以卸下防備，讓場域中的人、信息和體驗自然進入感知。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心說明",
+              "start": 6,
+              "end": 76
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 95,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 165,
+              "end": 219
+            }
+          ]
+        },
+        "name": "Environment（環境）公共說明"
+      },
+      "variable.perspective:introduction": {
+        "summary": "Perspective（視角）公共說明",
+        "detail": "核心說明\n\nPerspective 是看待世界的濾鏡。\n\n當身體處在合適的 Environment 中，Perspective 描述眼睛和注意力天然會看向哪裡、被什麼吸引，以及一個人最自然的觀察角度。\n\n當視角處於正確狀態時，會比較清晰地看見世界；當視角偏離時，會出現 **Distraction（分心）**，注意力轉向對應的另一種 Perspective。\n\nTone 1–3 · Left · Active（聚焦型視角）\n\n觀察方式偏聚焦，需要相對明確的目標。像使用望遠鏡一樣，一次盯住一個點深入觀察，並過濾背景雜音。\n\nTone 4–6 · Right · Passive（廣角型視角）\n\n觀察方式偏周邊／廣角。不需要死死盯住一個目標，更像廣角鏡頭，在放鬆狀態下通過余光和整體氛圍捕捉信息。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心說明",
+              "start": 6,
+              "end": 179
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（聚焦型視角）",
+              "start": 214,
+              "end": 261
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（廣角型視角）",
+              "start": 298,
+              "end": 348
+            }
+          ]
+        },
+        "name": "Perspective（視角）公共說明"
+      },
+      "variable.motivation:introduction": {
+        "summary": "Motivation（動機）公共說明",
+        "detail": "核心說明\n\nMotivation 描述頭腦處理信息時的底層驅動力：為什麼會去思考、表達或推動某件事，心智真正從什麼動機出發。\n\n當 Motivation 處在正確狀態時，心智較清明；當焦慮或迷失時，動機可能發生 **Transference（動機轉移）**，偏向對應的另一種 Motivation。\n\nTone 1–3 · Left · Active（戰略性心智）\n\n心智偏聚焦、邏輯和戰略性。更容易通過分析、計劃、目標和結構處理問題，在思考中主動過濾無關信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏發散、全景與接收性。不適合過度死磕細節或制定僵硬計劃，更容易在放鬆狀態下接收信息，讓不同線索自然連接成整體理解。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心說明",
+              "start": 6,
+              "end": 149
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（戰略性心智）",
+              "start": 184,
+              "end": 231
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（接受性心智）",
+              "start": 268,
+              "end": 327
+            }
+          ]
+        },
+        "name": "Motivation（動機）公共說明"
+      },
+      "variable.determination:appetite": {
+        "summary": "追求極簡與單一",
+        "detail": "核心特質\n\n你的消化系統非常原始，一次只能處理一種信息或一種食物。飲食越簡單，你的大腦運轉越清晰。\n\nTone 1–3 · Left · Consecutive（連續）\n\n每次只吃一種食材，吃完再吃下一種，例如先吃完所有的肉，再吃所有的菜。\n\nTone 4–6 · Right · Alternating（交替）\n\n可以幾樣食材交替吃，但仍強調彼此分開，不把不同內容全部混合在一起咀嚼或攝取。\n\n生活建議\n\n避免複雜的調味和一鍋燉的混合菜式。在吸收信息時，也需要一次只專注一件事，不要多線操作。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 49
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Consecutive（連續）",
+              "start": 86,
+              "end": 120
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Alternating（交替）",
+              "start": 158,
+              "end": 196
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 204,
+              "end": 247
+            }
+          ]
+        }
+      },
+      "variable.determination:taste": {
+        "summary": "追求符合直覺的挑剔",
+        "detail": "核心特質\n\n重點在於“吃你認識、且直覺認為對的東西”。這種設計表現為對食物成分極其敏感和挑剔。\n\n比如點一碗麵條時，大腦可能發出非常清晰的指令：不要辣椒、不要麻、不要花生、不要蔥和香菜、不要內臟，或者對飲料的冰量和零糖有非常明確的要求。\n\n這在外界看來可能叫“挑食”，但在人類圖的這套描述里，它強調的是身體對適合攝取內容的精細篩選。\n\nTone 1–3 · Left · Open（開放）\n\n更偏向接觸和嘗試眼前出現的內容，再辨識哪些真正適合自己。\n\nTone 4–6 · Right · Closed（封閉）\n\n更偏向已經辨識、熟悉和接受的內容，選擇範圍通常更集中。\n\n生活建議\n\n相信你的味蕾和挑剔感。不想吃的成分不要為了迎合別人或所謂“營養均衡”而強迫自己攝取。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 166
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Open（開放）",
+              "start": 196,
+              "end": 224
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Closed（封閉）",
+              "start": 257,
+              "end": 284
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 292,
+              "end": 334
+            }
+          ]
+        }
+      },
+      "variable.determination:thirst": {
+        "summary": "追求溫度的絕對值",
+        "detail": "核心特質\n\n你的消化系統對食物進入體內時的“溫度”非常敏感。\n\nTone 1–3 · Left · Hot（熱食）\n\n偏向溫度較高的食物和飲料。教材進一步描述為食物和飲料的溫度高於體溫，即使天氣炎熱，也可能更適合熱飲和熱食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向溫度較低的攝取條件。教材舉例包括冷盤、沙拉，或把食物放涼以後再吃。\n\n生活建議\n\n觀察並遵守自己對應的溫度條件。教材認為溫度條件不合適時，身體可能更容易感到沈重，大腦也容易昏沈。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 30
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Hot（熱食）",
+              "start": 59,
+              "end": 112
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Cold（冷食）",
+              "start": 143,
+              "end": 178
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 186,
+              "end": 234
+            }
+          ]
+        }
+      },
+      "variable.determination:touch": {
+        "summary": "追求進食時的外在氛圍",
+        "detail": "核心特質\n\n吃什麼未必是最關鍵的，在什麼狀態下吃反而更重要。這個 Color 強調神經系統對進食或攝取時外部刺激狀態的敏感。\n\nTone 1–3 · Left · Calm（平靜）\n\n偏向放鬆、安靜、干擾少的環境。教材描述為盡量不要一邊進食一邊看書、看手機，或討論過度嚴肅、緊張的工作內容。\n\nTone 4–6 · Right · Nervous（興奮／忙碌／刺激）\n\n偏向有活動、有動靜和刺激的環境。可以是在交談、移動、觀看內容或周圍比較活躍的情況下進食。\n\n生活建議\n\n觀察自己在哪一種氛圍下吃完以後身體更有能量。如果是 Calm 分支，而環境突然進入爭吵或高度緊張狀態，可以暫停進食，等身體重新放鬆。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 62
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Calm（平靜）",
+              "start": 92,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Nervous（興奮／忙碌／刺激）",
+              "start": 185,
+              "end": 229
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 237,
+              "end": 303
+            }
+          ]
+        }
+      },
+      "variable.determination:sound": {
+        "summary": "追求進食時的聲學頻率",
+        "detail": "核心特質\n\n消化與攝取狀態會受到聽覺環境影響。背景聲音和音量會改變身體吸收食物、信息和經驗時的狀態。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景聲音、活動感或較明顯聲響的環境。教材舉例包括較熱鬧的餐廳、音樂、電視或其他持續背景聲。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向聲音刺激較低、相對安靜的環境。對細小雜音也可能比較敏感，例如周圍人的咀嚼聲。\n\n生活建議\n\nHigh 分支獨處進食時，可以主動創造適合自己的背景聲音；Low 分支則盡量選擇安靜空間或減少不必要的聲音刺激。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 50
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · High（高音量）",
+              "start": 81,
+              "end": 130
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Low（低音量）",
+              "start": 161,
+              "end": 201
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 209,
+              "end": 265
+            }
+          ]
+        }
+      },
+      "variable.determination:light": {
+        "summary": "追求日夜與光照的節律",
+        "detail": "核心特質\n\n消化與大腦活躍狀態會受到光線條件和晝夜節律影響。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向較明亮、直接的光照。教材把這一分支描述為更接近日間運作，需要在光線充足的條件下攝取。\n\nTone 4–6 · Right · Indirect（間接）\n\n偏向較弱、間接、昏暗或偏晚間的光線條件。教材舉例包括黃昏以後、拉上窗簾的室內或夜間環境。\n\n生活建議\n\n順應自己的光線條件，而不是只服從傳統“早中晚三餐”的時間表。重點是身體對光照條件的反應，而不是機械套用固定作息。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 30
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Direct（直接）",
+              "start": 62,
+              "end": 106
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Indirect（間接）",
+              "start": 141,
+              "end": 185
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 193,
+              "end": 249
+            }
+          ]
+        }
+      },
+      "variable.environment:caves": {
+        "summary": "適合邊界清楚、入口明確，並能掌握人員進出的空間。",
+        "detail": "核心特質\n\n強調安全感、專屬感與出入控制。\n\nTone 1–3 · Left · Selective（選擇型）\n\n更偏向主動掌握空間，知道誰進來、誰離開，並保持對環境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全邊界已經成立後放鬆下來，讓自己自然融入這個受保護的空間。\n\n物理環境\n\n只有一個出入口的房間、背靠牆壁的座位、舒適封閉的私人書房或臥室，甚至車內，都可能具有 Caves 的性質。\n\n生活建議\n\n在外就餐或工作時，盡量選擇背靠牆壁、能看到大門或主要出入口的位置。如果缺乏安全感，身體系統可能持續處於緊繃狀態。\n\n理想商業場景\n\n需要一個能夠較好掌控的私人空間，例如獨立辦公室、居家辦公的專屬書房，或只有一個主要出入口、能清楚感知人員進出的工位。\n\n在不容易受到外界無預警打擾的“庇護所”中，更容易穩定工作並產出高質量成果。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 21
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Selective（選擇型）",
+              "start": 57,
+              "end": 88
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Blending（融合型）",
+              "start": 124,
+              "end": 158
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 166,
+              "end": 219
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 227,
+              "end": 283
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 293,
+              "end": 390
+            }
+          ]
+        }
+      },
+      "variable.environment:markets": {
+        "summary": "適合資源、人員、商品和信息不斷交換流動的環境。",
+        "detail": "核心特質\n\n強調資源交換、人脈流動與動態活力。\n\nTone 1–3 · Left · Internal（內部型）\n\n更主動參與交換、觀察選擇，並進入環境中的人與資源流動。\n\nTone 4–6 · Right · External（外部型）\n\n更適合處在這種流動環境里，讓機會、信息和選擇自然進入自己的感知。\n\n物理環境\n\n城市中心、商業街、人多的咖啡館、熱鬧的辦公區域、市集，以及其他持續發生人員、商品、資源或信息交換的地方。\n\n生活建議\n\n即使不與人直接交談，身處充滿活力、資源和交換的環境，也可能讓身體感覺更充沛。太長時間待在過度孤立、缺少流動的地方，可能更容易失去活力。\n\n理想商業場景\n\n繁華、充滿交易與信息流動的場所，例如共享辦公空間、人來人往的咖啡館、交易大廳或商業核心區。\n\n這裡的重要條件是擁有選擇權，並能夠持續接觸人脈、資源與信息交換。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 23
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Internal（內部型）",
+              "start": 58,
+              "end": 85
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · External（外部型）",
+              "start": 121,
+              "end": 153
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 161,
+              "end": 213
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 221,
+              "end": 288
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 298,
+              "end": 377
+            }
+          ]
+        }
+      },
+      "variable.environment:kitchens": {
+        "summary": "適合不同材料、資源或想法被組合、加工和轉化的環境。",
+        "detail": "核心特質\n\n強調轉化、融合與創造，也可以理解為“煉金術”式的環境主題。\n\n重點在於“事物的發生與蛻變”。它不僅指真實廚房，也代表把原料、資源、人才或想法組合、加工並轉化成新成果的場所。\n\nTone 1–3 · Left · Wet（濕）\n\n更容易主動進入轉化過程，參與組合、製作和推動變化。\n\nTone 4–6 · Right · Dry（乾）\n\n更偏向身處轉化正在發生的環境里，自然接收變化、碰撞與創造帶來的刺激。\n\n物理環境\n\n真實廚房、餐館後廚、工廠、充滿創造力的工作室、實驗室、研發空間、製造空間或合署辦公場所，都可能呈現 Kitchens 的性質。\n\n生活建議\n\n適合處在“東西正在被做出來”的地方。與其待在完全靜態、沒有變化的空間，更需要感受到材料、信息、人或想法正在被加工和轉化。\n\n理想商業場景\n\n能夠把不同元素——資源、人才、想法——聚集到一起產生新事物的空間。\n\n例如研發中心、創意工作室、頭腦風暴會議室或製造車間。商業價值來自把原始材料轉化成更高價值的產品、服務或成果。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 92
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Wet（濕）",
+              "start": 120,
+              "end": 145
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Dry（乾）",
+              "start": 174,
+              "end": 208
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 216,
+              "end": 279
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 287,
+              "end": 347
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 357,
+              "end": 446
+            }
+          ]
+        }
+      },
+      "variable.environment:mountains": {
+        "summary": "適合較高、能夠拉開距離並獲得更開闊視野的位置。",
+        "detail": "核心特質\n\n強調視野、全局觀與制高點。\n\nTone 1–3 · Left · Active（主動）\n\n更偏向主動利用高度和距離觀察周圍，掌握全局。\n\nTone 4–6 · Right · Passive（被動）\n\n更偏向放鬆地處在較高位置，讓整體環境和更大的視野自然進入感知。\n\n物理環境\n\n高樓層公寓、山上的房子、視野開闊的頂樓、高處座位、瞭望台，或其他能夠與密集人流拉開距離、獲得更寬視野的位置。\n\n生活建議\n\n當需要理清思緒或恢復狀態時，可以往更高、更開闊的位置移動。在辦公室或餐廳，也可以觀察自己是否更喜歡能俯瞰整體或視野較寬的位置。\n\n理想商業場景\n\n適合處於能夠觀察全局的位置，例如高樓層辦公室、戰略與高層視角崗位，或能夠暫時遠離日常繁雜執行、從更大尺度觀察行業和系統的獨立空間。\n\n重要的是“退一步、站得更高”以後更容易看清長期趨勢，而不是持續被局部事務淹沒。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 19
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active（主動）",
+              "start": 51,
+              "end": 73
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive（被動）",
+              "start": 107,
+              "end": 138
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 146,
+              "end": 200
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 208,
+              "end": 271
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 281,
+              "end": 387
+            }
+          ]
+        }
+      },
+      "variable.environment:valleys": {
+        "summary": "適合處在流動通道中，接收人與信息不斷經過和交換的環境。",
+        "detail": "核心特質\n\n強調信息匯聚、交流與聲學連接。\n\nTone 1–3 · Left · Narrow（狹窄）\n\n更主動進入流動，觀察、參與和連接正在發生的交流。\n\nTone 4–6 · Right · Wide（寬廣）\n\n更偏向讓自己待在信息流中，通過周圍的聲音、人群和變化自然接收環境。\n\n物理環境\n\n一樓的房子、建築底層大廳、街道旁的座位、走廊、公共區域、交誼空間，以及人們持續經過和交流的信息通道。\n\n生活建議\n\n需要能夠“聽到周圍在發生什麼”的地方。重點不是站得高，而是處在信息能夠流經自己的平面或通道。\n\n人們路過、交流、分享消息的場所，更容易帶來合適的信息與機會。\n\n理想商業場景\n\n信息交匯的通道，例如一樓門面、人流必經的開放辦公區、前台、公關或信息中心。\n\n商業價值往往來自聽見不同方向的聲音、掌握最新信息，並對這些信息進行處理和傳遞。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 21
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Narrow（狹窄）",
+              "start": 53,
+              "end": 77
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Wide（寬廣）",
+              "start": 108,
+              "end": 141
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 149,
+              "end": 199
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 207,
+              "end": 285
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 295,
+              "end": 373
+            }
+          ]
+        }
+      },
+      "variable.environment:shores": {
+        "summary": "適合處在兩個不同空間、領域或狀態交界的過渡地帶。",
+        "detail": "核心特質\n\n強調邊界、過渡地帶與連接不同世界。\n\nTone 1–3 · Left · Natural（自然）\n\n更主動在兩個領域之間移動、連接或觀察邊界兩側的差異。\n\nTone 4–6 · Right · Artificial（人工）\n\n更適合停留在交界處，同時接收來自兩個不同領域的信息和體驗。\n\n物理環境\n\n真正的海灘是海與陸的交界；類似性質也可以出現在城市與郊區之間、室內與室外之間、靠窗位置、兩個部門之間、兩種空間或系統之間。\n\n生活建議\n\n身體可能喜歡一種“隨時可以離開，又隨時可以進入”的過渡狀態。\n\n靠窗、城市邊緣、空間邊界等位置，能夠同時感知兩個不同區域，更容易產生舒適感。\n\n理想商業場景\n\n適合處在兩個狀態、系統或領域的交界，例如跨部門橋梁崗位、混合辦公、需要頻繁跨區域移動的工作，或對接不同市場的國際業務。\n\n價值在於打破邊界，把一種信息、資源或模式帶入另一個領域。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心特質",
+              "start": 6,
+              "end": 23
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Natural（自然）",
+              "start": 56,
+              "end": 82
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Artificial（人工）",
+              "start": 119,
+              "end": 148
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "物理環境",
+              "start": 156,
+              "end": 217
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "生活建議",
+              "start": 225,
+              "end": 295
+            },
+            {
+              "id": "businessScenario",
+              "title": "理想商業場景",
+              "start": 305,
+              "end": 394
+            }
+          ]
+        }
+      },
+      "variable.perspective:survival": {
+        "summary": "關注基礎與底線",
+        "detail": "核心視角\n\n你的眼睛天然會關注“生存”。\n\n看待人、事、環境或系統時，會自然問：\n\n- 這安全嗎？\n- 這能保障基本生活嗎？\n- 基礎打得牢不牢？\n\n你往往很快注意到事物中最核心、最關乎持續存在和生存底線的部分。\n\nTone 1–3 · Left\n\n更聚焦地尋找具體風險、基礎條件和關鍵細節。\n\nTone 4–6 · Right\n\n更廣泛地接收環境整體的穩定感、安全感與生存條件。\n\n偏離狀態\n\n當你分心時，注意力會從踏實的生存基礎轉向“渴望／想要”。你不再只看真正維持生活所需要的條件，而可能越來越盯著那些其實並非必要、只是“想要”的東西。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 106
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 125,
+              "end": 146
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 166,
+              "end": 190
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 198,
+              "end": 271,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "survival",
+              "targetValue": "wanting"
+            }
+          ]
+        }
+      },
+      "variable.perspective:possibility": {
+        "summary": "關注未知與潛力",
+        "detail": "核心視角\n\n你看世界的濾鏡是：\n\n**“如果……會怎樣？”**\n\n你的注意力不會只停留在已經發生的現狀，而會自然看向尚未發生的事情、隱藏的潛能，或別人暫時還沒有看到的另一種可能。\n\nTone 1–3 · Left\n\n更容易集中注意某一個值得發展的可能方向。\n\nTone 4–6 · Right\n\n更容易同時看到多個潛在方向，讓可能性自然浮現出來。\n\n偏離狀態\n\n當你分心時，可能開始過度關注“這件事到底有多大概率能成”，變得過度精打細算和現實，因為害怕失敗而扼殺原本存在的潛力與可能性。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 89
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 108,
+              "end": 128
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 148,
+              "end": 173
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 181,
+              "end": 243,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "possibility",
+              "targetValue": "probability"
+            }
+          ]
+        }
+      },
+      "variable.perspective:power": {
+        "summary": "關注勝敗與階級",
+        "detail": "核心視角\n\n你的視角會自然觀察人際關係、組織和社會結構里的“權力動態”。\n\n你會注意：\n\n- 誰在掌控局面？\n- 誰是贏家？\n- 誰是輸家？\n- 資源和能量正在流向哪裡？\n- 誰真正能夠影響結果？\n\n這並不是壞事，而是一種看清現實力量結構的觀察天賦。\n\nTone 1–3 · Left\n\n更聚焦於明確的力量關係和關鍵控制點。\n\nTone 4–6 · Right\n\n更容易從整體關係網絡中感受到權力、資源和影響力如何分布。\n\n偏離狀態\n\n當你分心時，可能會試圖假裝超脫，把自己放到“只是個人／旁觀者”的位置，不願正視現實中已經存在的權力關係。\n\n當真實的力量、資源和利益動態被忽略時，反而更容易在現實互動中判斷失准或吃虧。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 125
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 144,
+              "end": 162
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 182,
+              "end": 210
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 218,
+              "end": 310,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "power",
+              "targetValue": "personal"
+            }
+          ]
+        }
+      },
+      "variable.perspective:wanting": {
+        "summary": "關注缺乏與需求",
+        "detail": "核心視角\n\n你能敏銳地看到：\n\n**“這個世界還缺什麼？”**\n\n你的視角會尋找空白、尚未滿足的需求和缺口——無論是市場上的痛點、系統中的不足，還是別人內在尚未被滿足的需要。\n\n因此，這是一種天然的需求發現視角。\n\nTone 1–3 · Left\n\n更聚焦於一個具體缺口或需要解決的問題。\n\nTone 4–6 · Right\n\n更容易從整體環境中感受到尚未滿足的需求和空白。\n\n偏離狀態\n\n當你分心時，注意力會從外界的需求和空白收縮到自己的基本生存問題上，開始為安全、生計或基礎條件產生過度擔憂與恐懼。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 106
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 125,
+              "end": 144
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 164,
+              "end": 187
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 195,
+              "end": 251,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "wanting",
+              "targetValue": "survival"
+            }
+          ]
+        }
+      },
+      "variable.perspective:probability": {
+        "summary": "關注現實與可行性",
+        "detail": "核心視角\n\n你的眼睛像一個非常務實的測量儀。\n\n你會自然觀察：\n\n**“這件事真正做成的幾率有多大？”**\n\n你關注結果、實用性、效率、現實條件，以及事情如何真正成功落地。\n\nTone 1–3 · Left\n\n更傾向集中分析具體條件、數據與結果。\n\nTone 4–6 · Right\n\n更容易通過觀察整體態勢，感知不同結果出現的可能程度。\n\n偏離狀態\n\n當你分心時，可能忽略現實條件，陷入各種缺乏落地基礎的“也許還有可能”，甚至開始相信毫無現實支撐的畫大餅，把時間浪費在幾乎無法發生的事情上。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 86
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 105,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 169
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 177,
+              "end": 246,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "probability",
+              "targetValue": "possibility"
+            }
+          ]
+        }
+      },
+      "variable.perspective:personal": {
+        "summary": "關注自身的覺察與全景",
+        "detail": "核心視角\n\n你看世界的角度就像在看一場電影，而你既是觀眾也是主角。\n\n你會自然關注：\n\n**“這一切對我個人有什麼意義？”**\n\n你可以用一種相對超然、抽離的方式觀察世界的運作，覺察正在發生的事情，同時不必馬上深陷其中。\n\nTone 1–3 · Left\n\n更聚焦於自己與某個具體對象、事件或問題之間的關係。\n\nTone 4–6 · Right\n\n更像站在一個較寬廣的位置，從整體經驗中觀察自己與世界之間的關係。\n\n偏離狀態\n\n當你分心時，可能突然被捲入輸贏、利益、資源和權力關係。\n\n原本能夠保持一定距離觀察世界，卻開始為了誰贏誰輸、誰掌控局面而“近身肉搏”，這種捲入容易帶來明顯的疲憊和挫敗。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心視角",
+              "start": 6,
+              "end": 110
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 129,
+              "end": 154
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 174,
+              "end": 206
+            },
+            {
+              "id": "distraction",
+              "title": "偏離狀態",
+              "start": 214,
+              "end": 298,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "personal",
+              "targetValue": "power"
+            }
+          ]
+        }
+      },
+      "variable.motivation:fear": {
+        "summary": "追求基礎與安全",
+        "detail": "核心動機\n\n這裡的“恐懼”並不是指膽小，而是指為了求生和瞭解未知而產生的驅動力。\n\n你的動機是把事情弄清楚、打好基礎、掌握充分的信息，從而減少和消除不確定性。\n\nTone 1–3 · Left\n\n更傾向主動研究、分析，並建立清楚的理解結構。\n\nTone 4–6 · Right\n\n更傾向接收信息，讓理解在觀察和經驗中逐漸形成。\n\n正確狀態\n\n在做決定前，你需要深入研究、收集數據，直到你覺得：\n\n**“我準備好了。”**  \n**“我懂了。”**\n\n這種建立在理解、信息和基礎之上的踏實感，是你繼續前進的動力。\n\n偏離狀態\n\n當你感到焦慮時，可能放棄原本的研究與理解過程，轉而覺得：\n\n**“我必須馬上行動。”**\n\n於是，在基礎還沒有建立、信息還不足的時候急於求成。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 79
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 98,
+              "end": 120
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 140,
+              "end": 163
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 171,
+              "end": 255
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 263,
+              "end": 334,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "fear",
+              "targetValue": "need"
+            }
+          ]
+        }
+      },
+      "variable.motivation:hope": {
+        "summary": "追求順其自然與信念",
+        "detail": "核心動機\n\n你的驅動力來自對未來的信任與等待。\n\n你不需要強求所有事情馬上發生，而是更容易抱持一種“事情會自然展開、時機會到來”的信念。\n\nTone 1–3 · Left\n\n會更有意識地觀察局面，並判斷什麼時候值得繼續等待、什麼時候條件正在形成。\n\nTone 4–6 · Right\n\n更容易保持接收和觀察，讓事情自己展開，在過程中自然看見時機。\n\n正確狀態\n\n你更像一個純粹的觀察者。\n\n當遇到問題時，你的動機可以是：\n\n**“看看接下來會發生什麼。”**\n\n在正確時機真正出現之前，不必急著介入，而是保持觀察和信任。\n\n偏離狀態\n\n當你陷入焦慮時，可能失去原本的信任，轉而覺得自己必須插手、干預、解決甚至拯救別人。\n\n如果事情最終沒有被“修好”，還可能產生強烈的責任壓力或負罪感。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 68
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 87,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 173
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 181,
+              "end": 260
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 268,
+              "end": 342,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "hope",
+              "targetValue": "guilt"
+            }
+          ]
+        }
+      },
+      "variable.motivation:desire": {
+        "summary": "追求成就與領導",
+        "detail": "核心動機\n\n這是非常具有推動力的 Motivation。\n\n你的動機可以是渴望更好、渴望擁有、渴望成功，或渴望帶領事情向某個方向前進。\n\n這種純粹的“想要”，本身就是推動你前進的燃料。\n\nTone 1–3 · Left\n\n更容易主動規劃目標、步驟和推進方式。\n\nTone 4–6 · Right\n\n更傾向接收當下出現的機會，再自然參與變化和推動。\n\n正確狀態\n\n承認自己的野心與慾望。\n\n當你真心渴望某個目標——無論是物質、地位、事業還是精神成長——真實承認“我想要”，反而會讓推動力變得清楚。\n\n偏離狀態\n\n當你迷失時，可能開始偽裝成“我什麼都不想要”“無所謂”“順其自然”。\n\n表面看起來沒有目的，內心實際上仍然非常想要某個結果。\n\n這種沒有被承認的慾望，會讓表達與行動變得彆扭、壓抑。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 92
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 111,
+              "end": 129
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 149,
+              "end": 173
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 181,
+              "end": 247
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 255,
+              "end": 345,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "desire",
+              "targetValue": "innocence"
+            }
+          ]
+        }
+      },
+      "variable.motivation:need": {
+        "summary": "追求必要性與效率",
+        "detail": "核心動機\n\n你的驅動力是判斷：\n\n**“這件事是不是絕對必需的？”**\n\n你不會為了做而做。真正需要解決某個問題，或者缺少某個關鍵資源時，行動的必要性才會變得清楚。\n\nTone 1–3 · Left\n\n更聚焦於分析問題，並找到具體需要處理的事項。\n\nTone 4–6 · Right\n\n更容易從整體局面中感受到什麼才是真正必要的。\n\n正確狀態\n\n非常務實。\n\n動機圍繞“滿足當下真正的實際需要”展開，不需要多餘裝飾，也不需要為了證明什麼增加無關步驟。\n\n重點是解決真實存在的痛點和必要問題。\n\n偏離狀態\n\n當你迷失時，本來只需要解決眼前的問題，卻可能開始過度擔憂、過度研究、瘋狂收集更多並不相關的信息。\n\n結果反而遲遲無法處理當前真正必要的事情。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 82
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 101,
+              "end": 123
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 143,
+              "end": 165
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 173,
+              "end": 245
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 253,
+              "end": 323,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "need",
+              "targetValue": "fear"
+            }
+          ]
+        }
+      },
+      "variable.motivation:guilt": {
+        "summary": "追求修復與提供解決方案",
+        "detail": "核心動機\n\n這裡的“內疚／責任”不是一般意義上的自我責備，而更接近一種：\n\n**“如果不去做，我會覺得這件事沒有被處理。”**\n\n你的動機是糾正錯誤、修復系統，並在自己確實能夠提供幫助時解決現實問題。\n\nTone 1–3 · Left\n\n更容易主動分析問題並制定修復方案。\n\nTone 4–6 · Right\n\n更容易從整體運行中察覺哪裡不對，再自然產生修正方向。\n\n正確狀態\n\n你像一個天然的“修理工”或“救火隊員”。\n\n當你看到問題，而且知道自己確實有能力解決時，那種想讓事情重新回到正常軌道的責任心，會成為非常強的動力。\n\n偏離狀態\n\n當壓力過大或進入迷失狀態時，可能開始對已經看見的問題視而不見，幻想：\n\n**“它自己會好起來的。”**\n\n或者期待其他人來處理本來已經能夠看見、也有能力解決的問題。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 100
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 119,
+              "end": 136
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 156,
+              "end": 182
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 190,
+              "end": 263
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 271,
+              "end": 353,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "guilt",
+              "targetValue": "hope"
+            }
+          ]
+        }
+      },
+      "variable.motivation:innocence": {
+        "summary": "追求無為與純粹的體驗",
+        "detail": "核心動機\n\n這個 Motivation 最特別的地方，是它的最高狀態接近：\n\n**“沒有動機。”**\n\n不是被恐懼、慾望或責任驅使，也不是為了達到特定結果而行動，而是單純進入當下的體驗。\n\nTone 1–3 · Left\n\n即使較少個人議程，觀察和表達方式仍然可以更集中、明確。\n\nTone 4–6 · Right\n\n更容易保持開放、接收和自然流動，讓體驗本身帶來理解。\n\n正確狀態\n\n保持不帶目的性的純真。\n\n不急著控制結果，只是作為一個純粹的存在去經歷、觀察和感受。\n\n當沒有隱藏議程、不試圖操縱事情必須走向某個結果時，反而更容易自然地產生影響。\n\n偏離狀態\n\n當你迷失時，可能突然出現越來越強的目的性：\n\n- 想控制結果\n- 想獲得特定金錢或權力目標\n- 想讓事情按照自己的意圖發展\n- 行動越來越充滿策略、心機和個人議程\n\n這會讓原本自然、無為的狀態消失。",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "核心動機",
+              "start": 6,
+              "end": 93
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 112,
+              "end": 139
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 159,
+              "end": 185
+            },
+            {
+              "id": "correctState",
+              "title": "正確狀態",
+              "start": 193,
+              "end": 275
+            },
+            {
+              "id": "transference",
+              "title": "偏離狀態",
+              "start": 283,
+              "end": 382,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "innocence",
+              "targetValue": "desire"
+            }
+          ]
+        }
+      }
+    },
+    "en": {
+      "variable.introduction": {
+        "summary": "Variable (the four arrows) overview",
+        "detail": "Core explanation\n\nVariable (the four arrows) is based on the finer substructure of Human Design:\n\n**Gate → Line → Color → Tone → Base**\n\nArrow direction is determined by Tone:\n\n- Tones 1, 2 and 3 → Left\n- Tones 4, 5 and 6 → Right\n\nThe data sources of the four Variables are:\n\n- Design Sun / Earth → Determination\n- Design Nodes → Environment\n- Personality Nodes → Perspective\n- Personality Sun / Earth → Motivation\n\nLeft and Right describe how the same Color operates in different Tone ranges. Color determines the theme; Tone further determines whether that theme operates in a more Left or Right way.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core explanation",
+              "start": 18,
+              "end": 602
+            }
+          ]
+        },
+        "name": "Variable (the four arrows) overview"
+      },
+      "variable.determination:introduction": {
+        "summary": "Determination overview",
+        "detail": "Core explanation\n\nDetermination describes how the body digests food. It also concerns how the brain absorbs information, learns and processes life experiences.\n\nTone 1–3 · Left\n\nLeft tends toward active, regular and structured intake. The brain processes input more actively and is better suited to a clear rhythm, a framework and focused intake.\n\nTone 4–6 · Right\n\nRight tends toward reception, a natural approach and going with the flow. There is no need to force intake into a fixed structure; the body and brain are better suited to receiving food, information and experience in a natural state.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core explanation",
+              "start": 18,
+              "end": 159
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 178,
+              "end": 346
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 366,
+              "end": 599
+            }
+          ]
+        },
+        "name": "Determination overview"
+      },
+      "variable.environment:introduction": {
+        "summary": "Environment overview",
+        "detail": "Core explanation\n\nEnvironment describes the physical surroundings in which the body can more easily feel comfortable and nourished. It also concerns the settings in which a person can encounter suitable people, events and opportunities with less resistance.\n\nTone 1–3 · Left\n\nLeft tends toward active observation and participation. A person can more easily stay energized, actively use the space and maintain a clear sense of participation in what is happening around them.\n\nTone 4–6 · Right\n\nRight tends toward relaxation, blending in and reception. In a suitable environment, the body does not need to remain in control. It can lower its defenses and allow people, information and experiences in that setting to enter awareness naturally.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core explanation",
+              "start": 18,
+              "end": 257
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 276,
+              "end": 473
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 493,
+              "end": 740
+            }
+          ]
+        },
+        "name": "Environment overview"
+      },
+      "variable.perspective:introduction": {
+        "summary": "Perspective overview",
+        "detail": "Core explanation\n\nPerspective is the filter through which you see the world.\n\nWhen the body is in a suitable Environment, Perspective describes where the eyes and attention naturally turn, what attracts them and a person's most natural angle of observation.\n\nWhen the perspective is in its correct state, the world can be seen more clearly. When it moves off track, **Distraction** can occur: attention shifts toward the paired Perspective.\n\nTone 1–3 · Left · Active · Focused perspective\n\nObservation tends to be focused and needs a relatively clear target. Like looking through a telescope, it examines one point in depth at a time and filters out background noise.\n\nTone 4–6 · Right · PassiveWide-angle perspective\n\nObservation tends to be peripheral or wide-angle. There is no need to stare fixedly at one target. It is more like a wide-angle lens, picking up information through peripheral vision and the overall atmosphere in a relaxed state.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core explanation",
+              "start": 18,
+              "end": 440
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active · Focused perspective",
+              "start": 490,
+              "end": 667
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · PassiveWide-angle perspective",
+              "start": 719,
+              "end": 948
+            }
+          ]
+        },
+        "name": "Perspective overview"
+      },
+      "variable.motivation:introduction": {
+        "summary": "Motivation overview",
+        "detail": "Core explanation\n\nMotivation describes the underlying drive behind how the mind processes information: why it thinks, expresses itself or moves something forward, and the motivation from which it truly operates.\n\nWhen Motivation is in its correct state, the mind is clearer. In anxiety or confusion, **Transference** may occur: motivation shifts toward its paired Motivation.\n\nTone 1–3 · Left · Active · Strategic mind\n\nThe mind tends toward focus, logic and strategy. It can more easily handle problems through analysis, plans, goals and structure, actively filtering out irrelevant information while thinking.\n\nTone 4–6 · Right · PassiveReceptive mind\n\nThe mind tends toward a broad, panoramic and receptive mode. It is less suited to getting stuck on details or making rigid plans. In a relaxed state, it can more easily receive information and let different clues connect naturally into an overall understanding.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core explanation",
+              "start": 18,
+              "end": 375
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active · Strategic mind",
+              "start": 420,
+              "end": 611
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · PassiveReceptive mind",
+              "start": 655,
+              "end": 916
+            }
+          ]
+        },
+        "name": "Motivation overview"
+      },
+      "variable.determination:appetite": {
+        "summary": "Seeking simplicity and one thing at a time",
+        "detail": "Core traits\n\nYour digestive system is very primitive and can handle only one kind of information or food at a time. The simpler your diet, the more clearly your brain operates.\n\nTone 1–3 · Left · Consecutive\n\nEat one ingredient at a time, finishing it before moving on to the next. For example, finish all the meat first, then eat all the vegetables.\n\nTone 4–6 · Right · Alternating\n\nSeveral ingredients can be eaten in alternation, but the emphasis remains on keeping them separate rather than mixing everything together when chewing or taking it in.\n\nEveryday guidance\n\nAvoid complex seasonings and mixed dishes cooked together in one pot. When taking in information, you also need to focus on one thing at a time rather than multitask.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 176
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Consecutive",
+              "start": 209,
+              "end": 350
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Alternating",
+              "start": 384,
+              "end": 551
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 572,
+              "end": 738
+            }
+          ]
+        }
+      },
+      "variable.determination:taste": {
+        "summary": "Seeking selectivity that follows intuition",
+        "detail": "Core traits\n\nThe emphasis is on eating things you recognize and intuitively feel are right. This design is described as being extremely sensitive and selective about food ingredients.\n\nFor example, when ordering a bowl of noodles, the brain may give very clear instructions: no chili, no numbing spice, no peanuts, no scallions or coriander, no offal; or it may have very specific requirements about ice and zero sugar in a drink.\n\nOthers may call this picky eating, but within this Human Design description, the emphasis is on the body's fine selection of what is suitable to take in.\n\nTone 1–3 · Left · Open\n\nThere is more of a tendency to encounter and try what appears in front of you, then discern what truly suits you.\n\nTone 4–6 · Right · Closed\n\nThere is more of a tendency toward things already recognized, familiar and accepted, usually within a more focused range of choices.\n\nEveryday guidance\n\nTrust your taste buds and sense of selectivity. Do not force yourself to consume ingredients you do not want in order to please others or meet a supposed standard of nutritional balance.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 585
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Open",
+              "start": 611,
+              "end": 724
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Closed",
+              "start": 753,
+              "end": 885
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 906,
+              "end": 1092
+            }
+          ]
+        }
+      },
+      "variable.determination:thirst": {
+        "summary": "Seeking a definite temperature",
+        "detail": "Core traits\n\nYour digestive system is very sensitive to the temperature of food as it enters the body.\n\nTone 1–3 · Left · Hot\n\nThere is a preference for foods and drinks at a higher temperature. The supplied material further describes this as food and drink warmer than body temperature; even in hot weather, hot drinks and food may be more suitable.\n\nTone 4–6 · Right · Cold\n\nThere is a preference for cooler intake conditions. Examples in the supplied material include cold dishes, salads or letting food cool before eating it.\n\nEveryday guidance\n\nObserve and follow the temperature conditions that correspond to your branch. The supplied material holds that unsuitable temperature conditions may make the body feel heavier and the brain more foggy.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 102
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Hot",
+              "start": 127,
+              "end": 350
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Cold",
+              "start": 377,
+              "end": 529
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 550,
+              "end": 751
+            }
+          ]
+        }
+      },
+      "variable.determination:touch": {
+        "summary": "Seeking the surrounding atmosphere while eating",
+        "detail": "Core traits\n\nWhat you eat may not be the most important factor; the state in which you eat may matter more. This Color emphasizes the nervous system's sensitivity to external stimulation during eating or intake.\n\nTone 1–3 · Left · Calm\n\nThere is a preference for a relaxed, quiet environment with little interference. The supplied material describes avoiding reading, looking at a phone or discussing overly serious or stressful work matters while eating.\n\nTone 4–6 · Right · Nervous\n\nThere is a preference for an environment with activity, movement and stimulation. Eating may take place while talking, moving, watching content or amid active surroundings.\n\nEveryday guidance\n\nObserve which atmosphere leaves your body with more energy after eating. If your branch is Calm and the environment suddenly becomes argumentative or highly stressful, you can pause eating and wait until the body relaxes again.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 211
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Calm",
+              "start": 237,
+              "end": 455
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Nervous",
+              "start": 485,
+              "end": 657
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 678,
+              "end": 905
+            }
+          ]
+        }
+      },
+      "variable.determination:sound": {
+        "summary": "Seeking the acoustic conditions of eating",
+        "detail": "Core traits\n\nDigestion and intake can be affected by the auditory environment. Background sounds and volume can change the body's state when absorbing food, information and experience.\n\nTone 1–3 · Left · High\n\nThere is a preference for an environment with background sounds, activity or more noticeable noise. Examples in the supplied material include lively restaurants, music, television or other continuous background sound.\n\nTone 4–6 · Right · Low\n\nThere is a preference for less auditory stimulation and a relatively quiet environment. Even small noises may feel significant, such as the sound of other people chewing.\n\nEveryday guidance\n\nWhen eating alone, the High branch can actively create suitable background sound. The Low branch can try to choose a quiet space or reduce unnecessary auditory stimulation.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 184
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · High",
+              "start": 210,
+              "end": 427
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Low",
+              "start": 453,
+              "end": 623
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 644,
+              "end": 816
+            }
+          ]
+        }
+      },
+      "variable.determination:light": {
+        "summary": "Seeking the rhythm of day, night and light",
+        "detail": "Core traits\n\nDigestion and brain activity can be affected by lighting conditions and the rhythm of day and night.\n\nTone 1–3 · Left · Direct\n\nThere is a preference for brighter, direct light. The supplied material describes this branch as operating more like a daytime pattern, with intake in well-lit conditions.\n\nTone 4–6 · Right · Indirect\n\nThere is a preference for weaker, indirect, dimmer or more evening-oriented light. Examples in the supplied material include after dusk, indoors with curtains drawn or nighttime surroundings.\n\nEveryday guidance\n\nFollow your lighting conditions rather than only a traditional schedule of breakfast, lunch and dinner. The emphasis is on the body's response to light rather than mechanically following a fixed routine.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 113
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Direct",
+              "start": 141,
+              "end": 312
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Indirect",
+              "start": 343,
+              "end": 534
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 555,
+              "end": 758
+            }
+          ]
+        }
+      },
+      "variable.environment:caves": {
+        "summary": "Favors bounded spaces with clear access and a strong sense of protection.",
+        "detail": "Core traits\n\nThe emphasis is on safety, a sense of a space being one's own, and control over entry and exit.\n\nTone 1–3 · Left · Selective\n\nThere is more of a tendency to actively manage the space, know who comes in and who leaves, and retain a sense of control over the environment.\n\nTone 4–6 · Right · Blending\n\nOnce safe boundaries are established, there is more of a tendency to relax and blend naturally into the protected space.\n\nPhysical environment\n\nA room with only one entrance and exit, a seat with its back against a wall, a comfortable enclosed private study or bedroom, or even the inside of a car may have the qualities of Caves.\n\nEveryday guidance\n\nWhen eating or working outside the home, try choosing a position with your back against a wall and a view of the door or main entrance. Without a sense of safety, the body's system may remain tense.\n\nIdeal business setting\n\nA private space that can be managed well is needed: for example, a separate office, a dedicated study for working from home, or a workstation with only one main entrance where people coming and going can be clearly noticed.\n\nIn a sanctuary less exposed to unexpected interruptions, it can be easier to work steadily and produce high-quality results.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 108
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Selective",
+              "start": 139,
+              "end": 282
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Blending",
+              "start": 313,
+              "end": 433
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 457,
+              "end": 643
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 664,
+              "end": 862
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 888,
+              "end": 1237
+            }
+          ]
+        }
+      },
+      "variable.environment:markets": {
+        "summary": "Favors environments where people, resources, options, and information are in exchange.",
+        "detail": "Core traits\n\nThe emphasis is on resource exchange, the flow of connections and dynamic vitality.\n\nTone 1–3 · Left · Internal\n\nThere is more active participation in exchange, observation and selection, entering the flow of people and resources in the environment.\n\nTone 4–6 · Right · External\n\nIt is more suitable to be within this flowing environment and let opportunities, information and choices enter awareness naturally.\n\nPhysical environment\n\nCity centers, shopping streets, busy cafés, lively office areas, markets and other places where people, goods, resources or information are continually exchanged.\n\nEveryday guidance\n\nEven without speaking directly to others, being in an environment full of activity, resources and exchange may make the body feel more energized. Spending too long in excessive isolation or places with little flow may make it easier to lose vitality.\n\nIdeal business setting\n\nBusy places full of transactions and information flow, such as coworking spaces, cafés with people coming and going, trading halls or central business districts.\n\nThe important conditions are having choices and continuing to encounter connections, resources and exchanges of information.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 96
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Internal",
+              "start": 126,
+              "end": 262
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · External",
+              "start": 293,
+              "end": 424
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 448,
+              "end": 610
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 631,
+              "end": 881
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 907,
+              "end": 1194
+            }
+          ]
+        }
+      },
+      "variable.environment:kitchens": {
+        "summary": "Favors environments where materials, people, or ideas are being transformed into something new.",
+        "detail": "Core traits\n\nThe emphasis is on transformation, blending and creation. It can also be understood as an alchemical theme of environment.\n\nWhat matters is things happening and changing. This does not refer only to a literal kitchen: it also represents places where raw materials, resources, people or ideas are combined, processed and transformed into new results.\n\nTone 1–3 · Left · Wet\n\nIt is easier to actively enter the process of transformation, participating in combining, making and moving change forward.\n\nTone 4–6 · Right · Dry\n\nThere is more of a tendency to be in an environment where transformation is happening, naturally receiving the stimulation brought by change, interaction and creation.\n\nPhysical environment\n\nActual kitchens, restaurant kitchens, factories, creative studios, laboratories, research and development spaces, manufacturing spaces or shared office premises may all show the qualities of Kitchens.\n\nEveryday guidance\n\nIt is suitable to be where things are being made. Rather than staying in a completely static space without change, there is more of a need to feel materials, information, people or ideas being processed and transformed.\n\nIdeal business setting\n\nSpaces where different elements—resources, people and ideas—can come together to create something new.\n\nExamples include research and development centers, creative studios, brainstorming rooms or manufacturing workshops. Commercial value comes from transforming raw materials into higher-value products, services or results.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 362
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Wet",
+              "start": 387,
+              "end": 510
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Dry",
+              "start": 536,
+              "end": 703
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 727,
+              "end": 927
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 948,
+              "end": 1167
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 1193,
+              "end": 1517
+            }
+          ]
+        }
+      },
+      "variable.environment:mountains": {
+        "summary": "Favors elevation, distance, and a wider vantage point.",
+        "detail": "Core traits\n\nThe emphasis is on vision, an overview and a vantage point.\n\nTone 1–3 · Left · Active\n\nThere is more of a tendency to actively use height and distance to observe the surroundings and gain an overview.\n\nTone 4–6 · Right · Passive\n\nThere is more of a tendency to relax in a higher position and let the overall environment and a wider view enter awareness naturally.\n\nPhysical environment\n\nApartments on higher floors, houses on a mountain, top floors with an open view, elevated seating, lookout points or other positions that create distance from dense crowds and offer a wider view.\n\nEveryday guidance\n\nWhen you need to clarify your thoughts or recover your state, you can move somewhere higher and more open. In an office or restaurant, you can also observe whether you prefer a position from which you can look over the whole space or have a wider view.\n\nIdeal business setting\n\nA position from which the whole can be observed, such as a higher-floor office, a strategic or senior-level role, or an independent space where you can step away from the complexity of daily execution and observe an industry or system at a larger scale.\n\nWhat matters is seeing long-term trends more clearly after stepping back and gaining a higher vantage point, rather than being continually submerged in local tasks.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 72
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Active",
+              "start": 100,
+              "end": 213
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Passive",
+              "start": 243,
+              "end": 376
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 400,
+              "end": 595
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 616,
+              "end": 868
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 894,
+              "end": 1313
+            }
+          ]
+        }
+      },
+      "variable.environment:valleys": {
+        "summary": "Favors channels of movement, communication, sound, and information flow.",
+        "detail": "Core traits\n\nThe emphasis is on the gathering of information, exchange and acoustic connection.\n\nTone 1–3 · Left · Narrow\n\nThere is more active entry into the flow, observing, participating in and connecting with exchanges that are happening.\n\nTone 4–6 · Right · Wide\n\nThere is more of a tendency to stay within the flow of information and receive the environment naturally through surrounding sounds, people and changes.\n\nPhysical environment\n\nGround-floor homes, lobbies at the base of buildings, seats beside a street, corridors, public areas, social spaces and information channels through which people continually pass and communicate.\n\nEveryday guidance\n\nThere is a need for places where you can hear what is happening around you. The emphasis is not on being high up, but on being on a level or passage through which information can flow past you.\n\nPlaces where people pass by, communicate and share news can more easily bring suitable information and opportunities.\n\nIdeal business setting\n\nChannels where information intersects, such as ground-floor storefronts, open office areas that people must pass through, reception desks, public relations or information centers.\n\nCommercial value often comes from hearing voices from different directions, keeping up with the latest information, and processing and passing it on.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 95
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Narrow",
+              "start": 123,
+              "end": 242
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Wide",
+              "start": 269,
+              "end": 421
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 445,
+              "end": 640
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 661,
+              "end": 973
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 999,
+              "end": 1329
+            }
+          ]
+        }
+      },
+      "variable.environment:shores": {
+        "summary": "Favors thresholds where two different spaces, domains, or conditions meet.",
+        "detail": "Core traits\n\nThe emphasis is on boundaries, transitional places and connecting different worlds.\n\nTone 1–3 · Left · Natural\n\nThere is more active movement, connection or observation of differences on either side of a boundary between two fields.\n\nTone 4–6 · Right · Artificial\n\nIt is more suitable to remain at the meeting point and receive information and experiences from two different fields at the same time.\n\nPhysical environment\n\nA real beach is the meeting of sea and land. Similar qualities may occur between city and suburb, indoors and outdoors, beside a window, between two departments, or between two spaces or systems.\n\nEveryday guidance\n\nThe body may like a transitional state in which it can leave at any time and enter at any time.\n\nPositions beside a window, at the edge of a city or at a spatial boundary allow awareness of two different areas at once and can make comfort easier to find.\n\nIdeal business setting\n\nThe meeting point between two states, systems or fields: for example, roles that bridge departments, hybrid working, work requiring frequent movement between areas, or international business connecting different markets.\n\nThe value lies in crossing boundaries and bringing information, resources or a model from one field into another.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core traits",
+              "start": 13,
+              "end": 96
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left · Natural",
+              "start": 125,
+              "end": 245
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right · Artificial",
+              "start": 278,
+              "end": 412
+            },
+            {
+              "id": "physicalEnvironment",
+              "title": "Physical environment",
+              "start": 436,
+              "end": 631
+            },
+            {
+              "id": "lifeAdvice",
+              "title": "Everyday guidance",
+              "start": 652,
+              "end": 906
+            },
+            {
+              "id": "businessScenario",
+              "title": "Ideal business setting",
+              "start": 932,
+              "end": 1267
+            }
+          ]
+        }
+      },
+      "variable.perspective:survival": {
+        "summary": "Attention to foundations and the bottom line",
+        "detail": "Core perspective\n\nYour eyes naturally pay attention to survival.\n\nWhen looking at people, events, surroundings or systems, you naturally ask:\n\n- Is this safe?\n- Can this support basic living needs?\n- Are the foundations solid?\n\nYou often quickly notice the most essential parts of something, those most closely concerned with continued existence and the bottom line of survival.\n\nTone 1–3 · Left\n\nThere is more focused searching for specific risks, basic conditions and key details.\n\nTone 4–6 · Right\n\nThere is broader reception of the environment's overall stability, safety and conditions for survival.\n\nOff-track State\n\nWhen you are distracted, attention shifts from practical survival foundations toward wanting. You no longer look only at the conditions truly needed to sustain life; you may increasingly fixate on things that are not actually necessary and are merely wanted.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 378
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 397,
+              "end": 482
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 502,
+              "end": 604
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 623,
+              "end": 881,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "survival",
+              "targetValue": "wanting"
+            }
+          ]
+        }
+      },
+      "variable.perspective:possibility": {
+        "summary": "Attention to the unknown and potential",
+        "detail": "Core perspective\n\nThe filter through which you see the world is:\n\n**What would happen if...?**\n\nYour attention does not stay only with what has already happened. It naturally turns toward what has not yet happened, hidden potential or another possibility that others have not yet seen.\n\nTone 1–3 · Left\n\nIt is easier to focus attention on one possible direction worth developing.\n\nTone 4–6 · Right\n\nIt is easier to see several potential directions at the same time and let possibilities emerge naturally.\n\nOff-track State\n\nWhen you are distracted, you may become overly concerned with how likely something is to succeed, becoming excessively calculating and realistic. Fear of failure can then stifle the potential and possibilities that were originally present.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 285
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 304,
+              "end": 379
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 399,
+              "end": 504
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 523,
+              "end": 762,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "possibility",
+              "targetValue": "probability"
+            }
+          ]
+        }
+      },
+      "variable.perspective:power": {
+        "summary": "Attention to winning, losing and hierarchy",
+        "detail": "Core perspective\n\nYour perspective naturally observes the dynamics of power in relationships, organizations and social structures.\n\nYou notice:\n\n- Who is in control?\n- Who is the winner?\n- Who is the loser?\n- Where are resources and energy flowing?\n- Who can truly influence the outcome?\n\nThis is not a bad thing. It is a gift for seeing the real structure of forces at work.\n\nTone 1–3 · Left\n\nThere is more focus on clear relationships of force and key points of control.\n\nTone 4–6 · Right\n\nIt is easier to sense how power, resources and influence are distributed across the whole network of relationships.\n\nOff-track State\n\nWhen you are distracted, you may try to pretend to be detached, placing yourself in the position of just an individual or observer and refusing to acknowledge the power relations that already exist.\n\nIgnoring the actual dynamics of force, resources and interests can make it easier to misjudge interactions or lose out in reality.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 375
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 394,
+              "end": 472
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 492,
+              "end": 607
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 626,
+              "end": 956,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "power",
+              "targetValue": "personal"
+            }
+          ]
+        }
+      },
+      "variable.perspective:wanting": {
+        "summary": "Attention to what is lacking and needed",
+        "detail": "Core perspective\n\nYou can keenly see:\n\n**What is still missing in this world?**\n\nYour perspective searches for gaps, unmet needs and missing pieces—whether pain points in a market, shortcomings in a system or needs within another person that have not yet been met.\n\nThis is therefore a natural perspective for discovering needs.\n\nTone 1–3 · Left\n\nThere is more focus on a specific gap or a problem that needs solving.\n\nTone 4–6 · Right\n\nIt is easier to sense unmet needs and gaps in the overall environment.\n\nOff-track State\n\nWhen you are distracted, attention contracts from needs and gaps in the outside world to your own basic survival issues. Excessive worry and fear about safety, livelihood or basic conditions can begin to arise.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 328
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 347,
+              "end": 417
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 437,
+              "end": 507
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 526,
+              "end": 736,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "wanting",
+              "targetValue": "survival"
+            }
+          ]
+        }
+      },
+      "variable.perspective:probability": {
+        "summary": "Attention to reality and feasibility",
+        "detail": "Core perspective\n\nYour eyes are like a very practical measuring instrument.\n\nYou naturally observe:\n\n**How likely is this to actually succeed?**\n\nYou pay attention to results, usefulness, efficiency, real conditions and how things can successfully be put into practice.\n\nTone 1–3 · Left\n\nThere is more of a tendency to concentrate on analyzing specific conditions, data and results.\n\nTone 4–6 · Right\n\nIt is easier to sense how likely different outcomes are by observing the overall situation.\n\nOff-track State\n\nWhen you are distracted, you may ignore real conditions and become caught in various perhaps-it-is-still-possible ideas that lack a practical foundation. You may even begin believing empty promises without any real support, wasting time on things that are almost impossible.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 269
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 288,
+              "end": 382
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 402,
+              "end": 493
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 512,
+              "end": 786,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "probability",
+              "targetValue": "possibility"
+            }
+          ]
+        }
+      },
+      "variable.perspective:personal": {
+        "summary": "Attention to personal awareness and the whole picture",
+        "detail": "Core perspective\n\nYour angle on the world is like watching a film in which you are both the audience and the main character.\n\nYou naturally pay attention to:\n\n**What does all this mean to me personally?**\n\nYou can observe how the world works in a relatively detached way, remaining aware of what is happening without having to become deeply caught in it immediately.\n\nTone 1–3 · Left\n\nThere is more focus on the relationship between yourself and a particular object, event or problem.\n\nTone 4–6 · Right\n\nIt is more like standing in a broader position and observing the relationship between yourself and the world through your overall experience.\n\nOff-track State\n\nWhen you are distracted, you may suddenly become caught in winning and losing, interests, resources and power relations.\n\nYou were able to observe the world from some distance, but now begin close combat over who wins, who loses and who controls the situation. This involvement can bring noticeable fatigue and frustration.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core perspective",
+              "start": 18,
+              "end": 366
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 385,
+              "end": 484
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 504,
+              "end": 645
+            },
+            {
+              "id": "distraction",
+              "title": "Off-track State",
+              "start": 664,
+              "end": 987,
+              "kind": "deviation",
+              "terminology": "distraction",
+              "sourceValue": "personal",
+              "targetValue": "power"
+            }
+          ]
+        }
+      },
+      "variable.motivation:fear": {
+        "summary": "Seeking foundations and safety",
+        "detail": "Core motivation\n\nFear here does not mean being timid. It refers to the drive that arises from survival and understanding the unknown.\n\nYour motivation is to understand things, establish solid foundations and obtain sufficient information, thereby reducing and removing uncertainty.\n\nTone 1–3 · Left\n\nThere is more of a tendency to actively research, analyze and build a clear structure of understanding.\n\nTone 4–6 · Right\n\nThere is more of a tendency to receive information and let understanding form gradually through observation and experience.\n\nCorrect state\n\nBefore making a decision, you need to research deeply and gather data until you feel:\n\n**I am ready.**\n**I understand.**\n\nThis grounded feeling, built on understanding, information and foundations, is the drive that lets you keep moving forward.\n\nOff-track State\n\nWhen you feel anxious, you may abandon your original process of research and understanding and instead feel:\n\n**I must act immediately.**\n\nYou then rush for results before the foundations have been established and while information is still insufficient.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 281
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 300,
+              "end": 403
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 423,
+              "end": 546
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 563,
+              "end": 808
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 827,
+              "end": 1081,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "fear",
+              "targetValue": "need"
+            }
+          ]
+        }
+      },
+      "variable.motivation:hope": {
+        "summary": "Seeking natural unfolding and faith",
+        "detail": "Core motivation\n\nYour drive comes from trust in the future and waiting.\n\nYou do not need to force everything to happen immediately. It is easier to hold a belief that things will unfold naturally and the right moment will arrive.\n\nTone 1–3 · Left\n\nThere is more conscious observation of the situation and judgment about when it is worth continuing to wait and when conditions are forming.\n\nTone 4–6 · Right\n\nIt is easier to remain receptive and observant, let events unfold by themselves and naturally see the right moment in the process.\n\nCorrect state\n\nYou are more like a pure observer.\n\nWhen facing a problem, your motivation can be:\n\n**Let us see what happens next.**\n\nBefore the correct moment actually arrives, there is no need to rush to intervene. You can maintain observation and trust.\n\nOff-track State\n\nWhen anxiety takes over, you may lose your original trust and instead feel that you must get involved, intervene, solve things or even rescue others.\n\nIf things are ultimately not fixed, you may also feel intense pressure from responsibility or guilt.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 229
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 248,
+              "end": 388
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 408,
+              "end": 538
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 555,
+              "end": 796
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 815,
+              "end": 1066,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "hope",
+              "targetValue": "guilt"
+            }
+          ]
+        }
+      },
+      "variable.motivation:desire": {
+        "summary": "Seeking achievement and leadership",
+        "detail": "Core motivation\n\nThis is a Motivation with a strong driving force.\n\nYour motivation may be the desire for something better, to possess something, to succeed or to lead things in a certain direction.\n\nThis pure wanting is itself the fuel that moves you forward.\n\nTone 1–3 · Left\n\nIt is easier to actively plan goals, steps and ways to move forward.\n\nTone 4–6 · Right\n\nThere is more of a tendency to receive opportunities appearing in the present, then naturally participate in change and move things forward.\n\nCorrect state\n\nAcknowledge your ambition and desire.\n\nWhen you sincerely desire a goal—whether material things, status, a career or spiritual growth—honestly acknowledging I want this can make the driving force clear.\n\nOff-track State\n\nWhen you lose your way, you may begin pretending that you do not want anything, do not care or are simply letting things unfold.\n\nOn the surface, you appear to have no purpose, while inwardly you still very much want a particular result.\n\nThis unacknowledged desire can make expression and action awkward and suppressed.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 260
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 279,
+              "end": 347
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 367,
+              "end": 507
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 524,
+              "end": 726
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 745,
+              "end": 1065,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "desire",
+              "targetValue": "innocence"
+            }
+          ]
+        }
+      },
+      "variable.motivation:need": {
+        "summary": "Seeking necessity and efficiency",
+        "detail": "Core motivation\n\nYour drive is to judge:\n\n**Is this absolutely necessary?**\n\nYou do not act merely for the sake of doing something. When a problem truly needs solving or a key resource is missing, the necessity of action becomes clear.\n\nTone 1–3 · Left\n\nThere is more focus on analyzing problems and identifying specific matters that need attention.\n\nTone 4–6 · Right\n\nIt is easier to sense what is truly necessary from the overall situation.\n\nCorrect state\n\nThere is a very practical approach.\n\nMotivation revolves around meeting the actual needs of the present. There is no need for extra decoration or irrelevant steps added to prove something.\n\nThe emphasis is on solving pain points and necessary problems that really exist.\n\nOff-track State\n\nWhen you lose your way, a problem that only needs addressing in the present may instead lead to excessive worry, over-research and frantic collection of more unrelated information.\n\nAs a result, you keep delaying what is truly necessary now.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 235
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 254,
+              "end": 349
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 369,
+              "end": 442
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 459,
+              "end": 729
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 748,
+              "end": 989,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "need",
+              "targetValue": "fear"
+            }
+          ]
+        }
+      },
+      "variable.motivation:guilt": {
+        "summary": "Seeking repair and providing solutions",
+        "detail": "Core motivation\n\nGuilt or responsibility here is not self-blame in the usual sense. It is closer to:\n\n**If I do not do something, I will feel this has been left unaddressed.**\n\nYour motivation is to correct mistakes, repair systems and solve real problems when you are genuinely able to help.\n\nTone 1–3 · Left\n\nIt is easier to actively analyze problems and develop a repair plan.\n\nTone 4–6 · Right\n\nIt is easier to notice what is wrong in the overall operation and naturally arrive at a direction for correction.\n\nCorrect state\n\nYou are like a natural repairer or firefighter.\n\nWhen you see a problem and know you are genuinely able to solve it, the sense of responsibility that wants to bring things back onto their normal track can become a very strong driving force.\n\nOff-track State\n\nWhen pressure becomes too great or you lose your way, you may begin ignoring problems you have already seen and imagine:\n\n**It will get better by itself.**\n\nOr you may expect others to handle problems that you can already see and have the ability to solve.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 292
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 311,
+              "end": 379
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 399,
+              "end": 512
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 529,
+              "end": 769
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 788,
+              "end": 1044,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "guilt",
+              "targetValue": "hope"
+            }
+          ]
+        }
+      },
+      "variable.motivation:innocence": {
+        "summary": "Seeking non-striving and pure experience",
+        "detail": "Core motivation\n\nThe most distinctive quality of this Motivation is that its highest state comes close to:\n\n**Having no motivation.**\n\nThere is no drive from fear, desire or responsibility, nor action taken to achieve a particular result. There is simply entry into the experience of the present.\n\nTone 1–3 · Left\n\nEven with less of a personal agenda, observation and expression can still be more focused and clear.\n\nTone 4–6 · Right\n\nIt is easier to stay open, receptive and naturally flowing, letting experience itself bring understanding.\n\nCorrect state\n\nMaintain innocence without an ulterior purpose.\n\nThere is no rush to control the outcome; you simply experience, observe and feel as a pure presence.\n\nWithout a hidden agenda or an attempt to manipulate things toward a required result, influence can arise more naturally.\n\nOff-track State\n\nWhen you lose your way, an increasingly strong sense of purpose may suddenly arise:\n\n- Wanting to control the outcome\n- Wanting to reach specific goals of money or power\n- Wanting things to follow your own intentions\n- Acting with more and more strategy, calculation and personal agenda\n\nThis makes the original natural, non-striving state disappear.",
+        "presentation": {
+          "kind": "variable",
+          "format": "variable-29-v1",
+          "sections": [
+            {
+              "id": "core",
+              "title": "Core motivation",
+              "start": 17,
+              "end": 296
+            },
+            {
+              "id": "tone1to3",
+              "title": "Tone 1–3 · Left",
+              "start": 315,
+              "end": 415
+            },
+            {
+              "id": "tone4to6",
+              "title": "Tone 4–6 · Right",
+              "start": 435,
+              "end": 541
+            },
+            {
+              "id": "correctState",
+              "title": "Correct state",
+              "start": 558,
+              "end": 829
+            },
+            {
+              "id": "transference",
+              "title": "Off-track State",
+              "start": 848,
+              "end": 1198,
+              "kind": "deviation",
+              "terminology": "transference",
+              "sourceValue": "innocence",
+              "targetValue": "desire"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

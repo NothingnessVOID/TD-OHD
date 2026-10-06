@@ -34,7 +34,7 @@ function render() {
     render();
     detail.querySelector('.knowledge-jump-card')?.focus({preventScroll:true});
   });
-  detail.querySelector('[data-knowledge-jump]')?.addEventListener('click', event => {
+  detail.querySelectorAll('[data-knowledge-jump]').forEach(button=>button.addEventListener('click', event => {
     const entry = getKnowledgeEntryById(event.currentTarget.dataset.knowledgeJump);
     if (!entry) return;
     knowledgeDetailHistory.push({query:currentQuery,context:currentContext,libraryId:currentLibraryId});
@@ -42,7 +42,7 @@ function render() {
     currentContext = null; currentLibraryId = entry.id;
     render();
     detail.querySelector('.gate-detail-back')?.focus({preventScroll:true});
-  });
+  }));
   detail.querySelectorAll('[data-knowledge-gate]').forEach(button => button.addEventListener('click', () => {
     // Navigation only: chart owns the existing Gate renderer and its return stack.
     window.dispatchEvent(new CustomEvent('ohd-open-knowledge-gate', { detail: {

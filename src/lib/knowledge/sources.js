@@ -10,6 +10,7 @@ export const SOURCES = Object.freeze({
   'td-ohd-variable': { type: 'td-ohd', lineage: ['td-ohd', 'unknown'], evidence: 'phase 2 moved existing text unchanged; original sentence source unresolved', reviewed: false },
   'sharp-identity': { type: 'sharpastrology', lineage: ['sharpastrology'], evidence: 'engine-core/TransitCore.cs', reviewed: false },
   unknown: { type: 'unknown', lineage: ['unknown'], evidence: null, reviewed: false },
+  'variable-final-content': { type:'td-ohd', lineage:['td-ohd'], reviewed:true, evidence:'User-approved TD-OHD-Variable-29-final-content-zh-CN.md; zh-Hant faithful conversion and English faithful translation. Original course material was not requested or independently verified.' },
   'teacher-material': { type: 'teacher-material', lineage: ['teacher-material'], evidence: null, reserved: true },
   'teacher-extension': { type: 'teacher-extension', lineage: ['teacher-extension'], evidence: null, reserved: true },
   'jovian-public': { type:'jovian-public',lineage:['jovian-public'],evidence:'Jovian Archive public Dictionary and learning pages',url:'https://jovianarchive.com/pages/human-design-dictionary',accessed:'2026-10-02' },

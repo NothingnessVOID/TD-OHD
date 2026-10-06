@@ -689,747 +689,1108 @@ export default {
     }
   },
   "variable.determination:appetite": {
-    "summary": "偏向簡單、分開的攝取方式，讓不同內容保持相對獨立。",
-    "detail": "食慾型的重點是簡單與分開，減少一次混合太多不同內容。\n\nTone 1–3 · Left · Consecutive（連續）\n\n一次處理一種內容，完成之後再進到下一種。\n\nTone 4–6 · Right · Alternating（交替）\n\n可以在幾種彼此獨立的內容之間交替，但仍保持它們不要全部混在一起。",
+    "summary": "追求極簡與單一",
+    "detail": "核心特質\n\n你的消化系統非常原始，一次只能處理一種信息或一種食物。飲食越簡單，你的大腦運轉越清晰。\n\nTone 1–3 · Left · Consecutive（連續）\n\n每次只吃一種食材，吃完再吃下一種，例如先吃完所有的肉，再吃所有的菜。\n\nTone 4–6 · Right · Alternating（交替）\n\n可以幾樣食材交替吃，但仍強調彼此分開，不把不同內容全部混合在一起咀嚼或攝取。\n\n生活建議\n\n避免複雜的調味和一鍋燉的混合菜式。在吸收信息時，也需要一次只專注一件事，不要多線操作。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 26
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 49
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Consecutive（連續）",
-          "start": 63,
-          "end": 83
+          "start": 86,
+          "end": 120
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Alternating（交替）",
-          "start": 121,
-          "end": 153
+          "start": 158,
+          "end": 196
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 204,
+          "end": 247
         }
       ]
     }
   },
   "variable.determination:taste": {
-    "summary": "透過自身的口味與辨識，篩選真正適合攝取的內容。",
-    "detail": "口味型本身帶著明顯的選擇性，身體會逐漸形成「這個適合／這個不適合」的辨識。\n\nTone 1–3 · Left · Open（開放）\n\n開放口味會先對眼前出現的內容產生直接吸引，再從接觸中辨識真正適合自己的部分。\n\nTone 4–6 · Right · Closed（封閉）\n\n封閉口味的攝取範圍比較集中，也更具選擇性，傾向待在已經辨識或接受的內容範圍內。",
+    "summary": "追求符合直覺的挑剔",
+    "detail": "核心特質\n\n重點在於“吃你認識、且直覺認為對的東西”。這種設計表現為對食物成分極其敏感和挑剔。\n\n比如點一碗麵條時，大腦可能發出非常清晰的指令：不要辣椒、不要麻、不要花生、不要蔥和香菜、不要內臟，或者對飲料的冰量和零糖有非常明確的要求。\n\n這在外界看來可能叫“挑食”，但在人類圖的這套描述里，它強調的是身體對適合攝取內容的精細篩選。\n\nTone 1–3 · Left · Open（開放）\n\n更偏向接觸和嘗試眼前出現的內容，再辨識哪些真正適合自己。\n\nTone 4–6 · Right · Closed（封閉）\n\n更偏向已經辨識、熟悉和接受的內容，選擇範圍通常更集中。\n\n生活建議\n\n相信你的味蕾和挑剔感。不想吃的成分不要為了迎合別人或所謂“營養均衡”而強迫自己攝取。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 37
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 166
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Open（開放）",
-          "start": 67,
-          "end": 105
+          "start": 196,
+          "end": 224
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Closed（封閉）",
-          "start": 138,
-          "end": 177
+          "start": 257,
+          "end": 284
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 292,
+          "end": 334
         }
       ]
     }
   },
   "variable.determination:thirst": {
-    "summary": "攝取狀態對溫度條件特別敏感。",
-    "detail": "溫度型的重點不只是吃什麼，而是內容進入身體時的溫度條件。\n\nTone 1–3 · Left · Hot（熱）\n\n偏向較溫熱的攝取條件。\n\nTone 4–6 · Right · Cold（冷）\n\n偏向較冷、較涼的攝取條件。",
+    "summary": "追求溫度的絕對值",
+    "detail": "核心特質\n\n你的消化系統對食物進入體內時的“溫度”非常敏感。\n\nTone 1–3 · Left · Hot（熱食）\n\n偏向溫度較高的食物和飲料。教材進一步描述為食物和飲料的溫度高於體溫，即使天氣炎熱，也可能更適合熱飲和熱食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向溫度較低的攝取條件。教材舉例包括冷盤、沙拉，或把食物放涼以後再吃。\n\n生活建議\n\n觀察並遵守自己對應的溫度條件。教材認為溫度條件不合適時，身體可能更容易感到沈重，大腦也容易昏沈。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 28
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 30
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Left · Hot（熱）",
-          "start": 56,
-          "end": 67
+          "title": "Tone 1–3 · Left · Hot（熱食）",
+          "start": 59,
+          "end": 112
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Cold（冷）",
-          "start": 97,
-          "end": 110
+          "title": "Tone 4–6 · Right · Cold（冷食）",
+          "start": 143,
+          "end": 178
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 186,
+          "end": 234
         }
       ]
     }
   },
   "variable.determination:touch": {
-    "summary": "攝取狀態會受到當下環境與外界刺激程度影響。",
-    "detail": "觸覺型關注的是「在什麼狀態下攝取」，不只是攝取的內容本身。\n\nTone 1–3 · Left · Calm（平靜）\n\n較適合安定、較少干擾的狀態。\n\nTone 4–6 · Right · Nervous（刺激／動態）\n\n較適合周圍有活動、交流、移動或刺激的狀態。",
+    "summary": "追求進食時的外在氛圍",
+    "detail": "核心特質\n\n吃什麼未必是最關鍵的，在什麼狀態下吃反而更重要。這個 Color 強調神經系統對進食或攝取時外部刺激狀態的敏感。\n\nTone 1–3 · Left · Calm（平靜）\n\n偏向放鬆、安靜、干擾少的環境。教材描述為盡量不要一邊進食一邊看書、看手機，或討論過度嚴肅、緊張的工作內容。\n\nTone 4–6 · Right · Nervous（興奮／忙碌／刺激）\n\n偏向有活動、有動靜和刺激的環境。可以是在交談、移動、觀看內容或周圍比較活躍的情況下進食。\n\n生活建議\n\n觀察自己在哪一種氛圍下吃完以後身體更有能量。如果是 Calm 分支，而環境突然進入爭吵或高度緊張狀態，可以暫停進食，等身體重新放鬆。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 29
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 62
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Calm（平靜）",
-          "start": 59,
-          "end": 73
+          "start": 92,
+          "end": 145
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Right · Nervous（刺激／動態）",
-          "start": 110,
-          "end": 131
+          "title": "Tone 4–6 · Right · Nervous（興奮／忙碌／刺激）",
+          "start": 185,
+          "end": 229
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 237,
+          "end": 303
         }
       ]
     }
   },
   "variable.determination:sound": {
-    "summary": "攝取過程對周遭的聲音環境與音量很敏感。",
-    "detail": "聲音型把聲學環境本身也視為攝取條件的一部分。\n\nTone 1–3 · Left · High（高音量）\n\n偏向較有聲音、活動感或明顯聲響的環境。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向較低聲音刺激、比較安靜的環境。",
+    "summary": "追求進食時的聲學頻率",
+    "detail": "核心特質\n\n消化與攝取狀態會受到聽覺環境影響。背景聲音和音量會改變身體吸收食物、信息和經驗時的狀態。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景聲音、活動感或較明顯聲響的環境。教材舉例包括較熱鬧的餐廳、音樂、電視或其他持續背景聲。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向聲音刺激較低、相對安靜的環境。對細小雜音也可能比較敏感，例如周圍人的咀嚼聲。\n\n生活建議\n\nHigh 分支獨處進食時，可以主動創造適合自己的背景聲音；Low 分支則盡量選擇安靜空間或減少不必要的聲音刺激。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 22
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 50
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · High（高音量）",
-          "start": 53,
-          "end": 72
+          "start": 81,
+          "end": 130
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Low（低音量）",
-          "start": 103,
-          "end": 120
+          "start": 161,
+          "end": 201
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 209,
+          "end": 265
         }
       ]
     }
   },
   "variable.determination:light": {
-    "summary": "攝取狀態和光照條件以及日夜節律有關。",
-    "detail": "光線型把照明本身視為攝取條件的一部分。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向較明亮、直接的光照。\n\nTone 4–6 · Right · Indirect（間接）\n\n偏向較柔和、間接、昏暗或偏晚間的光線條件。",
+    "summary": "追求日夜與光照的節律",
+    "detail": "核心特質\n\n消化與大腦活躍狀態會受到光線條件和晝夜節律影響。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向較明亮、直接的光照。教材把這一分支描述為更接近日間運作，需要在光線充足的條件下攝取。\n\nTone 4–6 · Right · Indirect（間接）\n\n偏向較弱、間接、昏暗或偏晚間的光線條件。教材舉例包括黃昏以後、拉上窗簾的室內或夜間環境。\n\n生活建議\n\n順應自己的光線條件，而不是只服從傳統“早中晚三餐”的時間表。重點是身體對光照條件的反應，而不是機械套用固定作息。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 19
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 30
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Direct（直接）",
-          "start": 51,
-          "end": 63
+          "start": 62,
+          "end": 106
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Indirect（間接）",
-          "start": 98,
-          "end": 119
+          "start": 141,
+          "end": 185
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 193,
+          "end": 249
         }
       ]
     }
   },
   "variable.environment:caves": {
-    "summary": "適合有清楚邊界與入口、能提供保護感的空間。",
-    "detail": "洞穴環境在意的是包覆、安全、隱私，以及入口如何被管理，不是真的要求住進洞穴。\n\nTone 1–3 · Left · Selective（選擇型）\n\n會更主動管理空間邊界，對誰或什麼能進入自己的場域比較有選擇。\n\nTone 4–6 · Right · Blending（融合型）\n\n同樣需要洞穴式的保護感，但在安全邊界內比較能容許人與能量自然混合流動。",
+    "summary": "適合邊界清楚、入口明確，並能掌握人員進出的空間。",
+    "detail": "核心特質\n\n強調安全感、專屬感與出入控制。\n\nTone 1–3 · Left · Selective（選擇型）\n\n更偏向主動掌握空間，知道誰進來、誰離開，並保持對環境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全邊界已經成立後放鬆下來，讓自己自然融入這個受保護的空間。\n\n物理環境\n\n只有一個出入口的房間、背靠牆壁的座位、舒適封閉的私人書房或臥室，甚至車內，都可能具有 Caves 的性質。\n\n生活建議\n\n在外就餐或工作時，盡量選擇背靠牆壁、能看到大門或主要出入口的位置。如果缺乏安全感，身體系統可能持續處於緊繃狀態。\n\n理想商業場景\n\n需要一個能夠較好掌控的私人空間，例如獨立辦公室、居家辦公的專屬書房，或只有一個主要出入口、能清楚感知人員進出的工位。\n\n在不容易受到外界無預警打擾的“庇護所”中，更容易穩定工作並產出高質量成果。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 38
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 21
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Selective（選擇型）",
-          "start": 74,
-          "end": 104
+          "start": 57,
+          "end": 88
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Blending（融合型）",
-          "start": 140,
-          "end": 175
+          "start": 124,
+          "end": 158
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 166,
+          "end": 219
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 227,
+          "end": 283
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 293,
+          "end": 390
         }
       ]
     }
   },
   "variable.environment:markets": {
-    "summary": "適合人、資源、選項與資訊持續交換的場域。",
-    "detail": "市場環境的重點是流通、選擇、交易與互動，不限於真正的市集或商業場所。\n\nTone 1–3 · Left · Internal（內部型）\n\n傾向把人、選項或交換帶進自己的空間裡。\n\nTone 4–6 · Right · External（外部型）\n\n傾向進入本來就已經充滿交流、選擇與流動的外部場域。",
+    "summary": "適合資源、人員、商品和信息不斷交換流動的環境。",
+    "detail": "核心特質\n\n強調資源交換、人脈流動與動態活力。\n\nTone 1–3 · Left · Internal（內部型）\n\n更主動參與交換、觀察選擇，並進入環境中的人與資源流動。\n\nTone 4–6 · Right · External（外部型）\n\n更適合處在這種流動環境里，讓機會、信息和選擇自然進入自己的感知。\n\n物理環境\n\n城市中心、商業街、人多的咖啡館、熱鬧的辦公區域、市集，以及其他持續發生人員、商品、資源或信息交換的地方。\n\n生活建議\n\n即使不與人直接交談，身處充滿活力、資源和交換的環境，也可能讓身體感覺更充沛。太長時間待在過度孤立、缺少流動的地方，可能更容易失去活力。\n\n理想商業場景\n\n繁華、充滿交易與信息流動的場所，例如共享辦公空間、人來人往的咖啡館、交易大廳或商業核心區。\n\n這裡的重要條件是擁有選擇權，並能夠持續接觸人脈、資源與信息交換。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 34
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 23
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Internal（內部型）",
-          "start": 69,
-          "end": 88
+          "start": 58,
+          "end": 85
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · External（外部型）",
-          "start": 124,
-          "end": 149
+          "start": 121,
+          "end": 153
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 161,
+          "end": 213
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 221,
+          "end": 288
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 298,
+          "end": 377
         }
       ]
     }
   },
   "variable.environment:kitchens": {
-    "summary": "適合材料、人物、資源或想法正在被加工與轉化的地方。",
-    "detail": "廚房環境的重點是轉化、混合、製作與突變，不限於真正做飯的廚房。\n\nTone 1–3 · Left · Wet（濕）\n\n偏向較流動、濕潤、混合感較強，轉化正在活躍發生的環境條件。\n\nTone 4–6 · Right · Dry（乾）\n\n偏向較乾燥、較分開、流動性較低的轉化環境。",
+    "summary": "適合不同材料、資源或想法被組合、加工和轉化的環境。",
+    "detail": "核心特質\n\n強調轉化、融合與創造，也可以理解為“煉金術”式的環境主題。\n\n重點在於“事物的發生與蛻變”。它不僅指真實廚房，也代表把原料、資源、人才或想法組合、加工並轉化成新成果的場所。\n\nTone 1–3 · Left · Wet（濕）\n\n更容易主動進入轉化過程，參與組合、製作和推動變化。\n\nTone 4–6 · Right · Dry（乾）\n\n更偏向身處轉化正在發生的環境里，自然接收變化、碰撞與創造帶來的刺激。\n\n物理環境\n\n真實廚房、餐館後廚、工廠、充滿創造力的工作室、實驗室、研發空間、製造空間或合署辦公場所，都可能呈現 Kitchens 的性質。\n\n生活建議\n\n適合處在“東西正在被做出來”的地方。與其待在完全靜態、沒有變化的空間，更需要感受到材料、信息、人或想法正在被加工和轉化。\n\n理想商業場景\n\n能夠把不同元素——資源、人才、想法——聚集到一起產生新事物的空間。\n\n例如研發中心、創意工作室、頭腦風暴會議室或製造車間。商業價值來自把原始材料轉化成更高價值的產品、服務或成果。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 31
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 92
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Wet（濕）",
-          "start": 59,
-          "end": 88
+          "start": 120,
+          "end": 145
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Dry（乾）",
-          "start": 117,
-          "end": 138
+          "start": 174,
+          "end": 208
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 216,
+          "end": 279
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 287,
+          "end": 347
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 357,
+          "end": 446
         }
       ]
     }
   },
   "variable.environment:mountains": {
-    "summary": "適合較高、能拉開距離並取得更大視野的位置。",
-    "detail": "高地環境的重點是高度、距離與視野，可以是實際的高處，也可以是任何讓人從密集流動中拉開距離的場域。\n\nTone 1–3 · Left · Active（主動）\n\n會比較主動運用高處與距離去觀察、掌握與參與環境。\n\nTone 4–6 · Right · Passive（被動）\n\n更適合在高處放鬆地接收整體視野，不需要主動塑造空間。",
+    "summary": "適合較高、能夠拉開距離並獲得更開闊視野的位置。",
+    "detail": "核心特質\n\n強調視野、全局觀與制高點。\n\nTone 1–3 · Left · Active（主動）\n\n更偏向主動利用高度和距離觀察周圍，掌握全局。\n\nTone 4–6 · Right · Passive（被動）\n\n更偏向放鬆地處在較高位置，讓整體環境和更大的視野自然進入感知。\n\n物理環境\n\n高樓層公寓、山上的房子、視野開闊的頂樓、高處座位、瞭望台，或其他能夠與密集人流拉開距離、獲得更寬視野的位置。\n\n生活建議\n\n當需要理清思緒或恢復狀態時，可以往更高、更開闊的位置移動。在辦公室或餐廳，也可以觀察自己是否更喜歡能俯瞰整體或視野較寬的位置。\n\n理想商業場景\n\n適合處於能夠觀察全局的位置，例如高樓層辦公室、戰略與高層視角崗位，或能夠暫時遠離日常繁雜執行、從更大尺度觀察行業和系統的獨立空間。\n\n重要的是“退一步、站得更高”以後更容易看清長期趨勢，而不是持續被局部事務淹沒。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 48
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 19
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Active（主動）",
-          "start": 80,
-          "end": 104
+          "start": 51,
+          "end": 73
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Passive（被動）",
-          "start": 138,
-          "end": 164
+          "start": 107,
+          "end": 138
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 146,
+          "end": 200
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 208,
+          "end": 271
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 281,
+          "end": 387
         }
       ]
     }
   },
   "variable.environment:valleys": {
-    "summary": "適合人、聲音、資訊與交流沿著通道持續流動的場域。",
-    "detail": "山谷環境的重點是連結與流動，像人流、資訊流與聲音能夠經過的通道。\n\nTone 1–3 · Left · Narrow（狹窄）\n\n偏向比較集中、距離較近、交流路徑更明確的流動通道。\n\nTone 4–6 · Right · Wide（寬廣）\n\n偏向比較開闊、可以同時容納更多不同流向與交流的場域。",
+    "summary": "適合處在流動通道中，接收人與信息不斷經過和交換的環境。",
+    "detail": "核心特質\n\n強調信息匯聚、交流與聲學連接。\n\nTone 1–3 · Left · Narrow（狹窄）\n\n更主動進入流動，觀察、參與和連接正在發生的交流。\n\nTone 4–6 · Right · Wide（寬廣）\n\n更偏向讓自己待在信息流中，通過周圍的聲音、人群和變化自然接收環境。\n\n物理環境\n\n一樓的房子、建築底層大廳、街道旁的座位、走廊、公共區域、交誼空間，以及人們持續經過和交流的信息通道。\n\n生活建議\n\n需要能夠“聽到周圍在發生什麼”的地方。重點不是站得高，而是處在信息能夠流經自己的平面或通道。\n\n人們路過、交流、分享消息的場所，更容易帶來合適的信息與機會。\n\n理想商業場景\n\n信息交匯的通道，例如一樓門面、人流必經的開放辦公區、前台、公關或信息中心。\n\n商業價值往往來自聽見不同方向的聲音、掌握最新信息，並對這些信息進行處理和傳遞。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 32
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 21
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Narrow（狹窄）",
-          "start": 64,
-          "end": 89
+          "start": 53,
+          "end": 77
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Wide（寬廣）",
-          "start": 120,
-          "end": 146
+          "start": 108,
+          "end": 141
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 149,
+          "end": 199
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 207,
+          "end": 285
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 295,
+          "end": 373
         }
       ]
     }
   },
   "variable.environment:shores": {
-    "summary": "適合兩種不同空間、領域或狀態相接的邊界地帶。",
-    "detail": "岸邊環境的主題是邊界與過渡：一個世界和另一個世界彼此接觸的位置。\n\nTone 1–3 · Left · Natural（自然）\n\n偏向自然形成的邊界，例如海岸、河岸或其他天然交界。\n\nTone 4–6 · Right · Artificial（人工）\n\n偏向人造或結構性的交界，例如室內／室外、不同區域或不同功能空間之間的邊界。",
+    "summary": "適合處在兩個不同空間、領域或狀態交界的過渡地帶。",
+    "detail": "核心特質\n\n強調邊界、過渡地帶與連接不同世界。\n\nTone 1–3 · Left · Natural（自然）\n\n更主動在兩個領域之間移動、連接或觀察邊界兩側的差異。\n\nTone 4–6 · Right · Artificial（人工）\n\n更適合停留在交界處，同時接收來自兩個不同領域的信息和體驗。\n\n物理環境\n\n真正的海灘是海與陸的交界；類似性質也可以出現在城市與郊區之間、室內與室外之間、靠窗位置、兩個部門之間、兩種空間或系統之間。\n\n生活建議\n\n身體可能喜歡一種“隨時可以離開，又隨時可以進入”的過渡狀態。\n\n靠窗、城市邊緣、空間邊界等位置，能夠同時感知兩個不同區域，更容易產生舒適感。\n\n理想商業場景\n\n適合處在兩個狀態、系統或領域的交界，例如跨部門橋梁崗位、混合辦公、需要頻繁跨區域移動的工作，或對接不同市場的國際業務。\n\n價值在於打破邊界，把一種信息、資源或模式帶入另一個領域。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 32
+          "id": "core",
+          "title": "核心特質",
+          "start": 6,
+          "end": 23
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Natural（自然）",
-          "start": 65,
-          "end": 90
+          "start": 56,
+          "end": 82
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Artificial（人工）",
-          "start": 127,
-          "end": 164
+          "start": 119,
+          "end": 148
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理環境",
+          "start": 156,
+          "end": 217
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建議",
+          "start": 225,
+          "end": 295
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商業場景",
+          "start": 305,
+          "end": 394
         }
       ]
     }
   },
   "variable.perspective:survival": {
-    "summary": "自然注意什麼能維持安全、穩定與基本生存。",
-    "detail": "生存視角會自然注意事物的基礎條件和安全性。\n\n面對一個環境、系統或事件，會先看它是否穩定、資源是否足夠、哪些地方可能帶來風險，以及什麼能夠維持持續運作。\n\nTone 1–3 · Left\n\n更聚焦地尋找具體風險、基礎條件和關鍵細節。\n\nTone 4–6 · Right\n\n更廣泛地接收環境整體的穩定感、安全感與生存條件。\n\n生存視角原本關注的是「真正維持生存需要什麼」、基礎是否穩定、安全條件是否足夠；偏離到慾望視角後，則容易越來越被「我還想得到什麼」吸引，把注意力放到那些並非真正必要、只是想要的東西上。",
+    "summary": "關注基礎與底線",
+    "detail": "核心視角\n\n你的眼睛天然會關注“生存”。\n\n看待人、事、環境或系統時，會自然問：\n\n- 這安全嗎？\n- 這能保障基本生活嗎？\n- 基礎打得牢不牢？\n\n你往往很快注意到事物中最核心、最關乎持續存在和生存底線的部分。\n\nTone 1–3 · Left\n\n更聚焦地尋找具體風險、基礎條件和關鍵細節。\n\nTone 4–6 · Right\n\n更廣泛地接收環境整體的穩定感、安全感與生存條件。\n\n偏離狀態\n\n當你分心時，注意力會從踏實的生存基礎轉向“渴望／想要”。你不再只看真正維持生活所需要的條件，而可能越來越盯著那些其實並非必要、只是“想要”的東西。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 76
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 106
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 95,
-          "end": 116
+          "start": 125,
+          "end": 146
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 136,
-          "end": 160
+          "start": 166,
+          "end": 190
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 162,
-          "end": 253,
+          "start": 198,
+          "end": 271,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "survival",
-          "targetValue": "wanting",
-          "terminology": "distraction"
+          "targetValue": "wanting"
         }
       ]
     }
   },
   "variable.perspective:possibility": {
-    "summary": "自然看見尚未發生的可能、潛力與不同發展方向。",
-    "detail": "可能性視角不會只停留在眼前已經發生的事實，而會自然注意尚未發生的可能、隱藏的潛力和新的發展方向。\n\n它經常在看：「還有什麼可能？」「事情還能變成什麼樣？」\n\nTone 1–3 · Left\n\n更容易集中注意某一個值得發展的可能方向。\n\nTone 4–6 · Right\n\n更容易同時看到多個潛在方向，讓可能性自然浮現出來。\n\n可能性視角原本關注尚未發生的可能、隱藏的潛力和新的發展方向；偏離到機率視角後，則容易不斷計算「這件事到底有多大機率能成」，因為過度強調現實勝算而看不見原本存在的可能性。",
+    "summary": "關注未知與潛力",
+    "detail": "核心視角\n\n你看世界的濾鏡是：\n\n**“如果……會怎樣？”**\n\n你的注意力不會只停留在已經發生的現狀，而會自然看向尚未發生的事情、隱藏的潛能，或別人暫時還沒有看到的另一種可能。\n\nTone 1–3 · Left\n\n更容易集中注意某一個值得發展的可能方向。\n\nTone 4–6 · Right\n\n更容易同時看到多個潛在方向，讓可能性自然浮現出來。\n\n偏離狀態\n\n當你分心時，可能開始過度關注“這件事到底有多大概率能成”，變得過度精打細算和現實，因為害怕失敗而扼殺原本存在的潛力與可能性。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 77
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 89
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 96,
-          "end": 116
+          "start": 108,
+          "end": 128
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 136,
-          "end": 161
+          "start": 148,
+          "end": 173
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 163,
-          "end": 247,
+          "start": 181,
+          "end": 243,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "possibility",
-          "targetValue": "probability",
-          "terminology": "distraction"
+          "targetValue": "probability"
         }
       ]
     }
   },
   "variable.perspective:power": {
-    "summary": "自然注意力量、資源、影響力，以及誰真正掌握局面。",
-    "detail": "權力視角會自然注意關係和系統中的力量結構。\n\n它會看到：誰有資源？誰能夠影響結果？力量正在流向哪裡？\n\nTone 1–3 · Left\n\n更聚焦於明確的力量關係和關鍵控制點。\n\nTone 4–6 · Right\n\n更容易從整體關係網絡中感受到權力、資源和影響力如何分布。\n\n權力視角原本能夠觀察真實存在的力量、資源與權力結構；偏離到個人視角後，則容易退回到個人立場和自身感受中，試圖置身於真實的力量關係之外，反而看不清實際正在發生的權力動態。",
+    "summary": "關注勝敗與階級",
+    "detail": "核心視角\n\n你的視角會自然觀察人際關係、組織和社會結構里的“權力動態”。\n\n你會注意：\n\n- 誰在掌控局面？\n- 誰是贏家？\n- 誰是輸家？\n- 資源和能量正在流向哪裡？\n- 誰真正能夠影響結果？\n\n這並不是壞事，而是一種看清現實力量結構的觀察天賦。\n\nTone 1–3 · Left\n\n更聚焦於明確的力量關係和關鍵控制點。\n\nTone 4–6 · Right\n\n更容易從整體關係網絡中感受到權力、資源和影響力如何分布。\n\n偏離狀態\n\n當你分心時，可能會試圖假裝超脫，把自己放到“只是個人／旁觀者”的位置，不願正視現實中已經存在的權力關係。\n\n當真實的力量、資源和利益動態被忽略時，反而更容易在現實互動中判斷失准或吃虧。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 50
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 125
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 69,
-          "end": 87
+          "start": 144,
+          "end": 162
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 107,
-          "end": 135
+          "start": 182,
+          "end": 210
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 137,
-          "end": 221,
+          "start": 218,
+          "end": 310,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "power",
-          "targetValue": "personal",
-          "terminology": "distraction"
+          "targetValue": "personal"
         }
       ]
     }
   },
   "variable.perspective:wanting": {
-    "summary": "自然看見什麼還缺少、什麼沒有被滿足，以及哪裡存在需求。",
-    "detail": "慾望視角很容易看到空缺和尚未滿足的需求。\n\n面對產品、關係、環境或系統，會自然注意：「這裡還少什麼？」\n\nTone 1–3 · Left\n\n更聚焦於一個具體缺口或需要解決的問題。\n\nTone 4–6 · Right\n\n更容易從整體環境中感受到尚未滿足的需求和空白。\n\n慾望視角原本能夠看到外界還缺什麼、哪裡存在需求與空白；偏離到生存視角後，則容易把注意力收縮到自己的基本生存問題上，為安全、生計或基礎條件產生過度擔憂。",
+    "summary": "關注缺乏與需求",
+    "detail": "核心視角\n\n你能敏銳地看到：\n\n**“這個世界還缺什麼？”**\n\n你的視角會尋找空白、尚未滿足的需求和缺口——無論是市場上的痛點、系統中的不足，還是別人內在尚未被滿足的需要。\n\n因此，這是一種天然的需求發現視角。\n\nTone 1–3 · Left\n\n更聚焦於一個具體缺口或需要解決的問題。\n\nTone 4–6 · Right\n\n更容易從整體環境中感受到尚未滿足的需求和空白。\n\n偏離狀態\n\n當你分心時，注意力會從外界的需求和空白收縮到自己的基本生存問題上，開始為安全、生計或基礎條件產生過度擔憂與恐懼。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 51
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 106
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 70,
-          "end": 89
+          "start": 125,
+          "end": 144
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 109,
-          "end": 132
+          "start": 164,
+          "end": 187
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 134,
-          "end": 209,
+          "start": 195,
+          "end": 251,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "wanting",
-          "targetValue": "survival",
-          "terminology": "distraction"
+          "targetValue": "survival"
         }
       ]
     }
   },
   "variable.perspective:probability": {
-    "summary": "自然判斷在現實條件下，什麼結果最可能發生。",
-    "detail": "機率視角關注現實條件和可行性。\n\n它會自然觀察：「照現在這樣發展，什麼結果最可能發生？」\n\nTone 1–3 · Left\n\n更傾向集中分析具體條件、數據與結果。\n\nTone 4–6 · Right\n\n更容易透過觀察整體態勢，感知不同結果出現的可能程度。\n\n機率視角原本關注現實條件、可行性以及最可能發生的結果；偏離到可能性視角後，則容易忽略實際條件，沉浸在各種「也許還有可能」的想像中，把注意力放到缺乏現實基礎的可能性上。",
+    "summary": "關注現實與可行性",
+    "detail": "核心視角\n\n你的眼睛像一個非常務實的測量儀。\n\n你會自然觀察：\n\n**“這件事真正做成的幾率有多大？”**\n\n你關注結果、實用性、效率、現實條件，以及事情如何真正成功落地。\n\nTone 1–3 · Left\n\n更傾向集中分析具體條件、數據與結果。\n\nTone 4–6 · Right\n\n更容易通過觀察整體態勢，感知不同結果出現的可能程度。\n\n偏離狀態\n\n當你分心時，可能忽略現實條件，陷入各種缺乏落地基礎的“也許還有可能”，甚至開始相信毫無現實支撐的畫大餅，把時間浪費在幾乎無法發生的事情上。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 44
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 86
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 63,
-          "end": 81
+          "start": 105,
+          "end": 123
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 101,
-          "end": 127
+          "start": 143,
+          "end": 169
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 129,
-          "end": 212,
+          "start": 177,
+          "end": 246,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "probability",
-          "targetValue": "possibility",
-          "terminology": "distraction"
+          "targetValue": "possibility"
         }
       ]
     }
   },
   "variable.perspective:personal": {
-    "summary": "從自身的位置與經驗出發，觀看世界與自己之間的關係。",
-    "detail": "個人視角會自然從自身的位置和經驗出發，觀察一件事與「我」有什麼關係、自己處在什麼位置，以及這個經歷對自己意味著什麼。\n\nTone 1–3 · Left\n\n更聚焦於自己與某個具體對象或問題之間的關係。\n\nTone 4–6 · Right\n\n更像站在較寬廣的位置，從整體經驗中觀察自己與世界之間的關係。\n\n個人視角原本可以從自身的位置與經驗出發，以較為抽離的方式觀察世界；偏離到權力視角後，則容易被捲入輸贏、資源與權力關係，開始過度關注誰占優勢、誰掌控局面以及利益如何分配。",
+    "summary": "關注自身的覺察與全景",
+    "detail": "核心視角\n\n你看世界的角度就像在看一場電影，而你既是觀眾也是主角。\n\n你會自然關注：\n\n**“這一切對我個人有什麼意義？”**\n\n你可以用一種相對超然、抽離的方式觀察世界的運作，覺察正在發生的事情，同時不必馬上深陷其中。\n\nTone 1–3 · Left\n\n更聚焦於自己與某個具體對象、事件或問題之間的關係。\n\nTone 4–6 · Right\n\n更像站在一個較寬廣的位置，從整體經驗中觀察自己與世界之間的關係。\n\n偏離狀態\n\n當你分心時，可能突然被捲入輸贏、利益、資源和權力關係。\n\n原本能夠保持一定距離觀察世界，卻開始為了誰贏誰輸、誰掌控局面而“近身肉搏”，這種捲入容易帶來明顯的疲憊和挫敗。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 58
+          "id": "core",
+          "title": "核心視角",
+          "start": 6,
+          "end": 110
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 77,
-          "end": 99
+          "start": 129,
+          "end": 154
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 119,
-          "end": 149
+          "start": 174,
+          "end": 206
         },
         {
           "id": "distraction",
           "title": "偏離狀態",
-          "start": 151,
-          "end": 235,
+          "start": 214,
+          "end": 298,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "personal",
-          "targetValue": "power",
-          "terminology": "distraction"
+          "targetValue": "power"
         }
       ]
     }
   },
   "variable.motivation:fear": {
-    "summary": "心智自然被未知、風險與尚未理解的部分吸引。",
-    "detail": "這裡的「恐懼」不是「膽小」。\n\n它更像一種面對未知時產生的認知動力：想把事情弄清楚，知道這是怎麼回事、風險在哪裡、自己還缺什麼資訊。\n\nTone 1–3 · Left\n\n更傾向主動研究、分析，並建立清楚的理解結構。\n\nTone 4–6 · Right\n\n更傾向接收資訊，讓理解在觀察和經驗中逐漸形成。\n\n恐懼動機原本會透過理解未知、收集資訊和建立基礎來減少不確定性；偏離到需求動機後，則容易變成「我必須馬上做點什麼」，在基礎還沒有建立之前就急於行動。",
+    "summary": "追求基礎與安全",
+    "detail": "核心動機\n\n這裡的“恐懼”並不是指膽小，而是指為了求生和瞭解未知而產生的驅動力。\n\n你的動機是把事情弄清楚、打好基礎、掌握充分的信息，從而減少和消除不確定性。\n\nTone 1–3 · Left\n\n更傾向主動研究、分析，並建立清楚的理解結構。\n\nTone 4–6 · Right\n\n更傾向接收信息，讓理解在觀察和經驗中逐漸形成。\n\n正確狀態\n\n在做決定前，你需要深入研究、收集數據，直到你覺得：\n\n**“我準備好了。”**  \n**“我懂了。”**\n\n這種建立在理解、信息和基礎之上的踏實感，是你繼續前進的動力。\n\n偏離狀態\n\n當你感到焦慮時，可能放棄原本的研究與理解過程，轉而覺得：\n\n**“我必須馬上行動。”**\n\n於是，在基礎還沒有建立、信息還不足的時候急於求成。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 66
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
+          "end": 79
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 85,
-          "end": 107
+          "start": 98,
+          "end": 120
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 127,
-          "end": 150
+          "start": 140,
+          "end": 163
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 171,
+          "end": 255
         },
         {
           "id": "transference",
           "title": "偏離狀態",
-          "start": 152,
-          "end": 225,
+          "start": 263,
+          "end": 334,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "fear",
-          "targetValue": "need",
-          "terminology": "transference"
+          "targetValue": "need"
         }
       ]
     }
   },
   "variable.motivation:hope": {
-    "summary": "心智自然傾向觀察、等待，讓事情在適合的時間逐漸顯現。",
-    "detail": "「希望」的動力不是馬上介入，而是對過程保持信任，願意觀察和等待答案在合適的時機顯現。\n\nTone 1–3 · Left\n\n會更有意識地觀察局面，判斷什麼時候值得繼續等待。\n\nTone 4–6 · Right\n\n更容易保持接收和觀察，讓事情自己展開。\n\n希望動機原本會觀察、等待，並相信事情會在合適的時機顯現；偏離到責任動機後，則容易覺得「是不是我必須去解決這件事」，開始過度介入、干預或承擔原本並不需要承擔的責任。",
+    "summary": "追求順其自然與信念",
+    "detail": "核心動機\n\n你的驅動力來自對未來的信任與等待。\n\n你不需要強求所有事情馬上發生，而是更容易抱持一種“事情會自然展開、時機會到來”的信念。\n\nTone 1–3 · Left\n\n會更有意識地觀察局面，並判斷什麼時候值得繼續等待、什麼時候條件正在形成。\n\nTone 4–6 · Right\n\n更容易保持接收和觀察，讓事情自己展開，在過程中自然看見時機。\n\n正確狀態\n\n你更像一個純粹的觀察者。\n\n當遇到問題時，你的動機可以是：\n\n**“看看接下來會發生什麼。”**\n\n在正確時機真正出現之前，不必急著介入，而是保持觀察和信任。\n\n偏離狀態\n\n當你陷入焦慮時，可能失去原本的信任，轉而覺得自己必須插手、干預、解決甚至拯救別人。\n\n如果事情最終沒有被“修好”，還可能產生強烈的責任壓力或負罪感。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 42
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 61,
-          "end": 85
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 105,
-          "end": 124
-        },
-        {
-          "id": "transference",
-          "title": "偏離狀態",
-          "start": 126,
-          "end": 207,
-          "kind": "deviation",
-          "sourceValue": "hope",
-          "targetValue": "guilt",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:desire": {
-    "summary": "心智自然被推動、影響與組織現實的可能性吸引。",
-    "detail": "「慾望」帶有明顯的推動力。\n\n它容易注意什麼可以變得更好、什麼可以推進，以及自己可以如何影響結果。\n\nTone 1–3 · Left\n\n更容易主動規劃目標、步驟和推進方式。\n\nTone 4–6 · Right\n\n更傾向接收當下的機會，再自然參與變化和推動。\n\n慾望動機原本真實存在著目標、企圖和推動現實的力量；偏離到純真動機後，卻可能表現成「我什麼都不想要」「無所謂」「順其自然」，表面看似沒有目的，實際上仍然被沒有承認的慾望推動。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 49
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 68,
-          "end": 86
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 106,
-          "end": 128
-        },
-        {
-          "id": "transference",
-          "title": "偏離狀態",
-          "start": 130,
-          "end": 216,
-          "kind": "deviation",
-          "sourceValue": "desire",
-          "targetValue": "innocence",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:need": {
-    "summary": "心智自然辨識什麼是真正必要、不可缺少與值得優先處理的部分。",
-    "detail": "「需求」關注的是必要性。\n\n它會從大量可能性中辨認：哪件事真的需要處理？什麼只是多餘？什麼才是當前最關鍵的？\n\nTone 1–3 · Left\n\n更聚焦於分析問題，並找到具體需要處理的事項。\n\nTone 4–6 · Right\n\n更容易從整體局面中感受到什麼才是真正必要的。\n\n需求動機原本只是辨認什麼是真正必要、當前需要處理的問題；偏離到恐懼動機後，則容易開始過度擔憂、過度研究和不斷收集更多資訊，反而遲遲無法處理眼前真正必要的事情。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 54
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 73,
-          "end": 95
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 115,
-          "end": 137
-        },
-        {
-          "id": "transference",
-          "title": "偏離狀態",
-          "start": 139,
-          "end": 218,
-          "kind": "deviation",
-          "sourceValue": "need",
-          "targetValue": "fear",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:guilt": {
-    "summary": "心智自然看見哪裡出了問題，以及有哪些部分可以修正或改善。",
-    "detail": "這裡的「內疚／責任」更接近一種「需要修正」的動力。\n\n它會自然注意：什麼出了問題？哪裡需要調整？怎樣讓事情重新回到正常運作的狀態？\n\nTone 1–3 · Left\n\n更容易主動分析問題並制定修復方案。\n\nTone 4–6 · Right\n\n更容易從整體運作中察覺哪裡不對，再自然產生修正方向。\n\n責任動機原本能夠看到哪裡出了問題，並產生修復、糾正和讓事情回到正軌的動力；偏離到希望動機後，則可能開始期待事情自己變好，迴避本來已經看見、也能夠處理的問題。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 65
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 84,
-          "end": 101
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 121,
-          "end": 147
-        },
-        {
-          "id": "transference",
-          "title": "偏離狀態",
-          "start": 149,
-          "end": 227,
-          "kind": "deviation",
-          "sourceValue": "guilt",
-          "targetValue": "hope",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:innocence": {
-    "summary": "心智能在較少個人企圖與預設的情況下觀看、理解與表達。",
-    "detail": "「純真」最特別的地方，是它不需要一個明確的個人目標來推動心智。\n\n它更偏向直接體驗正在發生的事情，不急著透過恐懼、責任或慾望去控制結果。\n\nTone 1–3 · Left\n\n即使具有較少的個人議程，觀察方式仍然可以更集中和明確。\n\nTone 4–6 · Right\n\n更容易保持開放、接收和自然流動，讓體驗本身帶來理解。\n\n純真動機原本較少個人議程，不急於控制結果，而是直接經歷和觀察正在發生的事情；偏離到慾望動機後，則容易產生越來越強的目的性，開始想掌控結果、獲得特定目標，或讓事情按照自己的意圖發展。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
           "end": 68
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
           "start": 87,
-          "end": 114
+          "end": 123
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 134,
-          "end": 160
+          "start": 143,
+          "end": 173
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 181,
+          "end": 260
         },
         {
           "id": "transference",
           "title": "偏離狀態",
-          "start": 162,
-          "end": 252,
+          "start": 268,
+          "end": 342,
           "kind": "deviation",
-          "sourceValue": "innocence",
-          "targetValue": "desire",
-          "terminology": "transference"
+          "terminology": "transference",
+          "sourceValue": "hope",
+          "targetValue": "guilt"
         }
       ]
     }
+  },
+  "variable.motivation:desire": {
+    "summary": "追求成就與領導",
+    "detail": "核心動機\n\n這是非常具有推動力的 Motivation。\n\n你的動機可以是渴望更好、渴望擁有、渴望成功，或渴望帶領事情向某個方向前進。\n\n這種純粹的“想要”，本身就是推動你前進的燃料。\n\nTone 1–3 · Left\n\n更容易主動規劃目標、步驟和推進方式。\n\nTone 4–6 · Right\n\n更傾向接收當下出現的機會，再自然參與變化和推動。\n\n正確狀態\n\n承認自己的野心與慾望。\n\n當你真心渴望某個目標——無論是物質、地位、事業還是精神成長——真實承認“我想要”，反而會讓推動力變得清楚。\n\n偏離狀態\n\n當你迷失時，可能開始偽裝成“我什麼都不想要”“無所謂”“順其自然”。\n\n表面看起來沒有目的，內心實際上仍然非常想要某個結果。\n\n這種沒有被承認的慾望，會讓表達與行動變得彆扭、壓抑。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
+          "end": 92
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 111,
+          "end": 129
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 149,
+          "end": 173
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 181,
+          "end": 247
+        },
+        {
+          "id": "transference",
+          "title": "偏離狀態",
+          "start": 255,
+          "end": 345,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "desire",
+          "targetValue": "innocence"
+        }
+      ]
+    }
+  },
+  "variable.motivation:need": {
+    "summary": "追求必要性與效率",
+    "detail": "核心動機\n\n你的驅動力是判斷：\n\n**“這件事是不是絕對必需的？”**\n\n你不會為了做而做。真正需要解決某個問題，或者缺少某個關鍵資源時，行動的必要性才會變得清楚。\n\nTone 1–3 · Left\n\n更聚焦於分析問題，並找到具體需要處理的事項。\n\nTone 4–6 · Right\n\n更容易從整體局面中感受到什麼才是真正必要的。\n\n正確狀態\n\n非常務實。\n\n動機圍繞“滿足當下真正的實際需要”展開，不需要多餘裝飾，也不需要為了證明什麼增加無關步驟。\n\n重點是解決真實存在的痛點和必要問題。\n\n偏離狀態\n\n當你迷失時，本來只需要解決眼前的問題，卻可能開始過度擔憂、過度研究、瘋狂收集更多並不相關的信息。\n\n結果反而遲遲無法處理當前真正必要的事情。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
+          "end": 82
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 101,
+          "end": 123
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 143,
+          "end": 165
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 173,
+          "end": 245
+        },
+        {
+          "id": "transference",
+          "title": "偏離狀態",
+          "start": 253,
+          "end": 323,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "need",
+          "targetValue": "fear"
+        }
+      ]
+    }
+  },
+  "variable.motivation:guilt": {
+    "summary": "追求修復與提供解決方案",
+    "detail": "核心動機\n\n這裡的“內疚／責任”不是一般意義上的自我責備，而更接近一種：\n\n**“如果不去做，我會覺得這件事沒有被處理。”**\n\n你的動機是糾正錯誤、修復系統，並在自己確實能夠提供幫助時解決現實問題。\n\nTone 1–3 · Left\n\n更容易主動分析問題並制定修復方案。\n\nTone 4–6 · Right\n\n更容易從整體運行中察覺哪裡不對，再自然產生修正方向。\n\n正確狀態\n\n你像一個天然的“修理工”或“救火隊員”。\n\n當你看到問題，而且知道自己確實有能力解決時，那種想讓事情重新回到正常軌道的責任心，會成為非常強的動力。\n\n偏離狀態\n\n當壓力過大或進入迷失狀態時，可能開始對已經看見的問題視而不見，幻想：\n\n**“它自己會好起來的。”**\n\n或者期待其他人來處理本來已經能夠看見、也有能力解決的問題。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
+          "end": 100
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 119,
+          "end": 136
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 156,
+          "end": 182
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 190,
+          "end": 263
+        },
+        {
+          "id": "transference",
+          "title": "偏離狀態",
+          "start": 271,
+          "end": 353,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "guilt",
+          "targetValue": "hope"
+        }
+      ]
+    }
+  },
+  "variable.motivation:innocence": {
+    "summary": "追求無為與純粹的體驗",
+    "detail": "核心動機\n\n這個 Motivation 最特別的地方，是它的最高狀態接近：\n\n**“沒有動機。”**\n\n不是被恐懼、慾望或責任驅使，也不是為了達到特定結果而行動，而是單純進入當下的體驗。\n\nTone 1–3 · Left\n\n即使較少個人議程，觀察和表達方式仍然可以更集中、明確。\n\nTone 4–6 · Right\n\n更容易保持開放、接收和自然流動，讓體驗本身帶來理解。\n\n正確狀態\n\n保持不帶目的性的純真。\n\n不急著控制結果，只是作為一個純粹的存在去經歷、觀察和感受。\n\n當沒有隱藏議程、不試圖操縱事情必須走向某個結果時，反而更容易自然地產生影響。\n\n偏離狀態\n\n當你迷失時，可能突然出現越來越強的目的性：\n\n- 想控制結果\n- 想獲得特定金錢或權力目標\n- 想讓事情按照自己的意圖發展\n- 行動越來越充滿策略、心機和個人議程\n\n這會讓原本自然、無為的狀態消失。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心動機",
+          "start": 6,
+          "end": 93
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 112,
+          "end": 139
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 159,
+          "end": 185
+        },
+        {
+          "id": "correctState",
+          "title": "正確狀態",
+          "start": 193,
+          "end": 275
+        },
+        {
+          "id": "transference",
+          "title": "偏離狀態",
+          "start": 283,
+          "end": 382,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "innocence",
+          "targetValue": "desire"
+        }
+      ]
+    }
+  },
+  "variable.introduction": {
+    "summary": "Variable（四箭頭）總說明",
+    "detail": "核心說明\n\nVariable（四箭頭）建立在更細的 Human Design 子結構之上：\n\n**Gate（閘門） → Line（爻線） → Color（基色） → Tone（基調） → Base（基質）**\n\n箭頭方向由 Tone 決定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四個 Variable 的數據來源關係：\n\n- Design Sun / Earth（設計太陽／地球）→ Determination（攝取）\n- Design Nodes（設計南北交點）→ Environment（環境）\n- Personality Nodes（人格南北交點）→ Perspective（視角）\n- Personality Sun / Earth（人格太陽／地球）→ Motivation（動機）\n\n左右方向描述的是同一個 Color 在不同 Tone 區間下的運作傾向。Color 決定“是哪一種主題”，Tone 進一步決定這個主題更偏 Left 還是 Right 的方式運行。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心說明",
+          "start": 6,
+          "end": 470
+        }
+      ]
+    },
+    "name": "Variable（四箭頭）總說明"
+  },
+  "variable.determination:introduction": {
+    "summary": "Determination（攝取）公共說明",
+    "detail": "核心說明\n\nDetermination 描述身體如何消化食物，也涉及大腦如何吸收信息、學習和處理生活經驗。\n\nTone 1–3 · Left\n\n左向偏主動、規律與結構化。大腦較主動地處理輸入，更適合清楚的節奏、框架與專注的攝取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然與隨順。不需要過度強迫自己按照固定結構吸收，身體和大腦更適合在自然狀態下接收食物、信息和經驗。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心說明",
+          "start": 6,
+          "end": 53
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 72,
+          "end": 116
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 136,
+          "end": 191
+        }
+      ]
+    },
+    "name": "Determination（攝取）公共說明"
+  },
+  "variable.environment:introduction": {
+    "summary": "Environment（環境）公共說明",
+    "detail": "核心說明\n\nEnvironment 描述什麼樣的物理環境更容易讓身體感到舒適和被滋養，也關係到一個人在什麼場域中更容易以較小阻力遇到適合的人、事與機會。\n\nTone 1–3 · Left\n\n左向偏主動觀察與參與。人在環境中更容易保持活力、主動使用空間，並對周圍發生的事情保持較明確的參與感。\n\nTone 4–6 · Right\n\n右向偏放鬆、融入與接收。環境合適時，身體不需要持續掌控，可以卸下防備，讓場域中的人、信息和體驗自然進入感知。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心說明",
+          "start": 6,
+          "end": 76
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 95,
+          "end": 145
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 165,
+          "end": 219
+        }
+      ]
+    },
+    "name": "Environment（環境）公共說明"
+  },
+  "variable.perspective:introduction": {
+    "summary": "Perspective（視角）公共說明",
+    "detail": "核心說明\n\nPerspective 是看待世界的濾鏡。\n\n當身體處在合適的 Environment 中，Perspective 描述眼睛和注意力天然會看向哪裡、被什麼吸引，以及一個人最自然的觀察角度。\n\n當視角處於正確狀態時，會比較清晰地看見世界；當視角偏離時，會出現 **Distraction（分心）**，注意力轉向對應的另一種 Perspective。\n\nTone 1–3 · Left · Active（聚焦型視角）\n\n觀察方式偏聚焦，需要相對明確的目標。像使用望遠鏡一樣，一次盯住一個點深入觀察，並過濾背景雜音。\n\nTone 4–6 · Right · Passive（廣角型視角）\n\n觀察方式偏周邊／廣角。不需要死死盯住一個目標，更像廣角鏡頭，在放鬆狀態下通過余光和整體氛圍捕捉信息。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心說明",
+          "start": 6,
+          "end": 179
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active（聚焦型視角）",
+          "start": 214,
+          "end": 261
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · Passive（廣角型視角）",
+          "start": 298,
+          "end": 348
+        }
+      ]
+    },
+    "name": "Perspective（視角）公共說明"
+  },
+  "variable.motivation:introduction": {
+    "summary": "Motivation（動機）公共說明",
+    "detail": "核心說明\n\nMotivation 描述頭腦處理信息時的底層驅動力：為什麼會去思考、表達或推動某件事，心智真正從什麼動機出發。\n\n當 Motivation 處在正確狀態時，心智較清明；當焦慮或迷失時，動機可能發生 **Transference（動機轉移）**，偏向對應的另一種 Motivation。\n\nTone 1–3 · Left · Active（戰略性心智）\n\n心智偏聚焦、邏輯和戰略性。更容易通過分析、計劃、目標和結構處理問題，在思考中主動過濾無關信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏發散、全景與接收性。不適合過度死磕細節或制定僵硬計劃，更容易在放鬆狀態下接收信息，讓不同線索自然連接成整體理解。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心說明",
+          "start": 6,
+          "end": 149
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active（戰略性心智）",
+          "start": 184,
+          "end": 231
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · Passive（接受性心智）",
+          "start": 268,
+          "end": 327
+        }
+      ]
+    },
+    "name": "Motivation（動機）公共說明"
   }
 };

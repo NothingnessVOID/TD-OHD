@@ -22,6 +22,12 @@ async function open(url,width) {
 const selectors=['.gate-detail-card','.gate-detail-body','.tl-detail-header','.tl-detail-heading','.tl-detail-statuses','.tl-detail-activations','.tl-detail-timing','.tl-timing-duration','.tl-timing-boundary','.tl-timing-source','.gate-lens-switch','.gate-detail-lines','.center-detail-head','.planet-detail-title'];
 async function snapshot(page) {
  await page.locator('#gate-detail:not(.hidden) .gate-detail-card').waitFor();
+ // Lens clicks may scroll the two dialogs differently; compare the same viewport state.
+ await page.locator('#gate-detail').evaluate(root=>{
+  root.scrollTop=0;
+  root.querySelector('.gate-detail-card').scrollTop=0;
+  root.querySelector('.gate-detail-body').scrollTop=0;
+ });
  await page.waitForTimeout(300);
  return page.evaluate(selectors=>{
   const root=document.querySelector('#gate-detail'),body=root.querySelector('.gate-detail-body');

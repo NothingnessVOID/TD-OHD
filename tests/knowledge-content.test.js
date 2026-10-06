@@ -12,8 +12,8 @@ import * as vocabulary from '../src/lib/vocabulary.js';
 const query=(objectType,objectId)=>({objectType,objectId});
 const withLanguages=fn=>{const previous=getLocale();try{for(const locale of ['en','zh-CN','zh-Hant']){setLocale(locale,{persist:false});fn(locale);}}finally{setLocale(previous,{persist:false});}};
 
-test('formal locale content has identical 55 keys, bounded summaries and separate bodies',()=>{
- const keys=Object.keys(knowledgeContent.en).sort();assert.equal(keys.length,55);
+test('formal locale content has identical 60 keys, bounded summaries and separate bodies',()=>{
+ const keys=Object.keys(knowledgeContent.en).sort();assert.equal(keys.length,60);
  for(const [locale,records]of Object.entries(knowledgeContent)) {
   assert.deepEqual(Object.keys(records).sort(),keys);
   for(const [key,record]of Object.entries(records)) {
@@ -26,7 +26,7 @@ test('formal locale content has identical 55 keys, bounded summaries and separat
  }
  withLanguages(locale=>{for(const e of listKnowledgeEntries()) {
   if(e.objectType==='cognition'){assert.equal(e.summary,null);assert.equal(e.detail,null);continue;}
-  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,2);
+  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,e.objectType==='variable'?3:2);
   const text=[e.name,e.summary.content,e.detail.content].join(' ');
   if(locale==='en')assert.doesNotMatch(text,/[\u3400-\u9fff]/);
   else if(locale==='zh-Hant') assert.doesNotMatch(text,/骶骨|实践家|正向反馈/);

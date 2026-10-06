@@ -26,7 +26,7 @@ try {
  for(const width of [1224,903,664,390])for(const locale of ['en','zh-CN','zh-Hant']) {
   console.log(`Checking layout ${width}/${locale}`);
   const old=await open(baseline,width,locale),current=await open(base,width,locale),page=current.page;
-  const before=await snapshot(old.page);const initial=await snapshot(page); {assert.equal(initial.cards.length,before.cards.length); for(let i=0;i<initial.cards.length;i++)assert.equal(initial.cards[i].width,before.cards[i].width);}
+  const before=await snapshot(old.page);const initial=await snapshot(page); assert.deepEqual(initial.cards,before.cards,'Foundation text and dimensions remain exact');
   for(const [index,kind]of ['type','authority','profile','definition'].entries()) {
    const trigger=page.locator(`[data-knowledge-object="${kind}"]`);
    assert.equal(await trigger.getAttribute('role'),'button');assert.equal(await trigger.getAttribute('tabindex'),'0');
@@ -61,10 +61,10 @@ try {
   if(width<=640)await page.locator('[data-reference-back]').click();
   await page.locator('[data-reference-filter="basic"]').click();assert.equal(await page.locator('.reference-result[data-reference-kind="knowledge"]').count(),31);
   assert.equal(await page.locator('.reference-result[data-reference-kind="concept"]').count(),3);
-  await page.locator('[data-reference-filter="variable"]').click();assert.equal(await page.locator('.reference-result').count(),24);
+  await page.locator('[data-reference-filter="variable"]').click();assert.equal(await page.locator('.reference-result').count(),29);
   await page.locator('#reference-search').fill('hope');assert.equal(await page.locator('.reference-result').getAttribute('data-reference-id'),'hd.variable.motivation.hope');
   assert.deepEqual(current.errors,[]);assert.deepEqual(old.errors,[]);
-  results.push({width,locale,foundationExact:true,variableExact:true,keyboard:true,modal:true,library:true,pureLocale:true});
+  results.push({width,locale,foundationExact:true,variableSummaryFromApprovedSource:true,keyboard:true,modal:true,library:true,pureLocale:true});
   await old.context.close();await current.context.close();
  }
  // One body regardless of shell, including runtime locale refresh and library links.
@@ -93,5 +93,5 @@ try {
  await page.locator('#reference-detail [data-knowledge-id="hd.authority.sacral"]').waitFor();await page.goBack({waitUntil:'domcontentloaded'});await page.locator('#reference-detail [data-knowledge-id="hd.cross.introduction"]').waitFor();await page.goForward({waitUntil:'domcontentloaded'});await page.locator('#reference-detail [data-knowledge-id="hd.authority.sacral"]').waitFor();
  assert.deepEqual(current.errors,[]);await current.context.close();
  if(process.env.KNOWLEDGE_ACCESS_VALIDATION_OUTPUT)writeFileSync(process.env.KNOWLEDGE_ACCESS_VALIDATION_OUTPUT,JSON.stringify({layoutComparisons:results,sameBodyLanguages:15,routes:routes.length},null,2)+'\n');
- console.log(`PASS ${results.length} exact Foundation/Variable layout comparisons, keyboard/shell/library checks; 15 same-body/locale combinations and six deep-link reload routes`);
+ console.log(`PASS ${results.length} exact Foundation comparisons and Variable access checks, keyboard/shell/library checks; 15 same-body/locale combinations and six deep-link reload routes`);
 }finally{await browser.close();}

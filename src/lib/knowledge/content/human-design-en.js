@@ -689,747 +689,1108 @@ export default {
     }
   },
   "variable.determination:appetite": {
-    "summary": "Favors simple, separated intake, keeping what is taken in relatively distinct.",
-    "detail": "Appetite is the first Determination. Its theme is simplicity and separation in the conditions of intake.\n\nTone 1–3 · Left · Consecutive\n\nTake in one thing at a time and finish one before moving to the next.\n\nTone 4–6 · Right · Alternating\n\nMove between separate items or inputs while still keeping them distinct rather than mixing everything together.",
+    "summary": "Seeking simplicity and one thing at a time",
+    "detail": "Core traits\n\nYour digestive system is very primitive and can handle only one kind of information or food at a time. The simpler your diet, the more clearly your brain operates.\n\nTone 1–3 · Left · Consecutive\n\nEat one ingredient at a time, finishing it before moving on to the next. For example, finish all the meat first, then eat all the vegetables.\n\nTone 4–6 · Right · Alternating\n\nSeveral ingredients can be eaten in alternation, but the emphasis remains on keeping them separate rather than mixing everything together when chewing or taking it in.\n\nEveryday guidance\n\nAvoid complex seasonings and mixed dishes cooked together in one pot. When taking in information, you also need to focus on one thing at a time rather than multitask.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 104
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 176
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Consecutive",
-          "start": 137,
-          "end": 206
+          "start": 209,
+          "end": 350
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Alternating",
-          "start": 240,
-          "end": 351
+          "start": 384,
+          "end": 551
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 572,
+          "end": 738
         }
       ]
     }
   },
   "variable.determination:taste": {
-    "summary": "Uses taste and discernment to select what is appropriate to take in.",
-    "detail": "Taste is selective by nature. The body develops clear preferences about what belongs in the intake field.\n\nTone 1–3 · Left · Open\n\nOpen Taste is guided by a clear, direct attraction and can sample what presents itself before recognizing what is correct.\n\nTone 4–6 · Right · Closed\n\nClosed Taste is more contained and selective, tending to stay within a narrower set of recognized or acceptable inputs.",
+    "summary": "Seeking selectivity that follows intuition",
+    "detail": "Core traits\n\nThe emphasis is on eating things you recognize and intuitively feel are right. This design is described as being extremely sensitive and selective about food ingredients.\n\nFor example, when ordering a bowl of noodles, the brain may give very clear instructions: no chili, no numbing spice, no peanuts, no scallions or coriander, no offal; or it may have very specific requirements about ice and zero sugar in a drink.\n\nOthers may call this picky eating, but within this Human Design description, the emphasis is on the body's fine selection of what is suitable to take in.\n\nTone 1–3 · Left · Open\n\nThere is more of a tendency to encounter and try what appears in front of you, then discern what truly suits you.\n\nTone 4–6 · Right · Closed\n\nThere is more of a tendency toward things already recognized, familiar and accepted, usually within a more focused range of choices.\n\nEveryday guidance\n\nTrust your taste buds and sense of selectivity. Do not force yourself to consume ingredients you do not want in order to please others or meet a supposed standard of nutritional balance.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 105
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 585
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Open",
-          "start": 131,
-          "end": 253
+          "start": 611,
+          "end": 724
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Closed",
-          "start": 282,
-          "end": 401
+          "start": 753,
+          "end": 885
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 906,
+          "end": 1092
         }
       ]
     }
   },
   "variable.determination:thirst": {
-    "summary": "Intake is sensitive to temperature.",
-    "detail": "Thirst is less about a specific food and more about the temperature condition under which intake is received.\n\nTone 1–3 · Left · Hot\n\nThe left-side fixing is Hot: warmer conditions.\n\nTone 4–6 · Right · Cold\n\nThe right-side fixing is Cold: cooler conditions.",
+    "summary": "Seeking a definite temperature",
+    "detail": "Core traits\n\nYour digestive system is very sensitive to the temperature of food as it enters the body.\n\nTone 1–3 · Left · Hot\n\nThere is a preference for foods and drinks at a higher temperature. The supplied material further describes this as food and drink warmer than body temperature; even in hot weather, hot drinks and food may be more suitable.\n\nTone 4–6 · Right · Cold\n\nThere is a preference for cooler intake conditions. Examples in the supplied material include cold dishes, salads or letting food cool before eating it.\n\nEveryday guidance\n\nObserve and follow the temperature conditions that correspond to your branch. The supplied material holds that unsuitable temperature conditions may make the body feel heavier and the brain more foggy.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 109
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 102
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Hot",
-          "start": 134,
-          "end": 181
+          "start": 127,
+          "end": 350
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Cold",
-          "start": 208,
-          "end": 257
+          "start": 377,
+          "end": 529
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 550,
+          "end": 751
         }
       ]
     }
   },
   "variable.determination:touch": {
-    "summary": "Intake is sensitive to the level and quality of surrounding stimulation.",
-    "detail": "Touch concerns the state of the environment while taking things in, not only the content itself.\n\nTone 1–3 · Left · Calm\n\nCalm favors a quieter, more settled, less distracting condition.\n\nTone 4–6 · Right · Nervous\n\nNervous favors more movement, company, activity, or stimulation around the intake process.",
+    "summary": "Seeking the surrounding atmosphere while eating",
+    "detail": "Core traits\n\nWhat you eat may not be the most important factor; the state in which you eat may matter more. This Color emphasizes the nervous system's sensitivity to external stimulation during eating or intake.\n\nTone 1–3 · Left · Calm\n\nThere is a preference for a relaxed, quiet environment with little interference. The supplied material describes avoiding reading, looking at a phone or discussing overly serious or stressful work matters while eating.\n\nTone 4–6 · Right · Nervous\n\nThere is a preference for an environment with activity, movement and stimulation. Eating may take place while talking, moving, watching content or amid active surroundings.\n\nEveryday guidance\n\nObserve which atmosphere leaves your body with more energy after eating. If your branch is Calm and the environment suddenly becomes argumentative or highly stressful, you can pause eating and wait until the body relaxes again.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 96
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 211
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Calm",
-          "start": 122,
-          "end": 186
+          "start": 237,
+          "end": 455
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Nervous",
-          "start": 216,
-          "end": 306
+          "start": 485,
+          "end": 657
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 678,
+          "end": 905
         }
       ]
     }
   },
   "variable.determination:sound": {
-    "summary": "Intake is sensitive to the acoustic environment.",
-    "detail": "Sound makes the level and quality of surrounding sound part of the intake condition.\n\nTone 1–3 · Left · High\n\nHigh favors a more present, active, or audible sound field.\n\nTone 4–6 · Right · Low\n\nLow favors reduced acoustic stimulation and greater quiet.",
+    "summary": "Seeking the acoustic conditions of eating",
+    "detail": "Core traits\n\nDigestion and intake can be affected by the auditory environment. Background sounds and volume can change the body's state when absorbing food, information and experience.\n\nTone 1–3 · Left · High\n\nThere is a preference for an environment with background sounds, activity or more noticeable noise. Examples in the supplied material include lively restaurants, music, television or other continuous background sound.\n\nTone 4–6 · Right · Low\n\nThere is a preference for less auditory stimulation and a relatively quiet environment. Even small noises may feel significant, such as the sound of other people chewing.\n\nEveryday guidance\n\nWhen eating alone, the High branch can actively create suitable background sound. The Low branch can try to choose a quiet space or reduce unnecessary auditory stimulation.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 84
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 184
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · High",
-          "start": 110,
-          "end": 169
+          "start": 210,
+          "end": 427
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Low",
-          "start": 195,
-          "end": 253
+          "start": 453,
+          "end": 623
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 644,
+          "end": 816
         }
       ]
     }
   },
   "variable.determination:light": {
-    "summary": "Intake is sensitive to light conditions and the day/night rhythm.",
-    "detail": "Light makes illumination itself part of the intake condition.\n\nTone 1–3 · Left · Direct\n\nDirect favors brighter, more direct light conditions.\n\nTone 4–6 · Right · Indirect\n\nIndirect favors softer, indirect, dimmer, or later-day light conditions.",
+    "summary": "Seeking the rhythm of day, night and light",
+    "detail": "Core traits\n\nDigestion and brain activity can be affected by lighting conditions and the rhythm of day and night.\n\nTone 1–3 · Left · Direct\n\nThere is a preference for brighter, direct light. The supplied material describes this branch as operating more like a daytime pattern, with intake in well-lit conditions.\n\nTone 4–6 · Right · Indirect\n\nThere is a preference for weaker, indirect, dimmer or more evening-oriented light. Examples in the supplied material include after dusk, indoors with curtains drawn or nighttime surroundings.\n\nEveryday guidance\n\nFollow your lighting conditions rather than only a traditional schedule of breakfast, lunch and dinner. The emphasis is on the body's response to light rather than mechanically following a fixed routine.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 61
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 113
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Direct",
-          "start": 89,
-          "end": 142
+          "start": 141,
+          "end": 312
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Indirect",
-          "start": 173,
-          "end": 245
+          "start": 343,
+          "end": 534
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 555,
+          "end": 758
         }
       ]
     }
   },
   "variable.environment:caves": {
     "summary": "Favors bounded spaces with clear access and a strong sense of protection.",
-    "detail": "Caves is about enclosure, safety, privacy, and the way access to the space is managed.\n\nTone 1–3 · Left · Selective\n\nSelective Caves actively manages the boundary and is more particular about who or what enters the space.\n\nTone 4–6 · Right · Blending\n\nBlending Caves retains the protected quality of Caves but allows more mixing and flow within that enclosure.",
+    "detail": "Core traits\n\nThe emphasis is on safety, a sense of a space being one's own, and control over entry and exit.\n\nTone 1–3 · Left · Selective\n\nThere is more of a tendency to actively manage the space, know who comes in and who leaves, and retain a sense of control over the environment.\n\nTone 4–6 · Right · Blending\n\nOnce safe boundaries are established, there is more of a tendency to relax and blend naturally into the protected space.\n\nPhysical environment\n\nA room with only one entrance and exit, a seat with its back against a wall, a comfortable enclosed private study or bedroom, or even the inside of a car may have the qualities of Caves.\n\nEveryday guidance\n\nWhen eating or working outside the home, try choosing a position with your back against a wall and a view of the door or main entrance. Without a sense of safety, the body's system may remain tense.\n\nIdeal business setting\n\nA private space that can be managed well is needed: for example, a separate office, a dedicated study for working from home, or a workstation with only one main entrance where people coming and going can be clearly noticed.\n\nIn a sanctuary less exposed to unexpected interruptions, it can be easier to work steadily and produce high-quality results.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 86
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 108
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Selective",
-          "start": 117,
-          "end": 221
+          "start": 139,
+          "end": 282
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Blending",
-          "start": 252,
-          "end": 360
+          "start": 313,
+          "end": 433
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 457,
+          "end": 643
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 664,
+          "end": 862
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 888,
+          "end": 1237
         }
       ]
     }
   },
   "variable.environment:markets": {
     "summary": "Favors environments where people, resources, options, and information are in exchange.",
-    "detail": "Markets is the environment of circulation, choice, trade, and interaction.\n\nTone 1–3 · Left · Internal\n\nInternal Markets brings people, options, or exchange into one's own space.\n\nTone 4–6 · Right · External\n\nExternal Markets moves into places where exchange and choice are already happening.",
+    "detail": "Core traits\n\nThe emphasis is on resource exchange, the flow of connections and dynamic vitality.\n\nTone 1–3 · Left · Internal\n\nThere is more active participation in exchange, observation and selection, entering the flow of people and resources in the environment.\n\nTone 4–6 · Right · External\n\nIt is more suitable to be within this flowing environment and let opportunities, information and choices enter awareness naturally.\n\nPhysical environment\n\nCity centers, shopping streets, busy cafés, lively office areas, markets and other places where people, goods, resources or information are continually exchanged.\n\nEveryday guidance\n\nEven without speaking directly to others, being in an environment full of activity, resources and exchange may make the body feel more energized. Spending too long in excessive isolation or places with little flow may make it easier to lose vitality.\n\nIdeal business setting\n\nBusy places full of transactions and information flow, such as coworking spaces, cafés with people coming and going, trading halls or central business districts.\n\nThe important conditions are having choices and continuing to encounter connections, resources and exchanges of information.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 74
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 96
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Internal",
-          "start": 104,
-          "end": 178
+          "start": 126,
+          "end": 262
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · External",
-          "start": 209,
-          "end": 292
+          "start": 293,
+          "end": 424
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 448,
+          "end": 610
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 631,
+          "end": 881
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 907,
+          "end": 1194
         }
       ]
     }
   },
   "variable.environment:kitchens": {
     "summary": "Favors environments where materials, people, or ideas are being transformed into something new.",
-    "detail": "Kitchens is about transformation, making, combining, and mutation; it is not limited to literal kitchens.\n\nTone 1–3 · Left · Wet\n\nWet Kitchens emphasizes a more fluid, humid, mixed, or actively transforming condition.\n\nTone 4–6 · Right · Dry\n\nDry Kitchens emphasizes a drier, more separated, or less fluid form of the same transformative environment.",
+    "detail": "Core traits\n\nThe emphasis is on transformation, blending and creation. It can also be understood as an alchemical theme of environment.\n\nWhat matters is things happening and changing. This does not refer only to a literal kitchen: it also represents places where raw materials, resources, people or ideas are combined, processed and transformed into new results.\n\nTone 1–3 · Left · Wet\n\nIt is easier to actively enter the process of transformation, participating in combining, making and moving change forward.\n\nTone 4–6 · Right · Dry\n\nThere is more of a tendency to be in an environment where transformation is happening, naturally receiving the stimulation brought by change, interaction and creation.\n\nPhysical environment\n\nActual kitchens, restaurant kitchens, factories, creative studios, laboratories, research and development spaces, manufacturing spaces or shared office premises may all show the qualities of Kitchens.\n\nEveryday guidance\n\nIt is suitable to be where things are being made. Rather than staying in a completely static space without change, there is more of a need to feel materials, information, people or ideas being processed and transformed.\n\nIdeal business setting\n\nSpaces where different elements—resources, people and ideas—can come together to create something new.\n\nExamples include research and development centers, creative studios, brainstorming rooms or manufacturing workshops. Commercial value comes from transforming raw materials into higher-value products, services or results.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 105
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 362
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Wet",
-          "start": 130,
-          "end": 217
+          "start": 387,
+          "end": 510
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Dry",
-          "start": 243,
-          "end": 350
+          "start": 536,
+          "end": 703
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 727,
+          "end": 927
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 948,
+          "end": 1167
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 1193,
+          "end": 1517
         }
       ]
     }
   },
   "variable.environment:mountains": {
     "summary": "Favors elevation, distance, and a wider vantage point.",
-    "detail": "Mountains is about height and perspective — literal elevation or any setting that creates distance from the dense flow below.\n\nTone 1–3 · Left · Active\n\nActive Mountains engages the elevated environment more actively and deliberately.\n\nTone 4–6 · Right · Passive\n\nPassive Mountains receives from the elevated vantage with less need to shape or direct the space.",
+    "detail": "Core traits\n\nThe emphasis is on vision, an overview and a vantage point.\n\nTone 1–3 · Left · Active\n\nThere is more of a tendency to actively use height and distance to observe the surroundings and gain an overview.\n\nTone 4–6 · Right · Passive\n\nThere is more of a tendency to relax in a higher position and let the overall environment and a wider view enter awareness naturally.\n\nPhysical environment\n\nApartments on higher floors, houses on a mountain, top floors with an open view, elevated seating, lookout points or other positions that create distance from dense crowds and offer a wider view.\n\nEveryday guidance\n\nWhen you need to clarify your thoughts or recover your state, you can move somewhere higher and more open. In an office or restaurant, you can also observe whether you prefer a position from which you can look over the whole space or have a wider view.\n\nIdeal business setting\n\nA position from which the whole can be observed, such as a higher-floor office, a strategic or senior-level role, or an independent space where you can step away from the complexity of daily execution and observe an industry or system at a larger scale.\n\nWhat matters is seeing long-term trends more clearly after stepping back and gaining a higher vantage point, rather than being continually submerged in local tasks.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 125
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 72
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Active",
-          "start": 153,
-          "end": 234
+          "start": 100,
+          "end": 213
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Passive",
-          "start": 264,
-          "end": 361
+          "start": 243,
+          "end": 376
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 400,
+          "end": 595
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 616,
+          "end": 868
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 894,
+          "end": 1313
         }
       ]
     }
   },
   "variable.environment:valleys": {
     "summary": "Favors channels of movement, communication, sound, and information flow.",
-    "detail": "Valleys is about connection at the level where information and people move through a channel.\n\nTone 1–3 · Left · Narrow\n\nNarrow Valleys favors a more concentrated channel of exchange, with fewer and stronger currents.\n\nTone 4–6 · Right · Wide\n\nWide Valleys favors a broader field of exchange with more space and more currents moving through it.",
+    "detail": "Core traits\n\nThe emphasis is on the gathering of information, exchange and acoustic connection.\n\nTone 1–3 · Left · Narrow\n\nThere is more active entry into the flow, observing, participating in and connecting with exchanges that are happening.\n\nTone 4–6 · Right · Wide\n\nThere is more of a tendency to stay within the flow of information and receive the environment naturally through surrounding sounds, people and changes.\n\nPhysical environment\n\nGround-floor homes, lobbies at the base of buildings, seats beside a street, corridors, public areas, social spaces and information channels through which people continually pass and communicate.\n\nEveryday guidance\n\nThere is a need for places where you can hear what is happening around you. The emphasis is not on being high up, but on being on a level or passage through which information can flow past you.\n\nPlaces where people pass by, communicate and share news can more easily bring suitable information and opportunities.\n\nIdeal business setting\n\nChannels where information intersects, such as ground-floor storefronts, open office areas that people must pass through, reception desks, public relations or information centers.\n\nCommercial value often comes from hearing voices from different directions, keeping up with the latest information, and processing and passing it on.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 93
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 95
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Narrow",
-          "start": 121,
-          "end": 217
+          "start": 123,
+          "end": 242
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Wide",
-          "start": 244,
-          "end": 344
+          "start": 269,
+          "end": 421
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 445,
+          "end": 640
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 661,
+          "end": 973
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 999,
+          "end": 1329
         }
       ]
     }
   },
   "variable.environment:shores": {
     "summary": "Favors thresholds where two different spaces, domains, or conditions meet.",
-    "detail": "Shores is about boundaries and transitional zones — the place where one world touches another.\n\nTone 1–3 · Left · Natural\n\nNatural Shores emphasizes boundaries found in the natural environment, such as coastlines, riverbanks, or other organic edges.\n\nTone 4–6 · Right · Artificial\n\nArtificial Shores emphasizes created boundaries between different kinds of space, such as inside/outside, one district/another, or other built thresholds.",
+    "detail": "Core traits\n\nThe emphasis is on boundaries, transitional places and connecting different worlds.\n\nTone 1–3 · Left · Natural\n\nThere is more active movement, connection or observation of differences on either side of a boundary between two fields.\n\nTone 4–6 · Right · Artificial\n\nIt is more suitable to remain at the meeting point and receive information and experiences from two different fields at the same time.\n\nPhysical environment\n\nA real beach is the meeting of sea and land. Similar qualities may occur between city and suburb, indoors and outdoors, beside a window, between two departments, or between two spaces or systems.\n\nEveryday guidance\n\nThe body may like a transitional state in which it can leave at any time and enter at any time.\n\nPositions beside a window, at the edge of a city or at a spatial boundary allow awareness of two different areas at once and can make comfort easier to find.\n\nIdeal business setting\n\nThe meeting point between two states, systems or fields: for example, roles that bridge departments, hybrid working, work requiring frequent movement between areas, or international business connecting different markets.\n\nThe value lies in crossing boundaries and bringing information, resources or a model from one field into another.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 94
+          "id": "core",
+          "title": "Core traits",
+          "start": 13,
+          "end": 96
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Natural",
-          "start": 123,
-          "end": 249
+          "start": 125,
+          "end": 245
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Artificial",
-          "start": 282,
-          "end": 436
+          "start": 278,
+          "end": 412
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "Physical environment",
+          "start": 436,
+          "end": 631
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "Everyday guidance",
+          "start": 652,
+          "end": 906
+        },
+        {
+          "id": "businessScenario",
+          "title": "Ideal business setting",
+          "start": 932,
+          "end": 1267
         }
       ]
     }
   },
   "variable.perspective:survival": {
-    "summary": "Naturally sees what supports continuity, safety, and basic survival.",
-    "detail": "The Survival perspective naturally notices basic conditions and security.\n\nWhen looking at an environment, system or event, it tends to notice whether things are stable, whether resources are sufficient, where risks may appear, and what is required for continuity.\n\nTone 1–3 · Left\n\nMore focused on identifying specific risks, basic conditions and critical details.\n\nTone 4–6 · Right\n\nMore receptive to the overall sense of stability, security and survival conditions in the environment.\n\nThe Survival perspective is originally concerned with what is genuinely required to sustain life, whether the foundation is stable and whether basic conditions are secure. When it shifts toward the Wanting perspective, attention can become increasingly absorbed in what else is desired, including things that are wanted rather than truly necessary.",
+    "summary": "Attention to foundations and the bottom line",
+    "detail": "Core perspective\n\nYour eyes naturally pay attention to survival.\n\nWhen looking at people, events, surroundings or systems, you naturally ask:\n\n- Is this safe?\n- Can this support basic living needs?\n- Are the foundations solid?\n\nYou often quickly notice the most essential parts of something, those most closely concerned with continued existence and the bottom line of survival.\n\nTone 1–3 · Left\n\nThere is more focused searching for specific risks, basic conditions and key details.\n\nTone 4–6 · Right\n\nThere is broader reception of the environment's overall stability, safety and conditions for survival.\n\nOff-track State\n\nWhen you are distracted, attention shifts from practical survival foundations toward wanting. You no longer look only at the conditions truly needed to sustain life; you may increasingly fixate on things that are not actually necessary and are merely wanted.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 264
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 378
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 283,
-          "end": 365
+          "start": 397,
+          "end": 482
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 385,
-          "end": 487
+          "start": 502,
+          "end": 604
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 489,
-          "end": 837,
+          "start": 623,
+          "end": 881,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "survival",
-          "targetValue": "wanting",
-          "terminology": "distraction"
+          "targetValue": "wanting"
         }
       ]
     }
   },
   "variable.perspective:possibility": {
-    "summary": "Naturally sees potential, openings, and what could happen.",
-    "detail": "The Possibility perspective does not stop at what has already happened. It naturally notices unrealized possibilities, hidden potential and new directions for development.\n\nIt tends to ask: “What else could happen?” and “What else could this become?”\n\nTone 1–3 · Left\n\nMore likely to focus on one particular possibility worth developing.\n\nTone 4–6 · Right\n\nMore likely to notice several potential directions at once and allow possibilities to emerge naturally.\n\nThe Possibility perspective is originally oriented toward unrealized possibilities, hidden potential and new directions. When it shifts toward the Probability perspective, attention can become preoccupied with calculating how likely something is to succeed, allowing realistic odds to obscure possibilities that were previously visible.",
+    "summary": "Attention to the unknown and potential",
+    "detail": "Core perspective\n\nThe filter through which you see the world is:\n\n**What would happen if...?**\n\nYour attention does not stay only with what has already happened. It naturally turns toward what has not yet happened, hidden potential or another possibility that others have not yet seen.\n\nTone 1–3 · Left\n\nIt is easier to focus attention on one possible direction worth developing.\n\nTone 4–6 · Right\n\nIt is easier to see several potential directions at the same time and let possibilities emerge naturally.\n\nOff-track State\n\nWhen you are distracted, you may become overly concerned with how likely something is to succeed, becoming excessively calculating and realistic. Fear of failure can then stifle the potential and possibilities that were originally present.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 250
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 285
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 269,
-          "end": 337
+          "start": 304,
+          "end": 379
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 357,
-          "end": 460
+          "start": 399,
+          "end": 504
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 462,
-          "end": 798,
+          "start": 523,
+          "end": 762,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "possibility",
-          "targetValue": "probability",
-          "terminology": "distraction"
+          "targetValue": "probability"
         }
       ]
     }
   },
   "variable.perspective:power": {
-    "summary": "Naturally sees influence, leverage, resources, and who or what holds power in a situation.",
-    "detail": "The Power perspective naturally notices structures of power within relationships and systems.\n\nIt sees who has resources, who can influence an outcome, and where power is moving.\n\nTone 1–3 · Left\n\nMore focused on explicit power relationships and critical points of control.\n\nTone 4–6 · Right\n\nMore receptive to how power, resources and influence are distributed across the wider network.\n\nThe Power perspective is originally able to observe real structures of power, resources and influence. When it shifts toward the Personal perspective, attention can retreat into personal position and subjective experience, making the actual power dynamics harder to see clearly.",
+    "summary": "Attention to winning, losing and hierarchy",
+    "detail": "Core perspective\n\nYour perspective naturally observes the dynamics of power in relationships, organizations and social structures.\n\nYou notice:\n\n- Who is in control?\n- Who is the winner?\n- Who is the loser?\n- Where are resources and energy flowing?\n- Who can truly influence the outcome?\n\nThis is not a bad thing. It is a gift for seeing the real structure of forces at work.\n\nTone 1–3 · Left\n\nThere is more focus on clear relationships of force and key points of control.\n\nTone 4–6 · Right\n\nIt is easier to sense how power, resources and influence are distributed across the whole network of relationships.\n\nOff-track State\n\nWhen you are distracted, you may try to pretend to be detached, placing yourself in the position of just an individual or observer and refusing to acknowledge the power relations that already exist.\n\nIgnoring the actual dynamics of force, resources and interests can make it easier to misjudge interactions or lose out in reality.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 178
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 375
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 197,
-          "end": 273
+          "start": 394,
+          "end": 472
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 293,
-          "end": 387
+          "start": 492,
+          "end": 607
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 389,
-          "end": 667,
+          "start": 626,
+          "end": 956,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "power",
-          "targetValue": "personal",
-          "terminology": "distraction"
+          "targetValue": "personal"
         }
       ]
     }
   },
   "variable.perspective:wanting": {
-    "summary": "Naturally sees what is missing, wanted, or still needs to be filled.",
-    "detail": "The Wanting perspective naturally notices what is missing and what remains unmet.\n\nWhen looking at a product, relationship, environment or system, it tends to ask: “What is still missing here?”\n\nTone 1–3 · Left\n\nMore focused on one specific gap or problem that needs to be addressed.\n\nTone 4–6 · Right\n\nMore receptive to unmet needs and gaps across the wider environment.\n\nThe Wanting perspective is originally able to notice what is missing in the outside world and where needs or gaps exist. When it shifts toward the Survival perspective, attention can contract around personal survival concerns, creating excessive worry about security, livelihood or basic conditions.",
+    "summary": "Attention to what is lacking and needed",
+    "detail": "Core perspective\n\nYou can keenly see:\n\n**What is still missing in this world?**\n\nYour perspective searches for gaps, unmet needs and missing pieces—whether pain points in a market, shortcomings in a system or needs within another person that have not yet been met.\n\nThis is therefore a natural perspective for discovering needs.\n\nTone 1–3 · Left\n\nThere is more focus on a specific gap or a problem that needs solving.\n\nTone 4–6 · Right\n\nIt is easier to sense unmet needs and gaps in the overall environment.\n\nOff-track State\n\nWhen you are distracted, attention contracts from needs and gaps in the outside world to your own basic survival issues. Excessive worry and fear about safety, livelihood or basic conditions can begin to arise.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 193
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 328
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 212,
-          "end": 283
+          "start": 347,
+          "end": 417
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 303,
-          "end": 371
+          "start": 437,
+          "end": 507
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 373,
-          "end": 672,
+          "start": 526,
+          "end": 736,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "wanting",
-          "targetValue": "survival",
-          "terminology": "distraction"
+          "targetValue": "survival"
         }
       ]
     }
   },
   "variable.perspective:probability": {
-    "summary": "Naturally sees what is realistically most likely to happen.",
-    "detail": "The Probability perspective is concerned with real conditions and feasibility.\n\nIt naturally asks: “Given the way things are developing, what outcome is most likely?”\n\nTone 1–3 · Left\n\nMore inclined to focus on specific conditions, data and outcomes.\n\nTone 4–6 · Right\n\nMore receptive to the overall situation and the relative likelihood of different outcomes.\n\nThe Probability perspective is originally concerned with real conditions, feasibility and the outcome most likely to occur. When it shifts toward the Possibility perspective, attention can move away from actual conditions and become absorbed in imagined possibilities that have little realistic foundation.",
+    "summary": "Attention to reality and feasibility",
+    "detail": "Core perspective\n\nYour eyes are like a very practical measuring instrument.\n\nYou naturally observe:\n\n**How likely is this to actually succeed?**\n\nYou pay attention to results, usefulness, efficiency, real conditions and how things can successfully be put into practice.\n\nTone 1–3 · Left\n\nThere is more of a tendency to concentrate on analyzing specific conditions, data and results.\n\nTone 4–6 · Right\n\nIt is easier to sense how likely different outcomes are by observing the overall situation.\n\nOff-track State\n\nWhen you are distracted, you may ignore real conditions and become caught in various perhaps-it-is-still-possible ideas that lack a practical foundation. You may even begin believing empty promises without any real support, wasting time on things that are almost impossible.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 166
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 269
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 185,
-          "end": 250
+          "start": 288,
+          "end": 382
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 270,
-          "end": 360
+          "start": 402,
+          "end": 493
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 362,
-          "end": 668,
+          "start": 512,
+          "end": 786,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "probability",
-          "targetValue": "possibility",
-          "terminology": "distraction"
+          "targetValue": "possibility"
         }
       ]
     }
   },
   "variable.perspective:personal": {
-    "summary": "Naturally sees the world through the relationship between experience and the self.",
-    "detail": "The Personal perspective naturally observes experience from one’s own position, noticing how something relates to oneself, where one stands within it, and what the experience means personally.\n\nTone 1–3 · Left\n\nMore focused on the relationship between oneself and a specific person, object or issue.\n\nTone 4–6 · Right\n\nMore able to observe the relationship between oneself and the world from a broader field of experience.\n\nThe Personal perspective is originally able to observe the world from one’s own position and experience with a certain degree of distance. When it shifts toward the Power perspective, attention can become entangled in competition, resources and power dynamics, increasingly focusing on who has the advantage, who controls the situation and how interests are distributed.",
+    "summary": "Attention to personal awareness and the whole picture",
+    "detail": "Core perspective\n\nYour angle on the world is like watching a film in which you are both the audience and the main character.\n\nYou naturally pay attention to:\n\n**What does all this mean to me personally?**\n\nYou can observe how the world works in a relatively detached way, remaining aware of what is happening without having to become deeply caught in it immediately.\n\nTone 1–3 · Left\n\nThere is more focus on the relationship between yourself and a particular object, event or problem.\n\nTone 4–6 · Right\n\nIt is more like standing in a broader position and observing the relationship between yourself and the world through your overall experience.\n\nOff-track State\n\nWhen you are distracted, you may suddenly become caught in winning and losing, interests, resources and power relations.\n\nYou were able to observe the world from some distance, but now begin close combat over who wins, who loses and who controls the situation. This involvement can bring noticeable fatigue and frustration.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 192
+          "id": "core",
+          "title": "Core perspective",
+          "start": 18,
+          "end": 366
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 211,
-          "end": 299
+          "start": 385,
+          "end": 484
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 319,
-          "end": 422
+          "start": 504,
+          "end": 645
         },
         {
           "id": "distraction",
           "title": "Off-track State",
-          "start": 424,
-          "end": 794,
+          "start": 664,
+          "end": 987,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "personal",
-          "targetValue": "power",
-          "terminology": "distraction"
+          "targetValue": "power"
         }
       ]
     }
   },
   "variable.motivation:fear": {
-    "summary": "The mind is naturally drawn toward the unknown, risk, and what has not yet been understood.",
-    "detail": "“Fear” here does not mean being timid.\n\nIt is closer to a cognitive drive that arises in the face of the unknown: wanting to understand what is happening, where the risks are, and what information is still missing.\n\nTone 1–3 · Left\n\nMore inclined to actively research, analyze and build a clear structure of understanding.\n\nTone 4–6 · Right\n\nMore inclined to receive information and allow understanding to form gradually through observation and experience.\n\nFear motivation originally reduces uncertainty by understanding the unknown, gathering information and building a solid foundation. When it shifts toward Need motivation, it can turn into “I have to do something right now,” leading to action before the necessary foundation has been established.",
+    "summary": "Seeking foundations and safety",
+    "detail": "Core motivation\n\nFear here does not mean being timid. It refers to the drive that arises from survival and understanding the unknown.\n\nYour motivation is to understand things, establish solid foundations and obtain sufficient information, thereby reducing and removing uncertainty.\n\nTone 1–3 · Left\n\nThere is more of a tendency to actively research, analyze and build a clear structure of understanding.\n\nTone 4–6 · Right\n\nThere is more of a tendency to receive information and let understanding form gradually through observation and experience.\n\nCorrect state\n\nBefore making a decision, you need to research deeply and gather data until you feel:\n\n**I am ready.**\n**I understand.**\n\nThis grounded feeling, built on understanding, information and foundations, is the drive that lets you keep moving forward.\n\nOff-track State\n\nWhen you feel anxious, you may abandon your original process of research and understanding and instead feel:\n\n**I must act immediately.**\n\nYou then rush for results before the foundations have been established and while information is still insufficient.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 214
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 281
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 233,
-          "end": 322
+          "start": 300,
+          "end": 403
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 342,
-          "end": 456
+          "start": 423,
+          "end": 546
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 563,
+          "end": 808
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 458,
-          "end": 753,
+          "start": 827,
+          "end": 1081,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "fear",
-          "targetValue": "need",
-          "terminology": "transference"
+          "targetValue": "need"
         }
       ]
     }
   },
   "variable.motivation:hope": {
-    "summary": "The mind is naturally oriented toward waiting, observing, and allowing what is possible to reveal itself.",
-    "detail": "Hope is not driven by immediate intervention. Its drive is to trust the process, observe, and wait for an answer to reveal itself at the appropriate time.\n\nTone 1–3 · Left\n\nMore consciously observes the situation and evaluates when continued waiting is appropriate.\n\nTone 4–6 · Right\n\nMore able to remain receptive and observant, allowing events to unfold on their own.\n\nHope motivation originally observes, waits and trusts that things will reveal themselves at the right time. When it shifts toward Guilt motivation, it can begin to feel, “Do I have to fix this?” and become overly involved, interfering or taking responsibility that was not actually necessary.",
+    "summary": "Seeking natural unfolding and faith",
+    "detail": "Core motivation\n\nYour drive comes from trust in the future and waiting.\n\nYou do not need to force everything to happen immediately. It is easier to hold a belief that things will unfold naturally and the right moment will arrive.\n\nTone 1–3 · Left\n\nThere is more conscious observation of the situation and judgment about when it is worth continuing to wait and when conditions are forming.\n\nTone 4–6 · Right\n\nIt is easier to remain receptive and observant, let events unfold by themselves and naturally see the right moment in the process.\n\nCorrect state\n\nYou are more like a pure observer.\n\nWhen facing a problem, your motivation can be:\n\n**Let us see what happens next.**\n\nBefore the correct moment actually arrives, there is no need to rush to intervene. You can maintain observation and trust.\n\nOff-track State\n\nWhen anxiety takes over, you may lose your original trust and instead feel that you must get involved, intervene, solve things or even rescue others.\n\nIf things are ultimately not fixed, you may also feel intense pressure from responsibility or guilt.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 154
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 229
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 173,
-          "end": 265
+          "start": 248,
+          "end": 388
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 285,
-          "end": 369
+          "start": 408,
+          "end": 538
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 555,
+          "end": 796
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 371,
-          "end": 663,
+          "start": 815,
+          "end": 1066,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "hope",
-          "targetValue": "guilt",
-          "terminology": "transference"
+          "targetValue": "guilt"
         }
       ]
     }
   },
   "variable.motivation:desire": {
-    "summary": "The mind is naturally drawn toward directing, influencing, and moving things toward a result.",
-    "detail": "Desire carries a clear drive to move things forward.\n\nIt naturally notices what could become better, what can be advanced, and how one might influence the outcome.\n\nTone 1–3 · Left\n\nMore inclined to actively plan goals, steps and methods of moving things forward.\n\nTone 4–6 · Right\n\nMore inclined to receive opportunities as they arise and then participate naturally in change and movement.\n\nDesire motivation originally contains genuine goals, ambition and the drive to affect reality. When it shifts toward Innocence motivation, it may present itself as “I don’t want anything,” “I don’t care,” or “I’ll just go with the flow,” while unacknowledged desire is still driving the process underneath.",
+    "summary": "Seeking achievement and leadership",
+    "detail": "Core motivation\n\nThis is a Motivation with a strong driving force.\n\nYour motivation may be the desire for something better, to possess something, to succeed or to lead things in a certain direction.\n\nThis pure wanting is itself the fuel that moves you forward.\n\nTone 1–3 · Left\n\nIt is easier to actively plan goals, steps and ways to move forward.\n\nTone 4–6 · Right\n\nThere is more of a tendency to receive opportunities appearing in the present, then naturally participate in change and move things forward.\n\nCorrect state\n\nAcknowledge your ambition and desire.\n\nWhen you sincerely desire a goal—whether material things, status, a career or spiritual growth—honestly acknowledging I want this can make the driving force clear.\n\nOff-track State\n\nWhen you lose your way, you may begin pretending that you do not want anything, do not care or are simply letting things unfold.\n\nOn the surface, you appear to have no purpose, while inwardly you still very much want a particular result.\n\nThis unacknowledged desire can make expression and action awkward and suppressed.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 163
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 260
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 182,
-          "end": 263
+          "start": 279,
+          "end": 347
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 283,
-          "end": 390
+          "start": 367,
+          "end": 507
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 524,
+          "end": 726
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 392,
-          "end": 698,
+          "start": 745,
+          "end": 1065,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "desire",
-          "targetValue": "innocence",
-          "terminology": "transference"
+          "targetValue": "innocence"
         }
       ]
     }
   },
   "variable.motivation:need": {
-    "summary": "The mind is naturally drawn toward what is necessary, essential, and actually required.",
-    "detail": "Need is concerned with necessity.\n\nIt sorts through many possibilities by asking: What truly needs to be handled? What is unnecessary? What is most important right now?\n\nTone 1–3 · Left\n\nMore focused on analyzing the problem and identifying the specific matter that needs attention.\n\nTone 4–6 · Right\n\nMore receptive to sensing what is genuinely necessary within the overall situation.\n\nNeed motivation originally identifies what is truly necessary and what requires attention now. When it shifts toward Fear motivation, it can become excessive worry, over-research and endless information gathering, making it harder to act on what actually needs to be done.",
+    "summary": "Seeking necessity and efficiency",
+    "detail": "Core motivation\n\nYour drive is to judge:\n\n**Is this absolutely necessary?**\n\nYou do not act merely for the sake of doing something. When a problem truly needs solving or a key resource is missing, the necessity of action becomes clear.\n\nTone 1–3 · Left\n\nThere is more focus on analyzing problems and identifying specific matters that need attention.\n\nTone 4–6 · Right\n\nIt is easier to sense what is truly necessary from the overall situation.\n\nCorrect state\n\nThere is a very practical approach.\n\nMotivation revolves around meeting the actual needs of the present. There is no need for extra decoration or irrelevant steps added to prove something.\n\nThe emphasis is on solving pain points and necessary problems that really exist.\n\nOff-track State\n\nWhen you lose your way, a problem that only needs addressing in the present may instead lead to excessive worry, over-research and frantic collection of more unrelated information.\n\nAs a result, you keep delaying what is truly necessary now.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 168
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 235
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 187,
-          "end": 282
+          "start": 254,
+          "end": 349
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 302,
-          "end": 385
+          "start": 369,
+          "end": 442
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 459,
+          "end": 729
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 387,
-          "end": 659,
+          "start": 748,
+          "end": 989,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "need",
-          "targetValue": "fear",
-          "terminology": "transference"
+          "targetValue": "fear"
         }
       ]
     }
   },
   "variable.motivation:guilt": {
-    "summary": "The mind is naturally drawn toward what can be corrected, repaired, or made to work better.",
-    "detail": "“Guilt” here is closer to a drive to correct what is wrong.\n\nIt naturally notices what has gone wrong, what needs adjustment, and how something can be brought back into proper functioning.\n\nTone 1–3 · Left\n\nMore inclined to actively analyze the problem and develop a corrective solution.\n\nTone 4–6 · Right\n\nMore able to notice what is not working within the whole system and allow a corrective direction to emerge.\n\nGuilt motivation originally sees what is wrong and generates the drive to repair, correct and restore things to proper functioning. When it shifts toward Hope motivation, it can begin to wait for the problem to resolve itself and avoid something that has already been recognized and could actually be addressed.",
+    "summary": "Seeking repair and providing solutions",
+    "detail": "Core motivation\n\nGuilt or responsibility here is not self-blame in the usual sense. It is closer to:\n\n**If I do not do something, I will feel this has been left unaddressed.**\n\nYour motivation is to correct mistakes, repair systems and solve real problems when you are genuinely able to help.\n\nTone 1–3 · Left\n\nIt is easier to actively analyze problems and develop a repair plan.\n\nTone 4–6 · Right\n\nIt is easier to notice what is wrong in the overall operation and naturally arrive at a direction for correction.\n\nCorrect state\n\nYou are like a natural repairer or firefighter.\n\nWhen you see a problem and know you are genuinely able to solve it, the sense of responsibility that wants to bring things back onto their normal track can become a very strong driving force.\n\nOff-track State\n\nWhen pressure becomes too great or you lose your way, you may begin ignoring problems you have already seen and imagine:\n\n**It will get better by itself.**\n\nOr you may expect others to handle problems that you can already see and have the ability to solve.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 188
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 292
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 207,
-          "end": 287
+          "start": 311,
+          "end": 379
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 307,
-          "end": 414
+          "start": 399,
+          "end": 512
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 529,
+          "end": 769
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 416,
-          "end": 727,
+          "start": 788,
+          "end": 1044,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "guilt",
-          "targetValue": "hope",
-          "terminology": "transference"
+          "targetValue": "hope"
         }
       ]
     }
   },
   "variable.motivation:innocence": {
-    "summary": "The mind is naturally capable of awareness without a personal agenda attached to the outcome.",
-    "detail": "The distinctive quality of Innocence is that it does not require a fixed personal goal to drive the mind.\n\nIt is more oriented toward directly experiencing what is happening without trying to control the result through fear, responsibility or desire.\n\nTone 1–3 · Left\n\nEven with less personal agenda, observation can still be more concentrated and explicit.\n\nTone 4–6 · Right\n\nMore able to remain open, receptive and naturally flowing, allowing experience itself to produce understanding.\n\nInnocence motivation originally carries less personal agenda and does not need to control the outcome, allowing experience to unfold directly. When it shifts toward Desire motivation, increasingly strong personal aims can appear, along with the urge to control the result, obtain a specific outcome or make events follow one’s intended direction.",
+    "summary": "Seeking non-striving and pure experience",
+    "detail": "Core motivation\n\nThe most distinctive quality of this Motivation is that its highest state comes close to:\n\n**Having no motivation.**\n\nThere is no drive from fear, desire or responsibility, nor action taken to achieve a particular result. There is simply entry into the experience of the present.\n\nTone 1–3 · Left\n\nEven with less of a personal agenda, observation and expression can still be more focused and clear.\n\nTone 4–6 · Right\n\nIt is easier to stay open, receptive and naturally flowing, letting experience itself bring understanding.\n\nCorrect state\n\nMaintain innocence without an ulterior purpose.\n\nThere is no rush to control the outcome; you simply experience, observe and feel as a pure presence.\n\nWithout a hidden agenda or an attempt to manipulate things toward a required result, influence can arise more naturally.\n\nOff-track State\n\nWhen you lose your way, an increasingly strong sense of purpose may suddenly arise:\n\n- Wanting to control the outcome\n- Wanting to reach specific goals of money or power\n- Wanting things to follow your own intentions\n- Acting with more and more strategy, calculation and personal agenda\n\nThis makes the original natural, non-striving state disappear.",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 250
+          "id": "core",
+          "title": "Core motivation",
+          "start": 17,
+          "end": 296
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 269,
-          "end": 357
+          "start": 315,
+          "end": 415
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 377,
-          "end": 488
+          "start": 435,
+          "end": 541
+        },
+        {
+          "id": "correctState",
+          "title": "Correct state",
+          "start": 558,
+          "end": 829
         },
         {
           "id": "transference",
           "title": "Off-track State",
-          "start": 490,
-          "end": 836,
+          "start": 848,
+          "end": 1198,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "innocence",
-          "targetValue": "desire",
-          "terminology": "transference"
+          "targetValue": "desire"
         }
       ]
     }
+  },
+  "variable.introduction": {
+    "summary": "Variable (the four arrows) overview",
+    "detail": "Core explanation\n\nVariable (the four arrows) is based on the finer substructure of Human Design:\n\n**Gate → Line → Color → Tone → Base**\n\nArrow direction is determined by Tone:\n\n- Tones 1, 2 and 3 → Left\n- Tones 4, 5 and 6 → Right\n\nThe data sources of the four Variables are:\n\n- Design Sun / Earth → Determination\n- Design Nodes → Environment\n- Personality Nodes → Perspective\n- Personality Sun / Earth → Motivation\n\nLeft and Right describe how the same Color operates in different Tone ranges. Color determines the theme; Tone further determines whether that theme operates in a more Left or Right way.",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "Core explanation",
+          "start": 18,
+          "end": 602
+        }
+      ]
+    },
+    "name": "Variable (the four arrows) overview"
+  },
+  "variable.determination:introduction": {
+    "summary": "Determination overview",
+    "detail": "Core explanation\n\nDetermination describes how the body digests food. It also concerns how the brain absorbs information, learns and processes life experiences.\n\nTone 1–3 · Left\n\nLeft tends toward active, regular and structured intake. The brain processes input more actively and is better suited to a clear rhythm, a framework and focused intake.\n\nTone 4–6 · Right\n\nRight tends toward reception, a natural approach and going with the flow. There is no need to force intake into a fixed structure; the body and brain are better suited to receiving food, information and experience in a natural state.",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "Core explanation",
+          "start": 18,
+          "end": 159
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 178,
+          "end": 346
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 366,
+          "end": 599
+        }
+      ]
+    },
+    "name": "Determination overview"
+  },
+  "variable.environment:introduction": {
+    "summary": "Environment overview",
+    "detail": "Core explanation\n\nEnvironment describes the physical surroundings in which the body can more easily feel comfortable and nourished. It also concerns the settings in which a person can encounter suitable people, events and opportunities with less resistance.\n\nTone 1–3 · Left\n\nLeft tends toward active observation and participation. A person can more easily stay energized, actively use the space and maintain a clear sense of participation in what is happening around them.\n\nTone 4–6 · Right\n\nRight tends toward relaxation, blending in and reception. In a suitable environment, the body does not need to remain in control. It can lower its defenses and allow people, information and experiences in that setting to enter awareness naturally.",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "Core explanation",
+          "start": 18,
+          "end": 257
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 276,
+          "end": 473
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 493,
+          "end": 740
+        }
+      ]
+    },
+    "name": "Environment overview"
+  },
+  "variable.perspective:introduction": {
+    "summary": "Perspective overview",
+    "detail": "Core explanation\n\nPerspective is the filter through which you see the world.\n\nWhen the body is in a suitable Environment, Perspective describes where the eyes and attention naturally turn, what attracts them and a person's most natural angle of observation.\n\nWhen the perspective is in its correct state, the world can be seen more clearly. When it moves off track, **Distraction** can occur: attention shifts toward the paired Perspective.\n\nTone 1–3 · Left · Active · Focused perspective\n\nObservation tends to be focused and needs a relatively clear target. Like looking through a telescope, it examines one point in depth at a time and filters out background noise.\n\nTone 4–6 · Right · PassiveWide-angle perspective\n\nObservation tends to be peripheral or wide-angle. There is no need to stare fixedly at one target. It is more like a wide-angle lens, picking up information through peripheral vision and the overall atmosphere in a relaxed state.",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "Core explanation",
+          "start": 18,
+          "end": 440
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active · Focused perspective",
+          "start": 490,
+          "end": 667
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · PassiveWide-angle perspective",
+          "start": 719,
+          "end": 948
+        }
+      ]
+    },
+    "name": "Perspective overview"
+  },
+  "variable.motivation:introduction": {
+    "summary": "Motivation overview",
+    "detail": "Core explanation\n\nMotivation describes the underlying drive behind how the mind processes information: why it thinks, expresses itself or moves something forward, and the motivation from which it truly operates.\n\nWhen Motivation is in its correct state, the mind is clearer. In anxiety or confusion, **Transference** may occur: motivation shifts toward its paired Motivation.\n\nTone 1–3 · Left · Active · Strategic mind\n\nThe mind tends toward focus, logic and strategy. It can more easily handle problems through analysis, plans, goals and structure, actively filtering out irrelevant information while thinking.\n\nTone 4–6 · Right · PassiveReceptive mind\n\nThe mind tends toward a broad, panoramic and receptive mode. It is less suited to getting stuck on details or making rigid plans. In a relaxed state, it can more easily receive information and let different clues connect naturally into an overall understanding.",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "Core explanation",
+          "start": 18,
+          "end": 375
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active · Strategic mind",
+          "start": 420,
+          "end": 611
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · PassiveReceptive mind",
+          "start": 655,
+          "end": 916
+        }
+      ]
+    },
+    "name": "Motivation overview"
   }
 };

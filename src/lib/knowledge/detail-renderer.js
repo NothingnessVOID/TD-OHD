@@ -7,7 +7,7 @@ import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
 import { centerName } from '../vocabulary.js';
 
 const categoryLabels = { type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
-const variableLabels = { determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
+const variableLabels = { overview:'Variable', determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
 const profileLabels = { rightAngle:'Right Angle · Personal destiny', juxtaposition:'Juxtaposition · Fixed destiny', leftAngle:'Left Angle · Transpersonal destiny' };
 const angleLabels = { right:profileLabels.rightAngle, left:profileLabels.leftAngle, juxtaposition:profileLabels.juxtaposition };
 const textOf = slot => slot?.template ?? slot?.content ?? '';
@@ -18,6 +18,21 @@ const surface = (title, body, id='') => `<section class="knowledge-surface"${id 
 function renderProse(slot, range=null) {
   const text=range?slice(slot,range):textOf(slot);
   return text.split(/\n\n+/).filter(part=>part.trim()).map(part=>`<p>${resolveKnowledgeText(part,{rich:true}).replaceAll('\n','<br>')}</p>`).join('');
+}
+// Small, escaped formatting for the supplied Variable paragraphs and lists only.
+function renderVariableProse(slot, range) {
+  const inline = text => resolveKnowledgeText(text, {rich:true}).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replaceAll('\n','<br>');
+  return slice(slot,range).split(/\n\n+/).filter(part=>part.trim()).map(part=>
+    part.split('\n').every(line=>line.startsWith('- '))
+      ? `<ul class="knowledge-prose-list">${part.split('\n').map(line=>`<li>${inline(line.slice(2))}</li>`).join('')}</ul>`
+      : `<p>${inline(part)}</p>`).join('');
+}
+function renderVariableLinks(entry) {
+  const kind=entry.properties.kind;
+  const ids=entry.properties.publicOverview
+    ? kind==='overview' ? ['determination','environment','perspective','motivation'].map(value=>`hd.variable.${value}.introduction`) : ['hd.variable.introduction']
+    : [`hd.variable.${kind}.introduction`];
+  return `<nav class="knowledge-variable-links">${ids.map(id=>{const target=getKnowledgeEntryById(id);return target?`<button type="button" class="knowledge-jump-card" data-knowledge-jump="${id}" data-reference-kind="knowledge" data-reference-id="${id}"><span>${esc(target.name)}</span><span aria-hidden="true">→</span></button>`:'';}).join('')}</nav>`;
 }
 function renderHeader(entry) {
   const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
@@ -89,7 +104,7 @@ function renderDeviation(entry, slot, section) {
     ? 'Distraction describes what can happen when a perspective moves off its correct state and attention shifts toward its paired perspective.'
     : 'Transference describes what can happen when a motivation moves off its correct state and shifts toward its paired motivation.';
   const node=(value,label)=>`<div class="knowledge-deviation-node" data-value="${esc(value)}"><span class="knowledge-deviation-label">${esc(t(label))}</span><strong>${esc(name(value))}</strong></div>`;
-  return `<section class="knowledge-section knowledge-surface knowledge-information knowledge-deviation" data-section="${esc(section.id)}" data-terminology="${esc(section.terminology)}"><h3 class="knowledge-deviation-heading">${esc(t('Off-track State'))}</h3><div class="knowledge-deviation-term">${esc(t(section.terminology==='distraction'?'Variable Distraction':'Variable Transference'))}</div><p class="knowledge-deviation-mechanism">${esc(t(mechanism))}</p><div class="knowledge-deviation-flow">${node(section.sourceValue,perspective?'Correct perspective':'Correct motivation')}<div class="knowledge-deviation-transition"><span class="knowledge-deviation-arrow" aria-hidden="true">↓</span><span class="knowledge-deviation-label">${esc(t('When off track'))}</span></div>${node(section.targetValue,'Possible off-track direction')}</div>${renderProse(slot,section)}</section>`;
+  return `<section class="knowledge-section knowledge-surface knowledge-information knowledge-deviation" data-section="${esc(section.id)}" data-terminology="${esc(section.terminology)}"><h3 class="knowledge-deviation-heading">${esc(t('Off-track State'))}</h3><div class="knowledge-deviation-term">${esc(t(section.terminology==='distraction'?'Variable Distraction':'Variable Transference'))}</div><div class="knowledge-deviation-flow">${node(section.sourceValue,perspective?'Correct perspective':'Correct motivation')}<div class="knowledge-deviation-transition"><span class="knowledge-deviation-arrow" aria-hidden="true">↓</span><span class="knowledge-deviation-label">${esc(t('When off track'))}</span></div>${node(section.targetValue,'Possible off-track direction')}</div>${renderVariableProse(slot,section)}<p class="knowledge-deviation-mechanism knowledge-secondary">${esc(t(mechanism))}</p></section>`;
 }
 function renderVariable(entry, context) {
   const slot=entry.detail,sections=slot?.presentation?.sections;
@@ -98,12 +113,21 @@ function renderVariable(entry, context) {
   const render=section=>{
     if(section.kind==='deviation')return renderDeviation(entry,slot,section);
     const branch=section.id==='tone1to3'||section.id==='tone4to6';
-    return `<section class="knowledge-section${branch?' knowledge-surface knowledge-branch':section.id==='intro'?' knowledge-reading':' knowledge-surface knowledge-information'}"${branch?` data-selected="${selected===section.id}"`:''} data-section="${section.id}">${section.title?`<h3>${esc(section.title)}${selected===section.id?`<span class="knowledge-yours">${esc(t('Yours'))}</span>`:''}</h3>`:''}${renderProse(slot,section)}</section>`;
+    return `<section class="knowledge-section${branch?' knowledge-surface knowledge-branch':['intro','core'].includes(section.id)?' knowledge-reading':' knowledge-surface knowledge-information'}"${branch?` data-selected="${selected===section.id}"`:''} data-section="${section.id}">${section.title?`<h3>${esc(section.title)}${selected===section.id?`<span class="knowledge-yours">${esc(t('Yours'))}</span>`:''}</h3>`:''}${renderVariableProse(slot,section)}</section>`;
   };
-  return sections.filter(s=>s.id==='intro').map(render).join('')+`<div class="knowledge-branches">${sections.filter(s=>s.id==='tone1to3'||s.id==='tone4to6').map(render).join('')}</div>`+sections.filter(s=>!['intro','tone1to3','tone4to6'].includes(s.id)).map(render).join('');
+  // Metadata order is authoritative: core -> Tone pair -> remaining material.
+  let branchesRendered=false;
+  return sections.map(section=>{
+    if(['tone1to3','tone4to6'].includes(section.id)) {
+      if(branchesRendered)return '';
+      branchesRendered=true;
+      return `<div class="knowledge-branches">${sections.filter(part=>['tone1to3','tone4to6'].includes(part.id)).map(render).join('')}</div>`;
+    }
+    return render(section);
+  }).join('')+renderVariableLinks(entry);
 }
 function renderContext(entry, slot) {
-  if(entry.objectType!=='variable'||!slot)return '';
+  if(entry.objectType!=='variable'||entry.properties.publicOverview||!slot)return '';
   const direction=variableDirection(slot);
   return `<aside class="knowledge-context knowledge-context-badges">${direction?badge(`${direction==='left'?'←':'→'} ${t(direction==='left'?'Left — focused':'Right — receptive')}`,'knowledge-direction'):''}${badge(t('Color {color} · Tone {tone} · Base {base}',slot),'knowledge-substructure')}</aside>`;
 }
@@ -117,6 +141,6 @@ export function renderKnowledgeDetail(query,{variableContext=null,definitionComp
   const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
   const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
-  const source=entry.objectType==='variable'?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
+  const source=entry.objectType==='variable'&&!entry.properties.publicOverview?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
   return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${renderers[entry.objectType]?.()??renderProse(entry.detail)}</section></article>`;
 }

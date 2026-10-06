@@ -12,6 +12,9 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 export const originalContent=Object.fromEntries(Object.keys(knowledgeContent).map(locale=>[locale,JSON.parse(execFileSync('git',['show',`${baseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''))]));
 export const copyBaseline='e731e69b91ea1ce083a4a8b023d2dd660c08735e';
 export const round2FContent=Object.fromEntries(Object.keys(knowledgeContent).map(locale=>[locale,JSON.parse(execFileSync('git',['show',`${copyBaseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''))]));
+export const restorationBaseline='efe59fdc863f409a66eb0c0eaaea73f09f324119';
+export const round2GContent=Object.fromEntries(Object.keys(knowledgeContent).map(locale=>[locale,JSON.parse(execFileSync('git',['show',`${restorationBaseline}:src/lib/knowledge/content/human-design-${locale}.js`]).toString().split('export default ')[1].trim().replace(/;$/,''))]));
+const restored=JSON.parse(readFileSync(new URL('../fixtures/variable-29-content.json',import.meta.url))).records;
 const approvedCopy=JSON.parse(readFileSync(new URL('../fixtures/knowledge-round2g-copy.json',import.meta.url))).details;
 /** Preserve the historical Round 2F range proof, then permit only exact Round 2G target copies. */
 export function assertContentBoundary() {
@@ -38,11 +41,15 @@ export function assertContentBoundary() {
  assert.equal(changed,36);assert.equal(unchanged,129);
  // The historical fixture itself cannot be silently replaced.
  assert.deepEqual(readFileSync(new URL('../fixtures/knowledge-round2c-content.json',import.meta.url)),execFileSync('git',['show',baseline+':tests/fixtures/knowledge-round2c-content.json']));
- for(const [locale,records] of Object.entries(knowledgeContent))for(const [id,r] of Object.entries(records)){
+ for(const [locale,records] of Object.entries(round2GContent))for(const [id,r] of Object.entries(records)){
   const before=round2FContent[locale][id];assert.equal(r.summary,before.summary,`${locale}/${id}: Round 2G Summary immutable`);
   if(!targetIds.has(id)){assert.deepEqual(r,before,`${locale}/${id}: Round 2G non-target immutable`);continue;}
   assert.equal(r.detail,approvedCopy[locale][id],`${locale}/${id}: product-approved exact copy`);
  }
  assert.deepEqual(readFileSync(new URL('../fixtures/knowledge-round2f-deviation.json',import.meta.url)),execFileSync('git',['show',copyBaseline+':tests/fixtures/knowledge-round2f-deviation.json']));
+ for(const [locale,records] of Object.entries(knowledgeContent)) {
+  assert.equal(Object.keys(records).length,60);
+  for(const [id,record] of Object.entries(records))assert.deepEqual(record,id.startsWith('variable.')?restored[locale][id]:round2GContent[locale][id],`${locale}/${id}: Variable 29 content boundary`);
+ }
  return {changed,unchanged};
 }

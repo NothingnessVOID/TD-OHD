@@ -1,4 +1,4 @@
-import {assertContentBoundary, targetIds} from './helpers/knowledge-round2f-contract.js';
+import {assertContentBoundary, targetIds, round2GContent} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -27,8 +27,8 @@ test('protected BodyGraph detail functions are byte-identical to the latest base
 test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F editorial ranges',()=>{
  const hashes=JSON.parse(bytes('tests/fixtures/knowledge-round2b-content.json'));
  assert.equal(Object.keys(hashes).length,55);assertContentBoundary();
- for(const [key,record]of Object.entries(knowledgeContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
- setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,55);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable').length,24);
+ for(const [key,record]of Object.entries(round2GContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
+ setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,60);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
  assert.match(knowledgeContent['zh-CN']['authority.sacral'].detail,/嗯哼／呃呃/);assert.match(knowledgeContent['zh-CN']['definition.quadrupleSplit'].detail,/8 个或 9 个/);
 });
 test('Type has semantic Strategy and Aura sections; Strategy shares its Type identity',()=>{
@@ -40,17 +40,17 @@ test('Type has semantic Strategy and Aura sections; Strategy shares its Type ide
 });
 test('24 semantic Variable bodies mark only the numeric Tone branch and never mark Library',()=>{
  setLocale('zh-CN',{persist:false});
- for(const entry of listKnowledgeEntries().filter(e=>e.objectType==='variable')){
+ for(const entry of listKnowledgeEntries().filter(e=>e.objectType==='variable'&&!e.properties.publicOverview)){
   const bare=renderKnowledgeDetail(entry);assert.doesNotMatch(bare,/knowledge-yours/);
   for(const tone of [1,2,3,4,5,6]){
    const html=renderKnowledgeDetail(entry,{variableContext:{color:entry.properties.color,tone,base:2}});
    const matches=html.match(/knowledge-yours/g)||[];assert.equal(matches.length,1);
    assert.match(html,new RegExp(`data-section="${tone<=3?'tone1to3':'tone4to6'}"><h3>[^<]+<span class="knowledge-yours">你的`));
-   for(const section of entry.detail.presentation.sections)assert.ok(html.includes(entry.detail.template.slice(section.start,section.end).split('\n\n')[0]));
+   for(const section of entry.detail.presentation.sections)assert.ok(html.replace(/<[^>]*>/g,'').replaceAll('&quot;','\"').replaceAll('&#39;',"'").includes(entry.detail.template.slice(section.start,section.end).split('\n\n')[0].replaceAll('**','')));
    assert.doesNotMatch(html,/warning|error|sourceId|reviewStatus|verified|资料来源/);
   }
  }
 });
 test('EN and Hant use their own semantic presentation without zh-CN fallback',()=>{
- for(const locale of ['en','zh-Hant']){setLocale(locale,{persist:false});for(const entry of listKnowledgeEntries().filter(e=>e.objectType==='variable'||e.objectType==='type')){assert.ok(entry.detail.presentation);const html=renderKnowledgeDetail(entry,{variableContext:{tone:2,color:1,base:1}});assert.doesNotMatch(html,/气场/);if(entry.objectType==='variable')assert.match(html,/knowledge-yours/);}}
+ for(const locale of ['en','zh-Hant']){setLocale(locale,{persist:false});for(const entry of listKnowledgeEntries().filter(e=>e.objectType==='variable'&&!e.properties.publicOverview||e.objectType==='type')){assert.ok(entry.detail.presentation);const html=renderKnowledgeDetail(entry,{variableContext:{tone:2,color:1,base:1}});assert.doesNotMatch(html,/气场/);if(entry.objectType==='variable'&&!entry.properties.publicOverview)assert.match(html,/knowledge-yours/);}}
 });

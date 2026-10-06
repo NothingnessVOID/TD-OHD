@@ -17,7 +17,7 @@ const entry = (objectType, objectId, name, summary = null, extra = {}) => ({
   reviewStatus: 'unreviewed', version: 1, ...extra
 });
 // Independent slots resolve only their own locale resource and terms.
-const reviewedRef = (key, slot) => ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`, 'reviewed-hd-content', { reviewStatus:'reviewed',version:2, templateRead:()=>knowledgeContent[getLocale()][key][slot], presentationRead:()=>slot === 'detail' ? knowledgeContent[getLocale()][key].presentation : undefined });
+const reviewedRef = (key, slot) => ref(() => reviewedText(key, slot), 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.${slot}`, key.startsWith('variable.') ? 'variable-final-content' : 'reviewed-hd-content', { reviewStatus:'reviewed',version:key.startsWith('variable.') ? 3 : 2, templateRead:()=>knowledgeContent[getLocale()][key][slot], presentationRead:()=>slot === 'detail' ? knowledgeContent[getLocale()][key].presentation : undefined });
 export const foundationRecords = [];
 for (const [id, type] of Object.entries(TYPES)) foundationRecords.push(entry('type', id,
   ref(() => typeName(type.name), catalogFile, `TYPES.${id}.name`),
@@ -43,8 +43,19 @@ for (const [kind, names] of Object.entries(variableNames)) for (let color = 1; c
   const valueId = variableValueId(kind, color), name = names[color - 1];
   foundationRecords.push(entry('variable', `${kind}:${valueId}`,
     ref(() => variable({ name })[0], variableFile, `variableNames.${kind}[${color - 1}]`, 'td-ohd-variable'), reviewedRef(`variable.${kind}:${valueId}`, 'summary'), {
-      detail: reviewedRef(`variable.${kind}:${valueId}`, 'detail'),reviewStatus:'reviewed',version:2,
+      detail: reviewedRef(`variable.${kind}:${valueId}`, 'detail'),reviewStatus:'reviewed',version:3,
       properties: () => ({ kind, valueId, color }), propertySource: ref(null, variableFile, 'variableValueId', 'td-ohd-presentation')
+    }));
+}
+// User-approved common material is registered once, not copied into each Color.
+for (const kind of ['overview', 'determination', 'environment', 'perspective', 'motivation']) {
+  const objectId = kind === 'overview' ? 'introduction' : `${kind}:introduction`;
+  const key = `variable.${objectId}`;
+  foundationRecords.push(entry('variable', objectId,
+    ref(() => knowledgeContent[getLocale()][key].name, 'src/lib/knowledge/content/human-design-{locale}.js', `${key}.name`, 'variable-final-content', {reviewStatus:'reviewed',version:3}),
+    reviewedRef(key, 'summary'), {
+      detail: reviewedRef(key, 'detail'), reviewStatus:'reviewed', version:3,
+      properties: () => ({kind, publicOverview:true})
     }));
 }
 const cognitionIds = ['smell', 'taste', 'outerVision', 'innerVision', 'feeling', 'touch'];

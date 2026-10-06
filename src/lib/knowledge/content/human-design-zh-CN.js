@@ -641,745 +641,973 @@ export default {
     }
   },
   "variable.determination:appetite": {
-    "summary": "偏向简单、分开的摄取方式，让不同内容保持相对独立。",
-    "detail": "Appetite（食欲型）的核心是简单与分开。无论摄取食物还是信息，都更强调减少混杂，让不同内容保持清楚的边界。\n\nTone 1–3 · Consecutive（连续）\n\n一次完成一种内容，再进入下一种。例如先吃完一种食材，再吃另一种。\n\nTone 4–6 · Alternating（交替）\n\n可以在几种不同内容之间交替，但仍强调它们彼此分开，而不是全部混合在一起。",
+    "summary": "追求极简与单一",
+    "detail": "核心特质\n\n你的消化系统非常原始，一次只能处理一种信息或一种食物。饮食越简单，你的大脑运转越清晰。\n\nTone 1–3 · Left · Consecutive（连续）\n\n每次只吃一种食材，吃完再吃下一种，例如先吃完所有的肉，再吃所有的菜。\n\nTone 4–6 · Right · Alternating（交替）\n\n可以几样食材交替吃，但仍强调彼此分开，不把不同内容全部混合在一起咀嚼或摄取。\n\n生活建议\n\n避免复杂的调味和一锅炖的混合菜式。在吸收信息时，也需要一次只专注一件事，不要多线操作。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 56
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 49
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Consecutive（连续）",
+          "title": "Tone 1–3 · Left · Consecutive（连续）",
           "start": 86,
-          "end": 118
+          "end": 120
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Alternating（交替）",
-          "start": 148,
-          "end": 184
+          "title": "Tone 4–6 · Right · Alternating（交替）",
+          "start": 158,
+          "end": 196
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 204,
+          "end": 247
         }
       ]
     }
   },
   "variable.determination:taste": {
-    "summary": "通过自身的口味与辨识，筛选真正适合摄取的内容。",
-    "detail": "Taste（味觉型）具有明显的筛选机制，会自然形成“这个适合我／这个不适合我”的辨识。\n\nTone 1–3 · Open（开放）\n\n更偏向接触和尝试眼前出现的内容，再辨识哪些真正适合自己。\n\nTone 4–6 · Closed（封闭）\n\n更偏向已经辨识、熟悉和接受的内容，选择范围通常更集中。",
+    "summary": "追求符合直觉的挑剔",
+    "detail": "核心特质\n\n重点在于“吃你认识、且直觉认为对的东西”。这种设计表现为对食物成分极其敏感和挑剔。\n\n比如点一碗面条时，大脑可能发出非常清晰的指令：不要辣椒、不要麻、不要花生、不要葱和香菜、不要内脏，或者对饮料的冰量和零糖有非常明确的要求。\n\n这在外界看来可能叫“挑食”，但在人类图的这套描述里，它强调的是身体对适合摄取内容的精细筛选。\n\nTone 1–3 · Open（开放）\n\n更偏向接触和尝试眼前出现的内容，再辨识哪些真正适合自己。\n\nTone 4–6 · Closed（封闭）\n\n更偏向已经辨识、熟悉和接受的内容，选择范围通常更集中。\n\n生活建议\n\n相信你的味蕾和挑剔感。不想吃的成分不要为了迎合别人或所谓“营养均衡”而强迫自己摄取。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 43
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 166
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Open（开放）",
-          "start": 66,
-          "end": 94
+          "start": 189,
+          "end": 217
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Closed（封闭）",
-          "start": 119,
-          "end": 146
+          "start": 242,
+          "end": 269
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 277,
+          "end": 319
         }
       ]
     }
   },
   "variable.determination:thirst": {
-    "summary": "摄取状态对温度敏感，冷热条件会改变身体的接收方式。",
-    "detail": "Thirst（温度型）的重点不是具体吃什么，而是摄取内容进入身体时的温度条件。\n\nTone 1–3 · Hot（热）\n\n偏向温度较高的摄取条件。\n\nTone 4–6 · Cold（冷）\n\n偏向温度较低的摄取条件。",
+    "summary": "追求温度的绝对值",
+    "detail": "核心特质\n\n你的消化系统对食物进入体内时的“温度”非常敏感。\n\nTone 1–3 · Left · Hot（热食）\n\n偏向温度较高的食物和饮料。教材进一步描述为食物和饮料的温度高于体温，即使天气炎热，也可能更适合热饮和热食。\n\nTone 4–6 · Right · Cold（冷食）\n\n偏向温度较低的摄取条件。教材举例包括冷盘、沙拉，或把食物放凉以后再吃。\n\n生活建议\n\n观察并遵守自己对应的温度条件。教材认为温度条件不合适时，身体可能更容易感到沉重，大脑也容易昏沉。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 39
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 30
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Hot（热）",
-          "start": 60,
-          "end": 72
+          "title": "Tone 1–3 · Left · Hot（热食）",
+          "start": 59,
+          "end": 112
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Cold（冷）",
-          "start": 94,
-          "end": 106
+          "title": "Tone 4–6 · Right · Cold（冷食）",
+          "start": 143,
+          "end": 178
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 186,
+          "end": 234
         }
       ]
     }
   },
   "variable.determination:touch": {
-    "summary": "摄取效果与当时的环境状态和外界刺激强度有关。",
-    "detail": "Touch（触觉型）关注的不只是摄取什么，而是身体摄取时处于什么样的环境状态。\n\nTone 1–3 · Calm（平静）\n\n偏向放松、安静、干扰较少的状态。\n\nTone 4–6 · Nervous（活跃／刺激）\n\n偏向周围存在活动、交流或刺激的状态。\n\n因此同样一种食物或信息，在不同环境状态下，体验可能非常不同。",
+    "summary": "追求进食时的外在氛围",
+    "detail": "核心特质\n\n吃什么未必是最关键的，在什么状态下吃反而更重要。这个 Color 强调神经系统对进食或摄取时外部刺激状态的敏感。\n\nTone 1–3 · Left · Calm（平静）\n\n偏向放松、安静、干扰少的环境。教材描述为尽量不要一边进食一边看书、看手机，或讨论过度严肃、紧张的工作内容。\n\nTone 4–6 · Right · Nervous（兴奋／忙碌／刺激）\n\n偏向有活动、有动静和刺激的环境。可以是在交谈、移动、观看内容或周围比较活跃的情况下进食。\n\n生活建议\n\n观察自己在哪一种氛围下吃完以后身体更有能量。如果是 Calm 分支，而环境突然进入争吵或高度紧张状态，可以暂停进食，等身体重新放松。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 39
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 62
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Calm（平静）",
-          "start": 62,
-          "end": 78
+          "title": "Tone 1–3 · Left · Calm（平静）",
+          "start": 92,
+          "end": 145
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Nervous（活跃／刺激）",
-          "start": 107,
-          "end": 157
+          "title": "Tone 4–6 · Right · Nervous（兴奋／忙碌／刺激）",
+          "start": 185,
+          "end": 229
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 237,
+          "end": 303
         }
       ]
     }
   },
   "variable.determination:sound": {
-    "summary": "摄取过程对周围的声音环境与音量特别敏感。",
-    "detail": "Sound（声音型）通过声学环境形成不同的摄取条件。\n\nTone 1–3 · High（高音量）\n\n偏向有背景声音、活动感或较明显声响的环境。\n\nTone 4–6 · Low（低音量）\n\n偏向声音刺激较低、相对安静的环境。\n\n重点不是“声音好不好听”，而是摄取时所处的声音强度是否符合自己的分支。",
+    "summary": "追求进食时的声学频率",
+    "detail": "核心特质\n\n消化与摄取状态会受到听觉环境影响。背景声音和音量会改变身体吸收食物、信息和经验时的状态。\n\nTone 1–3 · Left · High（高音量）\n\n偏向存在背景声音、活动感或较明显声响的环境。教材举例包括较热闹的餐厅、音乐、电视或其他持续背景声。\n\nTone 4–6 · Right · Low（低音量）\n\n偏向声音刺激较低、相对安静的环境。对细小杂音也可能比较敏感，例如周围人的咀嚼声。\n\n生活建议\n\nHigh 分支独处进食时，可以主动创造适合自己的背景声音；Low 分支则尽量选择安静空间或减少不必要的声音刺激。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 26
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 50
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · High（高音量）",
-          "start": 50,
-          "end": 71
+          "title": "Tone 1–3 · Left · High（高音量）",
+          "start": 81,
+          "end": 130
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Low（低音量）",
-          "start": 94,
-          "end": 148
+          "title": "Tone 4–6 · Right · Low（低音量）",
+          "start": 161,
+          "end": 201
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 209,
+          "end": 265
         }
       ]
     }
   },
   "variable.determination:light": {
-    "summary": "摄取状态与光照条件以及昼夜节律有关。",
-    "detail": "Light（光线型）的摄取条件和当时的光照环境密切相关。\n\nTone 1–3 · Direct（直接）\n\n偏向较明亮、直接的光照条件。\n\nTone 4–6 · Indirect（间接）\n\n偏向较弱、间接、昏暗或偏晚间的光线条件。\n\n核心是光线条件本身，而不是把它简单理解成某一种固定作息。",
+    "summary": "追求日夜与光照的节律",
+    "detail": "核心特质\n\n消化与大脑活跃状态会受到光线条件和昼夜节律影响。\n\nTone 1–3 · Left · Direct（直接）\n\n偏向较明亮、直接的光照。教材把这一分支描述为更接近日间运作，需要在光线充足的条件下摄取。\n\nTone 4–6 · Right · Indirect（间接）\n\n偏向较弱、间接、昏暗或偏晚间的光线条件。教材举例包括黄昏以后、拉上窗帘的室内或夜间环境。\n\n生活建议\n\n顺应自己的光线条件，而不是只服从传统“早中晚三餐”的时间表。重点是身体对光照条件的反应，而不是机械套用固定作息。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 28
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 30
         },
         {
           "id": "tone1to3",
-          "title": "Tone 1–3 · Direct（直接）",
-          "start": 53,
-          "end": 67
+          "title": "Tone 1–3 · Left · Direct（直接）",
+          "start": 62,
+          "end": 106
         },
         {
           "id": "tone4to6",
-          "title": "Tone 4–6 · Indirect（间接）",
-          "start": 94,
-          "end": 144
+          "title": "Tone 4–6 · Right · Indirect（间接）",
+          "start": 141,
+          "end": 185
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 193,
+          "end": 249
         }
       ]
     }
   },
   "variable.environment:caves": {
     "summary": "适合边界清楚、入口明确，并能掌握人员进出的空间。",
-    "detail": "Caves（洞穴）的核心是安全、私密和入口控制。\n\n它并不等于真的住在洞穴里。独立房间、私人空间、背后有依靠并能看到入口的位置，都可能具有这种性质。\n\nTone 1–3 · Left · Selective（选择型）\n\n更偏向主动掌握空间，知道谁进来、谁离开，并保持对环境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全边界已经成立后放松下来，让自己自然融入这个受保护的空间。",
+    "detail": "核心特质\n\n强调安全感、专属感与出入控制。\n\nTone 1–3 · Left · Selective（选择型）\n\n更偏向主动掌握空间，知道谁进来、谁离开，并保持对环境的控制感。\n\nTone 4–6 · Right · Blending（融合型）\n\n更偏向在安全边界已经成立后放松下来，让自己自然融入这个受保护的空间。\n\n物理环境\n\n只有一个出入口的房间、背靠墙壁的座位、舒适封闭的私人书房或卧室，甚至车内，都可能具有 Caves 的性质。\n\n生活建议\n\n在外就餐或工作时，尽量选择背靠墙壁、能看到大门或主要出入口的位置。如果缺乏安全感，身体系统可能持续处于紧绷状态。\n\n理想商业场景\n\n需要一个能够较好掌控的私人空间，例如独立办公室、居家办公的专属书房，或只有一个主要出入口、能清楚感知人员进出的工位。\n\n在不容易受到外界无预警打扰的“庇护所”中，更容易稳定工作并产出高质量成果。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 74
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 21
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Selective（选择型）",
-          "start": 110,
-          "end": 141
+          "start": 57,
+          "end": 88
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Blending（融合型）",
-          "start": 177,
-          "end": 211
+          "start": 124,
+          "end": 158
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 166,
+          "end": 219
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 227,
+          "end": 283
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 293,
+          "end": 390
         }
       ]
     }
   },
   "variable.environment:markets": {
     "summary": "适合资源、人员、商品和信息不断交换流动的环境。",
-    "detail": "Markets（市场）的核心是交换、选择和动态流动。\n\n真正的市场、商业区、咖啡馆、共享空间，甚至任何人和信息持续进出的地方，都可能具有 Markets 的性质。\n\nTone 1–3 · Left · Internal（内部型）\n\n更主动参与交换、观察选择，并进入环境中的人与资源流动。\n\nTone 4–6 · Right · External（外部型）\n\n更适合处在这种流动环境里，让机会、信息和选择自然进入自己的感知。",
+    "detail": "核心特质\n\n强调资源交换、人脉流动与动态活力。\n\nTone 1–3 · Left · Internal（内部型）\n\n更主动参与交换、观察选择，并进入环境中的人与资源流动。\n\nTone 4–6 · Right · External（外部型）\n\n更适合处在这种流动环境里，让机会、信息和选择自然进入自己的感知。\n\n物理环境\n\n城市中心、商业街、人多的咖啡馆、热闹的办公区域、市集，以及其他持续发生人员、商品、资源或信息交换的地方。\n\n生活建议\n\n即使不与人直接交谈，身处充满活力、资源和交换的环境，也可能让身体感觉更充沛。太长时间待在过度孤立、缺少流动的地方，可能更容易失去活力。\n\n理想商业场景\n\n繁华、充满交易与信息流动的场所，例如共享办公空间、人来人往的咖啡馆、交易大厅或商业核心区。\n\n这里的重要条件是拥有选择权，并能够持续接触人脉、资源与信息交换。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 81
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 23
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Internal（内部型）",
-          "start": 116,
-          "end": 143
+          "start": 58,
+          "end": 85
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · External（外部型）",
-          "start": 179,
-          "end": 211
+          "start": 121,
+          "end": 153
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 161,
+          "end": 213
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 221,
+          "end": 288
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 298,
+          "end": 377
         }
       ]
     }
   },
   "variable.environment:kitchens": {
     "summary": "适合不同材料、资源或想法被组合、加工和转化的环境。",
-    "detail": "Kitchens（厨房）的核心是转化。\n\n它可以是真实厨房，也可以是工作室、实验室、研发空间、工厂，或者任何“原料进入之后变成另一种东西”的地方。\n\nTone 1–3 · Left · Wet（湿）\n\n更容易主动进入转化过程，参与组合、制作和推动变化。\n\nTone 4–6 · Right · Dry（干）\n\n更偏向身处转化正在发生的环境里，自然接收变化、碰撞与创造带来的刺激。",
+    "detail": "核心特质\n\n强调转化、融合与创造，也可以理解为“炼金术”式的环境主题。\n\n重点在于“事物的发生与蜕变”。它不仅指真实厨房，也代表把原料、资源、人才或想法组合、加工并转化成新成果的场所。\n\nTone 1–3 · Left · Wet（湿）\n\n更容易主动进入转化过程，参与组合、制作和推动变化。\n\nTone 4–6 · Right · Dry（干）\n\n更偏向身处转化正在发生的环境里，自然接收变化、碰撞与创造带来的刺激。\n\n物理环境\n\n真实厨房、餐馆后厨、工厂、充满创造力的工作室、实验室、研发空间、制造空间或合署办公场所，都可能呈现 Kitchens 的性质。\n\n生活建议\n\n适合处在“东西正在被做出来”的地方。与其待在完全静态、没有变化的空间，更需要感受到材料、信息、人或想法正在被加工和转化。\n\n理想商业场景\n\n能够把不同元素——资源、人才、想法——聚集到一起产生新事物的空间。\n\n例如研发中心、创意工作室、头脑风暴会议室或制造车间。商业价值来自把原始材料转化成更高价值的产品、服务或成果。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 73
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 92
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Wet（湿）",
-          "start": 101,
-          "end": 126
+          "start": 120,
+          "end": 145
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Dry（干）",
-          "start": 155,
-          "end": 189
+          "start": 174,
+          "end": 208
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 216,
+          "end": 279
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 287,
+          "end": 347
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 357,
+          "end": 446
         }
       ]
     }
   },
   "variable.environment:mountains": {
     "summary": "适合较高、能够拉开距离并获得更开阔视野的位置。",
-    "detail": "Mountains（高山）的核心是高度、距离与视野。\n\n它不一定是山，也可以是高楼、顶层、高处座位，或者任何能够暂时离开密集人流、从较高位置观察整体的空间。\n\nTone 1–3 · Left · Active（主动）\n\n更偏向主动利用高度和距离观察周围，掌握全局。\n\nTone 4–6 · Right · Passive（被动）\n\n更偏向放松地处在较高位置，让整体环境和更大的视野自然进入感知。",
+    "detail": "核心特质\n\n强调视野、全局观与制高点。\n\nTone 1–3 · Left · Active（主动）\n\n更偏向主动利用高度和距离观察周围，掌握全局。\n\nTone 4–6 · Right · Passive（被动）\n\n更偏向放松地处在较高位置，让整体环境和更大的视野自然进入感知。\n\n物理环境\n\n高楼层公寓、山上的房子、视野开阔的顶楼、高处座位、瞭望台，或其他能够与密集人流拉开距离、获得更宽视野的位置。\n\n生活建议\n\n当需要理清思绪或恢复状态时，可以往更高、更开阔的位置移动。在办公室或餐厅，也可以观察自己是否更喜欢能俯瞰整体或视野较宽的位置。\n\n理想商业场景\n\n适合处于能够观察全局的位置，例如高楼层办公室、战略与高层视角岗位，或能够暂时远离日常繁杂执行、从更大尺度观察行业和系统的独立空间。\n\n重要的是“退一步、站得更高”以后更容易看清长期趋势，而不是持续被局部事务淹没。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 78
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 19
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Active（主动）",
-          "start": 110,
-          "end": 132
+          "start": 51,
+          "end": 73
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Passive（被动）",
-          "start": 166,
-          "end": 197
+          "start": 107,
+          "end": 138
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 146,
+          "end": 200
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 208,
+          "end": 271
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 281,
+          "end": 387
         }
       ]
     }
   },
   "variable.environment:valleys": {
     "summary": "适合处在流动通道中，接收人与信息不断经过和交换的环境。",
-    "detail": "Valleys（山谷）的核心是通道、交流和信息流动。\n\n街道、一楼、走廊、公共区域以及人们不断经过、交流的地方，都可能体现这种环境性质。\n\nTone 1–3 · Left · Narrow（狭窄）\n\n更主动进入流动，观察、参与和连接正在发生的交流。\n\nTone 4–6 · Right · Wide（宽广）\n\n更偏向让自己待在信息流中，通过周围的声音、人群和变化自然接收环境。",
+    "detail": "核心特质\n\n强调信息汇聚、交流与声学连接。\n\nTone 1–3 · Left · Narrow（狭窄）\n\n更主动进入流动，观察、参与和连接正在发生的交流。\n\nTone 4–6 · Right · Wide（宽广）\n\n更偏向让自己待在信息流中，通过周围的声音、人群和变化自然接收环境。\n\n物理环境\n\n一楼的房子、建筑底层大厅、街道旁的座位、走廊、公共区域、交谊空间，以及人们持续经过和交流的信息通道。\n\n生活建议\n\n需要能够“听到周围在发生什么”的地方。重点不是站得高，而是处在信息能够流经自己的平面或通道。\n\n人们路过、交流、分享消息的场所，更容易带来合适的信息与机会。\n\n理想商业场景\n\n信息交汇的通道，例如一楼门面、人流必经的开放办公区、前台、公关或信息中心。\n\n商业价值往往来自听见不同方向的声音、掌握最新信息，并对这些信息进行处理和传递。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 68
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 21
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Narrow（狭窄）",
-          "start": 100,
-          "end": 124
+          "start": 53,
+          "end": 77
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Wide（宽广）",
-          "start": 155,
-          "end": 188
+          "start": 108,
+          "end": 141
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 149,
+          "end": 199
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 207,
+          "end": 285
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 295,
+          "end": 373
         }
       ]
     }
   },
   "variable.environment:shores": {
     "summary": "适合处在两个不同空间、领域或状态交界的过渡地带。",
-    "detail": "Shores（海岸）的核心是边界与过渡。\n\n海与陆、室内与室外、城市与郊区、一个部门与另一个部门之间，都可以形成类似性质。\n\nTone 1–3 · Left · Natural（自然）\n\n更主动在两个领域之间移动、连接或观察边界两侧的差异。\n\nTone 4–6 · Right · Artificial（人工）\n\n更适合停留在交界处，同时接收来自两个不同领域的信息和体验。",
+    "detail": "核心特质\n\n强调边界、过渡地带与连接不同世界。\n\nTone 1–3 · Left · Natural（自然）\n\n更主动在两个领域之间移动、连接或观察边界两侧的差异。\n\nTone 4–6 · Right · Artificial（人工）\n\n更适合停留在交界处，同时接收来自两个不同领域的信息和体验。\n\n物理环境\n\n真正的海滩是海与陆的交界；类似性质也可以出现在城市与郊区之间、室内与室外之间、靠窗位置、两个部门之间、两种空间或系统之间。\n\n生活建议\n\n身体可能喜欢一种“随时可以离开，又随时可以进入”的过渡状态。\n\n靠窗、城市边缘、空间边界等位置，能够同时感知两个不同区域，更容易产生舒适感。\n\n理想商业场景\n\n适合处在两个状态、系统或领域的交界，例如跨部门桥梁岗位、混合办公、需要频繁跨区域移动的工作，或对接不同市场的国际业务。\n\n价值在于打破边界，把一种信息、资源或模式带入另一个领域。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 61
+          "id": "core",
+          "title": "核心特质",
+          "start": 6,
+          "end": 23
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left · Natural（自然）",
-          "start": 94,
-          "end": 120
+          "start": 56,
+          "end": 82
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right · Artificial（人工）",
-          "start": 157,
-          "end": 186
+          "start": 119,
+          "end": 148
+        },
+        {
+          "id": "physicalEnvironment",
+          "title": "物理环境",
+          "start": 156,
+          "end": 217
+        },
+        {
+          "id": "lifeAdvice",
+          "title": "生活建议",
+          "start": 225,
+          "end": 295
+        },
+        {
+          "id": "businessScenario",
+          "title": "理想商业场景",
+          "start": 305,
+          "end": 394
         }
       ]
     }
   },
   "variable.perspective:survival": {
-    "summary": "自然注意安全、稳定以及维持持续存在所需的基础条件。",
-    "detail": "生存视角会自然注意事物的基础条件和安全性。\n\n面对一个环境、系统或事件，会先看它是否稳定、资源是否足够、哪些地方可能带来风险，以及什么能够维持持续运作。\n\nTone 1–3 · Left\n\n更聚焦地寻找具体风险、基础条件和关键细节。\n\nTone 4–6 · Right\n\n更广泛地接收环境整体的稳定感、安全感与生存条件。\n\n生存视角原本关注的是“真正维持生存需要什么”、基础是否稳定、安全条件是否足够；偏离到欲望视角后，则容易越来越被“我还想得到什么”吸引，把注意力放到那些并非真正必要、只是想要的东西上。",
+    "summary": "关注基础与底线",
+    "detail": "核心视角\n\n你的眼睛天然会关注“生存”。\n\n看待人、事、环境或系统时，会自然问：\n\n- 这安全吗？\n- 这能保障基本生活吗？\n- 基础打得牢不牢？\n\n你往往很快注意到事物中最核心、最关乎持续存在和生存底线的部分。\n\nTone 1–3 · Left\n\n更聚焦地寻找具体风险、基础条件和关键细节。\n\nTone 4–6 · Right\n\n更广泛地接收环境整体的稳定感、安全感与生存条件。\n\n偏离状态\n\n当你分心时，注意力会从踏实的生存基础转向“渴望／想要”。你不再只看真正维持生活所需要的条件，而可能越来越盯着那些其实并非必要、只是“想要”的东西。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 76
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 106
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 95,
-          "end": 116
+          "start": 125,
+          "end": 146
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 136,
-          "end": 160
+          "start": 166,
+          "end": 190
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 162,
-          "end": 253,
+          "start": 198,
+          "end": 271,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "survival",
-          "targetValue": "wanting",
-          "terminology": "distraction"
+          "targetValue": "wanting"
         }
       ]
     }
   },
   "variable.perspective:possibility": {
-    "summary": "自然看到尚未发生的可能、潜力和另一种发展方向。",
-    "detail": "可能性视角不会只停留在眼前已经发生的事实，而会自然注意尚未发生的可能、隐藏的潜力和新的发展方向。\n\n它经常在看：“还有什么可能？”“事情还能变成什么样？”\n\nTone 1–3 · Left\n\n更容易集中注意某一个值得发展的可能方向。\n\nTone 4–6 · Right\n\n更容易同时看到多个潜在方向，让可能性自然浮现出来。\n\n可能性视角原本关注尚未发生的可能、隐藏的潜力和新的发展方向；偏离到概率视角后，则容易不断计算“这件事到底有多大概率能成”，因为过度强调现实胜算而看不见原本存在的可能性。",
+    "summary": "关注未知与潜力",
+    "detail": "核心视角\n\n你看世界的滤镜是：\n\n**“如果……会怎样？”**\n\n你的注意力不会只停留在已经发生的现状，而会自然看向尚未发生的事情、隐藏的潜能，或别人暂时还没有看到的另一种可能。\n\nTone 1–3 · Left\n\n更容易集中注意某一个值得发展的可能方向。\n\nTone 4–6 · Right\n\n更容易同时看到多个潜在方向，让可能性自然浮现出来。\n\n偏离状态\n\n当你分心时，可能开始过度关注“这件事到底有多大概率能成”，变得过度精打细算和现实，因为害怕失败而扼杀原本存在的潜力与可能性。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 77
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 89
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 96,
-          "end": 116
+          "start": 108,
+          "end": 128
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 136,
-          "end": 161
+          "start": 148,
+          "end": 173
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 163,
-          "end": 247,
+          "start": 181,
+          "end": 243,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "possibility",
-          "targetValue": "probability",
-          "terminology": "distraction"
+          "targetValue": "probability"
         }
       ]
     }
   },
   "variable.perspective:power": {
-    "summary": "自然注意力量、资源、影响力以及谁在掌握局面。",
-    "detail": "权力视角会自然注意关系和系统中的力量结构。\n\n它会看到：谁有资源？谁能够影响结果？力量正在流向哪里？\n\nTone 1–3 · Left\n\n更聚焦于明确的力量关系和关键控制点。\n\nTone 4–6 · Right\n\n更容易从整体关系网络中感受到权力、资源和影响力如何分布。\n\n权力视角原本能够观察真实存在的力量、资源与权力结构；偏离到个人视角后，则容易退回到个人立场和自身感受中，试图置身于真实的力量关系之外，反而看不清实际正在发生的权力动态。",
+    "summary": "关注胜败与阶级",
+    "detail": "核心视角\n\n你的视角会自然观察人际关系、组织和社会结构里的“权力动态”。\n\n你会注意：\n\n- 谁在掌控局面？\n- 谁是赢家？\n- 谁是输家？\n- 资源和能量正在流向哪里？\n- 谁真正能够影响结果？\n\n这并不是坏事，而是一种看清现实力量结构的观察天赋。\n\nTone 1–3 · Left\n\n更聚焦于明确的力量关系和关键控制点。\n\nTone 4–6 · Right\n\n更容易从整体关系网络中感受到权力、资源和影响力如何分布。\n\n偏离状态\n\n当你分心时，可能会试图假装超脱，把自己放到“只是个人／旁观者”的位置，不愿正视现实中已经存在的权力关系。\n\n当真实的力量、资源和利益动态被忽略时，反而更容易在现实互动中判断失准或吃亏。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 50
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 125
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 69,
-          "end": 87
+          "start": 144,
+          "end": 162
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 107,
-          "end": 135
+          "start": 182,
+          "end": 210
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 137,
-          "end": 221,
+          "start": 218,
+          "end": 310,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "power",
-          "targetValue": "personal",
-          "terminology": "distraction"
+          "targetValue": "personal"
         }
       ]
     }
   },
   "variable.perspective:wanting": {
-    "summary": "自然看到什么还缺少、什么尚未满足，以及哪里存在需求。",
-    "detail": "欲望视角很容易看到空缺和尚未满足的需求。\n\n面对产品、关系、环境或系统，会自然注意：“这里还少什么？”\n\nTone 1–3 · Left\n\n更聚焦于一个具体缺口或需要解决的问题。\n\nTone 4–6 · Right\n\n更容易从整体环境中感受到尚未满足的需求和空白。\n\n欲望视角原本能够看到外界还缺什么、哪里存在需求与空白；偏离到生存视角后，则容易把注意力收缩到自己的基本生存问题上，为安全、生计或基础条件产生过度担忧。",
+    "summary": "关注缺乏与需求",
+    "detail": "核心视角\n\n你能敏锐地看到：\n\n**“这个世界还缺什么？”**\n\n你的视角会寻找空白、尚未满足的需求和缺口——无论是市场上的痛点、系统中的不足，还是别人内在尚未被满足的需要。\n\n因此，这是一种天然的需求发现视角。\n\nTone 1–3 · Left\n\n更聚焦于一个具体缺口或需要解决的问题。\n\nTone 4–6 · Right\n\n更容易从整体环境中感受到尚未满足的需求和空白。\n\n偏离状态\n\n当你分心时，注意力会从外界的需求和空白收缩到自己的基本生存问题上，开始为安全、生计或基础条件产生过度担忧与恐惧。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 51
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 106
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 70,
-          "end": 89
+          "start": 125,
+          "end": 144
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 109,
-          "end": 132
+          "start": 164,
+          "end": 187
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 134,
-          "end": 209,
+          "start": 195,
+          "end": 251,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "wanting",
-          "targetValue": "survival",
-          "terminology": "distraction"
+          "targetValue": "survival"
         }
       ]
     }
   },
   "variable.perspective:probability": {
-    "summary": "自然判断现实条件下，什么结果最有可能发生。",
-    "detail": "概率视角关注现实条件和可行性。\n\n它会自然观察：“照现在这样发展，什么结果最可能发生？”\n\nTone 1–3 · Left\n\n更倾向集中分析具体条件、数据与结果。\n\nTone 4–6 · Right\n\n更容易通过观察整体态势，感知不同结果出现的可能程度。\n\n概率视角原本关注现实条件、可行性以及最可能发生的结果；偏离到可能性视角后，则容易忽略实际条件，沉浸在各种“也许还有可能”的想象中，把注意力放到缺乏现实基础的可能性上。",
+    "summary": "关注现实与可行性",
+    "detail": "核心视角\n\n你的眼睛像一个非常务实的测量仪。\n\n你会自然观察：\n\n**“这件事真正做成的几率有多大？”**\n\n你关注结果、实用性、效率、现实条件，以及事情如何真正成功落地。\n\nTone 1–3 · Left\n\n更倾向集中分析具体条件、数据与结果。\n\nTone 4–6 · Right\n\n更容易通过观察整体态势，感知不同结果出现的可能程度。\n\n偏离状态\n\n当你分心时，可能忽略现实条件，陷入各种缺乏落地基础的“也许还有可能”，甚至开始相信毫无现实支撑的画大饼，把时间浪费在几乎无法发生的事情上。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 44
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 86
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 63,
-          "end": 81
+          "start": 105,
+          "end": 123
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 101,
-          "end": 127
+          "start": 143,
+          "end": 169
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 129,
-          "end": 212,
+          "start": 177,
+          "end": 246,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "probability",
-          "targetValue": "possibility",
-          "terminology": "distraction"
+          "targetValue": "possibility"
         }
       ]
     }
   },
   "variable.perspective:personal": {
-    "summary": "从自身的位置和经验出发，观察一切与“我”之间的关系。",
-    "detail": "个人视角会自然从自身的位置和经验出发，观察一件事与“我”有什么关系、自己处在什么位置，以及这个经历对自己意味着什么。\n\nTone 1–3 · Left\n\n更聚焦于自己与某个具体对象或问题之间的关系。\n\nTone 4–6 · Right\n\n更像站在较宽广的位置，从整体经验中观察自己与世界之间的关系。\n\n个人视角原本可以从自身的位置与经验出发，以较为抽离的方式观察世界；偏离到权力视角后，则容易被卷入输赢、资源与权力关系，开始过度关注谁占优势、谁掌控局面以及利益如何分配。",
+    "summary": "关注自身的觉察与全景",
+    "detail": "核心视角\n\n你看世界的角度就像在看一场电影，而你既是观众也是主角。\n\n你会自然关注：\n\n**“这一切对我个人有什么意义？”**\n\n你可以用一种相对超然、抽离的方式观察世界的运作，觉察正在发生的事情，同时不必马上深陷其中。\n\nTone 1–3 · Left\n\n更聚焦于自己与某个具体对象、事件或问题之间的关系。\n\nTone 4–6 · Right\n\n更像站在一个较宽广的位置，从整体经验中观察自己与世界之间的关系。\n\n偏离状态\n\n当你分心时，可能突然被卷入输赢、利益、资源和权力关系。\n\n原本能够保持一定距离观察世界，却开始为了谁赢谁输、谁掌控局面而“近身肉搏”，这种卷入容易带来明显的疲惫和挫败。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 58
+          "id": "core",
+          "title": "核心视角",
+          "start": 6,
+          "end": 110
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 77,
-          "end": 99
+          "start": 129,
+          "end": 154
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 119,
-          "end": 149
+          "start": 174,
+          "end": 206
         },
         {
           "id": "distraction",
           "title": "偏离状态",
-          "start": 151,
-          "end": 235,
+          "start": 214,
+          "end": 298,
           "kind": "deviation",
+          "terminology": "distraction",
           "sourceValue": "personal",
-          "targetValue": "power",
-          "terminology": "distraction"
+          "targetValue": "power"
         }
       ]
     }
   },
   "variable.motivation:fear": {
-    "summary": "被未知和不确定吸引，想把事情真正弄明白。",
-    "detail": "这里的“恐惧”不是“胆小”。\n\n它更像一种面对未知时产生的认知动力：想把事情弄清楚，知道这是怎么回事、风险在哪里、自己还缺什么信息。\n\nTone 1–3 · Left\n\n更倾向主动研究、分析，并建立清楚的理解结构。\n\nTone 4–6 · Right\n\n更倾向接收信息，让理解在观察和经验中逐渐形成。\n\n恐惧动机原本会通过理解未知、收集信息和建立基础来减少不确定性；偏离到需求动机后，则容易变成“我必须马上做点什么”，在基础还没有建立之前就急于行动。",
+    "summary": "追求基础与安全",
+    "detail": "核心动机\n\n这里的“恐惧”并不是指胆小，而是指为了求生和了解未知而产生的驱动力。\n\n你的动机是把事情弄清楚、打好基础、掌握充分的信息，从而减少和消除不确定性。\n\nTone 1–3 · Left\n\n更倾向主动研究、分析，并建立清楚的理解结构。\n\nTone 4–6 · Right\n\n更倾向接收信息，让理解在观察和经验中逐渐形成。\n\n正确状态\n\n在做决定前，你需要深入研究、收集数据，直到你觉得：\n\n**“我准备好了。”**  \n**“我懂了。”**\n\n这种建立在理解、信息和基础之上的踏实感，是你继续前进的动力。\n\n偏离状态\n\n当你感到焦虑时，可能放弃原本的研究与理解过程，转而觉得：\n\n**“我必须马上行动。”**\n\n于是，在基础还没有建立、信息还不足的时候急于求成。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 66
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
+          "end": 79
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
-          "start": 85,
-          "end": 107
+          "start": 98,
+          "end": 120
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 127,
-          "end": 150
+          "start": 140,
+          "end": 163
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 171,
+          "end": 255
         },
         {
           "id": "transference",
           "title": "偏离状态",
-          "start": 152,
-          "end": 225,
+          "start": 263,
+          "end": 334,
           "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "fear",
-          "targetValue": "need",
-          "terminology": "transference"
+          "targetValue": "need"
         }
       ]
     }
   },
   "variable.motivation:hope": {
-    "summary": "倾向观察和等待，让事情在合适的时机自然显现。",
-    "detail": "“希望”的动力不是马上介入，而是对过程保持信任，愿意观察和等待答案在合适的时机显现。\n\nTone 1–3 · Left\n\n会更有意识地观察局面，判断什么时候值得继续等待。\n\nTone 4–6 · Right\n\n更容易保持接收和观察，让事情自己展开。\n\n希望动机原本会观察、等待，并相信事情会在合适的时机显现；偏离到责任动机后，则容易觉得“是不是我必须去解决这件事”，开始过度介入、干预或承担原本并不需要承担的责任。",
+    "summary": "追求顺其自然与信念",
+    "detail": "核心动机\n\n你的驱动力来自对未来的信任与等待。\n\n你不需要强求所有事情马上发生，而是更容易抱持一种“事情会自然展开、时机会到来”的信念。\n\nTone 1–3 · Left\n\n会更有意识地观察局面，并判断什么时候值得继续等待、什么时候条件正在形成。\n\nTone 4–6 · Right\n\n更容易保持接收和观察，让事情自己展开，在过程中自然看见时机。\n\n正确状态\n\n你更像一个纯粹的观察者。\n\n当遇到问题时，你的动机可以是：\n\n**“看看接下来会发生什么。”**\n\n在正确时机真正出现之前，不必急着介入，而是保持观察和信任。\n\n偏离状态\n\n当你陷入焦虑时，可能失去原本的信任，转而觉得自己必须插手、干预、解决甚至拯救别人。\n\n如果事情最终没有被“修好”，还可能产生强烈的责任压力或负罪感。",
     "presentation": {
       "kind": "variable",
+      "format": "variable-29-v1",
       "sections": [
         {
-          "id": "intro",
-          "start": 0,
-          "end": 42
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 61,
-          "end": 85
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 105,
-          "end": 124
-        },
-        {
-          "id": "transference",
-          "title": "偏离状态",
-          "start": 126,
-          "end": 207,
-          "kind": "deviation",
-          "sourceValue": "hope",
-          "targetValue": "guilt",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:desire": {
-    "summary": "被改变、推动和组织现实的可能吸引。",
-    "detail": "“欲望”带有明显的推动力。\n\n它容易注意什么可以变得更好、什么可以推进，以及自己可以如何影响结果。\n\nTone 1–3 · Left\n\n更容易主动规划目标、步骤和推进方式。\n\nTone 4–6 · Right\n\n更倾向接收当下的机会，再自然参与变化和推动。\n\n欲望动机原本真实存在着目标、企图和推动现实的力量；偏离到纯真动机后，却可能表现成“我什么都不想要”“无所谓”“顺其自然”，表面看似没有目的，实际上仍然被没有承认的欲望推动。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 49
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 68,
-          "end": 86
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 106,
-          "end": 128
-        },
-        {
-          "id": "transference",
-          "title": "偏离状态",
-          "start": 130,
-          "end": 216,
-          "kind": "deviation",
-          "sourceValue": "desire",
-          "targetValue": "innocence",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:need": {
-    "summary": "自然辨认什么是真正必要、必须优先处理的部分。",
-    "detail": "“需求”关注的是必要性。\n\n它会从大量可能性中辨认：哪件事真的需要处理？什么只是多余？什么才是当前最关键的？\n\nTone 1–3 · Left\n\n更聚焦于分析问题，并找到具体需要处理的事项。\n\nTone 4–6 · Right\n\n更容易从整体局面中感受到什么才是真正必要的。\n\n需求动机原本只是辨认什么是真正必要、当前需要处理的问题；偏离到恐惧动机后，则容易开始过度担忧、过度研究和不断收集更多信息，反而迟迟无法处理眼前真正必要的事情。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 54
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 73,
-          "end": 95
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 115,
-          "end": 137
-        },
-        {
-          "id": "transference",
-          "title": "偏离状态",
-          "start": 139,
-          "end": 218,
-          "kind": "deviation",
-          "sourceValue": "need",
-          "targetValue": "fear",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:guilt": {
-    "summary": "自然发现哪里出了问题，并寻找可以修正和改善的方法。",
-    "detail": "这里的“内疚／责任”更接近一种“需要修正”的动力。\n\n它会自然注意：什么出了问题？哪里需要调整？怎样让事情重新回到正常运作的状态？\n\nTone 1–3 · Left\n\n更容易主动分析问题并制定修复方案。\n\nTone 4–6 · Right\n\n更容易从整体运行中察觉哪里不对，再自然产生修正方向。\n\n责任动机原本能够看到哪里出了问题，并产生修复、纠正和让事情回到正轨的动力；偏离到希望动机后，则可能开始期待事情自己变好，回避本来已经看见、也能够处理的问题。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
-          "end": 65
-        },
-        {
-          "id": "tone1to3",
-          "title": "Tone 1–3 · Left",
-          "start": 84,
-          "end": 101
-        },
-        {
-          "id": "tone4to6",
-          "title": "Tone 4–6 · Right",
-          "start": 121,
-          "end": 147
-        },
-        {
-          "id": "transference",
-          "title": "偏离状态",
-          "start": 149,
-          "end": 227,
-          "kind": "deviation",
-          "sourceValue": "guilt",
-          "targetValue": "hope",
-          "terminology": "transference"
-        }
-      ]
-    }
-  },
-  "variable.motivation:innocence": {
-    "summary": "以较少预设和个人议程的方式观察、理解和表达。",
-    "detail": "“纯真”最特别的地方，是它不需要一个明确的个人目标来推动心智。\n\n它更偏向直接体验正在发生的事情，不急着通过恐惧、责任或欲望去控制结果。\n\nTone 1–3 · Left\n\n即使具有较少的个人议程，观察方式仍然可以更集中和明确。\n\nTone 4–6 · Right\n\n更容易保持开放、接收和自然流动，让体验本身带来理解。\n\n纯真动机原本较少个人议程，不急于控制结果，而是直接经历和观察正在发生的事情；偏离到欲望动机后，则容易产生越来越强的目的性，开始想掌控结果、获得特定目标，或让事情按照自己的意图发展。",
-    "presentation": {
-      "kind": "variable",
-      "sections": [
-        {
-          "id": "intro",
-          "start": 0,
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
           "end": 68
         },
         {
           "id": "tone1to3",
           "title": "Tone 1–3 · Left",
           "start": 87,
-          "end": 114
+          "end": 123
         },
         {
           "id": "tone4to6",
           "title": "Tone 4–6 · Right",
-          "start": 134,
-          "end": 160
+          "start": 143,
+          "end": 173
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 181,
+          "end": 260
         },
         {
           "id": "transference",
           "title": "偏离状态",
-          "start": 162,
-          "end": 252,
+          "start": 268,
+          "end": 342,
           "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "hope",
+          "targetValue": "guilt"
+        }
+      ]
+    }
+  },
+  "variable.motivation:desire": {
+    "summary": "追求成就与领导",
+    "detail": "核心动机\n\n这是非常具有推动力的 Motivation。\n\n你的动机可以是渴望更好、渴望拥有、渴望成功，或渴望带领事情向某个方向前进。\n\n这种纯粹的“想要”，本身就是推动你前进的燃料。\n\nTone 1–3 · Left\n\n更容易主动规划目标、步骤和推进方式。\n\nTone 4–6 · Right\n\n更倾向接收当下出现的机会，再自然参与变化和推动。\n\n正确状态\n\n承认自己的野心与欲望。\n\n当你真心渴望某个目标——无论是物质、地位、事业还是精神成长——真实承认“我想要”，反而会让推动力变得清楚。\n\n偏离状态\n\n当你迷失时，可能开始伪装成“我什么都不想要”“无所谓”“顺其自然”。\n\n表面看起来没有目的，内心实际上仍然非常想要某个结果。\n\n这种没有被承认的欲望，会让表达与行动变得别扭、压抑。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
+          "end": 92
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 111,
+          "end": 129
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 149,
+          "end": 173
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 181,
+          "end": 247
+        },
+        {
+          "id": "transference",
+          "title": "偏离状态",
+          "start": 255,
+          "end": 345,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "desire",
+          "targetValue": "innocence"
+        }
+      ]
+    }
+  },
+  "variable.motivation:need": {
+    "summary": "追求必要性与效率",
+    "detail": "核心动机\n\n你的驱动力是判断：\n\n**“这件事是不是绝对必需的？”**\n\n你不会为了做而做。真正需要解决某个问题，或者缺少某个关键资源时，行动的必要性才会变得清楚。\n\nTone 1–3 · Left\n\n更聚焦于分析问题，并找到具体需要处理的事项。\n\nTone 4–6 · Right\n\n更容易从整体局面中感受到什么才是真正必要的。\n\n正确状态\n\n非常务实。\n\n动机围绕“满足当下真正的实际需要”展开，不需要多余装饰，也不需要为了证明什么增加无关步骤。\n\n重点是解决真实存在的痛点和必要问题。\n\n偏离状态\n\n当你迷失时，本来只需要解决眼前的问题，却可能开始过度担忧、过度研究、疯狂收集更多并不相关的信息。\n\n结果反而迟迟无法处理当前真正必要的事情。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
+          "end": 82
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 101,
+          "end": 123
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 143,
+          "end": 165
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 173,
+          "end": 245
+        },
+        {
+          "id": "transference",
+          "title": "偏离状态",
+          "start": 253,
+          "end": 323,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "need",
+          "targetValue": "fear"
+        }
+      ]
+    }
+  },
+  "variable.motivation:guilt": {
+    "summary": "追求修复与提供解决方案",
+    "detail": "核心动机\n\n这里的“内疚／责任”不是一般意义上的自我责备，而更接近一种：\n\n**“如果不去做，我会觉得这件事没有被处理。”**\n\n你的动机是纠正错误、修复系统，并在自己确实能够提供帮助时解决现实问题。\n\nTone 1–3 · Left\n\n更容易主动分析问题并制定修复方案。\n\nTone 4–6 · Right\n\n更容易从整体运行中察觉哪里不对，再自然产生修正方向。\n\n正确状态\n\n你像一个天然的“修理工”或“救火队员”。\n\n当你看到问题，而且知道自己确实有能力解决时，那种想让事情重新回到正常轨道的责任心，会成为非常强的动力。\n\n偏离状态\n\n当压力过大或进入迷失状态时，可能开始对已经看见的问题视而不见，幻想：\n\n**“它自己会好起来的。”**\n\n或者期待其他人来处理本来已经能够看见、也有能力解决的问题。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
+          "end": 100
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 119,
+          "end": 136
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 156,
+          "end": 182
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 190,
+          "end": 263
+        },
+        {
+          "id": "transference",
+          "title": "偏离状态",
+          "start": 271,
+          "end": 353,
+          "kind": "deviation",
+          "terminology": "transference",
+          "sourceValue": "guilt",
+          "targetValue": "hope"
+        }
+      ]
+    }
+  },
+  "variable.motivation:innocence": {
+    "summary": "追求无为与纯粹的体验",
+    "detail": "核心动机\n\n这个 Motivation 最特别的地方，是它的最高状态接近：\n\n**“没有动机。”**\n\n不是被恐惧、欲望或责任驱使，也不是为了达到特定结果而行动，而是单纯进入当下的体验。\n\nTone 1–3 · Left\n\n即使较少个人议程，观察和表达方式仍然可以更集中、明确。\n\nTone 4–6 · Right\n\n更容易保持开放、接收和自然流动，让体验本身带来理解。\n\n正确状态\n\n保持不带目的性的纯真。\n\n不急着控制结果，只是作为一个纯粹的存在去经历、观察和感受。\n\n当没有隐藏议程、不试图操纵事情必须走向某个结果时，反而更容易自然地产生影响。\n\n偏离状态\n\n当你迷失时，可能突然出现越来越强的目的性：\n\n- 想控制结果\n- 想获得特定金钱或权力目标\n- 想让事情按照自己的意图发展\n- 行动越来越充满策略、心机和个人议程\n\n这会让原本自然、无为的状态消失。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心动机",
+          "start": 6,
+          "end": 93
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 112,
+          "end": 139
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 159,
+          "end": 185
+        },
+        {
+          "id": "correctState",
+          "title": "正确状态",
+          "start": 193,
+          "end": 275
+        },
+        {
+          "id": "transference",
+          "title": "偏离状态",
+          "start": 283,
+          "end": 382,
+          "kind": "deviation",
+          "terminology": "transference",
           "sourceValue": "innocence",
-          "targetValue": "desire",
-          "terminology": "transference"
+          "targetValue": "desire"
         }
       ]
     }
@@ -1419,5 +1647,138 @@ export default {
         }
       ]
     }
+  },
+  "variable.introduction": {
+    "summary": "Variable（四箭头）总说明",
+    "detail": "核心说明\n\nVariable（四箭头）建立在更细的 Human Design 子结构之上：\n\n**Gate（闸门） → Line（爻线） → Color（基色） → Tone（基调） → Base（基质）**\n\n箭头方向由 Tone 决定：\n\n- Tone 1、2、3 → Left（左向）\n- Tone 4、5、6 → Right（右向）\n\n四个 Variable 的数据来源关系：\n\n- Design Sun / Earth（设计太阳／地球）→ Determination（摄取）\n- Design Nodes（设计南北交点）→ Environment（环境）\n- Personality Nodes（人格南北交点）→ Perspective（视角）\n- Personality Sun / Earth（人格太阳／地球）→ Motivation（动机）\n\n左右方向描述的是同一个 Color 在不同 Tone 区间下的运作倾向。Color 决定“是哪一种主题”，Tone 进一步决定这个主题更偏 Left 还是 Right 的方式运行。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心说明",
+          "start": 6,
+          "end": 470
+        }
+      ]
+    },
+    "name": "Variable（四箭头）总说明"
+  },
+  "variable.determination:introduction": {
+    "summary": "Determination（摄取）公共说明",
+    "detail": "核心说明\n\nDetermination 描述身体如何消化食物，也涉及大脑如何吸收信息、学习和处理生活经验。\n\nTone 1–3 · Left\n\n左向偏主动、规律与结构化。大脑较主动地处理输入，更适合清楚的节奏、框架与专注的摄取方式。\n\nTone 4–6 · Right\n\n右向偏接收、自然与随顺。不需要过度强迫自己按照固定结构吸收，身体和大脑更适合在自然状态下接收食物、信息和经验。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心说明",
+          "start": 6,
+          "end": 53
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 72,
+          "end": 116
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 136,
+          "end": 191
+        }
+      ]
+    },
+    "name": "Determination（摄取）公共说明"
+  },
+  "variable.environment:introduction": {
+    "summary": "Environment（环境）公共说明",
+    "detail": "核心说明\n\nEnvironment 描述什么样的物理环境更容易让身体感到舒适和被滋养，也关系到一个人在什么场域中更容易以较小阻力遇到适合的人、事与机会。\n\nTone 1–3 · Left\n\n左向偏主动观察与参与。人在环境中更容易保持活力、主动使用空间，并对周围发生的事情保持较明确的参与感。\n\nTone 4–6 · Right\n\n右向偏放松、融入与接收。环境合适时，身体不需要持续掌控，可以卸下防备，让场域中的人、信息和体验自然进入感知。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心说明",
+          "start": 6,
+          "end": 76
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left",
+          "start": 95,
+          "end": 145
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right",
+          "start": 165,
+          "end": 219
+        }
+      ]
+    },
+    "name": "Environment（环境）公共说明"
+  },
+  "variable.perspective:introduction": {
+    "summary": "Perspective（视角）公共说明",
+    "detail": "核心说明\n\nPerspective 是看待世界的滤镜。\n\n当身体处在合适的 Environment 中，Perspective 描述眼睛和注意力天然会看向哪里、被什么吸引，以及一个人最自然的观察角度。\n\n当视角处于正确状态时，会比较清晰地看见世界；当视角偏离时，会出现 **Distraction（分心）**，注意力转向对应的另一种 Perspective。\n\nTone 1–3 · Left · Active（聚焦型视角）\n\n观察方式偏聚焦，需要相对明确的目标。像使用望远镜一样，一次盯住一个点深入观察，并过滤背景杂音。\n\nTone 4–6 · Right · Passive（广角型视角）\n\n观察方式偏周边／广角。不需要死死盯住一个目标，更像广角镜头，在放松状态下通过余光和整体氛围捕捉信息。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心说明",
+          "start": 6,
+          "end": 179
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active（聚焦型视角）",
+          "start": 214,
+          "end": 261
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · Passive（广角型视角）",
+          "start": 298,
+          "end": 348
+        }
+      ]
+    },
+    "name": "Perspective（视角）公共说明"
+  },
+  "variable.motivation:introduction": {
+    "summary": "Motivation（动机）公共说明",
+    "detail": "核心说明\n\nMotivation 描述头脑处理信息时的底层驱动力：为什么会去思考、表达或推动某件事，心智真正从什么动机出发。\n\n当 Motivation 处在正确状态时，心智较清明；当焦虑或迷失时，动机可能发生 **Transference（动机转移）**，偏向对应的另一种 Motivation。\n\nTone 1–3 · Left · Active（战略性心智）\n\n心智偏聚焦、逻辑和战略性。更容易通过分析、计划、目标和结构处理问题，在思考中主动过滤无关信息。\n\nTone 4–6 · Right · Passive（接受性心智）\n\n心智偏发散、全景与接收性。不适合过度死磕细节或制定僵硬计划，更容易在放松状态下接收信息，让不同线索自然连接成整体理解。",
+    "presentation": {
+      "kind": "variable",
+      "format": "variable-29-v1",
+      "sections": [
+        {
+          "id": "core",
+          "title": "核心说明",
+          "start": 6,
+          "end": 149
+        },
+        {
+          "id": "tone1to3",
+          "title": "Tone 1–3 · Left · Active（战略性心智）",
+          "start": 184,
+          "end": 231
+        },
+        {
+          "id": "tone4to6",
+          "title": "Tone 4–6 · Right · Passive（接受性心智）",
+          "start": 268,
+          "end": 327
+        }
+      ]
+    },
+    "name": "Motivation（动机）公共说明"
   }
 };
