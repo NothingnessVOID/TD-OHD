@@ -17,6 +17,7 @@ import { calculateLineFixings } from './features/transit-timeline/line-fixing.js
 import { renderVariableArrowRow } from './lib/variable-arrows.js';
 import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
+import { getCenterPalette } from './lib/center-palette-registry.js';
 import { getTransitSourceMode } from './lib/skin-registry.js';
 import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
@@ -47,7 +48,8 @@ const CENTER_KEYS = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 
 const skinToken = (style, name) => style.getPropertyValue(name).trim();
 const centerColors = (style) => Object.fromEntries(CENTER_KEYS.map(key => [key, {
   edge: skinToken(style, `--hd-center-${key}`),
-  core: skinToken(style, `--hd-center-${key}-core`)
+  core: skinToken(style, `--hd-center-${key}-core`),
+  on: skinToken(style, `--hd-center-${key}-on`)
 }]));
 
 const SHAPE_KEY_MAP = {
@@ -101,9 +103,7 @@ function palette(style) {
     connectionAOn: read('--hd-connection-a-on'),
     connectionBOn: read('--hd-connection-b-on'),
     connectionBothOn: read('--hd-connection-both-on'),
-    connectionACore: read('--hd-connection-a-core'),
-    connectionBCore: read('--hd-connection-b-core'),
-    connectionBridgedCore: read('--hd-connection-bridged-core')
+    connectionBridgedOn: read('--hd-connection-bridged-on')
   };
 }
 
@@ -133,6 +133,8 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   const style = getComputedStyle(document.documentElement);
   const colors = palette(style);
+  const centerPalette = centerColors(style);
+  const solidCenters = getCenterPalette(document.documentElement.getAttribute('data-center-palette'))?.render === 'solid';
 
   // Composite (two-person) overlay: color the body by WHO brings each gate,
   // instead of by personality/design. The half-channel model makes this read
@@ -253,35 +255,26 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   // Core and edge are CSS-derived skin tokens, so gradients accept modern CSS
   // color formats without parsing or modifying a hex value in JavaScript.
-  if (!composite) {
-    for (const [key, color] of Object.entries(centerColors(style))) {
+  if (!composite && !solidCenters) {
+    for (const [key, color] of Object.entries(centerPalette)) {
       const grad = svgEl('radialGradient', { id: paint(`cg-${key}`), cx: '0.5', cy: '0.36', r: '0.78' });
       grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': color.core }));
       grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': color.edge }));
       defs.appendChild(grad);
     }
-  } else {
-    // Person colors + a "together" hue for centers neither defines alone.
+  } else if (composite) {
+    // Relationship ownership colors; ordinary Center Palette does not apply.
     const colA = composite.colorA, colB = composite.colorB;
-    const colBridged = composite.colorBridged;
     // Two-tone stripe for gates both people carry (companionship at gate level).
     const ab = svgEl('pattern', { id: paint('stripe-ab'), width: '8', height: '8', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
     ab.appendChild(svgEl('rect', { width: '8', height: '8', fill: colA }));
     ab.appendChild(svgEl('rect', { width: '4', height: '8', fill: colB }));
     defs.appendChild(ab);
-    const radial = (id, color, core) => {
-      const grad = svgEl('radialGradient', { id: paint(id), cx: '0.5', cy: '0.36', r: '0.78' });
-      grad.appendChild(svgEl('stop', { offset: '0', 'stop-color': core }));
-      grad.appendChild(svgEl('stop', { offset: '1', 'stop-color': color }));
-      defs.appendChild(grad);
-    };
-    radial('cc-a', colA, colors.connectionACore);
-    radial('cc-b', colB, colors.connectionBCore);
-    radial('cc-bridged', colBridged, colors.connectionBridgedCore);
-    // Both define it → a diagonal blend from one person's hue to the other's.
+    // Both preserves two ownership colors with a hard diagonal boundary.
     const both = svgEl('linearGradient', { id: paint('cc-both'), x1: '0', y1: '0', x2: '1', y2: '1' });
-    both.appendChild(svgEl('stop', { offset: '0', 'stop-color': colA }));
-    both.appendChild(svgEl('stop', { offset: '1', 'stop-color': colB }));
+    for (const [offset, color] of [['0', colA], ['0.5', colA], ['0.5', colB], ['1', colB]]) {
+      both.appendChild(svgEl('stop', { offset, 'stop-color': color }));
+    }
     defs.appendChild(both);
   }
   if (transit) {
@@ -324,13 +317,43 @@ export function renderBodygraph(container, chart, opts = {}) {
       : personality ? colors.personalityOn
       : design ? colors.designOn : colors.inactiveOn;
   };
+  const centerPaint = key => solidCenters ? centerPalette[key].edge : `url(#${paint(`cg-${key}`)})`;
   const centerFill = (key, defined) => {
-    if (transit?.mode === 'transit-only') return defined ? `url(#${paint(`cg-${key}`)})` : colors.undefinedCenter;
+    if (transit?.mode === 'transit-only') return defined ? centerPaint(key) : colors.undefinedCenter;
     if (composite) {
       const o = centerOwner(key);
-      return o ? `url(#${paint(`cc-${o}`)})` : colors.undefinedCenter;
+      return o === 'both' ? `url(#${paint('cc-both')})` : o === 'a' ? composite.colorA
+        : o === 'b' ? composite.colorB : o === 'bridged' ? composite.colorBridged : colors.undefinedCenter;
     }
-    return defined ? `url(#${paint(`cg-${key}`)})` : colors.undefinedCenter;
+    return defined ? centerPaint(key) : colors.undefinedCenter;
+  };
+
+  // Visual ownership only. Existing mechanic classification and calculation stay unchanged.
+  const channelHalfFill = gate => {
+    if (!composite) return gateFill(gate);
+    const channels = compChannels.filter(ch => ch.gates.includes(gate));
+    if (!channels.length) return gateFill(gate);
+    const owners = new Set();
+    for (const ch of channels) {
+      const dynamic = channelDynamic(ch);
+      if (dynamic === 'companionship') { owners.add('a'); owners.add('b'); }
+      else if (dynamic === 'compromise' || dynamic === 'dominance') {
+        owners.add(ch.gates.every(g => aGates.has(g)) ? 'a' : 'b');
+      } else if (dynamic === 'electromagnetic') owners.add(gateOwner(gate));
+    }
+    return owners.has('a') && owners.has('b') ? `url(#${paint('stripe-ab')})`
+      : owners.has('a') ? composite.colorA : owners.has('b') ? composite.colorB : gateFill(gate);
+  };
+  const inactiveGateOn = gate => {
+    const key = GATES[gate]?.center;
+    if (!definedCenters.has(key)) return colors.inactiveOn;
+    // Transparent inactive circles show the center underneath.
+    if (composite) {
+      const owner = centerOwner(key);
+      return owner === 'a' ? colors.connectionAOn : owner === 'b' ? colors.connectionBOn
+        : owner === 'both' ? colors.connectionBothOn : colors.connectionBridgedOn;
+    }
+    return centerPalette[key].on;
   };
 
   // --- Channel paths (one per gate = half-channel) ---
@@ -349,6 +372,11 @@ export function renderBodygraph(container, chart, opts = {}) {
     let fill = first && second ? `url(#${paint(composite ? 'stripe-ab' : 'stripe-both')})`
       : first ? (composite ? composite.colorA : colors.personality)
       : second ? (composite ? composite.colorB : colors.design) : colors.inactive;
+    if (composite) {
+      const fills = gates.map(channelHalfFill);
+      fill = fills.includes(`url(#${paint('stripe-ab')})`) || (fills.includes(composite.colorA) && fills.includes(composite.colorB))
+        ? `url(#${paint('stripe-ab')})` : fills.find(value => value !== colors.inactive) ?? colors.inactive;
+    }
     if (transit) {
       const hasTransit = gates.some(g => transit.transitGates.has(g));
       const hasNatal = transit.mode !== 'transit-only' && gates.some(g => transit.natalGates.has(g));
@@ -374,7 +402,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     const isActive = activeGates.has(gateNum);
     const path = svgEl('path', {
       d: joinedGates.has(gateNum) ? joinedPaths[gateNum] || pathData : pathData,
-      fill: gateFill(gateNum),
+      fill: channelHalfFill(gateNum),
       opacity: isActive ? '1' : colors.inactiveChannelOpacity,
       'data-gate': gateNum,
       class: 'bg-gate-path'
@@ -482,7 +510,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
       'font-family': skinToken(style, '--font'),
-      fill: isActive ? gateOnColor(gateNum) : colors.inactiveOn,
+      fill: isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum),
       'pointer-events': 'none',
       text: gateNum
     }));
@@ -609,7 +637,7 @@ export function renderBodygraph(container, chart, opts = {}) {
         const txt = o === 'both' ? t('Both of you define this')
           : o === 'a' ? t('{label} defines this', { label: composite.labelA })
           : o === 'b' ? t('{label} defines this', { label: composite.labelB })
-          : o === 'bridged' ? t('Defined together — neither of you has it alone')
+          : o === 'bridged' ? t('Newly defined in the relationship')
           : t('Open between you');
         return `<strong>${centerTitle}</strong><div class="bg-tt-channel">${escapeHTML(txt)}</div>`;
       }

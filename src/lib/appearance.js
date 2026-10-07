@@ -1,4 +1,5 @@
-import { getSkin as lookupSkin, getCenterPalette as lookupPalette, defaultSkinForMode } from './skin-registry.js';
+import { getCenterPalette as lookupPalette } from './center-palette-registry.js';
+import { getSkin as lookupSkin, defaultSkinForMode } from './skin-registry.js';
 
 export const DEFAULT_SITE_SKIN = 'default-light';
 export const DEFAULT_HD_SKIN = 'classic'; // Legacy name: this now means Center Palette.
@@ -9,6 +10,8 @@ const listeners = new Set();
 let overridesBySkin = {};
 let preferences = {};
 let skinMode = 'manual';
+let centerPaletteMode = 'skin-default';
+let manualCenterPalette = DEFAULT_HD_SKIN;
 let systemScheme = null;
 export const SKIN_CUSTOM_TOKENS = Object.freeze({
   accent: '--accent', personality: '--hd-personality', design: '--hd-design',
@@ -25,11 +28,12 @@ const validIdentifier = id => typeof id === 'string' && /^[a-z][a-z0-9-]*$/.test
 export const getSkinId = () => lookupSkin(root().getAttribute('data-skin'))?.id ?? DEFAULT_SITE_SKIN;
 export const getSkinMode = () => skinMode;
 export const getTheme = () => lookupSkin(getSkinId()).mode;
+export const getCenterPaletteMode = () => centerPaletteMode;
 export const getCenterPalette = () => lookupPalette(root().getAttribute('data-center-palette'))?.id ?? DEFAULT_HD_SKIN;
 export const getSiteSkin = getSkinId;
 export const getHumanDesignSkin = getCenterPalette;
 export const getAppearance = () => ({
-  skin: getSkinId(), skinMode: getSkinMode(), centerPalette: getCenterPalette(),
+  skin: getSkinId(), skinMode: getSkinMode(), centerPalette: getCenterPalette(), centerPaletteMode,
   theme: getTheme(), siteSkin: getSkinId(), humanDesignSkin: getCenterPalette()
 });
 // Compatibility shape for existing color/size controls; persisted slots remain separate.
@@ -58,7 +62,7 @@ function applyOverrides() {
   }
 }
 function persist() {
-  write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinMode, skinId: getSkinId(), centerPalette: getCenterPalette(), overridesBySkin, preferences }));
+  write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinMode, skinId: getSkinId(), centerPalette: getCenterPalette(), centerPaletteMode, manualCenterPalette, overridesBySkin, preferences }));
   write(THEME_STORAGE_KEY, getTheme()); // Compatibility readers only; Skin is authoritative.
 }
 function notify() { applyOverrides(); for (const listener of listeners) listener(getAppearance()); }
@@ -71,6 +75,7 @@ function size(values) {
 }
 export function initAppearance() {
   overridesBySkin = {}; preferences = {}; skinMode = 'manual';
+  centerPaletteMode = 'skin-default'; manualCenterPalette = DEFAULT_HD_SKIN;
   // Reinitialization must not duplicate the system-theme listener.
   if (systemScheme?.removeEventListener) systemScheme.removeEventListener('change', onSystemSchemeChange);
   else systemScheme?.removeListener?.(onSystemSchemeChange);
@@ -84,6 +89,10 @@ export function initAppearance() {
     skinMode = saved.skinMode === 'auto' ? 'auto' : 'manual';
     if (lookupSkin(saved.skinId)) skinId = saved.skinId;
     if (lookupPalette(saved.centerPalette)) centerPalette = saved.centerPalette;
+    // Older stored palettes represent an explicit choice; fresh sessions follow Skin.
+    centerPaletteMode = saved.centerPaletteMode === 'skin-default' ? 'skin-default'
+      : saved.centerPaletteMode === 'manual' || lookupPalette(saved.centerPalette) ? 'manual' : 'skin-default';
+    manualCenterPalette = lookupPalette(saved.manualCenterPalette)?.id ?? centerPalette;
     for (const [id, values] of Object.entries(saved.overridesBySkin || {})) {
       // Keep dormant future Skin preferences; never activate an unregistered Skin.
       if (validIdentifier(id)) Object.defineProperty(overridesBySkin, id, { value: colors(values), enumerable: true, writable: true, configurable: true });
@@ -92,7 +101,7 @@ export function initAppearance() {
   } else {
     const legacy = parse(LEGACY_APPEARANCE_STORAGE_KEY);
     if ([1, 2].includes(legacy?.version)) {
-      if (lookupPalette(legacy.preset)) centerPalette = legacy.preset;
+      if (lookupPalette(legacy.preset)) { centerPalette = legacy.preset; manualCenterPalette = centerPalette; centerPaletteMode = 'manual'; }
       let effective = {};
       if (legacy.version === 1) {
         // Exactly the previous effective-global precedence. Preserve raw legacy storage as well.
@@ -110,8 +119,7 @@ export function initAppearance() {
   if (skinMode === 'auto') skinId = resolvedSystemSkin();
   root().setAttribute('data-skin', skinId);
   root().setAttribute('data-theme', lookupSkin(skinId).mode);
-  root().setAttribute('data-center-palette', centerPalette);
-  root().setAttribute('data-hd-skin', centerPalette); // Compatibility selector mirror.
+  applyCenterPalette(skinId); // Compatibility selector mirror.
   applyOverrides(); persist();
   if (systemScheme?.addEventListener) systemScheme.addEventListener('change', onSystemSchemeChange);
   else systemScheme?.addListener?.(onSystemSchemeChange);
@@ -121,6 +129,11 @@ function onSystemSchemeChange() {
   if (skinMode === 'auto') applySkin(resolvedSystemSkin(), 'auto');
 }
 // Auto resolves to a registered Skin and uses the same override/refresh path as manual selection.
+function applyCenterPalette(skinId = getSkinId()) {
+  const id = centerPaletteMode === 'skin-default' ? lookupSkin(skinId).defaultCenterPalette : manualCenterPalette;
+  root().setAttribute('data-center-palette', id);
+  root().setAttribute('data-hd-skin', id);
+}
 function applySkin(id, mode) {
   const skin = lookupSkin(id);
   if (!skin) throw new TypeError('Unknown Skin');
@@ -128,6 +141,7 @@ function applySkin(id, mode) {
   skinMode = mode;
   root().setAttribute('data-skin', id);
   root().setAttribute('data-theme', skin.mode);
+  applyCenterPalette(id);
   persist(); notify();
 }
 export function setSkin(id) { applySkin(id, 'manual'); }
@@ -139,10 +153,14 @@ export function setTheme(mode) {
 export function setSiteSkin(id) { setSkin(id === 'default' ? defaultSkinForMode(getTheme()) : id); }
 export function setCenterPalette(id) {
   if (!lookupPalette(id)) throw new TypeError('Unknown Center Palette');
-  if (getCenterPalette() === id) return;
-  root().setAttribute('data-center-palette', id);
-  root().setAttribute('data-hd-skin', id);
+  if (getCenterPalette() === id && centerPaletteMode === 'manual') return;
+  centerPaletteMode = 'manual'; manualCenterPalette = id;
+  applyCenterPalette();
   persist(); notify();
+}
+export function setSkinDefaultCenterPalette() {
+  centerPaletteMode = 'skin-default';
+  applyCenterPalette(); persist(); notify();
 }
 export const setHumanDesignSkin = setCenterPalette;
 export function setCustomOverride(key, value) {
@@ -160,14 +178,14 @@ export function restoreCurrentSkin() {
 }
 export const restoreCurrentPreset = restoreCurrentSkin;
 export function resetAppearance() {
-  // Existing API retains mode. Write an empty v3 state so old data cannot resurrect.
-  const id = defaultSkinForMode(getTheme());
+  // Reset Appearance to the fixed site default. Empty v3 state prevents legacy overrides from returning.
+  const id = DEFAULT_SITE_SKIN;
   skinMode = 'manual';
   overridesBySkin = {}; preferences = {};
   root().setAttribute('data-skin', id);
   root().setAttribute('data-theme', lookupSkin(id).mode);
-  root().setAttribute('data-center-palette', DEFAULT_HD_SKIN);
-  root().setAttribute('data-hd-skin', DEFAULT_HD_SKIN);
+  centerPaletteMode = 'skin-default'; manualCenterPalette = DEFAULT_HD_SKIN;
+  applyCenterPalette(id);
   persist(); notify();
 }
 export function onAppearanceChange(listener) { listeners.add(listener); return () => listeners.delete(listener); }

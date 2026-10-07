@@ -93,10 +93,7 @@
       </section>
       <section class="appearance-section" aria-labelledby="center-palette-title">
         <h3 id="center-palette-title" data-i18n="Center Palette">Center Palette</h3>
-        <div class="center-palettes" role="group" aria-labelledby="center-palette-title">
-          <button type="button" data-center-palette="classic"><span class="skin-swatch classic-swatch" aria-hidden="true"></span><span data-i18n="Classic">Classic</span></button>
-          <button type="button" data-center-palette="chakra"><span class="skin-swatch chakra-swatch" aria-hidden="true"></span><span data-i18n="Chakra">Chakra</span></button>
-        </div>
+        <div id="center-palette-picker" class="center-palettes" role="group" aria-labelledby="center-palette-title"></div>
       </section>
       <section class="appearance-section" aria-labelledby="skin-custom-title">
       <h3 id="skin-custom-title" data-i18n="Customize">Customize</h3>
@@ -109,7 +106,7 @@
         <label for="appearance-gateNumberSize" class="skin-size-field"><span data-i18n="Gate Number Size">Gate Number Size</span><span class="skin-size-control"><input type="range" id="appearance-gateNumberSize" data-appearance-key="gateNumberSize" min="14" max="30" step="1"><input type="number" id="appearance-size-value" data-appearance-key="gateNumberSize" min="14" max="30" step="1" value="22" aria-label="Gate Number Size" data-i18n-aria-label="Gate Number Size"><span>px</span></span></label>
       </div>
       </section>
-      <div class="skin-settings-footer"><button type="button" id="appearance-restore" class="btn-secondary" data-i18n="Restore Current Skin">Restore Current Skin</button></div>
+      <div class="skin-settings-footer"><button type="button" id="appearance-restore" class="btn-secondary" data-i18n="Reset Appearance">Reset Appearance</button></div>
     </dialog>
 
     <!-- Birth Data Entry -->

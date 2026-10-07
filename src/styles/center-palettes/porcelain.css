@@ -1,0 +1,31 @@
+/* Approved Center Palette V3. No Skin/source colors here. */
+:root[data-center-palette="porcelain"] {
+  --hd-center-core-edge-ratio: 95%;
+  --hd-center-head: #B7A7C9;
+  --hd-center-head-core: color-mix(in srgb, var(--hd-center-head) 95%, white);
+  --hd-center-head-on: #111111;
+  --hd-center-ajna: #A7B0CE;
+  --hd-center-ajna-core: color-mix(in srgb, var(--hd-center-ajna) 95%, white);
+  --hd-center-ajna-on: #111111;
+  --hd-center-throat: #9DBDD0;
+  --hd-center-throat-core: color-mix(in srgb, var(--hd-center-throat) 95%, white);
+  --hd-center-throat-on: #111111;
+  --hd-center-g: #A8C4B4;
+  --hd-center-g-core: color-mix(in srgb, var(--hd-center-g) 95%, white);
+  --hd-center-g-on: #111111;
+  --hd-center-heart: #A7BEA8;
+  --hd-center-heart-core: color-mix(in srgb, var(--hd-center-heart) 95%, white);
+  --hd-center-heart-on: #111111;
+  --hd-center-spleen: #C8C49B;
+  --hd-center-spleen-core: color-mix(in srgb, var(--hd-center-spleen) 95%, white);
+  --hd-center-spleen-on: #111111;
+  --hd-center-solar: #D6C28B;
+  --hd-center-solar-core: color-mix(in srgb, var(--hd-center-solar) 95%, white);
+  --hd-center-solar-on: #111111;
+  --hd-center-sacral: #D7A98A;
+  --hd-center-sacral-core: color-mix(in srgb, var(--hd-center-sacral) 95%, white);
+  --hd-center-sacral-on: #111111;
+  --hd-center-root: #C9958F;
+  --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 95%, white);
+  --hd-center-root-on: #111111;
+}
