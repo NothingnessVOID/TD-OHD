@@ -1,5 +1,5 @@
 /* Midnight Contrast: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="midnight-contrast"] {
   color-scheme: dark;
@@ -57,13 +57,15 @@
   --hd-planet-column-text: #F0F6FA;
   --hd-personality: #F0F6FA;
   --hd-personality-on: #080F14;
-  --hd-design: #E69582;
+  --hd-design: #7FA7B8;
   --hd-design-on: #080F14;
   --hd-both: #B79BC4;
   --hd-both-on: #080F14;
   --hd-transit: #E6B1C4;
   --hd-transit-on: #1B2025;
   --hd-transit-text: #F0C4D3;
+  --hd-overlay-natal: #A7BAC5;
+  --hd-overlay-natal-on: #0B1318;
   --hd-transit-soft: rgba(230,177,196,0.14);
   --hd-type-generator: #C7AD72;
   --hd-type-manifesting-generator: #D09263;

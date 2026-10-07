@@ -1,5 +1,5 @@
 /* Contemplation: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="contemplation"] {
   color-scheme: light;
@@ -61,10 +61,12 @@
   --hd-design-on: #000000;
   --hd-both: #726678;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #7663A5;
-  --hd-transit-on: #FFFFFF;
-  --hd-transit-text: #594A86;
-  --hd-transit-soft: #ECE9F4;
+  --hd-transit: #7E99A8;
+  --hd-transit-on: #0D171C;
+  --hd-transit-text: #526F80;
+  --hd-overlay-natal: #7B7E83;
+  --hd-overlay-natal-on: #000000;
+  --hd-transit-soft: #E8EDF0;
   --hd-type-generator: #8C815A;
   --hd-type-manifesting-generator: #98715B;
   --hd-type-manifestor: #94666C;

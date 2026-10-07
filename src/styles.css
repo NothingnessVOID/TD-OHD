@@ -964,6 +964,7 @@ body {
 .bg-tooltip .bg-tt-source.completed { color: var(--accent); }
 .bg-tt-design { color: var(--hd-design); font-weight: 600; }
 .bg-tt-personality { color: var(--hd-personality); font-weight: 600; }
+.bg-root[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--hd-overlay-natal); }
 .bg-tt-channel { margin-top: 3px; color: var(--text-secondary); font-size: 11px; }
 
 .bg-compact .bodygraph-svg { width: 100%; height: auto; }

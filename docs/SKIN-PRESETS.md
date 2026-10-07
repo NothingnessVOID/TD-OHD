@@ -1,23 +1,23 @@
-# Skin Presets V2 设计规格
+# Skin Presets V3 设计规格
 
-十一套正式 Skin 中，两套默认配色保持原样，以下是九套新增配色。每套文件显式覆盖九十个 canonical Token。九中心和字体独立，不参与本轮设计。
+十一套正式 Skin 中，两套默认主色保持原样，新增 Overlay Natal / On；默认暗色的 Design On 按本轮可读性要求修正。以下是九套新增配色。每套文件显式覆盖九十二个 canonical Token。九中心和字体独立，不参与本轮设计。
 
 ## 色彩层级（Color hierarchy）
 
-1. Transit / Signal：时间轴主条、行运激活与重点信息。
+1. Transit / Signal：时间轴主条、行运激活与重点信息；视觉焦点不等于必须有最高饱和度。
 2. Personality / Design / Both / Relationship ownership：清楚区分身份，降低彩度。
 3. Type / Circuit / Relationship mechanics：辅助识别，避免彩虹噪声。
 4. Inactive / Undefined / structural UI：中性结构退后。
 
-Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
+Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；`--tl-birth` 使用独立的 `--hd-overlay-natal`，出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
 
-七套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 仅更新 Accent bundle 和相应交互语义。默认两套、Center Palette、字体、Picker 布局、Storage V3 不变。
+七套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 仅更新 Accent bundle 和相应交互语义。默认两套主色、Center Palette、字体、Picker 布局、Storage V3 不变。
 
 ## 来源与边界
 
 网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
 
-参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design、Type、Circuit、Relationship 主色以本轮 Skin Palette V2 附件为最终规格。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
+参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design 来源色以本轮 Skin Palette V3 附件为最终规格；Type、Circuit、Relationship 延续 V2，不在本轮改色。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
 
 未指定的 on/text/soft、图表中性色、阴影等是本轮补齐的 TD-OHD 设计值。使用一次性颜色计算辅助确定后，最终结果写成明确 CSS；Skin 默认值不依赖统一 runtime 混色公式。可以在同一 Skin 内引用对应 surface/border，不跨分类 alias 主色。
 
@@ -30,7 +30,34 @@ Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#4
 - Relationship 四类状态独立于 Circuit，尽管某些批准数值恰巧相同，仍显式保存不同 Token。
 - 每 Skin 五项 override 和全局字号沿用 v3，无新存储迁移。用户改 Transit 时延续 Foundation 的列文字明暗处理；未自定义时采用各 Skin 明确的 text 值，Restore / 切换均会移除临时文字覆盖。
 - 九中心仅确认能渲染；之后另开九中心适配任务。
-- 主色与 Transit on/text/soft 严格采用 V2 批准值；其他来源和关系前景以可读性选定。最终对比度收口采用用户批准的草香 On `#09170F` 与珊瑚 Text `#B75240`，所有来源 On / Transit Text 均要求至少 4.5:1。Circuit soft 是每套 6–12% 的浅 surface tint；Relationship core 使用每套不同的中性高光与强度，最终均写为明确值。
+- 主色与明确指定的 Transit on/text/soft、Overlay Natal / On 采用 V3 批准值。没有指定的新 Transit soft 以 9% 主色浅背景固化；其余来源 On 以可读性选定。所有 Personality / Design / Transit / Overlay Natal On 均至少 4.5:1。Circuit soft 是每套 6–12% 的浅 surface tint；Relationship core 使用每套不同的中性高光与强度，最终均写为明确值。
+
+## 每 Skin 的行运来源策略
+
+Registry 的 `transitSourceMode` 为 `split` 或 `unified-natal`，它是展示配置，不计入颜色 Token，不进入计算模型或 Storage V3。
+
+- 普通出生图永远使用 Personality / Design / P-D stripe。
+- `split` 行运图保留 Personality / Design，Transit 使用原有 ring / hatch。
+- `unified-natal` 行运图将所有 natal gate、半通道、Integration span 和出生行星列统一使用 Overlay Natal；共有激活保留 Transit ring / hatch，去除 P-D stripe。
+- Transit-only 不读取出生来源颜色；两个出生行星栏目保留结构，在该模式隐藏。
+- Timeline Tracks / 四项来源 Legend 一律使用 Overlay Natal vs Transit；split BodyGraph 仍显示三来源。
+- Appearance 切换沿用现有刷新，出生图 / 关系图不被行运展示策略重着色。临时 Line Fixing 标记继续使用 Transit Text，tooltip 文案不变。
+
+| Skin | Overlay Natal | On | transitSourceMode |
+|---|---|---|---|
+| `default-light` | `#6B6560` | `#FFFFFF` | `split` |
+| `default-dark` | `#9E978E` | `#16130F` | `split` |
+| `high-contrast` | `#74716D` | `#FFFFFF` | `split` |
+| `grass-aroma` | `#748079` | `#07110C` | `split` |
+| `contemplation` | `#7B7E83` | `#000000` | `split` |
+| `absolutely` | `#6F6A65` | `#FFFFFF` | `split` |
+| `delve` | `#6F6F6F` | `#FFFFFF` | `unified-natal` |
+| `deep-think` | `#747B8A` | `#000000` | `split` |
+| `new-warm-paper` | `#756B60` | `#FFFFFF` | `split` |
+| `midnight-contrast` | `#A7BAC5` | `#0B1318` | `split` |
+| `coral` | `#6A7680` | `#FFFFFF` | `split` |
+
+默认暗色原有 Design 主色不变，Design On 调整为 `#16130F`，避免原有白字低于普通小字对比度。九中心仍独立。
 
 ## 完整规格
 
@@ -40,7 +67,7 @@ Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#4
 
 ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.css`
 
-暖白与钢蓝 UI；深青绿 Signal，砖红为辅助。
+墨灰、砖红、钢蓝 Transit，保留清楚的三来源区分。
 
 网站主 Palette：bg `#FAF8F7` / elevated `#FDFBFA` / sunken `#F3F1F0` / text `#1A1C1E` / accent `#3A6B85`
 
@@ -102,16 +129,18 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#4A4E52` |
 | `--hd-planet-column-text` | `#1A1C1E` |
-| `--hd-personality` | `#26292C` |
+| `--hd-personality` | `#202428` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#B6534B` |
+| `--hd-design` | `#B84A44` |
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#756454` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#28706D` |
+| `--hd-transit` | `#3A6B85` |
 | `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#1E5654` |
-| `--hd-transit-soft` | `#E6F0EF` |
+| `--hd-transit-text` | `#2E5870` |
+| `--hd-overlay-natal` | `#74716D` |
+| `--hd-overlay-natal-on` | `#FFFFFF` |
+| `--hd-transit-soft` | `#E9EBED` |
 | `--hd-type-generator` | `#9A7A35` |
 | `--hd-type-manifesting-generator` | `#A56C3C` |
 | `--hd-type-manifestor` | `#9E544E` |
@@ -145,7 +174,7 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 
 ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 
-灰绿环境与森林绿 Signal；暖陶土辅助，不使用明显蓝色重点。
+墨绿、陶土、草木绿 Transit；不增加明显蓝色。
 
 网站主 Palette：bg `#F5F8F3` / elevated `#F9FBF7` / sunken `#EFF3EC` / text `#2E3832` / accent `#5BA88C`
 
@@ -213,10 +242,12 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--hd-design-on` | `#07110C` |
 | `--hd-both` | `#7B704C` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#3F8D5E` |
-| `--hd-transit-on` | `#09170F` |
-| `--hd-transit-text` | `#2C6A45` |
-| `--hd-transit-soft` | `#E6F0E9` |
+| `--hd-transit` | `#4D9179` |
+| `--hd-transit-on` | `#07110C` |
+| `--hd-transit-text` | `#326B55` |
+| `--hd-overlay-natal` | `#748079` |
+| `--hd-overlay-natal-on` | `#07110C` |
+| `--hd-transit-soft` | `#E6EFE8` |
 | `--hd-type-generator` | `#8F8050` |
 | `--hd-type-manifesting-generator` | `#9E6F4D` |
 | `--hd-type-manifestor` | `#9E6559` |
@@ -250,7 +281,7 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 
 ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.css`
 
-雾灰蓝环境与灰紫 Signal，尘玫瑰辅助。
+石墨、尘玫瑰、雾灰蓝 Transit；不再用额外紫色 Signal。
 
 网站主 Palette：bg `#F3F5F7` / elevated `#F8F9FB` / sunken `#ECEFF2` / text `#2C3238` / accent `#7E99A8`
 
@@ -318,10 +349,12 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 | `--hd-design-on` | `#000000` |
 | `--hd-both` | `#726678` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#7663A5` |
-| `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#594A86` |
-| `--hd-transit-soft` | `#ECE9F4` |
+| `--hd-transit` | `#7E99A8` |
+| `--hd-transit-on` | `#0D171C` |
+| `--hd-transit-text` | `#526F80` |
+| `--hd-overlay-natal` | `#7B7E83` |
+| `--hd-overlay-natal-on` | `#000000` |
+| `--hd-transit-soft` | `#E8EDF0` |
 | `--hd-type-generator` | `#8C815A` |
 | `--hd-type-manifesting-generator` | `#98715B` |
 | `--hd-type-manifestor` | `#94666C` |
@@ -355,7 +388,7 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 
 ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 
-暖奶油与暖灰背景，Clay Orange 承担 Signal，冷灰 Design 退后。
+墨黑、暖灰褐、Clay Orange Transit；Design 不再是蓝灰。
 
 网站主 Palette：bg `#F4F3EE` / elevated `#FAF9F5` / sunken `#EDEAE2` / text `#2D2B28` / accent `#D97757`
 
@@ -417,15 +450,17 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6B6864` |
 | `--hd-planet-column-text` | `#2D2B28` |
-| `--hd-personality` | `#26221F` |
+| `--hd-personality` | `#141413` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#6E7880` |
+| `--hd-design` | `#7F7068` |
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#786C58` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#D97757` |
 | `--hd-transit-on` | `#1A1411` |
 | `--hd-transit-text` | `#A74D32` |
+| `--hd-overlay-natal` | `#6F6A65` |
+| `--hd-overlay-natal-on` | `#FFFFFF` |
 | `--hd-transit-soft` | `#F7E8E2` |
 | `--hd-type-generator` | `#9B8051` |
 | `--hd-type-manifesting-generator` | `#A96C4A` |
@@ -460,7 +495,7 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 
 ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 
-白黑灰极简；黑色 Signal，低彩度辅助语义。
+出生图黑 / 灰；行运图 Natal 灰 / Transit 黑，采用 unified-natal。
 
 网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#1A1A1A`
 
@@ -522,16 +557,18 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6E6E6E` |
 | `--hd-planet-column-text` | `#1A1A1A` |
-| `--hd-personality` | `#5A5A5A` |
+| `--hd-personality` | `#1A1A1A` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#9A5D57` |
+| `--hd-design` | `#6F6F6F` |
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#6F6963` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#111111` |
 | `--hd-transit-on` | `#FFFFFF` |
 | `--hd-transit-text` | `#1A1A1A` |
-| `--hd-transit-soft` | `#EFEFEF` |
+| `--hd-overlay-natal` | `#6F6F6F` |
+| `--hd-overlay-natal-on` | `#FFFFFF` |
+| `--hd-transit-soft` | `#EAEAEA` |
 | `--hd-type-generator` | `#82745C` |
 | `--hd-type-manifesting-generator` | `#896A55` |
 | `--hd-type-manifestor` | `#895A56` |
@@ -565,7 +602,7 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 
 ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 
-主要蓝色 Skin；明亮蓝 Signal，灰粉 Design。
+蓝黑、暖红、高识别度蓝 Transit。
 
 网站主 Palette：bg `#FCFCFD` / elevated `#F8F8FA` / sunken `#F0F0F2` / text `#1D1D1F` / accent `#4D6BFE`
 
@@ -636,6 +673,8 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 | `--hd-transit` | `#4660E5` |
 | `--hd-transit-on` | `#FFFFFF` |
 | `--hd-transit-text` | `#354CC0` |
+| `--hd-overlay-natal` | `#747B8A` |
+| `--hd-overlay-natal-on` | `#000000` |
 | `--hd-transit-soft` | `#E9EDFF` |
 | `--hd-type-generator` | `#9C8353` |
 | `--hd-type-manifesting-generator` | `#A8744D` |
@@ -670,7 +709,7 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 
 ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-paper.css`
 
-暖纸墨色，青灰蓝界面秩序与朱砂 Signal。
+墨色 Personality、朱砂 Design、青灰蓝 Transit，恢复三色身份。
 
 网站主 Palette：bg `#F5EFE4` / elevated `#FBF7EE` / sunken `#EFE8DB` / text `#2A2622` / accent `#537D96`
 
@@ -732,16 +771,18 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#4A433C` |
 | `--hd-planet-column-text` | `#2A2622` |
-| `--hd-personality` | `#302923` |
+| `--hd-personality` | `#2A2622` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#64747D` |
+| `--hd-design` | `#8B2C1F` |
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#78684F` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#A84A36` |
-| `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#7C3529` |
-| `--hd-transit-soft` | `#F2E3DC` |
+| `--hd-transit` | `#537D96` |
+| `--hd-transit-on` | `#080605` |
+| `--hd-transit-text` | `#3F6179` |
+| `--hd-overlay-natal` | `#756B60` |
+| `--hd-overlay-natal-on` | `#FFFFFF` |
+| `--hd-transit-soft` | `#E3E8E8` |
 | `--hd-type-generator` | `#8D784C` |
 | `--hd-type-manifesting-generator` | `#956447` |
 | `--hd-type-manifestor` | `#884E42` |
@@ -779,7 +820,7 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 
 ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-contrast.css`
 
-深青夜环境，暖玫瑰 Signal 与柔和珊瑚、紫灰辅助。
+月白 Personality、青蓝 Design、暖玫瑰 Transit。
 
 网站主 Palette：bg `#26343D` / elevated `#30414B` / sunken `#202C34` / text `#F0F6FA` / accent `#E6B1C4`
 
@@ -843,13 +884,15 @@ ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-co
 | `--hd-planet-column-text` | `#F0F6FA` |
 | `--hd-personality` | `#F0F6FA` |
 | `--hd-personality-on` | `#080F14` |
-| `--hd-design` | `#E69582` |
+| `--hd-design` | `#7FA7B8` |
 | `--hd-design-on` | `#080F14` |
 | `--hd-both` | `#B79BC4` |
 | `--hd-both-on` | `#080F14` |
 | `--hd-transit` | `#E6B1C4` |
 | `--hd-transit-on` | `#1B2025` |
 | `--hd-transit-text` | `#F0C4D3` |
+| `--hd-overlay-natal` | `#A7BAC5` |
+| `--hd-overlay-natal-on` | `#0B1318` |
 | `--hd-transit-soft` | `rgba(230,177,196,0.14)` |
 | `--hd-type-generator` | `#C7AD72` |
 | `--hd-type-manifesting-generator` | `#D09263` |
@@ -884,7 +927,7 @@ ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-co
 
 ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 
-和纸暖白，墨蓝 UI 与珊瑚朱 Signal、灰青辅助。
+墨蓝 Personality、灰青 Design、珊瑚朱 Transit。
 
 网站主 Palette：bg `#FDF6EC` / elevated `#FFFBF3` / sunken `#FCF1E4` / text `#1A3049` / accent `#1A3049`
 
@@ -946,15 +989,17 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#314153` |
 | `--hd-planet-column-text` | `#1A3049` |
-| `--hd-personality` | `#21364A` |
+| `--hd-personality` | `#1A3049` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#59757A` |
-| `--hd-design-on` | `#FFFFFF` |
+| `--hd-design` | `#6E8C7A` |
+| `--hd-design-on` | `#000000` |
 | `--hd-both` | `#87735E` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#F37E63` |
 | `--hd-transit-on` | `#1A1714` |
 | `--hd-transit-text` | `#B75240` |
+| `--hd-overlay-natal` | `#6A7680` |
+| `--hd-overlay-natal-on` | `#FFFFFF` |
 | `--hd-transit-soft` | `#FCE7E0` |
 | `--hd-type-generator` | `#9A7F4D` |
 | `--hd-type-manifesting-generator` | `#AD7446` |

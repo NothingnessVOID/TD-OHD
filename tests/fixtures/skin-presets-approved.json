@@ -18,9 +18,9 @@
       "danger": "#7A3030"
     },
     "sources": [
-      "#26292C",
-      "#B6534B",
-      "#28706D",
+      "#202428",
+      "#B84A44",
+      "#3A6B85",
       "#756454",
       "#C8C5C2"
     ],
@@ -48,9 +48,14 @@
     ],
     "signal": {
       "on": "#FFFFFF",
-      "text": "#1E5654",
-      "soft": "#E6F0EF"
-    }
+      "text": "#2E5870",
+      "soft": "#E9EBED"
+    },
+    "overlayNatal": {
+      "color": "#74716D",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "grass-aroma",
@@ -73,7 +78,7 @@
     "sources": [
       "#344039",
       "#B76A58",
-      "#3F8D5E",
+      "#4D9179",
       "#7B704C",
       "#C4CDC5"
     ],
@@ -100,10 +105,15 @@
       "#76817B"
     ],
     "signal": {
-      "on": "#09170F",
-      "text": "#2C6A45",
-      "soft": "#E6F0E9"
-    }
+      "on": "#07110C",
+      "text": "#326B55",
+      "soft": "#E6EFE8"
+    },
+    "overlayNatal": {
+      "color": "#748079",
+      "on": "#07110C"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "contemplation",
@@ -126,7 +136,7 @@
     "sources": [
       "#313740",
       "#A16872",
-      "#7663A5",
+      "#7E99A8",
       "#726678",
       "#C7CDD2"
     ],
@@ -153,10 +163,15 @@
       "#7E868B"
     ],
     "signal": {
-      "on": "#FFFFFF",
-      "text": "#594A86",
-      "soft": "#ECE9F4"
-    }
+      "on": "#0D171C",
+      "text": "#526F80",
+      "soft": "#E8EDF0"
+    },
+    "overlayNatal": {
+      "color": "#7B7E83",
+      "on": "#000000"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "absolutely",
@@ -179,8 +194,8 @@
       "focus": "#D97757"
     },
     "sources": [
-      "#26221F",
-      "#6E7880",
+      "#141413",
+      "#7F7068",
       "#D97757",
       "#786C58",
       "#BBB5AC"
@@ -211,7 +226,12 @@
       "on": "#1A1411",
       "text": "#A74D32",
       "soft": "#F7E8E2"
-    }
+    },
+    "overlayNatal": {
+      "color": "#6F6A65",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "delve",
@@ -232,8 +252,8 @@
       "danger": "#8B3A3A"
     },
     "sources": [
-      "#5A5A5A",
-      "#9A5D57",
+      "#1A1A1A",
+      "#6F6F6F",
       "#111111",
       "#6F6963",
       "#D1D1D1"
@@ -263,8 +283,13 @@
     "signal": {
       "on": "#FFFFFF",
       "text": "#1A1A1A",
-      "soft": "#EFEFEF"
-    }
+      "soft": "#EAEAEA"
+    },
+    "overlayNatal": {
+      "color": "#6F6F6F",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "unified-natal"
   },
   {
     "id": "deep-think",
@@ -319,7 +344,12 @@
       "on": "#FFFFFF",
       "text": "#354CC0",
       "soft": "#E9EDFF"
-    }
+    },
+    "overlayNatal": {
+      "color": "#747B8A",
+      "on": "#000000"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "new-warm-paper",
@@ -340,9 +370,9 @@
       "danger": "#8B2C1F"
     },
     "sources": [
-      "#302923",
-      "#64747D",
-      "#A84A36",
+      "#2A2622",
+      "#8B2C1F",
+      "#537D96",
       "#78684F",
       "#C3B9AA"
     ],
@@ -369,10 +399,15 @@
       "#746C64"
     ],
     "signal": {
-      "on": "#FFFFFF",
-      "text": "#7C3529",
-      "soft": "#F2E3DC"
-    }
+      "on": "#080605",
+      "text": "#3F6179",
+      "soft": "#E3E8E8"
+    },
+    "overlayNatal": {
+      "color": "#756B60",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "midnight-contrast",
@@ -394,7 +429,7 @@
     },
     "sources": [
       "#F0F6FA",
-      "#E69582",
+      "#7FA7B8",
       "#E6B1C4",
       "#B79BC4",
       "#71828D"
@@ -425,7 +460,12 @@
       "on": "#1B2025",
       "text": "#F0C4D3",
       "soft": "rgba(230,177,196,0.14)"
-    }
+    },
+    "overlayNatal": {
+      "color": "#A7BAC5",
+      "on": "#0B1318"
+    },
+    "transitSourceMode": "split"
   },
   {
     "id": "coral",
@@ -446,8 +486,8 @@
       "danger": "#A3483B"
     },
     "sources": [
-      "#21364A",
-      "#59757A",
+      "#1A3049",
+      "#6E8C7A",
       "#F37E63",
       "#87735E",
       "#C9BEB1"
@@ -478,6 +518,11 @@
       "on": "#1A1714",
       "text": "#B75240",
       "soft": "#FCE7E0"
-    }
+    },
+    "overlayNatal": {
+      "color": "#6A7680",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split"
   }
 ]

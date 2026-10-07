@@ -1,5 +1,5 @@
 /* Delve: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="delve"] {
   color-scheme: light;
@@ -55,16 +55,18 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #6E6E6E;
   --hd-planet-column-text: #1A1A1A;
-  --hd-personality: #5A5A5A;
+  --hd-personality: #1A1A1A;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #9A5D57;
+  --hd-design: #6F6F6F;
   --hd-design-on: #FFFFFF;
   --hd-both: #6F6963;
   --hd-both-on: #FFFFFF;
   --hd-transit: #111111;
   --hd-transit-on: #FFFFFF;
   --hd-transit-text: #1A1A1A;
-  --hd-transit-soft: #EFEFEF;
+  --hd-overlay-natal: #6F6F6F;
+  --hd-overlay-natal-on: #FFFFFF;
+  --hd-transit-soft: #EAEAEA;
   --hd-type-generator: #82745C;
   --hd-type-manifesting-generator: #896A55;
   --hd-type-manifestor: #895A56;

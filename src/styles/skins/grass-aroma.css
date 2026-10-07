@@ -1,5 +1,5 @@
 /* Grass Aroma: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="grass-aroma"] {
   color-scheme: light;
@@ -61,10 +61,12 @@
   --hd-design-on: #07110C;
   --hd-both: #7B704C;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #3F8D5E;
-  --hd-transit-on: #09170F;
-  --hd-transit-text: #2C6A45;
-  --hd-transit-soft: #E6F0E9;
+  --hd-transit: #4D9179;
+  --hd-transit-on: #07110C;
+  --hd-transit-text: #326B55;
+  --hd-overlay-natal: #748079;
+  --hd-overlay-natal-on: #07110C;
+  --hd-transit-soft: #E6EFE8;
   --hd-type-generator: #8F8050;
   --hd-type-manifesting-generator: #9E6F4D;
   --hd-type-manifestor: #9E6559;

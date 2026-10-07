@@ -1,4 +1,4 @@
-# Skin 系统手册 V1
+# Skin 系统手册 V3
 
 网站与图表的整套语义颜色放在 **Skin**。九中心的配色放在 **Center Palette**。字体保持独立，切换前两者不会设置或重置字体。
 
@@ -15,6 +15,7 @@ Skin 是一套网站及图表配色方案，负责网站表面、文字、强调
   id: 'default-light',
   name: 'Default Light',
   mode: 'light',
+  transitSourceMode: 'split',
   preview: { surface, text, accent, personality, design, transit },
   cssSource: 'src/styles/skins/default.css'
 }
@@ -54,18 +55,18 @@ Palette 拥有九个 edge 和九个 core，共 18 个 Token。Classic 根规则�
 
 ## 5. Skin Token 分类与图表规则
 
-`SKIN_TOKEN_GROUPS` 分六组，`SKIN_TOKENS` 合计 **90 个 canonical Token**：
+`SKIN_TOKEN_GROUPS` 分六组，`SKIN_TOKENS` 合计 **92 个 canonical Token**：
 
 | 类别 | 数量 | 含义 |
 |---|---:|---|
 | site | 31 | 页面、卡片、下沉、文字、accent、状态、focus、投影、遮罩、登录光晕 |
 | graph | 21 | 图内/面板、中性颜色、选择轮廓、tooltip/detail/legend/Timeline 表面 |
-| sources | 10 | Personality / Design / Both / Transit 及 on、text、soft |
+| sources | 12 | Personality / Design / Both / Transit 及 on、text、soft；Overlay Natal / On |
 | types | 5 | 当前支持的五种类型各自颜色 |
 | circuits | 8 | 四种当前回路主色及 soft |
 | relationship | 15 | A/B/Both/bridged、前景/高光、四种关系状态 |
 
-Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色不算这 90 个配色输入。下文有完整 checklist。
+Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色不算这 92 个配色输入。下文有完整 checklist。
 
 图表规则：
 
@@ -75,6 +76,16 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 4. 中心 radialGradient 从 Palette 的 edge/core 来；A/B/bridged 的关系 core 从 Skin 来。
 5. 图表背景用户设置同时覆盖 SVG 内背景和图表 panel，保持原有可见效果。
 6. 渲染器读取 computed Token；原有 `onAppearanceChange()` 继续刷新出生图、关系图、可见 Transit 和 Timeline。CSS-only UI 自行跟随 cascade。
+
+### 行运来源展示策略
+
+`transitSourceMode` 与 Skin 的明暗 `mode` 不同，只决定 Transit / Timeline 的来源着色。`getTransitSourceMode()` 读取 Registry，缺省 `split`。当前仅 Delve 选择 `unified-natal`，其他十套为 `split`；renderer 不检查 Delve ID。
+
+普通出生图始终是 Personality / Design 两来源。Overlay 下 unified-natal 使用 `--hd-overlay-natal` / `--hd-overlay-natal-on` 表示整组出生激活，Transit 使用自身主色 / On；共有 gate 用 Natal 主体加 Transit ring，Integration 混合路径用 Natal / Transit pattern。两个出生行星栏目仍保留姓名、数值及交互，只统一颜色。临时 fixing 仍读 Transit Text。
+
+Timeline 主轨道及其四项 Legend 一律是 Overlay Natal / Transit，不增加 Personality / Design 图例。`--tl-birth` 不再借 text-secondary。Transit-only 始终只绘行运激活。计算、来源判定、缓存和 Storage V3 不感知此策略。
+
+Picker 继续展示出生图 Personality / Design / Transit，不因二色行运模式隐藏 Design。
 
 ## 6. Relationship Token 与解耦
 
@@ -145,7 +156,7 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 ## 9. 新增 Skin 的标准步骤
 
 1. 定一个稳定 ID，与翻译名称无关；只选 light 或 dark mode。
-2. 在 `src/styles/skins/` 建样式，scope 到选中的 data-skin；覆盖完整 90 项 checklist（可引用同 Skin 的语义 Token/明确共用基底）。不写九中心或字体 Token。
+2. 在 `src/styles/skins/` 建样式，scope 到选中的 data-skin；覆盖完整 92 项 checklist（可引用同 Skin 的语义 Token/明确共用基底）。不写九中心或字体 Token。
 3. 维护 source 主色/on/text/soft、状态、Type、Circuit、Relationship 的独立语义。不要由其他分类巧合相同的色值推导关系状态。
 4. 在 SKINS 注册 id/name/mode/preview/cssSource；由主样式导入 CSS，确认被打包。Registry 的 cssSource 不是自动加载器。
 5. Preview 至少给 surface/text/accent/personality/design/transit 六个值；它们仅代表默认示意，不能伪装成用户 override 后的实时截图。测试 preview 对应默认 palette。
@@ -250,6 +261,8 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 - [ ] `--hd-transit-on`
 - [ ] `--hd-transit-text`
 - [ ] `--hd-transit-soft`
+- [ ] `--hd-overlay-natal`
+- [ ] `--hd-overlay-natal-on`
 
 ### types
 
@@ -346,4 +359,4 @@ Appearance 分三节：
 
 ## 14. 新暖纸几何例外
 
-只有 `new-warm-paper` 覆盖既有 `--radius: 2px`、`--radius-lg: 3px`，并追加 `--skin-large-radius: 6px`、`--skin-border-width: .5px`。后两者只用于有限的公共控件/卡片/大表面 selector，独立于九十个颜色 Token。其他 Skin 沿用当前几何。没有全仓圆角/间距重构，没有纸张纹理或图像，不影响字体。
+只有 `new-warm-paper` 覆盖既有 `--radius: 2px`、`--radius-lg: 3px`，并追加 `--skin-large-radius: 6px`、`--skin-border-width: .5px`。后两者只用于有限的公共控件/卡片/大表面 selector，独立于九十二个颜色 Token。其他 Skin 沿用当前几何。没有全仓圆角/间距重构，没有纸张纹理或图像，不影响字体。

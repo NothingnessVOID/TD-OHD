@@ -1,5 +1,5 @@
 /* Absolutely: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="absolutely"] {
   color-scheme: light;
@@ -55,15 +55,17 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #6B6864;
   --hd-planet-column-text: #2D2B28;
-  --hd-personality: #26221F;
+  --hd-personality: #141413;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #6E7880;
+  --hd-design: #7F7068;
   --hd-design-on: #FFFFFF;
   --hd-both: #786C58;
   --hd-both-on: #FFFFFF;
   --hd-transit: #D97757;
   --hd-transit-on: #1A1411;
   --hd-transit-text: #A74D32;
+  --hd-overlay-natal: #6F6A65;
+  --hd-overlay-natal-on: #FFFFFF;
   --hd-transit-soft: #F7E8E2;
   --hd-type-generator: #9B8051;
   --hd-type-manifesting-generator: #A96C4A;

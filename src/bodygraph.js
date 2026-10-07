@@ -17,6 +17,7 @@ import { calculateLineFixings } from './features/transit-timeline/line-fixing.js
 import { renderVariableArrowRow } from './lib/variable-arrows.js';
 import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
+import { getTransitSourceMode } from './lib/skin-registry.js';
 import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
@@ -82,6 +83,8 @@ function palette(style) {
     transit: read('--hd-transit'),
     transitOn: read('--hd-transit-on'),
     transitSoft: read('--hd-transit-soft'),
+    overlayNatal: read('--hd-overlay-natal'),
+    overlayNatalOn: read('--hd-overlay-natal-on'),
     transitHatchOpacity: read('--hd-transit-hatch-opacity'),
     transitRingWidth: read('--hd-transit-ring-width'),
     inactive: read('--hd-inactive'),
@@ -136,6 +139,11 @@ export function renderBodygraph(container, chart, opts = {}) {
   // beautifully — a two-tone channel is an electromagnetic bond.
   const composite = opts.composite || null;
   const transit = opts.transitModel || null;
+  // Skin controls presentation only; an ordinary birth chart always stays split.
+  const transitSourceMode = transit
+    ? getTransitSourceMode(document.documentElement.getAttribute('data-skin')) : 'split';
+  const unifiedNatal = transit?.mode === 'overlay' && transitSourceMode === 'unified-natal';
+  container.dataset.transitSourceMode = transitSourceMode;
   // SVG presentation attributes inherit the same theme tokens as the legend and badges.
   const transitColor = colors.transit;
 
@@ -233,13 +241,15 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   // Stripe pattern for gates activated by both personality and design
   const defs = svgEl('defs');
-  const pattern = svgEl('pattern', {
-    id: paint('stripe-both'), width: '8', height: '8',
-    patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)'
-  });
-  pattern.appendChild(svgEl('rect', { width: '8', height: '8', fill: colors.personality }));
-  pattern.appendChild(svgEl('rect', { width: '4', height: '8', fill: colors.design }));
-  defs.appendChild(pattern);
+  if (!unifiedNatal && transit?.mode !== 'transit-only') {
+    const pattern = svgEl('pattern', {
+      id: paint('stripe-both'), width: '8', height: '8',
+      patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)'
+    });
+    pattern.appendChild(svgEl('rect', { width: '8', height: '8', fill: colors.personality }));
+    pattern.appendChild(svgEl('rect', { width: '4', height: '8', fill: colors.design }));
+    defs.appendChild(pattern);
+  }
 
   // Core and edge are CSS-derived skin tokens, so gradients accept modern CSS
   // color formats without parsing or modifying a hex value in JavaScript.
@@ -293,6 +303,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     }
     const p = personalityGates.has(gateNum);
     const d = designGates.has(gateNum);
+    if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatal;
     if (p && d) return `url(#${paint('stripe-both')})`;
     if (p) return colors.personality;
     if (d) return colors.design;
@@ -300,6 +311,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   };
   const gateOnColor = (gateNum) => {
     if (transit?.gateSource(gateNum) === 'transit') return colors.transitOn;
+    if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatalOn;
     if (composite) {
       const owner = gateOwner(gateNum);
       return owner === 'a' ? colors.connectionAOn
@@ -338,8 +350,9 @@ export function renderBodygraph(container, chart, opts = {}) {
       : first ? (composite ? composite.colorA : colors.personality)
       : second ? (composite ? composite.colorB : colors.design) : colors.inactive;
     if (transit) {
-      const hasTransit = gates.some(g => transit.gateSource(g) === 'transit');
+      const hasTransit = gates.some(g => transit.transitGates.has(g));
       const hasNatal = transit.mode !== 'transit-only' && gates.some(g => transit.natalGates.has(g));
+      if (unifiedNatal && hasNatal) fill = colors.overlayNatal;
       if (hasTransit && hasNatal) {
         const mix = svgEl('pattern', { id: paint(`transit-span-${i}`), width: '10', height: '10', patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
         mix.appendChild(svgEl('rect', { width: '10', height: '10', fill }));

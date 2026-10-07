@@ -27,6 +27,8 @@ test('default Skin declarations retain every former site/chart value in light an
   for(const [before,after,cp]of [[hdLight,blocks[2],centerLight],[hdDark,blocks[3],centerDark]]){
     for(const[k,v]of Object.entries(before)){
       if(CENTER_PALETTE_TOKENS.includes(k))assert.equal(declarations(cp)[k],v,k);
+      // V3 foreground readability: preserve the red background, use dark small text.
+      else if(before===hdDark&&k==='--hd-design-on')assert.equal(after[k],'#16130F');
       else if(k==='--hd-electromagnetic')assert.equal(after['--hd-relationship-electromagnetic'],v);
       else if(after[k])assert.equal(after[k],v,k);
       else assert.ok(declarations(aliases)[k],k+' legacy/non-color remains');
@@ -49,11 +51,13 @@ test('relationship state colors are independent of circuit/text; legacy electrom
 });
 test('renderer consumes canonical source/core tokens without owning palettes or changing fonts',()=>{
   const renderer=read('src/bodygraph.js');assert.doesNotMatch(renderer,/#[0-9a-f]{3,8}\b/i);
-  assert.equal(sha(renderer),baseline.rendererSha256);
+  // V3 adds source presentation; geometry remains protected by its own fixture and browser parity checks.
+  assert.match(renderer, /getTransitSourceMode/);
+  assert.doesNotMatch(renderer, /['"]delve['"]/);
   for(const s of ['personality','design','transit'])assert.match(renderer,new RegExp(`read\\('--hd-${s}'\\)`));
   const current=read('src/styles.css');
   assert.match(current,/center-palettes\/classic.css/);
   assert.match(current,/center-palettes\/chakra.css/);
   assert.match(current,/skins\/default.css/);
-  assert.equal(sha(current.replace(/^@import[^\n]+\n/gm,'').trim()),baseline.layoutSha256,'only imports changed in stylesheet');
+  assert.equal(sha(current.replace(/^@import[^\n]+\n/gm,'').replace(/^\.bg-root\[data-transit-source-mode="unified-natal"\].*\n/gm,'').trim()),baseline.layoutSha256,'layout unchanged apart from source tooltip colors');
 });
