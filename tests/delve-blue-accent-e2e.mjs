@@ -1,4 +1,4 @@
-/** Narrow real-page comparison of Delve Azure and unchanged Deep Think. */
+/** Narrow real-page comparison of Delve black structure / Azure graph / deep-blue Timeline and Deep Think. */
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -15,7 +15,7 @@ try {
   await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
   await page.addStyleTag({content:'*,*::before,*::after{transition:none!important;animation:none!important}'});
   const navigate=async view=>page.locator(`.nav-link[data-view="${view}"]`).click();
-  const expected={delve:{accent:'#2E75D4',transit:'#2E75D4',natal:'#6F6F6F',design:'#6F6F6F',personality:'#1A1A1A',mode:'unified-natal'},'deep-think':{accent:'#4D6BFE',transit:'#4660E5',natal:'#747B8A',design:'#C26068',personality:'#252A36',mode:'split'}};
+  const expected={delve:{accent:'#111111',transit:'#2E75D4',natal:'#6F6F6F',design:'#6F6F6F',personality:'#1A1A1A',mode:'unified-natal'},'deep-think':{accent:'#4D6BFE',transit:'#4660E5',natal:'#747B8A',design:'#C26068',personality:'#252A36',mode:'split'}};
   const color=async(locator,token,property='color')=>{
     const pair=await locator.first().evaluate((n,{token,property})=>{
       const probe=document.createElement('span');probe.style.setProperty(property,`var(${token})`);document.body.append(probe);
@@ -50,11 +50,11 @@ try {
     },expected[id]);
     await color(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),id==='delve'?'--hd-overlay-natal':'--hd-design');
     await color(page.locator('#timeline-view .tl-bar[data-source="natal"]'),'--hd-overlay-natal','background-color');
-    await color(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit','background-color');
+    await color(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-timeline-transit','background-color');
     await color(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
     await page.locator('#timeline-view .tl-legend-disclosure').evaluate(n=>n.open=true);
     await color(page.locator('#timeline-view .tl-legend [data-source="natal"] i'),'--hd-overlay-natal','background-color');
-    await color(page.locator('#timeline-view .tl-legend [data-source="transit"] i'),'--hd-transit','background-color');
+    await color(page.locator('#timeline-view .tl-legend [data-source="transit"] i'),'--hd-timeline-transit','background-color');
     await color(page.locator('#timeline-view .tl-legend [data-source="both"] i'),'--hd-overlay-natal','border-top-color');
     const completed=await page.locator('#timeline-view .tl-legend [data-source="completed"] i').evaluate(n=>getComputedStyle(n).backgroundImage);
     assert.match(completed,/linear-gradient/);
@@ -64,5 +64,5 @@ try {
   }
   assert.deepEqual(errors,[]);
   writeFileSync(evidence+'/delve-blue-results.json',JSON.stringify({results,errors},null,2));
-  console.log('PASS: Delve black/gray birth, gray/Azure overlay and tracks, shared columns, Natal/Transit/Completed/Both legend, Picker, unchanged centers and distinct Deep Think. Evidence: '+evidence);
+  console.log('PASS: Delve black/gray birth, gray/Azure overlay and gray/deep-blue tracks, shared columns, Natal/Transit/Completed/Both legend, Picker, unchanged centers and distinct Deep Think. Evidence: '+evidence);
 } finally {await browser.close();}

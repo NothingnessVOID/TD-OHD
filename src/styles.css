@@ -1862,7 +1862,8 @@ body.modal-open { overflow: hidden; }
 
 .reliability { color: var(--text-secondary); }
 .reliability-solid { background: var(--status-success-soft); }
-.reliability-soft { background: var(--status-caution-soft); }
+.reliability-info { background: var(--status-info-soft); }
+.reliability-caution { background: var(--status-caution-soft); }
 
 .reliability-dot {
   flex-shrink: 0;
@@ -1874,7 +1875,8 @@ body.modal-open { overflow: hidden; }
 }
 
 .reliability-solid .reliability-dot { background: var(--status-success); }
-.reliability-soft .reliability-dot { background: var(--accent); }
+.reliability-info .reliability-dot { background: var(--status-info); }
+.reliability-caution .reliability-dot { background: var(--status-caution); }
 
 .shared-cta {
   text-align: center;

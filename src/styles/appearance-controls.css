@@ -18,8 +18,15 @@
 .skin-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .skin-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; min-height: 88px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--skin-preview-surface); color: var(--skin-preview-text); font: inherit; font-size: 13px; line-height: 1.5; text-align: left; cursor: pointer; }
 .skin-card-name { padding-right: 18px; overflow-wrap: anywhere; }
+.skin-card-mode { margin-top: -8px; font-size: 11px; font-weight: 500; line-height: 1.3; letter-spacing: .02em; color: var(--skin-preview-signature); }
 .skin-card-colors { display: flex; gap: 5px; margin-top: auto; padding-left: 8px; border-left: 3px solid var(--skin-preview-accent); }
 .skin-card-colors i { display: block; width: 22px; height: 5px; border-radius: 3px; }
+.skin-card-auto { background: linear-gradient(90deg, var(--auto-preview-light-surface) 0 50%, var(--auto-preview-dark-surface) 50% 100%); color: var(--auto-preview-light-text); }
+.skin-card-auto .skin-card-name { padding-right: 0; max-width: calc(50% - 6px); }
+.skin-card-auto .skin-card-mode { max-width: calc(50% - 6px); color: var(--auto-preview-light-text); }
+.skin-card-auto .skin-card-check { color: var(--auto-preview-dark-text); }
+.skin-card-auto-colors { display: flex; justify-content: space-between; width: 100%; margin-top: auto; }
+.skin-card-auto-colors i { display: block; width: 22px; height: 5px; border-radius: 3px; }
 .skin-card-check { position: absolute; top: 12px; right: 12px; color: var(--skin-preview-text); font-size: 12px; visibility: hidden; }
 .skin-card[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 2px; }
 .skin-card[aria-pressed="true"] .skin-card-check { visibility: visible; }

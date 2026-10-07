@@ -1,5 +1,5 @@
 import { SKINS } from './skin-registry.js';
-import { CUSTOM_TOKENS, getCustomOverrides, getSkinId, setSkin, getCenterPalette, onAppearanceChange, setCenterPalette, setCustomOverride, restoreCurrentSkin } from './appearance.js';
+import { CUSTOM_TOKENS, getCustomOverrides, getSkinId, getSkinMode, setSkin, setAutoSkin, getCenterPalette, onAppearanceChange, setCenterPalette, setCustomOverride, restoreCurrentSkin } from './appearance.js';
 import { onLocaleChange, translatePage } from './i18n.js';
 
 export function setupAppearanceControls() {
@@ -10,19 +10,27 @@ export function setupAppearanceControls() {
   const language = document.getElementById('language-menu');
   // Preview is the Skin default, independent of the active page and user overrides.
   const picker = document.getElementById('skin-picker');
-  for (const skin of SKINS) {
+  function createCard(label, tagline) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'skin-card';
-    button.dataset.skinId = skin.id;
-    for (const [key, value] of Object.entries(skin.preview)) button.style.setProperty(`--skin-preview-${key}`, value);
     const name = document.createElement('span');
     name.className = 'skin-card-name';
-    name.dataset.i18n = skin.name;
+    name.dataset.i18n = label;
+    const mode = document.createElement('span');
+    mode.className = 'skin-card-mode';
+    mode.dataset.i18n = tagline;
     const check = document.createElement('span');
     check.className = 'skin-card-check';
     check.textContent = '✓';
     check.setAttribute('aria-hidden', 'true');
+    button.append(name, mode, check);
+    return button;
+  }
+  function appendSkinCard(skin) {
+    const button = createCard(skin.name, skin.tagline);
+    button.dataset.skinId = skin.id;
+    for (const [key, value] of Object.entries(skin.preview)) button.style.setProperty(`--skin-preview-${key}`, value);
     const colors = document.createElement('span');
     colors.className = 'skin-card-colors';
     colors.setAttribute('aria-hidden', 'true');
@@ -31,10 +39,33 @@ export function setupAppearanceControls() {
       color.style.background = `var(--skin-preview-${source})`;
       colors.append(color);
     }
-    button.append(name, check, colors);
+    button.append(colors);
     button.addEventListener('click', () => setSkin(skin.id));
     picker.append(button);
   }
+  const dawn = SKINS.find(skin => skin.id === 'default-light');
+  const dusk = SKINS.find(skin => skin.id === 'default-dark');
+  appendSkinCard(dawn);
+  appendSkinCard(dusk);
+  // Auto is a picker choice, not a Skin or an override-storage slot.
+  const auto = createCard('Auto', 'Follow system');
+  auto.classList.add('skin-card-auto');
+  auto.dataset.skinMode = 'auto';
+  for (const [mode, skin] of [['light', dawn], ['dark', dusk]]) {
+    for (const key of ['surface', 'text', 'accent']) auto.style.setProperty(`--auto-preview-${mode}-${key}`, skin.preview[key]);
+  }
+  const autoColors = document.createElement('span');
+  autoColors.className = 'skin-card-auto-colors';
+  autoColors.setAttribute('aria-hidden', 'true');
+  for (const mode of ['light', 'dark']) {
+    const color = document.createElement('i');
+    color.style.background = `var(--auto-preview-${mode}-accent)`;
+    autoColors.append(color);
+  }
+  auto.append(autoColors);
+  auto.addEventListener('click', setAutoSkin);
+  picker.append(auto);
+  for (const skin of SKINS.filter(skin => !['default-light', 'default-dark'].includes(skin.id))) appendSkinCard(skin);
   translatePage(dialog);
   const closeMore = () => { more.open = false; share.open = false; language.open = false; };
   more.addEventListener('toggle', () => {
@@ -57,7 +88,9 @@ export function setupAppearanceControls() {
   }
   function refresh() {
     const custom = getCustomOverrides();
-    picker.querySelectorAll('[data-skin-id]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.skinId === getSkinId())));
+    const automatic = getSkinMode() === 'auto';
+    picker.querySelectorAll('[data-skin-id]').forEach(button => button.setAttribute('aria-pressed', String(!automatic && button.dataset.skinId === getSkinId())));
+    auto.setAttribute('aria-pressed', String(automatic));
     dialog.querySelectorAll('button[data-center-palette]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.centerPalette === getCenterPalette())));
     dialog.querySelectorAll('[data-appearance-key]').forEach(input => {
       const key = input.dataset.appearanceKey;

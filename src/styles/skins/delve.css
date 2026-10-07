@@ -1,5 +1,7 @@
 /* Delve: neutral site surfaces retain the supplied OpenHanako v1.0 beta reference.
-   Azure interaction/Transit accent is a TD-OHD product-inspired choice, not an official brand color.
+   Black anchors site structure; Azure is reserved for focus/selection and BodyGraph Transit.
+   Timeline uses deeper blue; independent status colors never alias source colors or Accent.
+   These TD-OHD product-inspired choices are not official brand colors.
    TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="delve"] {
@@ -12,10 +14,10 @@
   --text-tertiary: #999999;
   --border: rgba(0,0,0,0.10);
   --border-subtle: #DFDFE0;
-  --accent: #2E75D4;
-  --accent-strong: #245FAE;
-  --accent-hover: #245FAE;
-  --accent-soft: rgba(46,117,212,0.08);
+  --accent: #111111;
+  --accent-strong: #000000;
+  --accent-hover: #000000;
+  --accent-soft: rgba(0,0,0,0.05);
   --accent-on: #FFFFFF;
   --focus: #2E75D4;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
@@ -26,9 +28,12 @@
   --lens-active-shadow: 0 1px 2px rgba(0,0,0,0.06);
   --status-error: #8B3A3A;
   --status-error-soft: #A64E4C;
-  --status-success: #5CB85C;
-  --status-success-soft: #F3FAF3;
-  --status-caution-soft: #F8F6F1;
+  --status-success: #5C8A68;
+  --status-success-soft: #F1F6F2;
+  --status-info: #2E75D4;
+  --status-info-soft: #EEF4FC;
+  --status-caution: #A36F2B;
+  --status-caution-soft: #FAF5EA;
   --type-badge-bg: #F8F5F0;
   --type-badge-text: #4C3E24;
   --type-badge-border: #A08C67;
@@ -43,7 +48,7 @@
   --hd-undefined: #BDBDBD;
   --hd-undefined-center: #F7F7F8;
   --hd-center-stroke: #A7A7A7;
-  --hd-defined-fill: #2E75D4;
+  --hd-defined-fill: #111111;
   --hd-undefined-fill: transparent;
   --hd-selection-ring: #2E75D4;
   --hd-timeline-panel-bg: #F7F7F8;
@@ -51,7 +56,7 @@
   --hd-tooltip-bg: #F7F7F8;
   --hd-tooltip-border: var(--border);
   --hd-detail-bg: #F7F7F8;
-  --hd-detail-border: #2E75D4;
+  --hd-detail-border: #111111;
   --hd-legend-bg: #F7F7F8;
   --hd-legend-border: var(--border);
   --hd-legend-text: #6E6E6E;
@@ -63,6 +68,11 @@
   --hd-both: #6F6963;
   --hd-both-on: #FFFFFF;
   --hd-transit: #2E75D4;
+  --hd-timeline-birth: #111111;
+  --hd-timeline-transit: #1F4F85;
+  --hd-timeline-both-birth: #111111;
+  --hd-timeline-both-transit: #1F4F85;
+  --hd-timeline-both-on: #FFFFFF;
   --hd-transit-on: #FFFFFF;
   --hd-transit-text: #245FAE;
   --hd-overlay-natal: #6F6F6F;

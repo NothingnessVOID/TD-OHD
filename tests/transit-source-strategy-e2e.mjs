@@ -62,7 +62,7 @@ try {
         headings:[...root.querySelectorAll('.tl-birth-head .bg-planets-head')].map(n=>n.textContent),
         birthHidden:root.querySelector('.tl-birth-column').hidden,
         legend:[...root.querySelectorAll('.tl-legend [data-source]')].filter(n=>!n.hidden).map(n=>({source:n.dataset.source,background:getComputedStyle(n.querySelector('i')).backgroundColor})),
-        birth:color('overlay-natal'),transit:color('transit'),transitText:color('transit-text')};
+        birth:color('overlay-natal'),transit:color('transit'),timelineTransit:color('timeline-transit'),transitText:color('transit-text')};
     };
     const luminance = hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((n,v,i)=>n+v*[.2126,.7152,.0722][i],0);
     const contrast=(a,b)=>(Math.max(luminance(a),luminance(b))+.05)/(Math.min(luminance(a),luminance(b))+.05);
@@ -109,7 +109,7 @@ try {
       if(row.temporary==='true')assert.match(row.title,/temporaryFixing · natalFixing/);
     }
     assert.deepEqual(r.columns.legend.map(n=>n.source),['natal','transit','completed','both']);
-    assert.equal(r.columns.legend[0].background,r.columns.birth);assert.equal(r.columns.legend[1].background,r.columns.transit);
+    assert.equal(r.columns.legend[0].background,r.columns.birth);assert.equal(r.columns.legend[1].background,r.columns.timelineTransit);
     assert.equal(r.skyColumns.birthHidden,true);assert.deepEqual(r.skyColumns.legend.map(n=>n.source),['transit']);
     for(const [source,ratio]of Object.entries(r.contrast))assert.ok(ratio>=4.5,r.id+' '+source+' foreground '+ratio);
     const geom=[r.birth.geometry,r.overlay.geometry,r.sky.geometry];

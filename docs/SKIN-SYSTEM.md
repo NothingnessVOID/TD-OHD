@@ -55,18 +55,18 @@ Palette 拥有九个 edge 和九个 core，共 18 个 Token。Classic 根规则�
 
 ## 5. Skin Token 分类与图表规则
 
-`SKIN_TOKEN_GROUPS` 分六组，`SKIN_TOKENS` 合计 **92 个 canonical Token**：
+`SKIN_TOKEN_GROUPS` 分六组，`SKIN_TOKENS` 合计 **100 个 canonical Token**：
 
 | 类别 | 数量 | 含义 |
 |---|---:|---|
-| site | 31 | 页面、卡片、下沉、文字、accent、状态、focus、投影、遮罩、登录光晕 |
-| graph | 21 | 图内/面板、中性颜色、选择轮廓、tooltip/detail/legend/Timeline 表面 |
+| site | 34 | 页面、卡片、下沉、文字、accent、状态、focus、投影、遮罩、登录光晕 |
+| graph | 26 | 图内/面板、中性颜色、选择轮廓、tooltip/detail/legend/Timeline 表面 |
 | sources | 12 | Personality / Design / Both / Transit 及 on、text、soft；Overlay Natal / On |
 | types | 5 | 当前支持的五种类型各自颜色 |
 | circuits | 8 | 四种当前回路主色及 soft |
 | relationship | 15 | A/B/Both/bridged、前景/高光、四种关系状态 |
 
-Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色不算这 92 个配色输入。下文有完整 checklist。
+Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色不算这 100 个配色输入。下文有完整 checklist。
 
 图表规则：
 
@@ -83,7 +83,7 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 
 普通出生图始终是 Personality / Design 两来源。Overlay 下 unified-natal 使用 `--hd-overlay-natal` / `--hd-overlay-natal-on` 表示整组出生激活，Transit 使用自身主色 / On；共有 gate 用 Natal 主体加 Transit ring，Integration 混合路径用 Natal / Transit pattern。两个出生行星栏目仍保留姓名、数值及交互，只统一颜色。临时 fixing 仍读 Transit Text。
 
-Timeline 主轨道及其四项 Legend 一律是 Overlay Natal / Transit，不增加 Personality / Design 图例。`--tl-birth` 不再借 text-secondary。Transit-only 始终只绘行运激活。计算、来源判定、缓存和 Storage V3 不感知此策略。
+Timeline 主轨道及其四项 Legend 一律是 Overlay Natal / Skin-owned Timeline Transit（`--hd-timeline-transit`），不增加 Personality / Design 图例。`--tl-birth` 不再借 text-secondary。Transit-only 始终只绘行运激活。计算、来源判定、缓存和 Storage V3 不感知此策略。
 
 Picker 继续展示出生图 Personality / Design / Transit，不因二色行运模式隐藏 Design。
 
@@ -156,7 +156,7 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 ## 9. 新增 Skin 的标准步骤
 
 1. 定一个稳定 ID，与翻译名称无关；只选 light 或 dark mode。
-2. 在 `src/styles/skins/` 建样式，scope 到选中的 data-skin；覆盖完整 92 项 checklist（可引用同 Skin 的语义 Token/明确共用基底）。不写九中心或字体 Token。
+2. 在 `src/styles/skins/` 建样式，scope 到选中的 data-skin；覆盖完整 100 项 checklist（可引用同 Skin 的语义 Token/明确共用基底）。不写九中心或字体 Token。
 3. 维护 source 主色/on/text/soft、状态、Type、Circuit、Relationship 的独立语义。不要由其他分类巧合相同的色值推导关系状态。
 4. 在 SKINS 注册 id/name/mode/preview/cssSource；由主样式导入 CSS，确认被打包。Registry 的 cssSource 不是自动加载器。
 5. Preview 至少给 surface/text/accent/personality/design/transit 六个值；它们仅代表默认示意，不能伪装成用户 override 后的实时截图。测试 preview 对应默认 palette。
@@ -217,6 +217,9 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 - [ ] `--status-error-soft`
 - [ ] `--status-success`
 - [ ] `--status-success-soft`
+- [ ] `--status-info`
+- [ ] `--status-info-soft`
+- [ ] `--status-caution`
 - [ ] `--status-caution-soft`
 - [ ] `--type-badge-bg`
 - [ ] `--type-badge-text`
@@ -240,6 +243,11 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 - [ ] `--hd-selection-ring`
 - [ ] `--hd-timeline-panel-bg`
 - [ ] `--hd-timeline-panel-border`
+- [ ] `--hd-timeline-birth`
+- [ ] `--hd-timeline-transit`
+- [ ] `--hd-timeline-both-birth`
+- [ ] `--hd-timeline-both-transit`
+- [ ] `--hd-timeline-both-on`
 - [ ] `--hd-tooltip-bg`
 - [ ] `--hd-tooltip-border`
 - [ ] `--hd-detail-bg`
@@ -360,3 +368,33 @@ Appearance 分三节：
 ## 14. 新暖纸几何例外
 
 只有 `new-warm-paper` 覆盖既有 `--radius: 2px`、`--radius-lg: 3px`，并追加 `--skin-large-radius: 6px`、`--skin-border-width: .5px`。后两者只用于有限的公共控件/卡片/大表面 selector，独立于九十二个颜色 Token。其他 Skin 沿用当前几何。没有全仓圆角/间距重构，没有纸张纹理或图像，不影响字体。
+
+### Timeline 与可靠性状态的独立语义
+
+`--hd-timeline-transit` 控制轨道和图例，不控制图窗 BodyGraph。九套核心 Skin 显式定义 BodyGraph 与 Timeline 的角色色；默认两套继续引用 `--hd-transit`。Delve 图窗用 Azure `#2E75D4`，轨道用墨蓝 `#1F4F85`。
+
+Reliability 的 solid / info / caution 分别读取 `--status-success` / `--status-info` / `--status-caution` 和对应 soft。它们不引用 Accent 或图表来源色。所有 Skin 显式提供 Info / Caution；Delve 使用绿 / 蓝 / 琥珀，Site Accent 则是 `#111111`。
+
+V4 的三个角色独立：`--accent` 是 UI Identity / Interaction，`--hd-transit` 是 BodyGraph Transit Signal，`--hd-timeline-transit` 是密集轨道 Signal。允许同色、同系不同强度或不同色相，不强制 Accent = Transit。Picker 的 `preview.transit` 代表 BodyGraph，而不是 Timeline。完整九套矩阵见 `SKIN-PRESETS.md`。
+
+### Timeline Both 专用来源条纹
+
+新增三个 canonical Token：`--hd-timeline-both-birth`、`--hd-timeline-both-transit`、`--hd-timeline-both-on`，均归入 graph。十一套正式 Skin 显式定义；Auto 使用当前实际 Skin 的值，不单独登记 Token。
+
+- Natal 单色条读取独立的 `--hd-timeline-birth`，BodyGraph Overlay 保持读取 `--hd-overlay-natal`。
+- Transit 单色条继续读取 `--hd-timeline-transit`。
+- Both 条为 135°、6px Transit / 6px Birth 等宽斜纹，文字使用独立 Both on；当前激活行沿用同一来源配色。
+- Both 图例为同色 3px / 3px 斜纹，不使用 Surface、white 或 Transit soft 充当另一来源。
+- Completed Bar 保持 Transit 主体加 5px Birth 左标记；图例缩小为 Transit 主体加 4px Birth 左标记，区别于 Both。
+
+本轮仅进行本地页面与真实 Both interval 的人工画面查看，未运行测试或 build。
+
+### Timeline Birth 与 Picker Signature
+
+`--hd-timeline-birth` 是新增的第 100 个 canonical Token，归入 graph。十一套 Skin 显式定义，其他皮肤沿用原 Timeline Birth 值；Delve 为 `#111111`，其 Timeline Both Birth 也为 `#111111`。Delve BodyGraph Overlay Natal 仍为 `#6F6F6F`。
+
+Timeline 层级为轨道背景 0、Bar 1、弱日期带与 gridline 2、cursor 3；轨道局部建立 stacking context。Bar 用 top/bottom 定位，每行底部通过局部 `--tl-row-gap: 1px` 留出细分隔。随后按视觉反馈恢复贯穿每个时间列的低透明度交替日期带，包括 Bar 所在区域；gridline 在日期带之后绘制，来源颜色 Token 保持不变。
+
+人工查看还发现 Gate expand 控件的原局部规则被通用 Timeline 按钮的 32px 最小高度覆盖，使 28px 行内的 track 实际扩为 33px。局部规则提高优先级后，row / track 保持 28px；随后按视觉反馈保留 1px 行间细缝，Bar 为 27px，未改时间区间或行高设定。
+
+Registry 的 `tagline` 为 Picker 第二行文案 key，`preview.signature` 为第二行代表色，均属于展示 metadata，不计入 canonical Token。Auto 第二行为 Follow system，保持双主题预览，没有独立 signature Token 或颜色 override 槽。

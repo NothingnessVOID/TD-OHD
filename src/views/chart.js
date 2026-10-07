@@ -171,7 +171,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
   // wrong about Type/Authority/Profile — say so calmly and prominently.
   if (birth?.timeUnknown) {
     reliabilityHtml = `
-      <div class="reliability reliability-soft">
+      <div class="reliability reliability-caution">
         <span class="reliability-dot"></span>
         <span>${t('No birth time — this chart is a best guess using noon. Your <strong>Type, Authority and Profile</strong> can change with the real time, so treat this as a starting point until you find it (birth certificates and baby books are the usual sources).')}</span>
       </div>`;
@@ -187,7 +187,7 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <span>${t('Solid chart — even if your birth time were off by 15 minutes, nothing here would change.')}</span>
       </div>`
       : `
-      <div class="reliability reliability-soft">
+      <div class="reliability reliability-info">
         <span class="reliability-dot"></span>
         <span>${t("Your chart is solid. One fine detail — your <strong>{detail}</strong> — sits right on a line, so it's the only thing a birth time off by 15+ minutes could nudge. Everything else holds no matter what. If your time came from a birth certificate, even that is settled.", { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
       </div>`;

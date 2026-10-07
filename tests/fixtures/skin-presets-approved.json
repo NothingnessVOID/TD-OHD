@@ -55,7 +55,8 @@
       "color": "#74716D",
       "on": "#FFFFFF"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#315B70"
   },
   {
     "id": "grass-aroma",
@@ -78,7 +79,7 @@
     "sources": [
       "#344039",
       "#B76A58",
-      "#4D9179",
+      "#5AA486",
       "#7B704C",
       "#C4CDC5"
     ],
@@ -113,7 +114,8 @@
       "color": "#748079",
       "on": "#07110C"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#4D9179"
   },
   {
     "id": "contemplation",
@@ -136,7 +138,7 @@
     "sources": [
       "#313740",
       "#A16872",
-      "#7E99A8",
+      "#6F9DB2",
       "#726678",
       "#C7CDD2"
     ],
@@ -171,7 +173,8 @@
       "color": "#7B7E83",
       "on": "#000000"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#7E99A8"
   },
   {
     "id": "absolutely",
@@ -223,7 +226,7 @@
       "#7D7973"
     ],
     "signal": {
-      "on": "#1A1411",
+      "on": "#100B08",
       "text": "#A74D32",
       "soft": "#F7E8E2"
     },
@@ -231,7 +234,8 @@
       "color": "#6F6A65",
       "on": "#FFFFFF"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#B96449"
   },
   {
     "id": "delve",
@@ -242,12 +246,12 @@
       "text": "#1A1A1A",
       "text-secondary": "#6E6E6E",
       "text-tertiary": "#999999",
-      "accent": "#2E75D4",
-      "accent-hover": "#245FAE",
-      "accent-soft": "rgba(46,117,212,0.08)",
+      "accent": "#111111",
+      "accent-hover": "#000000",
+      "accent-soft": "rgba(0,0,0,0.05)",
       "border": "rgba(0,0,0,0.10)",
       "shadow-base": "rgba(0,0,0,0.06)",
-      "success": "#5CB85C",
+      "success": "#5C8A68",
       "coral": "#D9746C",
       "danger": "#8B3A3A"
     },
@@ -289,7 +293,8 @@
       "color": "#6F6F6F",
       "on": "#FFFFFF"
     },
-    "transitSourceMode": "unified-natal"
+    "transitSourceMode": "unified-natal",
+    "timelineTransit": "#1F4F85"
   },
   {
     "id": "deep-think",
@@ -349,7 +354,8 @@
       "color": "#747B8A",
       "on": "#000000"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#394FC5"
   },
   {
     "id": "new-warm-paper",
@@ -372,7 +378,7 @@
     "sources": [
       "#2A2622",
       "#8B2C1F",
-      "#537D96",
+      "#4A94B2",
       "#78684F",
       "#C3B9AA"
     ],
@@ -407,7 +413,8 @@
       "color": "#756B60",
       "on": "#FFFFFF"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#537D96"
   },
   {
     "id": "midnight-contrast",
@@ -465,7 +472,8 @@
       "color": "#A7BAC5",
       "on": "#0B1318"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#C98FA5"
   },
   {
     "id": "coral",
@@ -523,6 +531,7 @@
       "color": "#6A7680",
       "on": "#FFFFFF"
     },
-    "transitSourceMode": "split"
+    "transitSourceMode": "split",
+    "timelineTransit": "#D5634E"
   }
 ]

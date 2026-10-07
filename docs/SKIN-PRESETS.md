@@ -1,6 +1,34 @@
-# Skin Presets V3 设计规格
+# Skin Color Role V4 设计规格
 
-十一套正式 Skin 中，两套默认主色保持原样，新增 Overlay Natal / On；默认暗色的 Design On 按本轮可读性要求修正。以下是九套新增配色。每套文件显式覆盖九十二个 canonical Token。九中心和字体独立，不参与本轮设计。
+十一套正式 Skin 中，两套默认主色保持原样，新增 Overlay Natal / On；默认暗色的 Design On 按本轮可读性要求修正。以下是九套新增配色。每套文件显式覆盖九十六个 canonical Token。九中心和字体独立，不参与本轮设计。
+
+## 三个独立且协调的色彩角色
+
+A Skin owns three separate but coordinated roles:
+
+1. **Theme Accent**（`--accent`）：UI Identity / Interaction Color。
+2. **BodyGraph Transit Signal**（`--hd-transit`）：小面积通道、闸门的行运来源色，可更鲜明。
+3. **Timeline Transit Signal**（`--hd-timeline-transit`）：大量条带的行运色，可更沉静、耐看。
+
+它们允许 same、same family / different strength、different hue。不存在全局强制继承或 Accent = Transit 关系；九套核心 Skin 使用明确 HEX，默认两套保持 `var(--hd-transit)`。不使用固定 `color-mix()` 自动制造时间轴色。
+
+`preview.accent` 表示 Theme Accent，`preview.transit` 表示 BodyGraph Transit。`--hd-transit-on` 负责图上主色前景，轨道沿用它作为现有前景；没有新增 Timeline on/text Token。`--hd-transit-text` 继续是可读的来源文字，soft 保留各 Skin 现有弱背景。
+
+| Skin | Theme Accent | Personality | Design | BodyGraph Transit | Timeline Transit |
+|---|---|---|---|---|---|
+| `high-contrast` | `#3A6B85` | `#202428` | `#B84A44` | `#3A6B85` | `#315B70` |
+| `grass-aroma` | `#5BA88C` | `#344039` | `#B76A58` | `#5AA486` | `#4D9179` |
+| `contemplation` | `#7E99A8` | `#313740` | `#A16872` | `#6F9DB2` | `#7E99A8` |
+| `absolutely` | `#D97757` | `#141413` | `#7F7068` | `#D97757` | `#B96449` |
+| `delve` | `#111111` | `#1A1A1A` | `#6F6F6F` | `#2E75D4` | `#1F4F85` |
+| `deep-think` | `#4D6BFE` | `#252A36` | `#C26068` | `#4660E5` | `#394FC5` |
+| `new-warm-paper` | `#537D96` | `#2A2622` | `#8B2C1F` | `#4A94B2` | `#537D96` |
+| `midnight-contrast` | `#E6B1C4` | `#F0F6FA` | `#7FA7B8` | `#E6B1C4` | `#C98FA5` |
+| `coral` | `#1A3049` | `#1A3049` | `#6E8C7A` | `#F37E63` | `#D5634E` |
+
+Reliability 三状态保持上一轮独立语义，不引用 Accent 或 Transit。Type / Circuit / Relationship / P-D / Center Palette / 字体 / Storage 均保持。Canonical 仍为 **96**，没有新增 Token。
+
+Absolutely 的旧 Transit On `#1A1411` 在新时间轴深橙 `#B96449` 上约 4.32:1。本轮只把共享前景调整为 `#100B08`，维持深色文字并提高可读性；BodyGraph Orange 与 Timeline Deep Orange 均保持批准主色。其他八套 On / Text / Soft 保持。
 
 ## 色彩层级（Color hierarchy）
 
@@ -9,15 +37,15 @@
 3. Type / Circuit / Relationship mechanics：辅助识别，避免彩虹噪声。
 4. Inactive / Undefined / structural UI：中性结构退后。
 
-Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；`--tl-birth` 使用独立的 `--hd-overlay-natal`，出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
+Timeline 的 `--tl-transit` 直接读取独立的 `--hd-timeline-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；`--tl-birth` 使用独立的 `--hd-overlay-natal`，出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
 
-六套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 依 V2 更新 Accent bundle，Delve 依 V3 后续修正采用 Azure Accent。默认两套主色、Center Palette、字体、Picker 布局、Storage V3 不变。
+六套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 依 V2 更新 Accent bundle，Delve 依 V3 后续修正使用黑色结构、蓝色 Focus/Signal 与独立状态色。默认两套主色、Center Palette、字体、Picker 布局、Storage V3 不变。
 
 ## 来源与边界
 
-网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新；Delve Accent 依 V3 后续修正）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
+网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新；Delve 结构与状态色依 V3 后续修正）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
 
-参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design 来源色以本轮 Skin Palette V3 附件为最终规格；Type、Circuit、Relationship 延续 V2，不在本轮改色。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
+参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Theme / BodyGraph / Timeline 的角色色以本轮 Skin Color Role V4 附件为最终规格；Type、Circuit、Relationship 延续 V2，不在本轮改色。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
 
 未指定的 on/text/soft、图表中性色、阴影等是本轮补齐的 TD-OHD 设计值。使用一次性颜色计算辅助确定后，最终结果写成明确 CSS；Skin 默认值不依赖统一 runtime 混色公式。可以在同一 Skin 内引用对应 surface/border，不跨分类 alias 主色。
 
@@ -101,6 +129,9 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 | `--status-error-soft` | `#9A4746` |
 | `--status-success` | `#5A9A5E` |
 | `--status-success-soft` | `#E8EEE6` |
+| `--status-info` | `#456C89` |
+| `--status-info-soft` | `#EDF2F6` |
+| `--status-caution` | `#956B35` |
 | `--status-caution-soft` | `#F3EDE3` |
 | `--type-badge-bg` | `#F3ECE1` |
 | `--type-badge-text` | `#5B4A25` |
@@ -136,6 +167,7 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 | `--hd-both` | `#756454` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#3A6B85` |
+| `--hd-timeline-transit` | `#315B70` |
 | `--hd-transit-on` | `#FFFFFF` |
 | `--hd-transit-text` | `#2E5870` |
 | `--hd-overlay-natal` | `#74716D` |
@@ -208,6 +240,9 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--status-error-soft` | `#A56050` |
 | `--status-success` | `#7BAE7F` |
 | `--status-success-soft` | `#E9F1E7` |
+| `--status-info` | `#476D82` |
+| `--status-info-soft` | `#EAF1F5` |
+| `--status-caution` | `#98713D` |
 | `--status-caution-soft` | `#EEEFE3` |
 | `--type-badge-bg` | `#EDEDE2` |
 | `--type-badge-text` | `#4D4525` |
@@ -242,7 +277,8 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--hd-design-on` | `#07110C` |
 | `--hd-both` | `#7B704C` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#4D9179` |
+| `--hd-transit` | `#5AA486` |
+| `--hd-timeline-transit` | `#4D9179` |
 | `--hd-transit-on` | `#07110C` |
 | `--hd-transit-text` | `#326B55` |
 | `--hd-overlay-natal` | `#748079` |
@@ -315,6 +351,9 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 | `--status-error-soft` | `#9F5755` |
 | `--status-success` | `#6FA87E` |
 | `--status-success-soft` | `#E7EEEC` |
+| `--status-info` | `#536E88` |
+| `--status-info-soft` | `#EAF0F6` |
+| `--status-caution` | `#957444` |
 | `--status-caution-soft` | `#ECECEA` |
 | `--type-badge-bg` | `#ECECE9` |
 | `--type-badge-text` | `#504D38` |
@@ -349,7 +388,8 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 | `--hd-design-on` | `#000000` |
 | `--hd-both` | `#726678` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#7E99A8` |
+| `--hd-transit` | `#6F9DB2` |
+| `--hd-timeline-transit` | `#7E99A8` |
 | `--hd-transit-on` | `#0D171C` |
 | `--hd-transit-text` | `#526F80` |
 | `--hd-overlay-natal` | `#7B7E83` |
@@ -422,6 +462,9 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 | `--status-error-soft` | `#9F5852` |
 | `--status-success` | `#7BAE7F` |
 | `--status-success-soft` | `#E7EBE2` |
+| `--status-info` | `#526C85` |
+| `--status-info-soft` | `#EDF1F5` |
+| `--status-caution` | `#976E3E` |
 | `--status-caution-soft` | `#EDE8DD` |
 | `--type-badge-bg` | `#EDE8DC` |
 | `--type-badge-text` | `#614B2D` |
@@ -457,7 +500,8 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 | `--hd-both` | `#786C58` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#D97757` |
-| `--hd-transit-on` | `#1A1411` |
+| `--hd-timeline-transit` | `#B96449` |
+| `--hd-transit-on` | `#100B08` |
 | `--hd-transit-text` | `#A74D32` |
 | `--hd-overlay-natal` | `#6F6A65` |
 | `--hd-overlay-natal-on` | `#FFFFFF` |
@@ -495,9 +539,9 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 
 ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 
-基础仍为黑白灰极简体系，采用 OpenAI / ChatGPT product-inspired blue accent 作为小面积交互与 Transit Signal。`#2E75D4` 是本项目的 Azure 配色选择，不代表 OpenAI 官方品牌色。出生图黑 / 灰；行运图 Natal 灰 / Transit Azure 蓝，继续采用 unified-natal。
+黑白灰承担页面骨架，Site Accent 为 `#111111`；OpenAI / ChatGPT product-inspired Azure 只承担 Focus、Selection 与 BodyGraph Transit Signal。Timeline 单独使用墨蓝 `#1F4F85`；Reliability 使用独立的绿 / 蓝 / 琥珀状态色。`#2E75D4` 是本项目的 Azure 配色选择，不代表 OpenAI 官方品牌色。出生图黑 / 灰；行运图 Natal 灰 / Transit Azure 蓝，继续采用 unified-natal。
 
-网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#2E75D4`
+网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#111111`
 
 特殊规则：保留现有基础几何；不增加专属字体或装饰资产。
 
@@ -513,10 +557,10 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--text-tertiary` | `#999999` |
 | `--border` | `rgba(0,0,0,0.10)` |
 | `--border-subtle` | `#DFDFE0` |
-| `--accent` | `#2E75D4` |
-| `--accent-strong` | `#245FAE` |
-| `--accent-hover` | `#245FAE` |
-| `--accent-soft` | `rgba(46,117,212,0.08)` |
+| `--accent` | `#111111` |
+| `--accent-strong` | `#000000` |
+| `--accent-hover` | `#000000` |
+| `--accent-soft` | `rgba(0,0,0,0.05)` |
 | `--accent-on` | `#FFFFFF` |
 | `--focus` | `#2E75D4` |
 | `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.06)` |
@@ -527,9 +571,12 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--lens-active-shadow` | `0 1px 2px rgba(0,0,0,0.06)` |
 | `--status-error` | `#8B3A3A` |
 | `--status-error-soft` | `#A64E4C` |
-| `--status-success` | `#5CB85C` |
-| `--status-success-soft` | `#F3FAF3` |
-| `--status-caution-soft` | `#F8F6F1` |
+| `--status-success` | `#5C8A68` |
+| `--status-success-soft` | `#F1F6F2` |
+| `--status-info` | `#2E75D4` |
+| `--status-info-soft` | `#EEF4FC` |
+| `--status-caution` | `#A36F2B` |
+| `--status-caution-soft` | `#FAF5EA` |
 | `--type-badge-bg` | `#F8F5F0` |
 | `--type-badge-text` | `#4C3E24` |
 | `--type-badge-border` | `#A08C67` |
@@ -544,7 +591,7 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-undefined` | `#BDBDBD` |
 | `--hd-undefined-center` | `#F7F7F8` |
 | `--hd-center-stroke` | `#A7A7A7` |
-| `--hd-defined-fill` | `#2E75D4` |
+| `--hd-defined-fill` | `#111111` |
 | `--hd-undefined-fill` | `transparent` |
 | `--hd-selection-ring` | `#2E75D4` |
 | `--hd-timeline-panel-bg` | `#F7F7F8` |
@@ -552,7 +599,7 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-tooltip-bg` | `#F7F7F8` |
 | `--hd-tooltip-border` | `var(--border)` |
 | `--hd-detail-bg` | `#F7F7F8` |
-| `--hd-detail-border` | `#2E75D4` |
+| `--hd-detail-border` | `#111111` |
 | `--hd-legend-bg` | `#F7F7F8` |
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6E6E6E` |
@@ -564,6 +611,7 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-both` | `#6F6963` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#2E75D4` |
+| `--hd-timeline-transit` | `#1F4F85` |
 | `--hd-transit-on` | `#FFFFFF` |
 | `--hd-transit-text` | `#245FAE` |
 | `--hd-overlay-natal` | `#6F6F6F` |
@@ -636,6 +684,9 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 | `--status-error-soft` | `#A64E4C` |
 | `--status-success` | `#34A853` |
 | `--status-success-soft` | `#ECF5EF` |
+| `--status-info` | `#486893` |
+| `--status-info-soft` | `#EDF2F9` |
+| `--status-caution` | `#9C7438` |
 | `--status-caution-soft` | `#F7F5EF` |
 | `--type-badge-bg` | `#F7F4EE` |
 | `--type-badge-text` | `#554522` |
@@ -671,6 +722,7 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 | `--hd-both` | `#6F668C` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#4660E5` |
+| `--hd-timeline-transit` | `#394FC5` |
 | `--hd-transit-on` | `#FFFFFF` |
 | `--hd-transit-text` | `#354CC0` |
 | `--hd-overlay-natal` | `#747B8A` |
@@ -743,6 +795,9 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 | `--status-error-soft` | `#8B2C1F` |
 | `--status-success` | `#4A6B4A` |
 | `--status-success-soft` | `#E3E1D4` |
+| `--status-info` | `#496A82` |
+| `--status-info-soft` | `#E8EEF1` |
+| `--status-caution` | `#946830` |
 | `--status-caution-soft` | `#EDE4D3` |
 | `--type-badge-bg` | `#ECE4D3` |
 | `--type-badge-text` | `#4A3C20` |
@@ -777,7 +832,8 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#78684F` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#537D96` |
+| `--hd-transit` | `#4A94B2` |
+| `--hd-timeline-transit` | `#537D96` |
 | `--hd-transit-on` | `#080605` |
 | `--hd-transit-text` | `#3F6179` |
 | `--hd-overlay-natal` | `#756B60` |
@@ -854,6 +910,9 @@ ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-co
 | `--status-error-soft` | `#E79D97` |
 | `--status-success` | `#A8DDAA` |
 | `--status-success-soft` | `#3F5452` |
+| `--status-info` | `#8CB8D8` |
+| `--status-info-soft` | `#2D4354` |
+| `--status-caution` | `#DCBA7B` |
 | `--status-caution-soft` | `#494F45` |
 | `--type-badge-bg` | `#494F46` |
 | `--type-badge-text` | `#F0F6FA` |
@@ -889,6 +948,7 @@ ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-co
 | `--hd-both` | `#B79BC4` |
 | `--hd-both-on` | `#080F14` |
 | `--hd-transit` | `#E6B1C4` |
+| `--hd-timeline-transit` | `#C98FA5` |
 | `--hd-transit-on` | `#1B2025` |
 | `--hd-transit-text` | `#F0C4D3` |
 | `--hd-overlay-natal` | `#A7BAC5` |
@@ -961,6 +1021,9 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--status-error-soft` | `#BF5B49` |
 | `--status-success` | `#6E8C7A` |
 | `--status-success-soft` | `#EFECE1` |
+| `--status-info` | `#476B91` |
+| `--status-info-soft` | `#EAF0F7` |
+| `--status-caution` | `#A07736` |
 | `--status-caution-soft` | `#F7EDDD` |
 | `--type-badge-bg` | `#F6ECDC` |
 | `--type-badge-text` | `#50442A` |
@@ -996,6 +1059,7 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-both` | `#87735E` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#F37E63` |
+| `--hd-timeline-transit` | `#D5634E` |
 | `--hd-transit-on` | `#1A1714` |
 | `--hd-transit-text` | `#B75240` |
 | `--hd-overlay-natal` | `#6A7680` |
@@ -1030,3 +1094,5 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-relationship-compromise` | `#956D55` |
 | `--hd-relationship-dominance` | `#748087` |
 
+
+当前 contract 为 **96 canonical Token**：site 34、graph 22、sources 12、types 5、circuits 8、relationship 15。新增 Timeline signal 和 Info / Caution 状态色均由每个 Skin 显式提供。
