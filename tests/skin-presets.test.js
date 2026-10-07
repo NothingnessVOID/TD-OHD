@@ -43,16 +43,13 @@ test('all nine presets have their own complete 90-token stylesheet and exact app
   }
 });
 
-test('source foreground contrast respects approved V2 exceptions; relationship Both remains readable', () => {
+test('all source foregrounds and Transit text meet 4.5 contrast; relationship Both remains readable', () => {
   for (const skin of SKINS.slice(2)) {
     const tokens = values(read(skin.cssSource));
     for (const source of ['personality', 'design', 'transit', 'both', 'inactive']) {
-      // Preserve the supplied Grass Signal foreground (3.98:1); do not silently recolor it.
-      const minimum = source === 'transit' && skin.id === 'grass-aroma' ? 3.97 : 4.5;
-      assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= minimum, skin.id + ' ' + source + ' on');
+      assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= 4.5, skin.id + ' ' + source + ' on');
     }
-    // Coral's explicitly approved small-text color is 3.91:1; tracked for human review.
-    assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= (skin.id === 'coral' ? 3.90 : 4.5), skin.id + ' transit text');
+    assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= 4.5, skin.id + ' transit text');
     for (const source of ['a', 'b', 'bridged']) assert.ok(contrast(tokens[`--hd-connection-${source}`], tokens[`--hd-connection-${source}-on`]) >= 4.5, skin.id + ' relationship ' + source);
     const backgrounds = ['a', 'b'].map(source => tokens[`--hd-connection-${source}`]);
     // The shared foreground must work against both ownership colors.

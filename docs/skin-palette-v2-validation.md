@@ -58,16 +58,18 @@
 九套时间轴主 Signal 不再大量趋同蓝灰。Type / Circuit 用于小面积辅助标识，soft 不形成大彩块；关系 A/B 在图中可区分，整体比 V1 克制。相近的灰绿 / 陶土关系色是按附件采用的辅助身份色，关系页辨识度主要还来自 surface 与背景，而不是把关系色再提高到行运强度。
 出生图没有 Transit，因此不添加 Signal 来制造辨识度。九中心配色保持独立，未做协调性改色。
 
-## 明确保留的对比度例外与人工检查建议
+## 最终对比度收口
 
-这两组数值由附件明确指定。测试逐项锁定批准 HEX，另将其实际对比度作为明确例外记录；其余前景仍要求 4.5:1。
+基于 `871b1962ad1305d3142efb20c9a046829da55848`，按照用户最终批准值，仅调整草香的 Transit Bar 前景和珊瑚的 Transit Text。两套 Signal 主色、Timeline 主条背景和其他 Palette 均不变。
 
-| Skin / 场景 | 批准前景 | 背景 | 对比度 | 结论 |
+| Skin / 场景 | 最终前景 | 背景 | 对比度 | 结论 |
 |---|---|---|---:|---|
-| 草香 Transit bar On | `#10251A` | `#3F8D5E` | 3.98:1 | 低于普通小字 4.5:1，后续建议人工决定是否使用更深 foreground |
-| 珊瑚 Transit Text | `#C45D49` | `#FDF6EC` | 3.91:1 | 低于普通小字 4.5:1，后续建议人工决定是否压暗文字色 |
+| 草香 Transit bar On | `#09170F` | `#3F8D5E` | 4.54:1 | 达到普通小字 4.5:1 |
+| 珊瑚 Transit Text | `#B75240` | `#FDF6EC` | 4.56:1 | 达到普通小字 4.5:1 |
 
-其余来源 On、独立关系 On、A/B 共用 Both On 及其余 Transit Text 都达到 4.5:1。当前不擅自改变上述批准值。
+来源 On、独立关系 On、A/B 共用 Both On 和 Transit Text 均达到 4.5:1；移除草香 / 珊瑚测试中的低对比度例外。批准 fixture 与完整 Token 表同步更新，每套 90 Token 完整。
+
+本次 Skin Palette / Appearance contract 10 passed、Timeline 63 passed，合计 73 passed、0 failed、0 skipped。只运行这些定向测试；不重新生成大量截图，不跑 build、完整 Release E2E 或年度验证。
 
 ## 完整修改文件
 
