@@ -30,7 +30,7 @@ Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#4
 - Relationship 四类状态独立于 Circuit，尽管某些批准数值恰巧相同，仍显式保存不同 Token。
 - 每 Skin 五项 override 和全局字号沿用 v3，无新存储迁移。用户改 Transit 时延续 Foundation 的列文字明暗处理；未自定义时采用各 Skin 明确的 text 值，Restore / 切换均会移除临时文字覆盖。
 - 九中心仅确认能渲染；之后另开九中心适配任务。
-- 主色与 Transit on/text/soft 严格采用 V2 批准值；其他来源和关系前景以可读性选定。对比度不足的批准值在 V2 验证报告中明列，不擅自改色。Circuit soft 是每套 6–12% 的浅 surface tint；Relationship core 使用每套不同的中性高光与强度，最终均写为明确值。
+- 主色与 Transit on/text/soft 严格采用 V2 批准值；其他来源和关系前景以可读性选定。最终对比度收口采用用户批准的草香 On `#09170F` 与珊瑚 Text `#B75240`，所有来源 On / Transit Text 均要求至少 4.5:1。Circuit soft 是每套 6–12% 的浅 surface tint；Relationship core 使用每套不同的中性高光与强度，最终均写为明确值。
 
 ## 完整规格
 
@@ -214,7 +214,7 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--hd-both` | `#7B704C` |
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#3F8D5E` |
-| `--hd-transit-on` | `#10251A` |
+| `--hd-transit-on` | `#09170F` |
 | `--hd-transit-text` | `#2C6A45` |
 | `--hd-transit-soft` | `#E6F0E9` |
 | `--hd-type-generator` | `#8F8050` |
@@ -954,7 +954,7 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-both-on` | `#FFFFFF` |
 | `--hd-transit` | `#F37E63` |
 | `--hd-transit-on` | `#1A1714` |
-| `--hd-transit-text` | `#C45D49` |
+| `--hd-transit-text` | `#B75240` |
 | `--hd-transit-soft` | `#FCE7E0` |
 | `--hd-type-generator` | `#9A7F4D` |
 | `--hd-type-manifesting-generator` | `#AD7446` |
