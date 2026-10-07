@@ -1,45 +1,58 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-
-const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
-const hd = read('../src/styles/tokens/human-design-classic.css');
-const site = read('../src/styles/tokens/site-default.css');
-const renderer = read('../src/bodygraph.js');
-const centers = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
-
-test('classic HD skin defines nine independent center edges and derived cores in both themes', () => {
-  const [light, dark] = hd.split('[data-theme="dark"]');
-  assert.ok(light && dark, 'classic skin needs light and dark definitions');
-  for (const center of centers) {
-    for (const theme of [light, dark]) {
-      assert.match(theme, new RegExp(`--hd-center-${center}:\\s*[^;]+;`));
-      assert.match(theme, new RegExp(`--hd-center-${center}-core:\\s*color-mix\\([^;]*var\\(--hd-center-${center}\\)`));
+import { readFileSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { SKINS, SKIN_TOKENS, SKIN_TOKEN_GROUPS, CENTER_KEYS, CENTER_PALETTE_TOKENS, CENTER_PALETTES, PLANNED_SKIN_DIRECTIONS } from '../src/lib/skin-registry.js';
+const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
+const skin=read('src/styles/skins/default.css'), centers=read('src/styles/center-palettes/classic.css'), aliases=read('src/styles/tokens/human-design-classic.css');
+// Captured from the audit baseline; tests also work in shallow CI checkouts.
+const baseline=JSON.parse(read('tests/fixtures/skin-foundation-baseline.json'));
+const sha=text=>createHash('sha256').update(text).digest('hex');
+const declarations=text=>Object.fromEntries([...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(m=>[m[1],m[2].trim()]));
+test('registered Skins have stable identity, mode, preview and real CSS; planned directions are not selectable',()=>{
+  assert.deepEqual(SKINS.map(x=>x.id),['default-light','default-dark']);
+  for(const s of SKINS){assert.ok(['light','dark'].includes(s.mode));assert.ok(existsSync(s.cssSource));for(const k of ['surface','text','accent','personality','design','transit'])assert.match(s.preview[k],/^#[0-9a-f]{6}$/i);}
+  assert.ok(PLANNED_SKIN_DIRECTIONS.every(id=>!SKINS.some(s=>s.id===id)));
+  assert.equal(new Set(SKIN_TOKENS).size,SKIN_TOKENS.length);
+  for(const token of SKIN_TOKENS)assert.ok(declarations(skin)[token],token);
+  assert.ok(!SKIN_TOKENS.some(t=>CENTER_PALETTE_TOKENS.includes(t)||t.includes('font')||t.includes('gate-number')));
+});
+test('default Skin declarations retain every former site/chart value in light and dark; centers retain all edge/core values',()=>{
+  const [siteLight,siteDark]=baseline.siteModes;
+  const [hdLight,hdDark]=baseline.chartModes;
+  const blocks=[...skin.matchAll(/\{([^{}]+)\}/g)].map(m=>declarations(m[1]));
+  const [centerLight,centerDark]=centers.split('[data-theme="dark"]');
+  for(const [before,after]of [[siteLight,blocks[0]],[siteDark,blocks[1]]])for(const[k,v]of Object.entries(before))assert.equal(after[k],v,k);
+  for(const [before,after,cp]of [[hdLight,blocks[2],centerLight],[hdDark,blocks[3],centerDark]]){
+    for(const[k,v]of Object.entries(before)){
+      if(CENTER_PALETTE_TOKENS.includes(k))assert.equal(declarations(cp)[k],v,k);
+      else if(k==='--hd-electromagnetic')assert.equal(after['--hd-relationship-electromagnetic'],v);
+      else if(after[k])assert.equal(after[k],v,k);
+      else assert.ok(declarations(aliases)[k],k+' legacy/non-color remains');
     }
   }
+  assert.doesNotMatch(skin,/--hd-center-(head|ajna|g|sacral|root)(?:-core)?:/);
+  for(const p of CENTER_PALETTES)assert.ok(existsSync(p.cssSource));
+  const chakra=declarations(read('src/styles/center-palettes/chakra.css'));
+  assert.deepEqual(chakra,baseline.chakra);
+  for(const c of CENTER_KEYS)assert.match(centers,new RegExp(`--hd-center-${c}-core:\\s*color-mix`));
 });
-
-test('activation sources have one canonical palette input and legacy names are aliases', () => {
-  for (const source of ['personality', 'design', 'transit']) {
-    assert.match(hd, new RegExp(`--hd-${source}:\\s*#[0-9a-f]+;`, 'i'));
-    assert.match(hd, new RegExp(`--hd-${source}-on:\\s*#[0-9a-f]+;`, 'i'));
-    assert.match(renderer, new RegExp(`read\\('--hd-${source}'\\)`));
-  }
-  for (const [alias, source] of [
-    ['personality', 'personality'], ['graph-personality', 'personality'],
-    ['design', 'design'], ['graph-design', 'design'], ['transit-source', 'transit']
-  ]) {
-    assert.match(hd, new RegExp(`--${alias}:\\s*var\\(--hd-${source}\\);`));
-  }
-  assert.doesNotMatch(renderer, /#[0-9a-f]{3,8}\b/i, 'renderer cannot own palette hex values');
+test('relationship state colors are independent of circuit/text; legacy electromagnetic is an alias',()=>{
+  const values=declarations(skin);
+  for(const token of SKIN_TOKEN_GROUPS.relationship)assert.doesNotMatch(values[token],/--hd-circuit-|--text-tertiary/);
+  assert.equal(values['--hd-relationship-companionship'],'#27ae60');assert.equal(values['--hd-relationship-compromise'],'#2980b9');
+  assert.equal(values['--hd-electromagnetic'],'var(--hd-relationship-electromagnetic)');
+  const view=read('src/views/connection.js');
+  assert.match(view,/--hd-relationship-companionship/);assert.match(view,/--hd-relationship-compromise/);assert.match(view,/--hd-relationship-dominance/);
+  assert.doesNotMatch(view,/var\(--hd-circuit-integration\)|var\(--hd-circuit-collective\)|var\(--text-tertiary\)/);
 });
-
-test('site and HD palettes have separate complete light and dark sections', () => {
-  assert.match(site, /:root\s*\{[\s\S]*--bg:[^;]+;[\s\S]*--accent:[^;]+;/);
-  assert.match(site, /\[data-theme="dark"\]\s*\{[\s\S]*--bg:[^;]+;[\s\S]*--accent:[^;]+;/);
-  assert.match(hd, /--hd-graph-panel-bg:[^;]+;/);
-  assert.match(hd, /--hd-tooltip-bg:[^;]+;/);
-  assert.match(hd, /--hd-detail-bg:[^;]+;/);
-  assert.match(hd, /--hd-legend-bg:[^;]+;/);
-  assert.match(hd, /--hd-gate-number-size:\s*22px;/);
+test('renderer consumes canonical source/core tokens without owning palettes or changing fonts',()=>{
+  const renderer=read('src/bodygraph.js');assert.doesNotMatch(renderer,/#[0-9a-f]{3,8}\b/i);
+  assert.equal(sha(renderer),baseline.rendererSha256);
+  for(const s of ['personality','design','transit'])assert.match(renderer,new RegExp(`read\\('--hd-${s}'\\)`));
+  const current=read('src/styles.css');
+  assert.match(current,/center-palettes\/classic.css/);
+  assert.match(current,/center-palettes\/chakra.css/);
+  assert.match(current,/skins\/default.css/);
+  assert.equal(sha(current.replace(/^@import[^\n]+\n/gm,'').trim()),baseline.layoutSha256,'only imports changed in stylesheet');
 });

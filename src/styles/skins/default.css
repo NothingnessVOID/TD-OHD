@@ -1,0 +1,177 @@
+/* Complete current Skin colors: site + Human Design semantics. Font and centers are separate. */
+/* Default Skins declare their light/dark mode; data-theme is a compatibility mirror.
+   Component styles use these semantic variables instead of palette literals. */
+:root,
+[data-skin="default-light"] {
+  --bg: #faf8f5;
+  --bg-elevated: #ffffff;
+  --bg-sunken: #f0ede8;
+  --text: #1a1714;
+  --text-secondary: #6b6560;
+  --text-tertiary: #6f675f;
+  --border: #e5e0da;
+  --border-subtle: #ede9e3;
+
+  --accent: #c47a2a;
+  --accent-strong: #9a5e1c;
+  --accent-soft: #f5e6d0;
+  --accent-hover: #834e15;
+  --accent-on: #ffffff;
+
+  --focus: var(--accent);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .06);
+  --shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .12);
+  --modal-backdrop: rgba(15, 12, 8, .45);
+  --modal-overlay: rgba(0, 0, 0, .4);
+  --lens-active-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+
+  /* Independent status and product-type meanings belong to the site layer. */
+  --status-error: #b3422f;
+  --status-error-soft: #b14c32;
+  --status-success: #27ae60;
+  --status-success-soft: #e9f4ed;
+  --status-caution-soft: #f7eedd;
+  --type-badge-bg: #f7e8ef;
+  --type-badge-text: #8a2850;
+  --type-badge-border: #d898b8;
+  --type-strategy-text: #8a5418;
+  --site-auth-glow: #dcc5a42b;
+  --site-auth-shadow: #3c30210b;
+}
+
+[data-skin="default-dark"],
+:root:not([data-skin])[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141210;
+  --bg-elevated: #1e1c18;
+  --bg-sunken: #0c0b09;
+  --text: #e8e4de;
+  --text-secondary: #9e978e;
+  --text-tertiary: #8a8378;
+  --border: #2a2620;
+  --border-subtle: #221f1a;
+
+  --accent: #d4943a;
+  --accent-strong: #8a5418;
+  --accent-soft: #2a2115;
+  --accent-hover: #a3631d;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .2);
+  --shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .4);
+  --modal-backdrop: rgba(0, 0, 0, .65);
+
+  --status-error: #e07a68;
+  --status-success: #3fae6e;
+  --status-success-soft: #1a2a20;
+  --status-caution-soft: #2a2115;
+  --type-badge-bg: #2a1520;
+  --type-badge-text: #d47898;
+  --type-badge-border: #582840;
+  --type-strategy-text: var(--accent);
+}
+
+/* Chart semantic palette belongs to the same default Skin as site surfaces. */
+:root,
+[data-skin="default-light"] {
+  --hd-personality: #2d2d2d;
+  --hd-personality-on: #ffffff;
+  --hd-design: #c0392b;
+  --hd-design-on: #ffffff;
+  --hd-transit: #1af4ff;
+  --hd-transit-on: #16130f;
+  --hd-transit-text: color-mix(in srgb, var(--hd-transit) 65%, #16130f);
+  --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 9.8%, var(--bg));
+  --hd-both: #6b4423;
+  --hd-both-on: #ffffff;
+  --hd-undefined: #c8c0b8;
+  --hd-electromagnetic: var(--hd-relationship-electromagnetic);
+  --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
+  --hd-relationship-electromagnetic: #c47a2a;
+  --hd-relationship-companionship: #27ae60;
+  --hd-relationship-compromise: #2980b9;
+  --hd-relationship-dominance: #6f675f;
+
+  --hd-inactive: #b8b0a6;
+  --hd-inactive-on: #312c26;
+  --hd-undefined-center: #ffffff;
+  --hd-center-stroke: #c0b8ae;
+  --hd-defined-fill: var(--accent);
+  --hd-undefined-fill: transparent;
+
+  --hd-graph-panel-bg: var(--bg-elevated);
+  --hd-graph-panel-border: var(--border-subtle);
+  --hd-graph-bg: transparent;
+  --hd-timeline-panel-bg: var(--bg-elevated);
+  --hd-timeline-panel-border: var(--border);
+  --hd-tooltip-bg: var(--bg-elevated);
+  --hd-tooltip-border: var(--border);
+  --hd-detail-bg: var(--bg-elevated);
+  --hd-detail-border: var(--accent);
+  --hd-legend-bg: var(--bg-elevated);
+  --hd-legend-border: var(--border);
+  --hd-legend-text: var(--text-secondary);
+  --hd-planet-column-text: var(--text);
+
+  --hd-selection-ring: #2980b9;
+
+  --hd-type-generator: #d4a843;
+  --hd-type-manifesting-generator: #e08832;
+  --hd-type-manifestor: #c0392b;
+  --hd-type-projector: #2980b9;
+  --hd-type-reflector: #7f8c8d;
+
+  --hd-circuit-individual: #8e44ad;
+  --hd-circuit-individual-soft: #f0e6f6;
+  --hd-circuit-tribal: #c0392b;
+  --hd-circuit-tribal-soft: #fce4e4;
+  --hd-circuit-collective: #2980b9;
+  --hd-circuit-collective-soft: #e4f0fc;
+  --hd-circuit-integration: #27ae60;
+  --hd-circuit-integration-soft: #e4f6ec;
+
+  --hd-connection-a: #2a9d8f;
+  --hd-connection-a-on: #ffffff;
+  --hd-connection-a-core: color-mix(in srgb, var(--hd-connection-a) 73%, white);
+  --hd-connection-b: #e07a5f;
+  --hd-connection-b-on: #ffffff;
+  --hd-connection-b-core: color-mix(in srgb, var(--hd-connection-b) 69%, white);
+  --hd-connection-bridged: #d4a23a;
+  --hd-connection-bridged-on: #ffffff;
+  --hd-connection-both-on: #ffffff;
+  --hd-connection-bridged-core: color-mix(in srgb, var(--hd-connection-bridged) 71%, white);
+
+}
+
+[data-skin="default-dark"],
+:root:not([data-skin])[data-theme="dark"] {
+  --hd-personality: #e0dcd6;
+  --hd-personality-on: #16130f;
+  --hd-design: #e74c3c;
+  --hd-transit: #1af4ff;
+  --hd-transit-text: var(--hd-transit);
+  --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 10%, #111516);
+  --hd-both: var(--accent);
+  --hd-relationship-dominance: #8a8378;
+
+  --hd-both-on: #16130f;
+  --hd-undefined: #3a3630;
+
+  --hd-inactive: #8c847a;
+  --hd-inactive-on: #f1ebe2;
+  --hd-undefined-center: #0d0c0a;
+  --hd-center-stroke: #5a5248;
+  --hd-graph-panel-bg: var(--bg-sunken);
+
+  --hd-circuit-individual-soft: #2a1d32;
+  --hd-circuit-tribal-soft: #2a1515;
+  --hd-circuit-collective-soft: #152030;
+  --hd-circuit-integration-soft: #152a1d;
+  --hd-connection-a: #3db5a5;
+  --hd-connection-a-core: color-mix(in srgb, var(--hd-connection-a) 86%, white);
+  --hd-connection-b: #e8927a;
+  --hd-connection-b-core: color-mix(in srgb, var(--hd-connection-b) 82%, white);
+  --hd-connection-bridged: #cda64a;
+  --hd-connection-bridged-core: color-mix(in srgb, var(--hd-connection-bridged) 85%, white);
+}
