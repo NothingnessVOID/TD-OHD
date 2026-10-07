@@ -1,4 +1,4 @@
-import { CUSTOM_TOKENS, getCustomOverrides, getHumanDesignSkin, onAppearanceChange, setHumanDesignSkin, setCustomOverride, restoreCurrentPreset } from './appearance.js';
+import { CUSTOM_TOKENS, getCustomOverrides, getCenterPalette, onAppearanceChange, setCenterPalette, setCustomOverride, restoreCurrentSkin } from './appearance.js';
 import { onLocaleChange, translatePage } from './i18n.js';
 
 export function setupAppearanceControls() {
@@ -28,7 +28,7 @@ export function setupAppearanceControls() {
   }
   function refresh() {
     const custom = getCustomOverrides();
-    dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.skinPreset === getHumanDesignSkin())));
+    dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.skinPreset === getCenterPalette())));
     dialog.querySelectorAll('[data-appearance-key]').forEach(input => {
       const key = input.dataset.appearanceKey;
       input.value = custom[key] ?? (key === 'gateNumberSize' ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue(CUSTOM_TOKENS[key])) : colorValue(key === 'graphBackground' ? '--hd-graph-panel-bg' : CUSTOM_TOKENS[key]));
@@ -41,9 +41,9 @@ export function setupAppearanceControls() {
     if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
   });
   dialog.addEventListener('close', () => toggle.focus());
-  dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.addEventListener('click', () => setHumanDesignSkin(button.dataset.skinPreset)));
+  dialog.querySelectorAll('[data-skin-preset]').forEach(button => button.addEventListener('click', () => setCenterPalette(button.dataset.skinPreset)));
   dialog.querySelectorAll('[data-appearance-key]').forEach(input => input.addEventListener('input', () => { if (input.validity.valid && input.value !== '') setCustomOverride(input.dataset.appearanceKey,input.value); }));
-  document.getElementById('appearance-restore').addEventListener('click',restoreCurrentPreset);
+  document.getElementById('appearance-restore').addEventListener('click',restoreCurrentSkin);
   onAppearanceChange(() => { if (dialog.open) refresh(); });
   onLocaleChange(() => translatePage(dialog));
 }

@@ -27,14 +27,15 @@ try {
   await page.locator('#bodygraph-container .bodygraph-svg').waitFor();
   await setAppearance('setTheme', 'light');
   await page.addStyleTag({ content: `
-    html[data-hd-skin="appearance-probe"] {
+    html[data-center-palette="chakra"] {
       --hd-design: #7B2CFF;
       --hd-transit: #00EE44;
       --hd-center-g: #2468AF;
       --hd-center-root: #AF6835;
     }
   ` });
-  await setAppearance('setHumanDesignSkin', 'appearance-probe');
+  await page.evaluate(async () => { const m = await import('/src/lib/appearance.js'); m.setCustomOverride('design', '#7B2CFF'); m.setCustomOverride('transit', '#00EE44'); });
+  await setAppearance('setCenterPalette', 'chakra');
   await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').first().waitFor();
 
   assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').count() > 0,
@@ -57,7 +58,8 @@ try {
   assert.equal((await inspect('#gate-detail .bg-tt-design')).color, 'rgb(123, 44, 255)');
   await page.keyboard.press('Escape');
 
-  await setAppearance('setHumanDesignSkin', 'classic');
+  await setAppearance('restoreCurrentSkin');
+  await setAppearance('setCenterPalette', 'classic');
   await setAppearance('setTheme', 'dark');
   assert.equal(await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim()), '#e74c3c');
   assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#e74c3c"]').count() > 0,
@@ -68,9 +70,12 @@ try {
     await page.goto(`${base}/${birth}&view=${view}`);
     const stage = view === 'transits' ? '#transit-stage' : '#timeline-view';
     await page.locator(`${stage} .bodygraph-svg`).waitFor();
+    await setAppearance('restoreCurrentSkin');
+    await setAppearance('setCenterPalette', 'classic');
     const beforeTransitText = (await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color;
-    await page.addStyleTag({ content: 'html[data-hd-skin="appearance-probe"] { --hd-design: #7B2CFF; --hd-transit: #00EE44; }' });
-    await setAppearance('setHumanDesignSkin', 'appearance-probe');
+    await page.addStyleTag({ content: 'html[data-center-palette="chakra"] { --hd-design: #7B2CFF; --hd-transit: #00EE44; }' });
+    await page.evaluate(async () => { const m = await import('/src/lib/appearance.js'); m.setCustomOverride('design', '#7B2CFF'); m.setCustomOverride('transit', '#00EE44'); });
+  await setAppearance('setCenterPalette', 'chakra');
     assert.ok(await page.locator(`${stage} .bg-gate-path[fill="#00EE44"]`).count() > 0,
       `${view} transit paths follow the Transit token`);
     assert.equal((await inspect(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`)).color,

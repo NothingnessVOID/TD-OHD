@@ -152,10 +152,10 @@ const DYN_BLURB = {
 // The four ways two charts share channels — explained, with the circuit each
 // connection runs through (individual / tribal / collective / integration).
 const CONN_TYPES = [
-  ['electromagnetic', 'Electromagnetic', 'var(--electromagnetic)', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
-  ['companionship', 'Companionship', 'var(--hd-circuit-integration)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
-  ['compromise', 'Compromise', 'var(--hd-circuit-collective)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
-  ['dominance', 'Dominance', 'var(--text-tertiary)', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
+  ['electromagnetic', 'Electromagnetic', 'var(--hd-relationship-electromagnetic)', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
+  ['companionship', 'Companionship', 'var(--hd-relationship-companionship)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
+  ['compromise', 'Compromise', 'var(--hd-relationship-compromise)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
+  ['dominance', 'Dominance', 'var(--hd-relationship-dominance)', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
 ];
 
 function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}) {
@@ -213,7 +213,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
       <div class="composite-legend">
         <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
         <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
-        <span class="lg"><i class="lg-stripe" style="background:linear-gradient(45deg, ${cpal.a} 0 50%, ${cpal.b} 50% 100%)"></i>${t('Both have it')}</span>
+        <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
         <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Made together')}</span>
       </div>
       <div id="conn-composite" class="composite-graph"></div>

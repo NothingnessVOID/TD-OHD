@@ -1,0 +1,41 @@
+/* Center palette is independent from Skin. Core ratios follow mode for legacy parity. */
+:root {
+  --hd-center-head: #e9d56b;
+  --hd-center-ajna: #a3c46c;
+  --hd-center-throat: #c2a06b;
+  --hd-center-g: #e9d56b;
+  --hd-center-heart: #dd6356;
+  --hd-center-spleen: #c2a06b;
+  --hd-center-solar: #c2a06b;
+  --hd-center-sacral: #dd6356;
+  --hd-center-root: #c2a06b;
+  --hd-center-head-core: color-mix(in srgb, var(--hd-center-head) 64%, white);
+  --hd-center-ajna-core: color-mix(in srgb, var(--hd-center-ajna) 62%, white);
+  --hd-center-throat-core: color-mix(in srgb, var(--hd-center-throat) 62%, white);
+  --hd-center-g-core: color-mix(in srgb, var(--hd-center-g) 64%, white);
+  --hd-center-heart-core: color-mix(in srgb, var(--hd-center-heart) 72%, white);
+  --hd-center-spleen-core: color-mix(in srgb, var(--hd-center-spleen) 62%, white);
+  --hd-center-solar-core: color-mix(in srgb, var(--hd-center-solar) 62%, white);
+  --hd-center-sacral-core: color-mix(in srgb, var(--hd-center-sacral) 72%, white);
+  --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 62%, white);
+}
+[data-theme="dark"] {
+  --hd-center-head: #f0c040;
+  --hd-center-ajna: #5ebd6e;
+  --hd-center-throat: #c4884a;
+  --hd-center-g: #f0c040;
+  --hd-center-heart: #e74c3c;
+  --hd-center-spleen: #c4884a;
+  --hd-center-solar: #c4884a;
+  --hd-center-sacral: #e74c3c;
+  --hd-center-root: #c4884a;
+  --hd-center-head-core: color-mix(in srgb, var(--hd-center-head) 87%, white);
+  --hd-center-ajna-core: color-mix(in srgb, var(--hd-center-ajna) 85%, white);
+  --hd-center-throat-core: color-mix(in srgb, var(--hd-center-throat) 86%, white);
+  --hd-center-g-core: color-mix(in srgb, var(--hd-center-g) 87%, white);
+  --hd-center-heart-core: color-mix(in srgb, var(--hd-center-heart) 89%, white);
+  --hd-center-spleen-core: color-mix(in srgb, var(--hd-center-spleen) 86%, white);
+  --hd-center-solar-core: color-mix(in srgb, var(--hd-center-solar) 86%, white);
+  --hd-center-sacral-core: color-mix(in srgb, var(--hd-center-sacral) 89%, white);
+  --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 86%, white);
+}
