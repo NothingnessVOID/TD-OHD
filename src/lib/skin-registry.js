@@ -32,7 +32,7 @@ export const SKINS = Object.freeze([
   }),
   Object.freeze({
     id: 'delve', name: 'Delve', mode: 'light', transitSourceMode: 'unified-natal',
-    preview: Object.freeze({ surface: '#FFFFFF', text: '#1A1A1A', accent: '#1A1A1A', personality: '#1A1A1A', design: '#6F6F6F', transit: '#111111' }),
+    preview: Object.freeze({ surface: '#FFFFFF', text: '#1A1A1A', accent: '#2E75D4', personality: '#1A1A1A', design: '#6F6F6F', transit: '#2E75D4' }),
     cssSource: 'src/styles/skins/delve.css'
   }),
   Object.freeze({

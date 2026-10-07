@@ -109,15 +109,29 @@ test('Timeline Signal has no fixed bluegray anchor; cursor and birth keep their 
   assert.match(css, /--tl-birth:\s*var\(--hd-overlay-natal\);/);
 });
 
-test('V3 preserves V2 site surfaces, Picker layout, storage, centers, topology and algorithms', () => {
+test('V3 preserves V2 surfaces except approved Delve Accent, and protects layout/storage/centers/algorithms', () => {
   const baseline = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json'));
   for (const fixture of approved) {
     const tokens = values(read(SKINS.find(s => s.id === fixture.id).cssSource));
     for (const [key, value] of Object.entries(baseline.site[fixture.id])) {
-      assert.equal(tokens[key], value, fixture.id + ' keeps site ' + key);
+      const expected = baseline.approvedSiteChanges?.[fixture.id]?.[key] ?? value;
+      assert.equal(tokens[key], expected, fixture.id + ' keeps approved site ' + key);
     }
   }
   for (const [path, hash] of Object.entries(baseline.files)) {
     assert.equal(createHash('sha256').update(read(path)).digest('hex'), hash, path + ' stays unchanged');
   }
+});
+
+
+test('Delve Azure update changes only approved colors; birth/natal, other semantics and Deep Think stay intact', () => {
+  const baseline = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json')).delveAzureBaseline;
+  const skin = SKINS.find(s => s.id === 'delve');
+  const tokens = values(read(skin.cssSource));
+  assert.deepEqual(tokens, { ...baseline.tokens, ...baseline.changes });
+  assert.equal(skin.transitSourceMode, 'unified-natal');
+  assert.deepEqual(skin.preview, {surface:'#FFFFFF',text:'#1A1A1A',accent:'#2E75D4',personality:'#1A1A1A',design:'#6F6F6F',transit:'#2E75D4'});
+  assert.ok(contrast(tokens['--hd-transit'],tokens['--hd-transit-on']) >= 4.5);
+  assert.ok(contrast(tokens['--accent'],tokens['--accent-on']) >= 4.5);
+  for (const [path,hash] of Object.entries(baseline.files)) assert.equal(createHash('sha256').update(read(path)).digest('hex'),hash,path+' unchanged in Azure follow-up');
 });

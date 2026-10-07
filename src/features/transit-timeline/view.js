@@ -1261,7 +1261,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       else { $('.tl-table').setAttribute('aria-busy', 'false'); renderRows(); }
     },
     deactivate,
-    refresh() { if (active) { graphKey = ''; renderMoment(); } },
+    // Invalidate paint even while hidden, so re-entry uses the current Skin.
+    refresh() { graphKey = ''; if (active) renderMoment(); },
     setLanguage,
     destroy() { clearTimeout(navigationTimer); deactivate(); client.dispose(); sizing.disconnect(); events.abort(); root.replaceChildren(); root.classList.remove('tl', 'tl-no-chart'); }
   };
