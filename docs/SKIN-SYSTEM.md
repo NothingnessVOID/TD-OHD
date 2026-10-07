@@ -410,3 +410,7 @@ Amber Dawn BodyGraph Transit 为 `#2D929F`，Timeline Transit / Both Transit Str
 ## Relationship Palette V3 / Circuit 可读性
 
 当前九套 Light Relationship 配色、独立 Connection 按钮规则及跨 Skin 固定 Circuit 语义色见 [RELATIONSHIP-PALETTE-V3.md](RELATIONSHIP-PALETTE-V3.md)。两套 Dark Relationship 配色保持不变；V2 ownership 视觉语法继续沿用。
+
+## Relationship Palette V4 / Delve 大面积颜色
+
+四套 Skin 的最新关系身份、Ink Light #606060 和 Delve Timeline Birth #343434 见 [RELATIONSHIP-PALETTE-V4.md](RELATIONSHIP-PALETTE-V4.md)。V3 其余七套 Relationship 及全部 Circuit 规则继续有效。

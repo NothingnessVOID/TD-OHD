@@ -32,9 +32,9 @@ export const CENTER_PALETTES = Object.freeze([
   }),
   Object.freeze({
     id: 'ink', name: 'Ink', tagline: 'Monochrome', render: 'solid', coreEdgeRatio: 100,
-    preview: Object.freeze({"head": "#4B4A47", "ajna": "#4B4A47", "throat": "#4B4A47", "g": "#4B4A47", "heart": "#4B4A47", "spleen": "#4B4A47", "solar": "#4B4A47", "sacral": "#4B4A47", "root": "#4B4A47"}),
+    preview: Object.freeze({"head": "#606060", "ajna": "#606060", "throat": "#606060", "g": "#606060", "heart": "#606060", "spleen": "#606060", "solar": "#606060", "sacral": "#606060", "root": "#606060"}),
     foreground: Object.freeze({"head": "#FFFFFF", "ajna": "#FFFFFF", "throat": "#FFFFFF", "g": "#FFFFFF", "heart": "#FFFFFF", "spleen": "#FFFFFF", "solar": "#FFFFFF", "sacral": "#FFFFFF", "root": "#FFFFFF"}),
-    signature: '#4B4A47', darkEdge: "#96938E",
+    signature: '#606060', darkEdge: "#96938E",
     cssSource: 'src/styles/center-palettes/ink.css'
   }),
   Object.freeze({
