@@ -1,7 +1,7 @@
 /* Local layout only; colors continue to come from the existing skin tokens. */
 .tl {
   --tl-surface: var(--bg-elevated); --tl-line: var(--border);
-  --tl-transit: color-mix(in srgb, var(--hd-transit) 75%, #445457); --tl-transit-ink: var(--hd-transit-on);
+  --tl-transit: var(--hd-transit); --tl-transit-ink: var(--hd-transit-on);
   --tl-birth: var(--text-secondary); --tl-cursor-color: var(--accent-strong);
   --tl-date-even: color-mix(in srgb, var(--tl-surface) 85%, var(--text-secondary));
   --tl-date-odd: color-mix(in srgb, var(--tl-surface) 92%, var(--tl-transit));

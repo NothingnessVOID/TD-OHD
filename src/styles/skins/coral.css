@@ -1,5 +1,5 @@
 /* Coral: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors are the approved adaptation.
+   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="coral"] {
   color-scheme: light;
@@ -37,7 +37,7 @@
   --hd-graph-bg: transparent;
   --hd-graph-panel-bg: #FFFBF3;
   --hd-graph-panel-border: var(--border-subtle);
-  --hd-inactive: #C6BBB0;
+  --hd-inactive: #C9BEB1;
   --hd-inactive-on: #060E16;
   --hd-undefined: #C7B8A8;
   --hd-undefined-center: #FFFBF3;
@@ -55,42 +55,42 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #314153;
   --hd-planet-column-text: #1A3049;
-  --hd-personality: #1A3049;
+  --hd-personality: #21364A;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #D95F4C;
-  --hd-design-on: #060E16;
-  --hd-both: #8C5B4A;
+  --hd-design: #59757A;
+  --hd-design-on: #FFFFFF;
+  --hd-both: #87735E;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #4B8E9B;
-  --hd-transit-on: #060E16;
-  --hd-transit-text: #326A74;
-  --hd-transit-soft: #ECECE4;
-  --hd-type-generator: #B38C44;
-  --hd-type-manifesting-generator: #D17A43;
-  --hd-type-manifestor: #D95F4C;
-  --hd-type-projector: #315F85;
-  --hd-type-reflector: #7A8790;
-  --hd-circuit-individual: #775D83;
-  --hd-circuit-individual-soft: #F0E7E2;
-  --hd-circuit-tribal: #D95F4C;
-  --hd-circuit-tribal-soft: #FAE8DD;
-  --hd-circuit-collective: #315F85;
-  --hd-circuit-collective-soft: #EAE8E2;
-  --hd-circuit-integration: #6E8C7A;
-  --hd-circuit-integration-soft: #EFECE1;
-  --hd-connection-a: #4C8C83;
-  --hd-connection-a-on: #060E16;
-  --hd-connection-a-core: #77A8A1;
-  --hd-connection-b: #F37E63;
+  --hd-transit: #F37E63;
+  --hd-transit-on: #1A1714;
+  --hd-transit-text: #C45D49;
+  --hd-transit-soft: #FCE7E0;
+  --hd-type-generator: #9A7F4D;
+  --hd-type-manifesting-generator: #AD7446;
+  --hd-type-manifestor: #B76351;
+  --hd-type-projector: #506C82;
+  --hd-type-reflector: #747F86;
+  --hd-circuit-individual: #706477;
+  --hd-circuit-individual-soft: #F3ECE4;
+  --hd-circuit-tribal: #9C5F50;
+  --hd-circuit-tribal-soft: #F6EBE1;
+  --hd-circuit-collective: #576E7F;
+  --hd-circuit-collective-soft: #F1ECE4;
+  --hd-circuit-integration: #65796D;
+  --hd-circuit-integration-soft: #F2EDE3;
+  --hd-connection-a: #5C7F78;
+  --hd-connection-a-on: #000000;
+  --hd-connection-a-core: #7D9891;
+  --hd-connection-b: #BC715F;
   --hd-connection-b-on: #060E16;
-  --hd-connection-b-core: #F69D88;
-  --hd-connection-bridged: #B9944D;
+  --hd-connection-b-core: #C98D7D;
+  --hd-connection-bridged: #9A8251;
   --hd-connection-bridged-on: #060E16;
-  --hd-connection-bridged-core: #CAAE78;
+  --hd-connection-bridged-core: #AE9A71;
   --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
-  --hd-connection-both-on: #060E16;
-  --hd-relationship-electromagnetic: #C97C4A;
-  --hd-relationship-companionship: #6E8C7A;
-  --hd-relationship-compromise: #C97B56;
-  --hd-relationship-dominance: #727F89;
+  --hd-connection-both-on: #000000;
+  --hd-relationship-electromagnetic: #B06B4E;
+  --hd-relationship-companionship: #6B7F70;
+  --hd-relationship-compromise: #956D55;
+  --hd-relationship-dominance: #748087;
 }

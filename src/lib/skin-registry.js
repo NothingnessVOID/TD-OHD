@@ -12,47 +12,47 @@ export const SKINS = Object.freeze([
   }),
   Object.freeze({
     id: 'high-contrast', name: 'High Contrast', mode: 'light',
-    preview: Object.freeze({ surface: '#FAF8F7', text: '#1A1C1E', accent: '#3A6B85', personality: '#202428', design: '#B84A44', transit: '#2A8EA0' }),
+    preview: Object.freeze({ surface: '#FAF8F7', text: '#1A1C1E', accent: '#3A6B85', personality: '#26292C', design: '#B6534B', transit: '#28706D' }),
     cssSource: 'src/styles/skins/high-contrast.css'
   }),
   Object.freeze({
     id: 'grass-aroma', name: 'Grass Aroma', mode: 'light',
-    preview: Object.freeze({ surface: '#F5F8F3', text: '#2E3832', accent: '#5BA88C', personality: '#2E3832', design: '#B86758', transit: '#3E939A' }),
+    preview: Object.freeze({ surface: '#F5F8F3', text: '#2E3832', accent: '#5BA88C', personality: '#344039', design: '#B76A58', transit: '#3F8D5E' }),
     cssSource: 'src/styles/skins/grass-aroma.css'
   }),
   Object.freeze({
     id: 'contemplation', name: 'Contemplation', mode: 'light',
-    preview: Object.freeze({ surface: '#F3F5F7', text: '#2C3238', accent: '#7E99A8', personality: '#2C3238', design: '#A85F5B', transit: '#4D91A6' }),
+    preview: Object.freeze({ surface: '#F3F5F7', text: '#2C3238', accent: '#7E99A8', personality: '#313740', design: '#A16872', transit: '#7663A5' }),
     cssSource: 'src/styles/skins/contemplation.css'
   }),
   Object.freeze({
     id: 'absolutely', name: 'Absolutely', mode: 'light',
-    preview: Object.freeze({ surface: '#F4F3EE', text: '#2D2B28', accent: '#B5846E', personality: '#2D2B28', design: '#A95D46', transit: '#477C88' }),
+    preview: Object.freeze({ surface: '#F4F3EE', text: '#2D2B28', accent: '#D97757', personality: '#26221F', design: '#6E7880', transit: '#D97757' }),
     cssSource: 'src/styles/skins/absolutely.css'
   }),
   Object.freeze({
     id: 'delve', name: 'Delve', mode: 'light',
-    preview: Object.freeze({ surface: '#FFFFFF', text: '#1A1A1A', accent: '#1A1A1A', personality: '#1A1A1A', design: '#A64B46', transit: '#2F7F9D' }),
+    preview: Object.freeze({ surface: '#FFFFFF', text: '#1A1A1A', accent: '#1A1A1A', personality: '#5A5A5A', design: '#9A5D57', transit: '#111111' }),
     cssSource: 'src/styles/skins/delve.css'
   }),
   Object.freeze({
     id: 'deep-think', name: 'Deep Think', mode: 'light',
-    preview: Object.freeze({ surface: '#FCFCFD', text: '#1D1D1F', accent: '#636AE8', personality: '#25262B', design: '#C35558', transit: '#2FA7C0' }),
+    preview: Object.freeze({ surface: '#FCFCFD', text: '#1D1D1F', accent: '#4D6BFE', personality: '#252A36', design: '#C26068', transit: '#4660E5' }),
     cssSource: 'src/styles/skins/deep-think.css'
   }),
   Object.freeze({
     id: 'new-warm-paper', name: 'New Warm Paper', mode: 'light',
-    preview: Object.freeze({ surface: '#F5EFE4', text: '#2A2622', accent: '#537D96', personality: '#2A2622', design: '#8B2C1F', transit: '#4F8991' }),
+    preview: Object.freeze({ surface: '#F5EFE4', text: '#2A2622', accent: '#537D96', personality: '#302923', design: '#64747D', transit: '#A84A36' }),
     cssSource: 'src/styles/skins/new-warm-paper.css'
   }),
   Object.freeze({
     id: 'midnight-contrast', name: 'Midnight Contrast', mode: 'dark',
-    preview: Object.freeze({ surface: '#26343D', text: '#F0F6FA', accent: '#E6B1C4', personality: '#F0F6FA', design: '#F08A78', transit: '#62D8E8' }),
+    preview: Object.freeze({ surface: '#26343D', text: '#F0F6FA', accent: '#E6B1C4', personality: '#F0F6FA', design: '#E69582', transit: '#E6B1C4' }),
     cssSource: 'src/styles/skins/midnight-contrast.css'
   }),
   Object.freeze({
     id: 'coral', name: 'Coral', mode: 'light',
-    preview: Object.freeze({ surface: '#FDF6EC', text: '#1A3049', accent: '#1A3049', personality: '#1A3049', design: '#D95F4C', transit: '#4B8E9B' }),
+    preview: Object.freeze({ surface: '#FDF6EC', text: '#1A3049', accent: '#1A3049', personality: '#21364A', design: '#59757A', transit: '#F37E63' }),
     cssSource: 'src/styles/skins/coral.css'
   })
 ]);

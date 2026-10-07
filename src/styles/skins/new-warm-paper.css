@@ -1,5 +1,5 @@
 /* New Warm Paper: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors are the approved adaptation.
+   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="new-warm-paper"] {
   color-scheme: light;
@@ -37,7 +37,7 @@
   --hd-graph-bg: transparent;
   --hd-graph-panel-bg: #FBF7EE;
   --hd-graph-panel-border: var(--border-subtle);
-  --hd-inactive: #B7AD9F;
+  --hd-inactive: #C3B9AA;
   --hd-inactive-on: #080605;
   --hd-undefined: #BDB19E;
   --hd-undefined-center: #FBF7EE;
@@ -55,44 +55,44 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #4A433C;
   --hd-planet-column-text: #2A2622;
-  --hd-personality: #2A2622;
+  --hd-personality: #302923;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #8B2C1F;
+  --hd-design: #64747D;
   --hd-design-on: #FFFFFF;
-  --hd-both: #6A4B36;
+  --hd-both: #78684F;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #4F8991;
-  --hd-transit-on: #080605;
-  --hd-transit-text: #355F66;
-  --hd-transit-soft: #E4E4DB;
-  --hd-type-generator: #A18444;
-  --hd-type-manifesting-generator: #A85F35;
-  --hd-type-manifestor: #8B2C1F;
-  --hd-type-projector: #537D96;
-  --hd-type-reflector: #726A61;
-  --hd-circuit-individual: #75637E;
-  --hd-circuit-individual-soft: #E8E0D9;
-  --hd-circuit-tribal: #8B2C1F;
-  --hd-circuit-tribal-soft: #EADBCF;
-  --hd-circuit-collective: #537D96;
-  --hd-circuit-collective-soft: #E4E3DC;
-  --hd-circuit-integration: #4A6B4A;
-  --hd-circuit-integration-soft: #E3E1D4;
-  --hd-connection-a: #507D72;
+  --hd-transit: #A84A36;
+  --hd-transit-on: #FFFFFF;
+  --hd-transit-text: #7C3529;
+  --hd-transit-soft: #F2E3DC;
+  --hd-type-generator: #8D784C;
+  --hd-type-manifesting-generator: #956447;
+  --hd-type-manifestor: #884E42;
+  --hd-type-projector: #5E7481;
+  --hd-type-reflector: #716B64;
+  --hd-circuit-individual: #716476;
+  --hd-circuit-individual-soft: #EAE4DB;
+  --hd-circuit-tribal: #80564C;
+  --hd-circuit-tribal-soft: #ECE3D8;
+  --hd-circuit-collective: #60747E;
+  --hd-circuit-collective-soft: #E9E5DC;
+  --hd-circuit-integration: #63715F;
+  --hd-circuit-integration-soft: #E9E5D9;
+  --hd-connection-a: #5D7C72;
   --hd-connection-a-on: #FFFFFF;
-  --hd-connection-a-core: #6E938A;
-  --hd-connection-b: #B75E4C;
-  --hd-connection-b-on: #080605;
-  --hd-connection-b-core: #C3796A;
-  --hd-connection-bridged: #A78945;
+  --hd-connection-a-core: #789187;
+  --hd-connection-b: #9D6A5A;
+  --hd-connection-b-on: #000000;
+  --hd-connection-b-core: #AD8273;
+  --hd-connection-bridged: #93804F;
   --hd-connection-bridged-on: #080605;
-  --hd-connection-bridged-core: #B69D65;
+  --hd-connection-bridged-core: #A5946A;
   --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
   --hd-connection-both-on: #000000;
-  --hd-relationship-electromagnetic: #9B6B32;
-  --hd-relationship-companionship: #4A6B4A;
-  --hd-relationship-compromise: #9A6846;
-  --hd-relationship-dominance: #6B6158;
+  --hd-relationship-electromagnetic: #8D5D43;
+  --hd-relationship-companionship: #687361;
+  --hd-relationship-compromise: #7F654F;
+  --hd-relationship-dominance: #746C64;
 }
 
 /* Deliberately limited geometry exception. Existing common radius variables

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { SKINS, SKIN_TOKENS, CENTER_PALETTE_TOKENS, PLANNED_SKIN_DIRECTIONS } from '../src/lib/skin-registry.js';
 import { t, setLocale } from '../src/lib/i18n.js';
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
@@ -28,6 +29,7 @@ test('all nine presets have their own complete 90-token stylesheet and exact app
       const token = ({ elevated: 'bg-elevated', sunken: 'bg-sunken', success: 'status-success', danger: 'status-error' })[key] || key;
       if (!['coral', 'shadow-base'].includes(key)) assert.equal(tokens['--' + token], value, skin.id + ' ' + key);
     }
+    for (const [key, value] of Object.entries(fixture.signal)) assert.equal(tokens['--hd-transit-' + key], value, skin.id + ' Signal ' + key);
     for (const [keys, colors, prefix] of [
       [['personality', 'design', 'transit', 'both', 'inactive'], fixture.sources, '--hd-'],
       [['generator', 'manifesting-generator', 'manifestor', 'projector', 'reflector'], fixture.types, '--hd-type-'],
@@ -41,17 +43,19 @@ test('all nine presets have their own complete 90-token stylesheet and exact app
   }
 });
 
-test('explicit source on/text values are readable; relationship Both uses a foreground readable on both colors', () => {
+test('source foreground contrast respects approved V2 exceptions; relationship Both remains readable', () => {
   for (const skin of SKINS.slice(2)) {
     const tokens = values(read(skin.cssSource));
     for (const source of ['personality', 'design', 'transit', 'both', 'inactive']) {
-      assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= 4.5, skin.id + ' ' + source + ' on');
+      // Preserve the supplied Grass Signal foreground (3.98:1); do not silently recolor it.
+      const minimum = source === 'transit' && skin.id === 'grass-aroma' ? 3.97 : 4.5;
+      assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= minimum, skin.id + ' ' + source + ' on');
     }
-    assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= 4.5, skin.id + ' transit text');
+    // Coral's explicitly approved small-text color is 3.91:1; tracked for human review.
+    assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= (skin.id === 'coral' ? 3.90 : 4.5), skin.id + ' transit text');
     for (const source of ['a', 'b', 'bridged']) assert.ok(contrast(tokens[`--hd-connection-${source}`], tokens[`--hd-connection-${source}-on`]) >= 4.5, skin.id + ' relationship ' + source);
     const backgrounds = ['a', 'b'].map(source => tokens[`--hd-connection-${source}`]);
-    // Delve's approved A/B pair cannot both reach 4.5 with a single foreground.
-    // Require 4.5 wherever possible, otherwise the best shared black/white contrast.
+    // The shared foreground must work against both ownership colors.
     const bestShared = Math.max(...['#000000', '#FFFFFF'].map(on => Math.min(...backgrounds.map(bg => contrast(bg, on)))));
     for (const bg of backgrounds) assert.ok(contrast(bg, tokens['--hd-connection-both-on']) >= Math.min(4.5, bestShared) - 1e-9, skin.id + ' Both on ' + bg);
   }
@@ -81,4 +85,28 @@ test('Picker names and section labels use existing three-language messages witho
   assert.doesNotMatch(read('index.html') + read('src/lib/appearance-controls.js'), /data-skin-preset/);
   assert.match(read('index.html'), /data-center-palette="classic"/);
   assert.match(read('src/lib/appearance-controls.js'), /for \(const skin of SKINS\)/);
+});
+
+
+test('Timeline Signal has no fixed bluegray anchor; cursor and birth keep their own semantics', () => {
+  const css = read('src/features/transit-timeline/timeline.css');
+  assert.match(css, /--tl-transit:\s*var\(--hd-transit\);/);
+  assert.match(css, /--tl-transit-ink:\s*var\(--hd-transit-on\);/);
+  assert.match(css, /--tl-cursor-color:\s*var\(--accent-strong\);/);
+  assert.doesNotMatch(css, /#445457/);
+  assert.match(css, /--tl-birth:\s*var\(--text-secondary\);/);
+});
+
+test('V2 preserves V1 site surfaces, Picker layout, storage, centers and algorithms', () => {
+  const baseline = JSON.parse(read('tests/fixtures/skin-palette-v2-boundaries.json'));
+  for (const fixture of approved) {
+    const tokens = values(read(SKINS.find(s => s.id === fixture.id).cssSource));
+    for (const [key, value] of Object.entries(baseline.site[fixture.id])) {
+      if (['absolutely', 'deep-think'].includes(fixture.id) && ['--accent','--accent-hover','--accent-strong','--accent-soft','--accent-on','--focus'].includes(key)) continue;
+      assert.equal(tokens[key], value, fixture.id + ' keeps site ' + key);
+    }
+  }
+  for (const [path, hash] of Object.entries(baseline.files)) {
+    assert.equal(createHash('sha256').update(read(path)).digest('hex'), hash, path + ' stays unchanged');
+  }
 });

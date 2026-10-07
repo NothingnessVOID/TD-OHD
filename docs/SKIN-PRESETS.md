@@ -1,12 +1,23 @@
-# Skin Presets V1 设计规格
+# Skin Presets V2 设计规格
 
 十一套正式 Skin 中，两套默认配色保持原样，以下是九套新增配色。每套文件显式覆盖九十个 canonical Token。九中心和字体独立，不参与本轮设计。
 
+## 色彩层级（Color hierarchy）
+
+1. Transit / Signal：时间轴主条、行运激活与重点信息。
+2. Personality / Design / Both / Relationship ownership：清楚区分身份，降低彩度。
+3. Type / Circuit / Relationship mechanics：辅助识别，避免彩虹噪声。
+4. Inactive / Undefined / structural UI：中性结构退后。
+
+Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
+
+七套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 仅更新 Accent bundle 和相应交互语义。默认两套、Center Palette、字体、Picker 布局、Storage V3 不变。
+
 ## 来源与边界
 
-网站基础色以用户本轮附件为最终规格，并核对 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
+网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
 
-参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design、Type、Circuit、Relationship 主色来自用户明确给出的适配表。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
+参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design、Type、Circuit、Relationship 主色以本轮 Skin Palette V2 附件为最终规格。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
 
 未指定的 on/text/soft、图表中性色、阴影等是本轮补齐的 TD-OHD 设计值。使用一次性颜色计算辅助确定后，最终结果写成明确 CSS；Skin 默认值不依赖统一 runtime 混色公式。可以在同一 Skin 内引用对应 surface/border，不跨分类 alias 主色。
 
@@ -19,7 +30,7 @@
 - Relationship 四类状态独立于 Circuit，尽管某些批准数值恰巧相同，仍显式保存不同 Token。
 - 每 Skin 五项 override 和全局字号沿用 v3，无新存储迁移。用户改 Transit 时延续 Foundation 的列文字明暗处理；未自定义时采用各 Skin 明确的 text 值，Restore / 切换均会移除临时文字覆盖。
 - 九中心仅确认能渲染；之后另开九中心适配任务。
-- 来源 on 与独立关系 on 的对比度至少 4.5:1。Delve 的批准 A/B 色对无法让单一 Both 前景同时达到 4.5:1，因此选黑色取得最好的共有前景对比度（最低约 4.48:1）；其余 Both 至少 4.5:1。不调整批准主色。
+- 主色与 Transit on/text/soft 严格采用 V2 批准值；其他来源和关系前景以可读性选定。对比度不足的批准值在 V2 验证报告中明列，不擅自改色。Circuit soft 是每套 6–12% 的浅 surface tint；Relationship core 使用每套不同的中性高光与强度，最终均写为明确值。
 
 ## 完整规格
 
@@ -29,7 +40,7 @@
 
 ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.css`
 
-清楚、锐利、洁净；以偏暖白和克制青蓝保留高可读性。
+暖白与钢蓝 UI；深青绿 Signal，砖红为辅助。
 
 网站主 Palette：bg `#FAF8F7` / elevated `#FDFBFA` / sunken `#F3F1F0` / text `#1A1C1E` / accent `#3A6B85`
 
@@ -73,7 +84,7 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#FDFBFA` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#B9B8B7` |
+| `--hd-inactive` | `#C8C5C2` |
 | `--hd-inactive-on` | `#161A1D` |
 | `--hd-undefined` | `#C7C2BC` |
 | `--hd-undefined-center` | `#FDFBFA` |
@@ -91,50 +102,50 @@ ID：`high-contrast` · mode：`light` · CSS：`src/styles/skins/high-contrast.
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#4A4E52` |
 | `--hd-planet-column-text` | `#1A1C1E` |
-| `--hd-personality` | `#202428` |
+| `--hd-personality` | `#26292C` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#B84A44` |
+| `--hd-design` | `#B6534B` |
 | `--hd-design-on` | `#FFFFFF` |
-| `--hd-both` | `#6D5546` |
+| `--hd-both` | `#756454` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#2A8EA0` |
-| `--hd-transit-on` | `#161A1D` |
-| `--hd-transit-text` | `#1C6676` |
-| `--hd-transit-soft` | `#E3ECED` |
-| `--hd-type-generator` | `#B68A2F` |
-| `--hd-type-manifesting-generator` | `#C97532` |
-| `--hd-type-manifestor` | `#B84A44` |
-| `--hd-type-projector` | `#3A6B85` |
-| `--hd-type-reflector` | `#70777C` |
-| `--hd-circuit-individual` | `#7A5A8F` |
-| `--hd-circuit-individual-soft` | `#ECE7EC` |
-| `--hd-circuit-tribal` | `#B84A44` |
-| `--hd-circuit-tribal-soft` | `#F3E5E3` |
-| `--hd-circuit-collective` | `#3A6B85` |
-| `--hd-circuit-collective-soft` | `#E5E8EA` |
-| `--hd-circuit-integration` | `#5A8B63` |
-| `--hd-circuit-integration-soft` | `#E8ECE7` |
-| `--hd-connection-a` | `#3F8C84` |
-| `--hd-connection-a-on` | `#080B0D` |
-| `--hd-connection-a-core` | `#73ABA5` |
-| `--hd-connection-b` | `#C66E62` |
+| `--hd-transit` | `#28706D` |
+| `--hd-transit-on` | `#FFFFFF` |
+| `--hd-transit-text` | `#1E5654` |
+| `--hd-transit-soft` | `#E6F0EF` |
+| `--hd-type-generator` | `#9A7A35` |
+| `--hd-type-manifesting-generator` | `#A56C3C` |
+| `--hd-type-manifestor` | `#9E544E` |
+| `--hd-type-projector` | `#5C7180` |
+| `--hd-type-reflector` | `#757A7D` |
+| `--hd-circuit-individual` | `#6E6178` |
+| `--hd-circuit-individual-soft` | `#EFECED` |
+| `--hd-circuit-tribal` | `#8D5A55` |
+| `--hd-circuit-tribal-soft` | `#F1EBEA` |
+| `--hd-circuit-collective` | `#60747F` |
+| `--hd-circuit-collective-soft` | `#EEEDED` |
+| `--hd-circuit-integration` | `#687D69` |
+| `--hd-circuit-integration-soft` | `#EEEEEC` |
+| `--hd-connection-a` | `#56807A` |
+| `--hd-connection-a-on` | `#000000` |
+| `--hd-connection-a-core` | `#769792` |
+| `--hd-connection-b` | `#A46C62` |
 | `--hd-connection-b-on` | `#080B0D` |
-| `--hd-connection-b-core` | `#D5958C` |
-| `--hd-connection-bridged` | `#B99045` |
+| `--hd-connection-b-core` | `#B5877F` |
+| `--hd-connection-bridged` | `#9A8355` |
 | `--hd-connection-bridged-on` | `#080B0D` |
-| `--hd-connection-bridged-core` | `#CCAE77` |
+| `--hd-connection-bridged-core` | `#AD9A74` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#080B0D` |
-| `--hd-relationship-electromagnetic` | `#B37B2E` |
-| `--hd-relationship-companionship` | `#5A8B63` |
-| `--hd-relationship-compromise` | `#B17A45` |
-| `--hd-relationship-dominance` | `#6B6F73` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#9A6F37` |
+| `--hd-relationship-companionship` | `#6F816E` |
+| `--hd-relationship-compromise` | `#8F6C50` |
+| `--hd-relationship-dominance` | `#757A7D` |
 
 ### 草香 / Grass Aroma
 
 ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 
-清晨植物的柔和透亮；以灰绿底和温暖来源色避免医疗后台气质。
+灰绿环境与森林绿 Signal；暖陶土辅助，不使用明显蓝色重点。
 
 网站主 Palette：bg `#F5F8F3` / elevated `#F9FBF7` / sunken `#EFF3EC` / text `#2E3832` / accent `#5BA88C`
 
@@ -178,7 +189,7 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#F9FBF7` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#B5C0B8` |
+| `--hd-inactive` | `#C4CDC5` |
 | `--hd-inactive-on` | `#07110C` |
 | `--hd-undefined` | `#BCC8BD` |
 | `--hd-undefined-center` | `#F9FBF7` |
@@ -196,50 +207,50 @@ ID：`grass-aroma` · mode：`light` · CSS：`src/styles/skins/grass-aroma.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#5E6B63` |
 | `--hd-planet-column-text` | `#2E3832` |
-| `--hd-personality` | `#2E3832` |
+| `--hd-personality` | `#344039` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#B86758` |
+| `--hd-design` | `#B76A58` |
 | `--hd-design-on` | `#07110C` |
-| `--hd-both` | `#6E5B40` |
+| `--hd-both` | `#7B704C` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#3E939A` |
-| `--hd-transit-on` | `#07110C` |
-| `--hd-transit-text` | `#28686E` |
-| `--hd-transit-soft` | `#E3EEEA` |
-| `--hd-type-generator` | `#A98B47` |
-| `--hd-type-manifesting-generator` | `#C17A45` |
-| `--hd-type-manifestor` | `#B86758` |
-| `--hd-type-projector` | `#5B8398` |
-| `--hd-type-reflector` | `#7D8A84` |
-| `--hd-circuit-individual` | `#826F91` |
-| `--hd-circuit-individual-soft` | `#EAEAE9` |
-| `--hd-circuit-tribal` | `#B86758` |
-| `--hd-circuit-tribal-soft` | `#EFEAE4` |
-| `--hd-circuit-collective` | `#5B8398` |
-| `--hd-circuit-collective-soft` | `#E6ECEA` |
-| `--hd-circuit-integration` | `#5BA88C` |
-| `--hd-circuit-integration-soft` | `#E6F0E9` |
-| `--hd-connection-a` | `#4E9B88` |
+| `--hd-transit` | `#3F8D5E` |
+| `--hd-transit-on` | `#10251A` |
+| `--hd-transit-text` | `#2C6A45` |
+| `--hd-transit-soft` | `#E6F0E9` |
+| `--hd-type-generator` | `#8F8050` |
+| `--hd-type-manifesting-generator` | `#9E6F4D` |
+| `--hd-type-manifestor` | `#9E6559` |
+| `--hd-type-projector` | `#607A75` |
+| `--hd-type-reflector` | `#748079` |
+| `--hd-circuit-individual` | `#716A79` |
+| `--hd-circuit-individual-soft` | `#ECEEEA` |
+| `--hd-circuit-tribal` | `#91675D` |
+| `--hd-circuit-tribal-soft` | `#EEEEE8` |
+| `--hd-circuit-collective` | `#617B78` |
+| `--hd-circuit-collective-soft` | `#EBEFEA` |
+| `--hd-circuit-integration` | `#61866F` |
+| `--hd-circuit-integration-soft` | `#EBF0EA` |
+| `--hd-connection-a` | `#5E8579` |
 | `--hd-connection-a-on` | `#07110C` |
-| `--hd-connection-a-core` | `#75B1A2` |
-| `--hd-connection-b` | `#D4887A` |
+| `--hd-connection-a-core` | `#7A9A90` |
+| `--hd-connection-b` | `#A87568` |
 | `--hd-connection-b-on` | `#07110C` |
-| `--hd-connection-b-core` | `#DDA297` |
-| `--hd-connection-bridged` | `#B49A56` |
+| `--hd-connection-b-core` | `#B78D82` |
+| `--hd-connection-bridged` | `#958557` |
 | `--hd-connection-bridged-on` | `#07110C` |
-| `--hd-connection-bridged-core` | `#C4B07B` |
+| `--hd-connection-bridged-core` | `#A79A74` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#07110C` |
-| `--hd-relationship-electromagnetic` | `#A77B3D` |
-| `--hd-relationship-companionship` | `#6C9A70` |
-| `--hd-relationship-compromise` | `#B67B53` |
-| `--hd-relationship-dominance` | `#77827C` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#8C6C43` |
+| `--hd-relationship-companionship` | `#6F8C74` |
+| `--hd-relationship-compromise` | `#916F56` |
+| `--hd-relationship-dominance` | `#76817B` |
 
 ### 沉思 / Contemplation
 
 ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.css`
 
-雨天雾灰蓝；辅助色低饱和，保持安静的冷色秩序。
+雾灰蓝环境与灰紫 Signal，尘玫瑰辅助。
 
 网站主 Palette：bg `#F3F5F7` / elevated `#F8F9FB` / sunken `#ECEFF2` / text `#2C3238` / accent `#7E99A8`
 
@@ -283,7 +294,7 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#F8F9FB` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#BAC3C9` |
+| `--hd-inactive` | `#C7CDD2` |
 | `--hd-inactive-on` | `#0D171C` |
 | `--hd-undefined` | `#BAC5CE` |
 | `--hd-undefined-center` | `#F8F9FB` |
@@ -301,52 +312,52 @@ ID：`contemplation` · mode：`light` · CSS：`src/styles/skins/contemplation.
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#5A6570` |
 | `--hd-planet-column-text` | `#2C3238` |
-| `--hd-personality` | `#2C3238` |
+| `--hd-personality` | `#313740` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#A85F5B` |
-| `--hd-design-on` | `#FFFFFF` |
-| `--hd-both` | `#665867` |
+| `--hd-design` | `#A16872` |
+| `--hd-design-on` | `#000000` |
+| `--hd-both` | `#726678` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#4D91A6` |
-| `--hd-transit-on` | `#0D171C` |
-| `--hd-transit-text` | `#326878` |
-| `--hd-transit-soft` | `#E4ECF0` |
-| `--hd-type-generator` | `#A8945C` |
-| `--hd-type-manifesting-generator` | `#B77956` |
-| `--hd-type-manifestor` | `#A85F5B` |
-| `--hd-type-projector` | `#65889B` |
-| `--hd-type-reflector` | `#7F898F` |
-| `--hd-circuit-individual` | `#7B6B8F` |
-| `--hd-circuit-individual-soft` | `#E8E9EE` |
-| `--hd-circuit-tribal` | `#A85F5B` |
-| `--hd-circuit-tribal-soft` | `#ECE8E9` |
-| `--hd-circuit-collective` | `#6B8C9E` |
-| `--hd-circuit-collective-soft` | `#E7ECEF` |
-| `--hd-circuit-integration` | `#6FA87E` |
-| `--hd-circuit-integration-soft` | `#E7EEEC` |
-| `--hd-connection-a` | `#5F918F` |
-| `--hd-connection-a-on` | `#0D171C` |
-| `--hd-connection-a-core` | `#7FA7A5` |
-| `--hd-connection-b` | `#C4827C` |
-| `--hd-connection-b-on` | `#0D171C` |
-| `--hd-connection-b-core` | `#D09B96` |
-| `--hd-connection-bridged` | `#A79262` |
+| `--hd-transit` | `#7663A5` |
+| `--hd-transit-on` | `#FFFFFF` |
+| `--hd-transit-text` | `#594A86` |
+| `--hd-transit-soft` | `#ECE9F4` |
+| `--hd-type-generator` | `#8C815A` |
+| `--hd-type-manifesting-generator` | `#98715B` |
+| `--hd-type-manifestor` | `#94666C` |
+| `--hd-type-projector` | `#657783` |
+| `--hd-type-reflector` | `#778087` |
+| `--hd-circuit-individual` | `#716A83` |
+| `--hd-circuit-individual-soft` | `#E9EAEE` |
+| `--hd-circuit-tribal` | `#89646B` |
+| `--hd-circuit-tribal-soft` | `#EBE9EC` |
+| `--hd-circuit-collective` | `#667985` |
+| `--hd-circuit-collective-soft` | `#E8EBEE` |
+| `--hd-circuit-integration` | `#718376` |
+| `--hd-circuit-integration-soft` | `#E9ECED` |
+| `--hd-connection-a` | `#617F7F` |
+| `--hd-connection-a-on` | `#000000` |
+| `--hd-connection-a-core` | `#7F9798` |
+| `--hd-connection-b` | `#A07174` |
+| `--hd-connection-b-on` | `#000000` |
+| `--hd-connection-b-core` | `#B28C8F` |
+| `--hd-connection-bridged` | `#8F805E` |
 | `--hd-connection-bridged-on` | `#0D171C` |
-| `--hd-connection-bridged-core` | `#B9A881` |
+| `--hd-connection-bridged-core` | `#A4987D` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#0D171C` |
-| `--hd-relationship-electromagnetic` | `#9D7748` |
-| `--hd-relationship-companionship` | `#6F9B80` |
-| `--hd-relationship-compromise` | `#A87861` |
-| `--hd-relationship-dominance` | `#7D878E` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#896A4B` |
+| `--hd-relationship-companionship` | `#74887A` |
+| `--hd-relationship-compromise` | `#8B6F61` |
+| `--hd-relationship-dominance` | `#7E868B` |
 
 ### Absolutely / Absolutely
 
 ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 
-暖奶油、赤陶、温暖墨黑；有人文编辑感，不增加复古装饰。
+暖奶油与暖灰背景，Clay Orange 承担 Signal，冷灰 Design 退后。
 
-网站主 Palette：bg `#F4F3EE` / elevated `#FAF9F5` / sunken `#EDEAE2` / text `#2D2B28` / accent `#B5846E`
+网站主 Palette：bg `#F4F3EE` / elevated `#FAF9F5` / sunken `#EDEAE2` / text `#2D2B28` / accent `#D97757`
 
 特殊规则：保留现有基础几何；不增加专属字体或装饰资产。
 
@@ -362,12 +373,12 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 | `--text-tertiary` | `#9B9793` |
 | `--border` | `rgba(177,173,161,0.28)` |
 | `--border-subtle` | `#E4E0D8` |
-| `--accent` | `#B5846E` |
-| `--accent-strong` | `#A27460` |
-| `--accent-hover` | `#A27460` |
-| `--accent-soft` | `rgba(181,132,110,0.08)` |
+| `--accent` | `#D97757` |
+| `--accent-strong` | `#B9573E` |
+| `--accent-hover` | `#C76445` |
+| `--accent-soft` | `rgba(217,119,87,0.10)` |
 | `--accent-on` | `#241B17` |
-| `--focus` | `#855541` |
+| `--focus` | `#D97757` |
 | `--shadow-sm` | `0 1px 2px rgba(45,43,40,0.07)` |
 | `--shadow` | `0 2px 8px rgba(45,43,40,0.07)` |
 | `--shadow-lg` | `0 8px 24px rgba(45,43,40,0.07)` |
@@ -388,68 +399,68 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#FAF9F5` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#BDB8B0` |
+| `--hd-inactive` | `#BBB5AC` |
 | `--hd-inactive-on` | `#241B17` |
 | `--hd-undefined` | `#C6BEB1` |
 | `--hd-undefined-center` | `#FAF9F5` |
 | `--hd-center-stroke` | `#AFA696` |
-| `--hd-defined-fill` | `#B5846E` |
+| `--hd-defined-fill` | `#D97757` |
 | `--hd-undefined-fill` | `transparent` |
-| `--hd-selection-ring` | `#855541` |
+| `--hd-selection-ring` | `#D97757` |
 | `--hd-timeline-panel-bg` | `#FAF9F5` |
 | `--hd-timeline-panel-border` | `var(--border)` |
 | `--hd-tooltip-bg` | `#FAF9F5` |
 | `--hd-tooltip-border` | `var(--border)` |
 | `--hd-detail-bg` | `#FAF9F5` |
-| `--hd-detail-border` | `#B5846E` |
+| `--hd-detail-border` | `#D97757` |
 | `--hd-legend-bg` | `#FAF9F5` |
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6B6864` |
 | `--hd-planet-column-text` | `#2D2B28` |
-| `--hd-personality` | `#2D2B28` |
+| `--hd-personality` | `#26221F` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#A95D46` |
+| `--hd-design` | `#6E7880` |
 | `--hd-design-on` | `#FFFFFF` |
-| `--hd-both` | `#725646` |
+| `--hd-both` | `#786C58` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#477C88` |
-| `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#355E68` |
-| `--hd-transit-soft` | `#E1E6E3` |
-| `--hd-type-generator` | `#B18B4B` |
-| `--hd-type-manifesting-generator` | `#BC7447` |
-| `--hd-type-manifestor` | `#A95D46` |
-| `--hd-type-projector` | `#52788B` |
-| `--hd-type-reflector` | `#817D76` |
-| `--hd-circuit-individual` | `#786578` |
-| `--hd-circuit-individual-soft` | `#E6E3E1` |
-| `--hd-circuit-tribal` | `#A95D46` |
-| `--hd-circuit-tribal-soft` | `#ECE2DC` |
-| `--hd-circuit-collective` | `#5D7E8E` |
-| `--hd-circuit-collective-soft` | `#E3E6E3` |
-| `--hd-circuit-integration` | `#6F8A69` |
-| `--hd-circuit-integration-soft` | `#E5E7DF` |
-| `--hd-connection-a` | `#5E8D83` |
-| `--hd-connection-a-on` | `#0E0A08` |
-| `--hd-connection-a-core` | `#85A8A1` |
-| `--hd-connection-b` | `#C47F68` |
+| `--hd-transit` | `#D97757` |
+| `--hd-transit-on` | `#1A1411` |
+| `--hd-transit-text` | `#A74D32` |
+| `--hd-transit-soft` | `#F7E8E2` |
+| `--hd-type-generator` | `#9B8051` |
+| `--hd-type-manifesting-generator` | `#A96C4A` |
+| `--hd-type-manifestor` | `#98564A` |
+| `--hd-type-projector` | `#69757B` |
+| `--hd-type-reflector` | `#7F7A73` |
+| `--hd-circuit-individual` | `#766A75` |
+| `--hd-circuit-individual-soft` | `#EBE9E6` |
+| `--hd-circuit-tribal` | `#8E5F55` |
+| `--hd-circuit-tribal-soft` | `#EDE9E3` |
+| `--hd-circuit-collective` | `#6C777C` |
+| `--hd-circuit-collective-soft` | `#EAEAE6` |
+| `--hd-circuit-integration` | `#737A63` |
+| `--hd-circuit-integration-soft` | `#EBEBE4` |
+| `--hd-connection-a` | `#647D75` |
+| `--hd-connection-a-on` | `#000000` |
+| `--hd-connection-a-core` | `#7E928B` |
+| `--hd-connection-b` | `#A16E5E` |
 | `--hd-connection-b-on` | `#0E0A08` |
-| `--hd-connection-b-core` | `#D29E8C` |
-| `--hd-connection-bridged` | `#B09255` |
+| `--hd-connection-b-core` | `#B08678` |
+| `--hd-connection-bridged` | `#9B855A` |
 | `--hd-connection-bridged-on` | `#0E0A08` |
-| `--hd-connection-bridged-core` | `#C3AC7E` |
+| `--hd-connection-bridged-core` | `#AB9974` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#0E0A08` |
-| `--hd-relationship-electromagnetic` | `#B5846E` |
-| `--hd-relationship-companionship` | `#758E6E` |
-| `--hd-relationship-compromise` | `#B37457` |
-| `--hd-relationship-dominance` | `#7A7671` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#B9684D` |
+| `--hd-relationship-companionship` | `#747F68` |
+| `--hd-relationship-compromise` | `#8E6B58` |
+| `--hd-relationship-dominance` | `#7D7973` |
 
 ### 随时准备接住你 / Delve
 
 ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 
-黑白灰的极简数字界面；图表语义仍独立，但色彩克制。
+白黑灰极简；黑色 Signal，低彩度辅助语义。
 
 网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#1A1A1A`
 
@@ -493,7 +504,7 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#F7F7F8` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#C6C6C6` |
+| `--hd-inactive` | `#D1D1D1` |
 | `--hd-inactive-on` | `#111111` |
 | `--hd-undefined` | `#BDBDBD` |
 | `--hd-undefined-center` | `#F7F7F8` |
@@ -511,52 +522,52 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6E6E6E` |
 | `--hd-planet-column-text` | `#1A1A1A` |
-| `--hd-personality` | `#1A1A1A` |
+| `--hd-personality` | `#5A5A5A` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#A64B46` |
+| `--hd-design` | `#9A5D57` |
 | `--hd-design-on` | `#FFFFFF` |
-| `--hd-both` | `#5B4B40` |
+| `--hd-both` | `#6F6963` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#2F7F9D` |
+| `--hd-transit` | `#111111` |
 | `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#236276` |
-| `--hd-transit-soft` | `#EFF5F8` |
-| `--hd-type-generator` | `#9B7A3D` |
-| `--hd-type-manifesting-generator` | `#A9673F` |
-| `--hd-type-manifestor` | `#A64B46` |
-| `--hd-type-projector` | `#486C85` |
-| `--hd-type-reflector` | `#777777` |
-| `--hd-circuit-individual` | `#6F617B` |
-| `--hd-circuit-individual-soft` | `#F4F3F5` |
-| `--hd-circuit-tribal` | `#A64B46` |
-| `--hd-circuit-tribal-soft` | `#F8F2F1` |
-| `--hd-circuit-collective` | `#486C85` |
-| `--hd-circuit-collective-soft` | `#F1F4F6` |
-| `--hd-circuit-integration` | `#557C60` |
-| `--hd-circuit-integration-soft` | `#F2F5F3` |
-| `--hd-connection-a` | `#4A7D75` |
+| `--hd-transit-text` | `#1A1A1A` |
+| `--hd-transit-soft` | `#EFEFEF` |
+| `--hd-type-generator` | `#82745C` |
+| `--hd-type-manifesting-generator` | `#896A55` |
+| `--hd-type-manifestor` | `#895A56` |
+| `--hd-type-projector` | `#64727B` |
+| `--hd-type-reflector` | `#7C7C7C` |
+| `--hd-circuit-individual` | `#716B76` |
+| `--hd-circuit-individual-soft` | `#F6F6F7` |
+| `--hd-circuit-tribal` | `#7F5F5A` |
+| `--hd-circuit-tribal-soft` | `#F7F5F5` |
+| `--hd-circuit-collective` | `#69757C` |
+| `--hd-circuit-collective-soft` | `#F6F7F7` |
+| `--hd-circuit-integration` | `#68766C` |
+| `--hd-circuit-integration-soft` | `#F6F7F6` |
+| `--hd-connection-a` | `#617B76` |
 | `--hd-connection-a-on` | `#FFFFFF` |
-| `--hd-connection-a-core` | `#6B948E` |
-| `--hd-connection-b` | `#B7665C` |
+| `--hd-connection-a-core` | `#7A908C` |
+| `--hd-connection-b` | `#947068` |
 | `--hd-connection-b-on` | `#030303` |
-| `--hd-connection-b-core` | `#C48279` |
-| `--hd-connection-bridged` | `#9F8143` |
+| `--hd-connection-b-core` | `#A58780` |
+| `--hd-connection-bridged` | `#8A7C60` |
 | `--hd-connection-bridged-on` | `#030303` |
-| `--hd-connection-bridged-core` | `#B09865` |
+| `--hd-connection-bridged-core` | `#9D9179` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
 | `--hd-connection-both-on` | `#000000` |
-| `--hd-relationship-electromagnetic` | `#9A6A3A` |
-| `--hd-relationship-companionship` | `#557C60` |
-| `--hd-relationship-compromise` | `#9B6A4D` |
-| `--hd-relationship-dominance` | `#777777` |
+| `--hd-relationship-electromagnetic` | `#806B53` |
+| `--hd-relationship-companionship` | `#69766C` |
+| `--hd-relationship-compromise` | `#7C685A` |
+| `--hd-relationship-dominance` | `#7C7C7C` |
 
 ### 用户彻底怒了 / Deep Think
 
 ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 
-冷静、现代的数字界面；蓝紫只作为点睛，不增加渐变背景或发光。
+主要蓝色 Skin；明亮蓝 Signal，灰粉 Design。
 
-网站主 Palette：bg `#FCFCFD` / elevated `#F8F8FA` / sunken `#F0F0F2` / text `#1D1D1F` / accent `#636AE8`
+网站主 Palette：bg `#FCFCFD` / elevated `#F8F8FA` / sunken `#F0F0F2` / text `#1D1D1F` / accent `#4D6BFE`
 
 特殊规则：保留现有基础几何；不增加专属字体或装饰资产。
 
@@ -572,12 +583,12 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 | `--text-tertiary` | `#95959C` |
 | `--border` | `rgba(0,0,0,0.09)` |
 | `--border-subtle` | `#DFE0E5` |
-| `--accent` | `#636AE8` |
-| `--accent-strong` | `#5158D4` |
-| `--accent-hover` | `#5158D4` |
-| `--accent-soft` | `rgba(99,106,232,0.06)` |
-| `--accent-on` | `#FFFFFF` |
-| `--focus` | `#5158D4` |
+| `--accent` | `#4D6BFE` |
+| `--accent-strong` | `#4059D7` |
+| `--accent-hover` | `#4059D7` |
+| `--accent-soft` | `rgba(77,107,254,0.08)` |
+| `--accent-on` | `#000000` |
+| `--focus` | `#4D6BFE` |
 | `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` |
 | `--shadow` | `0 2px 8px rgba(0,0,0,0.05)` |
 | `--shadow-lg` | `0 8px 24px rgba(0,0,0,0.05)` |
@@ -598,68 +609,68 @@ ID：`deep-think` · mode：`light` · CSS：`src/styles/skins/deep-think.css`
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#F8F8FA` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#C2C4CC` |
+| `--hd-inactive` | `#C9CCD6` |
 | `--hd-inactive-on` | `#040509` |
 | `--hd-undefined` | `#B9BBC6` |
 | `--hd-undefined-center` | `#F8F8FA` |
 | `--hd-center-stroke` | `#A5A8B5` |
-| `--hd-defined-fill` | `#636AE8` |
+| `--hd-defined-fill` | `#4D6BFE` |
 | `--hd-undefined-fill` | `transparent` |
-| `--hd-selection-ring` | `#5158D4` |
+| `--hd-selection-ring` | `#4D6BFE` |
 | `--hd-timeline-panel-bg` | `#F8F8FA` |
 | `--hd-timeline-panel-border` | `var(--border)` |
 | `--hd-tooltip-bg` | `#F8F8FA` |
 | `--hd-tooltip-border` | `var(--border)` |
 | `--hd-detail-bg` | `#F8F8FA` |
-| `--hd-detail-border` | `#636AE8` |
+| `--hd-detail-border` | `#4D6BFE` |
 | `--hd-legend-bg` | `#F8F8FA` |
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#65656B` |
 | `--hd-planet-column-text` | `#1D1D1F` |
-| `--hd-personality` | `#25262B` |
+| `--hd-personality` | `#252A36` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#C35558` |
+| `--hd-design` | `#C26068` |
 | `--hd-design-on` | `#040509` |
-| `--hd-both` | `#6B5A77` |
+| `--hd-both` | `#6F668C` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#2FA7C0` |
-| `--hd-transit-on` | `#040509` |
-| `--hd-transit-text` | `#237387` |
-| `--hd-transit-soft` | `#ECF5F8` |
-| `--hd-type-generator` | `#C09A43` |
-| `--hd-type-manifesting-generator` | `#C9783C` |
-| `--hd-type-manifestor` | `#C35558` |
-| `--hd-type-projector` | `#596FC8` |
-| `--hd-type-reflector` | `#7E8491` |
-| `--hd-circuit-individual` | `#7B62C8` |
-| `--hd-circuit-individual-soft` | `#F2F0F9` |
-| `--hd-circuit-tribal` | `#C35558` |
-| `--hd-circuit-tribal-soft` | `#F7EFF0` |
-| `--hd-circuit-collective` | `#4D78C5` |
-| `--hd-circuit-collective-soft` | `#EEF1F9` |
-| `--hd-circuit-integration` | `#4C9A72` |
-| `--hd-circuit-integration-soft` | `#EEF4F2` |
-| `--hd-connection-a` | `#429B93` |
+| `--hd-transit` | `#4660E5` |
+| `--hd-transit-on` | `#FFFFFF` |
+| `--hd-transit-text` | `#354CC0` |
+| `--hd-transit-soft` | `#E9EDFF` |
+| `--hd-type-generator` | `#9C8353` |
+| `--hd-type-manifesting-generator` | `#A8744D` |
+| `--hd-type-manifestor` | `#A85D64` |
+| `--hd-type-projector` | `#536AA8` |
+| `--hd-type-reflector` | `#737989` |
+| `--hd-circuit-individual` | `#756AA0` |
+| `--hd-circuit-individual-soft` | `#F3F2F6` |
+| `--hd-circuit-tribal` | `#955F66` |
+| `--hd-circuit-tribal-soft` | `#F5F1F2` |
+| `--hd-circuit-collective` | `#5F73A3` |
+| `--hd-circuit-collective-soft` | `#F1F2F7` |
+| `--hd-circuit-integration` | `#5F7F72` |
+| `--hd-circuit-integration-soft` | `#F1F3F3` |
+| `--hd-connection-a` | `#5B8588` |
 | `--hd-connection-a-on` | `#040509` |
-| `--hd-connection-a-core` | `#71B4AE` |
-| `--hd-connection-b` | `#D9746C` |
+| `--hd-connection-a-core` | `#789A9D` |
+| `--hd-connection-b` | `#AD716B` |
 | `--hd-connection-b-on` | `#040509` |
-| `--hd-connection-b-core` | `#E29791` |
-| `--hd-connection-bridged` | `#C2A14D` |
+| `--hd-connection-b-core` | `#BB8A85` |
+| `--hd-connection-bridged` | `#9B8657` |
 | `--hd-connection-bridged-on` | `#040509` |
-| `--hd-connection-bridged-core` | `#D1B87A` |
+| `--hd-connection-bridged-core` | `#AC9B75` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#040509` |
-| `--hd-relationship-electromagnetic` | `#636AE8` |
-| `--hd-relationship-companionship` | `#4C9A72` |
-| `--hd-relationship-compromise` | `#B77A4F` |
-| `--hd-relationship-dominance` | `#7C8190` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#6C72C7` |
+| `--hd-relationship-companionship` | `#678476` |
+| `--hd-relationship-compromise` | `#866D5B` |
+| `--hd-relationship-dominance` | `#7B8090` |
 
 ### 新暖纸 / New Warm Paper
 
 ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-paper.css`
 
-宣纸、墨色、青灰蓝、朱红；细线和弱阴影形成纸本感觉。
+暖纸墨色，青灰蓝界面秩序与朱砂 Signal。
 
 网站主 Palette：bg `#F5EFE4` / elevated `#FBF7EE` / sunken `#EFE8DB` / text `#2A2622` / accent `#537D96`
 
@@ -703,7 +714,7 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#FBF7EE` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#B7AD9F` |
+| `--hd-inactive` | `#C3B9AA` |
 | `--hd-inactive-on` | `#080605` |
 | `--hd-undefined` | `#BDB19E` |
 | `--hd-undefined-center` | `#FBF7EE` |
@@ -721,44 +732,44 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#4A433C` |
 | `--hd-planet-column-text` | `#2A2622` |
-| `--hd-personality` | `#2A2622` |
+| `--hd-personality` | `#302923` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#8B2C1F` |
+| `--hd-design` | `#64747D` |
 | `--hd-design-on` | `#FFFFFF` |
-| `--hd-both` | `#6A4B36` |
+| `--hd-both` | `#78684F` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#4F8991` |
-| `--hd-transit-on` | `#080605` |
-| `--hd-transit-text` | `#355F66` |
-| `--hd-transit-soft` | `#E4E4DB` |
-| `--hd-type-generator` | `#A18444` |
-| `--hd-type-manifesting-generator` | `#A85F35` |
-| `--hd-type-manifestor` | `#8B2C1F` |
-| `--hd-type-projector` | `#537D96` |
-| `--hd-type-reflector` | `#726A61` |
-| `--hd-circuit-individual` | `#75637E` |
-| `--hd-circuit-individual-soft` | `#E8E0D9` |
-| `--hd-circuit-tribal` | `#8B2C1F` |
-| `--hd-circuit-tribal-soft` | `#EADBCF` |
-| `--hd-circuit-collective` | `#537D96` |
-| `--hd-circuit-collective-soft` | `#E4E3DC` |
-| `--hd-circuit-integration` | `#4A6B4A` |
-| `--hd-circuit-integration-soft` | `#E3E1D4` |
-| `--hd-connection-a` | `#507D72` |
+| `--hd-transit` | `#A84A36` |
+| `--hd-transit-on` | `#FFFFFF` |
+| `--hd-transit-text` | `#7C3529` |
+| `--hd-transit-soft` | `#F2E3DC` |
+| `--hd-type-generator` | `#8D784C` |
+| `--hd-type-manifesting-generator` | `#956447` |
+| `--hd-type-manifestor` | `#884E42` |
+| `--hd-type-projector` | `#5E7481` |
+| `--hd-type-reflector` | `#716B64` |
+| `--hd-circuit-individual` | `#716476` |
+| `--hd-circuit-individual-soft` | `#EAE4DB` |
+| `--hd-circuit-tribal` | `#80564C` |
+| `--hd-circuit-tribal-soft` | `#ECE3D8` |
+| `--hd-circuit-collective` | `#60747E` |
+| `--hd-circuit-collective-soft` | `#E9E5DC` |
+| `--hd-circuit-integration` | `#63715F` |
+| `--hd-circuit-integration-soft` | `#E9E5D9` |
+| `--hd-connection-a` | `#5D7C72` |
 | `--hd-connection-a-on` | `#FFFFFF` |
-| `--hd-connection-a-core` | `#6E938A` |
-| `--hd-connection-b` | `#B75E4C` |
-| `--hd-connection-b-on` | `#080605` |
-| `--hd-connection-b-core` | `#C3796A` |
-| `--hd-connection-bridged` | `#A78945` |
+| `--hd-connection-a-core` | `#789187` |
+| `--hd-connection-b` | `#9D6A5A` |
+| `--hd-connection-b-on` | `#000000` |
+| `--hd-connection-b-core` | `#AD8273` |
+| `--hd-connection-bridged` | `#93804F` |
 | `--hd-connection-bridged-on` | `#080605` |
-| `--hd-connection-bridged-core` | `#B69D65` |
+| `--hd-connection-bridged-core` | `#A5946A` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
 | `--hd-connection-both-on` | `#000000` |
-| `--hd-relationship-electromagnetic` | `#9B6B32` |
-| `--hd-relationship-companionship` | `#4A6B4A` |
-| `--hd-relationship-compromise` | `#9A6846` |
-| `--hd-relationship-dominance` | `#6B6158` |
+| `--hd-relationship-electromagnetic` | `#8D5D43` |
+| `--hd-relationship-companionship` | `#687361` |
+| `--hd-relationship-compromise` | `#7F654F` |
+| `--hd-relationship-dominance` | `#746C64` |
 | `--radius` | `2px` |
 | `--radius-lg` | `3px` |
 | `--skin-large-radius` | `6px` |
@@ -768,7 +779,7 @@ ID：`new-warm-paper` · mode：`light` · CSS：`src/styles/skins/new-warm-pape
 
 ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-contrast.css`
 
-深青夜与暖玫瑰；文字层级清晰，背景保持青色而不退成黑色。
+深青夜环境，暖玫瑰 Signal 与柔和珊瑚、紫灰辅助。
 
 网站主 Palette：bg `#26343D` / elevated `#30414B` / sunken `#202C34` / text `#F0F6FA` / accent `#E6B1C4`
 
@@ -832,48 +843,48 @@ ID：`midnight-contrast` · mode：`dark` · CSS：`src/styles/skins/midnight-co
 | `--hd-planet-column-text` | `#F0F6FA` |
 | `--hd-personality` | `#F0F6FA` |
 | `--hd-personality-on` | `#080F14` |
-| `--hd-design` | `#F08A78` |
+| `--hd-design` | `#E69582` |
 | `--hd-design-on` | `#080F14` |
-| `--hd-both` | `#C89BB0` |
+| `--hd-both` | `#B79BC4` |
 | `--hd-both-on` | `#080F14` |
-| `--hd-transit` | `#62D8E8` |
-| `--hd-transit-on` | `#080F14` |
-| `--hd-transit-text` | `#62D8E8` |
-| `--hd-transit-soft` | `#31535D` |
-| `--hd-type-generator` | `#E0C06B` |
-| `--hd-type-manifesting-generator` | `#E6A05E` |
-| `--hd-type-manifestor` | `#F08A78` |
-| `--hd-type-projector` | `#78B6E1` |
-| `--hd-type-reflector` | `#AAB8C0` |
-| `--hd-circuit-individual` | `#C6A1E5` |
-| `--hd-circuit-individual-soft` | `#44495D` |
-| `--hd-circuit-tribal` | `#F08A78` |
-| `--hd-circuit-tribal-soft` | `#4C4448` |
-| `--hd-circuit-collective` | `#78B6E1` |
-| `--hd-circuit-collective-soft` | `#364D5C` |
-| `--hd-circuit-integration` | `#8FD0A0` |
-| `--hd-circuit-integration-soft` | `#3A5250` |
-| `--hd-connection-a` | `#66C7BA` |
+| `--hd-transit` | `#E6B1C4` |
+| `--hd-transit-on` | `#1B2025` |
+| `--hd-transit-text` | `#F0C4D3` |
+| `--hd-transit-soft` | `rgba(230,177,196,0.14)` |
+| `--hd-type-generator` | `#C7AD72` |
+| `--hd-type-manifesting-generator` | `#D09263` |
+| `--hd-type-manifestor` | `#D37F72` |
+| `--hd-type-projector` | `#80A6C1` |
+| `--hd-type-reflector` | `#A3B0B8` |
+| `--hd-circuit-individual` | `#A88BBC` |
+| `--hd-circuit-individual-soft` | `#363E4C` |
+| `--hd-circuit-tribal` | `#C17C70` |
+| `--hd-circuit-tribal-soft` | `#393D43` |
+| `--hd-circuit-collective` | `#7F9FB4` |
+| `--hd-circuit-collective-soft` | `#31414B` |
+| `--hd-circuit-integration` | `#86A58E` |
+| `--hd-circuit-integration-soft` | `#324247` |
+| `--hd-connection-a` | `#74AFA6` |
 | `--hd-connection-a-on` | `#080F14` |
-| `--hd-connection-a-core` | `#7ACEC3` |
-| `--hd-connection-b` | `#F1A087` |
+| `--hd-connection-a-core` | `#83B8B0` |
+| `--hd-connection-b` | `#D18A7D` |
 | `--hd-connection-b-on` | `#080F14` |
-| `--hd-connection-b-core` | `#F3AC97` |
-| `--hd-connection-bridged` | `#DFC267` |
+| `--hd-connection-b-core` | `#D5978C` |
+| `--hd-connection-bridged` | `#BCA45F` |
 | `--hd-connection-bridged-on` | `#080F14` |
-| `--hd-connection-bridged-core` | `#E3CA7B` |
+| `--hd-connection-bridged-core` | `#C2AE72` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#080F14` |
-| `--hd-relationship-electromagnetic` | `#E6B1C4` |
-| `--hd-relationship-companionship` | `#8FD0A0` |
-| `--hd-relationship-compromise` | `#E7A86F` |
-| `--hd-relationship-dominance` | `#B7C8D3` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#B88E6A` |
+| `--hd-relationship-companionship` | `#8BA590` |
+| `--hd-relationship-compromise` | `#B3926E` |
+| `--hd-relationship-dominance` | `#A8B6BE` |
 
 ### 珊瑚 / Coral
 
 ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 
-和纸暖白、墨蓝、珊瑚朱与灰青；活泼而克制。
+和纸暖白，墨蓝 UI 与珊瑚朱 Signal、灰青辅助。
 
 网站主 Palette：bg `#FDF6EC` / elevated `#FFFBF3` / sunken `#FCF1E4` / text `#1A3049` / accent `#1A3049`
 
@@ -917,7 +928,7 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-graph-bg` | `transparent` |
 | `--hd-graph-panel-bg` | `#FFFBF3` |
 | `--hd-graph-panel-border` | `var(--border-subtle)` |
-| `--hd-inactive` | `#C6BBB0` |
+| `--hd-inactive` | `#C9BEB1` |
 | `--hd-inactive-on` | `#060E16` |
 | `--hd-undefined` | `#C7B8A8` |
 | `--hd-undefined-center` | `#FFFBF3` |
@@ -935,42 +946,42 @@ ID：`coral` · mode：`light` · CSS：`src/styles/skins/coral.css`
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#314153` |
 | `--hd-planet-column-text` | `#1A3049` |
-| `--hd-personality` | `#1A3049` |
+| `--hd-personality` | `#21364A` |
 | `--hd-personality-on` | `#FFFFFF` |
-| `--hd-design` | `#D95F4C` |
-| `--hd-design-on` | `#060E16` |
-| `--hd-both` | `#8C5B4A` |
+| `--hd-design` | `#59757A` |
+| `--hd-design-on` | `#FFFFFF` |
+| `--hd-both` | `#87735E` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#4B8E9B` |
-| `--hd-transit-on` | `#060E16` |
-| `--hd-transit-text` | `#326A74` |
-| `--hd-transit-soft` | `#ECECE4` |
-| `--hd-type-generator` | `#B38C44` |
-| `--hd-type-manifesting-generator` | `#D17A43` |
-| `--hd-type-manifestor` | `#D95F4C` |
-| `--hd-type-projector` | `#315F85` |
-| `--hd-type-reflector` | `#7A8790` |
-| `--hd-circuit-individual` | `#775D83` |
-| `--hd-circuit-individual-soft` | `#F0E7E2` |
-| `--hd-circuit-tribal` | `#D95F4C` |
-| `--hd-circuit-tribal-soft` | `#FAE8DD` |
-| `--hd-circuit-collective` | `#315F85` |
-| `--hd-circuit-collective-soft` | `#EAE8E2` |
-| `--hd-circuit-integration` | `#6E8C7A` |
-| `--hd-circuit-integration-soft` | `#EFECE1` |
-| `--hd-connection-a` | `#4C8C83` |
-| `--hd-connection-a-on` | `#060E16` |
-| `--hd-connection-a-core` | `#77A8A1` |
-| `--hd-connection-b` | `#F37E63` |
+| `--hd-transit` | `#F37E63` |
+| `--hd-transit-on` | `#1A1714` |
+| `--hd-transit-text` | `#C45D49` |
+| `--hd-transit-soft` | `#FCE7E0` |
+| `--hd-type-generator` | `#9A7F4D` |
+| `--hd-type-manifesting-generator` | `#AD7446` |
+| `--hd-type-manifestor` | `#B76351` |
+| `--hd-type-projector` | `#506C82` |
+| `--hd-type-reflector` | `#747F86` |
+| `--hd-circuit-individual` | `#706477` |
+| `--hd-circuit-individual-soft` | `#F3ECE4` |
+| `--hd-circuit-tribal` | `#9C5F50` |
+| `--hd-circuit-tribal-soft` | `#F6EBE1` |
+| `--hd-circuit-collective` | `#576E7F` |
+| `--hd-circuit-collective-soft` | `#F1ECE4` |
+| `--hd-circuit-integration` | `#65796D` |
+| `--hd-circuit-integration-soft` | `#F2EDE3` |
+| `--hd-connection-a` | `#5C7F78` |
+| `--hd-connection-a-on` | `#000000` |
+| `--hd-connection-a-core` | `#7D9891` |
+| `--hd-connection-b` | `#BC715F` |
 | `--hd-connection-b-on` | `#060E16` |
-| `--hd-connection-b-core` | `#F69D88` |
-| `--hd-connection-bridged` | `#B9944D` |
+| `--hd-connection-b-core` | `#C98D7D` |
+| `--hd-connection-bridged` | `#9A8251` |
 | `--hd-connection-bridged-on` | `#060E16` |
-| `--hd-connection-bridged-core` | `#CAAE78` |
+| `--hd-connection-bridged-core` | `#AE9A71` |
 | `--hd-connection-both` | `linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%)` |
-| `--hd-connection-both-on` | `#060E16` |
-| `--hd-relationship-electromagnetic` | `#C97C4A` |
-| `--hd-relationship-companionship` | `#6E8C7A` |
-| `--hd-relationship-compromise` | `#C97B56` |
-| `--hd-relationship-dominance` | `#727F89` |
+| `--hd-connection-both-on` | `#000000` |
+| `--hd-relationship-electromagnetic` | `#B06B4E` |
+| `--hd-relationship-companionship` | `#6B7F70` |
+| `--hd-relationship-compromise` | `#956D55` |
+| `--hd-relationship-dominance` | `#748087` |
 
