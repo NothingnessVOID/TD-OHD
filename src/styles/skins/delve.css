@@ -1,5 +1,5 @@
 /* Delve: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors are the approved adaptation.
+   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="delve"] {
   color-scheme: light;
@@ -37,7 +37,7 @@
   --hd-graph-bg: transparent;
   --hd-graph-panel-bg: #F7F7F8;
   --hd-graph-panel-border: var(--border-subtle);
-  --hd-inactive: #C6C6C6;
+  --hd-inactive: #D1D1D1;
   --hd-inactive-on: #111111;
   --hd-undefined: #BDBDBD;
   --hd-undefined-center: #F7F7F8;
@@ -55,42 +55,42 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #6E6E6E;
   --hd-planet-column-text: #1A1A1A;
-  --hd-personality: #1A1A1A;
+  --hd-personality: #5A5A5A;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #A64B46;
+  --hd-design: #9A5D57;
   --hd-design-on: #FFFFFF;
-  --hd-both: #5B4B40;
+  --hd-both: #6F6963;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #2F7F9D;
+  --hd-transit: #111111;
   --hd-transit-on: #FFFFFF;
-  --hd-transit-text: #236276;
-  --hd-transit-soft: #EFF5F8;
-  --hd-type-generator: #9B7A3D;
-  --hd-type-manifesting-generator: #A9673F;
-  --hd-type-manifestor: #A64B46;
-  --hd-type-projector: #486C85;
-  --hd-type-reflector: #777777;
-  --hd-circuit-individual: #6F617B;
-  --hd-circuit-individual-soft: #F4F3F5;
-  --hd-circuit-tribal: #A64B46;
-  --hd-circuit-tribal-soft: #F8F2F1;
-  --hd-circuit-collective: #486C85;
-  --hd-circuit-collective-soft: #F1F4F6;
-  --hd-circuit-integration: #557C60;
-  --hd-circuit-integration-soft: #F2F5F3;
-  --hd-connection-a: #4A7D75;
+  --hd-transit-text: #1A1A1A;
+  --hd-transit-soft: #EFEFEF;
+  --hd-type-generator: #82745C;
+  --hd-type-manifesting-generator: #896A55;
+  --hd-type-manifestor: #895A56;
+  --hd-type-projector: #64727B;
+  --hd-type-reflector: #7C7C7C;
+  --hd-circuit-individual: #716B76;
+  --hd-circuit-individual-soft: #F6F6F7;
+  --hd-circuit-tribal: #7F5F5A;
+  --hd-circuit-tribal-soft: #F7F5F5;
+  --hd-circuit-collective: #69757C;
+  --hd-circuit-collective-soft: #F6F7F7;
+  --hd-circuit-integration: #68766C;
+  --hd-circuit-integration-soft: #F6F7F6;
+  --hd-connection-a: #617B76;
   --hd-connection-a-on: #FFFFFF;
-  --hd-connection-a-core: #6B948E;
-  --hd-connection-b: #B7665C;
+  --hd-connection-a-core: #7A908C;
+  --hd-connection-b: #947068;
   --hd-connection-b-on: #030303;
-  --hd-connection-b-core: #C48279;
-  --hd-connection-bridged: #9F8143;
+  --hd-connection-b-core: #A58780;
+  --hd-connection-bridged: #8A7C60;
   --hd-connection-bridged-on: #030303;
-  --hd-connection-bridged-core: #B09865;
+  --hd-connection-bridged-core: #9D9179;
   --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
   --hd-connection-both-on: #000000;
-  --hd-relationship-electromagnetic: #9A6A3A;
-  --hd-relationship-companionship: #557C60;
-  --hd-relationship-compromise: #9B6A4D;
-  --hd-relationship-dominance: #777777;
+  --hd-relationship-electromagnetic: #806B53;
+  --hd-relationship-companionship: #69766C;
+  --hd-relationship-compromise: #7C685A;
+  --hd-relationship-dominance: #7C7C7C;
 }

@@ -4,7 +4,7 @@ import { chromium } from 'playwright-core';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { SKINS, SKIN_TOKENS } from '../src/lib/skin-registry.js';
 const base = (process.env.E2E_URL || 'http://127.0.0.1:5173').replace(/\/$/, '');
-const evidence = process.env.SKIN_EVIDENCE_DIR || '/tmp/td-ohd-skin-presets-browser';
+const evidence = process.env.SKIN_EVIDENCE_DIR || '/tmp/td-ohd-skin-palette-v2';
 mkdirSync(evidence, {recursive:true});
 const birth = '/?d=2000-05-10&t=12%3A30&tz=8';
 const browser = await chromium.launch({channel:process.env.CHROME_CHANNEL || 'chrome',headless:true});
@@ -19,6 +19,9 @@ await context.addInitScript(() => {
   });
 });
 const page = await context.newPage(), errors = [], results = [];
+// Every comparison uses the same instant and dense year; no annual generation.
+await page.clock.setFixedTime(new Date('2026-03-15T04:00:00Z'));
+let referenceTimeline;
 page.on('pageerror', e => errors.push(e.message));
 await context.route(/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//, r => r.abort());
 const css = name => page.locator('html').evaluate((n,key)=>getComputedStyle(n).getPropertyValue(key).trim(),name);
@@ -68,6 +71,7 @@ try {
     assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${actual['--hd-design']}"]`).count(),'actual Design paths use this Skin');
     await readable(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--hd-personality');
     await shot(skin.id+'-home');
+    await page.locator('#bodygraph-container').screenshot({path:`${evidence}/${skin.id}-birth-graph.png`});
     // A detail surface and a real popover, then the birth form.
     await page.locator('#bodygraph-container .bg-planets-design .bg-planet-row').first().click();
     await page.locator('#gate-detail .planet-detail-card').waitFor();await readable(page.locator('#gate-detail .gate-detail-card'),'--hd-detail-bg','background-color');
@@ -87,6 +91,19 @@ try {
     await shot(skin.id+'-transit');
     await navigate('timeline');await page.locator('#timeline-view .bodygraph-svg').waitFor({timeout:60000});
     await readable(page.locator('#timeline-view .tl-transit-column .bg-planet-act'),'--hd-transit-text');
+    await page.locator('#timeline-view [data-field="span"]').selectOption('past-year');
+    await page.waitForFunction(() => {
+      const table = document.querySelector('#timeline-view .tl-table');
+      return table?.getAttribute('aria-busy') === 'false' && Number(table.dataset.end) - Number(table.dataset.start) > 360 * 86400000 && document.querySelectorAll('#timeline-view .tl-bar').length > 100;
+    }, null, {timeout:180000});
+    const timeline = await page.locator('#timeline-view .tl-table').evaluate(n => ({
+      start:n.dataset.start,end:n.dataset.end,selected:n.dataset.selected,
+      bars:[...n.querySelectorAll('.tl-bar')].map(b=>[b.dataset.source,b.style.left,b.style.width,b.textContent])
+    }));
+    if (referenceTimeline) assert.deepEqual(timeline, referenceTimeline, 'identical events and selected instant across all Skins');
+    else referenceTimeline = timeline;
+    await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit','background-color');
+    await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
     await shot(skin.id+'-timeline');
     await navigate('connection');await page.locator('#conn-person').selectOption({label:'Skin Fixture B'});await page.locator('#conn-calculate').click();
     await page.locator('#connection-content .composite-graph .bodygraph-svg').waitFor({timeout:60000});
@@ -105,12 +122,12 @@ try {
     assert.deepEqual(paint.both,paint.stripe);assert.equal(paint.bridged,actual['--hd-connection-bridged']);
     assert.ok(paint.fills.includes(actual['--hd-connection-a'])&&paint.fills.includes(actual['--hd-connection-b']));
     await shot(skin.id+'-relationship');
+    await page.locator('#connection-content .composite-graph').screenshot({path:`${evidence}/${skin.id}-relationship-graph.png`});
     if(['new-warm-paper','midnight-contrast','delve'].includes(skin.id)) {
-      await page.locator('#connection-content .composite-graph').screenshot({path:`${evidence}/${skin.id}-relationship-graph.png`});
       for(const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries())
         await page.locator('#connection-content .conn-section').nth(i).screenshot({path:`${evidence}/${skin.id}-relationship-${key}.png`});
     }
-    results.push({id:skin.id,mode:skin.mode,validComputedTokens:90,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true});
+    results.push({id:skin.id,mode:skin.mode,validComputedTokens:90,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-transit']}});
     await navigate('chart');
   }
   // Real controls: independent overrides, restore, Palette, size, language and keyboard.
@@ -121,7 +138,7 @@ try {
   await page.locator('[data-skin-id="grass-aroma"]').click();assert.equal(await css('--accent'),'#5BA88C');
   assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');assert.equal(await css('--hd-gate-number-size'),'18px');
   await page.locator('[data-skin-id="high-contrast"]').click();assert.equal(await css('--accent'),'#123456');assert.equal(await css('--hd-transit'),'#234567');
-  await page.locator('#appearance-restore').click();assert.equal(await css('--accent'),'#3A6B85');assert.equal(await css('--hd-transit'),'#2A8EA0');
+  await page.locator('#appearance-restore').click();assert.equal(await css('--accent'),'#3A6B85');assert.equal(await css('--hd-transit'),'#28706D');
   assert.equal(await css('--hd-gate-number-size'),'18px');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
   await page.locator('[data-skin-id="midnight-contrast"]').click();
   await page.keyboard.press('Escape');await page.goto(base+birth);await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
