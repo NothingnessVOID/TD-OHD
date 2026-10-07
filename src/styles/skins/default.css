@@ -91,24 +91,24 @@
   --hd-personality-on: #FFFFFF;
   --hd-design: #B84D43;
   --hd-design-on: #FFFFFF;
-  --hd-transit: #3D8A94;
+  --hd-transit: #2D929F;
   --hd-timeline-birth: #6B655F;
   --hd-timeline-transit: #2F6870;
   --hd-timeline-both-birth: #6B655F;
   --hd-timeline-both-transit: #2F6870;
   --hd-timeline-both-on: #FFFFFF;
   --hd-transit-on: #FFFFFF;
-  --hd-transit-text: #2D6870;
-  --hd-transit-soft: #E5F0F1;
+  --hd-transit-text: #246D76;
+  --hd-transit-soft: #E1F0F1;
   --hd-both: #76503B;
   --hd-both-on: #FFFFFF;
   --hd-undefined: #CBC4BC;
-  --hd-electromagnetic: var(--hd-relationship-electromagnetic);
-  --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
-  --hd-relationship-electromagnetic: #B4783F;
-  --hd-relationship-companionship: #6E826C;
-  --hd-relationship-compromise: #92705A;
-  --hd-relationship-dominance: #79756F;
+  --hd-electromagnetic: #B4783F;
+  --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
+  --hd-relationship-electromagnetic: var(--hd-connection-bridged);
+  --hd-relationship-companionship: var(--hd-connection-both);
+  --hd-relationship-compromise: var(--hd-connection-a);
+  --hd-relationship-dominance: var(--hd-connection-a);
 
   --hd-inactive: #C1BAB2;
   --hd-inactive-on: #2D2925;
@@ -148,16 +148,16 @@
   --hd-circuit-integration: #657A66;
   --hd-circuit-integration-soft: #F0F4EF;
 
-  --hd-connection-a: #5C8C84;
-  --hd-connection-a-on: #171411;
-  --hd-connection-a-core: #6D988F;
-  --hd-connection-b: #B87363;
-  --hd-connection-b-on: #171411;
-  --hd-connection-b-core: #C08374;
-  --hd-connection-bridged: #A2874E;
-  --hd-connection-bridged-on: #171411;
-  --hd-connection-both-on: #171411;
-  --hd-connection-bridged-core: #AD9461;
+  --hd-connection-a: #3D7C76;
+  --hd-connection-a-on: #FFFFFF;
+  --hd-connection-a-core: var(--hd-connection-a);
+  --hd-connection-b: #A85C50;
+  --hd-connection-b-on: #FFFFFF;
+  --hd-connection-b-core: var(--hd-connection-b);
+  --hd-connection-bridged: #806B42;
+  --hd-connection-bridged-on: #FFFFFF;
+  --hd-connection-both-on: #FFFFFF;
+  --hd-connection-bridged-core: var(--hd-connection-bridged);
 
 }
 
@@ -178,7 +178,7 @@
   --hd-transit-text: #83C8CF;
   --hd-transit-soft: #17282B;
   --hd-both: #C18C58;
-  --hd-relationship-dominance: #AAA29A;
+  --hd-relationship-dominance: var(--hd-connection-a);
 
   --hd-both-on: #171411;
   --hd-undefined: #423D37;
@@ -194,11 +194,11 @@
   --hd-circuit-collective-soft: #1D2A32;
   --hd-circuit-integration-soft: #202C24;
   --hd-connection-a: #75B1A7;
-  --hd-connection-a-core: #82B9B0;
+  --hd-connection-a-core: var(--hd-connection-a);
   --hd-connection-b: #D49280;
-  --hd-connection-b-core: #DA9F8F;
+  --hd-connection-b-core: var(--hd-connection-b);
   --hd-connection-bridged: #C5A75F;
-  --hd-connection-bridged-core: #CCB171;
+  --hd-connection-bridged-core: var(--hd-connection-bridged);
   --hd-transit-on: #111819;
   --hd-selection-ring: #D69A55;
   --hd-defined-fill: #D69A55;
@@ -211,11 +211,14 @@
   --hd-circuit-tribal: #C77E70;
   --hd-circuit-collective: #7FA0B4;
   --hd-circuit-integration: #89A28C;
-  --hd-connection-a-on: #171411;
-  --hd-connection-b-on: #171411;
-  --hd-connection-bridged-on: #171411;
-  --hd-connection-both-on: #171411;
-  --hd-relationship-electromagnetic: #D69A5D;
-  --hd-relationship-companionship: #91AA92;
-  --hd-relationship-compromise: #B48D73;
+  --hd-connection-a-on: #111111;
+  --hd-connection-b-on: #111111;
+  --hd-connection-bridged-on: #111111;
+  --hd-connection-both-on: #111111;
+  --hd-relationship-electromagnetic: var(--hd-connection-bridged);
+  --hd-relationship-companionship: var(--hd-connection-both);
+  --hd-relationship-compromise: var(--hd-connection-a);
+  --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
+  /* Legacy Team consumer: preserve its pre-V2 color. Relationship no longer reads this. */
+  --hd-electromagnetic: #D69A5D;
 }

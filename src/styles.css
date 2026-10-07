@@ -11,6 +11,14 @@
 @import './styles/tokens/human-design-classic.css';
 @import './styles/center-palettes/classic.css';
 @import './styles/center-palettes/chakra.css';
+@import './styles/center-palettes/jewel.css';
+@import './styles/center-palettes/mineral.css';
+@import './styles/center-palettes/ink.css';
+@import './styles/center-palettes/porcelain.css';
+@import './styles/center-palettes/botanical.css';
+@import './styles/center-palettes/paper.css';
+@import './styles/center-palettes/night-bloom.css';
+@import './styles/center-palettes/base.css';
 @import './styles/appearance-controls.css';
 
 /* Layout and typography stay here. Site and Human Design skin values live in
@@ -2128,10 +2136,6 @@ body.modal-open { overflow: hidden; }
   background: var(--bg-sunken);
   border-left: 3px solid var(--border);
 }
-.conn-detail-channel.electromagnetic { border-left-color: var(--hd-electromagnetic); }
-.conn-detail-channel.companionship { border-left-color: var(--hd-circuit-integration); }
-.conn-detail-channel.compromise { border-left-color: var(--hd-circuit-collective); }
-.conn-detail-channel.dominance { border-left-color: var(--text-tertiary); }
 .cdc-dyn {
   font-size: 10.5px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.6px; color: var(--text-tertiary); margin-bottom: 3px;
@@ -2144,7 +2148,14 @@ body.modal-open { overflow: hidden; }
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.5px; color: var(--accent);
 }
-.conn-center-tag.bridged { color: var(--accent); }
+.conn-center-tag.a { background: var(--hd-connection-a); color: var(--hd-connection-a-on); }
+.conn-center-tag.b { background: var(--hd-connection-b); color: var(--hd-connection-b-on); }
+.conn-center-tag.both { background: var(--hd-connection-both); color: var(--hd-connection-both-on); }
+.conn-center-tag.bridged { background: var(--hd-connection-bridged); color: var(--hd-connection-bridged-on); }
+.conn-center-tag:not(.open) { padding: 3px 6px; border-radius: 4px; }
+/* All mechanic cards stay on a Skin surface; only the small ownership marker carries color. */
+#connection-content .connection-type, .conn-detail-channel { position: relative; border-left: 0; }
+.conn-mechanic-marker { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px 0 0 3px; background: var(--connection-marker); }
 .conn-center-tag.open { color: var(--text-tertiary); }
 
 /* =============================================

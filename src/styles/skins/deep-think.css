@@ -88,19 +88,21 @@
   --hd-circuit-collective-soft: #F1F2F7;
   --hd-circuit-integration: #5F7F72;
   --hd-circuit-integration-soft: #F1F3F3;
-  --hd-connection-a: #5B8588;
-  --hd-connection-a-on: #040509;
-  --hd-connection-a-core: #789A9D;
-  --hd-connection-b: #AD716B;
-  --hd-connection-b-on: #040509;
-  --hd-connection-b-core: #BB8A85;
-  --hd-connection-bridged: #9B8657;
-  --hd-connection-bridged-on: #040509;
-  --hd-connection-bridged-core: #AC9B75;
-  --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
-  --hd-connection-both-on: #000000;
-  --hd-relationship-electromagnetic: #6C72C7;
-  --hd-relationship-companionship: #678476;
-  --hd-relationship-compromise: #866D5B;
-  --hd-relationship-dominance: #7B8090;
+  --hd-connection-a: #394FC5;
+  --hd-connection-a-on: #FFFFFF;
+  --hd-connection-a-core: var(--hd-connection-a);
+  --hd-connection-b: #A45159;
+  --hd-connection-b-on: #FFFFFF;
+  --hd-connection-b-core: var(--hd-connection-b);
+  --hd-connection-bridged: #66559A;
+  --hd-connection-bridged-on: #FFFFFF;
+  --hd-connection-bridged-core: var(--hd-connection-bridged);
+  --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
+  --hd-connection-both-on: #FFFFFF;
+  --hd-relationship-electromagnetic: var(--hd-connection-bridged);
+  --hd-relationship-companionship: var(--hd-connection-both);
+  --hd-relationship-compromise: var(--hd-connection-a);
+  --hd-relationship-dominance: var(--hd-connection-a);
+  /* Legacy Team consumer: preserve its pre-V2 color. Relationship no longer reads this. */
+  --hd-electromagnetic: #6C72C7;
 }

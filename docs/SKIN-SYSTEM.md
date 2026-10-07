@@ -36,14 +36,13 @@ CSS 的 `:root` 默认值保证初始化之前有基础颜色；没有 data-skin
 
 ## 3. Center Palette
 
-中心配色独立文件：
+正式注册表是 `src/lib/center-palette-registry.js`，九套配色分别为 Classic、Chakra、Jewel、Mineral、Ink、Porcelain、Botanical、Paper、Night Bloom。每套拥有九中心的 edge / core / on，共 27 个 Token。
 
-- `src/styles/center-palettes/classic.css`
-- `src/styles/center-palettes/chakra.css`
+`centerPaletteMode` 为 `skin-default`（默认）或 `manual`。随皮肤时使用 Skin Registry 的 `defaultCenterPalette`；手动点选后切换 Skin 保留当前 Palette。Picker 的“随皮肤 / Match Skin”是模式卡，预览当前 Skin 的默认配套，不注册为 Palette ID。Root 的 `data-center-palette` 和兼容 `data-hd-skin` 永远写实际 resolved ID。
 
-正式属性是 `data-center-palette="classic|chakra"`。`setCenterPalette()` 更新选择；同时镜像旧 `data-hd-skin`，以兼容既有 selector/工具。旧 `setHumanDesignSkin()` 是该 API 的 alias，当前只接受这两种正式配色。
+Classic/Chakra 使用 92% edge + 8% white 的轻微 radial，Porcelain 使用 95% edge + 5% white。其余六套 core = edge，SVG 直接纯色填充，无径向渐变。全部 edge 固定使用批准值，只有 Ink 有明确 dark 值 `#96938E`。inactive gate 在 defined center 内使用 Center On；实际激活的 P/D/Transit/Both 保持 Source On。
 
-Palette 拥有九个 edge 和九个 core，共 18 个 Token。Classic 根规则提供默认 edge/core；Chakra 覆盖九个 edge，复用以它们为输入的 core 派生公式。明暗模式影响现有中心色和混色比例，以保持原网站视觉。中心没有进入每 Skin 的颜色 override；切换 Skin 保留选中的 Palette。
+完整配套、色号与人工查看记录见 [CENTER-PALETTE-V3-RELATIONSHIP-V2.md](CENTER-PALETTE-V3-RELATIONSHIP-V2.md)。
 
 旧 `human-design-chakra.css` 是兼容 import。旧 `human-design-classic.css` 现在只保存兼容 alias、闸门字号、图表透明度/线宽等非配色参数；正式 Skin 的颜色已迁走。旧 `site-default.css` 同样只作兼容 import。
 
@@ -73,7 +72,7 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 1. 来源主色用于通道/闸门/行星来源；on 是色底上的前景，Transit text 是可读文字，soft 是浅底，不能随意互换。
 2. active / inactive、undefined 概念色、开放中心底色、透明填色分开保留。
 3. Type 与 Circuit、网站 success 等不同语义不能因同值合并。
-4. 中心 radialGradient 从 Palette 的 edge/core 来；A/B/bridged 的关系 core 从 Skin 来。
+4. 中心 radialGradient 从 Palette 的 edge/core 来；关系合图按 ownership 纯色或硬切双色显示，不使用 radial。
 5. 图表背景用户设置同时覆盖 SVG 内背景和图表 panel，保持原有可见效果。
 6. 渲染器读取 computed Token；原有 `onAppearanceChange()` 继续刷新出生图、关系图、可见 Transit 和 Timeline。CSS-only UI 自行跟随 cascade。
 
@@ -89,20 +88,13 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 
 ## 6. Relationship Token 与解耦
 
-现有关系来源 `--hd-connection-a/b/bridged` 及 on/core 保留。
+Relationship 的正式视觉来源是 A、B、Both、Created（关系中新定义）。A/B/Created 及共同 On 在十一套 Skin 内各自登记批准值。`bridged` 保留内部 ID；可见状态使用“关系中新定义”。合图中心不读取普通 Center Palette。
 
-默认 Skin 的独立状态 Token（新增九套的数值详见 `SKIN-PRESETS.md`）：
+A/B/Created 中心为纯色；Both 中心为 A 0–50%、B 50–100% 的硬切 diagonal。Gate Both、Companionship Channel、Both Legend 使用 A/B 45° 等面积条纹。
 
-| 状态 | 明亮值 | 暗色值 |
-|---|---|---|
-| --hd-relationship-electromagnetic | #c47a2a | #c47a2a |
-| --hd-relationship-companionship | #27ae60 | #27ae60 |
-| --hd-relationship-compromise | #2980b9 | #2980b9 |
-| --hd-relationship-dominance | #6f675f | #8a8378 |
+Electromagnetic 的两半分别保留 A/B；Compromise / Dominance 通道主体使用完整拥有者颜色，单 Gate 继续按真实来源显示。Mechanic list/detail 只在 Skin surface 上放小 marker：Electromagnetic → Created；Companionship → A/B stripe；Compromise/Dominance → owner。不再有四套独立 mechanic 色。
 
-`views/connection.js` 的状态边线直接读取这些值，已不借 Circuit integration/collective 或 text-tertiary。`--hd-electromagnetic` 保留为新的 electromagnetic alias，旧 Team 等消费者保持当前色值；没有修改 Team/Penta 或关系算法。
-
-**Both 是组合 paint，不是单一纯色。** 新 `--hd-connection-both` 给 CSS 图例使用，默认是 A/B 的 45°双色 gradient；`--hd-connection-both-on` 是字色。SVG 的双方闸门保持 A/B 斜纹，双方中心保持 A/B linearGradient。Both 的正式表达由关系 A/B + Both paint/on 构成，没有借用本命 `--hd-both` 或 Circuit。此时 CSS gradient 不能直接填进 SVG fill；未来新增 Skin 必须同时验证这些表面，不能仅修改图例 paint 并宣称整个 Both 都改变。
+旧 `--hd-relationship-*` Token 暂时保留为 ownership alias；正式关系 UI 不读取这些历史四状态 Token。`--hd-electromagnetic` 为旧 Team 消费者显式保留各 Skin 的改动前值，避免关系颜色变化波及 Team。A/B/bridged core 兼容值现在等于主色，关系图不生成 radial。
 
 ## 7. 用户 Override 存储
 
@@ -145,13 +137,15 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 
 迁移不会设置当前账户/资料数据，也不触碰 profiles、计算缓存或 8787 安装。
 
-## 8. Restore 当前 Skin
+## 8. 恢复默认外观
 
-`restoreCurrentSkin()` 只清当前 Skin 的五种颜色 override，保留当前 Skin、mode、Center Palette、字号、其他 Skin 的槽以及所有旧存储原文。
+Appearance Footer 使用 `resetAppearance()`，显示 Reset Appearance / 恢复默认外观 / 恢復預設外觀。
 
-现有「恢复默认颜色」按钮绑定此 API。旧 `restoreCurrentPreset()` 为 alias；没有新增 Reset 按钮。
+重置固定选择 `default-light`（Amber Dawn）、`skinMode: manual`、`centerPaletteMode: skin-default`，解析为 Mineral，清空全部 `overridesBySkin` 和 Appearance `preferences`（含 gateNumberSize）。Root 同步为 `data-skin="default-light"`、`data-theme="light"`、`data-center-palette="mineral"`、`data-hd-skin="mineral"`。
 
-已有 `resetAppearance()` API 仍保留当前 mode、选择同 mode 的默认 Skin、还原 Classic、清全部颜色槽与字号。它写空 v3 状态，避免下次初始化重新导入保留的旧 key；不删除历史旧设置。
+写入空 override/preferences 的 v3 状态，防止刷新时旧配置重新迁入。历史旧存储保留。出生数据、人物、语言、地点、时区、Timeline、Knowledge、同步账号、独立 Font 设置不属于重置范围。
+
+旧 `restoreCurrentSkin()` / `restoreCurrentPreset()` API 保留给兼容消费者，但 Appearance Footer 不再调用它们。
 
 ## 9. 新增 Skin 的标准步骤
 
@@ -358,10 +352,10 @@ Picker 继续展示出生图 Personality / Design / Transit，不因二色行运
 Appearance 分三节：
 
 1. **皮肤**：十一张默认色卡，桌面三列，手机两列。每张卡显示自己的 surface/text/accent 及 Personality/Design/Transit，不使用截图。原生 button 支持 Tab、Enter、Space 与 aria-pressed；切换不重建按钮、不丢焦点。名称跟随三语言实时刷新。
-2. **中心配色**：Classic / Chakra，保持原中心色条，使用 `data-center-palette`，不再把中心配色称为 Skin。
-3. **自定义**：五个当前 Skin 颜色与独立 Gate Number Size；底部「恢复当前皮肤」只清当前颜色槽。
+2. **中心配色**：九套独立 Palette + 随皮肤模式，九宫格预览，Root 使用 resolved `data-center-palette`。
+3. **自定义**：五个当前 Skin 颜色与独立 Gate Number Size；底部「恢复默认外观」固定回到 Amber Dawn / manual / skin-default → Mineral，清空全部 Skin 颜色槽和 Appearance 字号偏好。
 
-刷新恢复当前 Skin 与 Center Palette。切 Skin 保留中心配色、字体和字号；切中心配色保留 Skin 与五项自定义。旧格式不再修改，继续沿用 Foundation 的 v3 和迁移。
+刷新恢复当前 Skin、Center Palette Mode 与手动选择。切 Skin 时，随皮肤模式解析该 Skin 的默认中心配色，手动模式保留用户选择；字体和字号保持。切中心配色保留 Skin 与五项自定义。旧格式不再修改，继续沿用 Foundation 的 v3 和迁移。
 
 九中心的十八个 edge/core Token 本轮完全排除，原两套 CSS 没有修改；不能因为某套 Skin 的九中心组合不协调而回调已经指定的 Skin 主色。
 
@@ -398,3 +392,17 @@ Timeline 层级为轨道背景 0、Bar 1、弱日期带与 gridline 2、cursor 3
 人工查看还发现 Gate expand 控件的原局部规则被通用 Timeline 按钮的 32px 最小高度覆盖，使 28px 行内的 track 实际扩为 33px。局部规则提高优先级后，row / track 保持 28px；随后按视觉反馈保留 1px 行间细缝，Bar 为 27px，未改时间区间或行高设定。
 
 Registry 的 `tagline` 为 Picker 第二行文案 key，`preview.signature` 为第二行代表色，均属于展示 metadata，不计入 canonical Token。Auto 第二行为 Follow system，保持双主题预览，没有独立 signature Token 或颜色 override 槽。
+
+## Center Palette V2 当前状态
+
+中心配色已扩展为 Classic / Chakra / Jewel / Mineral / Ink / Porcelain。此前两套 Palette 与静态色条的描述属于历史阶段；当前独立 Registry、Light/Dark edge/core 规则、共享卡片与人工查看记录见 [CENTER-PALETTES-V2.md](CENTER-PALETTES-V2.md)。Skin 配色、Timeline、Relationship、Font 与存储结构不随本轮调整。
+
+## Appearance Header 与 Amber Dawn Transit 更新
+
+当前弹窗完整 Header 使用 sticky，背景为不透明 `--bg-elevated`；同时覆盖 Dialog 内边距，避免卡片从标题栏上方露出。桌面和手机滚到底部仍可见标题与关闭按钮。
+
+Amber Dawn BodyGraph Transit 为 `#2D929F`，Timeline Transit / Both Transit Stripe 保持原值 `#2F6870`，text 为 `#246D76`，soft 为 `#E1F0F1`，on 为 `#FFFFFF`。Both Birth / Completed 左 Birth marker 保持 `#6B655F`。Picker Transit 同步 BodyGraph 色，Signature 保持 `#B86F2C`。Amber Dusk 和其他 Skin 不变。人工确认记录见 [APPEARANCE-RESET-AMBER-DAWN.md](APPEARANCE-RESET-AMBER-DAWN.md)。
+
+## Center Palette V3 / Relationship Visual V2 当前规则
+
+本轮九套 Palette 和十一套默认配套、inactive Center On、关系 ownership 视觉规则已生效。Reset Appearance 固定回 Amber Dawn / manual Skin / skin-default Center Mode / resolved Mineral，清空所有 Skin override 与 gateNumberSize 偏好；字体和业务资料保留。前述 V2 附录记录是历史人工检查，不代表当前配色比例。详见 [CENTER-PALETTE-V3-RELATIONSHIP-V2.md](CENTER-PALETTE-V3-RELATIONSHIP-V2.md)。
