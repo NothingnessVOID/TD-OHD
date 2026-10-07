@@ -1,4 +1,13 @@
 @import './styles/skins/default.css';
+@import './styles/skins/high-contrast.css';
+@import './styles/skins/grass-aroma.css';
+@import './styles/skins/contemplation.css';
+@import './styles/skins/absolutely.css';
+@import './styles/skins/delve.css';
+@import './styles/skins/deep-think.css';
+@import './styles/skins/new-warm-paper.css';
+@import './styles/skins/midnight-contrast.css';
+@import './styles/skins/coral.css';
 @import './styles/tokens/human-design-classic.css';
 @import './styles/center-palettes/classic.css';
 @import './styles/center-palettes/chakra.css';

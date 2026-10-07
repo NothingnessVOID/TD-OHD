@@ -60,3 +60,19 @@ test('invalid persisted fields and unavailable storage do not break startup; dor
   globalThis.localStorage={getItem(){throw Error('denied');},setItem(){throw Error('denied');}};
   initAppearance();setSkin('default-dark');setCustomOverride('design','#123456');assert.equal(getCustomOverrides().design,'#123456');
 }));
+
+test('new Skin slots stay independent with all five overrides, reload and Restore; v3 format is unchanged', ()=>withBrowser(({storage,styles})=>{
+  initAppearance(); setCenterPalette('chakra'); setCustomOverride('gateNumberSize',18);
+  const custom={accent:'#123456',personality:'#345678',design:'#56789a',transit:'#6789ab',graphBackground:'#abcdef'};
+  setSkin('high-contrast'); for(const[k,v]of Object.entries(custom))setCustomOverride(k,v);
+  assert.equal(styles.get('--hd-transit-text'),'color-mix(in srgb, var(--hd-transit) 65%, var(--text))');
+  setSkin('grass-aroma'); assert.deepEqual(getCustomOverrides(),{gateNumberSize:18});
+  assert.equal(styles.has('--hd-transit-text'),false,'the next Skin uses its explicit default text');
+  setCustomOverride('accent','#777aaa'); setSkin('high-contrast'); assert.deepEqual(getSkinOverrides(),custom);
+  initAppearance(); assert.equal(getAppearance().skin,'high-contrast'); assert.deepEqual(getSkinOverrides(),custom);
+  assert.equal(getAppearance().centerPalette,'chakra'); restoreCurrentSkin(); assert.deepEqual(getCustomOverrides(),{gateNumberSize:18});
+  assert.equal(styles.has('--hd-transit-text'),false,'Restore removes the custom column-text treatment');
+  setSkin('grass-aroma'); assert.equal(getCustomOverrides().accent,'#777aaa');
+  setSkin('midnight-contrast'); assert.equal(getAppearance().theme,'dark'); assert.equal(getAppearance().centerPalette,'chakra');
+  assert.deepEqual(Object.keys(JSON.parse(storage.get(APPEARANCE_STORAGE_KEY))),['version','skinId','centerPalette','overridesBySkin','preferences']);
+}));

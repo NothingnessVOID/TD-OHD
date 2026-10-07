@@ -10,7 +10,8 @@ const baseline=JSON.parse(read('tests/fixtures/skin-foundation-baseline.json'));
 const sha=text=>createHash('sha256').update(text).digest('hex');
 const declarations=text=>Object.fromEntries([...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(m=>[m[1],m[2].trim()]));
 test('registered Skins have stable identity, mode, preview and real CSS; planned directions are not selectable',()=>{
-  assert.deepEqual(SKINS.map(x=>x.id),['default-light','default-dark']);
+  assert.deepEqual(SKINS.slice(0,2).map(x=>x.id),['default-light','default-dark']);
+  assert.equal(SKINS.length,11);
   for(const s of SKINS){assert.ok(['light','dark'].includes(s.mode));assert.ok(existsSync(s.cssSource));for(const k of ['surface','text','accent','personality','design','transit'])assert.match(s.preview[k],/^#[0-9a-f]{6}$/i);}
   assert.ok(PLANNED_SKIN_DIRECTIONS.every(id=>!SKINS.some(s=>s.id===id)));
   assert.equal(new Set(SKIN_TOKENS).size,SKIN_TOKENS.length);

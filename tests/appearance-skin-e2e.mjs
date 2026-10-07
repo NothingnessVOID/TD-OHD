@@ -15,12 +15,12 @@ const inspect = selector => page.locator(selector).first().evaluate(node => ({
   stroke: node.getAttribute('stroke'),
   stopColor: node.getAttribute('stop-color')
 }));
-const setAppearance = (method, value) => page.evaluate(async ({ method, value }) => {
+const setAppearance = (method, ...args) => page.evaluate(async ({ method, args }) => {
   // Vite may timestamp module URLs after HMR; use the instance loaded by main.
   const moduleUrl = performance.getEntriesByType('resource').map(entry => entry.name)
     .filter(url => new URL(url).pathname === '/src/lib/appearance.js').at(-1) || '/src/lib/appearance.js';
-  (await import(moduleUrl))[method](value);
-}, { method, value });
+  (await import(moduleUrl))[method](...args);
+}, { method, args });
 
 try {
   await page.goto(`${base}/${birth}`);
@@ -34,7 +34,8 @@ try {
       --hd-center-root: #AF6835;
     }
   ` });
-  await page.evaluate(async () => { const m = await import('/src/lib/appearance.js'); m.setCustomOverride('design', '#7B2CFF'); m.setCustomOverride('transit', '#00EE44'); });
+  await setAppearance('setCustomOverride', 'design', '#7B2CFF');
+  await setAppearance('setCustomOverride', 'transit', '#00EE44');
   await setAppearance('setCenterPalette', 'chakra');
   await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').first().waitFor();
 
@@ -74,8 +75,9 @@ try {
     await setAppearance('setCenterPalette', 'classic');
     const beforeTransitText = (await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color;
     await page.addStyleTag({ content: 'html[data-center-palette="chakra"] { --hd-design: #7B2CFF; --hd-transit: #00EE44; }' });
-    await page.evaluate(async () => { const m = await import('/src/lib/appearance.js'); m.setCustomOverride('design', '#7B2CFF'); m.setCustomOverride('transit', '#00EE44'); });
-  await setAppearance('setCenterPalette', 'chakra');
+    await setAppearance('setCustomOverride', 'design', '#7B2CFF');
+    await setAppearance('setCustomOverride', 'transit', '#00EE44');
+    await setAppearance('setCenterPalette', 'chakra');
     assert.ok(await page.locator(`${stage} .bg-gate-path[fill="#00EE44"]`).count() > 0,
       `${view} transit paths follow the Transit token`);
     assert.equal((await inspect(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`)).color,

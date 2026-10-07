@@ -2,13 +2,13 @@
 
 网站与图表的整套语义颜色放在 **Skin**。九中心的配色放在 **Center Palette**。字体保持独立，切换前两者不会设置或重置字体。
 
-本阶段沿用网站当前明亮/暗色视觉，只建立正式身份、颜色契约、按 Skin 保存的用户覆盖及迁移。原始全站审计保留在 `docs/skin-audit/`，不重写历史报告。
+Foundation 建立了身份、颜色契约、按 Skin 保存的用户覆盖及迁移；第三阶段新增九套完整 Skin 与正式 Picker，共十一套可选。默认明亮/暗色保持兼容。原始全站审计保留在 `docs/skin-audit/`，不重写历史报告。
 
 ## 1. Skin 的定义
 
 Skin 是一套网站及图表配色方案，负责网站表面、文字、强调、边框、状态、投影、focus，图表中性色/面板，以及激活来源、Type、Circuit、Relationship。主颜色、文字 on 色与浅底属于不同语义；即使当前值相同也保留不同 Token。
 
-`src/lib/skin-registry.js` 是正式注册表。当前只注册 `default-light` / `default-dark`，两者的 `cssSource` 是 `src/styles/skins/default.css`，由 `src/styles.css` 统一导入。
+`src/lib/skin-registry.js` 是正式注册表。当前注册十一套 Skin。`default-light` / `default-dark` 共用 `src/styles/skins/default.css`；九套新增 Skin 各有独立 CSS 文件，全部由 `src/styles.css` 统一导入。名称通过现有 i18n 的 source key 翻译。
 
 ```js
 {
@@ -80,7 +80,7 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 
 现有关系来源 `--hd-connection-a/b/bridged` 及 on/core 保留。
 
-新增独立状态 Token：
+默认 Skin 的独立状态 Token（新增九套的数值详见 `SKIN-PRESETS.md`）：
 
 | 状态 | 明亮值 | 暗色值 |
 |---|---|---|
@@ -149,11 +149,11 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 3. 维护 source 主色/on/text/soft、状态、Type、Circuit、Relationship 的独立语义。不要由其他分类巧合相同的色值推导关系状态。
 4. 在 SKINS 注册 id/name/mode/preview/cssSource；由主样式导入 CSS，确认被打包。Registry 的 cssSource 不是自动加载器。
 5. Preview 至少给 surface/text/accent/personality/design/transit 六个值；它们仅代表默认示意，不能伪装成用户 override 后的实时截图。测试 preview 对应默认 palette。
-6. 当前 UI 不提供任意新 Skin picker。本阶段只保留两个原兼容控件；正式增加选择 UI 属于后续任务。
+6. Picker 直接从 SKINS 构建卡片，不手写另一份列表。补齐英文 source key 对应的三语言名称；预览使用自身 surface/text/accent 与三个来源色，选中状态使用页面 Accent。
 7. 验证 Skin 切换→mode 镜像、当前槽、返回恢复、当前 Restore、所有 Palette、独立字号/字体、迁移与存储不可用情形。
 8. 检查下节列出的视觉输出表面，并记录未覆盖的输出。
 
-暖纸、青夜高对比、Anthropic-inspired、OpenAI-inspired、DeepSeek-inspired 只登记为 `PLANNED_SKIN_DIRECTIONS`，不是可选 Skin，没有 CSS 或实现。
+已经实现的九个方向不再登记为 planned；`PLANNED_SKIN_DIRECTIONS` 保留为空数组作兼容。UI 不宣称任何皮肤属于品牌官方，不使用品牌图形。
 
 ## 10. 必须检查的视觉表面
 
@@ -172,7 +172,7 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 - Worker、服务器分享 SVG/OG、SEO/OAuth/邮件模板尚未接入 Skin Registry；browser share URL 仍只传旧 theme，未传 Skin/Palette/自定义色。
 - Both 当前是组合绘制，CSS paint 与 SVG paint 路径仍不同；不支持任意用户覆盖 Both paint。
 - 自定义颜色只有五项；source-on 仍固定，accent-on 保留旧亮度阈值。完整自定义色可访问性验证留后续。
-- Chakra/Classic swatch 仍为旧静态示意。没有新 Skin picker，也未重新设计 Appearance UI。
+- Chakra/Classic swatch 仍为原静态示意。正式 Picker 已提供默认配色预览；九中心 × Skin 的适配仍未进行。
 - 字体和字号分级、局部透明度/阴影几何、临时中心 .5 等未扩大重构。
 - 兼容 data-theme/data-hd-skin/API/旧 CSS import 暂时保留；不在本阶段移除。
 
@@ -315,3 +315,35 @@ Compatibility alias、局部 Timeline 派生 Token、字体、尺寸、中心色
 - 用户字号：`--hd-gate-number-size` / preferences。
 - 其他数值：baseline offset、active/inactive weight、circle/channel/hatch opacity、stroke/ring width 保持既有配置。
 - `--personality` / `--design` / `--transit-source*` / `--electromagnetic` / `--connection-person-*` 等旧名必须仍指向对应 canonical。
+
+## 13. 第三阶段正式 Skin 与设置界面
+
+| Skin ID | English | 简体名称 | mode |
+|---|---|---|---|
+| default-light | Default Light | 默认明亮 | light |
+| default-dark | Default Dark | 默认黑暗 | dark |
+| high-contrast | High Contrast | 素白 | light |
+| grass-aroma | Grass Aroma | 草香 | light |
+| contemplation | Contemplation | 沉思 | light |
+| absolutely | Absolutely | Absolutely | light |
+| delve | Delve | 随时准备接住你 | light |
+| deep-think | Deep Think | 用户彻底怒了 | light |
+| new-warm-paper | New Warm Paper | 新暖纸 | light |
+| midnight-contrast | Midnight Contrast | 青夜·高对比 | dark |
+| coral | Coral | 珊瑚 | light |
+
+网站、Human Design Sources、Type、Circuit、Relationship 的核心 Palette 与全部 Token 规格见 `SKIN-PRESETS.md`。
+
+Appearance 分三节：
+
+1. **皮肤**：十一张默认色卡，桌面三列，手机两列。每张卡显示自己的 surface/text/accent 及 Personality/Design/Transit，不使用截图。原生 button 支持 Tab、Enter、Space 与 aria-pressed；切换不重建按钮、不丢焦点。名称跟随三语言实时刷新。
+2. **中心配色**：Classic / Chakra，保持原中心色条，使用 `data-center-palette`，不再把中心配色称为 Skin。
+3. **自定义**：五个当前 Skin 颜色与独立 Gate Number Size；底部「恢复当前皮肤」只清当前颜色槽。
+
+刷新恢复当前 Skin 与 Center Palette。切 Skin 保留中心配色、字体和字号；切中心配色保留 Skin 与五项自定义。旧格式不再修改，继续沿用 Foundation 的 v3 和迁移。
+
+九中心的十八个 edge/core Token 本轮完全排除，原两套 CSS 没有修改；不能因为某套 Skin 的九中心组合不协调而回调已经指定的 Skin 主色。
+
+## 14. 新暖纸几何例外
+
+只有 `new-warm-paper` 覆盖既有 `--radius: 2px`、`--radius-lg: 3px`，并追加 `--skin-large-radius: 6px`、`--skin-border-width: .5px`。后两者只用于有限的公共控件/卡片/大表面 selector，独立于九十个颜色 Token。其他 Skin 沿用当前几何。没有全仓圆角/间距重构，没有纸张纹理或图像，不影响字体。
