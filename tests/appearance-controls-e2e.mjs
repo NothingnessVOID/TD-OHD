@@ -107,7 +107,7 @@ async function checkViewport(viewport) {
     await page.locator('#type-banner').click({ position: { x: 5, y: 5 } });
     assert.equal(await page.locator('#more-menu').evaluate(node => node.open), false, 'outside click closes More');
     await openSettings();
-    const preset = name => page.locator(`[data-skin-preset="${name}"]`).click();
+    const preset = name => page.locator(`button[data-center-palette="${name}"]`).click();
     await preset('classic');
     const defaults = Object.fromEntries(await Promise.all(['accent', 'personality', 'design', 'transit', 'graphBackground', 'gateNumberSize'].map(async key => [key, await value(key)])));
     const custom = { accent: '#7b2cff', personality: '#325ba7', design: '#a62b8c', transit: '#00bb77', graphBackground: '#e5eef7', gateNumberSize: '18' };

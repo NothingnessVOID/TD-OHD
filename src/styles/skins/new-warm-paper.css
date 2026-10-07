@@ -1,0 +1,116 @@
+/* New Warm Paper: site colors follow the supplied OpenHanako v1.0 beta reference.
+   TD-OHD source/type/circuit/relationship colors are the approved adaptation.
+   Explicit secondary colors are local design choices; no Center Palette or fonts. */
+:root[data-skin="new-warm-paper"] {
+  color-scheme: light;
+  --bg: #F5EFE4;
+  --bg-elevated: #FBF7EE;
+  --bg-sunken: #EFE8DB;
+  --text: #2A2622;
+  --text-secondary: #4A433C;
+  --text-tertiary: #6B6158;
+  --border: #D8CFBE;
+  --border-subtle: #E2DBCF;
+  --accent: #537D96;
+  --accent-strong: #3F6179;
+  --accent-hover: #3F6179;
+  --accent-soft: rgba(83,125,150,0.08);
+  --accent-on: #FFFFFF;
+  --focus: #3F6179;
+  --shadow-sm: 0 1px 2px rgba(42,38,34,0.04);
+  --shadow: 0 2px 8px rgba(42,38,34,0.04);
+  --shadow-lg: 0 8px 24px rgba(42,38,34,0.04);
+  --modal-backdrop: rgba(42, 38, 34, .38);
+  --modal-overlay: rgba(42, 38, 34, .30);
+  --lens-active-shadow: 0 1px 2px rgba(42,38,34,0.04);
+  --status-error: #8B2C1F;
+  --status-error-soft: #8B2C1F;
+  --status-success: #4A6B4A;
+  --status-success-soft: #E3E1D4;
+  --status-caution-soft: #EDE4D3;
+  --type-badge-bg: #ECE4D3;
+  --type-badge-text: #4A3C20;
+  --type-badge-border: #A48D5E;
+  --type-strategy-text: #3F6179;
+  --site-auth-glow: #DDE1DE;
+  --site-auth-shadow: rgba(42,38,34,0.04);
+  --hd-graph-bg: transparent;
+  --hd-graph-panel-bg: #FBF7EE;
+  --hd-graph-panel-border: var(--border-subtle);
+  --hd-inactive: #B7AD9F;
+  --hd-inactive-on: #080605;
+  --hd-undefined: #BDB19E;
+  --hd-undefined-center: #FBF7EE;
+  --hd-center-stroke: #A99B86;
+  --hd-defined-fill: #537D96;
+  --hd-undefined-fill: transparent;
+  --hd-selection-ring: #3F6179;
+  --hd-timeline-panel-bg: #FBF7EE;
+  --hd-timeline-panel-border: var(--border);
+  --hd-tooltip-bg: #FBF7EE;
+  --hd-tooltip-border: var(--border);
+  --hd-detail-bg: #FBF7EE;
+  --hd-detail-border: #537D96;
+  --hd-legend-bg: #FBF7EE;
+  --hd-legend-border: var(--border);
+  --hd-legend-text: #4A433C;
+  --hd-planet-column-text: #2A2622;
+  --hd-personality: #2A2622;
+  --hd-personality-on: #FFFFFF;
+  --hd-design: #8B2C1F;
+  --hd-design-on: #FFFFFF;
+  --hd-both: #6A4B36;
+  --hd-both-on: #FFFFFF;
+  --hd-transit: #4F8991;
+  --hd-transit-on: #080605;
+  --hd-transit-text: #355F66;
+  --hd-transit-soft: #E4E4DB;
+  --hd-type-generator: #A18444;
+  --hd-type-manifesting-generator: #A85F35;
+  --hd-type-manifestor: #8B2C1F;
+  --hd-type-projector: #537D96;
+  --hd-type-reflector: #726A61;
+  --hd-circuit-individual: #75637E;
+  --hd-circuit-individual-soft: #E8E0D9;
+  --hd-circuit-tribal: #8B2C1F;
+  --hd-circuit-tribal-soft: #EADBCF;
+  --hd-circuit-collective: #537D96;
+  --hd-circuit-collective-soft: #E4E3DC;
+  --hd-circuit-integration: #4A6B4A;
+  --hd-circuit-integration-soft: #E3E1D4;
+  --hd-connection-a: #507D72;
+  --hd-connection-a-on: #FFFFFF;
+  --hd-connection-a-core: #6E938A;
+  --hd-connection-b: #B75E4C;
+  --hd-connection-b-on: #080605;
+  --hd-connection-b-core: #C3796A;
+  --hd-connection-bridged: #A78945;
+  --hd-connection-bridged-on: #080605;
+  --hd-connection-bridged-core: #B69D65;
+  --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
+  --hd-connection-both-on: #000000;
+  --hd-relationship-electromagnetic: #9B6B32;
+  --hd-relationship-companionship: #4A6B4A;
+  --hd-relationship-compromise: #9A6846;
+  --hd-relationship-dominance: #6B6158;
+}
+
+/* Deliberately limited geometry exception. Existing common radius variables
+   handle controls/cards; only a few shared surfaces need an extra size. */
+:root[data-skin="new-warm-paper"] {
+  --radius: 2px;
+  --radius-lg: 3px;
+  --skin-large-radius: 6px;
+  --skin-border-width: .5px;
+}
+:root[data-skin="new-warm-paper"] :is(.form-group input, .form-group select, .btn-secondary, .foundation-item, .panel, .panel-content, .reference-sidebar, .reference-detail) {
+  border-width: var(--skin-border-width);
+}
+:root[data-skin="new-warm-paper"] :is(.bodygraph-container, .gate-detail-card, .skin-settings, .sync-popover) {
+  border-radius: var(--skin-large-radius);
+  border-width: var(--skin-border-width);
+}
+:root[data-skin="new-warm-paper"] :is(.skin-card, .center-palettes button) {
+  border-radius: var(--radius-lg);
+  border-width: var(--skin-border-width);
+}

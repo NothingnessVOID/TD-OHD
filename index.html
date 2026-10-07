@@ -68,7 +68,7 @@
                 <option value="zh-Hant" lang="zh-Hant">繁體中文</option>
               </select>
               <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" data-i18n-title="Toggle dark mode" data-i18n-aria-label="Toggle dark mode"><span class="theme-icon" aria-hidden="true">◐</span></button>
-              <button id="skin-settings-button" class="theme-toggle" aria-label="Skin" title="Skin" data-i18n-aria-label="Skin" data-i18n-title="Skin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-3.7 1.5 1.5 0 0 1 .8-2.8H17a4 4 0 0 0 4-4c0-4.4-4-7.5-9-7.5Z"/><circle cx="7.5" cy="11" r=".7"/><circle cx="9" cy="7" r=".7"/><circle cx="14" cy="6.5" r=".7"/><circle cx="17.5" cy="10" r=".7"/></svg></button>
+              <button id="skin-settings-button" class="theme-toggle" aria-label="Appearance" title="Appearance" data-i18n-aria-label="Appearance" data-i18n-title="Appearance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-3.7 1.5 1.5 0 0 1 .8-2.8H17a4 4 0 0 0 4-4c0-4.4-4-7.5-9-7.5Z"/><circle cx="7.5" cy="11" r=".7"/><circle cx="9" cy="7" r=".7"/><circle cx="14" cy="6.5" r=".7"/><circle cx="17.5" cy="10" r=".7"/></svg></button>
             </div>
           </details>
         </div>
@@ -86,12 +86,20 @@
 
 
     <dialog id="skin-settings" class="skin-settings" aria-labelledby="skin-settings-title">
-      <div class="skin-settings-header"><div><p class="skin-eyebrow" data-i18n="Appearance">Appearance</p><h2 id="skin-settings-title" data-i18n="Skin">Skin</h2></div><button id="skin-settings-close" class="ui-icon-button skin-settings-close" aria-label="Close" data-i18n-aria-label="Close">×</button></div>
-      <div class="skin-presets" role="group" aria-label="Skin" data-i18n-aria-label="Skin">
-        <button type="button" data-skin-preset="classic"><span class="skin-swatch classic-swatch" aria-hidden="true"></span><span data-i18n="Classic">Classic</span></button>
-        <button type="button" data-skin-preset="chakra"><span class="skin-swatch chakra-swatch" aria-hidden="true"></span><span data-i18n="Chakra">Chakra</span></button>
-      </div>
-      <p class="skin-custom-note" data-i18n="Customize the current skin and theme">Customize the current skin and theme</p>
+      <div class="skin-settings-header"><h2 id="skin-settings-title" data-i18n="Appearance">Appearance</h2><button type="button" id="skin-settings-close" class="ui-icon-button skin-settings-close" aria-label="Close" data-i18n-aria-label="Close">×</button></div>
+      <section class="appearance-section" aria-labelledby="skin-picker-title">
+        <h3 id="skin-picker-title" data-i18n="Skin">Skin</h3>
+        <div id="skin-picker" class="skin-picker" role="group" aria-labelledby="skin-picker-title"></div>
+      </section>
+      <section class="appearance-section" aria-labelledby="center-palette-title">
+        <h3 id="center-palette-title" data-i18n="Center Palette">Center Palette</h3>
+        <div class="center-palettes" role="group" aria-labelledby="center-palette-title">
+          <button type="button" data-center-palette="classic"><span class="skin-swatch classic-swatch" aria-hidden="true"></span><span data-i18n="Classic">Classic</span></button>
+          <button type="button" data-center-palette="chakra"><span class="skin-swatch chakra-swatch" aria-hidden="true"></span><span data-i18n="Chakra">Chakra</span></button>
+        </div>
+      </section>
+      <section class="appearance-section" aria-labelledby="skin-custom-title">
+      <h3 id="skin-custom-title" data-i18n="Customize">Customize</h3>
       <div class="skin-custom-fields">
         <label for="appearance-accent"><span data-i18n="Accent">Accent</span><input type="color" id="appearance-accent" data-appearance-key="accent"></label>
         <label for="appearance-personality"><span data-i18n="Personality">Personality</span><input type="color" id="appearance-personality" data-appearance-key="personality"></label>
@@ -100,7 +108,8 @@
         <label for="appearance-graphBackground"><span data-i18n="Graph Background">Graph Background</span><input type="color" id="appearance-graphBackground" data-appearance-key="graphBackground"></label>
         <label for="appearance-gateNumberSize" class="skin-size-field"><span data-i18n="Gate Number Size">Gate Number Size</span><span class="skin-size-control"><input type="range" id="appearance-gateNumberSize" data-appearance-key="gateNumberSize" min="14" max="30" step="1"><input type="number" id="appearance-size-value" data-appearance-key="gateNumberSize" min="14" max="30" step="1" value="22" aria-label="Gate Number Size" data-i18n-aria-label="Gate Number Size"><span>px</span></span></label>
       </div>
-      <div class="skin-settings-footer"><button type="button" id="appearance-restore" class="btn-secondary" data-i18n="Restore Default Colors">Restore Default Colors</button></div>
+      </section>
+      <div class="skin-settings-footer"><button type="button" id="appearance-restore" class="btn-secondary" data-i18n="Restore Current Skin">Restore Current Skin</button></div>
     </dialog>
 
     <!-- Birth Data Entry -->

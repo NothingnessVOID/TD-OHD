@@ -38,9 +38,13 @@ function applyOverrides() {
   const style = root().style;
   if (!style) return;
   for (const token of Object.values(CUSTOM_TOKENS)) style.removeProperty(token);
-  for (const token of ['--accent-soft', '--accent-hover', '--accent-strong', '--accent-on', '--hd-graph-panel-bg']) style.removeProperty(token);
+  for (const token of ['--accent-soft', '--accent-hover', '--accent-strong', '--accent-on', '--hd-graph-panel-bg', '--hd-transit-text']) style.removeProperty(token);
   for (const [key, value] of Object.entries(getCustomOverrides())) style.setProperty(CUSTOM_TOKENS[key], key === 'gateNumberSize' ? `${value}px` : value);
   const current = getSkinOverrides();
+  // Only user-edited Transit uses the legacy column-text treatment.
+  // Skin defaults keep their explicitly designed on/text/soft values.
+  if (current.transit && !['default-light', 'default-dark'].includes(getSkinId())) style.setProperty('--hd-transit-text', getTheme() === 'dark'
+    ? 'var(--hd-transit)' : 'color-mix(in srgb, var(--hd-transit) 65%, var(--text))');
   if (current.graphBackground) style.setProperty('--hd-graph-panel-bg', current.graphBackground);
   if (current.accent) {
     style.setProperty('--accent-soft', 'color-mix(in srgb, var(--accent) 16%, var(--bg))');

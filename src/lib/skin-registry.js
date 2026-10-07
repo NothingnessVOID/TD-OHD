@@ -9,12 +9,55 @@ export const SKINS = Object.freeze([
     id: 'default-dark', name: 'Default Dark', mode: 'dark',
     preview: Object.freeze({ surface: '#141210', text: '#e8e4de', accent: '#d4943a', personality: '#e0dcd6', design: '#e74c3c', transit: '#1af4ff' }),
     cssSource: 'src/styles/skins/default.css'
+  }),
+  Object.freeze({
+    id: 'high-contrast', name: 'High Contrast', mode: 'light',
+    preview: Object.freeze({ surface: '#FAF8F7', text: '#1A1C1E', accent: '#3A6B85', personality: '#202428', design: '#B84A44', transit: '#2A8EA0' }),
+    cssSource: 'src/styles/skins/high-contrast.css'
+  }),
+  Object.freeze({
+    id: 'grass-aroma', name: 'Grass Aroma', mode: 'light',
+    preview: Object.freeze({ surface: '#F5F8F3', text: '#2E3832', accent: '#5BA88C', personality: '#2E3832', design: '#B86758', transit: '#3E939A' }),
+    cssSource: 'src/styles/skins/grass-aroma.css'
+  }),
+  Object.freeze({
+    id: 'contemplation', name: 'Contemplation', mode: 'light',
+    preview: Object.freeze({ surface: '#F3F5F7', text: '#2C3238', accent: '#7E99A8', personality: '#2C3238', design: '#A85F5B', transit: '#4D91A6' }),
+    cssSource: 'src/styles/skins/contemplation.css'
+  }),
+  Object.freeze({
+    id: 'absolutely', name: 'Absolutely', mode: 'light',
+    preview: Object.freeze({ surface: '#F4F3EE', text: '#2D2B28', accent: '#B5846E', personality: '#2D2B28', design: '#A95D46', transit: '#477C88' }),
+    cssSource: 'src/styles/skins/absolutely.css'
+  }),
+  Object.freeze({
+    id: 'delve', name: 'Delve', mode: 'light',
+    preview: Object.freeze({ surface: '#FFFFFF', text: '#1A1A1A', accent: '#1A1A1A', personality: '#1A1A1A', design: '#A64B46', transit: '#2F7F9D' }),
+    cssSource: 'src/styles/skins/delve.css'
+  }),
+  Object.freeze({
+    id: 'deep-think', name: 'Deep Think', mode: 'light',
+    preview: Object.freeze({ surface: '#FCFCFD', text: '#1D1D1F', accent: '#636AE8', personality: '#25262B', design: '#C35558', transit: '#2FA7C0' }),
+    cssSource: 'src/styles/skins/deep-think.css'
+  }),
+  Object.freeze({
+    id: 'new-warm-paper', name: 'New Warm Paper', mode: 'light',
+    preview: Object.freeze({ surface: '#F5EFE4', text: '#2A2622', accent: '#537D96', personality: '#2A2622', design: '#8B2C1F', transit: '#4F8991' }),
+    cssSource: 'src/styles/skins/new-warm-paper.css'
+  }),
+  Object.freeze({
+    id: 'midnight-contrast', name: 'Midnight Contrast', mode: 'dark',
+    preview: Object.freeze({ surface: '#26343D', text: '#F0F6FA', accent: '#E6B1C4', personality: '#F0F6FA', design: '#F08A78', transit: '#62D8E8' }),
+    cssSource: 'src/styles/skins/midnight-contrast.css'
+  }),
+  Object.freeze({
+    id: 'coral', name: 'Coral', mode: 'light',
+    preview: Object.freeze({ surface: '#FDF6EC', text: '#1A3049', accent: '#1A3049', personality: '#1A3049', design: '#D95F4C', transit: '#4B8E9B' }),
+    cssSource: 'src/styles/skins/coral.css'
   })
 ]);
-// Future directions are documentation, not selectable or partially implemented Skins.
-export const PLANNED_SKIN_DIRECTIONS = Object.freeze([
-  'warm-paper', 'blue-night-high-contrast', 'anthropic-inspired', 'openai-inspired', 'deepseek-inspired'
-]);
+// All approved directions are now registered; no placeholder Skins.
+export const PLANNED_SKIN_DIRECTIONS = Object.freeze([]);
 export const CENTER_PALETTES = Object.freeze([
   Object.freeze({ id: 'classic', name: 'Classic', cssSource: 'src/styles/center-palettes/classic.css' }),
   Object.freeze({ id: 'chakra', name: 'Chakra', cssSource: 'src/styles/center-palettes/chakra.css' })
