@@ -1,4 +1,5 @@
-/* Delve: site colors follow the supplied OpenHanako v1.0 beta reference.
+/* Delve: neutral site surfaces retain the supplied OpenHanako v1.0 beta reference.
+   Azure interaction/Transit accent is a TD-OHD product-inspired choice, not an official brand color.
    TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="delve"] {
@@ -11,12 +12,12 @@
   --text-tertiary: #999999;
   --border: rgba(0,0,0,0.10);
   --border-subtle: #DFDFE0;
-  --accent: #1A1A1A;
-  --accent-strong: #1A1A1A;
-  --accent-hover: #000000;
-  --accent-soft: rgba(0,0,0,0.05);
+  --accent: #2E75D4;
+  --accent-strong: #245FAE;
+  --accent-hover: #245FAE;
+  --accent-soft: rgba(46,117,212,0.08);
   --accent-on: #FFFFFF;
-  --focus: #1A1A1A;
+  --focus: #2E75D4;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
   --shadow: 0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.06);
@@ -42,15 +43,15 @@
   --hd-undefined: #BDBDBD;
   --hd-undefined-center: #F7F7F8;
   --hd-center-stroke: #A7A7A7;
-  --hd-defined-fill: #1A1A1A;
+  --hd-defined-fill: #2E75D4;
   --hd-undefined-fill: transparent;
-  --hd-selection-ring: #1A1A1A;
+  --hd-selection-ring: #2E75D4;
   --hd-timeline-panel-bg: #F7F7F8;
   --hd-timeline-panel-border: var(--border);
   --hd-tooltip-bg: #F7F7F8;
   --hd-tooltip-border: var(--border);
   --hd-detail-bg: #F7F7F8;
-  --hd-detail-border: #1A1A1A;
+  --hd-detail-border: #2E75D4;
   --hd-legend-bg: #F7F7F8;
   --hd-legend-border: var(--border);
   --hd-legend-text: #6E6E6E;
@@ -61,12 +62,12 @@
   --hd-design-on: #FFFFFF;
   --hd-both: #6F6963;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #111111;
+  --hd-transit: #2E75D4;
   --hd-transit-on: #FFFFFF;
-  --hd-transit-text: #1A1A1A;
+  --hd-transit-text: #245FAE;
   --hd-overlay-natal: #6F6F6F;
   --hd-overlay-natal-on: #FFFFFF;
-  --hd-transit-soft: #EAEAEA;
+  --hd-transit-soft: #E8F0FB;
   --hd-type-generator: #82745C;
   --hd-type-manifesting-generator: #896A55;
   --hd-type-manifestor: #895A56;

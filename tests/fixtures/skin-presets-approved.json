@@ -242,9 +242,9 @@
       "text": "#1A1A1A",
       "text-secondary": "#6E6E6E",
       "text-tertiary": "#999999",
-      "accent": "#1A1A1A",
-      "accent-hover": "#000000",
-      "accent-soft": "rgba(0,0,0,0.05)",
+      "accent": "#2E75D4",
+      "accent-hover": "#245FAE",
+      "accent-soft": "rgba(46,117,212,0.08)",
       "border": "rgba(0,0,0,0.10)",
       "shadow-base": "rgba(0,0,0,0.06)",
       "success": "#5CB85C",
@@ -254,7 +254,7 @@
     "sources": [
       "#1A1A1A",
       "#6F6F6F",
-      "#111111",
+      "#2E75D4",
       "#6F6963",
       "#D1D1D1"
     ],
@@ -282,8 +282,8 @@
     ],
     "signal": {
       "on": "#FFFFFF",
-      "text": "#1A1A1A",
-      "soft": "#EAEAEA"
+      "text": "#245FAE",
+      "soft": "#E8F0FB"
     },
     "overlayNatal": {
       "color": "#6F6F6F",

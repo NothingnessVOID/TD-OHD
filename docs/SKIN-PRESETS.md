@@ -11,11 +11,11 @@
 
 Timeline 的 `--tl-transit` 直接读取 `--hd-transit`，不再使用固定 `#445457` 混色。`--tl-transit-ink` 使用批准的 `--hd-transit-on`；`--tl-birth` 使用独立的 `--hd-overlay-natal`，出生定义保持中性，游标保持 UI Accent，弱日期背景 tint 保留。
 
-七套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 仅更新 Accent bundle 和相应交互语义。默认两套主色、Center Palette、字体、Picker 布局、Storage V3 不变。
+六套网站基础 Palette 保持 V1；Absolutely 与 Deep Think 依 V2 更新 Accent bundle，Delve 依 V3 后续修正采用 Azure Accent。默认两套主色、Center Palette、字体、Picker 布局、Storage V3 不变。
 
 ## 来源与边界
 
-网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
+网站基础色继承 V1（Absolutely / Deep Think 的 Accent bundle 依 V2 更新；Delve Accent 依 V3 后续修正）。V1 当时核对了 [OpenHanako v1.0.0-beta](https://github.com/liliMozi/openhanako/releases/tag/v1.0.0-beta) 的对应主题文件。核对 tag commit：`1d3ef308299e9f630786384e77de45444ea59196`。
 
 参考路径为 `desktop/src/themes/<skin-id>.css`。本文与 CSS 是 TD-OHD 的适配规格；Human Design 来源色以本轮 Skin Palette V3 附件为最终规格；Type、Circuit、Relationship 延续 V2，不在本轮改色。没有复制参考项目的组件、品牌图形、字体、纹理或资产。
 
@@ -495,9 +495,9 @@ ID：`absolutely` · mode：`light` · CSS：`src/styles/skins/absolutely.css`
 
 ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 
-出生图黑 / 灰；行运图 Natal 灰 / Transit 黑，采用 unified-natal。
+基础仍为黑白灰极简体系，采用 OpenAI / ChatGPT product-inspired blue accent 作为小面积交互与 Transit Signal。`#2E75D4` 是本项目的 Azure 配色选择，不代表 OpenAI 官方品牌色。出生图黑 / 灰；行运图 Natal 灰 / Transit Azure 蓝，继续采用 unified-natal。
 
-网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#1A1A1A`
+网站主 Palette：bg `#FFFFFF` / elevated `#F7F7F8` / sunken `#F0F0F0` / text `#1A1A1A` / accent `#2E75D4`
 
 特殊规则：保留现有基础几何；不增加专属字体或装饰资产。
 
@@ -513,12 +513,12 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--text-tertiary` | `#999999` |
 | `--border` | `rgba(0,0,0,0.10)` |
 | `--border-subtle` | `#DFDFE0` |
-| `--accent` | `#1A1A1A` |
-| `--accent-strong` | `#1A1A1A` |
-| `--accent-hover` | `#000000` |
-| `--accent-soft` | `rgba(0,0,0,0.05)` |
+| `--accent` | `#2E75D4` |
+| `--accent-strong` | `#245FAE` |
+| `--accent-hover` | `#245FAE` |
+| `--accent-soft` | `rgba(46,117,212,0.08)` |
 | `--accent-on` | `#FFFFFF` |
-| `--focus` | `#1A1A1A` |
+| `--focus` | `#2E75D4` |
 | `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.06)` |
 | `--shadow` | `0 2px 8px rgba(0,0,0,0.06)` |
 | `--shadow-lg` | `0 8px 24px rgba(0,0,0,0.06)` |
@@ -544,15 +544,15 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-undefined` | `#BDBDBD` |
 | `--hd-undefined-center` | `#F7F7F8` |
 | `--hd-center-stroke` | `#A7A7A7` |
-| `--hd-defined-fill` | `#1A1A1A` |
+| `--hd-defined-fill` | `#2E75D4` |
 | `--hd-undefined-fill` | `transparent` |
-| `--hd-selection-ring` | `#1A1A1A` |
+| `--hd-selection-ring` | `#2E75D4` |
 | `--hd-timeline-panel-bg` | `#F7F7F8` |
 | `--hd-timeline-panel-border` | `var(--border)` |
 | `--hd-tooltip-bg` | `#F7F7F8` |
 | `--hd-tooltip-border` | `var(--border)` |
 | `--hd-detail-bg` | `#F7F7F8` |
-| `--hd-detail-border` | `#1A1A1A` |
+| `--hd-detail-border` | `#2E75D4` |
 | `--hd-legend-bg` | `#F7F7F8` |
 | `--hd-legend-border` | `var(--border)` |
 | `--hd-legend-text` | `#6E6E6E` |
@@ -563,12 +563,12 @@ ID：`delve` · mode：`light` · CSS：`src/styles/skins/delve.css`
 | `--hd-design-on` | `#FFFFFF` |
 | `--hd-both` | `#6F6963` |
 | `--hd-both-on` | `#FFFFFF` |
-| `--hd-transit` | `#111111` |
+| `--hd-transit` | `#2E75D4` |
 | `--hd-transit-on` | `#FFFFFF` |
-| `--hd-transit-text` | `#1A1A1A` |
+| `--hd-transit-text` | `#245FAE` |
 | `--hd-overlay-natal` | `#6F6F6F` |
 | `--hd-overlay-natal-on` | `#FFFFFF` |
-| `--hd-transit-soft` | `#EAEAEA` |
+| `--hd-transit-soft` | `#E8F0FB` |
 | `--hd-type-generator` | `#82745C` |
 | `--hd-type-manifesting-generator` | `#896A55` |
 | `--hd-type-manifestor` | `#895A56` |
