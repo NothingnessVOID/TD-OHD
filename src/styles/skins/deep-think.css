@@ -1,5 +1,5 @@
 /* Deep Think: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="deep-think"] {
   color-scheme: light;
@@ -64,6 +64,8 @@
   --hd-transit: #4660E5;
   --hd-transit-on: #FFFFFF;
   --hd-transit-text: #354CC0;
+  --hd-overlay-natal: #747B8A;
+  --hd-overlay-natal-on: #000000;
   --hd-transit-soft: #E9EDFF;
   --hd-type-generator: #9C8353;
   --hd-type-manifesting-generator: #A8744D;

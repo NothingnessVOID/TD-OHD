@@ -75,6 +75,8 @@
 /* Chart semantic palette belongs to the same default Skin as site surfaces. */
 :root,
 [data-skin="default-light"] {
+  --hd-overlay-natal: #6B6560;
+  --hd-overlay-natal-on: #FFFFFF;
   --hd-personality: #2d2d2d;
   --hd-personality-on: #ffffff;
   --hd-design: #c0392b;
@@ -146,9 +148,12 @@
 
 [data-skin="default-dark"],
 :root:not([data-skin])[data-theme="dark"] {
+  --hd-overlay-natal: #9E978E;
+  --hd-overlay-natal-on: #16130F;
   --hd-personality: #e0dcd6;
   --hd-personality-on: #16130f;
   --hd-design: #e74c3c;
+  --hd-design-on: #16130F;
   --hd-transit: #1af4ff;
   --hd-transit-text: var(--hd-transit);
   --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 10%, #111516);

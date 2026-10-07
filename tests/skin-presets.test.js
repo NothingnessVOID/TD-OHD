@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { SKINS, SKIN_TOKENS, CENTER_PALETTE_TOKENS, PLANNED_SKIN_DIRECTIONS } from '../src/lib/skin-registry.js';
+import { SKINS, SKIN_TOKENS, SKIN_TOKEN_GROUPS, getTransitSourceMode, CENTER_PALETTE_TOKENS, PLANNED_SKIN_DIRECTIONS } from '../src/lib/skin-registry.js';
 import { t, setLocale } from '../src/lib/i18n.js';
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const approved = JSON.parse(read('tests/fixtures/skin-presets-approved.json'));
@@ -13,7 +13,19 @@ const luminance = hex => {
 };
 const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + .05) / (Math.min(luminance(a), luminance(b)) + .05);
 
-test('all nine presets have their own complete 90-token stylesheet and exact approved primary palettes', () => {
+test('per-Skin source strategy is registry data with split fallback and 12 source tokens', () => {
+  assert.equal(SKIN_TOKEN_GROUPS.sources.length, 12);
+  assert.equal(SKIN_TOKENS.length, 92);
+  assert.deepEqual(SKINS.filter(s => s.transitSourceMode === 'unified-natal').map(s => s.id), ['delve']);
+  for (const s of SKINS) {
+    assert.ok(['split','unified-natal'].includes(s.transitSourceMode));
+    assert.equal(getTransitSourceMode(s.id),s.transitSourceMode);
+  }
+  assert.equal(getTransitSourceMode('future-or-invalid-id'), 'split');
+  assert.doesNotMatch(read('src/bodygraph.js') + read('src/features/transit-timeline/graph-window.js'), /['"]delve['"]/);
+});
+
+test('all nine presets have their own complete 92-token stylesheet and exact approved primary palettes', () => {
   assert.equal(SKINS.length, 11);
   assert.equal(new Set(SKINS.map(s => s.id)).size, 11);
   assert.deepEqual(PLANNED_SKIN_DIRECTIONS, []);
@@ -22,13 +34,16 @@ test('all nine presets have their own complete 90-token stylesheet and exact app
     const css = read(skin.cssSource), tokens = values(css);
     assert.equal(skin.mode, fixture.id === 'midnight-contrast' ? 'dark' : 'light');
     assert.ok(css.includes(`:root[data-skin="${skin.id}"]`));
-    assert.equal(SKIN_TOKENS.filter(t => tokens[t]).length, 90, skin.id);
+    assert.equal(SKIN_TOKENS.filter(t => tokens[t]).length, 92, skin.id);
     for (const token of CENTER_PALETTE_TOKENS) assert.equal(tokens[token], undefined);
     assert.doesNotMatch(css, /font-|color-mix|url\(/, skin.id);
     for (const [key, value] of Object.entries(fixture.site)) {
       const token = ({ elevated: 'bg-elevated', sunken: 'bg-sunken', success: 'status-success', danger: 'status-error' })[key] || key;
       if (!['coral', 'shadow-base'].includes(key)) assert.equal(tokens['--' + token], value, skin.id + ' ' + key);
     }
+    assert.equal(skin.transitSourceMode, fixture.transitSourceMode);
+    assert.equal(tokens['--hd-overlay-natal'], fixture.overlayNatal.color);
+    assert.equal(tokens['--hd-overlay-natal-on'], fixture.overlayNatal.on);
     for (const [key, value] of Object.entries(fixture.signal)) assert.equal(tokens['--hd-transit-' + key], value, skin.id + ' Signal ' + key);
     for (const [keys, colors, prefix] of [
       [['personality', 'design', 'transit', 'both', 'inactive'], fixture.sources, '--hd-'],
@@ -46,7 +61,7 @@ test('all nine presets have their own complete 90-token stylesheet and exact app
 test('all source foregrounds and Transit text meet 4.5 contrast; relationship Both remains readable', () => {
   for (const skin of SKINS.slice(2)) {
     const tokens = values(read(skin.cssSource));
-    for (const source of ['personality', 'design', 'transit', 'both', 'inactive']) {
+    for (const source of ['personality', 'design', 'transit', 'both', 'inactive', 'overlay-natal']) {
       assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= 4.5, skin.id + ' ' + source + ' on');
     }
     assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= 4.5, skin.id + ' transit text');
@@ -91,15 +106,14 @@ test('Timeline Signal has no fixed bluegray anchor; cursor and birth keep their 
   assert.match(css, /--tl-transit-ink:\s*var\(--hd-transit-on\);/);
   assert.match(css, /--tl-cursor-color:\s*var\(--accent-strong\);/);
   assert.doesNotMatch(css, /#445457/);
-  assert.match(css, /--tl-birth:\s*var\(--text-secondary\);/);
+  assert.match(css, /--tl-birth:\s*var\(--hd-overlay-natal\);/);
 });
 
-test('V2 preserves V1 site surfaces, Picker layout, storage, centers and algorithms', () => {
-  const baseline = JSON.parse(read('tests/fixtures/skin-palette-v2-boundaries.json'));
+test('V3 preserves V2 site surfaces, Picker layout, storage, centers, topology and algorithms', () => {
+  const baseline = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json'));
   for (const fixture of approved) {
     const tokens = values(read(SKINS.find(s => s.id === fixture.id).cssSource));
     for (const [key, value] of Object.entries(baseline.site[fixture.id])) {
-      if (['absolutely', 'deep-think'].includes(fixture.id) && ['--accent','--accent-hover','--accent-strong','--accent-soft','--accent-on','--focus'].includes(key)) continue;
       assert.equal(tokens[key], value, fixture.id + ' keeps site ' + key);
     }
   }

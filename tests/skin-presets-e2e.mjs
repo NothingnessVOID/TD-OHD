@@ -4,7 +4,7 @@ import { chromium } from 'playwright-core';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { SKINS, SKIN_TOKENS } from '../src/lib/skin-registry.js';
 const base = (process.env.E2E_URL || 'http://127.0.0.1:5173').replace(/\/$/, '');
-const evidence = process.env.SKIN_EVIDENCE_DIR || '/tmp/td-ohd-skin-palette-v2';
+const evidence = process.env.SKIN_EVIDENCE_DIR || '/tmp/td-ohd-skin-palette-v3';
 mkdirSync(evidence, {recursive:true});
 const birth = '/?d=2000-05-10&t=12%3A30&tz=8';
 const browser = await chromium.launch({channel:process.env.CHROME_CHANNEL || 'chrome',headless:true});
@@ -60,7 +60,7 @@ try {
         : ['--shadow-sm','--shadow','--shadow-lg','--lens-active-shadow'].includes(token) ? 'box-shadow' : 'color';
       return !value || !CSS.supports(property,value);
     }),actual);
-    assert.deepEqual(invalid,[],skin.id+' all 90 computed values have valid CSS syntax');
+    assert.deepEqual(invalid,[],skin.id+' all 92 computed values have valid CSS syntax');
     assert.equal(await page.locator('html').getAttribute('data-theme'),skin.mode);
     assert.equal(await css('--font'),font);assert.equal(await css('--font-serif'),serif);
     const colors = await page.locator('#bodygraph-container .bg-centers .bg-center').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
@@ -88,7 +88,11 @@ try {
     await readable(page.locator('.reference-sidebar'),'--bg-elevated','background-color');await shot(skin.id+'-library');
     await navigate('transits');await page.locator('#transit-stage .bodygraph-svg').waitFor({timeout:60000});
     await readable(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--hd-transit-text');
+    await readable(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
+    await readable(page.locator('#transit-stage .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
+    assert.equal(await page.locator('#transit-stage .tl-graph').getAttribute('data-transit-source-mode'),skin.transitSourceMode);
     await shot(skin.id+'-transit');
+    await page.locator('#transit-stage .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-transit-graph.png`});
     await navigate('timeline');await page.locator('#timeline-view .bodygraph-svg').waitFor({timeout:60000});
     await readable(page.locator('#timeline-view .tl-transit-column .bg-planet-act'),'--hd-transit-text');
     await page.locator('#timeline-view [data-field="span"]').selectOption('past-year');
@@ -104,7 +108,11 @@ try {
     else referenceTimeline = timeline;
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit','background-color');
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
+    await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
+    await readable(page.locator('#timeline-view .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
     await shot(skin.id+'-timeline');
+    await page.locator('#timeline-view .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-timeline-graph.png`});
+    await page.locator('#timeline-view .tl-workspace').screenshot({path:`${evidence}/${skin.id}-timeline-workspace.png`});
     await navigate('connection');await page.locator('#conn-person').selectOption({label:'Skin Fixture B'});await page.locator('#conn-calculate').click();
     await page.locator('#connection-content .composite-graph .bodygraph-svg').waitFor({timeout:60000});
     for (const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries()) {
@@ -127,7 +135,7 @@ try {
       for(const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries())
         await page.locator('#connection-content .conn-section').nth(i).screenshot({path:`${evidence}/${skin.id}-relationship-${key}.png`});
     }
-    results.push({id:skin.id,mode:skin.mode,validComputedTokens:90,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-transit']}});
+    results.push({id:skin.id,mode:skin.mode,transitSourceMode:skin.transitSourceMode,validComputedTokens:92,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-transit']}});
     await navigate('chart');
   }
   // Real controls: independent overrides, restore, Palette, size, language and keyboard.
@@ -138,7 +146,7 @@ try {
   await page.locator('[data-skin-id="grass-aroma"]').click();assert.equal(await css('--accent'),'#5BA88C');
   assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');assert.equal(await css('--hd-gate-number-size'),'18px');
   await page.locator('[data-skin-id="high-contrast"]').click();assert.equal(await css('--accent'),'#123456');assert.equal(await css('--hd-transit'),'#234567');
-  await page.locator('#appearance-restore').click();assert.equal(await css('--accent'),'#3A6B85');assert.equal(await css('--hd-transit'),'#28706D');
+  await page.locator('#appearance-restore').click();assert.equal(await css('--accent'),'#3A6B85');assert.equal(await css('--hd-transit'),'#3A6B85');
   assert.equal(await css('--hd-gate-number-size'),'18px');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
   await page.locator('[data-skin-id="midnight-contrast"]').click();
   await page.keyboard.press('Escape');await page.goto(base+birth);await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});

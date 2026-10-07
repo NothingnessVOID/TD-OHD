@@ -1,5 +1,5 @@
 /* High Contrast: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="high-contrast"] {
   color-scheme: light;
@@ -55,16 +55,18 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #4A4E52;
   --hd-planet-column-text: #1A1C1E;
-  --hd-personality: #26292C;
+  --hd-personality: #202428;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #B6534B;
+  --hd-design: #B84A44;
   --hd-design-on: #FFFFFF;
   --hd-both: #756454;
   --hd-both-on: #FFFFFF;
-  --hd-transit: #28706D;
+  --hd-transit: #3A6B85;
   --hd-transit-on: #FFFFFF;
-  --hd-transit-text: #1E5654;
-  --hd-transit-soft: #E6F0EF;
+  --hd-transit-text: #2E5870;
+  --hd-overlay-natal: #74716D;
+  --hd-overlay-natal-on: #FFFFFF;
+  --hd-transit-soft: #E9EBED;
   --hd-type-generator: #9A7A35;
   --hd-type-manifesting-generator: #A56C3C;
   --hd-type-manifestor: #9E544E;

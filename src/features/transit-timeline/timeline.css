@@ -2,7 +2,7 @@
 .tl {
   --tl-surface: var(--bg-elevated); --tl-line: var(--border);
   --tl-transit: var(--hd-transit); --tl-transit-ink: var(--hd-transit-on);
-  --tl-birth: var(--text-secondary); --tl-cursor-color: var(--accent-strong);
+  --tl-birth: var(--hd-overlay-natal); --tl-cursor-color: var(--accent-strong);
   --tl-date-even: color-mix(in srgb, var(--tl-surface) 85%, var(--text-secondary));
   --tl-date-odd: color-mix(in srgb, var(--tl-surface) 92%, var(--tl-transit));
   --tl-day-even: color-mix(in srgb, var(--bg-sunken) 13%, transparent);
@@ -121,6 +121,7 @@
 .tl .tl-birth-value[data-side="design"] .tl-fixing-mark { color: var(--hd-design); }
 .tl .tl-birth-value[data-side="personality"] .tl-fixing-mark { color: var(--hd-personality); }
 .tl .tl-birth-value .tl-fixing-mark[data-temporary="true"] { color: var(--hd-transit-text); }
+:is(.tl[data-transit-source-mode="unified-natal"], .tl [data-transit-source-mode="unified-natal"]) :is(.tl-birth-head .bg-planets-head, .tl-birth-value .bg-planet-act, .tl-birth-value .tl-fixing-mark:not([data-temporary="true"])) { color: var(--hd-overlay-natal); }
 .tl-explorer, .tl-tracks-panel { min-width: 0; }
 .tl-tracks-panel { position: relative; z-index: 0; display: flex; flex-direction: column; height: calc(var(--tl-canvas-height) + 2px); border: 1px solid var(--tl-line); border-radius: 8px; background: var(--tl-surface); overflow: hidden; }
 .tl-event-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }

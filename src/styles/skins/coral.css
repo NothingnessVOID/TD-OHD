@@ -1,5 +1,5 @@
 /* Coral: site colors follow the supplied OpenHanako v1.0 beta reference.
-   TD-OHD source/type/circuit/relationship colors use the approved Palette V2.
+   TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="coral"] {
   color-scheme: light;
@@ -55,15 +55,17 @@
   --hd-legend-border: var(--border);
   --hd-legend-text: #314153;
   --hd-planet-column-text: #1A3049;
-  --hd-personality: #21364A;
+  --hd-personality: #1A3049;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #59757A;
-  --hd-design-on: #FFFFFF;
+  --hd-design: #6E8C7A;
+  --hd-design-on: #000000;
   --hd-both: #87735E;
   --hd-both-on: #FFFFFF;
   --hd-transit: #F37E63;
   --hd-transit-on: #1A1714;
   --hd-transit-text: #B75240;
+  --hd-overlay-natal: #6A7680;
+  --hd-overlay-natal-on: #FFFFFF;
   --hd-transit-soft: #FCE7E0;
   --hd-type-generator: #9A7F4D;
   --hd-type-manifesting-generator: #AD7446;
