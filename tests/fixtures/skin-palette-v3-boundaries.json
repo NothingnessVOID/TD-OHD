@@ -314,11 +314,17 @@
   },
   "approvedSiteChanges": {
     "delve": {
-      "--accent": "#2E75D4",
-      "--accent-strong": "#245FAE",
-      "--accent-hover": "#245FAE",
-      "--accent-soft": "rgba(46,117,212,0.08)",
-      "--focus": "#2E75D4"
+      "--accent": "#111111",
+      "--accent-strong": "#000000",
+      "--accent-hover": "#000000",
+      "--accent-soft": "rgba(0,0,0,0.05)",
+      "--focus": "#2E75D4",
+      "--status-success": "#5C8A68",
+      "--status-success-soft": "#F1F6F2",
+      "--status-info": "#2E75D4",
+      "--status-info-soft": "#EEF4FC",
+      "--status-caution": "#A36F2B",
+      "--status-caution-soft": "#FAF5EA"
     }
   },
   "delveAzureBaseline": {
@@ -435,6 +441,25 @@
       "src/bodygraph.js": "d0f58bc3371fdf67122be833fd872dfd3fbaeb0581b8054c873b7b3c95db3ea4",
       "src/features/transit-timeline/graph-window.js": "d890ff126130277626c3eaab0c4923030b5aead4125ef7da17fd5d07870b5fbd",
       "src/features/transit-timeline/timeline.css": "f642bee0fbdb0ec45df2c7fef22097d1f759707f99676522bbca642742aecdc3"
+    }
+  },
+  "delveSemanticChanges": {
+    "baseline": "685d33a4a5bd253b46dfae5363361e419bf2c365",
+    "changes": {
+      "--accent": "#111111",
+      "--accent-strong": "#000000",
+      "--accent-hover": "#000000",
+      "--accent-soft": "rgba(0,0,0,0.05)",
+      "--focus": "#2E75D4",
+      "--status-success": "#5C8A68",
+      "--status-success-soft": "#F1F6F2",
+      "--status-info": "#2E75D4",
+      "--status-info-soft": "#EEF4FC",
+      "--status-caution": "#A36F2B",
+      "--status-caution-soft": "#FAF5EA",
+      "--hd-defined-fill": "#111111",
+      "--hd-detail-border": "#111111",
+      "--hd-timeline-transit": "#1F4F85"
     }
   }
 }

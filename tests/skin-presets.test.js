@@ -15,7 +15,7 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + .05) / (Math.
 
 test('per-Skin source strategy is registry data with split fallback and 12 source tokens', () => {
   assert.equal(SKIN_TOKEN_GROUPS.sources.length, 12);
-  assert.equal(SKIN_TOKENS.length, 92);
+  assert.equal(SKIN_TOKENS.length, 96);
   assert.deepEqual(SKINS.filter(s => s.transitSourceMode === 'unified-natal').map(s => s.id), ['delve']);
   for (const s of SKINS) {
     assert.ok(['split','unified-natal'].includes(s.transitSourceMode));
@@ -25,7 +25,7 @@ test('per-Skin source strategy is registry data with split fallback and 12 sourc
   assert.doesNotMatch(read('src/bodygraph.js') + read('src/features/transit-timeline/graph-window.js'), /['"]delve['"]/);
 });
 
-test('all nine presets have their own complete 92-token stylesheet and exact approved primary palettes', () => {
+test('all nine presets have their own complete 96-token stylesheet and exact approved primary palettes', () => {
   assert.equal(SKINS.length, 11);
   assert.equal(new Set(SKINS.map(s => s.id)).size, 11);
   assert.deepEqual(PLANNED_SKIN_DIRECTIONS, []);
@@ -34,7 +34,7 @@ test('all nine presets have their own complete 92-token stylesheet and exact app
     const css = read(skin.cssSource), tokens = values(css);
     assert.equal(skin.mode, fixture.id === 'midnight-contrast' ? 'dark' : 'light');
     assert.ok(css.includes(`:root[data-skin="${skin.id}"]`));
-    assert.equal(SKIN_TOKENS.filter(t => tokens[t]).length, 92, skin.id);
+    assert.equal(SKIN_TOKENS.filter(t => tokens[t]).length, 96, skin.id);
     for (const token of CENTER_PALETTE_TOKENS) assert.equal(tokens[token], undefined);
     assert.doesNotMatch(css, /font-|color-mix|url\(/, skin.id);
     for (const [key, value] of Object.entries(fixture.site)) {
@@ -65,6 +65,7 @@ test('all source foregrounds and Transit text meet 4.5 contrast; relationship Bo
       assert.ok(contrast(tokens[`--hd-${source}`], tokens[`--hd-${source}-on`]) >= 4.5, skin.id + ' ' + source + ' on');
     }
     assert.ok(contrast(tokens['--hd-transit-text'], tokens['--bg']) >= 4.5, skin.id + ' transit text');
+    assert.ok(contrast(tokens['--hd-timeline-transit'], tokens['--hd-transit-on']) >= 4.5, skin.id + ' timeline foreground');
     for (const source of ['a', 'b', 'bridged']) assert.ok(contrast(tokens[`--hd-connection-${source}`], tokens[`--hd-connection-${source}-on`]) >= 4.5, skin.id + ' relationship ' + source);
     const backgrounds = ['a', 'b'].map(source => tokens[`--hd-connection-${source}`]);
     // The shared foreground must work against both ownership colors.
@@ -102,14 +103,14 @@ test('Picker names and section labels use existing three-language messages witho
 
 test('Timeline Signal has no fixed bluegray anchor; cursor and birth keep their own semantics', () => {
   const css = read('src/features/transit-timeline/timeline.css');
-  assert.match(css, /--tl-transit:\s*var\(--hd-transit\);/);
+  assert.match(css, /--tl-transit:\s*var\(--hd-timeline-transit\);/);
   assert.match(css, /--tl-transit-ink:\s*var\(--hd-transit-on\);/);
   assert.match(css, /--tl-cursor-color:\s*var\(--accent-strong\);/);
   assert.doesNotMatch(css, /#445457/);
   assert.match(css, /--tl-birth:\s*var\(--hd-overlay-natal\);/);
 });
 
-test('V3 preserves V2 surfaces except approved Delve Accent, and protects layout/storage/centers/algorithms', () => {
+test('V3 preserves V2 surfaces except approved Delve structure/status colors, and protects layout/storage/centers/algorithms', () => {
   const baseline = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json'));
   for (const fixture of approved) {
     const tokens = values(read(SKINS.find(s => s.id === fixture.id).cssSource));
@@ -124,14 +125,39 @@ test('V3 preserves V2 surfaces except approved Delve Accent, and protects layout
 });
 
 
-test('Delve Azure update changes only approved colors; birth/natal, other semantics and Deep Think stay intact', () => {
-  const baseline = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json')).delveAzureBaseline;
+test('Delve uses black structure, Azure BodyGraph and deep-blue Timeline; birth and other semantics stay intact', () => {
+  const boundary = JSON.parse(read('tests/fixtures/skin-palette-v3-boundaries.json'));
+  const baseline = boundary.delveAzureBaseline;
   const skin = SKINS.find(s => s.id === 'delve');
   const tokens = values(read(skin.cssSource));
-  assert.deepEqual(tokens, { ...baseline.tokens, ...baseline.changes });
+  assert.deepEqual(tokens, { ...baseline.tokens, ...baseline.changes, ...boundary.delveSemanticChanges.changes });
   assert.equal(skin.transitSourceMode, 'unified-natal');
-  assert.deepEqual(skin.preview, {surface:'#FFFFFF',text:'#1A1A1A',accent:'#2E75D4',personality:'#1A1A1A',design:'#6F6F6F',transit:'#2E75D4'});
+  assert.deepEqual(skin.preview, {surface:'#FFFFFF',text:'#1A1A1A',accent:'#111111',personality:'#1A1A1A',design:'#6F6F6F',transit:'#2E75D4'});
   assert.ok(contrast(tokens['--hd-transit'],tokens['--hd-transit-on']) >= 4.5);
   assert.ok(contrast(tokens['--accent'],tokens['--accent-on']) >= 4.5);
-  for (const [path,hash] of Object.entries(baseline.files)) assert.equal(createHash('sha256').update(read(path)).digest('hex'),hash,path+' unchanged in Azure follow-up');
+  // Remove only this round's explicitly approved additions before checking old boundaries.
+  for (const [path,hash] of Object.entries(baseline.files)) {
+    let css = read(path);
+    if (path === 'src/styles/skins/deep-think.css') css = css.replace(/^  --(?:status-info|status-info-soft|status-caution|hd-timeline-transit):[^\n]+\n/gm, '');
+    if (path.endsWith('/timeline.css')) css = css.replace('--tl-transit: var(--hd-timeline-transit);', '--tl-transit: var(--hd-transit);');
+    assert.equal(createHash('sha256').update(css).digest('hex'),hash,path+' unchanged beyond approved semantics');
+  }
+});
+
+// Prepared for the later unified verification; this round uses manual visual review only.
+test('all Skins own independent info/caution colors and Skin-owned Timeline signal', () => {
+  for (const skin of SKINS) {
+    const css = read(skin.cssSource);
+    const blocks = [...css.matchAll(/\{([^{}]+)\}/g)].map(m => values(m[1]));
+    const tokens = skin.id === 'default-light' ? {...blocks[0], ...blocks[2]} : skin.id === 'default-dark' ? {...blocks[0], ...blocks[2], ...blocks[1], ...blocks[3]} : values(css);
+    for (const token of SKIN_TOKENS) assert.ok(tokens[token], skin.id + ' ' + token);
+    for (const token of ['--status-info','--status-info-soft','--status-caution']) assert.match(tokens[token], /^#[0-9a-f]{6}$/i, skin.id + ' independent ' + token);
+    assert.equal(tokens['--hd-timeline-transit'], approved.find(f => f.id === skin.id)?.timelineTransit ?? 'var(--hd-transit)');
+  }
+  const css = read('src/styles.css'), renderer = read('src/views/chart.js');
+  assert.doesNotMatch(css + renderer, /reliability-soft/);
+  for (const [state,token] of [['solid','success'],['info','info'],['caution','caution']]) {
+    assert.ok(css.includes(`.reliability-${state} { background: var(--status-${token}-soft); }`));
+    assert.ok(css.includes(`.reliability-${state} .reliability-dot { background: var(--status-${token}); }`));
+  }
 });

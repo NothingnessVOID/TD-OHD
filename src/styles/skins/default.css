@@ -1,41 +1,45 @@
-/* Complete current Skin colors: site + Human Design semantics. Font and centers are separate. */
+/* TD-OHD Classic Day / Night: paired warm neutrals, copper and teal.
+   Site + Human Design semantics only; Font and Center Palette are separate. */
 /* Default Skins declare their light/dark mode; data-theme is a compatibility mirror.
    Component styles use these semantic variables instead of palette literals. */
 :root,
 [data-skin="default-light"] {
-  --bg: #faf8f5;
-  --bg-elevated: #ffffff;
-  --bg-sunken: #f0ede8;
-  --text: #1a1714;
-  --text-secondary: #6b6560;
-  --text-tertiary: #6f675f;
-  --border: #e5e0da;
-  --border-subtle: #ede9e3;
+  --bg: #F7F5F2;
+  --bg-elevated: #FEFDFB;
+  --bg-sunken: #EFEBE6;
+  --text: #1E1B18;
+  --text-secondary: #625D57;
+  --text-tertiary: #8A837B;
+  --border: #DDD7CF;
+  --border-subtle: #EAE6E0;
 
-  --accent: #c47a2a;
-  --accent-strong: #9a5e1c;
-  --accent-soft: #f5e6d0;
-  --accent-hover: #834e15;
-  --accent-on: #ffffff;
+  --accent: #B86F2C;
+  --accent-strong: #8A4E18;
+  --accent-soft: #F4E6D5;
+  --accent-hover: #985820;
+  --accent-on: #FFFFFF;
 
-  --focus: var(--accent);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .06);
-  --shadow: 0 2px 8px rgba(0, 0, 0, .08);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .12);
+  --focus: #B86F2C;
+  --shadow-sm: 0 1px 2px rgba(30,27,24,0.05);
+  --shadow: 0 2px 8px rgba(30,27,24,0.07);
+  --shadow-lg: 0 8px 24px rgba(30,27,24,0.10);
   --modal-backdrop: rgba(15, 12, 8, .45);
   --modal-overlay: rgba(0, 0, 0, .4);
   --lens-active-shadow: 0 1px 2px rgba(0, 0, 0, .08);
 
   /* Independent status and product-type meanings belong to the site layer. */
-  --status-error: #b3422f;
-  --status-error-soft: #b14c32;
-  --status-success: #27ae60;
-  --status-success-soft: #e9f4ed;
-  --status-caution-soft: #f7eedd;
-  --type-badge-bg: #f7e8ef;
-  --type-badge-text: #8a2850;
-  --type-badge-border: #d898b8;
-  --type-strategy-text: #8a5418;
+  --status-error: #B24E43;
+  --status-error-soft: #F6E8E5;
+  --status-success: #5E8A68;
+  --status-success-soft: #EDF4EE;
+  --status-info: #4E8096;
+  --status-info-soft: #EAF1F4;
+  --status-caution: #A67532;
+  --status-caution-soft: #F7F0E4;
+  --type-badge-bg: #F2E7D8;
+  --type-badge-text: #76502C;
+  --type-badge-border: #C7A477;
+  --type-strategy-text: #8A4E18;
   --site-auth-glow: #dcc5a42b;
   --site-auth-shadow: #3c30210b;
 }
@@ -43,63 +47,74 @@
 [data-skin="default-dark"],
 :root:not([data-skin])[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #141210;
-  --bg-elevated: #1e1c18;
-  --bg-sunken: #0c0b09;
-  --text: #e8e4de;
-  --text-secondary: #9e978e;
-  --text-tertiary: #8a8378;
-  --border: #2a2620;
-  --border-subtle: #221f1a;
+  --bg: #161412;
+  --bg-elevated: #211E1A;
+  --bg-sunken: #0F0D0C;
+  --text: #F0EBE4;
+  --text-secondary: #AAA197;
+  --text-tertiary: #7E766D;
+  --border: #332E28;
+  --border-subtle: #29251F;
 
-  --accent: #d4943a;
-  --accent-strong: #8a5418;
-  --accent-soft: #2a2115;
-  --accent-hover: #a3631d;
+  --accent: #D69A55;
+  --accent-strong: #B77732;
+  --accent-soft: #2B2117;
+  --accent-hover: #E0AA6A;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .2);
   --shadow: 0 2px 8px rgba(0, 0, 0, .3);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, .4);
   --modal-backdrop: rgba(0, 0, 0, .65);
 
-  --status-error: #e07a68;
-  --status-success: #3fae6e;
-  --status-success-soft: #1a2a20;
-  --status-caution-soft: #2a2115;
-  --type-badge-bg: #2a1520;
-  --type-badge-text: #d47898;
-  --type-badge-border: #582840;
+  --status-error: #D9796E;
+  --status-success: #7EAD87;
+  --status-success-soft: #1D2A21;
+  --status-info: #72A7BD;
+  --status-info-soft: #18262C;
+  --status-caution: #D0A05E;
+  --status-caution-soft: #2B2217;
+  --type-badge-bg: #2F251A;
+  --type-badge-text: #D6B083;
+  --type-badge-border: #6B5032;
   --type-strategy-text: var(--accent);
+  --accent-on: #17120D;
+  --focus: #D69A55;
+  --status-error-soft: #2C1C1A;
 }
 
 /* Chart semantic palette belongs to the same default Skin as site surfaces. */
 :root,
 [data-skin="default-light"] {
-  --hd-overlay-natal: #6B6560;
+  --hd-overlay-natal: #6B655F;
   --hd-overlay-natal-on: #FFFFFF;
-  --hd-personality: #2d2d2d;
-  --hd-personality-on: #ffffff;
-  --hd-design: #c0392b;
-  --hd-design-on: #ffffff;
-  --hd-transit: #1af4ff;
-  --hd-transit-on: #16130f;
-  --hd-transit-text: color-mix(in srgb, var(--hd-transit) 65%, #16130f);
-  --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 9.8%, var(--bg));
-  --hd-both: #6b4423;
-  --hd-both-on: #ffffff;
-  --hd-undefined: #c8c0b8;
+  --hd-personality: #282624;
+  --hd-personality-on: #FFFFFF;
+  --hd-design: #B84D43;
+  --hd-design-on: #FFFFFF;
+  --hd-transit: #3D8A94;
+  --hd-timeline-birth: #6B655F;
+  --hd-timeline-transit: #2F6870;
+  --hd-timeline-both-birth: #6B655F;
+  --hd-timeline-both-transit: #2F6870;
+  --hd-timeline-both-on: #FFFFFF;
+  --hd-transit-on: #FFFFFF;
+  --hd-transit-text: #2D6870;
+  --hd-transit-soft: #E5F0F1;
+  --hd-both: #76503B;
+  --hd-both-on: #FFFFFF;
+  --hd-undefined: #CBC4BC;
   --hd-electromagnetic: var(--hd-relationship-electromagnetic);
   --hd-connection-both: linear-gradient(45deg, var(--hd-connection-a) 0 50%, var(--hd-connection-b) 50% 100%);
-  --hd-relationship-electromagnetic: #c47a2a;
-  --hd-relationship-companionship: #27ae60;
-  --hd-relationship-compromise: #2980b9;
-  --hd-relationship-dominance: #6f675f;
+  --hd-relationship-electromagnetic: #B4783F;
+  --hd-relationship-companionship: #6E826C;
+  --hd-relationship-compromise: #92705A;
+  --hd-relationship-dominance: #79756F;
 
-  --hd-inactive: #b8b0a6;
-  --hd-inactive-on: #312c26;
-  --hd-undefined-center: #ffffff;
-  --hd-center-stroke: #c0b8ae;
-  --hd-defined-fill: var(--accent);
+  --hd-inactive: #C1BAB2;
+  --hd-inactive-on: #2D2925;
+  --hd-undefined-center: #FEFDFB;
+  --hd-center-stroke: #BDB5AC;
+  --hd-defined-fill: #B86F2C;
   --hd-undefined-fill: transparent;
 
   --hd-graph-panel-bg: var(--bg-elevated);
@@ -116,67 +131,91 @@
   --hd-legend-text: var(--text-secondary);
   --hd-planet-column-text: var(--text);
 
-  --hd-selection-ring: #2980b9;
+  --hd-selection-ring: #B86F2C;
 
-  --hd-type-generator: #d4a843;
-  --hd-type-manifesting-generator: #e08832;
-  --hd-type-manifestor: #c0392b;
-  --hd-type-projector: #2980b9;
-  --hd-type-reflector: #7f8c8d;
+  --hd-type-generator: #A08345;
+  --hd-type-manifesting-generator: #B56D3C;
+  --hd-type-manifestor: #A9564D;
+  --hd-type-projector: #577789;
+  --hd-type-reflector: #777D7D;
 
-  --hd-circuit-individual: #8e44ad;
-  --hd-circuit-individual-soft: #f0e6f6;
-  --hd-circuit-tribal: #c0392b;
-  --hd-circuit-tribal-soft: #fce4e4;
-  --hd-circuit-collective: #2980b9;
-  --hd-circuit-collective-soft: #e4f0fc;
-  --hd-circuit-integration: #27ae60;
-  --hd-circuit-integration-soft: #e4f6ec;
+  --hd-circuit-individual: #75677F;
+  --hd-circuit-individual-soft: #F4F1F5;
+  --hd-circuit-tribal: #965C52;
+  --hd-circuit-tribal-soft: #F7EFED;
+  --hd-circuit-collective: #5B7686;
+  --hd-circuit-collective-soft: #EFF3F5;
+  --hd-circuit-integration: #657A66;
+  --hd-circuit-integration-soft: #F0F4EF;
 
-  --hd-connection-a: #2a9d8f;
-  --hd-connection-a-on: #ffffff;
-  --hd-connection-a-core: color-mix(in srgb, var(--hd-connection-a) 73%, white);
-  --hd-connection-b: #e07a5f;
-  --hd-connection-b-on: #ffffff;
-  --hd-connection-b-core: color-mix(in srgb, var(--hd-connection-b) 69%, white);
-  --hd-connection-bridged: #d4a23a;
-  --hd-connection-bridged-on: #ffffff;
-  --hd-connection-both-on: #ffffff;
-  --hd-connection-bridged-core: color-mix(in srgb, var(--hd-connection-bridged) 71%, white);
+  --hd-connection-a: #5C8C84;
+  --hd-connection-a-on: #171411;
+  --hd-connection-a-core: #6D988F;
+  --hd-connection-b: #B87363;
+  --hd-connection-b-on: #171411;
+  --hd-connection-b-core: #C08374;
+  --hd-connection-bridged: #A2874E;
+  --hd-connection-bridged-on: #171411;
+  --hd-connection-both-on: #171411;
+  --hd-connection-bridged-core: #AD9461;
 
 }
 
 [data-skin="default-dark"],
 :root:not([data-skin])[data-theme="dark"] {
-  --hd-overlay-natal: #9E978E;
-  --hd-overlay-natal-on: #16130F;
-  --hd-personality: #e0dcd6;
-  --hd-personality-on: #16130f;
-  --hd-design: #e74c3c;
-  --hd-design-on: #16130F;
-  --hd-transit: #1af4ff;
-  --hd-transit-text: var(--hd-transit);
-  --hd-transit-soft: color-mix(in srgb, var(--hd-transit) 10%, #111516);
-  --hd-both: var(--accent);
-  --hd-relationship-dominance: #8a8378;
+  --hd-overlay-natal: #9E968C;
+  --hd-overlay-natal-on: #171411;
+  --hd-personality: #E9E4DD;
+  --hd-personality-on: #171411;
+  --hd-design: #E16F60;
+  --hd-design-on: #171411;
+  --hd-transit: #65B8C0;
+  --hd-timeline-birth: #9E968C;
+  --hd-timeline-transit: #3F7C82;
+  --hd-timeline-both-birth: #A69E94;
+  --hd-timeline-both-transit: #6A9FA5;
+  --hd-timeline-both-on: #111111;
+  --hd-transit-text: #83C8CF;
+  --hd-transit-soft: #17282B;
+  --hd-both: #C18C58;
+  --hd-relationship-dominance: #AAA29A;
 
-  --hd-both-on: #16130f;
-  --hd-undefined: #3a3630;
+  --hd-both-on: #171411;
+  --hd-undefined: #423D37;
 
-  --hd-inactive: #8c847a;
-  --hd-inactive-on: #f1ebe2;
-  --hd-undefined-center: #0d0c0a;
-  --hd-center-stroke: #5a5248;
+  --hd-inactive: #6F6860;
+  --hd-inactive-on: #F0EBE4;
+  --hd-undefined-center: #0F0D0C;
+  --hd-center-stroke: #655D54;
   --hd-graph-panel-bg: var(--bg-sunken);
 
-  --hd-circuit-individual-soft: #2a1d32;
-  --hd-circuit-tribal-soft: #2a1515;
-  --hd-circuit-collective-soft: #152030;
-  --hd-circuit-integration-soft: #152a1d;
-  --hd-connection-a: #3db5a5;
-  --hd-connection-a-core: color-mix(in srgb, var(--hd-connection-a) 86%, white);
-  --hd-connection-b: #e8927a;
-  --hd-connection-b-core: color-mix(in srgb, var(--hd-connection-b) 82%, white);
-  --hd-connection-bridged: #cda64a;
-  --hd-connection-bridged-core: color-mix(in srgb, var(--hd-connection-bridged) 85%, white);
+  --hd-circuit-individual-soft: #28212D;
+  --hd-circuit-tribal-soft: #30221F;
+  --hd-circuit-collective-soft: #1D2A32;
+  --hd-circuit-integration-soft: #202C24;
+  --hd-connection-a: #75B1A7;
+  --hd-connection-a-core: #82B9B0;
+  --hd-connection-b: #D49280;
+  --hd-connection-b-core: #DA9F8F;
+  --hd-connection-bridged: #C5A75F;
+  --hd-connection-bridged-core: #CCB171;
+  --hd-transit-on: #111819;
+  --hd-selection-ring: #D69A55;
+  --hd-defined-fill: #D69A55;
+  --hd-type-generator: #C2A15A;
+  --hd-type-manifesting-generator: #D18A52;
+  --hd-type-manifestor: #D4786D;
+  --hd-type-projector: #78A0B7;
+  --hd-type-reflector: #A3AAAA;
+  --hd-circuit-individual: #A992B5;
+  --hd-circuit-tribal: #C77E70;
+  --hd-circuit-collective: #7FA0B4;
+  --hd-circuit-integration: #89A28C;
+  --hd-connection-a-on: #171411;
+  --hd-connection-b-on: #171411;
+  --hd-connection-bridged-on: #171411;
+  --hd-connection-both-on: #171411;
+  --hd-relationship-electromagnetic: #D69A5D;
+  --hd-relationship-companionship: #91AA92;
+  --hd-relationship-compromise: #B48D73;
 }

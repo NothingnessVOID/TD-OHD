@@ -60,7 +60,7 @@ try {
         : ['--shadow-sm','--shadow','--shadow-lg','--lens-active-shadow'].includes(token) ? 'box-shadow' : 'color';
       return !value || !CSS.supports(property,value);
     }),actual);
-    assert.deepEqual(invalid,[],skin.id+' all 92 computed values have valid CSS syntax');
+    assert.deepEqual(invalid,[],skin.id+' all 96 computed values have valid CSS syntax');
     assert.equal(await page.locator('html').getAttribute('data-theme'),skin.mode);
     assert.equal(await css('--font'),font);assert.equal(await css('--font-serif'),serif);
     const colors = await page.locator('#bodygraph-container .bg-centers .bg-center').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
@@ -106,7 +106,7 @@ try {
     }));
     if (referenceTimeline) assert.deepEqual(timeline, referenceTimeline, 'identical events and selected instant across all Skins');
     else referenceTimeline = timeline;
-    await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit','background-color');
+    await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-timeline-transit','background-color');
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
     await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
     await readable(page.locator('#timeline-view .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
@@ -135,7 +135,7 @@ try {
       for(const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries())
         await page.locator('#connection-content .conn-section').nth(i).screenshot({path:`${evidence}/${skin.id}-relationship-${key}.png`});
     }
-    results.push({id:skin.id,mode:skin.mode,transitSourceMode:skin.transitSourceMode,validComputedTokens:92,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-transit']}});
+    results.push({id:skin.id,mode:skin.mode,transitSourceMode:skin.transitSourceMode,validComputedTokens:96,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-timeline-transit']}});
     await navigate('chart');
   }
   // Real controls: independent overrides, restore, Palette, size, language and keyboard.

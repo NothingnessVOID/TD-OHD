@@ -27,6 +27,9 @@
   --status-error-soft: #E79D97;
   --status-success: #A8DDAA;
   --status-success-soft: #3F5452;
+  --status-info: #8CB8D8;
+  --status-info-soft: #2D4354;
+  --status-caution: #DCBA7B;
   --status-caution-soft: #494F45;
   --type-badge-bg: #494F46;
   --type-badge-text: #F0F6FA;
@@ -62,6 +65,11 @@
   --hd-both: #B79BC4;
   --hd-both-on: #080F14;
   --hd-transit: #E6B1C4;
+  --hd-timeline-birth: #A7BAC5;
+  --hd-timeline-transit: #C98FA5;
+  --hd-timeline-both-birth: #A7BAC5;
+  --hd-timeline-both-transit: #C98FA5;
+  --hd-timeline-both-on: #111111;
   --hd-transit-on: #1B2025;
   --hd-transit-text: #F0C4D3;
   --hd-overlay-natal: #A7BAC5;

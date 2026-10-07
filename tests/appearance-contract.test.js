@@ -56,8 +56,12 @@ test('renderer consumes canonical source/core tokens without owning palettes or 
   assert.doesNotMatch(renderer, /['"]delve['"]/);
   for(const s of ['personality','design','transit'])assert.match(renderer,new RegExp(`read\\('--hd-${s}'\\)`));
   const current=read('src/styles.css');
+  // Reliability semantics changed; all geometry and typography remain protected by the old hash.
+  const priorReliability=current
+    .replace('.reliability-info { background: var(--status-info-soft); }\n.reliability-caution { background: var(--status-caution-soft); }', '.reliability-soft { background: var(--status-caution-soft); }')
+    .replace('.reliability-info .reliability-dot { background: var(--status-info); }\n.reliability-caution .reliability-dot { background: var(--status-caution); }', '.reliability-soft .reliability-dot { background: var(--accent); }');
   assert.match(current,/center-palettes\/classic.css/);
   assert.match(current,/center-palettes\/chakra.css/);
   assert.match(current,/skins\/default.css/);
-  assert.equal(sha(current.replace(/^@import[^\n]+\n/gm,'').replace(/^\.bg-root\[data-transit-source-mode="unified-natal"\].*\n/gm,'').trim()),baseline.layoutSha256,'layout unchanged apart from source tooltip colors');
+  assert.equal(sha(priorReliability.replace(/^@import[^\n]+\n/gm,'').replace(/^\.bg-root\[data-transit-source-mode="unified-natal"\].*\n/gm,'').trim()),baseline.layoutSha256,'layout unchanged apart from source tooltip and Reliability colors');
 });

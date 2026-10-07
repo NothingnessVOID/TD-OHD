@@ -8,6 +8,8 @@ const THEME_STORAGE_KEY = 'bodygraph-theme';
 const listeners = new Set();
 let overridesBySkin = {};
 let preferences = {};
+let skinMode = 'manual';
+let systemScheme = null;
 export const SKIN_CUSTOM_TOKENS = Object.freeze({
   accent: '--accent', personality: '--hd-personality', design: '--hd-design',
   transit: '--hd-transit', graphBackground: '--hd-graph-bg'
@@ -21,12 +23,13 @@ const validValue = (key, value) => key === 'gateNumberSize'
   : typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 const validIdentifier = id => typeof id === 'string' && /^[a-z][a-z0-9-]*$/.test(id);
 export const getSkinId = () => lookupSkin(root().getAttribute('data-skin'))?.id ?? DEFAULT_SITE_SKIN;
+export const getSkinMode = () => skinMode;
 export const getTheme = () => lookupSkin(getSkinId()).mode;
 export const getCenterPalette = () => lookupPalette(root().getAttribute('data-center-palette'))?.id ?? DEFAULT_HD_SKIN;
 export const getSiteSkin = getSkinId;
 export const getHumanDesignSkin = getCenterPalette;
 export const getAppearance = () => ({
-  skin: getSkinId(), centerPalette: getCenterPalette(),
+  skin: getSkinId(), skinMode: getSkinMode(), centerPalette: getCenterPalette(),
   theme: getTheme(), siteSkin: getSkinId(), humanDesignSkin: getCenterPalette()
 });
 // Compatibility shape for existing color/size controls; persisted slots remain separate.
@@ -55,7 +58,7 @@ function applyOverrides() {
   }
 }
 function persist() {
-  write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinId: getSkinId(), centerPalette: getCenterPalette(), overridesBySkin, preferences }));
+  write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinMode, skinId: getSkinId(), centerPalette: getCenterPalette(), overridesBySkin, preferences }));
   write(THEME_STORAGE_KEY, getTheme()); // Compatibility readers only; Skin is authoritative.
 }
 function notify() { applyOverrides(); for (const listener of listeners) listener(getAppearance()); }
@@ -67,12 +70,18 @@ function size(values) {
   return validValue('gateNumberSize', values?.gateNumberSize) ? { gateNumberSize: Number(values.gateNumberSize) } : {};
 }
 export function initAppearance() {
-  overridesBySkin = {}; preferences = {};
+  overridesBySkin = {}; preferences = {}; skinMode = 'manual';
+  // Reinitialization must not duplicate the system-theme listener.
+  if (systemScheme?.removeEventListener) systemScheme.removeEventListener('change', onSystemSchemeChange);
+  else systemScheme?.removeListener?.(onSystemSchemeChange);
+  systemScheme = window.matchMedia?.('(prefers-color-scheme: dark)') ?? null;
   const savedTheme = read(THEME_STORAGE_KEY);
-  const legacyMode = savedTheme === 'dark' || (!savedTheme && window.matchMedia?.('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  const legacyMode = savedTheme === 'dark' || (!savedTheme && systemScheme?.matches) ? 'dark' : 'light';
   let skinId = defaultSkinForMode(legacyMode), centerPalette = DEFAULT_HD_SKIN;
   const saved = parse(APPEARANCE_STORAGE_KEY);
   if (saved?.version === 3) {
+    // Existing v3 preferences stay manual unless Auto was explicitly chosen.
+    skinMode = saved.skinMode === 'auto' ? 'auto' : 'manual';
     if (lookupSkin(saved.skinId)) skinId = saved.skinId;
     if (lookupPalette(saved.centerPalette)) centerPalette = saved.centerPalette;
     for (const [id, values] of Object.entries(saved.overridesBySkin || {})) {
@@ -98,20 +107,31 @@ export function initAppearance() {
       preferences = size(effective);
     }
   }
+  if (skinMode === 'auto') skinId = resolvedSystemSkin();
   root().setAttribute('data-skin', skinId);
   root().setAttribute('data-theme', lookupSkin(skinId).mode);
   root().setAttribute('data-center-palette', centerPalette);
   root().setAttribute('data-hd-skin', centerPalette); // Compatibility selector mirror.
   applyOverrides(); persist();
+  if (systemScheme?.addEventListener) systemScheme.addEventListener('change', onSystemSchemeChange);
+  else systemScheme?.addListener?.(onSystemSchemeChange);
 }
-export function setSkin(id) {
+const resolvedSystemSkin = () => defaultSkinForMode(systemScheme?.matches ? 'dark' : 'light');
+function onSystemSchemeChange() {
+  if (skinMode === 'auto') applySkin(resolvedSystemSkin(), 'auto');
+}
+// Auto resolves to a registered Skin and uses the same override/refresh path as manual selection.
+function applySkin(id, mode) {
   const skin = lookupSkin(id);
   if (!skin) throw new TypeError('Unknown Skin');
-  if (getSkinId() === id) return;
+  if (getSkinId() === id && skinMode === mode) return;
+  skinMode = mode;
   root().setAttribute('data-skin', id);
   root().setAttribute('data-theme', skin.mode);
   persist(); notify();
 }
+export function setSkin(id) { applySkin(id, 'manual'); }
+export function setAutoSkin() { applySkin(resolvedSystemSkin(), 'auto'); }
 export function setTheme(mode) {
   if (!['light','dark'].includes(mode)) throw new TypeError('Unknown theme');
   setSkin(defaultSkinForMode(mode));
@@ -142,6 +162,7 @@ export const restoreCurrentPreset = restoreCurrentSkin;
 export function resetAppearance() {
   // Existing API retains mode. Write an empty v3 state so old data cannot resurrect.
   const id = defaultSkinForMode(getTheme());
+  skinMode = 'manual';
   overridesBySkin = {}; preferences = {};
   root().setAttribute('data-skin', id);
   root().setAttribute('data-theme', lookupSkin(id).mode);
