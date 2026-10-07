@@ -406,3 +406,7 @@ Amber Dawn BodyGraph Transit 为 `#2D929F`，Timeline Transit / Both Transit Str
 ## Center Palette V3 / Relationship Visual V2 当前规则
 
 本轮九套 Palette 和十一套默认配套、inactive Center On、关系 ownership 视觉规则已生效。Reset Appearance 固定回 Amber Dawn / manual Skin / skin-default Center Mode / resolved Mineral，清空所有 Skin override 与 gateNumberSize 偏好；字体和业务资料保留。前述 V2 附录记录是历史人工检查，不代表当前配色比例。详见 [CENTER-PALETTE-V3-RELATIONSHIP-V2.md](CENTER-PALETTE-V3-RELATIONSHIP-V2.md)。
+
+## Relationship Palette V3 / Circuit 可读性
+
+当前九套 Light Relationship 配色、独立 Connection 按钮规则及跨 Skin 固定 Circuit 语义色见 [RELATIONSHIP-PALETTE-V3.md](RELATIONSHIP-PALETTE-V3.md)。两套 Dark Relationship 配色保持不变；V2 ownership 视觉语法继续沿用。
