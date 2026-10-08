@@ -1,31 +1,31 @@
-/* Approved Center Palette V3. No Skin/source colors here. */
+/* Approved Center Palette V4. No Skin/source colors here. */
 :root[data-center-palette="jewel"] {
-  --hd-center-core-edge-ratio: 100%;
-  --hd-center-head: #6E3FA0;
-  --hd-center-head-core: var(--hd-center-head);
+  --hd-center-core-edge-ratio: 82%;
+  --hd-center-head: #7C44B2;
+  --hd-center-head-core: color-mix(in srgb, var(--hd-center-head) 82%, white);
   --hd-center-head-on: #FFFFFF;
-  --hd-center-ajna: #384D9B;
-  --hd-center-ajna-core: var(--hd-center-ajna);
+  --hd-center-ajna: #465DB5;
+  --hd-center-ajna-core: color-mix(in srgb, var(--hd-center-ajna) 82%, white);
   --hd-center-ajna-on: #FFFFFF;
-  --hd-center-throat: #1F6F9A;
-  --hd-center-throat-core: var(--hd-center-throat);
+  --hd-center-throat: #1B7FB0;
+  --hd-center-throat-core: color-mix(in srgb, var(--hd-center-throat) 82%, white);
   --hd-center-throat-on: #FFFFFF;
-  --hd-center-g: #2E7D64;
-  --hd-center-g-core: var(--hd-center-g);
+  --hd-center-g: #1C8272;
+  --hd-center-g-core: color-mix(in srgb, var(--hd-center-g) 82%, white);
   --hd-center-g-on: #FFFFFF;
-  --hd-center-heart: #3E7B48;
-  --hd-center-heart-core: var(--hd-center-heart);
-  --hd-center-heart-on: #FFFFFF;
-  --hd-center-spleen: #696B24;
-  --hd-center-spleen-core: var(--hd-center-spleen);
-  --hd-center-spleen-on: #FFFFFF;
-  --hd-center-solar: #8F5D12;
-  --hd-center-solar-core: var(--hd-center-solar);
-  --hd-center-solar-on: #FFFFFF;
-  --hd-center-sacral: #A44D1E;
-  --hd-center-sacral-core: var(--hd-center-sacral);
-  --hd-center-sacral-on: #FFFFFF;
-  --hd-center-root: #8E3030;
-  --hd-center-root-core: var(--hd-center-root);
+  --hd-center-heart: #35965D;
+  --hd-center-heart-core: color-mix(in srgb, var(--hd-center-heart) 82%, white);
+  --hd-center-heart-on: #111111;
+  --hd-center-spleen: #88953A;
+  --hd-center-spleen-core: color-mix(in srgb, var(--hd-center-spleen) 82%, white);
+  --hd-center-spleen-on: #111111;
+  --hd-center-solar: #BA8024;
+  --hd-center-solar-core: color-mix(in srgb, var(--hd-center-solar) 82%, white);
+  --hd-center-solar-on: #111111;
+  --hd-center-sacral: #CE632B;
+  --hd-center-sacral-core: color-mix(in srgb, var(--hd-center-sacral) 82%, white);
+  --hd-center-sacral-on: #111111;
+  --hd-center-root: #AE444C;
+  --hd-center-root-core: color-mix(in srgb, var(--hd-center-root) 82%, white);
   --hd-center-root-on: #FFFFFF;
 }
