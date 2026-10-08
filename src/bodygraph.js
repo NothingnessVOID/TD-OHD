@@ -141,6 +141,14 @@ export function renderBodygraph(container, chart, opts = {}) {
   // beautifully — a two-tone channel is an electromagnetic bond.
   const composite = opts.composite || null;
   const transit = opts.transitModel || null;
+  // Birth-only source hues never enter transit or relationship rendering.
+  const birthOnly = !transit && !composite;
+  const personalityColor = birthOnly
+    ? skinToken(style, '--hd-birth-personality') || colors.personality : colors.personality;
+  const designColor = birthOnly
+    ? skinToken(style, '--hd-birth-design') || colors.design : colors.design;
+  container.style.setProperty('--bg-source-personality', personalityColor);
+  container.style.setProperty('--bg-source-design', designColor);
   // Skin controls presentation only; an ordinary birth chart always stays split.
   const transitSourceMode = transit
     ? getTransitSourceMode(document.documentElement.getAttribute('data-skin')) : 'split';
@@ -248,8 +256,8 @@ export function renderBodygraph(container, chart, opts = {}) {
       id: paint('stripe-both'), width: '8', height: '8',
       patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)'
     });
-    pattern.appendChild(svgEl('rect', { width: '8', height: '8', fill: colors.personality }));
-    pattern.appendChild(svgEl('rect', { width: '4', height: '8', fill: colors.design }));
+    pattern.appendChild(svgEl('rect', { width: '8', height: '8', fill: personalityColor }));
+    pattern.appendChild(svgEl('rect', { width: '4', height: '8', fill: designColor }));
     defs.appendChild(pattern);
   }
 
@@ -298,8 +306,8 @@ export function renderBodygraph(container, chart, opts = {}) {
     const d = designGates.has(gateNum);
     if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatal;
     if (p && d) return `url(#${paint('stripe-both')})`;
-    if (p) return colors.personality;
-    if (d) return colors.design;
+    if (p) return personalityColor;
+    if (d) return designColor;
     return colors.inactive;
   };
   const gateOnColor = (gateNum) => {
@@ -380,8 +388,8 @@ export function renderBodygraph(container, chart, opts = {}) {
     const first = gates.some(g => composite ? aGates.has(g) : personalityGates.has(g));
     const second = gates.some(g => composite ? bGates.has(g) : designGates.has(g));
     let fill = first && second ? `url(#${paint(composite ? 'stripe-ab' : 'stripe-both')})`
-      : first ? (composite ? composite.colorA : colors.personality)
-      : second ? (composite ? composite.colorB : colors.design) : colors.inactive;
+      : first ? (composite ? composite.colorA : personalityColor)
+      : second ? (composite ? composite.colorB : designColor) : colors.inactive;
     if (composite) {
       const fills = gates.map(channelHalfFill);
       fill = fills.includes(`url(#${paint('stripe-ab')})`) || (fills.includes(composite.colorA) && fills.includes(composite.colorB))

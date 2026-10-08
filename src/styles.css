@@ -893,8 +893,8 @@ body {
   margin-bottom: 2px;
 }
 
-.bg-planets-design .bg-planets-head { color: var(--hd-design); }
-.bg-planets-personality .bg-planets-head { color: var(--hd-personality); }
+.bg-planets-design .bg-planets-head { color: var(--bg-source-design, var(--hd-design)); }
+.bg-planets-personality .bg-planets-head { color: var(--bg-source-personality, var(--hd-personality)); }
 
 .bg-planets-date {
   font-size: 9px;
@@ -927,8 +927,8 @@ body {
   opacity: 0.75;
 }
 
-.bg-planets-design .bg-planet-act { color: var(--hd-design); font-weight: 600; }
-.bg-planets-personality .bg-planet-act { color: var(--hd-personality); font-weight: 600; }
+.bg-planets-design .bg-planet-act { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
+.bg-planets-personality .bg-planet-act { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
 
 /* Hover highlight: dim everything, then re-light the hovered gate/channel */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
@@ -970,8 +970,8 @@ body {
 .bg-tooltip .bg-tt-source.both { color: var(--text-secondary); }
 .bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--hd-transit-text); }
 .bg-tooltip .bg-tt-source.completed { color: var(--accent); }
-.bg-tt-design { color: var(--hd-design); font-weight: 600; }
-.bg-tt-personality { color: var(--hd-personality); font-weight: 600; }
+.bg-tt-design { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
+.bg-tt-personality { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
 .bg-root[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--hd-overlay-natal); }
 .bg-tt-channel { margin-top: 3px; color: var(--text-secondary); font-size: 11px; }
 
