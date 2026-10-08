@@ -1,4 +1,5 @@
 import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import {assertContentBoundary, targetIds, round2GContent} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,14 +15,15 @@ import { chartKnowledgeQuery } from '../src/lib/knowledge/access.js';
 const base='66185da8071a64b679ce51857c7029556957f038';
 const bytes=p=>readFileSync(new URL('../'+p,import.meta.url));
 const original=p=>preservedSource(p,base);
+const approvedSkin=p=>skinProjection(p,base);
 const q=(objectType,objectId)=>({objectType,objectId});
 
 test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
- for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])assert.deepEqual(bytes(path),original(path),path);
+ for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])assert.deepEqual(bytes(path),skinScope.files[path]?approvedSkin(path):preservedSource(path,base),path);
 });
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
- assert.deepEqual(bytes('src/lib/bodygraph-detail-layout.js'),original('src/lib/bodygraph-detail-layout.js'));
+ assert.deepEqual(bytes('src/lib/bodygraph-detail-layout.js'),approvedSkin('src/lib/bodygraph-detail-layout.js'));
  const before=extract(original('src/views/chart.js').toString()),after=extract(bytes('src/views/chart.js').toString());
  for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail',]){assert.ok(before.has(name),name);assert.equal(after.get(name),before.get(name),name);}
 });

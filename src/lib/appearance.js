@@ -1,32 +1,57 @@
-/** Theme, site skin and Human Design skin share one appearance state. */
-export const DEFAULT_SITE_SKIN = 'default';
-export const DEFAULT_HD_SKIN = 'classic';
-export const APPEARANCE_STORAGE_KEY = 'td-ohd-appearance-v1';
+import { getCenterPalette as lookupPalette } from './center-palette-registry.js';
+import { getSkin as lookupSkin, defaultSkinForMode } from './skin-registry.js';
+
+export const DEFAULT_SITE_SKIN = 'default-light';
+export const DEFAULT_HD_SKIN = 'classic'; // Legacy name: this now means Center Palette.
+export const APPEARANCE_STORAGE_KEY = 'td-ohd-appearance-v3';
+export const LEGACY_APPEARANCE_STORAGE_KEY = 'td-ohd-appearance-v1';
 const THEME_STORAGE_KEY = 'bodygraph-theme';
 const listeners = new Set();
-let globalOverrides = {};
-export const CUSTOM_TOKENS = Object.freeze({
+let overridesBySkin = {};
+let preferences = {};
+let skinMode = 'manual';
+let centerPaletteMode = 'skin-default';
+let manualCenterPalette = DEFAULT_HD_SKIN;
+let systemScheme = null;
+export const SKIN_CUSTOM_TOKENS = Object.freeze({
   accent: '--accent', personality: '--hd-personality', design: '--hd-design',
-  transit: '--hd-transit', graphBackground: '--hd-graph-bg', gateNumberSize: '--hd-gate-number-size'
+  transit: '--hd-transit', graphBackground: '--hd-graph-bg'
 });
+export const CUSTOM_TOKENS = Object.freeze({ ...SKIN_CUSTOM_TOKENS, gateNumberSize: '--hd-gate-number-size' });
 const root = () => document.documentElement;
 const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
-const write = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Still works in private storage. */ } };
+const write = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Current-session state still works. */ } };
 const validValue = (key, value) => key === 'gateNumberSize'
   ? ['number', 'string'].includes(typeof value) && Number.isFinite(Number(value)) && Number(value) >= 14 && Number(value) <= 30
   : typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
-export const getTheme = () => root().getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-export const getSiteSkin = () => root().getAttribute('data-skin') || DEFAULT_SITE_SKIN;
-export const getHumanDesignSkin = () => root().getAttribute('data-hd-skin') || DEFAULT_HD_SKIN;
-export const getAppearance = () => ({ theme: getTheme(), siteSkin: getSiteSkin(), humanDesignSkin: getHumanDesignSkin() });
-export const getCustomOverrides = () => ({ ...globalOverrides });
+const validIdentifier = id => typeof id === 'string' && /^[a-z][a-z0-9-]*$/.test(id);
+export const getSkinId = () => lookupSkin(root().getAttribute('data-skin'))?.id ?? DEFAULT_SITE_SKIN;
+export const getSkinMode = () => skinMode;
+export const getTheme = () => lookupSkin(getSkinId()).mode;
+export const getCenterPaletteMode = () => centerPaletteMode;
+export const getCenterPalette = () => lookupPalette(root().getAttribute('data-center-palette'))?.id ?? DEFAULT_HD_SKIN;
+export const getSiteSkin = getSkinId;
+export const getHumanDesignSkin = getCenterPalette;
+export const getAppearance = () => ({
+  skin: getSkinId(), skinMode: getSkinMode(), centerPalette: getCenterPalette(), centerPaletteMode,
+  theme: getTheme(), siteSkin: getSkinId(), humanDesignSkin: getCenterPalette()
+});
+// Compatibility shape for existing color/size controls; persisted slots remain separate.
+export const getCustomOverrides = () => ({ ...overridesBySkin[getSkinId()], ...preferences });
+export const getSkinOverrides = (id = getSkinId()) => ({ ...overridesBySkin[id] });
+export const getAppearancePreferences = () => ({ ...preferences });
+
 function applyOverrides() {
   const style = root().style;
   if (!style) return;
   for (const token of Object.values(CUSTOM_TOKENS)) style.removeProperty(token);
-  for (const token of ['--accent-soft', '--accent-hover', '--accent-strong', '--accent-on', '--hd-graph-panel-bg']) style.removeProperty(token);
-  const current = getCustomOverrides();
-  for (const [key, value] of Object.entries(current)) style.setProperty(CUSTOM_TOKENS[key], key === 'gateNumberSize' ? `${value}px` : value);
+  for (const token of ['--accent-soft', '--accent-hover', '--accent-strong', '--accent-on', '--hd-graph-panel-bg', '--hd-transit-text']) style.removeProperty(token);
+  for (const [key, value] of Object.entries(getCustomOverrides())) style.setProperty(CUSTOM_TOKENS[key], key === 'gateNumberSize' ? `${value}px` : value);
+  const current = getSkinOverrides();
+  // Only user-edited Transit uses the legacy column-text treatment.
+  // Skin defaults keep their explicitly designed on/text/soft values.
+  if (current.transit && !['default-light', 'default-dark'].includes(getSkinId())) style.setProperty('--hd-transit-text', getTheme() === 'dark'
+    ? 'var(--hd-transit)' : 'color-mix(in srgb, var(--hd-transit) 65%, var(--text))');
   if (current.graphBackground) style.setProperty('--hd-graph-panel-bg', current.graphBackground);
   if (current.accent) {
     style.setProperty('--accent-soft', 'color-mix(in srgb, var(--accent) 16%, var(--bg))');
@@ -36,67 +61,131 @@ function applyOverrides() {
     style.setProperty('--accent-on', (rgb[0]*299 + rgb[1]*587 + rgb[2]*114)/1000 > 150 ? '#16130f' : '#ffffff');
   }
 }
-function persist() { write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 2, preset: getHumanDesignSkin(), globalOverrides })); }
+function persist() {
+  write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinMode, skinId: getSkinId(), centerPalette: getCenterPalette(), centerPaletteMode, manualCenterPalette, overridesBySkin, preferences }));
+  write(THEME_STORAGE_KEY, getTheme()); // Compatibility readers only; Skin is authoritative.
+}
 function notify() { applyOverrides(); for (const listener of listeners) listener(getAppearance()); }
+const parse = key => { try { return JSON.parse(read(key)); } catch { return null; } };
+function colors(values) {
+  return Object.fromEntries(Object.entries(values || {}).filter(([key, value]) => Object.hasOwn(SKIN_CUSTOM_TOKENS, key) && validValue(key, value)));
+}
+function size(values) {
+  return validValue('gateNumberSize', values?.gateNumberSize) ? { gateNumberSize: Number(values.gateNumberSize) } : {};
+}
 export function initAppearance() {
-  globalOverrides = {};
-  let preset = DEFAULT_HD_SKIN;
+  overridesBySkin = {}; preferences = {}; skinMode = 'manual';
+  centerPaletteMode = 'skin-default'; manualCenterPalette = DEFAULT_HD_SKIN;
+  // Reinitialization must not duplicate the system-theme listener.
+  if (systemScheme?.removeEventListener) systemScheme.removeEventListener('change', onSystemSchemeChange);
+  else systemScheme?.removeListener?.(onSystemSchemeChange);
+  systemScheme = window.matchMedia?.('(prefers-color-scheme: dark)') ?? null;
   const savedTheme = read(THEME_STORAGE_KEY);
-  const theme = savedTheme === 'dark' || (!savedTheme && window.matchMedia?.('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-  try {
-    const saved = JSON.parse(read(APPEARANCE_STORAGE_KEY));
-    if ([1, 2].includes(saved?.version)) {
-      if (['classic', 'chakra'].includes(saved.preset)) preset = saved.preset;
-      const accept = values => {
-        for (const [key,value] of Object.entries(values || {})) {
-          if (Object.hasOwn(CUSTOM_TOKENS,key) && validValue(key,value)) globalOverrides[key] = key === 'gateNumberSize' ? Number(value) : value;
-        }
-      };
-      // Migrate old per-skin settings. Chakra and the current theme take priority.
-      if (saved.version === 1) {
-        for (const skin of ['classic','chakra']) for (const mode of [theme === 'light' ? 'dark' : 'light', theme]) accept(saved.overrides?.[`${skin}:${mode}`]);
-      }
-      accept(saved.globalOverrides);
+  const legacyMode = savedTheme === 'dark' || (!savedTheme && systemScheme?.matches) ? 'dark' : 'light';
+  let skinId = defaultSkinForMode(legacyMode), centerPalette = DEFAULT_HD_SKIN;
+  const saved = parse(APPEARANCE_STORAGE_KEY);
+  if (saved?.version === 3) {
+    // Existing v3 preferences stay manual unless Auto was explicitly chosen.
+    skinMode = saved.skinMode === 'auto' ? 'auto' : 'manual';
+    if (lookupSkin(saved.skinId)) skinId = saved.skinId;
+    if (lookupPalette(saved.centerPalette)) centerPalette = saved.centerPalette;
+    // Older stored palettes represent an explicit choice; fresh sessions follow Skin.
+    centerPaletteMode = saved.centerPaletteMode === 'skin-default' ? 'skin-default'
+      : saved.centerPaletteMode === 'manual' || lookupPalette(saved.centerPalette) ? 'manual' : 'skin-default';
+    manualCenterPalette = lookupPalette(saved.manualCenterPalette)?.id ?? centerPalette;
+    for (const [id, values] of Object.entries(saved.overridesBySkin || {})) {
+      // Keep dormant future Skin preferences; never activate an unregistered Skin.
+      if (validIdentifier(id)) Object.defineProperty(overridesBySkin, id, { value: colors(values), enumerable: true, writable: true, configurable: true });
     }
-  } catch { /* Discard malformed preferences. */ }
-  root().setAttribute('data-theme', theme);
-  root().setAttribute('data-skin', DEFAULT_SITE_SKIN);
-  root().setAttribute('data-hd-skin', preset);
-  applyOverrides();
+    preferences = size(saved.preferences);
+  } else {
+    const legacy = parse(LEGACY_APPEARANCE_STORAGE_KEY);
+    if ([1, 2].includes(legacy?.version)) {
+      if (lookupPalette(legacy.preset)) { centerPalette = legacy.preset; manualCenterPalette = centerPalette; centerPaletteMode = 'manual'; }
+      let effective = {};
+      if (legacy.version === 1) {
+        // Exactly the previous effective-global precedence. Preserve raw legacy storage as well.
+        for (const palette of ['classic', 'chakra']) for (const mode of [legacyMode === 'light' ? 'dark' : 'light', legacyMode]) {
+          const values = legacy.overrides?.[`${palette}:${mode}`];
+          effective = { ...effective, ...colors(values), ...size(values) };
+        }
+      }
+      effective = { ...effective, ...colors(legacy.globalOverrides), ...size(legacy.globalOverrides) };
+      // Old colors were global. Seed both defaults to retain the existing look in both modes.
+      overridesBySkin = { 'default-light': colors(effective), 'default-dark': colors(effective) };
+      preferences = size(effective);
+    }
+  }
+  if (skinMode === 'auto') skinId = resolvedSystemSkin();
+  root().setAttribute('data-skin', skinId);
+  root().setAttribute('data-theme', lookupSkin(skinId).mode);
+  applyCenterPalette(skinId); // Compatibility selector mirror.
+  applyOverrides(); persist();
+  if (systemScheme?.addEventListener) systemScheme.addEventListener('change', onSystemSchemeChange);
+  else systemScheme?.addListener?.(onSystemSchemeChange);
 }
-export function setTheme(theme) {
-  if (!['light','dark'].includes(theme)) throw new TypeError('Unknown theme');
-  write(THEME_STORAGE_KEY, theme);
-  if (getTheme() !== theme) { root().setAttribute('data-theme', theme); notify(); }
+const resolvedSystemSkin = () => defaultSkinForMode(systemScheme?.matches ? 'dark' : 'light');
+function onSystemSchemeChange() {
+  if (skinMode === 'auto') applySkin(resolvedSystemSkin(), 'auto');
 }
-function assertSkin(skin) {
-  if (typeof skin !== 'string' || !/^[a-z][a-z0-9-]*$/.test(skin)) throw new TypeError('Skin name must be a lowercase CSS identifier');
+// Auto resolves to a registered Skin and uses the same override/refresh path as manual selection.
+function applyCenterPalette(skinId = getSkinId()) {
+  const id = centerPaletteMode === 'skin-default' ? lookupSkin(skinId).defaultCenterPalette : manualCenterPalette;
+  root().setAttribute('data-center-palette', id);
+  root().setAttribute('data-hd-skin', id);
 }
-export function setSiteSkin(skin) { assertSkin(skin); if (getSiteSkin() !== skin) { root().setAttribute('data-skin',skin); notify(); } }
-export function setHumanDesignSkin(skin) {
-  assertSkin(skin);
-  if (getHumanDesignSkin() === skin) return;
-  root().setAttribute('data-hd-skin',skin);
-  // Non-preset skins remain available for token probes but are never restored.
+function applySkin(id, mode) {
+  const skin = lookupSkin(id);
+  if (!skin) throw new TypeError('Unknown Skin');
+  if (getSkinId() === id && skinMode === mode) return;
+  skinMode = mode;
+  root().setAttribute('data-skin', id);
+  root().setAttribute('data-theme', skin.mode);
+  applyCenterPalette(id);
   persist(); notify();
 }
+export function setSkin(id) { applySkin(id, 'manual'); }
+export function setAutoSkin() { applySkin(resolvedSystemSkin(), 'auto'); }
+export function setTheme(mode) {
+  if (!['light','dark'].includes(mode)) throw new TypeError('Unknown theme');
+  setSkin(defaultSkinForMode(mode));
+}
+export function setSiteSkin(id) { setSkin(id === 'default' ? defaultSkinForMode(getTheme()) : id); }
+export function setCenterPalette(id) {
+  if (!lookupPalette(id)) throw new TypeError('Unknown Center Palette');
+  if (getCenterPalette() === id && centerPaletteMode === 'manual') return;
+  centerPaletteMode = 'manual'; manualCenterPalette = id;
+  applyCenterPalette();
+  persist(); notify();
+}
+export function setSkinDefaultCenterPalette() {
+  centerPaletteMode = 'skin-default';
+  applyCenterPalette(); persist(); notify();
+}
+export const setHumanDesignSkin = setCenterPalette;
 export function setCustomOverride(key, value) {
   if (!Object.hasOwn(CUSTOM_TOKENS,key) || !validValue(key,value)) throw new TypeError('Invalid appearance override');
-  globalOverrides[key] = key === 'gateNumberSize' ? Number(value) : value;
+  if (key === 'gateNumberSize') preferences.gateNumberSize = Number(value);
+  else {
+    const id = getSkinId();
+    overridesBySkin[id] = { ...getSkinOverrides(id), [key]: value };
+  }
   persist(); notify();
 }
-export function restoreCurrentPreset() {
-  const size = globalOverrides.gateNumberSize;
-  globalOverrides = size == null ? {} : { gateNumberSize: size };
+export function restoreCurrentSkin() {
+  delete overridesBySkin[getSkinId()];
   persist(); notify();
 }
+export const restoreCurrentPreset = restoreCurrentSkin;
 export function resetAppearance() {
-  const theme = getTheme();
-  globalOverrides = {};
-  try { localStorage.removeItem(APPEARANCE_STORAGE_KEY); } catch { /* No persistent storage. */ }
-  write(THEME_STORAGE_KEY, theme);
-  root().setAttribute('data-skin',DEFAULT_SITE_SKIN);
-  root().setAttribute('data-hd-skin',DEFAULT_HD_SKIN);
-  notify();
+  // Reset Appearance to the fixed site default. Empty v3 state prevents legacy overrides from returning.
+  const id = DEFAULT_SITE_SKIN;
+  skinMode = 'manual';
+  overridesBySkin = {}; preferences = {};
+  root().setAttribute('data-skin', id);
+  root().setAttribute('data-theme', lookupSkin(id).mode);
+  centerPaletteMode = 'skin-default'; manualCenterPalette = DEFAULT_HD_SKIN;
+  applyCenterPalette(id);
+  persist(); notify();
 }
 export function onAppearanceChange(listener) { listeners.add(listener); return () => listeners.delete(listener); }

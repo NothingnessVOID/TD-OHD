@@ -138,6 +138,13 @@ function compositePalette() {
   };
 }
 
+// Mechanic labels use ownership markers, never a separate four-color palette.
+function mechanicMarker(kind, owner) {
+  if (kind === 'electromagnetic') return 'var(--hd-connection-bridged)';
+  if (kind === 'companionship') return 'var(--hd-connection-both)';
+  return owner === 'b' ? 'var(--hd-connection-b)' : 'var(--hd-connection-a)';
+}
+
 const DYN_LABEL = {
   electromagnetic: 'Electromagnetic', companionship: 'Companionship',
   compromise: 'Compromise', dominance: 'Dominance'
@@ -152,10 +159,10 @@ const DYN_BLURB = {
 // The four ways two charts share channels — explained, with the circuit each
 // connection runs through (individual / tribal / collective / integration).
 const CONN_TYPES = [
-  ['electromagnetic', 'Electromagnetic', 'var(--electromagnetic)', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
-  ['companionship', 'Companionship', 'var(--hd-circuit-integration)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
-  ['compromise', 'Compromise', 'var(--hd-circuit-collective)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
-  ['dominance', 'Dominance', 'var(--text-tertiary)', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
+  ['electromagnetic', 'Electromagnetic', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
+  ['companionship', 'Companionship', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
+  ['compromise', 'Compromise', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
+  ['dominance', 'Dominance', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
 ];
 
 function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}) {
@@ -179,14 +186,15 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
     return renderChannelCircuitBadges(channel);
   };
 
-  const connSection = ([key, label, color, blurb]) => {
+  const connSection = ([key, label, blurb]) => {
     const items = cc.connections[key] || [];
     return `
       <div class="conn-section">
         <div class="conn-section-head"><span class="panel-title">${t(label)}</span><span class="conn-count">${items.length}</span></div>
         <p class="panel-intro">${t(blurb)}</p>
         ${items.length ? items.map(c => `
-          <div class="connection-type" style="border-left:3px solid ${color}">
+          <div class="connection-type" style="--connection-marker:${mechanicMarker(key, c.dominant?.toLowerCase())}">
+            <i class="conn-mechanic-marker" aria-hidden="true"></i>
             <div class="conn-channel">${esc(channelName(c.gates))} <span class="conn-gates">(${c.gates.join('–')})</span> ${circuitBadge(c)}</div>
             <div class="conn-desc">${esc(contentText(c.description))}</div>
           </div>`).join('')
@@ -213,8 +221,8 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
       <div class="composite-legend">
         <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
         <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
-        <span class="lg"><i class="lg-stripe" style="background:linear-gradient(45deg, ${cpal.a} 0 50%, ${cpal.b} 50% 100%)"></i>${t('Both have it')}</span>
-        <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Made together')}</span>
+        <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
+        <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Newly defined in the relationship')}</span>
       </div>
       <div id="conn-composite" class="composite-graph"></div>
       <div id="conn-detail" class="gate-detail hidden"></div>
@@ -297,7 +305,8 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
         name: esc(whoName(ow)), gate: gn
       });
       return `
-        <div class="conn-detail-channel ${dyn}">
+        <div class="conn-detail-channel ${dyn}" style="--connection-marker:${mechanicMarker(dyn, ch.gates.every(g => a.chart.gates.all.includes(g)) ? 'a' : 'b')}">
+          <i class="conn-mechanic-marker" aria-hidden="true"></i>
           <div class="cdc-dyn">${t(DYN_LABEL[dyn])}</div>
           <div class="cdc-name">${esc(channelName(ch.gates))} <span class="conn-gates">(${ch.gates.join('–')})</span></div>
           <div class="cdc-bring">${bring(g, owner)} · ${bring(other, api.gateOwner(other))}</div>
@@ -320,7 +329,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
     const owner = api.centerOwner(key);
     const dn = graphCenter(key);
     const tag = owner === 'both' ? t('Both define') : owner === 'a' ? t('{name} defines', { name: nameA })
-      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Made together') : t('Open between you');
+      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Newly defined in the relationship') : t('Open between you');
     const txt = owner === 'both' ? t('You both define {center} — fixed, reliable common ground between you.', { center: dn })
       : owner === 'a' ? t('{from} defines {center}; {to} takes it in. {from} steadily conditions {to} here — a consistent, often unspoken influence.', { from: nameA, to: nameB, center: dn })
       : owner === 'b' ? t('{from} defines {center}; {to} takes it in. {from} steadily conditions {to} here — a consistent, often unspoken influence.', { from: nameB, to: nameA, center: dn })

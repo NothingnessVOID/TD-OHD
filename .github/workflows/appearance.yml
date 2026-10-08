@@ -39,6 +39,11 @@ jobs:
         env:
           E2E_URL: http://127.0.0.1:5173
           CHROME_CHANNEL: chromium
+      - name: Approved Skin palettes and transit source regression
+        run: node tests/skin-presets-e2e.mjs && node tests/transit-source-strategy-e2e.mjs
+        env:
+          E2E_URL: http://127.0.0.1:5173
+          CHROME_CHANNEL: chromium
       - name: Show browser log on failure
         if: failure()
         run: cat /tmp/appearance-vite.log || true
