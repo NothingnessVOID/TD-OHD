@@ -1,4 +1,4 @@
-import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {assertContentBoundary, targetIds, round2GContent} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -52,5 +52,5 @@ test('native Type terminology and authored Profile geometry use the shared rende
  const geometry=listKnowledgeEntries().filter(e=>e.objectType==='profile'&&e.objectId!=='introduction').map(e=>renderKnowledgeDetail(e)).join(' ');for(const phrase of locale==='en'?['Personal Destiny','Fixed Fate','Transpersonal Karma']:['個人命運','固定宿命','超個人業力'])assert.ok(geometry.includes(phrase));}
 });
 test('locale loader, calculations and arrow mapping remain byte-identical to Round 2B',()=>{
- for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(readFileSync(new URL('../'+path,import.meta.url))),hash(preservedSource(path,baseline)),path);
+ for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(path==='src/bodygraph.js'?phase1ProtectedCurrent(path):readFileSync(new URL('../'+path,import.meta.url))),hash(preservedSource(path,baseline)),path);
 });

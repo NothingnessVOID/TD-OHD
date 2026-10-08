@@ -116,13 +116,15 @@ test('Traditional computed chart, relationship, transit and team prose preserves
     check(chart.variable.determination.cognition.name);
     assert.match(hant.zhCross(chart.incarnationCross), /輪迴交叉/);
     const comparison = engine.compareHumanDesign(chart, charts[(i+1)%charts.length]);
-    for (const key of ['dynamic', 'gifts', 'challenges', 'tips']) check(comparison.typeInteraction[key]);
-    check(comparison.authorityDynamic.description);
-    check(comparison.profileHarmony.description);
-    check(comparison.bridging.description);
-    check(comparison.summary);
-    comparison.centerDynamics.forEach(v => check(v.description));
-    Object.values(comparison.connectionChart.connections).flat().forEach(v => check(v.description));
+    assert.equal(comparison.profileHarmony, undefined, 'arbitrary compatibility scores are removed');
+    assert.equal(comparison.individuals.personA.type, chart.type.name);
+    assert.equal(comparison.individuals.personA.authority, chart.authority.name);
+    assert.equal(comparison.individuals.personA.profile, chart.profile.numbers);
+    assert.equal(comparison.centerDynamics.length, 9);
+    for (const key of ['personA', 'personB']) assert.ok(['not-applicable','none','partial','complete'].includes(comparison.bridging[key].status));
+    assert.equal(typeof comparison.summaryFacts.createdCenterCount, 'number');
+    // The fact-only relationship display is checked in all languages by the
+    // dedicated connection-structure E2E, including Open/Undefined and bridging.
     const transit = analyzeTransitActivations(chart, sky);
     transit.temporarilyDefinedCenters.forEach(v => check(v.theme));
     transit.reinforcedGates.forEach(v => check(v.meaning));

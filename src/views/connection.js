@@ -7,6 +7,7 @@ import { saveTemporaryBirth } from '../lib/temporary-birth.js';
 
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
 import { compareHumanDesign } from '../lib/human-design/connection.js';
+import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph } from '../bodygraph.js';
 import { computeChart } from '../lib/chartdata.js';
@@ -143,22 +144,22 @@ const DYN_LABEL = {
   compromise: 'Compromise', dominance: 'Dominance'
 };
 const DYN_BLURB = {
-  electromagnetic: 'You each bring one half — together you complete it. Spark, and the friction that rides with it.',
-  companionship: 'You both carry the whole channel — easy, shared common ground.',
-  compromise: 'One of you has the full channel, the other only half — the full side sets the tone.',
-  dominance: 'One of you has the whole channel, the other has none of it — it flows one way.'
+  electromagnetic: 'The listed gate contributions complete this channel in the composite.',
+  companionship: 'Both people have both gates of this channel.',
+  compromise: 'One person has both gates; the other contributes one gate.',
+  dominance: 'One person has both gates; the other contributes neither gate.'
 };
 
 // The four ways two charts share channels — explained, with the circuit each
 // connection runs through (individual / tribal / collective / integration).
 const CONN_TYPES = [
-  ['electromagnetic', 'Electromagnetic', 'var(--electromagnetic)', 'Each of you carries one half of a channel — together you complete it, generating energy neither has alone. This is the spark of attraction, and the friction that rides along with it.'],
-  ['companionship', 'Companionship', 'var(--hd-circuit-integration)', 'You both already have the whole channel — shared, stable common ground where you simply “get” each other with no effort.'],
-  ['compromise', 'Compromise', 'var(--hd-circuit-collective)', 'One of you has the full channel, the other only half of it. The full-channel person sets the tone here; the other gets drawn into their frequency — workable, but it asks for give and take.'],
-  ['dominance', 'Dominance', 'var(--text-tertiary)', 'One of you has the full channel and the other has nothing in it. That energy flows one way, consistently conditioning the open person — powerful, and worth being conscious of.']
+  ['electromagnetic', 'Electromagnetic', 'var(--electromagnetic)', 'Each person contributes one gate; together the channel is complete.'],
+  ['companionship', 'Companionship', 'var(--hd-circuit-integration)', 'Both people have the complete channel.'],
+  ['compromise', 'Compromise', 'var(--hd-circuit-collective)', 'One person has the complete channel and the other contributes one of its gates.'],
+  ['dominance', 'Dominance', 'var(--text-tertiary)', 'One person has the complete channel and the other has neither gate.']
 ];
 
-function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}) {
+export function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}) {
   lastComparison = [comparison, a, b];
   const container = document.getElementById('connection-content');
   const wasExpanded = !!container.querySelector('.composite-individuals')?.open;
@@ -166,15 +167,30 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
   const openGate = previousDetail?.dataset.gate;
   const openCenter = previousDetail?.dataset.center;
   if (!languageOnly || openGate != null || openCenter != null) closeDetailDialog();
-  const cc = comparison.connectionChart;
+  const structure = comparison.structure || analyzeConnectionStructure(a.chart, b.chart);
+  comparison.structure = structure;
+  const cc = comparison.connectionChart || { connections: structure.connections, compositeType: null, compositeChannelCount: structure.composite.channelCount };
   const nameA = a.birth.name || t('You');
   const nameB = b.defaultDisplayName ? t('Person B') : (b.birth.name || t('Person B'));
-  const ti = comparison.typeInteraction;
-  const ad = comparison.authorityDynamic;
-  const ph = comparison.profileHarmony;
-  const br = comparison.bridging;
-  const stats = comparison.stats || {};
-
+  const ad = comparison.authorityDynamic || {};
+  const br = comparison.bridging || {};
+  const centerDynamics = comparison.centerDynamics || structure.centerStates;
+  const centerRows = Array.isArray(centerDynamics) ? centerDynamics : Object.values(centerDynamics);
+  const centerIndex = new Map((structure.centerStates || []).map(state => [state.center, state]));
+  const centerStatus = (state, person) => person === 'A' ? state?.personA : person === 'B' ? state?.personB : state?.status || (state?.compositeDefined ? 'defined' : 'open');
+  const isDefined = value => value === true || value === 'defined';
+  const isCreated = state => state?.created === true;
+  const bridgeA = structure.bridging?.personA || br.personA;
+  const bridgeB = structure.bridging?.personB || br.personB;
+  const centerFormula = structure.formulas?.expression || '—';
+  const createdCount = structure.formulas?.createdCenterCount ?? 0;
+  const createdChannelCount = structure.composite?.createdChannelCount ?? 0;
+  const statusText = status => status === 'not-applicable' ? t('Not applicable') : status === 'complete' ? t('Fully bridged') : status === 'partial' ? t('Partially bridged') : status === 'none' ? t('Not bridged') : t('Not applicable');
+  const summaryFacts = comparison.summaryFacts || comparison.summary || {};
+  const summaryText = t('Center formula {formula}; Created centers {centers}; Created channels {channels}; electromagnetic channels {electromagnetic}; A bridging {statusA}; B bridging {statusB}.', {
+    formula: structure.formulas?.expression || '—', centers: structure.formulas?.createdCenterCount ?? 0, channels: structure.composite?.createdChannelCount ?? 0,
+    electromagnetic: summaryFacts.electromagneticCount ?? 0, statusA: statusText(bridgeA?.status), statusB: statusText(bridgeB?.status)
+  });
   const circuitBadge = channel => {
     return renderChannelCircuitBadges(channel);
   };
@@ -185,31 +201,27 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
       <div class="conn-section">
         <div class="conn-section-head"><span class="panel-title">${t(label)}</span><span class="conn-count">${items.length}</span></div>
         <p class="panel-intro">${t(blurb)}</p>
-        ${items.length ? items.map(c => `
+        ${items.length ? items.map(c => {
+          const contribution = key === 'electromagnetic' ? `${nameA}: ${c.gateA} · ${nameB}: ${c.gateB}`
+            : key === 'compromise' ? `${c.dominant === 'A' ? nameA : nameB}: ${t('Complete channel')} · ${c.dominant === 'A' ? nameB : nameA}: ${t('Gate {gate}', { gate: c.partialGate })}`
+            : key === 'dominance' ? `${c.dominant === 'A' ? nameA : nameB}: ${t('Complete channel')} · ${c.dominant === 'A' ? nameB : nameA}: ${t('No gates')}`
+            : `${nameA} + ${nameB}: ${t('Complete channel')}`;
+          return `
           <div class="connection-type" style="border-left:3px solid ${color}">
             <div class="conn-channel">${esc(channelName(c.gates))} <span class="conn-gates">(${c.gates.join('–')})</span> ${circuitBadge(c)}</div>
-            <div class="conn-desc">${esc(contentText(c.description))}</div>
-          </div>`).join('')
+            <div class="conn-desc">${t(DYN_BLURB[key])} ${esc(contribution)}</div>
+          </div>`;
+        }).join('')
         : `<div class="conn-empty">${t('No {label} channels between you.', { label: t(label).toLowerCase() })}</div>`}
       </div>`;
   };
-
-  // Center conditioning map — who steadily influences whom.
-  const cd = comparison.centerDynamics || [];
-  const conditioning = cd.filter(c => /Conditions/.test(c.dynamic)).map(c => {
-    const from = c.dynamic.startsWith('A') ? nameA : nameB;
-    const to = c.dynamic.startsWith('A') ? nameB : nameA;
-    return `<div class="conn-center"><strong>${esc(centerName(c.centerName))}</strong> — ${esc(from)} ${t('conditions')} ${esc(to)} <span class="conn-center-theme">${esc(contentText(c.theme))}</span></div>`;
-  });
-  const bothDefined = cd.filter(c => c.dynamic === 'Both Defined').map(c => c.centerName);
-  const bothOpen = cd.filter(c => c.dynamic === 'Both Open').map(c => c.centerName);
 
   const cpal = compositePalette();
 
   container.innerHTML = `
     <div class="composite-wrap">
       <div class="panel-title">${t('Your charts combined')}</div>
-      <p class="panel-intro">${t('One body, both of you — each half-channel colored by who brings it. A <strong>two-tone</strong> channel is an electromagnetic bond you only complete together. Hover or tap any gate, channel, or center.')}</p>
+      <p class="panel-intro">${t('One body, both of you — each gate colored by who brings it. A <strong>two-tone</strong> channel shows gates contributed by both people. Hover or tap any gate, channel, or center.')}</p>
       <div class="composite-legend">
         <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
         <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
@@ -225,53 +237,47 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
       <div class="connection-graphs">
         <div class="connection-graph">
           <div class="connection-graph-name">${esc(nameA)}</div>
-          <div class="connection-graph-type">${esc(typeName(a.chart.type.name))} ${esc(a.chart.profile.numbers)}</div>
+          <div class="connection-graph-type">${esc(typeName(a.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personA?.strategy || a.chart.type?.strategy || a.chart.strategy?.name || a.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(a.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(a.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(a.chart.definition?.name || a.chart.definition || ''))}</div>
           <div id="conn-graph-a"></div>
         </div>
         <div class="connection-graph">
           <div class="connection-graph-name">${esc(nameB)}</div>
-          <div class="connection-graph-type">${esc(typeName(b.chart.type.name))} ${esc(b.chart.profile.numbers)}</div>
+          <div class="connection-graph-type">${esc(typeName(b.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personB?.strategy || b.chart.type?.strategy || b.chart.strategy?.name || b.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(b.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(b.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(b.chart.definition?.name || b.chart.definition || ''))}</div>
           <div id="conn-graph-b"></div>
         </div>
       </div>
     </details>
 
-    <div class="conn-dynamic">
-      <div class="panel-title">${esc(contentText(ti.dynamic))}</div>
-      <div class="conn-dynamic-sub">${esc(typeName(ti.typeA))} + ${esc(typeName(ti.typeB))}</div>
-      <p><strong>${t('Gifts')}</strong> · ${esc(contentText(ti.gifts))}</p>
-      <p><strong>${t('Challenge')}</strong> · ${esc(contentText(ti.challenges))}</p>
-      <p><strong>${t('Make it work')}</strong> · ${esc(contentText(ti.tips))}</p>
-    </div>
-
     <div class="foundation-grid" style="margin-bottom:8px">
-      <div class="foundation-item"><div class="label">${t('Together you are')}</div><div class="value">${esc(typeName(cc.compositeType))}</div><div class="detail">${t('{count} channels combined', { count: cc.compositeChannelCount })}</div></div>
-      <div class="foundation-item"><div class="label">${t('Attraction')}</div><div class="value">${stats.electromagneticCount ?? cc.connections.electromagnetic.length}</div><div class="detail">${t('electromagnetic links')}</div></div>
-      <div class="foundation-item"><div class="label">${t('Conditioning')}</div><div class="value">${stats.conditioningCenters ?? conditioning.length}</div><div class="detail">${t('centers one shapes in the other')}</div></div>
+      <div class="foundation-item"><div class="label">${t('Composite-derived type')}</div><div class="value">${esc(typeName(cc.compositeType))}</div><div class="detail">${t('{count} channels combined', { count: cc.compositeChannelCount })}</div></div>
+      <div class="foundation-item" data-testid="connection-center-formula" data-formula="${esc(centerFormula)}"><div class="label">${t('Center formula')}</div><div class="value">${esc(centerFormula)}</div><div class="detail">${t('{count} defined · {other} undefined', { count: structure.formulas?.definedCount ?? 0, other: structure.formulas?.undefinedCount ?? 9 })}</div></div>
+      <div class="foundation-item" data-testid="connection-created-count" data-count="${createdCount}"><div class="label">${t('Created centers')}</div><div class="value">${createdCount}</div><div class="detail">${t('{count} created channels', { count: createdChannelCount })}</div></div>
     </div>
 
-    <div class="panel-title" style="margin-top:22px">${t('How you decide together')}</div>
-    <p class="panel-intro">${esc(authorityName(ad.authorityA))} + ${esc(authorityName(ad.authorityB))} — ${esc(contentText(ad.description))} ${ad.timing ? `<em>${t('Timing:')} ${esc(contentText(ad.timing))}.</em>` : ''}</p>
-
+    <div class="panel-title" style="margin-top:22px">${t('Individual decision foundations')}</div>
+    <p class="panel-intro">${esc(nameA)} · ${esc(authorityName(comparison.individuals?.personA?.authority || ad.authorityA || a.chart.authority?.name))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(authorityName(comparison.individuals?.personB?.authority || ad.authorityB || b.chart.authority?.name))}</p>
     <div class="panel-title">${t('Profiles')}</div>
-    <p class="panel-intro">${esc(profileName(ph.profileA))} (${esc(ph.profileA)}) + ${esc(profileName(ph.profileB))} (${esc(ph.profileB)}) — ${esc(contentText(ph.description))}</p>
+    <p class="panel-intro">${esc(nameA)} · ${esc(profileName(a.chart.profile?.numbers))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(profileName(b.chart.profile?.numbers))}</p>
 
     <div class="panel-title" style="margin-top:22px">${t('The four ways your channels connect')}</div>
     ${CONN_TYPES.map(connSection).join('')}
 
-    <div class="panel-title" style="margin-top:22px">${t('Your centers together')}</div>
-    <p class="panel-intro">${t('Where one of you is defined and the other open, the defined person steadily conditions the open one — a consistent, often unspoken influence.')}</p>
-    ${conditioning.length ? conditioning.join('') : `<div class="conn-empty">${t('Neither of you conditions the other’s centers — an unusually independent pairing.')}</div>`}
-    ${bothDefined.length ? `<p class="conn-note"><strong>${t('Both defined:')}</strong> ${bothDefined.map(centerName).map(esc).join(t(', '))} ${t('— consistent, fixed common ground.')}</p>` : ''}
-    ${bothOpen.length ? `<p class="conn-note"><strong>${t('Both open:')}</strong> ${bothOpen.map(centerName).map(esc).join(t(', '))} ${t('— you amplify each other (and the room) here; watch for shared not-self patterns.')}</p>` : ''}
+    <div class="panel-title" style="margin-top:22px">${t('Center states')}</div>
+    <p class="panel-intro">${t('Each row reports defined, undefined, or open status in person A, person B, and the composite. Created channels are listed as structural facts.')}</p>
+    ${centerRows.map(c => {
+      const s = centerIndex.get(c.center || c.centerName) || c;
+      const created = (structure.composite.createdChannels || []).filter(channel => channel.centers.includes(s.center));
+      const state = value => isDefined(value) ? t('Defined') : value === 'undefined' ? t('Undefined') : value === 'open' ? t('Completely open') : t('Open');
+      return `<div class="conn-center" data-testid="connection-center-state" data-center="${esc(s.center || s.centerName)}" data-a-state="${centerStatus(s, 'A')}" data-b-state="${centerStatus(s, 'B')}" data-composite-state="${centerStatus(s, 'composite')}" data-a-defined="${isDefined(centerStatus(s, 'A'))}" data-b-defined="${isDefined(centerStatus(s, 'B'))}" data-composite-defined="${isDefined(centerStatus(s, 'composite'))}" data-created="${isCreated(s)}"><strong>${esc(centerName(s.centerName || s.center))}</strong><div>${esc(nameA)}: ${state(centerStatus(s, 'A'))} · ${esc(nameB)}: ${state(centerStatus(s, 'B'))} · ${t('Composite')}: ${state(centerStatus(s, 'composite'))}</div>${created.length ? `<div class="conn-center-theme">${t('Created channels')}: ${created.map(ch => `${esc(channelName(ch.gates))} (${ch.gates.join('–')})`).join(', ')}</div>` : ''}</div>`;
+    }).join('')}
 
-    ${br?.bridgedChannels?.length ? `
-      <div class="panel-title" style="margin-top:22px">${t('What you create together')}</div>
-      <p class="panel-intro">${esc(contentText(br.description))}</p>
-      <div class="pills">${br.bridgedChannels.map(c => `<span class="pill">${esc(channelName(CHANNELS.find(ch => ch.name === c.channel)?.gates || c.channel))} · ${esc(contentText(c.theme))}</span>`).join('')}</div>` : ''}
+    <div class="panel-title" style="margin-top:22px">${t('Bridging by person')}</div>
+    <div class="conn-center" data-testid="connection-bridging-a" data-status="${bridgeA?.status || 'n/a'}" data-original-regions="${bridgeA?.originalRegionCount ?? 0}"><strong>${esc(nameA)}</strong> · ${t('Original regions')}: ${esc(String(bridgeA?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeA?.status)}${(bridgeA?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
+    <div class="conn-center" data-testid="connection-bridging-b" data-status="${bridgeB?.status || 'n/a'}" data-original-regions="${bridgeB?.originalRegionCount ?? 0}"><strong>${esc(nameB)}</strong> · ${t('Original regions')}: ${esc(String(bridgeB?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeB?.status)}${(bridgeB?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
+    ${(structure.composite.createdChannels || []).length ? `<div class="panel-title">${t('Created channels')}</div><div class="pills">${structure.composite.createdChannels.map(c => `<span class="pill">${esc(channelName(c.gates))}</span>`).join('')}</div>` : ''}
 
     <div class="panel-title" style="margin-top:22px">${t('In a nutshell')}</div>
-    <p>${esc(contentText(comparison.summary))}</p>
+    <p>${esc(contentText(summaryText))}</p>
   `;
   container.querySelector('.composite-individuals').open = wasExpanded;
 
@@ -319,13 +325,12 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
   function showCompositeCenter(key, scroll = true) {
     const owner = api.centerOwner(key);
     const dn = graphCenter(key);
+    const dyn = centerIndex.get(key) || centerRows.find(c => (c.center || c.centerName) === key || c.centerName === centerName(key));
     const tag = owner === 'both' ? t('Both define') : owner === 'a' ? t('{name} defines', { name: nameA })
-      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Made together') : t('Open between you');
-    const txt = owner === 'both' ? t('You both define {center} — fixed, reliable common ground between you.', { center: dn })
-      : owner === 'a' ? t('{from} defines {center}; {to} takes it in. {from} steadily conditions {to} here — a consistent, often unspoken influence.', { from: nameA, to: nameB, center: dn })
-      : owner === 'b' ? t('{from} defines {center}; {to} takes it in. {from} steadily conditions {to} here — a consistent, often unspoken influence.', { from: nameB, to: nameA, center: dn })
-      : owner === 'bridged' ? t('Neither of you defines {center} alone — but together your gates complete a channel into it. You generate this energy only as a pair.', { center: dn })
-      : t('{center} stays open between you — you both amplify whatever’s in the room here. Watch for shared not-self patterns.', { center: dn });
+      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Made together') : t('Completely open');
+    const displayState = value => value === 'defined' ? t('Defined') : value === 'undefined' ? t('Undefined') : value === 'open' ? t('Completely open') : t('Open');
+    const createdCenterChannels = (structure.composite.createdChannels || []).filter(channel => channel.centers.includes(key));
+    const txt = `${nameA}: ${displayState(centerStatus(dyn, 'A'))} · ${nameB}: ${displayState(centerStatus(dyn, 'B'))} · ${t('Composite')}: ${displayState(centerStatus(dyn, 'composite'))}. ${createdCenterChannels.length ? `${t('Created channels')}: ${createdCenterChannels.map(channel => `${channelName(channel.gates)} (${channel.gates.join('–')})`).join(', ')}` : ''}`;
     detail.innerHTML = `
       <div class="gate-detail-card center-detail-card" data-center="${key}">
         <button class="gate-detail-close" title="${t('Close')}">&times;</button>
@@ -340,7 +345,7 @@ function renderConnectionContent(comparison, a, b, { languageOnly = false } = {}
 
   api = renderBodygraph(container.querySelector('#conn-composite'), a.chart, {
     composite: {
-      chartA: a.chart, chartB: b.chart,
+      chartA: a.chart, chartB: b.chart, structure,
       colorA: cpal.a, colorB: cpal.b, colorBridged: cpal.bridged,
       labelA: nameA, labelB: nameB
     },

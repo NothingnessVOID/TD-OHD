@@ -13,6 +13,7 @@
 
 import { GATE_PATHS, CENTER_SHAPES, GATE_CIRCLE_POSITIONS } from './lib/human-design/bodygraph-geometry.js';
 import { GATES, CHANNELS } from './lib/human-design/catalog.js';
+import { analyzeConnectionStructure } from './lib/human-design/connection-structure.js';
 import { calculateLineFixings } from './features/transit-timeline/line-fixing.js';
 import { renderVariableArrowRow } from './lib/variable-arrows.js';
 import './styles/variable-arrows.css';
@@ -135,6 +136,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   // instead of by personality/design. The half-channel model makes this read
   // beautifully — a two-tone channel is an electromagnetic bond.
   const composite = opts.composite || null;
+  const compositeStructure = composite?.structure || (composite ? analyzeConnectionStructure(composite.chartA, composite.chartB) : null);
   const transit = opts.transitModel || null;
   // SVG presentation attributes inherit the same theme tokens as the legend and badges.
   const transitColor = colors.transit;
@@ -173,11 +175,10 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   let definedCenters;
   if (composite) {
-    const compCenters = new Set();
-    for (const ch of compChannels) for (const c of (ch.centers || [])) compCenters.add(c);
+    const compCenters = new Set(compositeStructure.composite.centers);
     definedCenters = compCenters;
-    const aDef = new Set(composite.chartA.centers.definedNames);
-    const bDef = new Set(composite.chartB.centers.definedNames);
+    const aDef = new Set(compositeStructure.individuals.personA.centers);
+    const bDef = new Set(compositeStructure.individuals.personB.centers);
     centerOwner = (key) => {
       if (!compCenters.has(key)) return null;
       const a = aDef.has(key), b = bDef.has(key);
@@ -390,6 +391,11 @@ export function renderBodygraph(container, chart, opts = {}) {
       stroke: transitDefined ? transitColor : defined ? 'none' : colors.centerStroke,
       'stroke-width': transitDefined ? Number(colors.centerStrokeWidth) + 2 : colors.centerStrokeWidth,
       'data-center': centerKey,
+      ...(composite ? {
+        'data-center-defined': String(defined),
+        'data-center-created': String(compositeStructure.centerStates.find(state => state.center === centerKey)?.created || false),
+        'data-center-owner': centerOwner(centerKey) || 'none'
+      } : {}),
       class: 'bg-center'
     });
     if (animate) {
@@ -597,7 +603,7 @@ export function renderBodygraph(container, chart, opts = {}) {
           : o === 'a' ? t('{label} defines this', { label: composite.labelA })
           : o === 'b' ? t('{label} defines this', { label: composite.labelB })
           : o === 'bridged' ? t('Defined together — neither of you has it alone')
-          : t('Open between you');
+          : t(compositeStructure.centerStates.find(state => state.center === centerKey)?.status === 'open' ? 'Completely open' : 'Undefined');
         return `<strong>${centerTitle}</strong><div class="bg-tt-channel">${escapeHTML(txt)}</div>`;
       }
       const defined = definedCenters.has(centerKey);
