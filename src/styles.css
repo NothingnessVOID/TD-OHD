@@ -1,6 +1,24 @@
-@import './styles/tokens/site-default.css';
+@import './styles/skins/default.css';
+@import './styles/skins/high-contrast.css';
+@import './styles/skins/grass-aroma.css';
+@import './styles/skins/contemplation.css';
+@import './styles/skins/absolutely.css';
+@import './styles/skins/delve.css';
+@import './styles/skins/deep-think.css';
+@import './styles/skins/new-warm-paper.css';
+@import './styles/skins/midnight-contrast.css';
+@import './styles/skins/coral.css';
 @import './styles/tokens/human-design-classic.css';
-@import './styles/tokens/human-design-chakra.css';
+@import './styles/center-palettes/classic.css';
+@import './styles/center-palettes/chakra.css';
+@import './styles/center-palettes/jewel.css';
+@import './styles/center-palettes/mineral.css';
+@import './styles/center-palettes/ink.css';
+@import './styles/center-palettes/porcelain.css';
+@import './styles/center-palettes/botanical.css';
+@import './styles/center-palettes/paper.css';
+@import './styles/center-palettes/night-bloom.css';
+@import './styles/center-palettes/base.css';
 @import './styles/appearance-controls.css';
 
 /* Layout and typography stay here. Site and Human Design skin values live in
@@ -522,7 +540,7 @@ body {
   line-height: 1.6;
   vertical-align: middle;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 2px 6px;
@@ -875,8 +893,8 @@ body {
   margin-bottom: 2px;
 }
 
-.bg-planets-design .bg-planets-head { color: var(--hd-design); }
-.bg-planets-personality .bg-planets-head { color: var(--hd-personality); }
+.bg-planets-design .bg-planets-head { color: var(--bg-source-design, var(--hd-design)); }
+.bg-planets-personality .bg-planets-head { color: var(--bg-source-personality, var(--hd-personality)); }
 
 .bg-planets-date {
   font-size: 9px;
@@ -909,8 +927,8 @@ body {
   opacity: 0.75;
 }
 
-.bg-planets-design .bg-planet-act { color: var(--hd-design); font-weight: 600; }
-.bg-planets-personality .bg-planet-act { color: var(--hd-personality); font-weight: 600; }
+.bg-planets-design .bg-planet-act { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
+.bg-planets-personality .bg-planet-act { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
 
 /* Hover highlight: dim everything, then re-light the hovered gate/channel */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
@@ -952,8 +970,9 @@ body {
 .bg-tooltip .bg-tt-source.both { color: var(--text-secondary); }
 .bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--hd-transit-text); }
 .bg-tooltip .bg-tt-source.completed { color: var(--accent); }
-.bg-tt-design { color: var(--hd-design); font-weight: 600; }
-.bg-tt-personality { color: var(--hd-personality); font-weight: 600; }
+.bg-tt-design { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
+.bg-tt-personality { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
+.bg-root[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--hd-overlay-natal); }
 .bg-tt-channel { margin-top: 3px; color: var(--text-secondary); font-size: 11px; }
 
 .bg-compact .bodygraph-svg { width: 100%; height: auto; }
@@ -1851,7 +1870,8 @@ body.modal-open { overflow: hidden; }
 
 .reliability { color: var(--text-secondary); }
 .reliability-solid { background: var(--status-success-soft); }
-.reliability-soft { background: var(--status-caution-soft); }
+.reliability-info { background: var(--status-info-soft); }
+.reliability-caution { background: var(--status-caution-soft); }
 
 .reliability-dot {
   flex-shrink: 0;
@@ -1863,7 +1883,8 @@ body.modal-open { overflow: hidden; }
 }
 
 .reliability-solid .reliability-dot { background: var(--status-success); }
-.reliability-soft .reliability-dot { background: var(--accent); }
+.reliability-info .reliability-dot { background: var(--status-info); }
+.reliability-caution .reliability-dot { background: var(--status-caution); }
 
 .shared-cta {
   text-align: center;
@@ -1893,6 +1914,8 @@ body.modal-open { overflow: hidden; }
 
 .act-design { color: var(--hd-design); font-weight: 600; }
 .act-personality { color: var(--hd-personality); font-weight: 600; }
+#chart-view .act-design { color: var(--hd-birth-design, var(--hd-design)); }
+#chart-view .act-personality { color: var(--hd-birth-personality, var(--hd-personality)); }
 
 .hanging-gates { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -2045,7 +2068,27 @@ body.modal-open { overflow: hidden; }
   margin-bottom: 14px;
 }
 
-.connection-form .btn-primary { width: auto; padding: 10px 24px; }
+.connection-form .btn-primary {
+  width: auto;
+  padding: 10px 24px;
+  background: color-mix(in srgb, var(--accent) 45%, var(--bg-elevated));
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+  font-weight: 600;
+}
+.connection-form .btn-primary:hover {
+  background: color-mix(in srgb, var(--accent) 55%, var(--bg-elevated));
+  color: var(--text);
+}
+[data-theme="dark"] .connection-form .btn-primary {
+  background: var(--accent);
+  color: var(--accent-on);
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--border));
+}
+[data-theme="dark"] .connection-form .btn-primary:hover {
+  background: var(--accent-hover);
+  color: var(--accent-on);
+}
 
 .connection-graphs {
   display: grid;
@@ -2115,10 +2158,6 @@ body.modal-open { overflow: hidden; }
   background: var(--bg-sunken);
   border-left: 3px solid var(--border);
 }
-.conn-detail-channel.electromagnetic { border-left-color: var(--hd-electromagnetic); }
-.conn-detail-channel.companionship { border-left-color: var(--hd-circuit-integration); }
-.conn-detail-channel.compromise { border-left-color: var(--hd-circuit-collective); }
-.conn-detail-channel.dominance { border-left-color: var(--text-tertiary); }
 .cdc-dyn {
   font-size: 10.5px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.6px; color: var(--text-tertiary); margin-bottom: 3px;
@@ -2131,7 +2170,14 @@ body.modal-open { overflow: hidden; }
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.5px; color: var(--accent);
 }
-.conn-center-tag.bridged { color: var(--accent); }
+.conn-center-tag.a { background: var(--hd-connection-a); color: var(--hd-connection-a-on); }
+.conn-center-tag.b { background: var(--hd-connection-b); color: var(--hd-connection-b-on); }
+.conn-center-tag.both { background: var(--hd-connection-both); color: var(--hd-connection-both-on); }
+.conn-center-tag.bridged { background: var(--hd-connection-bridged); color: var(--hd-connection-bridged-on); }
+.conn-center-tag:not(.open) { padding: 3px 6px; border-radius: 4px; }
+/* All mechanic cards stay on a Skin surface; only the small ownership marker carries color. */
+#connection-content .connection-type, .conn-detail-channel { position: relative; border-left: 0; }
+.conn-mechanic-marker { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 3px 0 0 3px; background: var(--connection-marker); }
 .conn-center-tag.open { color: var(--text-tertiary); }
 
 /* =============================================

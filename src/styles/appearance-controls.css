@@ -8,18 +8,38 @@
 .more-panel .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .more-panel .chart-share-menu { position: relative; }
 .more-panel .chart-share-actions { right: calc(100% + 10px); top: 0; max-width: calc(100vw - 64px); }
-.skin-settings { margin: auto; width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg-elevated); color: var(--text); box-shadow: var(--shadow-lg); }
+.skin-settings { --skin-settings-padding: 24px; margin: auto; width: min(680px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: var(--skin-settings-padding); border: 1px solid var(--border); border-radius: 20px; background: var(--bg-elevated); color: var(--text); box-shadow: var(--shadow-lg); }
 .skin-settings::backdrop { background: var(--modal-backdrop); }
-.skin-settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.skin-settings-header h2 { font-size: 24px; font-weight: 600; margin-top: 3px; }
-.skin-eyebrow { font-size: 11px; letter-spacing: .08em; color: var(--text-secondary); }
-.skin-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.skin-presets button { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; padding: 16px; border: 1px solid var(--border); border-radius: 12px; color: var(--text); background: var(--bg); font: inherit; font-size: 14px; cursor: pointer; }
-.skin-presets button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-.skin-swatch { display: block; width: 100%; height: 8px; border-radius: 8px; }
-.classic-swatch { background: linear-gradient(90deg,#e9d56b 0 25%,#a3c46c 25% 50%,#c2a06b 50% 75%,#dd6356 75%); }
-.chakra-swatch { background: linear-gradient(90deg,#a38abb,#7579aa,#6e9fbe,#79a889,#d4ba63,#cf9561,#bd7169); }
-.skin-custom-note { margin: 22px 0 8px; color: var(--text-secondary); font-size: 12px; }
+/* Cover the dialog padding too, so scrolling cards cannot show above the sticky header. */
+.skin-settings-header { position: sticky; top: calc(-1 * var(--skin-settings-padding)); z-index: 10; display: flex; justify-content: space-between; align-items: center; margin: calc(-1 * var(--skin-settings-padding)) calc(-1 * var(--skin-settings-padding)) 20px; padding: var(--skin-settings-padding) var(--skin-settings-padding) 12px; background: var(--bg-elevated); border-bottom: 1px solid var(--border-subtle); }
+.skin-settings-header h2 { font-size: 24px; font-weight: 600; margin: 0; }
+/* Cards show their own Skin palette; current Skin only controls selection/focus. */
+.appearance-section + .appearance-section { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-subtle); }
+.appearance-section h3 { margin-bottom: 10px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.skin-picker, .center-palettes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.appearance-choice-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; min-height: 88px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--choice-surface); color: var(--choice-text); font: inherit; font-size: 13px; line-height: 1.5; text-align: left; cursor: pointer; }
+.appearance-choice-name { padding-right: 18px; overflow-wrap: anywhere; }
+.appearance-choice-mode { margin-top: -8px; font-size: 11px; font-weight: 500; line-height: 1.3; letter-spacing: .02em; color: var(--choice-signature); }
+.skin-card-colors { display: flex; gap: 5px; margin-top: auto; padding-left: 8px; border-left: 3px solid var(--skin-preview-accent); }
+.skin-card-colors i { display: block; width: 22px; height: 5px; border-radius: 3px; }
+.skin-card-auto { background: linear-gradient(90deg, var(--auto-preview-light-surface) 0 50%, var(--auto-preview-dark-surface) 50% 100%); color: var(--auto-preview-light-text); }
+.skin-card-auto .skin-card-name { padding-right: 0; max-width: calc(50% - 6px); }
+.skin-card-auto .skin-card-mode { max-width: calc(50% - 6px); color: var(--auto-preview-light-text); }
+.skin-card-auto .skin-card-check { color: var(--auto-preview-dark-text); }
+.skin-card-auto-colors { display: flex; justify-content: space-between; width: 100%; margin-top: auto; }
+.skin-card-auto-colors i { display: block; width: 22px; height: 5px; border-radius: 3px; }
+.appearance-choice-check { position: absolute; top: 12px; right: 12px; color: var(--choice-text); font-size: 12px; visibility: hidden; }
+.appearance-choice-card[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 2px; }
+.appearance-choice-card[aria-pressed="true"] .appearance-choice-check { visibility: visible; }
+.appearance-choice-card:hover { border-color: var(--text-secondary); }
+.appearance-choice-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.skin-card { --choice-surface: var(--skin-preview-surface); --choice-text: var(--skin-preview-text); --choice-signature: var(--skin-preview-signature); }
+/* Signature stays palette-specific; mix with text for readable small captions on either mode. */
+.center-palette-card { --choice-surface: var(--bg); --choice-text: var(--text); --choice-signature: color-mix(in srgb, var(--center-preview-signature-light) 45%, var(--text)); }
+[data-theme="dark"] .center-palette-card { --choice-signature: color-mix(in srgb, var(--center-preview-signature-dark) 45%, var(--text)); }
+.center-palette-preview { display: grid; grid-template-columns: repeat(3, 12px); gap: 4px; margin-top: auto; }
+.center-palette-preview i { display: block; width: 12px; height: 12px; border-radius: 2px; background: var(--center-preview-light); }
+[data-theme="dark"] .center-palette-preview i { background: var(--center-preview-dark); }
 .skin-custom-fields label { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; }
 .skin-custom-fields input[type="color"] { width: 38px; height: 28px; min-height: 0; padding: 3px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); cursor: pointer; }
 .skin-size-control { display: flex; align-items: center; gap: 10px; }
@@ -27,6 +47,6 @@
 .skin-size-control output { width: 32px; font-size: 11px; color: var(--text-secondary); }
 .skin-settings-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; }
 .skin-settings-footer button { font-size: 12px; }
-@media (--phone) { .skin-settings { padding: 20px; } }
+@media (max-width: 600px) { .skin-settings { --skin-settings-padding: 20px; } .skin-picker, .center-palettes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .skin-size-control input[type="number"] { width: 52px; min-width: 0; padding: 4px; text-align: center; }

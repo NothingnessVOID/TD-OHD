@@ -7,8 +7,8 @@ const digest = value => createHash('sha256').update(value).digest('hex');
 
 test('Phase 1 renderer projections authorize only the reviewed composite UI bodies', () => {
   for (const [file, historical] of [
-    ['src/bodygraph.js', releaseCandidate],
-    ['src/views/connection.js', releaseCandidate]
+    ['src/bodygraph.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8'],
+    ['src/views/connection.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8']
   ]) {
     const current = readCurrentSource(file);
     const expectedHistorical = preservedSource(file, historical);
@@ -21,14 +21,14 @@ test('Phase 1 renderer projections authorize only the reviewed composite UI bodi
 test('unrelated protected-function edits survive the composite projection and therefore fail byte comparison', () => {
   const source = readCurrentSource('src/bodygraph.js').toString();
   const unrelatedEdit = source.replace('function litFor(', 'function litFor( /* unrelated edit */');
-  const baseGraph = preservedSource('src/bodygraph.js', releaseCandidate).toString();
+  const baseGraph = preservedSource('src/bodygraph.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8').toString();
   const projected = phase1Projection(source, 'src/bodygraph.js').toString();
   assert.notEqual(digest(unrelatedEdit), digest(source));
   assert.notEqual(digest(phase1Projection(unrelatedEdit, 'src/bodygraph.js')), digest(baseGraph));
 
   const connection = readCurrentSource('src/views/connection.js').toString();
   const unrelatedEditConnection = connection.replace('function rerenderConnectionGraphs()', 'function rerenderConnectionGraphs() /* unrelated edit */');
-  const baseConnection = preservedSource('src/views/connection.js', releaseCandidate);
+  const baseConnection = preservedSource('src/views/connection.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8');
   assert.equal(digest(phase1Projection(connection, 'src/views/connection.js')), digest(baseConnection));
   assert.notEqual(digest(unrelatedEditConnection), digest(connection));
   assert.notEqual(digest(phase1Projection(unrelatedEditConnection, 'src/views/connection.js')), digest(baseConnection));
