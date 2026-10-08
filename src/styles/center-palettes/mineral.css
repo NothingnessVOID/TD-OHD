@@ -1,0 +1,31 @@
+/* Approved Center Palette V3. No Skin/source colors here. */
+:root[data-center-palette="mineral"] {
+  --hd-center-core-edge-ratio: 100%;
+  --hd-center-head: #C2A34B;
+  --hd-center-head-core: var(--hd-center-head);
+  --hd-center-head-on: #111111;
+  --hd-center-ajna: #7E9272;
+  --hd-center-ajna-core: var(--hd-center-ajna);
+  --hd-center-ajna-on: #111111;
+  --hd-center-throat: #9B7B61;
+  --hd-center-throat-core: var(--hd-center-throat);
+  --hd-center-throat-on: #111111;
+  --hd-center-g: #B59B66;
+  --hd-center-g-core: var(--hd-center-g);
+  --hd-center-g-on: #111111;
+  --hd-center-heart: #A95B4C;
+  --hd-center-heart-core: var(--hd-center-heart);
+  --hd-center-heart-on: #FFFFFF;
+  --hd-center-spleen: #8A7A55;
+  --hd-center-spleen-core: var(--hd-center-spleen);
+  --hd-center-spleen-on: #111111;
+  --hd-center-solar: #A87643;
+  --hd-center-solar-core: var(--hd-center-solar);
+  --hd-center-solar-on: #111111;
+  --hd-center-sacral: #B25D3B;
+  --hd-center-sacral-core: var(--hd-center-sacral);
+  --hd-center-sacral-on: #FFFFFF;
+  --hd-center-root: #765849;
+  --hd-center-root-core: var(--hd-center-root);
+  --hd-center-root-on: #FFFFFF;
+}

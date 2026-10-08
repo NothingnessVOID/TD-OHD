@@ -1,0 +1,573 @@
+[
+  {
+    "id": "high-contrast",
+    "site": {
+      "bg": "#FAF8F7",
+      "elevated": "#FDFBFA",
+      "sunken": "#F3F1F0",
+      "text": "#1A1C1E",
+      "text-secondary": "#4A4E52",
+      "text-tertiary": "#6B6F73",
+      "accent": "#3A6B85",
+      "accent-hover": "#2E5870",
+      "accent-soft": "rgba(58,107,133,0.08)",
+      "border": "rgba(92,75,70,0.22)",
+      "shadow-base": "rgba(26,28,30,0.11)",
+      "success": "#5A9A5E",
+      "coral": "#D4716F",
+      "danger": "#7A3030"
+    },
+    "sources": [
+      "#202428",
+      "#B84A44",
+      "#3A6B85",
+      "#756454",
+      "#C8C5C2"
+    ],
+    "types": [
+      "#9A7A35",
+      "#A56C3C",
+      "#9E544E",
+      "#5C7180",
+      "#757A7D"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#91B3C4",
+      "#D8A39D",
+      "#C5B984",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#2E5870",
+      "soft": "#E9EBED"
+    },
+    "overlayNatal": {
+      "color": "#74716D",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#315B70",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "grass-aroma",
+    "site": {
+      "bg": "#F5F8F3",
+      "elevated": "#F9FBF7",
+      "sunken": "#EFF3EC",
+      "text": "#2E3832",
+      "text-secondary": "#5E6B63",
+      "text-tertiary": "#8A9490",
+      "accent": "#5BA88C",
+      "accent-hover": "#4D9179",
+      "accent-soft": "rgba(91,168,140,0.08)",
+      "border": "rgba(91,168,140,0.22)",
+      "shadow-base": "rgba(46,56,50,0.09)",
+      "success": "#7BAE7F",
+      "coral": "#D4887A",
+      "danger": "#8B4A3A"
+    },
+    "sources": [
+      "#344039",
+      "#B76A58",
+      "#5AA486",
+      "#7B704C",
+      "#C4CDC5"
+    ],
+    "types": [
+      "#8F8050",
+      "#9E6F4D",
+      "#9E6559",
+      "#607A75",
+      "#748079"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#91BFAE",
+      "#D8A795",
+      "#BFC18A",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#326B55",
+      "soft": "#E6EFE8"
+    },
+    "overlayNatal": {
+      "color": "#748079",
+      "on": "#07110C"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#4D9179",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "contemplation",
+    "site": {
+      "bg": "#F3F5F7",
+      "elevated": "#F8F9FB",
+      "sunken": "#ECEFF2",
+      "text": "#2C3238",
+      "text-secondary": "#5A6570",
+      "text-tertiary": "#869098",
+      "accent": "#7E99A8",
+      "accent-hover": "#6B8594",
+      "accent-soft": "rgba(126,153,168,0.08)",
+      "border": "rgba(126,153,168,0.22)",
+      "shadow-base": "rgba(44,50,56,0.09)",
+      "success": "#6FA87E",
+      "coral": "#C4827C",
+      "danger": "#8B4040"
+    },
+    "sources": [
+      "#313740",
+      "#A16872",
+      "#6F9DB2",
+      "#726678",
+      "#C7CDD2"
+    ],
+    "types": [
+      "#8C815A",
+      "#98715B",
+      "#94666C",
+      "#657783",
+      "#778087"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#A1B9C6",
+      "#CEADB4",
+      "#C3BDA7",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#526F80",
+      "soft": "#E8EDF0"
+    },
+    "overlayNatal": {
+      "color": "#7B7E83",
+      "on": "#000000"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#7E99A8",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "absolutely",
+    "site": {
+      "bg": "#F4F3EE",
+      "elevated": "#FAF9F5",
+      "sunken": "#EDEAE2",
+      "text": "#2D2B28",
+      "text-secondary": "#6B6864",
+      "text-tertiary": "#9B9793",
+      "accent": "#D97757",
+      "accent-hover": "#C76445",
+      "accent-soft": "rgba(217,119,87,0.10)",
+      "border": "rgba(177,173,161,0.28)",
+      "shadow-base": "rgba(45,43,40,0.07)",
+      "success": "#7BAE7F",
+      "coral": "#C4917E",
+      "danger": "#8B3A3A",
+      "accent-strong": "#B9573E",
+      "focus": "#D97757"
+    },
+    "sources": [
+      "#141413",
+      "#788C5D",
+      "#D97757",
+      "#786C58",
+      "#BBB5AC"
+    ],
+    "types": [
+      "#9B8051",
+      "#A96C4A",
+      "#98564A",
+      "#69757B",
+      "#7F7A73"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#D97757",
+      "#6A9BCC",
+      "#788C5D",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#A74D32",
+      "soft": "#F7E8E2"
+    },
+    "overlayNatal": {
+      "color": "#6F6A65",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#B96449",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "delve",
+    "site": {
+      "bg": "#FFFFFF",
+      "elevated": "#F7F7F8",
+      "sunken": "#F0F0F0",
+      "text": "#1A1A1A",
+      "text-secondary": "#6E6E6E",
+      "text-tertiary": "#999999",
+      "accent": "#111111",
+      "accent-hover": "#000000",
+      "accent-soft": "rgba(0,0,0,0.05)",
+      "border": "rgba(0,0,0,0.10)",
+      "shadow-base": "rgba(0,0,0,0.06)",
+      "success": "#5C8A68",
+      "coral": "#D9746C",
+      "danger": "#8B3A3A"
+    },
+    "sources": [
+      "#1A1A1A",
+      "#6F6F6F",
+      "#2E75D4",
+      "#6F6963",
+      "#D1D1D1"
+    ],
+    "types": [
+      "#82745C",
+      "#896A55",
+      "#895A56",
+      "#64727B",
+      "#7C7C7C"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#3F3F3F",
+      "#2E75D4",
+      "#AAB0B6",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#245FAE",
+      "soft": "#E8F0FB"
+    },
+    "overlayNatal": {
+      "color": "#6F6F6F",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "unified-natal",
+    "timelineTransit": "#1F4F85",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "deep-think",
+    "site": {
+      "bg": "#FCFCFD",
+      "elevated": "#F8F8FA",
+      "sunken": "#F0F0F2",
+      "text": "#1D1D1F",
+      "text-secondary": "#65656B",
+      "text-tertiary": "#95959C",
+      "accent": "#4D6BFE",
+      "accent-hover": "#4059D7",
+      "accent-soft": "rgba(77,107,254,0.08)",
+      "border": "rgba(0,0,0,0.09)",
+      "shadow-base": "rgba(0,0,0,0.05)",
+      "success": "#34A853",
+      "coral": "#D9746C",
+      "danger": "#8B3A3A",
+      "accent-strong": "#4059D7",
+      "focus": "#4D6BFE"
+    },
+    "sources": [
+      "#252A36",
+      "#C26068",
+      "#4660E5",
+      "#6F668C",
+      "#C9CCD6"
+    ],
+    "types": [
+      "#9C8353",
+      "#A8744D",
+      "#A85D64",
+      "#536AA8",
+      "#737989"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#4D6BFE",
+      "#5FA98D",
+      "#8793A6",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#354CC0",
+      "soft": "#E9EDFF"
+    },
+    "overlayNatal": {
+      "color": "#747B8A",
+      "on": "#000000"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#394FC5",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "new-warm-paper",
+    "site": {
+      "bg": "#F5EFE4",
+      "elevated": "#FBF7EE",
+      "sunken": "#EFE8DB",
+      "text": "#2A2622",
+      "text-secondary": "#4A433C",
+      "text-tertiary": "#6B6158",
+      "accent": "#537D96",
+      "accent-hover": "#3F6179",
+      "accent-soft": "rgba(83,125,150,0.08)",
+      "border": "#D8CFBE",
+      "shadow-base": "rgba(42,38,34,0.04)",
+      "success": "#4A6B4A",
+      "coral": "#8B2C1F",
+      "danger": "#8B2C1F"
+    },
+    "sources": [
+      "#2A2622",
+      "#8B2C1F",
+      "#4A94B2",
+      "#78684F",
+      "#C3B9AA"
+    ],
+    "types": [
+      "#8D784C",
+      "#956447",
+      "#884E42",
+      "#5E7481",
+      "#716B64"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#718B99",
+      "#C16F5A",
+      "#AA9161",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#3F6179",
+      "soft": "#E3E8E8"
+    },
+    "overlayNatal": {
+      "color": "#756B60",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#537D96",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  },
+  {
+    "id": "midnight-contrast",
+    "site": {
+      "bg": "#26343D",
+      "elevated": "#30414B",
+      "sunken": "#202C34",
+      "text": "#F0F6FA",
+      "text-secondary": "#D3E0E8",
+      "text-tertiary": "#B7C8D3",
+      "accent": "#E6B1C4",
+      "accent-hover": "#F0C4D3",
+      "accent-soft": "rgba(230,177,196,0.14)",
+      "border": "rgba(230,177,196,0.26)",
+      "shadow-base": "rgba(0,0,0,0.44)",
+      "success": "#A8DDAA",
+      "coral": "#F1BEAD",
+      "danger": "#E28B8B"
+    },
+    "sources": [
+      "#F0F6FA",
+      "#7FA7B8",
+      "#E6B1C4",
+      "#B79BC4",
+      "#71828D"
+    ],
+    "types": [
+      "#C7AD72",
+      "#D09263",
+      "#D37F72",
+      "#80A6C1",
+      "#A3B0B8"
+    ],
+    "circuits": [
+      "#C28BE0",
+      "#E98075",
+      "#6BB8E8",
+      "#65C98A"
+    ],
+    "relationships": [
+      "#7FA7B8",
+      "#E6B1C4",
+      "#B9A77A",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#F0C4D3",
+      "soft": "rgba(230,177,196,0.14)"
+    },
+    "overlayNatal": {
+      "color": "#A7BAC5",
+      "on": "#0B1318"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#C98FA5",
+    "circuitSofts": [
+      "#2A1D32",
+      "#2A1515",
+      "#152030",
+      "#152A1D"
+    ]
+  },
+  {
+    "id": "coral",
+    "site": {
+      "bg": "#FDF6EC",
+      "elevated": "#FFFBF3",
+      "sunken": "#FCF1E4",
+      "text": "#1A3049",
+      "text-secondary": "#314153",
+      "text-tertiary": "#727F89",
+      "accent": "#1A3049",
+      "accent-hover": "#243A55",
+      "accent-soft": "rgba(26,48,73,0.07)",
+      "border": "rgba(243,126,99,0.18)",
+      "shadow-base": "rgba(26,48,73,0.08)",
+      "success": "#6E8C7A",
+      "coral": "#F37E63",
+      "danger": "#A3483B"
+    },
+    "sources": [
+      "#1A3049",
+      "#6E8C7A",
+      "#F37E63",
+      "#87735E",
+      "#C9BEB1"
+    ],
+    "types": [
+      "#9A7F4D",
+      "#AD7446",
+      "#B76351",
+      "#506C82",
+      "#747F86"
+    ],
+    "circuits": [
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
+    ],
+    "relationships": [
+      "#6E8C7A",
+      "#F37E63",
+      "#B6C5B5",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
+    ],
+    "signal": {
+      "text": "#B75240",
+      "soft": "#FCE7E0"
+    },
+    "overlayNatal": {
+      "color": "#6A7680",
+      "on": "#FFFFFF"
+    },
+    "transitSourceMode": "split",
+    "timelineTransit": "#D5634E",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
+  }
+]

@@ -1,4 +1,5 @@
 import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection} from './helpers/skin-projection.js';
 import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,8 +1,11 @@
 import {execFileSync} from 'node:child_process';
+import {approvedSkinSource,skinScope} from './skin-projection.js';
 export const releaseCandidate = '7b133bdcbe600bb6f0e0fa8925da890ea39c9978';
 export const approvedPresentationPaths = new Set(['src/features/transit-timeline/timeline.css', 'src/features/transit-timeline/view.js', 'src/lib/channel-badges.js', 'src/lib/human-design/english-readings.js', 'src/lib/knowledge/content/human-design-en.js', 'src/lib/knowledge/content/human-design-zh-CN.js', 'src/lib/knowledge/content/human-design-zh-Hant.js', 'src/lib/knowledge/detail-access.css', 'src/lib/knowledge/detail-controller.js', 'src/lib/knowledge/detail-renderer.js', 'src/lib/knowledge/human-design-foundation.js', 'src/lib/knowledge/sources.js', 'src/lib/local-account.js', 'src/lib/planet-reference.js', 'src/lib/reference-catalog.js', 'src/lib/reference-content.js', 'src/lib/reference-messages.js', 'src/lib/reference-supplements.js', 'src/lib/reference-supplements.json', 'src/lib/sync-popover-ui.js', 'src/lib/vocabulary.js', 'src/locales/en.js', 'src/locales/ui-contexts.json', 'src/locales/zh-CN/channels.json', 'src/locales/zh-CN/index.js', 'src/locales/zh-CN/ui-views.json', 'src/locales/zh-CN/vocabulary.js', 'src/locales/zh-Hant/channels.json', 'src/locales/zh-Hant/index.js', 'src/locales/zh-Hant/ui-views.json', 'src/locales/zh-Hant/vocabulary.js', 'src/main.js', 'src/styles.css', 'src/views/chart.js', 'src/views/connection.js', 'src/views/reference.js', 'src/views/transit-presentation.js']);
 export function preservedSource(file, historical) {
- const source = execFileSync('git', ['show', `${approvedPresentationPaths.has(file) ? releaseCandidate : historical}:${file}`]);
+ const source = Object.hasOwn(skinScope.files, file)
+  ? approvedSkinSource(file, historical)
+  : execFileSync('git', ['show', `${approvedPresentationPaths.has(file) ? releaseCandidate : historical}:${file}`]);
  // Approved zh-CN terminology correction only; retain the immutable prose boundary.
  return ['src/lib/knowledge/content/human-design-zh-CN.js', 'src/lib/reference-supplements.json'].includes(file)
   ? Buffer.from(source.toString().replaceAll('荐骨', '骶骨')) : source;
