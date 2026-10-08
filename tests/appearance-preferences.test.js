@@ -31,7 +31,7 @@ test('per-Skin overrides restore independently, size and palette survive switch/
   assert.equal(getAppearance().skin,'default-light'); assert.equal(getAppearance().centerPalette,'chakra');
   setSkin('default-dark'); assert.equal(getCustomOverrides().design,'#333444');
   resetAppearance(); initAppearance();
-  assert.equal(getAppearance().skin,'default-dark'); assert.equal(getAppearance().centerPalette,'classic'); assert.deepEqual(getCustomOverrides(),{});
+  assert.equal(getAppearance().skin,'default-light'); assert.equal(getAppearance().centerPalette,'classic'); assert.deepEqual(getCustomOverrides(),{});
 }));
 test('v2 global colors seed both defaults without modifying old storage; new state wins on reload', ()=>withBrowser(({storage})=>{
   const legacy=JSON.stringify({version:2,preset:'chakra',globalOverrides:{accent:'#123456',design:'#abcdef',gateNumberSize:20,unknown:'#112233'}});
@@ -74,5 +74,5 @@ test('new Skin slots stay independent with all five overrides, reload and Restor
   assert.equal(styles.has('--hd-transit-text'),false,'Restore removes the custom column-text treatment');
   setSkin('grass-aroma'); assert.equal(getCustomOverrides().accent,'#777aaa');
   setSkin('midnight-contrast'); assert.equal(getAppearance().theme,'dark'); assert.equal(getAppearance().centerPalette,'chakra');
-  assert.deepEqual(Object.keys(JSON.parse(storage.get(APPEARANCE_STORAGE_KEY))),['version','skinId','centerPalette','overridesBySkin','preferences']);
+  assert.deepEqual(Object.keys(JSON.parse(storage.get(APPEARANCE_STORAGE_KEY))),['version','skinMode','skinId','centerPalette','centerPaletteMode','manualCenterPalette','overridesBySkin','preferences']);
 }));

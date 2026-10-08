@@ -76,6 +76,18 @@ export function validateSyncedRelease(rootPath = root) {
   if (restoration && (restoration.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119' || Object.keys(restoration.files).length !== 9 || Object.keys(restoration.files).some(file => !restorationAllowed.has(file)))) throw new Error('Invalid Variable 29 final content scope');
   // Later content/UI rounds were explicitly approved after the historical sync scopes.
   // Pin their immutable RC blobs; astronomy, topology and annual data keep the old guards.
+  // The user-approved skin scope includes reviewed renderer/appearance runtime JS as exact hashes.
+  const skinScope = JSON.parse(readFileSync(path.join(rootPath, 'tests/fixtures/skin-reviewed-scope.json')));
+  if (skinScope.schemaVersion !== 1 || skinScope.base !== 'a5485015f23ef31ca8227df2a2eaf2290a08e266'
+      || skinScope.reviewedHead !== 'c15e021ea1b57ec46be5209d3dc75a4631f47b13') throw new Error('Invalid reviewed skin scope baseline');
+  const skinPaths = git('diff', '--name-only', `${skinScope.base}...${skinScope.reviewedHead}`, '--', 'src').toString().trim().split('\n').filter(Boolean).sort();
+  if (skinScope.srcFiles.slice().sort().join('\n') !== skinPaths.join('\n')) throw new Error('Invalid reviewed skin src scope');
+  for (const [file, digest] of Object.entries(skinScope.files))
+    if (hash(git('show', `${skinScope.reviewedHead}:${file}`)) !== digest) throw new Error(`Reviewed skin hash differs: ${file}`);
+  for (const file of [...skinScope.srcFiles, 'index.html', 'package.json'])
+    if (hash(readFileSync(path.join(rootPath, file))) !== skinScope.files[file]) throw new Error(`Working file differs from reviewed skin: ${file}`);
+  for (const file of ['src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/lib/human-design/connection.js','src/lib/transit-graph.js','src/features/transit-timeline/core.js','src/lib/bodygraph-integration.js','src/lib/human-design/bodygraph-geometry.js','src/lib/variable-arrows.js','engine-core/TransitCore.cs'])
+    if (!git('show', `${skinScope.reviewedHead}:${file}`).equals(git('show', `${skinScope.base}:${file}`))) throw new Error(`Protected algorithm/catalog/astronomy changed: ${file}`);
   const finalScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/knowledge-layer/release-candidate-scope.json')));
   if (finalScope.releaseCandidate !== '7b133bdcbe600bb6f0e0fa8925da890ea39c9978'
       || finalScope.baseline !== 'efe59fdc863f409a66eb0c0eaaea73f09f324119') throw new Error('Invalid release candidate baseline');
@@ -91,7 +103,7 @@ export function validateSyncedRelease(rootPath = root) {
   const staticEnv = Buffer.from('# Static hosted sites do not include the password-protected local installation.\nVITE_OHD_LOCAL=false\nVITE_OHD_API_BASE=\nVITE_OHD_SYNC_ENABLED=false\n');
   for (const [file, bytes] of [['.env.production', productionEnv], ['.env.static', staticEnv]])
     if (hash(bytes) !== finalScope.releaseFixes[file] || hash(readFileSync(path.join(rootPath, file))) !== hash(bytes)) throw new Error(`Static feature switch differs: ${file}`);
-  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files)])].filter(protectedPath);
+  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...skinScope.srcFiles, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
@@ -100,7 +112,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (terminologyHash(file) ?? finalScope.releaseFixes[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

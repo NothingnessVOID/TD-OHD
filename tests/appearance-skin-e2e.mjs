@@ -43,10 +43,10 @@ try {
     'design channels follow the sole Design token');
   assert.equal((await inspect('#bodygraph-container .bg-planets-design .bg-planet-act')).color, 'rgb(123, 44, 255)');
   const centerEdge = async key => (await inspect(`#bodygraph-container radialGradient[id$="-cg-${key}"] stop[offset="1"]`)).stopColor;
-  assert.equal(await centerEdge('g'), '#2468AF');
-  assert.equal(await centerEdge('root'), '#AF6835');
-  assert.notEqual(await centerEdge('head'), '#2468AF');
-  assert.notEqual(await centerEdge('throat'), '#AF6835');
+  assert.equal(await centerEdge('g'), '#6F9E86');
+  assert.equal(await centerEdge('root'), '#B8645A');
+  assert.notEqual(await centerEdge('head'), '#6F9E86');
+  assert.notEqual(await centerEdge('throat'), '#B8645A');
 
   await page.locator('#bodygraph-container .bg-gate[data-gate="49"] .bg-gate-circle').hover();
   await page.locator('#bodygraph-container .bg-tooltip .bg-tt-design').waitFor();
@@ -62,9 +62,9 @@ try {
   await setAppearance('restoreCurrentSkin');
   await setAppearance('setCenterPalette', 'classic');
   await setAppearance('setTheme', 'dark');
-  assert.equal(await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim()), '#e74c3c');
-  assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#e74c3c"]').count() > 0,
-    'dark theme repaints current chart without reload');
+  assert.equal(await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim()), '#E16F60');
+  assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#E16F60"]').count() > 0,
+    'default-dark Design uses the approved final color and repaints without reload');
   await setAppearance('setTheme', 'light');
 
   for (const view of ['transits', 'timeline']) {
@@ -82,12 +82,16 @@ try {
       `${view} transit paths follow the Transit token`);
     assert.equal((await inspect(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`)).color,
       'rgb(123, 44, 255)', `${view} Design planet column follows the Design token`);
-    assert.notEqual((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
-      beforeTransitText, `${view} transit planet column follows the Transit text derivative`);
+    const expectedTransitText = await page.evaluate(() => {
+      const probe=document.createElement('span');probe.style.color='var(--hd-transit-text)';document.body.append(probe);
+      const value=getComputedStyle(probe).color;probe.remove();return value;
+    });
+    assert.equal((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
+      expectedTransitText, `${view} transit planet column retains the separately approved Transit text token`);
     const legend = `${stage} .tl-legend [data-source="transit"] i`;
     const expectedLegend = await page.evaluate(() => {
       const probe = document.createElement('i');
-      probe.style.backgroundColor = 'var(--hd-transit)';
+      probe.style.backgroundColor = 'var(--hd-timeline-transit)';
       document.body.append(probe);
       const color = getComputedStyle(probe).backgroundColor;
       probe.remove();

@@ -300,9 +300,9 @@
     }
   },
   "files": {
-    "src/lib/appearance.js": "0a05f80e592a9c1f191a00cbba95580e0066b7fa1ab12f67b22aed9b949cc70b",
-    "src/lib/appearance-controls.js": "815f9a28ccba0d96d7d8afdf009415540f426018d1a94d1508663b7ad6c2b4d4",
-    "src/styles/appearance-controls.css": "695f5c540131f631a8538c9734ea99fff14c22c37793607a7263aa4e65a7d2d8",
+    "src/lib/appearance.js": "ab126ec94027f4096c3a3a791bcec01a949f3ab3ebfaebf47740fc6a609322fc",
+    "src/lib/appearance-controls.js": "513ea70147e84d25767fc4e4ee945fbaf28b266d5ab443fcb605858d69e76d5f",
+    "src/styles/appearance-controls.css": "542bd27e33966d4ecccf3ae5745c5af829fc1e4580a9d0f7819b8ac211d4126f",
     "src/styles/center-palettes/classic.css": "bdee09d347cd60aae08b39f12627eea28fe7deed8476411d7aa7bfd4315a815a",
     "src/styles/center-palettes/chakra.css": "7ced1b69a84ae4df14ca2a540e966f5b84d46ce4f7a392616b1ad81b1f29c8f4",
     "src/views/connection.js": "aca2b6b7e211964e0639b977e7dfab83f1fc81d1cbe8e4aabd46cdb96ae4cb2e",

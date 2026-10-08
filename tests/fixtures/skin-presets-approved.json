@@ -32,22 +32,20 @@
       "#757A7D"
     ],
     "circuits": [
-      "#6E6178",
-      "#8D5A55",
-      "#60747F",
-      "#687D69"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#56807A",
-      "#A46C62",
-      "#9A8355",
-      "#9A6F37",
-      "#6F816E",
-      "#8F6C50",
-      "#757A7D"
+      "#91B3C4",
+      "#D8A39D",
+      "#C5B984",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#FFFFFF",
       "text": "#2E5870",
       "soft": "#E9EBED"
     },
@@ -56,7 +54,13 @@
       "on": "#FFFFFF"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#315B70"
+    "timelineTransit": "#315B70",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "grass-aroma",
@@ -91,22 +95,20 @@
       "#748079"
     ],
     "circuits": [
-      "#716A79",
-      "#91675D",
-      "#617B78",
-      "#61866F"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#5E8579",
-      "#A87568",
-      "#958557",
-      "#8C6C43",
-      "#6F8C74",
-      "#916F56",
-      "#76817B"
+      "#91BFAE",
+      "#D8A795",
+      "#BFC18A",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#07110C",
       "text": "#326B55",
       "soft": "#E6EFE8"
     },
@@ -115,7 +117,13 @@
       "on": "#07110C"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#4D9179"
+    "timelineTransit": "#4D9179",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "contemplation",
@@ -150,22 +158,20 @@
       "#778087"
     ],
     "circuits": [
-      "#716A83",
-      "#89646B",
-      "#667985",
-      "#718376"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#617F7F",
-      "#A07174",
-      "#8F805E",
-      "#896A4B",
-      "#74887A",
-      "#8B6F61",
-      "#7E868B"
+      "#A1B9C6",
+      "#CEADB4",
+      "#C3BDA7",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#0D171C",
       "text": "#526F80",
       "soft": "#E8EDF0"
     },
@@ -174,7 +180,13 @@
       "on": "#000000"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#7E99A8"
+    "timelineTransit": "#7E99A8",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "absolutely",
@@ -198,7 +210,7 @@
     },
     "sources": [
       "#141413",
-      "#7F7068",
+      "#788C5D",
       "#D97757",
       "#786C58",
       "#BBB5AC"
@@ -211,22 +223,20 @@
       "#7F7A73"
     ],
     "circuits": [
-      "#766A75",
-      "#8E5F55",
-      "#6C777C",
-      "#737A63"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#647D75",
-      "#A16E5E",
-      "#9B855A",
-      "#B9684D",
-      "#747F68",
-      "#8E6B58",
-      "#7D7973"
+      "#D97757",
+      "#6A9BCC",
+      "#788C5D",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#100B08",
       "text": "#A74D32",
       "soft": "#F7E8E2"
     },
@@ -235,7 +245,13 @@
       "on": "#FFFFFF"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#B96449"
+    "timelineTransit": "#B96449",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "delve",
@@ -270,22 +286,20 @@
       "#7C7C7C"
     ],
     "circuits": [
-      "#716B76",
-      "#7F5F5A",
-      "#69757C",
-      "#68766C"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#617B76",
-      "#947068",
-      "#8A7C60",
-      "#806B53",
-      "#69766C",
-      "#7C685A",
-      "#7C7C7C"
+      "#3F3F3F",
+      "#2E75D4",
+      "#AAB0B6",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#FFFFFF",
       "text": "#245FAE",
       "soft": "#E8F0FB"
     },
@@ -294,7 +308,13 @@
       "on": "#FFFFFF"
     },
     "transitSourceMode": "unified-natal",
-    "timelineTransit": "#1F4F85"
+    "timelineTransit": "#1F4F85",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "deep-think",
@@ -331,22 +351,20 @@
       "#737989"
     ],
     "circuits": [
-      "#756AA0",
-      "#955F66",
-      "#5F73A3",
-      "#5F7F72"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#5B8588",
-      "#AD716B",
-      "#9B8657",
-      "#6C72C7",
-      "#678476",
-      "#866D5B",
-      "#7B8090"
+      "#4D6BFE",
+      "#5FA98D",
+      "#8793A6",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#FFFFFF",
       "text": "#354CC0",
       "soft": "#E9EDFF"
     },
@@ -355,7 +373,13 @@
       "on": "#000000"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#394FC5"
+    "timelineTransit": "#394FC5",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "new-warm-paper",
@@ -390,22 +414,20 @@
       "#716B64"
     ],
     "circuits": [
-      "#716476",
-      "#80564C",
-      "#60747E",
-      "#63715F"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#5D7C72",
-      "#9D6A5A",
-      "#93804F",
-      "#8D5D43",
-      "#687361",
-      "#7F654F",
-      "#746C64"
+      "#718B99",
+      "#C16F5A",
+      "#AA9161",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#080605",
       "text": "#3F6179",
       "soft": "#E3E8E8"
     },
@@ -414,7 +436,13 @@
       "on": "#FFFFFF"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#537D96"
+    "timelineTransit": "#537D96",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   },
   {
     "id": "midnight-contrast",
@@ -449,22 +477,20 @@
       "#A3B0B8"
     ],
     "circuits": [
-      "#A88BBC",
-      "#C17C70",
-      "#7F9FB4",
-      "#86A58E"
+      "#C28BE0",
+      "#E98075",
+      "#6BB8E8",
+      "#65C98A"
     ],
     "relationships": [
-      "#74AFA6",
-      "#D18A7D",
-      "#BCA45F",
-      "#B88E6A",
-      "#8BA590",
-      "#B3926E",
-      "#A8B6BE"
+      "#7FA7B8",
+      "#E6B1C4",
+      "#B9A77A",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#1B2025",
       "text": "#F0C4D3",
       "soft": "rgba(230,177,196,0.14)"
     },
@@ -473,7 +499,13 @@
       "on": "#0B1318"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#C98FA5"
+    "timelineTransit": "#C98FA5",
+    "circuitSofts": [
+      "#2A1D32",
+      "#2A1515",
+      "#152030",
+      "#152A1D"
+    ]
   },
   {
     "id": "coral",
@@ -508,22 +540,20 @@
       "#747F86"
     ],
     "circuits": [
-      "#706477",
-      "#9C5F50",
-      "#576E7F",
-      "#65796D"
+      "#7A2F99",
+      "#A82E24",
+      "#1C6695",
+      "#18773F"
     ],
     "relationships": [
-      "#5C7F78",
-      "#BC715F",
-      "#9A8251",
-      "#B06B4E",
-      "#6B7F70",
-      "#956D55",
-      "#748087"
+      "#6E8C7A",
+      "#F37E63",
+      "#B6C5B5",
+      "repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px)",
+      null,
+      "var(--hd-connection-bridged)"
     ],
     "signal": {
-      "on": "#1A1714",
       "text": "#B75240",
       "soft": "#FCE7E0"
     },
@@ -532,6 +562,12 @@
       "on": "#FFFFFF"
     },
     "transitSourceMode": "split",
-    "timelineTransit": "#D5634E"
+    "timelineTransit": "#D5634E",
+    "circuitSofts": [
+      "#F0E6F6",
+      "#FCE4E4",
+      "#E4F0FC",
+      "#E4F6EC"
+    ]
   }
 ]
