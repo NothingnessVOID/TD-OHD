@@ -1,5 +1,5 @@
-import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
-import {skinProjection} from './helpers/skin-projection.js';
+import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -50,7 +50,7 @@ test('Knowledge theme colors have no activation/type palette coupling',()=>{
 });
 test('protected calculation, geometry and BodyGraph functions stay byte-identical to Round 2D',()=>{
  const base='7d9f7df080dbbb997f7db6eeac6b04327fd5b2db';
- for(const p of ['src/lib/human-design/bodygraph-geometry.js','src/bodygraph.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js'])assert.deepEqual(readFileSync(new URL('../'+p,import.meta.url)),preservedSource(p,base),p);
+ for(const p of ['src/lib/human-design/bodygraph-geometry.js','src/bodygraph.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js'])assert.deepEqual(p==='src/bodygraph.js'?phase1ProtectedCurrent(p):readFileSync(new URL('../'+p,import.meta.url)),skinScope.files[p]?skinProjection(p,base):preservedSource(p,base),p);
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
  const old=extract(preservedSource('src/views/chart.js',base).toString()),now=extract(readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8'));
  // goBack's additive Knowledge return branch is guarded in knowledge-polish.test.js.

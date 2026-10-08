@@ -76,13 +76,15 @@ test('computed charts, relationships, teams and transits have translated dynamic
     check(c.variable.determination.cognition.name,'cognition');
     chinese(zh.zhCross(c.incarnationCross),'incarnation cross');
     const comp = engine.compareHumanDesign(c, charts[(i+1)%charts.length]);
-    for (const key of ['dynamic','gifts','challenges','tips']) check(comp.typeInteraction[key],`type ${key}`);
-    check(comp.authorityDynamic.description,'authority');
-    check(comp.profileHarmony.description,'profile');
-    check(comp.bridging.description,'bridging');
-    check(comp.summary,'summary');
-    comp.centerDynamics.forEach(v=>check(v.description,'center dynamic'));
-    Object.values(comp.connectionChart.connections).flat().forEach(v=>check(v.description,'channel dynamic'));
+    assert.equal(comp.profileHarmony, undefined, 'arbitrary compatibility scores are removed');
+    assert.equal(comp.individuals.personA.type, c.type.name);
+    assert.equal(comp.individuals.personA.authority, c.authority.name);
+    assert.equal(comp.individuals.personA.profile, c.profile.numbers);
+    assert.equal(comp.centerDynamics.length, 9);
+    for (const key of ['personA', 'personB']) assert.ok(['not-applicable','none','partial','complete'].includes(comp.bridging[key].status));
+    assert.equal(typeof comp.summaryFacts.createdCenterCount, 'number');
+    // The structural comparison now returns facts; translated display is verified
+    // in connection-structure-e2e.mjs for every state in all three languages.
     const transit = analyzeTransitActivations(c, sky);
     transit.temporarilyDefinedCenters.forEach(v=>check(v.theme,'transit center'));
     transit.reinforcedGates.forEach(v=>{

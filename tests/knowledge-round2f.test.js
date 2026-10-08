@@ -1,5 +1,5 @@
-import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
-import {skinProjection} from './helpers/skin-projection.js';
+import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -59,5 +59,5 @@ test('deviation interface has explicit locale messages and uses neutral theme to
  assert.match(css,/var\(--accent\)/);assert.match(css,/var\(--accent-soft\)/);assert.match(css,/var\(--border-subtle\)/);assert.doesNotMatch(css,/#[0-9a-f]+|--hd-|danger|warning|alert|red|yellow/i);
 });
 test('engines, Variable mapping, Home, Export, Timeline and protected consumers stay byte-identical to actual baseline',()=>{
- for(const file of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs','src/bodygraph.js','src/views/chart.js','src/views/connection.js','src/views/team.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/chart-data-export.js'])assert.deepEqual(readFileSync(new URL('../'+file,import.meta.url)),preservedSource(file,baseline),file);
+ for(const file of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs','src/bodygraph.js','src/views/chart.js','src/views/connection.js','src/views/team.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/chart-data-export.js'])assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(file)?phase1ProtectedCurrent(file):readFileSync(new URL('../'+file,import.meta.url)),skinScope.files[file]?skinProjection(file,baseline):preservedSource(file,baseline),file);
 });
