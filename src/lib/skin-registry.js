@@ -82,6 +82,7 @@ export const SKIN_TOKEN_GROUPS = Object.freeze({
     '--hd-detail-bg', '--hd-detail-border', '--hd-legend-bg', '--hd-legend-border', '--hd-legend-text', '--hd-planet-column-text'
   ]),
   sources: Object.freeze([
+    '--hd-birth-personality', '--hd-birth-design',
     '--hd-personality', '--hd-personality-on', '--hd-design', '--hd-design-on',
     '--hd-both', '--hd-both-on', '--hd-transit', '--hd-transit-on', '--hd-transit-text', '--hd-transit-soft', '--hd-overlay-natal', '--hd-overlay-natal-on'
   ]),

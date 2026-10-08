@@ -1,5 +1,8 @@
 /* Independent graph preferences/visual parameters and legacy aliases. Skin owns colors. */
 :root {
+  /* Optional birth-only defaults follow the current Skin source hues. */
+  --hd-birth-personality: var(--hd-personality);
+  --hd-birth-design: var(--hd-design);
   --hd-gate-number-size: 22px;
   --hd-gate-number-baseline-offset: 4;
   --hd-gate-active-weight: 700;
