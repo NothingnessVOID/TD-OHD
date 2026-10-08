@@ -27,7 +27,7 @@ export const SKINS = Object.freeze([
   }),
   Object.freeze({
     id: 'absolutely', defaultCenterPalette: 'mineral', name: 'Absolutely', tagline: 'A little familiar', mode: 'light', transitSourceMode: 'split',
-    preview: Object.freeze({ surface: '#F4F3EE', text: '#2D2B28', accent: '#D97757', personality: '#141413', design: '#7F7068', transit: '#D97757', signature: '#D97757' }),
+    preview: Object.freeze({ surface: '#F4F3EE', text: '#2D2B28', accent: '#D97757', personality: '#141413', design: '#788C5D', transit: '#D97757', signature: '#D97757' }),
     cssSource: 'src/styles/skins/absolutely.css'
   }),
   Object.freeze({

@@ -143,6 +143,7 @@ export function renderBodygraph(container, chart, opts = {}) {
   const transit = opts.transitModel || null;
   // Birth-only source hues never enter transit or relationship rendering.
   const birthOnly = !transit && !composite;
+  container.dataset.sourceContext = composite ? 'composite' : transit ? 'transit' : 'birth';
   const personalityColor = birthOnly
     ? skinToken(style, '--hd-birth-personality') || colors.personality : colors.personality;
   const designColor = birthOnly
