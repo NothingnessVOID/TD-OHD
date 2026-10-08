@@ -56,20 +56,21 @@ try {
     await selectSkin(skin.id);
     const actual=await page.locator('html').evaluate((root,tokens)=>Object.fromEntries(tokens.map(t=>[t,getComputedStyle(root).getPropertyValue(t).trim()])),SKIN_TOKENS);
     const invalid=await page.evaluate(values=>Object.entries(values).filter(([token,value])=>{
-      const property=token==='--hd-connection-both' ? 'background-image'
+      const property=['--hd-connection-both','--hd-relationship-companionship'].includes(token) ? 'background-image'
         : ['--shadow-sm','--shadow','--shadow-lg','--lens-active-shadow'].includes(token) ? 'box-shadow' : 'color';
       return !value || !CSS.supports(property,value);
     }),actual);
-    assert.deepEqual(invalid,[],skin.id+' all 96 computed values have valid CSS syntax');
+    assert.deepEqual(invalid,[],skin.id+' all registered computed values have valid CSS syntax');
     assert.equal(await page.locator('html').getAttribute('data-theme'),skin.mode);
     assert.equal(await css('--font'),font);assert.equal(await css('--font-serif'),serif);
     const colors = await page.locator('#bodygraph-container .bg-centers .bg-center').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
     assert.equal(colors.length,9,'all nine centers remain rendered');
     const edges = await page.locator('#bodygraph-container radialGradient stop[offset="1"]').evaluateAll(ns=>ns.map(n=>n.getAttribute('stop-color')));
-    if (sameModeCenters[skin.mode]) assert.deepEqual(edges,sameModeCenters[skin.mode],'Skin does not change Center Palette in the same mode');
-    else sameModeCenters[skin.mode]=edges;
-    assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${actual['--hd-design']}"]`).count(),'actual Design paths use this Skin');
-    await readable(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--hd-personality');
+    assert.equal(await page.locator('html').getAttribute('data-center-palette'), skin.defaultCenterPalette, 'Follow Skin resolves the approved paired center palette');
+    if (sameModeCenters[skin.defaultCenterPalette]) assert.deepEqual(edges,sameModeCenters[skin.defaultCenterPalette],'the same paired Center Palette has the same painted centers');
+    else sameModeCenters[skin.defaultCenterPalette]=edges;
+    assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${actual['--hd-birth-design'] || actual['--hd-design']}"]`).count(),'actual Design paths use the birth-specific Skin source');
+    await readable(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--hd-birth-personality');
     await shot(skin.id+'-home');
     await page.locator('#bodygraph-container').screenshot({path:`${evidence}/${skin.id}-birth-graph.png`});
     // A detail surface and a real popover, then the birth form.
@@ -88,7 +89,8 @@ try {
     await readable(page.locator('.reference-sidebar'),'--bg-elevated','background-color');await shot(skin.id+'-library');
     await navigate('transits');await page.locator('#transit-stage .bodygraph-svg').waitFor({timeout:60000});
     await readable(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--hd-transit-text');
-    await readable(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
+    if (skin.id === 'absolutely') assert.equal(await page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act').first().evaluate(n=>getComputedStyle(n).color), 'rgb(82, 102, 61)', 'approved Absolutely small Design text');
+    else await readable(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
     await readable(page.locator('#transit-stage .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
     assert.equal(await page.locator('#transit-stage .tl-graph').getAttribute('data-transit-source-mode'),skin.transitSourceMode);
     await shot(skin.id+'-transit');
@@ -108,7 +110,8 @@ try {
     else referenceTimeline = timeline;
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-timeline-transit','background-color');
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
-    await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
+    if (skin.id === 'absolutely') assert.equal(await page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act').first().evaluate(n=>getComputedStyle(n).color), 'rgb(82, 102, 61)', 'approved Absolutely timeline small Design text');
+    else await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
     await readable(page.locator('#timeline-view .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
     await shot(skin.id+'-timeline');
     await page.locator('#timeline-view .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-timeline-graph.png`});
@@ -118,16 +121,34 @@ try {
     for (const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries()) {
       const rows=page.locator('#connection-content .conn-section').nth(i).locator('.connection-type');
       assert.ok(await rows.count(),skin.id+' renders '+key+' fixtures');
-      await readable(rows,`--hd-relationship-${key}`,'border-left-color');
+      for (const row of await rows.all()) {
+        const marker = row.locator('.conn-mechanic-marker');
+        const expected = await row.evaluate(n => {
+          const probe=document.createElement('i'); probe.style.background=getComputedStyle(n).getPropertyValue('--connection-marker'); n.append(probe);
+          const value=getComputedStyle(probe).backgroundImage !== 'none' ? getComputedStyle(probe).backgroundImage : getComputedStyle(probe).backgroundColor; probe.remove(); return value;
+        });
+        const painted = await marker.evaluate(n => getComputedStyle(n).backgroundImage !== 'none' ? getComputedStyle(n).backgroundImage : getComputedStyle(n).backgroundColor);
+        assert.equal(painted, expected, skin.id+' '+key+' ownership marker paints the actual source');
+      }
     }
     const paint=await page.locator('#connection-content .composite-graph svg').evaluate(n=>({
       stripe:[...n.querySelectorAll('pattern[id$="-stripe-ab"] rect')].map(n=>n.getAttribute('fill')),
       both:[...n.querySelectorAll('linearGradient[id$="-cc-both"] stop')].map(n=>n.getAttribute('stop-color')),
-      bridged:n.querySelector('radialGradient[id$="-cc-bridged"] stop[offset="1"]').getAttribute('stop-color'),
+      bridged:[...n.querySelectorAll('.bg-center')].map(n=>n.getAttribute('fill')),
       fills:[...n.querySelectorAll('.bg-gate-path')].map(n=>n.getAttribute('fill'))
     }));
     assert.deepEqual(paint.stripe,[actual['--hd-connection-a'],actual['--hd-connection-b']]);
-    assert.deepEqual(paint.both,paint.stripe);assert.equal(paint.bridged,actual['--hd-connection-bridged']);
+    assert.deepEqual(paint.both,[paint.stripe[0],paint.stripe[0],paint.stripe[1],paint.stripe[1]], 'Both retains the approved hard 50% boundary');
+    const createdPaint = await page.evaluate(async () => {
+      const load=path=>import(performance.getEntriesByType('resource').find(r=>new URL(r.name).pathname===path)?.name || path);
+      const {renderBodygraph}=await load('/src/bodygraph.js');
+      const chart=gates=>({gates:{all:gates,personality:{},design:{}},channels:[],centers:{definedNames:[]}});
+      const node=document.createElement('div');document.body.append(node);
+      const style=getComputedStyle(document.documentElement), color=name=>style.getPropertyValue(name).trim();
+      renderBodygraph(node,chart([59]),{composite:{chartA:chart([59]),chartB:chart([6]),colorA:color('--hd-connection-a'),colorB:color('--hd-connection-b'),colorBridged:color('--hd-connection-bridged')},animate:false});
+      const fills=['sacral','solar'].map(key=>node.querySelector(`.bg-center[data-center="${key}"]`).getAttribute('fill'));node.remove();return fills;
+    });
+    assert.deepEqual(createdPaint,[actual['--hd-connection-bridged'],actual['--hd-connection-bridged']],skin.id+' preserves Created center paint');
     assert.ok(paint.fills.includes(actual['--hd-connection-a'])&&paint.fills.includes(actual['--hd-connection-b']));
     await shot(skin.id+'-relationship');
     await page.locator('#connection-content .composite-graph').screenshot({path:`${evidence}/${skin.id}-relationship-graph.png`});
@@ -135,7 +156,7 @@ try {
       for(const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries())
         await page.locator('#connection-content .conn-section').nth(i).screenshot({path:`${evidence}/${skin.id}-relationship-${key}.png`});
     }
-    results.push({id:skin.id,mode:skin.mode,transitSourceMode:skin.transitSourceMode,validComputedTokens:96,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-timeline-transit']}});
+    results.push({id:skin.id,mode:skin.mode,transitSourceMode:skin.transitSourceMode,validComputedTokens:SKIN_TOKENS.length,surfaces:['home','entry','detail','popover','library','transit','timeline','relationship'],relationshipPaint:true,timeline:{start:timeline.start,end:timeline.end,selected:timeline.selected,barCount:timeline.bars.length,signal:actual['--hd-timeline-transit']}});
     await navigate('chart');
   }
   // Real controls: independent overrides, restore, Palette, size, language and keyboard.
@@ -146,21 +167,25 @@ try {
   await page.locator('[data-skin-id="grass-aroma"]').click();assert.equal(await css('--accent'),'#5BA88C');
   assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');assert.equal(await css('--hd-gate-number-size'),'18px');
   await page.locator('[data-skin-id="high-contrast"]').click();assert.equal(await css('--accent'),'#123456');assert.equal(await css('--hd-transit'),'#234567');
-  await page.locator('#appearance-restore').click();assert.equal(await css('--accent'),'#3A6B85');assert.equal(await css('--hd-transit'),'#3A6B85');
-  assert.equal(await css('--hd-gate-number-size'),'18px');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
+  await page.locator('#appearance-restore').click();
+  assert.equal(await page.locator('html').getAttribute('data-skin'),'default-light');
+  assert.equal(await css('--accent'),'#B86F2C');assert.equal(await css('--hd-transit'),'#2D929F');
+  assert.equal(await css('--hd-gate-number-size'),'22px');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'classic');
+  await page.locator('button[data-center-palette="chakra"]').click();
+  await setField('gateNumberSize','18');
   await page.locator('[data-skin-id="midnight-contrast"]').click();
   await page.keyboard.press('Escape');await page.goto(base+birth);await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
   assert.equal(await page.locator('html').getAttribute('data-skin'),'midnight-contrast');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
   await openSettings();assert.equal(await css('--hd-gate-number-size'),'18px');
   const messages={
-    en:['Appearance','Skin','Center Palette','Customize','Restore Current Skin'],
-    'zh-CN':['外观','皮肤','中心配色','自定义','恢复当前皮肤'],
-    'zh-Hant':['外觀','皮膚','中心配色','自訂','恢復目前皮膚']
+    en:['Appearance','Skin','Center Palette','Customize','Reset Appearance'],
+    'zh-CN':['外观','皮肤','中心配色','自定义','恢复默认外观'],
+    'zh-Hant':['外觀','皮膚','中心配色','自訂','恢復預設外觀']
   };
   for(const locale of ['en','zh-CN','zh-Hant']){
     await page.evaluate(async locale=>{const path=performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/i18n.js')?.name || '/src/lib/i18n.js';(await import(path)).setLocale(locale);},locale);
     const labels=await page.locator('#skin-settings-title,.appearance-section h3,#appearance-restore').allTextContents();assert.deepEqual(labels,messages[locale]);
-    assert.equal(await page.locator('#skin-picker button').count(),11);
+    assert.equal(await page.locator('#skin-picker button').count(),12);
     for(const skin of SKINS){const name=await page.locator(`[data-skin-id="${skin.id}"] .skin-card-name`).innerText();assert.ok(name);assert.notEqual(name,skin.id);}
     await shot('picker-'+locale);
   }

@@ -1,4 +1,5 @@
 import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection} from './helpers/skin-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';

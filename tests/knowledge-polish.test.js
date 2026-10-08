@@ -1,4 +1,5 @@
 import {preservedSource} from './helpers/knowledge-release-contract.js';
+import {assertSkinScopeBoundary} from './helpers/skin-projection.js';
 import {uiKeys} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -10,7 +11,8 @@ test('Knowledge uses the actual shared Back class and no duplicate CSS identity'
  const controller=file('src/lib/knowledge/detail-controller.js');assert.match(controller,/class="gate-detail-back"/);assert.doesNotMatch(controller+file('src/lib/knowledge/detail-access.css'),/knowledge-back/);
  assert.match(file('src/styles.css'),/:has\(\.gate-detail-back\) \.gate-detail-body > \.knowledge-detail > \.detail-name/);
 });
-test('final approved shared styles retain primitives and title avoidance',()=>{
+test('approved shared styles retain the existing primitives after approved skin projection',()=>{
+ assertSkinScopeBoundary();
  assert.equal(file('src/styles.css'),preservedSource('src/styles.css',base).toString());
  assert.match(file('src/styles.css'),/\.ui-back-button/);
  assert.match(file('src/styles.css'),/\.ui-icon-button/);

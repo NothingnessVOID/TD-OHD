@@ -13,7 +13,7 @@ function withBrowser(body) {
 }
 test('Skin owns mode; Center Palette and fonts remain independent; compatibility APIs are mirrors', () => withBrowser(({attributes,storage}) => {
   initAppearance();
-  assert.deepEqual(getAppearance(), {skin:'default-light',centerPalette:'classic',theme:'light',siteSkin:'default-light',humanDesignSkin:'classic'});
+  assert.deepEqual(getAppearance(), {skin:'default-light',skinMode:'manual',centerPalette:'classic',centerPaletteMode:'skin-default',theme:'light',siteSkin:'default-light',humanDesignSkin:'classic'});
   attributes.set('data-font','reader-choice');
   setCenterPalette('chakra'); setSkin('default-dark');
   assert.equal(getAppearance().centerPalette,'chakra');
@@ -33,7 +33,7 @@ test('appearance changes notify graph subscribers once; no-op selection does not
   initAppearance(); const changes=[]; const unsubscribe=onAppearanceChange(value=>changes.push(value));
   try {
     setSkin('default-dark'); setCenterPalette('chakra'); setSkin('default-light'); setSkin('default-light');
-    assert.deepEqual(changes.map(x=>[x.skin,x.centerPalette]),[['default-dark','classic'],['default-dark','chakra'],['default-light','chakra']]);
+    assert.deepEqual(changes.map(x=>[x.skin,x.centerPalette]),[['default-dark','mineral'],['default-dark','chakra'],['default-light','chakra']]);
   } finally { unsubscribe(); }
 }));
 test('legacy dark mode chooses default-dark at startup', () => withBrowser(({storage}) => {

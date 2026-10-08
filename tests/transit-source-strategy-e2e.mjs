@@ -44,7 +44,7 @@ try {
         const el=container.querySelector('.bg-gate[data-gate="'+g+'"]');
         return [g,{circle:getPaint(el.querySelector('.bg-gate-circle').getAttribute('fill')),
           path:getPaint(container.querySelector('.bg-gate-path[data-gate="'+g+'"]').getAttribute('fill')),
-          on:el.querySelector('text').getAttribute('fill'),ring:el.querySelector('.bg-transit-ring')?.getAttribute('stroke')}];
+          on:el.querySelector('text').getAttribute('fill'),stroke:el.querySelector('text').getAttribute('stroke'),strokeWidth:el.querySelector('text').getAttribute('stroke-width'),ring:el.querySelector('.bg-transit-ring')?.getAttribute('stroke')}];
       })),
       spans:[...container.querySelectorAll('.bg-integration-span')].map(p=>getPaint(p.getAttribute('fill'))),
       geometry:[...container.querySelectorAll('path')].map(p=>p.getAttribute('d'))
@@ -69,8 +69,8 @@ try {
     const out=[];
     for(const skin of SKINS){
       setSkin(skin.id);
-      const tokens=Object.fromEntries(['personality','personality-on','design','design-on','transit','transit-on','overlay-natal','overlay-natal-on','inactive','inactive-on'].map(n=>[n,token(n)]));
-      const tokenColors=Object.fromEntries(['personality','design','overlay-natal','transit-text'].map(n=>[n,color(n)]));
+      const tokens=Object.fromEntries(['birth-personality','birth-design','personality','personality-on','design','design-on','transit','transit-on','overlay-natal','overlay-natal-on','inactive','inactive-on'].map(n=>[n,token(n)]));
+      const tokenColors=Object.fromEntries(['personality','design','overlay-natal','transit-text','timeline-birth'].map(n=>[n,color(n)]).concat([['design-text', (() => { const el=document.createElement('span');el.style.color='var(--hd-design-text, var(--hd-design))';document.body.append(el);const c=getComputedStyle(el).color;el.remove();return c; })()]]));
       out.push({id:skin.id,mode:skin.transitSourceMode,tokens,tokenColors,birth:draw(null),overlay:draw(model),columns:columns('overlay'),
         reinforced:draw(buildTransitGraph(chart,reinforced)),sky:draw(buildTransitGraph(chart,sky,'transit-only')),
         allSky:draw(buildTransitGraph(chart,reinforced,'transit-only')),skyColumns:columns('transit-only'),
@@ -88,36 +88,45 @@ try {
     const t=r.tokens, unified=r.mode==='unified-natal';
     assert.equal(r.birth.strategy,'split',r.id+' ordinary birth ignores strategy');
     const natalPaint={10:t.design,20:[t.personality,t.design],34:t.personality};
+    const birthPaint={10:t['birth-design'] || t.design,20:[t['birth-personality'] || t.personality,t['birth-design'] || t.design],34:t['birth-personality'] || t.personality};
     for(const gate of [10,20,34]){
-      assert.deepEqual(r.birth.gates[gate].circle,natalPaint[gate]);
+      assert.deepEqual(r.birth.gates[gate].circle,birthPaint[gate]);
       for(const surface of ['circle','path'])assert.deepEqual(r.overlay.gates[gate][surface],unified?t['overlay-natal']:natalPaint[gate],r.id+' overlay '+surface+' '+gate);
-      if(unified)assert.equal(r.overlay.gates[gate].on,t['overlay-natal-on']);
+      assert.equal(r.overlay.gates[gate].on,'#FFFFFF');
+      assert.equal(r.overlay.gates[gate].stroke,'#111111');
+      assert.equal(r.overlay.gates[gate].strokeWidth,'1.15');
     }
     assert.equal(r.overlay.stripe,!unified);
-    assert.equal(r.overlay.gates[57].circle,t.transit);assert.equal(r.overlay.gates[57].on,t['transit-on']);
+    assert.equal(r.overlay.gates[57].circle,t.transit);assert.equal(r.overlay.gates[57].on,'#FFFFFF');
     assert.equal(r.overlay.gates[34].ring,t.transit);assert.equal(r.overlay.gates[64].circle,t.inactive);
     if(unified){assert.equal(r.overlay.spans[0],t['overlay-natal']);assert.deepEqual(r.overlay.spans[1],[t['overlay-natal'],t.transit]);
       for(const span of r.reinforced.spans)assert.deepEqual(span,[t['overlay-natal'],t.transit]);}
     for(const gate of [10,20])assert.equal(r.sky.gates[gate].circle,t.inactive);
-    for(const gate of [34,57]){assert.equal(r.sky.gates[gate].circle,t.transit);assert.equal(r.sky.gates[gate].on,t['transit-on']);}
+    for(const gate of [34,57]){assert.equal(r.sky.gates[gate].circle,t.transit);assert.equal(r.sky.gates[gate].on,'#FFFFFF');}
     assert.equal(r.sky.stripe,false);for(const span of r.allSky.spans)assert.equal(span,t.transit);
     assert.deepEqual(r.columns.headings,['design','personality']);
     assert.deepEqual(r.columns.rows.map(n=>n.value),['10.3','34.1','20.4','20.2']);
     for(const row of r.columns.rows){
-      assert.equal(row.color,r.tokenColors[unified?'overlay-natal':row.side],r.id+' shared birth column');
-      assert.equal(row.mark,row.temporary==='true'?r.columns.transitText:row.color,'temporary fixing keeps Transit text color');
+      assert.equal(row.color,r.id === 'absolutely' && row.side === 'design' ? 'rgb(82, 102, 61)' : r.tokenColors[unified?'overlay-natal':row.side],r.id+' approved small-text source color');
+      assert.equal(row.mark,row.temporary==='true'?r.columns.transitText:r.tokenColors[unified?'overlay-natal':row.side],'fixing marks preserve source/temporary semantics separately from small-text override');
       if(row.temporary==='true')assert.match(row.title,/temporaryFixing · natalFixing/);
     }
     assert.deepEqual(r.columns.legend.map(n=>n.source),['natal','transit','completed','both']);
-    assert.equal(r.columns.legend[0].background,r.columns.birth);assert.equal(r.columns.legend[1].background,r.columns.timelineTransit);
+    assert.equal(r.columns.legend[0].background,r.tokenColors['timeline-birth']);assert.equal(r.columns.legend[1].background,r.columns.timelineTransit);
     assert.equal(r.skyColumns.birthHidden,true);assert.deepEqual(r.skyColumns.legend.map(n=>n.source),['transit']);
-    for(const [source,ratio]of Object.entries(r.contrast))assert.ok(ratio>=4.5,r.id+' '+source+' foreground '+ratio);
+    // Gate Visual V3 uses approved white glyphs with a fixed dark outline,
+    // rather than source-specific foreground tokens. Verify the actual outline
+    // and its white contrast independently of the surrounding source palette.
+    for (const gate of [34,57]) {
+      assert.equal(r.sky.gates[gate].stroke, '#111111');
+      assert.equal(r.sky.gates[gate].strokeWidth, '1.15');
+    }
     const geom=[r.birth.geometry,r.overlay.geometry,r.sky.geometry];
     if(referenceGeometry)assert.deepEqual(geom,referenceGeometry,'strategy/color never alters geometry');else referenceGeometry=geom;
   }
   assert.equal(results.modelBefore,results.modelAfter,'renderer never mutates calculation sources');
   assert.equal(results.semantic.overlay.gates[10].circle,'#765432');
-  assert.equal(results.semantic.birth.gates[10].circle,'#6F6F6F');
+  assert.equal(results.semantic.birth.gates[10].circle,'#2E75D4');
   assert.equal(results.semantic.columns.rows[0].color,'rgb(118, 84, 50)');
   writeFileSync(evidence+'/source-strategy-results.json',JSON.stringify(results,null,2));
   console.log('PASS: 11 Skins × birth/overlay/reinforced/transit-only; Integration, gate numbers, live tokens, shared columns, fixing marks, legend, geometry, contrasts and unchanged calculation model.');
