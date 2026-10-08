@@ -15,6 +15,14 @@ const inspect = selector => page.locator(selector).first().evaluate(node => ({
   stroke: node.getAttribute('stroke'),
   stopColor: node.getAttribute('stop-color')
 }));
+const assertReadable = async selector => {
+  const result = await page.locator(selector).first().evaluate(async node => {
+    const {contrastRatio,resolveRGB}=await import('/src/lib/source-contrast.js');
+    let surface=node;while(surface && getComputedStyle(surface).backgroundColor==='rgba(0, 0, 0, 0)')surface=surface.parentElement;
+    return contrastRatio(resolveRGB(getComputedStyle(node).color),resolveRGB(surface?getComputedStyle(surface).backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg')));
+  });
+  assert.ok(result>=4.5,`${selector} actual contrast ${result}`);
+};
 const setAppearance = (method, ...args) => page.evaluate(async ({ method, args }) => {
   // Vite may timestamp module URLs after HMR; use the instance loaded by main.
   const moduleUrl = performance.getEntriesByType('resource').map(entry => entry.name)
@@ -41,7 +49,7 @@ try {
 
   assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').count() > 0,
     'design channels follow the sole Design token');
-  assert.equal((await inspect('#bodygraph-container .bg-planets-design .bg-planet-act')).color, 'rgb(123, 44, 255)');
+  await assertReadable('#bodygraph-container .bg-planets-design .bg-planet-act');
   const centerEdge = async key => (await inspect(`#bodygraph-container radialGradient[id$="-cg-${key}"] stop[offset="1"]`)).stopColor;
   assert.equal(await centerEdge('g'), '#6F9E86');
   assert.equal(await centerEdge('root'), '#B8645A');
@@ -50,13 +58,13 @@ try {
 
   await page.locator('#bodygraph-container .bg-gate[data-gate="49"] .bg-gate-circle').hover();
   await page.locator('#bodygraph-container .bg-tooltip .bg-tt-design').waitFor();
-  assert.equal((await inspect('#bodygraph-container .bg-tooltip .bg-tt-design')).color, 'rgb(123, 44, 255)');
+  await assertReadable('#bodygraph-container .bg-tooltip .bg-tt-design');
 
   await page.locator('#bodygraph-container .bg-planets-design .bg-planet-row').first().click();
   await page.locator('#gate-detail [data-detail-kind="planet"][data-source="design"]').waitFor();
   assert.equal((await inspect('#gate-detail .planet-detail-card .detail-label')).color, await page.locator('html').evaluate(n=>{const s=document.createElement('span');s.style.color='var(--accent)';n.append(s);const c=getComputedStyle(s).color;s.remove();return c;}));
   await page.locator('#gate-detail [data-planet-gate]').click();
-  assert.equal((await inspect('#gate-detail .bg-tt-design')).color, 'rgb(123, 44, 255)');
+  await assertReadable('#gate-detail .bg-tt-design');
   await page.keyboard.press('Escape');
 
   await setAppearance('restoreCurrentSkin');
@@ -80,10 +88,9 @@ try {
     await setAppearance('setCenterPalette', 'chakra');
     assert.ok(await page.locator(`${stage} .bg-gate-path[fill="#00EE44"]`).count() > 0,
       `${view} transit paths follow the Transit token`);
-    assert.equal((await inspect(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`)).color,
-      'rgb(123, 44, 255)', `${view} Design planet column follows the Design token`);
+    await assertReadable(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`);
     const expectedTransitText = await page.evaluate(() => {
-      const probe=document.createElement('span');probe.style.color='var(--hd-transit-text)';document.body.append(probe);
+      const probe=document.createElement('span');probe.style.color='var(--source-transit-text)';document.body.append(probe);
       const value=getComputedStyle(probe).color;probe.remove();return value;
     });
     assert.equal((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
