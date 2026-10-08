@@ -62,8 +62,8 @@
   --hd-birth-design: #D97757;
   --hd-personality: #141413;
   --hd-personality-on: #FFFFFF;
-  --hd-design: #7F7068;
-  --hd-design-on: #FFFFFF;
+  --hd-design: #788C5D;
+  --hd-design-on: #111111;
   --hd-both: #786C58;
   --hd-both-on: #FFFFFF;
   --hd-transit: #D97757;
@@ -107,4 +107,15 @@
   --hd-relationship-dominance: var(--hd-connection-a);
   /* Legacy Team consumer: preserve its pre-V2 color. Relationship no longer reads this. */
   --hd-electromagnetic: #B9684D;
+}
+
+/* Small design text on light transit/detail surfaces; source fills stay #788C5D. */
+:root[data-skin="absolutely"] .tl :is(.bg-planets-design .bg-planets-head, .bg-planets-design .bg-planet-act, .act-design),
+:root[data-skin="absolutely"] [data-source-context="transit"] .bg-tt-design {
+  color: #52663D;
+}
+/* Birth-only text retains Clay, including chart result tables and detail headings. */
+:root[data-skin="absolutely"] #chart-view .act-design,
+:root[data-skin="absolutely"] [data-source-context="birth"] .bg-tt-design {
+  color: var(--hd-birth-design);
 }

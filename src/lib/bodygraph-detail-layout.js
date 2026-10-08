@@ -99,6 +99,7 @@ export function decorateBodygraphDetail(detail, selection, chart, context) {
   if (!body || !label || !title) return;
   const header = document.createElement('div');
   header.className = 'tl-detail-header';
+  header.dataset.sourceContext = context?.model ? 'transit' : 'birth';
   if (selection.kind === 'gate') header.classList.add('tl-gate-detail-header');
   if (selection.kind === 'channel') header.classList.add('tl-channel-detail-header');
   const heading = document.createElement('div');
