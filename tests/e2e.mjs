@@ -232,7 +232,8 @@ await check('connection compare works (place search resolves tz)', async () => {
   await page.click('#conn-calculate');
   await page.waitForSelector('#connection-content .foundation-item', { timeout: 5000 });
   const content = await page.textContent('#connection-content');
-  if (!/How you decide together/.test(content)) throw new Error(content.slice(0, 120));
+  if (!/Nine-center formula/.test(content)) throw new Error(content.slice(0, 120));
+  if (/How you decide together|natural harmony|create attraction/.test(content)) throw new Error('Unsupported relationship interpretation rendered');
   // The combined (composite) chart renders, has a legend, and is interactive.
   await page.waitForSelector('#conn-composite .bodygraph-svg', { timeout: 5000 });
   if (!(await page.$('.composite-legend'))) throw new Error('composite legend missing');

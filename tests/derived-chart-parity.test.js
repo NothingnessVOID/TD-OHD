@@ -46,7 +46,37 @@ function calculate({ kind, input }) {
   return result;
 }
 
-for (const [kind, count] of [['connection', 64], ['penta', 32], ['geneKeys', 64], ['transit', 64]]) {
+// Connection Phase 1 deliberately replaces interpretive output with structural facts.
+// Preserve the captured inputs and independently verify topology for all 64 cases;
+// the unrelated derived engines retain their historical full-output hashes.
+test('connection retains four classifications and correct center topology across 64 captured inputs', () => {
+  const cases = fixtures.cases.filter(fixture => fixture.kind === 'connection');
+  assert.equal(cases.length, 64);
+  for (const fixture of cases) {
+    const [a, b] = fixture.input.map(index => charts[index]);
+    const result = calculate(fixture);
+    const union = new Set([...a.gates.all, ...b.gates.all]);
+    const channels = CHANNELS.filter(channel => channel.gates.every(gate => union.has(gate)));
+    const centers = [...new Set(channels.flatMap(channel => channel.centers))].sort();
+    assert.deepEqual([...result.connectionChart.compositeCenters].sort(), centers, fixture.case);
+    assert.equal(result.connectionChart.compositeChannelCount, channels.length, fixture.case);
+    for (const channel of channels) {
+      const aCount = channel.gates.filter(gate => a.gates.all.includes(gate)).length;
+      const bCount = channel.gates.filter(gate => b.gates.all.includes(gate)).length;
+      const category = aCount === 2 && bCount === 2 ? 'companionship'
+        : Math.max(aCount, bCount) === 2 ? (Math.min(aCount, bCount) === 1 ? 'compromise' : 'dominance')
+        : 'electromagnetic';
+      assert.ok(result.connectionChart.connections[category].some(item => item.channel === channel.name), `${fixture.case}: ${channel.name}`);
+    }
+    assert.equal(result.connectionChart.summary.total, channels.length, fixture.case);
+    assert.equal(result.centerDynamics.filter(center => center.compositeDefined).length, centers.length);
+    assert.equal(result.centerDynamics.filter(center => center.created).length,
+      centers.filter(center => !a.centers.definedNames.includes(center) && !b.centers.definedNames.includes(center)).length);
+    assert.equal(result.profileHarmony, undefined);
+  }
+});
+
+for (const [kind, count] of [['penta', 32], ['geneKeys', 64], ['transit', 64]]) {
   test(`${kind} full output retains ${count} captured synthetic contract hashes`, () => {
     const cases = fixtures.cases.filter(fixture => fixture.kind === kind);
     assert.equal(cases.length, count);
