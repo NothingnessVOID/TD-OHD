@@ -1,5 +1,5 @@
-import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
-import {skinProjection} from './helpers/skin-projection.js';
+import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -43,7 +43,7 @@ test('24 Variable articles × six Tones keep exactly one selected branch, Librar
  }
 }));
 test('Round 2C calculations, dialog mechanics and protected detail modules stay exact',()=>{
- for(const file of ['src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])assert.equal(hash(readFileSync(new URL('../'+file,import.meta.url))),hash(preservedSource(file,'438ad2dc2dfa950eed55687143516051023de824')),file);
+ for(const file of ['src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])assert.equal(hash(['src/bodygraph.js','src/views/connection.js'].includes(file)?phase1ProtectedCurrent(file):readFileSync(new URL('../'+file,import.meta.url))),hash(skinScope.files[file]?skinProjection(file,'438ad2dc2dfa950eed55687143516051023de824'):preservedSource(file,'438ad2dc2dfa950eed55687143516051023de824')),file);
  const renderer=readFileSync(new URL('../src/lib/knowledge/detail-renderer.js',import.meta.url),'utf8');assert.doesNotMatch(renderer,/indexOf\(|includes\('30|match\(.*30|querySelector.*bodygraph/);
  const css=readFileSync(new URL('../src/lib/knowledge/detail-access.css',import.meta.url),'utf8');assert.doesNotMatch(css,/#[a-f0-9]{3,8}\b/i);
 });

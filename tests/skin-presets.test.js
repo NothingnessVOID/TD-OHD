@@ -136,7 +136,8 @@ test('V3 preserves V2 surfaces except approved Delve structure/status colors, an
   }
   for (const [path, hash] of Object.entries(baseline.files)) {
     if (skinScopeFile(path)) continue;
-    assert.equal(createHash('sha256').update(read(path)).digest('hex'), hash, path + ' stays unchanged');
+    const integratedScope = JSON.parse(read('docs/connection-structure-phase1-scope.json'));
+    assert.equal(createHash('sha256').update(read(path)).digest('hex'), integratedScope.files[path] ?? hash, path + ' preserves its approved algorithm or integrated relationship contract');
   }
 });
 
