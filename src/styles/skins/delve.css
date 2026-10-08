@@ -94,10 +94,10 @@
   --hd-connection-a: #3F3F3F;
   --hd-connection-a-on: #FFFFFF;
   --hd-connection-a-core: var(--hd-connection-a);
-  --hd-connection-b: #6E6E6E;
+  --hd-connection-b: #2E75D4;
   --hd-connection-b-on: #FFFFFF;
   --hd-connection-b-core: var(--hd-connection-b);
-  --hd-connection-bridged: #B8B8B8;
+  --hd-connection-bridged: #AAB0B6;
   --hd-connection-bridged-on: #111111;
   --hd-connection-bridged-core: var(--hd-connection-bridged);
   --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
