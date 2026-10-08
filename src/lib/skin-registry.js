@@ -1,7 +1,7 @@
 /** A Skin owns site and chart semantics. Centers and fonts are separate axes. */
 export const SKINS = Object.freeze([
   Object.freeze({
-    id: 'default-light', defaultCenterPalette: 'mineral', name: 'Amber Dawn', tagline: 'Day', mode: 'light', transitSourceMode: 'split',
+    id: 'default-light', defaultCenterPalette: 'classic', name: 'Amber Dawn', tagline: 'Day', mode: 'light', transitSourceMode: 'split',
     preview: Object.freeze({ surface: '#F7F5F2', text: '#1E1B18', accent: '#B86F2C', personality: '#282624', design: '#B84D43', transit: '#2D929F', signature: '#B86F2C' }),
     cssSource: 'src/styles/skins/default.css'
   }),

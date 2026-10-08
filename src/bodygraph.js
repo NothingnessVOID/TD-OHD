@@ -303,6 +303,8 @@ export function renderBodygraph(container, chart, opts = {}) {
     return colors.inactive;
   };
   const gateOnColor = (gateNum) => {
+    // Ordinary gate numbers communicate activation state, independently of source hue.
+    if (!composite) return '#FFFFFF';
     if (transit?.gateSource(gateNum) === 'transit') return colors.transitOn;
     if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatalOn;
     if (composite) {
@@ -353,7 +355,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       return owner === 'a' ? colors.connectionAOn : owner === 'b' ? colors.connectionBOn
         : owner === 'both' ? colors.connectionBothOn : colors.connectionBridgedOn;
     }
-    return centerPalette[key].on;
+    return '#111111';
   };
 
   // Opaque center-derived circles preserve contrast without changing composite ownership.
@@ -361,8 +363,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     const key = GATES[gate]?.center;
     if (composite || !definedCenters.has(key)) return null;
     const center = centerPalette[key];
-    const mixer = center.on.toUpperCase() === '#FFFFFF' ? 'black' : 'white';
-    return `color-mix(in srgb, ${center.edge} 78%, ${mixer})`;
+    return `color-mix(in srgb, ${center.edge} 60%, white)`;
   };
 
   // --- Channel paths (one per gate = half-channel) ---
@@ -521,6 +522,10 @@ export function renderBodygraph(container, chart, opts = {}) {
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
       'font-family': skinToken(style, '--font'),
       fill: isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum),
+      ...(!composite ? {
+        stroke: isActive ? '#111111' : 'none',
+        ...(isActive ? { 'stroke-width': '1.15', 'paint-order': 'stroke fill', 'stroke-linejoin': 'round' } : {})
+      } : {}),
       'pointer-events': 'none',
       text: gateNum
     }));
