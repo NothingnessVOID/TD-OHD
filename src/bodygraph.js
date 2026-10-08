@@ -393,6 +393,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       'data-center': centerKey,
       ...(composite ? {
         'data-center-defined': String(defined),
+        'data-center-state': compositeStructure.centerStates.find(state => state.center === centerKey).status,
         'data-center-created': String(compositeStructure.centerStates.find(state => state.center === centerKey)?.created || false),
         'data-center-owner': centerOwner(centerKey) || 'none'
       } : {}),

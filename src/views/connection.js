@@ -327,12 +327,12 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     const dn = graphCenter(key);
     const dyn = centerIndex.get(key) || centerRows.find(c => (c.center || c.centerName) === key || c.centerName === centerName(key));
     const tag = owner === 'both' ? t('Both define') : owner === 'a' ? t('{name} defines', { name: nameA })
-      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Made together') : t('Completely open');
+      : owner === 'b' ? t('{name} defines', { name: nameB }) : owner === 'bridged' ? t('Made together') : t(dyn.status === 'open' ? 'Completely open' : 'Undefined');
     const displayState = value => value === 'defined' ? t('Defined') : value === 'undefined' ? t('Undefined') : value === 'open' ? t('Completely open') : t('Open');
     const createdCenterChannels = (structure.composite.createdChannels || []).filter(channel => channel.centers.includes(key));
     const txt = `${nameA}: ${displayState(centerStatus(dyn, 'A'))} · ${nameB}: ${displayState(centerStatus(dyn, 'B'))} · ${t('Composite')}: ${displayState(centerStatus(dyn, 'composite'))}. ${createdCenterChannels.length ? `${t('Created channels')}: ${createdCenterChannels.map(channel => `${channelName(channel.gates)} (${channel.gates.join('–')})`).join(', ')}` : ''}`;
     detail.innerHTML = `
-      <div class="gate-detail-card center-detail-card" data-center="${key}">
+      <div class="gate-detail-card center-detail-card" data-center="${key}" data-center-state="${dyn.status}" data-created="${dyn.created}">
         <button class="gate-detail-close" title="${t('Close')}">&times;</button>
         <div class="panel-title">${esc(t('{center} Center', { center: dn }))}</div>
         <div class="center-detail-head"><span class="conn-center-tag ${owner || 'open'}">${esc(tag)}</span></div>

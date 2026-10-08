@@ -2,8 +2,8 @@
   "baseline": "a548501",
   "description": "Reviewed Relationship Phase 1 source scope. Every other source remains under the historical two-parent guard.",
   "files": {
-    "src/bodygraph.js": "b1b136767cbb6e14e0984b97460f6aa436ba7733e1f5f0012f283e22af9b4993",
-    "src/views/connection.js": "5770e3f1e100aa648ddacc9079860b2512669e83f69ab7984e44d5993597fb0a",
+    "src/bodygraph.js": "e97f04d453ef79f6a31c55aac303f77935a40c446197dc276db90c81c0cc5f27",
+    "src/views/connection.js": "703e87016d642b8e1bea16e671ffc41ba3a0c09dac65ad57ed74b441780434bb",
     "src/lib/human-design/connection.js": "be7b3d221c18bf74679c2ed214a930a83940c453766f375292687c62610a685f",
     "src/lib/human-design/connection-structure.js": "ec6f50f0e9b4420be071f9530de073500008a59f6ef38d8d402d8a11bdbdc32d",
     "src/locales/ui-contexts.json": "f8d3560d2c9830d0e5586bcce6af390e3318ce4377f3c520eb3d048116b20c9c",
