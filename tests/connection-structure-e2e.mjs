@@ -8,8 +8,10 @@ try {
   page.on('pageerror', error => errors.push(error.message));
   await page.goto(base);
   await page.locator('#birth-entry').waitFor();
+  await page.locator('#boot-status').waitFor({ state: 'hidden' });
   const cases = [
     { a: [59], b: [6], formula: '2–7', created: 2, bridgeA: 'not-applicable', bridgeB: 'not-applicable' },
+    { a: [59,61], b: [6], formula: '2–7', created: 2, bridgeA: 'not-applicable', bridgeB: 'not-applicable' },
     { a: [1,8,59,6], b: [20,34], formula: '4–5', created: 0, bridgeA: 'complete', bridgeB: 'not-applicable' },
     { a: [1,8,59,6,13], b: [33], formula: '4–5', created: 0, bridgeA: 'none', bridgeB: 'not-applicable' },
     { a: [1,8,59,6,18,58], b: [20,34], formula: '6–3', created: 0, bridgeA: 'partial', bridgeB: 'not-applicable' },
@@ -40,7 +42,9 @@ try {
           defined: nodes.filter(n => n.dataset.centerDefined === 'true').length,
           created: nodes.filter(n => n.dataset.centerCreated === 'true').length,
           count: nodes.length, centers: Object.keys(CENTERS).length,
-          detailCenters: comparison.centerDynamics.filter(c => c.created).map(c => c.center) };
+          detailCenters: comparison.centerDynamics.filter(c => c.created).map(c => c.center),
+          states: comparison.structure.centerStates.map(c => ({ center: c.center, status: c.status, created: c.created })),
+          labels: { undefined: (await import('/src/lib/i18n.js')).t('Undefined'), open: (await import('/src/lib/i18n.js')).t('Completely open'), created: (await import('/src/lib/i18n.js')).t('Made together') } };
       }, { locale, fixture });
       assert.ok(result.text.includes(fixture.formula), `${locale}: formula ${fixture.formula}`);
       assert.equal(result.count, 9, 'all nine SVG centers carry structural status');
@@ -52,6 +56,24 @@ try {
       assert.equal(await page.locator('[data-testid="connection-center-state"]').count(), 9);
       assert.doesNotMatch(result.text, /natural harmony|spark of attraction|How you decide together|unusually independent pairing/i);
       if (locale !== 'en') assert.doesNotMatch(result.text, /Composite-derived type|Completely open|Not applicable|Fully bridged|Partially bridged|createdCenterCount|electromagneticCount|bridgeStatus|not-applicable/);
+      // Compare every center's shared structural status across the list, SVG,
+      // hover tooltip and clickable detail, in each supported language.
+      for (const state of result.states) {
+        const node = page.locator(`#conn-composite .bg-center[data-center="${state.center}"]`);
+        assert.equal(await node.getAttribute('data-center-state'), state.status);
+        assert.equal(await page.locator(`[data-testid="connection-center-state"][data-center="${state.center}"]`).getAttribute('data-composite-state'), state.status);
+        if (state.status !== 'defined' || state.created) {
+          await node.dispatchEvent('pointerover', { pointerType: 'mouse', clientX: 100, clientY: 100 });
+          if (state.status !== 'defined') assert.ok((await page.locator('#conn-composite .bg-tooltip').innerText()).includes(result.labels[state.status]), `${locale} ${state.center} ${state.status}: ${await page.locator('#conn-composite .bg-tooltip').innerText()}`);
+          await node.dispatchEvent('click');
+          const card = page.locator('#conn-detail .center-detail-card');
+          assert.equal(await card.getAttribute('data-center-state'), state.status);
+          assert.equal(await card.getAttribute('data-created'), String(state.created));
+          assert.equal(await card.locator('.conn-center-tag').textContent(), state.created ? result.labels.created : result.labels[state.status]);
+          await page.locator('#conn-detail .gate-detail-close').click();
+          await node.dispatchEvent('pointerout', { pointerType: 'mouse' });
+        }
+      }
       for (const center of result.detailCenters) {
         await page.locator(`#conn-composite [data-center="${center}"]`).first().dispatchEvent('click');
         await page.locator('#conn-detail:not(.hidden)').waitFor();

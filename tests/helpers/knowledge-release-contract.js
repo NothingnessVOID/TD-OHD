@@ -22,7 +22,7 @@ function replaceOnce(source, before, after, label) {
 function removeOnce(source, snippet, label) { return replaceOnce(source, snippet, '', label); }
 const bodygraphImport = "import { analyzeConnectionStructure } from './lib/human-design/connection-structure.js';\n";
 const connectionImport = "import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';\n";
-const renderConnectionDigest = 'f72f8b919fcfda34e9ab37333f4a7713cfdf412b866a169285456daf1fd1239f';
+const renderConnectionDigest = '753facd5d856077c1644503da1efdf41603af290084748168a9d43b83269a089';
 const authorizedConnectionConstants = new Map([
  ['DYN_BLURB', `const DYN_BLURB = {
   electromagnetic: 'The listed gate contributions complete this channel in the composite.',
@@ -43,7 +43,7 @@ function projectBodygraph(source) {
  text = replaceOnce(text, '  const compositeStructure = composite?.structure || (composite ? analyzeConnectionStructure(composite.chartA, composite.chartB) : null);\n', '', 'composite structure local');
  text = replaceOnce(text, '    const compCenters = new Set(compositeStructure.composite.centers);\n', '    const compCenters = new Set();\n    for (const ch of compChannels) for (const c of (ch.centers || [])) compCenters.add(c);\n', 'composite center derivation');
  text = replaceOnce(text, '    const aDef = new Set(compositeStructure.individuals.personA.centers);\n    const bDef = new Set(compositeStructure.individuals.personB.centers);', '    const aDef = new Set(composite.chartA.centers.definedNames);\n    const bDef = new Set(composite.chartB.centers.definedNames);', 'composite center ownership');
- text = replaceOnce(text, "      ...(composite ? {\n        'data-center-defined': String(defined),\n        'data-center-created': String(compositeStructure.centerStates.find(state => state.center === centerKey)?.created || false),\n        'data-center-owner': centerOwner(centerKey) || 'none'\n      } : {}),\n", '', 'composite center data attributes');
+ text = replaceOnce(text, "      ...(composite ? {\n        'data-center-defined': String(defined),\n        'data-center-state': compositeStructure.centerStates.find(state => state.center === centerKey).status,\n        'data-center-created': String(compositeStructure.centerStates.find(state => state.center === centerKey)?.created || false),\n        'data-center-owner': centerOwner(centerKey) || 'none'\n      } : {}),\n", '', 'composite center data attributes');
  text = replaceOnce(text, "          : t(compositeStructure.centerStates.find(state => state.center === centerKey)?.status === 'open' ? 'Completely open' : 'Undefined');", "          : t('Open between you');", 'composite tooltip text');
  return Buffer.from(text);
 }

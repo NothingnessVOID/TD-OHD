@@ -35,6 +35,11 @@ jobs:
         env:
           E2E_URL: http://127.0.0.1:5173
           CHROME_CHANNEL: chromium
+      - name: Relationship structure and three-language browser regression
+        run: node tests/connection-structure-e2e.mjs
+        env:
+          E2E_URL: http://127.0.0.1:5173
+          CHROME_CHANNEL: chromium
       - name: Show server log on failure
         if: failure()
         run: cat /tmp/sharp-vite.log || true
