@@ -1,4 +1,5 @@
 import {execFileSync} from 'node:child_process';
+import {contrastProjection} from './contrast-projection.js';
 import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import {parseAst} from 'rollup/parseAst';
@@ -53,7 +54,7 @@ function projectConnection(source) {
  }
  return Buffer.from(text);
 }
-export function phase1Projection(source, file) { return file === 'src/bodygraph.js' ? projectBodygraph(source) : file === 'src/views/connection.js' ? projectConnection(source) : Buffer.isBuffer(source) ? source : Buffer.from(source); }
+export function phase1Projection(source, file) { source = contrastProjection(source,file); return file === 'src/bodygraph.js' ? projectBodygraph(source) : file === 'src/views/connection.js' ? projectConnection(source) : Buffer.isBuffer(source) ? source : Buffer.from(source); }
 export function preservedSource(file, historical) {
  const source = ['src/bodygraph.js', 'src/views/connection.js'].includes(file)
   ? latestMainSource(file)

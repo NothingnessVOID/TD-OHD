@@ -24,7 +24,7 @@ test('unrelated protected-function edits survive the composite projection and th
   const baseGraph = preservedSource('src/bodygraph.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8').toString();
   const projected = phase1Projection(source, 'src/bodygraph.js').toString();
   assert.notEqual(digest(unrelatedEdit), digest(source));
-  assert.notEqual(digest(phase1Projection(unrelatedEdit, 'src/bodygraph.js')), digest(baseGraph));
+  assert.throws(() => phase1Projection(unrelatedEdit, 'src/bodygraph.js'), /unreviewed contrast delta/, 'unrelated changes must fail the exact contrast scope');
 
   const connection = readCurrentSource('src/views/connection.js').toString();
   const unrelatedEditConnection = connection.replace('function rerenderConnectionGraphs()', 'function rerenderConnectionGraphs() /* unrelated edit */');

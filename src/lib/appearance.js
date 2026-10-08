@@ -1,3 +1,4 @@
+import { applySourceTextColors } from './source-contrast.js';
 import { getCenterPalette as lookupPalette } from './center-palette-registry.js';
 import { getSkin as lookupSkin, defaultSkinForMode } from './skin-registry.js';
 
@@ -60,6 +61,7 @@ function applyOverrides() {
     const rgb = current.accent.slice(1).match(/../g).map(x => parseInt(x,16));
     style.setProperty('--accent-on', (rgb[0]*299 + rgb[1]*587 + rgb[2]*114)/1000 > 150 ? '#16130f' : '#ffffff');
   }
+  applySourceTextColors(root());
 }
 function persist() {
   write(APPEARANCE_STORAGE_KEY, JSON.stringify({ version: 3, skinMode, skinId: getSkinId(), centerPalette: getCenterPalette(), centerPaletteMode, manualCenterPalette, overridesBySkin, preferences }));

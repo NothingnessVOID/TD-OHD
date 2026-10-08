@@ -20,6 +20,7 @@ import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
 import { getCenterPalette } from './lib/center-palette-registry.js';
 import { getTransitSourceMode } from './lib/skin-registry.js';
+import { readableColor, resolveRGB, contrastRatio, mixRGB, rgbCSS } from './lib/source-contrast.js';
 import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
@@ -152,6 +153,11 @@ export function renderBodygraph(container, chart, opts = {}) {
     ? skinToken(style, '--hd-birth-design') || colors.design : colors.design;
   container.style.setProperty('--bg-source-personality', personalityColor);
   container.style.setProperty('--bg-source-design', designColor);
+  const textBackgrounds = ['--bg', '--bg-elevated', '--hd-graph-bg', '--hd-graph-panel-bg'].map(name => skinToken(style, name)).filter(color => color && color !== 'transparent');
+  for (const [source, color] of [['personality', personalityColor], ['design', designColor]]) {
+    container.style.setProperty(`--bg-source-${source}-text`, readableColor(color, textBackgrounds, skinToken(style, '--text')));
+    container.style.setProperty(`--bg-source-${source}-tooltip-text`, readableColor(color, [skinToken(style, '--hd-tooltip-bg')], skinToken(style, '--text')));
+  }
   // Skin controls presentation only; an ordinary birth chart always stays split.
   const transitSourceMode = transit
     ? getTransitSourceMode(document.documentElement.getAttribute('data-skin')) : 'split';
@@ -313,16 +319,14 @@ export function renderBodygraph(container, chart, opts = {}) {
     return colors.inactive;
   };
   const gateOnColor = (gateNum) => {
-    // Ordinary gate numbers communicate activation state, independently of source hue.
-    if (!composite) return '#FFFFFF';
-    if (transit?.gateSource(gateNum) === 'transit') return colors.transitOn;
-    if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatalOn;
     if (composite) {
       const owner = gateOwner(gateNum);
       return owner === 'a' ? colors.connectionAOn
         : owner === 'b' ? colors.connectionBOn
         : owner === 'both' ? colors.connectionBothOn : colors.inactiveOn;
     }
+    if (transit?.gateSource(gateNum) === 'transit') return colors.transitOn;
+    if (unifiedNatal && transit.natalGates.has(gateNum)) return colors.overlayNatalOn;
     const personality = personalityGates.has(gateNum);
     const design = designGates.has(gateNum);
     return personality && design ? colors.bothOn
@@ -357,15 +361,9 @@ export function renderBodygraph(container, chart, opts = {}) {
       : owners.has('a') ? composite.colorA : owners.has('b') ? composite.colorB : gateFill(gate);
   };
   const inactiveGateOn = gate => {
+    if (composite) return colors.inactiveOn;
     const key = GATES[gate]?.center;
-    if (!definedCenters.has(key)) return colors.inactiveOn;
-    // Transparent inactive circles show the center underneath.
-    if (composite) {
-      const owner = centerOwner(key);
-      return owner === 'a' ? colors.connectionAOn : owner === 'b' ? colors.connectionBOn
-        : owner === 'both' ? colors.connectionBothOn : colors.connectionBridgedOn;
-    }
-    return '#111111';
+    return definedCenters.has(key) ? '#111111' : colors.inactiveOn;
   };
 
   // Opaque center-derived circles preserve contrast without changing composite ownership.
@@ -531,17 +529,39 @@ export function renderBodygraph(container, chart, opts = {}) {
         'stroke-dasharray': transit ? 'none' : '4 3', class: 'bg-transit-ring'
       }));
     }
+    const striped = isActive && fill.startsWith('url(');
+    const stripeFills = composite ? [composite.colorA, composite.colorB] : [personalityColor, designColor];
+    const surface = isActive ? fill : inactiveFill || colors.inactive;
+    const preferred = isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum);
+    let numberSurfaces = striped ? stripeFills : [surface];
+    if (!isActive && !inactiveFill) {
+      const key = GATES[gateNum]?.center;
+      const owner = composite ? centerOwner(key) : null;
+      const underneath = composite && definedCenters.has(key)
+        ? owner === 'both' ? [composite.colorA, composite.colorB]
+          : [owner === 'a' ? composite.colorA : owner === 'b' ? composite.colorB : composite.colorBridged]
+        : [colors.undefinedCenter];
+      numberSurfaces = underneath.map(color => rgbCSS(mixRGB(resolveRGB(color), resolveRGB(colors.inactive), Number(colors.inactiveCircleOpacity))));
+    }
+    const numberColor = readableColor(preferred, numberSurfaces);
+    const needsBacking = (striped && contrastRatio(resolveRGB(stripeFills[0]), resolveRGB(stripeFills[1])) >= 3)
+      || numberSurfaces.some(color => contrastRatio(resolveRGB(numberColor), resolveRGB(color)) < 4.5);
+    // Only the number's local area is backed; the source stripe perimeter stays visible.
+    const backing = resolveRGB(numberColor).reduce((sum, n) => sum + n, 0) > 382 ? '#111111' : '#FFFFFF';
+    if (needsBacking) g.appendChild(svgEl('ellipse', {
+      cx: c.cx, cy: c.cy, rx: 14, ry: 12.5,
+      fill: backing, class: 'bg-gate-number-backing', 'pointer-events': 'none'
+    }));
     g.appendChild(svgEl('text', {
       x: c.cx, y: c.cy,
       'dominant-baseline': 'central', opacity: '1', 'fill-opacity': '1',
       'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
       'font-family': skinToken(style, '--font'),
-      fill: isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum),
-      ...(!composite ? {
-        stroke: isActive ? '#111111' : 'none',
-        ...(isActive ? { 'stroke-width': '1.15', 'paint-order': 'stroke fill', 'stroke-linejoin': 'round' } : {})
-      } : {}),
+      fill: needsBacking ? readableColor(numberColor, [backing]) : numberColor,
+      'data-number-background': needsBacking ? backing : numberSurfaces.join('|'),
+      'data-number-striped': String(striped),
+      stroke: 'none',
       'pointer-events': 'none',
       text: gateNum
     }));
