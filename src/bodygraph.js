@@ -356,6 +356,15 @@ export function renderBodygraph(container, chart, opts = {}) {
     return centerPalette[key].on;
   };
 
+  // Opaque center-derived circles preserve contrast without changing composite ownership.
+  const inactiveGateFill = gate => {
+    const key = GATES[gate]?.center;
+    if (composite || !definedCenters.has(key)) return null;
+    const center = centerPalette[key];
+    const mixer = center.on.toUpperCase() === '#FFFFFF' ? 'black' : 'white';
+    return `color-mix(in srgb, ${center.edge} 78%, ${mixer})`;
+  };
+
   // --- Channel paths (one per gate = half-channel) ---
   const pathGroup = svgEl('g', { class: `bg-paths${animate ? ' bg-reveal-paths' : ''}` });
   const gatePathEls = {};
@@ -472,6 +481,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     const gateNum = parseInt(gateStr);
     const isActive = activeGates.has(gateNum);
     const fill = gateFill(gateNum);
+    const inactiveFill = isActive ? null : inactiveGateFill(gateNum);
 
     const g = svgEl('g', { class: 'bg-gate', 'data-gate': gateNum, cursor: opts.compact ? 'default' : 'pointer' });
     if (interactive) {
@@ -492,8 +502,8 @@ export function renderBodygraph(container, chart, opts = {}) {
     }
     g.appendChild(svgEl('circle', {
       cx: c.cx, cy: c.cy, r: (c.r || 12.3) + 4,
-      fill: isActive ? fill : colors.inactive,
-      'fill-opacity': isActive ? '1' : colors.inactiveCircleOpacity,
+      fill: isActive ? fill : (inactiveFill || colors.inactive),
+      'fill-opacity': isActive || inactiveFill ? '1' : colors.inactiveCircleOpacity,
       stroke: 'none',
       class: 'bg-gate-circle'
     }));

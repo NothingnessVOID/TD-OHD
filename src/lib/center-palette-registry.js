@@ -3,10 +3,10 @@ export const CENTER_KEYS = Object.freeze(["head", "ajna", "throat", "g", "heart"
 export const CENTER_PALETTE_TOKENS = Object.freeze(CENTER_KEYS.flatMap(id => [`--hd-center-${id}`, `--hd-center-${id}-core`, `--hd-center-${id}-on`]));
 export const CENTER_PALETTES = Object.freeze([
   Object.freeze({
-    id: 'classic', name: 'Classic', tagline: 'Classic structure', render: 'soft-radial', coreEdgeRatio: 92,
-    preview: Object.freeze({"head": "#D9BC55", "ajna": "#8FAF72", "throat": "#B88957", "g": "#D9BC55", "heart": "#C65B51", "spleen": "#B88957", "solar": "#B88957", "sacral": "#C65B51", "root": "#B88957"}),
+    id: 'classic', name: 'Classic', tagline: 'Classic structure', render: 'soft-radial', coreEdgeRatio: 78,
+    preview: Object.freeze({"head": "#E2C754", "ajna": "#93C179", "throat": "#CA9963", "g": "#E2C754", "heart": "#D76C5E", "spleen": "#CA9963", "solar": "#CA9963", "sacral": "#D76C5E", "root": "#CA9963"}),
     foreground: Object.freeze({"head": "#111111", "ajna": "#111111", "throat": "#111111", "g": "#111111", "heart": "#111111", "spleen": "#111111", "solar": "#111111", "sacral": "#111111", "root": "#111111"}),
-    signature: '#B88957', darkEdge: null,
+    signature: '#CA9963', darkEdge: null,
     cssSource: 'src/styles/center-palettes/classic.css'
   }),
   Object.freeze({
@@ -17,10 +17,10 @@ export const CENTER_PALETTES = Object.freeze([
     cssSource: 'src/styles/center-palettes/chakra.css'
   }),
   Object.freeze({
-    id: 'jewel', name: 'Jewel', tagline: 'Jewel tones', render: 'solid', coreEdgeRatio: 100,
-    preview: Object.freeze({"head": "#6E3FA0", "ajna": "#384D9B", "throat": "#1F6F9A", "g": "#2E7D64", "heart": "#3E7B48", "spleen": "#696B24", "solar": "#8F5D12", "sacral": "#A44D1E", "root": "#8E3030"}),
-    foreground: Object.freeze({"head": "#FFFFFF", "ajna": "#FFFFFF", "throat": "#FFFFFF", "g": "#FFFFFF", "heart": "#FFFFFF", "spleen": "#FFFFFF", "solar": "#FFFFFF", "sacral": "#FFFFFF", "root": "#FFFFFF"}),
-    signature: '#6E3FA0', darkEdge: null,
+    id: 'jewel', name: 'Jewel', tagline: 'Jewel tones', render: 'soft-radial', coreEdgeRatio: 82,
+    preview: Object.freeze({"head": "#7C44B2", "ajna": "#465DB5", "throat": "#1B7FB0", "g": "#1C8272", "heart": "#35965D", "spleen": "#88953A", "solar": "#BA8024", "sacral": "#CE632B", "root": "#AE444C"}),
+    foreground: Object.freeze({"head": "#FFFFFF", "ajna": "#FFFFFF", "throat": "#FFFFFF", "g": "#FFFFFF", "heart": "#111111", "spleen": "#111111", "solar": "#111111", "sacral": "#111111", "root": "#FFFFFF"}),
+    signature: '#7C44B2', darkEdge: null,
     cssSource: 'src/styles/center-palettes/jewel.css'
   }),
   Object.freeze({
@@ -31,10 +31,10 @@ export const CENTER_PALETTES = Object.freeze([
     cssSource: 'src/styles/center-palettes/mineral.css'
   }),
   Object.freeze({
-    id: 'ink', name: 'Ink', tagline: 'Monochrome', render: 'solid', coreEdgeRatio: 100,
-    preview: Object.freeze({"head": "#606060", "ajna": "#606060", "throat": "#606060", "g": "#606060", "heart": "#606060", "spleen": "#606060", "solar": "#606060", "sacral": "#606060", "root": "#606060"}),
+    id: 'ink', name: 'Graphite', tagline: 'Monochrome', render: 'solid', coreEdgeRatio: 100,
+    preview: Object.freeze({"head": "#3F3F3F", "ajna": "#3F3F3F", "throat": "#3F3F3F", "g": "#3F3F3F", "heart": "#3F3F3F", "spleen": "#3F3F3F", "solar": "#3F3F3F", "sacral": "#3F3F3F", "root": "#3F3F3F"}),
     foreground: Object.freeze({"head": "#FFFFFF", "ajna": "#FFFFFF", "throat": "#FFFFFF", "g": "#FFFFFF", "heart": "#FFFFFF", "spleen": "#FFFFFF", "solar": "#FFFFFF", "sacral": "#FFFFFF", "root": "#FFFFFF"}),
-    signature: '#606060', darkEdge: "#96938E",
+    signature: '#3F3F3F', darkEdge: "#96938E",
     cssSource: 'src/styles/center-palettes/ink.css'
   }),
   Object.freeze({
@@ -46,16 +46,16 @@ export const CENTER_PALETTES = Object.freeze([
   }),
   Object.freeze({
     id: 'botanical', name: 'Botanical', tagline: 'Botanical palette', render: 'solid', coreEdgeRatio: 100,
-    preview: Object.freeze({"head": "#A89B54", "ajna": "#78906A", "throat": "#568979", "g": "#659A70", "heart": "#6D8E5D", "spleen": "#8B884E", "solar": "#9C7E4E", "sacral": "#9A5B43", "root": "#70584A"}),
-    foreground: Object.freeze({"head": "#111111", "ajna": "#111111", "throat": "#111111", "g": "#111111", "heart": "#111111", "spleen": "#111111", "solar": "#111111", "sacral": "#FFFFFF", "root": "#FFFFFF"}),
-    signature: '#A89B54', darkEdge: null,
+    preview: Object.freeze({"head": "#D8C66A", "ajna": "#9DBD79", "throat": "#70B7A6", "g": "#86BE83", "heart": "#8CB46D", "spleen": "#B5B46C", "solar": "#C8A06A", "sacral": "#C87C60", "root": "#A58A79"}),
+    foreground: Object.freeze({"head": "#111111", "ajna": "#111111", "throat": "#111111", "g": "#111111", "heart": "#111111", "spleen": "#111111", "solar": "#111111", "sacral": "#111111", "root": "#111111"}),
+    signature: '#86BE83', darkEdge: null,
     cssSource: 'src/styles/center-palettes/botanical.css'
   }),
   Object.freeze({
     id: 'paper', name: 'Paper', tagline: 'Paper palette', render: 'solid', coreEdgeRatio: 100,
-    preview: Object.freeze({"head": "#B79A51", "ajna": "#72877D", "throat": "#58788B", "g": "#798765", "heart": "#91483E", "spleen": "#927953", "solar": "#9E6B43", "sacral": "#A44C3B", "root": "#675348"}),
-    foreground: Object.freeze({"head": "#111111", "ajna": "#111111", "throat": "#FFFFFF", "g": "#111111", "heart": "#FFFFFF", "spleen": "#111111", "solar": "#FFFFFF", "sacral": "#FFFFFF", "root": "#FFFFFF"}),
-    signature: '#B79A51', darkEdge: null,
+    preview: Object.freeze({"head": "#D3B46D", "ajna": "#8FA9A0", "throat": "#7897A8", "g": "#9AA981", "heart": "#C17461", "spleen": "#AE9875", "solar": "#C48A59", "sacral": "#CF735C", "root": "#A08670"}),
+    foreground: Object.freeze({"head": "#111111", "ajna": "#111111", "throat": "#111111", "g": "#111111", "heart": "#111111", "spleen": "#111111", "solar": "#111111", "sacral": "#111111", "root": "#111111"}),
+    signature: '#C17461', darkEdge: null,
     cssSource: 'src/styles/center-palettes/paper.css'
   }),
   Object.freeze({
