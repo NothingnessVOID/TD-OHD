@@ -1914,6 +1914,8 @@ body.modal-open { overflow: hidden; }
 
 .act-design { color: var(--hd-design); font-weight: 600; }
 .act-personality { color: var(--hd-personality); font-weight: 600; }
+#chart-view .act-design { color: var(--hd-birth-design, var(--hd-design)); }
+#chart-view .act-personality { color: var(--hd-birth-personality, var(--hd-personality)); }
 
 .hanging-gates { display: flex; flex-wrap: wrap; gap: 8px; }
 
