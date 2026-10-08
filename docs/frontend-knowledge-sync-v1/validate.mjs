@@ -94,7 +94,17 @@ export function validateSyncedRelease(rootPath = root) {
   const connectionScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/connection-structure-phase1-scope.json')));
   const connectionPaths = ['src/bodygraph.js', 'src/views/connection.js', 'src/lib/human-design/connection.js', 'src/lib/human-design/connection-structure.js', 'src/locales/ui-contexts.json', 'src/locales/zh-CN/ui-views.json', 'src/locales/zh-Hant/ui-views.json'];
   if (Object.keys(connectionScope.files).sort().join('\n') !== connectionPaths.sort().join('\n')) throw new Error('Invalid Relationship Phase 1 source scope');
-  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths])].filter(protectedPath);
+  // Reviewed skin snapshot protects its non-composite source projection at c15e021.
+  const skinScope = JSON.parse(readFileSync(path.join(rootPath, 'tests/fixtures/skin-reviewed-scope.json')));
+  if (skinScope.schemaVersion !== 1 || skinScope.base !== 'a5485015f23ef31ca8227df2a2eaf2290a08e266'
+      || skinScope.reviewedHead !== 'c15e021ea1b57ec46be5209d3dc75a4631f47b13') throw new Error('Invalid reviewed skin scope baseline');
+  const skinPaths = git('diff', '--name-only', `${skinScope.base}...${skinScope.reviewedHead}`, '--', 'src').toString().trim().split('\n').filter(Boolean).sort();
+  if (skinScope.srcFiles.slice().sort().join('\n') !== skinPaths.join('\n')) throw new Error('Invalid reviewed skin src scope');
+  for (const [file, digest] of Object.entries(skinScope.files))
+    if (!connectionPaths.includes(file) && hash(git('show', `${skinScope.reviewedHead}:${file}`)) !== digest) throw new Error(`Reviewed skin hash differs: ${file}`);
+  for (const file of ['src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/lib/human-design/connection.js','src/features/transit-timeline/core.js','src/lib/bodygraph-integration.js','src/lib/human-design/bodygraph-geometry.js','src/lib/variable-arrows.js','engine-core/TransitCore.cs'])
+    if (!git('show', `${skinScope.reviewedHead}:${file}`).equals(git('show', `${skinScope.base}:${file}`))) throw new Error(`Protected algorithm/catalog/astronomy changed: ${file}`);
+  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
@@ -103,7 +113,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

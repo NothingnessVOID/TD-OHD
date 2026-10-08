@@ -15,36 +15,38 @@ const inspect = selector => page.locator(selector).first().evaluate(node => ({
   stroke: node.getAttribute('stroke'),
   stopColor: node.getAttribute('stop-color')
 }));
-const setAppearance = (method, value) => page.evaluate(async ({ method, value }) => {
+const setAppearance = (method, ...args) => page.evaluate(async ({ method, args }) => {
   // Vite may timestamp module URLs after HMR; use the instance loaded by main.
   const moduleUrl = performance.getEntriesByType('resource').map(entry => entry.name)
     .filter(url => new URL(url).pathname === '/src/lib/appearance.js').at(-1) || '/src/lib/appearance.js';
-  (await import(moduleUrl))[method](value);
-}, { method, value });
+  (await import(moduleUrl))[method](...args);
+}, { method, args });
 
 try {
   await page.goto(`${base}/${birth}`);
   await page.locator('#bodygraph-container .bodygraph-svg').waitFor();
   await setAppearance('setTheme', 'light');
   await page.addStyleTag({ content: `
-    html[data-hd-skin="appearance-probe"] {
+    html[data-center-palette="chakra"] {
       --hd-design: #7B2CFF;
       --hd-transit: #00EE44;
       --hd-center-g: #2468AF;
       --hd-center-root: #AF6835;
     }
   ` });
-  await setAppearance('setHumanDesignSkin', 'appearance-probe');
+  await setAppearance('setCustomOverride', 'design', '#7B2CFF');
+  await setAppearance('setCustomOverride', 'transit', '#00EE44');
+  await setAppearance('setCenterPalette', 'chakra');
   await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').first().waitFor();
 
   assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#7B2CFF"]').count() > 0,
     'design channels follow the sole Design token');
   assert.equal((await inspect('#bodygraph-container .bg-planets-design .bg-planet-act')).color, 'rgb(123, 44, 255)');
   const centerEdge = async key => (await inspect(`#bodygraph-container radialGradient[id$="-cg-${key}"] stop[offset="1"]`)).stopColor;
-  assert.equal(await centerEdge('g'), '#2468AF');
-  assert.equal(await centerEdge('root'), '#AF6835');
-  assert.notEqual(await centerEdge('head'), '#2468AF');
-  assert.notEqual(await centerEdge('throat'), '#AF6835');
+  assert.equal(await centerEdge('g'), '#6F9E86');
+  assert.equal(await centerEdge('root'), '#B8645A');
+  assert.notEqual(await centerEdge('head'), '#6F9E86');
+  assert.notEqual(await centerEdge('throat'), '#B8645A');
 
   await page.locator('#bodygraph-container .bg-gate[data-gate="49"] .bg-gate-circle').hover();
   await page.locator('#bodygraph-container .bg-tooltip .bg-tt-design').waitFor();
@@ -57,37 +59,46 @@ try {
   assert.equal((await inspect('#gate-detail .bg-tt-design')).color, 'rgb(123, 44, 255)');
   await page.keyboard.press('Escape');
 
-  await setAppearance('setHumanDesignSkin', 'classic');
+  await setAppearance('restoreCurrentSkin');
+  await setAppearance('setCenterPalette', 'classic');
   await setAppearance('setTheme', 'dark');
-  assert.equal(await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim()), '#e74c3c');
-  assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#e74c3c"]').count() > 0,
-    'dark theme repaints current chart without reload');
+  assert.equal(await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim()), '#E16F60');
+  assert.ok(await page.locator('#bodygraph-container .bg-gate-path[fill="#E16F60"]').count() > 0,
+    'default-dark Design uses the approved final color and repaints without reload');
   await setAppearance('setTheme', 'light');
 
   for (const view of ['transits', 'timeline']) {
     await page.goto(`${base}/${birth}&view=${view}`);
     const stage = view === 'transits' ? '#transit-stage' : '#timeline-view';
     await page.locator(`${stage} .bodygraph-svg`).waitFor();
+    await setAppearance('restoreCurrentSkin');
+    await setAppearance('setCenterPalette', 'classic');
     const beforeTransitText = (await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color;
-    await page.addStyleTag({ content: 'html[data-hd-skin="appearance-probe"] { --hd-design: #7B2CFF; --hd-transit: #00EE44; }' });
-    await setAppearance('setHumanDesignSkin', 'appearance-probe');
+    await page.addStyleTag({ content: 'html[data-center-palette="chakra"] { --hd-design: #7B2CFF; --hd-transit: #00EE44; }' });
+    await setAppearance('setCustomOverride', 'design', '#7B2CFF');
+    await setAppearance('setCustomOverride', 'transit', '#00EE44');
+    await setAppearance('setCenterPalette', 'chakra');
     assert.ok(await page.locator(`${stage} .bg-gate-path[fill="#00EE44"]`).count() > 0,
       `${view} transit paths follow the Transit token`);
     assert.equal((await inspect(`${stage} .tl-birth-value.bg-planets-design .bg-planet-act`)).color,
       'rgb(123, 44, 255)', `${view} Design planet column follows the Design token`);
-    assert.notEqual((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
-      beforeTransitText, `${view} transit planet column follows the Transit text derivative`);
+    const expectedTransitText = await page.evaluate(() => {
+      const probe=document.createElement('span');probe.style.color='var(--hd-transit-text)';document.body.append(probe);
+      const value=getComputedStyle(probe).color;probe.remove();return value;
+    });
+    assert.equal((await inspect(`${stage} .tl-transit-column .bg-planet-act`)).color,
+      expectedTransitText, `${view} transit planet column retains the separately approved Transit text token`);
     const legend = `${stage} .tl-legend [data-source="transit"] i`;
     const expectedLegend = await page.evaluate(() => {
       const probe = document.createElement('i');
-      probe.style.backgroundColor = 'color-mix(in srgb, #00EE44 75%, #445457)';
+      probe.style.backgroundColor = 'var(--hd-timeline-transit)';
       document.body.append(probe);
       const color = getComputedStyle(probe).backgroundColor;
       probe.remove();
       return color;
     });
     assert.equal((await inspect(legend)).background, expectedLegend,
-      `${view} legend follows the existing Transit color derivative`);
+      `${view} legend uses the unmuted Transit Signal token`);
   }
   assert.deepEqual(errors, []);
   console.log('Appearance skin: Design/Transit linkage, G/Root independence, details, and live light/dark refresh passed.');

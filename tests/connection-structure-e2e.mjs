@@ -16,6 +16,9 @@ try {
     { a: [1,8,59,6,13], b: [33], formula: '4–5', created: 0, bridgeA: 'none', bridgeB: 'not-applicable' },
     { a: [1,8,59,6,18,58], b: [20,34], formula: '6–3', created: 0, bridgeA: 'partial', bridgeB: 'not-applicable' },
   ];
+  const skinIds = await page.evaluate(async () => (await import('/src/lib/skin-registry.js')).SKINS.map(skin => skin.id));
+  for (const skinId of skinIds) {
+  await page.evaluate(async id => (await import('/src/lib/appearance.js')).setSkin(id), skinId);
   for (const locale of ['en','zh-CN','zh-Hant']) {
     for (const fixture of cases) {
       const result = await page.evaluate(async ({ locale, fixture }) => {
@@ -44,7 +47,7 @@ try {
           count: nodes.length, centers: Object.keys(CENTERS).length,
           detailCenters: comparison.centerDynamics.filter(c => c.created).map(c => c.center),
           states: comparison.structure.centerStates.map(c => ({ center: c.center, status: c.status, created: c.created })),
-          labels: { undefined: (await import('/src/lib/i18n.js')).t('Undefined'), open: (await import('/src/lib/i18n.js')).t('Completely open'), created: (await import('/src/lib/i18n.js')).t('Made together') } };
+          labels: { undefined: (await import('/src/lib/i18n.js')).t('Undefined'), open: (await import('/src/lib/i18n.js')).t('Completely open'), created: (await import('/src/lib/i18n.js')).t('Newly defined in the relationship') } };
       }, { locale, fixture });
       assert.ok(result.text.includes(fixture.formula), `${locale}: formula ${fixture.formula}`);
       assert.equal(result.count, 9, 'all nine SVG centers carry structural status');
@@ -81,6 +84,17 @@ try {
         await page.locator('#conn-detail .gate-detail-close').click();
       }
     }
+  }
+  }
+  // Verify all nine Center Palettes leave composite structural and ownership
+  // facts unchanged while remaining selectable in the combined application.
+  const palettes = await page.evaluate(async () => (await import('/src/lib/center-palette-registry.js')).CENTER_PALETTES.map(p => p.id));
+  assert.equal(palettes.length, 9);
+  const compositePaint = () => page.locator('#conn-composite .bg-center').evaluateAll(nodes => nodes.map(n => [n.dataset.center,n.getAttribute('fill'),n.dataset.centerState]));
+  const beforePalette = await compositePaint();
+  for (const palette of palettes) {
+    await page.evaluate(async id => (await import('/src/lib/appearance.js')).setCenterPalette(id), palette);
+    assert.deepEqual(await compositePaint(), beforePalette, 'Center Palette preserves composite ownership and structure');
   }
   // Exercise the real astronomical chart and manual partner flow, separately
   // from the synthetic topology fixtures (no online geocoding required).

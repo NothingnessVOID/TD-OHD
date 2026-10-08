@@ -12,8 +12,8 @@
 }
 .bg-variable-bottom { top: 80px; }
 .bg-variable-arrow { display: flex; flex-direction: column; align-items: center; width: 68px; min-width: 0; }
-.bg-variable-arrow[data-source="design"] { color: var(--hd-design); }
-.bg-variable-arrow[data-source="personality"] { color: var(--hd-personality); }
+.bg-variable-arrow[data-source="design"] { color: var(--bg-source-design, var(--hd-design)); }
+.bg-variable-arrow[data-source="personality"] { color: var(--bg-source-personality, var(--hd-personality)); }
 .bg-variable-label { font-size: clamp(9px, 1.1vw, 11px); line-height: 1.3; text-align: center; overflow-wrap: anywhere; }
 .bg-variable-symbol { font-size: clamp(24px, 3vw, 32px); line-height: 1; font-weight: 500; }
 .variable-grid .arrow-card .arrow-label { color: var(--text); font-size: 14px; text-transform: none; letter-spacing: 0; }
@@ -27,8 +27,8 @@
 .foundation-variable-card .foundation-variable-notation { font-size: 10px; color: var(--text-secondary); margin-bottom: 8px; overflow-wrap: anywhere; }
 .foundation-variable-arrows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; line-height: 1.3; }
 .foundation-variable-group { min-width: 0; display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
-.foundation-variable-heading { text-align: center; font-size: 11px; margin-bottom: 5px; color: var(--hd-personality); }
-.foundation-variable-group[data-source="design"] .foundation-variable-heading { color: var(--hd-design); }
+.foundation-variable-heading { text-align: center; font-size: 11px; margin-bottom: 5px; color: var(--hd-birth-personality, var(--hd-personality)); }
+.foundation-variable-group[data-source="design"] .foundation-variable-heading { color: var(--hd-birth-design, var(--hd-design)); }
 .foundation-variable-heading small, .foundation-variable-caption small { display: block; font-size: 9px; overflow-wrap: anywhere; }
 .foundation-variable-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
 .foundation-variable-slot { text-align: center; min-width: 0; }
@@ -37,8 +37,8 @@
 @media (--phone) {
   .foundation-variable-arrows { grid-template-columns: 1fr; }
 }
-.foundation-variable-arrows [data-source="design"], .arrow-direction[data-source="design"] .variable-direction-symbol { color: var(--hd-design); }
-.foundation-variable-arrows [data-source="personality"], .arrow-direction[data-source="personality"] .variable-direction-symbol { color: var(--hd-personality); }
+.foundation-variable-arrows [data-source="design"], .arrow-direction[data-source="design"] .variable-direction-symbol { color: var(--hd-birth-design, var(--hd-design)); }
+.foundation-variable-arrows [data-source="personality"], .arrow-direction[data-source="personality"] .variable-direction-symbol { color: var(--hd-birth-personality, var(--hd-personality)); }
 
 .bg-natal-fixing { flex: 0 0 7px; width: 7px; font-size: 7px; line-height: 7px; overflow-wrap: anywhere; text-align: center; color: var(--text-secondary); }
 

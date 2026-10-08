@@ -1,4 +1,5 @@
 /** Shared graph window used by the timeline and the transit summary page. */
+import { getTransitSourceMode } from '../../lib/skin-registry.js';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const setText = (node, value) => { if (node.textContent !== value) node.textContent = value; };
 
@@ -14,6 +15,9 @@ export function graphPanelMarkup({ labels, locale = 'en-GB', graphId = '' }) {
 
 export function renderGraphColumns({ root, chart, activations, mode, planets, fixings, translate }) {
   const $ = selector => root.querySelector(selector);
+  // Keep both birth columns and all data; only their presentation is Skin-dependent.
+  ($('.tl-graph-panel') || root).dataset.transitSourceMode = getTransitSourceMode(
+    root.ownerDocument.documentElement.getAttribute('data-skin'));
   if (!$('.tl-planets').children.length) {
     $('.tl-planets').innerHTML = planets.map(planet => `<button type="button" class="tl-planet bg-planet-row" data-planet="${esc(planet.id)}" title="${esc(planet.name)}"><span class="bg-planet-glyph" aria-hidden="true">${esc(planet.glyph)}</span><strong class="bg-planet-act"></strong><span class="tl-fixing-mark" aria-hidden="true"></span></button>`).join('');
     $('.tl-birth-planets').innerHTML = planets.map(planet => `<div class="tl-birth-row"><button type="button" class="tl-birth-value bg-planet-row bg-planets-design" data-birth-planet="${esc(planet.id)}" data-side="design"><span class="tl-fixing-mark" aria-hidden="true"></span><span class="bg-planet-act"></span></button><span class="bg-planet-glyph tl-birth-glyph" aria-hidden="true">${esc(planet.glyph)}</span><button type="button" class="tl-birth-value bg-planet-row bg-planets-personality" data-birth-planet="${esc(planet.id)}" data-side="personality"><span class="bg-planet-act"></span><span class="tl-fixing-mark" aria-hidden="true"></span></button></div>`).join('');

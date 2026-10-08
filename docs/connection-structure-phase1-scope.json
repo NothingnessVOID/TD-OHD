@@ -1,12 +1,12 @@
 {
-  "baseline": "a548501",
+  "baseline": "f6e8232664ecbabc12544d1e99a131fd5261c6e8",
   "description": "Reviewed Relationship Phase 1 source scope. Every other source remains under the historical two-parent guard.",
   "files": {
-    "src/bodygraph.js": "e97f04d453ef79f6a31c55aac303f77935a40c446197dc276db90c81c0cc5f27",
-    "src/views/connection.js": "703e87016d642b8e1bea16e671ffc41ba3a0c09dac65ad57ed74b441780434bb",
+    "src/bodygraph.js": "0619c506cf621d984a2a34fcec881faeab06bc29341728b69f6cb601844de5e8",
+    "src/views/connection.js": "727a61d8f3785a63e0f51c465e84d91e304b411556dc156cc283d573fa303f67",
     "src/lib/human-design/connection.js": "be7b3d221c18bf74679c2ed214a930a83940c453766f375292687c62610a685f",
     "src/lib/human-design/connection-structure.js": "ec6f50f0e9b4420be071f9530de073500008a59f6ef38d8d402d8a11bdbdc32d",
-    "src/locales/ui-contexts.json": "f8d3560d2c9830d0e5586bcce6af390e3318ce4377f3c520eb3d048116b20c9c",
+    "src/locales/ui-contexts.json": "063fbc9aa1098f40720788c52726b9299a4969d8888056bd50d2313a75781808",
     "src/locales/zh-CN/ui-views.json": "2ec5b3524f4d9ade8940dd38a3467cab3f2aa313cd37139e80139f3545485e61",
     "src/locales/zh-Hant/ui-views.json": "88e74508535c9147e296d88dd0bc46a4746a41098ba7df5b25ac578788897585"
   }

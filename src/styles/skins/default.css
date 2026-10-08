@@ -1,0 +1,224 @@
+/* TD-OHD Classic Day / Night: paired warm neutrals, copper and teal.
+   Site + Human Design semantics only; Font and Center Palette are separate. */
+/* Default Skins declare their light/dark mode; data-theme is a compatibility mirror.
+   Component styles use these semantic variables instead of palette literals. */
+:root,
+[data-skin="default-light"] {
+  --bg: #F7F5F2;
+  --bg-elevated: #FEFDFB;
+  --bg-sunken: #EFEBE6;
+  --text: #1E1B18;
+  --text-secondary: #625D57;
+  --text-tertiary: #8A837B;
+  --border: #DDD7CF;
+  --border-subtle: #EAE6E0;
+
+  --accent: #B86F2C;
+  --accent-strong: #8A4E18;
+  --accent-soft: #F4E6D5;
+  --accent-hover: #985820;
+  --accent-on: #FFFFFF;
+
+  --focus: #B86F2C;
+  --shadow-sm: 0 1px 2px rgba(30,27,24,0.05);
+  --shadow: 0 2px 8px rgba(30,27,24,0.07);
+  --shadow-lg: 0 8px 24px rgba(30,27,24,0.10);
+  --modal-backdrop: rgba(15, 12, 8, .45);
+  --modal-overlay: rgba(0, 0, 0, .4);
+  --lens-active-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+
+  /* Independent status and product-type meanings belong to the site layer. */
+  --status-error: #B24E43;
+  --status-error-soft: #F6E8E5;
+  --status-success: #5E8A68;
+  --status-success-soft: #EDF4EE;
+  --status-info: #4E8096;
+  --status-info-soft: #EAF1F4;
+  --status-caution: #A67532;
+  --status-caution-soft: #F7F0E4;
+  --type-badge-bg: #F2E7D8;
+  --type-badge-text: #76502C;
+  --type-badge-border: #C7A477;
+  --type-strategy-text: #8A4E18;
+  --site-auth-glow: #dcc5a42b;
+  --site-auth-shadow: #3c30210b;
+}
+
+[data-skin="default-dark"],
+:root:not([data-skin])[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #161412;
+  --bg-elevated: #211E1A;
+  --bg-sunken: #0F0D0C;
+  --text: #F0EBE4;
+  --text-secondary: #AAA197;
+  --text-tertiary: #7E766D;
+  --border: #332E28;
+  --border-subtle: #29251F;
+
+  --accent: #D69A55;
+  --accent-strong: #B77732;
+  --accent-soft: #2B2117;
+  --accent-hover: #E0AA6A;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .2);
+  --shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .4);
+  --modal-backdrop: rgba(0, 0, 0, .65);
+
+  --status-error: #D9796E;
+  --status-success: #7EAD87;
+  --status-success-soft: #1D2A21;
+  --status-info: #72A7BD;
+  --status-info-soft: #18262C;
+  --status-caution: #D0A05E;
+  --status-caution-soft: #2B2217;
+  --type-badge-bg: #2F251A;
+  --type-badge-text: #D6B083;
+  --type-badge-border: #6B5032;
+  --type-strategy-text: var(--accent);
+  --accent-on: #17120D;
+  --focus: #D69A55;
+  --status-error-soft: #2C1C1A;
+}
+
+/* Chart semantic palette belongs to the same default Skin as site surfaces. */
+:root,
+[data-skin="default-light"] {
+  --hd-overlay-natal: #6B655F;
+  --hd-overlay-natal-on: #FFFFFF;
+  --hd-personality: #282624;
+  --hd-personality-on: #FFFFFF;
+  --hd-design: #B84D43;
+  --hd-design-on: #FFFFFF;
+  --hd-transit: #2D929F;
+  --hd-timeline-birth: #6B655F;
+  --hd-timeline-transit: #2F6870;
+  --hd-timeline-both-birth: #6B655F;
+  --hd-timeline-both-transit: #2F6870;
+  --hd-timeline-both-on: #FFFFFF;
+  --hd-transit-on: #FFFFFF;
+  --hd-transit-text: #246D76;
+  --hd-transit-soft: #E1F0F1;
+  --hd-both: #76503B;
+  --hd-both-on: #FFFFFF;
+  --hd-undefined: #CBC4BC;
+  --hd-electromagnetic: #B4783F;
+  --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
+  --hd-relationship-electromagnetic: var(--hd-connection-bridged);
+  --hd-relationship-companionship: var(--hd-connection-both);
+  --hd-relationship-compromise: var(--hd-connection-a);
+  --hd-relationship-dominance: var(--hd-connection-a);
+
+  --hd-inactive: #C1BAB2;
+  --hd-inactive-on: #2D2925;
+  --hd-undefined-center: #FEFDFB;
+  --hd-center-stroke: #BDB5AC;
+  --hd-defined-fill: #B86F2C;
+  --hd-undefined-fill: transparent;
+
+  --hd-graph-panel-bg: var(--bg-elevated);
+  --hd-graph-panel-border: var(--border-subtle);
+  --hd-graph-bg: transparent;
+  --hd-timeline-panel-bg: var(--bg-elevated);
+  --hd-timeline-panel-border: var(--border);
+  --hd-tooltip-bg: var(--bg-elevated);
+  --hd-tooltip-border: var(--border);
+  --hd-detail-bg: var(--bg-elevated);
+  --hd-detail-border: var(--accent);
+  --hd-legend-bg: var(--bg-elevated);
+  --hd-legend-border: var(--border);
+  --hd-legend-text: var(--text-secondary);
+  --hd-planet-column-text: var(--text);
+
+  --hd-selection-ring: #B86F2C;
+
+  --hd-type-generator: #A08345;
+  --hd-type-manifesting-generator: #B56D3C;
+  --hd-type-manifestor: #A9564D;
+  --hd-type-projector: #577789;
+  --hd-type-reflector: #777D7D;
+
+  --hd-circuit-individual: #7A2F99;
+  --hd-circuit-individual-soft: #F0E6F6;
+  --hd-circuit-tribal: #A82E24;
+  --hd-circuit-tribal-soft: #FCE4E4;
+  --hd-circuit-collective: #1C6695;
+  --hd-circuit-collective-soft: #E4F0FC;
+  --hd-circuit-integration: #18773F;
+  --hd-circuit-integration-soft: #E4F6EC;
+
+  --hd-connection-a: #87B1AD;
+  --hd-connection-a-on: #111111;
+  --hd-connection-a-core: var(--hd-connection-a);
+  --hd-connection-b: #D79A8E;
+  --hd-connection-b-on: #111111;
+  --hd-connection-b-core: var(--hd-connection-b);
+  --hd-connection-bridged: #C3AD80;
+  --hd-connection-bridged-on: #111111;
+  --hd-connection-both-on: #111111;
+  --hd-connection-bridged-core: var(--hd-connection-bridged);
+
+}
+
+[data-skin="default-dark"],
+:root:not([data-skin])[data-theme="dark"] {
+  --hd-overlay-natal: #9E968C;
+  --hd-overlay-natal-on: #171411;
+  --hd-personality: #E9E4DD;
+  --hd-personality-on: #171411;
+  --hd-design: #E16F60;
+  --hd-design-on: #171411;
+  --hd-transit: #65B8C0;
+  --hd-timeline-birth: #9E968C;
+  --hd-timeline-transit: #3F7C82;
+  --hd-timeline-both-birth: #A69E94;
+  --hd-timeline-both-transit: #6A9FA5;
+  --hd-timeline-both-on: #111111;
+  --hd-transit-text: #83C8CF;
+  --hd-transit-soft: #17282B;
+  --hd-both: #C18C58;
+  --hd-relationship-dominance: var(--hd-connection-a);
+
+  --hd-both-on: #171411;
+  --hd-undefined: #423D37;
+
+  --hd-inactive: #6F6860;
+  --hd-inactive-on: #F0EBE4;
+  --hd-undefined-center: #0F0D0C;
+  --hd-center-stroke: #655D54;
+  --hd-graph-panel-bg: var(--bg-sunken);
+
+  --hd-circuit-individual-soft: #2A1D32;
+  --hd-circuit-tribal-soft: #2A1515;
+  --hd-circuit-collective-soft: #152030;
+  --hd-circuit-integration-soft: #152A1D;
+  --hd-connection-a: #75B1A7;
+  --hd-connection-a-core: var(--hd-connection-a);
+  --hd-connection-b: #D49280;
+  --hd-connection-b-core: var(--hd-connection-b);
+  --hd-connection-bridged: #C5A75F;
+  --hd-connection-bridged-core: var(--hd-connection-bridged);
+  --hd-transit-on: #111819;
+  --hd-selection-ring: #D69A55;
+  --hd-defined-fill: #D69A55;
+  --hd-type-generator: #C2A15A;
+  --hd-type-manifesting-generator: #D18A52;
+  --hd-type-manifestor: #D4786D;
+  --hd-type-projector: #78A0B7;
+  --hd-type-reflector: #A3AAAA;
+  --hd-circuit-individual: #C28BE0;
+  --hd-circuit-tribal: #E98075;
+  --hd-circuit-collective: #6BB8E8;
+  --hd-circuit-integration: #65C98A;
+  --hd-connection-a-on: #111111;
+  --hd-connection-b-on: #111111;
+  --hd-connection-bridged-on: #111111;
+  --hd-connection-both-on: #111111;
+  --hd-relationship-electromagnetic: var(--hd-connection-bridged);
+  --hd-relationship-companionship: var(--hd-connection-both);
+  --hd-relationship-compromise: var(--hd-connection-a);
+  --hd-connection-both: repeating-linear-gradient(45deg, var(--hd-connection-a) 0 6px, var(--hd-connection-b) 6px 12px);
+  /* Legacy Team consumer: preserve its pre-V2 color. Relationship no longer reads this. */
+  --hd-electromagnetic: #D69A5D;
+}
