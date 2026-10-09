@@ -4,6 +4,8 @@
    Component styles use these semantic variables instead of palette literals. */
 :root,
 [data-skin="default-light"] {
+  --hd-gate-active-ink: #FFF9F2;
+  --hd-gate-inactive-ink: #191A18;
   --bg: #F7F5F2;
   --bg-elevated: #FEFDFB;
   --bg-sunken: #EFEBE6;
@@ -46,6 +48,8 @@
 
 [data-skin="default-dark"],
 :root:not([data-skin])[data-theme="dark"] {
+  --hd-gate-active-ink: #201A16;
+  --hd-gate-inactive-ink: #25201C;
   color-scheme: dark;
   --bg: #161412;
   --bg-elevated: #211E1A;

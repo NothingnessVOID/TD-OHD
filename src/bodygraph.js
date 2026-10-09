@@ -20,7 +20,7 @@ import './styles/variable-arrows.css';
 import { TRANSIT_SOURCE_LABELS } from './lib/transit-graph.js';
 import { getCenterPalette } from './lib/center-palette-registry.js';
 import { getTransitSourceMode } from './lib/skin-registry.js';
-import { readableColor, resolveRGB, contrastRatio, mixRGB, rgbCSS } from './lib/source-contrast.js';
+import { readableColor, candidateColor, resolveRGB, contrastRatio, mixRGB, rgbCSS } from './lib/source-contrast.js';
 import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
@@ -532,7 +532,9 @@ export function renderBodygraph(container, chart, opts = {}) {
     const striped = isActive && fill.startsWith('url(');
     const stripeFills = composite ? [composite.colorA, composite.colorB] : [personalityColor, designColor];
     const surface = isActive ? fill : inactiveFill || colors.inactive;
-    const preferred = isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum);
+    const preferred = skinToken(style, isActive ? '--hd-gate-active-ink' : '--hd-gate-inactive-ink')
+      || (isActive ? gateOnColor(gateNum) : inactiveGateOn(gateNum));
+    const alternate = skinToken(style, isActive ? '--hd-gate-inactive-ink' : '--hd-gate-active-ink') || preferred;
     let numberSurfaces = striped ? stripeFills : [surface];
     if (!isActive && !inactiveFill) {
       const key = GATES[gateNum]?.center;
@@ -543,14 +545,17 @@ export function renderBodygraph(container, chart, opts = {}) {
         : [colors.undefinedCenter];
       numberSurfaces = underneath.map(color => rgbCSS(mixRGB(resolveRGB(color), resolveRGB(colors.inactive), Number(colors.inactiveCircleOpacity))));
     }
-    const numberColor = readableColor(preferred, numberSurfaces);
+    const numberColor = candidateColor(preferred, alternate, numberSurfaces);
     const needsBacking = (striped && contrastRatio(resolveRGB(stripeFills[0]), resolveRGB(stripeFills[1])) >= 3)
       || numberSurfaces.some(color => contrastRatio(resolveRGB(numberColor), resolveRGB(color)) < 4.5);
     // Only the number's local area is backed; the source stripe perimeter stays visible.
-    const backing = resolveRGB(numberColor).reduce((sum, n) => sum + n, 0) > 382 ? '#111111' : '#FFFFFF';
+    const backing = resolveRGB(preferred).reduce((sum, n) => sum + n, 0) > 382
+      ? skinToken(style, '--hd-gate-inactive-ink') : skinToken(style, '--hd-gate-active-ink');
+    const backingColor = contrastRatio(resolveRGB(preferred), resolveRGB(backing)) >= 4.5
+      ? backing : resolveRGB(preferred).reduce((sum, n) => sum + n, 0) > 382 ? '#211E1A' : '#FAF8F3';
     if (needsBacking) g.appendChild(svgEl('ellipse', {
       cx: c.cx, cy: c.cy, rx: 14, ry: 12.5,
-      fill: backing, class: 'bg-gate-number-backing', 'pointer-events': 'none'
+      fill: backingColor, class: 'bg-gate-number-backing', 'pointer-events': 'none'
     }));
     g.appendChild(svgEl('text', {
       x: c.cx, y: c.cy,
@@ -558,8 +563,10 @@ export function renderBodygraph(container, chart, opts = {}) {
       'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
       'font-family': skinToken(style, '--font'),
-      fill: needsBacking ? readableColor(numberColor, [backing]) : numberColor,
-      'data-number-background': needsBacking ? backing : numberSurfaces.join('|'),
+      fill: needsBacking ? candidateColor(preferred, alternate, [backingColor]) : numberColor,
+      'data-number-background': needsBacking ? backingColor : numberSurfaces.join('|'),
+      'data-number-surfaces': numberSurfaces.join('|'),
+      'data-number-active': String(isActive),
       'data-number-striped': String(striped),
       stroke: 'none',
       'pointer-events': 'none',

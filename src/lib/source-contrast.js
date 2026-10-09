@@ -44,6 +44,18 @@ export function readableColor(preferred, backgrounds, toward = '#111111') {
   const result = readableRGB(original, backgrounds.map(resolveRGB), resolveRGB(toward));
   return result.every((n, i) => n === original[i]) ? preferred : rgbCSS(result);
 }
+export function candidateRGB(preferred, alternate, backgrounds, toward = preferred) {
+  const passes = color => backgrounds.every(bg => contrastRatio(color, bg) >= 4.5);
+  if (passes(preferred)) return preferred;
+  if (passes(alternate)) return alternate;
+  return readableRGB(preferred, backgrounds, toward);
+}
+export function candidateColor(preferred, alternate, backgrounds) {
+  const surfaces = backgrounds.map(resolveRGB);
+  if (surfaces.every(bg => contrastRatio(resolveRGB(preferred), bg) >= 4.5)) return preferred;
+  if (surfaces.every(bg => contrastRatio(resolveRGB(alternate), bg) >= 4.5)) return alternate;
+  return rgbCSS(candidateRGB(resolveRGB(preferred), resolveRGB(alternate), surfaces));
+}
 export function applySourceTextColors(root) {
   if (typeof getComputedStyle !== 'function' || typeof document.createElement !== 'function') return;
   const style = getComputedStyle(root);
