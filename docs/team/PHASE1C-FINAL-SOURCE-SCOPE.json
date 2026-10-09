@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "baseline": "fe4e5fd536b91b53c87965da9b1bc9aed95c928c",
+  "status": "frozen",
+  "files": {
+    "src/locales/zh-CN/ui-views.json": "382f88bff20621632c2a89c7876825c7d992fb5aec6759bdaec2141817122349",
+    "src/locales/zh-Hant/ui-views.json": "8023a108577964e05f28443a8c30414fb520ee8c5dd32545d5327d36fbfe54a2"
+  }
+}
