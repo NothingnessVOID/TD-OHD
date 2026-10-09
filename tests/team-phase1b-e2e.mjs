@@ -38,7 +38,7 @@ try {
   await page.locator('#team-calculate').click();
   await page.locator('.team-summary').waitFor({ timeout: 60000 });
   assert.equal(await page.locator('.team-channel').count(), 6);
-  assert.match(await page.locator('#team-content').innerText(), /Phase 1C/);
+  assert.equal(await page.locator('.penta-gate').count(), 12);
   assert.doesNotMatch(await page.locator('#team-content').innerText(), /Team Roles|Recommendations|Group Type/);
   const before = stored.teams[0].members.map(m => m.memberId);
   await page.reload();

@@ -1,7 +1,8 @@
 import '../styles/team-members.css';
+import { createPentaMatrix } from './penta-matrix.js';
 import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, getPerson, savePerson, birthFromPerson } from '../lib/people.js';
+import { listPeople, getPerson, savePerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
@@ -17,6 +18,13 @@ let quickRows = [];
 let generation = 0;
 let pending = false;
 let latest = null;
+let matrix = null;
+function invalidateResult() { matrix?.dispose(); matrix = null; latest = null; $('team-content').replaceChildren(); }
+function currentResultValid() {
+  return !!latest && selectedPentaId === latest.pentaId && generation === latest.generation
+    && latest.personSnapshots.every(([id, snapshot]) => JSON.stringify(getPerson(id)) === snapshot);
+}
+function checkResult() { if (latest && !currentResultValid()) invalidateResult(); }
 const $ = id => document.getElementById(id);
 const text = (key, params) => esc(t(key, params));
 const errorText = error => esc(error?.message || t('Unable to complete the operation.'));
@@ -27,7 +35,7 @@ function rowHasData(row) { return !!(row.querySelector('.team-name').value.trim(
 function memberName(member) { return member.personId ? (getPerson(member.personId)?.name || member.labelSnapshot || member.displayName || t('Missing reference')) : member.displayName; }
 function message(key, params) { $('team-content').innerHTML = `<p class="team-message" role="status">${text(key, params)}</p>`; }
 function failure(error) { $('team-content').innerHTML = `<p class="team-message" role="alert">${errorText(error)}</p>`; }
-function changed() { generation++; pending = false; $('team-calculate').disabled = false; latest = null; $('team-content').replaceChildren(); updateCounts(); }
+function changed() { generation++; pending = false; $('team-calculate').disabled = false; invalidateResult(); updateCounts(); }
 function updateCounts() {
   if ($('team-count')) $('team-count').textContent = t('Team members: {count}', { count: allMembers().length });
   if ($('team-group-count')) $('team-group-count').textContent = t('Group members: {count} / 5', { count: selectedGroup()?.memberIds.length || 0 });
@@ -167,10 +175,16 @@ function persistTeam() {
   } catch (error) { failure(error); }
 }
 function removeTeam() { if (!teamId) return; try { deleteTeam(teamId); resetTeam(); message('Team deleted.'); } catch (error) { failure(error); } }
-function renderResult(result, names, label) {
-  $('team-content').innerHTML = `<div class="team-summary"><h3>${esc(name() || t('Untitled team'))} · ${esc(label)}</h3><p>${names.map(esc).join(' · ')}</p><p>${text('Gates covered: {count} / 12', { count: result.summary.presentGateCount })}</p><p>${text('Channels covered: {count} / 6', { count: result.summary.coveredChannelCount })}</p></div><div class="team-channels">${result.channels.map(channel => `<div class="team-channel"><strong>${esc(channel.channelId)}</strong> · ${esc(channel.gates.join('–'))} · ${text(({ absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' })[channel.status])}</div>`).join('')}</div><p class="team-hint">${text('Penta matrix diagram arrives in Phase 1C.')}</p>`;
+function renderResult() {
+  if (!currentResultValid()) { checkResult(); return; }
+  const highlighted = matrix?.highlightedMemberId;
+  matrix?.dispose();
+  $('team-content').replaceChildren();
+  matrix = createPentaMatrix($('team-content'), latest);
+  if (highlighted) matrix.setHighlightedMemberId(highlighted);
 }
 async function runTeamAnalysis() {
+  checkResult();
   if (pending) return;
   const token = generation;
   pending = true; $('team-calculate').disabled = true;
@@ -197,13 +211,14 @@ async function runTeamAnalysis() {
     const charts = [];
     for (const candidate of candidates) {
       const data = await computeChart(candidate.birth);
-      if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) return;
+      if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) { if (token === generation) invalidateResult(); return; }
       charts.push({ memberId: candidate.memberId, chart: data.chart });
     }
     const result = analyzePentaStructure(charts);
-    if (token !== generation) return;
-    latest = { result, names: candidates.map(item => item.displayName), label: group.label };
-    renderResult(result, latest.names, latest.label);
+    if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) return;
+    latest = { result, people: candidates.map(item => ({ memberId: item.memberId, displayName: item.displayName })), groupLabel: group.label,
+      pentaId: group.pentaId, generation: token, personSnapshots: candidates.filter(item => item.personId).map(item => [item.personId, item.personSnapshot]) };
+    renderResult();
   } catch (error) { if (token === generation) failure(error); }
   finally { if (token === generation) { pending = false; $('team-calculate').disabled = false; } }
 }
@@ -234,9 +249,12 @@ export function setupTeamView() {
   });
   $('add-member').addEventListener('click', newQuickRow);
   $('team-calculate').addEventListener('click', runTeamAnalysis);
+  onPeopleChange(() => { checkResult(); renderMembers(); });
+  window.addEventListener('ohd-people-changed', () => { checkResult(); renderMembers(); });
+  window.addEventListener('storage', event => { if (event.key?.includes('profile') || event.key?.startsWith('ohd-local-')) { checkResult(); renderMembers(); } });
   refreshToolbar(); renderMembers();
 }
-export function renderTeamView() { renderMembers(); refreshToolbar(); }
+export function renderTeamView() { checkResult(); renderMembers(); refreshToolbar(); }
 export function refreshTeamLanguage() {
   const subtitle = document.querySelector('#team-view .view-subtitle');
   subtitle.textContent = t('Team members and Penta structure');
@@ -261,5 +279,5 @@ export function refreshTeamLanguage() {
     row.querySelector('.team-time').setAttribute('aria-label', t('Birth time'));
     row._placeSearch.refreshLanguage();
   }
-  renderMembers(); refreshToolbar(); if (latest) renderResult(latest.result, latest.names, latest.label);
+  checkResult(); renderMembers(); refreshToolbar(); if (latest) renderResult();
 }

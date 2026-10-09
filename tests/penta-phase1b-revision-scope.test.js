@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, cpSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { validatePentaPhase1BRevisionScope } from '../docs/frontend-knowledge-sync-v1/validate.mjs';
 
@@ -16,7 +17,8 @@ function sandbox(run) {
     cpSync(path.join(root, scopeFile), path.join(temp, scopeFile));
     for (const file of paths) {
       mkdirSync(path.dirname(path.join(temp, file)), { recursive: true });
-      cpSync(path.join(root, file), path.join(temp, file));
+      // Exercise the frozen 1B baseline independently of subsequent 1C edits.
+      writeFileSync(path.join(temp, file), execFileSync('git', ['show', `23f9decbb888ba213d0432d8d53dae4dd24eac39:${file}`], { cwd: root }));
     }
     return run(temp);
   } finally { rmSync(temp, { recursive: true, force: true }); }
