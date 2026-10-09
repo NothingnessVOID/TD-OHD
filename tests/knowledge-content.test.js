@@ -24,7 +24,7 @@ test('formal locale content has identical 64 keys, bounded summaries and separat
    assert.doesNotMatch(record.detail,/"(?:strategy|signature|notSelf|geometry|taxonomy)"\s*:/);
   }
  }
- withLanguages(locale=>{for(const e of listKnowledgeEntries()) {
+ withLanguages(locale=>{for(const e of listKnowledgeEntries().filter(entry=>entry.objectType!=='penta')) {
   if(e.objectType==='cognition'){assert.equal(e.summary,null);assert.equal(e.detail,null);continue;}
   assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,(e.objectType==='variable'||e.objectType==='type'||e.objectId==='introduction'&&e.objectType!=='cross')?3:2);
   const text=[e.name,e.summary.content,e.detail.content].join(' ');

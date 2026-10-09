@@ -1,9 +1,14 @@
 import { foundationRecords, crossRecord } from './human-design-foundation.js';
+import { pentaRecords } from './penta-foundation.js';
 import { validateKnowledgeEntry } from './schema.js';
 import { getLocale } from '../i18n.js';
 const key = query => `${query.domain ?? 'human-design'}:${query.objectType}:${query.objectId}`;
 const metadata = ({ read, templateRead, presentationRead, ...source }) => ({...source,...(source.file?{file:source.file.replace('{locale}',getLocale())}:{})});
-const resolve = reference => reference == null ? null : ({ ...metadata(reference), content: reference.read(), ...(reference.templateRead ? { template:reference.templateRead() } : {}), ...(reference.presentationRead?.() ? { presentation: reference.presentationRead() } : {}), locale: getLocale() });
+const resolve = reference => {
+  if (reference == null) return null;
+  const content = reference.read();
+  return content == null ? null : ({ ...metadata(reference), content, ...(reference.templateRead ? { template:reference.templateRead() } : {}), ...(reference.presentationRead?.() ? { presentation: reference.presentationRead() } : {}), locale: getLocale() });
+};
 
 /** A small reference reader. Summary lookup never resolves Detail. */
 export function createKnowledgeReader(records, dynamic = () => null) {
@@ -42,5 +47,8 @@ export function createKnowledgeReader(records, dynamic = () => null) {
   };
   return { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail };
 }
-export const { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(foundationRecords, crossRecord);
-export const listKnowledgeEntries = () => foundationRecords.map(record => getKnowledgeEntry(record));
+const records = [...foundationRecords, ...pentaRecords];
+export const { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(records, crossRecord);
+// Legacy Reference Library asks for its original foundation set without resolving Penta Detail.
+export const listKnowledgeEntries = ({ includePenta = true } = {}) =>
+  (includePenta ? records : foundationRecords).map(record => getKnowledgeEntry(record));

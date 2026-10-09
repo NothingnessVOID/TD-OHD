@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed",
+  "baseline": "da21b31c8832e4786a68b34c6956c0b7efa65946",
+  "files": {
+    "src/lib/knowledge/content/penta.js": "fe9b0e6b8a5f78dd9cc425083f224385cc42c36256f54fb48d346b7d0e6acefc",
+    "src/lib/knowledge/penta-foundation.js": "08960b1a721ddfc2154bff73c02e403faf1a5147e4c931ccea798d3fa35c7428",
+    "src/lib/knowledge/penta-messages.js": "ad143127929021feb23ea97dec6fe8dbc5b3d5bf012dbea02cda2fa4874738d1",
+    "src/lib/knowledge/registry.js": "33dd7a9e46446ec348937539d92f9920276888dbf2284e92bc7e130377a584d3",
+    "src/lib/knowledge/schema.js": "f3fbb9ae90da43ccffc37159e84f66b0e5e2f4ba3b054f77135b2776cee3f3a9",
+    "src/lib/knowledge/sources.js": "5d5c997db037f1fdef7170066cb6daff1b0b528ae1a246a7598525cec9e527d2",
+    "src/lib/reference-catalog.js": "9da382cd18d12fb1626cdb253f0a0e6257fef282591629c06ce34d14a6c1e68b",
+    "src/styles/penta-matrix.css": "5896e01f65acab72006484fb794ab075a7feb0e09112c8ab3ba3b08476e68f1b",
+    "src/views/penta-matrix.js": "a0a7b278a013d0fc618e7aefb54f38e20c4ad24047ccf86df58fe369cede04c9"
+  }
+}

@@ -33,7 +33,7 @@ test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F edi
  const hashes=JSON.parse(bytes('tests/fixtures/knowledge-round2b-content.json'));
  assert.equal(Object.keys(hashes).length,55);assertContentBoundary();
  for(const [key,record]of Object.entries(round2GContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
- setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
+ setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
  assert.match(knowledgeContent['zh-CN']['authority.sacral'].detail,/嗯哼／呃呃/);assert.match(knowledgeContent['zh-CN']['definition.quadrupleSplit'].detail,/8 个或 9 个/);
 });
 test('Type has semantic Strategy and Aura sections; Strategy shares its Type identity',()=>{

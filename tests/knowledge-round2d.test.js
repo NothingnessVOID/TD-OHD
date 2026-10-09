@@ -19,7 +19,7 @@ test('Round 2D historical content guard permits only the approved Round 2F devia
  assertContentBoundary();
 });
 test('all 64 reviewed entries render; Cognition remains six name-only entries',()=>langs(()=>{
- const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
+ const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
  for(const entry of entries){const html=renderKnowledgeDetail(entry);assert.match(html,/knowledge-detail/);if(entry.hasSummary)assert.match(html,/knowledge-summary-callout/);assert.doesNotMatch(html,/center-reading|gate-chip|circuit-badge|role="alert"/);}
 }));
 test('Generator has real Strategy/Aura surfaces, source chips and compact metadata; Emotional stays prose',()=>langs(()=>{

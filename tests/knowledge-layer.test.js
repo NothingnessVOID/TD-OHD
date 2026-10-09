@@ -15,7 +15,7 @@ import { setLocale, getLocale } from '../src/lib/i18n.js';
 import { adaptSharpChart } from '../src/lib/chart-engine/sharp-contract.js';
 const query = (objectType, objectId, extra={})=>({domain:'human-design',objectType,objectId,...extra});
 const fixtures=JSON.parse(readFileSync(new URL('./fixtures/sharp-definition-components.json',import.meta.url)));
-const all = listKnowledgeEntries();
+const all = listKnowledgeEntries().filter(e => e.objectType !== 'penta'); // Historical foundation count stays independently protected.
 
 test('70 unique foundation entries have valid domain, object type, sources, review and slot versions',()=>{
  assert.equal(all.length,70);assert.equal(new Set(all.map(x=>x.id)).size,70);

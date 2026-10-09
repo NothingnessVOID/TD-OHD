@@ -45,6 +45,13 @@
 #team-view .team-channel.penta-absent { border-style:dashed; }
 #team-view .team-channel.penta-crossMemberOnly { border-style:dashed; border-width:2px; }
 #team-view .team-channel.penta-both { border-style:double; border-width:3px; }
+#team-view .penta-knowledge-nav { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+#team-view .penta-knowledge-nav button { min-height:44px; padding:8px 12px; border:1px solid var(--border); border-radius:8px; background:var(--bg-elevated); color:var(--text); cursor:pointer; }
+#team-view .penta-knowledge-nav button:focus-visible { outline:3px solid var(--focus,var(--accent)); }
 #team-view .penta-detail .gate-detail-body { overflow-wrap:anywhere; }
+#team-view .penta-detail .penta-structure-facts, #team-view .penta-detail .penta-knowledge { border-top:1px solid var(--border); padding-top:12px; margin-top:12px; }
+#team-view .penta-detail .penta-knowledge-sources { color:var(--text-secondary); font-size:.85em; }
+#team-view .penta-detail .penta-knowledge-sources a { color:var(--accent); overflow-wrap:anywhere; }
+#team-view .penta-detail .penta-knowledge-missing { color:var(--text-secondary); }
 #team-view .penta-detail .gate-detail-body li { margin-block:5px; }
 @media (max-width:390px) { #team-view .penta-canvas { width:100%; } #team-view .penta-legend button { font-size:12px; } #team-view .penta-state-legend { grid-template-columns:minmax(0,1fr); } }
