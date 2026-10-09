@@ -50,24 +50,27 @@ try {
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).filter(p => p.name === 'Connection Synthetic').length), 1);
 
   await page.locator('.nav-link[data-view="team"]').click();
-  const row = page.locator('.team-member-row').first();
-  await row.locator('.team-name').fill('Team Synthetic');
-  await row.locator('.team-date').fill('1995-02-01');
-  await row.locator('.team-time').fill('10:00');
-  await row.locator('.ps-toggle').click();
-  await row.locator('.ps-manual').fill('8');
-  await page.locator('#team-saved input').evaluateAll(nodes => nodes.forEach(node => node.checked = false));
+  await page.locator('#team-person-picker').selectOption(profile.id);
+  await page.locator('#team-add-person').click();
+  const row = page.locator('#team-members .team-member-row').first();
+  for (const [index, date] of ['1995-02-01', '1996-03-02'].entries()) {
+    await page.locator('#add-member').click();
+    const quick = page.locator('#team-members .team-member-row').nth(index);
+    await quick.locator('.team-name').fill(`Team Synthetic ${index + 1}`);
+    await quick.locator('.team-date').fill(date);
+    await quick.locator('.team-time').fill('10:00');
+    await quick.locator('.ps-toggle').click();
+    await quick.locator('.ps-manual').fill('8');
+  }
   await page.locator('#team-calculate').click();
-  await page.locator('#team-content').filter({ hasText: 'Add at least two people' }).waitFor();
-  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).some(p => p.name === 'Team Synthetic')), false,
-    'a member is not saved before a successful team result');
-  await page.locator(`#team-saved input[value="${profile.id}"]`).check();
-  await page.locator('#team-calculate').click();
-  await page.waitForFunction(() => JSON.parse(localStorage.getItem(window.profileKey)).some(p => p.name === 'Team Synthetic'));
-  await page.evaluate(() => { window.teamRenders = 0; new MutationObserver(() => window.teamRenders++).observe(document.getElementById('team-content'), {childList:true}); });
-  await page.locator('#team-calculate').click();
-  await page.waitForFunction(() => window.teamRenders > 0);
-  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).filter(p => p.name === 'Team Synthetic').length), 1);
+  await page.locator('#team-content .team-summary').waitFor({ timeout: 60000 });
+  assert.equal(await page.locator('#team-content .team-channel').count(), 6);
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).some(p => p.name.startsWith('Team Synthetic'))), false,
+    'analysis never saves temporary team members');
+  await page.locator('#team-save').click();
+  assert.match(await page.locator('#team-content').innerText(), /Unsaved members/);
+  await row.locator('.team-save-person').click();
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).filter(p => p.name === 'Team Synthetic 1').length), 1);
   assert.deepEqual(api, []);
   await page.close();
 
@@ -87,5 +90,5 @@ try {
     else await p.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
     await p.close();
   }
-  console.log('Runtime restore, Chinese default, language persistence, no sync requests, Connection/Team autosave passed.');
+  console.log('Runtime restore, Chinese default, language persistence, no sync requests, Connection save and Team explicit save passed.');
 } finally { await browser.close(); }

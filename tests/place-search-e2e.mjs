@@ -53,6 +53,7 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor();
   for (const [view, scope] of [['connection', '#conn-place'], ['team', '#team-members .team-member-row:first-child .team-place']]) {
     await page.locator(`.nav-link[data-view="${view}"]`).click();
+    if (view === 'team') await page.locator('#add-member').click();
     await page.locator(view === 'connection' ? '#conn-date' : '.team-date').first().fill('1985-01-01');
     await page.locator(view === 'connection' ? '#conn-time' : '.team-time').first().fill('12:00');
     const place = page.locator(`${scope} .ps-input`);

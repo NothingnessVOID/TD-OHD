@@ -24,6 +24,7 @@ async function check(name, fn) {
 
 const browser = await chromium.launch({ executablePath: CHROME, headless: true });
 const page = await browser.newPage({ viewport: { width: 1380, height: 1000 }, locale: 'en-US' });
+await page.addInitScript(() => localStorage.setItem('ohd-language', 'en'));
 page.on('pageerror', err => fail('page JS error', err.message));
 
 // --- Entry flow with live geocoding ---
@@ -46,7 +47,7 @@ await check('selecting a place resolves historical timezone', async () => {
   const chip = await page.waitForSelector('#tz-chip:not(.hidden)', { timeout: 3000 });
   const text = await chip.textContent();
   if (!/UTC-6/.test(text)) throw new Error(`expected UTC-6 (MDT June 1990), got: ${text}`);
-  if (!/America\/Denver/.test(text)) throw new Error(`expected America/Denver, got: ${text}`);
+  if (!/Boulder/.test(text)) throw new Error(`expected Boulder place label, got: ${text}`);
 });
 
 await check('chart renders after submit', async () => {
@@ -250,29 +251,33 @@ await check('connection compare works (place search resolves tz)', async () => {
   await page.waitForSelector('#conn-detail', { state: 'hidden' });
 });
 
-await check('connection skin recolors the composite without changing source semantics', async () => {
-  await page.addStyleTag({ content: 'html[data-hd-skin="connection-probe"] { --hd-connection-a: #1234EE; --hd-connection-b: #EE3412; }' });
-  await page.evaluate(async () => (await import('/src/lib/appearance.js')).setHumanDesignSkin('connection-probe'));
-  await page.waitForFunction(() => document.querySelectorAll('#conn-composite .bg-gate-path[fill="#1234EE"], #conn-composite .bg-gate-path[fill="#EE3412"]').length > 0);
-  const design = await page.locator('html').evaluate(node => getComputedStyle(node).getPropertyValue('--hd-design').trim());
-  if (design === '#1234EE' || design === '#EE3412') throw new Error('relationship colors overwrote Design');
+await check('connection composite retains source semantics when center palette changes', async () => {
+  const before = await page.locator('.composite-legend').innerText();
+  await page.evaluate(async () => (await import('/src/lib/appearance.js')).setCenterPalette('chakra'));
+  const after = await page.locator('.composite-legend').innerText();
+  if (after !== before) throw new Error('center palette changed relationship source labels');
+  await page.evaluate(async () => (await import('/src/lib/appearance.js')).setSkinDefaultCenterPalette());
 });
 
 // --- Team using manual rows with place search ---
 await check('team analysis works (place search per row)', async () => {
   await page.click('.nav-link[data-view="team"]');
-  await page.click('#add-member'); // one row exists from init; now two
   const rows = [
-    { date: '1992-11-02', place: 'Tokyo' },
-    { date: '1985-03-20', place: 'Paris' },
+    { name: 'Tokyo member', date: '1992-11-02', place: 'Tokyo' },
+    { name: 'Paris member', date: '1985-03-20', place: 'Paris' },
+    { name: 'Osaka member', date: '1990-08-10', place: 'Osaka' },
   ];
   for (let i = 0; i < rows.length; i++) {
+    await page.click('#add-member');
     const sel = `#team-members .team-member-row:nth-child(${i + 1})`;
+    await page.fill(`${sel} .team-name`, rows[i].name);
     await page.fill(`${sel} .team-date`, rows[i].date);
+    await page.fill(`${sel} .team-time`, '12:00');
     await pickPlace(`${sel} .team-place`, rows[i].place);
   }
   await page.click('#team-calculate');
-  await page.waitForSelector('#team-content .role-card', { timeout: 5000 });
+  await page.waitForSelector('#team-content .team-summary', { timeout: 60000 });
+  if (await page.locator('#team-content .team-channel').count() !== 6) throw new Error('Expected six Penta channels');
 });
 
 // --- Theme toggle re-renders graph ---
@@ -343,7 +348,8 @@ await check('connection invite auto-runs the comparison (dyad loop)', async () =
   await p3.click('#birth-form button[type=submit]');
   await p3.waitForSelector('#connection-content .foundation-item', { timeout: 6000 });
   const content = await p3.textContent('#connection-content');
-  if (!/How you decide together/.test(content)) throw new Error('comparison not shown: ' + content.slice(0, 120));
+  if (!/Nine-center formula|九中心/.test(content)) throw new Error('comparison not shown: ' + content.slice(0, 120));
+  if (/How you decide together/.test(content)) throw new Error('unsupported relationship interpretation shown');
   await ctx.close();
 });
 
