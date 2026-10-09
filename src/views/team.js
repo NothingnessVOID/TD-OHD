@@ -1,203 +1,297 @@
-import { saveTemporaryBirth } from '../lib/temporary-birth.js';
-/**
- * Team view — Penta/group analysis. Members come from saved people
- * (checkboxes) plus optional quick-add rows.
- */
-
-import { analyzePenta } from '../lib/human-design/penta.js';
+import '../styles/team-members.css';
+import '../styles/team-visual-polish.css';
+import { createPentaMatrix } from './penta-matrix.js';
+import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson } from '../lib/people.js';
-import { reportSaveFailure } from '../lib/local-store.js';
-import { contentText } from '../lib/content.js';
+import { listPeople, getPerson, savePerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
-import { typeName, channelName } from '../lib/vocabulary.js';
 import { t } from '../lib/i18n.js';
-import { getCurrentChart } from './chart.js';
+import { createMember, validateBirth } from '../lib/human-design/team-members.js';
+import { listTeams, getTeam, saveTeam, deleteTeam } from '../lib/team-repository.js';
 
-
-let latestTeamState = null;
-
-export function setupTeamView() {
-  document.getElementById('add-member').addEventListener('click', addMemberRow);
-  document.getElementById('team-calculate').addEventListener('click', runTeamAnalysis);
-  addMemberRow(); // never present an empty void — one ready row invites input
+let teamId = null;
+let teamRevision = null;
+let members = [];
+let groups = [];
+let selectedPentaId = null;
+let quickRows = [];
+let generation = 0;
+let pending = false;
+let latest = null;
+let matrix = null;
+let dirty = false;
+const confirmDiscard = () => !dirty || window.confirm(t('Discard unsaved team changes?'));
+function markSaved() { dirty = false; }
+function invalidateResult() { matrix?.dispose(); matrix = null; latest = null; $('team-content').replaceChildren(); }
+function currentResultValid() {
+  return !!latest && selectedPentaId === latest.pentaId && generation === latest.generation
+    && latest.personSnapshots.every(([id, snapshot]) => JSON.stringify(getPerson(id)) === snapshot);
 }
-
-/** Refresh saved-people checkboxes each time the view opens. */
-export function renderTeamView() {
-  const wrap = document.getElementById('team-saved');
-  const hadChoices = !!wrap.querySelector('.team-saved-list');
-  const selectedIds = new Set([...wrap.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.value));
-  const people = listPeople();
-  const current = getCurrentChart();
-  if (!people.length) {
-    wrap.innerHTML = `<p class="panel-intro">${t('A team needs at least two people — add their birth data below, or save charts first to pick them by name.')}</p>`;
-    return;
-  }
-  wrap.innerHTML = `
-    <div class="saved-people-label">${t('Include')}</div>
-    <div class="team-saved-list">
-      ${people.map(p => `
-        <label class="team-saved-person">
-          <input type="checkbox" value="${esc(p.id)}" ${(hadChoices ? selectedIds.has(p.id) : current?.birth?.id === p.id) ? 'checked' : ''}>
-          ${esc(p.name)}
-        </label>
-      `).join('')}
-    </div>
-  `;
+function checkResult() { if (latest && !currentResultValid()) invalidateResult(); }
+const $ = id => document.getElementById(id);
+const text = (key, params) => esc(t(key, params));
+const errorText = error => esc(error?.message || t('Unable to complete the operation.'));
+const name = () => $('team-name').value.trim();
+const selectedGroup = () => groups.find(group => group.pentaId === selectedPentaId);
+const allMembers = () => [...members, ...quickRows.filter(rowHasData).map(row => ({ memberId: row._memberId, personId: null, displayName: row.querySelector('.team-name').value.trim() || t('Unnamed member'), origin: 'quick' }))];
+function rowHasData(row) { return !!(row.querySelector('.team-name').value.trim() || row.querySelector('.team-date').value || row.querySelector('.team-time').value || row._placeSearch?.hasInput() || row.querySelector('.ps-input')?.value.trim()); }
+function memberName(member) { return member.personId ? (getPerson(member.personId)?.name || member.labelSnapshot || member.displayName || t('Missing reference')) : member.displayName; }
+function message(key, params) { $('team-content').innerHTML = `<p class="team-message" role="status">${text(key, params)}</p>`; }
+function failure(error) { $('team-content').innerHTML = `<p class="team-message" role="alert">${errorText(error)}</p>`; }
+function changed() { dirty = true; generation++; pending = false; $('team-calculate').disabled = false; invalidateResult(); updateCounts(); }
+function updateCounts() {
+  if ($('team-count')) $('team-count').textContent = t('Team members: {count}', { count: allMembers().length });
+  if ($('team-group-count')) $('team-group-count').textContent = t('Group members: {count} / 5', { count: selectedGroup()?.memberIds.length || 0 });
 }
-
-function addMemberRow() {
-  const membersContainer = document.getElementById('team-members');
+function refreshToolbar() {
+  const select = $('team-list');
+  try {
+    select.innerHTML = `<option value="">${text('Choose a saved team')}</option>` + listTeams().map(team => `<option value="${esc(team.teamId)}">${esc(team.name)}</option>`).join('');
+    select.value = teamId || '';
+  } catch (error) { failure(error); }
+}
+function renderGroups() {
+  const picker = $('team-group-list');
+  if (!picker) return;
+  picker.innerHTML = `<option value="">${text('Select Penta')}</option>` + groups.map(group => `<option value="${esc(group.pentaId)}">${esc(group.label)}</option>`).join('');
+  picker.value = selectedPentaId || '';
+  $('team-group-name').value = selectedGroup()?.label || '';
+  $('team-group-name').disabled = !selectedGroup();
+  const group = selectedGroup();
+  $('team-group-members').innerHTML = group ? group.memberIds.map(id => {
+    const member = allMembers().find(item => item.memberId === id);
+    const number = allMembers().findIndex(item => item.memberId === id) + 1;
+    return `<div class="team-group-member" data-member-id="${esc(id)}"><span><b class="team-member-index">${number}</b>${esc(member ? memberName(member) : t('Missing reference'))}</span><button type="button" class="team-unassign btn-secondary">${text('Remove from Penta')}</button></div>`;
+  }).join('') : `<p class="team-hint">${text('Select a Penta group first.')}</p>`;
+  updateCounts();
+}
+function renderMembers() {
+  $('team-saved').innerHTML = `<label>${text('Choose a saved person')} <select id="team-person-picker"><option value="">${text('Choose a saved person')}</option>${listPeople().map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select></label><button type="button" id="team-add-person" class="btn-secondary">${text('Add person')}</button>`;
+  $('team-selected').innerHTML = members.map((member, index) => {
+    const missing = member.personId && !getPerson(member.personId);
+    const group = groups.find(g => g.memberIds.includes(member.memberId));
+    const action = group?.pentaId === selectedPentaId
+      ? `<span class="team-assigned">${text('In current Penta')}</span>`
+      : group ? '' : `<button type="button" class="team-assign btn-secondary">${text('Add to current Penta')}</button>`;
+    return `<div class="team-member-card" data-member-id="${esc(member.memberId)}"><div class="team-member-identity"><b class="team-member-index">${index + 1}</b><span class="team-member-meta"><strong>${esc(memberName(member))}</strong><small>${missing ? text('Missing reference') : group ? esc(group.label) : text('Ungrouped')}</small></span></div><div class="team-member-actions">${missing ? `<button type="button" class="team-reassign btn-secondary">${text('Reassign person')}</button>` : ''}${action}<button type="button" class="team-remove btn-secondary">${text('Remove from team')}</button></div></div>`;
+  }).join('');
+  renderGroups();
+}
+function addSavedPerson(id, replacing = null) {
+  const person = getPerson(id);
+  if (!person) return message('Missing reference');
+  if (members.some(item => item.personId === id && item !== replacing)) return message('The selected person is already in this team.');
+  if (replacing) { replacing.personId = id; replacing.displayName = person.name; replacing.labelSnapshot = person.name; }
+  else members.push(createMember({ personId: id, displayName: person.name, origin: 'saved' }));
+  changed(); renderMembers();
+}
+function assign(id) {
+  const group = selectedGroup();
+  if (!group) return message('Select a Penta group first.');
+  if (!allMembers().some(member => member.memberId === id)) return;
+  if (group.memberIds.includes(id)) return;
+  if (groups.some(item => item.memberIds.includes(id))) return message('A member is already assigned to another Penta.');
+  if (group.memberIds.length >= 5) return message('Five members maximum per Penta.');
+  group.memberIds.push(id); changed(); renderMembers();
+}
+function removeMember(id) {
+  members = members.filter(item => item.memberId !== id);
+  for (const group of groups) group.memberIds = group.memberIds.filter(item => item !== id);
+  changed(); renderMembers();
+}
+function newQuickRow() {
   const row = document.createElement('div');
   row.className = 'team-member-row';
-  row.innerHTML = `
-    <input type="text" class="team-name" placeholder="${esc(t('Name'))}">
-    <input type="date" class="team-date" required>
-    <input type="time" class="team-time" value="12:00">
-    <div class="team-place"></div>
-    <button class="remove-member" title="${esc(t('Remove'))}">&times;</button>
-  `;
-  const ps = createPlaceSearch(row.querySelector('.team-place'), {
-    placeholder: 'Birth place',
-    getDateTime: () => ({ date: row.querySelector('.team-date').value, time: row.querySelector('.team-time').value })
+  row.innerHTML = `<div class="team-quick-fields"><input class="team-name" type="text" placeholder="${text('Name')}" aria-label="${text('Name')}"><input class="team-date" type="date" aria-label="${text('Birth date')}"><input class="team-time" type="time" aria-label="${text('Birth time')}"></div><div class="team-place"></div><div class="team-row-actions"><button type="button" class="team-assign-quick">${text('Add to Penta')}</button><button type="button" class="team-save-person">${text('Save as person')}</button><button type="button" class="team-remove-quick">${text('Remove')}</button></div>`;
+  row._memberId = crypto.randomUUID();
+  row._placeSearch = createPlaceSearch(row.querySelector('.team-place'), { getDateTime: () => ({ date: row.querySelector('.team-date').value, time: row.querySelector('.team-time').value }) });
+  for (const field of ['.team-date', '.team-time']) row.querySelector(field).addEventListener('change', row._placeSearch.updateDateTime);
+  row.addEventListener('input', changed);
+  row.addEventListener('change', changed);
+  row.querySelector('.team-place').addEventListener('click', () => queueMicrotask(() => { if (row.isConnected) changed(); }));
+  row.querySelector('.team-assign-quick').addEventListener('click', () => assign(row._memberId));
+  row.querySelector('.team-remove-quick').addEventListener('click', () => {
+    for (const group of groups) group.memberIds = group.memberIds.filter(id => id !== row._memberId);
+    row._placeSearch.destroy(); row.remove(); quickRows = quickRows.filter(item => item !== row); changed(); renderGroups();
   });
-  row._placeSearch = ps;
-  for (const field of ['.team-date', '.team-time']) row.querySelector(field).addEventListener('change', ps.updateDateTime);
-  row.querySelector('.remove-member').addEventListener('click', () => { ps.destroy(); row.remove(); });
-  membersContainer.appendChild(row);
+  row.querySelector('.team-save-person').addEventListener('click', () => saveQuickPerson(row));
+  $('team-members').append(row); quickRows.push(row); changed();
 }
-
-async function runTeamAnalysis() {
-  const current = getCurrentChart();
-  const charts = [];
-  const names = [];
-  const generatedNames = new Map();
-  const pendingBirths = [];
+function birthProblem(birth) {
+  if (birth.timeUnknown === true) return 'Birth time marked unknown.';
+  if (!birth.birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birth.birthDate) || !validDate(birth.birthDate)) return 'Invalid birth date.';
+  if (!birth.birthTime) return 'Missing birth time.';
+  if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(birth.birthTime)) return 'Invalid birth time.';
+  if (birth.timezone === null || birth.timezone === undefined || birth.timezone === '') return 'Missing timezone.';
+  if (typeof birth.timezone !== 'number' || !Number.isFinite(birth.timezone) || birth.timezone < -14 || birth.timezone > 14) return 'Invalid timezone.';
+  if (!validateBirth(birth)) return 'Invalid birth date.';
+  return null;
+}
+function validDate(date) {
+  const [year, month, day] = date.split('-').map(Number);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  return year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+}
+function checkedBirth(birth, label) {
+  const problem = birthProblem(birth);
+  if (problem) throw new Error(t('Birth details need correction: {names}', { names: label }) + ' ' + t(problem) + ' ' + t('Edit this person’s birth details.'));
+  return birth;
+}
+function quickBirth(row) {
+  const enteredName = row.querySelector('.team-name').value.trim();
+  const birthDate = row.querySelector('.team-date').value;
+  const birthTime = row.querySelector('.team-time').value;
+  if (!enteredName) throw new Error(t('Please enter a name, date, time and place or UTC offset.'));
+  if (!birthDate || !birthTime) return checkedBirth({ birthDate, birthTime, timezone: undefined }, enteredName);
+  const location = row._placeSearch.getBirthLocation(birthDate, birthTime);
+  if (!location) row._placeSearch.flagMissing();
+  return checkedBirth({ name: enteredName, birthDate, birthTime, timezone: location?.timezone, location: location?.lat != null ? location : null }, enteredName);
+}
+function saveQuickPerson(row) {
   try {
-    // Saved people (checkboxes)
-    const people = listPeople();
-    for (const cb of document.querySelectorAll('#team-saved input[type=checkbox]:checked')) {
-      const person = people.find(p => p.id === cb.value);
-      if (!person) continue;
-      // Reuse the already-computed chart for the current person
-      if (current?.birth?.id === person.id) {
-        charts.push(current.chart);
-        names.push(person.name);
-      } else {
-        const data = await computeChart(birthFromPerson(person));
-        charts.push(data.chart);
-        names.push(person.name);
+    const birth = quickBirth(row);
+    const person = savePerson({ ...birth, id: crypto.randomUUID() });
+    members.push(createMember({ memberId: row._memberId, personId: person.id, displayName: person.name, origin: 'saved' }));
+    row._placeSearch.destroy(); row.remove(); quickRows = quickRows.filter(item => item !== row);
+    changed(); renderMembers(); message('Person saved.');
+  } catch (error) { failure(error); }
+}
+function clearQuick() { for (const row of quickRows) row._placeSearch.destroy(); quickRows = []; $('team-members').replaceChildren(); }
+function openTeam(id) {
+  try {
+    const team = getTeam(id);
+    if (!team) throw new Error(t('The saved team could not be found.'));
+    teamId = team.teamId; teamRevision = team.revision; $('team-name').value = team.name;
+    members = team.members.map(item => ({ ...item, displayName: getPerson(item.personId)?.name || item.labelSnapshot, origin: 'saved' }));
+    groups = team.groups.map(item => ({ ...item, memberIds: [...item.memberIds] }));
+    selectedPentaId = groups[0]?.pentaId || null;
+    clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
+  } catch (error) { failure(error); }
+}
+function resetTeam() {
+  teamId = null; teamRevision = null; members = []; groups = []; selectedPentaId = null;
+  $('team-name').value = ''; clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
+}
+function persistTeam() {
+  try {
+    const unsaved = quickRows.filter(rowHasData).map(row => row.querySelector('.team-name').value.trim() || t('Unnamed member'));
+    if (unsaved.length) return message('Unsaved members: {names}. Save each as a person first.', { names: unsaved.join(', ') });
+    if (!name()) return message('Please enter a team name.');
+    const saved = saveTeam({ ...(teamId ? { teamId, revision: teamRevision } : {}), name: name(), members: members.map(item => ({ memberId: item.memberId, personId: item.personId, labelSnapshot: memberName(item) })), groups });
+    teamId = saved.teamId; teamRevision = saved.revision; markSaved(); refreshToolbar(); message('Team saved.');
+  } catch (error) { failure(error); }
+}
+function removeTeam() { if (!teamId || !window.confirm(t('Delete this saved team?'))) return; try { deleteTeam(teamId); dirty = false; resetTeam(); message('Team deleted.'); } catch (error) { failure(error); } }
+function renderResult() {
+  if (!currentResultValid()) { checkResult(); return; }
+  const highlighted = matrix?.highlightedMemberId;
+  matrix?.dispose();
+  $('team-content').replaceChildren();
+  matrix = createPentaMatrix($('team-content'), latest);
+  if (highlighted) matrix.setHighlightedMemberId(highlighted);
+}
+async function runTeamAnalysis() {
+  checkResult();
+  if (pending) return;
+  const token = generation;
+  pending = true; $('team-calculate').disabled = true;
+  message('Calculating…');
+  try {
+    // A partially completed quick row must never disappear from validation merely because it is unassigned.
+    for (const row of quickRows.filter(rowHasData)) quickBirth(row);
+    const group = selectedGroup();
+    if (!group) return message('Select a Penta group first.');
+    if (group.memberIds.length < 3) return message('Selected Penta needs at least three members.');
+    if (group.memberIds.length > 5) return message('Five members maximum per Penta.');
+    const candidates = group.memberIds.map(id => {
+      const member = members.find(item => item.memberId === id);
+      if (!member) {
+        const row = quickRows.find(item => item._memberId === id);
+        if (!row || !rowHasData(row)) throw new Error(t('Missing reference: {name}. Remove or reassign this member.', { name: id }));
+        return { memberId: id, displayName: row.querySelector('.team-name').value.trim(), birth: quickBirth(row) };
       }
+      const person = getPerson(member.personId);
+      if (!person) throw new Error(t('Missing reference: {name}. Remove or reassign this member.', { name: member.labelSnapshot || member.displayName }));
+      checkedBirth({ ...person, timezone: person.location?.timezone }, person.name);
+      return { memberId: id, personId: person.id, personSnapshot: JSON.stringify(person), displayName: person.name, birth: birthFromPerson(person) };
+    });
+    const charts = [];
+    for (const candidate of candidates) {
+      const data = await computeChart(candidate.birth);
+      if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) { if (token === generation) invalidateResult(); return; }
+      charts.push({ memberId: candidate.memberId, chart: data.chart });
     }
-
-    // Quick-add rows
-    for (const row of document.querySelectorAll('#team-members .team-member-row')) {
-      const date = row.querySelector('.team-date').value;
-      if (!date) continue;
-      const time = row.querySelector('.team-time').value;
-      if (!time) { row.querySelector('.team-time').focus(); continue; }
-      const loc = row._placeSearch?.getBirthLocation(date, time);
-      if (!loc) { row._placeSearch?.flagMissing(); continue; } // skip rather than chart at UTC=0
-      const enteredName = row.querySelector('.team-name').value.trim();
-      const number = charts.length + 1;
-      const name = enteredName || t('Person {number}', { number });
-      if (!enteredName) generatedNames.set(name, number);
-      const data = await computeChart({ birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
-      if (enteredName) pendingBirths.push({ name: enteredName, birthDate: date, birthTime: time, timezone: loc.timezone, location: loc.lat != null ? loc : null });
-      charts.push(data.chart);
-      names.push(name);
-    }
-
-    if (charts.length < 2) {
-      latestTeamState = { kind: 'error' };
-      document.getElementById('team-content').innerHTML =
-        `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
-      return;
-    }
-
-    const result = analyzePenta(charts, names);
-    for (const birth of pendingBirths) {
-      try { saveTemporaryBirth(birth); } catch (e) { reportSaveFailure(e); }
-    }
-    latestTeamState = { kind: 'result', result, generatedNames };
-    renderTeamContent(result, generatedNames);
-  } catch (error) {
-    document.getElementById('team-content').innerHTML = `<p class="panel-intro">${esc(error.message)}</p>`;
-  }
+    const result = analyzePentaStructure(charts);
+    if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) return;
+    latest = { result, people: candidates.map(item => ({ memberId: item.memberId, displayName: item.displayName })), groupLabel: group.label,
+      pentaId: group.pentaId, generation: token, personSnapshots: candidates.filter(item => item.personId).map(item => [item.personId, item.personSnapshot]) };
+    renderResult();
+  } catch (error) { if (token === generation) failure(error); }
+  finally { if (token === generation) { pending = false; $('team-calculate').disabled = false; } }
 }
-
-export function refreshTeamLanguage() {
-  renderTeamView();
-  document.querySelectorAll('#team-members .team-member-row').forEach(row => {
-    row.querySelector('.team-name').placeholder = t('Name');
-    row.querySelector('.remove-member').title = t('Remove');
+export function setupTeamView() {
+  $('team-form').insertAdjacentHTML('afterbegin', `<div class="team-toolbar"><label>${text('Team name')} <input id="team-name" type="text" maxlength="100"></label><label>${text('Saved teams')} <select id="team-list"></select></label><div class="team-actions"><button type="button" id="team-new" class="btn-secondary">${text('New team')}</button><button type="button" id="team-save" class="btn-primary">${text('Save team')}</button><button type="button" id="team-delete" class="btn-secondary">${text('Delete team')}</button></div><p class="team-hint">${text('Browser-only team storage. Not synced with your people library or account.')}</p></div><div class="team-workspace"><div class="team-management"><section class="team-groups"><h3>${text('Penta groups')}</h3><p class="team-hint">${text('Penta groups are assigned manually.')}</p><div class="team-group-controls"><label>${text('Select Penta')} <select id="team-group-list"></select></label><div class="team-group-actions"><button type="button" id="team-group-new" class="btn-secondary">${text('New Penta')}</button><button type="button" id="team-group-delete" class="btn-secondary">${text('Delete Penta')}</button></div><label>${text('Penta name')} <input id="team-group-name" type="text" maxlength="100"></label></div><p id="team-group-count" class="team-count"></p><div id="team-group-members"></div></section><details class="team-pool"><summary><strong>${text('Team members')}</strong><span id="team-count" class="team-count"></span></summary><div class="team-pool-body"><div id="team-selected" class="team-selection"></div></div></details></div><div class="team-results"><div class="team-results-heading"><h3>${text('Penta structure')}</h3></div></div></div>`);
+  const pool = $('team-form').querySelector('.team-pool-body');
+  pool.append($('team-saved'), $('team-members'), $('add-member'));
+  $('team-form').querySelector('.team-groups').append($('team-calculate'));
+  $('team-form').querySelector('.team-results').append($('team-content'));
+  $('team-form').querySelector('.team-pool').open = window.innerWidth >= 900;
+  const subtitle = document.querySelector('#team-view .view-subtitle');
+  subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
+  $('add-member').removeAttribute('data-i18n'); $('add-member').textContent = t('+ Add by birth data');
+  $('team-calculate').removeAttribute('data-i18n'); $('team-calculate').textContent = t('Analyze Penta');
+  $('team-new').addEventListener('click', () => { if (confirmDiscard()) resetTeam(); });
+  $('team-save').addEventListener('click', persistTeam);
+  $('team-delete').addEventListener('click', removeTeam);
+  $('team-list').addEventListener('change', event => { if (event.target.value && confirmDiscard()) openTeam(event.target.value); else event.target.value = teamId || ''; });
+  $('team-name').addEventListener('input', changed);
+  $('team-group-new').addEventListener('click', () => { const group = { pentaId: crypto.randomUUID(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] }; groups.push(group); selectedPentaId = group.pentaId; changed(); renderMembers(); });
+  $('team-group-delete').addEventListener('click', () => { if (!selectedGroup()) return; groups = groups.filter(group => group.pentaId !== selectedPentaId); selectedPentaId = groups[0]?.pentaId || null; changed(); renderMembers(); });
+  $('team-group-list').addEventListener('change', event => { selectedPentaId = event.target.value || null; changed(); renderMembers(); });
+  $('team-group-name').addEventListener('input', event => { if (selectedGroup()) { selectedGroup().label = event.target.value; changed(); $('team-group-list').selectedOptions[0].textContent = event.target.value; for (const card of $('team-selected').children) { if (selectedGroup().memberIds.includes(card.dataset.memberId)) card.querySelector('.team-member-meta small').textContent = event.target.value; } } });
+  $('team-group-members').addEventListener('click', event => { if (!event.target.classList.contains('team-unassign')) return; const group = selectedGroup(); if (!group) return; group.memberIds = group.memberIds.filter(id => id !== event.target.closest('[data-member-id]')?.dataset.memberId); changed(); renderMembers(); });
+  $('team-saved').addEventListener('click', event => { if (event.target.id === 'team-add-person') addSavedPerson($('team-person-picker').value); });
+  $('team-selected').addEventListener('click', event => {
+    const id = event.target.closest('[data-member-id]')?.dataset.memberId;
+    const member = members.find(item => item.memberId === id);
+    if (!member) return;
+    if (event.target.classList.contains('team-remove')) removeMember(id);
+    if (event.target.classList.contains('team-reassign')) addSavedPerson($('team-person-picker').value, member);
+    if (event.target.classList.contains('team-assign')) assign(id);
   });
-  if (latestTeamState?.kind === 'result') renderTeamContent(latestTeamState.result, latestTeamState.generatedNames);
-  else if (latestTeamState?.kind === 'error') {
-    document.getElementById('team-content').innerHTML =
-      `<p class="panel-intro">${t('Add at least two people to analyze the group.')}</p>`;
-  }
+  $('add-member').addEventListener('click', newQuickRow);
+  $('team-calculate').addEventListener('click', runTeamAnalysis);
+  onPeopleChange(() => { checkResult(); renderMembers(); });
+  window.addEventListener('ohd-people-changed', () => { checkResult(); renderMembers(); });
+  window.addEventListener('storage', event => { if (event.key?.includes('profile') || event.key?.startsWith('ohd-local-')) { checkResult(); renderMembers(); } });
+  refreshToolbar(); renderMembers();
 }
-
-function renderTeamContent(result, generatedNames = new Map()) {
-  const container = document.getElementById('team-content');
-  const displayName = name => generatedNames.has(name)
-    ? t('Person {number}', { number: generatedNames.get(name) })
-    : name;
-  const rolesHtml = [...result.filledRoles.map(r => `
-    <div class="role-card filled">
-      <div class="role-name">${esc(contentText(r.role))}</div>
-      <div class="role-detail">${esc(contentText(r.description))}</div>
-      <div class="role-detail" style="margin-top:4px"><strong>${t('Filled by:')}</strong> ${r.contributors.map(displayName).map(esc).join(t(', '))}</div>
-    </div>
-  `), ...result.missingRoles.map(r => `
-    <div class="role-card missing">
-      <div class="role-name">${esc(contentText(r.role))} ${t('— Missing')}</div>
-      <div class="role-detail">${esc(contentText(r.suggestion))}</div>
-    </div>
-  `)].join('');
-
-  const recsHtml = result.recommendations.map(r => `
-    <div class="recommendation-card">
-      <div class="rec-category">${esc(t(r.category))}</div>
-      <div class="rec-insight">${esc(contentText(r.insight))}</div>
-    </div>
-  `).join('');
-
-  container.innerHTML = `
-    <div class="foundation-grid" style="margin-bottom:20px">
-      <div class="foundation-item">
-        <div class="label">${t('Group Type')}</div>
-        <div class="value">${esc(typeName(result.groupType))}</div>
-        <div class="detail">${esc(contentText(result.groupCareerType))}</div>
-      </div>
-      <div class="foundation-item">
-        <div class="label">${t('Members')}</div>
-        <div class="value">${result.memberCount} ${result.isPenta ? t('(Penta)') : ''}</div>
-        <div class="detail">${t('{channels} channels, {centers} centers', { channels: result.stats.totalChannels, centers: result.stats.totalDefinedCenters })}</div>
-      </div>
-    </div>
-
-    <div class="panel-title">${t('Team Roles')}</div>
-    ${rolesHtml}
-
-    ${result.electromagnetics.length > 0 ? `
-      <div style="margin-top:16px">
-        <div class="panel-title">${t('Electromagnetic Connections ({count})', { count: result.electromagnetics.length })}</div>
-        ${result.electromagnetics.slice(0, 10).map(e => `
-          <div class="connection-type" style="border-left:3px solid var(--electromagnetic)">
-            <div class="conn-channel">${esc(channelName(e.gates || e.channel))}</div>
-            <div class="conn-desc">${esc(displayName(e.personA))} + ${esc(displayName(e.personB))} — ${esc(contentText(e.theme))}</div>
-          </div>
-        `).join('')}
-      </div>
-    ` : ''}
-
-    <div style="margin-top:16px">
-      <div class="panel-title">${t('Recommendations')}</div>
-      ${recsHtml}
-    </div>
-  `;
+export function renderTeamView() { checkResult(); renderMembers(); refreshToolbar(); }
+export function refreshTeamLanguage() {
+  const subtitle = document.querySelector('#team-view .view-subtitle');
+  subtitle.textContent = t('Team members and Penta structure');
+  $('add-member').textContent = t('+ Add by birth data'); $('team-calculate').textContent = t('Analyze Penta');
+  const toolbar = $('team-form').querySelector('.team-toolbar');
+  toolbar.querySelector('label:first-child').firstChild.textContent = t('Team name') + ' ';
+  toolbar.querySelector('label:nth-child(2)').firstChild.textContent = t('Saved teams') + ' ';
+  for (const [id, key] of [['team-new','New team'],['team-save','Save team'],['team-delete','Delete team']]) $(id).textContent = t(key);
+  toolbar.querySelector('.team-hint').textContent = t('Browser-only team storage. Not synced with your people library or account.');
+  $('team-form').querySelector('.team-pool summary strong').textContent = t('Team members');
+  $('team-form').querySelector('.team-results-heading h3').textContent = t('Penta structure');
+  $('team-form').querySelector('.team-groups h3').textContent = t('Penta groups');
+  $('team-form').querySelector('.team-groups .team-hint').textContent = t('Penta groups are assigned manually.');
+  $('team-group-new').textContent = t('New Penta'); $('team-group-delete').textContent = t('Delete Penta');
+  $('team-group-list').parentElement.firstChild.textContent = t('Select Penta') + ' ';
+  $('team-group-name').parentElement.firstChild.textContent = t('Penta name') + ' ';
+  for (const row of quickRows) {
+    row.querySelector('.team-name').placeholder = t('Name');
+    row.querySelector('.team-assign-quick').textContent = t('Add to Penta');
+    row.querySelector('.team-save-person').textContent = t('Save as person');
+    row.querySelector('.team-remove-quick').textContent = t('Remove');
+    row.querySelector('.team-date').setAttribute('aria-label', t('Birth date'));
+    row.querySelector('.team-time').setAttribute('aria-label', t('Birth time'));
+    row._placeSearch.refreshLanguage();
+  }
+  checkResult(); renderMembers(); refreshToolbar(); if (latest) renderResult();
 }

@@ -1,3 +1,4 @@
+import {isReviewedPhase1BHistorySource} from './helpers/penta-phase1b-history-scope.js';
 import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import {assertContentBoundary} from './helpers/knowledge-round2f-contract.js';
@@ -18,7 +19,7 @@ test('Round 2D historical content guard permits only the approved Round 2F devia
  assertContentBoundary();
 });
 test('all 64 reviewed entries render; Cognition remains six name-only entries',()=>langs(()=>{
- const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
+ const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
  for(const entry of entries){const html=renderKnowledgeDetail(entry);assert.match(html,/knowledge-detail/);if(entry.hasSummary)assert.match(html,/knowledge-summary-callout/);assert.doesNotMatch(html,/center-reading|gate-chip|circuit-badge|role="alert"/);}
 }));
 test('Generator has real Strategy/Aura surfaces, source chips and compact metadata; Emotional stays prose',()=>langs(()=>{
@@ -43,7 +44,7 @@ test('24 Variable articles × six Tones keep exactly one selected branch, Librar
  }
 }));
 test('Round 2C calculations, dialog mechanics and protected detail modules stay exact',()=>{
- for(const file of ['src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])assert.equal(hash(['src/bodygraph.js','src/views/connection.js'].includes(file)?phase1ProtectedCurrent(file):readFileSync(new URL('../'+file,import.meta.url))),hash(skinScope.files[file]?skinProjection(file,'438ad2dc2dfa950eed55687143516051023de824'):preservedSource(file,'438ad2dc2dfa950eed55687143516051023de824')),file);
+ for(const file of ['src/lib/detail-dialog.js','src/lib/bodygraph-detail-layout.js','src/bodygraph.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js'])if(!isReviewedPhase1BHistorySource(file))assert.equal(hash(['src/bodygraph.js','src/views/connection.js'].includes(file)?phase1ProtectedCurrent(file):readFileSync(new URL('../'+file,import.meta.url))),hash(skinScope.files[file]?skinProjection(file,'438ad2dc2dfa950eed55687143516051023de824'):preservedSource(file,'438ad2dc2dfa950eed55687143516051023de824')),file);
  const renderer=readFileSync(new URL('../src/lib/knowledge/detail-renderer.js',import.meta.url),'utf8');assert.doesNotMatch(renderer,/indexOf\(|includes\('30|match\(.*30|querySelector.*bodygraph/);
  const css=readFileSync(new URL('../src/lib/knowledge/detail-access.css',import.meta.url),'utf8');assert.doesNotMatch(css,/#[a-f0-9]{3,8}\b/i);
 });
