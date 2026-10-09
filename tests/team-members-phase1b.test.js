@@ -65,7 +65,8 @@ test('versioned repository CRUD preserves relationship ids and isolates all othe
   assert.ok(saved.teamId);
   assert.equal(saved.name, 'Team');
   assert.equal(saved.revision, 1);
-  assert.equal(saved.schemaVersion, 1);
+  assert.equal(saved.schemaVersion, 2);
+  assert.deepEqual(saved.groups, []);
   assert.equal(saved.kind, 'penta');
   assert.deepEqual(saved.members, [{ memberId: 'member-a', personId: person.id, labelSnapshot: person.name }]);
   assert.equal(JSON.parse(store.data.get(TEAM_STORAGE_KEY)).version, TEAM_STORAGE_VERSION);
@@ -102,12 +103,12 @@ test('corruption and unsupported versions are explicit errors and never overwrit
   const store = storage();
   const valid = saveTeam({ name: 'T', members: [member()] }, store);
   for (const [raw, expected] of [['broken', 'CORRUPT_STORAGE'], ['null', 'CORRUPT_STORAGE'],
-    ['[]', 'CORRUPT_STORAGE'], [JSON.stringify({ version: 2, teams: [] }), 'UNSUPPORTED_VERSION'],
+    ['[]', 'CORRUPT_STORAGE'], [JSON.stringify({ version: 3, teams: [] }), 'UNSUPPORTED_VERSION'],
     [JSON.stringify({ version: 1, teams: {} }), 'CORRUPT_STORAGE'],
-    [JSON.stringify({ version: 1, teams: [{ ...valid, schemaVersion: 2 }] }), 'UNSUPPORTED_VERSION'],
-    [JSON.stringify({ version: 1, teams: [{ ...valid, kind: 'wa' }] }), 'CORRUPT_STORAGE'],
-    [JSON.stringify({ version: 1, teams: [{ ...valid, members: null }] }), 'CORRUPT_STORAGE'],
-    [JSON.stringify({ version: 1, teams: [valid, valid] }), 'CORRUPT_STORAGE']]) {
+    [JSON.stringify({ version: 2, teams: [{ ...valid, schemaVersion: 3 }] }), 'UNSUPPORTED_VERSION'],
+    [JSON.stringify({ version: 2, teams: [{ ...valid, kind: 'wa' }] }), 'CORRUPT_STORAGE'],
+    [JSON.stringify({ version: 2, teams: [{ ...valid, members: null }] }), 'CORRUPT_STORAGE'],
+    [JSON.stringify({ version: 2, teams: [valid, valid] }), 'CORRUPT_STORAGE']]) {
     store.data.set(TEAM_STORAGE_KEY, raw);
     for (const operation of [() => listTeams(store), () => getTeam(valid.teamId, store),
       () => saveTeam({ name: 'New', members: [] }, store), () => deleteTeam(valid.teamId, store)]) {
