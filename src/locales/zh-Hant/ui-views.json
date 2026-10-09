@@ -230,5 +230,17 @@
   "Invalid birth date.": "出生日期無效。",
   "Invalid birth time.": "出生時間無效。",
   "Invalid timezone.": "時區無效。",
-  "Birth time marked unknown.": "出生時間已標記為未知。"
+  "Birth time marked unknown.": "出生時間已標記為未知。",
+  "Penta members": "Penta 成員",
+  "Show all": "顯示全部",
+  "Penta matrix": "Penta 矩陣",
+  "Activated": "已啟動",
+  "Penta matrix layout is a TD-OHD display arrangement.": "矩陣排列為 TD-OHD 的展示方案。",
+  "Contributors": "貢獻成員",
+  "No Penta contributors": "無貢獻成員",
+  "Self complete members": "獨立接通成員",
+  "Complementary member pairs": "互補成員組合",
+  "Throat": "喉嚨中心",
+  "G Center": "G 中心",
+  "Sacral": "薦骨中心"
 }
