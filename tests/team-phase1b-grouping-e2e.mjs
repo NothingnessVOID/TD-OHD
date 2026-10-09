@@ -20,6 +20,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, locale: 'en-US' });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  page.on('dialog', dialog => dialog.accept());
   await page.addInitScript(({ key, profiles }) => {
     localStorage.setItem('ohd-language', 'en');
     localStorage.setItem(key, JSON.stringify(profiles));
@@ -35,6 +36,7 @@ try {
   await page.goto(base);
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('#team-view:not(.hidden) .team-pool summary').click();
   await page.locator('#team-view:not(.hidden) #team-person-picker').waitFor();
   const addSaved = async id => {
     await page.locator('#team-person-picker').selectOption(id);
@@ -99,10 +101,9 @@ try {
     assert.equal(await page.locator('#team-group-count').innerText(), `Group members: ${second} / 5`);
   };
   await page.locator('#team-group-list').selectOption({ index: 1 });
-  await assignIndexes([0, 1, 2]);
+  await assignIndexes([1, 2]);
   await page.locator('#team-group-list').selectOption({ index: 2 });
-  await cards.nth(0).locator('.team-assign').click();
-  assert.match(await page.locator('#team-content').innerText(), /already assigned/i);
+  assert.equal(await cards.nth(0).locator('.team-assign').count(), 0, 'a member in another Penta has no misleading add action');
   await setPair(3, 3);
   await setPair(3, 4);
   await setPair(4, 4);
@@ -126,6 +127,7 @@ try {
   assert.equal(await page.locator('#team-group-name').inputValue(), 'Draft group name');
 
   // Partially entered quick birth data cannot be hidden by being left unassigned.
+  await page.locator('.team-pool summary').click();
   await page.locator('#add-member').click();
   const incomplete = page.locator('.team-member-row').last();
   await incomplete.locator('.team-name').fill('Missing time');

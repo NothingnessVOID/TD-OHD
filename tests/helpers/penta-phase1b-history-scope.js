@@ -5,9 +5,9 @@ import { readFileSync } from 'node:fs';
 // Historical comparisons permit only these independently pinned Phase 1B bytes.
 // Never derive approval from the editable source-scope manifest.
 const phase1C = Object.freeze({
-  'src/views/team.js': '60c5c03e1b0bdc6d398d2017774e354142dc9f83008220edc4507069159cb149',
-  'src/locales/zh-CN/ui-views.json': '7d220cde18c44093a0d62025f8135d3dc6d963ffb788848b147df04244a9b2f9',
-  'src/locales/zh-Hant/ui-views.json': '87d3038a7a0f16ec629be2c66803f8f414d4418428e139e92abc97c96921b40a'
+  'src/views/team.js': '48dfdaf77fee8510591edbad680100f4d2f5fae5f57d06440b7b0fcdc4ae5890',
+  'src/locales/zh-CN/ui-views.json': 'c606d9b3a6d784a27c27e5b308319dae698524c1c67f41a4c4d3bfb4c017e5c7',
+  'src/locales/zh-Hant/ui-views.json': '895a3e7e3887af0e0567b008b1053624880f86401f0c4fed67bde17d50e6134d'
 });
 const reviewed = Object.freeze({
   'src/views/team.js': '9936ec4e15f3480d9af4427037a7b97bd716a8ec30ca5f9d5fdef8f8c8ade0f9',

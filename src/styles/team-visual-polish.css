@@ -1,0 +1,59 @@
+/* Scoped Team layout: other views keep their original width and controls. */
+#team-view .view-container { max-width: 1120px; width: 100%; margin-inline: auto; }
+#team-view .team-form { min-width: 0; }
+#team-view .team-toolbar, #team-view .team-groups, #team-view .team-pool, #team-view .team-results { border: 1px solid var(--border); border-radius: 16px; background: var(--bg-elevated); padding: 20px; min-width: 0; }
+#team-view .team-toolbar { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 14px 20px; align-items: end; margin-bottom: 20px; }
+#team-view .team-toolbar > label { display: grid; gap: 7px; width: 100%; }
+#team-view .team-toolbar .team-hint { grid-column: 1 / -1; margin: 0; }
+#team-view .team-actions { display: flex; flex-wrap: wrap; gap: 8px; grid-column: 1 / -1; }
+#team-view .team-actions button { margin: 0; }
+#team-view .team-workspace { display: grid; grid-template-columns: minmax(320px, .88fr) minmax(0,1.12fr); align-items: start; gap: 20px; }
+#team-view .team-management { display: grid; gap: 16px; min-width: 0; }
+#team-view .team-groups h3, #team-view .team-results h3 { margin: 0 0 8px; }
+#team-view .team-group-controls { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; }
+#team-view .team-group-controls label { display: grid; gap: 7px; min-width: 0; }
+#team-view .team-group-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+#team-view .team-group-actions button { white-space: normal; margin: 0; }
+#team-view .team-groups #team-calculate { width: 100%; margin-top: 16px; }
+#team-view .team-pool { padding: 0; }
+#team-view .team-pool summary { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 6px; cursor: pointer; padding: 16px 20px; list-style-position: inside; }
+#team-view .team-pool summary::marker { color: var(--accent); }
+#team-view .team-pool-body { padding: 0 16px 16px; }
+#team-view .team-selection { display: grid; gap: 8px; margin-bottom: 12px; }
+#team-view .team-saved { display: grid; gap: 9px; margin: 16px 0; }
+#team-view .team-saved label { display: grid; gap: 7px; min-width: 0; color: var(--text-secondary); }
+#team-view .team-saved select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+#team-view .team-member-card, #team-view .team-group-member { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 10px 12px; margin: 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-sunken); }
+#team-view .team-member-identity { display: flex; align-items: center; min-width: 0; gap: 9px; }
+#team-view .team-member-index { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--text); font-size: 13px; font-variant-numeric: tabular-nums; }
+#team-view .team-member-meta { display: grid; min-width: 0; line-height: 1.35; }
+#team-view .team-member-meta strong { overflow-wrap: anywhere; }
+#team-view .team-member-meta small { color: var(--text-secondary); }
+#team-view .team-member-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+#team-view .team-member-actions button, #team-view .team-group-member button { min-height: 44px; padding: 7px 10px; margin: 0; font-size: 12px; }
+#team-view .team-assigned { color: var(--text-secondary); font-size: 13px; padding: 8px 0; }
+#team-view .team-group-member { margin: 8px 0; }
+#team-view .team-group-member > span { display: flex; align-items: center; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+#team-view .team-toolbar :is(input, select), #team-view .team-group-controls :is(input, select) { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+#team-view .team-toolbar button, #team-view .team-group-actions button, #team-view #team-calculate, #team-view #add-member, #team-view #team-add-person { min-height: 44px; }
+#team-view .team-results { min-height: 400px; }
+#team-view .team-results-heading { border-bottom: 1px solid var(--border-subtle); margin-bottom: 14px; }
+#team-view .team-results .team-summary { margin-block: 14px; }
+#team-view #team-content:empty::before { content: ''; display: block; min-height: 120px; }
+@media (max-width: 899px) {
+  #team-view .team-workspace { display: flex; flex-direction: column; }
+  #team-view .team-management, #team-view .team-results { width: 100%; box-sizing: border-box; }
+  #team-view .team-management { display: contents; }
+  #team-view .team-groups { order: 0; }
+  #team-view .team-results { order: 1; }
+  #team-view .team-pool { order: 2; }
+  #team-view .team-toolbar { grid-template-columns: minmax(0,1fr); padding: 16px; }
+  #team-view .team-toolbar .team-hint, #team-view .team-actions { grid-column: 1; }
+  #team-view .team-results { min-height: 0; }
+}
+@media (max-width: 390px) {
+  #team-view .team-groups, #team-view .team-results { padding: 14px; }
+  #team-view .team-group-actions { grid-template-columns: minmax(0,1fr); }
+  #team-view .team-member-card { align-items: flex-start; }
+  #team-view .team-member-actions { width: 100%; }
+}
