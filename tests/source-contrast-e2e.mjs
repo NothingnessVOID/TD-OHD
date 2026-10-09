@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdirSync,writeFileSync} from 'node:fs';
-const evidence=process.env.CONTRAST_EVIDENCE_DIR || '/Users/abyssldx/Desktop/OH-WorkSpace/TD-OHD-contrast-evidence';
+const evidence=process.env.CONTRAST_EVIDENCE_DIR || '/Users/abyssldx/Desktop/OH-WorkSpace/TD-OHD-ink-v2-evidence';
 mkdirSync(evidence,{recursive:true});
 const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL || 'chrome',headless:true});
 try {
@@ -39,6 +39,13 @@ try {
       const surfaces=backing?[backing.getAttribute('fill')]:text.dataset.numberBackground.split('|');
       const ratio=Math.min(...surfaces.map(fill=>contrastRatio(resolveRGB(getComputedStyle(text).fill),resolveRGB(fill))));
       if(ratio<4.5)throw Error(`${skin.id}/${palette.id}/${custom}/${mode}/${gate.dataset.gate}: ${ratio}`);
+      const inkStyle=getComputedStyle(document.documentElement);
+      const preferred=inkStyle.getPropertyValue(text.dataset.numberActive==='true'?'--hd-gate-active-ink':'--hd-gate-inactive-ink').trim();
+      const alternate=inkStyle.getPropertyValue(text.dataset.numberActive==='true'?'--hd-gate-inactive-ink':'--hd-gate-active-ink').trim();
+      const passes=color=>surfaces.every(bg=>contrastRatio(resolveRGB(color),resolveRGB(bg))>=4.5);
+      const actual=resolveRGB(getComputedStyle(text).fill);
+      if(passes(preferred) && JSON.stringify(actual)!==JSON.stringify(resolveRGB(preferred)))throw Error('preferred ink must remain unchanged');
+      if(!passes(preferred) && passes(alternate) && JSON.stringify(actual)!==JSON.stringify(resolveRGB(alternate)))throw Error('alternate ink selection');
       min=Math.min(min,ratio);
       if(text.dataset.numberStriped==='true'){stripes++;if(backing)backed++;}
       if(backing && Number(backing.getAttribute('rx'))>=Number(circle.getAttribute('r')))throw Error('backing hides source perimeter');

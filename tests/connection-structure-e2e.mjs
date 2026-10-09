@@ -114,4 +114,17 @@ try {
   assert.equal(await page.locator('[data-testid="connection-bridging-b"]').count(), 1);
   assert.deepEqual(errors, []);
   console.log('Connection Phase 1: real topology fixtures, nine SVG center states, Created details and three languages passed.');
-} finally { await browser.close(); }
+} finally {
+  console.log('Connection E2E cleanup: browser.close started');
+  // A passing assertion log is not a successful run until browser cleanup exits.
+  // Fail fast on a stuck Chrome close; never force a successful process exit.
+  const cleanupWatchdog = setTimeout(() => {
+    console.error('Connection E2E cleanup FAILED: browser.close did not finish in 30s');
+    console.error('Active resources:', process.getActiveResourcesInfo());
+    process.exit(1);
+  }, 30000);
+  try {
+    await browser.close();
+    console.log('Connection E2E cleanup: browser.close completed');
+  } finally { clearTimeout(cleanupWatchdog); }
+}
