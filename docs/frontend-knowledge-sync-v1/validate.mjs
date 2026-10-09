@@ -27,6 +27,28 @@ const pentaReviewed = Object.freeze({
   'src/lib/human-design/team-activation.js': '84d48728136abd62b7ca4fb07dad6eca0c24de70ce01c43eafad3f9ffc0dc34c',
   'src/lib/human-design/penta-structure.js': 'f6f3d722f8c11454bd2864ccf6eb1d56b3e687031e17d75762c73a3987ed15ad'
 });
+const pentaPhase1BReviewed = Object.freeze({
+  'src/views/team.js': '36a9366c324cd3b385c2103d34f923a605d7286a12b9719777a70c58674636f5',
+  'src/lib/human-design/team-members.js': '905278020bb8c6ac5fe06ce82a74be00974e912f961f4410e7741a81db5ab1d5',
+  'src/lib/team-repository.js': '1c25146ad151aa0028436683e082fc80b61b2b12f9c6e98df22df6b67b5a45eb',
+  'src/styles/team-members.css': '975a636b93e0a402dfff8285bfb43eef5177c1eb7e6b9d10d74bdd8fb01829e8',
+  'src/locales/zh-CN/ui-views.json': 'ee4224b560b80e1263ee08eb2f9e8b7c320847dcbe67baca63fe94f74816b1c0',
+  'src/locales/zh-Hant/ui-views.json': '5414dff5488945a9d5bdd03b8172f5298e0efc4afc83665b56d5f7d623b9a7ef'
+});
+export function validatePentaPhase1BSourceScope(rootPath, currentFiles) {
+  const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1B-SOURCE-SCOPE.json')));
+  const paths = Object.keys(pentaPhase1BReviewed);
+  if (scope.schemaVersion !== 1 || !/^[0-9a-f]{40}$/.test(scope.baseline)
+      || Object.keys(scope.files).sort().join('\n') !== paths.slice().sort().join('\n')
+      || paths.some(file => scope.files[file] !== pentaPhase1BReviewed[file]
+        || hash(readFileSync(path.join(rootPath, file))) !== pentaPhase1BReviewed[file]))
+    throw new Error('Invalid Penta Phase 1B source scope');
+  const allowed = new Set(paths);
+  for (const file of currentFiles)
+    if (protectedPath(file) && !allowed.has(file) && !pentaReviewed[file]) throw new Error(`Unreviewed new source: ${file}`);
+  return paths;
+}
+
 export function validatePentaPhase1AScope(rootPath, currentFiles) {
   const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1A-SOURCE-SCOPE.json')));
   const paths = Object.keys(pentaReviewed);
@@ -38,7 +60,7 @@ export function validatePentaPhase1AScope(rootPath, currentFiles) {
     throw new Error('Invalid Penta Phase 1A source scope');
   const allowed = new Set(paths);
   for (const file of currentFiles) {
-    if (protectedPath(file) && !allowed.has(file)) throw new Error(`Unreviewed new source: ${file}`);
+    if (protectedPath(file) && !allowed.has(file) && !pentaPhase1BReviewed[file]) throw new Error(`Unreviewed new source: ${file}`);
   }
   return paths;
 }
@@ -137,8 +159,11 @@ export function validateSyncedRelease(rootPath = root) {
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   // Only the three pinned Phase 1A paths extend the historical allowlist.
-  const pentaPaths = validatePentaPhase1AScope(rootPath, currentFiles.filter(file => !expectedFiles.includes(file)));
+  const additionalFiles = currentFiles.filter(file => !expectedFiles.includes(file));
+  const pentaPaths = validatePentaPhase1AScope(rootPath, additionalFiles);
   expectedFiles.push(...pentaPaths);
+  const pentaPhase1BPaths = validatePentaPhase1BSourceScope(rootPath, additionalFiles);
+  expectedFiles.push(...pentaPhase1BPaths);
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   // The approved terminology correction changes only zh-CN 荐骨 to 骶骨.
@@ -146,7 +171,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (pentaReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (pentaReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));
