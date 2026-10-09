@@ -12,6 +12,8 @@ try {
   page.on('dialog', dialog => dialog.accept());
   await page.addInitScript(({ key, profiles }) => { localStorage.setItem('ohd-language', 'en'); localStorage.setItem(key, JSON.stringify(profiles)); localStorage.setItem('ohd-last-person-id', profiles[0].id); }, { key: PROFILE_STORAGE_KEY, profiles });
   await page.goto(base);
+  // Ensure the persisted person has finished booting before opening Team.
+  await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
   await page.locator('#team-view:not(.hidden) .team-pool summary').click();
