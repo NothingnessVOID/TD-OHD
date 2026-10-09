@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "baseline": "56e9419185d6c7e2edf02278fe208ee7e6443a03",
+  "review": "Phase 1B Team UI and member repository source scope, pinned to the frozen six-file source snapshot.",
+  "files": {
+    "src/views/team.js": "36a9366c324cd3b385c2103d34f923a605d7286a12b9719777a70c58674636f5",
+    "src/lib/human-design/team-members.js": "905278020bb8c6ac5fe06ce82a74be00974e912f961f4410e7741a81db5ab1d5",
+    "src/lib/team-repository.js": "1c25146ad151aa0028436683e082fc80b61b2b12f9c6e98df22df6b67b5a45eb",
+    "src/styles/team-members.css": "975a636b93e0a402dfff8285bfb43eef5177c1eb7e6b9d10d74bdd8fb01829e8",
+    "src/locales/zh-CN/ui-views.json": "ee4224b560b80e1263ee08eb2f9e8b7c320847dcbe67baca63fe94f74816b1c0",
+    "src/locales/zh-Hant/ui-views.json": "5414dff5488945a9d5bdd03b8172f5298e0efc4afc83665b56d5f7d623b9a7ef"
+  }
+}

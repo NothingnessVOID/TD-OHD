@@ -1,27 +1,39 @@
 name: Deploy to GitHub Pages
 
-# Publish only from the dedicated pages branch. Work on main does not change
-# the live site until it is deliberately promoted to pages.
-# The build is static and omits account/sync API configuration.
+# Publish the live site automatically from main.
+# Every push to main rebuilds and, only if the full test and build job
+# passes, deploys the static bundle. The build is static and omits
+# account/sync API configuration.
+# workflow_dispatch allows a deliberate re-run without a new commit.
+# Nothing here deploys from, or cancels, an in-progress official deployment.
 
 on:
   push:
-    branches: [pages]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Keep a single Pages pipeline. cancel-in-progress is false so a newer push
+# never cancels a deployment that is already publishing the live site; the
+# queued run waits its turn instead.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Build only the source of the current main. On push this is the pushed
+      # commit; on a manual dispatch this pins to main regardless of the branch
+      # the run was started from.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-node@v4
         with:
@@ -37,12 +49,14 @@ jobs:
       - name: Prepare pinned Sharp runtime and Swiss files for native tests
         run: npm run build:engine
 
-      - name: Run tests
-        run: npm test
-
+      # Build the static Pages bundle first: the release/distribution tests
+      # inspect dist/, so it must exist before the suite runs.
       - name: Build
         # Pages has no account/sync API; omit .env.production's same-origin API setting.
         run: npm run build:pages
+
+      - name: Run tests
+        run: npm test
 
       - name: Check static bundle
         run: npm run check:pages-bundle
@@ -60,15 +74,21 @@ jobs:
           cat /tmp/pages-vite.log
           exit 1
 
-      - name: Check timeline, planetary detail, and reference in browser
+      - name: Check timeline, planetary detail, reference, and Team/Penta in browser
         env:
           E2E_URL: http://127.0.0.1:5173
           CHROME_CHANNEL: chromium
           SKIP_TIMELINE_YEAR: "1"
+          SCREENSHOT_DIR: /tmp/td-ohd-team-pages-e2e
         run: |
           npm run e2e:timeline
           npm run e2e:planet
           npm run e2e:reference
+          node tests/team-phase1b-e2e.mjs
+          node tests/team-phase1b-grouping-e2e.mjs
+          node tests/penta-phase1c-matrix-e2e.mjs
+          node tests/team-phase1c-e2e.mjs
+          node tests/team-phase1e-knowledge-e2e.mjs
 
       - name: Show browser test server log on failure
         if: failure()

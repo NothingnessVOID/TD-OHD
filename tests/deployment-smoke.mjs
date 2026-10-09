@@ -7,6 +7,7 @@ const base = (process.env.E2E_URL || 'http://127.0.0.1:5173').replace(/\/$/, '')
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 const context = await browser.newContext({ viewport: { width: 1380, height: 1000 }, locale: 'en-US' });
 const page = await context.newPage();
+await page.addInitScript(() => localStorage.setItem('ohd-language', 'en'));
 const errors = [];
 const engineRequests = [];
 const engineResponses = [];
@@ -102,9 +103,8 @@ try {
   console.log('Deployment smoke: second actual birth and Connection reuse existing runtime PASS');
 
   await page.locator('.nav-link[data-view="team"]').click();
-  for (const checkbox of await page.locator('#team-saved input[type="checkbox"]').all()) await checkbox.uncheck();
-  await page.locator('#add-member').click();
-  for (const [index, date] of ['1992-11-02', '1985-03-20'].entries()) {
+  for (const [index, date] of ['1992-11-02', '1985-03-20', '1990-08-10'].entries()) {
+    await page.locator('#add-member').click();
     const row = page.locator('#team-members .team-member-row').nth(index);
     await row.locator('.team-name').fill(`Synthetic smoke team ${index + 1}`);
     await row.locator('.team-date').fill(date);
@@ -112,10 +112,12 @@ try {
     await row.locator('.team-place .ps-toggle').click();
     await row.locator('.team-place .ps-manual').fill('0');
   }
+  await page.locator('#team-group-new').click();
+  for (const row of await page.locator('#team-members .team-member-row').all()) await row.locator('.team-assign-quick').click();
   await page.locator('#team-calculate').click();
-  await page.locator('#team-content .role-card').first().waitFor({ timeout: 60000 });
-  assert.equal(await page.locator('#team-content .role-card').count(), 9, 'Team structural roles rendered');
-  console.log('Deployment smoke: Team manual inputs and group analysis PASS');
+  await page.locator('#team-content .team-summary').waitFor({ timeout: 60000 });
+  assert.equal(await page.locator('#team-content .team-channel').count(), 6, 'Six Penta channel coverage rows rendered');
+  console.log('Deployment smoke: Team manual inputs and Penta structure PASS');
 
   await page.locator('.nav-link[data-view="transits"]').click();
   await page.locator('#transit-stage .bodygraph-svg').waitFor({ timeout: 60000 });
@@ -174,7 +176,8 @@ try {
 
   await page.locator('.nav-link[data-view="library"]').click();
   await page.locator('#reference-count').waitFor();
-  assert.match(await page.locator('#reference-count').innerText(), /128/);
+  const referenceCount = Number((await page.locator('#reference-count').innerText()).match(/^\d+/)?.[0]);
+  assert.ok(referenceCount >= 128, `Reference catalog has at least the original 128 entries, got ${referenceCount}`);
   assert.ok(await page.locator('#reference-results .reference-result').count() > 0);
   console.log('Deployment smoke: Reference PASS');
 

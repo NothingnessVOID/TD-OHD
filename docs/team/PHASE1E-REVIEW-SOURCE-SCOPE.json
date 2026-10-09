@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed",
+  "baseline": "db44e6ae53bee690850469085ee04a43bc4b9f7b",
+  "files": {
+    "src/lib/knowledge/content/penta.js": "67a0fd041aefe3ac1406eae9df86b054f27675fe27cd3b491a4f0d4056ab05b0",
+    "src/lib/knowledge/penta-foundation.js": "09b948c103375d4c2d4261eeb2522bac872a4886aea16d88de13a9fa392797a2",
+    "src/lib/knowledge/penta-messages.js": "543887e43e4c0ec35c45d7bb6a86927f12431b4a0cc9f47347ddbc9659738454",
+    "src/lib/knowledge/registry.js": "e36cf9e5ee8b25535c51272acabe75266eb5899a9c7718b14d433bc7f921989d",
+    "src/lib/knowledge/sources.js": "cd83418f6cd8353fc5ebd47e5f9fb8144e784fab98b0806506fb14a81a211539",
+    "src/lib/reference-catalog.js": "3ae91d2ebe4732a94b6e77134761774d884f1155cbe8bad2b2c4ce8d7a1b0776",
+    "src/views/penta-matrix.js": "8d8480983178d660c8733579da306408806a2264a24a7a2f6e2387ab47a6368e"
+  }
+}

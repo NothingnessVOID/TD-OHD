@@ -1,3 +1,4 @@
+import {isReviewedPhase1BHistorySource} from './helpers/penta-phase1b-history-scope.js';
 import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import test from 'node:test';
@@ -62,5 +63,5 @@ test('approved vocabulary preserves the finalized Need label; names resolve thro
  setLocale('en',{persist:false});assert.equal(getKnowledgeEntry(q('variable.motivation:need')).name,'Need');
 });
 test('engines, mapping, compact rendering and export stay exact to actual Round 2F baseline',()=>{
- for(const p of ['src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/human-design/variable-data.js','src/bodygraph.js','src/views/chart.js','src/views/team.js','src/views/connection.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/knowledge/content/index.js'])assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(p)?phase1ProtectedCurrent(p):readFileSync(new URL('../'+p,import.meta.url)),skinScope.files[p]?skinProjection(p,copyBaseline):preservedSource(p,copyBaseline),p);
+ for(const p of ['src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/lib/variable-arrows.js','src/lib/human-design/variable-data.js','src/bodygraph.js','src/views/chart.js','src/views/team.js','src/views/connection.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/lib/knowledge/content/index.js'])if(!isReviewedPhase1BHistorySource(p))assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(p)?phase1ProtectedCurrent(p):readFileSync(new URL('../'+p,import.meta.url)),skinScope.files[p]?skinProjection(p,copyBaseline):preservedSource(p,copyBaseline),p);
 });

@@ -1,3 +1,4 @@
+import {isReviewedPhase1BHistorySource} from './helpers/penta-phase1b-history-scope.js';
 import {contrastProjection} from './helpers/contrast-projection.js';
 import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {skinProjection,skinScope} from './helpers/skin-projection.js';
@@ -20,7 +21,7 @@ const approvedSkin=p=>skinProjection(p,base);
 const q=(objectType,objectId)=>({objectType,objectId});
 
 test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
- for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):contrastProjection(bytes(path),path),skinScope.files[path]?approvedSkin(path):preservedSource(path,base),path);
+ for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])if(!isReviewedPhase1BHistorySource(path))assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):contrastProjection(bytes(path),path),skinScope.files[path]?approvedSkin(path):preservedSource(path,base),path);
 });
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
@@ -32,7 +33,7 @@ test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F edi
  const hashes=JSON.parse(bytes('tests/fixtures/knowledge-round2b-content.json'));
  assert.equal(Object.keys(hashes).length,55);assertContentBoundary();
  for(const [key,record]of Object.entries(round2GContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
- setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
+ setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
  assert.match(knowledgeContent['zh-CN']['authority.sacral'].detail,/嗯哼／呃呃/);assert.match(knowledgeContent['zh-CN']['definition.quadrupleSplit'].detail,/8 个或 9 个/);
 });
 test('Type has semantic Strategy and Aura sections; Strategy shares its Type identity',()=>{

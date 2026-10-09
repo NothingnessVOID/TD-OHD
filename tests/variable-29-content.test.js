@@ -1,3 +1,4 @@
+import {isReviewedPhase1BHistorySource} from './helpers/penta-phase1b-history-scope.js';
 import {preservedSource,phase1ProtectedCurrent,approvedContent} from './helpers/knowledge-release-contract.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -76,5 +77,5 @@ test('all non-Variable knowledge, calculation, snapshots, sources, positions, ex
   const old=approvedContent[locale];
   for(const [key,r]of Object.entries(records).filter(([key])=>!key.startsWith('variable.')))assert.deepEqual(r,old[key]);
  }
- for(const path of ['src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/views/chart.js','src/bodygraph.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js','tests/fixtures/sharp-definition-components.json'])assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):readFileSync(new URL('../'+path,import.meta.url)),preservedSource(path,fixture.baseline),path);
+ for(const path of ['src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/views/chart.js','src/bodygraph.js','src/lib/chart-data-export.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','engine-core/TransitCore.cs','src/views/connection.js','src/views/team.js','tests/fixtures/sharp-definition-components.json'])if(!isReviewedPhase1BHistorySource(path))assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):readFileSync(new URL('../'+path,import.meta.url)),preservedSource(path,fixture.baseline),path);
 });
