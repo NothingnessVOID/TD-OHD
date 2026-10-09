@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, cpSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { validatePentaPhase1CScope, validatePentaPhase1CPolishScope, validatePentaPhase1CFinalScope } from '../docs/frontend-knowledge-sync-v1/validate.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -14,7 +15,10 @@ function sandbox(fn) {
   try {
     for (const file of ['docs/team/PHASE1C-SOURCE-SCOPE.json', 'docs/team/PHASE1C-POLISH-SOURCE-SCOPE.json', 'docs/team/PHASE1C-FINAL-SOURCE-SCOPE.json', ...new Set([...Object.keys(scope.files), ...Object.keys(polish.files), ...Object.keys(final.files)])]) {
       mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
-      cpSync(path.join(root, file), path.join(dir, file));
+      // Exercise the historical snapshot with its own original bytes; Phase 1E has a separate guard.
+      if (['src/views/penta-matrix.js','src/styles/penta-matrix.css'].includes(file))
+        writeFileSync(path.join(dir, file), execFileSync('git', ['show', `da21b31c8832e4786a68b34c6956c0b7efa65946:${file}`], { cwd: root }));
+      else cpSync(path.join(root, file), path.join(dir, file));
     }
     return fn(dir);
   } finally { rmSync(dir, { recursive: true, force: true }); }

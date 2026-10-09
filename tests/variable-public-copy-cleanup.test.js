@@ -45,7 +45,7 @@ test('all 29 public Variable articles and rendered bodies contain zero internal 
  }
 });
 test('conflict records, source evidence, calculations, Tone mapping and all renderer behavior remain byte-identical',()=>{
- for(const path of ['docs/knowledge-layer/variable-29-conflicts.md','tests/fixtures/variable-29-source-zh-CN.md','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/sources.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs']){
+ for(const path of ['docs/knowledge-layer/variable-29-conflicts.md','tests/fixtures/variable-29-source-zh-CN.md','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/human-design-foundation.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs']){
   const bytes=readFileSync(new URL('../'+path,import.meta.url));
   assert.deepEqual(bytes,preservedSource(path,cleanup.baseline),path);
  }

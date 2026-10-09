@@ -2,7 +2,7 @@
 const legacy = ['natal', 'engine'].join('');
 export const SOURCE_TYPES = Object.freeze([
   'sharpastrology', legacy, 'open-human-design', 'td-ohd', 'teacher-material',
-  'teacher-extension', 'jovian-public', 'ra-jovian', 'gene-keys-official', 'unknown'
+  'teacher-extension', 'jovian-public', 'ra-jovian', 'bg5-official', 'gene-keys-official', 'unknown'
 ]);
 export const SOURCES = Object.freeze({
   'legacy-hd-static': { type: legacy, lineage: [legacy], evidence: 'THIRD_PARTY_NOTICES.md', reviewed: false },
@@ -34,5 +34,8 @@ export const SOURCES = Object.freeze({
     'https://jovianarchive.com/pages/the-gift-of-awareness-understanding-motivation-in-human-design',
     'https://jovianarchive.com/pages/incarnation-crosses-in-human-design'
   ],accessed:'2026-10-02' },
+  'penta-jovian-article': { type: 'jovian-public', lineage: ['jovian-public'], reviewed: true, evidence: 'docs/team/PHASE1D-EVIDENCE-MATRIX.md; J1 body text, Sacral–G–Throat and family/business contexts', url: 'https://jovianarchive.com/blogs/deeper-mechanics-system-theory/the-penta', accessed: '2026-10-09' },
+  'penta-bg5-course': { type: 'bg5-official', lineage: ['bg5-official'], reviewed: true, evidence: 'docs/team/PHASE1D-EVIDENCE-MATRIX.md; B2 Class 4–6 titles only, six gate pairs', url: 'https://bg5businessinstitute.com/courses/1959/bg5-business-consultant-certification-program', accessed: '2026-10-09' },
+  'penta-structure': { type: 'td-ohd', lineage: ['td-ohd'], reviewed: true, evidence: 'src/lib/human-design/penta-catalog.js; Phase 0 structural transcription and Phase 1D matrix', accessed: '2026-10-09' },
   'gene-keys-official': { type: 'gene-keys-official', lineage: ['gene-keys-official'], evidence: null, reserved: true }
 });

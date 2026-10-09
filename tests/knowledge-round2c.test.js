@@ -19,7 +19,7 @@ test('Round 2C historical copies remain protected; 64 current articles and six n
  for(const [locale,records]of Object.entries(knowledgeContent)){
   assert.deepEqual(Object.keys(records).sort(),Object.keys(knowledgeContent.en).sort());assert.equal(Object.keys(records).length,64);
   for(const [key,record]of Object.entries(records)){assert.doesNotMatch(record.detail,/Internal editorial notes|內部編輯備註|sourceId|reviewStatus|internal audit|https?:\/\//i);}
-  setLocale(locale,{persist:false});const entries=listKnowledgeEntries();assert.equal(entries.filter(e=>e.hasSummary&&e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail&&!e.hasSummary).length,6);
+  setLocale(locale,{persist:false});const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasSummary&&e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail&&!e.hasSummary).length,6);
  }
 });
 test('historical zh-CN Taste/Environment changes stay exact in the immutable historical records',()=>{

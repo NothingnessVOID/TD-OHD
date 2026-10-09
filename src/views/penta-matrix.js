@@ -3,9 +3,24 @@ import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { prepareDetailDialog, openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
+import { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail } from '../lib/knowledge/registry.js';
+import '../lib/knowledge/penta-messages.js';
 
 const states = { absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' };
 const center = { throat: 'Throat', g: 'G Center', sacral: 'Sacral' };
+const sectionLabels = { facts:'Penta structure and activations', reading:'Penta verified mechanism', sources:'Penta sources and review', missing:'Penta specific interpretation missing', status:'Penta evidence status', scope:'Penta evidence scope', overview:'Penta overview', powerColumn:'Penta Power Column', contexts:'Penta family and business' };
+const pentaQuery = objectId => ({ domain:'human-design', objectType:'penta', objectId });
+function knowledgeSections(objectId) {
+  const query = pentaQuery(objectId);
+  const entry = getKnowledgeEntry(query);
+  const words = sectionLabels;
+  if (!entry) return '';
+  const summary = getKnowledgeSummary(query);
+  const detail = getKnowledgeDetail(query);
+  const evidence = entry.properties.evidence;
+  const links = evidence.urls.map((url,index) => `<li><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(evidence.sourceIds[index])} · ${esc(url)}</a></li>`).join('');
+  return `<section class="penta-knowledge" data-knowledge-id="${esc(entry.id)}"><h4>${label(words.reading)}</h4><p>${esc(summary?.content ?? t(words.missing))}</p>${detail ? `<p>${esc(detail.content)}</p>` : `<p class="penta-knowledge-missing" data-detail-status="missing">${label(words.missing)}</p>`}<section class="penta-knowledge-sources"><h4>${label(words.sources)}</h4><p>${label(words.status)}: ${esc(evidence.status)} · ${label(words.scope)}: ${esc(evidence.scope)}</p><ul>${links}</ul></section></section>`;
+}
 const point = cell => ({ x: 55 + cell.column * 105, y: 57 + cell.row * 98 });
 const label = (key, args) => esc(t(key, args));
 const identity = (id, people) => { const index = people.findIndex(person => person.memberId === id); return index < 0 ? esc(id) : `${index + 1} · ${esc(people[index].displayName)}`; };
@@ -53,17 +68,18 @@ export function createPentaMatrix(container, { result, people, groupLabel }) {
     const names = gate.memberIds.map(id => identity(id, people)).join(' · ') || noMembers();
     const rows = gate.activations.map(a => `<li>${identity(a.memberId, people)} · ${label(a.side === 'design' ? 'Design' : 'Personality')} · ${esc(planetName(a.planet))} · ${label('Gate {gate}', { gate: a.gate })}.${a.line}</li>`).join('');
     const title = `${t('Gate {gate}', { gate: gate.gate })} · ${hexagramName(gate.gate)}`;
-    detail(`<h3>${esc(title)}</h3><p>${esc(gateName(gate.gate))} · ${label(center[gate.center])}</p><p>${label('Contributors')}: ${gate.contributorCount} · ${names}</p><ul>${rows}</ul>`, title);
+    detail(`<h3>${esc(title)}</h3><section class="penta-structure-facts"><h4>${label(sectionLabels.facts)}</h4><p>${esc(gateName(gate.gate))} · ${label(center[gate.center])}</p><p>${label('Contributors')}: ${gate.contributorCount} · ${names}</p><ul>${rows}</ul></section>${knowledgeSections(`gate:${gate.gate}`)}`, title);
   }
   function showChannel(ch) {
     const title = `${t('Channel')} ${ch.gates.join('–')} · ${channelName(ch.channelId)}`;
     const ends = ch.gates.map(gate => `<li>${label('Gate {gate}', { gate })}: ${(ch.holdersByGate[gate] || []).map(id => identity(id, people)).join(' · ') || noMembers()}</li>`).join('');
     const pairs = ch.complementaryMemberPairs.map(pair => `<li>${identity(pair.upperMemberId, people)} (${ch.gates[0]}) + ${identity(pair.lowerMemberId, people)} (${ch.gates[1]})</li>`).join('');
-    detail(`<h3>${esc(title)}</h3><p>${esc(channelText(ch))}</p><ul>${ends}</ul><p>${label('Self complete members')}: ${ch.selfCompleteMemberIds.map(id => identity(id, people)).join(' · ') || noMembers()}</p><p>${label('Complementary member pairs')}</p><ul>${pairs || `<li>${noMembers()}</li>`}</ul><p>${label('Missing gates')}: ${ch.missingGates.join(', ') || label('None')}</p>`, title);
+    detail(`<h3>${esc(title)}</h3><section class="penta-structure-facts"><h4>${label(sectionLabels.facts)}</h4><p>${esc(channelText(ch))}</p><ul>${ends}</ul><p>${label('Self complete members')}: ${ch.selfCompleteMemberIds.map(id => identity(id, people)).join(' · ') || noMembers()}</p><p>${label('Complementary member pairs')}</p><ul>${pairs || `<li>${noMembers()}</li>`}</ul><p>${label('Missing gates')}: ${ch.missingGates.join(', ') || label('None')}</p></section>${knowledgeSections(`channel:${ch.channelId}`)}`, title);
   }
   function render() {
     const canvas = container.querySelector('.penta-render');
-    canvas.innerHTML = `<h3>${esc(groupLabel)}</h3>${legend()}${svg()}${stateLegend()}<p class="penta-caption">${label('Penta matrix layout is a TD-OHD display arrangement.')}</p><div class="team-summary"><p>${label('Gates covered: {count} / 12', { count: result.summary.presentGateCount })}</p><p>${label('Channels covered: {count} / 6', { count: result.summary.coveredChannelCount })}</p></div><div class="team-channels">${result.channels.map(ch => `<button type="button" class="team-channel penta-${ch.status}" data-channel="${esc(ch.channelId)}"><strong>${esc(ch.gates.join('–'))} · ${esc(channelName(ch.channelId))}</strong><span class="penta-channel-state"><b aria-hidden="true">${symbols[ch.status]}</b>${esc(channelText(ch))}</span></button>`).join('')}</div>`;
+    const words = sectionLabels;
+    canvas.innerHTML = `<h3>${esc(groupLabel)}</h3><nav class="penta-knowledge-nav" aria-label="${label(words.overview)}">${['introduction','powerColumn','contexts'].map(id => `<button type="button" class="penta-knowledge-link" data-penta-knowledge="${id}">${label(words[id === 'introduction' ? 'overview' : id])}</button>`).join('')}</nav>${legend()}${svg()}${stateLegend()}<p class="penta-caption">${label('Penta matrix layout is a TD-OHD display arrangement.')}</p><div class="team-summary"><p>${label('Gates covered: {count} / 12', { count: result.summary.presentGateCount })}</p><p>${label('Channels covered: {count} / 6', { count: result.summary.coveredChannelCount })}</p></div><div class="team-channels">${result.channels.map(ch => `<button type="button" class="team-channel penta-${ch.status}" data-channel="${esc(ch.channelId)}"><strong>${esc(ch.gates.join('–'))} · ${esc(channelName(ch.channelId))}</strong><span class="penta-channel-state"><b aria-hidden="true">${symbols[ch.status]}</b>${esc(channelText(ch))}</span></button>`).join('')}</div>`;
     canvas.classList.toggle('penta-filtered', !!selected);
     canvas.querySelectorAll('[data-source-id]').forEach(tag => tag.classList.toggle('penta-dimmed', !!selected && tag.dataset.sourceId !== selected));
   }
@@ -73,6 +89,7 @@ export function createPentaMatrix(container, { result, people, groupLabel }) {
     if (!target || !container.contains(target)) return;
     if (target.classList.contains('penta-all')) { selected = null; render(); container.querySelector('.penta-all')?.focus(); }
     else if (target.classList.contains('penta-member')) { selected = target.dataset.memberId; render(); [...container.querySelectorAll('.penta-member')].find(button => button.dataset.memberId === selected)?.focus(); }
+    else if (target.dataset.pentaKnowledge) { const id = target.dataset.pentaKnowledge; const entry = getKnowledgeEntry(pentaQuery(id)); if (entry) detail(`<h3>${esc(entry.name)}</h3>${knowledgeSections(id)}`, entry.name); }
     else if (target.dataset.gate) showGate(result.gates.find(g => g.gate === Number(target.dataset.gate)));
     else if (target.dataset.channel) showChannel(result.channels.find(ch => ch.channelId === target.dataset.channel));
   };
