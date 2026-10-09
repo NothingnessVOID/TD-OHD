@@ -4,9 +4,9 @@
 
 **A personal fork of [Open Human Design](https://github.com/Unforced-Dev/open-human-design), with browser WASM birth and transit calculation, precise transit controls, an interactive timeline, and English, Simplified Chinese, and Traditional Chinese interfaces.** TD Open Human Design (TD-OHD) is the current working name.
 
-**[Official web app · Netlify](https://td-ohd.netlify.app/)** · [Older, separately published GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/)
+**[GitHub Pages site](https://nothingnessvoid.github.io/TD-OHD/)** · [Legacy Netlify deployment](https://td-ohd.netlify.app/) (kept as historical/backup)
 
-The initial 2026-10-01 release migrated birth charts and added appearance controls and natal Variable arrows. The current migration completes the transit and timeline calculation paths using the same SharpAstrology core; see the [engine migration guide](docs/SHARP_ENGINE_MIGRATION.md) for architecture, reproduction, and verification status. The [earlier release notes (Chinese)](docs/releases/web-2026-10-01.md) describe that historical release, not this migration. Source changes do not by themselves deploy Netlify or GitHub Pages.
+The initial 2026-10-01 release migrated birth charts and added appearance controls and natal Variable arrows. The current migration completes the transit and timeline calculation paths using the same SharpAstrology core; see the [engine migration guide](docs/SHARP_ENGINE_MIGRATION.md) for architecture, reproduction, and verification status. The [earlier release notes (Chinese)](docs/releases/web-2026-10-01.md) describe that historical release, not this migration. Pushes to `main` now publish GitHub Pages automatically once the deploy workflow passes; the legacy Netlify app is no longer updated from this repository.
 
 The original project provides interactive Human Design charts, including the bodygraph, planetary activations, Type, Strategy, Authority, Profile, Variable/PHS, Incarnation Cross, transits, relationship charts, and team analysis. This fork builds on that foundation rather than claiming those features as new work.
 
@@ -35,7 +35,7 @@ These short recordings use an isolated browser and a synthetic chart named **Dem
 
 ## Privacy and hosting
 
-The [Netlify app](https://td-ohd.netlify.app/) and [GitHub Pages version](https://nothingnessvoid.github.io/TD-OHD/) are static deployments. Chart calculations run in the browser, saved people stay in that browser's local storage, and neither deployment has the local desktop password/SQLite service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from these deployments.
+The [GitHub Pages site](https://nothingnessvoid.github.io/TD-OHD/) and the [legacy Netlify deployment](https://td-ohd.netlify.app/) are static deployments. Chart calculations run in the browser, saved people stay in that browser's local storage, and neither deployment has the local desktop password/SQLite service. Shareable chart links contain birth data in the URL, so share them deliberately. The upstream project's optional hosted MCP and account services are separate from these deployments.
 
 The same source tree also has an **optional local desktop mode** with a password-protected SQLite library. It is included in the repository for maintainability but excluded from the Pages bundle. The database and credentials live outside the checkout on the user's computer. See [local desktop mode](docs/LOCAL_DESKTOP_OVERLAY.md) for the build boundary and update procedure.
 
@@ -67,7 +67,11 @@ Appearance tokens live in [`src/styles/tokens/`](src/styles/tokens/). The Transi
 
 ## Publishing the website
 
-The official website is [Netlify](https://td-ohd.netlify.app/). Its deployment is separate from GitHub Pages. The `main` branch holds ongoing source development. GitHub Pages is built only when the dedicated `pages` branch is pushed; merging into `main` does not publish a new website. Promote reviewed commits to `pages` when they are ready to go live. The [Pages workflow](.github/workflows/deploy.yml) runs tests and a static build, then deploys it without the account/sync backend. GitHub Pages remains configured for **GitHub Actions** because Vite must build the source; `pages` is the workflow's sole publishing branch.
+GitHub Pages is published from `main`. The [`Deploy to GitHub Pages` workflow](.github/workflows/deploy.yml) runs on every push to `main` (and can be re-run by hand with `workflow_dispatch`). It installs dependencies, builds the pinned Sharp runtime, produces the static `build:pages` bundle, runs the full test suite (the release/distribution tests inspect `dist/`, so the build must exist first), checks the bundle excludes the local account client, and runs the required timeline, planetary-detail, and reference browser checks. Only if that whole job passes does the `deploy` job publish, so a failing run never updates the live site. The build always checks out `main`, so only current `main` source is ever built.
+
+GitHub Pages stays configured for **GitHub Actions** because Vite must build the source. The workflow uses a `pages` concurrency group with `cancel-in-progress: false`, so a newer push queues behind an in-progress deployment instead of cancelling it.
+
+The [legacy Netlify deployment](https://td-ohd.netlify.app/) is kept as a historical/backup site. Its deployment is separate from GitHub Pages and is no longer updated from this repository; the repository homepage link still points there. Pushing source no longer changes Netlify.
 
 ## Project relationship
 

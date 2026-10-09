@@ -4,9 +4,9 @@
 
 **这是基于 [Open Human Design 原项目](https://github.com/Unforced-Dev/open-human-design)的个人分叉版本，增加了浏览器 WASM 出生图与行运计算、精细行运控制、交互式时间轴，以及英文、简体中文、繁体中文界面。** 当前暂用英文名称 TD Open Human Design，缩写 TD-OHD；暂不展开 TD 的中文含义。
 
-**[官方网页版 · Netlify](https://td-ohd.netlify.app/)** · [独立发布的旧版 GitHub Pages](https://nothingnessvoid.github.io/TD-OHD/)
+**[GitHub Pages 正式站点](https://nothingnessvoid.github.io/TD-OHD/)** · [旧版 Netlify 部署](https://td-ohd.netlify.app/)（保留作历史／备用）
 
-2026-10-01 首次发布迁移了出生图引擎，并加入外观设置和本命四箭头。当前迁移继续补完行运与时间轴，统一使用 SharpAstrology 计算核心；架构、复现步骤及验证状态见[引擎迁移说明](docs/SHARP_ENGINE_MIGRATION.md)。[早期发布说明](docs/releases/web-2026-10-01.md)记录历史版本，不代表本轮迁移范围。源码更新本身不会发布 Netlify 或 GitHub Pages。
+2026-10-01 首次发布迁移了出生图引擎，并加入外观设置和本命四箭头。当前迁移继续补完行运与时间轴，统一使用 SharpAstrology 计算核心；架构、复现步骤及验证状态见[引擎迁移说明](docs/SHARP_ENGINE_MIGRATION.md)。[早期发布说明](docs/releases/web-2026-10-01.md)记录历史版本，不代表本轮迁移范围。现在推送到 `main` 会在部署工作流通过后自动发布 GitHub Pages；旧版 Netlify 不再由本仓库更新。
 
 原项目提供交互式人类图，包括人体图、行星激活、类型、策略、内在权威、人生角色、四箭头／PHS、化身十字、行运、关系合图与团队分析。本仓库在这些已有功能上继续开发，不把原项目的成果写成新增功能。
 
@@ -35,7 +35,7 @@
 
 ## 隐私与部署
 
-[Netlify 网页版](https://td-ohd.netlify.app/)和 [GitHub Pages 版本](https://nothingnessvoid.github.io/TD-OHD/)都是纯静态部署。图表在浏览器中计算，保存的人物资料留在各自网址对应的浏览器本地存储中；两者都不提供本机桌面版的密码／SQLite 服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这些静态部署。
+[GitHub Pages 站点](https://nothingnessvoid.github.io/TD-OHD/)和[旧版 Netlify 部署](https://td-ohd.netlify.app/)都是纯静态部署。图表在浏览器中计算，保存的人物资料留在各自网址对应的浏览器本地存储中；两者都不提供本机桌面版的密码／SQLite 服务。分享图表链接会把出生资料写入网址，请留意分享对象。原项目提供的托管 MCP 和账号服务不属于这些静态部署。
 
 同一套源码还包含**可选的本机桌面模式**，使用密码保护的 SQLite 资料库。这部分代码放在仓库中便于与前端一起维护，但不会进入 Pages 构建包；数据库与密码资料只留在使用者电脑的代码目录之外。构建边界与更新方法见[本机桌面模式说明](docs/LOCAL_DESKTOP_OVERLAY.md)。
 
@@ -67,7 +67,11 @@ npm run check:pages-bundle
 
 ## 网页发布
 
-官方网页发布地址是 [Netlify](https://td-ohd.netlify.app/)，与 GitHub Pages 的发布流程独立。`main` 分支继续用于源码开发。只有推送专用的 `pages` 分支才会构建并发布 GitHub Pages；合并到 `main` 不会自动改动线上网页。准备上线时，再把审查完成的提交送入 `pages`。[Pages 工作流](.github/workflows/deploy.yml)会运行测试、构建纯静态网页并发布，不启用账号同步后端。由于 Vite 需要构建，GitHub Pages 设置仍使用 **GitHub Actions**；真正触发发布的源码分支只有 `pages`。
+官方网页发布地址是 [GitHub Pages](https://nothingnessvoid.github.io/TD-OHD/)，由 `main` 发布。[`Deploy to GitHub Pages` 工作流](.github/workflows/deploy.yml)在每次推送到 `main` 时运行（也可用 `workflow_dispatch` 手动重跑）：安装依赖、构建固定版本的 Sharp 引擎、生成静态 `build:pages` 产物、运行全量测试（发布／分发安全检查会读取 `dist/`，因此必须先构建产物），检查产物不含本机账号客户端，并运行时间轴、行星详情、参考页三项浏览器检查。只有该构建任务全部通过，`deploy` 任务才会发布，因此任何一步失败都不会更新线上站点。构建始终检出 `main`，只构建当前 `main` 的源码。
+
+由于 Vite 需要构建，GitHub Pages 设置仍使用 **GitHub Actions**。工作流使用 `pages` 并发组并设置 `cancel-in-progress: false`，新的推送会排队等待正在进行的部署，而不会取消它。
+
+[旧版 Netlify 部署](https://td-ohd.netlify.app/)保留作历史／备用站点，与 GitHub Pages 独立，不再由本仓库更新，仓库 homepage 链接仍指向它。推送源码已不会改动 Netlify。
 
 ## 项目来源与后续贡献
 
