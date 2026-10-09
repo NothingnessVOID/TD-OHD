@@ -1,3 +1,4 @@
+import {contrastProjection} from './helpers/contrast-projection.js';
 import {preservedSource} from './helpers/knowledge-release-contract.js';
 import {assertSkinScopeBoundary} from './helpers/skin-projection.js';
 import {uiKeys} from './helpers/knowledge-round2f-contract.js';
@@ -13,7 +14,7 @@ test('Knowledge uses the actual shared Back class and no duplicate CSS identity'
 });
 test('approved shared styles retain the existing primitives after approved skin projection',()=>{
  assertSkinScopeBoundary();
- assert.equal(file('src/styles.css'),preservedSource('src/styles.css',base).toString());
+ assert.equal(contrastProjection(file('src/styles.css'),'src/styles.css').toString(),preservedSource('src/styles.css',base).toString());
  assert.match(file('src/styles.css'),/\.ui-back-button/);
  assert.match(file('src/styles.css'),/\.ui-icon-button/);
 });

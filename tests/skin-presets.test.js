@@ -151,6 +151,7 @@ test('Delve uses black structure, Azure BodyGraph and deep-blue Timeline; birth 
   const approvedChanges = { ...baseline.changes, ...boundary.delveSemanticChanges.changes,
     '--hd-timeline-both-birth':'#343434',
     '--hd-birth-personality':'#1A1A1A','--hd-birth-design':'#2E75D4',
+    '--hd-gate-active-ink':'#FFFFFF','--hd-gate-inactive-ink':'#242424',
     '--hd-electromagnetic':'#806B53','--hd-timeline-both-transit':'#1F4F85','--hd-timeline-both-on':'#FFFFFF',
     '--hd-timeline-transit':'#1F4F85','--hd-timeline-birth':'#343434',
     '--hd-circuit-individual':'#7A2F99','--hd-circuit-individual-soft':'#F0E6F6',

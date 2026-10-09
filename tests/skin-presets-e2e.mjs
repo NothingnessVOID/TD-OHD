@@ -70,7 +70,7 @@ try {
     if (sameModeCenters[skin.defaultCenterPalette]) assert.deepEqual(edges,sameModeCenters[skin.defaultCenterPalette],'the same paired Center Palette has the same painted centers');
     else sameModeCenters[skin.defaultCenterPalette]=edges;
     assert.ok(await page.locator(`#bodygraph-container .bg-gate-path[fill="${actual['--hd-birth-design'] || actual['--hd-design']}"]`).count(),'actual Design paths use the birth-specific Skin source');
-    await readable(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--hd-birth-personality');
+    await readable(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--source-birthPersonality-text');
     await shot(skin.id+'-home');
     await page.locator('#bodygraph-container').screenshot({path:`${evidence}/${skin.id}-birth-graph.png`});
     // A detail surface and a real popover, then the birth form.
@@ -88,15 +88,14 @@ try {
     await navigate('library');await page.locator('.reference-sidebar').waitFor();
     await readable(page.locator('.reference-sidebar'),'--bg-elevated','background-color');await shot(skin.id+'-library');
     await navigate('transits');await page.locator('#transit-stage .bodygraph-svg').waitFor({timeout:60000});
-    await readable(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--hd-transit-text');
-    if (skin.id === 'absolutely') assert.equal(await page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act').first().evaluate(n=>getComputedStyle(n).color), 'rgb(82, 102, 61)', 'approved Absolutely small Design text');
-    else await readable(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
-    await readable(page.locator('#transit-stage .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
+    await readable(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--source-transit-text');
+    await readable(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--source-natal-text' : '--source-design-text');
+    await readable(page.locator('#transit-stage .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--source-natal-text' : '--source-personality-text');
     assert.equal(await page.locator('#transit-stage .tl-graph').getAttribute('data-transit-source-mode'),skin.transitSourceMode);
     await shot(skin.id+'-transit');
     await page.locator('#transit-stage .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-transit-graph.png`});
     await navigate('timeline');await page.locator('#timeline-view .bodygraph-svg').waitFor({timeout:60000});
-    await readable(page.locator('#timeline-view .tl-transit-column .bg-planet-act'),'--hd-transit-text');
+    await readable(page.locator('#timeline-view .tl-transit-column .bg-planet-act'),'--source-transit-text');
     await page.locator('#timeline-view [data-field="span"]').selectOption('past-year');
     await page.waitForFunction(() => {
       const table = document.querySelector('#timeline-view .tl-table');
@@ -110,9 +109,8 @@ try {
     else referenceTimeline = timeline;
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-timeline-transit','background-color');
     await readable(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
-    if (skin.id === 'absolutely') assert.equal(await page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act').first().evaluate(n=>getComputedStyle(n).color), 'rgb(82, 102, 61)', 'approved Absolutely timeline small Design text');
-    else await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-design');
-    await readable(page.locator('#timeline-view .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--hd-overlay-natal' : '--hd-personality');
+    await readable(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--source-natal-text' : '--source-design-text');
+    await readable(page.locator('#timeline-view .tl-birth-value[data-side="personality"] .bg-planet-act'),skin.transitSourceMode === 'unified-natal' ? '--source-natal-text' : '--source-personality-text');
     await shot(skin.id+'-timeline');
     await page.locator('#timeline-view .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-timeline-graph.png`});
     await page.locator('#timeline-view .tl-workspace').screenshot({path:`${evidence}/${skin.id}-timeline-workspace.png`});
