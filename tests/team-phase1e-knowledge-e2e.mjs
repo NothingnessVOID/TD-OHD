@@ -7,7 +7,7 @@ const base=process.env.E2E_URL;
 assert.ok(base,'Set E2E_URL to the running app.');
 const output=new URL('../docs/team/screenshots/phase1e-review/',import.meta.url).pathname;
 mkdirSync(output,{recursive:true});
-const browser=await chromium.launch({channel:'chrome',headless:true});
+const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL || 'chrome',headless:true});
 const people=Array.from({length:3},(_,i)=>({id:`phase1e-${i}`,name:`Member ${i+1}`,birthDate:`198${i}-05-16`,birthTime:'12:00',timeUnknown:false,location:{timezone:0,lat:null,lon:null,iana:null,name:null}}));
 const page=await browser.newPage({viewport:{width:1280,height:900}});
 const errors=[];page.on('pageerror',error=>errors.push(error.message));

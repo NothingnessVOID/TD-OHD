@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 const base = process.env.E2E_URL;
 assert.ok(base);
 try {
@@ -45,7 +45,7 @@ try {
     await page.keyboard.press('Escape');
   }
   await page.evaluate(() => { document.querySelector('#team-content').replaceChildren(); window.__showSynthetic(4); });
-  assert.equal(await page.locator('.penta-gate[data-gate="31"] .penta-member-tag').count(), 2);
+  assert.equal(await page.locator('.penta-gate[data-gate="31"] .penta-native-member').count(), 2);
   await page.locator('.penta-gate-hit[data-gate="31"]').click();
   const gateDetail = await page.locator('.penta-detail').innerText();
   assert.match(gateDetail, /Personality.*Sun.*31\.3/s);
