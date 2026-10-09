@@ -5,7 +5,7 @@ import { SKINS } from '../src/lib/skin-registry.js';
 
 const base = process.env.E2E_URL;
 assert.ok(base, 'Set E2E_URL to the running app.');
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 const profiles = Array.from({ length: 8 }, (_, i) => ({ id: `penta-svg-${i}`, name: i < 2 ? 'Same name' : `Member ${i + 1}`,
   birthDate: `${1980 + i}-05-16`, birthTime: '12:00', timeUnknown: false,
   location: { timezone: 0, lat: null, lon: null, iana: null, name: null } }));

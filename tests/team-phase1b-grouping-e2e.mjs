@@ -4,7 +4,7 @@ import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
 
 const base = process.env.E2E_URL;
 assert.ok(base, 'Set E2E_URL to the running application URL.');
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 const storageKey = 'ohd-teams-v1';
 const profiles = Array.from({ length: 8 }, (_, i) => ({
   id: `group-e2e-${i}`, name: `Member ${i + 1}`, birthDate: `${1988 + i}-04-15`, birthTime: '12:00',
@@ -34,6 +34,7 @@ try {
   }, { key: PROFILE_STORAGE_KEY, profiles });
 
   await page.goto(base);
+  await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
   await page.locator('#team-view:not(.hidden) .team-pool summary').click();
