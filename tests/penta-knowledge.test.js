@@ -17,11 +17,14 @@ test('Penta has 21 stable, distinct identities, with source evidence and no fabr
     assert.equal(entry.id,`hd.penta.gate.${gate.gate}`);
     assert.equal(entry.properties.gate,gate.gate);
     assert.equal(entry.properties.interpretationStatus,'missing');
+    assert.equal(entry.summary,null);
+    assert.equal(entry.summaryStatus,'missing');
+    assert.equal(getKnowledgeSummary(q(`gate:${gate.gate}`)),null);
     assert.equal(entry.detail,null);
     assert.equal(entry.detailStatus,'missing');
     assert.equal(entry.properties.evidence.status,'verified');
     assert.deepEqual(entry.properties.evidence.sourceIds,['B2']);
-    assert.equal(SOURCES[entry.summary.sourceId].reserved,undefined);
+    assert.equal(SOURCES[entry.provenance.name.sourceId].reserved,undefined);
     assert.equal(getKnowledgeDetail(q(`gate:${gate.gate}`)),null);
     assert.equal(getKnowledgeEntry({domain:'human-design',objectType:'gate',objectId:String(gate.gate)}),null);
   }
@@ -29,10 +32,14 @@ test('Penta has 21 stable, distinct identities, with source evidence and no fabr
     const entry=getKnowledgeEntry(q(`channel:${channel.channelId}`));
     assert.equal(entry.id,`hd.penta.channel.${channel.channelId}`);
     assert.deepEqual(entry.properties.gates,channel.gates);
-    assert.equal(entry.summary.sourceId,entry.detail.sourceId);
-    assert.equal(entry.summary.version,entry.detail.version);
+    assert.equal(entry.summary.sourceId,'penta-bg5-course');
+    assert.match(entry.summary.content,/BG5/);
+    assert.equal(entry.detail,null);
+    assert.equal(entry.detailStatus,'missing');
+    assert.equal(entry.properties.interpretationStatus,'missing');
+    assert.equal(getKnowledgeDetail(q(`channel:${channel.channelId}`)),null);
     assert.deepEqual(entry.properties.evidence.sourceIds,['B2']);
-    assert.ok(entry.detail.content.includes(channel.gates.join('–')));
+    assert.ok(entry.summary.content.includes(channel.gates.join('–')));
     assert.equal(getKnowledgeEntry({domain:'human-design',objectType:'channel',objectId:channel.channelId}),null);
   }
   for (const id of ['introduction','powerColumn','contexts']) {
@@ -42,6 +49,11 @@ test('Penta has 21 stable, distinct identities, with source evidence and no fabr
     assert.equal(getKnowledgeEntryById(entry.id).id,entry.id);
     assert.equal(entry.summary.sourceId,entry.detail.sourceId);
   }
+  const column=getKnowledgeEntry(q('powerColumn'));
+  assert.equal(column.detail.sourceId,'penta-power-column-public');
+  assert.deepEqual(column.properties.evidence.sourceIds,['J1','P1','P2']);
+  assert.equal(column.properties.interpretationStatus,'verified');
+  assert.deepEqual(SOURCES['penta-power-column-public'].urls,column.properties.evidence.urls.slice(1));
   assert.ok(pentaRecords.every(record=>record.properties().unresolved.includes('gapFormula')));
 });
 
@@ -54,21 +66,27 @@ test('locale content stays independent, and missing local slot never borrows ano
       const summary=getKnowledgeSummary(q('introduction'));
       results.push(summary.content);
       assert.equal(summary.locale,locale);
+      assert.equal(getKnowledgeSummary(q('gate:31')),null);
       assert.equal(getKnowledgeDetail(q('gate:31')),null);
+      assert.equal(getKnowledgeEntry(q('gate:31')).hasSummary,false);
       assert.equal(getKnowledgeEntry(q('gate:31')).hasDetail,false);
+      assert.equal(getKnowledgeDetail(q('channel:7-31')),null);
     }
     assert.equal(new Set(results).size,3);
   } finally { setLocale(original,{persist:false}); }
 });
 
 test('ordinary reference inventory and categories remain separate from Penta', () => {
-  assert.equal(listKnowledgeEntries().filter(e=>e.objectType==='penta').length,21);
+  assert.equal(listKnowledgeEntries({includePenta:true}).filter(e=>e.objectType==='penta').length,21);
   const catalog=referenceEntries();
   assert.equal(catalog.filter(e=>e.kind==='gate').length,64);
   assert.equal(catalog.filter(e=>e.kind==='channel').length,36);
   assert.equal(catalog.filter(e=>e.kind==='knowledge').length,64); // 70 foundation records minus six cognition entries.
   assert.ok(catalog.every(e=>!String(e.id).startsWith('hd.penta.')));
-  assert.equal(listKnowledgeEntries({includePenta:false}).length,70);
+  assert.equal(listKnowledgeEntries().length,70);
+  assert.deepEqual(listKnowledgeEntries().map(e=>e.id),listKnowledgeEntries({includePenta:false}).map(e=>e.id));
+  assert.ok(listKnowledgeEntries().every(e=>e.objectType!=='penta'));
+  assert.equal(listKnowledgeEntries({includePenta:true}).length,91);
   const view=readFileSync(new URL('../src/views/penta-matrix.js',import.meta.url),'utf8');
   assert.match(view,/getKnowledgeDetail\(query\)/);
   assert.match(view,/knowledgeSections\(`gate:\$\{gate\.gate\}`\)/);
