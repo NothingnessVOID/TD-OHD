@@ -8,7 +8,7 @@ import '../lib/knowledge/penta-messages.js';
 
 const states = { absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' };
 const center = { throat: 'Throat', g: 'G Center', sacral: 'Sacral' };
-const sectionLabels = { facts:'Penta structure and activations', reading:'Penta verified mechanism', sources:'Penta sources and review', missing:'Penta specific interpretation missing', status:'Penta evidence status', scope:'Penta evidence scope', overview:'Penta overview', powerColumn:'Penta Power Column', contexts:'Penta family and business' };
+const sectionLabels = { facts:'Penta structure and activations', reading:'Penta verified structure', sources:'Penta sources and review', missing:'Penta specific interpretation missing', status:'Penta evidence status', scope:'Penta evidence scope', overview:'Penta overview', powerColumn:'Penta Power Column', contexts:'Penta family and business' };
 const pentaQuery = objectId => ({ domain:'human-design', objectType:'penta', objectId });
 function knowledgeSections(objectId) {
   const query = pentaQuery(objectId);
@@ -19,7 +19,7 @@ function knowledgeSections(objectId) {
   const detail = getKnowledgeDetail(query);
   const evidence = entry.properties.evidence;
   const links = evidence.urls.map((url,index) => `<li><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(evidence.sourceIds[index])} · ${esc(url)}</a></li>`).join('');
-  return `<section class="penta-knowledge" data-knowledge-id="${esc(entry.id)}"><h4>${label(words.reading)}</h4><p>${esc(summary?.content ?? t(words.missing))}</p>${detail ? `<p>${esc(detail.content)}</p>` : `<p class="penta-knowledge-missing" data-detail-status="missing">${label(words.missing)}</p>`}<section class="penta-knowledge-sources"><h4>${label(words.sources)}</h4><p>${label(words.status)}: ${esc(evidence.status)} · ${label(words.scope)}: ${esc(evidence.scope)}</p><ul>${links}</ul></section></section>`;
+  return `<section class="penta-knowledge" data-knowledge-id="${esc(entry.id)}"><h4>${label(words.reading)}</h4>${summary ? `<p>${esc(summary.content)}</p>` : ''}${detail ? `<p>${esc(detail.content)}</p>` : `<p class="penta-knowledge-missing" data-detail-status="missing">${label(words.missing)}</p>`}<section class="penta-knowledge-sources"><h4>${label(words.sources)}</h4><p>${label(words.status)}: ${esc(evidence.status)} · ${label(words.scope)}: ${esc(evidence.scope)}</p><ul>${links}</ul></section></section>`;
 }
 const point = cell => ({ x: 55 + cell.column * 105, y: 57 + cell.row * 98 });
 const label = (key, args) => esc(t(key, args));

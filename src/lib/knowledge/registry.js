@@ -49,6 +49,6 @@ export function createKnowledgeReader(records, dynamic = () => null) {
 }
 const records = [...foundationRecords, ...pentaRecords];
 export const { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(records, crossRecord);
-// Legacy Reference Library asks for its original foundation set without resolving Penta Detail.
-export const listKnowledgeEntries = ({ includePenta = true } = {}) =>
+// Preserve the original list contract; callers opt into the separate Penta inventory.
+export const listKnowledgeEntries = ({ includePenta = false } = {}) =>
   (includePenta ? records : foundationRecords).map(record => getKnowledgeEntry(record));
