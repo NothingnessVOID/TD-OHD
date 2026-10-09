@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "baseline": "bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4",
+  "status": "frozen",
+  "review": "Independent Phase 1B validation and grouping revision. Fixed source paths and SHA-256 values are also pinned in validate.mjs.",
+  "allowedPaths": [
+    "src/views/team.js",
+    "src/lib/human-design/team-members.js",
+    "src/lib/team-repository.js",
+    "src/styles/team-members.css",
+    "src/locales/zh-CN/ui-views.json",
+    "src/locales/zh-Hant/ui-views.json"
+  ],
+  "files": {
+    "src/views/team.js": "9936ec4e15f3480d9af4427037a7b97bd716a8ec30ca5f9d5fdef8f8c8ade0f9",
+    "src/lib/human-design/team-members.js": "905278020bb8c6ac5fe06ce82a74be00974e912f961f4410e7741a81db5ab1d5",
+    "src/lib/team-repository.js": "f709480c5584172da5e9e7e7ca0796fe7f6926143a0e8266d0538fd99b3b618b",
+    "src/styles/team-members.css": "975a636b93e0a402dfff8285bfb43eef5177c1eb7e6b9d10d74bdd8fb01829e8",
+    "src/locales/zh-CN/ui-views.json": "72443bb169058968cbc8f7e8f98938d1045e9644630e77a0d217a98f89e40cbb",
+    "src/locales/zh-Hant/ui-views.json": "793c2976e1256cb6153230d3c2fe82f687b8a1c75f12c233756c5ec6269d1217"
+  }
+}

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, cpSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { validatePentaPhase1BSourceScope } from '../docs/frontend-knowledge-sync-v1/validate.mjs';
@@ -20,7 +21,8 @@ function sandbox(run) {
   try {
     for (const file of [...files, scopeFile]) {
       mkdirSync(path.dirname(path.join(temp, file)), { recursive: true });
-      cpSync(path.join(root, file), path.join(temp, file));
+      if (file === scopeFile) cpSync(path.join(root, file), path.join(temp, file));
+      else writeFileSync(path.join(temp, file), execFileSync('git', ['show', `bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4:${file}`], { cwd: root }));
     }
     return run(temp);
   } finally { rmSync(temp, { recursive: true, force: true }); }

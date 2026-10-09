@@ -25,7 +25,7 @@ test('the removed astronomy package cannot return to code or dependency manifest
     // these two exact fixture/assertion lines, never the entire test file.
     if (relative === 'tests/team-members-phase1b.test.js') {
       assert.equal(createHash('sha256').update(source).digest('hex'),
-        '736b62ba644f2288cc4bd454da692db052292e35dbe3a8879b7437bc41e56a20',
+        '839077d4ed2361815023bf95de88c34d6b789f9072501cc6654d79ad21ebed55',
         'Phase 1B storage-key exception requires the frozen test digest');
       for (const line of [
         `  const data = new Map([['${forbidden}_profiles', 'untouched'], ['ohd-last-person-id', 'person-a']]);`,

@@ -18,6 +18,7 @@ try {
   await add(profiles[0].id);
   await add(profiles[1].id);
   assert.equal(await page.locator('.team-member-card').count(), 2);
+  await page.locator('#team-group-new').click();
   await page.locator('#team-calculate').click();
   assert.match(await page.locator('#team-content').innerText(), /three members/);
   await add(profiles[2].id);
@@ -27,12 +28,13 @@ try {
   await page.locator('#team-name').fill('<Team & friends>');
   await page.locator('#team-save').click();
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('ohd-teams-v1')));
-  assert.equal(stored.teams[0].schemaVersion, 1);
+  assert.equal(stored.teams[0].schemaVersion, 2);
   assert.equal(stored.teams[0].kind, 'penta');
   assert.equal(stored.teams[0].members.length, 3);
   assert.equal(JSON.stringify(stored).includes('birthDate'), false);
   assert.equal(JSON.stringify(stored).includes('chart'), false);
   assert.equal(await page.locator('#team-selected').locator('script').count(), 0);
+  for (const card of await page.locator('.team-member-card').all()) await card.locator('.team-assign').click();
   await page.locator('#team-calculate').click();
   await page.locator('.team-summary').waitFor({ timeout: 60000 });
   assert.equal(await page.locator('.team-channel').count(), 6);
@@ -46,6 +48,7 @@ try {
   await page.locator('#team-view:not(.hidden) #team-list').waitFor();
   await page.locator('#team-list').selectOption(stored.teams[0].teamId);
   assert.equal(await page.locator('.team-member-card').count(), 3);
+  for (const card of await page.locator('.team-member-card').all()) await card.locator('.team-assign').click();
   assert.deepEqual((await page.evaluate(() => JSON.parse(localStorage.getItem('ohd-teams-v1')))).teams[0].members.map(m => m.memberId), before);
   await page.locator('#add-member').click();
   const row = page.locator('.team-member-row').first();
@@ -54,12 +57,13 @@ try {
   await page.locator('#team-save').click();
   assert.match(await page.locator('#team-content').innerText(), /Unsaved members: Quick/);
   await page.locator('#team-calculate').click();
-  assert.match(await page.locator('#team-content').innerText(), /Please enter a name/);
+  assert.match(await page.locator('#team-content').innerText(), /Birth details need correction: Quick/);
   await row.locator('.team-date').fill('2000-02-29');
   await row.locator('.team-time').fill('10:00');
   await row.locator('.ps-toggle').click();
   await row.locator('.ps-manual').fill('0');
   const profileBefore = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).length, PROFILE_STORAGE_KEY);
+  await row.locator('.team-assign-quick').click();
   await page.locator('#team-calculate').click();
   await page.locator('.team-summary').waitFor({ timeout: 60000 });
   assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).length, PROFILE_STORAGE_KEY), profileBefore);

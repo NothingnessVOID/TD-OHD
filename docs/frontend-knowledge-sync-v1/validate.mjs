@@ -35,17 +35,40 @@ const pentaPhase1BReviewed = Object.freeze({
   'src/locales/zh-CN/ui-views.json': 'ee4224b560b80e1263ee08eb2f9e8b7c320847dcbe67baca63fe94f74816b1c0',
   'src/locales/zh-Hant/ui-views.json': '5414dff5488945a9d5bdd03b8172f5298e0efc4afc83665b56d5f7d623b9a7ef'
 });
-export function validatePentaPhase1BSourceScope(rootPath, currentFiles) {
+export function validatePentaPhase1BSourceScope(rootPath, currentFiles, revision = null) {
   const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1B-SOURCE-SCOPE.json')));
   const paths = Object.keys(pentaPhase1BReviewed);
   if (scope.schemaVersion !== 1 || !/^[0-9a-f]{40}$/.test(scope.baseline)
       || Object.keys(scope.files).sort().join('\n') !== paths.slice().sort().join('\n')
       || paths.some(file => scope.files[file] !== pentaPhase1BReviewed[file]
-        || hash(readFileSync(path.join(rootPath, file))) !== pentaPhase1BReviewed[file]))
+        || hash(readFileSync(path.join(rootPath, file))) !== (revision?.[file] ?? pentaPhase1BReviewed[file])))
     throw new Error('Invalid Penta Phase 1B source scope');
   const allowed = new Set(paths);
   for (const file of currentFiles)
     if (protectedPath(file) && !allowed.has(file) && !pentaReviewed[file]) throw new Error(`Unreviewed new source: ${file}`);
+  return paths;
+}
+
+const pentaPhase1BRevisionReviewed = Object.freeze({
+  'src/views/team.js': '9936ec4e15f3480d9af4427037a7b97bd716a8ec30ca5f9d5fdef8f8c8ade0f9',
+  'src/lib/human-design/team-members.js': '905278020bb8c6ac5fe06ce82a74be00974e912f961f4410e7741a81db5ab1d5',
+  'src/lib/team-repository.js': 'f709480c5584172da5e9e7e7ca0796fe7f6926143a0e8266d0538fd99b3b618b',
+  'src/styles/team-members.css': '975a636b93e0a402dfff8285bfb43eef5177c1eb7e6b9d10d74bdd8fb01829e8',
+  'src/locales/zh-CN/ui-views.json': '72443bb169058968cbc8f7e8f98938d1045e9644630e77a0d217a98f89e40cbb',
+  'src/locales/zh-Hant/ui-views.json': '793c2976e1256cb6153230d3c2fe82f687b8a1c75f12c233756c5ec6269d1217'
+});
+export function validatePentaPhase1BRevisionScope(rootPath, changedFiles) {
+  const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1B-REVISION-SCOPE.json')));
+  const paths = Object.keys(pentaPhase1BRevisionReviewed);
+  if (scope.schemaVersion !== 1 || scope.baseline !== 'bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4'
+      || scope.status !== 'frozen' || Object.keys(scope.files ?? {}).sort().join('\n') !== paths.slice().sort().join('\n')
+      || scope.allowedPaths?.slice().sort().join('\n') !== paths.slice().sort().join('\n')
+      || paths.some(file => scope.files[file] !== pentaPhase1BRevisionReviewed[file]
+        || hash(readFileSync(path.join(rootPath, file))) !== pentaPhase1BRevisionReviewed[file]))
+    throw new Error('Invalid Penta Phase 1B revision scope');
+  const allowed = new Set(paths);
+  for (const file of changedFiles)
+    if (protectedPath(file) && !allowed.has(file)) throw new Error(`Unlicensed Phase 1B revision source: ${file}`);
   return paths;
 }
 
@@ -158,11 +181,13 @@ export function validateSyncedRelease(rootPath = root) {
   // the review manifest so editing that manifest cannot authorize another source.
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
+  const phase1BRevisionChanges = execFileSync('git', ['diff', '--name-only', 'bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4', '--'], { cwd: rootPath }).toString().trim().split('\n').filter(Boolean);
+  validatePentaPhase1BRevisionScope(rootPath, phase1BRevisionChanges);
   // Only the three pinned Phase 1A paths extend the historical allowlist.
   const additionalFiles = currentFiles.filter(file => !expectedFiles.includes(file));
   const pentaPaths = validatePentaPhase1AScope(rootPath, additionalFiles);
   expectedFiles.push(...pentaPaths);
-  const pentaPhase1BPaths = validatePentaPhase1BSourceScope(rootPath, additionalFiles);
+  const pentaPhase1BPaths = validatePentaPhase1BSourceScope(rootPath, additionalFiles, pentaPhase1BRevisionReviewed);
   expectedFiles.push(...pentaPhase1BPaths);
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
@@ -171,7 +196,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (pentaReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (pentaReviewed[file] ?? pentaPhase1BRevisionReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));
