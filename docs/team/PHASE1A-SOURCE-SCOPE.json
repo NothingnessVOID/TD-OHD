@@ -1,0 +1,9 @@
+{
+  "baseline": "d2abe43c39a6ae3f04c74a6747cb1174d0388052",
+  "review": "Penta Phase 1A independent topology, full Sharp activation provenance, and structural coverage. No legacy Team UI, astronomy, or BG5 skill interpretation changes.",
+  "files": {
+    "src/lib/human-design/penta-catalog.js": "91a6df5319e9bb790a20b517220f4831d9ed9b04267184e4e85bb5ae8f4774fc",
+    "src/lib/human-design/team-activation.js": "84d48728136abd62b7ca4fb07dad6eca0c24de70ce01c43eafad3f9ffc0dc34c",
+    "src/lib/human-design/penta-structure.js": "f6f3d722f8c11454bd2864ccf6eb1d56b3e687031e17d75762c73a3987ed15ad"
+  }
+}

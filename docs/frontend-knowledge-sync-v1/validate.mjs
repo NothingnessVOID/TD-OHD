@@ -20,6 +20,29 @@ const tree = ref => {
 const protectedPath = file => /^(?:src\/|engine-core\/|engine-tools\/|engine-wasm\/|scripts\/|third_party\/|jovian-engine\/|public\/transit-data\/)/.test(file)
   || /^(?:package(?:-lock)?\.json|LICENSE|vite\.config\.js|index\.html|\.env\.production)$/.test(file);
 
+// The additive review is anchored both to a committed snapshot and to literal
+// digests here. A modified scope document alone cannot expand the allowlist.
+const pentaReviewed = Object.freeze({
+  'src/lib/human-design/penta-catalog.js': '91a6df5319e9bb790a20b517220f4831d9ed9b04267184e4e85bb5ae8f4774fc',
+  'src/lib/human-design/team-activation.js': '84d48728136abd62b7ca4fb07dad6eca0c24de70ce01c43eafad3f9ffc0dc34c',
+  'src/lib/human-design/penta-structure.js': 'f6f3d722f8c11454bd2864ccf6eb1d56b3e687031e17d75762c73a3987ed15ad'
+});
+export function validatePentaPhase1AScope(rootPath, currentFiles) {
+  const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1A-SOURCE-SCOPE.json')));
+  const paths = Object.keys(pentaReviewed);
+  if (scope.baseline !== 'd2abe43c39a6ae3f04c74a6747cb1174d0388052'
+      || Object.keys(scope.files).sort().join('\n') !== paths.slice().sort().join('\n')
+      || paths.some(file => scope.files[file] !== pentaReviewed[file]
+        || hash(readFileSync(path.join(rootPath, file))) !== pentaReviewed[file]
+        || !git('show', `${scope.baseline}:${file}`).equals(readFileSync(path.join(rootPath, file)))))
+    throw new Error('Invalid Penta Phase 1A source scope');
+  const allowed = new Set(paths);
+  for (const file of currentFiles) {
+    if (protectedPath(file) && !allowed.has(file)) throw new Error(`Unreviewed new source: ${file}`);
+  }
+  return paths;
+}
+
 export function expectedMergedSource(file) {
   const read = ref => tree(ref).includes(file) ? git('show', `${ref}:${file}`) : null;
   const base = read(BASE), main = read(MAIN), knowledge = read(KNOWLEDGE);
@@ -109,8 +132,13 @@ export function validateSyncedRelease(rootPath = root) {
   if (contrastScope.base !== 'a13eab9c1f9e82f9c3b2fcbc6b9692018f7037ef' || Object.keys(contrastScope.files).sort().join('\n') !== contrastPaths.sort().join('\n')) throw new Error('Invalid source contrast scope');
   const inkScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/gate-ink-v2-scope.json')));
   if (inkScope.base !== '1883dbfa0c5e35567897c8b2786286ff20259ee8' || Object.keys(inkScope.files).length !== 12) throw new Error('Invalid gate ink scope');
+  // Phase 1A is a narrow additive review. Pin paths and digests independently of
+  // the review manifest so editing that manifest cannot authorize another source.
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
+  // Only the three pinned Phase 1A paths extend the historical allowlist.
+  const pentaPaths = validatePentaPhase1AScope(rootPath, currentFiles.filter(file => !expectedFiles.includes(file)));
+  expectedFiles.push(...pentaPaths);
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
   // The approved terminology correction changes only zh-CN 荐骨 to 骶骨.
@@ -118,7 +146,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (pentaReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));
