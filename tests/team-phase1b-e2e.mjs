@@ -9,10 +9,12 @@ try {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, locale: 'en-US' });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  page.on('dialog', dialog => dialog.accept());
   await page.addInitScript(({ key, profiles }) => { localStorage.setItem('ohd-language', 'en'); localStorage.setItem(key, JSON.stringify(profiles)); localStorage.setItem('ohd-last-person-id', profiles[0].id); }, { key: PROFILE_STORAGE_KEY, profiles });
   await page.goto(base);
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('#team-view:not(.hidden) .team-pool summary').click();
   await page.locator('#team-view:not(.hidden) #team-person-picker').waitFor();
   const add = async id => { await page.locator('#team-person-picker').selectOption(id); await page.locator('#team-add-person').click(); };
   await add(profiles[0].id);
@@ -48,6 +50,7 @@ try {
   await page.locator('#team-view:not(.hidden) #team-list').waitFor();
   await page.locator('#team-list').selectOption(stored.teams[0].teamId);
   assert.equal(await page.locator('.team-member-card').count(), 3);
+  await page.locator('.team-pool summary').click();
   for (const card of await page.locator('.team-member-card').all()) await card.locator('.team-assign').click();
   assert.deepEqual((await page.evaluate(() => JSON.parse(localStorage.getItem('ohd-teams-v1')))).teams[0].members.map(m => m.memberId), before);
   await page.locator('#add-member').click();
@@ -64,7 +67,9 @@ try {
   await row.locator('.ps-manual').fill('0');
   const profileBefore = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).length, PROFILE_STORAGE_KEY);
   await row.locator('.team-assign-quick').click();
+  assert.equal(await page.locator('.team-group-member').count(), 4);
   await page.locator('#team-calculate').click();
+  if (await page.locator('#team-content [role="alert"]').count()) throw new Error(await page.locator('#team-content').innerText());
   await page.locator('.team-summary').waitFor({ timeout: 60000 });
   assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).length, PROFILE_STORAGE_KEY), profileBefore);
   await page.locator('#team-save').click();

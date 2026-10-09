@@ -73,17 +73,40 @@ export function validatePentaPhase1BRevisionScope(rootPath, changedFiles, phase1
 }
 
 const phase1CPaths = ['src/views/team.js', 'src/views/penta-matrix.js', 'src/styles/penta-matrix.css', 'src/locales/zh-CN/ui-views.json', 'src/locales/zh-Hant/ui-views.json'];
+const phase1CPolishReviewed = Object.freeze({
+  'src/views/team.js': '48dfdaf77fee8510591edbad680100f4d2f5fae5f57d06440b7b0fcdc4ae5890',
+  'src/views/penta-matrix.js': '75a5ec701f1bc5a3de2c36baddfa531e81050d56c6a5701d92aba7b76d26c7b4',
+  'src/styles/penta-matrix.css': 'a24176aa34ff4b7cd9caebd54b5c8e82e3c57d18acd420e1531c5a85d5ac9cff',
+  'src/styles/team-visual-polish.css': '201a6c9bbd56080800affd6a0b437f92bbe52cec09a323cfcf457b5588d6a681',
+  'src/locales/zh-CN/ui-views.json': 'c606d9b3a6d784a27c27e5b308319dae698524c1c67f41a4c4d3bfb4c017e5c7',
+  'src/locales/zh-Hant/ui-views.json': '895a3e7e3887af0e0567b008b1053624880f86401f0c4fed67bde17d50e6134d'
+});
+export function validatePentaPhase1CPolishScope(rootPath, currentFiles = []) {
+  const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1C-POLISH-SOURCE-SCOPE.json')));
+  const paths = Object.keys(phase1CPolishReviewed);
+  if (scope.schemaVersion !== 1 || scope.status !== 'frozen' || scope.baseline !== '57958633051b1afd2084bdf150756280f4b6f739'
+      || Object.keys(scope.files ?? {}).sort().join('\n') !== paths.slice().sort().join('\n')
+      || paths.some(file => scope.files[file] !== phase1CPolishReviewed[file]
+        || hash(readFileSync(path.join(rootPath, file))) !== phase1CPolishReviewed[file]))
+    throw new Error('Invalid Phase 1C polish source scope');
+  const baselinePaths = new Set(execFileSync('git', ['ls-tree', '-r', '--name-only', scope.baseline], { cwd: root }).toString().trim().split('\n'));
+  for (const file of currentFiles)
+    if (protectedPath(file) && !paths.includes(file) && !phase1CPaths.includes(file)
+        && !pentaPhase1BReviewed[file] && !pentaReviewed[file] && !baselinePaths.has(file))
+      throw new Error(`Unreviewed Phase 1C polish source: ${file}`);
+  return scope.files;
+}
 export function validatePentaPhase1CScope(rootPath) {
   const scope = JSON.parse(readFileSync(path.join(rootPath, 'docs/team/PHASE1C-SOURCE-SCOPE.json')));
   if (scope.schemaVersion !== 1 || scope.baseline !== '23f9decbb888ba213d0432d8d53dae4dd24eac39'
     || Object.keys(scope.files ?? {}).sort().join('\n') !== phase1CPaths.slice().sort().join('\n'))
     throw new Error('Invalid Penta Phase 1C source scope');
   for (const file of phase1CPaths)
-    if (hash(readFileSync(path.join(rootPath, file))) !== scope.files[file]) throw new Error(`Invalid Phase 1C source: ${file}`);
+    if (hash(git('show', `57958633051b1afd2084bdf150756280f4b6f739:${file}`)) !== scope.files[file]) throw new Error(`Invalid Phase 1C source: ${file}`);
   const changes = execFileSync('git', ['diff', '--name-only', scope.baseline, '--'], { cwd: root }).toString().trim().split('\n').filter(protectedPath);
   const untracked = execFileSync('git', ['ls-files', '--others', '--exclude-standard'], { cwd: root }).toString().trim().split('\n').filter(protectedPath);
   for (const file of [...changes, ...untracked])
-    if (!phase1CPaths.includes(file)) throw new Error(`Unreviewed Phase 1C source: ${file}`);
+    if (!phase1CPaths.includes(file) && !phase1CPolishReviewed[file]) throw new Error(`Unreviewed Phase 1C source: ${file}`);
   return scope.files;
 }
 
@@ -197,22 +220,25 @@ export function validateSyncedRelease(rootPath = root) {
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   const phase1C = validatePentaPhase1CScope(rootPath);
+  const polishChanges = execFileSync('git', ['diff', '--name-only', '57958633051b1afd2084bdf150756280f4b6f739', '--'], { cwd: rootPath }).toString().trim().split('\n');
+  const polishNew = execFileSync('git', ['ls-files', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
+  const phase1CPolish = validatePentaPhase1CPolishScope(rootPath, [...polishChanges, ...polishNew]);
   const phase1BRevisionChanges = execFileSync('git', ['diff', '--name-only', 'bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4', '23f9decbb888ba213d0432d8d53dae4dd24eac39', '--'], { cwd: rootPath }).toString().trim().split('\n').filter(Boolean);
-  validatePentaPhase1BRevisionScope(rootPath, phase1BRevisionChanges, phase1C);
+  validatePentaPhase1BRevisionScope(rootPath, phase1BRevisionChanges, { ...phase1C, ...phase1CPolish });
   // Only the three pinned Phase 1A paths extend the historical allowlist.
   const additionalFiles = currentFiles.filter(file => !expectedFiles.includes(file));
-  const pentaPaths = validatePentaPhase1AScope(rootPath, additionalFiles, phase1C);
+  const pentaPaths = validatePentaPhase1AScope(rootPath, additionalFiles, { ...phase1C, ...phase1CPolish });
   expectedFiles.push(...pentaPaths);
-  const pentaPhase1BPaths = validatePentaPhase1BSourceScope(rootPath, additionalFiles, pentaPhase1BRevisionReviewed, phase1C);
+  const pentaPhase1BPaths = validatePentaPhase1BSourceScope(rootPath, additionalFiles, pentaPhase1BRevisionReviewed, { ...phase1C, ...phase1CPolish });
   expectedFiles.push(...pentaPhase1BPaths);
   for (const file of currentFiles.filter(protectedPath))
-    if (!expectedFiles.includes(file) && !phase1C[file]) throw new Error(`Unreviewed new source: ${file}`);
+    if (!expectedFiles.includes(file) && !phase1C[file] && !phase1CPolish[file]) throw new Error(`Unreviewed new source: ${file}`);
   // The approved terminology correction changes only zh-CN 荐骨 to 骶骨.
   const terminologyFiles = new Set(['src/lib/knowledge/content/human-design-zh-CN.js','src/lib/reference-supplements.json']);
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (phase1C[file] ?? pentaReviewed[file] ?? pentaPhase1BRevisionReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (phase1CPolish[file] ?? phase1C[file] ?? pentaReviewed[file] ?? pentaPhase1BRevisionReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

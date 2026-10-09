@@ -1,4 +1,5 @@
 import '../styles/team-members.css';
+import '../styles/team-visual-polish.css';
 import { createPentaMatrix } from './penta-matrix.js';
 import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
@@ -19,6 +20,9 @@ let generation = 0;
 let pending = false;
 let latest = null;
 let matrix = null;
+let dirty = false;
+const confirmDiscard = () => !dirty || window.confirm(t('Discard unsaved team changes?'));
+function markSaved() { dirty = false; }
 function invalidateResult() { matrix?.dispose(); matrix = null; latest = null; $('team-content').replaceChildren(); }
 function currentResultValid() {
   return !!latest && selectedPentaId === latest.pentaId && generation === latest.generation
@@ -35,7 +39,7 @@ function rowHasData(row) { return !!(row.querySelector('.team-name').value.trim(
 function memberName(member) { return member.personId ? (getPerson(member.personId)?.name || member.labelSnapshot || member.displayName || t('Missing reference')) : member.displayName; }
 function message(key, params) { $('team-content').innerHTML = `<p class="team-message" role="status">${text(key, params)}</p>`; }
 function failure(error) { $('team-content').innerHTML = `<p class="team-message" role="alert">${errorText(error)}</p>`; }
-function changed() { generation++; pending = false; $('team-calculate').disabled = false; invalidateResult(); updateCounts(); }
+function changed() { dirty = true; generation++; pending = false; $('team-calculate').disabled = false; invalidateResult(); updateCounts(); }
 function updateCounts() {
   if ($('team-count')) $('team-count').textContent = t('Team members: {count}', { count: allMembers().length });
   if ($('team-group-count')) $('team-group-count').textContent = t('Group members: {count} / 5', { count: selectedGroup()?.memberIds.length || 0 });
@@ -57,16 +61,20 @@ function renderGroups() {
   const group = selectedGroup();
   $('team-group-members').innerHTML = group ? group.memberIds.map(id => {
     const member = allMembers().find(item => item.memberId === id);
-    return `<div class="team-group-member" data-member-id="${esc(id)}"><span>${esc(member ? memberName(member) : t('Missing reference'))}</span><button type="button" class="team-unassign">${text('Remove from Penta')}</button></div>`;
+    const number = allMembers().findIndex(item => item.memberId === id) + 1;
+    return `<div class="team-group-member" data-member-id="${esc(id)}"><span><b class="team-member-index">${number}</b>${esc(member ? memberName(member) : t('Missing reference'))}</span><button type="button" class="team-unassign btn-secondary">${text('Remove from Penta')}</button></div>`;
   }).join('') : `<p class="team-hint">${text('Select a Penta group first.')}</p>`;
   updateCounts();
 }
 function renderMembers() {
   $('team-saved').innerHTML = `<label>${text('Choose a saved person')} <select id="team-person-picker"><option value="">${text('Choose a saved person')}</option>${listPeople().map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select></label><button type="button" id="team-add-person" class="btn-secondary">${text('Add person')}</button>`;
-  $('team-selected').innerHTML = members.map(member => {
+  $('team-selected').innerHTML = members.map((member, index) => {
     const missing = member.personId && !getPerson(member.personId);
     const group = groups.find(g => g.memberIds.includes(member.memberId));
-    return `<div class="team-member-card" data-member-id="${esc(member.memberId)}"><span>${esc(memberName(member))}${missing ? ` · ${text('Missing reference')}` : ''}${group ? ` · ${esc(group.label)}` : ` · ${text('Ungrouped')}`}</span><div>${missing ? `<button type="button" class="team-reassign">${text('Reassign person')}</button>` : ''}<button type="button" class="team-assign">${text('Add to Penta')}</button><button type="button" class="team-remove">${text('Remove')}</button></div></div>`;
+    const action = group?.pentaId === selectedPentaId
+      ? `<span class="team-assigned">${text('In current Penta')}</span>`
+      : group ? '' : `<button type="button" class="team-assign btn-secondary">${text('Add to current Penta')}</button>`;
+    return `<div class="team-member-card" data-member-id="${esc(member.memberId)}"><div class="team-member-identity"><b class="team-member-index">${index + 1}</b><span class="team-member-meta"><strong>${esc(memberName(member))}</strong><small>${missing ? text('Missing reference') : group ? esc(group.label) : text('Ungrouped')}</small></span></div><div class="team-member-actions">${missing ? `<button type="button" class="team-reassign btn-secondary">${text('Reassign person')}</button>` : ''}${action}<button type="button" class="team-remove btn-secondary">${text('Remove from team')}</button></div></div>`;
   }).join('');
   renderGroups();
 }
@@ -158,12 +166,12 @@ function openTeam(id) {
     members = team.members.map(item => ({ ...item, displayName: getPerson(item.personId)?.name || item.labelSnapshot, origin: 'saved' }));
     groups = team.groups.map(item => ({ ...item, memberIds: [...item.memberIds] }));
     selectedPentaId = groups[0]?.pentaId || null;
-    clearQuick(); changed(); refreshToolbar(); renderMembers();
+    clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
   } catch (error) { failure(error); }
 }
 function resetTeam() {
   teamId = null; teamRevision = null; members = []; groups = []; selectedPentaId = null;
-  $('team-name').value = ''; clearQuick(); changed(); refreshToolbar(); renderMembers();
+  $('team-name').value = ''; clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
 }
 function persistTeam() {
   try {
@@ -171,10 +179,10 @@ function persistTeam() {
     if (unsaved.length) return message('Unsaved members: {names}. Save each as a person first.', { names: unsaved.join(', ') });
     if (!name()) return message('Please enter a team name.');
     const saved = saveTeam({ ...(teamId ? { teamId, revision: teamRevision } : {}), name: name(), members: members.map(item => ({ memberId: item.memberId, personId: item.personId, labelSnapshot: memberName(item) })), groups });
-    teamId = saved.teamId; teamRevision = saved.revision; refreshToolbar(); message('Team saved.');
+    teamId = saved.teamId; teamRevision = saved.revision; markSaved(); refreshToolbar(); message('Team saved.');
   } catch (error) { failure(error); }
 }
-function removeTeam() { if (!teamId) return; try { deleteTeam(teamId); resetTeam(); message('Team deleted.'); } catch (error) { failure(error); } }
+function removeTeam() { if (!teamId || !window.confirm(t('Delete this saved team?'))) return; try { deleteTeam(teamId); dirty = false; resetTeam(); message('Team deleted.'); } catch (error) { failure(error); } }
 function renderResult() {
   if (!currentResultValid()) { checkResult(); return; }
   const highlighted = matrix?.highlightedMemberId;
@@ -223,20 +231,25 @@ async function runTeamAnalysis() {
   finally { if (token === generation) { pending = false; $('team-calculate').disabled = false; } }
 }
 export function setupTeamView() {
-  $('team-form').insertAdjacentHTML('afterbegin', `<div class="team-toolbar"><label>${text('Team name')} <input id="team-name" type="text" maxlength="100"></label><label>${text('Saved teams')} <select id="team-list"></select></label><div class="team-actions"><button type="button" id="team-new">${text('New team')}</button><button type="button" id="team-save">${text('Save team')}</button><button type="button" id="team-delete">${text('Delete team')}</button></div><p class="team-hint">${text('Browser-only team storage. Not synced with your people library or account.')}</p></div><section class="team-pool"><h3>${text('Team members')}</h3><div id="team-selected" class="team-selection"></div><p id="team-count" class="team-count"></p></section><section class="team-groups"><h3>${text('Penta groups')}</h3><p class="team-hint">${text('Penta groups are assigned manually.')}</p><div class="team-group-controls"><label>${text('Select Penta')} <select id="team-group-list"></select></label><button type="button" id="team-group-new">${text('New Penta')}</button><button type="button" id="team-group-delete">${text('Delete Penta')}</button><label>${text('Penta name')} <input id="team-group-name" type="text" maxlength="100"></label></div><p id="team-group-count" class="team-count"></p><div id="team-group-members"></div></section>`);
+  $('team-form').insertAdjacentHTML('afterbegin', `<div class="team-toolbar"><label>${text('Team name')} <input id="team-name" type="text" maxlength="100"></label><label>${text('Saved teams')} <select id="team-list"></select></label><div class="team-actions"><button type="button" id="team-new" class="btn-secondary">${text('New team')}</button><button type="button" id="team-save" class="btn-primary">${text('Save team')}</button><button type="button" id="team-delete" class="btn-secondary">${text('Delete team')}</button></div><p class="team-hint">${text('Browser-only team storage. Not synced with your people library or account.')}</p></div><div class="team-workspace"><div class="team-management"><section class="team-groups"><h3>${text('Penta groups')}</h3><p class="team-hint">${text('Penta groups are assigned manually.')}</p><div class="team-group-controls"><label>${text('Select Penta')} <select id="team-group-list"></select></label><div class="team-group-actions"><button type="button" id="team-group-new" class="btn-secondary">${text('New Penta')}</button><button type="button" id="team-group-delete" class="btn-secondary">${text('Delete Penta')}</button></div><label>${text('Penta name')} <input id="team-group-name" type="text" maxlength="100"></label></div><p id="team-group-count" class="team-count"></p><div id="team-group-members"></div></section><details class="team-pool"><summary><strong>${text('Team members')}</strong><span id="team-count" class="team-count"></span></summary><div class="team-pool-body"><div id="team-selected" class="team-selection"></div></div></details></div><div class="team-results"><div class="team-results-heading"><h3>${text('Penta structure')}</h3></div></div></div>`);
+  const pool = $('team-form').querySelector('.team-pool-body');
+  pool.append($('team-saved'), $('team-members'), $('add-member'));
+  $('team-form').querySelector('.team-groups').append($('team-calculate'));
+  $('team-form').querySelector('.team-results').append($('team-content'));
+  $('team-form').querySelector('.team-pool').open = window.innerWidth >= 900;
   const subtitle = document.querySelector('#team-view .view-subtitle');
   subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
   $('add-member').removeAttribute('data-i18n'); $('add-member').textContent = t('+ Add by birth data');
   $('team-calculate').removeAttribute('data-i18n'); $('team-calculate').textContent = t('Analyze Penta');
-  $('team-new').addEventListener('click', resetTeam);
+  $('team-new').addEventListener('click', () => { if (confirmDiscard()) resetTeam(); });
   $('team-save').addEventListener('click', persistTeam);
   $('team-delete').addEventListener('click', removeTeam);
-  $('team-list').addEventListener('change', event => { if (event.target.value) openTeam(event.target.value); });
+  $('team-list').addEventListener('change', event => { if (event.target.value && confirmDiscard()) openTeam(event.target.value); else event.target.value = teamId || ''; });
   $('team-name').addEventListener('input', changed);
   $('team-group-new').addEventListener('click', () => { const group = { pentaId: crypto.randomUUID(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] }; groups.push(group); selectedPentaId = group.pentaId; changed(); renderMembers(); });
   $('team-group-delete').addEventListener('click', () => { if (!selectedGroup()) return; groups = groups.filter(group => group.pentaId !== selectedPentaId); selectedPentaId = groups[0]?.pentaId || null; changed(); renderMembers(); });
-  $('team-group-list').addEventListener('change', event => { selectedPentaId = event.target.value || null; changed(); renderGroups(); });
-  $('team-group-name').addEventListener('input', event => { if (selectedGroup()) { selectedGroup().label = event.target.value; changed(); $('team-group-list').selectedOptions[0].textContent = event.target.value; for (const card of $('team-selected').children) { const member = members.find(item => item.memberId === card.dataset.memberId); if (member && selectedGroup().memberIds.includes(member.memberId)) card.querySelector('span').textContent = `${memberName(member)} · ${event.target.value}`; } } });
+  $('team-group-list').addEventListener('change', event => { selectedPentaId = event.target.value || null; changed(); renderMembers(); });
+  $('team-group-name').addEventListener('input', event => { if (selectedGroup()) { selectedGroup().label = event.target.value; changed(); $('team-group-list').selectedOptions[0].textContent = event.target.value; for (const card of $('team-selected').children) { if (selectedGroup().memberIds.includes(card.dataset.memberId)) card.querySelector('.team-member-meta small').textContent = event.target.value; } } });
   $('team-group-members').addEventListener('click', event => { if (!event.target.classList.contains('team-unassign')) return; const group = selectedGroup(); if (!group) return; group.memberIds = group.memberIds.filter(id => id !== event.target.closest('[data-member-id]')?.dataset.memberId); changed(); renderMembers(); });
   $('team-saved').addEventListener('click', event => { if (event.target.id === 'team-add-person') addSavedPerson($('team-person-picker').value); });
   $('team-selected').addEventListener('click', event => {
@@ -264,7 +277,8 @@ export function refreshTeamLanguage() {
   toolbar.querySelector('label:nth-child(2)').firstChild.textContent = t('Saved teams') + ' ';
   for (const [id, key] of [['team-new','New team'],['team-save','Save team'],['team-delete','Delete team']]) $(id).textContent = t(key);
   toolbar.querySelector('.team-hint').textContent = t('Browser-only team storage. Not synced with your people library or account.');
-  $('team-form').querySelector('.team-pool h3').textContent = t('Team members');
+  $('team-form').querySelector('.team-pool summary strong').textContent = t('Team members');
+  $('team-form').querySelector('.team-results-heading h3').textContent = t('Penta structure');
   $('team-form').querySelector('.team-groups h3').textContent = t('Penta groups');
   $('team-form').querySelector('.team-groups .team-hint').textContent = t('Penta groups are assigned manually.');
   $('team-group-new').textContent = t('New Penta'); $('team-group-delete').textContent = t('Delete Penta');
