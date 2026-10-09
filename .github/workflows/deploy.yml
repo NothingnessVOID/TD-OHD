@@ -34,6 +34,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          # Source-scope and history audit tests read pinned earlier commits.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
