@@ -1,0 +1,12 @@
+{
+  "base": "a13eab9c1f9e82f9c3b2fcbc6b9692018f7037ef",
+  "authorization": "Source number and small-text contrast only; preserve Skin/Center Palette fills, geometry, astronomy, topology and knowledge.",
+  "files": {
+    "src/bodygraph.js": "211d1a00dd5af40277e2bb5dabb5d81e71bc149007f4b37d23d3869058ee967c",
+    "src/lib/appearance.js": "0010d0c90d8213a7455b42962b88810ed2157b060aacc62e54f836eb0754a41c",
+    "src/styles.css": "487ddad899804a84d609b724475b06fd7d6ead60ca2cca1003df59e33b99c8af",
+    "src/styles/variable-arrows.css": "923f560724758f22a83191bc4690426770fb0d8675d7f7709c6ed6fc2db3703c",
+    "src/features/transit-timeline/timeline.css": "83f385ecc3619ca3e5dfb24e36b5884dd38e94cc68f2078f4c5dc2a49100b494",
+    "src/lib/source-contrast.js": "cb25bcb201596b54211e859955a0af6cb86635bca61de71454483dc08d4374e6"
+  }
+}

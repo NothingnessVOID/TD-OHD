@@ -2,6 +2,8 @@
    TD-OHD source colors use Palette V3; type/circuit/relationship retain Palette V2.
    Explicit secondary colors are local design choices; no Center Palette or fonts. */
 :root[data-skin="high-contrast"] {
+  --hd-gate-active-ink: #FAFAF8;
+  --hd-gate-inactive-ink: #1A1C1E;
   color-scheme: light;
   --bg: #FAF8F7;
   --bg-elevated: #FDFBFA;

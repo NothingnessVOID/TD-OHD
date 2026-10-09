@@ -104,7 +104,12 @@ export function validateSyncedRelease(rootPath = root) {
     if (!connectionPaths.includes(file) && hash(git('show', `${skinScope.reviewedHead}:${file}`)) !== digest) throw new Error(`Reviewed skin hash differs: ${file}`);
   for (const file of ['src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/lib/human-design/connection.js','src/features/transit-timeline/core.js','src/lib/bodygraph-integration.js','src/lib/human-design/bodygraph-geometry.js','src/lib/variable-arrows.js','engine-core/TransitCore.cs'])
     if (!git('show', `${skinScope.reviewedHead}:${file}`).equals(git('show', `${skinScope.base}:${file}`))) throw new Error(`Protected algorithm/catalog/astronomy changed: ${file}`);
-  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, 'index.html', 'package.json'])].filter(protectedPath);
+  const contrastScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/source-contrast-scope.json')));
+  const contrastPaths = ['src/bodygraph.js','src/lib/appearance.js','src/styles.css','src/styles/variable-arrows.css','src/features/transit-timeline/timeline.css','src/lib/source-contrast.js'];
+  if (contrastScope.base !== 'a13eab9c1f9e82f9c3b2fcbc6b9692018f7037ef' || Object.keys(contrastScope.files).sort().join('\n') !== contrastPaths.sort().join('\n')) throw new Error('Invalid source contrast scope');
+  const inkScope = JSON.parse(readFileSync(path.join(rootPath, 'docs/gate-ink-v2-scope.json')));
+  if (inkScope.base !== '1883dbfa0c5e35567897c8b2786286ff20259ee8' || Object.keys(inkScope.files).length !== 12) throw new Error('Invalid gate ink scope');
+  const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
   const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
   for (const file of currentFiles.filter(protectedPath))
     if (!expectedFiles.includes(file)) throw new Error(`Unreviewed new source: ${file}`);
@@ -113,7 +118,7 @@ export function validateSyncedRelease(rootPath = root) {
   const terminologyHash = file => terminologyFiles.has(file)
     ? hash(Buffer.from(git('show', `${finalScope.releaseCandidate}:${file}`).toString().replaceAll('荐骨', '骶骨'))) : undefined;
   for (const file of expectedFiles)
-    if (hash(readFileSync(path.join(rootPath, file))) !== (connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
+    if (hash(readFileSync(path.join(rootPath, file))) !== (inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
   validateDistribution(path.join(rootPath, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));

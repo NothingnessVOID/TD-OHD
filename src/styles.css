@@ -893,8 +893,8 @@ body {
   margin-bottom: 2px;
 }
 
-.bg-planets-design .bg-planets-head { color: var(--bg-source-design, var(--hd-design)); }
-.bg-planets-personality .bg-planets-head { color: var(--bg-source-personality, var(--hd-personality)); }
+.bg-planets-design .bg-planets-head { color: var(--bg-source-design-text, var(--source-design-text)); }
+.bg-planets-personality .bg-planets-head { color: var(--bg-source-personality-text, var(--source-personality-text)); }
 
 .bg-planets-date {
   font-size: 9px;
@@ -927,8 +927,8 @@ body {
   opacity: 0.75;
 }
 
-.bg-planets-design .bg-planet-act { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
-.bg-planets-personality .bg-planet-act { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
+.bg-planets-design .bg-planet-act { color: var(--bg-source-design-text, var(--source-design-text)); font-weight: 600; }
+.bg-planets-personality .bg-planet-act { color: var(--bg-source-personality-text, var(--source-personality-text)); font-weight: 600; }
 
 /* Hover highlight: dim everything, then re-light the hovered gate/channel */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
@@ -963,16 +963,24 @@ body {
 }
 
 .bg-tooltip strong { font-size: 12.5px; }
+/* Tooltip foregrounds use its own surface, independently of source fills. */
+:root .bg-tooltip .bg-tt-design { color: var(--bg-source-design-tooltip-text, var(--source-design-tooltip-text)); }
+:root .bg-tooltip .bg-tt-personality { color: var(--bg-source-personality-tooltip-text, var(--source-personality-tooltip-text)); }
+:root .bg-tooltip :is(.bg-tt-source.transit, .bg-tt-source-transit) { color: var(--source-transit-tooltip-text); }
+:root .bg-root[data-transit-source-mode="unified-natal"] .bg-tooltip :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
+/* Preserve approved Skin fills while making small text readable. */
+:root[data-skin] #chart-view .act-design { color: var(--source-birthDesign-text); }
+:root[data-skin] .tl :is(.bg-planets-design .bg-planets-head, .bg-planets-design .bg-planet-act, .act-design) { color: var(--source-design-text); }
 
 .bg-tt-acts { margin-top: 3px; display: flex; flex-wrap: wrap; gap: 6px; }
 .bg-tooltip .bg-tt-source.natal, .bg-tooltip .bg-tt-source.inactive { color: var(--text-secondary); }
-.bg-tooltip .bg-tt-source.transit { color: var(--hd-transit-text); }
+.bg-tooltip .bg-tt-source.transit { color: var(--source-transit-text); }
 .bg-tooltip .bg-tt-source.both { color: var(--text-secondary); }
-.bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--hd-transit-text); }
+.bg-tooltip .bg-tt-source.both .bg-tt-source-transit { color: var(--source-transit-text); }
 .bg-tooltip .bg-tt-source.completed { color: var(--accent); }
-.bg-tt-design { color: var(--bg-source-design, var(--hd-design)); font-weight: 600; }
-.bg-tt-personality { color: var(--bg-source-personality, var(--hd-personality)); font-weight: 600; }
-.bg-root[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--hd-overlay-natal); }
+.bg-tt-design { color: var(--bg-source-design-text, var(--source-design-text)); font-weight: 600; }
+.bg-tt-personality { color: var(--bg-source-personality-text, var(--source-personality-text)); font-weight: 600; }
+.bg-root[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-text); }
 .bg-tt-channel { margin-top: 3px; color: var(--text-secondary); font-size: 11px; }
 
 .bg-compact .bodygraph-svg { width: 100%; height: auto; }
@@ -1501,7 +1509,7 @@ body.modal-open { overflow: hidden; }
 .tl-detail-source.gate-detail-acts, .tl-detail-source.gate-detail-transits { padding: 0; margin: 0; border: 0; font-size: 13px; line-height: 1.65; }
 .tl-activation-label { color: var(--text-secondary); font-size: 12px; font-weight: 600; line-height: 1.5; }
 .tl-activation-label.tl-activation-natal:not(.tl-activation-inactive) { color: var(--accent); }
-.tl-activation-label.tl-activation-transit:not(.tl-activation-inactive) { color: var(--hd-transit-text); }
+.tl-activation-label.tl-activation-transit:not(.tl-activation-inactive) { color: var(--source-transit-text); }
 .tl-activation-label.tl-activation-inactive { color: var(--text-secondary); }
 .tl-detail-activations .tl-activation-row {
   display: grid;
@@ -1513,11 +1521,11 @@ body.modal-open { overflow: hidden; }
 .tl-activation-glyph { align-self: start; text-align: center; font-size: 1em; line-height: inherit; }
 .tl-activation-identity, .tl-activation-value { min-width: 0; overflow-wrap: anywhere; }
 .tl-activation-value { font-variant-numeric: tabular-nums; }
-.tl-activation-transit { color: var(--hd-transit-text); }
+.tl-activation-transit { color: var(--source-transit-text); }
 .tl-detail-statuses .gate-detail-inactive { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.5; font-style: normal; }
 .gate-detail-body .transit-source-badge.tl-detail-channel-status { display: block; align-self: start; width: fit-content; padding: 0; margin: 0; border-radius: 0; background: none; font-size: 12px; font-weight: 600; line-height: 1.5; text-transform: none; letter-spacing: normal; }
 .gate-detail-body .tl-detail-channel-status.tl-activation-natal { color: var(--accent); }
-.gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--hd-transit-text); }
+.gate-detail-body .tl-detail-channel-status.tl-activation-transit { color: var(--source-transit-text); }
 .tl-detail-heading .center-detail-head { margin-bottom: 0; }
 .tl-detail-heading .lens-note { margin: 0 0 6px; }
 .tl-detail-timing { position: relative; min-width: 0; display: flex; flex-direction: column; padding: 42px 0 0 10px; font-size: 10px; line-height: 1.4; }
@@ -1912,10 +1920,10 @@ body.modal-open { overflow: hidden; }
   color: var(--text-tertiary);
 }
 
-.act-design { color: var(--hd-design); font-weight: 600; }
-.act-personality { color: var(--hd-personality); font-weight: 600; }
-#chart-view .act-design { color: var(--hd-birth-design, var(--hd-design)); }
-#chart-view .act-personality { color: var(--hd-birth-personality, var(--hd-personality)); }
+.act-design { color: var(--source-design-text); font-weight: 600; }
+.act-personality { color: var(--source-personality-text); font-weight: 600; }
+#chart-view .act-design { color: var(--source-birthDesign-text); }
+#chart-view .act-personality { color: var(--source-birthPersonality-text); }
 
 .hanging-gates { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -2022,12 +2030,12 @@ body.modal-open { overflow: hidden; }
 .transit-birth-pair { position: absolute; top: 38px; right: 0; z-index: 2; width: 130px; min-width: 0; font-variant-numeric: tabular-nums; }
 .transit-planet-column { position: absolute; top: 38px; left: 0; z-index: 2; width: 58px; }
 .transit-graph .bg-planet-row { height: 17px; line-height: 17px; padding: 0 1px; gap: 1px; font-size: 10px; }
-.transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--hd-transit-text); }
+.transit-planet-column .bg-planets-head, .transit-planet-column .bg-planet-act { color: var(--source-transit-text); }
 .transit-birth-head, .transit-birth-row { display: grid; grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr); gap: 2px; align-items: center; }
 .transit-birth-head { height: 20px; align-items: start; }
 .transit-birth-head .bg-planets-head { font-size: 9px; letter-spacing: 0; margin: 0; white-space: nowrap; }
-.transit-birth-head .bg-planets-head:first-child { text-align: right; color: var(--hd-design); }
-.transit-birth-head .bg-planets-head:last-child { color: var(--hd-personality); }
+.transit-birth-head .bg-planets-head:first-child { text-align: right; color: var(--source-design-text); }
+.transit-birth-head .bg-planets-head:last-child { color: var(--source-personality-text); }
 .transit-birth-row { height: 17px; }
 .transit-birth-row .transit-birth-value { min-width: 0; height: 17px; line-height: 17px; }
 .transit-birth-row .bg-planets-design { justify-content: flex-end; }
@@ -2485,12 +2493,12 @@ input[aria-invalid="true"] { border-color: var(--status-error) !important; }
 .transit-key.sky-line { background:var(--hd-transit); }
 .transit-key.both { border:2px solid var(--hd-transit); border-radius:50%; width:14px; height:14px; }
 .transit-key.center { border:1px solid var(--hd-transit); background:repeating-linear-gradient(135deg,var(--hd-transit-soft) 0 3px,var(--hd-transit) 3px 4px); }
-.transit-source-badge { background:var(--hd-transit-soft); color:var(--hd-transit-text); }
+.transit-source-badge { background:var(--hd-transit-soft); color: var(--source-transit-text); }
 .gate-detail-body > .transit-source-badge { margin-left:0; }
 .transit-source-badge.natal, .transit-source-badge.inactive { background:var(--bg-sunken); color:var(--text-secondary); }
-.gate-detail-transits { color:var(--hd-transit-text); }
-.center-status.transit-defined { color:var(--hd-transit-text); }
-.gate-chip.transit-active { background:var(--hd-transit-soft); color:var(--hd-transit-text); border-color:var(--hd-transit); }
+.gate-detail-transits { color: var(--source-transit-text); }
+.center-status.transit-defined { color: var(--source-transit-text); }
+.gate-chip.transit-active { background:var(--hd-transit-soft); color: var(--source-transit-text); border-color:var(--hd-transit); }
 
 /* Direct drill-down for transit exploration. */
 /* Reuse the original card colors and row-lit accent without overriding them. */

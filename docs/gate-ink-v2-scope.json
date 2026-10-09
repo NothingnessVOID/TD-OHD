@@ -1,0 +1,17 @@
+{
+ "base":"1883dbfa0c5e35567897c8b2786286ff20259ee8",
+ "files":{
+ "src/bodygraph.js":"a057c005ac8bc92b194656598924d1f07e49cdfda355fb84d58c329f49d3d633",
+ "src/lib/source-contrast.js":"f164c6894e16a289b22054ce661dc59ee5bf43274e4b71dbf106968affd78eef",
+ "src/styles/skins/grass-aroma.css":"3fbc99a32e642cbba16eb483038576226b8e720fd0be5ccdbfc5ec685eac60cb",
+ "src/styles/skins/new-warm-paper.css":"dc307b4c80381df36ae3dacb8e7ea20aecfa507ea09d046840ed21de69bf745a",
+ "src/styles/skins/delve.css":"e473dc0c0bbb5b38e1cd8af6cf68374fe433d913e0421c3605dbbe71f8decae7",
+ "src/styles/skins/high-contrast.css":"c563592c79212a5f99229590ea514118be4137cf7ce4ab73f678b4ffd9dcde16",
+ "src/styles/skins/deep-think.css":"d22ab706e907fc58a17c0548ed7bfd0b1a4b9805d0c75afded5f3f0aab03c681",
+ "src/styles/skins/absolutely.css":"a885a3e35262a99135e4752ab6362e9065f25e9689f60863332464c93e8c01f4",
+ "src/styles/skins/coral.css":"25ab910d975068d9d7bb2ce7a0b0fa4c44c53e77c5bc0f10adc5bdd3408f76f3",
+ "src/styles/skins/midnight-contrast.css":"95cc22a233d032eebc8c4159e94601e114689aeea57f5e8119087c1ac922bfeb",
+ "src/styles/skins/default.css":"605999be06deecbb28272caec21c7e56ee88ba48bd012477cdf82f38da596020",
+ "src/styles/skins/contemplation.css":"3a07b5cabd2ac645726b46447e689b1223bc924eca378cb4d7b13b43dbcde7b4"
+ }
+}
