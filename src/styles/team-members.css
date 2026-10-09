@@ -1,0 +1,256 @@
+/* Phase 1B Team UI. Import after styles.css; all colors follow the active Skin. */
+#team-view .team-toolbar,
+#team-view .team-selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#team-view .team-toolbar > *,
+#team-view .team-selection > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#team-view .team-toolbar > label,
+#team-view .team-selection > label,
+#team-view .team-toolbar > input,
+#team-view .team-toolbar > select,
+#team-view .team-selection > select {
+  flex: 1 1 220px;
+}
+
+#team-view .team-saved-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block: 12px;
+}
+
+#team-view .team-saved-list > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#team-view .team-member-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+#team-view .team-member-row > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#team-view .team-member-row > input,
+#team-view .team-member-row > select {
+  flex: 1 1 140px;
+}
+
+#team-view .team-member-row > .team-place {
+  flex: 1 1 240px;
+}
+
+#team-view .team-member-card {
+  min-width: 0;
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--bg-elevated);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+#team-view .team-member-card .team-member-row:last-child {
+  margin-bottom: 0;
+}
+
+#team-view .team-quick-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  margin-block: 12px;
+}
+
+#team-view .team-quick-fields > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#team-view .team-quick-fields > .team-place,
+#team-view .team-quick-fields > .place-search,
+#team-view .team-quick-fields > .team-hint {
+  grid-column: 1 / -1;
+}
+
+#team-view :is(.team-toolbar, .team-selection, .team-member-card, .team-member-row, .team-quick-fields) label {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#team-view :is(.team-toolbar, .team-selection, .team-member-card, .team-member-row, .team-quick-fields) :is(input:not([type="checkbox"]):not([type="radio"]), select) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 8px);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+}
+
+#team-view input::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+#team-view :is(.team-toolbar, .team-selection, .team-member-card, .team-member-row, .team-saved-list) button,
+#team-view .team-form > button,
+#team-view #team-calculate,
+#team-view .team-saved-person {
+  box-sizing: border-box;
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#team-view .remove-member {
+  min-width: 44px;
+  color: var(--text-secondary);
+}
+
+#team-view :is(input, select, button, a):focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 3px;
+}
+
+#team-view [aria-invalid="true"] {
+  border-color: var(--status-error);
+}
+
+#team-view button:disabled,
+#team-view select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+#team-view .team-message,
+#team-view .team-hint {
+  min-width: 0;
+  margin-block: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+#team-view .team-message {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius, 8px);
+  background: var(--bg-sunken);
+  color: var(--text);
+}
+
+#team-view .team-message:empty {
+  display: none;
+}
+
+#team-view .team-message:is(.error, .is-error, [role="alert"], [data-kind="error"]) {
+  border-inline-start-color: var(--status-error);
+}
+
+#team-view .team-message:is(.success, .is-success, [data-kind="success"]) {
+  border-inline-start-color: var(--status-success, var(--accent));
+}
+
+#team-view .team-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+  margin-block: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+#team-view .team-summary > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#team-view .team-channel {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border-subtle, var(--border));
+  border-radius: var(--radius, 8px);
+  background: var(--bg-sunken);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+#team-view .team-count {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  #team-view .team-toolbar,
+  #team-view .team-selection {
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  #team-view .team-toolbar > *,
+  #team-view .team-selection > * {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  #team-view .team-member-card,
+  #team-view .team-summary {
+    padding: 12px;
+  }
+
+  #team-view .team-member-row > :is(.team-name, .team-place, select) {
+    flex-basis: 100%;
+  }
+
+  #team-view .team-quick-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  #team-view .team-quick-fields > * {
+    grid-column: 1;
+  }
+
+  #team-view .team-form > button,
+  #team-view #team-calculate {
+    width: 100%;
+    margin-inline: 0;
+  }
+}
