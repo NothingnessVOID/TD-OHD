@@ -1,0 +1,35 @@
+{
+  "records": [
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "passed": true
+    },
+    {
+      "width": 320,
+      "locale": "zh-Hant",
+      "passed": true
+    },
+    {
+      "width": 320,
+      "locale": "en",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "locale": "zh-Hant",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "passed": true
+    }
+  ],
+  "errors": []
+}
