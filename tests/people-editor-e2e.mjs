@@ -12,9 +12,28 @@ try {
   await page.addInitScript(({key,profiles})=>{
     localStorage.setItem('ohd-language','en');localStorage.setItem(key,JSON.stringify(profiles));localStorage.setItem('ohd-last-person-id',profiles[0].id);
   },{key:PROFILE_STORAGE_KEY,profiles});
-  await page.route('**/src/lib/chartdata.js', async route => {
+  let instrumentedResponses = 0;
+  await page.route(url => url.pathname === '/src/lib/chartdata.js', async route => {
     const response = await route.fetch();
-    const source = (await response.text()).replace('async function computeChart(birth) {', 'async function computeChart(birth) { if (birth.name === "First") await new Promise(resolve => setTimeout(resolve, 1200));');
+    const original = await response.text();
+    const declaration = 'async function computeChart(birth) {';
+    assert.equal(original.split(declaration).length - 1, 1, 'instrument exactly one computeChart declaration, including Vite query URLs');
+    const source = original.replace(declaration, `
+    let releaseFirst;
+    const finalCompleted = new Promise(resolve => { releaseFirst = resolve; });
+    async function computeChart(birth) {
+      if (!['First', 'Final'].includes(birth.name)) return computeChartOriginal(birth);
+      const events = globalThis.__peopleRequestOrder ||= [];
+      events.push(birth.name + ':start');
+      if (birth.name === 'First') await finalCompleted;
+      const result = await computeChartOriginal(birth);
+      events.push(birth.name + ':complete');
+      if (birth.name === 'Final') releaseFirst();
+      return result;
+    }
+    async function computeChartOriginal(birth) {`);
+    assert.notEqual(source, original, 'race instrumentation replacement must take effect');
+    instrumentedResponses++;
     await route.fulfill({response,body:source});
   });
   await page.goto(base);
@@ -68,7 +87,13 @@ try {
   await page.evaluate(async()=>{const p=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/people.js')?.name || '/src/lib/people.js');const b=p.birthFromPerson(p.getPerson('fictional-a'));p.savePerson({...b,name:'First',birthTime:'01:00',timeUnknown:false});p.savePerson({...b,name:'Final',birthTime:'23:00',timeUnknown:false});});
   await page.waitForFunction(()=>document.querySelector('#type-banner')?.textContent.includes('Final'));
   assert.equal(await page.locator('.nav-link.active').getAttribute('data-view'),'connection');
-  await page.waitForTimeout(1500); // The deliberately delayed first request has now returned.
+  assert.ok(instrumentedResponses > 0, 'the running chart data module was intercepted');
+  await page.waitForFunction(()=>globalThis.__peopleRequestOrder?.includes('First:complete'));
+  const requestOrder = await page.evaluate(()=>globalThis.__peopleRequestOrder);
+  assert.deepEqual(requestOrder, ['First:start','Final:start','Final:complete','First:complete'], 'the stale First calculation actually completes after Final');
+  console.log('Verified calculation order:', JSON.stringify(requestOrder));
+  // Let the application consume the stale promise before checking its final state.
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   assert.equal(await page.evaluate(async()=>{const {getCurrentChart}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');return getCurrentChart().birth.birthTime;}),'23:00');
   const other = await context.newPage();
   await other.goto(base);

@@ -44,11 +44,11 @@
     },
     {
       "path": "tests/people-editor-e2e.mjs",
-      "sha256": "46e7a0759d29c323828d2e9d11060ee3926422f6aeaf84dc84aa24aa4e91a8e3"
+      "sha256": "aec5842b63fbccd0b117b46367ef295efef7508ebd0091651552cbb971ec7f42"
     },
     {
       "path": "tests/review-round2-e2e.mjs",
-      "sha256": "bb47b75c0f41b2c833779cd6ddb378b7742a13e973673abc851ea4ec78e55830"
+      "sha256": "dd9c2af4e9019a78a034b568d262f4dda82bd9af0f0327e6f097d5de7ed31166"
     },
     {
       "path": "tests/skin-foundation-e2e.mjs",

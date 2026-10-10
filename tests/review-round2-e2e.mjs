@@ -39,14 +39,22 @@ try {
     libraryHeader.logoRight < libraryHeader.actionsLeft && !libraryHeader.overflow,
   `327px library header keeps branding and a readable chart selector: ${JSON.stringify(libraryHeader)}`);
   await page.setViewportSize({ width: 471, height: 703 });
-  const detailHeading = await page.evaluate(() => {
-    const back = document.querySelector('#reference-detail .reference-back').getBoundingClientRect();
-    const label = document.querySelector('#reference-detail .detail-label').getBoundingClientRect();
-    const title = document.querySelector('#reference-detail h2').getBoundingClientRect();
-    return { backBottom: back.bottom, labelTop: label.top, labelBottom: label.bottom, titleTop: title.top };
+  const mobileSheet = page.locator('#reference-mobile-detail');
+  for (const selector of ['.gate-detail-nav [data-reference-back]', '.gate-detail-nav .gate-detail-close', '#reference-detail .detail-label', '#reference-detail h2']) {
+    assert.equal(await mobileSheet.locator(selector).isVisible(), true, `471px ${selector} is actually visible`);
+  }
+  const detailHeading = await mobileSheet.evaluate(sheet => {
+    const rect = selector => sheet.querySelector(selector).getBoundingClientRect().toJSON();
+    return { back:rect('.gate-detail-nav [data-reference-back]'), close:rect('.gate-detail-nav .gate-detail-close'), label:rect('#reference-detail .detail-label'), title:rect('#reference-detail h2'), width:innerWidth, height:innerHeight };
   });
-  assert.ok(detailHeading.backBottom <= detailHeading.labelTop && detailHeading.labelBottom <= detailHeading.titleTop,
-    `mobile library heading does not overlap: ${JSON.stringify(detailHeading)}`);
+  for (const [name,rect] of Object.entries(detailHeading).filter(([,value])=>typeof value === 'object')) {
+    assert.ok(rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.right <= detailHeading.width && rect.top >= 0 && rect.bottom <= detailHeading.height, `${name} has nonzero visible viewport geometry: ${JSON.stringify(rect)}`);
+  }
+  assert.ok(detailHeading.back.right <= detailHeading.close.left &&
+    Math.max(detailHeading.back.bottom, detailHeading.close.bottom) <= detailHeading.label.top &&
+    detailHeading.label.bottom <= detailHeading.title.top,
+    `visible mobile return/close controls and heading do not overlap: ${JSON.stringify(detailHeading)}`);
+  console.log('Verified 471px visible sheet geometry:', JSON.stringify(detailHeading));
   await page.setViewportSize({ width: 903, height: 703 });
 
   await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
