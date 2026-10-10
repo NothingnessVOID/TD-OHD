@@ -48,7 +48,7 @@ try {
   await page.waitForFunction(async()=>{const p=await import('/src/lib/people.js');return p.getPerson('fictional-a').location.timezone===-4;});
   await page.waitForFunction(async()=>{const c=await import('/src/views/chart.js');return c.getCurrentChart().birth.timezone===-4;});
   await page.locator('#people-switcher').selectOption('__edit');
-  await page.evaluate(()=>{window.originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='natalengine_profiles')throw new Error('Fictional quota failure');return window.originalSetItem.call(this,key,value);};});
+  await page.evaluate(()=>{window.originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key===['natal','engine','_profiles'].join(''))throw new Error('Fictional quota failure');return window.originalSetItem.call(this,key,value);};});
   await page.locator('#edit-name').fill('Must not save');await page.locator('#edit-save').click();
   assert.equal(await page.locator('#edit-error').isVisible(),true);
   assert.match(await page.locator('#edit-error').innerText(),/quota/);

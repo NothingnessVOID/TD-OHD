@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {validationHead,validationPaths,validationProjection} from './release-validation-projection.js';
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -30,6 +31,7 @@ const manifest = validateIncrementManifest();
 const basePaths = new Set(git('ls-tree', '-r', '--name-only', incrementBase).toString().trim().split('\n'));
 /** Current bytes must pass BEFORE any historical projection. Never infer approval from current hashes. */
 export function incrementProjection(source, file) {
+  source = validationProjection(source, file);
   if (!Object.hasOwn(manifest.files, file)) return Buffer.isBuffer(source) ? source : Buffer.from(source);
   assert.equal(sha256(source), sha256(snapshotBytes(incrementHead, file)), `Unreviewed increment source: ${file}`);
   assert.ok(basePaths.has(file), `New increment file has no historical projection: ${file}`);
@@ -42,7 +44,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
 /** Complete current source inventory plus fixed blobs catches mutations in unchanged algorithms and new paths too. */
 export function validateReleaseIncrement(root = auditRoot, { read = file => readFileSync(path.join(root, file)), files = null } = {}) {
   const reviewed = validateIncrementManifest(read(incrementManifestPath));
-  const expected = git('ls-tree', '-r', '--name-only', incrementHead).toString().trim().split('\n').filter(protectedPath).sort();
+  const expected = [...new Set([...git('ls-tree', '-r', '--name-only', incrementHead).toString().trim().split('\n').filter(protectedPath), ...validationPaths])].sort();
   if (!files) {
     const walk = relative => readdirSync(path.join(root, relative), { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? walk(`${relative}/${entry.name}`) : [`${relative}/${entry.name}`]);
     files = ['src', 'engine-core', 'engine-tools', 'engine-wasm', 'jovian-engine', 'scripts', 'third_party', 'public/transit-data'].flatMap(walk).filter(file => !/(^|\/)(bin|obj|node_modules)\//.test(file));
@@ -51,7 +53,7 @@ export function validateReleaseIncrement(root = auditRoot, { read = file => read
     files = files.filter(file => !ignored.has(file) || expected.includes(file)).concat(['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production']);
   }
   assert.deepEqual(files.slice().sort(), expected, 'Unreviewed increment source inventory');
-  for (const file of expected) assert.equal(sha256(read(file)), sha256(snapshotBytes(incrementHead, file)), `Unreviewed increment source: ${file}`);
+  for (const file of expected) assert.equal(sha256(read(file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
   // Historical proof inputs must not be editable behind the isolated snapshot.
   for (const file of [...basePaths].filter(file => /^(docs|tests\/fixtures)\/.*\.json$/.test(file)))
     assert.deepEqual(read(file), snapshotBytes(incrementBase, file), `Historical audit input changed: ${file}`);

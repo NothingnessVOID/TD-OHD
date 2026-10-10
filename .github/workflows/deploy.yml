@@ -61,7 +61,9 @@ jobs:
         run: npm test
 
       - name: Check static bundle
-        run: npm run check:pages-bundle
+        run: |
+          npm run check:pages-bundle
+          node scripts/check-font-distribution.mjs
 
       - name: Install Chromium for browser checks
         run: npx playwright-core install --with-deps chromium
@@ -91,6 +93,23 @@ jobs:
           node tests/penta-phase1c-matrix-e2e.mjs
           node tests/team-phase1c-e2e.mjs
           node tests/team-phase1e-knowledge-e2e.mjs
+          node tests/team-selection-flow-e2e.mjs
+          node tests/penta-card-hover-e2e.mjs
+          node tests/font-preference-e2e.mjs
+          node tests/font-export-proof-e2e.mjs
+          node tests/channel-label-layout-e2e.mjs
+          node tests/reference-mobile-sheet-e2e.mjs
+
+      - name: Verify built Pages subpath
+        env:
+          CHROME_CHANNEL: chromium
+        run: |
+          node scripts/serve-pages-check.mjs > /tmp/pages-subpath.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:19965/TD-OHD/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node tests/pages-subpath-e2e.mjs
 
       - name: Show browser test server log on failure
         if: failure()
