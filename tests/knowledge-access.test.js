@@ -66,10 +66,11 @@ test('same DOM owner transition closes and cleans the previous controller; defau
  }finally{closeDetailDialog();globalThis.document=oldDocument;setLocale(oldLocale,{persist:false});}
 });
 test('shared sheet fitting retains limits and previous-height animation',()=>{
- const old=globalThis.window;globalThis.window={innerWidth:390,innerHeight:800};
+ const old=globalThis.window;globalThis.window={innerWidth:390,innerHeight:800,matchMedia:()=>({matches:false})};
  const card={style:{},offsetHeight:400,querySelector:selector=>selector==='.gate-detail-nav'?{offsetHeight:25}:{scrollHeight:900}};
  try{fitDetailSheetHeight(card,400);assert.equal(card.style.height,'656px');assert.match(card.style.transition,/height 260ms/);
- card.querySelector=()=>({offsetHeight:0,scrollHeight:0});fitDetailSheetHeight(card);assert.equal(card.style.height,'280px');}
+ card.querySelector=()=>({offsetHeight:0,scrollHeight:0});fitDetailSheetHeight(card);assert.equal(card.style.height,'280px');
+ globalThis.window.matchMedia=()=>({matches:true});fitDetailSheetHeight(card,400);assert.equal(card.style.transition,'none');assert.equal(card.style.height,'280px');}
  finally{globalThis.window=old;}
 });
 test('protected BodyGraph layout module and Knowledge body resources are not used as replacement renderers',()=>{

@@ -1,0 +1,38 @@
+{
+  "baseline": "cb29ace095f86f1215ded44a6945a8a4b0c66935",
+  "candidate": "8475a4a12311089f64dbec1ba8b37449cd238537",
+  "platform": "Windows x64 Python 3.11 pyswisseph 2.10.3.2 Swiss C 2.10.03",
+  "samePlatformSharpSpeedComparisons": 234,
+  "maxCandidateBaselineSpeedDelta": 0,
+  "historicalFixtureThreshold": 1e-08,
+  "linuxThresholdUnchanged": true,
+  "independentCWindowsRows": [
+    {
+      "epoch": "sharp-design",
+      "utc": "2014-11-09T14:55:40.8504099+00:00",
+      "ut": 2456971.1219958975,
+      "flags": 258,
+      "swissC": {
+        "longitude": 231.00155687521632,
+        "speed": 1.2543215574979478
+      },
+      "sharpSpeed": 1.2543215469945206,
+      "historicalSharpSpeed": 1.2543215354613813,
+      "deltaToCurrent": 1.0503427239072494e-08
+    },
+    {
+      "epoch": "oracle-design",
+      "utc": "2014-11-09T14:55:40.850369+00:00",
+      "ut": 2456971.121995897,
+      "flags": 258,
+      "swissC": {
+        "longitude": 231.0015568746322,
+        "speed": 1.254321557598944
+      },
+      "sharpSpeed": 1.2543215469945206,
+      "historicalSharpSpeed": 1.2543215354613813,
+      "deltaToCurrent": 1.0604423339444224e-08
+    }
+  ],
+  "limit": "Windows C and Sharp also show tiny nonzero finite-difference speed residuals. This evidence proves no candidate regression, not universal C/Sharp exactness."
+}

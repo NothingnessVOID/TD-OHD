@@ -1,3 +1,5 @@
+import { createUuid } from '../uuid.js';
+
 /** Team relationship identity is independent of names, birth data and array order. */
 export class TeamMemberError extends Error {
   constructor(code, message, path = null) {
@@ -24,10 +26,8 @@ export function createMember({ personId = null, displayName, origin, memberId } 
     throw new TeamMemberError('INVALID_PERSON_ID', 'A saved member needs a personId.', 'personId');
   }
   if (memberId === undefined) {
-    if (typeof globalThis.crypto?.randomUUID !== 'function') {
-      throw new TeamMemberError('ID_UNAVAILABLE', 'Secure UUID generation is unavailable.', 'memberId');
-    }
-    memberId = globalThis.crypto.randomUUID();
+    try { memberId = createUuid(); }
+    catch { throw new TeamMemberError('ID_UNAVAILABLE', 'Secure UUID generation is unavailable.', 'memberId'); }
   }
   if (!nonempty(memberId)) {
     throw new TeamMemberError('INVALID_MEMBER_ID', 'memberId must be a nonempty string.', 'memberId');

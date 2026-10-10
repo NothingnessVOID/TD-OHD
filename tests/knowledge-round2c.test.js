@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
 import {skinProjection,skinScope} from './helpers/skin-projection.js';
 import {assertContentBoundary, targetIds, round2GContent} from './helpers/knowledge-round2f-contract.js';
@@ -53,5 +54,5 @@ test('native Type terminology and authored Profile geometry use the shared rende
  const geometry=listKnowledgeEntries().filter(e=>e.objectType==='profile'&&e.objectId!=='introduction').map(e=>renderKnowledgeDetail(e)).join(' ');for(const phrase of locale==='en'?['Personal Destiny','Fixed Fate','Transpersonal Karma']:['個人命運','固定宿命','超個人業力'])assert.ok(geometry.includes(phrase));}
 });
 test('locale loader, calculations and arrow mapping remain byte-identical to Round 2B',()=>{
- for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):readFileSync(new URL('../'+path,import.meta.url))),hash(skinScope.files[path]?skinProjection(path,baseline):preservedSource(path,baseline)),path);
+ for(const path of ['src/lib/knowledge/content/index.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','engine-core/TransitCore.cs','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js'])assert.equal(hash(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):incrementHistoricalSource(path)),hash(skinScope.files[path]?skinProjection(path,baseline):preservedSource(path,baseline)),path);
 });

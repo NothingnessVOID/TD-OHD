@@ -1,0 +1,11 @@
+/* Stable categorical identity, restored from the Phase 1C Penta palette.
+   These colors identify members, not personality/design or circuitry. */
+:root {
+  --team-member-1: #ab3f24;
+  --team-member-2: #216fa9;
+  --team-member-3: #8060b6;
+  --team-member-4: #237e55;
+  --team-member-5: #9a6415;
+  --team-member-on: #fff;
+  --team-member-border: var(--bg-elevated);
+}

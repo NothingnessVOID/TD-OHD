@@ -1,99 +1,215 @@
 import '../styles/penta-matrix.css';
+import '../lib/penta-reading-messages.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { prepareDetailDialog, openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail } from '../lib/knowledge/registry.js';
-import '../lib/knowledge/penta-messages.js';
+import './team-messages.js';
 
 const states = { absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' };
-const center = { throat: 'Throat', g: 'G Center', sacral: 'Sacral' };
-const sectionLabels = { facts:'Penta structure and activations', reading:'Penta verified structure', sources:'Penta sources and review', missing:'Penta specific interpretation missing', status:'Penta evidence status', scope:'Penta evidence scope', overview:'Penta overview', powerColumn:'Penta Power Column', contexts:'Penta family and business' };
-const pentaQuery = objectId => ({ domain:'human-design', objectType:'penta', objectId });
-function knowledgeSections(objectId) {
-  const query = pentaQuery(objectId);
-  const entry = getKnowledgeEntry(query);
-  const words = sectionLabels;
-  if (!entry) return '';
-  const summary = getKnowledgeSummary(query);
-  const detail = getKnowledgeDetail(query);
-  const evidence = entry.properties.evidence;
-  const links = evidence.urls.map((url,index) => `<li><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(evidence.sourceIds[index])} · ${esc(url)}</a></li>`).join('');
-  return `<section class="penta-knowledge" data-knowledge-id="${esc(entry.id)}"><h4>${label(words.reading)}</h4>${summary ? `<p>${esc(summary.content)}</p>` : ''}${detail ? `<p>${esc(detail.content)}</p>` : `<p class="penta-knowledge-missing" data-detail-status="missing">${label(words.missing)}</p>`}<section class="penta-knowledge-sources"><h4>${label(words.sources)}</h4><p>${label(words.status)}: ${esc(evidence.status)} · ${label(words.scope)}: ${esc(evidence.scope)}</p><ul>${links}</ul></section></section>`;
-}
+import { renderPentaStateSymbol } from '../lib/penta-state-symbol.js';
 const point = cell => ({ x: 55 + cell.column * 105, y: 57 + cell.row * 98 });
 const label = (key, args) => esc(t(key, args));
-const identity = (id, people) => { const index = people.findIndex(person => person.memberId === id); return index < 0 ? esc(id) : `${index + 1} · ${esc(people[index].displayName)}`; };
+const query = objectId => ({ domain: 'human-design', objectType: 'penta', objectId });
 
-/** Render an existing Phase 1A result. No topology or coverage is calculated here. */
-export function createPentaMatrix(container, { result, people, groupLabel }) {
+/** Presentation only: calculations, topology and provenance stay in Phase 1A. */
+export function createPentaMatrix(container, {
+  result, people, groupLabel, analysisContainer = container, detailAdapter = null,
+  initialSelection = null, onMemberFocusChange = null
+}) {
   let selected = null;
+  let selectedTarget = initialSelection ? { ...initialSelection, id: String(initialSelection.id) } : null;
+  let hoverTarget = null;
+  let currentDetail = null;
+  let detailHistory = [];
+  let disposeDialog = null;
+  let disposed = false;
+  const analysis = document.createElement('div');
+  analysis.className = 'penta-analysis';
+  analysisContainer.append(analysis);
+  const graph = document.createElement('div');
+  graph.className = 'penta-render';
+  container.prepend(graph);
+  // The real site-wide sheet is a body-level sibling, never a nested panel.
   const dialog = document.createElement('div');
   dialog.className = 'gate-detail hidden penta-detail';
-  container.append(dialog);
-  const memberIndex = id => people.findIndex(person => person.memberId === id) + 1;
-  const noMembers = () => label('No Penta contributors');
-  const memberTags = ids => ids.map(id => `<span class="penta-member-tag penta-member-${memberIndex(id)}" data-source-id="${esc(id)}">${memberIndex(id)}</span>`).join('');
-  const channelText = channel => t(states[channel.status]);
-  const symbols = { absent: '–', selfComplete: '●', crossMemberOnly: '×', both: '◎' };
-  const stateLegend = () => `<div class="penta-state-legend" aria-label="${label('Channel states')}">${Object.entries(states).map(([state, key]) => `<span><b class="penta-state-symbol penta-${state}" aria-hidden="true">${symbols[state]}</b>${label(key)}</span>`).join('')}</div>`;
-  function legend() {
-    return `<div class="penta-legend" aria-label="${label('Penta members')}"><button type="button" class="penta-all" aria-pressed="${selected === null}">${label('Show all')}</button>${people.map((person, i) => `<button type="button" class="penta-member penta-member-${i + 1}" data-member-id="${esc(person.memberId)}" aria-pressed="${selected === person.memberId}"><span class="penta-member-tag">${i + 1}</span>${esc(person.displayName)}</button>`).join('')}</div>`;
+  document.body.append(dialog);
+
+  const memberIndex = id => people.find(person => person.memberId === id)?.displayIndex || people.findIndex(person => person.memberId === id) + 1;
+  const person = id => people.find(item => item.memberId === id);
+  const memberName = id => person(id)?.displayName || String(id);
+  const memberBadge = id => `<span class="penta-member-tag penta-member-${memberIndex(id)}">${memberIndex(id) || '·'}</span>`;
+  const identity = id => `${memberBadge(id)}<span>${esc(memberName(id))}</span>${person(id)?.timeUnknown ? `<span class="penta-estimate-mark" title="${label('Team estimated time')}">≈</span>` : ''}`;
+  const names = ids => ids.length ? people.filter(p => ids.includes(p.memberId)).map(p => `<span class="penta-person-inline" data-source-id="${esc(p.memberId)}">${identity(p.memberId)}</span>`).join(' ') : label('No Penta contributors');
+  const gateFor = id => result.gates.find(gate => gate.gate === Number(id));
+  const channelFor = id => result.channels.find(channel => [channel.channelId, channel.gates.join('-'), [...channel.gates].reverse().join('-')].includes(String(id)));
+  const ctx = { result, people, groupLabel };
+  const detailContext = () => ({ ...ctx,
+    onGateSelect: id => showDetail('gate', id),
+    onChannelSelect: id => showDetail('channel', id),
+    onBack: goBack
+  });
+  function qualifiedSummary(id) {
+    const entry = getKnowledgeEntry(query(id));
+    if (entry?.properties?.evidence?.status !== 'verified') return '';
+    if (/^(gate|channel):/.test(id) && entry.properties.interpretationStatus !== 'verified') return '';
+    const value = getKnowledgeSummary(query(id));
+    return value?.content ? `<p class="penta-context-note">${esc(value.content)}</p>` : '';
   }
-  function svg() {
-    const gates = new Map(result.gates.map(g => [g.gate, g]));
-    const channels = result.channels.map(ch => {
-      const start = point(gates.get(ch.gates[0]));
-      const end = point(gates.get(ch.gates[1]));
-      // A transparent hit stroke keeps even absent channels usable on touch and keyboard.
-      return `<g class="penta-edge penta-${ch.status}" data-channel="${esc(ch.channelId)}"><line x1="${start.x}" y1="${start.y + 29}" x2="${end.x}" y2="${end.y - 29}"/><circle class="penta-edge-symbol" cx="${start.x}" cy="${(start.y + end.y) / 2}" r="9"/><text class="penta-edge-letter" x="${start.x}" y="${(start.y + end.y) / 2 + 4}" text-anchor="middle">${symbols[ch.status]}</text><line class="penta-hit" x1="${start.x}" y1="${start.y + 29}" x2="${end.x}" y2="${end.y - 29}"/><title>${esc(ch.gates.join('–'))} · ${esc(channelText(ch))}</title></g>`;
+  function activationGroups(gate) {
+    if (!gate.activations.length) return `<p class="penta-muted">${label('No Penta contributors')}</p>`;
+    const ids = [...new Set([...people.map(p => p.memberId), ...gate.activations.map(a => a.memberId)])];
+    return `<div class="penta-activation-groups">${ids.map(id => {
+      const rows = gate.activations.filter(a => a.memberId === id);
+      if (!rows.length) return '';
+      return `<div class="penta-activation-person" data-source-id="${esc(id)}"><div class="penta-person-inline">${identity(id)}</div><div class="penta-activation-records">${rows.map(a => `<span>${label(a.side === 'design' ? 'Design' : 'Personality')} · ${esc(planetName(a.planet))} <b>${a.gate}.${a.line}</b></span>`).join('')}</div></div>`;
+    }).join('')}</div>`;
+  }
+  function gateSummary(gate) {
+    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(gateName(gate.gate))}" class="penta-analysis-card penta-gate-reading" data-detail-kind="gate" data-detail-id="${gate.gate}"><header class="penta-item-heading"><div class="penta-object-title">${label('Gate {gate}', { gate: gate.gate })}<span>${esc(gateName(gate.gate))} · ${esc(hexagramName(gate.gate))}</span></div><span class="penta-state-text">${label(gate.status === 'present' ? 'Activated' : 'Inactive')}</span></header>${activationGroups(gate)}${qualifiedSummary(`gate:${gate.gate}`)}</article>`;
+  }
+  function channelSummary(channel) {
+    const complete = channel.selfCompleteMemberIds || [];
+    const pairs = channel.complementaryMemberPairs || [];
+    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })} · ${esc(channelName(channel.channelId))}" class="penta-analysis-card penta-channel-reading" data-detail-kind="channel" data-detail-id="${esc(channel.channelId)}"><header class="penta-item-heading"><div class="penta-channel-title"><div class="detail-label">${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })}</div><h4 class="detail-name">${esc(channelName(channel.channelId))}</h4></div><span class="penta-state-text">${renderPentaStateSymbol(channel.status)}<span>${label(states[channel.status])}</span></span></header><dl class="penta-channel-holders">${channel.gates.map(gate => `<div><dt>${label('Gate {gate}', { gate })}</dt><dd>${names(channel.holdersByGate[gate] || [])}</dd></div>`).join('')}</dl>${complete.length ? `<p class="penta-relation"><strong>${label('Self complete members')}</strong> ${names(complete)}</p>` : ''}${pairs.length ? `<div class="penta-relation"><strong>${label('Complementary member pairs')}</strong><ul>${pairs.map(pair => `<li><span>${identity(pair.upperMemberId)}</span> <span aria-hidden="true">↔</span> <span>${identity(pair.lowerMemberId)}</span></li>`).join('')}</ul></div>` : ''}${channel.missingGates.length ? `<p class="penta-muted">${label('Missing gates')}: ${esc(channel.missingGates.join(' · '))}</p>` : ''}${qualifiedSummary(`channel:${channel.channelId}`)}</article>`;
+  }
+  function renderAnalysis() {
+    const estimated = people.filter(p => p.timeUnknown).map(p => p.displayName);
+    const channelGroup = (title, ids) => `<div class="penta-reading-subgroup"><h4 class="penta-subheading">${label(title)}</h4>${ids.map(id => channelFor(id)).filter(Boolean).map(channelSummary).join('')}</div>`;
+    const gateGroups = [['throat', 'Penta gate order throat'], ['g', 'Penta gate order g'], ['sacral', 'Penta gate order sacral']];
+    const background = ['introduction', 'powerColumn', 'contexts'].map(id => {
+      const summary = qualifiedSummary(id);
+      if (!summary) return '';
+      const entry = getKnowledgeEntry(query(id));
+      return `<article class="penta-background-note" data-detail-kind="knowledge" data-detail-id="${id}" tabindex="-1"><h4>${esc(entry.name)}</h4>${summary}<button type="button" class="penta-open-detail" data-open-kind="knowledge" data-open-id="${id}">${label('Penta open reading')} ↗</button></article>`;
+    }).join('');
+    analysis.innerHTML = `<section class="penta-overview penta-reading-section"><div class="penta-reading-heading"><h2>${label('Penta reading title')}</h2><p>${esc(groupLabel)} · ${people.length}</p></div><dl class="penta-overview-stats"><div><dt>${label('Penta reading members')}</dt><dd>${people.length}</dd></div><div><dt>${label('Penta reading gates covered')}</dt><dd>${result.summary.presentGateCount}<small> / 12</small></dd></div><div><dt>${label('Penta reading channels covered')}</dt><dd>${result.summary.coveredChannelCount}<small> / 6</small></dd></div></dl>${estimated.length ? `<p class="penta-estimate-note">≈ ${label('Penta noon notice', { names: estimated.join('、') })}</p>` : ''}</section><section class="penta-reading-section"><h3>${label('Penta reading channels')}</h3>${channelGroup('Penta upper group', ['7-31', '1-8', '13-33'])}${channelGroup('Penta lower group', ['5-15', '2-14', '29-46'])}</section><section class="penta-reading-section"><h3>${label('Penta reading gates')}</h3>${gateGroups.map(([center, title]) => `<div class="penta-reading-subgroup"><h4 class="penta-subheading">${label(title)}</h4>${result.gates.filter(gate => gate.center === center).sort((a,b) => a.row-b.row || a.column-b.column).map(gateSummary).join('')}</div>`).join('')}</section><section class="penta-reading-section"><h3>${label('Penta reading contributions')}</h3>${people.map(p => `<article class="penta-contribution-row" data-source-id="${esc(p.memberId)}"><h4 class="penta-person-inline">${identity(p.memberId)}</h4><div>${result.gates.filter(gate => gate.memberIds.includes(p.memberId)).map(gate => `<button type="button" class="penta-gate-reference" data-select-kind="gate" data-select-id="${gate.gate}">${gate.gate}</button>`).join('') || `<span class="penta-muted">${label('No Penta contributors')}</span>`}</div></article>`).join('')}</section>${background ? `<section class="penta-reading-section"><h3>${label('Penta reading background')}</h3>${background}</section>` : ''}`;
+  }
+  function renderGraph() {
+    const gates = new Map(result.gates.map(gate => [gate.gate, gate]));
+    const lines = result.channels.map(channel => {
+      const start = point(gates.get(channel.gates[0])), end = point(gates.get(channel.gates[1]));
+      return `<g class="penta-edge penta-${channel.status}" data-channel="${esc(channel.channelId)}" data-select-kind="channel" data-select-id="${esc(channel.channelId)}"><line x1="${start.x}" y1="${start.y+29}" x2="${end.x}" y2="${end.y-29}"/><circle class="penta-edge-symbol" cx="${start.x}" cy="${(start.y+end.y)/2}" r="9"/>${renderPentaStateSymbol(channel.status, { x: start.x - 8, y: (start.y+end.y)/2 - 8, size: 16 })}<line class="penta-hit" x1="${start.x}" y1="${start.y+29}" x2="${end.x}" y2="${end.y-29}"/><title>${esc(channel.channelId)} · ${label(states[channel.status])}</title></g>`;
     }).join('');
     const nodes = result.gates.map(gate => {
       const { x, y } = point(gate);
-      const badges = gate.memberIds.map((id, index) => `<g class="penta-native-member penta-member-${memberIndex(id)}" data-source-id="${esc(id)}" transform="translate(${(index - (gate.memberIds.length - 1) / 2) * 15} 20)"><circle r="7.5"/><text y="3.5" text-anchor="middle">${memberIndex(id)}</text></g>`).join('');
-      return `<g class="penta-gate penta-${gate.status}${selected && gate.memberIds.includes(selected) ? ' penta-highlight' : ''}" data-gate="${gate.gate}" transform="translate(${x} ${y})"><rect x="-42" y="-32" width="84" height="64" rx="9"/><text class="penta-number" text-anchor="middle" y="-5">${gate.gate}</text>${badges}<title>${label('Gate {gate}', { gate: gate.gate })} · ${label(gate.status === 'present' ? 'Activated' : 'Inactive')}</title></g>`;
+      const badges = people.filter(p => gate.memberIds.includes(p.memberId)).map((p,index,all) => `<g class="penta-native-member penta-member-${memberIndex(p.memberId)}" data-source-id="${esc(p.memberId)}" transform="translate(${(index-(all.length-1)/2)*15} 20)"><circle r="7.5"/><text y="3.5" text-anchor="middle">${memberIndex(p.memberId)}</text></g>`).join('');
+      return `<g class="penta-gate penta-${gate.status}" data-gate="${gate.gate}" data-select-kind="gate" data-select-id="${gate.gate}" transform="translate(${x} ${y})"><rect x="-42" y="-32" width="84" height="64" rx="9"/><text class="penta-number" text-anchor="middle" y="-5">${gate.gate}</text>${badges}<title>${label('Gate {gate}', { gate: gate.gate })} · ${esc(hexagramName(gate.gate))}</title></g>`;
     }).join('');
-    // Buttons are outside the SVG to ensure consistent keyboard activation and focus rings across browsers.
-    const overlay = result.gates.map(gate => { const { x, y } = point(gate); return `<button type="button" class="penta-gate-hit" data-gate="${gate.gate}" style="left:${x / 320 * 100}%;top:${y / 410 * 100}%" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(hexagramName(gate.gate))} · ${label(gate.status === 'present' ? 'Activated' : 'Inactive')}"></button>`; }).join('');
-    const edgeButtons = result.channels.map(ch => { const a = point(gates.get(ch.gates[0])), b = point(gates.get(ch.gates[1])); return `<button type="button" class="penta-channel-hit" data-channel="${esc(ch.channelId)}" style="left:${a.x / 320 * 100}%;top:${(a.y + b.y) / 820 * 100}%" aria-label="${label('Channel')} ${esc(ch.gates.join('–'))} · ${esc(channelText(ch))}"></button>`; }).join('');
-    return `<div class="penta-canvas"><svg viewBox="0 0 320 410" role="img" aria-label="${label('Penta matrix')}"><g class="penta-lines">${channels}</g><g class="penta-nodes">${nodes}</g></svg>${edgeButtons}${overlay}</div>`;
+    const gateButtons = result.gates.map(gate => { const p=point(gate); return `<button type="button" class="penta-gate-hit" data-select-kind="gate" data-select-id="${gate.gate}" data-gate="${gate.gate}" style="left:${p.x/320*100}%;top:${p.y/410*100}%" aria-pressed="false" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(hexagramName(gate.gate))}"></button>`; }).join('');
+    const channelButtons = result.channels.map(channel => { const a=point(gates.get(channel.gates[0])), b=point(gates.get(channel.gates[1])); return `<button type="button" class="penta-channel-hit" data-select-kind="channel" data-select-id="${esc(channel.channelId)}" data-channel="${esc(channel.channelId)}" style="left:${a.x/320*100}%;top:${(a.y+b.y)/820*100}%" aria-pressed="false" aria-label="${label('Channel')} ${esc(channel.channelId)} · ${label(states[channel.status])}"></button>`; }).join('');
+    graph.innerHTML = `<div class="penta-figure-space"><div class="penta-canvas"><svg viewBox="0 0 320 410" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${label('Penta matrix')}"><g class="penta-lines">${lines}</g><g class="penta-nodes">${nodes}</g></svg>${gateButtons}${channelButtons}</div></div><div class="penta-figure-footer"><div class="penta-state-legend" aria-label="${label('Channel states')}">${Object.entries(states).map(([state, name]) => `<span><b class="penta-state-symbol" aria-hidden="true">${renderPentaStateSymbol(state)}</b>${label(name)}</span>`).join('')}</div></div>`;
   }
-  function detail(html, title) {
+  function applyHighlights() {
+    const target = hoverTarget || selectedTarget;
+    const channel = target?.kind === 'channel' ? channelFor(target.id) : null;
+    const gateIds = new Set(channel?.gates || (target?.kind === 'gate' ? [Number(target.id)] : []));
+    graph.querySelectorAll('.penta-gate').forEach(node => {
+      const gate = gateFor(node.dataset.gate);
+      node.classList.toggle('penta-selected-target', gateIds.has(gate.gate));
+      node.classList.toggle('penta-highlight', !!selected && gate.memberIds.includes(selected));
+      node.classList.toggle('penta-member-muted', !!selected && gate.memberIds.length > 0 && !gate.memberIds.includes(selected));
+    });
+    graph.querySelectorAll('.penta-edge').forEach(node => {
+      const item = channelFor(node.dataset.channel);
+      node.classList.toggle('penta-selected-target', target?.kind === 'channel' && item.channelId === channel?.channelId);
+      node.classList.toggle('penta-member-muted', !!selected && !item.gates.some(gate => item.holdersByGate[gate]?.includes(selected)));
+    });
+    graph.querySelectorAll('button[data-select-kind]').forEach(button => button.setAttribute('aria-pressed', String(selectedTarget?.kind === button.dataset.selectKind && selectedTarget.id === button.dataset.selectId)));
+    for (const root of [graph, analysis]) root.querySelectorAll('[data-source-id]').forEach(node => node.classList.toggle('penta-dimmed', !!selected && node.dataset.sourceId !== selected));
+  }
+  function selectObject(kind, id, { focus = false } = {}) {
+    const item = kind === 'gate' ? gateFor(id) : kind === 'channel' ? channelFor(id) : getKnowledgeEntry(query(id));
+    if (!item) return;
+    selectedTarget = { kind, id: String(kind === 'channel' ? item.channelId : id) };
+    applyHighlights();
+    const target = [...analysis.querySelectorAll('[data-detail-kind]')].find(node => node.dataset.detailKind === kind && node.dataset.detailId === selectedTarget.id);
+    if (!target) return;
+    if (focus) target.focus({ preventScroll: true });
+  }
+  function knowledgeBody(id) {
+    const entry = getKnowledgeEntry(query(id));
+    if (!entry || entry.properties?.evidence?.status !== 'verified') return '';
+    const content = getKnowledgeDetail(query(id)) || getKnowledgeSummary(query(id));
+    return `<div class="detail-label">Penta</div><div class="detail-name">${esc(entry.name)}</div>${content?.content ? `<p class="gate-detail-desc">${esc(content.content)}</p>` : ''}`;
+  }
+  function showDetail(kind, id, pushHistory = true) {
+    if (disposed) return;
+    const record = kind === 'gate' ? gateFor(id) : kind === 'channel' ? channelFor(id) : getKnowledgeEntry(query(id));
+    if (!record) return;
+    const canonicalId = String(kind === 'channel' ? record.channelId : id);
+    const target = { kind, id: canonicalId };
+    if (pushHistory && currentDetail && (currentDetail.kind !== kind || currentDetail.id !== canonicalId)) detailHistory.push(currentDetail);
+    currentDetail = target;
+    selectObject(kind, canonicalId, { scroll: false });
+    disposeDialog?.(); disposeDialog = null;
     prepareDetailDialog(dialog, 'penta');
-    dialog.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><button type="button" class="gate-detail-close" aria-label="${label('Close')}">×</button></div><div class="gate-detail-body">${html}</div></div>`;
-    openDetailDialog(dialog, null, { owner: 'penta', label: title });
+    const context = detailContext();
+    const title = kind === 'gate' ? `${t('Gate {gate}', { gate: record.gate })} · ${hexagramName(record.gate)}` : kind === 'channel' ? `${t('Channel')} ${record.channelId} · ${channelName(record.channelId)}` : record.name;
+    const html = kind === 'knowledge' ? knowledgeBody(id) : detailAdapter?.[kind] ? detailAdapter[kind](record, context) : (kind === 'gate' ? gateSummary(record) : channelSummary(record));
+    dialog.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${renderDetailNavigation({ canGoBack: detailHistory.length > 0 })}</div><div class="gate-detail-body">${html}</div></div>`;
+    const bound = detailAdapter?.bind?.(dialog, context);
+    if (typeof bound === 'function') disposeDialog = bound;
+    if (!detailAdapter?.bind) dialog.querySelector('[data-shared-back]')?.addEventListener('click', goBack);
+    openDetailDialog(dialog, () => { disposeDialog?.(); disposeDialog = null; currentDetail = null; detailHistory = []; }, { owner: 'penta', label: title });
     fitDetailSheetHeight(dialog.querySelector('.gate-detail-card'));
   }
-  function showGate(gate) {
-    const names = gate.memberIds.map(id => identity(id, people)).join(' · ') || noMembers();
-    const rows = gate.activations.map(a => `<li>${identity(a.memberId, people)} · ${label(a.side === 'design' ? 'Design' : 'Personality')} · ${esc(planetName(a.planet))} · ${label('Gate {gate}', { gate: a.gate })}.${a.line}</li>`).join('');
-    const title = `${t('Gate {gate}', { gate: gate.gate })} · ${hexagramName(gate.gate)}`;
-    detail(`<h3>${esc(title)}</h3><section class="penta-structure-facts"><h4>${label(sectionLabels.facts)}</h4><p>${esc(gateName(gate.gate))} · ${label(center[gate.center])}</p><p>${label('Contributors')}: ${gate.contributorCount} · ${names}</p><ul>${rows}</ul></section>${knowledgeSections(`gate:${gate.gate}`)}`, title);
+  function goBack() { const previous = detailHistory.pop(); if (previous) showDetail(previous.kind, previous.id, false); }
+  function setMember(id) {
+    selected = people.some(p => p.memberId === id) ? id : null;
+    applyHighlights();
+    onMemberFocusChange?.(selected);
   }
-  function showChannel(ch) {
-    const title = `${t('Channel')} ${ch.gates.join('–')} · ${channelName(ch.channelId)}`;
-    const ends = ch.gates.map(gate => `<li>${label('Gate {gate}', { gate })}: ${(ch.holdersByGate[gate] || []).map(id => identity(id, people)).join(' · ') || noMembers()}</li>`).join('');
-    const pairs = ch.complementaryMemberPairs.map(pair => `<li>${identity(pair.upperMemberId, people)} (${ch.gates[0]}) + ${identity(pair.lowerMemberId, people)} (${ch.gates[1]})</li>`).join('');
-    detail(`<h3>${esc(title)}</h3><section class="penta-structure-facts"><h4>${label(sectionLabels.facts)}</h4><p>${esc(channelText(ch))}</p><ul>${ends}</ul><p>${label('Self complete members')}: ${ch.selfCompleteMemberIds.map(id => identity(id, people)).join(' · ') || noMembers()}</p><p>${label('Complementary member pairs')}</p><ul>${pairs || `<li>${noMembers()}</li>`}</ul><p>${label('Missing gates')}: ${ch.missingGates.join(', ') || label('None')}</p></section>${knowledgeSections(`channel:${ch.channelId}`)}`, title);
+  function handleClick(event) {
+    const button = event.target.closest('button');
+    if (button?.dataset.openKind) { showDetail(button.dataset.openKind, button.dataset.openId); return; }
+    if (button?.dataset.selectKind) { showDetail(button.dataset.selectKind, button.dataset.selectId); return; }
+    const hit = event.target.closest('[data-select-kind]');
+    if (hit && graph.contains(hit)) { showDetail(hit.dataset.selectKind, hit.dataset.selectId); return; }
+    const row = event.target.closest('.penta-analysis-card');
+    if (row && analysis.contains(row)) { row.focus({ preventScroll: true }); showDetail(row.dataset.detailKind, row.dataset.detailId); }
   }
+  function handleKey(event) {
+    const row = event.target.closest('.penta-analysis-card[role="button"]');
+    if (!row || event.target !== row || !['Enter', ' '].includes(event.key)) return;
+    event.preventDefault();
+    if (!event.repeat) showDetail(row.dataset.detailKind, row.dataset.detailId);
+  }
+  function handleHover(event) {
+    const target = event.target.closest('[data-select-kind], .penta-analysis-card');
+    hoverTarget = target ? { kind: target.dataset.selectKind || target.dataset.detailKind, id: target.dataset.selectId || target.dataset.detailId } : null;
+    applyHighlights();
+  }
+  function endHover() { hoverTarget = null; applyHighlights(); }
   function render() {
-    const canvas = container.querySelector('.penta-render');
-    const words = sectionLabels;
-    canvas.innerHTML = `<h3>${esc(groupLabel)}</h3><nav class="penta-knowledge-nav" aria-label="${label(words.overview)}">${['introduction','powerColumn','contexts'].map(id => `<button type="button" class="penta-knowledge-link" data-penta-knowledge="${id}">${label(words[id === 'introduction' ? 'overview' : id])}</button>`).join('')}</nav>${legend()}${svg()}${stateLegend()}<p class="penta-caption">${label('Penta matrix layout is a TD-OHD display arrangement.')}</p><div class="team-summary"><p>${label('Gates covered: {count} / 12', { count: result.summary.presentGateCount })}</p><p>${label('Channels covered: {count} / 6', { count: result.summary.coveredChannelCount })}</p></div><div class="team-channels">${result.channels.map(ch => `<button type="button" class="team-channel penta-${ch.status}" data-channel="${esc(ch.channelId)}"><strong>${esc(ch.gates.join('–'))} · ${esc(channelName(ch.channelId))}</strong><span class="penta-channel-state"><b aria-hidden="true">${symbols[ch.status]}</b>${esc(channelText(ch))}</span></button>`).join('')}</div>`;
-    canvas.classList.toggle('penta-filtered', !!selected);
-    canvas.querySelectorAll('[data-source-id]').forEach(tag => tag.classList.toggle('penta-dimmed', !!selected && tag.dataset.sourceId !== selected));
+    renderAnalysis();
+    analysis.querySelectorAll('.penta-reading-section').forEach(section => section.classList.add('panel'));
+    renderGraph(); applyHighlights();
   }
-  container.insertAdjacentHTML('afterbegin', '<div class="penta-render"></div>');
-  const handleClick = event => {
-    const target = event.target.closest('button');
-    if (!target || !container.contains(target)) return;
-    if (target.classList.contains('penta-all')) { selected = null; render(); container.querySelector('.penta-all')?.focus(); }
-    else if (target.classList.contains('penta-member')) { selected = target.dataset.memberId; render(); [...container.querySelectorAll('.penta-member')].find(button => button.dataset.memberId === selected)?.focus(); }
-    else if (target.dataset.pentaKnowledge) { const id = target.dataset.pentaKnowledge; const entry = getKnowledgeEntry(pentaQuery(id)); if (entry) detail(`<h3>${esc(entry.name)}</h3>${knowledgeSections(id)}`, entry.name); }
-    else if (target.dataset.gate) showGate(result.gates.find(g => g.gate === Number(target.dataset.gate)));
-    else if (target.dataset.channel) showChannel(result.channels.find(ch => ch.channelId === target.dataset.channel));
-  };
-  container.addEventListener('click', handleClick);
+  for (const root of [graph, analysis]) {
+    root.addEventListener('click', handleClick);
+    root.addEventListener('keydown', handleKey);
+    root.addEventListener('mouseover', handleHover);
+    root.addEventListener('mouseleave', endHover);
+  }
   render();
-  return { get highlightedMemberId() { return selected; }, setHighlightedMemberId(id) { selected = people.some(p => p.memberId === id) ? id : null; render(); }, refreshLanguage: render, dispose() { container.removeEventListener('click', handleClick); if (!dialog.classList.contains('hidden')) closeDetailDialog(); container.replaceChildren(); } };
+  return {
+    get highlightedMemberId() { return selected; },
+    get selection() { return selectedTarget ? { ...selectedTarget } : null; },
+    setHighlightedMemberId: setMember,
+    selectObject,
+    openGateDetail: id => showDetail('gate', id),
+    openChannelDetail: id => showDetail('channel', id),
+    closeDetail() { if (!dialog.classList.contains('hidden')) closeDetailDialog(); },
+    refreshLanguage() { const open = currentDetail ? { ...currentDetail } : null; render(); if (open) showDetail(open.kind, open.id, false); },
+    dispose() {
+      disposed = true;
+      if (!dialog.classList.contains('hidden')) closeDetailDialog();
+      disposeDialog?.(); disposeDialog = null;
+      for (const root of [graph, analysis]) { root.removeEventListener('click', handleClick); root.removeEventListener('keydown', handleKey); root.removeEventListener('mouseover', handleHover); root.removeEventListener('mouseleave', endHover); }
+      dialog.remove(); analysis.remove(); graph.remove();
+    }
+  };
 }

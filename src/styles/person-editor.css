@@ -1,0 +1,4 @@
+.person-editor { max-height: calc(100dvh - 32px); overflow-y: auto; }
+.person-editor .modal-field input { min-width: 0; width: 100%; box-sizing: border-box; }
+.person-editor #edit-estimate { color: var(--text-secondary); font-size: 13px; }
+.person-editor #edit-error { color: var(--text-primary); border-left: 3px solid var(--accent); padding-left: 10px; }

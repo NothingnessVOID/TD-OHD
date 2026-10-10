@@ -48,7 +48,7 @@ try{
   assert.deepEqual(await snapshot(page),await snapshot(old.page),`${width}/${locale}: Home text and box model`);
   layouts.push({width,locale,identical:true});await old.context.close();
   for(const id of cases){
-   await page.evaluate(async id=>{const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');openKnowledgeDetail({objectType:'variable',objectId:id},{variable:{tone:2,color:1,base:1}});},id);
+   await page.evaluate(async id=>{const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');if (document.querySelector('#library-view:not(.hidden)')) document.querySelector('.nav-link[data-view="chart"]').click(); openKnowledgeDetail({objectType:'variable',objectId:id},{variable:{tone:2,color:1,base:1}});},id);
    const modal=page.locator('#gate-detail .knowledge-detail'),block=modal.locator('.knowledge-deviation');
    await modal.waitFor();await check(block,width,locale,id);
    assert.equal(await modal.locator('.knowledge-yours').count(),1);

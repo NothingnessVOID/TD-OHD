@@ -1,8 +1,9 @@
 import http from 'node:http';
+import { assertPrivatePath, protectPrivatePath } from './private-path.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { randomBytes, randomUUID, scrypt, timingSafeEqual, createHash } from 'node:crypto';
 import { promisify } from 'node:util';
-import { mkdirSync, chmodSync, readFileSync, writeFileSync, renameSync, existsSync, statSync } from 'node:fs';
+import { mkdirSync, openSync, closeSync, readFileSync, writeFileSync, renameSync, existsSync, statSync } from 'node:fs';
 import { resolve, dirname, extname, join, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
@@ -35,27 +36,43 @@ function cleanPerson(p) {
 
 export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessionDays = 30, referencePages = true } = {}) {
   if (!dataDir) throw new Error('dataDir is required');
+  assertPrivatePath(dataDir);
   mkdirSync(dataDir, { recursive: true, mode: 0o700 });
-  chmodSync(dataDir, 0o700);
+  protectPrivatePath(dataDir, 0o700, { recursive: true });
   const dbPath = join(dataDir, 'human-design.sqlite');
+  if (!existsSync(dbPath)) closeSync(openSync(dbPath, 'wx', 0o600));
+  protectPrivatePath(dbPath, 0o600);
   const db = new DatabaseSync(dbPath);
-  chmodSync(dbPath, 0o600);
-  db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;
-    CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
-    CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, expires INTEGER NOT NULL);
-    CREATE TABLE IF NOT EXISTS people (id TEXT PRIMARY KEY, data TEXT NOT NULL, deleted INTEGER NOT NULL DEFAULT 0);
-    CREATE TABLE IF NOT EXISTS operations (id TEXT PRIMARY KEY, created INTEGER NOT NULL);`);
+  try {
+    db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;
+      CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, expires INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS people (id TEXT PRIMARY KEY, data TEXT NOT NULL, deleted INTEGER NOT NULL DEFAULT 0);
+      CREATE TABLE IF NOT EXISTS operations (id TEXT PRIMARY KEY, created INTEGER NOT NULL);`);
+    // SQLite creates WAL/SHM beside the protected database; verify before serving.
+    for (const suffix of ['-wal', '-shm']) {
+      if (existsSync(dbPath + suffix)) protectPrivatePath(dbPath + suffix, 0o600);
+    }
+  } catch (error) { db.close(); throw error; }
   const setting = key => db.prepare('SELECT value FROM settings WHERE key=?').get(key)?.value;
   const putSetting = (key, value) => db.prepare('INSERT OR REPLACE INTO settings VALUES (?,?)').run(key, value);
   if (!setting('instance')) putSetting('instance', randomUUID());
   const people = () => db.prepare('SELECT data FROM people WHERE deleted=0 ORDER BY rowid').all().map(r => JSON.parse(r.data));
   const snapshot = (prefix = 'daily') => {
     const backupDir = join(dataDir, 'backups');
+    assertPrivatePath(backupDir);
     mkdirSync(backupDir, { recursive: true, mode: 0o700 });
+    protectPrivatePath(backupDir, 0o700, { recursive: true });
     const stamp = prefix === 'daily' ? new Date().toISOString().slice(0, 10) : new Date().toISOString().replace(/[:.]/g, '-');
     const path = join(backupDir, `${prefix}-${stamp}.json`);
-    writeFileSync(path + '.tmp', JSON.stringify({ format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people() }, null, 2), { mode: 0o600 });
-    renameSync(path + '.tmp', path);
+    assertPrivatePath(path);
+    const temporary = path + '.' + randomUUID() + '.tmp';
+    const fd = openSync(temporary, 'wx', 0o600);
+    try {
+      protectPrivatePath(temporary, 0o600);
+      writeFileSync(fd, JSON.stringify({ format: 'ohd-local-backup-v1', exportedAt: new Date().toISOString(), people: people() }, null, 2));
+    } finally { closeSync(fd); }
+    renameSync(temporary, path);
   };
   let failedLogins = 0, lockedUntil = 0;
   const server = http.createServer(async (req, res) => {

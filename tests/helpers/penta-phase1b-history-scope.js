@@ -1,3 +1,4 @@
+import { incrementProjection } from './release-increment-projection.js';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -16,7 +17,7 @@ const reviewed = Object.freeze({
 });
 export function isReviewedPhase1BHistorySource(file, read = path => readFileSync(new URL(`../../${path}`, import.meta.url))) {
   if (!Object.hasOwn(reviewed, file)) return false;
-  assert.equal(createHash('sha256').update(read(file)).digest('hex'), phase1C[file] ?? reviewed[file],
+  assert.equal(createHash('sha256').update(incrementProjection(read(file), file)).digest('hex'), phase1C[file] ?? reviewed[file],
     `Unreviewed Phase 1B historical source: ${file}`);
   return true;
 }

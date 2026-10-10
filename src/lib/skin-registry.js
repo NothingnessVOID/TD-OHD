@@ -88,6 +88,7 @@ export const SKIN_TOKEN_GROUPS = Object.freeze({
   ]),
   types: Object.freeze(['generator', 'manifesting-generator', 'manifestor', 'projector', 'reflector'].map(id => `--hd-type-${id}`)),
   circuits: Object.freeze(['individual', 'collective', 'tribal', 'integration'].flatMap(id => [`--hd-circuit-${id}`, `--hd-circuit-${id}-soft`])),
+  team: Object.freeze(['--team-member-1', '--team-member-2', '--team-member-3', '--team-member-4', '--team-member-5', '--team-member-on', '--team-member-border']),
   relationship: Object.freeze([
     '--hd-connection-a', '--hd-connection-a-on', '--hd-connection-a-core',
     '--hd-connection-b', '--hd-connection-b-on', '--hd-connection-b-core',

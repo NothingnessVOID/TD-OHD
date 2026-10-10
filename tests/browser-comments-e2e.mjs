@@ -19,19 +19,19 @@ try {
   assert.ok(library.group && !library.circuit, 'only circuit groups remain in the filter');
   assert.ok(library.bodyHeight <= library.viewport + 2 && library.detailBottom <= library.viewport,
     `library stays inside the desktop viewport: ${JSON.stringify(library)}`);
-  const groupSections = () => desktop.locator('#reference-detail .reference-detail-body h3').allInnerTexts();
-  assert.deepEqual(await groupSections(), ['知晓回路', '中心化回路', '整合通道']);
-  assert.deepEqual(await desktop.locator('#reference-detail .reference-detail-body h3').last().evaluate(node =>
-    [...node.nextElementSibling.querySelectorAll('[data-reference-id]')].map(link => link.dataset.referenceId)),
+  const groupSections = () => desktop.locator('#reference-detail .reference-detail-body [data-reference-kind="circuit"]').allInnerTexts();
+  assert.deepEqual(await groupSections(), ['知晓回路', '向心回路', '整合通道']);
+  await desktop.locator('#reference-detail [data-reference-id="integration"]').click();
+  assert.deepEqual(await desktop.locator('#reference-detail [data-reference-kind="channel"]').evaluateAll(nodes => nodes.map(link => link.dataset.referenceId)),
   ['10-20', '10-57', '20-34', '34-57']);
   await desktop.goto(`${base}/#library/group/collective`);
   assert.deepEqual(await groupSections(), ['逻辑回路', '感知回路']);
   await desktop.goto(`${base}/#library/group/tribal`);
   assert.deepEqual(await groupSections(), ['自我回路', '防御回路']);
   for (const [id, group] of [['10-34', '个体回路'], ['20-57', '个体回路'],
-    ['30-41', '集体回路'], ['32-54', '家族回路']]) {
+    ['30-41', '集体回路'], ['32-54', '部落回路']]) {
     await desktop.goto(`${base}/#library/channel/${id}`);
-    assert.equal(await desktop.locator('#reference-detail .channel-detail-heading .circuit-badge').innerText(), group);
+    assert.equal(await desktop.locator('#reference-detail .channel-detail-heading .circuit-badge').first().innerText(), group);
   }
   await desktop.locator('#reference-search').fill('14.2');
   assert.equal(await desktop.locator('#reference-results .reference-result').count(), 0, 'line search is removed');
@@ -51,7 +51,7 @@ try {
   await desktop.locator('#gate-detail .gate-detail-close').click();
   await desktop.locator('#bodygraph-container .bg-gate[data-gate="30"]').first().click();
   await desktop.locator('#gate-detail [data-channel="30-41"]').click();
-  assert.match(await desktop.locator('#gate-detail .channel-detail-heading .circuit-badge').innerText(), /集体回路/);
+  assert.match(await desktop.locator('#gate-detail .channel-detail-heading .circuit-badge').first().innerText(), /集体回路/);
 
   await desktop.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&view=timeline`);
   await desktop.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false',
@@ -115,8 +115,8 @@ try {
   await mobile.goto(`${base}/#library/channel/32-54`);
   await mobile.locator('#reference-detail h2').waitFor();
   const sheet = await mobile.evaluate(() => ({
-    fixed: getComputedStyle(document.querySelector('#reference-detail')).position,
-    bottom: document.querySelector('#reference-detail').getBoundingClientRect().bottom,
+    fixed: getComputedStyle(document.querySelector('#reference-mobile-detail')).position,
+    bottom: document.querySelector('#reference-mobile-detail').getBoundingClientRect().bottom,
     viewport: innerHeight
   }));
   assert.equal(sheet.fixed, 'fixed');

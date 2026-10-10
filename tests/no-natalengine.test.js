@@ -20,7 +20,7 @@ test('the removed astronomy package cannot return to code or dependency manifest
   const violations = [];
   for (const path of paths.filter(file => /\.(?:js|mjs|cs|csproj|json)$/.test(file))) {
     let source = await readFile(path, 'utf8');
-    const relative = path.slice(root.length + 1);
+    const relative = path.slice(root.length + 1).replaceAll('\\', '/');
     // Phase 1B checks that the legacy storage key is untouched. Permit only
     // these two exact fixture/assertion lines, never the entire test file.
     if (relative === 'tests/team-members-phase1b.test.js') {

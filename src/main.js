@@ -10,28 +10,33 @@ import { syncPopoverHeading, setupSyncPopoverDismiss } from './lib/sync-popover-
 import { closeDetailDialog } from './lib/detail-dialog.js';
 import { refreshKnowledgeDetail } from './lib/knowledge/detail-controller.js';
 import './lib/knowledge/detail-access.css';
-import { computeChart, sensitivityCheck } from './lib/chartdata.js';
+import { computeChart, sensitivityCheck, invalidateBirth } from './lib/chartdata.js';
+import { openPersonEditor } from './lib/person-editor.js';
+import { presentationIdentity } from './lib/person-input.js';
 import { esc } from './lib/format.js';
 import { listPeople, getPerson, savePerson, deletePerson, birthFromPerson, getLastPersonId, setLastPersonId, enableSync, setAiAccess, getAiAccess, setSharedGuest, onPeopleChange } from './lib/people.js';
 import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } from './lib/sync.js';
 import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
-import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage } from './views/chart.js';
-import { setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
-import { setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
+import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage, clearCurrentChart } from './views/chart.js';
+import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
+import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
-import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
+import { setupReferenceView, renderReferenceView, openReference, deactivateReferenceDetail } from './views/reference.js';
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 import { setupAppearanceControls } from './lib/appearance-controls.js';
+import { onFontPreferenceChange } from './lib/font-preference.js';
 
 // ==========================================
 // State
 // ==========================================
 let currentData = null; // { birth, chart, geneKeys, sensitivity }
+let birthRequest = 0;
+let loadingPersonId = null;
 let pendingCompare = false; // a connection invite is waiting for the visitor's own chart
 let entryApi = null;
 let timelineView = null;
@@ -110,7 +115,9 @@ function showView(view, { fromHistory = false } = {}) {
     openReference();
     return;
   }
-  closeDetailDialog();
+  // A reference route redraw must not run its user-dismiss callback.
+  if (view !== 'library') deactivateReferenceDetail();
+  if (view !== 'library' || document.getElementById('reference-mobile-detail')?.dataset.detailOwner !== 'reference') closeDetailDialog();
   if (view !== 'timeline') timelineView?.deactivate();
   if (view !== 'library' && location.hash.startsWith('#library') && !fromHistory) {
     history.pushState({ ohdView: view }, '', `${location.pathname}${location.search}`);
@@ -134,7 +141,7 @@ function showView(view, { fromHistory = false } = {}) {
   document.getElementById('chart-required-view').classList.add('hidden');
   document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view !== 'chart');
 
-  if (!currentData && view !== 'library') {
+  if (!currentData && view !== 'library' && view !== 'team') {
     if (view !== 'chart') document.getElementById('chart-required-view').classList.remove('hidden');
     return;
   }
@@ -212,6 +219,8 @@ function setupPeopleSwitcher() {
     const value = select.value;
     if (value === '__new') {
       timelineView?.deactivate();
+      ++birthRequest; loadingPersonId = null;
+      invalidateConnection(); invalidateTransits(); closeDetailDialog(); clearCurrentChart();
       currentData = null;
       setLastPersonId(null);
       history.replaceState(null, '', window.location.pathname);
@@ -225,12 +234,9 @@ function setupPeopleSwitcher() {
       const id = currentData?.birth?.id;
       if (id && confirm(t('Remove {name} from saved charts?', { name: currentData.birth.name }))) {
         timelineView?.deactivate();
-        try { deletePerson(id); } catch (e) { console.warn('Could not delete person:', e); }
-        setLastPersonId(null);
-        currentData = null;
-        history.replaceState(null, '', window.location.pathname);
-        document.querySelectorAll('.view-section, .chart-view').forEach(s => s.classList.add('hidden'));
-        document.getElementById('birth-entry').classList.remove('hidden');
+        try { deletePerson(id); } catch (e) { console.warn('Could not delete person:', e); renderPeopleSwitcher(); return; }
+        // The shared people-change handler clears dependent views while preserving
+        // independent Team/library workspaces and their current selections.
         entryApi?.renderQuickPick();
       }
       renderPeopleSwitcher();
@@ -249,53 +255,14 @@ function setupPeopleSwitcher() {
 
 // Edit a saved person — rename (re-save under the same id) and toggle whether
 // the AI connector may read this chart. (P1-7: backend existed, no UI did.)
-function openEditPerson(birth) {
-  const id = birth.id;
-  if (!id) return;
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.innerHTML = `
-    <div class="modal" role="dialog" aria-modal="true" aria-label="${t('Edit chart')}" data-i18n-aria-label="Edit chart">
-      <div class="modal-title" data-i18n="Edit chart">${t('Edit chart')}</div>
-      <label class="modal-field"><span data-i18n="Name">${t('Name')}</span>
-        <input type="text" id="edit-name" value="${esc(birth.name || '')}" autocomplete="off">
-      </label>
-      <label class="modal-check" ${localMode ? 'hidden' : ''}>
-        <input type="checkbox" id="edit-ai" ${getAiAccess(id) ? 'checked' : ''}>
-        <span data-i18n="Let my AI read this chart through the connector">${t('Let my AI read this chart through the connector')}</span>
-      </label>
-      <div class="modal-actions">
-        <button type="button" class="btn-secondary" id="edit-cancel" data-i18n="Cancel">${t('Cancel')}</button>
-        <button type="button" class="btn-primary" id="edit-save" data-i18n="Save">${t('Save')}</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  const nameInput = overlay.querySelector('#edit-name');
-  nameInput.focus();
-  nameInput.select();
-
-  const close = () => { overlay.remove(); document.removeEventListener('keydown', onKey); };
-  function onKey(e) { if (e.key === 'Escape') close(); }
-  document.addEventListener('keydown', onKey);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector('#edit-cancel').addEventListener('click', close);
-  overlay.querySelector('#edit-save').addEventListener('click', () => {
-    const newName = nameInput.value.trim() || birth.name;
-    const aiOn = overlay.querySelector('#edit-ai').checked;
-    try {
-      savePerson({ ...birth, name: newName }); // same id → rename in place
-      setAiAccess(id, aiOn);
-    } catch (e) { console.warn('Could not update person:', e); }
-    close();
-    if (currentData?.birth?.id === id) loadBirth({ ...birth, name: newName }, { save: false });
-    else renderPeopleSwitcher();
-  });
-}
+function openEditPerson(birth) { openPersonEditor(birth); }
 
 // ==========================================
 // Chart loading
 // ==========================================
-async function loadBirth(birth, { save = false } = {}) {
+async function loadBirth(birth, { save = false, preserveView = false } = {}) {
+  const request = ++birthRequest;
+  loadingPersonId = birth.id || null;
   if (localMode && !birth.id && !save) {
     const existing = listPeople().find(p => p.name === birth.name && p.birthDate === birth.birthDate && p.birthTime === birth.birthTime && p.location?.timezone === birth.timezone);
     if (existing) birth = birthFromPerson(existing);
@@ -314,10 +281,14 @@ async function loadBirth(birth, { save = false } = {}) {
     }
   }
 
+  const snapshot = resolved.id ? presentationIdentity(getPerson(resolved.id)) : null;
+  let data;
   try {
-    currentData = await computeChart(resolved);
-    currentData.sensitivity = resolved.timeUnknown ? null : await sensitivityCheck(resolved, currentData.chart);
+    data = await computeChart(resolved);
+    data.sensitivity = resolved.timeUnknown ? null : await sensitivityCheck(resolved, data.chart);
+    if (request !== birthRequest || (resolved.id && snapshot !== presentationIdentity(getPerson(resolved.id)))) return null;
   } catch (error) {
+    if (request !== birthRequest) return null;
     console.error('Birth chart calculation failed:', error);
     const notice = document.getElementById('entry-invite');
     setMessage(notice, `Birth chart calculation failed: ${error.message}`);
@@ -326,12 +297,14 @@ async function loadBirth(birth, { save = false } = {}) {
     return null;
   }
 
+  currentData = data;
+  loadingPersonId = null;
   if (resolved.id) setLastPersonId(resolved.id);
   history.replaceState(null, '', `${window.location.pathname}?${birthToParams(resolved)}`);
 
   renderChartView(currentData);
   renderPeopleSwitcher();
-  showView('chart');
+  showView(preserveView ? document.querySelector('.nav-link.active')?.dataset.view || 'chart' : 'chart');
   return currentData;
 }
 
@@ -445,6 +418,7 @@ async function setupSync() {
 async function init() {
   setupSyncPopoverDismiss();
   onAppearanceChange(refreshAppearanceGraphs);
+  onFontPreferenceChange(refreshAppearanceGraphs);
   setupAppearanceControls();
   setupNavigation();
   setupPanelTabs();
@@ -458,23 +432,7 @@ async function init() {
   document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
   if (localMode) {
     localAccountUi.setupLocalAccount();
-    window.addEventListener('ohd-people-changed', () => {
-      if (currentData?.birth?.id) {
-        const refreshed = getPerson(currentData.birth.id);
-        if (!refreshed) {
-          timelineView?.deactivate();
-          currentData = null; setLastPersonId(null);
-          history.replaceState(null, '', window.location.pathname); showView('chart');
-        } else {
-          const fields = b => JSON.stringify([b.id, b.name, b.birthDate, b.birthTime, !!b.timeUnknown, b.timezone, b.location?.lat ?? null, b.location?.lon ?? null, b.location?.iana ?? null, b.location?.name ?? null]);
-          if (fields(birthFromPerson(refreshed)) !== fields(currentData.birth)) {
-            const view = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
-            loadBirth(birthFromPerson(refreshed)); showView(view);
-          }
-        }
-      }
-      renderPeopleSwitcher(); entryApi?.renderQuickPick();
-    });
+    // Local writes, sync snapshots and cross-tab updates converge in PeopleStore.
   } else if (syncAvailable) setupSync();
 
   entryApi = setupEntryView({
@@ -488,9 +446,32 @@ async function init() {
       }
     }
   });
-  onPeopleChange(() => {
+  onPeopleChange(change => {
+    if (change.calculationChanged && change.before) {
+      try { invalidateBirth(birthFromPerson(change.before)); } catch { /* Invalid legacy input has no usable calculation cache. */ }
+    }
     renderPeopleSwitcher(); entryApi?.renderQuickPick();
-    renderConnectionView(); renderTeamView();
+    refreshConnectionPeople(change);
+    renderTeamView();
+    if (change.personId !== currentData?.birth?.id && change.personId !== loadingPersonId) return;
+    closeDetailDialog();
+    clearCurrentChart();
+    invalidateTransits();
+    timelineView?.invalidateBirth();
+    const visibleView = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
+    if (!change.after) {
+      ++birthRequest; loadingPersonId = null; currentData = null;
+      invalidateConnection(); setLastPersonId(null);
+      history.replaceState(null, '', window.location.pathname);
+      renderPeopleSwitcher();
+      showView(['team', 'library'].includes(visibleView) ? visibleView : 'chart');
+      return;
+    }
+    currentData = null;
+    if (!['team', 'library'].includes(visibleView)) document.querySelectorAll('.view-section, .chart-view').forEach(section => section.classList.add('hidden'));
+    loadBirth(birthFromPerson(change.after), { preserveView: true }).then(data => {
+      if (data) refreshConnectionPeople(change, { currentReloaded: true });
+    });
   });
   initialized = true;
 
@@ -540,6 +521,8 @@ async function init() {
         banner.classList.remove('hidden');
         document.getElementById('make-own').addEventListener('click', () => {
           timelineView?.deactivate();
+          ++birthRequest; loadingPersonId = null;
+          invalidateConnection(); invalidateTransits(); closeDetailDialog(); clearCurrentChart();
           currentData = null;
           history.replaceState(null, '', window.location.pathname);
           banner.classList.add('hidden');

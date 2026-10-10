@@ -9,6 +9,15 @@
       document.documentElement.lang = ['en', 'zh-CN', 'zh-Hant'].includes(saved) ? saved : 'zh-CN';
     } catch { document.documentElement.lang = 'zh-CN'; }
   </script>
+  <script>
+    // Restore the independent font axis before styles and first paint.
+    try {
+      const savedFont = JSON.parse(localStorage.getItem('td-ohd-font-v1'));
+      document.documentElement.dataset.font = savedFont?.version === 1 && ['lxgw','original','ipa'].includes(savedFont.font) ? savedFont.font : 'lxgw';
+    } catch { document.documentElement.dataset.font = 'lxgw'; }
+  </script>
+  <link rel="stylesheet" href="./fonts/lxgw-neo-zhisong/v1.067/font.css">
+  <link rel="stylesheet" href="./fonts/ipa-original/font.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Cpath d=%27M16 3 29 16 16 29 3 16Z%27 fill=%27none%27 stroke=%27%23c8781d%27 stroke-width=%272%27/%3E%3C/svg%3E">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="TD Open Human Design — Interactive Charts">TD Open Human Design — Interactive Charts</title>
@@ -26,6 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="stylesheet" href="/src/lib/language-switcher.css">
+  <link rel="stylesheet" href="/src/styles/fonts.css">
 </head>
 <body>
   <div id="app" translate="no">
@@ -94,6 +104,17 @@
       <section class="appearance-section" aria-labelledby="center-palette-title">
         <h3 id="center-palette-title" data-i18n="Center Palette">Center Palette</h3>
         <div id="center-palette-picker" class="center-palettes" role="group" aria-labelledby="center-palette-title"></div>
+      </section>
+      <section class="appearance-section" aria-labelledby="font-picker-title">
+        <h3 id="font-picker-title" data-i18n="Font">字体</h3>
+        <div id="font-picker" class="font-picker" role="group" aria-labelledby="font-picker-title"></div>
+        <p class="font-preference-note" data-i18n="Font independent note"></p>
+        <p id="font-status" role="status" aria-live="polite"></p>
+        <details class="font-license-options"><summary data-i18n="Font license restore"></summary>
+          <p data-i18n="Font IPA note"></p>
+          <button type="button" id="font-restore-ipa" class="btn-secondary" aria-pressed="false" data-i18n="Font IPA restore"></button>
+          <p><a href="./fonts/README.html" target="_blank" rel="noopener" data-i18n="Font license link"></a></p>
+        </details>
       </section>
       <section class="appearance-section" aria-labelledby="skin-custom-title">
       <h3 id="skin-custom-title" data-i18n="Customize">Customize</h3>

@@ -2,6 +2,8 @@
 import { formatChartDataExport } from './chart-data-export.js';
 import { t } from './i18n.js';
 import { birthToParams, connectionUrl, shareUrl } from './share.js';
+import { fontCssForExport } from './font-export.js';
+import { getFontPreference } from './font-preference.js';
 
 const menu = () => document.getElementById('chart-share-menu');
 const actions = () => menu().querySelector('.chart-share-actions');
@@ -42,6 +44,7 @@ function downloadPng(blob, filename) {
 async function renderLocalChartPng() {
   const original = document.querySelector('#bodygraph-container svg');
   if (!original) throw new Error('Bodygraph unavailable');
+  const fontCss = await fontCssForExport(original);
   const clone = original.cloneNode(true);
   clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   const originals = [original, ...original.querySelectorAll('*')];
@@ -59,6 +62,7 @@ async function renderLocalChartPng() {
     node.style.setProperty('animation', 'none');
     node.style.setProperty('opacity', '1');
   });
+  if (fontCss) { const style = document.createElementNS('http://www.w3.org/2000/svg', 'style'); style.textContent = fontCss; clone.prepend(style); }
   const svgUrl = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' }));
   try {
     const image = new Image();
@@ -90,13 +94,15 @@ async function renderViewPng(view) {
   // Keep the screenshot local. Loading the renderer on demand avoids adding it
   // to the initial chart, transit, and timeline bundles.
   const { toBlob } = await import('html-to-image');
+  const fontEmbedCSS = await fontCssForExport(root);
   const width = Math.ceil(root.getBoundingClientRect().width);
   const height = Math.ceil(root.getBoundingClientRect().height);
   const pixelRatio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(24_000_000 / Math.max(width * height, 1)));
   const blob = await toBlob(root, {
     backgroundColor: siteColor('--bg'),
     pixelRatio,
-    skipFonts: true,
+    fontEmbedCSS,
+    skipFonts: !fontEmbedCSS,
     // Export the visible view as it is, including its current scroll position.
     width,
     height,
@@ -180,7 +186,7 @@ export function configureShareMenu(view, currentData, providers = {}) {
     try {
       if (view !== 'chart') {
         await saveViewImage(view);
-      } else if (['static', 'desktop'].includes(import.meta.env.MODE)) {
+      } else if (getFontPreference() !== 'original' || ['static', 'desktop'].includes(import.meta.env.MODE)) {
         downloadPng(await renderLocalChartPng(), 'human-design-chart.png');
       } else {
         try {

@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "fictional": true,
+  "description": "Ten fictional people for TD-OHD local Team and future WA development. Not real birth records or certified reference charts.",
+  "people": [
+    {
+      "id": "td-ohd-fictional-01",
+      "name": "测试01·林晨（虚构）",
+      "birthDate": "1990-01-15",
+      "birthTime": "08:20",
+      "timeUnknown": false,
+      "timezone": 8,
+      "location": { "lat": 39.9042, "lon": 116.4074, "iana": "Asia/Shanghai", "name": "北京，中国" }
+    },
+    {
+      "id": "td-ohd-fictional-02",
+      "name": "测试02·许晴（虚构）",
+      "birthDate": "1992-06-21",
+      "birthTime": "14:45",
+      "timeUnknown": false,
+      "timezone": 8,
+      "location": { "lat": 31.2304, "lon": 121.4737, "iana": "Asia/Shanghai", "name": "上海，中国" }
+    },
+    {
+      "id": "td-ohd-fictional-03",
+      "name": "测试03·周岳（虚构）",
+      "birthDate": "1988-11-03",
+      "birthTime": "22:10",
+      "timeUnknown": false,
+      "timezone": 8,
+      "location": { "lat": 23.1291, "lon": 113.2644, "iana": "Asia/Shanghai", "name": "广州，中国" }
+    },
+    {
+      "id": "td-ohd-fictional-04",
+      "name": "测试04·苏禾（虚构）",
+      "birthDate": "1995-03-12",
+      "birthTime": "06:35",
+      "timeUnknown": false,
+      "timezone": 8,
+      "location": { "lat": 30.5728, "lon": 104.0668, "iana": "Asia/Shanghai", "name": "成都，中国" }
+    },
+    {
+      "id": "td-ohd-fictional-05",
+      "name": "测试05·陈朔（虚构）",
+      "birthDate": "1985-09-28",
+      "birthTime": "18:50",
+      "timeUnknown": false,
+      "timezone": 9,
+      "location": { "lat": 35.6762, "lon": 139.6503, "iana": "Asia/Tokyo", "name": "东京，日本" }
+    },
+    {
+      "id": "td-ohd-fictional-06",
+      "name": "测试06·沈澄（虚构）",
+      "birthDate": "1991-07-09",
+      "birthTime": "11:15",
+      "timeUnknown": false,
+      "timezone": 8,
+      "location": { "lat": 25.033, "lon": 121.5654, "iana": "Asia/Taipei", "name": "台北" }
+    },
+    {
+      "id": "td-ohd-fictional-07",
+      "name": "测试07·陆川（虚构）",
+      "birthDate": "1989-01-24",
+      "birthTime": "09:40",
+      "timeUnknown": false,
+      "timezone": 0,
+      "location": { "lat": 51.5074, "lon": -0.1278, "iana": "Europe/London", "name": "伦敦，英国" }
+    },
+    {
+      "id": "td-ohd-fictional-08",
+      "name": "测试08·顾遥（虚构）",
+      "birthDate": "1993-01-07",
+      "birthTime": "16:25",
+      "timeUnknown": false,
+      "timezone": -5,
+      "location": { "lat": 40.7128, "lon": -74.006, "iana": "America/New_York", "name": "纽约，美国" }
+    },
+    {
+      "id": "td-ohd-fictional-09",
+      "name": "测试09·叶宁（虚构）",
+      "birthDate": "1997-07-19",
+      "birthTime": "07:05",
+      "timeUnknown": false,
+      "timezone": 10,
+      "location": { "lat": -33.8688, "lon": 151.2093, "iana": "Australia/Sydney", "name": "悉尼，澳大利亚" }
+    },
+    {
+      "id": "td-ohd-fictional-10",
+      "name": "测试10·温岚（虚构）",
+      "birthDate": "2000-02-29",
+      "birthTime": "12:00",
+      "timeUnknown": false,
+      "timezone": 1,
+      "location": { "lat": 52.52, "lon": 13.405, "iana": "Europe/Berlin", "name": "柏林，德国" }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { CENTER_PALETTES, CENTER_KEYS, centerPaletteDarkColor } from './center-p
 import { SKINS, getSkin } from './skin-registry.js';
 import { CUSTOM_TOKENS, getCustomOverrides, getSkinId, getSkinMode, setSkin, setAutoSkin, getCenterPalette, getCenterPaletteMode, setSkinDefaultCenterPalette, onAppearanceChange, setCenterPalette, setCustomOverride, resetAppearance } from './appearance.js';
 import { onLocaleChange, translatePage } from './i18n.js';
+import { setupFontControls } from './font-controls.js';
 
 export function setupAppearanceControls() {
   const more = document.getElementById('more-menu');
@@ -95,6 +96,7 @@ export function setupAppearanceControls() {
   }
   const pairedCenter = appendPaletteCard(CENTER_PALETTES.find(p => p.id === getSkin(getSkinId()).defaultCenterPalette), true);
   for (const palette of CENTER_PALETTES) appendPaletteCard(palette);
+  setupFontControls();
   translatePage(dialog);
   const closeMore = () => { more.open = false; share.open = false; language.open = false; };
   more.addEventListener('toggle', () => {

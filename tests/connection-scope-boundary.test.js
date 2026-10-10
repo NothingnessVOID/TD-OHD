@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -31,12 +32,12 @@ test('unrelated protected-function edits survive the composite projection and th
   const baseConnection = preservedSource('src/views/connection.js', 'f6e8232664ecbabc12544d1e99a131fd5261c6e8');
   assert.equal(digest(phase1Projection(connection, 'src/views/connection.js')), digest(baseConnection));
   assert.notEqual(digest(unrelatedEditConnection), digest(connection));
-  assert.notEqual(digest(phase1Projection(unrelatedEditConnection, 'src/views/connection.js')), digest(baseConnection));
+  assert.throws(() => phase1Projection(unrelatedEditConnection, 'src/views/connection.js'), /Unreviewed increment source/);
 });
 
 test('unapproved modules keep exact historical byte protection', () => {
   for (const file of ['src/features/transit-timeline/core.js', 'src/lib/chart-engine/sharp-contract.js', 'src/lib/human-design/bodygraph-geometry.js', 'src/views/chart.js']) {
     const source = readCurrentSource(file);
-    assert.equal(digest(source), digest(preservedSource(file, releaseCandidate)), file);
+    assert.equal(digest(incrementHistoricalSource(file)), digest(preservedSource(file, releaseCandidate)), file);
   }
 });

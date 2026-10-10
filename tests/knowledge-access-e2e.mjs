@@ -47,7 +47,7 @@ try {
   for(const index of [5,7])assert.equal(await page.locator('#foundation-panel .foundation-item').nth(index).getAttribute('role'),null);
   for(const selector of ['.foundation-variable-slot','.variable-grid .arrow-card'])for(const kind of ['motivation','perspective','determination','environment']) {
    const target=page.locator(`${selector}[data-knowledge-variable="${kind}"]`);
-   const expected=await page.evaluate(async kind=>{const {getCurrentChart}=await import('/src/views/chart.js');return getCurrentChart().chart.variable[kind].valueId;},kind);
+   const expected=await page.evaluate(async kind=>{const {getCurrentChart}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');return getCurrentChart().chart.variable[kind].valueId;},kind);
    await target.click();assert.equal(await page.locator('#gate-detail .knowledge-detail').getAttribute('data-knowledge-id'),`hd.variable.${kind}.${expected}`);
    const context=await page.locator('#gate-detail .knowledge-context').innerText();pure(context,locale);assert.match(context,/\d/);
    await page.keyboard.press('Escape');
@@ -58,7 +58,7 @@ try {
   assert.deepEqual((await page.locator('#gate-detail .knowledge-activation .knowledge-chip').allInnerTexts()).map(text=>Number(text.match(/\d+/)[0])),[23,43,49,4]);
   await page.locator('.knowledge-library-link').click();assert.match(page.url(),/#library\/knowledge\/hd.cross.introduction$/);
   await page.locator('#reference-detail .knowledge-detail').waitFor();pure(await page.locator('#reference-detail').innerText(),locale);
-  if(width<=640)await page.locator('[data-reference-back]').click();
+  if(width<=640)await page.locator('#reference-mobile-detail .gate-detail-nav [data-reference-back]').click();
   await page.locator('.reference-filter-toggle').click();
   await page.locator('[data-reference-filter="basic"]').click();assert.equal(await page.locator('.reference-result[data-reference-kind="knowledge"]').count(),0);
   assert.equal(await page.locator('.reference-result[data-reference-kind="concept"]').count(),3);
@@ -73,7 +73,7 @@ try {
  const current=await open(base,903,'zh-CN'),page=current.page;
  for(const [type,objectId]of [['type','generator'],['authority','sacral'],['profile','1/3'],['definition','split'],['variable','motivation:hope']]) {
   for(const locale of ['en','zh-CN','zh-Hant']) {
-   await page.evaluate(async({type,objectId,locale})=>{const {setLocale}=await import('/src/lib/i18n.js');setLocale(locale,{persist:false});const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');openKnowledgeDetail({objectType:type,objectId});},{type,objectId,locale});
+   await page.evaluate(async({type,objectId,locale})=>{const {setLocale}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/i18n.js')?.name || '/src/lib/i18n.js');setLocale(locale,{persist:false});const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');openKnowledgeDetail({objectType:type,objectId});},{type,objectId,locale});
    const article=await page.locator('#gate-detail .knowledge-detail').innerHTML();pure(await page.locator('#gate-detail').innerText(),locale);
    const label=await page.locator('#gate-detail').getAttribute('aria-label');assert.ok(label);pure(label,locale);
    await page.locator('.knowledge-library-link').click();await page.locator('#reference-detail .knowledge-detail').waitFor();
@@ -82,16 +82,16 @@ try {
  }
  await page.goto(`${base}/${birth}`,{waitUntil:'domcontentloaded'});await page.locator('[data-knowledge-object="authority"]').waitFor();
  await page.locator('[data-knowledge-object="authority"]').click();
- await page.evaluate(async()=>(await import('/src/lib/i18n.js')).setLocale('en',{persist:false}));
+ await page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/i18n.js')?.name || '/src/lib/i18n.js')).setLocale('en',{persist:false}));
  await page.keyboard.press('Escape');assert.equal(await page.locator('[data-knowledge-object="authority"]').evaluate(n=>n===document.activeElement),true);
  // Locale changes while open, using real locale notifications.
- await page.evaluate(async()=>{const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');openKnowledgeDetail({objectType:'variable',objectId:'motivation:hope'},{variable:{color:2,tone:4,base:3}});});
- for(const locale of ['en','zh-CN','zh-Hant']){await page.evaluate(async locale=>(await import('/src/lib/i18n.js')).setLocale(locale,{persist:false}),locale);pure(await page.locator('#gate-detail').innerText(),locale);}
+ await page.evaluate(async()=>{const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');openKnowledgeDetail({objectType:'variable',objectId:'motivation:hope'},{variable:{color:2,tone:4,base:3}});});
+ for(const locale of ['en','zh-CN','zh-Hant']){await page.evaluate(async locale=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/i18n.js')?.name || '/src/lib/i18n.js')).setLocale(locale,{persist:false}),locale);pure(await page.locator('#gate-detail').innerText(),locale);}
  await page.locator('#gate-detail').click({position:{x:4,y:4}});assert.equal(await page.locator('#gate-detail').getAttribute('class'),'gate-detail hidden');
- assert.equal(await page.evaluate(async()=>(await import('/src/lib/knowledge/detail-controller.js')).getKnowledgeDetailState()),null);
+ assert.equal(await page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js')).getKnowledgeDetailState()),null);
  const routes=['hd.type.generator','hd.authority.sacral','hd.profile.1-3','hd.definition.split','hd.variable.motivation.hope','hd.cross.introduction'];
  for(const id of routes){await page.goto(`${base}/#library/knowledge/${id}`,{waitUntil:'domcontentloaded'});await page.locator(`#reference-detail [data-knowledge-id="${id}"]`).waitFor();await page.reload({waitUntil:'domcontentloaded'});await page.locator(`#reference-detail [data-knowledge-id="${id}"]`).waitFor();}
- await page.evaluate(async()=>(await import('/src/views/reference.js')).openReference('knowledge','hd.authority.sacral'));
+ await page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/reference.js')?.name || '/src/views/reference.js')).openReference('knowledge','hd.authority.sacral'));
  await page.locator('#reference-detail [data-knowledge-id="hd.authority.sacral"]').waitFor();await page.goBack({waitUntil:'domcontentloaded'});await page.locator('#reference-detail [data-knowledge-id="hd.cross.introduction"]').waitFor();await page.goForward({waitUntil:'domcontentloaded'});await page.locator('#reference-detail [data-knowledge-id="hd.authority.sacral"]').waitFor();
  assert.deepEqual(current.errors,[]);await current.context.close();
  if(process.env.KNOWLEDGE_ACCESS_VALIDATION_OUTPUT)writeFileSync(process.env.KNOWLEDGE_ACCESS_VALIDATION_OUTPUT,JSON.stringify({layoutComparisons:results,sameBodyLanguages:15,routes:routes.length},null,2)+'\n');

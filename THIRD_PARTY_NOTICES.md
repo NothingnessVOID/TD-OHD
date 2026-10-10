@@ -1,5 +1,39 @@
 # Third-party notices for the Modern browser release
 
+## LXGW Neo ZhiSong v1.067 and original IPAmjMincho 006.01
+
+LXGW Neo ZhiSong standard by lxgw is derived from IPAex Mincho and IPAmj Mincho and distributed under IPA Font License 1.0. This release self-hosts Chinese WOFF2 subsets, the unchanged LXGW source TTF, rebuild scripts and pinned tools. It also supplies the unchanged original IPAmjMincho 006.01 and its license. Use Appearance → Font → License and original IPA font to select the actual original IPA font; the ordinary system-font choice is separate.
+
+Sources: https://github.com/lxgw/LxgwNeoZhiSong/releases/tag/v1.067 and https://moji.or.jp/mojikiban/font/ . Full licenses and executable restoration/download instructions: [public/fonts/README.html](public/fonts/README.html), [IPA Font License 1.0](public/fonts/ipa-original/IPA_Font_License_Agreement_v1.0.txt). Build and checksum details: [docs/fonts/README.md](docs/fonts/README.md). No font files are installed into the operating system.
+
+## @noble/hashes 2.2.0
+
+SHA-256 fallback for environments without WebCrypto. Source: https://github.com/paulmillr/noble-hashes/tree/2.2.0 . Package: https://www.npmjs.com/package/@noble/hashes/v/2.2.0 .
+
+The MIT License (MIT)
+
+Copyright (c) 2022 Paul Miller (https://paulmillr.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+## Browser engine packages
+
 - SharpAstrology.Base 0.14.0, Christian Reizner. MIT. Exact NuGet repository commit: `b029ea0a57fabf84b0d0209aa8d6871b6e64a41c`. Source: https://github.com/CReizner/SharpAstrology.Base . Full notice: `engine-wasm/licenses/SharpAstrology.Base-MIT.txt`.
 - SharpAstrology.HumanDesign 1.2.0, Christian Reizner. MIT. Source: https://github.com/CReizner/SharpAstrology.HumanDesign . License: `engine-wasm/licenses/SharpAstrology.HumanDesign-MIT.txt`.
 - SharpAstrology.SwissEph 0.5.1, Christian Reizner. AGPL-3.0 with Swiss Ephemeris notices. Source: https://github.com/CReizner/SharpAstrology.SwissEph . Licenses: `engine-wasm/licenses/SharpAstrology.SwissEph-AGPL-3.0.txt` and `engine-wasm/licenses/SharpAstrology.SwissEph-SwissEph.txt`.

@@ -1,5 +1,6 @@
 /** Exact two-parent source guard for this merge; build revision metadata is not calculation identity. */
-import { readFileSync, existsSync, readdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { incrementProjection, incrementBase, validateReleaseIncrement, snapshotBytes } from '../../tests/helpers/release-increment-projection.js';
+import { readFileSync, existsSync, readdirSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -10,6 +11,8 @@ const root = path.resolve(import.meta.dirname, '../..');
 export const BASE = '2bc308b7a9037a10bae92fff6c9ff536a276b8ae';
 export const MAIN = 'bc9b217fab260b1017bfb1478141f864e402289e';
 export const KNOWLEDGE = 'df06686baa855b01a8bbfb3d77cf85b34eaf4717';
+const historicalRoots = new Set();
+const historicalRead = (rootPath, file) => rootPath === root ? incrementProjection(readFileSync(path.join(rootPath, file)), file) : readFileSync(path.join(rootPath, file));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const git = (...args) => execFileSync('git', args, { cwd: root });
 const trees = new Map();
@@ -112,7 +115,7 @@ export function validatePentaPhase1EReviewScope(rootPath = root) {
       || scope.baseline !== 'db44e6ae53bee690850469085ee04a43bc4b9f7b'
       || Object.keys(scope.files ?? {}).sort().join('\n') !== paths.slice().sort().join('\n')
       || paths.some(file => !phase1EReviewed[file] || scope.files[file] !== phase1EReview[file]
-        || hash(readFileSync(path.join(rootPath, file))) !== phase1EReview[file]))
+        || hash(historicalRead(rootPath, file)) !== phase1EReview[file]))
     throw new Error('Invalid Phase 1E review source scope');
   return scope.files;
 }
@@ -147,7 +150,7 @@ export function validatePentaPhase1CPolishScope(rootPath, currentFiles = []) {
   if (scope.schemaVersion !== 1 || scope.status !== 'frozen' || scope.baseline !== '57958633051b1afd2084bdf150756280f4b6f739'
       || Object.keys(scope.files ?? {}).sort().join('\n') !== paths.slice().sort().join('\n')
       || paths.some(file => scope.files[file] !== phase1CPolishReviewed[file]
-        || hash(phase1CFinalReviewed[file] ? git('show', `fe4e5fd536b91b53c87965da9b1bc9aed95c928c:${file}`) : phase1EReviewed[file] && rootPath === root ? git('show', `da21b31c8832e4786a68b34c6956c0b7efa65946:${file}`) : readFileSync(path.join(rootPath, file))) !== phase1CPolishReviewed[file]))
+        || hash(phase1CFinalReviewed[file] ? git('show', `fe4e5fd536b91b53c87965da9b1bc9aed95c928c:${file}`) : phase1EReviewed[file] && (rootPath === root || historicalRoots.has(rootPath)) ? git('show', `da21b31c8832e4786a68b34c6956c0b7efa65946:${file}`) : historicalRead(rootPath, file)) !== phase1CPolishReviewed[file]))
     throw new Error('Invalid Phase 1C polish source scope');
   const baselinePaths = new Set(execFileSync('git', ['ls-tree', '-r', '--name-only', scope.baseline], { cwd: root }).toString().trim().split('\n'));
   for (const file of currentFiles)
@@ -163,8 +166,9 @@ export function validatePentaPhase1CScope(rootPath) {
     throw new Error('Invalid Penta Phase 1C source scope');
   for (const file of phase1CPaths)
     if (hash(git('show', `57958633051b1afd2084bdf150756280f4b6f739:${file}`)) !== scope.files[file]) throw new Error(`Invalid Phase 1C source: ${file}`);
-  const changes = execFileSync('git', ['diff', '--name-only', scope.baseline, '--'], { cwd: root }).toString().trim().split('\n').filter(protectedPath);
-  const untracked = execFileSync('git', ['ls-files', '--others', '--exclude-standard'], { cwd: root }).toString().trim().split('\n').filter(protectedPath);
+  // This is a historical proof. Live files are checked by the independent increment guard.
+  const changes = execFileSync('git', ['diff', '--name-only', scope.baseline, incrementBase, '--'], { cwd: root }).toString().trim().split('\n').filter(protectedPath);
+  const untracked = [];
   for (const file of [...changes, ...untracked])
     if (!phase1CPaths.includes(file) && !phase1CPolishReviewed[file] && !phase1CFinalReviewed[file] && !phase1EReviewed[file] && !phase1EReview[file]) throw new Error(`Unreviewed Phase 1C source: ${file}`);
   return scope.files;
@@ -208,6 +212,19 @@ export function expectedMergedSource(file) {
 }
 
 export function validateSyncedRelease(rootPath = root) {
+  const increment = validateReleaseIncrement(rootPath);
+  // Execute the unchanged historical proof using real baseline blobs in an isolated directory.
+  const temp = mkdtempSync(path.join(tmpdir(), 'td-historical-proof-'));
+  historicalRoots.add(temp);
+  try {
+    for (const file of tree(incrementBase).filter(file => protectedPath(file) || file === '.env.static' || /^(docs|tests\/fixtures)\/.*\.json$/.test(file))) {
+      mkdirSync(path.dirname(path.join(temp, file)), { recursive: true });
+      writeFileSync(path.join(temp, file), snapshotBytes(incrementBase, file));
+    }
+    return { ...validateHistoricalSyncedRelease(temp, rootPath), increment };
+  } finally { historicalRoots.delete(temp); rmSync(temp, { recursive: true, force: true }); }
+}
+function validateHistoricalSyncedRelease(rootPath, distributionRoot) {
   const reviewPath = path.join(rootPath, 'docs/knowledge-layer/round2b-scope.json');
   const review = existsSync(reviewPath) ? JSON.parse(readFileSync(reviewPath)) : null;
   const allowed = new Set(['src/lib/knowledge/access.js','src/lib/knowledge/content/human-design-zh-CN.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/human-design-foundation.js','src/lib/knowledge/registry.js','src/locales/zh-CN/ui-chart.json','src/locales/zh-CN/vocabulary.js','src/locales/zh-Hant/ui-chart.json','src/views/chart.js','src/views/reference.js']);
@@ -278,18 +295,18 @@ export function validateSyncedRelease(rootPath = root) {
   // Phase 1A is a narrow additive review. Pin paths and digests independently of
   // the review manifest so editing that manifest cannot authorize another source.
   const expectedFiles = [...new Set([...tree(MAIN), ...tree(KNOWLEDGE), ...Object.keys(finalScope.files), ...connectionPaths, ...skinScope.srcFiles, ...contrastPaths, 'index.html', 'package.json'])].filter(protectedPath);
-  const currentFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
+  const currentFiles = tree(incrementBase);
   const phase1E = validatePentaPhase1EScope(rootPath);
   const phase1ECurrent = validatePentaPhase1EReviewScope(rootPath);
   const reviewedPenta = { ...phase1E, ...phase1ECurrent };
   const phase1C = validatePentaPhase1CScope(rootPath);
-  const polishChanges = execFileSync('git', ['diff', '--name-only', '57958633051b1afd2084bdf150756280f4b6f739', '--'], { cwd: rootPath }).toString().trim().split('\n');
-  const polishNew = execFileSync('git', ['ls-files', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n');
+  const polishChanges = git('diff', '--name-only', '57958633051b1afd2084bdf150756280f4b6f739', incrementBase, '--').toString().trim().split('\n');
+  const polishNew = [];
   const phase1CPolish = validatePentaPhase1CPolishScope(rootPath, [...polishChanges, ...polishNew].filter(file => !reviewedPenta[file]));
-  const finalChanges = execFileSync('git', ['diff', '--name-only', 'fe4e5fd536b91b53c87965da9b1bc9aed95c928c', '--'], { cwd: rootPath }).toString().trim().split('\n').filter(Boolean);
-  const finalNew = execFileSync('git', ['ls-files', '--others', '--exclude-standard'], { cwd: rootPath }).toString().trim().split('\n').filter(Boolean);
+  const finalChanges = git('diff', '--name-only', 'fe4e5fd536b91b53c87965da9b1bc9aed95c928c', incrementBase, '--').toString().trim().split('\n').filter(Boolean);
+  const finalNew = [];
   const phase1CFinal = validatePentaPhase1CFinalScope(rootPath, [...finalChanges, ...finalNew].filter(file => !reviewedPenta[file]));
-  const phase1BRevisionChanges = execFileSync('git', ['diff', '--name-only', 'bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4', '23f9decbb888ba213d0432d8d53dae4dd24eac39', '--'], { cwd: rootPath }).toString().trim().split('\n').filter(Boolean);
+  const phase1BRevisionChanges = execFileSync('git', ['diff', '--name-only', 'bed1f568c29c1b9c5ac366f5912b50f74e0fb1c4', '23f9decbb888ba213d0432d8d53dae4dd24eac39', '--'], { cwd: root }).toString().trim().split('\n').filter(Boolean);
   validatePentaPhase1BRevisionScope(rootPath, phase1BRevisionChanges, { ...phase1C, ...phase1CPolish, ...phase1CFinal });
   // Only the three pinned Phase 1A paths extend the historical allowlist.
   const additionalFiles = currentFiles.filter(file => !expectedFiles.includes(file) && !reviewedPenta[file]);
@@ -306,13 +323,13 @@ export function validateSyncedRelease(rootPath = root) {
   for (const file of expectedFiles)
     if (hash(readFileSync(path.join(rootPath, file))) !== (reviewedPenta[file] ?? phase1CFinal[file] ?? phase1CPolish[file] ?? phase1C[file] ?? pentaReviewed[file] ?? pentaPhase1BRevisionReviewed[file] ?? pentaPhase1BReviewed[file] ?? inkScope.files[file] ?? contrastScope.files[file] ?? connectionScope.files[file] ?? terminologyHash(file) ?? finalScope.releaseFixes[file] ?? skinScope.files[file] ?? finalScope.files[file] ?? restoration?.files[file] ?? copy?.files[file] ?? deviation?.files[file] ?? polish?.files[file] ?? refinement?.files[file] ?? visualReview?.files[file] ?? localeReview?.files[file] ?? review?.files[file] ?? hash(expectedMergedSource(file))))
       throw new Error(`Two-parent source differs: ${file}`);
-  validateDistribution(path.join(rootPath, 'dist'));
+  validateDistribution(path.join(distributionRoot, 'dist'));
   const identity = JSON.parse(readFileSync(path.join(rootPath, 'docs/release-licensing-v1/production-identity.json')));
   for (const [name, expected] of Object.entries(identity.ephemerisHashes))
-    if (hash(readFileSync(path.join(rootPath, 'dist/engine/ephe', name))) !== expected) throw new Error(`Ephemeris changed: ${name}`);
+    if (hash(readFileSync(path.join(distributionRoot, 'dist/engine/ephe', name))) !== expected) throw new Error(`Ephemeris changed: ${name}`);
   const files = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry =>
     entry.isDirectory() ? files(path.join(dir, entry.name)) : [path.join(dir, entry.name)]);
-  if (files(path.join(rootPath, 'dist')).some(file => /jovian|swiss176|de406|native_backend/i.test(path.relative(path.join(rootPath, 'dist'), file))))
+  if (files(path.join(distributionRoot, 'dist')).some(file => /jovian|swiss176|de406|native_backend/i.test(path.relative(path.join(distributionRoot, 'dist'), file))))
     throw new Error('Historical runtime in browser');
   return { passed: true, engineSignature: identity.engineSignature, protectedFiles: expectedFiles.length,
     main: MAIN, knowledge: KNOWLEDGE };

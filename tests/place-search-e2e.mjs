@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 
-const base = process.env.E2E_URL || 'http://127.0.0.1:5173';
+const base = process.env.E2E_URL || 'http://127.0.0.1:19964';
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 try {
   const page = await browser.newPage({ locale: 'zh-CN' });
@@ -51,18 +51,20 @@ try {
 
   await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
   await page.locator('#chart-view:not(.hidden)').waitFor();
-  for (const [view, scope] of [['connection', '#conn-place'], ['team', '#team-members .team-member-row:first-child .team-place']]) {
+  for (const [view, scope] of [['connection', '#conn-place'], ['team', '.person-editor']]) {
     await page.locator(`.nav-link[data-view="${view}"]`).click();
-    if (view === 'team') await page.locator('#add-member').click();
-    await page.locator(view === 'connection' ? '#conn-date' : '.team-date').first().fill('1985-01-01');
-    await page.locator(view === 'connection' ? '#conn-time' : '.team-time').first().fill('12:00');
+    if (view === 'team') { await page.locator('#team-add-saved-person').click(); await page.locator('#team-person-create').click(); await page.locator('#edit-name').fill('Fictional Tokyo'); }
+    await page.locator(view === 'connection' ? '#conn-date' : '#edit-date').fill('1985-01-01');
+    await page.locator(view === 'connection' ? '#conn-time' : '#edit-time').fill('12:00');
     const place = page.locator(`${scope} .ps-input`);
+    if (!await place.isVisible()) await page.locator(`${scope} .ps-toggle`).click();
     await place.fill('Tokyo');
     await page.locator(`${scope} .ps-result`).first().click();
     assert.match(await page.locator(`${scope} .ps-chip`).innerText(), /Tokyo, Japan.*UTC\+9/);
     await page.locator(`${scope} .ps-toggle`).click();
     await page.locator(`${scope} .ps-manual`).fill('9');
     assert.match(await page.locator(`${scope} .ps-chip`).innerText(), /\+09|\+9/);
+    if (view === 'team') { await page.locator('#edit-save').click(); await page.locator('.person-editor').waitFor({state:'detached'}); await page.locator('#team-selection-confirm').click(); assert.equal(await page.locator('.team-person-chip').count(),1); }
   }
   console.log('Place search main, connection and team entry checks passed, including stale, IME and manual fallback.');
 } finally { await browser.close(); }

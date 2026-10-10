@@ -5,6 +5,6 @@ import { esc } from './format.js';
 
 export function renderChannelCircuitBadges(channel) {
   const { group, circuit } = channelCircuit(channel);
-  return `<span class="circuit-badge ${group}">${esc(circuitName(group))}</span>
-    <span class="circuit-badge ${group}">${esc(circuitName(circuit))}</span>`;
+  return `<span class="channel-circuit-badges"><span class="circuit-badge ${group}">${esc(circuitName(group))}</span>
+    <span class="circuit-badge ${group}">${esc(circuitName(circuit))}</span></span>`;
 }

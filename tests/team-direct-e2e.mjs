@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright-core';
+import {PROFILE_STORAGE_KEY} from '../src/lib/profile-storage.js';
+const base=process.env.E2E_URL||'http://127.0.0.1:19964';
+const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL||'chromium',headless:true});
+const context=await browser.newContext({viewport:{width:1280,height:900},reducedMotion:'reduce'});
+const profiles=Array.from({length:10},(_,i)=>({id:`fictional-direct-${i}`,name:`Fictional ${i+1}`,birthDate:`${1980+i}-05-16`,birthTime:i===0?'':'12:00',timeUnknown:i===0,location:{timezone:0}}));
+try{
+ const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(({key,profiles})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(profiles));localStorage.setItem('ohd-language','en');},{key:PROFILE_STORAGE_KEY,profiles});
+ await page.goto(base);await page.locator('.nav-link[data-view="team"]').click();
+ const select=async indices=>{await page.locator('#team-add-saved-person').click();for(const i of indices)await page.locator(`[data-add-person="${profiles[i].id}"]`).click();await page.locator('#team-selection-confirm').click();};
+ const ready=()=>page.waitForFunction(()=>document.querySelector('#team-content').getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-channel-reading').length===6,{},{timeout:90000});
+ await select([0,1]);assert.equal(await page.locator('.penta-placeholder').count(),1);await select([2]);await ready();assert.equal(await page.locator('.penta-gate-reading').count(),12);assert.equal(await page.locator('.team-person-chip small').count(),1);
+ await select([3,4]);await ready();await page.locator('#team-add-saved-person').click();assert.equal(await page.locator(`[data-add-person="${profiles[5].id}"]`).isDisabled(),true);await page.keyboard.press('Escape');
+ await page.locator('#team-save').click();await page.locator('#team-save-name').fill('Fictional ten-person team');await page.locator('#team-save-form button[type=submit]').click();
+ await page.locator('#team-current').click();await page.locator('#team-new-group').click();await page.locator('.team-control-dialog button[type=submit]').click();await select([5,6,7,8,9]);await ready();await page.locator('#team-save').click();await page.locator('#team-save-form button[type=submit]').click();
+ const saved=await page.evaluate(async()=>(await import('/src/lib/team-repository.js')).listTeams()[0]);assert.equal(saved.members.length,10);assert.deepEqual(saved.groups.map(g=>g.memberIds.length),[5,5]);
+ await page.locator('#team-current').click();await page.locator('#team-temporary').click();await page.locator('#team-current').click();await page.locator(`[data-team="${saved.teamId}"][data-group="${saved.groups[1].pentaId}"]`).click();await ready();assert.equal(await page.locator('.team-person-chip').count(),5);
+ assert.deepEqual(await page.evaluate(async id=>(await import('/src/lib/team-repository.js')).getTeam(id),saved.teamId),saved);
+ await page.mouse.wheel(0,600);await page.waitForFunction(()=>scrollY>300);assert.equal(await page.locator('.team-results').evaluate(n=>getComputedStyle(n).overflowY),'visible');
+ const y=await page.evaluate(()=>scrollY);await page.locator('.penta-gate-hit').first().focus();await page.keyboard.press('Enter');await page.locator('.penta-detail:not(.hidden)').waitFor();assert.equal(await page.evaluate(()=>scrollY),y);await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>scrollY),y);
+ await page.locator('.penta-channel-hit').first().press('Enter');await page.locator('.penta-detail:not(.hidden)').waitFor();await page.keyboard.press('Escape');
+ await page.evaluate(async id=>{const api=await import('/src/lib/people.js');api.savePerson({...api.getPerson(id),name:'Fictional edited',timezone:0});},profiles[5].id);await ready();assert.match(await page.locator('#team-selected-chips').innerText(),/Fictional edited/);
+ await page.evaluate(async id=>(await import('/src/lib/people.js')).deletePerson(id),profiles[5].id);await page.waitForFunction(()=>document.querySelector('#team-flow-status').textContent.includes('Missing reference'));assert.equal(await page.locator('.penta-channel-reading').count(),0);
+ await page.locator('#team-current').click();await page.locator(`[data-local-group="${saved.groups[0].pentaId}"]`).click();await ready();
+ const other=await context.newPage();await other.goto(base);await other.evaluate(async id=>{const api=await import('/src/lib/team-repository.js');api.saveTeam({...api.getTeam(id),name:'Fictional external'});},saved.teamId);await page.waitForFunction(()=>/revision/i.test(document.querySelector('#team-flow-status').textContent));assert.equal(await page.locator('.penta-channel-reading').count(),0);
+ await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);assert.deepEqual(errors,[]);
+ console.log('PASS current multi-select 2/3/5 and limit, ten-person 5+5 save/reopen, unknown time, direct graph keyboard/no-scroll, edit/delete/cross-tab invalidation, mobile');
+}finally{await context.close();await browser.close();}
