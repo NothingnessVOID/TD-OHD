@@ -50,6 +50,10 @@ npm install
 npm run dev
 ```
 
+开发服务和构建预览（`npm run preview`，需先构建）固定使用 `http://127.0.0.1:9961/`。端口占用时会直接报错，不自动切换端口；两者不要同时运行。Windows PowerShell 中可使用 `npm.cmd` 替代 `npm`。浏览器人物资料按地址独立保存，请统一使用该地址，避免混用 `localhost` 或旧端口。
+
+十位虚构团队测试人物可在开发服务的 `/dev/test-people.html` 页面显式导入，不进入正式构建。使用方法和开发分支同步约定见[本地开发说明](docs/LOCAL_DEVELOPMENT.md)。
+
 ```bash
 npm run build:engine
 npm test
