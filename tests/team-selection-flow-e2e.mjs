@@ -5,7 +5,7 @@ import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
 const browser = await chromium.launch({channel:'chromium',headless:true});
 const context = await browser.newContext({viewport:{width:1440,height:960}});
 const page = await context.newPage(); const errors=[]; page.on('pageerror',e=>errors.push(e.message));
-const people=Array.from({length:7},(_,i)=>({id:`fictional-flow-${i}`,name:i<2?'Fictional same':`Fictional ${i}`,birthDate:`198${i}-05-16`,birthTime:i===0?'':'10:00',timeUnknown:i===0,location:{timezone:0},createdAt:1000+i}));
+const people=Array.from({length:10},(_,i)=>({id:`fictional-flow-${i}`,name:i<2?'Fictional same':`Fictional ${i}`,birthDate:`198${i}-05-16`,birthTime:i===0?'':'10:00',timeUnknown:i===0,location:{timezone:0},createdAt:1000+i}));
 const output='test-results/team-flow'; await mkdir(output,{recursive:true});
 try {
  await page.addInitScript(({key,people})=>{localStorage.setItem(key,JSON.stringify(people));localStorage.setItem('ohd-language','en');localStorage.setItem('ohd-last-person-id',people[2].id);},{key:PROFILE_STORAGE_KEY,people});
@@ -15,7 +15,18 @@ try {
  await page.locator('#team-add-saved-person').click();
  await page.locator(`[data-add-person="${people[0].id}"]`).click(); await page.locator(`[data-add-person="${people[1].id}"]`).click();
  assert.equal(await chips.count(),0); assert.match(await page.locator('#team-selection-count').innerText(),/2\/5/);
- await page.locator('#team-person-search').fill(people[1].id); await page.locator(`[data-edit-person="${people[1].id}"]`).click(); await page.keyboard.press('Escape');
+ assert.equal(await page.locator('.team-picker-row').count(),10);
+ assert.equal(await page.locator('#team-person-create').getAttribute('class'),'btn-secondary');
+ assert.equal(await page.locator('.team-control-dialog header [data-close]').getAttribute('class'),'ui-icon-button');
+ assert.equal(await page.locator(`[data-add-person="${people[0].id}"] [aria-hidden]`).innerText(),'☑');
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('#team-selection-confirm').scrollIntoViewIfNeeded();
+ assert.equal(await page.locator('#team-selection-confirm').evaluate(n=>{const r=n.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight;}),true);
+ await page.setViewportSize({width:1440,height:960});
+ await page.evaluate(async id=>(await import('/src/lib/people.js')).deletePerson(id),people[9].id);
+ await page.locator(`[data-edit-person="${people[9].id}"]`).click();
+ assert.equal(await page.locator('.person-editor').count(),0); assert.match(await page.locator('.team-layer-error').innerText(),/Missing reference/);
+ await page.locator('#team-person-search').fill(people[1].id); await page.locator(`[data-edit-person="${people[1].id}"]`).click(); await page.locator('.person-editor header .ui-icon-button[data-close]').click();
  assert.equal(await page.locator('#team-person-search').inputValue(),people[1].id); assert.match(await page.locator('#team-selection-count').innerText(),/2\/5/);
  await page.keyboard.press('Escape'); assert.equal(await chips.count(),0); assert.equal(await page.locator('#team-add-saved-person').evaluate(n=>n===document.activeElement),true); assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
  const add=async i=>{await page.locator('#team-add-saved-person').click();await page.locator('#team-person-search').fill(people[i].id);await page.locator(`[data-add-person="${people[i].id}"]`).click();await page.locator('#team-selection-confirm').click();};
