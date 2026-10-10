@@ -1,7 +1,7 @@
 import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
-import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
+import { centerReading, centerInsights, channelsForGate, channelsForCenter } from '../lib/reference-content.js';
 import { gateName, channelName, centerName, circuitName, hexagramName } from '../lib/vocabulary.js';
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
@@ -10,7 +10,7 @@ import { renderPlanetReading, renderActivationReference, activationConceptRefere
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { circuitReference } from '../lib/reference-supplements.js';
-import { renderGateLensSwitch } from '../lib/gate-lenses.js';
+import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 
 const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable'];
 const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
@@ -59,14 +59,14 @@ const channelId = channel => channel.gates.join('-');
 function gateDetail(entry) {
   const gate = Number(entry.id);
   const channels = channelsForGate(gate);
-  return `${renderGateLensSwitch(lens, 'data-reference-lens')}<div class="reference-reading">${gateReading(gate, lens)}</div>
+  return `${renderSharedGateReading(gate, { lens, lensAttribute: 'data-reference-lens' })}
     <h3>${t('Related channels')}</h3><div class="reference-links">${channels.map(ch => link('channel', channelId(ch), `${channelId(ch)} · ${channelName(ch.gates)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3>${link('center', GATES[gate].center, centerName(GATES[gate].center))}`;
 }
 
 function channelDetail(entry) {
   const channel = CHANNELS.find(ch => channelId(ch) === entry.id);
-  return `${channelReading(entry.id) || `<p>${t('No text is available in the current source.')}</p>`}
+  return `${renderSharedChannelReading(entry.id)}
     <h3>${t('Related gates')}</h3><div class="reference-links">${channel.gates.map(gate => link('gate', gate, `${gate} · ${gateName(gate)}`)).join('')}</div>
     <h3>${t('Reference centers')}</h3><div class="reference-links">${channel.centers.map(center => link('center', center, centerName(center))).join('')}</div>
     <h3>${t('Circuit groups')}</h3><div class="reference-links">${link('group', channelCircuit(channel).group, circuitName(channelCircuit(channel).group))}${link('circuit', channelCircuit(channel).circuit, circuitName(channelCircuit(channel).circuit))}</div>`;
@@ -175,6 +175,7 @@ function build() {
       <div id="reference-filter-panel" class="reference-filter-panel" hidden><div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div></div>
       <p id="reference-count"></p><div id="reference-results" class="reference-results"></div></aside>
       <article id="reference-detail" class="reference-detail" role="region"></article></div></div>`;
+  bindSharedObjectDetails(mount, { onLensChange: nextLens => { lens = nextLens; } });
   built = true;
 }
 
@@ -210,8 +211,6 @@ export function setupReferenceView() {
     if (event.target.closest('[data-reference-filter-toggle]')) { filtersExpanded = !filtersExpanded; renderFilters(); return; }
     const filter = event.target.closest('[data-reference-filter]');
     if (filter) { category = filter.dataset.referenceFilter; limit = 60; filtersExpanded = false; renderReferenceView(); return; }
-    const selectedLens = event.target.closest('[data-reference-lens]');
-    if (selectedLens) { lens = selectedLens.dataset.referenceLens; renderDetail(); return; }
     if (event.target.closest('[data-reference-more]')) { limit += 60; renderResults(); }
     if (event.target.closest('[data-reference-back]')) {
       if ((history.state?.ohdReferenceDepth ?? 0) > 0) history.back();
