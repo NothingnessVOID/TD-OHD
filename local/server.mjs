@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { protectPrivatePath } from './private-path.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { randomBytes, randomUUID, scrypt, timingSafeEqual, createHash } from 'node:crypto';
 import { promisify } from 'node:util';
@@ -36,10 +37,10 @@ function cleanPerson(p) {
 export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessionDays = 30, referencePages = true } = {}) {
   if (!dataDir) throw new Error('dataDir is required');
   mkdirSync(dataDir, { recursive: true, mode: 0o700 });
-  chmodSync(dataDir, 0o700);
+  protectPrivatePath(dataDir, 0o700);
   const dbPath = join(dataDir, 'human-design.sqlite');
   const db = new DatabaseSync(dbPath);
-  chmodSync(dbPath, 0o600);
+  protectPrivatePath(dbPath, 0o600);
   db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;
     CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, expires INTEGER NOT NULL);

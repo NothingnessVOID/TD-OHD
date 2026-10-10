@@ -205,6 +205,7 @@ test('all Skins own independent info/caution colors and Skin-owned Timeline sign
       'contemplation': ['#313740','#A16872'], 'deep-think': ['#252A36','#C26068'],
       'new-warm-paper': ['#2A2622','#8B2C1F']
     };
+    Object.assign(tokens, values(read('src/styles/tokens/team.css')));
     for (const token of SKIN_TOKENS) {
       const birthIndex = token === '--hd-birth-personality' ? 0 : token === '--hd-birth-design' ? 1 : -1;
       const expected = birthIndex < 0 ? null : birthDefaults[skin.id]?.[birthIndex];

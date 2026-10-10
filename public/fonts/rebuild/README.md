@@ -1,6 +1,6 @@
 # Self-hosted Chinese fonts
 
-This directory documents font resources and reproducible build inputs. No system font installation or npm dependency is required. The IPA font binary is downloaded only when selected; loading an @font-face stylesheet does not itself fetch the font. No preload is supplied. UI and PNG integration are documented in ../development/FONT-PREFERENCE.md.
+This directory documents font resources and reproducible build inputs. No system font installation or npm dependency is required. The IPA font binary is downloaded only when selected; loading an @font-face stylesheet does not itself fetch the font. No preload is supplied. UI and PNG integration are documented in https://github.com/NothingnessVOID/TD-OHD/blob/main/docs/development/FONT-PREFERENCE.md.
 
 ## Sources and license
 
