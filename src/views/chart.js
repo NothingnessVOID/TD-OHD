@@ -1,4 +1,5 @@
 import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
+import { renderGateDetailHeading, renderChannelDetailHeading, renderDetailNavigation } from '../lib/object-detail-heading.js';
 /**
  * Chart view — bodygraph + foundation + tabbed detail panels.
  */
@@ -349,9 +350,7 @@ function showTransitChannelDetail(id, pushHistory = true) {
   const detail = document.getElementById('gate-detail');
   detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body">
-      <div class="detail-label">${t('Channel {channel}', { channel: id })}</div>
-      <div class="channel-detail-heading"><div class="detail-name">${esc(channelName(channel.gates))}</div>
-        ${renderChannelCircuitBadges(channel)}</div>
+      ${renderChannelDetailHeading(id)}
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${renderSharedChannelReading(id)}
@@ -392,15 +391,7 @@ window.addEventListener('ohd-open-knowledge-gate', event => {
 });
 
 function detailNav() {
-  const backBtn = detailHistory.length > 0
-    ? `<button class="gate-detail-back">← ${t('Back')}</button>`
-    : `<span></span>`;
-  return `
-    <span class="gate-detail-handle" aria-hidden="true"></span>
-    <div class="gate-detail-nav-buttons">
-      ${backBtn}
-      <button class="gate-detail-close" title="${t('Close')}">&times;</button>
-    </div>`;
+  return renderDetailNavigation({ canGoBack: detailHistory.length > 0 });
 }
 
 
@@ -500,8 +491,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     <div class="gate-detail-card">
       <div class="gate-detail-nav">${detailNav()}</div>
       <div class="gate-detail-body">
-        <div class="detail-label">${t('Gate {gate}', { gate: gateNum })}</div>
-        <div class="detail-name">${esc(gateName(gateNum))} <span class="detail-hexagram">${getLocale().startsWith('zh') ? '（' : '('}${esc(hexagramName(gateNum))}${getLocale().startsWith('zh') ? '）' : ')'}</span></div>
+        ${renderGateDetailHeading(gateNum)}
         ${acts.length ? `<div class="gate-detail-acts">${acts.join('<br>')}</div>` : ''}
         ${detailContext && transitActs.length ? `<div class="gate-detail-transits">${transitActs.join('<br>')}</div>` : ''}
         ${renderLens(gateNum)}

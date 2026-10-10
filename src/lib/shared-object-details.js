@@ -1,7 +1,8 @@
 import { gateReading, channelReading, channelsForGate, channelById } from './reference-content.js';
 import { renderGateLensSwitch } from './gate-lenses.js';
 import { getKnowledgeEntry } from './knowledge/registry.js';
-import { gateName, hexagramName, channelName, centerName, planetName } from './vocabulary.js';
+import { gateName, channelName, planetName } from './vocabulary.js';
+import { renderGateDetailHeading, renderChannelDetailHeading, renderDetailNavigation } from './object-detail-heading.js';
 import { GATES } from './human-design/catalog.js';
 import { esc } from './format.js';
 import { t } from './i18n.js';
@@ -47,23 +48,32 @@ function member(id, ctx) {
   return `${esc(person?.displayName || id)}${person?.timeUnknown ? ` <small class="shared-detail-estimated">(${text('Estimated at noon')})</small>` : ''}`;
 }
 function activations(record, ctx) {
-  const rows = (record.activations || []).map(a => `<li>${member(a.memberId, ctx)} · ${a.side === 'design' ? 'D' : 'P'} (${text(a.side === 'design' ? 'Design' : 'Personality')}) · ${esc(planetName(a.planet))} · ${esc(a.gate)}.${esc(a.line)}</li>`).join('');
-  return `<section data-penta-activations><h3>${text('Penta group activations')}</h3>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}${rows ? `<ul>${rows}</ul>` : `<p>${text('No Penta contributors')}</p>`}</section>`;
+  const groups = new Map();
+  for (const activation of record.activations || []) {
+    if (!groups.has(activation.memberId)) groups.set(activation.memberId, []);
+    groups.get(activation.memberId).push(activation);
+  }
+  const rows = [...groups].map(([id, entries]) => `<div data-penta-member="${esc(id)}"><h4>${member(id, ctx)}</h4><ul>${entries.map(a => {
+    const side = a.side === 'design' ? 'design' : 'personality';
+    return `<li><span data-activation-side="${side}">${side === 'design' ? 'D' : 'P'} (${text(side === 'design' ? 'Design' : 'Personality')})</span> · ${esc(planetName(a.planet))} · ${esc(a.gate)}.${esc(a.line)}</li>`;
+  }).join('')}</ul></div>`).join('');
+  return `<section data-penta-activations><h3>${text('Penta group activations')}</h3>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}${rows || `<p>${text('No Penta contributors')}</p>`}</section>`;
 }
 const states = { absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' };
 
 export const pentaDetailAdapter = Object.freeze({
+  navigation: renderDetailNavigation,
   gate(record, ctx = {}) {
     if (!record || !GATES[record.gate]) return '';
     const gate = record.gate;
-    return `<header><h2>${text('Gate {gate}', { gate })} · ${esc(gateName(gate))}</h2><p>${esc(hexagramName(gate))} · ${esc(centerName(GATES[gate].center))}</p></header>
+    return `<header><div class="tl-detail-header tl-gate-detail-header" data-source-context="penta"><div class="tl-detail-heading">${renderGateDetailHeading(gate)}</div></div></header>
       ${activations(record, ctx)}${specificReading(`gate:${gate}`)}
       ${renderSharedGateReading(gate, { activeLines: [...new Set((record.activations || []).map(a => a.line))] })}${channelLinks(gate)}`;
   },
   channel(record, ctx = {}) {
     const channel = channelById(record?.channelId);
     if (!channel) return '';
-    return `<header><h2>${text('Channel')} ${esc(record.channelId)} · ${esc(channelName(channel.gates))}</h2></header>
+    return `<header><div class="tl-detail-header tl-channel-detail-header" data-source-context="penta"><div class="tl-detail-heading">${renderChannelDetailHeading(record.channelId)}</div></div></header>
       <section data-penta-channel-state><h3>${text('Penta endpoint contributions')}</h3>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}<p>${text(states[record.status] || 'Not covered')}</p>
       <ul>${record.gates.map(gate => `<li>${text('Gate {gate}', { gate })}: ${(record.holdersByGate?.[gate] || []).map(id => member(id, ctx)).join(' · ') || text('No Penta contributors')}</li>`).join('')}</ul></section>
       ${specificReading(`channel:${record.channelId}`)}${renderSharedChannelReading(record.channelId)}
