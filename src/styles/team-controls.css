@@ -42,5 +42,7 @@
 #team-person-create { margin-top:8px; }
 .team-picker-row > [data-edit-person] { flex:none; white-space:nowrap; }
 .team-person-chip { border-color:color-mix(in srgb, var(--penta-person) 40%, var(--border)); }
-@media(max-width:1050px) { .team-current-toolbar button, .team-person-chip button, #team-add-saved-person, .team-control-dialog button { min-height:44px; } .team-person-chip [data-remove-member] { min-width:44px; } .team-chip-name { max-width:6.5em; } }
+.team-current-toolbar button, .team-person-chip button, #team-add-saved-person, .team-control-dialog button { min-height:44px; min-width:44px; }
+.team-person-chip [data-remove-member] { min-width:44px; }
+@media(max-width:1050px) { .team-chip-name { max-width:6.5em; } }
 @media(max-width:480px) { .team-picker-row { flex-wrap:wrap; } }

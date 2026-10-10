@@ -4,6 +4,7 @@ import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:f
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
+import { execFileSync } from 'node:child_process';
 import { DatabaseSync } from 'node:sqlite';
 import { createLocalServer } from '../local/server.mjs';
 
@@ -44,7 +45,12 @@ test('local account: two browser sessions, durable saves, safe legacy merge, aut
     assert.equal(invalid.status,400);
     const backup = await request('backup',{cookie:a.cookie}); assert.equal(backup.body.people.length,1);
     assert.ok(readdirSync(join(dir,'backups')).some(n => n.endsWith('.json')));
-    assert.equal(statSync(join(dir,'human-design.sqlite')).mode & 0o777,0o600);
+    if (process.platform === 'win32') {
+      const acl = JSON.parse(execFileSync('powershell.exe', ['-NoProfile','-NonInteractive','-Command', `$a=Get-Acl -LiteralPath $env:OHD_TEST_DB; @{ protected=$a.AreAccessRulesProtected; current=[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value; rules=@($a.Access | ForEach-Object { @{ sid=$_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value; type=$_.AccessControlType.ToString(); rights=$_.FileSystemRights.ToString() } }) } | ConvertTo-Json -Depth 4 -Compress`], { env:{...process.env,OHD_TEST_DB:join(dir,'human-design.sqlite')}, encoding:'utf8' }));
+      assert.equal(acl.protected,true);
+      assert.deepEqual(acl.rules.map(r=>r.sid).sort(), [acl.current,'S-1-5-18','S-1-5-32-544'].sort());
+      for (const rule of acl.rules) { assert.equal(rule.type,'Allow'); assert.equal(rule.rights,'FullControl'); }
+    } else assert.equal(statSync(join(dir,'human-design.sqlite')).mode & 0o777,0o600);
     await stop(); await start();
     assert.equal((await request('sync',{cookie:b.cookie,data:{operations:[]}})).body.people[0].name,'更新后的姓名');
     await request('sync',{cookie:b.cookie,data:{operations:[{operationId:'delete-1',id:person.id,kind:'delete'}]}});

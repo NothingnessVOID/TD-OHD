@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+import { windowsSwissBaseline } from './helpers/windows-swiss-baseline.js';
 import { engineIdentity } from '../scripts/lib/engine-identity.mjs';
 import { ENGINE_IDENTITY, ENGINE_SIGNATURE } from '../src/lib/chart-engine/engine-identity.js';
 import { ANNUAL_SIGNATURE } from '../src/features/transit-timeline/annual-signature.js';
@@ -52,6 +54,8 @@ test('proper UTC, fractional ticks, inverse, DE/ICRS/Moshier/J2000 and speed gua
   const output = execFileSync(dotnet, ['docs/sharp-swiss-parity-fix/scripts/parity-harness/bin/Release/net10.0/SharpAstrology.SwissEphemerides.IntegrationTests.dll', 'public/engine/ephe'], { input: `${requests.join('\n')}\n`, encoding: 'utf8' });
   const actual = output.trim().split('\n').map(line => JSON.parse(line));
   assert.equal(actual.length, 9);
+  const platformBaseline = process.platform === 'win32' ? windowsSwissBaseline(`${requests.join('\n')}\n`, resolve('public/engine/ephe')) : null;
+  if (platformBaseline) assert.equal(platformBaseline.length, 9);
   const dut1 = [];
   for (let index = 0; index < actual.length; index++) {
     const result = actual[index], fixture = evidence.cases[index];
@@ -67,8 +71,10 @@ test('proper UTC, fractional ticks, inverse, DE/ICRS/Moshier/J2000 and speed gua
         for (const field of ['gate', 'line', 'color', 'tone', 'base']) assert.equal(value[field], reference[field]);
         assert.ok(Math.abs(value.longitude - reference.longitude) < 1e-10);
         // Match the existing independent-C speed bound; finite differences amplify platform rounding.
-        const speedDelta=Math.abs(value.speed-reference.speed);
+        const speedReference=platformBaseline ? platformBaseline[index][side][body].speed : reference.speed;
+        const speedDelta=Math.abs(value.speed-speedReference);
         assert.ok(speedDelta<1e-8,`${fixture.id}/${side}/${body}: speed delta ${speedDelta}`);
+        if (platformBaseline) assert.equal(value.speed,speedReference,`${fixture.id}/${side}/${body}: exact same-platform production speed`);
       }
       const epoch = side === 'personality' ? result.personality : result.sharpAtOracleDesign;
       assert.ok(Math.abs(epoch.sun.longitude - fixture.oracle[side].sun.longitude) * 3600000 < .001);

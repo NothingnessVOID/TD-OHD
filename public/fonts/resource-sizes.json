@@ -25,6 +25,10 @@
       "bytes": 20613
     },
     {
+      "path": "lxgw-neo-zhisong/v1.067/LICENSE_CHS.md",
+      "bytes": 8026
+    },
+    {
       "path": "lxgw-neo-zhisong/v1.067/manifest.json",
       "bytes": 85728
     },
@@ -418,13 +422,13 @@
     },
     {
       "path": "rebuild/README.md",
-      "bytes": 6156
+      "bytes": 6210
     },
     {
       "path": "rebuild/requirements.txt",
       "bytes": 32
     }
   ],
-  "payloadBytes": 62500687,
+  "payloadBytes": 62508767,
   "note": "Payload excludes this size inventory and SHA256SUMS; both are included in repository total."
 }
