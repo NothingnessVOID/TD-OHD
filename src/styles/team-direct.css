@@ -26,6 +26,9 @@
   box-sizing: border-box; height: calc(100% + 24px); margin: -12px;
   padding: 12px; scroll-padding-block: 12px; border: 0; border-radius: var(--radius-lg);
   background: transparent; box-shadow: none;
+  /* The clearance preserves complete cards at either end; a short edge fade
+     makes a long card pass through the viewport without a hard white cut. */
+  mask-image: linear-gradient(to bottom, transparent, black 12px, black calc(100% - 12px), transparent);
 }
 #team-form .team-results-heading { display: none; }
 #team-content { flex: 1 1 auto; min-height: 0; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
@@ -122,7 +125,7 @@
   #team-view .view-container { padding: 0; }
   #team-form .team-workspace { display: flex; flex-direction: column; height: auto; gap: 16px; }
   #team-form .team-management { position: static; display: flex; width: 100%; height: auto; padding: 14px; gap: 8px; }
-  #team-form .team-results { width: 100%; height: auto; overflow: visible; padding: 0; margin: 0; scrollbar-gutter: auto; }
+  #team-form .team-results { width: 100%; height: auto; overflow: visible; padding: 0; margin: 0; scrollbar-gutter: auto; mask-image: none; }
   #team-content { flex: initial; }
   #team-form #team-content .penta-render { height: auto; display: block; }
   #team-content .penta-figure-space { container-type: normal; display: block; }

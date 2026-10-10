@@ -4,6 +4,7 @@ import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { prepareDetailDialog, openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail } from '../lib/knowledge/registry.js';
 import './team-messages.js';
 
@@ -159,10 +160,10 @@ export function createPentaMatrix(container, {
     const context = detailContext();
     const title = kind === 'gate' ? `${t('Gate {gate}', { gate: record.gate })} · ${hexagramName(record.gate)}` : kind === 'channel' ? `${t('Channel')} ${record.channelId} · ${channelName(record.channelId)}` : record.name;
     const html = kind === 'knowledge' ? knowledgeBody(id) : detailAdapter?.[kind] ? detailAdapter[kind](record, context) : (kind === 'gate' ? gateSummary(record) : channelSummary(record));
-    dialog.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons">${detailHistory.length ? `<button type="button" class="gate-detail-back" data-penta-back>← ${label('Back')}</button>` : '<span></span>'}<button type="button" class="gate-detail-close" title="${label('Close')}" aria-label="${label('Close')}">×</button></div></div><div class="gate-detail-body">${html}</div></div>`;
+    dialog.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${renderDetailNavigation({ canGoBack: detailHistory.length > 0 })}</div><div class="gate-detail-body">${html}</div></div>`;
     const bound = detailAdapter?.bind?.(dialog, context);
     if (typeof bound === 'function') disposeDialog = bound;
-    dialog.querySelector('[data-penta-back]')?.addEventListener('click', goBack);
+    if (!detailAdapter?.bind) dialog.querySelector('[data-shared-back]')?.addEventListener('click', goBack);
     openDetailDialog(dialog, () => { disposeDialog?.(); disposeDialog = null; currentDetail = null; detailHistory = []; }, { owner: 'penta', label: title });
     fitDetailSheetHeight(dialog.querySelector('.gate-detail-card'));
   }

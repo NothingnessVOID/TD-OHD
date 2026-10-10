@@ -1200,7 +1200,7 @@ body {
 }
 .modal-title { font-family: var(--font-serif); font-size: 19px; margin-bottom: 16px; }
 .modal-field { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
-.modal-field input {
+.modal-field input, .modal-field select {
   display: block;
   width: 100%;
   box-sizing: border-box;
