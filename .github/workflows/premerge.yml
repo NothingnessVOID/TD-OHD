@@ -1,0 +1,44 @@
+name: Pre-merge release regression
+on:
+  push:
+    branches: [dev/windows-development]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: npm ci
+      - run: npm run build:pages
+      - run: npm test
+      - run: npm run check:pages-bundle
+      - run: node scripts/check-font-distribution.mjs
+      - run: npx playwright-core install --with-deps chromium
+      - name: Serve built Pages subpath
+        run: |
+          node scripts/serve-pages-check.mjs > /tmp/pages-subpath.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:19965/TD-OHD/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/pages-subpath.log
+          exit 1
+      - run: node tests/pages-subpath-e2e.mjs
+        env:
+          CHROME_CHANNEL: chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: premerge-pages-evidence
+          path: artifacts/release/pages
