@@ -14,7 +14,7 @@ async function shot(name){await page.evaluate(()=>document.fonts.ready);await pa
 async function settled(){await page.waitForFunction(()=>document.querySelector('#team-content').getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-gate-reading').length===12,{},{timeout:90000});}
 async function language(code){if(!await page.locator('#more-menu').evaluate(n=>n.open))await page.locator('#more-toggle').click();if(!await page.locator('#language-menu').evaluate(n=>n.open))await page.locator('#language-menu summary').click();await page.locator(`[data-language="${code}"]`).click();if(await page.locator('#more-menu').evaluate(n=>n.open))await page.locator('#more-toggle').click();}
 async function skin(id){if(!await page.locator('#more-menu').evaluate(n=>n.open))await page.locator('#more-toggle').click();await page.locator('#skin-settings-button').click();await page.locator(`#skin-picker [data-skin-id="${id}"]`).click();await page.locator('#skin-settings-close').click();if(await page.locator('#more-menu').evaluate(n=>n.open))await page.locator('#more-toggle').click();}
-async function openGate(){await page.locator('[data-open-kind="gate"][data-open-id="31"]').first().click();await page.locator('.penta-detail:not(.hidden)').waitFor();}
+async function openGate(){await page.locator('.penta-gate-reading[data-detail-id="31"]').click();await page.locator('.penta-detail:not(.hidden)').waitFor();}
 try{
  await page.goto(base+'/dev/test-people.html');await page.locator('#import:not([disabled])').click();await page.goto(base);await page.locator('#chart-view:not(.hidden)').waitFor({timeout:90000});
  const birthPanel=await panelStyle('#chart-view .panel');await shot('01-birth-panels');
@@ -28,18 +28,18 @@ try{
  assert.equal(await page.locator('#team-person-search').inputValue(),'td-ohd-fictional-02');assert.match(await page.locator('#team-selection-count').innerText(),/3\/5/);
  await page.locator('#team-selection-confirm').click();await settled();
  assert.deepEqual(await panelStyle('#team-analysis .panel'),birthPanel,'Team uses exact shared panel surface and padding');
- const left=await page.locator('.team-management').boundingBox();const first=await page.locator('#team-analysis .panel').first().boundingBox();assert.ok(Math.abs(left.y-first.y)<2,'visible panels aligned');
+ const left=await page.locator('.team-graph-column').boundingBox();const first=await page.locator('#team-analysis .panel').first().boundingBox();assert.ok(Math.abs(left.y-first.y)<2,'visible panels aligned');
  await shot('07-team-scroll-start');
- await page.locator('.team-results').hover();await page.mouse.wheel(0,600);await page.waitForFunction(()=>document.querySelector('.team-results').scrollTop>300);await shot('08-team-scroll-middle');
- const after=await page.locator('.team-management').boundingBox();assert.equal(after.y,left.y);assert.equal(await page.evaluate(()=>scrollY),0);
- await page.locator('.team-results').evaluate(n=>n.scrollTop=n.scrollHeight);await shot('09-team-scroll-end');
- const bounds=await page.locator('.team-results').evaluate(n=>{const last=n.querySelector('.panel:last-child').getBoundingClientRect(),host=n.getBoundingClientRect();return {lastBottom:last.bottom,hostBottom:host.bottom,scrollable:n.scrollHeight>n.clientHeight,overflow:n.scrollWidth>n.clientWidth};});assert.ok(bounds.hostBottom-bounds.lastBottom>=10);assert.equal(bounds.overflow,false);
+ await page.locator('.team-results').hover();await page.mouse.wheel(0,600);await page.waitForFunction(()=>scrollY>300);await shot('08-team-scroll-middle');
+ const after=await page.locator('.team-graph-column').boundingBox();assert.ok(after.y>=56&&after.y<90);assert.ok(await page.evaluate(()=>scrollY)>300);
+ await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));await shot('09-team-scroll-end');
+ const bounds=await page.locator('.team-results').evaluate(n=>{const last=n.querySelector('.panel:last-child').getBoundingClientRect(),host=n.getBoundingClientRect();return {lastBottom:last.bottom,hostBottom:host.bottom,scrollable:n.scrollHeight>n.clientHeight,overflow:n.scrollWidth>n.clientWidth};});assert.ok(Math.abs(bounds.hostBottom-bounds.lastBottom)<2);assert.equal(bounds.scrollable,false);assert.equal(bounds.overflow,false);
  await page.locator('.penta-gate-hit[data-gate="31"]').click();await page.locator('.penta-gate-reading.penta-active-detail[data-detail-id="31"]').waitFor();await shot('10-graph-reading-link');
- const scroll=await page.locator('.team-results').evaluate(n=>n.scrollTop);await openGate();assert.equal(await page.locator('.penta-detail .detail-name').innerText(),birthGate);await shot('11-penta-gate');
+ const scroll=await page.evaluate(()=>scrollY);assert.equal(await page.locator('.penta-detail .detail-name').innerText(),birthGate);await shot('11-penta-gate');
  for(const lens of ['iching','gk','meridian','hd']){await page.locator(`.penta-detail [data-shared-lens="${lens}"]`).click();assert.equal(await page.locator(`.penta-detail [data-shared-lens="${lens}"]`).getAttribute('aria-pressed'),'true');}
  await page.locator('.penta-detail [data-shared-channel-select="7-31"]').click();assert.equal(await page.locator('.penta-detail .channel-detail-heading').innerText(),birthChannel);assert.equal(await page.locator('.penta-detail .channel-detail-heading .circuit-badge').count(),2);await shot('12-penta-channel');
- await page.locator('.penta-detail [data-shared-back]').click();assert.equal(await page.locator('.penta-detail [data-shared-gate="31"]').count(),1);await page.keyboard.press('Escape');assert.equal(await page.locator('.team-results').evaluate(n=>n.scrollTop),scroll);
- assert.equal(await page.locator('[data-open-kind="gate"][data-open-id="31"]').first().evaluate(n=>n===document.activeElement),true);
+ await page.locator('.penta-detail [data-shared-back]').click();assert.equal(await page.locator('.penta-detail [data-shared-gate="31"]').count(),1);await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>scrollY),scroll);
+ assert.equal(await page.locator('.penta-gate-hit[data-gate="31"]').evaluate(n=>n===document.activeElement),true);
  await page.locator('#team-save').click();await shot('13-save');await page.keyboard.press('Escape');await page.locator('#team-current').click();await shot('14-switcher');await page.keyboard.press('Escape');await page.locator('#team-manage').click();await shot('15-manage');await page.keyboard.press('Escape');
  for(const width of [1280,1024,430,390,320]){await page.setViewportSize({width,height:width===1280?720:844});await page.evaluate(()=>{scrollTo(0,0);document.querySelector('.team-results').scrollTop=0;});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);await shot(`16-analysis-${width}`);}
  await page.setViewportSize({width:390,height:844});await openGate();await shot('17-mobile-gate');await page.locator('.penta-detail [data-shared-channel-select="7-31"]').click();await shot('18-mobile-channel');await page.keyboard.press('Escape');

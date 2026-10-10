@@ -13,7 +13,7 @@ const page = await context.newPage(); page.setDefaultTimeout(15000);
 const errors=[], records=[]; page.on('pageerror', error=>errors.push(error.message));
 const geometry = () => page.evaluate(() => {
  const rect=selector=>{const r=document.querySelector(selector)?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}:null;};
- return {width:innerWidth,height:innerHeight,windowY:scrollY,overflow:document.documentElement.scrollWidth>innerWidth+1,left:rect('.team-management'),right:rect('.team-results'),canvas:rect('#team-content .penta-canvas'),firstPanel:rect('#team-analysis .panel'),rightScroll:document.querySelector('.team-results')?.scrollTop,gateCount:document.querySelectorAll('.penta-gate-reading').length,channelCount:document.querySelectorAll('.penta-channel-reading').length,gateOrder:[...document.querySelectorAll('.penta-gate-reading')].map(n=>Number(n.dataset.detailId)),contentIds:document.querySelectorAll('#team-content').length};
+ return {width:innerWidth,height:innerHeight,windowY:scrollY,overflow:document.documentElement.scrollWidth>innerWidth+1,left:rect('.team-graph-column'),right:rect('.team-results'),canvas:rect('#team-content .penta-canvas'),firstPanel:rect('#team-analysis .panel'),rightScroll:document.querySelector('.team-results')?.scrollTop,gateCount:document.querySelectorAll('.penta-gate-reading').length,channelCount:document.querySelectorAll('.penta-channel-reading').length,gateOrder:[...document.querySelectorAll('.penta-gate-reading')].map(n=>Number(n.dataset.detailId)),contentIds:document.querySelectorAll('#team-content').length};
 });
 async function shot(name) { await page.evaluate(()=>document.fonts.ready); const file=path.join(output,name+'.png'); await page.screenshot({path:file,animations:'disabled'});const state=await geometry();records.push({name,file,...state});console.log(JSON.stringify({name,file,...state})); }
 async function settled(){await page.waitForFunction(()=>document.querySelector('#team-content')?.getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-channel-reading').length===6,{},{timeout:90000});}
@@ -29,22 +29,22 @@ try {
  await settled();await shot('02-desktop-three');
  const before=await geometry();assert.equal(before.contentIds,1);assert.equal(before.channelCount,6);assert.equal(before.gateCount,12);assert.deepEqual(before.gateOrder,[31,8,33,7,1,13,15,2,46,5,14,29]);
  assert.ok(Math.abs(before.canvas.height/before.canvas.width-410/320)<.01);
- assert.ok(Math.abs(before.left.y-before.firstPanel.y)<2, 'visible panel tops align; scroll viewport includes shadow clearance');assert.ok(before.canvas.bottom<960);
- await page.locator('.team-results').hover();await page.mouse.wheel(0,650);await page.waitForFunction(()=>document.querySelector('.team-results').scrollTop>300);
- const scrolled=await geometry();assert.ok(Math.abs(scrolled.windowY-before.windowY)<2);assert.ok(Math.abs(scrolled.canvas.y-before.canvas.y)<2);
- await shot('03-independent-scroll');
+ assert.ok(Math.abs(before.left.y-before.firstPanel.y)<2, 'graph and reading start aligned');assert.ok(before.canvas.bottom<960);
+ await page.locator('.team-results').hover();await page.mouse.wheel(0,650);await page.waitForFunction(()=>scrollY>300);
+ const scrolled=await geometry();assert.ok(scrolled.windowY>before.windowY);assert.equal(scrolled.rightScroll,0);assert.ok(scrolled.left.y>=56&&scrolled.left.y<90);
+ await shot('03-document-scroll');
  await page.locator('.penta-gate-hit[data-gate="31"]').click();
  await page.locator('.penta-gate-reading.penta-active-detail[data-detail-id="31"]').waitFor();
- assert.equal(await page.locator('.penta-detail:not(.hidden)').count(),0);
+ assert.equal(await page.locator('.penta-detail:not(.hidden)').count(),1);
  await shot('04-graph-gate-link');
- const scrollBeforePopup=(await geometry()).rightScroll;
- await page.locator('[data-open-kind="gate"][data-open-id="31"]').first().click();await page.locator('.penta-detail:not(.hidden)').waitFor();
+ const scrollBeforePopup=scrolled.windowY;
+ assert.equal((await geometry()).windowY,scrollBeforePopup);await page.locator('.penta-detail:not(.hidden)').waitFor();
  assert.equal(await page.locator('.gate-detail:not(.hidden)').count(),1);await shot('05-gate-dialog');
  await page.locator('.penta-detail [data-shared-lens="meridian"]').click();await page.locator('.penta-detail .meridian-reading').waitFor();await shot('06-gate-meridian-dialog');
- await page.keyboard.press('Escape');assert.ok(Math.abs((await geometry()).rightScroll-scrollBeforePopup)<2);
+ await page.keyboard.press('Escape');assert.ok(Math.abs((await geometry()).windowY-scrollBeforePopup)<2);
  await page.locator('.penta-channel-hit[data-channel="7-31"]').click();await page.locator('.penta-channel-reading.penta-active-detail[data-detail-id="7-31"]').waitFor();
  assert.equal(await page.locator('.penta-gate.penta-selected-target').count(),2);
- await page.locator('[data-open-kind="channel"][data-open-id="7-31"]').first().click();await page.locator('.penta-detail:not(.hidden)').waitFor();await shot('07-channel-dialog');
+ await page.locator('.penta-detail:not(.hidden)').waitFor();await shot('07-channel-dialog');
  await page.keyboard.press('Escape');
  const totals=await page.locator('.penta-overview-stats').innerText();await page.locator('#team-selected-chips [data-focus-member]').first().click();assert.equal(await page.locator('.penta-overview-stats').innerText(),totals);await shot('08-member-focus');await page.locator('#team-selected-chips [data-focus-member]').first().click();
  await add('td-ohd-fictional-04');await add('td-ohd-fictional-05');await settled();
@@ -52,7 +52,7 @@ try {
  for(const [width,height] of [[1280,720],[1024,768],[430,932],[390,844],[320,800]]){
   await page.setViewportSize({width,height});await page.evaluate(()=>{scrollTo(0,0);document.querySelector('.team-results').scrollTop=0;});await shot(`10-layout-${width}`);assert.equal((await geometry()).overflow,false);
  }
- await page.setViewportSize({width:390,height:844});await page.locator('[data-open-kind="gate"][data-open-id="31"]').first().click();await page.locator('.penta-detail:not(.hidden)').waitFor();await shot('11-mobile-dialog');await page.keyboard.press('Escape');
+ await page.setViewportSize({width:390,height:844});await page.locator('.penta-gate-reading[data-detail-id="31"]').click();await page.locator('.penta-detail:not(.hidden)').waitFor();await shot('11-mobile-dialog');await page.keyboard.press('Escape');
  await page.setViewportSize({width:1440,height:960});await page.evaluate(()=>{scrollTo(0,0);document.querySelector('.team-results').scrollTop=0;});
  for(const code of ['en','zh-Hant','zh-CN']){await locale(code);await shot(`12-locale-${code}`);assert.equal((await geometry()).overflow,false);}
  const skinShots=[];

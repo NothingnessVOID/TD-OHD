@@ -37,7 +37,6 @@ try {
   for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 844 });
     await page.locator('.penta-gate-hit[data-gate="31"]').click();
-    await page.locator('.penta-open-detail[data-open-kind="gate"][data-open-id="31"]').click();
     const root = page.locator('.penta-detail');
     assert.equal(await root.locator('.detail-name').textContent(), birthHeading);
     assert.match(await root.locator('[data-penta-activations]').innerText(), /fiction-a/);
@@ -56,10 +55,10 @@ try {
     await root.locator('[data-shared-gate-select="31"]').click();
     await root.locator('.gate-detail-close').click();
     assert.equal(await root.isVisible(), false);
-    await page.locator('.penta-open-detail[data-open-kind="gate"][data-open-id="31"]').click();
+    await page.locator('.penta-gate-reading[data-detail-id="31"]').click();
     await page.keyboard.press('Escape');
     assert.equal(await root.isVisible(), false);
-    assert.equal(await page.locator('.penta-open-detail[data-open-kind="gate"][data-open-id="31"]').evaluate(el => el === document.activeElement), true);
+    assert.equal(await page.locator('.penta-gate-reading[data-detail-id="31"]').evaluate(el => el === document.activeElement), true);
   }
   assert.deepEqual(errors, []);
   console.log(`PASS actual chart + matrix clicks, shared headings, lenses, links, Back, Close, Escape, focus, desktop/mobile; screenshots: ${artifacts}`);

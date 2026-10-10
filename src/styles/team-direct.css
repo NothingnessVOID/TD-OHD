@@ -45,6 +45,11 @@
   border: 0; border-top: 1px solid var(--border-subtle, var(--border)); border-radius: 0;
   background: transparent; box-shadow: none; scroll-margin-top: calc(var(--header-height, 56px) + 12px);
 }
+#team-view .penta-analysis-card[role="button"] { cursor:pointer; border-radius:var(--radius); }
+#team-view .penta-analysis-card[role="button"]:hover { background:var(--bg-sunken); }
+#team-view .penta-channel-title { min-width:0; }
+#team-view .penta-channel-title .detail-name { font-size:19px; line-height:1.4; margin:0; }
+#team-view .penta-channel-reading .penta-state-text { display:flex; align-items:flex-start; gap:5px; }
 #team-view .penta-analysis-card.penta-active-detail { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 #team-view .penta-item-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 #team-view .penta-object-title { padding: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 650; text-align: left; cursor: pointer; min-height: 44px; }
