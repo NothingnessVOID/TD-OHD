@@ -19,6 +19,16 @@ try {
   });
   await page.goto(base);
   await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000});
+  await page.locator('#people-switcher').focus();
+  await page.locator('#people-switcher').selectOption('__edit');
+  await page.locator('#edit-name').focus();
+  await page.keyboard.press('Shift+Tab');
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'edit-save');
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'edit-name');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.person-editor').count(),0);
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'people-switcher');
   await page.locator('#people-switcher').selectOption('__edit');
   await page.locator('#edit-name').fill('Edited fictional');
   await page.locator('#edit-unknown').check();

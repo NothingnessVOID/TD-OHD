@@ -38,7 +38,18 @@ export function openPersonEditor(birth) {
   field('time').addEventListener('change', place.updateDateTime);
   const trigger = document.activeElement;
   const close = () => { place.destroy(); overlay.remove(); document.removeEventListener('keydown', onKey); if (trigger?.isConnected) trigger.focus(); };
-  const onKey = event => { if (event.key === 'Escape') close(); };
+  const onKey = event => {
+    if (event.key === 'Escape') { event.preventDefault(); close(); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...overlay.querySelectorAll('input, button, select, textarea, a[href], [tabindex]')]
+      .filter(node => !node.disabled && node.tabIndex >= 0 && !node.closest('[hidden], .hidden') && node.getClientRects().length);
+    const first = focusable[0], last = focusable.at(-1);
+    if (!first) { event.preventDefault(); return; }
+    if (!overlay.contains(document.activeElement) || (event.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  };
   document.addEventListener('keydown', onKey);
   field('cancel').addEventListener('click', close);
   overlay.addEventListener('click', event => { if (event.target === overlay) close(); });
