@@ -31,21 +31,33 @@ function currentRepository() { return !teamId || getTeam(teamId)?.revision === r
 function reset() { teamId = null; revision = null; teamName = ''; members = []; groups = [freshGroup()]; selectedId = groups[0].pentaId; dirty = false; schedule(false); }
 function renderControls() {
  const focusId = document.activeElement?.dataset?.focusMember;
- $('team-current').textContent = `${teamName ? teamName + ' / ' : ''}${group()?.label || 'Penta A'} ⌄`;
- $('team-save').textContent = t('Save'); $('team-manage').ariaLabel = t('Team manage');
- $('team-add-saved-person').textContent = t('Team add person');
- $('team-selected-chips').innerHTML = selectedMembers().map((m,i) => `<span class="team-person-chip penta-member-${i+1}"><button type="button" data-focus-member="${esc(m.memberId)}" aria-pressed="${matrix?.highlightedMemberId === m.memberId}"><b class="penta-member-tag">${i+1}</b>${esc(memberName(m))}${getPerson(m.personId)?.timeUnknown ? `<small title="${txt('Team estimated time')}">≈</small>` : ''}</button><button type="button" data-remove-member="${esc(m.memberId)}" aria-label="${txt('Remove')} ${esc(memberName(m))}">×</button></span>`).join('');
+ const title = teamName ? `${teamName} / ${group()?.label || 'Penta A'}` : (!teamId && groups.length === 1 && group()?.label === 'Penta A' ? t('Penta temporary') : group()?.label || t('Penta temporary'));
+ $('team-current').innerHTML = `<span class="team-current-name">${esc(title)}</span>${dirty ? `<span class="team-dirty-indicator" title="${txt('Penta unsaved changes')}" aria-label="${txt('Penta unsaved changes')}">●</span>` : ''}<span aria-hidden="true">⌄</span>`;
+ $('team-current').title = title;
+ $('team-save').textContent = t('Save'); $('team-save').classList.toggle('is-dirty', dirty); $('team-manage').ariaLabel = t('Team manage');
+ const addButton = $('team-add-saved-person');
+ addButton.textContent = t('Team add person'); addButton.removeAttribute('aria-disabled');
+ addButton.dataset.full = String(selectedMembers().length >= 5); addButton.title = selectedMembers().length >= 5 ? t('Team five limit') : t('Team add person');
+ $('team-member-caption').textContent = `${t('Penta current members')} · ${selectedMembers().length}/5`;
+ $('team-selected-chips').innerHTML = selectedMembers().map((m,i) => `<span class="team-person-chip penta-member-${i+1}"><button type="button" data-focus-member="${esc(m.memberId)}" aria-pressed="${matrix?.highlightedMemberId === m.memberId}" title="${esc(memberName(m))}"><b class="penta-member-tag">${i+1}</b><span class="team-chip-name">${esc(memberName(m))}</span>${getPerson(m.personId)?.timeUnknown ? `<small title="${txt('Team estimated time')}">≈</small>` : ''}</button><button type="button" data-remove-member="${esc(m.memberId)}" aria-label="${txt('Remove')} ${esc(memberName(m))}">×</button></span>`).join('');
+ $('team-selected-chips').append(addButton);
  if (focusId) [...$('team-selected-chips').querySelectorAll('[data-focus-member]')].find(button => button.dataset.focusMember === focusId)?.focus({ preventScroll:true });
 }
-function placeholder(error = false) { matrix?.dispose(); matrix = null; latest = null; renderPentaPlaceholder($('team-content'), { error }); $('team-analysis').replaceChildren(); }
+function placeholder(error = false) {
+ matrix?.dispose(); matrix = null; latest = null;
+ renderPentaPlaceholder($('team-content'), { error });
+ $('team-analysis').innerHTML = `<section class="penta-reading-section penta-empty-guide"><h2>${txt('Penta reading title')}</h2><p>${txt(error ? 'Penta repair guide' : 'Penta empty guide')}</p></section>`;
+}
 function schedule(markDirty = true) {
  if (markDirty) dirty = true;
- generation++; clearTimeout(timer); renderControls();
+ generation++; clearTimeout(timer); matrix?.closeDetail?.(); renderControls();
  const count = selectedMembers().length;
  $('team-content').setAttribute('aria-busy', String(count >= 3));
- if (count < 3) { $('team-analysis').inert = false; $('team-analysis').style.visibility = ''; placeholder(); status(t('Team choose more')); $('team-content').setAttribute('aria-busy','false'); return; }
- // Stale details become inaccessible while retaining their geometry during the short update.
- $('team-analysis').inert = true; $('team-analysis').style.visibility = 'hidden';
+ $('team-content').inert = count >= 3;
+ $('team-analysis').setAttribute('aria-busy', String(count >= 3));
+ if (count < 3) { $('team-analysis').inert = false; $('team-analysis').style.opacity = ''; placeholder(); status(); $('team-content').setAttribute('aria-busy','false'); return; }
+ // Keep the previous scene readable but non-interactive, with an explicit updating state.
+ $('team-analysis').inert = true; $('team-analysis').style.opacity = '.55';
  status(t('Calculating…')); timer = setTimeout(analyze, 160);
 }
 async function analyze() {
@@ -69,7 +81,7 @@ async function analyze() {
   const result = analyzePentaStructure(charts); if (!valid()) return;
   latest = { result, people: candidates, groupLabel: group().label }; renderResult(); status();
  } catch (error) { if (token === generation) { placeholder(true); status(error.message, getPerson(problemPerson) ? problemPerson : null); } }
- finally { if (token === generation) { $('team-content').setAttribute('aria-busy','false'); $('team-analysis').inert = false; $('team-analysis').style.visibility = ''; } }
+ finally { if (token === generation) { $('team-content').setAttribute('aria-busy','false'); $('team-content').inert = false; $('team-analysis').inert = false; $('team-analysis').setAttribute('aria-busy','false'); $('team-analysis').style.opacity = ''; } }
 }
 function renderResult() {
  if (!latest) return;
@@ -161,13 +173,17 @@ function manage() {
  });
 }
 export function setupTeamView() {
- $('team-form').innerHTML = `<div class="team-workspace"><div class="team-management"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p><div id="team-content"></div></div><div class="team-results"><div id="team-analysis"></div></div></div>`;
+ const subtitle = document.querySelector('#team-view .view-subtitle');
+ subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
+ const previousContent = $('team-content');
+ if (previousContent && !$('team-form').contains(previousContent)) previousContent.remove();
+ $('team-form').innerHTML = `<div class="team-workspace"><div class="team-management"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p><div id="team-content"></div></div><div class="team-results"><div id="team-analysis"></div></div></div>`;
  $('team-current').onclick = switcher; $('team-save').onclick = saveDialog; $('team-manage').onclick = manage; $('team-add-saved-person').onclick = picker;
- $('team-selected-chips').onclick = event => { const b = event.target.closest('button'); if(b?.dataset.removeMember) { group().memberIds=group().memberIds.filter(id=>id!==b.dataset.removeMember); schedule(); $('team-add-saved-person').focus(); } if(b?.dataset.focusMember && matrix) { matrix.setHighlightedMemberId(matrix.highlightedMemberId===b.dataset.focusMember?null:b.dataset.focusMember); renderControls(); } };
+ $('team-selected-chips').onclick = event => { const b = event.target.closest('button'); if(b?.dataset.removeMember) { group().memberIds=group().memberIds.filter(id=>id!==b.dataset.removeMember); schedule(); $('team-add-saved-person').focus(); } if(b?.dataset.focusMember && matrix) { matrix.setHighlightedMemberId(matrix.highlightedMemberId===b.dataset.focusMember?null:b.dataset.focusMember); } };
  $('team-flow-status').onclick = event => { const id=event.target.closest('button')?.dataset.editPerson; if(id) editPerson(id); };
  onPeopleChange(() => schedule(false));
  window.addEventListener('storage', event => { if(event.key === null || event.key === 'ohd-teams-v1') schedule(false); });
  reset();
 }
 export function renderTeamView() { if ($('team-current')) schedule(false); }
-export function refreshTeamLanguage() { closeLayer?.(); if (!$('team-current')) return; renderControls(); if(latest) renderResult(); else schedule(false); }
+export function refreshTeamLanguage() { closeLayer?.(); if (!$('team-current')) return; document.querySelector('#team-view .view-subtitle').textContent = t('Team members and Penta structure'); renderControls(); if(latest) renderResult(); else schedule(false); }

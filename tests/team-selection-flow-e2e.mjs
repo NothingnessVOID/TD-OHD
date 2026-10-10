@@ -9,7 +9,7 @@ const people=Array.from({length:7},(_,i)=>({id:`fictional-flow-${i}`,name:i<2?'F
 const output='test-results/team-flow'; await mkdir(output,{recursive:true});
 try {
  await page.addInitScript(({key,people})=>{localStorage.setItem(key,JSON.stringify(people));localStorage.setItem('ohd-language','en');localStorage.setItem('ohd-last-person-id',people[2].id);},{key:PROFILE_STORAGE_KEY,people});
- await page.goto('http://127.0.0.1:19962'); await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000}); await page.locator('[data-view="team"]').click();
+ await page.goto(process.env.E2E_URL || process.env.PREVIEW_URL || 'http://127.0.0.1:9961'); await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000}); await page.locator('[data-view="team"]').click();
  const chips=page.locator('.team-person-chip');
  assert.equal(await chips.count(),0); assert.equal(await page.locator('.penta-placeholder svg').count(),1);
  const add=async i=>{await page.locator('#team-add-saved-person').click();await page.locator('#team-person-search').fill(people[i].id);await page.locator(`[data-add-person="${people[i].id}"]`).click();};

@@ -103,7 +103,7 @@ export function createPentaMatrix(container, {
     }).join('');
     const gateButtons = result.gates.map(gate => { const p=point(gate); return `<button type="button" class="penta-gate-hit" data-select-kind="gate" data-select-id="${gate.gate}" data-gate="${gate.gate}" style="left:${p.x/320*100}%;top:${p.y/410*100}%" aria-pressed="false" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(hexagramName(gate.gate))}"></button>`; }).join('');
     const channelButtons = result.channels.map(channel => { const a=point(gates.get(channel.gates[0])), b=point(gates.get(channel.gates[1])); return `<button type="button" class="penta-channel-hit" data-select-kind="channel" data-select-id="${esc(channel.channelId)}" data-channel="${esc(channel.channelId)}" style="left:${a.x/320*100}%;top:${(a.y+b.y)/820*100}%" aria-pressed="false" aria-label="${label('Channel')} ${esc(channel.channelId)} · ${label(states[channel.status])}"></button>`; }).join('');
-    graph.innerHTML = `<div class="penta-figure-space"><div class="penta-canvas"><svg viewBox="0 0 320 410" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${label('Penta matrix')}"><g class="penta-lines">${lines}</g><g class="penta-nodes">${nodes}</g></svg>${gateButtons}${channelButtons}</div></div><div class="penta-figure-footer"><div class="penta-state-legend" aria-label="${label('Channel states')}">${Object.entries(states).map(([state, name]) => `<span><b class="penta-state-symbol penta-${state}" aria-hidden="true">${symbols[state]}</b>${label(name)}</span>`).join('')}</div><button type="button" class="penta-clear-focus" data-clear-member hidden>${label('Penta clear focus')}</button></div>`;
+    graph.innerHTML = `<div class="penta-figure-space"><div class="penta-canvas"><svg viewBox="0 0 320 410" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${label('Penta matrix')}"><g class="penta-lines">${lines}</g><g class="penta-nodes">${nodes}</g></svg>${gateButtons}${channelButtons}</div></div><div class="penta-figure-footer"><div class="penta-state-legend" aria-label="${label('Channel states')}">${Object.entries(states).map(([state, name]) => `<span><b class="penta-state-symbol penta-${state}" aria-hidden="true">${symbols[state]}</b>${label(name)}</span>`).join('')}</div></div>`;
   }
   function applyHighlights() {
     const target = hoverTarget || selectedTarget;
@@ -123,7 +123,6 @@ export function createPentaMatrix(container, {
     graph.querySelectorAll('button[data-select-kind]').forEach(button => button.setAttribute('aria-pressed', String(selectedTarget?.kind === button.dataset.selectKind && selectedTarget.id === button.dataset.selectId)));
     analysis.querySelectorAll('[data-detail-kind]').forEach(node => node.classList.toggle('penta-active-detail', selectedTarget?.kind === node.dataset.detailKind && selectedTarget.id === node.dataset.detailId));
     for (const root of [graph, analysis]) root.querySelectorAll('[data-source-id]').forEach(node => node.classList.toggle('penta-dimmed', !!selected && node.dataset.sourceId !== selected));
-    graph.querySelector('[data-clear-member]').hidden = !selected;
   }
   function selectObject(kind, id, { scroll = true, focus = false } = {}) {
     const item = kind === 'gate' ? gateFor(id) : kind === 'channel' ? channelFor(id) : getKnowledgeEntry(query(id));
@@ -207,6 +206,7 @@ export function createPentaMatrix(container, {
     selectObject,
     openGateDetail: id => showDetail('gate', id),
     openChannelDetail: id => showDetail('channel', id),
+    closeDetail() { if (!dialog.classList.contains('hidden')) closeDetailDialog(); },
     refreshLanguage() { const open = currentDetail ? { ...currentDetail } : null; render(); if (open) showDetail(open.kind, open.id, false); },
     dispose() {
       disposed = true;
