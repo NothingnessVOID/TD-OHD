@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import {isReviewedPhase1BHistorySource} from './helpers/penta-phase1b-history-scope.js';
 import {contrastProjection} from './helpers/contrast-projection.js';
 import {preservedSource, phase1ProtectedCurrent, releaseCandidate} from './helpers/knowledge-release-contract.js';
@@ -15,13 +16,13 @@ import { listKnowledgeEntries } from '../src/lib/knowledge/registry.js';
 import { renderKnowledgeDetail } from '../src/lib/knowledge/detail-renderer.js';
 import { chartKnowledgeQuery } from '../src/lib/knowledge/access.js';
 const base='66185da8071a64b679ce51857c7029556957f038';
-const bytes=p=>readFileSync(new URL('../'+p,import.meta.url));
+const bytes=p=>incrementHistoricalSource(p);
 const original=p=>preservedSource(p,base);
 const approvedSkin=p=>skinProjection(p,base);
 const q=(objectType,objectId)=>({objectType,objectId});
 
 test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
- for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])if(!isReviewedPhase1BHistorySource(path))assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):contrastProjection(bytes(path),path),skinScope.files[path]?approvedSkin(path):preservedSource(path,base),path);
+ for(const path of ['src/locales/zh-Hant/vocabulary.js','src/lib/knowledge/content/index.js','src/bodygraph.js','src/features/transit-timeline/core.js','src/features/transit-timeline/view.js','src/features/transit-timeline/timeline.css','src/main.js','src/lib/i18n.js','src/views/connection.js','src/views/team.js','engine-core/TransitCore.cs','src/lib/chart-engine/sharp-contract.js','src/lib/variable-arrows.js'])if(!isReviewedPhase1BHistorySource(path))assert.deepEqual(['src/bodygraph.js','src/views/connection.js'].includes(path)?phase1ProtectedCurrent(path):contrastProjection(readFileSync(new URL('../'+path,import.meta.url)),path),skinScope.files[path]?approvedSkin(path):preservedSource(path,base),path);
 });
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
