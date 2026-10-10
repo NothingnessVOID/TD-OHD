@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
 import { chromium } from 'playwright-core';
-const base = process.env.E2E_URL || 'http://127.0.0.1:5230';
+const base = process.env.E2E_URL || 'http://127.0.0.1:19964';
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chromium', headless: true });
 const profile = { id: 'synthetic-restored', name: 'Restored Synthetic', birthDate: '1990-01-01', birthTime: '12:00',
   location: { timezone: 8, lat: 31.2, lon: 121.5, iana: 'Asia/Shanghai', name: 'Shanghai' } };
@@ -50,30 +50,41 @@ try {
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).filter(p => p.name === 'Connection Synthetic').length), 1);
 
   await page.locator('.nav-link[data-view="team"]').click();
-  await page.locator('#team-person-picker').selectOption(profile.id);
-  await page.locator('#team-add-person').click();
-  const row = page.locator('#team-members .team-member-row').first();
+  await page.locator('#team-add-saved-person').click();
+  await page.locator(`[data-add-person="${profile.id}"]`).click();
+  const countPeople = () => page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).length);
+  const before = await countPeople();
+  // Unsaved editor drafts cannot enter analysis or mutate the saved library.
+  await page.locator('#team-person-create').click();
+  await page.locator('#edit-name').fill('Team Synthetic unsaved');
+  await page.locator('#edit-save').click();
+  assert.equal(await page.locator('.person-editor').count(), 1);
+  assert.equal(await countPeople(), before);
+  await page.keyboard.press('Escape');
   for (const [index, date] of ['1995-02-01', '1996-03-02'].entries()) {
-    await page.locator('#add-member').click();
-    const quick = page.locator('#team-members .team-member-row').nth(index);
-    await quick.locator('.team-name').fill(`Team Synthetic ${index + 1}`);
-    await quick.locator('.team-date').fill(date);
-    await quick.locator('.team-time').fill('10:00');
-    await quick.locator('.ps-toggle').click();
-    await quick.locator('.ps-manual').fill('8');
+    await page.locator('#team-person-create').click();
+    await page.locator('#edit-name').fill(`Team Synthetic ${index + 1}`);
+    await page.locator('#edit-date').fill(date);
+    await page.locator('#edit-time').fill('10:00');
+    if (!await page.locator('.person-editor .ps-manual').isVisible()) await page.locator('.person-editor .ps-toggle').click();
+    await page.locator('.person-editor .ps-manual').fill('8');
+    assert.equal(await countPeople(), before + index, 'draft editing does not save');
+    await page.locator('#edit-save').click();
+    await page.locator('.person-editor').waitFor({state:'detached'});
+    assert.equal(await countPeople(), before + index + 1, 'explicit editor save persists exactly one person');
   }
-  await page.locator('#team-group-new').click();
-  await page.locator('.team-member-card .team-assign').click();
-  for (const quick of await page.locator('#team-members .team-member-row').all()) await quick.locator('.team-assign-quick').click();
-  await page.locator('#team-calculate').click();
-  await page.locator('#team-content .team-summary').waitFor({ timeout: 60000 });
-  assert.equal(await page.locator('#team-content .team-channel').count(), 6);
-  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).some(p => p.name.startsWith('Team Synthetic'))), false,
-    'analysis never saves temporary team members');
-  await page.locator('#team-save').click();
-  assert.match(await page.locator('#team-content').innerText(), /Unsaved members/);
-  await row.locator('.team-save-person').click();
+  assert.equal(await page.locator('.team-person-chip').count(), 0, 'picker draft is not applied before confirmation');
+  await page.locator('#team-selection-confirm').click();
+  await page.waitForFunction(() => document.querySelector('#team-content').getAttribute('aria-busy') === 'false' && document.querySelectorAll('.penta-channel-reading').length === 6, {}, {timeout:90000});
+  assert.equal(await page.locator('.penta-channel-reading').count(), 6);
+  assert.equal(await countPeople(), before + 2, 'automatic analysis creates no extra profiles');
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem(window.profileKey)).filter(p => p.name === 'Team Synthetic 1').length), 1);
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('ohd-teams-v1') || '{"teams":[]}').teams.length), 0);
+  await page.locator('#team-save').click();
+  await page.locator('#team-save-name').fill('Fictional runtime team');
+  await page.locator('#team-save-form button[type=submit]').click();
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('ohd-teams-v1')).teams[0].members.length), 3);
+  assert.equal(await countPeople(), before + 2, 'team save does not duplicate profiles');
   assert.deepEqual(api, []);
   await page.close();
 
