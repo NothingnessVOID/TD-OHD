@@ -54,6 +54,7 @@
 .penta-detail .penta-detail-endpoints dt { color:var(--text-secondary); }
 .penta-detail .penta-detail-endpoints dd { margin:0; }
 .penta-detail [data-penta-channel-state] > h3 { margin-top:14px; }
+.penta-detail [data-penta-channel-state] > .transit-source-badge { margin-left:0; max-width:100%; white-space:normal; overflow-wrap:break-word; }
 .penta-detail [data-activation-side="personality"] { color:var(--hd-personality); }
 .penta-detail [data-activation-side="design"] { color:var(--hd-design); }
 @media (prefers-reduced-motion: reduce) { #team-view .penta-gate, #team-view .penta-edge { transition:none; } }

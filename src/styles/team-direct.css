@@ -49,7 +49,13 @@
 #team-view .penta-analysis-card[role="button"]:hover { background:var(--bg-sunken); }
 #team-view .penta-channel-title { min-width:0; }
 #team-view .penta-channel-title .detail-name { font-size:19px; line-height:1.4; margin:0; }
-#team-view .penta-channel-reading .penta-state-text { display:flex; align-items:flex-start; gap:5px; }
+#team-view .penta-channel-reading .penta-state-text { display:flex; align-items:flex-start; gap:5px; min-width:0; text-align:left; }
+#team-view .penta-channel-reading .penta-state-text > span { min-width:0; overflow-wrap:break-word; }
+#team-view .penta-channel-reading .penta-status-icon { width:18px; height:18px; }
+@media (max-width:600px) {
+  #team-view .penta-channel-reading .penta-item-heading { flex-direction:column; gap:6px; }
+  #team-view .penta-channel-reading .penta-state-text { max-width:100%; width:100%; }
+}
 #team-view .penta-analysis-card.penta-active-detail { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 #team-view .penta-item-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 #team-view .penta-object-title { padding: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 650; text-align: left; cursor: pointer; min-height: 44px; }
