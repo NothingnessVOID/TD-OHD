@@ -11,7 +11,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null, o
   if (!birth.id && !create) return;
   const title = create ? 'Team create person' : 'Edit chart';
   const content = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t(title))}">
-    <div class="modal-title">${esc(t(title))}</div>
+    <header><div class="modal-title">${esc(t(title))}</div><button type="button" class="ui-icon-button" data-close aria-label="${esc(t('Close'))}">×</button></header>
     <label class="modal-field">${t('Name')}<input id="edit-name" value="${esc(birth.name || '')}" required></label>
     <label class="modal-field">${t('Birth Date')}<input id="edit-date" type="date" value="${esc(birth.birthDate || '')}" required></label>
     <label class="modal-field">${t('Birth Time')}<input id="edit-time" type="time" value="${esc(birth.birthTime || '')}" required></label>
@@ -20,7 +20,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null, o
     <div id="edit-place"></div>
     <label class="modal-check" ${localMode ? 'hidden' : ''}><input id="edit-ai" type="checkbox" ${getAiAccess(birth.id) ? 'checked' : ''}>${t('Let my AI read this chart through the connector')}</label>
     <p id="edit-error" role="alert" hidden></p>
-    <div class="modal-actions"><button type="button" id="edit-cancel" class="btn-secondary">${t('Cancel')}</button><button type="submit" id="edit-save" class="btn-primary">${t('Save')}</button></div>
+    <div class="modal-actions"><button type="button" id="edit-cancel" class="btn-secondary" data-close>${t('Cancel')}</button><button type="submit" id="edit-save" class="btn-primary">${t('Save')}</button></div>
   </form>`;
   const { overlay, close } = openOperationDialog({ content, onClose: reason => { place.destroy(); if (reason !== 'saved') onCancel?.(); } });
   const field = id => overlay.querySelector(`#edit-${id}`);
@@ -36,7 +36,6 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null, o
   field('unknown').addEventListener('change', updateUnknown);
   field('date').addEventListener('change', place.updateDateTime);
   field('time').addEventListener('change', place.updateDateTime);
-  field('cancel').addEventListener('click', () => close());
   overlay.querySelector('form').addEventListener('submit', event => {
     event.preventDefault();
     try {
