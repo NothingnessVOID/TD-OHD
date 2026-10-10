@@ -24,6 +24,15 @@ let generation = 0, timer, matrix = null, latest = null, dirty = false, closeLay
 const group = () => groups.find(g => g.pentaId === selectedId);
 const selectedMembers = () => (group()?.memberIds || []).map(id => members.find(m => m.memberId === id)).filter(Boolean);
 const memberName = m => getPerson(m.personId)?.name || m.labelSnapshot;
+// Presentation-only slots; surviving members keep their color when another is removed.
+const memberSlots = new Map();
+function currentMemberSlots() {
+ const key = selectedId, selected = selectedMembers();
+ const slots = memberSlots.get(key) || new Map();
+ for (const id of slots.keys()) if (!selected.some(m => m.memberId === id)) slots.delete(id);
+ for (const m of selected) if (!slots.has(m.memberId)) slots.set(m.memberId, [1,2,3,4,5].find(n => ![...slots.values()].includes(n)));
+ memberSlots.set(key, slots); return slots;
+}
 function status(message = '', personId = null) {
  $('team-flow-status').innerHTML = esc(message) + (personId ? ` <button type="button" data-edit-person="${esc(personId)}">${txt('Edit chart')}</button>` : '');
 }
@@ -31,6 +40,7 @@ function currentRepository() { return !teamId || getTeam(teamId)?.revision === r
 function reset() { teamId = null; revision = null; teamName = ''; members = []; groups = [freshGroup()]; selectedId = groups[0].pentaId; dirty = false; schedule(false); }
 function renderControls() {
  const focusId = document.activeElement?.dataset?.focusMember;
+ const slots = currentMemberSlots();
  const title = teamName ? `${teamName} / ${group()?.label || 'Penta A'}` : (!teamId && groups.length === 1 && group()?.label === 'Penta A' ? t('Penta temporary') : group()?.label || t('Penta temporary'));
  $('team-current').innerHTML = `<span class="team-current-name">${esc(title)}</span>${dirty ? `<span class="team-dirty-indicator" title="${txt('Penta unsaved changes')}" aria-label="${txt('Penta unsaved changes')}">●</span>` : ''}<span aria-hidden="true">⌄</span>`;
  $('team-current').title = title;
@@ -39,7 +49,7 @@ function renderControls() {
  addButton.textContent = t('Team add person'); addButton.removeAttribute('aria-disabled');
  addButton.dataset.full = String(selectedMembers().length >= 5); addButton.title = selectedMembers().length >= 5 ? t('Team five limit') : t('Team add person');
  $('team-member-caption').textContent = `${t('Penta current members')} · ${selectedMembers().length}/5`;
- $('team-selected-chips').innerHTML = selectedMembers().map((m,i) => `<span class="team-person-chip penta-member-${i+1}"><button type="button" data-focus-member="${esc(m.memberId)}" aria-pressed="${matrix?.highlightedMemberId === m.memberId}" title="${esc(memberName(m))}"><b class="penta-member-tag">${i+1}</b><span class="team-chip-name">${esc(memberName(m))}</span>${getPerson(m.personId)?.timeUnknown ? `<small title="${txt('Team estimated time')}">≈</small>` : ''}</button><button type="button" data-remove-member="${esc(m.memberId)}" aria-label="${txt('Remove')} ${esc(memberName(m))}">×</button></span>`).join('');
+ $('team-selected-chips').innerHTML = selectedMembers().map(m => `<span class="team-person-chip penta-member-${slots.get(m.memberId)}"><button type="button" data-focus-member="${esc(m.memberId)}" aria-pressed="${matrix?.highlightedMemberId === m.memberId}" title="${esc(memberName(m))}"><b class="penta-member-tag">${slots.get(m.memberId)}</b><span class="team-chip-name">${esc(memberName(m))}</span>${getPerson(m.personId)?.timeUnknown ? `<small title="${txt('Team estimated time')}">≈</small>` : ''}</button><button type="button" data-remove-member="${esc(m.memberId)}" aria-label="${txt('Remove')} ${esc(memberName(m))}">×</button></span>`).join('');
  $('team-selected-chips').append(addButton);
  if (focusId) [...$('team-selected-chips').querySelectorAll('[data-focus-member]')].find(button => button.dataset.focusMember === focusId)?.focus({ preventScroll:true });
 }
@@ -73,7 +83,7 @@ async function analyze() {
    if (!birth.birthTime) throw new Error(`${person.name}: ${t('Missing birth time.')}`);
    if (birth.timezone == null) throw new Error(`${person.name}: ${t('Missing timezone.')}`);
    if (!validateBirth({ ...birth, timeUnknown: false })) throw new Error(`${person.name}: ${t('Birth details need correction: {names}', { names: person.name })}`);
-   return { memberId: m.memberId, personId: person.id, displayName: person.name, timeUnknown: !!person.timeUnknown, estimatedTime: person.timeUnknown ? '12:00' : null, snapshot: JSON.stringify(person), birth: effectiveTeamBirth(birthFromPerson(person)) };
+   return { memberId: m.memberId, displayIndex: currentMemberSlots().get(m.memberId), personId: person.id, displayName: person.name, timeUnknown: !!person.timeUnknown, estimatedTime: person.timeUnknown ? '12:00' : null, snapshot: JSON.stringify(person), birth: effectiveTeamBirth(birthFromPerson(person)) };
   });
   const valid = () => token === generation && pentaId === selectedId && currentRepository() && candidates.every(p => JSON.stringify(getPerson(p.personId)) === p.snapshot);
   const charts = [];
@@ -85,11 +95,11 @@ async function analyze() {
 }
 function renderResult() {
  if (!latest) return;
- const scroll = document.querySelector('.team-results').scrollTop, selection = matrix?.selection || null, highlighted = matrix?.highlightedMemberId || null;
+ const selection = matrix?.selection || null, highlighted = matrix?.highlightedMemberId || null;
  matrix?.dispose(); $('team-content').replaceChildren(); $('team-analysis').replaceChildren();
  matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis'), detailAdapter: pentaDetailAdapter, initialSelection: selection, onMemberFocusChange: renderControls });
  if (highlighted) matrix.setHighlightedMemberId(highlighted);
- document.querySelector('.team-results').scrollTop = scroll; renderControls();
+ renderControls();
 }
 function layer(title, body, bind) {
  closeLayer?.();
@@ -144,7 +154,7 @@ function picker(draft = null) {
 }
 function load(team, pentaId) { teamId = team.teamId; revision = team.revision; teamName = team.name; members = team.members.map(m => ({ ...m })); groups = team.groups.map(g => ({ ...g, memberIds: [...g.memberIds] })); if (!groups.length) groups.push(freshGroup()); selectedId = pentaId || groups[0].pentaId; dirty = false; schedule(false); }
 function switcher() {
- layer('Team / Penta', `<button type="button" id="team-temporary">${txt('Team temporary')}</button><button type="button" id="team-new-group">${txt('New Penta')}</button><div>${groups.map(g => `<button type="button" data-local-group="${esc(g.pentaId)}">${esc(teamName || t('Team temporary'))} / ${esc(g.label)}</button>`).join('')}</div><hr>${listTeams().map(team => `<section><strong>${esc(team.name)}</strong>${team.groups.map(g => `<button type="button" data-team="${esc(team.teamId)}" data-group="${esc(g.pentaId)}">${esc(g.label)}</button>`).join('') || `<button type="button" data-team="${esc(team.teamId)}">${txt('Open')}</button>`}</section>`).join('')}`, (root, close) => {
+ layer('Team / Penta', `<div class="team-switch-actions"><button type="button" id="team-temporary">${txt('Team temporary')}</button><button type="button" id="team-new-group">${txt('New Penta')}</button></div><div class="team-switch-list">${groups.map(g => `<button type="button" data-local-group="${esc(g.pentaId)}" aria-pressed="${g.pentaId === selectedId}">${esc(teamName || t('Team temporary'))} / ${esc(g.label)}</button>`).join('')}</div><hr>${listTeams().map(team => `<section><strong>${esc(team.name)}</strong>${team.groups.map(g => `<button type="button" data-team="${esc(team.teamId)}" data-group="${esc(g.pentaId)}">${esc(g.label)}</button>`).join('') || `<button type="button" data-team="${esc(team.teamId)}">${txt('Open')}</button>`}</section>`).join('')}`, (root, close) => {
   root.querySelector('#team-temporary').onclick = async () => { if (!dirty || await confirmOperation(t('Discard unsaved team changes?'))) { close(); reset(); } };
   root.querySelector('#team-new-group').onclick = () => {
    layer('New Penta', `<form><label class="modal-field">${txt('Penta name')}<input name="group" value="Penta ${String.fromCharCode(65+groups.length)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit">${txt('Confirm')}</button></div></form>`, (dialog, done) => {
@@ -156,7 +166,7 @@ function switcher() {
 }
 function saveDialog() {
  const snapshotTeams = listTeams();
- layer('Save team', `<form id="team-save-form"><label class="modal-field">${txt('Saved teams')}<select id="team-save-target"><option value="">${txt('New team')}</option>${snapshotTeams.map(team => `<option value="${esc(team.teamId)}" ${team.teamId === teamId ? 'selected' : ''}>${esc(team.name)}</option>`).join('')}</select></label><label class="modal-field">${txt('Team name')}<input id="team-save-name" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input id="team-save-group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form>`, (root, close) => {
+ layer('Save team', `<form id="team-save-form"><label class="modal-field">${txt('Saved teams')}<select id="team-save-target"><option value="">${txt('New team')}</option>${snapshotTeams.map(team => `<option value="${esc(team.teamId)}" ${team.teamId === teamId ? 'selected' : ''}>${esc(team.name)}</option>`).join('')}</select></label><label class="modal-field">${txt('Team name')}<input id="team-save-name" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input id="team-save-group" value="${esc(group().label)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit" class="btn-primary">${txt('Save')}</button></div></form>`, (root, close) => {
   const target = root.querySelector('#team-save-target'), name = root.querySelector('#team-save-name');
   const update = () => { name.required = !target.value; name.disabled = !!target.value; }; target.onchange = update; update();
   root.querySelector('form').onsubmit = async event => { event.preventDefault(); try {
@@ -186,7 +196,7 @@ function saveDialog() {
  });
 }
 function manage() {
- layer('Team manage', `<form><label class="modal-field">${txt('Team name')}<input name="team" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input name="group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form><button id="team-delete-group">${txt('Delete Penta')}</button><button id="team-delete-team" ${!teamId?'disabled':''}>${txt('Delete team')}</button><h4>${txt('Team members')}</h4>${members.map(m => `<div class="team-picker-row"><span>${esc(memberName(m))} · ${esc(groups.find(g => g.memberIds.includes(m.memberId))?.label || t('Ungrouped'))}</span><button data-assign="${esc(m.personId)}">${txt('Add to current Penta')}</button><button data-pool-remove="${esc(m.memberId)}">${txt('Remove from team')}</button></div>`).join('')}`, (root, close) => {
+ layer('Team manage', `<form><label class="modal-field">${txt('Team name')}<input name="team" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input name="group" value="${esc(group().label)}" required></label><div class="modal-actions"><button type="submit" class="btn-primary">${txt('Save')}</button></div></form><div class="team-destructive-actions"><button id="team-delete-group">${txt('Delete Penta')}</button><button id="team-delete-team" ${!teamId?'disabled':''}>${txt('Delete team')}</button></div><h4 class="team-operation-subtitle">${txt('Team members')}</h4>${members.map(m => `<div class="team-manage-member"><div><strong>${esc(memberName(m))}</strong><small>${esc(groups.find(g => g.memberIds.includes(m.memberId))?.label || t('Ungrouped'))}</small></div><div class="team-manage-actions"><button data-assign="${esc(m.personId)}" ${group().memberIds.includes(m.memberId) ? 'disabled' : ''}>${txt('Add to current Penta')}</button><button data-pool-remove="${esc(m.memberId)}">${txt('Remove from team')}</button></div></div>`).join('')}`, (root, close) => {
   root.querySelector('form').onsubmit = event => { event.preventDefault(); teamName = root.querySelector('[name=team]').value.trim(); group().label = root.querySelector('[name=group]').value.trim(); dirty = true; close(); renderControls(); saveDialog(); };
   root.querySelector('#team-delete-group').onclick = async () => { if (!await confirmOperation(t('Delete Penta'))) return; groups = groups.filter(g => g.pentaId !== selectedId); if (!groups.length) groups.push(freshGroup()); selectedId = groups[0].pentaId; close(); schedule(); };
   root.querySelector('#team-delete-team').onclick = async () => { if (!await confirmOperation(t('Delete this saved team?'))) return; try { if (!currentRepository()) throw Error(t('Team revision changed; reload before saving.')); deleteTeam(teamId); close(); reset(); } catch(e) { root.querySelector('.team-layer-error').textContent=e.message; } };
@@ -198,7 +208,7 @@ export function setupTeamView() {
  subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
  const previousContent = $('team-content');
  if (previousContent && !$('team-form').contains(previousContent)) previousContent.remove();
- $('team-form').innerHTML = `<div class="team-workspace"><div class="team-management"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p><div id="team-content"></div></div><div class="team-results"><div id="team-analysis"></div></div></div>`;
+ $('team-form').innerHTML = `<div class="team-management panel"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p></div><div class="team-workspace chart-layout"><div class="team-graph-column chart-column"><div id="team-content" class="bodygraph-container"></div></div><div class="team-results info-column"><div id="team-analysis"></div></div></div>`;
  $('team-current').onclick = switcher; $('team-save').onclick = saveDialog; $('team-manage').onclick = manage; $('team-add-saved-person').onclick = () => picker();
  $('team-selected-chips').onclick = event => { const b = event.target.closest('button'); if(b?.dataset.removeMember) { group().memberIds=group().memberIds.filter(id=>id!==b.dataset.removeMember); schedule(); $('team-add-saved-person').focus(); } if(b?.dataset.focusMember && matrix) { matrix.setHighlightedMemberId(matrix.highlightedMemberId===b.dataset.focusMember?null:b.dataset.focusMember); } };
  $('team-flow-status').onclick = event => { const id=event.target.closest('button')?.dataset.editPerson; if(id) editPerson(id); };

@@ -29,7 +29,7 @@ export function renderSharedChannelReading(id) {
   return `<section data-shared-channel-reading>${channelReading(id)}</section>`;
 }
 
-const gateLink = gate => `<button type="button" class="reference-link" data-shared-gate-select="${gate}">${text('Gate {gate}', { gate })} · ${esc(gateName(gate))}</button>`;
+const gateLink = gate => `<button type="button" class="transit-detail-link" data-shared-gate-select="${gate}"><span class="transit-detail-gate"><strong>${text('Gate {gate}', { gate })} · ${esc(gateName(gate))}</strong></span><span class="transit-detail-action">${text('View gate details')}</span></button>`;
 const channelLinks = gate => `<h3>${text('Related channels')}</h3><div class="reference-links">${channelsForGate(gate).map(ch => `<button type="button" class="reference-link" data-shared-channel-select="${ch.gates.join('-')}">${ch.gates.join('–')} · ${esc(channelName(ch.gates))}</button>`).join('')}</div>`;
 const query = objectId => ({ domain: 'human-design', objectType: 'penta', objectId });
 
@@ -45,7 +45,8 @@ function specificReading(objectId) {
 }
 function member(id, ctx) {
   const person = (ctx.people || []).find(item => item.memberId === id);
-  return `${esc(person?.displayName || id)}${person?.timeUnknown ? ` <small class="shared-detail-estimated">(${text('Estimated at noon')})</small>` : ''}`;
+  const index = person?.displayIndex || (ctx.people || []).findIndex(item => item.memberId === id) + 1;
+  return `<span class="penta-member-identity"><span class="penta-member-tag penta-member-${index}">${index || '·'}</span><span>${esc(person?.displayName || id)}</span>${person?.timeUnknown ? ` <small class="shared-detail-estimated">(${text('Estimated at noon')})</small>` : ''}</span>`;
 }
 function activations(record, ctx) {
   const groups = new Map();
@@ -53,7 +54,7 @@ function activations(record, ctx) {
     if (!groups.has(activation.memberId)) groups.set(activation.memberId, []);
     groups.get(activation.memberId).push(activation);
   }
-  const rows = [...groups].map(([id, entries]) => `<div data-penta-member="${esc(id)}"><h4>${member(id, ctx)}</h4><ul>${entries.map(a => {
+  const rows = [...groups].map(([id, entries]) => `<div class="penta-member-${(ctx.people || []).find(p => p.memberId === id)?.displayIndex || (ctx.people || []).findIndex(p => p.memberId === id) + 1}" data-penta-member="${esc(id)}"><h4>${member(id, ctx)}</h4><ul>${entries.map(a => {
     const side = a.side === 'design' ? 'design' : 'personality';
     return `<li><span data-activation-side="${side}">${side === 'design' ? 'D' : 'P'} (${text(side === 'design' ? 'Design' : 'Personality')})</span> · ${esc(planetName(a.planet))} · ${esc(a.gate)}.${esc(a.line)}</li>`;
   }).join('')}</ul></div>`).join('');
@@ -74,10 +75,13 @@ export const pentaDetailAdapter = Object.freeze({
     const channel = channelById(record?.channelId);
     if (!channel) return '';
     return `<header><div class="tl-detail-header tl-channel-detail-header" data-source-context="penta"><div class="tl-detail-heading">${renderChannelDetailHeading(record.channelId)}</div></div></header>
-      <section data-penta-channel-state><h3>${text('Penta endpoint contributions')}</h3>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}<p>${text(states[record.status] || 'Not covered')}</p>
-      <ul>${record.gates.map(gate => `<li>${text('Gate {gate}', { gate })}: ${(record.holdersByGate?.[gate] || []).map(id => member(id, ctx)).join(' · ') || text('No Penta contributors')}</li>`).join('')}</ul></section>
+      <section data-penta-channel-state><span class="circuit-badge transit-source-badge">${text(states[record.status] || 'Not covered')}</span>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}<h3>${text('Penta endpoint contributions')}</h3>
+      <dl class="penta-detail-endpoints">${record.gates.map(gate => `<div><dt>${text('Gate {gate}', { gate })}</dt><dd>${(record.holdersByGate?.[gate] || []).map(id => member(id, ctx)).join(' ') || text('No Penta contributors')}</dd></div>`).join('')}</dl>
+      ${(record.selfCompleteMemberIds || []).length ? `<h3>${text('Self complete members')}</h3><p>${record.selfCompleteMemberIds.map(id => member(id, ctx)).join(' ')}</p>` : ''}
+      ${(record.complementaryMemberPairs || []).length ? `<h3>${text('Complementary member pairs')}</h3><ul>${record.complementaryMemberPairs.map(pair => `<li>${member(pair.upperMemberId, ctx)} ↔ ${member(pair.lowerMemberId, ctx)}</li>`).join('')}</ul>` : ''}
+      ${record.missingGates?.length ? `<p>${text('Missing gates')}: ${record.missingGates.join(' · ')}</p>` : ''}</section>
       ${specificReading(`channel:${record.channelId}`)}${renderSharedChannelReading(record.channelId)}
-      <h3>${text('Related gates')}</h3><div class="reference-links">${channel.gates.map(gateLink).join('')}</div>`;
+      <h3>${text('Related gates')}</h3><div class="transit-channel-gates">${channel.gates.map(gateLink).join('')}</div>`;
   },
   knowledge(objectId, ctx = {}) {
     const entry = getKnowledgeEntry(query(objectId));

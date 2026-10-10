@@ -37,7 +37,7 @@ export function createPentaMatrix(container, {
   dialog.className = 'gate-detail hidden penta-detail';
   document.body.append(dialog);
 
-  const memberIndex = id => people.findIndex(person => person.memberId === id) + 1;
+  const memberIndex = id => people.find(person => person.memberId === id)?.displayIndex || people.findIndex(person => person.memberId === id) + 1;
   const person = id => people.find(item => item.memberId === id);
   const memberName = id => person(id)?.displayName || String(id);
   const memberBadge = id => `<span class="penta-member-tag penta-member-${memberIndex(id)}">${memberIndex(id) || '·'}</span>`;
@@ -51,7 +51,6 @@ export function createPentaMatrix(container, {
     onChannelSelect: id => showDetail('channel', id),
     onBack: goBack
   });
-  const scrollHost = () => analysisContainer.closest('.team-results') || analysisContainer;
   function qualifiedSummary(id) {
     const entry = getKnowledgeEntry(query(id));
     if (entry?.properties?.evidence?.status !== 'verified') return '';
@@ -134,11 +133,8 @@ export function createPentaMatrix(container, {
     if (!target) return;
     if (focus) target.focus({ preventScroll: true });
     if (!scroll) return;
-    const host = scrollHost();
     const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    if (['auto','scroll'].includes(getComputedStyle(host).overflowY) && host.scrollHeight > host.clientHeight) {
-      host.scrollTo({ top: host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top - 12, behavior });
-    } else target.scrollIntoView({ block: 'start', behavior });
+    target.scrollIntoView({ block: 'start', behavior });
   }
   function knowledgeBody(id) {
     const entry = getKnowledgeEntry(query(id));
@@ -189,11 +185,9 @@ export function createPentaMatrix(container, {
   }
   function endHover() { hoverTarget = null; applyHighlights(); }
   function render() {
-    const host = scrollHost(), top = host.scrollTop;
     renderAnalysis();
     analysis.querySelectorAll('.penta-reading-section').forEach(section => section.classList.add('panel'));
     renderGraph(); applyHighlights();
-    host.scrollTop = top;
   }
   for (const root of [graph, analysis]) {
     root.addEventListener('click', handleClick);
