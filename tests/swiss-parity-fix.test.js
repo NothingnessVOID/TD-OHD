@@ -59,18 +59,25 @@ test('proper UTC, fractional ticks, inverse, DE/ICRS/Moshier/J2000 and speed gua
   const dut1 = [];
   for (let index = 0; index < actual.length; index++) {
     const result = actual[index], fixture = evidence.cases[index];
+    assert.equal(result.id, fixture.id);
+    if (platformBaseline) assert.equal(platformBaseline[index].id, fixture.id);
     assert.ok(!result.error, result.error);
     assert.equal(result.guardsPassed, true);
     assert.equal(result.ut1, fixture.oracle.ut1);
     assert.ok(Math.abs(result.fractionUt1 - fixture.oracle.fractionUt1) * 86400 < .0001);
     assert.ok(Math.abs(Date.parse(result.roundTripUtc) - Date.parse(result.birthUtc)) <= 1);
     for (const side of ['personality', 'design']) {
+      // Require all thirteen bodies, not only whichever fields a candidate emits.
+      assert.equal(Object.keys(result[side]).length, 13);
+      assert.deepEqual(Object.keys(result[side]).sort(), Object.keys(fixture.sharp[side]).sort());
+      if (platformBaseline) assert.deepEqual(Object.keys(result[side]).sort(), Object.keys(platformBaseline[index][side]).sort());
       // Current Moon/True Node fixtures; earlier audit evidence stays frozen.
       for (const [body, value] of Object.entries(result[side])) {
         const reference = fixture.sharp[side][body];
         for (const field of ['gate', 'line', 'color', 'tone', 'base']) assert.equal(value[field], reference[field]);
         assert.ok(Math.abs(value.longitude - reference.longitude) < 1e-10);
         // Match the existing independent-C speed bound; finite differences amplify platform rounding.
+        assert.ok(Number.isFinite(value.speed));
         const speedReference=platformBaseline ? platformBaseline[index][side][body].speed : reference.speed;
         const speedDelta=Math.abs(value.speed-speedReference);
         assert.ok(speedDelta<1e-8,`${fixture.id}/${side}/${body}: speed delta ${speedDelta}`);
