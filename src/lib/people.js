@@ -13,7 +13,8 @@
  * self-hosted static builds) → pure local behavior, no network.
  */
 
-import { getProfiles, getProfile, saveProfile, deleteProfile } from './profile-storage.js';
+import { getProfiles, getProfile, saveProfile, deleteProfile, PROFILE_STORAGE_KEY } from './profile-storage.js';
+import { peopleChange, presentationIdentity } from './person-input.js';
 import { localMode, localList, localGet, localSave, localDelete } from './local-store.js';
 
 const LAST_KEY = 'ohd-last-person-id';
@@ -73,13 +74,52 @@ const store = localMode ? { list: localList, get: localGet, save: localSave, del
 // ---------------------------------------------------------------------------
 export const listPeople = (...args) => store.list(...args);
 export const getPerson = (...args) => store.get(...args);
-export const deletePerson = (...args) => store.delete(...args);
 const peopleListeners = new Set();
-export function onPeopleChange(listener) { peopleListeners.add(listener); return () => peopleListeners.delete(listener); }
+let knownPeople = new Map();
+let mutating = false;
+function rememberPeople() { knownPeople = new Map(store.list().map(person => [person.id, person])); }
+function emit(change) {
+  for (const listener of peopleListeners) {
+    try { listener(change); } catch (error) { console.error('People listener failed', error); }
+  }
+}
+export function onPeopleChange(listener) {
+  if (!peopleListeners.size) rememberPeople();
+  peopleListeners.add(listener);
+  return () => peopleListeners.delete(listener);
+}
 export function savePerson(...args) {
-  const saved = store.save(...args);
-  for (const listener of peopleListeners) listener();
+  const before = args[0]?.id ? store.get(args[0].id) : null;
+  let saved;
+  mutating = true;
+  try { saved = store.save(...args); } finally { mutating = false; }
+  rememberPeople();
+  emit(peopleChange('save', before, saved));
   return saved;
+}
+export function deletePerson(id) {
+  const before = store.get(id);
+  let result;
+  mutating = true;
+  try { result = store.delete(id); } finally { mutating = false; }
+  rememberPeople();
+  if (before) emit(peopleChange('delete', before, null));
+  return result;
+}
+function externalPeopleChanged() {
+  if (mutating) return;
+  const previous = knownPeople;
+  rememberPeople();
+  for (const id of new Set([...previous.keys(), ...knownPeople.keys()])) {
+    const before = previous.get(id) || null, after = knownPeople.get(id) || null;
+    if (presentationIdentity(before) !== presentationIdentity(after)) emit(peopleChange('external', before, after, id));
+  }
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('ohd-people-changed', externalPeopleChanged);
+  window.addEventListener('storage', event => {
+    if (!localMode && (event.key === PROFILE_STORAGE_KEY || event.key === null)) externalPeopleChanged();
+  });
 }
 
 /** Profile (storage shape) → birth data (app shape). */

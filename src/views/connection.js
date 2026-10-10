@@ -11,7 +11,7 @@ import { analyzeConnectionStructure } from '../lib/human-design/connection-struc
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph } from '../bodygraph.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
+import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
 import { reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
@@ -23,6 +23,27 @@ import { getCurrentChart } from './chart.js';
 
 let placeB = null;
 let lastComparison = null;
+let comparisonRequest = 0;
+let comparisonPeople = null;
+let currentBirthPending = null;
+export function invalidateConnection() {
+  ++comparisonRequest;
+  lastComparison = null;
+  document.getElementById('connection-content')?.replaceChildren();
+  closeDetailDialog();
+}
+export function refreshConnectionPeople(change, { currentReloaded = false } = {}) {
+  if (change.personId === getCurrentChart()?.birth?.id) currentBirthPending = currentReloaded || !change.after ? null : change.personId;
+  const affected = comparisonPeople && [comparisonPeople.a, comparisonPeople.b].includes(change.personId);
+  renderConnectionView();
+  if (!affected) return;
+  invalidateConnection();
+  if (!change.after) { comparisonPeople = null; return; }
+  if (comparisonPeople.a === change.personId && !currentReloaded) return;
+  const select = document.getElementById('conn-person');
+  if (comparisonPeople.b && getPerson(comparisonPeople.b)) select.value = comparisonPeople.b;
+  runComparison();
+}
 
 export function rerenderConnectionGraphs() {
   if (lastComparison && lastComparison[1] === getCurrentChart()) {
@@ -49,6 +70,7 @@ export function renderConnectionView() {
   const hadOptions = select.options.length > 0;
   const people = listPeople();
   const current = getCurrentChart();
+  if (lastComparison && lastComparison[1] !== current) invalidateConnection();
   const options = people
     .filter(p => p.id !== current?.birth?.id)
     .map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`)
@@ -76,8 +98,9 @@ export function compareWithGuest() {
 }
 
 async function runComparison() {
+  const request = ++comparisonRequest;
   const current = getCurrentChart();
-  if (!current) return;
+  if (!current || (currentBirthPending && currentBirthPending === current.birth.id)) return;
 
   const select = document.getElementById('conn-person');
   let birthB = null;
@@ -107,12 +130,16 @@ async function runComparison() {
   }
   if (!birthB) return;
 
+  comparisonPeople = { a: current.birth.id || null, b: birthB.id || null };
+  const snapshotB = birthB.id ? JSON.stringify(getPerson(birthB.id)) : null;
   let b;
   try { b = await computeChart(birthB); }
   catch (error) {
+    if (request !== comparisonRequest) return;
     document.getElementById('connection-content').innerHTML = `<p class="panel-intro">${esc(error.message)}</p>`;
     return;
   }
+  if (request !== comparisonRequest || current !== getCurrentChart() || (birthB.id && snapshotB !== JSON.stringify(getPerson(birthB.id)))) return;
   b.defaultDisplayName = defaultName;
   const comparison = compareHumanDesign(current.chart, b.chart);
   if (!select.value && !defaultName) {
