@@ -19,7 +19,7 @@ import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } f
 import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
-import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage } from './views/chart.js';
+import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage, clearCurrentChart } from './views/chart.js';
 import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
@@ -217,7 +217,7 @@ function setupPeopleSwitcher() {
     if (value === '__new') {
       timelineView?.deactivate();
       ++birthRequest; loadingPersonId = null;
-      invalidateConnection(); invalidateTransits(); closeDetailDialog();
+      invalidateConnection(); invalidateTransits(); closeDetailDialog(); clearCurrentChart();
       currentData = null;
       setLastPersonId(null);
       history.replaceState(null, '', window.location.pathname);
@@ -233,6 +233,7 @@ function setupPeopleSwitcher() {
         timelineView?.deactivate();
         try { deletePerson(id); } catch (e) { console.warn('Could not delete person:', e); renderPeopleSwitcher(); return; }
         setLastPersonId(null);
+        clearCurrentChart();
         currentData = null;
         history.replaceState(null, '', window.location.pathname);
         document.querySelectorAll('.view-section, .chart-view').forEach(s => s.classList.add('hidden'));
@@ -454,6 +455,7 @@ async function init() {
     renderTeamView();
     if (change.personId !== currentData?.birth?.id && change.personId !== loadingPersonId) return;
     closeDetailDialog();
+    clearCurrentChart();
     invalidateTransits();
     timelineView?.invalidateBirth();
     if (!change.after) {
@@ -517,6 +519,8 @@ async function init() {
         banner.classList.remove('hidden');
         document.getElementById('make-own').addEventListener('click', () => {
           timelineView?.deactivate();
+          ++birthRequest; loadingPersonId = null;
+          invalidateConnection(); invalidateTransits(); closeDetailDialog(); clearCurrentChart();
           currentData = null;
           history.replaceState(null, '', window.location.pathname);
           banner.classList.add('hidden');

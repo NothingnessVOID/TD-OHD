@@ -15,15 +15,23 @@
 
 - Authorized implementation tasks that need edits, installs, tests or commits start in fresh `write`-permission instances. Do not reuse a historical read-only research instance for development.
 - Give each implementation task its own branch/worktree and explicit file ownership. Keep shared API changes coordinated.
-- Isolated worktree test servers use assigned loopback-only ports; reserve 9961 for the user's validated shared preview.
-- Preserve failed test evidence. A task's passing tests do not replace cross-module integration and full browser regression.
+- Isolated worktree services use assigned loopback-only ports; reserve 9961 for the user's current shared preview.
+- Preserve failed test evidence; do not weaken assertions to hide failures.
+
+## Iteration and user acceptance (current instruction)
+
+- During active UI/feature iteration, run only necessary builds and obvious startup/error checks. Do not repeatedly run full suites, smoke tests or complete browser regression.
+- Integrate the feature into the 9961 preview so the user can first accept the direction, functionality and interaction.
+- Run comprehensive automated tests and full browser regression only after the user confirms that acceptance. Previously recorded test results remain historical evidence, not proof that the current integration is fully tested.
+- The user has confirmed LAN access works; do not keep changing firewall settings to solve an already-resolved access request.
+- This preview-first workflow does not authorize merging to `main` or deploying.
 
 ## Git synchronization
 
 - The user requests a commit and push to a development branch after each completed, validated development increment, so another computer can continue the work.
 - Current shared development branch: **`dev/windows-development`**.
 - Before work, inspect the current branch and worktree and fetch remote updates when available. Preserve existing uncommitted work. If histories diverge, investigate before integrating.
-- Commit only the intended changes, with a clear message. Run relevant tests/build checks and report any checks not run or failures.
+- Commit only intended changes with a clear message. Apply the current phase's checks (build/error checks before user acceptance; comprehensive tests afterward) and explicitly report deferred or failed checks.
 - Push the development branch without force and confirm its remote commit matches local `HEAD`.
 - Do not push directly to `main`, merge to `main`, publish, or deploy without separate explicit authorization. `main` updates trigger the production GitHub Pages workflow.
 - If authentication or a non-fast-forward push blocks synchronization, report it; do not rewrite remote history to bypass the problem.
