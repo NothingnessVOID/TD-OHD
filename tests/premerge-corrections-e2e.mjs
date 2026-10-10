@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 
-const base = process.env.E2E_URL || 'http://127.0.0.1:5187';
+const base = process.env.E2E_URL || 'http://127.0.0.1:19964';
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
 const city = { name: '上海', admin1: '上海市', country: '中国', country_code: 'CN',
   latitude: 31.2222, longitude: 121.4581, timezone: 'Asia/Shanghai', feature_code: 'PPLA', population: 24874500 };
@@ -30,7 +30,7 @@ try {
     assert.equal(await page.locator('#chart-view').isVisible(), false);
     await page.goto(`${base}/`);
 
-    for (const view of ['transits', 'timeline', 'connection', 'team']) {
+    for (const view of ['transits', 'timeline', 'connection']) {
       await navClick(view);
       await page.locator('#chart-required-view:not(.hidden)').waitFor();
       assert.match(await page.locator('#chart-required-view').innerText(), /请先建立出生图/);
@@ -39,6 +39,20 @@ try {
       assert.equal(await page.locator('#birth-entry').isVisible(), true);
       assert.equal(await page.evaluate(() => document.activeElement?.id), 'birth-date');
     }
+
+    // Team is independently accessible without a global chart; chart-dependent views remain guarded above.
+    await navClick('team');
+    await page.locator('#team-view:not(.hidden)').waitFor();
+    assert.equal(await page.locator('#chart-required-view').isVisible(), false);
+    assert.equal(await page.locator('.penta-placeholder').count(), 1);
+    assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['team']);
+    await page.locator('#team-add-saved-person').click();
+    await page.locator('#team-person-create').click();
+    assert.equal(await page.locator('.person-editor').isVisible(), true);
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Escape');
+    await navClick('chart');
+    await page.locator('#birth-entry:not(.hidden)').waitFor();
 
     await page.locator('#birth-date').fill('1990-06-15');
     await page.locator('#birth-time').fill('14:30');
@@ -55,6 +69,7 @@ try {
     assert.equal(new URL(page.url()).hash, '#library');
     await page.locator('#reference-search').fill('14.2');
     assert.equal(await page.locator('#reference-results .reference-result').count(), 0);
+    await page.locator('[data-reference-filter-toggle]').click();
     await page.locator('[data-reference-filter="gate"]').click();
     await page.locator('#reference-search').fill('14');
     await page.locator('#reference-results .reference-result').first().click();
@@ -93,7 +108,7 @@ try {
       body.innerHTML = centerReading('throat', { status: null, includeTheme: false });
       return [...body.querySelectorAll('.gate-detail-desc')].map(node => node.textContent.trim());
     });
-    const transitCenter = await page.locator('#gate-detail .center-detail-card .gate-detail-desc').allTextContents();
+    const transitCenter = await page.locator('#gate-detail .center-detail-card .center-reading .gate-detail-desc').allTextContents();
     assert.ok(canonicalCenter.length >= 2);
     assert.equal(transitCenter.length, 1, 'transit detail shows one reading for its current state');
     assert.ok(canonicalCenter.some(paragraph => paragraph === transitCenter[0].trim()));
@@ -185,7 +200,7 @@ try {
     assert.equal(await first.locator('.tl-target-picker').isVisible(), true);
     assert.equal(await first.locator('[data-condition="state"]').isVisible(), true);
     await page.goto(`${base}/#library/gate/14`);
-    await page.locator('#reference-detail:not(.hidden) .reference-back').click();
+    await page.locator(viewport.width < 600 ? '#reference-mobile-detail .gate-detail-nav [data-reference-back]' : '#reference-detail:not(.hidden) .reference-back').click();
     await page.waitForFunction(() => location.hash === '#library');
     assert.equal(await page.locator('#library-view').isVisible(), true);
     assert.match(await page.locator('#reference-detail .reference-empty').innerText(), /选择条目|Select an entry/);
