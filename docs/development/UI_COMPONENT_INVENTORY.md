@@ -44,6 +44,12 @@
 - Skin设置与中心配色分开，`appearance.js`管理`data-skin/data-theme`及`data-center-palette`。Auto按系统明暗选择default-light/default-dark，不给每个特色Skin自动配对。
 - High Contrast是已注册Skin。当前没有通用`forced-colors`或`prefers-contrast`适配；`source-contrast.js`只调整指定来源文字对比，不代表全站WCAG审计。动态文案仍需所属页面刷新；时间轴有注入式translator。
 
+## Penta 最终交互增量
+
+`src/lib/penta-state-symbol.js` 的 `renderPentaStateSymbol()` 是小型无状态SVG渲染函数，供左图、图例和右侧通道卡片调用；输入仅为计算结果的状态，不参与计算。断线、同形端点、异形端点接合、双层连接分别表示四种覆盖状态，始终保留文字说明。
+
+Penta六通道使用`detail-label/detail-name`的两级标题，名称取`channelName()`。18张闸门/通道分析卡片使用`role=button/tabindex=0/aria-haspopup=dialog`，无嵌套按钮，支持Enter/Space。图形与成员贡献快捷入口直接进入已有详情；`selectObject`仅管理高亮，不再滚动页面。公共reading/词汇/审核接口保持不变。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
