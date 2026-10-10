@@ -55,6 +55,15 @@ Remaining full-suite findings (not silently waived):
 
 No real user profiles were used. Browser service used only 127.0.0.1:19963 and CHROME_CHANNEL=chromium. The new browser test initially used direct chart-module import and timed out after Vite HMR created a separate module instance; it now clicks the real gate UI and passes. No main-session browser used.
 
+## Current-person invalidation hook
+
+`chart.js` additionally exports `clearCurrentChart()`. Parent/A should import and call it when the current person is deleted or invalidated, before leaving/refreshing the current-person view. It closes only the bodygraph-owned detail sheet, releases shared detail listeners, clears history/context/current lens and graph references, and makes `getCurrentChart()` return null. Repeated calls are safe. It does not touch profile storage or A's main.js. The isolated browser test checks a non-null fictional chart and an open detail before cleanup, then verifies null, closed detail and no reopening through showGateDetail after two cleanup calls.
+
+```js
+import { clearCurrentChart } from './views/chart.js';
+clearCurrentChart();
+```
+
 ## Integration limits
 
 B's real Penta matrix has not been connected in C's branch because B owns that file. Adapter/dialog integration was exercised in an isolated host using the real detail-dialog API; the parent should run the merged matrix flow after wiring. No new CSS was necessary; existing detail/reference/lens primitives are reused. No push, merge, PR or deployment performed.

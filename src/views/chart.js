@@ -878,6 +878,26 @@ function renderCrossPanel(container) {
   });
 }
 
+/** Release the current chart when its owning person is deleted or invalidated.
+ * Storage and person selection remain the caller's responsibility.
+ */
+export function clearCurrentChart() {
+  // Only dismiss our own sheet; other views may own the shared dialog.
+  const detail = document.getElementById('gate-detail');
+  if (detail?.dataset.detailOwner === 'bodygraph') closeDetailDialog();
+  if (currentDetail || detailContext || disposeSharedDetails) resetDetail();
+  bodygraphApi?.setPinned?.(null);
+  bodygraphApi?.highlightGate?.(null);
+  bodygraphApi = null;
+  current = null;
+  currentLens = 'hd';
+  detailHistory = [];
+  currentDetail = null;
+  detailContext = null;
+  disposeSharedDetails?.();
+  disposeSharedDetails = null;
+}
+
 export function getCurrentChart() {
   return current;
 }

@@ -64,6 +64,17 @@ try {
   await root.locator('[data-shared-lens="gk"]').click();
   assert.equal(await root.locator('.gk-spectrum').count(), 0);
   await page.keyboard.press('Escape');
+  const cleared = await page.evaluate(async () => {
+    const chart = await import('/src/views/chart.js');
+    if (!chart.getCurrentChart()) throw new Error('Expected the fictional current chart before cleanup');
+    chart.showGateDetail(31);
+    if (document.getElementById('gate-detail').classList.contains('hidden')) throw new Error('Expected an open chart detail before cleanup');
+    chart.clearCurrentChart();
+    chart.clearCurrentChart(); // idempotent cleanup
+    chart.showGateDetail(31);
+    return { current: chart.getCurrentChart(), open: !document.getElementById('gate-detail').classList.contains('hidden') };
+  });
+  assert.deepEqual(cleared, { current: null, open: false });
   await page.goto(`${base}/#library/gate/31`);
   await page.locator('#reference-detail [data-shared-reading]').waitFor();
   await page.evaluate(async () => { (await import('/src/lib/i18n.js')).setLocale('zh-CN', { persist: false }); (await import('/src/views/reference.js')).renderReferenceView({ languageChange: true }); });
