@@ -1,5 +1,5 @@
 import {execFileSync} from 'node:child_process';
-import {mkdtempSync,mkdirSync,rmSync} from 'node:fs';
+import {mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 const baseline='cb29ace095f86f1215ded44a6945a8a4b0c66935';
@@ -10,7 +10,7 @@ const baseline='cb29ace095f86f1215ded44a6945a8a4b0c66935';
 export function windowsSwissBaseline(requests, ephemeris) {
  const dir=mkdtempSync(path.join(tmpdir(),'ohd-swiss-baseline-'));
  try {
-  const archive=execFileSync('git',['archive',baseline,'engine-core','third_party/SharpAstrology.SwissEph','docs/sharp-swiss-parity-fix/scripts/parity-harness'],{maxBuffer:32*1024*1024});
+  const archive=execFileSync('git',['archive',baseline,'engine-core','third_party/SharpAstrology.SwissEph','docs/sharp-swiss-parity-fix/scripts/parity-harness'],{cwd:path.resolve(import.meta.dirname,'../..'),maxBuffer:32*1024*1024});
   execFileSync('tar',['-xf','-','-C',dir],{input:archive});
   const project=path.join(dir,'docs/sharp-swiss-parity-fix/scripts/parity-harness');
   execFileSync(process.env.DOTNET||'dotnet',['build',path.join(project,'ParityHarness.csproj'),'-c','Release','-v','quiet','-m:1'],{stdio:'pipe'});
