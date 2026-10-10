@@ -1,6 +1,6 @@
 # Self-hosted Chinese fonts
 
-Only font resources, scripts and documentation are changed. No system font installation, npm dependency, UI or PNG changes. Integration must load the IPA stylesheet only when the user selects `ipa`; loading an @font-face stylesheet does not itself fetch all shards. No preload is supplied.
+This directory documents font resources and reproducible build inputs. No system font installation or npm dependency is required. The IPA font binary is downloaded only when selected; loading an @font-face stylesheet does not itself fetch the font. No preload is supplied. UI and PNG integration are documented in ../development/FONT-PREFERENCE.md.
 
 ## Sources and license
 
@@ -34,11 +34,11 @@ python -m venv .font-venv
 .font-venv/Scripts/python.exe scripts/build-chinese-fonts.py --verify
 ```
 
-The script is offline, verifies source hashes, intersects the union of every Unicode cmap with explicit Han/compatibility/extension ranges and punctuation categories, and splits disjoint sets into at most 256 characters. Priority UI characters and Chinese hexagram names form the first shards. All remaining eligible characters are included, including rare extension Han. ASCII, Latin letters, numbers and symbol blocks (including U+4DC0–4DFF) stay with the existing fallback fonts. The selected policy does not claim to preserve the entire Latin/symbol cmap as web fonts; the complete original TTF is retained for that purpose. Punctuation variation selectors are passed to fontTools to retain applicable UVS mappings.
+The script is offline, verifies source hashes, intersects the union of every Unicode cmap with explicit Han/compatibility/extension ranges and punctuation categories, and splits disjoint sets into at most 256 characters. Priority UI characters and Chinese hexagram names, plus the checked-in docs/fonts/priority.txt character inventory captured from the simplified/traditional entry screens, form the first shards. The p2 filename namespace prevents stale cached p1 shards from being confused with the new grouping. All remaining eligible characters are included, including rare extension Han. ASCII, Latin letters, numbers and symbol blocks (including U+4DC0–4DFF) stay with the existing fallback fonts. The selected policy does not claim to preserve the entire Latin/symbol cmap as web fonts; the complete original TTF is retained for that purpose. Punctuation variation selectors are passed to fontTools to retain applicable UVS mappings.
 
 Each shard is reopened to verify its actual cmap equals its declared range. The selected union must match exactly with no overlap. The manifest records full source, selected and excluded ranges, source and shard hashes, bytes, maximum shard size, priority count and tool versions. `--verify` rebuilds into a fresh temporary directory and requires byte identity for all generated WOFF2/CSS/manifest files; timestamps are not recomputed. No npm changes or network access is needed to rebuild.
 
-Standalone public rebuild downloads mirror these files under `public/fonts/rebuild/`. To use them outside the checkout, recreate the same `scripts/`, `docs/fonts/` and `public/fonts/` layout, placing the two source TTFs at their documented paths. The accompanying public SHA256SUMS covers every public font resource except itself.
+Standalone public rebuild downloads mirror these files under `public/fonts/rebuild/`. To use them outside the checkout, recreate the same `scripts/`, `docs/fonts/` and `public/fonts/` layout, placing the two source TTFs at their documented paths and priority.txt under docs/fonts/. The accompanying public SHA256SUMS covers every public font resource except itself.
 
 ## Third-party notices paragraph for parent integration
 

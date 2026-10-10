@@ -1,5 +1,11 @@
 # Third-party notices for the Modern browser release
 
+## LXGW Neo ZhiSong v1.067 and original IPAmjMincho 006.01
+
+LXGW Neo ZhiSong standard by lxgw is derived from IPAex Mincho and IPAmj Mincho and distributed under IPA Font License 1.0. This release self-hosts Chinese WOFF2 subsets, the unchanged LXGW source TTF, rebuild scripts and pinned tools. It also supplies the unchanged original IPAmjMincho 006.01 and its license. Use Appearance → Font → License and original IPA font to select the actual original IPA font; the ordinary system-font choice is separate.
+
+Sources: https://github.com/lxgw/LxgwNeoZhiSong/releases/tag/v1.067 and https://moji.or.jp/mojikiban/font/ . Full licenses and executable restoration/download instructions: [public/fonts/README.html](public/fonts/README.html), [IPA Font License 1.0](public/fonts/ipa-original/IPA_Font_License_Agreement_v1.0.txt). Build and checksum details: [docs/fonts/README.md](docs/fonts/README.md). No font files are installed into the operating system.
+
 ## @noble/hashes 2.2.0
 
 SHA-256 fallback for environments without WebCrypto. Source: https://github.com/paulmillr/noble-hashes/tree/2.2.0 . Package: https://www.npmjs.com/package/@noble/hashes/v/2.2.0 .

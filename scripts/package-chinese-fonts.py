@@ -9,7 +9,7 @@ root=Path(__file__).resolve().parents[1]
 fonts=root/'public/fonts'
 rebuild=fonts/'rebuild'
 rebuild.mkdir(exist_ok=True)
-for source,name in [(root/'scripts/build-chinese-fonts.py','build-chinese-fonts.py'),(root/'docs/fonts/requirements.txt','requirements.txt'),(root/'docs/fonts/README.md','README.md')]:
+for source,name in [(root/'scripts/build-chinese-fonts.py','build-chinese-fonts.py'),(root/'docs/fonts/requirements.txt','requirements.txt'),(root/'docs/fonts/README.md','README.md'),(root/'docs/fonts/priority.txt','priority.txt')]:
     shutil.copyfile(source,rebuild/name)
 files=sorted(p for p in fonts.rglob('*') if p.is_file() and p.name not in ('SHA256SUMS','resource-sizes.json'))
 sizes={'files':[{'path':p.relative_to(fonts).as_posix(),'bytes':p.stat().st_size} for p in files],'payloadBytes':sum(p.stat().st_size for p in files),'note':'Payload excludes this size inventory and SHA256SUMS; both are included in repository total.'}

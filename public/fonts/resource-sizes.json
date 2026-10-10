@@ -18,7 +18,7 @@
     },
     {
       "path": "lxgw-neo-zhisong/v1.067/font.css",
-      "bytes": 40016
+      "bytes": 42906
     },
     {
       "path": "lxgw-neo-zhisong/v1.067/LICENSE.md",
@@ -26,401 +26,405 @@
     },
     {
       "path": "lxgw-neo-zhisong/v1.067/manifest.json",
-      "bytes": 82836
+      "bytes": 85728
     },
     {
       "path": "lxgw-neo-zhisong/v1.067/source/LXGWNeoZhiSong.ttf",
       "bytes": 10468036
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-000.woff2",
-      "bytes": 42376
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-000.woff2",
+      "bytes": 44244
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-001.woff2",
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-001.woff2",
+      "bytes": 27900
+    },
+    {
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-002.woff2",
       "bytes": 43988
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-002.woff2",
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-003.woff2",
       "bytes": 59748
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-003.woff2",
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-004.woff2",
       "bytes": 60748
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-004.woff2",
-      "bytes": 55352
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-005.woff2",
+      "bytes": 55564
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-005.woff2",
-      "bytes": 34036
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-006.woff2",
+      "bytes": 34132
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-006.woff2",
-      "bytes": 42984
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-007.woff2",
+      "bytes": 43264
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-007.woff2",
-      "bytes": 57676
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-008.woff2",
+      "bytes": 57692
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-008.woff2",
-      "bytes": 42644
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-009.woff2",
+      "bytes": 44320
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-009.woff2",
-      "bytes": 48188
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-010.woff2",
+      "bytes": 45976
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-010.woff2",
-      "bytes": 37032
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-011.woff2",
+      "bytes": 37164
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-011.woff2",
-      "bytes": 41864
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-012.woff2",
+      "bytes": 43640
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-012.woff2",
-      "bytes": 56260
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-013.woff2",
+      "bytes": 59672
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-013.woff2",
-      "bytes": 49452
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-014.woff2",
+      "bytes": 45320
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-014.woff2",
-      "bytes": 49476
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-015.woff2",
+      "bytes": 52384
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-015.woff2",
-      "bytes": 53728
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-016.woff2",
+      "bytes": 51352
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-016.woff2",
-      "bytes": 51952
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-017.woff2",
+      "bytes": 55076
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-017.woff2",
-      "bytes": 64540
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-018.woff2",
+      "bytes": 62328
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-018.woff2",
-      "bytes": 47184
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-019.woff2",
+      "bytes": 45312
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-019.woff2",
-      "bytes": 49676
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-020.woff2",
+      "bytes": 56528
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-020.woff2",
-      "bytes": 51604
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-021.woff2",
+      "bytes": 47736
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-021.woff2",
-      "bytes": 51496
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-022.woff2",
+      "bytes": 50288
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-022.woff2",
-      "bytes": 44804
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-023.woff2",
+      "bytes": 46056
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-023.woff2",
-      "bytes": 60664
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-024.woff2",
+      "bytes": 63976
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-024.woff2",
-      "bytes": 55044
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-025.woff2",
+      "bytes": 48868
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-025.woff2",
-      "bytes": 49104
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-026.woff2",
+      "bytes": 51896
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-026.woff2",
-      "bytes": 62324
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-027.woff2",
+      "bytes": 66632
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-027.woff2",
-      "bytes": 66880
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-028.woff2",
+      "bytes": 60148
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-028.woff2",
-      "bytes": 46176
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-029.woff2",
+      "bytes": 49984
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-029.woff2",
-      "bytes": 45028
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-030.woff2",
+      "bytes": 38756
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-030.woff2",
-      "bytes": 44784
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-031.woff2",
+      "bytes": 47972
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-031.woff2",
-      "bytes": 53620
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-032.woff2",
+      "bytes": 56780
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-032.woff2",
-      "bytes": 65100
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-033.woff2",
+      "bytes": 70044
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-033.woff2",
-      "bytes": 65436
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-034.woff2",
+      "bytes": 57796
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-034.woff2",
-      "bytes": 45152
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-035.woff2",
+      "bytes": 40796
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-035.woff2",
-      "bytes": 48028
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-036.woff2",
+      "bytes": 51472
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-036.woff2",
-      "bytes": 57040
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-037.woff2",
+      "bytes": 60020
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-037.woff2",
-      "bytes": 66584
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-038.woff2",
+      "bytes": 71336
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-038.woff2",
-      "bytes": 67552
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-039.woff2",
+      "bytes": 58396
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-039.woff2",
-      "bytes": 56796
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-040.woff2",
+      "bytes": 65536
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-040.woff2",
-      "bytes": 60352
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-041.woff2",
+      "bytes": 51084
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-041.woff2",
-      "bytes": 51760
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-042.woff2",
+      "bytes": 51532
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-042.woff2",
-      "bytes": 56304
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-043.woff2",
+      "bytes": 61708
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-043.woff2",
-      "bytes": 49744
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-044.woff2",
+      "bytes": 47464
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-044.woff2",
-      "bytes": 58232
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-045.woff2",
+      "bytes": 54252
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-045.woff2",
-      "bytes": 49800
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-046.woff2",
+      "bytes": 50408
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-046.woff2",
-      "bytes": 46532
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-047.woff2",
+      "bytes": 55548
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-047.woff2",
-      "bytes": 53928
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-048.woff2",
+      "bytes": 45956
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-048.woff2",
-      "bytes": 56360
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-049.woff2",
+      "bytes": 57812
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-049.woff2",
-      "bytes": 54192
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-050.woff2",
+      "bytes": 60980
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-050.woff2",
-      "bytes": 65652
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-051.woff2",
+      "bytes": 59964
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-051.woff2",
-      "bytes": 53684
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-052.woff2",
+      "bytes": 59796
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-052.woff2",
-      "bytes": 66328
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-053.woff2",
+      "bytes": 62208
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-053.woff2",
-      "bytes": 56020
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-054.woff2",
+      "bytes": 54608
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-054.woff2",
-      "bytes": 50216
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-055.woff2",
+      "bytes": 47964
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-055.woff2",
-      "bytes": 56892
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-056.woff2",
+      "bytes": 58248
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-056.woff2",
-      "bytes": 47300
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-057.woff2",
+      "bytes": 42840
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-057.woff2",
-      "bytes": 43768
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-058.woff2",
+      "bytes": 47312
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-058.woff2",
-      "bytes": 54292
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-059.woff2",
+      "bytes": 58752
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-059.woff2",
-      "bytes": 65748
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-060.woff2",
+      "bytes": 71660
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-060.woff2",
-      "bytes": 60712
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-061.woff2",
+      "bytes": 50880
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-061.woff2",
-      "bytes": 62216
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-062.woff2",
+      "bytes": 69588
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-062.woff2",
-      "bytes": 59644
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-063.woff2",
+      "bytes": 53736
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-063.woff2",
-      "bytes": 62348
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-064.woff2",
+      "bytes": 55572
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-064.woff2",
-      "bytes": 49436
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-065.woff2",
+      "bytes": 59028
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-065.woff2",
-      "bytes": 58692
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-066.woff2",
+      "bytes": 55448
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-066.woff2",
-      "bytes": 57816
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-067.woff2",
+      "bytes": 52608
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-067.woff2",
-      "bytes": 50060
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-068.woff2",
+      "bytes": 54388
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-068.woff2",
-      "bytes": 60004
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-069.woff2",
+      "bytes": 56844
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-069.woff2",
-      "bytes": 49680
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-070.woff2",
+      "bytes": 48748
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-070.woff2",
-      "bytes": 50044
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-071.woff2",
+      "bytes": 50888
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-071.woff2",
-      "bytes": 56696
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-072.woff2",
+      "bytes": 53860
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-072.woff2",
-      "bytes": 53868
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-073.woff2",
+      "bytes": 61236
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-073.woff2",
-      "bytes": 68652
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-074.woff2",
+      "bytes": 74200
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-074.woff2",
-      "bytes": 58960
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-075.woff2",
+      "bytes": 45984
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-075.woff2",
-      "bytes": 49652
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-076.woff2",
+      "bytes": 48664
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-076.woff2",
-      "bytes": 52852
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-077.woff2",
+      "bytes": 60040
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-077.woff2",
-      "bytes": 61120
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-078.woff2",
+      "bytes": 55924
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-078.woff2",
-      "bytes": 58660
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-079.woff2",
+      "bytes": 60656
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-079.woff2",
-      "bytes": 59484
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-080.woff2",
+      "bytes": 61824
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-080.woff2",
-      "bytes": 66956
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-081.woff2",
+      "bytes": 66980
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-081.woff2",
-      "bytes": 65908
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-082.woff2",
+      "bytes": 65816
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-082.woff2",
-      "bytes": 64244
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-083.woff2",
+      "bytes": 65980
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-083.woff2",
-      "bytes": 73096
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-084.woff2",
+      "bytes": 68768
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-084.woff2",
-      "bytes": 64756
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-085.woff2",
+      "bytes": 67564
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-085.woff2",
-      "bytes": 60696
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-086.woff2",
+      "bytes": 44456
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-086.woff2",
-      "bytes": 46988
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-087.woff2",
+      "bytes": 57808
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-087.woff2",
-      "bytes": 59440
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-088.woff2",
+      "bytes": 62104
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-088.woff2",
-      "bytes": 62312
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-089.woff2",
+      "bytes": 65752
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-089.woff2",
-      "bytes": 63852
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-090.woff2",
+      "bytes": 56484
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-090.woff2",
-      "bytes": 55816
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-091.woff2",
+      "bytes": 53576
     },
     {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-091.woff2",
-      "bytes": 53168
-    },
-    {
-      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-092.woff2",
-      "bytes": 9456
+      "path": "lxgw-neo-zhisong/v1.067/td-zhisong-p2-092.woff2",
+      "bytes": 31592
     },
     {
       "path": "README.html",
-      "bytes": 2858
+      "bytes": 2941
     },
     {
       "path": "rebuild/build-chinese-fonts.py",
-      "bytes": 7325
+      "bytes": 7389
+    },
+    {
+      "path": "rebuild/priority.txt",
+      "bytes": 707
     },
     {
       "path": "rebuild/README.md",
-      "bytes": 5840
+      "bytes": 6156
     },
     {
       "path": "rebuild/requirements.txt",
       "bytes": 32
     }
   ],
-  "payloadBytes": 62502311,
+  "payloadBytes": 62500687,
   "note": "Payload excludes this size inventory and SHA256SUMS; both are included in repository total."
 }

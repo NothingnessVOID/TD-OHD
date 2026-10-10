@@ -29,6 +29,7 @@ import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js'
 import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 import { setupAppearanceControls } from './lib/appearance-controls.js';
+import { onFontPreferenceChange } from './lib/font-preference.js';
 
 // ==========================================
 // State
@@ -415,6 +416,7 @@ async function setupSync() {
 async function init() {
   setupSyncPopoverDismiss();
   onAppearanceChange(refreshAppearanceGraphs);
+  onFontPreferenceChange(refreshAppearanceGraphs);
   setupAppearanceControls();
   setupNavigation();
   setupPanelTabs();
