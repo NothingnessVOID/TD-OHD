@@ -158,17 +158,18 @@ try {
     await page.locator(`${root} .tl-toolbar [data-action="next-gate"]`).click();
     const started = await page.locator(`${root} .tl-table`).evaluate(async table => {
       const at = Number(table.dataset.selected);
-      const { snapshot } = await import('/src/features/transit-timeline/provider.js');
+      const { snapshot } = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/features/transit-timeline/provider.js')?.name || '/src/features/transit-timeline/provider.js');
       const before = new Set(Object.values(await snapshot(at - 1000)).filter(Boolean).map(item => item.gate));
       return Object.values(await snapshot(at)).some(item => item && !before.has(item.gate));
     });
     assert.equal(started, true, `gate jump ${index + 1} starts an activation`);
-    const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => ({
-      outline: getComputedStyle(node).outlineColor,
-      shadow: getComputedStyle(node).boxShadow
-    }));
-    assert.match(glow.outline, /41, 128, 185/);
-    assert.match(glow.shadow, /41, 128, 185/);
+    const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => {
+      const probe=document.createElement('span');probe.style.color='var(--hd-selection-ring)';node.append(probe);
+      const expected=getComputedStyle(probe).color;probe.remove();
+      return { outline:getComputedStyle(node).outlineColor, shadow:getComputedStyle(node).boxShadow, expected };
+    });
+    assert.equal(glow.outline, glow.expected);
+    assert.ok(glow.shadow.includes(glow.expected), 'selection shadow follows the skin selection token');
   }
   const flashRow = page.locator(`${root} .tl-row-lit`).first();
   const flashKey = await flashRow.getAttribute('data-key');

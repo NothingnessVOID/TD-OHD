@@ -21,8 +21,8 @@ try {
   for(const [key,record]of Object.entries(fixture.records[locale])){
    const objectId=key.replace('variable.',''),isPublic=objectId==='introduction'||objectId.endsWith(':introduction');
    await page.evaluate(async({objectId,isPublic,tone})=>{
-    const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');
-    openKnowledgeDetail({objectType:'variable',objectId},isPublic?null:{variable:{color:2,tone,base:1,direction:tone<=3?'left':'right'}});
+    const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');
+    if (document.querySelector('#library-view:not(.hidden)')) document.querySelector('.nav-link[data-view="chart"]').click(); openKnowledgeDetail({objectType:'variable',objectId},isPublic?null:{variable:{color:2,tone,base:1,direction:tone<=3?'left':'right'}});
    },{objectId,isPublic,tone:width>=900?2:5});
    const article=page.locator('#gate-detail .knowledge-detail');
    const expected=objectId==='introduction'?'hd.variable.introduction':'hd.variable.'+objectId.replace(':','.');
@@ -55,9 +55,9 @@ try {
   const snapshot=()=>page.evaluate(()=>[...document.querySelectorAll('#foundation-panel .foundation-item,.variable-grid .arrow-card')].map(n=>({text:n.innerText,width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height})));
   const before=await snapshot();
   await page.evaluate(async locale=>{
-   const {knowledgeContent}=await import('/src/lib/knowledge/content/index.js');
+   const {knowledgeContent}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/content/index.js')?.name || '/src/lib/knowledge/content/index.js');
    for(const [key,r]of Object.entries(knowledgeContent[locale]))if(key.startsWith('variable.'))r.detail='DETAIL_SENTINEL'.repeat(10000);
-   const {refreshChartLanguage}=await import('/src/views/chart.js');refreshChartLanguage();
+   const {refreshChartLanguage}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');refreshChartLanguage();
   },locale);
   assert.deepEqual(await snapshot(),before,`${width}/${locale}: Detail changed Home`);
   assert.deepEqual(errors,[]);

@@ -25,7 +25,7 @@ try {
   const allowed=new Set([0,1,2,3,7]); // Approved Type/Authority/Profile copy and removed bilingual Variable heading.
   after.cards.forEach((card,i)=>{if(!allowed.has(i))assert.equal(card.text,before.cards[i].text);});
   const expected=await current.page.evaluate(async()=>{
-   const {getKnowledgeSummary}=await import('/src/lib/knowledge/registry.js');
+   const {getKnowledgeSummary}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/registry.js')?.name || '/src/lib/knowledge/registry.js');
    return ['type','authority','profile'].map((objectType,i)=>getKnowledgeSummary({objectType,objectId:['generator','sacral','2/4'][i]}).content);
   });
   for(const [i,slot]of [0,2,3].entries())assert.ok(after.cards[slot].text.includes(expected[i]));
@@ -34,12 +34,14 @@ try {
   const variableBefore=await current.page.locator('.variable-grid').evaluate(n=>({text:n.innerText,height:n.getBoundingClientRect().height}));
   if(locale==='en')assert.doesNotMatch(variableBefore.text,/[\u3400-\u9fff]/);else assert.doesNotMatch(variableBefore.text,/[A-Za-z]/);
   await current.page.evaluate(async()=>{
-   const {foundationRecords}=await import('/src/lib/knowledge/human-design-foundation.js');
+   const {foundationRecords}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/human-design-foundation.js')?.name || '/src/lib/knowledge/human-design-foundation.js');
    for(const record of foundationRecords.filter(r=>r.detail))record.detail={...record.detail,templateRead:undefined,read:()=> 'TEST_ONLY_LONG_DETAIL '.repeat(3000)};
-   const {refreshChartLanguage}=await import('/src/views/chart.js');refreshChartLanguage();
+   const {refreshChartLanguage}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');refreshChartLanguage();
   });
   assert.deepEqual(await snapshot(current.page),after,`${width}/${locale}: Detail cannot change Foundation`);
-  assert.deepEqual(await current.page.locator('.variable-grid').evaluate(n=>({text:n.innerText,height:n.getBoundingClientRect().height})),variableBefore);
+  const variableAfter=await current.page.locator('.variable-grid').evaluate(n=>({text:n.innerText,height:n.getBoundingClientRect().height}));
+  assert.equal(variableAfter.text,variableBefore.text);
+  assert.ok(Math.abs(variableAfter.height-variableBefore.height)<1/64,'Detail isolation preserves layout within one Chromium layout unit');
   await current.page.locator('[data-panel="cross"]').click();
   const crossText=await current.page.locator('#panel-content').innerText();assert.doesNotMatch(crossText,/70%|TEST_ONLY_LONG_DETAIL/);if(locale==='en')assert.doesNotMatch(crossText,/[\u3400-\u9fff]/);else assert.doesNotMatch(crossText,/[A-Za-z]/);
   assert.deepEqual(current.errors,[]);assert.deepEqual(old.errors,[]);
