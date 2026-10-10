@@ -50,7 +50,7 @@ try {
     await page.goto(`${base}/#library/gate/${gateNumber}`);
     await page.locator('#reference-detail .gate-detail-line').first().waitFor();
     assert.equal((await page.locator('#reference-detail .reference-reading').innerText()).trim(), popupCore);
-    if (viewport.width < 600) await page.locator('#reference-detail .reference-back').click();
+    if (viewport.width < 600) { await page.locator('#reference-mobile-detail .gate-detail-close').click(); await page.waitForURL('**/#library'); }
     await navClick('chart');
     await page.locator('#chart-view:not(.hidden)').waitFor();
     await navClick('transits');
