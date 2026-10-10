@@ -1,0 +1,74 @@
+{
+  "recordedAfterValidation": true,
+  "modifiedE2ECount": 15,
+  "files": [
+    {
+      "path": "tests/bodygraph-knowledge-regression-e2e.mjs",
+      "sha256": "f5b8797b0502a15ed60411c1f8a4b52a8b92b717009f5d4ac9f82647cbb48e6b"
+    },
+    {
+      "path": "tests/browser-comments-e2e.mjs",
+      "sha256": "5403d0574a96f6c1579490c248c5d8bc7e8a81b641711fd7bbdd649422b710c4"
+    },
+    {
+      "path": "tests/delve-blue-accent-e2e.mjs",
+      "sha256": "cd3b78aa0f5e60d4d211715e2ac6ba27301e7918682993c29a8f512e7427c80a"
+    },
+    {
+      "path": "tests/graph-window-fixing-colors-e2e.mjs",
+      "sha256": "785894b4da69219f7fa726abed2c3da6d0bae1a7450ffca39015a38cb018bf20"
+    },
+    {
+      "path": "tests/knowledge-access-e2e.mjs",
+      "sha256": "91ac1d56057ff42956f503c7da36df3c037613b5ec52649a220c63b696800dec"
+    },
+    {
+      "path": "tests/knowledge-deviation-e2e.mjs",
+      "sha256": "418dc6e584ade6ed3953b40775dbd81429697d37cbcec6fc436a125cf5698563"
+    },
+    {
+      "path": "tests/knowledge-layer-e2e.mjs",
+      "sha256": "feb522d253c466570f139bd3a759ba247440f1394201f33ee051e2774f7069aa"
+    },
+    {
+      "path": "tests/knowledge-presentation-e2e.mjs",
+      "sha256": "f0fae426b7eb7bb0b11cdce9b1aaf6da528a7c2d0b8e009f6ad93ea57f485472"
+    },
+    {
+      "path": "tests/knowledge-refinement-e2e.mjs",
+      "sha256": "9ace07948910d49ed93118ba011148e80d77b5cbef98cf817e6a422341bf760e"
+    },
+    {
+      "path": "tests/knowledge-visual-e2e.mjs",
+      "sha256": "942472bb9f4c19a3ff7d263274cf902e687de8bb7c7a2b28120e96f38e456674"
+    },
+    {
+      "path": "tests/people-editor-e2e.mjs",
+      "sha256": "46e7a0759d29c323828d2e9d11060ee3926422f6aeaf84dc84aa24aa4e91a8e3"
+    },
+    {
+      "path": "tests/review-round2-e2e.mjs",
+      "sha256": "bb47b75c0f41b2c833779cd6ddb378b7742a13e973673abc851ea4ec78e55830"
+    },
+    {
+      "path": "tests/skin-foundation-e2e.mjs",
+      "sha256": "2b814bf38716b06464d44040b7a364ae2ffbda5c3e4d97f0380834e99f319be5"
+    },
+    {
+      "path": "tests/skin-presets-e2e.mjs",
+      "sha256": "3af3ddbc5182c8ebddedbf29a5b95c683bdb2bdf96ec4e194faa9db9bfd48775"
+    },
+    {
+      "path": "tests/variable-29-e2e.mjs",
+      "sha256": "4eff6067d23c4cff6f8c3d3f6f115b9b8c07c2e5cb26815640d520b29b687b0b"
+    },
+    {
+      "path": "tests/helpers/browser-regression-batch.mjs",
+      "sha256": "d6c2d622574ad41fc9693dfbacfe60da1361e9c0e06e3f0af3fc73d1067c973b"
+    },
+    {
+      "path": "tests/helpers/browser-regression-baseline.mjs",
+      "sha256": "7cf29cf5f4ec727f04b0617ad4888a89e699fe1b271c956be2b601ac732ad7ef"
+    }
+  ]
+}

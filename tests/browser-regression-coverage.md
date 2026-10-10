@@ -4,7 +4,7 @@ Worktree: `p0-details`; branch: `release/browser-regression`; tested product sou
 
 ## Result and scope
 
-35 owned unique scripts PASS, zero remaining owned browser failures. 29 scripts DELEGATED/excluded by explicit ownership. One additional production-only script (`deployment-smoke.mjs`) failed its static-bundle precondition when initially pointed at Vite dev; it is NOT a pass and must be evaluated by the release owner against a built service. The parent reports its unit/Linux release checks green; those are not counted here.
+35 owned unique scripts PASS, zero remaining owned browser failures. 29 scripts DELEGATED/excluded by explicit ownership. One additional production-only script (`deployment-smoke.mjs`) failed its static-bundle precondition when initially pointed at Vite dev; that local attempt is NOT a pass. The parent subsequently reports actual-dist deployment-smoke PASS at d953322; this is external parent evidence, not counted among the 35 local passes. The parent reports its unit/Linux release checks green; those are not counted here.
 
 `browser-regression-results.json` lists all 65 discovered E2E/deployment scripts with final ownership/status, every executed attempt and concrete log path. `initial` results used Edge; their already-green results were retained per instruction. All repairs were validated with `CHROME_CHANNEL=chromium`, no forced Edge executable. Resumed scripts have a 120-second process budget; none was skipped to obtain a pass. Original logs remain under `artifacts/browser-regression/` (ignored local evidence).
 
@@ -31,6 +31,10 @@ Historical attempts FAIL and remain FAIL: `historical-phase4c/knowledge-access-e
 For release regression, the independently served accepted task starting commit `8475a4a` on 19974 replaces the obsolete pre-feature comparison target, without removing DOM/text/geometry checks. Source archives are immutable and separate from the candidate service. Passing this comparison establishes no change relative to that accepted starting UI; it does not validate the intervening historical design changes. Candidate-only assertions still exercise live dialog ownership, pins, timing, keyboard, migration, detail isolation and relationship semantics. The five two-server suites pass against this accepted baseline: BodyGraph, knowledge access/layer/deviation and skin foundation.
 
 19963 briefly exited during resumed tests. Connection-refused attempts in `chromium-navigation`, `accepted-baseline` and `chromium-adaptation-2` are retained. Restarting this exact worktree's Vite service restored the environment; only affected/failed suites were rerun. No confirmed product defect remains in this owned scope.
+
+## Final source verification
+
+All 15 modified E2E files were unchanged after their latest PASS; filesystem timestamps were checked against their final log timestamps, with zero later modifications. `browser-regression-source-hashes.json` records SHA-256 of those exact final files and the runner. This timestamp check supplements the retained execution evidence; the initial runner did not record source hashes at process launch. Parent's consolidated matrix has 66 unique entries; this branch's filename-based discovery has 65, so the parent matrix remains authoritative for total release scope.
 
 ## Reproduction
 

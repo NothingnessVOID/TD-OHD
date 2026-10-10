@@ -6,7 +6,7 @@ const [revision,port='19971']=process.argv.slice(2);if(!revision)throw Error('re
 const root=process.cwd(),resolved=spawnSync('git',['rev-parse',revision],{encoding:'utf8'});if(resolved.status)throw Error(resolved.stderr);
 const commit=resolved.stdout.trim(),target=path.join(root,'artifacts/browser-regression/baselines',commit);
 mkdirSync(target,{recursive:true});
-if(!existsSync(path.join(target,'baseline-provenance.json'))){ 
+if(!existsSync(path.join(target,'baseline-provenance.json'))){
  const archive=path.join(target,'snapshot.tar');const a=spawnSync('git',['archive','--format=tar','--output',archive,commit,'src','public','index.html','package.json','vite.config.js']);if(a.status)throw Error(String(a.stderr));
  const x=spawnSync('tar',['-xf',archive,'-C',target]);if(x.status)throw Error(String(x.stderr));
 }
