@@ -1,4 +1,5 @@
 import '../styles/person-editor.css';
+import { openOperationDialog } from './operation-dialog.js';
 import { createPlaceSearch } from './placesearch.js';
 import { savePerson, getAiAccess, setAiAccess } from './people.js';
 import { localMode } from './local-store.js';
@@ -6,12 +7,10 @@ import { esc } from './format.js';
 import { t } from './i18n.js';
 import { toDecimalHour } from './chart-engine/birth-time.js';
 
-export function openPersonEditor(birth = {}, { create = false, onSaved = null } = {}) {
+export function openPersonEditor(birth = {}, { create = false, onSaved = null, onCancel = null } = {}) {
   if (!birth.id && !create) return;
   const title = create ? 'Team create person' : 'Edit chart';
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.innerHTML = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t(title))}">
+  const content = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t(title))}">
     <div class="modal-title">${esc(t(title))}</div>
     <label class="modal-field">${t('Name')}<input id="edit-name" value="${esc(birth.name || '')}" required></label>
     <label class="modal-field">${t('Birth Date')}<input id="edit-date" type="date" value="${esc(birth.birthDate || '')}" required></label>
@@ -23,7 +22,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null } 
     <p id="edit-error" role="alert" hidden></p>
     <div class="modal-actions"><button type="button" id="edit-cancel" class="btn-secondary">${t('Cancel')}</button><button type="submit" id="edit-save" class="btn-primary">${t('Save')}</button></div>
   </form>`;
-  document.body.append(overlay);
+  const { overlay, close } = openOperationDialog({ content, onClose: reason => { place.destroy(); if (reason !== 'saved') onCancel?.(); } });
   const field = id => overlay.querySelector(`#edit-${id}`);
   const effectiveTime = () => field('unknown').checked ? '12:00' : field('time').value;
   const place = createPlaceSearch(field('place'), { getDateTime: () => ({ date: field('date').value, time: effectiveTime() }) });
@@ -37,23 +36,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null } 
   field('unknown').addEventListener('change', updateUnknown);
   field('date').addEventListener('change', place.updateDateTime);
   field('time').addEventListener('change', place.updateDateTime);
-  const trigger = document.activeElement;
-  const close = () => { place.destroy(); overlay.remove(); document.removeEventListener('keydown', onKey); if (trigger?.isConnected) trigger.focus(); };
-  const onKey = event => {
-    if (event.key === 'Escape') { event.preventDefault(); close(); return; }
-    if (event.key !== 'Tab') return;
-    const focusable = [...overlay.querySelectorAll('input, button, select, textarea, a[href], [tabindex]')]
-      .filter(node => !node.disabled && node.tabIndex >= 0 && !node.closest('[hidden], .hidden') && node.getClientRects().length);
-    const first = focusable[0], last = focusable.at(-1);
-    if (!first) { event.preventDefault(); return; }
-    if (!overlay.contains(document.activeElement) || (event.shiftKey ? document.activeElement === first : document.activeElement === last)) {
-      event.preventDefault();
-      (event.shiftKey ? last : first).focus();
-    }
-  };
-  document.addEventListener('keydown', onKey);
-  field('cancel').addEventListener('click', close);
-  overlay.addEventListener('click', event => { if (event.target === overlay) close(); });
+  field('cancel').addEventListener('click', () => close());
   overlay.querySelector('form').addEventListener('submit', event => {
     event.preventDefault();
     try {
@@ -65,7 +48,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null } 
       if (!location) { place.flagMissing(); return; }
       const saved = savePerson({ ...birth, name: field('name').value.trim(), birthDate, birthTime, timeUnknown: field('unknown').checked, timezone: location.timezone, location });
       if (!localMode) setAiAccess(saved.id, field('ai').checked);
-      close();
+      close('saved');
       onSaved?.(saved);
     } catch (error) {
       field('error').textContent = error.message;

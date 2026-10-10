@@ -1,0 +1,13 @@
+.operation-overlay { overflow-y:auto; }
+.operation-dialog { box-sizing:border-box; max-height:calc(100dvh - 40px); overflow-y:auto; }
+.operation-dialog header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.operation-dialog header .modal-title { margin:0; }
+.operation-dialog header { margin-bottom:16px; }
+.operation-dialog button, .operation-dialog input:not([type=checkbox]), .operation-dialog select { min-height:44px; }
+.operation-dialog button:focus-visible, .operation-dialog input:focus-visible, .operation-dialog select:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+.operation-dialog [data-close] { min-width:44px; }
+.operation-dialog .modal-actions > button { width:auto; flex:0 0 auto; white-space:nowrap; min-width:72px; }
+.operation-dialog .modal-actions { flex-wrap:wrap; }
+.operation-message { white-space:pre-line; overflow-wrap:anywhere; }
+.operation-dialog button:disabled { opacity:.5; cursor:default; }
+@media(max-width:480px) { .operation-overlay { padding:12px; } .operation-dialog { max-height:calc(100dvh - 24px); padding:20px; } }
