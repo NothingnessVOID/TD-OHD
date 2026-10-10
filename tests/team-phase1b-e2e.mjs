@@ -16,6 +16,7 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-view:not(.hidden) .team-pool summary').click();
   await page.locator('#team-view:not(.hidden) #team-person-picker').waitFor();
   const add = async id => { await page.locator('#team-person-picker').selectOption(id); await page.locator('#team-add-person').click(); };
@@ -40,7 +41,7 @@ try {
   assert.equal(await page.locator('#team-selected').locator('script').count(), 0);
   for (const card of await page.locator('.team-member-card').all()) await card.locator('.team-assign').click();
   await page.locator('#team-calculate').click();
-  await page.locator('.team-summary').waitFor({ timeout: 60000 });
+  await page.locator('.penta-overview').waitFor({ timeout: 60000 });
   assert.equal(await page.locator('.team-channel').count(), 6);
   assert.equal(await page.locator('.penta-gate').count(), 12);
   assert.doesNotMatch(await page.locator('#team-content').innerText(), /Team Roles|Recommendations|Group Type/);
@@ -49,6 +50,7 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-view:not(.hidden) #team-list').waitFor();
   await page.locator('#team-list').selectOption(stored.teams[0].teamId);
   assert.equal(await page.locator('.team-member-card').count(), 3);
@@ -72,7 +74,7 @@ try {
   assert.equal(await page.locator('.team-group-member').count(), 4);
   await page.locator('#team-calculate').click();
   if (await page.locator('#team-content [role="alert"]').count()) throw new Error(await page.locator('#team-content').innerText());
-  await page.locator('.team-summary').waitFor({ timeout: 60000 });
+  await page.locator('.penta-overview').waitFor({ timeout: 60000 });
   assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).length, PROFILE_STORAGE_KEY), profileBefore);
   await page.locator('#team-save').click();
   assert.match(await page.locator('#team-content').innerText(), /Unsaved members: Quick/);

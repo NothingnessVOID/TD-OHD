@@ -22,6 +22,7 @@ try {
   await page.goto(base);
   await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-person-picker').waitFor();
   for (const profile of profiles) {
     await page.locator('#team-person-picker').selectOption(profile.id);
@@ -49,14 +50,13 @@ try {
   assert.equal(await page.locator('.penta-all').getAttribute('aria-pressed'), 'true');
   await page.locator('.penta-gate-hit').first().focus();
   await page.keyboard.press('Enter');
-  await page.locator('.penta-detail:not(.hidden)').waitFor();
-  assert.match(await page.locator('.penta-detail').innerText(), /Gate 31/);
-  await page.keyboard.press('Escape');
-  assert.equal(await page.locator('.penta-detail').isVisible(), false);
+  // Persistent analysis replaces modal reading; keyboard activation moves focus.
+  assert.match(await page.locator('.penta-active-detail').innerText(), /Gate 31/);
+  assert.equal(await page.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
   await page.locator('.penta-channel-hit').first().focus();
   await page.keyboard.press('Enter');
-  assert.match(await page.locator('.penta-detail').innerText(), /31|7/);
-  await page.locator('.penta-detail .gate-detail-close').click();
+  assert.match(await page.locator('.penta-active-detail').innerText(), /31|7/);
+  assert.equal(await page.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
   if (screenshots) { await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: `${screenshots}/penta-desktop.png`, fullPage: true }); }
   await page.locator('#team-group-new').click();
   for (let i = 3; i < 8; i++) await page.locator('.team-member-card').nth(i).locator('.team-assign').click();
