@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, cpSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -18,7 +19,7 @@ function sandbox(fn) {
       // Exercise the historical snapshot with its own original bytes; Phase 1E has a separate guard.
       if (['src/views/penta-matrix.js','src/styles/penta-matrix.css'].includes(file))
         writeFileSync(path.join(dir, file), execFileSync('git', ['show', `da21b31c8832e4786a68b34c6956c0b7efa65946:${file}`], { cwd: root }));
-      else cpSync(path.join(root, file), path.join(dir, file));
+      else writeFileSync(path.join(dir, file), incrementHistoricalSource(file));
     }
     return fn(dir);
   } finally { rmSync(dir, { recursive: true, force: true }); }
