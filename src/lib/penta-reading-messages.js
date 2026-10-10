@@ -20,7 +20,12 @@ const messages = {
     'Penta member activations': 'Member activations',
     'Penta gate order throat': 'Throat Center',
     'Penta gate order g': 'G Center',
-    'Penta gate order sacral': 'Sacral Center'
+    'Penta gate order sacral': 'Sacral Center',
+    'Penta current members': 'Current members',
+    'Penta unsaved changes': 'Unsaved changes',
+    'Penta temporary': 'Temporary Penta',
+    'Penta empty guide': 'Choose at least three people to see the group analysis. Your current selections are kept.',
+    'Penta repair guide': 'Correct the person highlighted on the left to continue. The other selected members are kept.'
   },
   'zh-CN': {
     'Penta reading title': 'Penta 群体分析',
@@ -41,7 +46,12 @@ const messages = {
     'Penta member activations': '成员激活',
     'Penta gate order throat': '喉中心',
     'Penta gate order g': 'G 中心',
-    'Penta gate order sacral': '骶骨中心'
+    'Penta gate order sacral': '骶骨中心',
+    'Penta current members': '当前成员',
+    'Penta unsaved changes': '未保存修改',
+    'Penta temporary': '临时 Penta',
+    'Penta empty guide': '选满三位人物后，群体分析会自动显示。当前选择会保留。',
+    'Penta repair guide': '修正左侧提示的人物资料后即可继续，其他已选成员会保留。'
   },
   'zh-Hant': {
     'Penta reading title': 'Penta 群體分析',
@@ -62,7 +72,12 @@ const messages = {
     'Penta member activations': '成員啟動',
     'Penta gate order throat': '喉中心',
     'Penta gate order g': 'G 中心',
-    'Penta gate order sacral': '薦骨中心'
+    'Penta gate order sacral': '薦骨中心',
+    'Penta current members': '目前成員',
+    'Penta unsaved changes': '未儲存修改',
+    'Penta temporary': '臨時 Penta',
+    'Penta empty guide': '選滿三位人物後，群體分析會自動顯示。目前選擇會保留。',
+    'Penta repair guide': '修正左側提示的人物資料後即可繼續，其他已選成員會保留。'
   }
 };
 for (const [locale, values] of Object.entries(messages)) registerMessages(locale, values);

@@ -138,7 +138,7 @@ function showView(view, { fromHistory = false } = {}) {
   document.getElementById('chart-required-view').classList.add('hidden');
   document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view !== 'chart');
 
-  if (!currentData && view !== 'library') {
+  if (!currentData && view !== 'library' && view !== 'team') {
     if (view !== 'chart') document.getElementById('chart-required-view').classList.remove('hidden');
     return;
   }
@@ -232,12 +232,8 @@ function setupPeopleSwitcher() {
       if (id && confirm(t('Remove {name} from saved charts?', { name: currentData.birth.name }))) {
         timelineView?.deactivate();
         try { deletePerson(id); } catch (e) { console.warn('Could not delete person:', e); renderPeopleSwitcher(); return; }
-        setLastPersonId(null);
-        clearCurrentChart();
-        currentData = null;
-        history.replaceState(null, '', window.location.pathname);
-        document.querySelectorAll('.view-section, .chart-view').forEach(s => s.classList.add('hidden'));
-        document.getElementById('birth-entry').classList.remove('hidden');
+        // The shared people-change handler clears dependent views while preserving
+        // independent Team/library workspaces and their current selections.
         entryApi?.renderQuickPick();
       }
       renderPeopleSwitcher();
@@ -458,15 +454,17 @@ async function init() {
     clearCurrentChart();
     invalidateTransits();
     timelineView?.invalidateBirth();
+    const visibleView = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
     if (!change.after) {
       ++birthRequest; loadingPersonId = null; currentData = null;
       invalidateConnection(); setLastPersonId(null);
       history.replaceState(null, '', window.location.pathname);
-      showView('chart');
+      renderPeopleSwitcher();
+      showView(['team', 'library'].includes(visibleView) ? visibleView : 'chart');
       return;
     }
     currentData = null;
-    document.querySelectorAll('.view-section, .chart-view').forEach(section => section.classList.add('hidden'));
+    if (!['team', 'library'].includes(visibleView)) document.querySelectorAll('.view-section, .chart-view').forEach(section => section.classList.add('hidden'));
     loadBirth(birthFromPerson(change.after), { preserveView: true }).then(data => {
       if (data) refreshConnectionPeople(change, { currentReloaded: true });
     });
