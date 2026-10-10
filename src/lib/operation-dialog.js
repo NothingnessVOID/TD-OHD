@@ -14,6 +14,7 @@ export function openOperationDialog({ content, onClose = null, initialFocus = nu
  overlay.innerHTML = content;
  const root = overlay.firstElementChild;
  root.classList.add('operation-dialog'); root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.tabIndex = -1;
+ root.querySelectorAll('button:not([class]):not([data-add-person])').forEach(button => button.classList.add('btn-secondary'));
  const parent = stack.at(-1); if (parent) parent.inert = true;
  if (!stack.length) {
   previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';

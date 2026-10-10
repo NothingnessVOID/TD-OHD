@@ -93,7 +93,7 @@ function renderResult() {
 }
 function layer(title, body, bind) {
  closeLayer?.();
- const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}"><header><h3 class="modal-title">${txt(title)}</h3><button type="button" data-close aria-label="${txt('Close')}">×</button></header>${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
+ const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}"><header><h3 class="modal-title">${txt(title)}</h3><button type="button" class="ui-icon-button" data-close aria-label="${txt('Close')}">×</button></header>${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
  closeLayer = close; bind(root, close); return root;
 }
 function editPerson(id = null) {
@@ -104,15 +104,17 @@ function editPerson(id = null) {
 }
 function picker(draft = null) {
  draft ||= { ids: selectedMembers().map(m => m.personId), search: '', pentaId: selectedId, revision, teamId };
- layer('Team add person', `<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"><p id="team-selection-count" role="status"></p><button type="button" id="team-person-create">${txt('Team create person')}</button><div id="team-person-results"></div><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
+ layer('Team add person', `<label class="modal-field">${txt('Team search people')}<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"></label><p id="team-selection-count" role="status"></p><button type="button" id="team-person-create">${txt('Team create person')}</button><div id="team-person-results"></div><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
   const search = root.querySelector('input'); search.value = draft.search;
   const error = message => { root.querySelector('.team-layer-error').textContent = message; };
   const render = () => {
    root.querySelector('#team-selection-count').textContent = t('Team selected count', { count: draft.ids.length });
-   root.querySelector('#team-person-results').innerHTML = listPeople().filter(p => `${p.name} ${p.birthDate} ${p.id}`.toLowerCase().includes(draft.search.toLowerCase())).map(p => `<div class="team-picker-row"><button type="button" data-add-person="${esc(p.id)}" aria-pressed="${draft.ids.includes(p.id)}" ${draft.ids.length >= 5 && !draft.ids.includes(p.id) ? 'disabled' : ''}><strong>${esc(p.name)}</strong><small>${esc(p.birthDate)} · ${esc(p.timeUnknown ? t('Team estimated time') : p.birthTime)} · ${esc(p.id.slice(-6))}</small></button><button type="button" data-edit-person="${esc(p.id)}">${txt('Edit chart')}</button></div>`).join('');
+   root.querySelector('#team-person-results').innerHTML = listPeople().filter(p => `${p.name} ${p.birthDate} ${p.id}`.toLowerCase().includes(draft.search.toLowerCase())).map(p => `<div class="team-picker-row"><button type="button" class="btn-secondary team-picker-choice" data-add-person="${esc(p.id)}" aria-pressed="${draft.ids.includes(p.id)}" ${draft.ids.length >= 5 && !draft.ids.includes(p.id) ? 'disabled' : ''}><span class="team-picker-check" aria-hidden="true">${draft.ids.includes(p.id) ? '☑' : '☐'}</span><strong>${esc(p.name)}</strong><small>${esc(p.birthDate)} · ${esc(p.timeUnknown ? t('Team estimated time') : p.birthTime)} · ${esc(p.id.slice(-6))}</small></button><button type="button" class="btn-secondary" data-edit-person="${esc(p.id)}">${txt('Edit chart')}</button></div>`).join('');
   };
   const editor = id => {
-   const person = id ? getPerson(id) : null; close();
+   const person = id ? getPerson(id) : null;
+   if (id && !person) { error(t('Missing reference')); return; }
+   close();
    openPersonEditor(person ? { ...person, ...birthFromPerson(person) } : {}, { create: !person, onCancel: () => picker(draft), onSaved: saved => { if (!id && draft.ids.length < 5) draft.ids.push(saved.id); picker(draft); } });
   };
   search.oninput = () => { draft.search = search.value; render(); }; render(); search.focus();
@@ -145,7 +147,7 @@ function switcher() {
  layer('Team / Penta', `<button type="button" id="team-temporary">${txt('Team temporary')}</button><button type="button" id="team-new-group">${txt('New Penta')}</button><div>${groups.map(g => `<button type="button" data-local-group="${esc(g.pentaId)}">${esc(teamName || t('Team temporary'))} / ${esc(g.label)}</button>`).join('')}</div><hr>${listTeams().map(team => `<section><strong>${esc(team.name)}</strong>${team.groups.map(g => `<button type="button" data-team="${esc(team.teamId)}" data-group="${esc(g.pentaId)}">${esc(g.label)}</button>`).join('') || `<button type="button" data-team="${esc(team.teamId)}">${txt('Open')}</button>`}</section>`).join('')}`, (root, close) => {
   root.querySelector('#team-temporary').onclick = async () => { if (!dirty || await confirmOperation(t('Discard unsaved team changes?'))) { close(); reset(); } };
   root.querySelector('#team-new-group').onclick = () => {
-   layer('New Penta', `<form><label>${txt('Penta name')}<input name="group" value="Penta ${String.fromCharCode(65+groups.length)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit">${txt('Confirm')}</button></div></form>`, (dialog, done) => {
+   layer('New Penta', `<form><label class="modal-field">${txt('Penta name')}<input name="group" value="Penta ${String.fromCharCode(65+groups.length)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit">${txt('Confirm')}</button></div></form>`, (dialog, done) => {
     dialog.querySelector('form').onsubmit = event => { event.preventDefault(); const label = dialog.querySelector('input').value.trim(); if (!label) return; const g = freshGroup(); g.label = label; groups.push(g); selectedId = g.pentaId; done(); schedule(); };
    });
   };
@@ -154,7 +156,7 @@ function switcher() {
 }
 function saveDialog() {
  const snapshotTeams = listTeams();
- layer('Save team', `<form id="team-save-form"><label>${txt('Saved teams')}<select id="team-save-target"><option value="">${txt('New team')}</option>${snapshotTeams.map(team => `<option value="${esc(team.teamId)}" ${team.teamId === teamId ? 'selected' : ''}>${esc(team.name)}</option>`).join('')}</select></label><label>${txt('Team name')}<input id="team-save-name" value="${esc(teamName)}"></label><label>${txt('Penta name')}<input id="team-save-group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form>`, (root, close) => {
+ layer('Save team', `<form id="team-save-form"><label class="modal-field">${txt('Saved teams')}<select id="team-save-target"><option value="">${txt('New team')}</option>${snapshotTeams.map(team => `<option value="${esc(team.teamId)}" ${team.teamId === teamId ? 'selected' : ''}>${esc(team.name)}</option>`).join('')}</select></label><label class="modal-field">${txt('Team name')}<input id="team-save-name" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input id="team-save-group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form>`, (root, close) => {
   const target = root.querySelector('#team-save-target'), name = root.querySelector('#team-save-name');
   const update = () => { name.required = !target.value; name.disabled = !!target.value; }; target.onchange = update; update();
   root.querySelector('form').onsubmit = async event => { event.preventDefault(); try {
@@ -184,7 +186,7 @@ function saveDialog() {
  });
 }
 function manage() {
- layer('Team manage', `<form><label>${txt('Team name')}<input name="team" value="${esc(teamName)}"></label><label>${txt('Penta name')}<input name="group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form><button id="team-delete-group">${txt('Delete Penta')}</button><button id="team-delete-team" ${!teamId?'disabled':''}>${txt('Delete team')}</button><h4>${txt('Team members')}</h4>${members.map(m => `<div class="team-picker-row"><span>${esc(memberName(m))} · ${esc(groups.find(g => g.memberIds.includes(m.memberId))?.label || t('Ungrouped'))}</span><button data-assign="${esc(m.personId)}">${txt('Add to current Penta')}</button><button data-pool-remove="${esc(m.memberId)}">${txt('Remove from team')}</button></div>`).join('')}`, (root, close) => {
+ layer('Team manage', `<form><label class="modal-field">${txt('Team name')}<input name="team" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input name="group" value="${esc(group().label)}" required></label><button type="submit">${txt('Save')}</button></form><button id="team-delete-group">${txt('Delete Penta')}</button><button id="team-delete-team" ${!teamId?'disabled':''}>${txt('Delete team')}</button><h4>${txt('Team members')}</h4>${members.map(m => `<div class="team-picker-row"><span>${esc(memberName(m))} · ${esc(groups.find(g => g.memberIds.includes(m.memberId))?.label || t('Ungrouped'))}</span><button data-assign="${esc(m.personId)}">${txt('Add to current Penta')}</button><button data-pool-remove="${esc(m.memberId)}">${txt('Remove from team')}</button></div>`).join('')}`, (root, close) => {
   root.querySelector('form').onsubmit = event => { event.preventDefault(); teamName = root.querySelector('[name=team]').value.trim(); group().label = root.querySelector('[name=group]').value.trim(); dirty = true; close(); renderControls(); saveDialog(); };
   root.querySelector('#team-delete-group').onclick = async () => { if (!await confirmOperation(t('Delete Penta'))) return; groups = groups.filter(g => g.pentaId !== selectedId); if (!groups.length) groups.push(freshGroup()); selectedId = groups[0].pentaId; close(); schedule(); };
   root.querySelector('#team-delete-team').onclick = async () => { if (!await confirmOperation(t('Delete this saved team?'))) return; try { if (!currentRepository()) throw Error(t('Team revision changed; reload before saving.')); deleteTeam(teamId); close(); reset(); } catch(e) { root.querySelector('.team-layer-error').textContent=e.message; } };

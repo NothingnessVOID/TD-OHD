@@ -18,9 +18,10 @@
 .team-control-dialog [aria-pressed=true] { background:var(--accent-soft); border-color:var(--accent); }
 #team-selection-count { color:var(--text-secondary); }
 #team-person-results { margin-block:12px; }
-.team-control-dialog button { min-height:44px; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.4rem .6rem; font:inherit; cursor:pointer; }
-.team-control-dialog input, .team-control-dialog select { box-sizing:border-box; width:100%; min-width:0; padding:.6rem; background:var(--bg); color:var(--text); border:1px solid var(--border); font:inherit; }
-.team-control-dialog label { display:grid; gap:.3rem; margin:.6rem 0; }
+.team-picker-choice { display:grid; grid-template-columns:auto minmax(0,1fr); column-gap:8px; }
+.team-picker-check { grid-row:1 / 3; align-self:center; font-size:18px; }
+.team-picker-choice small { grid-column:2; }
+.team-control-dialog > .modal-actions { position:sticky; bottom:0; padding-block:12px; background:var(--bg-elevated); }
 .team-picker-row { display:flex; align-items:center; gap:.5rem; margin:.4rem 0; }
 .team-picker-row > :first-child { flex:1; min-width:0; text-align:left; overflow-wrap:anywhere; }
 .team-picker-row small { display:block; font-size:.7rem; color:var(--text-secondary); }
