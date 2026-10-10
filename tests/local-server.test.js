@@ -46,11 +46,20 @@ test('local account: two browser sessions, durable saves, safe legacy merge, aut
     const backup = await request('backup',{cookie:a.cookie}); assert.equal(backup.body.people.length,1);
     assert.ok(readdirSync(join(dir,'backups')).some(n => n.endsWith('.json')));
     if (process.platform === 'win32') {
-      const acl = JSON.parse(execFileSync('powershell.exe', ['-NoProfile','-NonInteractive','-Command', `$a=Get-Acl -LiteralPath $env:OHD_TEST_DB; @{ protected=$a.AreAccessRulesProtected; current=[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value; rules=@($a.Access | ForEach-Object { @{ sid=$_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value; type=$_.AccessControlType.ToString(); rights=$_.FileSystemRights.ToString() } }) } | ConvertTo-Json -Depth 4 -Compress`], { env:{...process.env,OHD_TEST_DB:join(dir,'human-design.sqlite')}, encoding:'utf8' }));
+      for (const privatePath of [dir, join(dir,'backups'), ...['', '-wal', '-shm'].map(suffix => join(dir,'human-design.sqlite' + suffix)), ...readdirSync(join(dir,'backups')).map(name => join(dir,'backups',name))]) {
+      const acl = JSON.parse(execFileSync('powershell.exe', ['-NoProfile','-NonInteractive','-Command', `$a=Get-Acl -LiteralPath $env:OHD_TEST_DB; @{ protected=$a.AreAccessRulesProtected; current=[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value; rules=@($a.Access | ForEach-Object { @{ sid=$_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value; type=$_.AccessControlType.ToString(); rights=$_.FileSystemRights.ToString(); inheritance=[int]$_.InheritanceFlags; propagation=[int]$_.PropagationFlags; inherited=$_.IsInherited } }) } | ConvertTo-Json -Depth 4 -Compress`], { env:{...process.env,OHD_TEST_DB:privatePath}, encoding:'utf8' }));
       assert.equal(acl.protected,true);
       assert.deepEqual(acl.rules.map(r=>r.sid).sort(), [acl.current,'S-1-5-18','S-1-5-32-544'].sort());
-      for (const rule of acl.rules) { assert.equal(rule.type,'Allow'); assert.equal(rule.rights,'FullControl'); }
-    } else assert.equal(statSync(join(dir,'human-design.sqlite')).mode & 0o777,0o600);
+      for (const rule of acl.rules) {
+        assert.equal(rule.type,'Allow'); assert.equal(rule.rights,'FullControl');
+        assert.equal(rule.inheritance,statSync(privatePath).isDirectory() ? 3 : 0);
+        assert.equal(rule.propagation,0); assert.equal(rule.inherited,false);
+      }
+      }
+    } else {
+      for (const path of [dir, join(dir,'backups')]) assert.equal(statSync(path).mode & 0o777,0o700);
+      for (const path of [...['', '-wal', '-shm'].map(suffix => join(dir,'human-design.sqlite' + suffix)), ...readdirSync(join(dir,'backups')).map(name => join(dir,'backups',name))]) assert.equal(statSync(path).mode & 0o777,0o600);
+    }
     await stop(); await start();
     assert.equal((await request('sync',{cookie:b.cookie,data:{operations:[]}})).body.people[0].name,'更新后的姓名');
     await request('sync',{cookie:b.cookie,data:{operations:[{operationId:'delete-1',id:person.id,kind:'delete'}]}});
