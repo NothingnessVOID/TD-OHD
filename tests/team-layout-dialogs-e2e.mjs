@@ -13,11 +13,11 @@ const page = await context.newPage(); page.setDefaultTimeout(15000);
 const errors=[], records=[]; page.on('pageerror', error=>errors.push(error.message));
 const geometry = () => page.evaluate(() => {
  const rect=selector=>{const r=document.querySelector(selector)?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}:null;};
- return {width:innerWidth,height:innerHeight,windowY:scrollY,overflow:document.documentElement.scrollWidth>innerWidth+1,left:rect('.team-management'),right:rect('.team-results'),canvas:rect('#team-content .penta-canvas'),rightScroll:document.querySelector('.team-results')?.scrollTop,gateCount:document.querySelectorAll('.penta-gate-reading').length,channelCount:document.querySelectorAll('.penta-channel-reading').length,gateOrder:[...document.querySelectorAll('.penta-gate-reading')].map(n=>Number(n.dataset.detailId)),contentIds:document.querySelectorAll('#team-content').length};
+ return {width:innerWidth,height:innerHeight,windowY:scrollY,overflow:document.documentElement.scrollWidth>innerWidth+1,left:rect('.team-management'),right:rect('.team-results'),canvas:rect('#team-content .penta-canvas'),firstPanel:rect('#team-analysis .panel'),rightScroll:document.querySelector('.team-results')?.scrollTop,gateCount:document.querySelectorAll('.penta-gate-reading').length,channelCount:document.querySelectorAll('.penta-channel-reading').length,gateOrder:[...document.querySelectorAll('.penta-gate-reading')].map(n=>Number(n.dataset.detailId)),contentIds:document.querySelectorAll('#team-content').length};
 });
 async function shot(name) { await page.evaluate(()=>document.fonts.ready); const file=path.join(output,name+'.png'); await page.screenshot({path:file,animations:'disabled'});const state=await geometry();records.push({name,file,...state});console.log(JSON.stringify({name,file,...state})); }
 async function settled(){await page.waitForFunction(()=>document.querySelector('#team-content')?.getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-channel-reading').length===6,{},{timeout:90000});}
-async function add(id){await page.locator('#team-add-saved-person').click();await page.locator('#team-person-search').fill(id);await page.locator(`[data-add-person="${id}"]`).click();}
+async function add(id){await page.locator('#team-add-saved-person').click();await page.locator('#team-person-search').fill(id);await page.locator(`[data-add-person="${id}"]`).click();await page.locator('#team-selection-confirm').click();}
 async function locale(code){if(!(await page.locator('#more-menu').evaluate(n=>n.open)))await page.locator('#more-toggle').click();if(!(await page.locator('#language-menu').evaluate(n=>n.open)))await page.locator('#language-menu summary').click();await page.locator(`[data-language="${code}"]`).click();if(await page.locator('#more-menu').evaluate(n=>n.open))await page.locator('#more-toggle').click();}
 try {
  await page.goto(base+'/dev/test-people.html');await page.locator('#import:not([disabled])').click();
@@ -29,7 +29,7 @@ try {
  await settled();await shot('02-desktop-three');
  const before=await geometry();assert.equal(before.contentIds,1);assert.equal(before.channelCount,6);assert.equal(before.gateCount,12);assert.deepEqual(before.gateOrder,[31,8,33,7,1,13,15,2,46,5,14,29]);
  assert.ok(Math.abs(before.canvas.height/before.canvas.width-410/320)<.01);
- assert.ok(Math.abs(before.left.y-before.right.y)<2);assert.ok(before.canvas.bottom<960);
+ assert.ok(Math.abs(before.left.y-before.firstPanel.y)<2, 'visible panel tops align; scroll viewport includes shadow clearance');assert.ok(before.canvas.bottom<960);
  await page.locator('.team-results').hover();await page.mouse.wheel(0,650);await page.waitForFunction(()=>document.querySelector('.team-results').scrollTop>300);
  const scrolled=await geometry();assert.ok(Math.abs(scrolled.windowY-before.windowY)<2);assert.ok(Math.abs(scrolled.canvas.y-before.canvas.y)<2);
  await shot('03-independent-scroll');

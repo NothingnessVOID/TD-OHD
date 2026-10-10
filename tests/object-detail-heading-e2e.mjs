@@ -10,7 +10,7 @@ try {
   const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('http://127.0.0.1:19963/?d=1990-06-15&t=14%3A30&tz=-6');
+  await page.goto(`${process.env.E2E_URL || 'http://127.0.0.1:9961'}/?d=1990-06-15&t=14%3A30&tz=-6`);
   await page.locator('#bodygraph-container .bg-gate[data-gate="31"]').click();
   const birthHeading = await page.locator('#gate-detail .detail-name').textContent();
   assert.equal(await page.locator('#gate-detail .tl-detail-heading .detail-label').count(), 1);
@@ -50,7 +50,7 @@ try {
     assert.equal(await root.locator('.channel-detail-heading .circuit-badge').count(), 2);
     assert.equal(await root.locator('[data-penta-specific]').count(), 0);
     await page.screenshot({ path: path.join(artifacts, `penta-channel-${width}.png`) });
-    await root.locator('[data-penta-back]').click();
+    await root.locator('[data-shared-back]').click();
     assert.equal(await root.locator('[data-shared-gate="31"]').count(), 1);
     await root.locator('[data-shared-channel-select="7-31"]').click();
     await root.locator('[data-shared-gate-select="31"]').click();

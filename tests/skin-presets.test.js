@@ -17,7 +17,11 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + .05) / (Math.
 
 test('per-Skin source strategy is registry data with split fallback and complete source tokens', () => {
   assert.equal(SKIN_TOKEN_GROUPS.sources.length, 14);
-  assert.equal(SKIN_TOKENS.length, 102);
+  assert.equal(SKIN_TOKENS.length, 109);
+  assert.equal(SKIN_TOKEN_GROUPS.team.length, 7);
+  const derivedTeamTokens = values(read('src/styles/tokens/team.css'));
+  for (const token of SKIN_TOKEN_GROUPS.team) assert.ok(derivedTeamTokens[token], token);
+  assert.match(read('src/styles.css'), /@import '\.\/styles\/tokens\/team\.css'/);
   assert.deepEqual(SKINS.slice(0,2).map(s=>s.defaultCenterPalette), ['classic','mineral']);
   assert.deepEqual(SKINS.filter(s => s.transitSourceMode === 'unified-natal').map(s => s.id), ['delve']);
   for (const s of SKINS) {
