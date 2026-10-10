@@ -6,15 +6,16 @@ import { esc } from './format.js';
 import { t } from './i18n.js';
 import { toDecimalHour } from './chart-engine/birth-time.js';
 
-export function openPersonEditor(birth) {
-  if (!birth.id) return;
+export function openPersonEditor(birth = {}, { create = false, onSaved = null } = {}) {
+  if (!birth.id && !create) return;
+  const title = create ? 'Team create person' : 'Edit chart';
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
-  overlay.innerHTML = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t('Edit chart'))}">
-    <div class="modal-title">${t('Edit chart')}</div>
+  overlay.innerHTML = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t(title))}">
+    <div class="modal-title">${esc(t(title))}</div>
     <label class="modal-field">${t('Name')}<input id="edit-name" value="${esc(birth.name || '')}" required></label>
-    <label class="modal-field">${t('Birth Date')}<input id="edit-date" type="date" value="${esc(birth.birthDate)}" required></label>
-    <label class="modal-field">${t('Birth Time')}<input id="edit-time" type="time" value="${esc(birth.birthTime || '12:00')}" required></label>
+    <label class="modal-field">${t('Birth Date')}<input id="edit-date" type="date" value="${esc(birth.birthDate || '')}" required></label>
+    <label class="modal-field">${t('Birth Time')}<input id="edit-time" type="time" value="${esc(birth.birthTime || '')}" required></label>
     <label class="modal-check"><input id="edit-unknown" type="checkbox" ${birth.timeUnknown ? 'checked' : ''}>${t("I don't know my birth time")}</label>
     <p id="edit-estimate">${t('time unknown — chart uses noon')}</p>
     <div id="edit-place"></div>
@@ -62,9 +63,10 @@ export function openPersonEditor(birth) {
       if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0,10) !== birthDate) throw new Error(t('Invalid birth date.'));
       const location = place.getBirthLocation(birthDate, birthTime);
       if (!location) { place.flagMissing(); return; }
-      savePerson({ ...birth, name: field('name').value.trim(), birthDate, birthTime, timeUnknown: field('unknown').checked, timezone: location.timezone, location });
-      if (!localMode) setAiAccess(birth.id, field('ai').checked);
+      const saved = savePerson({ ...birth, name: field('name').value.trim(), birthDate, birthTime, timeUnknown: field('unknown').checked, timezone: location.timezone, location });
+      if (!localMode) setAiAccess(saved.id, field('ai').checked);
       close();
+      onSaved?.(saved);
     } catch (error) {
       field('error').textContent = error.message;
       field('error').hidden = false;
