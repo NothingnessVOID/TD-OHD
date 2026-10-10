@@ -9,7 +9,7 @@ test('historical Phase 1B exceptions require each independently pinned source di
     assert.equal(isReviewedPhase1BHistorySource(file), true);
     const bytes = readFileSync(new URL(`../${file}`, import.meta.url));
     assert.throws(() => isReviewedPhase1BHistorySource(file, () => Buffer.concat([bytes, Buffer.from('\n') ])),
-      /Unreviewed Phase 1B historical source/);
+      /Unreviewed (Phase 1B historical|increment) source/);
   }
 });
 test('all other paths retain historical comparisons, including the other Phase 1B sources', () => {
