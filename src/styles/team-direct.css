@@ -1,25 +1,126 @@
-#team-form .team-workspace { display: grid; grid-template-columns: minmax(280px, 370px) minmax(0, 1fr); align-items: start; gap: 1.25rem; }
-#team-form .team-management { position: sticky; top: 1rem; min-width: 0; }
-#team-form .team-results { min-width: 0; max-height: calc(100dvh - 180px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
-.team-direct h3 { margin: 0 0 .5rem; }
-#team-direct-people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; max-height: 170px; overflow-y: auto; }
-.team-direct-person { min-height: 44px; display: flex; gap: .4rem; align-items: center; min-width: 0; overflow-wrap: anywhere; font-size: .85rem; }
-.team-direct-person small, .penta-member small { display: block; font-size: .7rem; }
-.team-direct-person input { width: auto; flex: 0 0 auto; }
-.team-advanced { margin-block: .6rem; }
-.team-advanced > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
-#team-form .penta-canvas { max-width: 260px; margin-inline: auto; }
-#team-form .penta-render > .team-channels, #team-form .penta-render > .team-summary { display: none; }
-.penta-analysis { overflow-wrap: anywhere; min-width: 0; }
-.penta-analysis-card { padding: .8rem; margin-block: .6rem; border: 1px solid var(--border); border-radius: .5rem; }
-.penta-analysis-card h3, .penta-analysis-card h4 { margin-top: 0; }
-.penta-active-detail, .penta-analysis-card:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.penta-analysis .penta-dimmed { opacity: .45; }
-.penta-analysis button { font: inherit; cursor: pointer; min-height: 44px; min-width: 44px; margin: .15rem; }
-@media (max-width: 899px) {
-  #team-form .team-workspace { display: flex; flex-direction: column; }
-  #team-form .team-management, #team-form .team-results { display: block; position: static; width: 100%; max-height: none; overflow: visible; }
-  #team-direct-people { max-height: none; overflow: visible; }
-  #team-form .team-toolbar, #team-form .team-group-controls { min-width: 0; }
-  #team-form input, #team-form select { max-width: 100%; }
+/* One Team workbench, using the chart/transit surfaces and spacing. */
+#team-view {
+  --team-max-width: min(1360px, calc(var(--max-width, 1200px) + 120px));
+  width: 100%; max-width: var(--team-max-width); padding: 18px 24px 20px; margin: 0 auto;
+}
+#team-view .view-title { display: inline-block; margin: 0 12px 0 0; font-size: 24px; line-height: 1.3; vertical-align: baseline; }
+#team-view .view-subtitle { display: inline; margin: 0; font-size: 13px; color: var(--text-secondary); }
+#team-view .view-container { width: 100%; max-width: none; padding: 0; margin: 0; box-sizing: border-box; }
+#team-form { width: 100%; max-width: none; margin: 14px 0 0; padding: 0; border: 0; background: transparent; }
+#team-form .team-workspace {
+  display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  gap: 22px; align-items: start; height: calc(100dvh - var(--header-height, 56px) - 96px); min-height: 0;
+}
+#team-form .team-management {
+  display: flex; flex-direction: column; gap: 10px; position: sticky;
+  top: calc(var(--header-height, 56px) + 12px); height: 100%; min-height: 0; min-width: 0;
+  box-sizing: border-box; padding: 14px; overflow: visible;
+  border: 1px solid var(--hd-graph-panel-border, var(--border)); border-radius: var(--radius-lg, 14px);
+  background: var(--hd-graph-panel-bg, var(--bg-elevated)); box-shadow: var(--shadow-sm);
+}
+#team-form .team-management > :not(#team-content) { flex: 0 0 auto; min-width: 0; }
+#team-form .team-results {
+  position: relative; height: 100%; max-height: none; min-height: 0; min-width: 0;
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior-y: contain; scrollbar-gutter: stable;
+  padding: 0 5px 0 0; border: 0; border-radius: 0; background: transparent; box-shadow: none;
+}
+#team-form .team-results-heading { display: none; }
+#team-content { flex: 1 1 auto; min-height: 0; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
+#team-view #team-content:empty::before { display: none; }
+#team-form #team-content .penta-render { height: 100%; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 6px; }
+#team-content .penta-figure-space { min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; container-type: size; }
+#team-form #team-content .penta-canvas {
+  width: min(100cqw, calc(100cqh * 320 / 410)); max-width: none;
+  aspect-ratio: 320 / 410; height: auto; position: relative; margin: 0;
+}
+#team-content .penta-canvas svg { display: block; width: 100%; height: 100%; }
+#team-content .penta-figure-footer { min-width: 0; }
+#team-view #team-content .penta-state-legend { gap: 5px 10px; margin: 0; font-size: 11px; line-height: 1.35; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#team-view #team-content .penta-state-legend span { gap: 6px; }
+#team-view #team-content .penta-state-symbol { width: 19px; height: 19px; font-size: 12px; }
+#team-view .penta-clear-focus { display: block; margin: 6px auto 0; padding: 2px 8px; min-height: 28px; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; }
+#team-view .penta-clear-focus[hidden] { display: none; }
+#team-view .penta-placeholder .penta-gate { cursor: default; }
+
+/* The right side has one scroll owner and flat, readable groups, not embedded sheets. */
+#team-analysis, .penta-analysis { min-width: 0; overflow: visible; }
+#team-view .penta-reading-section {
+  min-width: 0; margin: 0 0 16px; padding: 20px 22px;
+  border: 1px solid var(--border-subtle, var(--border)); border-radius: var(--radius-lg, 14px);
+  background: var(--bg-elevated); box-shadow: var(--shadow-sm);
+}
+#team-view .penta-reading-section > h3 { margin: 0 0 16px; font-size: 17px; font-weight: 600; }
+#team-view .penta-reading-heading h2 { margin: 0; font-size: 21px; line-height: 1.4; }
+#team-view .penta-reading-heading > p { margin: 5px 0 18px; color: var(--text-secondary); font-size: 12px; }
+#team-view .penta-overview-stats { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+#team-view .penta-overview-stats > div + div { border-left: 1px solid var(--border-subtle, var(--border)); padding-left: 14px; }
+#team-view .penta-overview-stats dt { font-size: 12px; color: var(--text-secondary); }
+#team-view .penta-overview-stats dd { margin: 5px 0 0; font-size: 28px; line-height: 1.2; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+#team-view .penta-overview-stats dd small { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
+#team-view .penta-estimate-note { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--border-subtle, var(--border)); font-size: 12px; color: var(--text-secondary); }
+#team-view .penta-reading-subgroup + .penta-reading-subgroup { margin-top: 24px; }
+#team-view .penta-subheading { margin: 0 0 3px; padding: 0 0 9px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: .02em; }
+#team-view .penta-analysis-card {
+  position: relative; min-width: 0; margin: 0; padding: 16px 2px;
+  border: 0; border-top: 1px solid var(--border-subtle, var(--border)); border-radius: 0;
+  background: transparent; box-shadow: none; scroll-margin-top: calc(var(--header-height, 56px) + 12px);
+}
+#team-view .penta-analysis-card.penta-active-detail { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+#team-view .penta-item-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+#team-view .penta-object-title { padding: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 650; text-align: left; cursor: pointer; min-height: 44px; }
+#team-view .penta-object-title > span { display: block; margin-top: 1px; font-size: 12px; line-height: 1.5; font-weight: 400; color: var(--text-secondary); }
+#team-view .penta-state-text { flex: 0 1 auto; max-width: 48%; color: var(--text-secondary); font-size: 12px; line-height: 1.5; text-align: right; }
+#team-view .penta-state-text b { font-size: 15px; color: var(--accent); }
+#team-view .penta-channel-holders { margin: 0; display: grid; gap: 7px; font-size: 13px; }
+#team-view .penta-channel-holders > div { display: grid; grid-template-columns: 68px minmax(0, 1fr); align-items: baseline; gap: 8px; }
+#team-view .penta-channel-holders dt { color: var(--text-secondary); }
+#team-view .penta-channel-holders dd { margin: 0; display: flex; flex-wrap: wrap; gap: 5px 8px; }
+#team-view .penta-person-inline { display: inline-flex; align-items: center; gap: 3px; min-width: 0; overflow-wrap: anywhere; font-size: 13px; }
+#team-view .penta-person-inline > span:not(.penta-member-tag) { min-width: 0; overflow-wrap: anywhere; }
+#team-view .penta-relation { margin: 10px 0 0; font-size: 12px; line-height: 1.7; }
+#team-view .penta-relation > strong { color: var(--text-secondary); font-weight: 500; margin-right: 6px; }
+#team-view .penta-relation ul { padding: 0; margin: 5px 0 0; list-style: none; }
+#team-view .penta-relation li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 3px 0; }
+#team-view .penta-activation-groups { display: grid; gap: 8px; }
+#team-view .penta-activation-person { display: grid; grid-template-columns: minmax(95px, 30%) minmax(0, 1fr); align-items: baseline; gap: 8px 12px; }
+#team-view .penta-activation-records { display: flex; flex-wrap: wrap; gap: 5px 14px; font-size: 12px; line-height: 1.65; color: var(--text-secondary); }
+#team-view .penta-activation-records b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+#team-view .penta-context-note { margin: 10px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+#team-view .penta-muted { margin: 8px 0; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+#team-view .penta-open-detail { display: inline-flex; align-items: center; gap: 5px; padding: 4px 0; margin-top: 5px; min-height: 44px; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 12px; font-weight: 500; cursor: pointer; }
+#team-view .penta-background-note + .penta-background-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-subtle, var(--border)); }
+#team-view .penta-background-note h4 { margin: 0; font-size: 14px; font-weight: 600; }
+#team-view .penta-contribution-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border-subtle, var(--border)); }
+#team-view .penta-contribution-row h4 { margin: 0; font-weight: 500; }
+#team-view .penta-gate-reference { padding: 4px; min-width: 44px; min-height: 44px; margin: 0 2px; border: 0; border-radius: var(--radius-sm, 6px); background: var(--bg-sunken); color: var(--text); font: inherit; cursor: pointer; }
+#team-view .penta-estimate-mark { color: var(--text-secondary); font-size: 12px; }
+#team-view .penta-analysis .penta-dimmed { opacity: .65; }
+#team-view .penta-analysis :is(button, article):focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 3px; }
+#team-form[aria-busy="true"] #team-analysis { opacity: .65; }
+
+@media (max-width: 1050px), (max-height: 540px) {
+  #team-view { padding: 16px 18px 20px; }
+  #team-view .view-title { font-size: 22px; }
+  #team-view .view-container { padding: 0; }
+  #team-form .team-workspace { display: flex; flex-direction: column; height: auto; gap: 16px; }
+  #team-form .team-management { position: static; display: flex; width: 100%; height: auto; padding: 14px; gap: 12px; }
+  #team-form .team-results { width: 100%; height: auto; overflow: visible; padding: 0; scrollbar-gutter: auto; }
+  #team-content { flex: initial; }
+  #team-form #team-content .penta-render { height: auto; display: block; }
+  #team-content .penta-figure-space { container-type: normal; display: block; }
+  #team-form #team-content .penta-canvas { width: min(100%, 440px); height: auto; margin: 4px auto 14px; }
+  #team-view .penta-reading-section { padding: 18px; }
+}
+@media (max-width: 430px) {
+  #team-view { padding-inline: 12px; }
+  #team-view .view-container { padding-inline: 0; }
+  #team-form .team-management { padding: 11px; }
+  #team-view .penta-reading-section { padding: 15px 13px; }
+  #team-view .penta-reading-heading h2 { font-size: 20px; }
+  #team-view .penta-overview-stats { gap: 5px; }
+  #team-view .penta-overview-stats > div + div { padding-left: 8px; }
+  #team-view .penta-overview-stats dt { font-size: 11px; }
+  #team-view .penta-overview-stats dd { font-size: 24px; }
+  #team-view .penta-activation-person { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+  #team-view .penta-activation-records { padding-left: 22px; }
 }
