@@ -50,6 +50,10 @@
 
 Penta六通道使用`detail-label/detail-name`的两级标题，名称取`channelName()`。18张闸门/通道分析卡片使用`role=button/tabindex=0/aria-haspopup=dialog`，无嵌套按钮，支持Enter/Space。图形与成员贡献快捷入口直接进入已有详情；`selectObject`仅管理高亮，不再滚动页面。公共reading/词汇/审核接口保持不变。
 
+## 独立字体设置
+
+`font-preference.js`拥有`td-ohd-font-v1`设备本地偏好，独立于Skin/Center Palette/appearance-v3。`font-controls.js`使用现有`appearance-choice-card`基础视觉，`fonts.css`覆盖字体family轴，不改字号和布局；`font-export.js`按文字范围嵌入当前中文字体。完整范围、许可恢复途径及PNG服务端边界见[FONT-PREFERENCE.md](FONT-PREFERENCE.md)。字体资源版本与转换脚本独立于Skin注册表。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。

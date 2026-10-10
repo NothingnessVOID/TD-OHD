@@ -52,7 +52,7 @@ def build(out):
     base=TTFont(src,recalcTimestamp=False)
     source=cmap(base)
     selected={cp for cp in source if eligible(cp)}
-    priority=sorted(selected & set(map(ord,PRIORITY)))
+    priority=sorted(selected & set(map(ord,PRIORITY+(ROOT/'docs/fonts/priority.txt').read_text(encoding='utf-8'))))
     remainder=sorted(selected-set(priority))
     groups=[priority[i:i+256] for i in range(0,len(priority),256)]
     groups += [remainder[i:i+256] for i in range(0,len(remainder),256)]
@@ -76,7 +76,7 @@ def build(out):
         worker.populate(unicodes=set(points)|selectors)
         worker.subset(font)
         font.flavor='woff2'
-        name=f'td-zhisong-{index:03d}.woff2'
+        name=f'td-zhisong-p2-{index:03d}.woff2'
         font.save(dest/name)
         actual=cmap(TTFont(dest/name))
         assert actual==set(points), f'cmap mismatch {name}'
