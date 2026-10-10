@@ -26,7 +26,7 @@ import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
-import { setupReferenceView, renderReferenceView, openReference } from './views/reference.js';
+import { setupReferenceView, renderReferenceView, openReference, deactivateReferenceDetail } from './views/reference.js';
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 import { setupAppearanceControls } from './lib/appearance-controls.js';
 import { onFontPreferenceChange } from './lib/font-preference.js';
@@ -115,7 +115,9 @@ function showView(view, { fromHistory = false } = {}) {
     openReference();
     return;
   }
-  closeDetailDialog();
+  // A reference route redraw must not run its user-dismiss callback.
+  if (view !== 'library') deactivateReferenceDetail();
+  if (view !== 'library' || document.getElementById('reference-mobile-detail')?.dataset.detailOwner !== 'reference') closeDetailDialog();
   if (view !== 'timeline') timelineView?.deactivate();
   if (view !== 'library' && location.hash.startsWith('#library') && !fromHistory) {
     history.pushState({ ohdView: view }, '', `${location.pathname}${location.search}`);

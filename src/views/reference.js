@@ -1,3 +1,6 @@
+import { openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
+import { PHONE_MEDIA_QUERY } from '../lib/breakpoints.js';
 import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { referenceEntries, referenceEntry, searchReference, circuitChannels } from '../lib/reference-catalog.js';
@@ -22,6 +25,59 @@ let lens = 'hd';
 let built = false;
 let lastResult = null;
 let lineHighlightTimer = 0;
+let phoneQuery;
+let syncingSheet = false;
+let listPosition = null;
+let showingDetail = false;
+
+function rememberList() {
+  listPosition = { x: window.scrollX, y: window.scrollY, results: document.getElementById('reference-results')?.scrollTop || 0 };
+  history.replaceState({ ...history.state, ohdReferenceList: true, ohdReferenceDepth: 0 }, '', location.href);
+}
+function restoreList() {
+  const position = listPosition;
+  const target = lastResult && [...document.querySelectorAll('.reference-result')].find(n => n.dataset.referenceKind === lastResult.kind && n.dataset.referenceId === lastResult.id);
+  (target || document.getElementById('reference-search'))?.focus({ preventScroll: true });
+  if (position) {
+    document.getElementById('reference-results').scrollTop = position.results;
+    window.scrollTo({ left: position.x, top: position.y, behavior: 'instant' });
+  }
+}
+function closeToList() {
+  const depth = history.state?.ohdReferenceDepth || 0;
+  if (depth > 0 && history.state?.ohdReferenceList) history.go(-depth);
+  else {
+    history.replaceState({ ...history.state, ohdReferenceDepth: 0, ohdReferenceList: true }, '', address());
+    window.dispatchEvent(new Event('ohd-reference-navigation'));
+  }
+}
+export function deactivateReferenceDetail() {
+  const sheet = document.getElementById('reference-mobile-detail');
+  if (sheet?.dataset.detailOwner === 'reference') {
+    syncingSheet = true; closeDetailDialog(); syncingSheet = false;
+  }
+}
+function syncMobileDetail() {
+  const article = document.getElementById('reference-detail');
+  const sheet = document.getElementById('reference-mobile-detail');
+  const selected = route();
+  const isDetail = !!(selected?.kind || selected?.invalid);
+  const visible = !document.getElementById('library-view').classList.contains('hidden');
+  if (phoneQuery.matches && isDetail && visible) {
+    sheet.querySelector('.gate-detail-card').append(article);
+    article.classList.add('gate-detail-body');
+    const nav = sheet.querySelector('.gate-detail-nav');
+    nav.innerHTML = renderDetailNavigation({ canGoBack: true }).replace('data-shared-back', 'data-reference-back');
+    openDetailDialog(sheet, () => { if (!syncingSheet) closeToList(); }, { owner: 'reference', label: t('Reference Library') });
+    fitDetailSheetHeight(sheet.querySelector('.gate-detail-card'));
+  } else {
+    deactivateReferenceDetail();
+    document.querySelector('.reference-layout').append(article);
+    article.classList.remove('gate-detail-body');
+  }
+  if (showingDetail && !isDetail && visible) restoreList();
+  showingDetail = isDetail;
+}
 
 function route() {
   const [path, search = ''] = location.hash.slice(1).split('?');
@@ -49,8 +105,9 @@ export function openReference(kind = null, id = null, { line = null, replace = f
     const previousView = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
     history.replaceState({ ...history.state, ohdView: previousView }, '', location.href);
   }
-  const depth = inside ? (history.state?.ohdReferenceDepth ?? 0) + 1 : 0;
-  history[replace ? 'replaceState' : 'pushState']({ ohdReferenceDepth: depth }, '', address(kind, id, line));
+  if (inside && !route()?.kind && !route()?.invalid && kind) rememberList();
+  const depth = inside && kind ? (history.state?.ohdReferenceDepth ?? 0) + (replace ? 0 : 1) : 0;
+  history[replace ? 'replaceState' : 'pushState']({ ohdReferenceDepth: depth, ohdReferenceList: inside && !!history.state?.ohdReferenceList }, '', address(kind, id, line));
   window.dispatchEvent(new Event('ohd-reference-navigation'));
 }
 
@@ -103,7 +160,7 @@ function conceptDetail(entry) {
 function renderDetail() {
   const selected = route();
   const article = document.getElementById('reference-detail');
-  document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind));
+  document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind || selected?.invalid));
   article.setAttribute('aria-label', selected?.kind ? t('Reference Library') : t('Select an entry to read.'));
   if (!selected?.kind && !selected?.invalid) {
     article.innerHTML = `<p class="reference-empty">${t('Select an entry to read.')}</p>`;
@@ -174,7 +231,8 @@ function build() {
       <div class="reference-filter-current">${t(labels[category])}</div>
       <div id="reference-filter-panel" class="reference-filter-panel" hidden><div class="reference-filters">${categories.map(id => `<button type="button" data-reference-filter="${id}" class="${category === id ? 'active' : ''}">${t(labels[id])}</button>`).join('')}</div></div>
       <p id="reference-count"></p><div id="reference-results" class="reference-results"></div></aside>
-      <article id="reference-detail" class="reference-detail" role="region"></article></div></div>`;
+      <article id="reference-detail" class="reference-detail" role="region"></article></div></div>
+    <div id="reference-mobile-detail" class="gate-detail reference-mobile-detail hidden"><div class="gate-detail-card"><div class="gate-detail-nav"></div></div></div>`;
   bindSharedObjectDetails(mount, { onLensChange: nextLens => { lens = nextLens; } });
   built = true;
 }
@@ -182,19 +240,23 @@ function build() {
 export function renderReferenceView({ languageChange = false } = {}) {
   const previousScroll = built ? document.querySelector('.reference-results')?.scrollTop || 0 : 0;
   const focused = document.activeElement?.id === 'reference-search';
+  const focusedResult = document.activeElement?.classList.contains('reference-result');
   const returning = document.activeElement?.hasAttribute?.('data-reference-back') && !route()?.kind;
-  if (!built || languageChange) build();
+  if (!built || languageChange) { deactivateReferenceDetail(); build(); }
   renderResults();
   renderDetail();
   renderFilters();
+  syncMobileDetail();
   if (previousScroll) document.querySelector('.reference-results').scrollTop = previousScroll;
   if (focused) document.getElementById('reference-search').focus({ preventScroll: true });
-  else if (returning && lastResult) document.querySelector(`.reference-result[data-reference-kind="${lastResult.kind}"][data-reference-id="${lastResult.id}"]`)
+  else if ((returning || focusedResult) && lastResult) document.querySelector(`.reference-result[data-reference-kind="${lastResult.kind}"][data-reference-id="${lastResult.id}"]`)
     ?.focus({ preventScroll: true });
 }
 
 export function setupReferenceView() {
   const mount = document.getElementById('library-view');
+  phoneQuery = window.matchMedia(PHONE_MEDIA_QUERY);
+  phoneQuery.addEventListener('change', () => { if (built) syncMobileDetail(); });
   mount.addEventListener('input', event => {
     if (event.target.id !== 'reference-search') return;
     query = event.target.value;
