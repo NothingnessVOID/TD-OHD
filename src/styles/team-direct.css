@@ -1,0 +1,122 @@
+/* Team uses normal document flow and the birth-chart layout primitives. */
+#team-view {
+  --team-max-width: var(--max-width, 1200px);
+  width: 100%; max-width: var(--team-max-width); padding: 18px 24px 20px; margin: 0 auto;
+}
+#team-view .view-title { display: inline-block; margin: 0 12px 0 0; font-size: 24px; line-height: 1.3; vertical-align: baseline; }
+#team-view .view-subtitle { display: inline; margin: 0; font-size: 13px; color: var(--text-secondary); }
+#team-view .view-container { width: 100%; max-width: none; padding: 0; margin: 0; box-sizing: border-box; }
+#team-form { width: 100%; max-width: none; margin: 14px 0 0; padding: 0; border: 0; background: transparent; }
+#team-form .team-workspace { grid-template-columns: minmax(0, 52fr) minmax(0, 48fr); padding:0; margin:0; gap:22px; max-width:none; }
+#team-form .team-management { display:grid; grid-template-columns: minmax(240px, 1fr) auto; gap:10px 18px; padding:16px 18px; }
+#team-form .team-current-toolbar { grid-column:1 / -1; }
+#team-form #team-member-caption { grid-column:1 / -1; }
+#team-form #team-selected-chips { grid-column:1 / -1; }
+#team-flow-status { grid-column:1 / -1; }
+#team-form .team-graph-column { top:calc(var(--header-height, 56px) + 16px); overflow:visible; max-height:none; }
+#team-form .team-results { min-width:0; overflow:visible; }
+#team-content { min-width:0; padding:18px; }
+#team-form #team-content .penta-render { display:block; }
+#team-content .penta-figure-space { display:flex; justify-content:center; }
+#team-form #team-content .penta-canvas { width:min(100%, 440px, calc((100dvh - var(--header-height, 56px) - 150px) * 320 / 410)); aspect-ratio:320 / 410; margin:0 auto 16px; }
+#team-content .penta-canvas svg { display:block; width:100%; height:100%; }
+#team-view #team-content .penta-state-legend { gap:8px 12px; margin:0; font-size:12px; line-height:1.45; grid-template-columns:repeat(2,minmax(0,1fr)); }
+#team-view #team-content .penta-state-symbol { width:24px; height:24px; font-size:15px; }
+#team-view .penta-placeholder .penta-gate { cursor: default; }
+
+/* Complete analysis follows the document; only the graph column is sticky. */
+#team-analysis, .penta-analysis { min-width: 0; overflow: visible; }
+/* Visual surfaces come from the shared .panel rule in styles.css. */
+#team-view .penta-reading-section { min-width: 0; }
+#team-analysis > .panel:last-child, #team-analysis .penta-analysis > .panel:last-child { margin-bottom: 0; }
+#team-view .penta-reading-section > h3 { margin: 0 0 16px; font-size: 17px; font-weight: 600; }
+#team-view .penta-reading-heading h2 { margin: 0; font-size: 21px; line-height: 1.4; }
+#team-view .penta-reading-heading > p { margin: 5px 0 18px; color: var(--text-secondary); font-size: 12px; }
+#team-view .penta-overview-stats { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+#team-view .penta-overview-stats > div + div { border-left: 1px solid var(--border-subtle, var(--border)); padding-left: 14px; }
+#team-view .penta-overview-stats dt { font-size: 12px; color: var(--text-secondary); }
+#team-view .penta-overview-stats dd { margin: 5px 0 0; font-size: 28px; line-height: 1.2; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+#team-view .penta-overview-stats dd small { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
+#team-view .penta-estimate-note { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--border-subtle, var(--border)); font-size: 12px; color: var(--text-secondary); }
+#team-view .penta-reading-subgroup + .penta-reading-subgroup { margin-top: 24px; }
+#team-view .penta-subheading { margin: 0 0 3px; padding: 0 0 9px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: .02em; }
+#team-view .penta-analysis-card {
+  position: relative; min-width: 0; margin: 0; padding: 16px 2px;
+  border: 0; border-top: 1px solid var(--border-subtle, var(--border)); border-radius: 0;
+  background: transparent; box-shadow: none; scroll-margin-top: calc(var(--header-height, 56px) + 12px);
+}
+#team-view .penta-analysis-card[role="button"] { cursor:pointer; border-radius:var(--radius); }
+#team-view .penta-analysis-card[role="button"]:hover { background:var(--bg-sunken); }
+#team-view .penta-channel-title { min-width:0; }
+#team-view .penta-channel-title .detail-name { font-size:19px; line-height:1.4; margin:0; }
+#team-view .penta-channel-reading .penta-state-text { display:flex; align-items:flex-start; gap:5px; min-width:0; text-align:left; }
+#team-view .penta-channel-reading .penta-state-text > span { min-width:0; overflow-wrap:break-word; }
+#team-view .penta-channel-reading .penta-status-icon { width:18px; height:18px; }
+@media (max-width:600px) {
+  #team-view .penta-channel-reading .penta-item-heading { flex-direction:column; gap:6px; }
+  #team-view .penta-channel-reading .penta-state-text { max-width:100%; width:100%; }
+}
+#team-view .penta-item-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+#team-view .penta-object-title { padding: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 650; text-align: left; cursor: pointer; min-height: 44px; }
+#team-view .penta-object-title > span { display: block; margin-top: 1px; font-size: 12px; line-height: 1.5; font-weight: 400; color: var(--text-secondary); }
+#team-view .penta-state-text { flex: 0 1 auto; max-width: 48%; color: var(--text-secondary); font-size: 12px; line-height: 1.5; text-align: right; }
+#team-view .penta-state-text b { font-size: 15px; color: var(--accent); }
+#team-view .penta-channel-holders { margin: 0; display: grid; gap: 7px; font-size: 13px; }
+#team-view .penta-channel-holders > div { display: grid; grid-template-columns: 68px minmax(0, 1fr); align-items: baseline; gap: 8px; }
+#team-view .penta-channel-holders dt { color: var(--text-secondary); }
+#team-view .penta-channel-holders dd { margin: 0; display: flex; flex-wrap: wrap; gap: 5px 8px; }
+#team-view .penta-person-inline { display: inline-flex; align-items: center; gap: 3px; min-width: 0; overflow-wrap: anywhere; font-size: 13px; }
+#team-view .penta-person-inline > span:not(.penta-member-tag) { min-width: 0; overflow-wrap: anywhere; }
+#team-view .penta-relation { margin: 10px 0 0; font-size: 12px; line-height: 1.7; }
+#team-view .penta-relation > strong { color: var(--text-secondary); font-weight: 500; margin-right: 6px; }
+#team-view .penta-relation ul { padding: 0; margin: 5px 0 0; list-style: none; }
+#team-view .penta-relation li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 3px 0; }
+#team-view .penta-activation-groups { display: grid; gap: 8px; }
+#team-view .penta-activation-person { display: grid; grid-template-columns: minmax(95px, 30%) minmax(0, 1fr); align-items: baseline; gap: 8px 12px; }
+#team-view .penta-activation-records { display: flex; flex-wrap: wrap; gap: 5px 14px; font-size: 12px; line-height: 1.65; color: var(--text-secondary); }
+#team-view .penta-activation-records b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+#team-view .penta-context-note { margin: 10px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+#team-view .penta-muted { margin: 8px 0; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+#team-view .penta-open-detail { display: inline-flex; align-items: center; gap: 5px; padding: 4px 0; margin-top: 5px; min-height: 44px; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 12px; font-weight: 500; cursor: pointer; }
+#team-view .penta-background-note + .penta-background-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-subtle, var(--border)); }
+#team-view .penta-background-note h4 { margin: 0; font-size: 14px; font-weight: 600; }
+#team-view .penta-contribution-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 0; border-top: 1px solid var(--border-subtle, var(--border)); }
+#team-view .penta-contribution-row h4 { margin: 0; font-weight: 500; }
+#team-view .penta-gate-reference { padding: 4px; min-width: 44px; min-height: 44px; margin: 0 2px; border: 0; border-radius: var(--radius-sm, 6px); background: var(--bg-sunken); color: var(--text); font: inherit; cursor: pointer; }
+#team-view .penta-estimate-mark { color: var(--text-secondary); font-size: 12px; }
+#team-view .penta-analysis .penta-dimmed { opacity: .65; }
+#team-view .penta-analysis :is(button, article):focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 3px; }
+#team-analysis[aria-busy="true"] { transition: opacity 120ms ease; }
+#team-view .penta-empty-guide h2 { margin:0 0 10px; font-size:21px; }
+#team-view .penta-empty-guide p { margin:0; color:var(--text-secondary); font-size:14px; line-height:1.7; }
+#team-view .team-member-caption { margin-bottom:-4px; }
+#team-view :is(input, select, button, a):focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+#team-view [aria-invalid="true"] { border-color: var(--status-error); }
+#team-view :is(button, select):disabled { opacity: .55; cursor: not-allowed; }
+#team-flow-status:empty { display: none; }
+
+@media (max-width: 1050px) {
+  #team-view { padding: 16px 18px 20px; }
+  #team-view .view-title { font-size: 22px; }
+  #team-view .view-container { padding: 0; }
+  #team-form .team-workspace { grid-template-columns:minmax(0,1fr); gap:16px; }
+  #team-form .team-graph-column { position:static; width:100%; }
+  #team-form .team-management { display:flex; flex-direction:column; padding:14px; gap:8px; }
+  #team-form #team-content .penta-canvas { width:min(100%,440px); margin:4px auto 16px; }
+}
+@media (max-width: 430px) {
+  #team-view { padding-inline: 12px; }
+  #team-view .view-container { padding-inline: 0; }
+  #team-form .team-management { padding: 11px; }
+  #team-selected-chips .team-person-chip { flex: 0 1 calc((100% - 5px) / 2); min-width: 0; }
+  #team-selected-chips [data-focus-member] { flex: 1; min-width: 0; }
+  #team-selected-chips .team-chip-name { flex: 1; }
+  #team-selected-chips [data-remove-member] { flex: 0 0 44px; }
+  #team-view .penta-reading-heading h2 { font-size: 20px; }
+  #team-view .penta-overview-stats { gap: 5px; }
+  #team-view .penta-overview-stats > div + div { padding-left: 8px; }
+  #team-view .penta-overview-stats dt { font-size: 11px; }
+  #team-view .penta-overview-stats dd { font-size: 24px; }
+  #team-view .penta-activation-person { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+  #team-view .penta-activation-records { padding-left: 22px; }
+}

@@ -55,9 +55,10 @@ try {
       assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
     }
     await page.locator('#reference-results .reference-result').nth(7).click();
-    await page.locator('#reference-detail .reference-back').waitFor();
+    const back = page.locator(viewport.width <= 640 ? '#reference-mobile-detail .gate-detail-back' : '#reference-detail .reference-back');
+    await back.waitFor();
     if (viewport.width > 600) assert.ok(await page.locator('#reference-results').evaluate(node => node.scrollTop) > 0);
-    await page.locator('#reference-detail .reference-back').click();
+    await back.click();
     assert.match(await page.locator('#reference-detail .reference-empty').innerText(), /选择条目|Select an entry/);
     if (viewport.width > 600) assert.equal(await page.evaluate(() => window.scrollY), 0);
     await page.locator('.reference-filter-toggle').click();

@@ -1,4 +1,5 @@
 import { renderChannelCircuitBadges } from '../lib/channel-badges.js';
+import { renderGateDetailHeading, renderChannelDetailHeading, renderDetailNavigation } from '../lib/object-detail-heading.js';
 /**
  * Chart view — bodygraph + foundation + tabbed detail panels.
  */
@@ -9,7 +10,7 @@ import {
   LINE_NAMES
 } from '../lib/human-design/catalog.js';
 import { GATE_DESCRIPTIONS, CHANNEL_DESCRIPTIONS, contentText, crossName, geneKeyTerm } from '../lib/content.js';
-import { gateReading, channelReading, centerReading, centerInsights, channelsForGate, channelById } from '../lib/reference-content.js';
+import { centerReading, centerInsights, channelsForGate, channelById } from '../lib/reference-content.js';
 import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
@@ -35,7 +36,7 @@ import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
-import { renderGateLensSwitch } from '../lib/gate-lenses.js';
+import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
 
 let current = null; // { birth, chart, geneKeys }
@@ -43,6 +44,7 @@ let bodygraphApi = null;
 let detailHistory = []; // stack of { kind, id } for modal back-navigation
 let currentDetail = null;
 let detailContext = null;
+let disposeSharedDetails = null;
 const detailGraph = () => detailContext?.api || bodygraphApi;
 
 const TYPE_COLORS = {
@@ -302,10 +304,12 @@ function renderLens(gateNum) {
     ...gateActiveLines(gateNum, chart),
     ...Object.values(detailContext?.transitGates || {}).filter(g => g?.gate === gateNum).map(g => g.line)
   ])].sort((a, b) => a - b);
-  return gateReading(gateNum, currentLens, { activeLines: lines, selectedLine: null });
+  return renderSharedGateReading(gateNum, { lens: currentLens, activeLines: lines, selectedLine: null, contentId: 'lens-content', lensAttribute: 'data-lens' });
 }
 
 function resetDetail() {
+  disposeSharedDetails?.();
+  disposeSharedDetails = null;
   detailGraph()?.setPinned?.(null);
   detailHistory = [];
   currentDetail = null;
@@ -346,12 +350,10 @@ function showTransitChannelDetail(id, pushHistory = true) {
   const detail = document.getElementById('gate-detail');
   detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body">
-      <div class="detail-label">${t('Channel {channel}', { channel: id })}</div>
-      <div class="channel-detail-heading"><div class="detail-name">${esc(channelName(channel.gates))}</div>
-        ${renderChannelCircuitBadges(channel)}</div>
+      ${renderChannelDetailHeading(id)}
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
-      ${channelReading(id)}
+      ${renderSharedChannelReading(id)}
       <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="${esc(t('Gate {gate}', { gate: g }))}">
         <span class="transit-detail-gate"><strong>${t('Gate {gate}', { gate: g })}</strong>${model?.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model?.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
         <span class="transit-detail-action">${t('View gate details')}</span>
@@ -389,15 +391,7 @@ window.addEventListener('ohd-open-knowledge-gate', event => {
 });
 
 function detailNav() {
-  const backBtn = detailHistory.length > 0
-    ? `<button class="gate-detail-back">← ${t('Back')}</button>`
-    : `<span></span>`;
-  return `
-    <span class="gate-detail-handle" aria-hidden="true"></span>
-    <div class="gate-detail-nav-buttons">
-      ${backBtn}
-      <button class="gate-detail-close" title="${t('Close')}">&times;</button>
-    </div>`;
+  return renderDetailNavigation({ canGoBack: detailHistory.length > 0 });
 }
 
 
@@ -497,12 +491,10 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     <div class="gate-detail-card">
       <div class="gate-detail-nav">${detailNav()}</div>
       <div class="gate-detail-body">
-        <div class="detail-label">${t('Gate {gate}', { gate: gateNum })}</div>
-        <div class="detail-name">${esc(gateName(gateNum))} <span class="detail-hexagram">${getLocale().startsWith('zh') ? '（' : '('}${esc(hexagramName(gateNum))}${getLocale().startsWith('zh') ? '）' : ')'}</span></div>
+        ${renderGateDetailHeading(gateNum)}
         ${acts.length ? `<div class="gate-detail-acts">${acts.join('<br>')}</div>` : ''}
         ${detailContext && transitActs.length ? `<div class="gate-detail-transits">${transitActs.join('<br>')}</div>` : ''}
-        ${renderGateLensSwitch(currentLens, 'data-lens')}
-        <div id="lens-content">${renderLens(gateNum)}</div>
+        ${renderLens(gateNum)}
         ${channelHtml}
       </div>
     </div>
@@ -512,11 +504,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
   fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: gateNum });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
-  detail.querySelectorAll('.lens-switch button').forEach(btn => btn.addEventListener('click', () => {
-    currentLens = btn.dataset.lens;
-    detail.querySelectorAll('.lens-switch button').forEach(b => b.classList.toggle('active', b.dataset.lens === currentLens));
-    document.getElementById('lens-content').innerHTML = renderLens(gateNum);
-  }));
+  disposeSharedDetails = bindSharedObjectDetails(detail, { onLensChange: lens => { currentLens = lens; } });
   detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
@@ -878,6 +866,26 @@ function renderCrossPanel(container) {
     item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
     wireRowHover(item, parseInt(item.dataset.gate));
   });
+}
+
+/** Release the current chart when its owning person is deleted or invalidated.
+ * Storage and person selection remain the caller's responsibility.
+ */
+export function clearCurrentChart() {
+  // Only dismiss our own sheet; other views may own the shared dialog.
+  const detail = document.getElementById('gate-detail');
+  if (detail?.dataset.detailOwner === 'bodygraph') closeDetailDialog();
+  if (currentDetail || detailContext || disposeSharedDetails) resetDetail();
+  bodygraphApi?.setPinned?.(null);
+  bodygraphApi?.highlightGate?.(null);
+  bodygraphApi = null;
+  current = null;
+  currentLens = 'hd';
+  detailHistory = [];
+  currentDetail = null;
+  detailContext = null;
+  disposeSharedDetails?.();
+  disposeSharedDetails = null;
 }
 
 export function getCurrentChart() {

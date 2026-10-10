@@ -23,9 +23,9 @@ try {
     await page.evaluate(async () => {await document.fonts.ready; return true;});
     for (const name of sceneNames) {
       await page.evaluate(async name => {
-        const {openKnowledgeDetail} = await import('/src/lib/knowledge/detail-controller.js');
-        const {getCurrentChart} = await import('/src/views/chart.js');
-        const {chartKnowledgeQuery} = await import('/src/lib/knowledge/access.js');
+        const {openKnowledgeDetail} = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');
+        const {getCurrentChart} = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');
+        const {chartKnowledgeQuery} = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/access.js')?.name || '/src/lib/knowledge/access.js');
         const chart = getCurrentChart().chart;
         const fixed = {
           type:{objectType:'type',objectId:'manifestingGenerator'},
@@ -37,7 +37,7 @@ try {
         };
         const variable = ['determination','environment','perspective','motivation'].includes(name);
         const query = fixed[name] || chartKnowledgeQuery(chart,variable?'variable':'cross',variable?name:null);
-        openKnowledgeDetail(query,variable?{variable:chart.variable[name]}:null);
+        if (document.querySelector('#library-view:not(.hidden)')) document.querySelector('.nav-link[data-view="chart"]').click(); openKnowledgeDetail(query,variable?{variable:chart.variable[name]}:null);
       },name);
       const article = page.locator('#gate-detail .knowledge-detail');
       const text = await article.innerText();

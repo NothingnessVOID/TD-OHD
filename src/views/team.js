@@ -1,297 +1,220 @@
-import '../styles/team-members.css';
-import '../styles/team-visual-polish.css';
+import '../styles/team-direct.css';
+import '../styles/team-controls.css';
+import './team-messages.js';
+import { effectiveTeamBirth } from './team-birth.js';
+import { renderPentaPlaceholder } from './penta-placeholder.js';
 import { createPentaMatrix } from './penta-matrix.js';
+import { pentaDetailAdapter } from '../lib/shared-object-details.js';
 import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
-import { listPeople, getPerson, savePerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
-import { createPlaceSearch } from '../lib/placesearch.js';
+import { listPeople, getPerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
+import { openPersonEditor } from '../lib/person-editor.js';
+import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
+import '../lib/team-selection-messages.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
-import { createMember, validateBirth } from '../lib/human-design/team-members.js';
+import { validateBirth } from '../lib/human-design/team-members.js';
 import { listTeams, getTeam, saveTeam, deleteTeam } from '../lib/team-repository.js';
-
-let teamId = null;
-let teamRevision = null;
-let members = [];
-let groups = [];
-let selectedPentaId = null;
-let quickRows = [];
-let generation = 0;
-let pending = false;
-let latest = null;
-let matrix = null;
-let dirty = false;
-const confirmDiscard = () => !dirty || window.confirm(t('Discard unsaved team changes?'));
-function markSaved() { dirty = false; }
-function invalidateResult() { matrix?.dispose(); matrix = null; latest = null; $('team-content').replaceChildren(); }
-function currentResultValid() {
-  return !!latest && selectedPentaId === latest.pentaId && generation === latest.generation
-    && latest.personSnapshots.every(([id, snapshot]) => JSON.stringify(getPerson(id)) === snapshot);
-}
-function checkResult() { if (latest && !currentResultValid()) invalidateResult(); }
+import { createUuid } from '../lib/uuid.js';
 const $ = id => document.getElementById(id);
-const text = (key, params) => esc(t(key, params));
-const errorText = error => esc(error?.message || t('Unable to complete the operation.'));
-const name = () => $('team-name').value.trim();
-const selectedGroup = () => groups.find(group => group.pentaId === selectedPentaId);
-const allMembers = () => [...members, ...quickRows.filter(rowHasData).map(row => ({ memberId: row._memberId, personId: null, displayName: row.querySelector('.team-name').value.trim() || t('Unnamed member'), origin: 'quick' }))];
-function rowHasData(row) { return !!(row.querySelector('.team-name').value.trim() || row.querySelector('.team-date').value || row.querySelector('.team-time').value || row._placeSearch?.hasInput() || row.querySelector('.ps-input')?.value.trim()); }
-function memberName(member) { return member.personId ? (getPerson(member.personId)?.name || member.labelSnapshot || member.displayName || t('Missing reference')) : member.displayName; }
-function message(key, params) { $('team-content').innerHTML = `<p class="team-message" role="status">${text(key, params)}</p>`; }
-function failure(error) { $('team-content').innerHTML = `<p class="team-message" role="alert">${errorText(error)}</p>`; }
-function changed() { dirty = true; generation++; pending = false; $('team-calculate').disabled = false; invalidateResult(); updateCounts(); }
-function updateCounts() {
-  if ($('team-count')) $('team-count').textContent = t('Team members: {count}', { count: allMembers().length });
-  if ($('team-group-count')) $('team-group-count').textContent = t('Group members: {count} / 5', { count: selectedGroup()?.memberIds.length || 0 });
+const txt = key => esc(t(key));
+const freshGroup = () => ({ pentaId: createUuid(), label: 'Penta A', memberIds: [] });
+let teamId = null, revision = null, teamName = '', members = [], groups = [], selectedId = null;
+let generation = 0, timer, matrix = null, latest = null, dirty = false, closeLayer = null;
+const group = () => groups.find(g => g.pentaId === selectedId);
+const selectedMembers = () => (group()?.memberIds || []).map(id => members.find(m => m.memberId === id)).filter(Boolean);
+const memberName = m => getPerson(m.personId)?.name || m.labelSnapshot;
+// Presentation-only slots; surviving members keep their color when another is removed.
+const memberSlots = new Map();
+function currentMemberSlots() {
+ const key = selectedId, selected = selectedMembers();
+ const slots = memberSlots.get(key) || new Map();
+ for (const id of slots.keys()) if (!selected.some(m => m.memberId === id)) slots.delete(id);
+ for (const m of selected) if (!slots.has(m.memberId)) slots.set(m.memberId, [1,2,3,4,5].find(n => ![...slots.values()].includes(n)));
+ memberSlots.set(key, slots); return slots;
 }
-function refreshToolbar() {
-  const select = $('team-list');
-  try {
-    select.innerHTML = `<option value="">${text('Choose a saved team')}</option>` + listTeams().map(team => `<option value="${esc(team.teamId)}">${esc(team.name)}</option>`).join('');
-    select.value = teamId || '';
-  } catch (error) { failure(error); }
+function status(message = '', personId = null) {
+ $('team-flow-status').innerHTML = esc(message) + (personId ? ` <button type="button" data-edit-person="${esc(personId)}">${txt('Edit chart')}</button>` : '');
 }
-function renderGroups() {
-  const picker = $('team-group-list');
-  if (!picker) return;
-  picker.innerHTML = `<option value="">${text('Select Penta')}</option>` + groups.map(group => `<option value="${esc(group.pentaId)}">${esc(group.label)}</option>`).join('');
-  picker.value = selectedPentaId || '';
-  $('team-group-name').value = selectedGroup()?.label || '';
-  $('team-group-name').disabled = !selectedGroup();
-  const group = selectedGroup();
-  $('team-group-members').innerHTML = group ? group.memberIds.map(id => {
-    const member = allMembers().find(item => item.memberId === id);
-    const number = allMembers().findIndex(item => item.memberId === id) + 1;
-    return `<div class="team-group-member" data-member-id="${esc(id)}"><span><b class="team-member-index">${number}</b>${esc(member ? memberName(member) : t('Missing reference'))}</span><button type="button" class="team-unassign btn-secondary">${text('Remove from Penta')}</button></div>`;
-  }).join('') : `<p class="team-hint">${text('Select a Penta group first.')}</p>`;
-  updateCounts();
+function currentRepository() { return !teamId || getTeam(teamId)?.revision === revision; }
+function reset() { teamId = null; revision = null; teamName = ''; members = []; groups = [freshGroup()]; selectedId = groups[0].pentaId; dirty = false; schedule(false); }
+function renderControls() {
+ const focusId = document.activeElement?.dataset?.focusMember;
+ const slots = currentMemberSlots();
+ const title = teamName ? `${teamName} / ${group()?.label || 'Penta A'}` : (!teamId && groups.length === 1 && group()?.label === 'Penta A' ? t('Penta temporary') : group()?.label || t('Penta temporary'));
+ $('team-current').innerHTML = `<span class="team-current-name">${esc(title)}</span>${dirty ? `<span class="team-dirty-indicator" title="${txt('Penta unsaved changes')}" aria-label="${txt('Penta unsaved changes')}">●</span>` : ''}<span aria-hidden="true">⌄</span>`;
+ $('team-current').title = title;
+ $('team-save').textContent = t('Save'); $('team-save').classList.toggle('is-dirty', dirty); $('team-manage').ariaLabel = t('Team manage');
+ const addButton = $('team-add-saved-person');
+ addButton.textContent = t('Team add person'); addButton.removeAttribute('aria-disabled');
+ addButton.dataset.full = String(selectedMembers().length >= 5); addButton.title = selectedMembers().length >= 5 ? t('Team five limit') : t('Team add person');
+ $('team-member-caption').textContent = `${t('Penta current members')} · ${selectedMembers().length}/5`;
+ $('team-selected-chips').innerHTML = selectedMembers().map(m => `<span class="team-person-chip penta-member-${slots.get(m.memberId)}"><button type="button" data-focus-member="${esc(m.memberId)}" aria-pressed="${matrix?.highlightedMemberId === m.memberId}" title="${esc(memberName(m))}"><b class="penta-member-tag">${slots.get(m.memberId)}</b><span class="team-chip-name">${esc(memberName(m))}</span>${getPerson(m.personId)?.timeUnknown ? `<small title="${txt('Team estimated time')}">≈</small>` : ''}</button><button type="button" data-remove-member="${esc(m.memberId)}" aria-label="${txt('Remove')} ${esc(memberName(m))}">×</button></span>`).join('');
+ $('team-selected-chips').append(addButton);
+ if (focusId) [...$('team-selected-chips').querySelectorAll('[data-focus-member]')].find(button => button.dataset.focusMember === focusId)?.focus({ preventScroll:true });
 }
-function renderMembers() {
-  $('team-saved').innerHTML = `<label>${text('Choose a saved person')} <select id="team-person-picker"><option value="">${text('Choose a saved person')}</option>${listPeople().map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select></label><button type="button" id="team-add-person" class="btn-secondary">${text('Add person')}</button>`;
-  $('team-selected').innerHTML = members.map((member, index) => {
-    const missing = member.personId && !getPerson(member.personId);
-    const group = groups.find(g => g.memberIds.includes(member.memberId));
-    const action = group?.pentaId === selectedPentaId
-      ? `<span class="team-assigned">${text('In current Penta')}</span>`
-      : group ? '' : `<button type="button" class="team-assign btn-secondary">${text('Add to current Penta')}</button>`;
-    return `<div class="team-member-card" data-member-id="${esc(member.memberId)}"><div class="team-member-identity"><b class="team-member-index">${index + 1}</b><span class="team-member-meta"><strong>${esc(memberName(member))}</strong><small>${missing ? text('Missing reference') : group ? esc(group.label) : text('Ungrouped')}</small></span></div><div class="team-member-actions">${missing ? `<button type="button" class="team-reassign btn-secondary">${text('Reassign person')}</button>` : ''}${action}<button type="button" class="team-remove btn-secondary">${text('Remove from team')}</button></div></div>`;
-  }).join('');
-  renderGroups();
+function placeholder(error = false) {
+ matrix?.dispose(); matrix = null; latest = null;
+ renderPentaPlaceholder($('team-content'), { error });
+ $('team-analysis').innerHTML = `<section class="panel penta-reading-section penta-empty-guide"><h2>${txt('Penta reading title')}</h2><p>${txt(error ? 'Penta repair guide' : 'Penta empty guide')}</p></section>`;
 }
-function addSavedPerson(id, replacing = null) {
-  const person = getPerson(id);
-  if (!person) return message('Missing reference');
-  if (members.some(item => item.personId === id && item !== replacing)) return message('The selected person is already in this team.');
-  if (replacing) { replacing.personId = id; replacing.displayName = person.name; replacing.labelSnapshot = person.name; }
-  else members.push(createMember({ personId: id, displayName: person.name, origin: 'saved' }));
-  changed(); renderMembers();
+function schedule(markDirty = true) {
+ if (markDirty) dirty = true;
+ generation++; clearTimeout(timer); matrix?.closeDetail?.(); renderControls();
+ const count = selectedMembers().length;
+ $('team-content').setAttribute('aria-busy', String(count >= 3));
+ $('team-content').inert = count >= 3;
+ $('team-analysis').setAttribute('aria-busy', String(count >= 3));
+ if (count < 3) { $('team-analysis').inert = false; $('team-analysis').style.opacity = ''; placeholder(); status(); $('team-content').setAttribute('aria-busy','false'); return; }
+ // Keep the previous scene readable but non-interactive, with an explicit updating state.
+ $('team-analysis').inert = true; $('team-analysis').style.opacity = '.55';
+ status(t('Calculating…')); timer = setTimeout(analyze, 160);
 }
-function assign(id) {
-  const group = selectedGroup();
-  if (!group) return message('Select a Penta group first.');
-  if (!allMembers().some(member => member.memberId === id)) return;
-  if (group.memberIds.includes(id)) return;
-  if (groups.some(item => item.memberIds.includes(id))) return message('A member is already assigned to another Penta.');
-  if (group.memberIds.length >= 5) return message('Five members maximum per Penta.');
-  group.memberIds.push(id); changed(); renderMembers();
-}
-function removeMember(id) {
-  members = members.filter(item => item.memberId !== id);
-  for (const group of groups) group.memberIds = group.memberIds.filter(item => item !== id);
-  changed(); renderMembers();
-}
-function newQuickRow() {
-  const row = document.createElement('div');
-  row.className = 'team-member-row';
-  row.innerHTML = `<div class="team-quick-fields"><input class="team-name" type="text" placeholder="${text('Name')}" aria-label="${text('Name')}"><input class="team-date" type="date" aria-label="${text('Birth date')}"><input class="team-time" type="time" aria-label="${text('Birth time')}"></div><div class="team-place"></div><div class="team-row-actions"><button type="button" class="team-assign-quick">${text('Add to Penta')}</button><button type="button" class="team-save-person">${text('Save as person')}</button><button type="button" class="team-remove-quick">${text('Remove')}</button></div>`;
-  row._memberId = crypto.randomUUID();
-  row._placeSearch = createPlaceSearch(row.querySelector('.team-place'), { getDateTime: () => ({ date: row.querySelector('.team-date').value, time: row.querySelector('.team-time').value }) });
-  for (const field of ['.team-date', '.team-time']) row.querySelector(field).addEventListener('change', row._placeSearch.updateDateTime);
-  row.addEventListener('input', changed);
-  row.addEventListener('change', changed);
-  row.querySelector('.team-place').addEventListener('click', () => queueMicrotask(() => { if (row.isConnected) changed(); }));
-  row.querySelector('.team-assign-quick').addEventListener('click', () => assign(row._memberId));
-  row.querySelector('.team-remove-quick').addEventListener('click', () => {
-    for (const group of groups) group.memberIds = group.memberIds.filter(id => id !== row._memberId);
-    row._placeSearch.destroy(); row.remove(); quickRows = quickRows.filter(item => item !== row); changed(); renderGroups();
+async function analyze() {
+ const token = generation, pentaId = selectedId;
+ let problemPerson = null;
+ try {
+  if (!currentRepository()) throw new Error(t('Team revision changed; reload before saving.'));
+  const candidates = selectedMembers().map(m => {
+   problemPerson = m.personId;
+   const person = getPerson(m.personId);
+   if (!person) throw new Error(`${memberName(m)}: ${t('Missing reference')}`);
+   const birth = effectiveTeamBirth({ ...person, timezone: person.location?.timezone });
+   if (!birth.birthTime) throw new Error(`${person.name}: ${t('Missing birth time.')}`);
+   if (birth.timezone == null) throw new Error(`${person.name}: ${t('Missing timezone.')}`);
+   if (!validateBirth({ ...birth, timeUnknown: false })) throw new Error(`${person.name}: ${t('Birth details need correction: {names}', { names: person.name })}`);
+   return { memberId: m.memberId, displayIndex: currentMemberSlots().get(m.memberId), personId: person.id, displayName: person.name, timeUnknown: !!person.timeUnknown, estimatedTime: person.timeUnknown ? '12:00' : null, snapshot: JSON.stringify(person), birth: effectiveTeamBirth(birthFromPerson(person)) };
   });
-  row.querySelector('.team-save-person').addEventListener('click', () => saveQuickPerson(row));
-  $('team-members').append(row); quickRows.push(row); changed();
+  const valid = () => token === generation && pentaId === selectedId && currentRepository() && candidates.every(p => JSON.stringify(getPerson(p.personId)) === p.snapshot);
+  const charts = [];
+  for (const p of candidates) { problemPerson = p.personId; const data = await computeChart(p.birth); if (!valid()) return; charts.push({ memberId: p.memberId, chart: data.chart }); }
+  const result = analyzePentaStructure(charts); if (!valid()) return;
+  latest = { result, people: candidates, groupLabel: group().label }; renderResult(); status();
+ } catch (error) { if (token === generation) { placeholder(true); status(error.message, getPerson(problemPerson) ? problemPerson : null); } }
+ finally { if (token === generation) { $('team-content').setAttribute('aria-busy','false'); $('team-content').inert = false; $('team-analysis').inert = false; $('team-analysis').setAttribute('aria-busy','false'); $('team-analysis').style.opacity = ''; } }
 }
-function birthProblem(birth) {
-  if (birth.timeUnknown === true) return 'Birth time marked unknown.';
-  if (!birth.birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birth.birthDate) || !validDate(birth.birthDate)) return 'Invalid birth date.';
-  if (!birth.birthTime) return 'Missing birth time.';
-  if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(birth.birthTime)) return 'Invalid birth time.';
-  if (birth.timezone === null || birth.timezone === undefined || birth.timezone === '') return 'Missing timezone.';
-  if (typeof birth.timezone !== 'number' || !Number.isFinite(birth.timezone) || birth.timezone < -14 || birth.timezone > 14) return 'Invalid timezone.';
-  if (!validateBirth(birth)) return 'Invalid birth date.';
-  return null;
-}
-function validDate(date) {
-  const [year, month, day] = date.split('-').map(Number);
-  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-  return year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
-}
-function checkedBirth(birth, label) {
-  const problem = birthProblem(birth);
-  if (problem) throw new Error(t('Birth details need correction: {names}', { names: label }) + ' ' + t(problem) + ' ' + t('Edit this person’s birth details.'));
-  return birth;
-}
-function quickBirth(row) {
-  const enteredName = row.querySelector('.team-name').value.trim();
-  const birthDate = row.querySelector('.team-date').value;
-  const birthTime = row.querySelector('.team-time').value;
-  if (!enteredName) throw new Error(t('Please enter a name, date, time and place or UTC offset.'));
-  if (!birthDate || !birthTime) return checkedBirth({ birthDate, birthTime, timezone: undefined }, enteredName);
-  const location = row._placeSearch.getBirthLocation(birthDate, birthTime);
-  if (!location) row._placeSearch.flagMissing();
-  return checkedBirth({ name: enteredName, birthDate, birthTime, timezone: location?.timezone, location: location?.lat != null ? location : null }, enteredName);
-}
-function saveQuickPerson(row) {
-  try {
-    const birth = quickBirth(row);
-    const person = savePerson({ ...birth, id: crypto.randomUUID() });
-    members.push(createMember({ memberId: row._memberId, personId: person.id, displayName: person.name, origin: 'saved' }));
-    row._placeSearch.destroy(); row.remove(); quickRows = quickRows.filter(item => item !== row);
-    changed(); renderMembers(); message('Person saved.');
-  } catch (error) { failure(error); }
-}
-function clearQuick() { for (const row of quickRows) row._placeSearch.destroy(); quickRows = []; $('team-members').replaceChildren(); }
-function openTeam(id) {
-  try {
-    const team = getTeam(id);
-    if (!team) throw new Error(t('The saved team could not be found.'));
-    teamId = team.teamId; teamRevision = team.revision; $('team-name').value = team.name;
-    members = team.members.map(item => ({ ...item, displayName: getPerson(item.personId)?.name || item.labelSnapshot, origin: 'saved' }));
-    groups = team.groups.map(item => ({ ...item, memberIds: [...item.memberIds] }));
-    selectedPentaId = groups[0]?.pentaId || null;
-    clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
-  } catch (error) { failure(error); }
-}
-function resetTeam() {
-  teamId = null; teamRevision = null; members = []; groups = []; selectedPentaId = null;
-  $('team-name').value = ''; clearQuick(); changed(); markSaved(); refreshToolbar(); renderMembers();
-}
-function persistTeam() {
-  try {
-    const unsaved = quickRows.filter(rowHasData).map(row => row.querySelector('.team-name').value.trim() || t('Unnamed member'));
-    if (unsaved.length) return message('Unsaved members: {names}. Save each as a person first.', { names: unsaved.join(', ') });
-    if (!name()) return message('Please enter a team name.');
-    const saved = saveTeam({ ...(teamId ? { teamId, revision: teamRevision } : {}), name: name(), members: members.map(item => ({ memberId: item.memberId, personId: item.personId, labelSnapshot: memberName(item) })), groups });
-    teamId = saved.teamId; teamRevision = saved.revision; markSaved(); refreshToolbar(); message('Team saved.');
-  } catch (error) { failure(error); }
-}
-function removeTeam() { if (!teamId || !window.confirm(t('Delete this saved team?'))) return; try { deleteTeam(teamId); dirty = false; resetTeam(); message('Team deleted.'); } catch (error) { failure(error); } }
 function renderResult() {
-  if (!currentResultValid()) { checkResult(); return; }
-  const highlighted = matrix?.highlightedMemberId;
-  matrix?.dispose();
-  $('team-content').replaceChildren();
-  matrix = createPentaMatrix($('team-content'), latest);
-  if (highlighted) matrix.setHighlightedMemberId(highlighted);
+ if (!latest) return;
+ const selection = matrix?.selection || null, highlighted = matrix?.highlightedMemberId || null;
+ matrix?.dispose(); $('team-content').replaceChildren(); $('team-analysis').replaceChildren();
+ matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis'), detailAdapter: pentaDetailAdapter, initialSelection: selection, onMemberFocusChange: renderControls });
+ if (highlighted) matrix.setHighlightedMemberId(highlighted);
+ renderControls();
 }
-async function runTeamAnalysis() {
-  checkResult();
-  if (pending) return;
-  const token = generation;
-  pending = true; $('team-calculate').disabled = true;
-  message('Calculating…');
-  try {
-    // A partially completed quick row must never disappear from validation merely because it is unassigned.
-    for (const row of quickRows.filter(rowHasData)) quickBirth(row);
-    const group = selectedGroup();
-    if (!group) return message('Select a Penta group first.');
-    if (group.memberIds.length < 3) return message('Selected Penta needs at least three members.');
-    if (group.memberIds.length > 5) return message('Five members maximum per Penta.');
-    const candidates = group.memberIds.map(id => {
-      const member = members.find(item => item.memberId === id);
-      if (!member) {
-        const row = quickRows.find(item => item._memberId === id);
-        if (!row || !rowHasData(row)) throw new Error(t('Missing reference: {name}. Remove or reassign this member.', { name: id }));
-        return { memberId: id, displayName: row.querySelector('.team-name').value.trim(), birth: quickBirth(row) };
-      }
-      const person = getPerson(member.personId);
-      if (!person) throw new Error(t('Missing reference: {name}. Remove or reassign this member.', { name: member.labelSnapshot || member.displayName }));
-      checkedBirth({ ...person, timezone: person.location?.timezone }, person.name);
-      return { memberId: id, personId: person.id, personSnapshot: JSON.stringify(person), displayName: person.name, birth: birthFromPerson(person) };
-    });
-    const charts = [];
-    for (const candidate of candidates) {
-      const data = await computeChart(candidate.birth);
-      if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) { if (token === generation) invalidateResult(); return; }
-      charts.push({ memberId: candidate.memberId, chart: data.chart });
+function layer(title, body, bind) {
+ closeLayer?.();
+ const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}"><header><h3 class="modal-title">${txt(title)}</h3><button type="button" class="ui-icon-button" data-close aria-label="${txt('Close')}">×</button></header>${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
+ closeLayer = close; bind(root, close); return root;
+}
+function editPerson(id = null) {
+ const person = id ? getPerson(id) : null;
+ if (id && !person) { status(t('Missing reference')); return; }
+ closeLayer?.(); $('team-add-saved-person').focus();
+ openPersonEditor(person ? { ...person, ...birthFromPerson(person), createdAt: person.createdAt } : {}, { create: !person, onSaved: saved => { if (!id) picker({ ids:[...selectedMembers().map(m => m.personId), saved.id].slice(0,5), search:'', pentaId:selectedId, revision, teamId }); else schedule(false); } });
+}
+function picker(draft = null) {
+ draft ||= { ids: selectedMembers().map(m => m.personId), search: '', pentaId: selectedId, revision, teamId };
+ layer('Team add person', `<label class="modal-field">${txt('Team search people')}<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"></label><p id="team-selection-count" role="status"></p><button type="button" id="team-person-create">${txt('Team create person')}</button><div id="team-person-results"></div><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
+  const search = root.querySelector('input'); search.value = draft.search;
+  const error = message => { root.querySelector('.team-layer-error').textContent = message; };
+  const render = () => {
+   root.querySelector('#team-selection-count').textContent = t('Team selected count', { count: draft.ids.length });
+   root.querySelector('#team-person-results').innerHTML = listPeople().filter(p => `${p.name} ${p.birthDate} ${p.id}`.toLowerCase().includes(draft.search.toLowerCase())).map(p => `<div class="team-picker-row"><button type="button" class="btn-secondary team-picker-choice" data-add-person="${esc(p.id)}" aria-pressed="${draft.ids.includes(p.id)}" ${draft.ids.length >= 5 && !draft.ids.includes(p.id) ? 'disabled' : ''}><span class="team-picker-check" aria-hidden="true">${draft.ids.includes(p.id) ? '☑' : '☐'}</span><strong>${esc(p.name)}</strong><small>${esc(p.birthDate)} · ${esc(p.timeUnknown ? t('Team estimated time') : p.birthTime)} · ${esc(p.id.slice(-6))}</small></button><button type="button" class="btn-secondary" data-edit-person="${esc(p.id)}">${txt('Edit chart')}</button></div>`).join('');
+  };
+  const editor = id => {
+   const person = id ? getPerson(id) : null;
+   if (id && !person) { error(t('Missing reference')); return; }
+   close();
+   openPersonEditor(person ? { ...person, ...birthFromPerson(person) } : {}, { create: !person, onCancel: () => picker(draft), onSaved: saved => { if (!id && draft.ids.length < 5) draft.ids.push(saved.id); picker(draft); } });
+  };
+  search.oninput = () => { draft.search = search.value; render(); }; render(); search.focus();
+  root.querySelector('#team-person-create').onclick = () => editor();
+  root.addEventListener('click', e => { const b = e.target.closest('button'); if (b?.dataset.addPerson) { const id = b.dataset.addPerson; draft.ids = draft.ids.includes(id) ? draft.ids.filter(v => v !== id) : [...draft.ids, id].slice(0,5); render(); root.querySelector(`[data-add-person="${CSS.escape(id)}"]`)?.focus(); } if (b?.dataset.editPerson) editor(b.dataset.editPerson); });
+  root.querySelector('#team-selection-confirm').onclick = async () => {
+   const valid = () => currentRepository() && draft.teamId === teamId && draft.revision === revision && draft.pentaId === selectedId;
+   if (!valid()) { error(t('Team revision changed; reload before saving.')); return; }
+   const nextMembers = members.map(m => ({...m})), nextGroups = groups.map(g => ({...g, memberIds:[...g.memberIds]}));
+   const ids = [], moves = [];
+   for (const id of draft.ids) {
+    const person = getPerson(id); if (!person) { error(t('Missing reference')); return; }
+    let member = nextMembers.find(m => m.personId === id);
+    if (!member) { member = { memberId:createUuid(), personId:id, labelSnapshot:person.name }; nextMembers.push(member); }
+    const other = nextGroups.find(g => g.pentaId !== selectedId && g.memberIds.includes(member.memberId));
+    if (other) { moves.push(t('Team move person', {name:person.name, group:other.label})); other.memberIds = other.memberIds.filter(v => v !== member.memberId); }
+    ids.push(member.memberId);
+   }
+   if (moves.length && !await confirmOperation(moves.join('\n'))) return;
+   if (!root.isConnected) return;
+   if (!valid()) { error(t('Team revision changed; reload before saving.')); return; }
+   if (draft.ids.some(id => !getPerson(id))) { error(t('Missing reference')); return; }
+   nextGroups.find(g => g.pentaId === selectedId).memberIds = ids;
+   members = nextMembers; groups = nextGroups; close(); schedule();
+  };
+ });
+}
+function load(team, pentaId) { teamId = team.teamId; revision = team.revision; teamName = team.name; members = team.members.map(m => ({ ...m })); groups = team.groups.map(g => ({ ...g, memberIds: [...g.memberIds] })); if (!groups.length) groups.push(freshGroup()); selectedId = pentaId || groups[0].pentaId; dirty = false; schedule(false); }
+function switcher() {
+ layer('Team / Penta', `<div class="team-switch-actions"><button type="button" id="team-temporary">${txt('Team temporary')}</button><button type="button" id="team-new-group">${txt('New Penta')}</button></div><div class="team-switch-list">${groups.map(g => `<button type="button" data-local-group="${esc(g.pentaId)}" aria-pressed="${g.pentaId === selectedId}">${esc(teamName || t('Team temporary'))} / ${esc(g.label)}</button>`).join('')}</div><hr>${listTeams().map(team => `<section><strong>${esc(team.name)}</strong>${team.groups.map(g => `<button type="button" data-team="${esc(team.teamId)}" data-group="${esc(g.pentaId)}">${esc(g.label)}</button>`).join('') || `<button type="button" data-team="${esc(team.teamId)}">${txt('Open')}</button>`}</section>`).join('')}`, (root, close) => {
+  root.querySelector('#team-temporary').onclick = async () => { if (!dirty || await confirmOperation(t('Discard unsaved team changes?'))) { close(); reset(); } };
+  root.querySelector('#team-new-group').onclick = () => {
+   layer('New Penta', `<form><label class="modal-field">${txt('Penta name')}<input name="group" value="Penta ${String.fromCharCode(65+groups.length)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit">${txt('Confirm')}</button></div></form>`, (dialog, done) => {
+    dialog.querySelector('form').onsubmit = event => { event.preventDefault(); const label = dialog.querySelector('input').value.trim(); if (!label) return; const g = freshGroup(); g.label = label; groups.push(g); selectedId = g.pentaId; done(); schedule(); };
+   });
+  };
+  root.onclick = async event => { const b = event.target.closest('button'); if (b?.dataset.localGroup) { selectedId = b.dataset.localGroup; close(); schedule(false); } else if (b?.dataset.team && (!dirty || await confirmOperation(t('Discard unsaved team changes?')))) { const team = getTeam(b.dataset.team); close(); load(team, b.dataset.group); } };
+ });
+}
+function saveDialog() {
+ const snapshotTeams = listTeams();
+ layer('Save team', `<form id="team-save-form"><label class="modal-field">${txt('Saved teams')}<select id="team-save-target"><option value="">${txt('New team')}</option>${snapshotTeams.map(team => `<option value="${esc(team.teamId)}" ${team.teamId === teamId ? 'selected' : ''}>${esc(team.name)}</option>`).join('')}</select></label><label class="modal-field">${txt('Team name')}<input id="team-save-name" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input id="team-save-group" value="${esc(group().label)}" required></label><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="submit" class="btn-primary">${txt('Save')}</button></div></form>`, (root, close) => {
+  const target = root.querySelector('#team-save-target'), name = root.querySelector('#team-save-name');
+  const update = () => { name.required = !target.value; name.disabled = !!target.value; }; target.onchange = update; update();
+  root.querySelector('form').onsubmit = async event => { event.preventDefault(); try {
+   if (!currentRepository()) throw Error(t('Team revision changed; reload before saving.'));
+   const destination = snapshotTeams.find(team => team.teamId === target.value);
+   let nextMembers = members.map(m => ({ memberId:m.memberId, personId:m.personId, labelSnapshot:memberName(m) }));
+   let nextGroups = groups.map(g => ({ ...g, memberIds:[...g.memberIds] })); let savedGroupId = selectedId;
+   nextGroups.find(g => g.pentaId === selectedId).label = root.querySelector('#team-save-group').value.trim();
+   if (destination && destination.teamId !== teamId) {
+    nextMembers = destination.members.map(m => ({...m})); nextGroups = destination.groups.map(g => ({...g, memberIds:[...g.memberIds]}));
+    const ids = [];
+    for (const source of selectedMembers()) {
+     let member = nextMembers.find(m => m.personId === source.personId);
+     if (!member) { member = { memberId: source.memberId, personId:source.personId, labelSnapshot:memberName(source) }; nextMembers.push(member); }
+     const assigned = nextGroups.find(g => g.memberIds.includes(member.memberId));
+     if (assigned && !await confirmOperation(t('Team move person', { name:memberName(source), group:assigned.label }))) return;
+     if (assigned) assigned.memberIds = assigned.memberIds.filter(id => id !== member.memberId);
+     ids.push(member.memberId);
     }
-    const result = analyzePentaStructure(charts);
-    if (token !== generation || candidates.some(item => item.personId && JSON.stringify(getPerson(item.personId)) !== item.personSnapshot)) return;
-    latest = { result, people: candidates.map(item => ({ memberId: item.memberId, displayName: item.displayName })), groupLabel: group.label,
-      pentaId: group.pentaId, generation: token, personSnapshots: candidates.filter(item => item.personId).map(item => [item.personId, item.personSnapshot]) };
-    renderResult();
-  } catch (error) { if (token === generation) failure(error); }
-  finally { if (token === generation) { pending = false; $('team-calculate').disabled = false; } }
+    if (nextGroups.some(g => g.pentaId === savedGroupId)) savedGroupId = createUuid();
+    nextGroups.push({ pentaId:savedGroupId, label:root.querySelector('#team-save-group').value.trim(), memberIds:ids });
+   }
+   if (!currentRepository()) throw Error(t('Team revision changed; reload before saving.'));
+   const saved = saveTeam({ ...(destination ? {teamId:destination.teamId, revision:destination.teamId === teamId ? revision : destination.revision} : {}), name:destination?.teamId === teamId ? teamName : destination?.name || name.value.trim(), members:nextMembers, groups:nextGroups });
+   close(); load(saved, savedGroupId); status(t('Team saved.'));
+  } catch(error) { root.querySelector('.team-layer-error').textContent = error.message; } };
+ });
+}
+function manage() {
+ layer('Team manage', `<form><label class="modal-field">${txt('Team name')}<input name="team" value="${esc(teamName)}"></label><label class="modal-field">${txt('Penta name')}<input name="group" value="${esc(group().label)}" required></label><div class="modal-actions"><button type="submit" class="btn-primary">${txt('Save')}</button></div></form><div class="team-destructive-actions"><button id="team-delete-group">${txt('Delete Penta')}</button><button id="team-delete-team" ${!teamId?'disabled':''}>${txt('Delete team')}</button></div><h4 class="team-operation-subtitle">${txt('Team members')}</h4>${members.map(m => `<div class="team-manage-member"><div><strong>${esc(memberName(m))}</strong><small>${esc(groups.find(g => g.memberIds.includes(m.memberId))?.label || t('Ungrouped'))}</small></div><div class="team-manage-actions"><button data-assign="${esc(m.personId)}" ${group().memberIds.includes(m.memberId) ? 'disabled' : ''}>${txt('Add to current Penta')}</button><button data-pool-remove="${esc(m.memberId)}">${txt('Remove from team')}</button></div></div>`).join('')}`, (root, close) => {
+  root.querySelector('form').onsubmit = event => { event.preventDefault(); teamName = root.querySelector('[name=team]').value.trim(); group().label = root.querySelector('[name=group]').value.trim(); dirty = true; close(); renderControls(); saveDialog(); };
+  root.querySelector('#team-delete-group').onclick = async () => { if (!await confirmOperation(t('Delete Penta'))) return; groups = groups.filter(g => g.pentaId !== selectedId); if (!groups.length) groups.push(freshGroup()); selectedId = groups[0].pentaId; close(); schedule(); };
+  root.querySelector('#team-delete-team').onclick = async () => { if (!await confirmOperation(t('Delete this saved team?'))) return; try { if (!currentRepository()) throw Error(t('Team revision changed; reload before saving.')); deleteTeam(teamId); close(); reset(); } catch(e) { root.querySelector('.team-layer-error').textContent=e.message; } };
+  root.addEventListener('click', async event => { const b = event.target.closest('button'); if (b?.dataset.assign) { const ids = selectedMembers().map(m => m.personId); if (!ids.includes(b.dataset.assign) && ids.length < 5) ids.push(b.dataset.assign); picker({ids, search:'', pentaId:selectedId, revision, teamId}); } if (b?.dataset.poolRemove) { const id=b.dataset.poolRemove; members=members.filter(m=>m.memberId!==id); groups.forEach(g=>g.memberIds=g.memberIds.filter(v=>v!==id)); close(); schedule(); } });
+ });
 }
 export function setupTeamView() {
-  $('team-form').insertAdjacentHTML('afterbegin', `<div class="team-toolbar"><label>${text('Team name')} <input id="team-name" type="text" maxlength="100"></label><label>${text('Saved teams')} <select id="team-list"></select></label><div class="team-actions"><button type="button" id="team-new" class="btn-secondary">${text('New team')}</button><button type="button" id="team-save" class="btn-primary">${text('Save team')}</button><button type="button" id="team-delete" class="btn-secondary">${text('Delete team')}</button></div><p class="team-hint">${text('Browser-only team storage. Not synced with your people library or account.')}</p></div><div class="team-workspace"><div class="team-management"><section class="team-groups"><h3>${text('Penta groups')}</h3><p class="team-hint">${text('Penta groups are assigned manually.')}</p><div class="team-group-controls"><label>${text('Select Penta')} <select id="team-group-list"></select></label><div class="team-group-actions"><button type="button" id="team-group-new" class="btn-secondary">${text('New Penta')}</button><button type="button" id="team-group-delete" class="btn-secondary">${text('Delete Penta')}</button></div><label>${text('Penta name')} <input id="team-group-name" type="text" maxlength="100"></label></div><p id="team-group-count" class="team-count"></p><div id="team-group-members"></div></section><details class="team-pool"><summary><strong>${text('Team members')}</strong><span id="team-count" class="team-count"></span></summary><div class="team-pool-body"><div id="team-selected" class="team-selection"></div></div></details></div><div class="team-results"><div class="team-results-heading"><h3>${text('Penta structure')}</h3></div></div></div>`);
-  const pool = $('team-form').querySelector('.team-pool-body');
-  pool.append($('team-saved'), $('team-members'), $('add-member'));
-  $('team-form').querySelector('.team-groups').append($('team-calculate'));
-  $('team-form').querySelector('.team-results').append($('team-content'));
-  $('team-form').querySelector('.team-pool').open = window.innerWidth >= 900;
-  const subtitle = document.querySelector('#team-view .view-subtitle');
-  subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
-  $('add-member').removeAttribute('data-i18n'); $('add-member').textContent = t('+ Add by birth data');
-  $('team-calculate').removeAttribute('data-i18n'); $('team-calculate').textContent = t('Analyze Penta');
-  $('team-new').addEventListener('click', () => { if (confirmDiscard()) resetTeam(); });
-  $('team-save').addEventListener('click', persistTeam);
-  $('team-delete').addEventListener('click', removeTeam);
-  $('team-list').addEventListener('change', event => { if (event.target.value && confirmDiscard()) openTeam(event.target.value); else event.target.value = teamId || ''; });
-  $('team-name').addEventListener('input', changed);
-  $('team-group-new').addEventListener('click', () => { const group = { pentaId: crypto.randomUUID(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] }; groups.push(group); selectedPentaId = group.pentaId; changed(); renderMembers(); });
-  $('team-group-delete').addEventListener('click', () => { if (!selectedGroup()) return; groups = groups.filter(group => group.pentaId !== selectedPentaId); selectedPentaId = groups[0]?.pentaId || null; changed(); renderMembers(); });
-  $('team-group-list').addEventListener('change', event => { selectedPentaId = event.target.value || null; changed(); renderMembers(); });
-  $('team-group-name').addEventListener('input', event => { if (selectedGroup()) { selectedGroup().label = event.target.value; changed(); $('team-group-list').selectedOptions[0].textContent = event.target.value; for (const card of $('team-selected').children) { if (selectedGroup().memberIds.includes(card.dataset.memberId)) card.querySelector('.team-member-meta small').textContent = event.target.value; } } });
-  $('team-group-members').addEventListener('click', event => { if (!event.target.classList.contains('team-unassign')) return; const group = selectedGroup(); if (!group) return; group.memberIds = group.memberIds.filter(id => id !== event.target.closest('[data-member-id]')?.dataset.memberId); changed(); renderMembers(); });
-  $('team-saved').addEventListener('click', event => { if (event.target.id === 'team-add-person') addSavedPerson($('team-person-picker').value); });
-  $('team-selected').addEventListener('click', event => {
-    const id = event.target.closest('[data-member-id]')?.dataset.memberId;
-    const member = members.find(item => item.memberId === id);
-    if (!member) return;
-    if (event.target.classList.contains('team-remove')) removeMember(id);
-    if (event.target.classList.contains('team-reassign')) addSavedPerson($('team-person-picker').value, member);
-    if (event.target.classList.contains('team-assign')) assign(id);
-  });
-  $('add-member').addEventListener('click', newQuickRow);
-  $('team-calculate').addEventListener('click', runTeamAnalysis);
-  onPeopleChange(() => { checkResult(); renderMembers(); });
-  window.addEventListener('ohd-people-changed', () => { checkResult(); renderMembers(); });
-  window.addEventListener('storage', event => { if (event.key?.includes('profile') || event.key?.startsWith('ohd-local-')) { checkResult(); renderMembers(); } });
-  refreshToolbar(); renderMembers();
+ const subtitle = document.querySelector('#team-view .view-subtitle');
+ subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
+ const previousContent = $('team-content');
+ if (previousContent && !$('team-form').contains(previousContent)) previousContent.remove();
+ $('team-form').innerHTML = `<div class="team-management panel"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p></div><div class="team-workspace chart-layout"><div class="team-graph-column chart-column"><div id="team-content" class="bodygraph-container"></div></div><div class="team-results info-column"><div id="team-analysis"></div></div></div>`;
+ $('team-current').onclick = switcher; $('team-save').onclick = saveDialog; $('team-manage').onclick = manage; $('team-add-saved-person').onclick = () => picker();
+ $('team-selected-chips').onclick = event => { const b = event.target.closest('button'); if(b?.dataset.removeMember) { group().memberIds=group().memberIds.filter(id=>id!==b.dataset.removeMember); schedule(); $('team-add-saved-person').focus(); } if(b?.dataset.focusMember && matrix) { matrix.setHighlightedMemberId(matrix.highlightedMemberId===b.dataset.focusMember?null:b.dataset.focusMember); } };
+ $('team-flow-status').onclick = event => { const id=event.target.closest('button')?.dataset.editPerson; if(id) editPerson(id); };
+ onPeopleChange(() => schedule(false));
+ window.addEventListener('storage', event => { if(event.key === null || event.key === 'ohd-teams-v1') schedule(false); });
+ reset();
 }
-export function renderTeamView() { checkResult(); renderMembers(); refreshToolbar(); }
-export function refreshTeamLanguage() {
-  const subtitle = document.querySelector('#team-view .view-subtitle');
-  subtitle.textContent = t('Team members and Penta structure');
-  $('add-member').textContent = t('+ Add by birth data'); $('team-calculate').textContent = t('Analyze Penta');
-  const toolbar = $('team-form').querySelector('.team-toolbar');
-  toolbar.querySelector('label:first-child').firstChild.textContent = t('Team name') + ' ';
-  toolbar.querySelector('label:nth-child(2)').firstChild.textContent = t('Saved teams') + ' ';
-  for (const [id, key] of [['team-new','New team'],['team-save','Save team'],['team-delete','Delete team']]) $(id).textContent = t(key);
-  toolbar.querySelector('.team-hint').textContent = t('Browser-only team storage. Not synced with your people library or account.');
-  $('team-form').querySelector('.team-pool summary strong').textContent = t('Team members');
-  $('team-form').querySelector('.team-results-heading h3').textContent = t('Penta structure');
-  $('team-form').querySelector('.team-groups h3').textContent = t('Penta groups');
-  $('team-form').querySelector('.team-groups .team-hint').textContent = t('Penta groups are assigned manually.');
-  $('team-group-new').textContent = t('New Penta'); $('team-group-delete').textContent = t('Delete Penta');
-  $('team-group-list').parentElement.firstChild.textContent = t('Select Penta') + ' ';
-  $('team-group-name').parentElement.firstChild.textContent = t('Penta name') + ' ';
-  for (const row of quickRows) {
-    row.querySelector('.team-name').placeholder = t('Name');
-    row.querySelector('.team-assign-quick').textContent = t('Add to Penta');
-    row.querySelector('.team-save-person').textContent = t('Save as person');
-    row.querySelector('.team-remove-quick').textContent = t('Remove');
-    row.querySelector('.team-date').setAttribute('aria-label', t('Birth date'));
-    row.querySelector('.team-time').setAttribute('aria-label', t('Birth time'));
-    row._placeSearch.refreshLanguage();
-  }
-  checkResult(); renderMembers(); refreshToolbar(); if (latest) renderResult();
-}
+export function renderTeamView() { if ($('team-current')) schedule(false); }
+export function refreshTeamLanguage() { closeLayer?.(); if (!$('team-current')) return; document.querySelector('#team-view .view-subtitle').textContent = t('Team members and Penta structure'); renderControls(); if(latest) renderResult(); else schedule(false); }

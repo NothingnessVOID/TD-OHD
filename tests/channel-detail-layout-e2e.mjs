@@ -108,7 +108,9 @@ try {
   await page.locator('#gate-detail:not(.hidden) .tl-detail-timing[data-kind="gate"][data-id="7"]').waitFor();
   await assertSharedHeadingAlignment('gate 7');
 
-  await selectMoment('2026-09-27', '21:00:51', '2026-09-27T13:00:51Z');
+  // Use the interior of the active interval. The old 21:00:51 sample lies
+  // six seconds before the current annual ephemeris interval (21:00:57).
+  await selectMoment('2026-09-27', '21:05:00', '2026-09-27T13:05:00Z');
   await page.locator('#timeline-view .tl-row[data-key="center:heart"] .tl-row-name').click();
   await page.locator('#gate-detail:not(.hidden) .tl-detail-timing[data-kind="center"][data-id="heart"]').waitFor();
   await assertSharedHeadingAlignment('heart center');

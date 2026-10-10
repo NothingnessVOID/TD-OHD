@@ -16,7 +16,7 @@ test('registered Skins have stable identity, mode, preview and real CSS; planned
   for(const s of SKINS){assert.ok(['light','dark'].includes(s.mode));assert.ok(existsSync(s.cssSource));for(const k of ['surface','text','accent','personality','design','transit'])assert.match(s.preview[k],/^#[0-9a-f]{6}$/i);}
   assert.ok(PLANNED_SKIN_DIRECTIONS.every(id=>!SKINS.some(s=>s.id===id)));
   assert.equal(new Set(SKIN_TOKENS).size,SKIN_TOKENS.length);
-  const lightAndDark={...declarations(skin),...declarations(skin.slice(skin.indexOf('[data-skin="default-dark"]')))};
+  const lightAndDark={...declarations(read('src/styles/tokens/team.css')),...declarations(skin),...declarations(skin.slice(skin.indexOf('[data-skin="default-dark"]')))};
   lightAndDark['--hd-birth-personality']='#282624'; lightAndDark['--hd-birth-design']='#E16F60';
   for(const token of SKIN_TOKENS)assert.ok(lightAndDark[token],token);
   assert.ok(SKIN_TOKENS.length >= 100, 'canonical registry includes independent birth source tokens');

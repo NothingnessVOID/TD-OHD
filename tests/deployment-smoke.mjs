@@ -103,20 +103,22 @@ try {
   console.log('Deployment smoke: second actual birth and Connection reuse existing runtime PASS');
 
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('#team-add-saved-person').click();
   for (const [index, date] of ['1992-11-02', '1985-03-20', '1990-08-10'].entries()) {
-    await page.locator('#add-member').click();
-    const row = page.locator('#team-members .team-member-row').nth(index);
-    await row.locator('.team-name').fill(`Synthetic smoke team ${index + 1}`);
-    await row.locator('.team-date').fill(date);
-    await row.locator('.team-time').fill('12:00');
-    await row.locator('.team-place .ps-toggle').click();
-    await row.locator('.team-place .ps-manual').fill('0');
+    await page.locator('#team-person-create').click();
+    await page.locator('#edit-name').fill(`Synthetic smoke team ${index + 1}`);
+    await page.locator('#edit-date').fill(date);
+    await page.locator('#edit-time').fill('12:00');
+    if (!await page.locator('.person-editor .ps-manual').isVisible()) await page.locator('.person-editor .ps-toggle').click();
+    await page.locator('.person-editor .ps-manual').fill('0');
+    await page.locator('#edit-save').click();
+    await page.locator('.person-editor').waitFor({ state: 'detached' });
   }
-  await page.locator('#team-group-new').click();
-  for (const row of await page.locator('#team-members .team-member-row').all()) await row.locator('.team-assign-quick').click();
-  await page.locator('#team-calculate').click();
-  await page.locator('#team-content .team-summary').waitFor({ timeout: 60000 });
-  assert.equal(await page.locator('#team-content .team-channel').count(), 6, 'Six Penta channel coverage rows rendered');
+  assert.equal(await page.locator('.team-person-chip').count(), 0, 'Picker remains a draft before confirmation');
+  await page.locator('#team-selection-confirm').click();
+  await page.waitForFunction(() => document.querySelector('#team-content')?.getAttribute('aria-busy') === 'false' && document.querySelectorAll('.penta-channel-reading').length === 6, null, { timeout: 90000 });
+  assert.equal(await page.locator('.team-person-chip').count(), 3, 'All three manually entered members are analyzed');
+  assert.equal(await page.locator('.penta-channel-reading').count(), 6, 'Six Penta channel coverage rows rendered');
   console.log('Deployment smoke: Team manual inputs and Penta structure PASS');
 
   await page.locator('.nav-link[data-view="transits"]').click();

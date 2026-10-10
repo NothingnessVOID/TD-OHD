@@ -49,7 +49,7 @@ const readable = async (locator,token,property='color') => {
 };
 try {
   await page.goto(base+birth);await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
-  await page.evaluate(async()=>{const {savePerson}=await import('/src/lib/people.js');savePerson({name:'Skin Fixture B',birthDate:'1985-03-20',birthTime:'08:00',timezone:0,location:{name:'Fixture UTC',lat:51.5,lon:0}});});
+  await page.evaluate(async()=>{const {savePerson}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/people.js')?.name || '/src/lib/people.js');savePerson({name:'Skin Fixture B',birthDate:'1985-03-20',birthTime:'08:00',timezone:0,location:{name:'Fixture UTC',lat:51.5,lon:0}});});
   const font = await css('--font'), serif = await css('--font-serif');
   const sameModeCenters = {};
   for (const skin of SKINS) {
@@ -176,9 +176,9 @@ try {
   assert.equal(await page.locator('html').getAttribute('data-skin'),'midnight-contrast');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
   await openSettings();assert.equal(await css('--hd-gate-number-size'),'18px');
   const messages={
-    en:['Appearance','Skin','Center Palette','Customize','Reset Appearance'],
-    'zh-CN':['外观','皮肤','中心配色','自定义','恢复默认外观'],
-    'zh-Hant':['外觀','皮膚','中心配色','自訂','恢復預設外觀']
+    en:['Appearance','Skin','Center Palette','Font','Customize','Reset Appearance'],
+    'zh-CN':['外观','皮肤','中心配色','字体','自定义','恢复默认外观'],
+    'zh-Hant':['外觀','皮膚','中心配色','字體','自訂','恢復預設外觀']
   };
   for(const locale of ['en','zh-CN','zh-Hant']){
     await page.evaluate(async locale=>{const path=performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/i18n.js')?.name || '/src/lib/i18n.js';(await import(path)).setLocale(locale);},locale);

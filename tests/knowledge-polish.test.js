@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import {contrastProjection} from './helpers/contrast-projection.js';
 import {preservedSource} from './helpers/knowledge-release-contract.js';
 import {assertSkinScopeBoundary} from './helpers/skin-projection.js';
@@ -19,7 +20,7 @@ test('approved shared styles retain the existing primitives after approved skin 
  assert.match(file('src/styles.css'),/\.ui-icon-button/);
 });
 test('Cross Panel uses one Basics button while preserving Gate wiring and no inline basics',()=>{
- const s=file('src/views/chart.js').split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.doesNotMatch(s,/getKnowledgeSummary|\.summary|\.detail/);assert.match(s,/wireRowHover\(item, parseInt\(item.dataset.gate\)\)/);
+ const s=incrementHistoricalSource('src/views/chart.js').toString().split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.doesNotMatch(s,/getKnowledgeSummary|\.summary|\.detail/);assert.match(s,/wireRowHover\(item, parseInt\(item.dataset.gate\)\)/);
 });
 test('only confirmed dead Cross UI keys are removed in each independent locale',()=>{
  const keys=['Shared Cross introduction','Specific Cross detail is unavailable.','View Cross introduction in the library'];for(const l of ['zh-CN','zh-Hant']){const p=`src/locales/${l}/ui-chart.json`,before=JSON.parse(execFileSync('git',['show',base+':'+p]));for(const k of keys)delete before[k];const now=JSON.parse(file(p));for(const k of uiKeys){assert.ok(now[k]);delete now[k];}assert.deepEqual(now,before);}
@@ -29,7 +30,7 @@ test('Knowledge hover uses accent-soft with no box-model changes',()=>{
  for(const m of css.matchAll(/\.knowledge-trigger[^}]+}/g))assert.doesNotMatch(m[0],/padding:|width:|height:|transform:/);
 });
 test('Cross activation drill-down preserves source identity and reuses the existing Gate renderer',()=>{
- const renderer=file('src/lib/knowledge/detail-renderer.js'),controller=file('src/lib/knowledge/detail-controller.js'),chart=file('src/views/chart.js');
+ const renderer=file('src/lib/knowledge/detail-renderer.js'),controller=file('src/lib/knowledge/detail-controller.js'),chart=incrementHistoricalSource('src/views/chart.js').toString();
  assert.match(renderer,/button type="button" class="knowledge-activation knowledge-activation-link"/);assert.match(renderer,/data-source-side/);assert.match(renderer,/data-source-planet/);assert.match(renderer,/aria-label/);
  assert.match(controller,/ohd-open-knowledge-gate/);assert.doesNotMatch(controller,/from .*chart/);assert.match(chart,/showGateDetail\(gate, false, source\)/);assert.match(chart,/prev.kind === 'knowledge'/);
  const before=execFileSync('git',['show',base+':src/views/chart.js']).toString();const extract=s=>s.slice(s.indexOf('function goBack()'),s.indexOf('function detailNav()')).split('// Thin Knowledge')[0].trim();

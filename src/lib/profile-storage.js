@@ -24,6 +24,7 @@ function generateId() {
 export function saveProfile(profile) {
   const profiles = getProfiles();
   const now = new Date().toISOString();
+  const previous = profile.id ? profiles.find(item => item.id === profile.id) : null;
   const clean = {
     id: profile.id || generateId(),
     name: profile.name || 'Unnamed Profile',
@@ -36,7 +37,7 @@ export function saveProfile(profile) {
       iana: profile.location.iana || null,
       name: profile.location.name || null
     } : null,
-    createdAt: profile.createdAt || now,
+    createdAt: previous?.createdAt || profile.createdAt || now,
     updatedAt: now
   };
   const index = profile.id ? profiles.findIndex(item => item.id === profile.id) : -1;

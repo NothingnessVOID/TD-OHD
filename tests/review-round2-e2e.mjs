@@ -39,14 +39,22 @@ try {
     libraryHeader.logoRight < libraryHeader.actionsLeft && !libraryHeader.overflow,
   `327px library header keeps branding and a readable chart selector: ${JSON.stringify(libraryHeader)}`);
   await page.setViewportSize({ width: 471, height: 703 });
-  const detailHeading = await page.evaluate(() => {
-    const back = document.querySelector('#reference-detail .reference-back').getBoundingClientRect();
-    const label = document.querySelector('#reference-detail .detail-label').getBoundingClientRect();
-    const title = document.querySelector('#reference-detail h2').getBoundingClientRect();
-    return { backBottom: back.bottom, labelTop: label.top, labelBottom: label.bottom, titleTop: title.top };
+  const mobileSheet = page.locator('#reference-mobile-detail');
+  for (const selector of ['.gate-detail-nav [data-reference-back]', '.gate-detail-nav .gate-detail-close', '#reference-detail .detail-label', '#reference-detail h2']) {
+    assert.equal(await mobileSheet.locator(selector).isVisible(), true, `471px ${selector} is actually visible`);
+  }
+  const detailHeading = await mobileSheet.evaluate(sheet => {
+    const rect = selector => sheet.querySelector(selector).getBoundingClientRect().toJSON();
+    return { back:rect('.gate-detail-nav [data-reference-back]'), close:rect('.gate-detail-nav .gate-detail-close'), label:rect('#reference-detail .detail-label'), title:rect('#reference-detail h2'), width:innerWidth, height:innerHeight };
   });
-  assert.ok(detailHeading.backBottom <= detailHeading.labelTop && detailHeading.labelBottom <= detailHeading.titleTop,
-    `mobile library heading does not overlap: ${JSON.stringify(detailHeading)}`);
+  for (const [name,rect] of Object.entries(detailHeading).filter(([,value])=>typeof value === 'object')) {
+    assert.ok(rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.right <= detailHeading.width && rect.top >= 0 && rect.bottom <= detailHeading.height, `${name} has nonzero visible viewport geometry: ${JSON.stringify(rect)}`);
+  }
+  assert.ok(detailHeading.back.right <= detailHeading.close.left &&
+    Math.max(detailHeading.back.bottom, detailHeading.close.bottom) <= detailHeading.label.top &&
+    detailHeading.label.bottom <= detailHeading.title.top,
+    `visible mobile return/close controls and heading do not overlap: ${JSON.stringify(detailHeading)}`);
+  console.log('Verified 471px visible sheet geometry:', JSON.stringify(detailHeading));
   await page.setViewportSize({ width: 903, height: 703 });
 
   await page.goto(`${base}/?d=1985-01-01&t=12%3A00&tz=0`);
@@ -158,17 +166,18 @@ try {
     await page.locator(`${root} .tl-toolbar [data-action="next-gate"]`).click();
     const started = await page.locator(`${root} .tl-table`).evaluate(async table => {
       const at = Number(table.dataset.selected);
-      const { snapshot } = await import('/src/features/transit-timeline/provider.js');
+      const { snapshot } = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/features/transit-timeline/provider.js')?.name || '/src/features/transit-timeline/provider.js');
       const before = new Set(Object.values(await snapshot(at - 1000)).filter(Boolean).map(item => item.gate));
       return Object.values(await snapshot(at)).some(item => item && !before.has(item.gate));
     });
     assert.equal(started, true, `gate jump ${index + 1} starts an activation`);
-    const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => ({
-      outline: getComputedStyle(node).outlineColor,
-      shadow: getComputedStyle(node).boxShadow
-    }));
-    assert.match(glow.outline, /41, 128, 185/);
-    assert.match(glow.shadow, /41, 128, 185/);
+    const glow = await page.locator(`${root} .tl-row-lit`).first().evaluate(node => {
+      const probe=document.createElement('span');probe.style.color='var(--hd-selection-ring)';node.append(probe);
+      const expected=getComputedStyle(probe).color;probe.remove();
+      return { outline:getComputedStyle(node).outlineColor, shadow:getComputedStyle(node).boxShadow, expected };
+    });
+    assert.equal(glow.outline, glow.expected);
+    assert.ok(glow.shadow.includes(glow.expected), 'selection shadow follows the skin selection token');
   }
   const flashRow = page.locator(`${root} .tl-row-lit`).first();
   const flashKey = await flashRow.getAttribute('data-key');

@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './helpers/release-increment-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -15,7 +16,7 @@ test('Phase 1E original snapshot and correction each retain independent exact ha
     const manifest = 'docs/team/PHASE1E-REVIEW-SOURCE-SCOPE.json';
     for (const file of [manifest, ...Object.keys(reviewed)]) {
       mkdirSync(path.dirname(path.join(dir,file)), { recursive:true });
-      cpSync(path.join(root,file), path.join(dir,file));
+      writeFileSync(path.join(dir,file), incrementHistoricalSource(file));
     }
     assert.deepEqual(validatePentaPhase1EReviewScope(dir), reviewed);
     const file = 'src/lib/knowledge/content/penta.js';

@@ -1,0 +1,935 @@
+{
+  "sourceCommit": "8475a4a12311089f64dbec1ba8b37449cd238537",
+  "candidate": "http://127.0.0.1:19963",
+  "acceptedBaseline": "http://127.0.0.1:19974",
+  "counts": {
+    "PASS": 35,
+    "DELEGATED": 29,
+    "PRECONDITION / release owner": 1
+  },
+  "rows": [
+    {
+      "script": "annual-fallback-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/annual-fallback-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 19,
+          "log": "artifacts/browser-regression/initial/annual-fallback-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "appearance-controls-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/appearance-controls-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 10,
+          "log": "artifacts/browser-regression/initial/appearance-controls-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "appearance-skin-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/appearance-skin-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 5,
+          "log": "artifacts/browser-regression/initial/appearance-skin-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "bodygraph-knowledge-regression-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/accepted-recovered/bodygraph-knowledge-regression-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "historical-phase4c",
+          "status": "fail",
+          "seconds": 33,
+          "log": "artifacts/browser-regression/historical-phase4c/bodygraph-knowledge-regression-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-baseline",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/accepted-baseline/bodygraph-knowledge-regression-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-recovered",
+          "status": "pass",
+          "seconds": 28,
+          "log": "artifacts/browser-regression/accepted-recovered/bodygraph-knowledge-regression-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "browser-comments-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-adaptation-2/browser-comments-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/initial/browser-comments-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-2",
+          "status": "pass",
+          "seconds": 8,
+          "log": "artifacts/browser-regression/chromium-adaptation-2/browser-comments-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "channel-detail-layout-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "channel-label-layout-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "chart-data-export-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/chart-data-export-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/initial/chart-data-export-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "connection-structure-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/connection-structure-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 79,
+          "log": "artifacts/browser-regression/initial/connection-structure-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "delve-blue-accent-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/delve-final/delve-blue-accent-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/delve-blue-accent-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-2",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/chromium-adaptation-2/delve-blue-accent-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-recovered",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/chromium-recovered/delve-blue-accent-e2e.mjs.log"
+        },
+        {
+          "run": "focused-final",
+          "status": "fail",
+          "seconds": 5,
+          "log": "artifacts/browser-regression/focused-final/delve-blue-accent-e2e.mjs.log"
+        },
+        {
+          "run": "skin-final",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/skin-final/delve-blue-accent-e2e.mjs.log"
+        },
+        {
+          "run": "delve-final",
+          "status": "pass",
+          "seconds": 7,
+          "log": "artifacts/browser-regression/delve-final/delve-blue-accent-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "deployment-smoke.mjs",
+      "status": "PRECONDITION / release owner",
+      "latestLog": "artifacts/browser-regression/initial/deployment-smoke.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/deployment-smoke.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 48,
+          "log": "artifacts/browser-regression/initial/e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "font-export-proof-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "font-preference-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "frontend-runtime-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/frontend-runtime-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 34,
+          "log": "artifacts/browser-regression/initial/frontend-runtime-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "gate-meridian-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/gate-meridian-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 13,
+          "log": "artifacts/browser-regression/initial/gate-meridian-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "graph-mobile-size-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/graph-mobile-size-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/graph-mobile-size-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "graph-window-fixing-colors-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-recovered/graph-window-fixing-colors-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/initial/graph-window-fixing-colors-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/graph-window-fixing-colors-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-2",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/chromium-adaptation-2/graph-window-fixing-colors-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-recovered",
+          "status": "pass",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/chromium-recovered/graph-window-fixing-colors-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-access-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/focused-final/knowledge-access-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "historical-phase4c",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/historical-phase4c/knowledge-access-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-baseline",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/accepted-baseline/knowledge-access-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-recovered",
+          "status": "fail",
+          "seconds": 27,
+          "log": "artifacts/browser-regression/accepted-recovered/knowledge-access-e2e.mjs.log"
+        },
+        {
+          "run": "focused-final",
+          "status": "pass",
+          "seconds": 38,
+          "log": "artifacts/browser-regression/focused-final/knowledge-access-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-deviation-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/accepted-recovered/knowledge-deviation-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "accepted-baseline",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/accepted-baseline/knowledge-deviation-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-recovered",
+          "status": "pass",
+          "seconds": 31,
+          "log": "artifacts/browser-regression/accepted-recovered/knowledge-deviation-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-layer-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/foundation-final/knowledge-layer-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "historical-layer",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/historical-layer/knowledge-layer-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-baseline",
+          "status": "pass",
+          "seconds": 31,
+          "log": "artifacts/browser-regression/accepted-baseline/knowledge-layer-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-recovered",
+          "status": "fail",
+          "seconds": 17,
+          "log": "artifacts/browser-regression/accepted-recovered/knowledge-layer-e2e.mjs.log"
+        },
+        {
+          "run": "foundation-final",
+          "status": "pass",
+          "seconds": 26,
+          "log": "artifacts/browser-regression/foundation-final/knowledge-layer-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-polish-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/knowledge-polish-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 62,
+          "log": "artifacts/browser-regression/initial/knowledge-polish-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-presentation-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-recovered/knowledge-presentation-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 1,
+          "log": "artifacts/browser-regression/initial/knowledge-presentation-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "fail",
+          "seconds": 47,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/knowledge-presentation-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-navigation",
+          "status": "fail",
+          "seconds": 23,
+          "log": "artifacts/browser-regression/chromium-navigation/knowledge-presentation-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-recovered",
+          "status": "pass",
+          "seconds": 22,
+          "log": "artifacts/browser-regression/chromium-recovered/knowledge-presentation-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-refinement-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/focused-final/knowledge-refinement-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/initial/knowledge-refinement-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "fail",
+          "seconds": 47,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/knowledge-refinement-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-navigation",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/chromium-navigation/knowledge-refinement-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-recovered",
+          "status": "fail",
+          "seconds": 18,
+          "log": "artifacts/browser-regression/chromium-recovered/knowledge-refinement-e2e.mjs.log"
+        },
+        {
+          "run": "focused-final",
+          "status": "pass",
+          "seconds": 21,
+          "log": "artifacts/browser-regression/focused-final/knowledge-refinement-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "knowledge-visual-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-adaptation-1/knowledge-visual-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/initial/knowledge-visual-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "pass",
+          "seconds": 18,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/knowledge-visual-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "lan-preview-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/lan-preview-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 2,
+          "log": "artifacts/browser-regression/initial/lan-preview-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "object-detail-heading-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/object-detail-heading-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 5,
+          "log": "artifacts/browser-regression/initial/object-detail-heading-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "penta-card-hover-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "penta-direct-details-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "penta-natural-scroll-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "penta-phase1c-matrix-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "people-editor-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/independent-review-fixes/people-editor-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/people-editor-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "pass",
+          "seconds": 5,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/people-editor-e2e.mjs.log"
+        },
+        {
+          "run": "independent-review-fixes",
+          "status": "pass",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/independent-review-fixes/people-editor-e2e.mjs.log",
+          "sha256": "aec5842b63fbccd0b117b46367ef295efef7508ebd0091651552cbb971ec7f42"
+        }
+      ]
+    },
+    {
+      "script": "place-search-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/place-search-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 37,
+          "log": "artifacts/browser-regression/initial/place-search-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "planet-detail-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/planet-detail-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 12,
+          "log": "artifacts/browser-regression/initial/planet-detail-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "premerge-corrections-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/premerge-corrections-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 33,
+          "log": "artifacts/browser-regression/initial/premerge-corrections-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "quarter-correction-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/quarter-correction-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/quarter-correction-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "reference-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "reference-mobile-sheet-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "reference-v1-acceptance-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "release-library-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/release-library-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 9,
+          "log": "artifacts/browser-regression/initial/release-library-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "review-round2-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/independent-review-fixes/review-round2-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 7,
+          "log": "artifacts/browser-regression/initial/review-round2-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-2",
+          "status": "pass",
+          "seconds": 11,
+          "log": "artifacts/browser-regression/chromium-adaptation-2/review-round2-e2e.mjs.log"
+        },
+        {
+          "run": "independent-review-fixes",
+          "status": "pass",
+          "seconds": 11,
+          "log": "artifacts/browser-regression/independent-review-fixes/review-round2-e2e.mjs.log",
+          "sha256": "dd9c2af4e9019a78a034b568d262f4dda82bd9af0f0327e6f097d5de7ed31166"
+        }
+      ]
+    },
+    {
+      "script": "sha256-lan-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/sha256-lan-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/sha256-lan-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "share-views-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/share-views-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 33,
+          "log": "artifacts/browser-regression/initial/share-views-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "shared-object-details-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": "artifacts/browser-regression/initial/shared-object-details-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/initial/shared-object-details-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "sharp-transit-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/sharp-transit-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 7,
+          "log": "artifacts/browser-regression/initial/sharp-transit-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "skin-foundation-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/skin-final/skin-foundation-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "accepted-baseline",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/accepted-baseline/skin-foundation-e2e.mjs.log"
+        },
+        {
+          "run": "accepted-recovered",
+          "status": "fail",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/accepted-recovered/skin-foundation-e2e.mjs.log"
+        },
+        {
+          "run": "foundation-final",
+          "status": "fail",
+          "seconds": 11,
+          "log": "artifacts/browser-regression/foundation-final/skin-foundation-e2e.mjs.log"
+        },
+        {
+          "run": "skin-final",
+          "status": "pass",
+          "seconds": 12,
+          "log": "artifacts/browser-regression/skin-final/skin-foundation-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "skin-presets-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-adaptation-1/skin-presets-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 46,
+          "log": "artifacts/browser-regression/initial/skin-presets-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-1",
+          "status": "pass",
+          "seconds": 53,
+          "log": "artifacts/browser-regression/chromium-adaptation-1/skin-presets-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "source-contrast-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/source-contrast-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 144,
+          "log": "artifacts/browser-regression/initial/source-contrast-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "team-direct-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-layout-dialogs-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-phase1b-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-phase1b-grouping-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-phase1c-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-phase1c-polish-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-phase1e-knowledge-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-selection-flow-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "team-ui-unification-e2e.mjs",
+      "status": "DELEGATED",
+      "latestLog": null,
+      "attempts": []
+    },
+    {
+      "script": "timeline-conditions-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/timeline-conditions-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/initial/timeline-conditions-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "timeline-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/timeline-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 17,
+          "log": "artifacts/browser-regression/initial/timeline-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "timeline-gestures-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/timeline-gestures-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 18,
+          "log": "artifacts/browser-regression/initial/timeline-gestures-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "timeline-mobile-layout-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/timeline-mobile-layout-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 10,
+          "log": "artifacts/browser-regression/initial/timeline-mobile-layout-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "timeline-mobile-touch-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/timeline-mobile-touch-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 4,
+          "log": "artifacts/browser-regression/initial/timeline-mobile-touch-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "transit-source-strategy-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/transit-source-strategy-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 3,
+          "log": "artifacts/browser-regression/initial/transit-source-strategy-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "transit-window-reuse-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/initial/transit-window-reuse-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "pass",
+          "seconds": 6,
+          "log": "artifacts/browser-regression/initial/transit-window-reuse-e2e.mjs.log"
+        }
+      ]
+    },
+    {
+      "script": "variable-29-e2e.mjs",
+      "status": "PASS",
+      "latestLog": "artifacts/browser-regression/chromium-recovered/variable-29-e2e.mjs.log",
+      "attempts": [
+        {
+          "run": "initial",
+          "status": "fail",
+          "seconds": 56,
+          "log": "artifacts/browser-regression/initial/variable-29-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-adaptation-2",
+          "status": "fail",
+          "seconds": 12,
+          "log": "artifacts/browser-regression/chromium-adaptation-2/variable-29-e2e.mjs.log"
+        },
+        {
+          "run": "chromium-recovered",
+          "status": "pass",
+          "seconds": 41,
+          "log": "artifacts/browser-regression/chromium-recovered/variable-29-e2e.mjs.log"
+        }
+      ]
+    }
+  ]
+}

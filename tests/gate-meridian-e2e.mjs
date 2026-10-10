@@ -31,7 +31,7 @@ async function assertGate24(reading) {
 
 async function assertSwitcherLayout(switcher, width) {
   assert.deepEqual(await switcher.locator('button').allInnerTexts(),
-    ['人类图', '易经', '基因钥匙', '经络穴位']);
+    ['详细信息', '六爻解读', '基因天赋', '经络穴位']);
   const layout = await switcher.evaluate(node => ({
     clientWidth: node.clientWidth,
     scrollWidth: node.scrollWidth,
@@ -85,7 +85,7 @@ try {
     await assertSwitcherLayout(librarySwitch, width);
     await checkLenses({ switcher: librarySwitch, reading: libraryReading, attribute: 'data-reference-lens' });
     if (width === 1380) {
-      for (const [language, label] of [['zh-Hant', '經絡穴位'], ['en', '经络穴位']]) {
+      for (const [language, label] of [['zh-Hant', '經絡穴位'], ['en', 'Meridians & acupoints']]) {
         // Exercise locale redraw while the mobile reference detail overlay stays open.
     if (!(await page.locator('#more-menu').evaluate(node => node.open))) await page.locator('#more-toggle').evaluate(node => node.click());
         await page.locator('#language-switcher').selectOption(language);

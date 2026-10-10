@@ -11,8 +11,8 @@
 
 import { chromium } from 'playwright-core';
 
-const BASE = process.env.E2E_URL || 'http://localhost:5174';
-const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const BASE = process.env.E2E_URL || 'http://127.0.0.1:19964';
+const CHROME = process.env.CHROME_PATH;
 
 let failures = 0;
 const ok = (name) => console.log(`✔ ${name}`);
@@ -22,7 +22,7 @@ async function check(name, fn) {
   try { await fn(); ok(name); } catch (err) { fail(name, err.message || err); }
 }
 
-const browser = await chromium.launch({ executablePath: CHROME, headless: true });
+const browser = await chromium.launch({ ...(CHROME ? { executablePath: CHROME } : { channel: process.env.CHROME_CHANNEL || 'chromium' }), headless: true });
 const page = await browser.newPage({ viewport: { width: 1380, height: 1000 }, locale: 'en-US' });
 await page.addInitScript(() => localStorage.setItem('ohd-language', 'en'));
 page.on('pageerror', err => fail('page JS error', err.message));
@@ -218,6 +218,7 @@ await check('coexisting graphs resolve all paints within their own SVG', async (
 // --- Connection with manual person ---
 // Shared place-search helper (Connection / Team): type → pick first result.
 async function pickPlace(scope, query) {
+  if (!await page.locator(`${scope} .ps-input`).isVisible()) await page.locator(`${scope} .ps-toggle`).click();
   await page.fill(`${scope} .ps-input`, query);
   await page.waitForSelector(`${scope} .ps-result`, { timeout: 8000 });
   await page.click(`${scope} .ps-result`);
@@ -259,27 +260,29 @@ await check('connection composite retains source semantics when center palette c
   await page.evaluate(async () => (await import('/src/lib/appearance.js')).setSkinDefaultCenterPalette());
 });
 
-// --- Team using manual rows with place search ---
-await check('team analysis works (place search per row)', async () => {
+// --- Team creates people through the shared editor, then explicitly confirms selection ---
+await check('team analysis works (place search per person editor)', async () => {
   await page.click('.nav-link[data-view="team"]');
   const rows = [
     { name: 'Tokyo member', date: '1992-11-02', place: 'Tokyo' },
     { name: 'Paris member', date: '1985-03-20', place: 'Paris' },
     { name: 'Osaka member', date: '1990-08-10', place: 'Osaka' },
   ];
-  for (let i = 0; i < rows.length; i++) {
-    await page.click('#add-member');
-    const sel = `#team-members .team-member-row:nth-child(${i + 1})`;
-    await page.fill(`${sel} .team-name`, rows[i].name);
-    await page.fill(`${sel} .team-date`, rows[i].date);
-    await page.fill(`${sel} .team-time`, '12:00');
-    await pickPlace(`${sel} .team-place`, rows[i].place);
+  await page.click('#team-add-saved-person');
+  for (const row of rows) {
+    await page.click('#team-person-create');
+    await page.fill('#edit-name', `Fictional ${row.name}`);
+    await page.fill('#edit-date', row.date);
+    await page.fill('#edit-time', '12:00');
+    await pickPlace('.person-editor', row.place);
+    await page.click('#edit-save');
+    await page.locator('.person-editor').waitFor({ state: 'detached' });
   }
-  await page.click('#team-group-new');
-  for (const row of await page.locator('#team-members .team-member-row').all()) await row.locator('.team-assign-quick').click();
-  await page.click('#team-calculate');
-  await page.waitForSelector('#team-content .team-summary', { timeout: 60000 });
-  if (await page.locator('#team-content .team-channel').count() !== 6) throw new Error('Expected six Penta channels');
+  if (await page.locator('.team-person-chip').count() !== 0) throw new Error('Unconfirmed selection entered analysis');
+  await page.click('#team-selection-confirm');
+  await page.waitForFunction(() => document.querySelector('#team-content').getAttribute('aria-busy') === 'false' && document.querySelectorAll('.penta-channel-reading').length === 6, {}, {timeout:90000});
+  if (await page.locator('.penta-channel-reading').count() !== 6) throw new Error('Expected six Penta channels');
+  if (await page.locator('.team-person-chip').count() !== 3) throw new Error('Expected three selected people');
 });
 
 // --- Theme toggle re-renders graph ---

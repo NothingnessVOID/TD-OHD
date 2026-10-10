@@ -34,20 +34,20 @@ function compare(before,after,label) {
  assert.equal(after.svg,before.svg,label+' SVG palette, gradients, glyphs and geometry');
 }
 async function relationship(page) {
- await page.evaluate(async()=>{const{savePerson}=await import('/src/lib/people.js');savePerson({name:'Foundation Fixture',birthDate:'1985-03-20',birthTime:'08:00',timezone:0,location:{name:'Fixture UTC',lat:51.5,lon:0}});});
+ await page.evaluate(async()=>{const{savePerson}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/people.js')?.name || '/src/lib/people.js');savePerson({name:'Foundation Fixture',birthDate:'1985-03-20',birthTime:'08:00',timezone:0,location:{name:'Fixture UTC',lat:51.5,lon:0}});});
  if (!(await page.locator('.nav-link[data-view="connection"]').isVisible())) await page.locator('.mobile-menu-toggle').click();
  await page.locator('.nav-link[data-view="connection"]').click();
  await page.locator('#conn-person').selectOption({label:'Foundation Fixture'});
  await page.locator('#conn-calculate').click();
  await page.locator('#connection-content .composite-graph .bodygraph-svg').waitFor({timeout:60000});
- return page.evaluate(()=>({text:document.querySelector('#connection-content').innerText,svg:document.querySelector('#connection-content .composite-graph svg').outerHTML,colors:[...document.querySelectorAll('#connection-content .connection-type')].map(n=>getComputedStyle(n).borderLeftColor),legend:getComputedStyle(document.querySelector('#connection-content .lg-stripe')).backgroundImage}));
+ return page.evaluate(()=>({text:document.querySelector('#connection-content').innerText,svg:document.querySelector('#connection-content .composite-graph svg').outerHTML,colors:[...document.querySelectorAll('#connection-content .conn-mechanic-marker')].map(n=>getComputedStyle(n).backgroundColor),legend:getComputedStyle(document.querySelector('#connection-content .lg-stripe')).backgroundImage}));
 }
 try {
  for(const width of [1224,390])for(const mode of ['light','dark']) {
   const old=await open(baseline,width,mode),current=await open(base,width,mode);
   try{
    for(const palette of ['classic','chakra']) {
-    await call(old.page,'setHumanDesignSkin',palette);await call(current.page,'setCenterPalette',palette);
+    await old.page.evaluate(async palette=>{const a=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/appearance.js')?.name || '/src/lib/appearance.js');(a.setCenterPalette || a.setHumanDesignSkin)(palette);},palette);await call(current.page,'setCenterPalette',palette);
     compare(await snapshot(old.page),await snapshot(current.page),`${width}/${mode}/${palette}`);
     await current.page.screenshot({path:`${output}/${width}-${mode}-${palette}.png`});
     results.push({width,mode,palette,bodygraphAndUiEqual:true});
@@ -57,10 +57,10 @@ try {
    assert.deepEqual(after,before,`${width}/${mode} relationship parity`);
    const colorsBefore=after.colors;
    await current.page.addStyleTag({content:':root { --hd-circuit-integration: #ee00ff !important; --hd-circuit-collective: #ee00ff !important; --text-tertiary: #ee00ff !important; }'});
-   const colorsAfter=await current.page.locator('#connection-content .connection-type').evaluateAll(ns=>ns.map(n=>getComputedStyle(n).borderLeftColor));
+   const colorsAfter=await current.page.locator('#connection-content .conn-mechanic-marker').evaluateAll(ns=>ns.map(n=>getComputedStyle(n).backgroundColor));
    assert.deepEqual(colorsAfter,colorsBefore,'relationship state colors do not follow circuit/weak text changes');
-   await current.page.addStyleTag({content:':root { --hd-relationship-electromagnetic: #123456 !important; --hd-relationship-companionship: #123456 !important; --hd-relationship-compromise: #123456 !important; --hd-relationship-dominance: #123456 !important; }'});
-   assert.ok((await current.page.locator('#connection-content .connection-type').evaluateAll(ns=>ns.map(n=>getComputedStyle(n).borderLeftColor))).every(c=>c==='rgb(18, 52, 86)'));
+   await current.page.addStyleTag({content:':root { --hd-connection-bridged: #123456 !important; --hd-connection-both: #123456 !important; --hd-connection-a: #123456 !important; --hd-connection-b: #123456 !important; }'});
+   assert.ok((await current.page.locator('#connection-content .conn-mechanic-marker').evaluateAll(ns=>ns.map(n=>getComputedStyle(n).backgroundColor))).every(c=>c==='rgb(18, 52, 86)'));
    const previousFill=await current.page.locator('.composite-graph .bg-gate-path').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
    await current.page.addStyleTag({content:':root { --hd-connection-a: #1234ee !important; --hd-connection-b: #ee3412 !important; }'});
    await current.page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/connection.js')?.name || '/src/views/connection.js')).rerenderConnectionGraphs());
@@ -85,7 +85,7 @@ try {
  await page.evaluate(async()=>{const a=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/appearance.js')?.name || '/src/lib/appearance.js');a.setCustomOverride('design','#abcdef');});
  await call(page,'setSkin','default-light');assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--hd-design').trim()),'#123456');
  await call(page,'restoreCurrentSkin');
- assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--hd-design').trim()),'#c0392b');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--hd-design').trim()),'#B84D43');
  await call(page,'setSkin','default-dark');await page.reload();await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
  assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');assert.equal(await page.locator('html').getAttribute('data-center-palette'),'chakra');
  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--hd-design').trim()),'#abcdef');

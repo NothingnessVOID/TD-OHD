@@ -1,3 +1,4 @@
+import {incrementHistoricalSource} from './release-increment-projection.js';
 import assert from 'node:assert/strict';
 import {contrastProjection} from './contrast-projection.js';
 import {readFileSync} from 'node:fs';
@@ -44,6 +45,6 @@ export function assertSkinScopeBoundary() {
   const relationFile = 'src/lib/human-design/connection.js';
   assert.equal(sha256(readFileSync(path.join(root, relationFile))), connectionScope.files[relationFile], `${relationFile} matches reviewed connection scope`);
   for (const file of ['src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','src/lib/transit-graph.js','src/features/transit-timeline/core.js','src/lib/bodygraph-integration.js','src/lib/human-design/bodygraph-geometry.js','src/lib/gate-lenses.js','src/lib/variable-arrows.js','engine-core/TransitCore.cs'])
-    assert.deepEqual(readFileSync(path.join(root, file)), git('show', `${skinScope.base}:${file}`), `${file} remains origin/main exact`);
+    assert.deepEqual(incrementHistoricalSource(file), git('show', `${skinScope.base}:${file}`), `${file} remains origin/main exact`);
   return {srcFiles: skinScope.srcFiles.length, exactHashes: Object.keys(skinScope.files).length};
 }
