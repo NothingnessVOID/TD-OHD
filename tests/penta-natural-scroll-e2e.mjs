@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdir,writeFile} from 'node:fs/promises';
 import path from 'node:path';
-const base=process.env.E2E_URL||'http://127.0.0.1:9961',out=path.resolve(process.env.SCREENSHOT_DIR||'artifacts/visual-review/penta-restoration');await mkdir(out,{recursive:true});
+const base=process.env.E2E_URL||'http://127.0.0.1:19964',out=path.resolve(process.env.SCREENSHOT_DIR||'artifacts/visual-review/penta-restoration');await mkdir(out,{recursive:true});
 const b=await chromium.launch({channel:'chromium',headless:true}),p=await b.newPage({viewport:{width:1440,height:960},locale:'zh-CN',reducedMotion:'reduce'});p.setDefaultTimeout(15000);const errors=[],observations=[];p.on('pageerror',e=>errors.push(e.message));
 async function shot(name){await p.screenshot({path:path.join(out,name+'.png'),animations:'disabled'});}
 async function settled(){await p.waitForFunction(()=>document.querySelector('#team-content').getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-gate-reading').length===12,{},{timeout:90000});}

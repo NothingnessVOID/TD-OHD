@@ -3,7 +3,7 @@ import { chromium } from 'playwright-core';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { SKINS } from '../src/lib/skin-registry.js';
-const base=(process.env.E2E_URL||'http://127.0.0.1:9961').replace(/\/$/,'');
+const base=(process.env.E2E_URL||'http://127.0.0.1:19964').replace(/\/$/,'');
 const output=path.resolve(process.env.SCREENSHOT_DIR||'artifacts/visual-review/unification');
 await mkdir(output,{recursive:true});
 const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL||'chromium',headless:true});

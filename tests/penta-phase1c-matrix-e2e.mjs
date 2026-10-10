@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
-const base = process.env.E2E_URL;
+const base = process.env.E2E_URL || 'http://127.0.0.1:19964';
 assert.ok(base);
 try {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -36,12 +36,13 @@ try {
   for (const [i, status] of statuses.entries()) {
     await page.evaluate(index => { document.querySelector('#team-content').replaceChildren(); window.__showSynthetic(index); }, i);
     assert.equal(await page.locator('.penta-edge').count(), 6);
-    assert.equal(await page.locator('.penta-edge').first().getAttribute('class'), `penta-edge penta-${status}`);
+    assert.equal(await page.locator('.penta-edge').first().locator('[data-penta-state]').getAttribute('data-penta-state'), status);
+    assert.equal(await page.locator('.penta-edge').first().evaluate((node, status) => node.classList.contains(`penta-${status}`), status), true);
     await page.locator('.penta-channel-hit').first().click();
     const detail = await page.locator('.penta-detail').innerText();
     assert.match(detail, /Gate 31|Gate 7/);
-    if (status === 'crossMemberOnly') assert.match(detail, /1 · Same \(31\) \+ 2 · Same \(7\)/);
-    if (status === 'both') assert.match(detail, /Self complete members: 1 · Same/);
+    if (status === 'crossMemberOnly') { assert.match(detail, /Complementary member pairs/); assert.equal(await page.locator('.penta-detail .penta-relation li').count(),1); assert.match(detail,/Same.*↔.*Same/s); }
+    if (status === 'both') assert.match(detail, /Self complete members.*1Same/s);
     await page.keyboard.press('Escape');
   }
   await page.evaluate(() => { document.querySelector('#team-content').replaceChildren(); window.__showSynthetic(4); });
@@ -50,13 +51,13 @@ try {
   const gateDetail = await page.locator('.penta-detail').innerText();
   assert.match(gateDetail, /Personality.*Sun.*31\.3/s);
   assert.match(gateDetail, /Design.*Earth.*31\.5/s);
-  assert.match(gateDetail, /1 · Same/);
-  assert.match(gateDetail, /2 · Same/);
+  assert.match(gateDetail, /1Same/);
+  assert.match(gateDetail, /2Same/);
   await page.keyboard.press('Escape');
-  await page.locator('.penta-member').nth(0).click();
-  assert.equal(await page.locator('.penta-member').nth(0).getAttribute('aria-pressed'), 'true');
+  await page.evaluate(() => window.__syntheticMatrix.setHighlightedMemberId('id-a'));
+  assert.equal(await page.evaluate(() => window.__syntheticMatrix.highlightedMemberId), 'id-a');
   assert.equal(await page.locator('.penta-gate.penta-highlight').count() > 0, true);
-  await page.locator('.penta-all').click();
+  await page.evaluate(() => window.__syntheticMatrix.setHighlightedMemberId(null));
   assert.equal(await page.locator('.penta-dimmed').count(), 0);
   console.log('Phase 1C synthetic matrix: four statuses, provenance, stable IDs and member highlight passed.');
 } finally { await browser.close(); }

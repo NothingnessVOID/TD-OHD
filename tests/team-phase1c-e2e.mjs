@@ -1,104 +1,27 @@
 import assert from 'node:assert/strict';
-import { chromium } from 'playwright-core';
-import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
-import { SKINS } from '../src/lib/skin-registry.js';
-
-const base = process.env.E2E_URL;
-assert.ok(base, 'Set E2E_URL to the running app.');
-const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chrome', headless: true });
-const profiles = Array.from({ length: 8 }, (_, i) => ({ id: `penta-svg-${i}`, name: i < 2 ? 'Same name' : `Member ${i + 1}`,
-  birthDate: `${1980 + i}-05-16`, birthTime: '12:00', timeUnknown: false,
-  location: { timezone: 0, lat: null, lon: null, iana: null, name: null } }));
-const screenshots = process.env.SCREENSHOT_DIR;
-try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, locale: 'en-US' });
-  const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
-  await page.addInitScript(({ key, profiles }) => {
-    localStorage.setItem('ohd-language', 'en');
-    localStorage.setItem(key, JSON.stringify(profiles));
-    localStorage.setItem('ohd-last-person-id', profiles[2].id);
-  }, { key: PROFILE_STORAGE_KEY, profiles });
-  await page.goto(base);
-  await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
-  await page.locator('.nav-link[data-view="team"]').click();
-  await page.locator('.team-advanced > summary').click();
-  await page.locator('#team-person-picker').waitFor();
-  for (const profile of profiles) {
-    await page.locator('#team-person-picker').selectOption(profile.id);
-    await page.locator('#team-add-person').click();
-  }
-  await page.locator('#team-group-new').click();
-  for (let i = 0; i < 3; i++) await page.locator('.team-member-card').nth(i).locator('.team-assign').click();
-  await page.locator('#team-calculate').click();
-  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
-  const check = async count => {
-    assert.equal(await page.locator('.penta-gate').count(), 12);
-    assert.equal(await page.locator('.penta-edge').count(), 6);
-    assert.equal(await page.locator('.penta-gate-hit').count(), 12);
-    assert.equal(await page.locator('.penta-channel-hit').count(), 6);
-    assert.equal(await page.locator('.penta-member').count(), count);
-    assert.deepEqual(await page.locator('.penta-gate').evaluateAll(nodes => nodes.map(n => Number(n.dataset.gate))), [31,8,33,7,1,13,15,2,46,5,14,29]);
-    assert.deepEqual(await page.locator('.penta-edge').evaluateAll(nodes => nodes.map(n => n.querySelector('title').textContent.split(' · ')[0])), ['31–7','8–1','33–13','15–5','2–14','46–29']);
-    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2), false);
-  };
-  await check(3);
-  await page.locator('.penta-member').nth(0).click();
-  assert.equal(await page.locator('.penta-member').nth(0).getAttribute('aria-pressed'), 'true');
-  assert.equal(await page.locator('.penta-member').nth(1).getAttribute('aria-pressed'), 'false');
-  await page.locator('.penta-all').click();
-  assert.equal(await page.locator('.penta-all').getAttribute('aria-pressed'), 'true');
-  await page.locator('.penta-gate-hit').first().focus();
-  await page.keyboard.press('Enter');
-  // Persistent analysis replaces modal reading; keyboard activation moves focus.
-  assert.match(await page.locator('.penta-active-detail').innerText(), /Gate 31/);
-  assert.equal(await page.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
-  await page.locator('.penta-channel-hit').first().focus();
-  await page.keyboard.press('Enter');
-  assert.match(await page.locator('.penta-active-detail').innerText(), /31|7/);
-  assert.equal(await page.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
-  if (screenshots) { await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: `${screenshots}/penta-desktop.png`, fullPage: true }); }
-  await page.locator('#team-group-new').click();
-  for (let i = 3; i < 8; i++) await page.locator('.team-member-card').nth(i).locator('.team-assign').click();
-  assert.equal(await page.locator('.penta-canvas').count(), 0);
-  await page.locator('#team-calculate').click();
-  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
-  await check(5);
-  await page.locator('#team-group-list').selectOption({ index: 1 });
-  assert.equal(await page.locator('.penta-canvas').count(), 0);
-  await page.locator('#team-calculate').click();
-  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
-  await check(3);
-  for (const skin of SKINS) {
-    await page.evaluate(id => document.documentElement.dataset.skin = id, skin.id);
-    await check(3);
-    const ink = await page.locator('.penta-number').first().evaluate(node => getComputedStyle(node).fill);
-    assert.ok(ink && ink !== 'rgba(0, 0, 0, 0)', `gate ink visible for ${skin.id}`);
-  }
-  // An in-flight A calculation cannot draw over a later group selection.
-  await page.locator('#team-group-list').selectOption({ index: 2 });
-  await page.locator('#team-calculate').click();
-  await page.locator('#team-group-list').selectOption({ index: 1 });
-  await page.waitForTimeout(600);
-  assert.equal(await page.locator('.penta-canvas').count(), 0);
-  await page.locator('#team-calculate').click();
-  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
-  // Saving updated birth details invalidates the old result immediately.
-  await page.evaluate(async id => {
-    const { getPerson, savePerson } = await import('/src/lib/people.js');
-    const person = getPerson(id);
-    savePerson({ ...person, birthDate: '1999-06-17', timezone: person.location?.timezone });
-    window.dispatchEvent(new Event('ohd-people-changed'));
-  }, profiles[0].id);
-  assert.equal(await page.locator('.penta-canvas').count(), 0);
-  await page.locator('#team-calculate').click();
-  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
-  for (const width of [390, 320]) {
-    await page.setViewportSize({ width, height: 844 });
-    await check(3);
-    if (screenshots && width === 320) { await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: `${screenshots}/penta-mobile-320.png`, fullPage: true }); }
-    if (screenshots && width === 390) { await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: `${screenshots}/penta-mobile-390.png`, fullPage: true }); }
-  }
-  assert.deepEqual(errors, []);
-  console.log('Phase 1C browser: topology, 3/5 members, A/B, keyboard details, highlight, mobile and no errors passed.');
-} finally { await browser.close(); }
+import {chromium} from 'playwright-core';
+import {PROFILE_STORAGE_KEY} from '../src/lib/profile-storage.js';
+import {SKINS} from '../src/lib/skin-registry.js';
+const base=process.env.E2E_URL||'http://127.0.0.1:19964';
+const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL||'chromium',headless:true});
+const profiles=Array.from({length:8},(_,i)=>({id:`fictional-svg-${i}`,name:i<2?'Fictional same':`Fictional member ${i+1}`,birthDate:`${1980+i}-05-16`,birthTime:'12:00',location:{timezone:0}}));
+try{
+ const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(({key,profiles})=>{localStorage.setItem(key,JSON.stringify(profiles));localStorage.setItem('ohd-language','en');localStorage.setItem('ohd-last-person-id',profiles[2].id);},{key:PROFILE_STORAGE_KEY,profiles});
+ await page.goto(base);await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000});await page.locator('[data-view="team"]').click();
+ const ready=()=>page.waitForFunction(()=>document.querySelector('#team-content').getAttribute('aria-busy')==='false'&&document.querySelectorAll('.penta-channel-reading').length===6,{},{timeout:90000});
+ const select=async indices=>{await page.locator('#team-add-saved-person').click();for(const i of indices)await page.locator(`[data-add-person="${profiles[i].id}"]`).click();await page.locator('#team-selection-confirm').click();};
+ const check=async count=>{for(const[selector,n]of [['.penta-gate',12],['.penta-edge',6],['.penta-gate-hit',12],['.penta-channel-hit',6],['[data-focus-member]',count]])assert.equal(await page.locator(selector).count(),n);assert.deepEqual(await page.locator('.penta-gate').evaluateAll(ns=>ns.map(n=>Number(n.dataset.gate))),[31,8,33,7,1,13,15,2,46,5,14,29]);assert.deepEqual(await page.locator('.penta-edge').evaluateAll(ns=>ns.map(n=>n.dataset.channel)),['7-31','1-8','13-33','5-15','2-14','29-46']);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false);};
+ await select([0,1,2]);await ready();await check(3);
+ await page.locator('[data-focus-member]').first().click();assert.equal(await page.locator('[data-focus-member]').first().getAttribute('aria-pressed'),'true');assert.equal(await page.locator('[data-focus-member]').nth(1).getAttribute('aria-pressed'),'false');assert.ok(await page.locator('.penta-highlight').count()>0);await page.locator('[data-focus-member]').first().click();assert.equal(await page.locator('.penta-dimmed').count(),0);
+ for(const selector of ['.penta-gate-hit','.penta-channel-hit']){const trigger=page.locator(selector).first();await trigger.focus();const y=await page.evaluate(()=>scrollY);await trigger.press('Enter');await page.locator('.penta-detail:not(.hidden)').waitFor();assert.match(await page.locator('.penta-detail').innerText(),/31|7/);assert.equal(await page.locator('.penta-detail').evaluate(n=>n.parentElement===document.body),true);assert.equal(await page.evaluate(()=>scrollY),y);await page.keyboard.press('Escape');assert.equal(await trigger.evaluate(n=>n===document.activeElement),true);assert.equal(await page.evaluate(()=>scrollY),y);}
+ assert.equal(await page.locator('.penta-analysis-card.penta-active-detail').count(),0);
+ await page.locator('#team-current').click();const a=await page.locator('[data-local-group]').first().getAttribute('data-local-group');await page.locator('#team-new-group').click();await page.locator('.team-control-dialog button[type=submit]').click();await page.locator('.penta-placeholder').waitFor();assert.equal(await page.locator('.penta-render:not(.penta-placeholder)').count(),0);await select([3,4,5,6,7]);await ready();await check(5);
+ await page.locator('#team-current').click();const b=await page.locator('[data-local-group]').last().getAttribute('data-local-group');await page.locator(`[data-local-group="${a}"]`).click();await ready();await check(3);
+ for(const skin of SKINS){await page.evaluate(id=>document.documentElement.dataset.skin=id,skin.id);await check(3);const ink=await page.locator('.penta-number').first().evaluate(n=>getComputedStyle(n).fill);assert.ok(ink&&ink!=='rgba(0, 0, 0, 0)',skin.id);}
+ // Rapid B -> A cannot finish with B's stale result.
+ await page.locator('#team-current').click();await page.locator(`[data-local-group="${b}"]`).click();await page.locator('#team-current').click();await page.locator(`[data-local-group="${a}"]`).click();await ready();await check(3);assert.equal(await page.locator('.penta-contribution-row').count(),3);assert.doesNotMatch(await page.locator('.penta-analysis').innerText(),/Fictional member [4-8]/);
+ const before=await page.locator('.penta-analysis').innerText();await page.evaluate(async id=>{const api=await import('/src/lib/people.js');api.savePerson({...api.getPerson(id),name:'Fictional updated member',birthDate:'1999-06-17',timezone:0});},profiles[0].id);await ready();assert.match(await page.locator('.penta-analysis').innerText(),/Fictional updated member/);assert.notEqual(await page.locator('.penta-analysis').innerText(),before);
+ for(const width of [390,320]){await page.setViewportSize({width,height:844});await check(3);if(process.env.SCREENSHOT_DIR)await page.screenshot({path:`${process.env.SCREENSHOT_DIR}/penta-mobile-${width}.png`,fullPage:true});}
+ assert.deepEqual(errors,[]);console.log('PASS topology, 3/5, A/B race, edit invalidation, member focus, independent keyboard sheets/no scroll, skins, 320/390; skip=0');
+}finally{await browser.close();}
