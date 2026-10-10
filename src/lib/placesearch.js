@@ -183,6 +183,17 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
   refreshLanguage();
   return {
     refreshLanguage,
+    setBirthLocation(location, timezone = location?.timezone) {
+      ++seqCounter; controller?.abort(); clearTimeout(debounce); clearResults();
+      manualMode = !location?.iana;
+      selected = location?.iana ? { label: location.name || location.iana, latitude: location.lat, longitude: location.lon, timezone: location.iana } : null;
+      input.value = selected?.label || '';
+      manual.value = timezone == null ? '' : String(timezone);
+      manual.disabled = !manualMode;
+      place.classList.toggle('hidden', manualMode);
+      manualWrap.classList.toggle('hidden', !manualMode);
+      refreshLanguage();
+    },
     updateDateTime: updateChip,
     hasInput: () => manualMode ? manual.value.trim() !== '' : !!selected,
     flagMissing: () => {

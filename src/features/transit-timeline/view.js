@@ -1261,6 +1261,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       else { $('.tl-table').setAttribute('aria-busy', 'false'); renderRows(); }
     },
     deactivate,
+    invalidateBirth() {
+      deactivate();
+      chart = null; result = null; context = null; identity = ''; graphKey = '';
+      host.closeDetail();
+    },
     // Invalidate paint even while hidden, so re-entry uses the current Skin.
     refresh() { graphKey = ''; if (active) renderMoment(); },
     setLanguage,
