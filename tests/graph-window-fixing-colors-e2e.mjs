@@ -8,7 +8,7 @@ try {
   await page.goto(process.env.E2E_URL || 'http://127.0.0.1:5177');
   await page.waitForSelector('#more-toggle');
   const results = await page.evaluate(async () => {
-    const { renderGraphColumns } = await import('/src/features/transit-timeline/graph-window.js');
+    const { renderGraphColumns } = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/features/transit-timeline/graph-window.js')?.name || '/src/features/transit-timeline/graph-window.js');
     const root = document.createElement('section');
     root.className = 'tl';
     root.style.cssText = '--hd-design:rgb(140, 30, 40);--hd-personality:rgb(40, 50, 60);--hd-transit:rgb(10, 160, 190);--hd-transit-text:color-mix(in srgb, var(--hd-transit) 65%, #16130f)';
@@ -35,7 +35,7 @@ try {
     const changed = read();
     render('juxtaposed', true);
     const both = read();
-    root.style.setProperty('--hd-transit', 'rgb(70, 180, 90)');
+    root.style.setProperty('--source-transit-text', 'rgb(70, 180, 90)');
     const newToken = read();
     const transitAfter = getComputedStyle(root.querySelector('.tl-planet .tl-fixing-mark')).color;
     render('exalted', false);

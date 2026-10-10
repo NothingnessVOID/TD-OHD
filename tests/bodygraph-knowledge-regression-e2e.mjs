@@ -42,7 +42,7 @@ function compare(old,current,label) {
   for(let j=0;j<a.nodes.length;j++){assert.equal(b.nodes[j].class,a.nodes[j].class);for(const key of ['x','y','width','height'])assert.ok(Math.abs(b.nodes[j].box[key]-a.nodes[j].box[key])<=1,`${label} ${a.selector} ${key}: ${b.nodes[j].box[key]} vs ${a.nodes[j].box[key]}`);}
  }
 }
-const invoke=(page,kind,id)=>page.evaluate(async({kind,id})=>{const view=await import('/src/views/chart.js');view[kind](id);},{kind,id});
+const invoke=(page,kind,id)=>page.evaluate(async({kind,id})=>{const view=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');view[kind](id);},{kind,id});
 try {
  for(const width of [1224,390]) {
   console.log(`Checking BodyGraph at ${width}`);
@@ -70,27 +70,27 @@ try {
   });await close();
   // Full-range fixture exercises shell/renderer semantics independently of interval availability.
   await both(p=>p.evaluate(async()=>{
-   const {showTransitDetail}=await import('/src/views/chart.js');
+   const {showTransitDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');
    showTransitDetail('gate',23,{transitGates:{},detailTiming:()=>({kind:'gate',id:23,label:'Activation timing',fullRange:true,source:'Transit',sourceTitle:'Fixture',estimateTitle:'Estimated',estimateLabel:'Estimated',durationTitle:'Duration',durationLabel:'Duration',durationValue:'Full range',fullRangeLabel:'Throughout the displayed range'})});
   }));await check('timeline-full-range-fixture');
   await both(async p=>{assert.equal(await p.locator('#gate-detail .tl-timing-full-range').count(),1);assert.equal(await p.locator('#gate-detail .tl-timing-boundary').count(),0);assert.equal(await p.locator('#gate-detail .tl-timing-range-note').count(),1);});await close();
   // Candidate-only direct owner transitions while old state/history/pin/timing exist.
   await current.page.evaluate(async()=>{
-   const {showGateDetail}=await import('/src/views/chart.js');const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');
+   const {showGateDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');
    showGateDetail(28);showGateDetail(23);openKnowledgeDetail({objectType:'authority',objectId:'sacral'});
   });
   assert.equal(await current.page.locator('#gate-detail .gate-detail-back').count(),0);assert.equal(await current.page.locator('#gate-detail .tl-detail-timing').count(),0);
   assert.equal(await current.page.locator('#gate-detail .knowledge-detail').count(),1);
-  await current.page.evaluate(async()=>(await import('/src/views/chart.js')).showGateDetail(28));
+  await current.page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js')).showGateDetail(28));
   assert.equal(await current.page.locator('#gate-detail .knowledge-detail').count(),0);assert.equal(await current.page.locator('#gate-detail .gate-detail-back').count(),0);
-  assert.equal(await current.page.evaluate(async()=>(await import('/src/lib/knowledge/detail-controller.js')).getKnowledgeDetailState()),null);
+  assert.equal(await current.page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js')).getKnowledgeDetailState()),null);
   assert.equal(await current.page.locator('#gate-detail .tl-detail-timing').count(),0);
   await current.page.keyboard.press('Escape');
   // Explicitly exercise old context cleanup and pinned selection release.
   await current.page.evaluate(async()=>{
    window.phase5Pins=[];window.phase5Closed=0;
-   const {showTransitDetail}=await import('/src/views/chart.js');
-   const {openKnowledgeDetail}=await import('/src/lib/knowledge/detail-controller.js');
+   const {showTransitDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/chart.js')?.name || '/src/views/chart.js');
+   const {openKnowledgeDetail}=await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/lib/knowledge/detail-controller.js')?.name || '/src/lib/knowledge/detail-controller.js');
    showTransitDetail('gate',28,{api:{setPinned:selection=>window.phase5Pins.push(selection)},onDetailClose:()=>window.phase5Closed++});
    openKnowledgeDetail({objectType:'authority',objectId:'sacral'});
   });

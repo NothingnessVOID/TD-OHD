@@ -18,7 +18,7 @@ try {
   const expected={delve:{accent:'#111111',transit:'#2E75D4',natal:'#6F6F6F',design:'#6F6F6F',personality:'#1A1A1A',mode:'unified-natal'},'deep-think':{accent:'#4D6BFE',transit:'#4660E5',natal:'#747B8A',design:'#C26068',personality:'#252A36',mode:'split'}};
   const color=async(locator,token,property='color')=>{
     const pair=await locator.first().evaluate((n,{token,property})=>{
-      const probe=document.createElement('span');probe.style.setProperty(property,`var(${token})`);document.body.append(probe);
+      const probe=document.createElement('span');probe.style.setProperty(property,`var(${token})`);n.append(probe);
       const v=[getComputedStyle(n).getPropertyValue(property),getComputedStyle(probe).getPropertyValue(property)];probe.remove();return v;
     },{token,property});assert.equal(pair[0],pair[1],token+' on real surface');
   };
@@ -26,20 +26,22 @@ try {
   for(const id of ['delve','deep-think']){
     await page.locator('#more-toggle').click();await page.locator('#skin-settings-button').click();
     await page.locator(`[data-skin-id="${id}"]`).click();
+    // Follow Skin now selects a paired palette; explicitly pin Classic for this parity scenario.
+    await page.locator('button[data-center-palette="classic"]').click();
     await page.locator('#skin-picker').screenshot({path:`${evidence}/${id}-picker.png`});
     await page.keyboard.press('Escape');
     const tokens=await page.locator('html').evaluate(n=>Object.fromEntries(['--accent','--hd-transit','--hd-overlay-natal','--hd-personality','--hd-design'].map(k=>[k,getComputedStyle(n).getPropertyValue(k).trim()])));
     for(const [key,token]of Object.entries({accent:'--accent',transit:'--hd-transit',natal:'--hd-overlay-natal',design:'--hd-design',personality:'--hd-personality'}))assert.equal(tokens[token],expected[id][key]);
     const edges=await page.locator('#bodygraph-container radialGradient stop').evaluateAll(ns=>ns.map(n=>n.getAttribute('stop-color')));
     if(centers)assert.deepEqual(edges,centers,'Classic centers remain identical');else centers=edges;
-    await color(page.locator('#bodygraph-container .bg-planets-design .bg-planet-act'),'--hd-design');
-    await color(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--hd-personality');
+    await color(page.locator('#bodygraph-container .bg-planets-design .bg-planet-act'),'--bg-source-design-text');
+    await color(page.locator('#bodygraph-container .bg-planets-personality .bg-planet-act'),'--bg-source-personality-text');
     assert.equal(await page.locator('#bodygraph-container').getAttribute('data-transit-source-mode'),'split');
     await page.locator('#bodygraph-container').screenshot({path:`${evidence}/${id}-birth.png`});
     await navigate('transits');await page.locator('#transit-stage .bodygraph-svg').waitFor({timeout:60000});
     assert.equal(await page.locator('#transit-stage .tl-graph').getAttribute('data-transit-source-mode'),expected[id].mode);
-    await color(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),id==='delve'?'--hd-overlay-natal':'--hd-design');
-    await color(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--hd-transit-text');
+    await color(page.locator('#transit-stage .tl-birth-value[data-side="design"] .bg-planet-act'),id==='delve'?'--source-natal-text':'--source-design-text');
+    await color(page.locator('#transit-stage .tl-transit-column .bg-planet-act'),'--source-transit-text');
     await page.locator('#transit-stage .tl-graph-panel').screenshot({path:`${evidence}/${id}-transit.png`});
     await navigate('timeline');await page.locator('#timeline-view .bodygraph-svg').waitFor({timeout:60000});
     await page.locator('#timeline-view [data-field="span"]').selectOption('past-year');
@@ -48,16 +50,19 @@ try {
       const graph=document.querySelector('#timeline-view .tl-graph');
       return graph?.dataset.transitSourceMode===mode&&[...graph.querySelectorAll('.bg-gate-circle')].some(n=>n.getAttribute('fill')===transit);
     },expected[id]);
-    await color(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),id==='delve'?'--hd-overlay-natal':'--hd-design');
-    await color(page.locator('#timeline-view .tl-bar[data-source="natal"]'),'--hd-overlay-natal','background-color');
+    await color(page.locator('#timeline-view .tl-birth-value[data-side="design"] .bg-planet-act'),id==='delve'?'--source-natal-text':'--source-design-text');
+    await color(page.locator('#timeline-view .tl-bar[data-source="natal"]'),'--hd-timeline-birth','background-color');
     await color(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-timeline-transit','background-color');
     await color(page.locator('#timeline-view .tl-bar[data-source="transit"]'),'--hd-transit-on');
     await page.locator('#timeline-view .tl-legend-disclosure').evaluate(n=>n.open=true);
-    await color(page.locator('#timeline-view .tl-legend [data-source="natal"] i'),'--hd-overlay-natal','background-color');
+    await color(page.locator('#timeline-view .tl-legend [data-source="natal"] i'),'--hd-timeline-birth','background-color');
     await color(page.locator('#timeline-view .tl-legend [data-source="transit"] i'),'--hd-timeline-transit','background-color');
-    await color(page.locator('#timeline-view .tl-legend [data-source="both"] i'),'--hd-overlay-natal','border-top-color');
-    const completed=await page.locator('#timeline-view .tl-legend [data-source="completed"] i').evaluate(n=>getComputedStyle(n).backgroundImage);
-    assert.match(completed,/linear-gradient/);
+    const both=await page.locator('#timeline-view .tl-legend [data-source="both"] i').evaluate(n=>getComputedStyle(n).backgroundImage);
+    assert.match(both,/repeating-linear-gradient/);
+    await color(page.locator('#timeline-view .tl-legend [data-source="completed"] i'),'--hd-timeline-birth','border-left-color');
+    await color(page.locator('#timeline-view .tl-legend [data-source="completed"] i'),'--hd-timeline-transit','background-color');
+    const completed=await page.locator('#timeline-view .tl-legend [data-source="completed"] i').evaluate(n=>getComputedStyle(n).borderLeftWidth);
+    assert.equal(completed,'4px');
     await page.locator('#timeline-view .tl-legend-disclosure').evaluate(n=>n.open=false);
     await page.locator('#timeline-view .tl-workspace').screenshot({path:`${evidence}/${id}-timeline.png`});
     results.push({id,tokens,centersUnchanged:true,completed});await navigate('chart');
