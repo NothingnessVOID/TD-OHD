@@ -36,7 +36,9 @@ const query = objectId => ({ domain: 'human-design', objectType: 'penta', object
 function specificReading(objectId) {
   const entry = getKnowledgeEntry(query(objectId));
   if (!entry || entry.reviewStatus !== 'reviewed' || entry.properties.evidence?.status !== 'verified') return '';
-  const slots = [entry.summary, entry.detail].filter(slot => slot?.reviewStatus === 'reviewed' && slot.evidenceStatus === 'verified' && slot.content?.trim());
+  // A verified topology/course reference is not yet a specialist interpretation.
+  if (/^(gate|channel):/.test(objectId) && entry.properties.interpretationStatus !== 'verified') return '';
+  const slots = [entry.detail || entry.summary].filter(slot => slot?.reviewStatus === 'reviewed' && slot.evidenceStatus === 'verified' && slot.content?.trim());
   if (!slots.length) return '';
   return `<section data-penta-specific><h3>${text('Penta specific reading')}</h3>${slots.map(slot => `<p>${esc(slot.content)}</p>`).join('')}</section>`;
 }

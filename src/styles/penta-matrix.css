@@ -13,6 +13,12 @@
 #team-view .penta-gate rect { fill:var(--bg-elevated); stroke:var(--border); stroke-width:2; }
 #team-view .penta-gate.penta-present rect { stroke:var(--accent); stroke-width:2.5; }
 #team-view .penta-gate.penta-highlight rect { stroke-width:4; }
+#team-view .penta-gate.penta-selected-target rect { stroke:var(--accent); stroke-width:4; fill:var(--accent-soft); }
+#team-view .penta-member-muted { opacity:.35; }
+#team-view .penta-gate.penta-selected-target, #team-view .penta-edge.penta-selected-target { opacity:1; }
+#team-view .penta-edge.penta-selected-target line:not(.penta-hit) { stroke:var(--accent); stroke-width:4.5; }
+#team-view .penta-edge.penta-selected-target .penta-edge-symbol { stroke:var(--accent); stroke-width:2; fill:var(--accent-soft); }
+#team-view .penta-gate, #team-view .penta-edge { transition:opacity 120ms ease; }
 #team-view .penta-gate text { fill:var(--text); font-family:inherit; }
 #team-view .penta-number { font-size:19px; font-weight:700; }
 #team-view .penta-native-member circle { fill:var(--penta-person); stroke:var(--bg-elevated); stroke-width:1.5; }
@@ -54,4 +60,8 @@
 #team-view .penta-detail .penta-knowledge-sources a { color:var(--accent); overflow-wrap:anywhere; }
 #team-view .penta-detail .penta-knowledge-missing { color:var(--text-secondary); }
 #team-view .penta-detail .gate-detail-body li { margin-block:5px; }
+/* Body-level popup shares the ordinary chart sheet; never size it as a Team panel. */
+.penta-detail .gate-detail-body { overflow-wrap:anywhere; }
+.penta-detail .gate-detail-body li { margin-block:5px; }
+@media (prefers-reduced-motion: reduce) { #team-view .penta-gate, #team-view .penta-edge { transition:none; } }
 @media (max-width:390px) { #team-view .penta-canvas { width:100%; } #team-view .penta-legend button { font-size:12px; } #team-view .penta-state-legend { grid-template-columns:minmax(0,1fr); } }

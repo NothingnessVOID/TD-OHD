@@ -1,0 +1,68 @@
+import { registerMessages } from './i18n.js';
+
+const messages = {
+  en: {
+    'Penta reading title': 'Penta group analysis',
+    'Penta reading members': 'Members',
+    'Penta reading gates covered': 'Activated gates',
+    'Penta reading channels covered': 'Covered channels',
+    'Penta reading channels': 'Six channels',
+    'Penta reading gates': 'Twelve gates',
+    'Penta upper group': 'Upper · Expression and organization',
+    'Penta lower group': 'Lower · Foundation and operation',
+    'Penta reading contributions': 'Member contributions',
+    'Penta reading background': 'About the group structure',
+    'Penta open details': 'View full details',
+    'Penta open reading': 'Read more',
+    'Penta focused member': 'Member focus',
+    'Penta clear focus': 'Show all members',
+    'Penta noon notice': 'Birth time is unknown for {names}; calculations use an estimated 12:00.',
+    'Penta member activations': 'Member activations',
+    'Penta gate order throat': 'Throat Center',
+    'Penta gate order g': 'G Center',
+    'Penta gate order sacral': 'Sacral Center'
+  },
+  'zh-CN': {
+    'Penta reading title': 'Penta 群体分析',
+    'Penta reading members': '群体人数',
+    'Penta reading gates covered': '已激活闸门',
+    'Penta reading channels covered': '已覆盖通道',
+    'Penta reading channels': '六条通道',
+    'Penta reading gates': '十二个闸门',
+    'Penta upper group': '上层 · 表达与组织',
+    'Penta lower group': '下层 · 基础与运作',
+    'Penta reading contributions': '成员贡献',
+    'Penta reading background': '群体结构说明',
+    'Penta open details': '查看详细解读',
+    'Penta open reading': '阅读完整说明',
+    'Penta focused member': '成员聚焦',
+    'Penta clear focus': '显示所有成员',
+    'Penta noon notice': '{names}的出生时间未知，当前按 12:00 估算。',
+    'Penta member activations': '成员激活',
+    'Penta gate order throat': '喉中心',
+    'Penta gate order g': 'G 中心',
+    'Penta gate order sacral': '骶骨中心'
+  },
+  'zh-Hant': {
+    'Penta reading title': 'Penta 群體分析',
+    'Penta reading members': '群體人數',
+    'Penta reading gates covered': '已啟動閘門',
+    'Penta reading channels covered': '已覆蓋通道',
+    'Penta reading channels': '六條通道',
+    'Penta reading gates': '十二個閘門',
+    'Penta upper group': '上層 · 表達與組織',
+    'Penta lower group': '下層 · 基礎與運作',
+    'Penta reading contributions': '成員貢獻',
+    'Penta reading background': '群體結構說明',
+    'Penta open details': '查看詳細解讀',
+    'Penta open reading': '閱讀完整說明',
+    'Penta focused member': '成員聚焦',
+    'Penta clear focus': '顯示所有成員',
+    'Penta noon notice': '{names}的出生時間未知，目前按 12:00 估算。',
+    'Penta member activations': '成員啟動',
+    'Penta gate order throat': '喉中心',
+    'Penta gate order g': 'G 中心',
+    'Penta gate order sacral': '薦骨中心'
+  }
+};
+for (const [locale, values] of Object.entries(messages)) registerMessages(locale, values);
