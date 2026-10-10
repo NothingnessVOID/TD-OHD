@@ -118,7 +118,6 @@ export function createPentaMatrix(container, {
       node.classList.toggle('penta-member-muted', !!selected && !item.gates.some(gate => item.holdersByGate[gate]?.includes(selected)));
     });
     graph.querySelectorAll('button[data-select-kind]').forEach(button => button.setAttribute('aria-pressed', String(selectedTarget?.kind === button.dataset.selectKind && selectedTarget.id === button.dataset.selectId)));
-    analysis.querySelectorAll('[data-detail-kind]').forEach(node => node.classList.toggle('penta-active-detail', selectedTarget?.kind === node.dataset.detailKind && selectedTarget.id === node.dataset.detailId));
     for (const root of [graph, analysis]) root.querySelectorAll('[data-source-id]').forEach(node => node.classList.toggle('penta-dimmed', !!selected && node.dataset.sourceId !== selected));
   }
   function selectObject(kind, id, { focus = false } = {}) {
