@@ -1,3 +1,4 @@
+import { sha256Hex } from '../../lib/sha256.js';
 import { ANNUAL_SIGNATURE } from './annual-signature.js';
 import { verifyAnnualStructure } from './annual-events.js';
 
@@ -44,8 +45,7 @@ export function createAnnualLoader({ fetcher = fetch, base = import.meta.env?.BA
       if (!response.ok) throw new Error(`Annual HTTP ${response.status}`);
       const bytes = await response.arrayBuffer();
       if (bytes.byteLength !== entry.bytes) throw new Error('Annual byte count mismatch');
-      const digest = await crypto.subtle.digest('SHA-256', bytes);
-      const actual = [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('');
+      const actual = await sha256Hex(bytes);
       if (actual !== entry.sha256) throw new Error('Annual hash mismatch');
       const data = JSON.parse(new TextDecoder().decode(bytes));
       if (data.signature !== ANNUAL_SIGNATURE || data.year !== year) throw new Error('Annual signature/year mismatch');
