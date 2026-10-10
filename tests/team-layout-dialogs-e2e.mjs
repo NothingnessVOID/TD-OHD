@@ -34,7 +34,7 @@ try {
  const scrolled=await geometry();assert.ok(scrolled.windowY>before.windowY);assert.equal(scrolled.rightScroll,0);assert.ok(scrolled.left.y>=56&&scrolled.left.y<90);
  await shot('03-document-scroll');
  await page.locator('.penta-gate-hit[data-gate="31"]').click();
- await page.locator('.penta-gate-reading.penta-active-detail[data-detail-id="31"]').waitFor();
+ await page.locator('.penta-detail:not(.hidden) [data-shared-gate="31"]').waitFor();
  assert.equal(await page.locator('.penta-detail:not(.hidden)').count(),1);
  await shot('04-graph-gate-link');
  const scrollBeforePopup=scrolled.windowY;
@@ -42,7 +42,7 @@ try {
  assert.equal(await page.locator('.gate-detail:not(.hidden)').count(),1);await shot('05-gate-dialog');
  await page.locator('.penta-detail [data-shared-lens="meridian"]').click();await page.locator('.penta-detail .meridian-reading').waitFor();await shot('06-gate-meridian-dialog');
  await page.keyboard.press('Escape');assert.ok(Math.abs((await geometry()).windowY-scrollBeforePopup)<2);
- await page.locator('.penta-channel-hit[data-channel="7-31"]').click();await page.locator('.penta-channel-reading.penta-active-detail[data-detail-id="7-31"]').waitFor();
+ await page.locator('.penta-channel-hit[data-channel="7-31"]').click();await page.locator('.penta-detail:not(.hidden) [data-penta-channel-state]').waitFor();
  assert.equal(await page.locator('.penta-gate.penta-selected-target').count(),2);
  await page.locator('.penta-detail:not(.hidden)').waitFor();await shot('07-channel-dialog');
  await page.keyboard.press('Escape');

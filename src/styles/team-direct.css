@@ -56,7 +56,6 @@
   #team-view .penta-channel-reading .penta-item-heading { flex-direction:column; gap:6px; }
   #team-view .penta-channel-reading .penta-state-text { max-width:100%; width:100%; }
 }
-#team-view .penta-analysis-card.penta-active-detail { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 #team-view .penta-item-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 #team-view .penta-object-title { padding: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; line-height: 1.5; font-weight: 650; text-align: left; cursor: pointer; min-height: 44px; }
 #team-view .penta-object-title > span { display: block; margin-top: 1px; font-size: 12px; line-height: 1.5; font-weight: 400; color: var(--text-secondary); }
