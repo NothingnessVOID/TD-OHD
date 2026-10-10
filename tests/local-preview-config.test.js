@@ -7,9 +7,16 @@ test('development watcher excludes locked .NET intermediates, not public engine 
   assert.deepEqual(config.server.watch.ignored, ['**/bin/**', '**/obj/**']);
 });
 
+test('LAN development keeps environment and private research files denied', () => {
+  assert.ok(config.server.fs.deny.includes('.env.*'));
+  assert.ok(config.server.fs.deny.includes('**/.git/**'));
+  assert.ok(config.server.fs.deny.includes('**/docs/handoff/**'));
+  assert.notEqual(config.server.allowedHosts, true);
+});
+
 for (const kind of ['server', 'preview']) {
-  test(`${kind} keeps the local preview on the fixed loopback origin`, () => {
-    assert.equal(config[kind].host, '127.0.0.1');
+  test(`${kind} serves trusted-LAN preview on the fixed port`, () => {
+    assert.equal(config[kind].host, '0.0.0.0');
     assert.equal(config[kind].port, 9961);
     assert.equal(config[kind].strictPort, true);
   });

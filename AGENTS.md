@@ -3,12 +3,20 @@
 ## Local environment and preview
 
 - Use Node.js 24 and the .NET 10 SDK. In Windows PowerShell, prefer `npm.cmd`.
-- Keep development and built preview at **http://127.0.0.1:9961/**.
+- Keep user-facing development and built preview on **port 9961**. Bind to `0.0.0.0` for the user's trusted LAN; local access is `http://127.0.0.1:9961/`, remote access is `http://<host-LAN-IP>:9961/`.
+- Do not configure public port forwarding, disable firewall protections, or set unrestricted Vite host allow-lists. Private research under `docs/handoff/` is denied by the dev server.
 - `npm.cmd run dev` starts development; `npm.cmd run build:pages` then `npm.cmd run preview` serves the static build.
 - Both servers use `strictPort`. Do not silently fall back to another port or run both at once.
 - If 9961 is occupied, identify the process before stopping it. Prefer reusing or stopping this project's own preview; preserve unrelated applications and unsaved work.
-- Browser profiles are origin-specific. Use `127.0.0.1`, not a mixture of `localhost`, old ports, and the fixed address.
+- Browser profiles are origin-specific. Keep one consistent address per browser; localhost and LAN-IP libraries do not automatically synchronize.
 - Preserve LF line endings. Engine signatures hash file contents, so automatic CRLF conversion can change generated signatures without a logic change.
+
+## Parallel implementation
+
+- Authorized implementation tasks that need edits, installs, tests or commits start in fresh `write`-permission instances. Do not reuse a historical read-only research instance for development.
+- Give each implementation task its own branch/worktree and explicit file ownership. Keep shared API changes coordinated.
+- Isolated worktree test servers use assigned loopback-only ports; reserve 9961 for the user's validated shared preview.
+- Preserve failed test evidence. A task's passing tests do not replace cross-module integration and full browser regression.
 
 ## Git synchronization
 

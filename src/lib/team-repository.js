@@ -1,4 +1,5 @@
 import { createMember } from './human-design/team-members.js';
+import { createUuid } from './uuid.js';
 
 export const TEAM_STORAGE_KEY = 'ohd-teams-v1';
 // Retain the storage key to discover existing browser-local teams.
@@ -164,8 +165,8 @@ export function saveTeam(input, storage) {
   const explicitGroups = input.groups === undefined ? undefined : groupsFor(input.groups, members);
   let teamId = input.teamId;
   if (teamId === undefined) {
-    if (typeof globalThis.crypto?.randomUUID !== 'function') fail('ID_UNAVAILABLE', 'Secure UUID generation is unavailable.');
-    teamId = globalThis.crypto.randomUUID();
+    try { teamId = createUuid(); }
+    catch (error) { fail('ID_UNAVAILABLE', 'Secure UUID generation is unavailable.', error); }
   }
   if (!nonempty(teamId)) fail('INVALID_TEAM_ID', 'teamId must be a nonempty string.');
   const target = storageFor(storage);

@@ -27,3 +27,6 @@ _*.mjs
 
 /jovian-engine/mechanics/bin/
 /jovian-engine/mechanics/obj/
+
+# Local-only handoff research; publish only separately reviewed summaries.
+/docs/handoff/

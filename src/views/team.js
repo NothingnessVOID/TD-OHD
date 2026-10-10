@@ -9,6 +9,7 @@ import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
 import { createMember, validateBirth } from '../lib/human-design/team-members.js';
 import { listTeams, getTeam, saveTeam, deleteTeam } from '../lib/team-repository.js';
+import { createUuid } from '../lib/uuid.js';
 
 let teamId = null;
 let teamRevision = null;
@@ -104,7 +105,7 @@ function newQuickRow() {
   const row = document.createElement('div');
   row.className = 'team-member-row';
   row.innerHTML = `<div class="team-quick-fields"><input class="team-name" type="text" placeholder="${text('Name')}" aria-label="${text('Name')}"><input class="team-date" type="date" aria-label="${text('Birth date')}"><input class="team-time" type="time" aria-label="${text('Birth time')}"></div><div class="team-place"></div><div class="team-row-actions"><button type="button" class="team-assign-quick">${text('Add to Penta')}</button><button type="button" class="team-save-person">${text('Save as person')}</button><button type="button" class="team-remove-quick">${text('Remove')}</button></div>`;
-  row._memberId = crypto.randomUUID();
+  row._memberId = createUuid();
   row._placeSearch = createPlaceSearch(row.querySelector('.team-place'), { getDateTime: () => ({ date: row.querySelector('.team-date').value, time: row.querySelector('.team-time').value }) });
   for (const field of ['.team-date', '.team-time']) row.querySelector(field).addEventListener('change', row._placeSearch.updateDateTime);
   row.addEventListener('input', changed);
@@ -151,7 +152,7 @@ function quickBirth(row) {
 function saveQuickPerson(row) {
   try {
     const birth = quickBirth(row);
-    const person = savePerson({ ...birth, id: crypto.randomUUID() });
+    const person = savePerson({ ...birth, id: createUuid() });
     members.push(createMember({ memberId: row._memberId, personId: person.id, displayName: person.name, origin: 'saved' }));
     row._placeSearch.destroy(); row.remove(); quickRows = quickRows.filter(item => item !== row);
     changed(); renderMembers(); message('Person saved.');
@@ -246,7 +247,7 @@ export function setupTeamView() {
   $('team-delete').addEventListener('click', removeTeam);
   $('team-list').addEventListener('change', event => { if (event.target.value && confirmDiscard()) openTeam(event.target.value); else event.target.value = teamId || ''; });
   $('team-name').addEventListener('input', changed);
-  $('team-group-new').addEventListener('click', () => { const group = { pentaId: crypto.randomUUID(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] }; groups.push(group); selectedPentaId = group.pentaId; changed(); renderMembers(); });
+  $('team-group-new').addEventListener('click', () => { const group = { pentaId: createUuid(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] }; groups.push(group); selectedPentaId = group.pentaId; changed(); renderMembers(); });
   $('team-group-delete').addEventListener('click', () => { if (!selectedGroup()) return; groups = groups.filter(group => group.pentaId !== selectedPentaId); selectedPentaId = groups[0]?.pentaId || null; changed(); renderMembers(); });
   $('team-group-list').addEventListener('change', event => { selectedPentaId = event.target.value || null; changed(); renderMembers(); });
   $('team-group-name').addEventListener('input', event => { if (selectedGroup()) { selectedGroup().label = event.target.value; changed(); $('team-group-list').selectedOptions[0].textContent = event.target.value; for (const card of $('team-selected').children) { if (selectedGroup().memberIds.includes(card.dataset.memberId)) card.querySelector('.team-member-meta small').textContent = event.target.value; } } });
