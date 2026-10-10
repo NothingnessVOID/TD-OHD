@@ -26,6 +26,7 @@ async function enterTeam(page) {
   const nav = page.locator('.nav-link[data-view="team"]');
   if (!(await nav.isVisible())) await page.locator('#mobile-menu-toggle').click();
   await nav.click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-view:not(.hidden) #team-group-list').waitFor();
 }
 async function chooseLanguage(page, code) {
@@ -69,7 +70,8 @@ async function chooseSkin(page, skin) {
 async function checkLayout(page, width) {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `${width}px horizontal overflow`);
   const controls = await page.locator('#team-view button:visible, #team-view input:visible, #team-view select:visible, #team-view summary:visible').evaluateAll(nodes => nodes.map(node => {
-    const rect = node.getBoundingClientRect();
+    // Checkbox activation includes its associated label, per the direct-selection contract.
+    const rect = (node.matches('input[type="checkbox"]') ? node.closest('label') : node).getBoundingClientRect();
     return { label: node.getAttribute('aria-label') || node.innerText || node.id || node.tagName,
       x: rect.x, y: rect.y, width: rect.width, height: rect.height,
       matrixHit: node.matches('.penta-gate-hit, .penta-channel-hit') };
@@ -139,13 +141,10 @@ try {
   assert.ok(await desktop.locator('.penta-gate.penta-highlight').count() > 0);
   await desktop.locator('.penta-gate-hit').first().focus();
   await desktop.keyboard.press('Enter');
-  await desktop.locator('.penta-detail:not(.hidden)').waitFor();
-  await desktop.keyboard.press('Escape');
-  assert.equal(await desktop.locator('.penta-detail').isVisible(), false);
+  assert.equal(await desktop.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
   await desktop.locator('.penta-channel-hit').first().focus();
   await desktop.keyboard.press('Enter');
-  await desktop.locator('.penta-detail:not(.hidden)').waitFor();
-  await desktop.locator('.penta-detail .gate-detail-close').click();
+  assert.equal(await desktop.locator('.penta-active-detail').evaluate(node => node === document.activeElement), true);
   for (const code of ['zh-CN', 'zh-Hant', 'en']) await chooseLanguage(desktop, code);
   await mobilePage(context, 320);
   await mobilePage(context, 390);
