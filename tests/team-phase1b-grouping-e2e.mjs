@@ -37,6 +37,7 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-view:not(.hidden) .team-pool summary').click();
   await page.locator('#team-view:not(.hidden) #team-person-picker').waitFor();
   const addSaved = async id => {
@@ -45,8 +46,13 @@ try {
   };
   const calls = () => page.evaluate(() => window.__teamComputeCalls);
 
-  // All invalid saved-person cases must fail validation before any engine request.
-  for (const [id, message] of [[profiles[0].id, /unknown/i], [profiles[1].id, /timezone/i], [profiles[2].id, /date/i],
+  // Contract change: unknown birth time is accepted as explicitly estimated noon.
+  for (const i of [0,3,4]) await page.locator(`#team-direct-people input[data-person-id="${profiles[i].id}"]`).check();
+  await page.locator('#team-calculate').click();
+  await page.locator('.penta-canvas').waitFor({ timeout: 90000 });
+  assert.match(await page.locator('.penta-overview').innerText(), /Estimated.*12:00/);
+  // Other invalid saved-person cases still fail before any engine request.
+  for (const [id, message] of [[profiles[1].id, /timezone/i], [profiles[2].id, /date/i],
     ['group-e2e-no-time', /Missing birth time/i], ['group-e2e-bad-time', /Invalid birth time/i], ['group-e2e-bad-zone', /Invalid timezone/i]]) {
     await page.locator('#team-new').click();
     await addSaved(id);
@@ -122,6 +128,7 @@ try {
   await page.locator('#chart-view:not(.hidden)').waitFor({ timeout: 120000 });
   await page.locator('#mobile-menu-toggle').click();
   await page.locator('.nav-link[data-view="team"]').click();
+  await page.locator('.team-advanced > summary').click();
   await page.locator('#team-list').selectOption(saved.teams[0].teamId);
   assert.equal(await page.locator('.team-member-card').count(), 8);
   assert.equal(await page.locator('#team-group-list option').count(), 3);

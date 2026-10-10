@@ -1,0 +1,25 @@
+#team-form .team-workspace { display: grid; grid-template-columns: minmax(280px, 370px) minmax(0, 1fr); align-items: start; gap: 1.25rem; }
+#team-form .team-management { position: sticky; top: 1rem; min-width: 0; }
+#team-form .team-results { min-width: 0; max-height: calc(100dvh - 180px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+.team-direct h3 { margin: 0 0 .5rem; }
+#team-direct-people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; max-height: 170px; overflow-y: auto; }
+.team-direct-person { min-height: 44px; display: flex; gap: .4rem; align-items: center; min-width: 0; overflow-wrap: anywhere; font-size: .85rem; }
+.team-direct-person small, .penta-member small { display: block; font-size: .7rem; }
+.team-direct-person input { width: auto; flex: 0 0 auto; }
+.team-advanced { margin-block: .6rem; }
+.team-advanced > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+#team-form .penta-canvas { max-width: 260px; margin-inline: auto; }
+#team-form .penta-render > .team-channels, #team-form .penta-render > .team-summary { display: none; }
+.penta-analysis { overflow-wrap: anywhere; min-width: 0; }
+.penta-analysis-card { padding: .8rem; margin-block: .6rem; border: 1px solid var(--border); border-radius: .5rem; }
+.penta-analysis-card h3, .penta-analysis-card h4 { margin-top: 0; }
+.penta-active-detail, .penta-analysis-card:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.penta-analysis .penta-dimmed { opacity: .45; }
+.penta-analysis button { font: inherit; cursor: pointer; min-height: 44px; min-width: 44px; margin: .15rem; }
+@media (max-width: 899px) {
+  #team-form .team-workspace { display: flex; flex-direction: column; }
+  #team-form .team-management, #team-form .team-results { display: block; position: static; width: 100%; max-height: none; overflow: visible; }
+  #team-direct-people { max-height: none; overflow: visible; }
+  #team-form .team-toolbar, #team-form .team-group-controls { min-width: 0; }
+  #team-form input, #team-form select { max-width: 100%; }
+}
