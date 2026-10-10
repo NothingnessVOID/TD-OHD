@@ -25,4 +25,4 @@ PNG downloads embed the selected font and show glyph differences from the system
 
 - Timeline center-layout fixture moved from six seconds before activation into the active interval; channel/gate/center desktop and mobile geometry assertions pass unchanged.
 - Penta hover waits for restored birth startup to complete before navigating; this fixes a Linux test race without changing product code or hover/focus checks.
-- People-editor out-of-order-response injection and mobile review back-button geometry received a final validity audit; their follow-up results must pass before merge.
+- Final validity audit follow-ups passed: people-editor records `First:start → Final:start → Final:complete → First:complete` and retains final time `23:00`; the 471px review measures nonzero, visible mobile back/close controls above the actual title. Evidence and source hashes are in `tests/browser-regression-review-fixes.md`.
