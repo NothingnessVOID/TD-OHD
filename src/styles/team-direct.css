@@ -1,52 +1,30 @@
-/* One Team workbench, using the chart/transit surfaces and spacing. */
+/* Team uses normal document flow and the birth-chart layout primitives. */
 #team-view {
-  --team-max-width: min(1360px, calc(var(--max-width, 1200px) + 120px));
+  --team-max-width: var(--max-width, 1200px);
   width: 100%; max-width: var(--team-max-width); padding: 18px 24px 20px; margin: 0 auto;
 }
 #team-view .view-title { display: inline-block; margin: 0 12px 0 0; font-size: 24px; line-height: 1.3; vertical-align: baseline; }
 #team-view .view-subtitle { display: inline; margin: 0; font-size: 13px; color: var(--text-secondary); }
 #team-view .view-container { width: 100%; max-width: none; padding: 0; margin: 0; box-sizing: border-box; }
 #team-form { width: 100%; max-width: none; margin: 14px 0 0; padding: 0; border: 0; background: transparent; }
-#team-form .team-workspace {
-  display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
-  gap: 22px; align-items: start; height: calc(100dvh - var(--header-height, 56px) - 96px); min-height: 0;
-}
-#team-form .team-management {
-  display: flex; flex-direction: column; gap: 8px; position: sticky;
-  top: calc(var(--header-height, 56px) + 12px); height: 100%; min-height: 0; min-width: 0;
-  box-sizing: border-box; padding: 14px; overflow: visible;
-  border: 1px solid var(--hd-graph-panel-border, var(--border)); border-radius: var(--radius-lg, 14px);
-  background: var(--hd-graph-panel-bg, var(--bg-elevated)); box-shadow: var(--shadow-sm);
-}
-#team-form .team-management > :not(#team-content) { flex: 0 0 auto; min-width: 0; }
-#team-form .team-results {
-  position: relative; height: 100%; max-height: none; min-height: 0; min-width: 0;
-  /* Extend the scroll viewport into the gap to keep panel shadows and focus rings visible. */
-  overflow-y: auto; overflow-x: hidden; overscroll-behavior-y: contain; scrollbar-gutter: stable;
-  box-sizing: border-box; height: calc(100% + 24px); margin: -12px;
-  padding: 12px; scroll-padding-block: 12px; border: 0; border-radius: var(--radius-lg);
-  background: transparent; box-shadow: none;
-  /* The clearance preserves complete cards at either end; a short edge fade
-     makes a long card pass through the viewport without a hard white cut. */
-  mask-image: linear-gradient(to bottom, transparent, black 12px, black calc(100% - 12px), transparent);
-}
-#team-form .team-results-heading { display: none; }
-#team-content { flex: 1 1 auto; min-height: 0; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
-#team-view #team-content:empty::before { display: none; }
-#team-form #team-content .penta-render { height: 100%; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 6px; }
-#team-content .penta-figure-space { min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; container-type: size; }
-#team-form #team-content .penta-canvas {
-  width: min(100cqw, calc(100cqh * 320 / 410)); max-width: none;
-  aspect-ratio: 320 / 410; height: auto; position: relative; margin: 0;
-}
-#team-content .penta-canvas svg { display: block; width: 100%; height: 100%; }
-#team-content .penta-figure-footer { min-width: 0; }
-#team-view #team-content .penta-state-legend { gap: 5px 10px; margin: 0; font-size: 11px; line-height: 1.35; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-#team-view #team-content .penta-state-legend span { gap: 6px; }
-#team-view #team-content .penta-state-symbol { width: 19px; height: 19px; font-size: 12px; }
+#team-form .team-workspace { grid-template-columns: minmax(0, 52fr) minmax(0, 48fr); padding:0; margin:0; gap:22px; max-width:none; }
+#team-form .team-management { display:grid; grid-template-columns: minmax(240px, 1fr) auto; gap:10px 18px; padding:16px 18px; }
+#team-form .team-current-toolbar { grid-column:1 / -1; }
+#team-form #team-member-caption { grid-column:1 / -1; }
+#team-form #team-selected-chips { grid-column:1 / -1; }
+#team-flow-status { grid-column:1 / -1; }
+#team-form .team-graph-column { top:calc(var(--header-height, 56px) + 16px); overflow:visible; max-height:none; }
+#team-form .team-results { min-width:0; overflow:visible; }
+#team-content { min-width:0; padding:18px; }
+#team-form #team-content .penta-render { display:block; }
+#team-content .penta-figure-space { display:flex; justify-content:center; }
+#team-form #team-content .penta-canvas { width:min(100%, 440px, calc((100dvh - var(--header-height, 56px) - 150px) * 320 / 410)); aspect-ratio:320 / 410; margin:0 auto 16px; }
+#team-content .penta-canvas svg { display:block; width:100%; height:100%; }
+#team-view #team-content .penta-state-legend { gap:8px 12px; margin:0; font-size:12px; line-height:1.45; grid-template-columns:repeat(2,minmax(0,1fr)); }
+#team-view #team-content .penta-state-symbol { width:24px; height:24px; font-size:15px; }
 #team-view .penta-placeholder .penta-gate { cursor: default; }
 
-/* The right side has one scroll owner and flat, readable groups, not embedded sheets. */
+/* Complete analysis follows the document; only the graph column is sticky. */
 #team-analysis, .penta-analysis { min-width: 0; overflow: visible; }
 /* Visual surfaces come from the shared .panel rule in styles.css. */
 #team-view .penta-reading-section { min-width: 0; }
@@ -107,29 +85,14 @@
 #team-view :is(button, select):disabled { opacity: .55; cursor: not-allowed; }
 #team-flow-status:empty { display: none; }
 
-/* On shorter desktop windows, reserve height for the diagram rather than empty controls. */
-@media (min-width: 1051px) and (min-height: 541px) and (max-height: 800px) {
-  #team-view { padding-top: 10px; padding-bottom: 12px; }
-  #team-view .view-title { font-size: 22px; }
-  #team-form { margin-top: 8px; }
-  #team-form .team-workspace { height: calc(100dvh - var(--header-height, 56px) - 68px); }
-  #team-form .team-management { gap: 6px; padding: 12px; }
-  #team-view .team-current-toolbar button { min-height: 36px; padding-block: 4px; }
-  #team-view .team-person-chip button { min-height: 32px; }
-  #team-add-saved-person { min-height: 34px; }
-}
-
-@media (max-width: 1050px), (max-height: 540px) {
+@media (max-width: 1050px) {
   #team-view { padding: 16px 18px 20px; }
   #team-view .view-title { font-size: 22px; }
   #team-view .view-container { padding: 0; }
-  #team-form .team-workspace { display: flex; flex-direction: column; height: auto; gap: 16px; }
-  #team-form .team-management { position: static; display: flex; width: 100%; height: auto; padding: 14px; gap: 8px; }
-  #team-form .team-results { width: 100%; height: auto; overflow: visible; padding: 0; margin: 0; scrollbar-gutter: auto; mask-image: none; }
-  #team-content { flex: initial; }
-  #team-form #team-content .penta-render { height: auto; display: block; }
-  #team-content .penta-figure-space { container-type: normal; display: block; }
-  #team-form #team-content .penta-canvas { width: min(100%, 440px); height: auto; margin: 4px auto 14px; }
+  #team-form .team-workspace { grid-template-columns:minmax(0,1fr); gap:16px; }
+  #team-form .team-graph-column { position:static; width:100%; }
+  #team-form .team-management { display:flex; flex-direction:column; padding:14px; gap:8px; }
+  #team-form #team-content .penta-canvas { width:min(100%,440px); margin:4px auto 16px; }
 }
 @media (max-width: 430px) {
   #team-view { padding-inline: 12px; }

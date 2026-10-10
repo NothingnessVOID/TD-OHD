@@ -39,7 +39,9 @@ test('group activations group stable member IDs and scope side color hooks to ma
     { memberId: 'a', side: 'personality', planet: 'earth', gate: 31, line: 5 }
   ] }, { people: [{ memberId: 'a', displayName: 'Same' }, { memberId: 'b', displayName: 'Same' }] });
   assert.equal((html.match(/data-penta-member=/g) || []).length, 2);
-  assert.equal((html.match(/<h4>Same<\/h4>/g) || []).length, 2);
+  assert.equal((html.match(/<span>Same<\/span>/g) || []).length, 2);
+  assert.match(html, /penta-member-tag penta-member-1/);
+  assert.match(html, /penta-member-tag penta-member-2/);
   assert.equal((html.match(/<span data-activation-side="design"/g) || []).length, 1);
   assert.equal((html.match(/<span data-activation-side="personality"/g) || []).length, 2);
   assert.ok(html.indexOf('31.5') < html.indexOf('data-penta-member="b"'));

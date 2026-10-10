@@ -24,11 +24,11 @@
 
 | 组件 / 状态 | 位置与 API | 实际消费者 / 场景 | 边界与遗留 |
 | --- | --- | --- | --- |
-| Panel：共享 CSS，直接复用 | `src/styles.css` `.panel`；`penta-matrix.js` 给分析section应用该类；`team.js`空状态同样使用 | 出生图信息面板、Team概览/六通道/十二门/贡献/背景 | Team只保留内部排版和独立滚动，不另写表面视觉；`.team-results`预留12px边缘容纳阴影/焦点，不新增内层滚动条 |
+| Panel：共享 CSS，直接复用 | `src/styles.css` `.panel`；`penta-matrix.js` 给分析section应用该类；`team.js`空状态同样使用 | 出生图信息面板、Team概览/六通道/十二门/贡献/背景 | Team只保留业务排版；顶部操作区正常流动，下方复用chart-layout/chart-column/info-column形成52/48双栏。仅图列Sticky，正文随document滚动；已删除内部滚动、负边距补偿和mask |
 | Operation Dialog：公共生命周期和既有视觉 | `src/lib/operation-dialog.js` `openOperationDialog({content,onClose,initialFocus})`、`confirmOperation(message)`；`src/styles/operation-dialog.css` | Team添加/保存/切换/管理/新建删除组/确认、`person-editor.js` | 复用`.modal/.modal-overlay`，集中Escape、遮罩、焦点、背景inert、嵌套确认和滚动锁；外观设置原生dialog和账户popover仍独立，未伪称全站均迁移 |
 | Object Detail Heading / Navigation：公共无状态渲染 | `src/lib/object-detail-heading.js` `renderGateDetailHeading`、`renderChannelDetailHeading`、`renderDetailNavigation`；回路沿用`channel-badges.js` | `chart.js`出生/行运标题、Penta adapter与矩阵导航 | 数据激活、详情历史和sheet生命周期仍由宿主维护；资料库保留其页面式标题布局 |
 | Team多选：独立业务草稿，公共弹窗承载 | `src/views/team.js` `picker()`；`person-editor.js`增加兼容`onCancel` | Team当前组合；搜索/多选/满员替换，编辑返回 | 确认才提交组合，人物资料保存本身独立；全局选择器、首页chips、关系选择器仍有不同业务语义 |
-| Team成员Token：集中语义，不借用回路色 | `src/styles/tokens/team.css`，注册于`skin-registry.js` team组 | 图上成员序号、已选chips及贡献列表 | 根据Skin文字/背景混色，数字保持身份区分；高对比Skin使用清楚边界。不是P/D/回路颜色映射 |
+| Team成员Token：集中语义，不借用回路色 | `src/styles/tokens/team.css`，注册于`skin-registry.js` team组 | 图上成员序号、已选chips、贡献列表、闸门和通道详情 | 恢复Phase1C五种分类色，白色编号；图、Chip、分析及body级详情共享。显示层按memberId维护当前组合的颜色槽，移除其他成员不重编号；不更改存储契约。与P/D来源色分开 |
 | 阅读详情可访问性：扩展既有控制器 | `src/lib/detail-dialog.js` | 既有阅读详情消费者 | Tab只枚举可见可用元素；手机高度切换遵守Reduced Motion |
 
 旧 `team-members.css`、`team-visual-polish.css` 作为历史文件保留，Team不再导入。`penta-matrix.css`清除了挂载到body后失效的`#team-view .penta-detail`选择器及已不生成的旧卡片/图例规则。
