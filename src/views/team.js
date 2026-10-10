@@ -4,6 +4,7 @@ import { effectiveTeamBirth } from './team-birth.js';
 import '../styles/team-visual-polish.css';
 import '../styles/team-direct.css';
 import { createPentaMatrix } from './penta-matrix.js';
+import { pentaDetailAdapter } from '../lib/shared-object-details.js';
 import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
 import { listPeople, getPerson, savePerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
@@ -102,7 +103,7 @@ function toggleDirectPerson(id, checked) {
   let group = selectedGroup();
   if (checked && group?.memberIds.length >= 5) { message('Five members maximum per Penta.'); renderMembers(); return; }
   if (!group && checked) {
-    group = { pentaId: crypto.randomUUID(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] };
+    group = { pentaId: createUuid(), label: `Penta ${String.fromCharCode(65 + groups.length)}`, memberIds: [] };
     groups.push(group); selectedPentaId = group.pentaId;
   }
   let member = members.find(item => item.personId === id);
@@ -224,7 +225,7 @@ function renderResult() {
   const highlighted = matrix?.highlightedMemberId;
   matrix?.dispose();
   $('team-content').replaceChildren();
-  matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis') });
+  matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis'), detailAdapter: pentaDetailAdapter });
   if (highlighted) matrix.setHighlightedMemberId(highlighted);
 }
 async function runTeamAnalysis() {

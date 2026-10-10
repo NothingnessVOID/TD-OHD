@@ -2,6 +2,8 @@
 
 Status: user authorized implementation on 2026-10-10. Research continues separately and does not block A/B/C. No merge to `main`, PR publication, or production deployment is authorized by this document.
 
+Latest user instruction supersedes the initial test-first sequence: integrate features and provide the 9961 preview for user acceptance first. During iteration perform only necessary build/startup-error checks. Defer full suites, smoke tests and complete browser regression until the user confirms direction and functionality. LAN connectivity is user-confirmed; stop further firewall adjustments.
+
 ## Branches and ownership
 
 All three feature worktrees start at `1d41435`.
@@ -87,6 +89,8 @@ User preview stays on port9961 and supports the trusted LAN. Private research an
 
 LAN HTTP lacks some secure-context APIs. UUID creation may use `crypto.getRandomValues` when native `randomUUID` is absent. Annual data integrity must retain SHA-256 verification; any fallback uses a vetted module chosen by the coordinator, never disabling checks.
 
-Each task supplies targeted unit tests, isolated fictional-profile browser tests, build results and remaining failures. Integration additionally covers shared APIs, rapid edit races, deletion, multi-tab changes, unknown-time flags, both people in a connection, Team grouping, ordinary and Penta details, three languages, desktop/mobile layout and keyboard/focus paths.
+The completed independent task reports retain their actual test/build evidence and failures. No additional automatic test rounds are required during the current user-review iteration.
 
-A successful task-specific test is not a substitute for the final full integration/browser regression. Read-only status-card refreshes do not trigger commits, pushes, merges or deployment.
+After user acceptance, the comprehensive verification backlog covers shared APIs, rapid edit races, deletion, multi-tab changes, unknown-time flags, both people in a connection, Team grouping, ordinary and Penta details, three languages, desktop/mobile layout and keyboard/focus paths. Preserve historical audit, Windows platform and Swiss numerical failures for that phase rather than weakening them now.
+
+A successful task-specific test is not proof of the final integration. Read-only status-card refreshes do not trigger commits, pushes, merges or deployment.
