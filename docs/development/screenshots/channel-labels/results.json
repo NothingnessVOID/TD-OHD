@@ -1,0 +1,1103 @@
+{
+  "errors": [],
+  "records": [
+    {
+      "label": "birth-1280-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 607,
+      "hostRight": 909,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-1280-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 640.1875,
+      "hostRight": 1144,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-1280-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 607,
+      "hostRight": 909,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-1280-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 640.1875,
+      "hostRight": 1144,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-1280-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 797.625,
+      "hostRight": 909,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "library-1280-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 837.40625,
+      "hostRight": 1144,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "birth-390-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-390-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 239,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-390-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-390-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 239,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-390-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 299.421875,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "library-390-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 294.421875,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "birth-320-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-320-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 239,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "个体回路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-320-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "library-320-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 239,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "個體迴路",
+        "整合通道"
+      ]
+    },
+    {
+      "label": "birth-320-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 296,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "library-320-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 294.421875,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "transit-390",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 299.421875,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "label": "transit-320",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 296,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Individual Circuit",
+        "Integration Channels"
+      ]
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "rows": [
+        {
+          "titleBottom": 1924.6875,
+          "stateTop": 1930.6875,
+          "gap": 5,
+          "iconY": 1930.6875,
+          "textY": 1930.6875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 2123.375,
+          "stateTop": 2129.375,
+          "gap": 5,
+          "iconY": 2129.375,
+          "textY": 2129.375,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 2348.75,
+          "stateTop": 2354.75,
+          "gap": 5,
+          "iconY": 2354.75,
+          "textY": 2354.75,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 2708.1875,
+          "stateTop": 2714.1875,
+          "gap": 5,
+          "iconY": 2714.1875,
+          "textY": 2714.1875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 2907.15625,
+          "stateTop": 2913.15625,
+          "gap": 5,
+          "iconY": 2913.15625,
+          "textY": 2913.15625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 3106.125,
+          "stateTop": 3112.125,
+          "gap": 5,
+          "iconY": 3112.125,
+          "textY": 3112.125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-390-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 262.828125,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Collective Circuit",
+        "Sensing Circuit"
+      ]
+    },
+    {
+      "width": 390,
+      "locale": "zh-CN",
+      "rows": [
+        {
+          "titleBottom": -72.90625,
+          "stateTop": -66.90625,
+          "gap": 5,
+          "iconY": -66.90625,
+          "textY": -66.90625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 125.78125,
+          "stateTop": 131.78125,
+          "gap": 5,
+          "iconY": 131.78125,
+          "textY": 131.78125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 351.15625,
+          "stateTop": 357.15625,
+          "gap": 5,
+          "iconY": 357.15625,
+          "textY": 357.15625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 710.59375,
+          "stateTop": 716.59375,
+          "gap": 5,
+          "iconY": 716.59375,
+          "textY": 716.59375,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 909.5625,
+          "stateTop": 915.5625,
+          "gap": 5,
+          "iconY": 915.5625,
+          "textY": 915.5625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 1108.53125,
+          "stateTop": 1114.53125,
+          "gap": 5,
+          "iconY": 1114.53125,
+          "textY": 1114.53125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-390-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集体回路",
+        "感知回路"
+      ]
+    },
+    {
+      "width": 390,
+      "locale": "zh-Hant",
+      "rows": [
+        {
+          "titleBottom": -72.90625,
+          "stateTop": -66.90625,
+          "gap": 5,
+          "iconY": -66.90625,
+          "textY": -66.90625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 125.78125,
+          "stateTop": 131.78125,
+          "gap": 5,
+          "iconY": 131.78125,
+          "textY": 131.78125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 351.15625,
+          "stateTop": 357.15625,
+          "gap": 5,
+          "iconY": 357.15625,
+          "textY": 357.15625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 710.59375,
+          "stateTop": 716.59375,
+          "gap": 5,
+          "iconY": 716.59375,
+          "textY": 716.59375,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 909.5625,
+          "stateTop": 915.5625,
+          "gap": 5,
+          "iconY": 915.5625,
+          "textY": 915.5625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 1108.53125,
+          "stateTop": 1114.53125,
+          "gap": 5,
+          "iconY": 1114.53125,
+          "textY": 1114.53125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-390-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 390,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "width": 320,
+      "locale": "en",
+      "rows": [
+        {
+          "titleBottom": -55.703125,
+          "stateTop": -49.703125,
+          "gap": 5,
+          "iconY": -49.703125,
+          "textY": -49.703125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 142.984375,
+          "stateTop": 148.984375,
+          "gap": 5,
+          "iconY": 148.984375,
+          "textY": 148.984375,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 368.359375,
+          "stateTop": 374.359375,
+          "gap": 5,
+          "iconY": 374.359375,
+          "textY": 374.359375,
+          "iconHeight": 18,
+          "textHeight": 36,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 745.796875,
+          "stateTop": 751.796875,
+          "gap": 5,
+          "iconY": 751.796875,
+          "textY": 751.796875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 944.765625,
+          "stateTop": 950.765625,
+          "gap": 5,
+          "iconY": 950.765625,
+          "textY": 950.765625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 1143.734375,
+          "stateTop": 1149.734375,
+          "gap": 5,
+          "iconY": 1149.734375,
+          "textY": 1149.734375,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-320-en",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 262.828125,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "Collective Circuit",
+        "Sensing Circuit"
+      ]
+    },
+    {
+      "width": 320,
+      "locale": "zh-CN",
+      "rows": [
+        {
+          "titleBottom": -73.28125,
+          "stateTop": -67.28125,
+          "gap": 5,
+          "iconY": -67.28125,
+          "textY": -67.28125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 125.40625,
+          "stateTop": 131.40625,
+          "gap": 5,
+          "iconY": 131.40625,
+          "textY": 131.40625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 350.78125,
+          "stateTop": 356.78125,
+          "gap": 5,
+          "iconY": 356.78125,
+          "textY": 356.78125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 710.21875,
+          "stateTop": 716.21875,
+          "gap": 5,
+          "iconY": 716.21875,
+          "textY": 716.21875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 909.1875,
+          "stateTop": 915.1875,
+          "gap": 5,
+          "iconY": 915.1875,
+          "textY": 915.1875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 1108.15625,
+          "stateTop": 1114.15625,
+          "gap": 5,
+          "iconY": 1114.15625,
+          "textY": 1114.15625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-320-zh-CN",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集体回路",
+        "感知回路"
+      ]
+    },
+    {
+      "width": 320,
+      "locale": "zh-Hant",
+      "rows": [
+        {
+          "titleBottom": -73.28125,
+          "stateTop": -67.28125,
+          "gap": 5,
+          "iconY": -67.28125,
+          "textY": -67.28125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "selfComplete"
+        },
+        {
+          "titleBottom": 125.40625,
+          "stateTop": 131.40625,
+          "gap": 5,
+          "iconY": 131.40625,
+          "textY": 131.40625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "crossMemberOnly"
+        },
+        {
+          "titleBottom": 350.78125,
+          "stateTop": 356.78125,
+          "gap": 5,
+          "iconY": 356.78125,
+          "textY": 356.78125,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "both"
+        },
+        {
+          "titleBottom": 710.21875,
+          "stateTop": 716.21875,
+          "gap": 5,
+          "iconY": 716.21875,
+          "textY": 716.21875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 909.1875,
+          "stateTop": 915.1875,
+          "gap": 5,
+          "iconY": 915.1875,
+          "textY": 915.1875,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        },
+        {
+          "titleBottom": 1108.15625,
+          "stateTop": 1114.15625,
+          "gap": 5,
+          "iconY": 1114.15625,
+          "textY": 1114.15625,
+          "iconHeight": 18,
+          "textHeight": 18,
+          "overflow": false,
+          "state": "absent"
+        }
+      ]
+    },
+    {
+      "label": "penta-320-zh-Hant",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-default-light",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-default-dark",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-high-contrast",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-grass-aroma",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-contemplation",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-absolutely",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-delve",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-deep-think",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-new-warm-paper",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-midnight-contrast",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    },
+    {
+      "label": "skin-coral",
+      "count": 2,
+      "gap": 4,
+      "sameRow": true,
+      "right": 236,
+      "hostRight": 320,
+      "overflow": false,
+      "navOverlap": false,
+      "margins": [
+        "0px",
+        "0px"
+      ],
+      "texts": [
+        "集體迴路",
+        "感知迴路"
+      ]
+    }
+  ]
+}

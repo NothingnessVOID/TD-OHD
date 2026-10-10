@@ -54,6 +54,12 @@ Penta六通道使用`detail-label/detail-name`的两级标题，名称取`channe
 
 `font-preference.js`拥有`td-ohd-font-v1`设备本地偏好，独立于Skin/Center Palette/appearance-v3。`font-controls.js`使用现有`appearance-choice-card`基础视觉，`fonts.css`覆盖字体family轴，不改字号和布局；`font-export.js`按文字范围嵌入当前中文字体。完整范围、许可恢复途径及PNG服务端边界见[FONT-PREFERENCE.md](FONT-PREFERENCE.md)。字体资源版本与转换脚本独立于Skin注册表。
 
+## Issue #24 标签排版修复
+
+`channel-badges.js` 的两个回路分类标签现在由 `.channel-circuit-badges` inline-flex 容器成组承载，内部使用4px gap、零左margin，保持颜色/字体/术语。出生图、行运、资料库、Penta及其他原消费者同步复用。标题靠左排列，空间不足时整组换行；详情标题为顶部导航保留高度。
+
+Penta六通道卡片在600px以下将状态放到标题下方，18px图标与可自然换行的文字首行对齐；仅Penta详情的独立状态badge清除左margin，不全局重置其他badge。状态文字、SVG内容、算法和成员颜色未改。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
