@@ -25,6 +25,35 @@ jobs:
       - run: npm run check:pages-bundle
       - run: node scripts/check-font-distribution.mjs
       - run: npx playwright-core install --with-deps chromium
+      - name: Start browser regression server
+        run: |
+          npm run dev -- --host 127.0.0.1 --port 5173 --strictPort > /tmp/premerge-vite.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5173/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/premerge-vite.log
+          exit 1
+      - name: Verify deployment browser checks before merging
+        env:
+          E2E_URL: http://127.0.0.1:5173
+          CHROME_CHANNEL: chromium
+          SCREENSHOT_DIR: /tmp/td-ohd-premerge-e2e
+        run: |
+          npm run e2e:timeline
+          npm run e2e:planet
+          npm run e2e:reference
+          node tests/team-phase1b-e2e.mjs
+          node tests/team-phase1b-grouping-e2e.mjs
+          node tests/penta-phase1c-matrix-e2e.mjs
+          node tests/team-phase1c-e2e.mjs
+          node tests/team-phase1e-knowledge-e2e.mjs
+          node tests/team-selection-flow-e2e.mjs
+          node tests/penta-card-hover-e2e.mjs
+          node tests/font-preference-e2e.mjs
+          node tests/font-export-proof-e2e.mjs
+          node tests/channel-label-layout-e2e.mjs
+          node tests/reference-mobile-sheet-e2e.mjs
       - name: Serve built Pages subpath
         run: |
           node scripts/serve-pages-check.mjs > /tmp/pages-subpath.log 2>&1 &
