@@ -20,6 +20,7 @@
 @import './styles/center-palettes/night-bloom.css';
 @import './styles/center-palettes/base.css';
 @import './styles/appearance-controls.css';
+@import './styles/tokens/team.css';
 
 /* Layout and typography stay here. Site and Human Design skin values live in
    separate token files, allowing future skins without component rewrites. */

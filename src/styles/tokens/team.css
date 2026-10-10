@@ -1,0 +1,19 @@
+/* Categorical member identity, independent of HD personality/design/circuit colors.
+   Numbers remain the primary identity cue; Skin surface/text provides contrast. */
+:root {
+  --team-member-1: color-mix(in srgb, var(--text) 12%, var(--bg-elevated));
+  --team-member-2: color-mix(in srgb, var(--text) 18%, var(--bg-elevated));
+  --team-member-3: color-mix(in srgb, var(--text) 24%, var(--bg-elevated));
+  --team-member-4: color-mix(in srgb, var(--text) 30%, var(--bg-elevated));
+  --team-member-5: color-mix(in srgb, var(--text) 36%, var(--bg-elevated));
+  --team-member-on: var(--text);
+  --team-member-border: var(--text-secondary);
+}
+:root[data-skin="high-contrast"] {
+  --team-member-1: var(--bg);
+  --team-member-2: var(--bg);
+  --team-member-3: var(--bg);
+  --team-member-4: var(--bg);
+  --team-member-5: var(--bg);
+  --team-member-border: var(--text);
+}
