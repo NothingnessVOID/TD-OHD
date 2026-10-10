@@ -1,0 +1,17 @@
+# Team selection flow rework (baseline 301d826)
+
+Scope: controls, people picker/editor, auto calculation, save/manage flows only. No matrix/layout stylesheet or algorithm edits. Branch fix/team-selection-flow.
+
+DOM: #team-form > .team-workspace has .team-management and .team-results. Management contains .team-current-toolbar (#team-current, #team-save, #team-manage), #team-selected-chips, #team-add-saved-person, #team-flow-status, #team-content. Results contains #team-analysis. Management/editor dialogs attach to body; no full member pool DOM remains in workspace. Buttons use type=button. Native dialog provides modal focus confinement/Escape. Person editor opens after closing Team layer.
+
+createPentaMatrix receives initialSelection from previous matrix.selection (null-safe), onMemberFocusChange, existing analysisContainer/detailAdapter. Chip name toggles setHighlightedMemberId; aria-pressed and keyboard focus preserved. Right scrollTop retained across render. Auto update debounce 160ms; generation + person snapshot + Penta ID + repository revision guards. Old analysis becomes inert/hidden with existing geometry during calculation; no whole-page loading reset. Fewer than three people render catalog-only placeholder, never fake coverage.
+
+openPersonEditor(birth, {create=false,onSaved=null}) is backward-compatible. Create starts with empty time and unchecked uncertainty. Only explicit unknown uses noon. Saved record callback fires after editor closes; storage failures retain the editor. Existing identity/createdAt retained.
+
+Save modal supports new Team, current Team update, or adding selected Penta to another Team. Reuses destination person/member IDs; preserves existing groups. Cross-group move requires confirmation. Captured repository revision rejects concurrent save. Management rename/delete/group/pool operations stay in dialog. Switching local groups preserves dirty state; cross-Team switch asks before discarding.
+
+Verification: node tests/team-selection-flow-e2e.mjs on 127.0.0.1:19962, installed Chromium, isolated fictional fixtures. Passed 0/1/2/3/5, automatic calculation, unknown mark, five-person guard, search and duplicate-name discrimination, shared editor creation/edit, missing-time rejection, explicit unknown creation, ID/createdAt preservation, new/current Team saves, 4+3 groups and switch, move cancellation/acceptance, temporary Penta into existing Team, destination member identity, revision conflict leaving dialog open, Escape, delete invalidation preserving chips, 390px no horizontal overflow. Syntax and git diff checks pass. No full Node/build/whole-site suite run this round.
+
+Screenshots (read and visually checked): test-results/team-flow/desktop-three.png, mobile-controls.png. These are control-flow evidence, not approval of final matrix/layout. Existing matrix still emits repeated group heading/member legend/navigation and existing left SVG sizing; parent owns removing/repositioning these and 42/58 layout. Phone screenshot covers missing-person error with retained chips and catalog placeholder. Parent should recapture normal 3/5-person state after its visual integration.
+
+Remaining integration validation: parent matrix initialSelection/onMemberFocusChange extensions and final visual scroll/size behavior; three-language full visual review; auto-update during long engine request stress test. No global files, shared knowledge, repository v2, UUID or C# changed.
