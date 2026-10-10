@@ -4,7 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { SKINS } from '../src/lib/skin-registry.js';
-const base = process.env.PREVIEW_URL || process.env.E2E_URL || 'http://127.0.0.1:9961';
+const base = process.env.E2E_URL || process.env.PREVIEW_URL || 'http://127.0.0.1:19964';
 const output = path.resolve(process.env.SCREENSHOT_DIR || 'artifacts/visual-review/final');
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel:process.env.CHROME_CHANNEL || 'chrome', headless:true });

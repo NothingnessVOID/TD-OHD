@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {PROFILE_STORAGE_KEY} from '../src/lib/profile-storage.js';
-const base=process.env.E2E_URL||'http://127.0.0.1:9961';
+const base=process.env.E2E_URL||'http://127.0.0.1:19964';
 const browser=await chromium.launch({channel:process.env.CHROME_CHANNEL||'chromium',headless:true});
 const context=await browser.newContext({viewport:{width:1280,height:900},reducedMotion:'reduce'});
 const profiles=Array.from({length:10},(_,i)=>({id:`fictional-direct-${i}`,name:`Fictional ${i+1}`,birthDate:`${1980+i}-05-16`,birthTime:i===0?'':'12:00',timeUnknown:i===0,location:{timezone:0}}));

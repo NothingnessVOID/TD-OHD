@@ -88,9 +88,11 @@ test('ordinary reference inventory and categories remain separate from Penta', (
   assert.ok(listKnowledgeEntries().every(e=>e.objectType!=='penta'));
   assert.equal(listKnowledgeEntries({includePenta:true}).length,91);
   const view=readFileSync(new URL('../src/views/penta-matrix.js',import.meta.url),'utf8');
-  assert.match(view,/getKnowledgeDetail\(query\)/);
-  assert.match(view,/knowledgeSections\(`gate:\$\{gate\.gate\}`\)/);
-  assert.match(view,/knowledgeSections\(`channel:\$\{ch\.channelId\}`\)/);
+  assert.match(view,/getKnowledgeDetail\(query\(id\)\)/);
+  assert.match(view,/qualifiedSummary\(`gate:\$\{gate\.gate\}`\)/);
+  assert.match(view,/qualifiedSummary\(`channel:\$\{channel\.channelId\}`\)/);
+  assert.match(view,/interpretationStatus !== 'verified'/);
+  assert.match(view,/detailAdapter\[kind\]\(record, context\)/);
   const home=readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8');
   assert.doesNotMatch(home,/penta-foundation|pentaContent/);
 });

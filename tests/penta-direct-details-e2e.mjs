@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdir} from 'node:fs/promises';
-const base=process.env.E2E_URL||'http://127.0.0.1:9961',out='artifacts/visual-review/penta-direct-details';await mkdir(out,{recursive:true});
+const base=process.env.E2E_URL||'http://127.0.0.1:19964',out='artifacts/visual-review/penta-direct-details';await mkdir(out,{recursive:true});
 const b=await chromium.launch({channel:'chromium',headless:true});const p=await b.newPage({viewport:{width:1440,height:960},locale:'zh-CN',reducedMotion:'reduce',hasTouch:true});const errors=[];p.on('pageerror',e=>errors.push(e.message));
 async function shot(name){await p.screenshot({path:`${out}/${name}.png`,animations:'disabled'});}
 async function openClose(trigger,key){await trigger.scrollIntoViewIfNeeded();await trigger.focus();const y=await p.evaluate(()=>scrollY);if(key)await trigger.press(key);else await trigger.click();await p.locator('.penta-detail:not(.hidden)').waitFor();assert.equal(await p.evaluate(()=>scrollY),y);await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>scrollY),y);assert.equal(await trigger.evaluate(n=>n===document.activeElement),true);}

@@ -6,10 +6,10 @@ const browser = await chromium.launch({channel:'chromium',headless:true});
 const context = await browser.newContext({viewport:{width:1440,height:960}});
 const page = await context.newPage(); const errors=[]; page.on('pageerror',e=>errors.push(e.message));
 const people=Array.from({length:10},(_,i)=>({id:`fictional-flow-${i}`,name:i<2?'Fictional same':`Fictional ${i}`,birthDate:`198${i}-05-16`,birthTime:i===0?'':'10:00',timeUnknown:i===0,location:{timezone:0},createdAt:1000+i}));
-const output='test-results/team-flow'; await mkdir(output,{recursive:true});
+const output=process.env.SCREENSHOT_DIR || 'artifacts/team-regression/team-flow'; await mkdir(output,{recursive:true});
 try {
  await page.addInitScript(({key,people})=>{localStorage.setItem(key,JSON.stringify(people));localStorage.setItem('ohd-language','en');localStorage.setItem('ohd-last-person-id',people[2].id);},{key:PROFILE_STORAGE_KEY,people});
- await page.goto(process.env.E2E_URL || process.env.PREVIEW_URL || 'http://127.0.0.1:9961'); await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000}); await page.locator('[data-view="team"]').click();
+ await page.goto(process.env.E2E_URL || process.env.PREVIEW_URL || 'http://127.0.0.1:19964'); await page.locator('#chart-view:not(.hidden)').waitFor({timeout:120000}); await page.locator('[data-view="team"]').click();
  const chips=page.locator('.team-person-chip');
  assert.equal(await chips.count(),0); assert.equal(await page.locator('.penta-placeholder svg').count(),1);
  await page.locator('#team-add-saved-person').click();

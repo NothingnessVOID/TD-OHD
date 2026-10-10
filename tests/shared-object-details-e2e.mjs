@@ -1,6 +1,6 @@
 import { chromium } from 'playwright-core';
 import assert from 'node:assert/strict';
-const base = 'http://127.0.0.1:19963';
+const base = process.env.E2E_URL || 'http://127.0.0.1:19964';
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'chromium', headless: true });
 try {
   const context = await browser.newContext();
@@ -65,7 +65,10 @@ try {
   assert.equal(await root.locator('.gk-spectrum').count(), 0);
   await page.keyboard.press('Escape');
   const cleared = await page.evaluate(async () => {
-    const chart = await import('/src/views/chart.js');
+    // Vite HMR can timestamp the live module; importing the bare URL creates a separate singleton.
+    const chartUrl = performance.getEntriesByType('resource').find(entry => new URL(entry.name).pathname === '/src/views/chart.js')?.name;
+    if (!chartUrl) throw new Error('Missing live chart module');
+    const chart = await import(chartUrl);
     if (!chart.getCurrentChart()) throw new Error('Expected the fictional current chart before cleanup');
     chart.showGateDetail(31);
     if (document.getElementById('gate-detail').classList.contains('hidden')) throw new Error('Expected an open chart detail before cleanup');
@@ -77,7 +80,7 @@ try {
   assert.deepEqual(cleared, { current: null, open: false });
   await page.goto(`${base}/#library/gate/31`);
   await page.locator('#reference-detail [data-shared-reading]').waitFor();
-  await page.evaluate(async () => { (await import('/src/lib/i18n.js')).setLocale('zh-CN', { persist: false }); (await import('/src/views/reference.js')).renderReferenceView({ languageChange: true }); });
+  await page.evaluate(async () => { (await import('/src/lib/i18n.js')).setLocale('zh-CN', { persist: false }); const url = performance.getEntriesByType('resource').find(entry => new URL(entry.name).pathname === '/src/views/reference.js')?.name; (await import(url)).renderReferenceView({ languageChange: true }); });
   const libraryText = await page.locator('#reference-detail [data-shared-reading]').textContent();
   // Compare DOM textContent on both sides; innerText adds layout whitespace.
   const canonical = await page.evaluate(async () => {

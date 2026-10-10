@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright-core';
 import {mkdir} from 'node:fs/promises';
-const base=process.env.E2E_URL||'http://127.0.0.1:9961',out='artifacts/visual-review/penta-card-hover';await mkdir(out,{recursive:true});
+const base=process.env.E2E_URL||'http://127.0.0.1:19964',out='artifacts/visual-review/penta-card-hover';await mkdir(out,{recursive:true});
 const browser=await chromium.launch({channel:'chromium',headless:true});
 try{
  for(const mobile of [false,true]){
