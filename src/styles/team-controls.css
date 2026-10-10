@@ -14,11 +14,11 @@
 #team-add-saved-person[data-full=true] { color:var(--text-secondary); border-style:dashed; }
 .team-person-chip [aria-pressed=true] { background:var(--accent-soft); border-radius:20px; }
 #team-flow-status { font-size:.75rem; color:var(--text-secondary); margin:.2rem 0; min-height:1em; }
-.team-control-dialog { width:min(480px,calc(100vw - 24px)); box-sizing:border-box; max-height:80dvh; overflow:auto; color:var(--text); background:var(--bg-elevated); border:1px solid var(--border); border-radius:12px; padding:1rem; }
-.team-control-dialog::backdrop { background:#0006; }
-.team-control-dialog header { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-.team-control-dialog h3 { margin:0; }
-.team-control-dialog button { min-height:36px; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.4rem .6rem; font:inherit; cursor:pointer; }
+.team-control-dialog { max-width:480px; }
+.team-control-dialog [aria-pressed=true] { background:var(--accent-soft); border-color:var(--accent); }
+#team-selection-count { color:var(--text-secondary); }
+#team-person-results { margin-block:12px; }
+.team-control-dialog button { min-height:44px; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.4rem .6rem; font:inherit; cursor:pointer; }
 .team-control-dialog input, .team-control-dialog select { box-sizing:border-box; width:100%; min-width:0; padding:.6rem; background:var(--bg); color:var(--text); border:1px solid var(--border); font:inherit; }
 .team-control-dialog label { display:grid; gap:.3rem; margin:.6rem 0; }
 .team-picker-row { display:flex; align-items:center; gap:.5rem; margin:.4rem 0; }
