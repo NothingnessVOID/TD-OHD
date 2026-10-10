@@ -2,6 +2,7 @@
 // not the authoritative library. Each operation has its own durable key so tabs
 // cannot overwrite one another's unsent edits.
 import { t } from './i18n.js';
+import { randomPersonId } from './person-input.js';
 import { PROFILE_STORAGE_KEY } from './profile-storage.js';
 
 export const localMode = import.meta.env?.VITE_OHD_LOCAL === 'true';
@@ -74,14 +75,15 @@ export async function localApi(path, options = {}) {
   return result;
 }
 function queue(kind, id, data) {
-  const operationId = crypto.randomUUID();
+  const operationId = randomPersonId();
   localStorage.setItem(OUTBOX + operationId, JSON.stringify({ operationId, kind, id, data, queuedAt: new Date().toISOString() }));
   announce('pending', 'Saving…');
   clearTimeout(timer); timer = setTimeout(() => flushLocal().catch(() => {}), 150);
+  return operationId;
 }
 function writeCache(people) {
-  cache = people;
   localStorage.setItem(CACHE, JSON.stringify(people));
+  cache = people;
   window.dispatchEvent(new Event('ohd-people-changed'));
 }
 export const localList = () => cache;
@@ -89,17 +91,22 @@ export const localGet = id => cache.find(p => p.id === id) || null;
 export function localSave(birth) {
   const name = birth.name?.trim() || `未命名 · ${birth.birthDate}`;
   const same = birth.id ? localGet(birth.id) : cache.find(p => p.name === name && p.birthDate === birth.birthDate && p.birthTime === birth.birthTime && p.location?.timezone === birth.timezone && !!p.timeUnknown === !!birth.timeUnknown);
-  const person = { id: same?.id || birth.id || crypto.randomUUID(), name, birthDate: birth.birthDate,
+  const person = { id: same?.id || birth.id || randomPersonId(), name, birthDate: birth.birthDate,
     birthTime: birth.birthTime || '12:00', timeUnknown: !!birth.timeUnknown,
     location: { lat: birth.location?.lat ?? null, lon: birth.location?.lon ?? null, timezone: birth.timezone,
       iana: birth.location?.iana || null, name: birth.location?.name || null },
     createdAt: same?.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString() };
-  queue('save', person.id, person);
-  writeCache([...cache.filter(p => p.id !== person.id), person]);
+  const operationId = queue('save', person.id, person);
+  try { writeCache([...cache.filter(p => p.id !== person.id), person]); }
+  catch (error) { localStorage.removeItem(OUTBOX + operationId); throw error; }
   return person;
 }
 export function localDelete(id) {
-  queue('delete', id); writeCache(cache.filter(p => p.id !== id)); return true;
+  if (!localGet(id)) return false;
+  const operationId = queue('delete', id);
+  try { writeCache(cache.filter(p => p.id !== id)); }
+  catch (error) { localStorage.removeItem(OUTBOX + operationId); throw error; }
+  return true;
 }
 export function reportSaveFailure(error) {
   announce('error', 'Save incomplete: {error}', { errorSource: error.source || 'Local service connection failed.' });
@@ -144,7 +151,7 @@ export async function initializeLocal() {
   active = true;
   window.addEventListener('focus', () => flushLocal().catch(() => {}));
   window.addEventListener('online', () => flushLocal().catch(() => {}));
-  window.addEventListener('storage', e => { if (e.key === CACHE) { cache = cachedPeople(); window.dispatchEvent(new Event('ohd-people-changed')); } });
+  window.addEventListener('storage', e => { if (e.key === CACHE || e.key === null) { cache = cachedPeople(); window.dispatchEvent(new Event('ohd-people-changed')); } });
   setInterval(() => { if (!document.hidden) flushLocal().catch(() => {}); }, 10000);
   window.addEventListener('beforeunload', e => { if (pendingOps().length) { e.preventDefault(); e.returnValue = ''; } });
 }

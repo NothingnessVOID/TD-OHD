@@ -25,7 +25,7 @@ export function createChartDataService(engine) {
       data = remember(chartCache, key, engine.calculateBirth(birth));
     }
     try { return { birth, ...await data }; }
-    catch (error) { chartCache.delete(key); throw error; }
+    catch (error) { if (chartCache.get(key) === data) chartCache.delete(key); throw error; }
   }
 
   /**
@@ -80,9 +80,14 @@ export function createChartDataService(engine) {
     })();
     remember(sensitivityCache, cacheKey, result);
     try { return await result; }
-    catch (error) { sensitivityCache.delete(cacheKey); throw error; }
+    catch (error) { if (sensitivityCache.get(cacheKey) === result) sensitivityCache.delete(cacheKey); throw error; }
   }
-  return { computeChart, sensitivityCheck };
+  function invalidateBirth(birth) {
+    const key = engine.cacheKey(birth);
+    chartCache.delete(key);
+    for (const item of sensitivityCache.keys()) if (item.startsWith(`${key}:`)) sensitivityCache.delete(item);
+  }
+  return { computeChart, sensitivityCheck, invalidateBirth };
 }
 
-export const { computeChart, sensitivityCheck } = createChartDataService(chartEngine);
+export const { computeChart, sensitivityCheck, invalidateBirth } = createChartDataService(chartEngine);

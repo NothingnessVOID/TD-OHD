@@ -21,6 +21,13 @@ import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './char
 let transitDetailContext = null;
 let lastTransitResult = null;
 let requestSequence = 0;
+export function invalidateTransits() {
+  ++requestSequence;
+  transitDetailContext = null;
+  lastTransitResult = null;
+  document.getElementById('transit-bodygraph')?.replaceChildren();
+  document.getElementById('transit-content')?.replaceChildren();
+}
 /** Only the successfully rendered moment; cleared as soon as a new request starts. */
 export function getCurrentTransitExportData() {
   if (!lastTransitResult || lastTransitResult.chart !== getCurrentChart()?.chart) return null;
