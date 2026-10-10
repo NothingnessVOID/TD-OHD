@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { importTestPeople } from '../dev/import-test-people.js';
+import { saveTeam, getTeam, TEAM_STORAGE_KEY } from '../src/lib/team-repository.js';
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/dev-test-people.json', import.meta.url), 'utf8'));
 function makeStore(initial = []) {
@@ -57,6 +58,26 @@ test('all fixture records are validated before the first write', () => {
   assert.throws(() => importTestPeople(invalid, store), /Invalid birth date/);
   assert.deepEqual(store.listPeople(), []);
   assert.throws(() => importTestPeople({ ...fixture, fictional: false }, store), /fictional people/);
+});
+
+test('all ten fixture people can share one team with two Penta groups of five', () => {
+  const values = new Map();
+  const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+  const members = fixture.people.map((person, index) => ({
+    memberId: `fixture-member-${index + 1}`, personId: person.id, labelSnapshot: person.name
+  }));
+  const groups = [0, 5].map((start, index) => ({
+    pentaId: `fixture-penta-${index + 1}`, label: `Fictional Penta ${index + 1}`,
+    memberIds: members.slice(start, start + 5).map(member => member.memberId)
+  }));
+  const saved = saveTeam({ name: 'Fictional ten-person team', members, groups }, storage);
+  const restored = getTeam(saved.teamId, storage);
+  assert.equal(restored.members.length, 10);
+  assert.deepEqual(restored.groups.map(group => group.memberIds.length), [5, 5]);
+  assert.deepEqual(restored.members.map(member => member.personId), fixture.people.map(person => person.id));
+  assert.doesNotMatch(values.get(TEAM_STORAGE_KEY), /birthDate|birthTime|timezone/);
+  assert.throws(() => saveTeam({ ...saved, groups: [{ ...groups[0], memberIds: members.slice(0, 6).map(member => member.memberId) }] }, storage),
+    error => error.code === 'GROUP_TOO_LARGE');
 });
 
 test('an interrupted import can be resumed without rewriting saved records', () => {
