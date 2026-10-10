@@ -174,7 +174,6 @@ export function createPentaMatrix(container, {
   }
   function handleClick(event) {
     const button = event.target.closest('button');
-    if (button?.hasAttribute('data-clear-member')) { setMember(null); return; }
     if (button?.dataset.openKind) { showDetail(button.dataset.openKind, button.dataset.openId); return; }
     if (button?.dataset.selectKind) { selectObject(button.dataset.selectKind, button.dataset.selectId, { focus: event.detail === 0 }); return; }
     const hit = event.target.closest('[data-select-kind]');
@@ -190,7 +189,9 @@ export function createPentaMatrix(container, {
   function endHover() { hoverTarget = null; applyHighlights(); }
   function render() {
     const host = scrollHost(), top = host.scrollTop;
-    renderAnalysis(); renderGraph(); applyHighlights();
+    renderAnalysis();
+    analysis.querySelectorAll('.penta-reading-section').forEach(section => section.classList.add('panel'));
+    renderGraph(); applyHighlights();
     host.scrollTop = top;
   }
   for (const root of [graph, analysis]) {

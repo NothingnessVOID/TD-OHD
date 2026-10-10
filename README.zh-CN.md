@@ -54,6 +54,8 @@ npm run dev
 
 十位虚构团队测试人物可在开发服务的 `/dev/test-people.html` 页面显式导入，不进入正式构建。使用方法和开发分支同步约定见[本地开发说明](docs/LOCAL_DEVELOPMENT.md)。
 
+项目开发规则入口：[执行约定 AGENTS.md](AGENTS.md) · [项目开发规范](docs/development/ENGINEERING_STANDARDS.md) · [UI 组件登记](docs/development/UI_COMPONENT_INVENTORY.md)。后续功能、维护与重构均遵守这些原则；组件登记随实际实现更新。
+
 ```bash
 npm run build:engine
 npm test

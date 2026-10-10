@@ -1,13 +1,10 @@
 #team-view .penta-render { min-width:0; color:var(--text); }
-#team-view .penta-legend { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:12px 0; }
-#team-view .penta-legend button { min-height:44px; border:1px solid var(--border); border-radius:8px; background:var(--bg-elevated); color:var(--text); padding:5px 10px; cursor:pointer; overflow-wrap:anywhere; }
-#team-view .penta-legend button[aria-pressed="true"] { outline:2px solid var(--focus,var(--accent)); outline-offset:1px; }
-#team-view .penta-member-tag { display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:50%; background:var(--penta-person); color:#fff; font-size:11px; font-weight:700; border:1px solid #fff; margin-right:3px; vertical-align:middle; }
-#team-view .penta-member-1 { --penta-person:#ab3f24; }
-#team-view .penta-member-2 { --penta-person:#216fa9; }
-#team-view .penta-member-3 { --penta-person:#8060b6; }
-#team-view .penta-member-4 { --penta-person:#237e55; }
-#team-view .penta-member-5 { --penta-person:#9a6415; }
+#team-view .penta-member-tag { display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:50%; background:var(--penta-person); color:var(--team-member-on); font-size:11px; font-weight:700; border:1px solid var(--team-member-border); margin-right:3px; vertical-align:middle; }
+#team-view .penta-member-1 { --penta-person:var(--team-member-1); }
+#team-view .penta-member-2 { --penta-person:var(--team-member-2); }
+#team-view .penta-member-3 { --penta-person:var(--team-member-3); }
+#team-view .penta-member-4 { --penta-person:var(--team-member-4); }
+#team-view .penta-member-5 { --penta-person:var(--team-member-5); }
 #team-view .penta-canvas { width:min(100%,480px); aspect-ratio:320/410; position:relative; margin:12px auto; }
 #team-view .penta-canvas svg { display:block; width:100%; height:100%; overflow:visible; }
 #team-view .penta-gate rect { fill:var(--bg-elevated); stroke:var(--border); stroke-width:2; }
@@ -21,47 +18,28 @@
 #team-view .penta-gate, #team-view .penta-edge { transition:opacity 120ms ease; }
 #team-view .penta-gate text { fill:var(--text); font-family:inherit; }
 #team-view .penta-number { font-size:19px; font-weight:700; }
-#team-view .penta-native-member circle { fill:var(--penta-person); stroke:var(--bg-elevated); stroke-width:1.5; }
-#team-view .penta-native-member text { fill:#fff; font-size:10px; font-weight:700; }
+#team-view .penta-native-member circle { fill:var(--penta-person); stroke:var(--team-member-border); stroke-width:1; }
+#team-view .penta-native-member text { fill:var(--team-member-on); font-size:10px; font-weight:700; }
 #team-view .penta-dimmed { opacity:.28; }
-#team-view .penta-edge line:not(.penta-hit) { stroke:var(--text-secondary); stroke-width:2.5; }
-#team-view .penta-edge.penta-absent line:not(.penta-hit) { stroke:var(--border); stroke-width:1.5; stroke-dasharray:4 4; }
-#team-view .penta-edge.penta-crossMemberOnly line:not(.penta-hit) { stroke:var(--accent); stroke-width:2.5; stroke-dasharray:7 3; }
+#team-view .penta-edge line:not(.penta-hit) { stroke:var(--text-secondary); stroke-width:3; }
+#team-view .penta-edge.penta-absent line:not(.penta-hit) { stroke:var(--border); stroke-width:2; stroke-dasharray:4 4; }
+#team-view .penta-edge.penta-crossMemberOnly line:not(.penta-hit) { stroke:var(--accent); stroke-dasharray:7 3; }
 #team-view .penta-edge.penta-selfComplete line:not(.penta-hit), #team-view .penta-edge.penta-both line:not(.penta-hit) { stroke:var(--accent); }
 #team-view .penta-edge-symbol { fill:var(--bg-elevated); stroke:var(--border); }
 #team-view .penta-edge-letter { fill:var(--text); font-size:13px; font-weight:700; }
 #team-view .penta-hit { stroke:transparent; stroke-width:22; }
-#team-view .penta-canvas button { position:absolute; cursor:pointer; background:transparent; border:0; padding:0; border-radius:8px; min-width:44px; min-height:44px; transform:translate(-50%,-50%); }
+#team-view .penta-canvas button { position:absolute; cursor:pointer; background:transparent; border:0; padding:0; border-radius:var(--radius); min-width:44px; min-height:44px; transform:translate(-50%,-50%); }
 #team-view .penta-canvas .penta-gate-hit { width:26.25%; height:15.61%; }
 #team-view .penta-canvas .penta-channel-hit { width:44px; height:44px; }
-#team-view .penta-canvas button:focus-visible, #team-view .penta-legend button:focus-visible, #team-view .team-channel:focus-visible { outline:3px solid var(--focus,var(--accent)); outline-offset:2px; }
+#team-view .penta-canvas button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
 #team-view .penta-caption { color:var(--text-secondary); font-size:12px; }
 #team-view .penta-state-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; margin:12px 0; font-size:12px; color:var(--text-secondary); }
 #team-view .penta-state-legend span { display:flex; align-items:center; gap:8px; min-width:0; }
 #team-view .penta-state-symbol { display:inline-grid; flex:none; place-items:center; width:24px; height:24px; color:var(--text); border:1px solid var(--border); border-radius:50%; background:var(--bg-sunken); font-size:15px; }
 #team-view .penta-state-symbol.penta-crossMemberOnly { border-style:dashed; border-width:2px; }
 #team-view .penta-state-symbol.penta-both { border-style:double; border-width:3px; }
-#team-view .penta-channel-state { display:flex; align-items:center; gap:8px; color:var(--text-secondary); }
-#team-view .penta-channel-state b { display:grid; place-items:center; flex:none; width:22px; height:22px; border:1px solid var(--border); border-radius:50%; color:var(--text); font-size:15px; }
-#team-view .team-summary p { margin:0; font-weight:600; }
-#team-view .penta-edge line:not(.penta-hit) { stroke-width:3; }
-#team-view .penta-edge.penta-absent line:not(.penta-hit) { stroke-width:2; }
-#team-view .team-channels { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:8px; }
-#team-view .team-channel { display:flex; flex-direction:column; gap:4px; text-align:left; min-height:48px; padding:10px; background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px; color:var(--text); cursor:pointer; }
-#team-view .team-channel.penta-absent { border-style:dashed; }
-#team-view .team-channel.penta-crossMemberOnly { border-style:dashed; border-width:2px; }
-#team-view .team-channel.penta-both { border-style:double; border-width:3px; }
-#team-view .penta-knowledge-nav { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
-#team-view .penta-knowledge-nav button { min-height:44px; padding:8px 12px; border:1px solid var(--border); border-radius:8px; background:var(--bg-elevated); color:var(--text); cursor:pointer; }
-#team-view .penta-knowledge-nav button:focus-visible { outline:3px solid var(--focus,var(--accent)); }
-#team-view .penta-detail .gate-detail-body { overflow-wrap:anywhere; }
-#team-view .penta-detail .penta-structure-facts, #team-view .penta-detail .penta-knowledge { border-top:1px solid var(--border); padding-top:12px; margin-top:12px; }
-#team-view .penta-detail .penta-knowledge-sources { color:var(--text-secondary); font-size:.85em; }
-#team-view .penta-detail .penta-knowledge-sources a { color:var(--accent); overflow-wrap:anywhere; }
-#team-view .penta-detail .penta-knowledge-missing { color:var(--text-secondary); }
-#team-view .penta-detail .gate-detail-body li { margin-block:5px; }
-/* Body-level popup shares the ordinary chart sheet; never size it as a Team panel. */
+/* Detail is mounted under body and uses the ordinary sheet's visual structure. */
 .penta-detail .gate-detail-body { overflow-wrap:anywhere; }
 .penta-detail .gate-detail-body li { margin-block:5px; }
 @media (prefers-reduced-motion: reduce) { #team-view .penta-gate, #team-view .penta-edge { transition:none; } }
-@media (max-width:390px) { #team-view .penta-canvas { width:100%; } #team-view .penta-legend button { font-size:12px; } #team-view .penta-state-legend { grid-template-columns:minmax(0,1fr); } }
+@media (max-width:390px) { #team-view .penta-state-legend { grid-template-columns:minmax(0,1fr); } }

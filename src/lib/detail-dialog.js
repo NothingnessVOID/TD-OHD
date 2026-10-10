@@ -31,9 +31,12 @@ export function openDetailDialog(element, onClose, { owner = 'bodygraph', label 
     const onKey = e => {
       if (e.key === 'Escape') { e.preventDefault(); closeDetailDialog(); }
       if (e.key !== 'Tab') return;
-      const buttons = [...element.querySelectorAll('button, a[href], [tabindex="0"]')];
+      const buttons = [...element.querySelectorAll('button, a[href], input, select, textarea, [tabindex]')]
+        .filter(node => !node.disabled && node.tabIndex >= 0 && !node.closest('[hidden], .hidden') && node.getClientRects().length);
       const first = buttons[0], last = buttons.at(-1);
-      if (e.shiftKey && document.activeElement === first) {
+      if (!element.contains(document.activeElement)) {
+        e.preventDefault(); (e.shiftKey ? last : first)?.focus();
+      } else if (e.shiftKey && document.activeElement === first) {
         e.preventDefault(); last?.focus();
       } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault(); first?.focus();
@@ -64,7 +67,9 @@ export function fitDetailSheetHeight(card, prevH = null) {
   const navH = card.querySelector('.gate-detail-nav')?.offsetHeight ?? 0;
   const bodyH = card.querySelector('.gate-detail-body')?.scrollHeight ?? card.scrollHeight;
   const targetH = Math.min(Math.max(navH + bodyH + 20, minH), maxH);
-  if (prevH != null) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    card.style.transition = 'none';
+  } else if (prevH != null) {
     card.style.transition = 'none';
     card.style.height = prevH + 'px';
     card.offsetHeight; // force reflow
