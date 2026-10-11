@@ -1794,23 +1794,25 @@ body.modal-open { overflow: hidden; }
 }
 
 .gate-detail-channel p { margin-top: 4px; font-size: 12.5px; }
-/* Explicit rows avoid the anonymous line box around the inline channel title.
-   The paired row owns a centered 44px target, so it needs no extra outer gap. */
+/* Only paired cards use three rows: title, wrapping metadata, harmonic gate. */
 .gate-detail-channel:has(.gate-detail-paired-gate) {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  padding-block: 8px;
+  padding-block: 6px;
+  row-gap: 4px;
 }
 .gate-detail-channel:has(.gate-detail-paired-gate) > .gate-link { justify-self: start; text-align: left; line-height: 1.5; }
-.gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display: flex; flex-wrap: wrap; margin: 4px 0; }
+.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-detail-channel-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+.gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display: flex; flex-wrap: wrap; margin: 0; }
 .gate-detail-paired-gate {
   display: flex;
   align-items: center;
   max-width: 100%;
-  min-height: 44px;
+  min-height: 30px;
   margin: 0;
   padding: 0;
   border: 0;
+  border-top: 1px solid var(--border-subtle);
   border-radius: 2px;
   background: transparent;
   font: inherit;
@@ -1820,6 +1822,9 @@ body.modal-open { overflow: hidden; }
   white-space: normal;
   overflow-wrap: anywhere;
   cursor: pointer;
+}
+@media (max-width: 600px), (pointer: coarse) {
+  .gate-detail-paired-gate { min-height: 44px; }
 }
 .gate-detail-paired-gate-label { font-size: 12px; color: var(--text-secondary); }
 .gate-detail-paired-gate-link { color: var(--accent); font-weight: 500; }
