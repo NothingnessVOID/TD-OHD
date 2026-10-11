@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
+import { historicalAuditSource } from './helpers/penta-audit-history-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -18,6 +20,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
   || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', pairedCardFinalBase], { cwd: auditRoot })
   .toString().trim().split('\n').filter(protectedPath);
+inventory.push(...pentaAddedPaths);
 function rejectsSource(file, mutated) {
   assert.notDeepEqual(mutated, read(file), 'Negative case must change current bytes');
   for (const project of projects) assert.throws(() => project(mutated, file), /Unreviewed increment source/);
@@ -186,7 +189,7 @@ test('historical approval helpers, manifests and status/navigation scopes remain
     'tests/helpers/release-validation-projection.js', 'docs/release-increment-8475a4a.json',
     'tests/channel-status-scope.test.js', 'tests/paired-gate-visual-scope.test.js',
     'tests/issue-details-scope.test.js', 'tests/release-increment-scope.test.js',
-  ]) assert.deepEqual(read(file), snapshotBytes(pairedCardFinalBase, file), `Historical approval unchanged: ${file}`);
+  ]) assert.deepEqual(historicalAuditSource(file), snapshotBytes(pairedCardFinalBase, file), `Historical approval unchanged: ${file}`);
   const file = 'tests/helpers/paired-card-layout-projection.js';
   const restored = read(file).toString()
     .replace("import { pairedCardFinalProjection } from './paired-card-final-projection.js';\n", '')
@@ -199,6 +202,7 @@ test('historical approval helpers, manifests and status/navigation scopes remain
 test('final unrelated paths pass through without conferring source approval', () => {
   for (const file of ['src/views/team.js', 'src/lib/knowledge/content/penta.js', 'engine-core/TransitCore.cs', 'src/lib/final-unreviewed.js']) {
     const source = Buffer.from('unapproved');
-    assert.strictEqual(pairedCardFinalProjection(source, file), source);
+    if (pentaIntegrationPaths.includes(file)) assert.throws(() => pairedCardFinalProjection(source, file), /Unreviewed increment source/);
+    else assert.strictEqual(pairedCardFinalProjection(source, file), source);
   }
 });
