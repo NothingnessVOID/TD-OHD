@@ -118,13 +118,12 @@ export function validateWaSnapshot(snapshot) {
   }
   const participants = new Set(assigned);
   if (snapshot.alphaId !== null) participants.add(snapshot.alphaId);
-  const edgeIds = new Set(), edgePairs = new Set();
+  const edgeIds = new Set();
   for (const [index, edge] of (snapshot.manualCommunicationEdges ?? []).entries()) {
     if (!participants.has(edge.fromMemberId) || !participants.has(edge.toMemberId)) issues.push({ ...issue('MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT', `manualCommunicationEdges/${index}`, edge.edgeId), annotation: structuredClone(edge) });
     if (edge.fromMemberId === edge.toMemberId) issues.push(issue('MANUAL_EDGE_SELF_LINK', 'manualCommunicationEdges', edge.edgeId));
-    const pair = JSON.stringify([edge.fromMemberId, edge.toMemberId]);
-    if (edgeIds.has(edge.edgeId) || edgePairs.has(pair)) issues.push(issue('DUPLICATE_MANUAL_EDGE', 'manualCommunicationEdges', edge.edgeId));
-    edgeIds.add(edge.edgeId); edgePairs.add(pair);
+    if (edgeIds.has(edge.edgeId)) issues.push(issue('DUPLICATE_MANUAL_EDGE', 'manualCommunicationEdges', edge.edgeId));
+    edgeIds.add(edge.edgeId);
   }
   const consultation = snapshot.consultation;
   for (const [index, id] of (consultation?.keyAllyIds ?? []).entries()) {
