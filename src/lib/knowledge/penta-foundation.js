@@ -18,7 +18,7 @@ const reference = (item, field) => ({
   read: () => readPentaContent(item.objectId, field, getLocale()),
   sourceId: PENTA_CONTENT_SOURCE, file: 'src/lib/knowledge/content/penta-v1.json',
   path: `records.${item.id}.locales.{locale}.${field}`, reviewStatus: 'reviewed',
-  version: 1, evidenceStatus: 'editorial-reviewed', format: 'plain-text'
+  version: pentaPackage.contentVersion, evidenceStatus: 'editorial-reviewed', format: 'plain-text'
 });
 function structuralRecord(id, sourceIds, scope, properties) {
   const objectId = id.startsWith('gate:') ? `gate.${id.slice(5)}` : id.startsWith('channel:') ? `channel.${id.slice(8)}` : id;
@@ -42,11 +42,11 @@ const originals = new Map(structuralRecords.map(item => [item.id, item]));
 function authoredRecord(item) {
   const original = originals.get(item.id);
   const sourceRefs = item.sourceRefs.map(ref => ({ ...ref, sourceId: ref.sourceId ?? ref.id }));
-  const contentSource = { sourceId: PENTA_CONTENT_SOURCE, file: 'src/lib/knowledge/content/penta-v1.json', path: `records.${item.id}`, reviewStatus: 'reviewed', version: 1 };
+  const contentSource = { sourceId: PENTA_CONTENT_SOURCE, file: 'src/lib/knowledge/content/penta-v1.json', path: `records.${item.id}`, reviewStatus: 'reviewed', version: pentaPackage.contentVersion };
   return {
     ...original, id: item.id, domain: 'human-design', objectType: 'penta', objectId: item.objectId,
     name: reference(item, 'name'), summary: reference(item, 'summary'), detail: reference(item, 'detail'),
-    reviewStatus: 'reviewed', version: 1,
+    reviewStatus: 'reviewed', version: pentaPackage.contentVersion,
     identitySource: original?.identitySource ?? contentSource,
     propertySource: original?.propertySource ?? contentSource,
     properties: () => ({
@@ -63,7 +63,7 @@ function authoredRecord(item) {
     })
   };
 }
-// Preserve the old 21 identities and order, then append the eight new topics.
+// Preserve the original 21 identities and order, then append package topics.
 export const pentaRecords = [
   ...structuralRecords.map(record => authoredRecord(authored.get(record.id))),
   ...pentaContentRecords.filter(item => !originals.has(item.id)).map(authoredRecord)
