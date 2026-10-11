@@ -78,7 +78,10 @@ async function checkPairs(page, source, expected, context, mode) {
   const before = await detail(page).locator('.tl-detail-header').innerText();
   for (const target of expected) {
     const labels = await invoke(page, 'labels', target);
-    assert.equal(await paired(page, target).innerText(), `${labels.paired} ${labels.gate} · ${labels.name}`);
+    assert.equal((await paired(page, target).textContent()).replace(/\s+/g, ' ').trim(), `${labels.paired} ${labels.gate} · ${labels.name}`);
+    assert.equal(await paired(page, target).locator('.gate-detail-paired-gate-label').textContent(), labels.paired);
+    assert.equal(await paired(page, target).locator('.gate-detail-paired-gate-number').textContent(), labels.gate);
+    assert.equal(await paired(page, target).locator('.gate-detail-paired-gate-name').textContent(), labels.name);
     assert.equal(await paired(page, target).locator('button').count(), 0, 'no nested buttons');
     await activate(paired(page, target), mode);
     await heading(page, target, context);
