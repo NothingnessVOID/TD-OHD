@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
+import { channelStatusProjection } from './helpers/channel-status-projection.js';
 import { pairedGateVisualBase, pairedGateVisualHead, pairedGateVisualPaths, pairedGateVisualProjection } from './helpers/paired-gate-visual-projection.js';
 import { issueDetailsBase, issueDetailsHead, issueDetailsProjection } from './helpers/issue-details-projection.js';
 import { auditRoot, incrementBase, incrementManifestPath, snapshotBytes, incrementProjection, validateReleaseIncrement } from './helpers/release-increment-projection.js';
@@ -28,7 +29,7 @@ test('visual layer pins only two files and projects before unchanged issue and r
   assert.deepEqual(changed, [...pairedGateVisualPaths]);
   for (const file of pairedGateVisualPaths) {
     const current = read(file);
-    assert.deepEqual(current, snapshotBytes(pairedGateVisualHead, file));
+    assert.deepEqual(channelStatusProjection(current, file), snapshotBytes(pairedGateVisualHead, file));
     assert.notDeepEqual(current, snapshotBytes(pairedGateVisualBase, file));
     assert.deepEqual(snapshotBytes(pairedGateVisualBase, file), snapshotBytes(issueDetailsHead, file));
     assert.deepEqual(pairedGateVisualProjection(current, file), snapshotBytes(pairedGateVisualBase, file));
