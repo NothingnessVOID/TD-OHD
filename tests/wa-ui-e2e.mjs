@@ -16,6 +16,7 @@ try {
     const {computeChart}=await import('/src/lib/chartdata.js');
     document.querySelectorAll('body > *').forEach(node=>{if(node.tagName!=='SCRIPT')node.remove();});
     (await import('/src/lib/i18n.js')).setLocale('en',{persist:false});
+    (await import('/src/lib/appearance.js')).initAppearance();
     const host=document.createElement('section');host.id='wa-test-host';document.body.append(host);
     window.waCalls=0;window.waDelay=false;window.waRelease=null;
     const repository=(await import('/src/lib/wa/repository.js')).createWaRepository();
@@ -55,7 +56,8 @@ try {
   await page.locator('[data-action=save]').click();await page.waitForFunction(()=>document.querySelector('.wa-draft-status').textContent.includes('r2'));
   for(const width of [1440,390,320])for(const locale of ['en','zh-CN','zh-Hant'])for(const theme of ['light','dark']){
     await page.setViewportSize({width,height:1000});
-    await page.evaluate(async({locale,theme})=>{(await import('/src/lib/i18n.js')).setLocale(locale,{persist:false});document.documentElement.dataset.theme=theme;window.waView.refreshLanguage();},{locale,theme});
+    await page.evaluate(async({locale,theme})=>{(await import('/src/lib/i18n.js')).setLocale(locale,{persist:false});(await import('/src/lib/appearance.js')).setSkin(`default-${theme}`);window.waView.refreshLanguage();},{locale,theme});
+    assert.equal(await page.locator('html').getAttribute('data-skin'), `default-${theme}`, 'actual registered Skin applied');
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${width} ${locale} overflow`);
     const controls=await page.locator('.wa-page button:visible,.wa-page select:visible,.wa-page input:visible').evaluateAll(nodes=>nodes.map(node=>({h:node.getBoundingClientRect().height,w:node.getBoundingClientRect().width})));
     assert.ok(controls.every(rect=>rect.h>=44&&rect.w>=44));

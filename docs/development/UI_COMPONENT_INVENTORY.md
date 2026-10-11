@@ -76,6 +76,12 @@ Penta 的对象选中高亮绑定详情生命周期；关闭时清理点击选�
 
 Team 增加一个 Penta 资料库入口，原背景区增加更多机制入口；资料库提供 Penta 知识及机制分类。图形、成员贡献及布局保持原实现，条目采用 Penta 专属名称，卦名复用 `hexagramName()`。Summary与Detail不互相回退，缺失／未知来源继续拒绝。
 
+## Wa v1 独立组织工作区
+
+`src/views/wa.js` 的 `mountWa()` 接入独立导航，复用 PeopleStore、现有出生图计算、Operation Dialog、Detail Dialog、公共安全段落、i18n 与 Skin Token。组织示意图仅表示手动 Alpha 与三个分组；六沟通主题及贡献独立显示，成员列表承担实际分配操作。
+
+`src/lib/wa/model.js` 与 `schema.json` 提供 refs-only 配置和标准／观察布局校验；`repository.js` 使用独立 IndexedDB 事务保存与恢复追加修订，不修改 TeamRepository v2。`analysis.js` 使用现有激活提取与 Penta 子组分析，Wa 六门对覆盖和 diff 单独计算；`content.js` 映射14篇三语资料与 canonical 门对，缺语种不回退。自动 Alpha、正式 Gap、Triggering、自动 Powerbases 和评分排名仍为明确未支持的扩展边界。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。

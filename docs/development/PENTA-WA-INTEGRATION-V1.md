@@ -34,6 +34,20 @@ Persisted Wa configurations require a distinct versioned refs-only contract; the
 
 Canonical pair identities normalize 45-21→21-45, 51-25→25-51 and 59-6→6-59. Original content IDs/display ordering may remain aliases; they do not create duplicate computed identities.
 
+## Phase 2 completed
+
+Wa v1 is mounted as an independent navigation workspace (`?view=wa`). It supports an existing-person pool, three manual Penta roles, manual Alpha, standard/observation drafts, a simple organizational schematic with editable member lists, six communication themes, contributor details, structural/member/group comparison, save/list/history and restore-as-new-revision. The supplied 14 Wa articles are independently available in all three languages. Canonical and reversed/full content IDs resolve to the same identities without cross-language fallback.
+
+Persisted snapshots are `kind: wa`, `schema: wa-refs-v1`, validated by strict Ajv Draft2020-12 plus identity/layout rules. `ohd-wa-refs-v1` IndexedDB commits head checks and immutable revisions atomically; PeopleStore/Team data are untouched. Runtime analysis reuses the site's 26-activation extractor and unchanged Penta calculation; the six-theme union and diff are original implementation, not copied reference-engine code.
+
+Final product snapshot: `52fcbae82836aeb033716b61b6ad79bd0b89c2d9`. Source approval covers exactly 13 paths, including nine new Wa files and four host/dependency files. Audit adaptation is separately pinned and reviewed. Final source guards and Penta compatibility checks: 103 passed, zero skipped. Parent integration batch: 48 related unit tests passed after updating the expected navigation list for Wa (47 initially passed and the corrected i18n file passed 12/12). Static build and Pages bundle check passed. Core isolated verification also covered 22 unchanged Team/Penta tests.
+
+Final integrated Chromium E2E passed on 9961: real WASM/core analysis, actual registered light/dark Skins (not only the compatibility data-theme attribute), 1440/390/320 × three languages (18 screenshots), reassignment with unchanged global coverage, individual derived changes, missing person data, observation mode, generation rejection, save/list/history/restore, conflicts and async read/write races. The real IndexedDB test passed two-page CAS, immutable collision rollback and reload persistence. Existing frontend-runtime restore/locale/no-sync/Connection/Team checks also passed.
+
+Stage 2 limitations: the graph is a manual Alpha/three-group schematic, not the full original Wa diagram. Custom policy and interval certainty remain reserved; automatic Alpha, formal Gap/Triggering, automatic Powerbases, scoring/ranking and formation claims are explicitly unsupported. Manual Powerbase metadata is supported by the contract, while v1 UI currently provides explanatory content rather than an annotation editor. A low-priority UI boundary remains: a failed old list/history read may show a stale error message after a draft switch; it cannot overwrite draft or stored configuration. Physical devices/Safari and a new complete all-feature computational sweep were not run.
+
+Screenshots: `artifacts/wa-v1/9961/desktop.png`, `mobile.png`, `mobile-detail.png`; validated Skin matrix at `artifacts/visual-review/wa-ui-v1/`. The latter deliberately includes escaped hostile-looking fictional names to verify text safety; these are synthetic test records, never injected into the user's browser profile.
+
 ## Delivery constraints
 
 Only local Windows 9961 preview and feature-branch pushes. No main merge, GitHub Pages or Netlify deployment. No unrelated UI issue work and no original calculation-engine rewrite. Existing worktrees and private research inputs remain intact. Per-stage actual results and screenshots are added after validation; plans above are not a completion claim.
