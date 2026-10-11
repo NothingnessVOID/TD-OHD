@@ -18,6 +18,14 @@ Summary and Detail are independent locale-specific slots. New content may be AI 
 
 Mechanism articles receive separate library reading access. Graph, member contribution semantics, colors and topology remain the existing implementation. Full I Ching names use `hexagramName()` independently of individual Human Design `gateName()` and Penta skill names.
 
+## Phase 1 completed
+
+Penta content, shared readers and mechanism library are integrated. Product snapshot `f347ff011e20e951c94b7dcf9f745a976b972399` includes the independent summary policy; parent integration tests and source audit follow it as separate commits. All 29 IDs have complete three-language reading, and the 11 mechanisms are available at `#library?filter=penta-mechanism`. Ordinary Penta topology, engine and TeamRepository files remain unchanged.
+
+Validation: 38 related unit tests passed in the parent workspace; 261 article reads passed across three languages × 1440/390/320 × 29 records. Existing shared-object/heading, reference, Penta direct-detail, background-knowledge and hover/dismissal E2E passed on 9961. Static frontend build passed. 135 related source/history/licensing audit tests passed while preserving old snapshots and mutation negatives. Independent review confirmed summary/detail isolation, source rejection and no package-to-verified fallback. Physical mobile/Safari and a new all-feature computational sweep were not performed.
+
+9961 screenshots: `artifacts/penta-v1/9961/1280-mechanisms.png`, `390-mechanism-reading.png`, `320-mechanism-reading.png`; deeper gate/channel screenshots remain in the isolated UI worktree's `artifacts/visual-review/penta-reading-v1/`.
+
 ## Wa preparation boundaries
 
 The package has no LICENSE file or package license field. The reference engine is inspected as a specification/test reference; it is not copied over the site's existing calculation engine. Deterministic structural union, manual grouping and manually selected Alpha can be implemented with existing website primitives and an independent Wa module.
