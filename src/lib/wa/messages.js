@@ -1,6 +1,17 @@
 import { registerMessages } from '../i18n.js';
 const messages = {
  'Manual records':['人工记录','人工紀錄'],
+ 'Edit':['编辑','編輯'],
+ 'Delete':['删除','刪除'],
+ 'Export backup':['导出备份','匯出備份'],
+ 'Manual record changes':['人工记录变更','人工紀錄變更'],
+ 'Manual references will be removed':['此操作会使以下引用失效。确认后将移除列出的记录；取消可保留当前分配。','此操作會使以下引用失效。確認後將移除列出的紀錄；取消可保留目前分配。'],
+ 'Remove affected records and continue':['移除上述记录并继续','移除上述紀錄並繼續'],
+ 'Powerbase notes':['Powerbase 注释','Powerbase 註記'],
+ 'Restore annotation warning':['恢复会替换当前草稿中的以下人工记录。已保存的版本仍保留在历史中；未保存的修改将被替换。可取消并先导出备份。','還原會替換目前草稿中的以下人工紀錄。已儲存的版本仍保留在歷史中；尚未儲存的修改將被替換。可取消並先匯出備份。'],
+ 'Revision has no v2 annotations':['所选版本没有 v2 咨询或人工联系记录。','所選版本沒有 v2 諮詢或人工聯繫紀錄。'],
+ 'Restore with these changes':['确认差异并恢复','確認差異並還原'],
+ 'Invalid manual record':['记录无法保存，请检查参与成员和必填内容，避免重复的有向联系。','紀錄無法儲存，請檢查參與成員與必填內容，避免重複的有向聯繫。'],
  'Manual':['人工填写','人工填寫'],
  'Manual records note':['这些记录由你填写，与下方或上方的结构覆盖分开保存，不参与自动计算。','這些紀錄由你填寫，與結構覆蓋分開儲存，不參與自動計算。'],
  'Export manual annotations':['导出人工注释','匯出人工註記'],
@@ -37,6 +48,7 @@ const messages = {
  'All participants':['全部参与成员','全部參與成員'],
  'Group members only':['仅本组成员','僅本組成員'],
  'Group with manual Alpha':['本组成员与手动 Alpha','本組成員與手動 Alpha'],
+ 'Show group with Alpha':['显示包含 Alpha 的独立观察','顯示包含 Alpha 的獨立觀察'],
  'Communication group':['沟通观察分组','溝通觀察分組'],
  'Activation changes':['激活变化详情','啟動變更詳情'],
  'Gates added':['新增闸门','新增閘門'],
@@ -115,4 +127,4 @@ const messages = {
  'Wa data error':['数据操作失败，请重试。草稿已保留。','資料操作失敗，請重試。草稿已保留。']
 };
 for (const [index, locale] of ['zh-CN', 'zh-Hant'].entries()) registerMessages(locale, Object.fromEntries(Object.entries(messages).map(([key, values]) => [key, values[index]])));
-registerMessages('en', {'Wa conditional result':'Some birth times are uncertain. Results apply only to the calculated time; unknown times are estimated at noon.', 'Wa scope':'Manual organization and endpoint contributions support discussion; they do not establish organizational mechanics or performance scores.', 'Wa draft':'Draft', 'Wa input changed':'Inputs changed. Analyze again.', 'Wa calculating':'Calculating member charts…', 'Wa save conflict':'The saved version changed. Your local draft is retained; review history or save as a new organization.', 'Wa restore note':'Restore creates a new revision and uses current person data for analysis.', 'Wa discard changes?':'Loading replaces your unsaved local draft. Continue?', 'Wa saved':'Organization saved', 'Wa restored':'Restored as a new revision', 'Wa empty result':'Assign members manually, then analyze to see contributions across six themes.', 'Wa data error':'The operation failed. Please retry; your draft is retained.'});
+registerMessages('en', {'Gap stage wish_list':'Wish list', 'Gap stage configured':'Configured', 'Gap stage observed':'Observed', 'Manual records note':'Your manual notes are saved separately from structural coverage and do not affect calculations.', 'Manual references will be removed':'This change invalidates the references below. Confirm to remove these records, or cancel to keep the current assignment.', 'Restore annotation warning':'Restoring replaces these manual records in the current draft. Saved revisions remain in history; unsaved edits will be replaced. Cancel to export a backup first.', 'Revision has no v2 annotations':'The selected revision contains no v2 consultation or manual links.', 'Invalid manual record':'Check participants and required fields. Duplicate directed links are not allowed.', 'Wa reading unavailable':'Wa reading is unavailable. Your draft and structural analysis are unaffected.', 'Wa conditional result':'Some birth times are uncertain. Results apply only to the calculated time; unknown times are estimated at noon.', 'Wa scope':'Manual organization and endpoint contributions support discussion; they do not establish organizational mechanics or performance scores.', 'Wa draft':'Draft', 'Wa input changed':'Inputs changed. Analyze again.', 'Wa calculating':'Calculating member charts…', 'Wa save conflict':'The saved version changed. Your local draft is retained; review history or save as a new organization.', 'Wa restore note':'Restore creates a new revision and uses current person data for analysis.', 'Wa discard changes?':'Loading replaces your unsaved local draft. Continue?', 'Wa saved':'Organization saved', 'Wa restored':'Restored as a new revision', 'Wa empty result':'Assign members manually, then analyze to see contributions across six themes.', 'Wa data error':'The operation failed. Please retry; your draft is retained.'});
