@@ -1794,6 +1794,8 @@ body.modal-open { overflow: hidden; }
 }
 
 .gate-detail-channel p { margin-top: 4px; font-size: 12.5px; }
+.gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display:flex; flex-wrap:wrap; margin:4px 0; }
+.gate-detail-paired-gate { display: block; max-width: 100%; min-height: 44px; margin-top: 8px; text-align: left; overflow-wrap: anywhere; }
 
 .gate-detail-harmonic { margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); }
 
@@ -2514,6 +2516,13 @@ input[aria-invalid="true"] { border-color: var(--status-error) !important; }
 .transit-summary-button > span { display:block; }
 .transit-summary-button > .transit-source-badge { display:inline-block; }
 .transit-channel-gates { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+.chart-channel-gates { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+.chart-channel-gates .transit-detail-link { min-width:0; align-content:start; overflow-wrap:anywhere; }
+.chart-channel-gates .transit-detail-link:hover { background:var(--accent-soft); border-color:var(--accent); }
+.chart-channel-gates .detail-label, .chart-channel-gates .detail-name { margin-bottom:0; }
+@media (max-width: 480px) {
+  .chart-channel-gates { grid-template-columns:minmax(0, 1fr); }
+}
 .transit-detail-link { display:grid; gap:10px; text-align:left; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:16px; font:inherit; cursor:pointer; }
 .transit-detail-gate { display:flex; align-items:center; flex-wrap:wrap; }
 .transit-detail-action { font-size:12px; color:var(--accent); text-decoration:underline; }
