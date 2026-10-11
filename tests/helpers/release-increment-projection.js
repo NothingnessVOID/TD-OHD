@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { pentaAddedPaths, assertPentaIntegrationApproval, assertPentaIntegrationSource } from './penta-integration-projection.js';
 import { integrationAddedPaths, waAddedPaths, assertWaIntegrationApproval, assertWaIntegrationSource } from './wa-integration-projection.js';
+import { v2AddedPaths, assertV2SourceApproval, assertV2Source, v2SourceProjection } from './penta-wa-v2-review.js';
 import {issueDetailsProjection} from './issue-details-projection.js';
 import {validationHead,validationPaths,validationProjection} from './release-validation-projection.js';
 import { createHash } from 'node:crypto';
@@ -49,7 +50,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
 export function validateReleaseIncrement(root = auditRoot, { read = file => readFileSync(path.join(root, file)), files = null } = {}) {
   const reviewed = validateIncrementManifest(read(incrementManifestPath));
   const historicalExpected = [...new Set([...git('ls-tree', '-r', '--name-only', incrementHead).toString().trim().split('\n').filter(protectedPath), ...validationPaths])].sort();
-  const expected = [...historicalExpected, ...integrationAddedPaths].sort();
+  const expected = [...historicalExpected, ...integrationAddedPaths, ...v2AddedPaths].sort();
   if (!files) {
     const walk = relative => readdirSync(path.join(root, relative), { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? walk(`${relative}/${entry.name}`) : [`${relative}/${entry.name}`]);
     files = ['src', 'engine-core', 'engine-tools', 'engine-wasm', 'jovian-engine', 'scripts', 'third_party', 'public/transit-data'].flatMap(walk).filter(file => !/(^|\/)(bin|obj|node_modules)\//.test(file));
@@ -58,15 +59,20 @@ export function validateReleaseIncrement(root = auditRoot, { read = file => read
     files = files.filter(file => !ignored.has(file) || expected.includes(file)).concat(['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production']);
   }
   assert.deepEqual(files.slice().sort(), expected, 'Unreviewed increment source inventory');
+  assertV2SourceApproval();
   assertPentaIntegrationApproval();
   assertWaIntegrationApproval();
   for (const file of expected) {
+    if (v2AddedPaths.includes(file)) {
+      assertV2Source(read(file), file);
+      continue;
+    }
     if (waAddedPaths.includes(file)) {
-      assertWaIntegrationSource(read(file), file);
+      assertWaIntegrationSource(v2SourceProjection(read(file), file), file);
       continue;
     }
     if (pentaAddedPaths.includes(file)) {
-      assertPentaIntegrationSource(read(file), file);
+      assertPentaIntegrationSource(v2SourceProjection(read(file), file), file);
       continue;
     }
     assert.equal(sha256(issueDetailsProjection(read(file), file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
