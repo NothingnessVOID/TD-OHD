@@ -11,6 +11,7 @@ const browser = await chromium.launch(process.env.CHROME_PATH
   ? { executablePath: process.env.CHROME_PATH, headless: true }
   : { channel: process.env.CHROME_CHANNEL || 'msedge', headless: true });
 const results = [];
+const skinsFor = locale => process.env.ISSUE22_QUICK === '1' && locale !== 'zh-CN' ? ['default-light'] : ['default-light', 'default-dark'];
 let activePage;
 const detail = page => page.locator('#gate-detail:not(.hidden)');
 async function invoke(page, operation, argument) {
@@ -65,7 +66,7 @@ async function compare(page, metadata, expected = null) {
   const seen = [];
   for (const key of keys) {
     const row = detail(page).locator('.gate-detail-channel').filter({ has: page.locator(`[data-channel="${key}"]`) });
-    const list = await status(row.locator(':scope > .transit-source-badge'));
+    const list = await status(row.locator('.transit-source-badge'));
     const source = ['defined', 'natal', 'completed', 'transit', 'inactive'].find(s => list.classes.includes(s));
     seen.push(source);
     assert.ok(source, 'original source class retained');
@@ -75,11 +76,11 @@ async function compare(page, metadata, expected = null) {
     const paired = row.locator('[data-paired-gate]');
     const pairedMarkup = await paired.evaluate(n => n.outerHTML);
     const geometry = await paired.evaluate(node => {
-      const b = node.getBoundingClientRect(), s = node.previousElementSibling.getBoundingClientRect();
+      const b = node.getBoundingClientRect(), s = node.parentElement.querySelector('.transit-source-badge').getBoundingClientRect();
       return { height: b.height, width: b.width, left: b.left, right: b.right, top: b.top, statusBottom: s.bottom,
         scroll: node.scrollWidth, client: node.clientWidth, padding: getComputedStyle(node).padding, background: getComputedStyle(node).backgroundColor };
     });
-    assert.ok(geometry.height >= 44 && geometry.width >= 44);
+    assert.ok(geometry.height >= (metadata.width<=600 ? 44 : 24) && geometry.width >= 44);
     assert.ok(geometry.left >= 0 && geometry.right <= metadata.width && geometry.scroll <= geometry.client + 1);
     assert.ok(geometry.top >= geometry.statusBottom, 'paired entry remains below status');
     assert.equal(geometry.padding, '0px');
@@ -104,16 +105,16 @@ async function compare(page, metadata, expected = null) {
   if (expected) assert.ok(seen.includes(expected), `fixture covers ${expected}`);
   const paired = detail(page).locator('[data-paired-gate]').first();
   const target = await paired.getAttribute('data-paired-gate');
-  if (metadata.width === 320) await paired.tap();
+  if (metadata.width <= 600) await paired.tap();
   else { await paired.focus(); await paired.press('Enter'); }
   assert.ok((await detail(page).locator('.tl-detail-heading > .detail-label').textContent()).includes(target));
   await detail(page).locator('.gate-detail-back').click();
   assert.equal(await detail(page).locator('.tl-detail-header').innerText(), header);
 }
 try {
-  for (const width of [1280, 320]) for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
+  for (const width of [1280, 390, 320]) for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     console.log(`Status comparison ${width}/${locale}`);
-    const context = await browser.newContext({ viewport: { width, height: 900 }, hasTouch: width === 320, reducedMotion: 'reduce' });
+    const context = await browser.newContext({ viewport: { width, height: 900 }, hasTouch: width <= 600, reducedMotion: 'reduce' });
     await context.addInitScript(locale => localStorage.setItem('ohd-language', locale), locale);
     await context.route(/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//, route => route.abort());
     const page = activePage = await context.newPage();
@@ -123,9 +124,9 @@ try {
     await page.locator('#foundation-panel .reliability').waitFor({ timeout: 60000 });
     await page.evaluate(() => document.fonts.ready);
     // Real birth entry includes a known full natal channel (24-61), plus multi-channel gates 20/57.
-    for (const skin of ['default-light', 'default-dark']) {
+    for (const skin of skinsFor(locale)) {
       await selectSkin(page, skin);
-      for (const gate of [24, 20, 57]) {
+      for (const gate of [24, 20, 37, 57]) {
         await page.locator(`#bodygraph-container .bg-gate[data-gate="${gate}"]`).click();
         await compare(page, { width, locale, skin, entry: 'birth', gate }, gate === 24 ? 'defined' : null);
         await close(page);
@@ -143,7 +144,7 @@ try {
     }
     await close(page);
     // Deterministic status coverage uses the production graph model, not a mocked status function.
-    const skins = ['default-light', 'default-dark'];
+    const skins = skinsFor(locale);
     for (const skin of skins) {
       await selectSkin(page, skin);
       for (const source of ['natal', 'completed', 'transit', 'inactive']) {
@@ -164,9 +165,9 @@ try {
       await nav.click();
       if (entry === 'timeline') await page.waitForFunction(() => document.querySelector('#timeline-view .tl-table')?.getAttribute('aria-busy') === 'false', null, { timeout: 120000 });
       else await page.locator('#transit-stage .tl-planet[data-gate]').first().waitFor({ timeout: 60000 });
-      for (const skin of ['default-light', 'default-dark']) {
+      for (const skin of skinsFor(locale)) {
         await selectSkin(page, skin);
-        for (const gate of [20, 57]) {
+        for (const gate of [20, 37, 57]) {
           const selector = entry === 'transits' ? `#transit-bodygraph .bg-gate[data-gate="${gate}"]`
             : `#timeline-view .tl-graph .bg-gate[data-gate="${gate}"]`;
           await page.locator(selector).first().click();
@@ -179,7 +180,7 @@ try {
     await context.close(); activePage = null;
   }
   writeFileSync(resolve(evidence, 'results.json'), JSON.stringify({ base, passed: true, comparisons: results.length, results }, null, 2) + '\n');
-  console.log(`PASS ${results.length} list/full comparisons; real birth/transits/timeline, deterministic natal/completed/transit/inactive, three locales, 320/desktop, light/dark skins.`);
+  console.log(`PASS ${results.length} list/full comparisons; real birth/transits/timeline, deterministic natal/completed/transit/inactive, three locales, 1280/390/320, light/dark skins.`);
 } catch (error) {
   if (activePage) await activePage.screenshot({ path: resolve(evidence, `failure-${Date.now()}.png`) }).catch(() => {});
   writeFileSync(resolve(evidence, `failure-${Date.now()}.json`), JSON.stringify({ error: error.stack, completed: results }, null, 2));

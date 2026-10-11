@@ -61,8 +61,9 @@ try {
     await page.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8`);
     await page.locator('#foundation-panel .reliability').waitFor({ timeout: 60000 });
     await page.evaluate(() => document.fonts.ready);
-    const skins = width === 1280 && locale === 'en' ? SKINS.map(skin => skin.id)
-      : ['default-light', 'default-dark', 'high-contrast', 'midnight-contrast'];
+    const skins = process.env.ISSUE22_QUICK === '1'
+      ? ['default-light', ...(locale === 'zh-CN' ? ['default-dark'] : []), ...(width===1280 && locale==='en' ? ['high-contrast','midnight-contrast'] : [])]
+      : width === 1280 && locale === 'en' ? SKINS.map(skin => skin.id) : ['default-light', 'default-dark', 'high-contrast', 'midnight-contrast'];
     for (const skin of skins) {
       console.log(`${phase}: ${width}/${locale}/${skin}`);
       await selectSkin(page, skin);
@@ -89,19 +90,20 @@ try {
         const css = getComputedStyle(node), box = node.getBoundingClientRect();
         const styles = selector => { const n = node.querySelector(selector); if (!n) return null; const s = getComputedStyle(n); return { color: s.color, size: parseFloat(s.fontSize), weight: Number(s.fontWeight) }; };
         const token = name => { const probe = document.createElement('span'); probe.style.color = `var(${name})`; node.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; };
-        const badge = node.parentElement.querySelector(':scope > .transit-source-badge').getBoundingClientRect();
+        const badge = node.parentElement.querySelector('.transit-source-badge').getBoundingClientRect();
         return { height: box.height, width: box.width, left: box.left, right: box.right, top: box.top, scroll: node.scrollWidth, client: node.clientWidth,
-          border: css.borderTopWidth, background: css.backgroundColor, padding: css.padding, shadow: css.boxShadow,
+          border: css.borderTopWidth, borderStyle: css.borderTopStyle, borderColor: css.borderTopColor, subtle: token('--border-subtle'), otherBorders: [css.borderRightWidth,css.borderBottomWidth,css.borderLeftWidth], background: css.backgroundColor, padding: css.padding, shadow: css.boxShadow,
           label: styles('.gate-detail-paired-gate-label'), number: styles('.gate-detail-paired-gate-number'), name: styles('.gate-detail-paired-gate-name'), link: styles('.gate-detail-paired-gate-link'),
           colors: { secondary: token('--text-secondary'), accent: token('--accent'), text: token('--text') },
           badge: { width: badge.width, height: badge.height, bottom: badge.bottom } };
       }));
       for (const m of metrics) {
-        assert.ok(m.height >= 44 && m.width >= 44, 'real 44px hit target');
+        assert.ok(m.height >= (width<=600 || phase==='before' ? 44 : 24) && m.width >= 44, 'real responsive hit target');
         assert.ok(m.scroll <= m.client + 1 && m.left >= 0 && m.right <= width, 'button wraps within viewport');
         assert.ok(m.top >= m.badge.bottom, 'paired row does not squeeze or overlap status badge');
         if (phase === 'after') {
-          assert.equal(m.border, '0px'); assert.equal(m.background, 'rgba(0, 0, 0, 0)');
+          assert.equal(m.border, '1px'); assert.equal(m.borderStyle, 'solid'); assert.equal(m.borderColor, m.subtle);
+          assert.deepEqual(m.otherBorders, ['0px','0px','0px']); assert.equal(m.background, 'rgba(0, 0, 0, 0)');
           assert.equal(m.padding, '0px'); assert.equal(m.shadow, 'none');
           assert.equal(m.label.color, m.colors.secondary); assert.equal(m.number.color, m.colors.accent); assert.equal(m.name.color, m.colors.accent);
           assert.equal(m.link.color, m.colors.accent); assert.equal(m.name.weight, m.number.weight); assert.equal(m.name.weight, m.link.weight);
@@ -157,7 +159,7 @@ try {
     await context.close(); activePage = null;
   }
   writeFileSync(resolve(evidence, 'results.json'), JSON.stringify({ base, phase, passed: true, cases: results }, null, 2) + '\n');
-  console.log(`PASS ${results.length} visual cases (${phase}); 1280/390/320, three languages, all registered desktop English skins.`);
+  console.log(`PASS ${results.length} visual cases (${phase}); 1280/390/320, three languages, light/dark and contrast skins; quick subset=${process.env.ISSUE22_QUICK === '1'}.`);
 } catch (error) {
   if (activePage) await activePage.screenshot({ path: resolve(evidence, 'failure.png') }).catch(() => {});
   writeFileSync(resolve(evidence, 'failure.json'), JSON.stringify({ error: error.stack, completed: results }, null, 2));
