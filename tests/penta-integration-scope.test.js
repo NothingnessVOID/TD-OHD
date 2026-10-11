@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
+import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
