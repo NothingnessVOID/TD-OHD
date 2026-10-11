@@ -60,7 +60,7 @@ export function mountWa(container, options = {}) {
   function pairCoverage(pair, id) { const gates = id.split('-'); return gates.filter(gate => pairHolders(pair, gate).length).length; }
   function resultHtml() {
     if (!result) return `<p class="wa-empty" data-wa-empty>${text('Wa empty result')}</p>`;
-    return `<div class="wa-themes">${WA_PAIR_IDS.map(id=>{ const pair=pairById(id), coverage=pairCoverage(pair,id); return `<button type="button" class="wa-theme" data-pair="${id}"><span class="wa-source-label">Wa</span><strong>${esc(waPairLabel(id,getLocale()))}</strong><span>${text(coverage===2?'Both endpoints present':coverage===1?'Partial endpoint coverage':'No endpoint coverage')}</span><small>${id.split('-').map(gate=>`${gate}: ${pairHolders(pair,gate).length}`).join(' · ')}</small></button>`; }).join('')}</div><section class="wa-comparison"><h3>${text('Compared with previous ready analysis')}</h3>${previousReady ? comparison.length ? `<ul>${comparison.map(change=>`<li>${esc(changeText(change))}</li>`).join('')}</ul>` : `<p>${text('No structural changes')}</p>` : `<p>${text('First ready analysis')}</p>`}</section>`;
+    return `${result.uncertainty.uncertainMemberIds.length?`<p class="wa-conditional">≈ ${text('Wa conditional result')}</p>`:''}<div class="wa-themes">${WA_PAIR_IDS.map(id=>{ const pair=pairById(id), coverage=pairCoverage(pair,id); return `<button type="button" class="wa-theme" data-pair="${id}"><span class="wa-source-label">Wa</span><strong>${esc(waPairLabel(id,getLocale()))}</strong><span>${text(coverage===2?'Both endpoints present':coverage===1?'Partial endpoint coverage':'No endpoint coverage')}</span><small>${id.split('-').map(gate=>`${gate}: ${pairHolders(pair,gate).length}`).join(' · ')}</small></button>`; }).join('')}</div><section class="wa-comparison"><h3>${text('Compared with previous ready analysis')}</h3>${previousReady ? comparison.length ? `<ul>${comparison.map(change=>`<li>${esc(changeText(change))}</li>`).join('')}</ul>` : `<p>${text('No structural changes')}</p>` : `<p>${text('First ready analysis')}</p>`}</section>`;
   }
   function changeText(change) {
     if (change.kind === 'contribution') return `${waPairLabel(change.id,getLocale())}: ${t('Contribution changed')}`;
@@ -108,7 +108,7 @@ export function mountWa(container, options = {}) {
         if (!person) throw Error(`${member.labelSnapshot}: ${t('Missing reference')}`);
         const birth=effectiveTeamBirth(birthFromPerson(person));
         if (!validateBirth({...birth,timeUnknown:false})) throw Error(`${person.name}: ${t('Missing assigned data')}`);
-        return {memberId:id,personId:person.id,displayName:person.name,timeUnknown:!!person.timeUnknown,personSnapshot:JSON.stringify(person),birth};
+        return {memberId:id,personId:person.id,displayName:person.name,timeUnknown:!!person.timeUnknown,birthTimeConfidence:person.timeUnknown?'estimated':person.birthTime?'exact':'not_recorded',personSnapshot:JSON.stringify(person),birth};
       });
       const prepared=[];
       for (const candidate of candidates) {
