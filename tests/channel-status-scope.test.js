@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
+import { pairedCardLayoutBase, pairedCardLayoutProjection } from './helpers/paired-card-layout-projection.js';
 import { channelStatusBase, channelStatusHead, channelStatusPaths, channelStatusProjection } from './helpers/channel-status-projection.js';
 import { pairedGateVisualBase, pairedGateVisualHead, pairedGateVisualProjection } from './helpers/paired-gate-visual-projection.js';
 import { issueDetailsBase, issueDetailsHead, issueDetailsProjection } from './helpers/issue-details-projection.js';
@@ -47,7 +48,7 @@ test('channel status pins only chart and projects base94 before unchanged paired
   assert.equal(channelStatusHead, '73b926bbc606b30242610d83feeaf6ba414a0228');
   assert.deepEqual(channelStatusPaths, [file]);
   const current = read(file);
-  assert.deepEqual(current, snapshotBytes(channelStatusHead, file));
+  assert.deepEqual(pairedCardLayoutProjection(current, file), snapshotBytes(channelStatusHead, file));
   assert.notDeepEqual(current, snapshotBytes(channelStatusBase, file));
   assert.deepEqual(snapshotBytes(channelStatusBase, file), snapshotBytes(pairedGateVisualHead, file));
   assert.deepEqual(channelStatusProjection(current, file), snapshotBytes(channelStatusBase, file));
@@ -98,7 +99,14 @@ test('restoring base94, paired or issue snapshots cannot bypass the channel-stat
 });
 
 test('other paths pass through identically while historical and inventory guards stay active', () => {
-  for (const p of ['src/styles.css', 'src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
+  const css = 'src/styles.css';
+  assert.deepEqual(channelStatusProjection(read(css), css), snapshotBytes(pairedCardLayoutBase, css));
+  const mutatedCss = Buffer.concat([read(css), Buffer.from('\n/* outside channel status scope */\n')]);
+  assert.throws(() => channelStatusProjection(mutatedCss, css), /Unreviewed increment source/);
+  assert.throws(() => validateReleaseIncrement(auditRoot, {
+    files: inventory, read: p => p === css ? mutatedCss : read(p),
+  }), /Unreviewed increment source/);
+  for (const p of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(p);
     assert.strictEqual(channelStatusProjection(current, p), current);
     const mutated = Buffer.concat([current, Buffer.from('\n// outside channel status scope\n')]);

@@ -94,6 +94,8 @@ test('CSS changes only the exact paired-gate block including hover media; every 
 
 test('paired hit target, transparent styling, text hierarchy and keyboard/hover regressions fail at every entry', () => {
   const file = 'src/styles.css';
+  // Retain all historical negative fixtures after compact normalizes current CSS to cc6.
+  const historical = channelStatusProjection(read(file), file);
   for (const [before, after] of [
     ['min-height: 44px;\n  margin-top: 2px;', 'min-height: 24px;\n  margin-top: 2px;'],
     ['margin-top: 2px;\n  padding: 0;', 'margin-top: 8px;\n  padding: 0;'],
@@ -102,8 +104,10 @@ test('paired hit target, transparent styling, text hierarchy and keyboard/hover 
     ['.gate-detail-paired-gate:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }', '.gate-detail-paired-gate:focus-visible { outline: none; }'],
     ['.gate-detail-paired-gate:hover .gate-detail-paired-gate-number { text-decoration: underline;', '.gate-detail-paired-gate:hover .gate-detail-paired-gate-number { text-decoration: none;'],
   ]) {
-    assert.ok(read(file).toString().includes(before), `Regression anchor exists: ${before}`);
-    rejectsSource(file, Buffer.from(read(file).toString().replace(before, after)));
+    assert.ok(historical.toString().includes(before), `Regression anchor exists: ${before}`);
+    const mutated = Buffer.from(historical.toString().replace(before, after));
+    assert.notDeepEqual(mutated, historical, 'Historical negative must mutate its fixture');
+    rejectsSource(file, mutated);
   }
 });
 
