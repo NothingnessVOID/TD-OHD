@@ -94,7 +94,7 @@ export function mountWa(container, options = {}) {
       return {kind:!change.from?'join':!change.to?'leave':'move',name:nameOf(member),from:destination(before.snapshot,change.memberId),to:destination(after.snapshot,change.memberId),before:before.snapshot,after:after.snapshot};
     });
     for(const group of diff.pentas)changes.push({kind:'group',name:destinationName(after.snapshot,group.pentaId)});
-    for(const member of diff.members || [])changes.push({kind:'member',name:nameOf(after.snapshot.members.find(item=>item.memberId===member.memberId)||before.snapshot.members.find(item=>item.memberId===member.memberId))});
+    for(const member of diff.memberChanges)changes.push({kind:'member',name:nameOf(after.snapshot.members.find(item=>item.memberId===member.memberId)||before.snapshot.members.find(item=>item.memberId===member.memberId))});
     for(const pair of diff.communication.pairs)changes.push({kind:'contribution',id:pair.channelId});
     return changes;
   }
@@ -136,7 +136,7 @@ export function mountWa(container, options = {}) {
     try {
       const saved=await repository.save(snapshot,{expectedRevision:asNew?0:snapshot.revision});
       if(disposed||token!==saveGeneration)return;
-      if(capturedGeneration===generation){draft=clone(saved);dirty=false;} else if(!asNew && draft.organizationId===snapshot.organizationId) { for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key]; }
+      if(capturedGeneration===generation){if(asNew){clearAnalysis();previousReady=null;comparison=[];}draft=clone(saved);dirty=false;} else if(!asNew && draft.organizationId===snapshot.organizationId) { for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key]; }
       notice='Wa saved';
     }catch(error){if(token===saveGeneration&&!disposed)failure(error);}finally{if(token===saveGeneration&&!disposed){saving=false;render();}}
   }
@@ -144,22 +144,22 @@ export function mountWa(container, options = {}) {
     closeLayer?.(); const opened=openOperationDialog({content:`<section class="modal wa-operation" aria-label="${text(title)}"><header><h2>${text(title)}</h2><button type="button" data-close aria-label="${text('Close')}">×</button></header>${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(closeLayer===opened.close)closeLayer=null;}});closeLayer=opened.close;return opened;
   }
   async function savedList() {
-    const token=++operation;
-    try { const list=await repository.list(); if(disposed||token!==operation)return;
+    const token=++operation, inputGeneration=generation;
+    try { const list=await repository.list(); if(disposed||token!==operation||inputGeneration!==generation)return;
       const {root,close}=layer('Saved organizations',list.length?`<div class="wa-saved-list">${list.map(item=>`<button type="button" data-load="${esc(item.organizationId)}">${esc(item.title || t('Wa organization'))} · r${item.revision}</button>`).join('')}</div>`:`<p>${text('No saved organizations')}</p>`);
       root.addEventListener('click',async event=>{const id=event.target.closest('[data-load]')?.dataset.load;if(!id)return;
-        try{if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;const loaded=await repository.get(id);if(!loaded||disposed||!root.isConnected)return;close();load(loaded);}catch(error){root.querySelector('.wa-layer-error').textContent=error.message;}});
+        try{if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;const requestGeneration=generation;const loaded=await repository.get(id);if(!loaded||disposed||!root.isConnected||token!==operation||requestGeneration!==generation)return;close();load(loaded);}catch(error){root.querySelector('.wa-layer-error').textContent=error.message;}});
     }catch(error){failure(error);render();}
   }
   async function history() {
-    const token=++operation, organizationId=draft.organizationId;
-    try { const versions=await repository.history(organizationId);if(disposed||token!==operation)return;
+    const token=++operation, organizationId=draft.organizationId, requestGeneration=generation;
+    try { const versions=await repository.history(organizationId);if(disposed||token!==operation||requestGeneration!==generation||organizationId!==draft.organizationId)return;
       const {root,close}=layer('Revision history',`<p>${text('Wa restore note')}</p>${versions.length?`<div class="wa-saved-list">${versions.map(item=>`<button type="button" data-restore="${esc(item.revisionId)}">${text('Restore revision')} · r${item.revision}<small>${esc(item.title)} · ${esc(item.savedAt)}</small></button>`).join('')}</div>`:`<p>${text('No revision history')}</p>`}`);
       root.addEventListener('click',async event=>{const button=event.target.closest('[data-restore]');if(!button||button.disabled)return;
-        try {if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;const expectedRevision=draft.revision, inputGeneration=generation;button.disabled=true;const restored=await repository.restore(organizationId,button.dataset.restore,{expectedRevision});if(disposed||!root.isConnected)return;if(inputGeneration!==generation){notice='Wa input changed';close();render();return;}close();load(restored);notice='Wa restored';render();}catch(error){failure(error);root.querySelector('.wa-layer-error').textContent=t(notice);button.disabled=false;}});
+        try {if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;const expectedRevision=draft.revision, inputGeneration=generation;button.disabled=true;const restored=await repository.restore(organizationId,button.dataset.restore,{expectedRevision});if(disposed||!root.isConnected)return;if(inputGeneration!==generation){if(draft.organizationId===organizationId){for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=restored[key];}notice='Wa input changed';close();render();return;}close();load(restored);notice='Wa restored';render();}catch(error){failure(error);root.querySelector('.wa-layer-error').textContent=t(notice);button.disabled=false;}});
     }catch(error){failure(error);render();}
   }
-  function load(snapshot) { preserveReady();clearAnalysis();if(snapshot.organizationId!==draft.organizationId)previousReady=null;draft=clone(snapshot);dirty=false;notice='';errorText='';render(); }
+  function load(snapshot) { operation++;closeLayer?.();preserveReady();clearAnalysis();if(snapshot.organizationId!==draft.organizationId)previousReady=null;draft=clone(snapshot);dirty=false;notice='';errorText='';render(); }
   async function onClick(event) {
     const button=event.target.closest('button');if(!button||!container.contains(button))return;
     try {
