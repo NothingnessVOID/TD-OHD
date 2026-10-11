@@ -3,7 +3,7 @@ import data from './penta-v1.json' with { type: 'json' };
 // Original package records and review passes stay intact in the data file.
 export const pentaPackage = data;
 export const pentaContentRecords = data.records;
-export const PENTA_CONTENT_SOURCE = 'penta-wa-development-v1';
+export const PENTA_CONTENT_SOURCE = 'penta-wa-development-v2';
 export const PENTA_CONTENT_LOCALES = Object.freeze(['zh-CN', 'zh-Hant', 'en']);
 export const pentaContent = Object.freeze(Object.fromEntries(PENTA_CONTENT_LOCALES.map(locale => [
   locale, Object.fromEntries(data.records.map(item => [item.objectId, item.locales[locale]]))
