@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { pairedGateVisualProjection } from './paired-gate-visual-projection.js';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -31,6 +32,7 @@ assert.deepEqual(changed, [...issueDetailsPaths].sort(), 'Unreviewed issue detai
 
 /** Validate supplied current bytes before historical projection; unknown paths retain all older guards. */
 export function issueDetailsProjection(source, file) {
+  source = pairedGateVisualProjection(source, file);
   if (!issueDetailsPaths.includes(file)) return source;
   assert.equal(sha(source), sha(bytes(issueDetailsHead, file)), `Unreviewed increment source: ${file} (issue details)`);
   return bytes(issueDetailsBase, file);

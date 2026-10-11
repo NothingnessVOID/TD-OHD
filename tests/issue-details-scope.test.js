@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
+import { pairedGateVisualProjection } from './helpers/paired-gate-visual-projection.js';
 import { issueDetailsBase, issueDetailsHead, issueDetailsPaths, issueDetailsProjection } from './helpers/issue-details-projection.js';
 import { auditRoot, incrementBase, incrementManifestPath, snapshotBytes, incrementProjection, validateReleaseIncrement } from './helpers/release-increment-projection.js';
 
@@ -21,7 +22,7 @@ test('issue details pins exact five source paths and validates before both histo
   assert.equal(issueDetailsHead, 'b11cb649040c7b2e016758b1c0a0e34f71ecaa29');
   assert.deepEqual(issueDetailsPaths, ['src/styles.css', 'src/styles/penta-matrix.css', 'src/views/chart.js', 'src/views/penta-matrix.js', 'src/views/team.js']);
   for (const file of issueDetailsPaths) {
-    assert.deepEqual(read(file), snapshotBytes(issueDetailsHead, file));
+    assert.deepEqual(pairedGateVisualProjection(read(file), file), snapshotBytes(issueDetailsHead, file));
     assert.deepEqual(issueDetailsProjection(read(file), file), snapshotBytes(issueDetailsBase, file));
     assert.deepEqual(incrementProjection(read(file), file), snapshotBytes(incrementBase, file));
   }
