@@ -122,7 +122,8 @@ export function analyzeWa(snapshot, preparedMembers = []) {
     try { activationsByMember.set(memberId, extractTeamActivations(member)); }
     catch (error) { issues.push({ code: error.code ?? 'INVALID_CHART', memberId, path: error.path, message: error.message }); }
     if (member.timeUnknown || member.birthTimeConfidence === 'estimated') estimatedMemberIds.push(memberId);
-    if (member.timeUnknown || ['estimated', 'unknown', 'not_recorded'].includes(member.birthTimeConfidence)) uncertainMemberIds.push(memberId);
+    if (member.timeUnknown || member.birthTimeConfidence === undefined
+      || ['estimated', 'unknown', 'not_recorded'].includes(member.birthTimeConfidence)) uncertainMemberIds.push(memberId);
   }
   // Do not produce partial coverage or plausible zero values when any assigned input is unready.
   if (issues.length) return { ...base, status: 'not_ready', issues, memberIds, poolMemberIds };
@@ -186,7 +187,17 @@ export function diffWa(previous, next) {
     const before = previous.communication.pairs.find(pair => pair.channelId === after.channelId);
     return equal(before, after) ? [] : [{ channelId: after.channelId, from: before, to: after }];
   });
-  return { status: 'ready', organizationId: next.organizationId, participants,
+  const derived = member => member ? { gateIds: member.gateIds, gateContributions: member.gateContributions,
+    activeChannelIds: member.activeChannelIds, activationCount: member.activationCount,
+    pairIds: member.pairIds, selfCompletePairIds: member.selfCompletePairIds } : null;
+  const memberChanges = sorted(new Set([...previous.members, ...next.members].map(member => member.memberId))).flatMap(memberId => {
+    const before = derived(previous.members.find(member => member.memberId === memberId));
+    const after = derived(next.members.find(member => member.memberId === memberId));
+    return equal(before, after) ? [] : [{ memberId, before, after,
+      gateIds: delta(before?.gateIds ?? [], after?.gateIds ?? []),
+      activeChannelIds: delta(before?.activeChannelIds ?? [], after?.activeChannelIds ?? []) }];
+  });
+  return { status: 'ready', organizationId: next.organizationId, participants, memberChanges,
     addedMemberIds: participants.added, removedMemberIds: participants.removed,
     pool: delta(previous.poolMemberIds, next.poolMemberIds),
     alpha: { changed: previous.alphaId !== next.alphaId, from: previous.alphaId, to: next.alphaId },
