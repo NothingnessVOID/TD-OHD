@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { finalAuditHead } from './penta-wa-v2-final-audit-approval.js';
+import { followupHistoricalSource } from './penta-wa-v2-followup.js';
 const root = path.resolve(import.meta.dirname, '../..');
 const preparationHead = '771337b5c00f1db106d987914a352012ce844ece';
 const historicalHead = '953959249bd7409c5b4d1042fc2ca38f943c39e5';
@@ -38,7 +39,7 @@ export function assertFinalAuditSnapshot(ref) {
     .trim().split('\n').filter(Boolean).sort(), [...finalAdaptedAuditPaths, ...finalNewAuditPaths].sort(),
   'Unreviewed final audit snapshot paths');
   for (const file of [...finalAdaptedAuditPaths, ...finalNewAuditPaths].filter(file => file !== approvalPath))
-    assert.deepEqual(read(file), bytes(ref, file), `Unreviewed historical audit source: ${file}`);
+    assert.deepEqual(followupHistoricalSource(file, read(file)), bytes(ref, file), `Unreviewed historical audit source: ${file}`);
   assert.equal(read(approvalPath).toString(), bytes(ref, approvalPath).toString()
     .replace("'PENDING_PARENT_FINAL_AUDIT_APPROVAL'", `'${finalAuditHead}'`), 'Unreviewed final audit approval edits');
   // A records and approval remain immutable even though the runtime adapter gains a new outer layer.
@@ -53,6 +54,7 @@ export function assertFinalAuditApproval() {
 export function finalAuditHistoricalSource(file, source = read(file)) {
   if (!finalAdaptedAuditPaths.includes(file)) return source;
   assertFinalAuditApproval();
+  source = followupHistoricalSource(file, source);
   assert.deepEqual(source, bytes(finalAuditHead, file), `Unreviewed historical audit source: ${file}`);
   return bytes(historicalHead, file);
 }
