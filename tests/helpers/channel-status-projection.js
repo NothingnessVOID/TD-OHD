@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { pairedCardLayoutProjection } from './paired-card-layout-projection.js';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -25,6 +26,7 @@ assert.deepEqual(changed, [...channelStatusPaths], 'Unreviewed channel-status so
 
 /** Accept only fixed new chart bytes, then restore base94 before the existing paired layer. */
 export function channelStatusProjection(source, file) {
+  source = pairedCardLayoutProjection(source, file);
   if (!channelStatusPaths.includes(file)) return source;
   assert.equal(sha(source), sha(bytes(channelStatusHead, file)), `Unreviewed increment source: ${file} (channel status)`);
   return bytes(channelStatusBase, file);
