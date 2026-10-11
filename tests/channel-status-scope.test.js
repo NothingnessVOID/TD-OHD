@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
+import { integrationAddedPaths, finalSourceProjection } from './helpers/penta-wa-v2-final-review.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -111,7 +111,7 @@ test('other paths pass through identically while historical and inventory guards
   }), /Unreviewed increment source/);
   for (const p of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(p);
-    assert.deepEqual(channelStatusProjection(current, p), pentaIntegrationProjection(current, p));
+    assert.deepEqual(channelStatusProjection(current, p), pentaIntegrationProjection(finalSourceProjection(current, p), p));
     const mutated = Buffer.concat([current, Buffer.from('\n// outside channel status scope\n')]);
     if (pentaIntegrationPaths.includes(p)) assert.throws(() => channelStatusProjection(mutated, p), /Unreviewed increment source/);
     else assert.strictEqual(channelStatusProjection(mutated, p), mutated);

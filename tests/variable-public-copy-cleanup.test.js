@@ -1,4 +1,5 @@
 import {preservedSource, releaseCandidate} from './helpers/knowledge-release-contract.js';
+import {incrementProjection} from './helpers/release-increment-projection.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -47,6 +48,12 @@ test('all 29 public Variable articles and rendered bodies contain zero internal 
 test('conflict records, source evidence, calculations, Tone mapping and all renderer behavior remain byte-identical',()=>{
  for(const path of ['docs/knowledge-layer/variable-29-conflicts.md','tests/fixtures/variable-29-source-zh-CN.md','src/lib/knowledge/detail-renderer.js','src/lib/knowledge/detail-controller.js','src/lib/knowledge/detail-access.css','src/lib/knowledge/human-design-foundation.js','src/lib/variable-arrows.js','src/lib/chart-engine/sharp-contract.js','src/lib/human-design/variable-data.js','engine-core/TransitCore.cs']){
   const bytes=readFileSync(new URL('../'+path,import.meta.url));
-  assert.deepEqual(bytes,preservedSource(path,cleanup.baseline),path);
+  const historical=path==='src/lib/knowledge/detail-renderer.js'?incrementProjection(bytes,path):bytes;
+  assert.deepEqual(historical,preservedSource(path,cleanup.baseline),path);
+  if(path==='src/lib/knowledge/detail-renderer.js') {
+   const flipped=Buffer.from(bytes);flipped[0]^=1;
+   for(const changed of [flipped,Buffer.concat([bytes,Buffer.from('\n// unreviewed renderer\n')])])
+    assert.throws(()=>incrementProjection(changed,path),error=>error.code==='ERR_ASSERTION'&&error.message.startsWith(`Unreviewed increment source: ${path}`));
+  }
  }
 });
