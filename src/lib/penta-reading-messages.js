@@ -2,6 +2,9 @@ import { registerMessages } from './i18n.js';
 
 const messages = {
   en: {
+    'Penta knowledge': 'Penta knowledge',
+    'Penta mechanisms': 'Penta mechanisms',
+    'Penta more mechanisms': 'More Penta mechanisms',
     'Penta reading title': 'Penta group analysis',
     'Penta reading members': 'Members',
     'Penta reading gates covered': 'Activated gates',
@@ -28,6 +31,9 @@ const messages = {
     'Penta repair guide': 'Correct the person highlighted on the left to continue. The other selected members are kept.'
   },
   'zh-CN': {
+    'Penta knowledge': 'Penta 知识',
+    'Penta mechanisms': 'Penta 机制',
+    'Penta more mechanisms': '更多 Penta 机制',
     'Penta reading title': 'Penta 群体分析',
     'Penta reading members': '群体人数',
     'Penta reading gates covered': '已激活闸门',
@@ -54,6 +60,9 @@ const messages = {
     'Penta repair guide': '修正左侧提示的人物资料后即可继续，其他已选成员会保留。'
   },
   'zh-Hant': {
+    'Penta knowledge': 'Penta 知識',
+    'Penta mechanisms': 'Penta 機制',
+    'Penta more mechanisms': '更多 Penta 機制',
     'Penta reading title': 'Penta 群體分析',
     'Penta reading members': '群體人數',
     'Penta reading gates covered': '已啟動閘門',

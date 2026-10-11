@@ -17,7 +17,7 @@ export function referenceEntries() {
   return [
     ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', category: 'basic', id,
       name: activationConceptName(id, getLocale()), aliases: activationConceptAliases(id) })),
-    ...listKnowledgeEntries().filter(entry => entry.objectType !== 'cognition').map(entry => ({
+    ...listKnowledgeEntries({ includePenta: true }).filter(entry => entry.objectType !== 'cognition').map(entry => ({
       kind: 'knowledge', category: entry.objectType,
       id: entry.id, name: entry.name, summary: entry.summary?.content ?? '', hasDetail: entry.hasDetail,
       objectType: entry.objectType, objectId: entry.objectId, aliases: [entry.objectId, entry.id]
@@ -53,7 +53,9 @@ export function searchReference(query, category = 'all') {
   const text = normalized(query);
   const tokens = text.split(' ').filter(Boolean);
   return referenceEntries().filter(entry => {
-    if (category !== 'all' && category !== (entry.category ?? entry.kind) && category !== entry.kind) return false;
+    if (category === 'penta-mechanism') {
+      if (entry.objectType !== 'penta' || /^(gate|channel):/.test(entry.objectId)) return false;
+    } else if (category !== 'all' && category !== (entry.category ?? entry.kind) && category !== entry.kind) return false;
     if (!tokens.length) return true;
     const values = [entry.id, entry.name, entry.summary, ...entry.aliases].map(normalized);
     return tokens.every(token => values.some(value => value.includes(token)));
