@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -8,6 +9,7 @@ const read = file => readFileSync(path.join(auditRoot, file));
 import {validationPaths,validationHead} from './helpers/release-validation-projection.js';
 const inventory = execFileSync('git', ['ls-tree','-r','--name-only',incrementHead], {cwd:auditRoot}).toString().trim().split('\n').filter(file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(file) || ['index.html','package.json','package-lock.json','vite.config.js','.env.production'].includes(file));
 inventory.push(...validationPaths.filter(file=>!inventory.includes(file)));
+inventory.push(...pentaAddedPaths);
 const validateMutation = (file, transform) => {
  const original = read(file), mutated = Buffer.from(transform(original.toString()));
  assert.notDeepEqual(mutated, original, 'Mutation must actually change bytes');
@@ -39,8 +41,8 @@ test('storage contract changes are rejected even in an authorized UUID compatibi
  validateMutation('src/lib/profile-storage.js', text => text.replace('createdAt: previous?.createdAt || profile.createdAt || now', 'createdAt: now'));
 });
 test('knowledge review bypass and content mutations cannot be hidden by projection', () => {
- validateMutation('src/lib/shared-object-details.js', text => text.replace("entry.reviewStatus !== 'reviewed'", 'false'));
- validateMutation('src/views/penta-matrix.js', text => text.replace("entry.properties.interpretationStatus !== 'verified'", 'false'));
+ validateMutation('src/lib/knowledge/penta-reading-policy.js', text => text.replace("reviewStatus !== 'reviewed'", 'false'));
+ validateMutation('src/lib/knowledge/penta-reading-policy.js', text => text.replace("if (!policy) return null;", "if (false) return null;"));
  validateMutation('src/lib/knowledge/content/penta.js', text => text+'\n// unreviewed content\n');
 });
 test('unrelated functions and annual integrity checks remain guarded', () => {

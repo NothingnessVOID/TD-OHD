@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
+import { historicalAuditSource } from './helpers/penta-audit-history-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -18,6 +20,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
   || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', pairedCardHeaderBase], { cwd: auditRoot })
   .toString().trim().split('\n').filter(protectedPath);
+inventory.push(...pentaAddedPaths);
 function rejectsSource(file, mutated) {
   assert.notDeepEqual(mutated, read(file), 'Negative case must change current bytes');
   for (const project of projects) assert.throws(() => project(mutated, file), /Unreviewed increment source/);
@@ -184,7 +187,7 @@ test('historical approvals remain immutable except the final entry hook; other p
     'docs/release-increment-8475a4a.json', 'tests/paired-card-layout-scope.test.js',
     'tests/channel-status-scope.test.js', 'tests/paired-gate-visual-scope.test.js',
     'tests/issue-details-scope.test.js', 'tests/release-increment-scope.test.js', 'tests/knowledge-polish.test.js',
-  ]) assert.deepEqual(read(file), snapshotBytes(pairedCardHeaderBase, file), `Historical approval unchanged: ${file}`);
+  ]) assert.deepEqual(historicalAuditSource(file), snapshotBytes(pairedCardHeaderBase, file), `Historical approval unchanged: ${file}`);
   const file = 'tests/helpers/paired-card-final-projection.js';
   const restored = read(file).toString()
     .replace("import { pairedCardHeaderProjection } from './paired-card-header-projection.js';\n", '')
@@ -192,7 +195,8 @@ test('historical approvals remain immutable except the final entry hook; other p
   assert.equal(restored, snapshotBytes(pairedCardHeaderBase, file).toString(), 'Final changes only by the header hook');
   for (const other of ['src/views/team.js', 'src/lib/knowledge/content/penta.js', 'engine-core/TransitCore.cs']) {
     const changed = Buffer.concat([read(other), Buffer.from('\n// outside header scope\n')]);
-    assert.strictEqual(pairedCardHeaderProjection(changed, other), changed);
+    if (pentaIntegrationPaths.includes(other)) assert.throws(() => pairedCardHeaderProjection(changed, other), /Unreviewed increment source/);
+    else assert.strictEqual(pairedCardHeaderProjection(changed, other), changed);
     assert.throws(() => validateReleaseIncrement(auditRoot, {
       files: inventory, read: p => p === other ? changed : read(p),
     }), /Unreviewed increment source/);
