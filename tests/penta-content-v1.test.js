@@ -10,13 +10,13 @@ import { getLocale, setLocale } from '../src/lib/i18n.js';
 const gateIds = [1,2,5,7,8,13,14,15,29,31,33,46].map(n => `hd.penta.gate.${n}`);
 const channelIds = ['1-8','2-14','5-15','7-31','13-33','29-46'].map(id => `hd.penta.channel.${id}`);
 const oldMechanisms = ['introduction','powerColumn','contexts'].map(id => `hd.penta.${id}`);
-const addedMechanisms = ['size-formation','structure-vs-individual','skill-gap','contributions','cross-member','duplicates','three-paths-six-links','alpha-bg5'].map(id => `hd.penta.${id}`);
+const addedMechanisms = ['size-formation','structure-vs-individual','skill-gap','contributions','cross-member','duplicates','three-paths-six-links','alpha-bg5','triggering'].map(id => `hd.penta.${id}`);
 const byId = new Map(pentaContentRecords.map(item => [item.id,item]));
 const query = objectId => ({ domain:'human-design',objectType:'penta',objectId });
 
-test('exact 29 identities retain the original 21 order and computed topology', () => {
+test('exact 30 identities retain the original 21 order and computed topology', () => {
   assert.deepEqual(pentaRecords.map(r=>r.id).sort(), [...gateIds,...channelIds,...oldMechanisms,...addedMechanisms].sort());
-  assert.equal(new Set(pentaRecords.map(r=>r.objectId)).size,29);
+  assert.equal(new Set(pentaRecords.map(r=>r.objectId)).size,30);
   assert.deepEqual(pentaRecords.slice(0,21).map(r=>r.id), [
     ...oldMechanisms,...PENTA_GATES.map(g=>`hd.penta.gate.${g.gate}`),...PENTA_CHANNELS.map(c=>`hd.penta.channel.${c.channelId}`)
   ]);
@@ -40,10 +40,10 @@ test('exact 29 identities retain the original 21 order and computed topology', (
     assert.equal(entry.properties.kind,'channel');
   }
   assert.equal(listKnowledgeEntries().length,70);
-  assert.equal(listKnowledgeEntries({includePenta:true}).length,99);
+  assert.equal(listKnowledgeEntries({includePenta:true}).length,100);
 });
 
-test('all 87 locale records preserve exact independent package fields and Penta gate names', () => {
+test('all 90 locale records preserve exact independent package fields and Penta gate names', () => {
   const original=getLocale();
   try {
     for (const locale of ['zh-CN','zh-Hant','en']) {
@@ -110,11 +110,11 @@ test('missing locale/slot remains missing, and negative review/evidence metadata
 });
 
 test('editorial provenance cannot borrow verified topology and every source reference resolves', () => {
-  const registered=SOURCES['penta-wa-development-v1'];
+  const registered=SOURCES['penta-wa-development-v2'];
   assert.equal(registered.type,'td-ohd');
   assert.equal(registered.humanApproval,false);
   assert.deepEqual(registered.lineage,['td-ohd']);
-  assert.equal(Object.keys(pentaPackage.sourceRegistry).length,14);
+  assert.equal(Object.keys(pentaPackage.sourceRegistry).length,40);
   for (const record of pentaRecords) {
     const item=byId.get(record.id),entry=getKnowledgeEntry(record),props=entry.properties;
     assert.equal(entry.reviewStatus,'reviewed');
@@ -122,7 +122,7 @@ test('editorial provenance cannot borrow verified topology and every source refe
     assert.equal(props.evidence.status,'editorial-reviewed');
     assert.deepEqual(props.editorialReview,{actor:'AI editorial team',status:'complete',humanApproval:false});
     for (const slot of [entry.summary,entry.detail,entry.provenance.name]) {
-      assert.equal(slot.sourceId,'penta-wa-development-v1');
+      assert.equal(slot.sourceId,'penta-wa-development-v2');
       assert.equal(slot.reviewStatus,'reviewed');
       assert.equal(slot.evidenceStatus,'editorial-reviewed');
     }
@@ -146,13 +146,14 @@ test('editorial provenance cannot borrow verified topology and every source refe
 });
 
 test('both review passes retain their own hashes and the final resolution stays nonhuman', () => {
-  const {crossReview,resolution}=pentaPackage.reviewHistory;
+  const historical=pentaPackage.history['penta-wa-development-v1'];
+  const {crossReview,resolution}=historical.reviewHistory;
   assert.equal(crossReview.findings.find(f=>f.id==='ECR-01').applied,false);
   assert.equal(resolution.findings_resolved.find(f=>f.id==='ECR-01').status,'applied_and_checked');
   assert.equal(resolution.human_approval,false);
   for (const path of ['penta/gates.json','penta/channels.json']) {
     assert.notEqual(crossReview.reviewedFiles.find(f=>f.path===path).sha256,resolution.final_files[path]);
-    assert.equal(resolution.final_files[path],pentaPackage.inputFiles.find(f=>f.path===path).sha256);
+    assert.equal(resolution.final_files[path],historical.inputFiles.find(f=>f.path===path).sha256);
   }
   assert.equal(pentaPackage.editorialReview.humanApproval,false);
 });

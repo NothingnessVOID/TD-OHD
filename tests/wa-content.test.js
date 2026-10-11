@@ -22,7 +22,7 @@ test('canonical/package/full IDs share identity without mutating source catalog'
     for(const alias of [packageId,`wa.communication.${id}`,`wa.communication.${packageId}`])assert.deepEqual(readWaContent(alias),expected);
     assert.equal(expected.canonicalId,id);assert.equal(expected.packageId,packageId);
   }
-  assert.equal(waPairLabel('21-45'),'21-45 Management');
+  assert.equal(waPairLabel('21-45'),'21-45 Management: Education and Implementation');
   assert.equal(waPairLabel('25-51'),'25-51 Competitiveness');
   assert.equal(waPairLabel('6-59'),'6-59 Interaction');
   const entry=readWaContent('21-45');entry.sourceRefs.push('mutated');
