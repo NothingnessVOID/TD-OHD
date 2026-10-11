@@ -196,8 +196,8 @@ export function mountWa(container, options = {}) {
     }).join('')}`;
   }
   async function changeMember(memberId, target, remove=false) {
-    const inputGeneration=generation;
-    const apply=options=>remove?removeWaMember(draft,memberId,options):moveWaMember(draft,memberId,target,options);
+    const inputGeneration=generation, original=draft, captured=clone(draft), identity=JSON.stringify(captured);
+    const apply=options=>remove?removeWaMember(captured,memberId,options):moveWaMember(captured,memberId,target,options);
     try {const next=apply();preserveReady();draft=next;changed();}
     catch(error){
       if(error?.code!=='ANNOTATION_CLEANUP_REQUIRED')throw error;
@@ -205,7 +205,7 @@ export function mountWa(container, options = {}) {
       render();
       const confirmed=await confirmAnnotationChange(cleanupReport(error.issues),'Remove affected records and continue');
       if(!confirmed||disposed)return;
-      if(inputGeneration!==generation){notice='Wa input changed';render();return;}
+      if(inputGeneration!==generation||draft!==original||JSON.stringify(draft)!==identity){notice='Wa input changed';render();return;}
       const next=apply({confirmAnnotationCleanup:true});preserveReady();draft=next;changed();
     }
   }
