@@ -19,8 +19,8 @@ test('the reference catalog covers the engine topology without top-level lines',
   }
   assert.equal(entries.filter(entry => entry.kind === 'group').length, 3);
   assert.equal(entries.filter(entry => entry.objectType !== 'penta').length, 199);
-  assert.equal(searchReference('', 'penta').length, 29);
-  assert.equal(searchReference('', 'penta-mechanism').length, 11);
+  assert.equal(searchReference('', 'penta').length, 30);
+  assert.equal(searchReference('', 'penta-mechanism').length, 12);
   for (const id of ['hd.variable.introduction', ...['determination', 'environment', 'perspective', 'motivation'].map(kind => `hd.variable.${kind}.introduction`)]) {
     assert.ok(entries.some(entry => entry.kind === 'knowledge' && entry.id === id), id);
   }
