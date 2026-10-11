@@ -450,13 +450,17 @@ function renderChannelJump(channel, chart, model = null, sourceGate = null) {
   const statusLabel = model
     ? t(active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view')
     : t(active ? 'Defined' : 'Not defined in this view');
+  const gateStatus = channel.gates.includes(sourceGate);
+  const natalStatus = gateStatus && (source === 'defined' || source === 'natal');
+  const statusClass = gateStatus
+    ? ` tl-activation-label tl-detail-channel-status${natalStatus ? ' tl-activation-natal' : ''}` : '';
   const pairedGate = channel.gates.includes(sourceGate)
     ? channel.gates.find(gate => gate !== sourceGate) : null;
   return `
     <div class="gate-detail-channel">
       <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
       ${renderChannelCircuitBadges(channel)}
-      <span class="circuit-badge transit-source-badge ${source}">${statusLabel}</span>
+      <span class="circuit-badge transit-source-badge ${source}${statusClass}">${natalStatus ? t('Birth activations') : statusLabel}</span>
       ${pairedGate == null ? '' : `<button type="button" class="gate-detail-paired-gate" data-paired-gate="${pairedGate}"><span class="gate-detail-paired-gate-label">${t('Harmonic gate:')}</span> <span class="gate-detail-paired-gate-number">${t('Gate {gate}', { gate: pairedGate })}</span> · <span class="gate-detail-paired-gate-name">${esc(gateName(pairedGate))}</span></button>`}
     </div>
   `;
