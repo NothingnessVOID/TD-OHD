@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { waAuditHead } from './wa-integration-approval.js';
+import { v2AuditHistoricalSource } from './penta-wa-v2-audit-compat.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const base = 'f278e419e605e65d6f7ec501857bdc896103e2fa';
@@ -39,7 +40,7 @@ export function assertWaAuditApproval() {
   [...waAdaptedAuditPaths, ...waNewAuditPaths, approvalPath].sort(), 'Unreviewed Wa audit snapshot paths');
   // The final two literal approval IDs are reviewed separately; never inferred from this file.
   for (const file of [...waAdaptedAuditPaths, ...waNewAuditPaths]) {
-    assert.deepEqual(readFileSync(path.join(root, file)), bytes(waAuditHead, file),
+    assert.deepEqual(v2AuditHistoricalSource(file, readFileSync(path.join(root, file))), bytes(waAuditHead, file),
       `Unreviewed historical audit source: ${file}`);
   }
   reviewed = true;
@@ -48,6 +49,7 @@ export function assertWaAuditApproval() {
 export function waAuditHistoricalSource(file, source = readFileSync(path.join(root, file))) {
   if (!waAdaptedAuditPaths.includes(file)) return source;
   assertWaAuditApproval();
+  source = v2AuditHistoricalSource(file, source);
   assert.deepEqual(source, bytes(waAuditHead, file), `Unreviewed historical audit source: ${file}`);
   return bytes(base, file);
 }

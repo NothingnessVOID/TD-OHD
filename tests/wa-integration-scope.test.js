@@ -4,7 +4,11 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { waIntegrationBase, waIntegrationHead, waPreparationHead, waAddedPaths,
   waIntegrationPaths, integrationAddedPaths, assertWaIntegrationApproval,
-  assertWaIntegrationSource, waIntegrationProjection, waSnapshotBytes } from './helpers/wa-integration-projection.js';
+  assertWaIntegrationSource as assertV1WaSource, waIntegrationProjection as v1WaProjection,
+  waSnapshotBytes } from './helpers/wa-integration-projection.js';
+import { v2SourceProjection } from './helpers/penta-wa-v2-review.js';
+const assertWaIntegrationSource = (source, file) => assertV1WaSource(v2SourceProjection(source, file), file);
+const waIntegrationProjection = (source, file) => v1WaProjection(v2SourceProjection(source, file), file);
 import { waAdaptedAuditPaths, waNewAuditPaths, assertWaAuditApproval,
   waAuditHistoricalSource } from './helpers/wa-audit-history-projection.js';
 import { pentaAddedPaths } from './helpers/penta-integration-projection.js';
@@ -48,7 +52,7 @@ test('Wa bytes validate before old projections and additions never invent histor
   for (const file of waIntegrationPaths) {
     const source = read(file);
     assertWaIntegrationSource(source, file);
-    assert.deepEqual(source, waSnapshotBytes(waIntegrationHead, file));
+    assert.deepEqual(v2SourceProjection(source, file), waSnapshotBytes(waIntegrationHead, file));
     if (waAddedPaths.includes(file)) {
       for (const project of [waIntegrationProjection, pairedCardHeaderProjection, incrementProjection])
         assert.throws(() => project(source, file), /no historical projection/);
