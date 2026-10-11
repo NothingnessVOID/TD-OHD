@@ -80,6 +80,7 @@ try {
           assert.equal(await button.locator('.gate-detail-paired-gate-label').textContent(), label.label);
           assert.equal(await button.locator('.gate-detail-paired-gate-number').textContent(), label.gate);
           assert.equal(await button.locator('.gate-detail-paired-gate-name').textContent(), label.name);
+          assert.equal(await button.locator('.gate-detail-paired-gate-link').textContent(), `${label.gate} · ${label.name}`);
           assert.equal(await button.locator('button, a, svg, [aria-hidden]').count(), 0);
         }
       }
@@ -91,7 +92,7 @@ try {
         const badge = node.parentElement.querySelector(':scope > .transit-source-badge').getBoundingClientRect();
         return { height: box.height, width: box.width, left: box.left, right: box.right, top: box.top, scroll: node.scrollWidth, client: node.clientWidth,
           border: css.borderTopWidth, background: css.backgroundColor, padding: css.padding, shadow: css.boxShadow,
-          label: styles('.gate-detail-paired-gate-label'), number: styles('.gate-detail-paired-gate-number'), name: styles('.gate-detail-paired-gate-name'),
+          label: styles('.gate-detail-paired-gate-label'), number: styles('.gate-detail-paired-gate-number'), name: styles('.gate-detail-paired-gate-name'), link: styles('.gate-detail-paired-gate-link'),
           colors: { secondary: token('--text-secondary'), accent: token('--accent'), text: token('--text') },
           badge: { width: badge.width, height: badge.height, bottom: badge.bottom } };
       }));
@@ -102,7 +103,9 @@ try {
         if (phase === 'after') {
           assert.equal(m.border, '0px'); assert.equal(m.background, 'rgba(0, 0, 0, 0)');
           assert.equal(m.padding, '0px'); assert.equal(m.shadow, 'none');
-          assert.equal(m.label.color, m.colors.secondary); assert.equal(m.number.color, m.colors.accent); assert.equal(m.name.color, m.colors.text);
+          assert.equal(m.label.color, m.colors.secondary); assert.equal(m.number.color, m.colors.accent); assert.equal(m.name.color, m.colors.accent);
+          assert.equal(m.link.color, m.colors.accent); assert.equal(m.name.weight, m.number.weight); assert.equal(m.name.weight, m.link.weight);
+          assert.ok([500, 600].includes(m.link.weight));
           assert.ok(m.label.size < m.name.size && m.name.weight > m.label.weight);
         }
       }
@@ -126,17 +129,18 @@ try {
         assert.equal(await first.evaluate(n => n.matches(':focus-visible')), true);
         const outline = await first.evaluate(n => ({ width: getComputedStyle(n).outlineWidth, style: getComputedStyle(n).outlineStyle }));
         assert.equal(outline.width, '2px'); assert.equal(outline.style, 'solid');
+        assert.ok(await first.locator('.gate-detail-paired-gate-link').evaluate(n => getComputedStyle(n).textDecorationLine.includes('underline')));
         if (width === 1280 && locale === 'en' && ['default-light', 'default-dark'].includes(skin)) {
           await first.screenshot({ path: resolve(evidence, `${name}-focus.png`) });
         }
         await detail.locator('.gate-detail-close').focus();
         if (width === 1280) {
           await first.hover();
-          assert.ok(await first.locator('.gate-detail-paired-gate-number').evaluate(n => getComputedStyle(n).textDecorationLine.includes('underline')));
+          assert.ok(await first.locator('.gate-detail-paired-gate-link').evaluate(n => getComputedStyle(n).textDecorationLine.includes('underline')));
           await page.mouse.move(0, 0);
         }
         assert.equal(await first.evaluate(n => n.matches(':focus-visible')), false);
-        assert.equal(await first.locator('.gate-detail-paired-gate-number').evaluate(n => getComputedStyle(n).textDecorationLine), 'none', 'emphasis clears after interaction');
+        assert.equal(await first.locator('.gate-detail-paired-gate-link').evaluate(n => getComputedStyle(n).textDecorationLine), 'none', 'emphasis clears after interaction');
         // Click near the bottom of the real box, outside the compact text line.
         const hit = await first.boundingBox();
         if (width < 600) await page.touchscreen.tap(hit.x + 4, hit.y + hit.height - 2);
