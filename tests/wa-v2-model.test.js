@@ -48,7 +48,7 @@ test('all identity, refs and birth preflight completes before provider; pool nev
   const { snapshot } = fixture({ pool: 1 }); const people = peopleFor(snapshot);
   let calls = 0;
   const calculateBirth = async () => { calls++; return { chart: chart() }; };
-  for (const mutate of [p => { p.timeUnknown = 'false'; }, p => { p.timeUnknown = null; }, p => { delete p.timeUnknown; },
+  for (const mutate of [p => { p.timeUnknown = 'false'; }, p => { p.timeUnknown = null; }, p => { p.timeUnknown = undefined; },
     p => { p.birthDate = '2025-02-29'; }, p => { p.birthTime = ''; }, p => { p.birthTime = '25:00'; },
     p => { p.location.timezone = NaN; }, p => { p.location.timezone = 15; }, p => { delete p.location.timezone; }]) {
     const invalid = structuredClone(people); mutate(invalid.get(snapshot.members[9].personId));
@@ -64,6 +64,39 @@ test('all identity, refs and birth preflight completes before provider; pool nev
   people.delete(snapshot.members[10].personId);
   const ready = await prepareWaMembers(snapshot, { getPerson: id => people.get(id), calculateBirth });
   assert.equal(ready.status, 'ready'); assert.equal(calls, 10); assert.equal(ready.members.length, 10);
+});
+
+test('legacy missing unknown flag and unrelated runtime undefined metadata remain valid', async () => {
+  const { snapshot } = fixture(); const people = peopleFor(snapshot);
+  for (const person of people.values()) { delete person.timeUnknown; person.note = undefined; person.unconsumed = () => {}; }
+  const providerChart = chart();
+  providerChart.optional = undefined;
+  providerChart.gates.personality.sun.optional = undefined;
+  providerChart.metadata = { backReference: providerChart };
+  const seen = [];
+  const result = await prepareWaMembers(snapshot, id => people.get(id), async birth => {
+    seen.push(birth); return { chart: providerChart };
+  });
+  assert.equal(result.status, 'ready'); assert.equal(seen.length, 10);
+  assert.ok(seen.every(birth => birth.timeUnknown === false && birth.birthTime === '10:30'));
+  assert.ok(result.members.every(member => member.birthTimeConfidence === 'exact'));
+  assert.equal(Object.hasOwn(result.members[0].chart, 'optional'), true);
+  assert.equal(result.members[0].chart.metadata.backReference, result.members[0].chart);
+  assert.equal(Object.hasOwn(people.values().next().value, 'timeUnknown'), false);
+  assert.equal(Object.hasOwn(snapshot.members[0], 'chart'), false);
+});
+
+test('consumed activation records remain strict even when runtime metadata is permissive', async () => {
+  const { snapshot } = fixture(); const people = peopleFor(snapshot);
+  for (const mutate of [c => { c.gates.personality.sun = new Date(); },
+    c => { c.gates.personality.sun = Object.assign(new Date(), { gate: 4, line: 1 }); },
+    c => { c.gates.design.sun.gate = NaN; }, c => { c.gates.personality.sun = c.gates.personality; },
+    c => { delete c.gates.design.pluto; }]) {
+    const invalid = chart(); mutate(invalid);
+    const result = await prepareWaMembers(snapshot, id => people.get(id), async () => ({ chart: invalid }));
+    assert.equal(result.status, 'not_ready');
+    assert.ok(result.issues.every(issue => issue.code === 'INVALID_PROVIDER_RESULT'));
+  }
 });
 
 test('explicit unknown alone permits the existing noon estimate; missing time never guessed', async () => {
@@ -117,7 +150,7 @@ test('manual schemas reject unknown attrs, pool endpoints/allies, duplicates and
     s => { s.manualCommunicationEdges[0].fromMemberId = 'm10'; },
     s => { s.manualCommunicationEdges[0].toMemberId = 'm00'; },
     s => { s.manualCommunicationEdges[0].strength = 9; },
-    s => { s.manualCommunicationEdges.push({ ...s.manualCommunicationEdges[0], edgeId: 'another' }); }
+    s => { s.manualCommunicationEdges.push({ ...s.manualCommunicationEdges[0], label: 'duplicate identity' }); }
   ]) {
     const invalid = structuredClone(base); mutate(invalid);
     assert.equal(validateWaSnapshot(invalid).valid, false, mutate.toString());
@@ -125,6 +158,10 @@ test('manual schemas reject unknown attrs, pool endpoints/allies, duplicates and
   const reversed = structuredClone(base);
   reversed.manualCommunicationEdges.push({ ...base.manualCommunicationEdges[0], edgeId: 'reverse', fromMemberId: 'm01', toMemberId: 'm00' });
   assert.equal(validateWaSnapshot(reversed).valid, true);
+  const sameDirection = structuredClone(base);
+  sameDirection.manualCommunicationEdges.push({ ...base.manualCommunicationEdges[0], edgeId: 'another-purpose', label: 'separate consultation purpose' });
+  assert.equal(validateWaSnapshot(sameDirection).valid, true);
+  assert.equal(updateWaAnnotations(base, { manualCommunicationEdges: sameDirection.manualCommunicationEdges }).manualCommunicationEdges.length, 2);
 });
 
 test('moves preserve annotations between groups and require detailed explicit cleanup on participant or Penta removal', () => {
