@@ -1794,15 +1794,15 @@ body.modal-open { overflow: hidden; }
 }
 
 .gate-detail-channel p { margin-top: 4px; font-size: 12.5px; }
-/* Only paired cards use three rows: title, wrapping metadata, harmonic gate. */
+/* Only paired cards group title and badges above status and harmonic gate. */
 .gate-detail-channel:has(.gate-detail-paired-gate) {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   padding-block: 6px;
   row-gap: 4px;
 }
-.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-link { justify-self: start; text-align: left; line-height: 1.5; }
-.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-detail-channel-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-detail-channel-header > .gate-link { text-align: left; line-height: 1.5; }
+.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-detail-channel-header { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
 .gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display: flex; flex-wrap: wrap; margin: 0; }
 .gate-detail-paired-gate {
   display: flex;
@@ -1812,7 +1812,7 @@ body.modal-open { overflow: hidden; }
   margin: 0;
   padding: 0;
   border: 0;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1.5px solid var(--border);
   border-radius: 2px;
   background: transparent;
   font: inherit;
