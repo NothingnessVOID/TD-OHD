@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { pairedCardFinalProjection } from './paired-card-final-projection.js';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -92,8 +93,9 @@ for (const file of pairedCardLayoutPaths) {
   assertPairedCardLayoutDelta(bytes(pairedCardLayoutBase, file), bytes(pairedCardLayoutHead, file), file);
 }
 
-/** Validate both current files, restoring cc6 before channel-status and all older layers. */
+/** Validate final first, then restore cc6 before channel-status and all older layers. */
 export function pairedCardLayoutProjection(source, file) {
+  source = pairedCardFinalProjection(source, file);
   if (!pairedCardLayoutPaths.includes(file)) return source;
   assert.equal(sha(source), sha(bytes(pairedCardLayoutHead, file)), `Unreviewed increment source: ${file} (paired-card layout)`);
   return bytes(pairedCardLayoutBase, file);

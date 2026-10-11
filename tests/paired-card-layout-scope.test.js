@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
+import { pairedCardFinalProjection } from './helpers/paired-card-final-projection.js';
 import { pairedCardLayoutBase, pairedCardLayoutHead, pairedCardLayoutPaths, pairedCardLayoutProjection, assertPairedCardLayoutDelta } from './helpers/paired-card-layout-projection.js';
 import { channelStatusBase, channelStatusHead, channelStatusProjection } from './helpers/channel-status-projection.js';
 import { pairedGateVisualBase, pairedGateVisualHead, pairedGateVisualProjection } from './helpers/paired-gate-visual-projection.js';
@@ -35,7 +36,7 @@ test('compact pins exactly chart/css and normalizes cc6 before status, paired, i
   assert.deepEqual(pairedCardLayoutPaths, ['src/styles.css', 'src/views/chart.js']);
   for (const file of pairedCardLayoutPaths) {
     const current = read(file);
-    assert.deepEqual(current, snapshotBytes(pairedCardLayoutHead, file));
+    assert.deepEqual(pairedCardFinalProjection(current, file), snapshotBytes(pairedCardLayoutHead, file));
     assert.notDeepEqual(current, snapshotBytes(pairedCardLayoutBase, file));
     assert.deepEqual(pairedCardLayoutProjection(current, file), snapshotBytes(pairedCardLayoutBase, file));
     assert.deepEqual(snapshotBytes(pairedCardLayoutBase, file), snapshotBytes(channelStatusHead, file));
@@ -87,6 +88,8 @@ test('status, source logic and navigation cannot enter the layout approval', () 
 
 test('compact grid scope, centered hit target and unified link regressions fail at every entry', () => {
   const file = 'src/styles.css';
+  // Keep the exact compact negative fixtures after final normalizes back to 7ff.
+  const historical = pairedCardFinalProjection(read(file), file);
   for (const [before, after] of [
     ['.gate-detail-channel:has(.gate-detail-paired-gate) {', '.gate-detail-channel {'],
     ['  grid-template-columns: minmax(0, 1fr);\n  padding-block: 8px;', '  grid-template-columns: 1fr;\n  padding-block: 12px;'],
@@ -99,7 +102,8 @@ test('compact grid scope, centered hit target and unified link regressions fail 
     ['.gate-detail-paired-gate:focus-visible .gate-detail-paired-gate-link { text-decoration: underline;', '.gate-detail-paired-gate:focus-visible .gate-detail-paired-gate-link { text-decoration: none;'],
     ['.gate-detail-paired-gate:hover .gate-detail-paired-gate-link { text-decoration: underline;', '.gate-detail-paired-gate:hover .gate-detail-paired-gate-link { text-decoration: none;'],
   ]) {
-    const mutated = mutateUnique(read(file), before, after);
+    const mutated = mutateUnique(historical, before, after);
+    assert.notDeepEqual(mutated, historical, 'Historical negative must mutate its fixture');
     rejectsSource(file, mutated);
     assert.throws(() => assertPairedCardLayoutDelta(snapshotBytes(pairedCardLayoutBase, file), mutated, file));
   }
