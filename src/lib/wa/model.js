@@ -37,8 +37,51 @@ export function createWaMember({ personId, labelSnapshot, memberId } = {}) {
   return { memberId: member.memberId, personId: member.personId, labelSnapshot: member.displayName };
 }
 
+/** Inspect descriptors without invoking getters; reject values JSON would erase or coerce.
+ * Iterative traversal rejects cycles and excessive nesting before Ajv or cloning runs. */
+export function validateWaPlainJson(value) {
+  const active = new Set();
+  const stack = [{ value, path: '', depth: 0 }];
+  try {
+    while (stack.length) {
+      const item = stack.pop();
+      if (item.exit) { active.delete(item.value); continue; }
+      const { value: current, path, depth } = item;
+      const invalid = message => ({ valid: false, issues: [issue('NON_JSON_VALUE', path, message)] });
+      if (current === null || typeof current === 'string' || typeof current === 'boolean') continue;
+      if (typeof current === 'number' && Number.isFinite(current)) continue;
+      if (typeof current !== 'object') return invalid('Only plain JSON values are accepted.');
+      if (depth > 100) return invalid('JSON nesting exceeds 100 levels.');
+      if (active.has(current)) return invalid('Cyclic data is not JSON.');
+      const array = Array.isArray(current);
+      const prototype = Object.getPrototypeOf(current);
+      if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) {
+        return invalid('Only plain objects and arrays are accepted.');
+      }
+      active.add(current);
+      stack.push({ value: current, exit: true });
+      const descriptors = Object.getOwnPropertyDescriptors(current);
+      const keys = Reflect.ownKeys(descriptors);
+      if (array && keys.length !== current.length + 1) return invalid('Sparse arrays and extra array properties are not accepted.');
+      for (const key of keys) {
+        if (array && key === 'length') continue;
+        if (typeof key !== 'string' || ['__proto__', 'prototype', 'constructor'].includes(key)) return invalid('Unsafe object key.');
+        if (array && (!/^(0|[1-9]\d*)$/.test(key) || Number(key) >= current.length)) return invalid('Extra array property.');
+        const descriptor = descriptors[key];
+        if (!descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) return invalid('Accessors and hidden properties are not JSON data.');
+        stack.push({ value: descriptor.value, path: `${path}/${key}`, depth: depth + 1 });
+      }
+    }
+  } catch {
+    return { valid: false, issues: [issue('NON_JSON_VALUE', '', 'Unable to inspect JSON data.')] };
+  }
+  return { valid: true, issues: [] };
+}
+
 /** Shape first, then relation semantics. Incomplete standard drafts remain valid. */
 export function validateWaSnapshot(snapshot) {
+  const json = validateWaPlainJson(snapshot);
+  if (!json.valid) return { ...json, status: 'invalid' };
   if (!checkShape(snapshot)) return {
     valid: false, status: 'invalid',
     issues: checkShape.errors.map(error => issue('SCHEMA_INVALID', error.instancePath, error.message))
@@ -85,7 +128,7 @@ export function assertWaSnapshot(snapshot) {
 
 export function validateWaLayout(snapshot) {
   const validation = validateWaSnapshot(snapshot);
-  if (!validation.valid) return { ...validation, ready: false, standardTemplateSatisfied: false, memberIds: [], poolMemberIds: [], groups: [] };
+  if (!validation.valid) return { ...validation, ready: false, canAnalyze: false, participantCount: 0, standardTemplateSatisfied: false, memberIds: [], poolMemberIds: [], groups: [] };
   const assigned = new Set(snapshot.pentas.flatMap(group => group.memberIds));
   if (snapshot.alphaId !== null) assigned.add(snapshot.alphaId);
   const groups = [...snapshot.pentas].sort((a, b) => a.pentaId < b.pentaId ? -1 : a.pentaId > b.pentaId ? 1 : 0)
@@ -100,7 +143,7 @@ export function validateWaLayout(snapshot) {
   if (assigned.size < 10 || assigned.size > 16) deviations.push(issue('PARTICIPANT_COUNT', 'members', 'Standard layout requires 10–16 assigned participants.'));
   const standardTemplateSatisfied = deviations.length === 0;
   const ready = standardTemplateSatisfied || snapshot.layoutMode === 'observation';
-  return { valid: true, ready, status: standardTemplateSatisfied ? 'valid_standard_layout'
+  return { valid: true, ready, canAnalyze: ready, participantCount: assigned.size, status: standardTemplateSatisfied ? 'valid_standard_layout'
     : snapshot.layoutMode === 'observation' ? 'outside_standard_template' : 'layout_not_ready',
   standardTemplateSatisfied, issues: deviations, groups,
   memberIds: [...assigned].sort(), poolMemberIds: snapshot.members.map(member => member.memberId).filter(id => !assigned.has(id)).sort() };
