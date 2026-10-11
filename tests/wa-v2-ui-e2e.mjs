@@ -95,7 +95,7 @@ try {
   assert.equal(await page.locator('[data-coverage=alpha] [data-pair="21-45"] small').innerText(),'21: 1 · 45: 3');
   await page.locator('[data-coverage=group] [data-pair="21-45"]').click();assert.ok(!(await page.locator('.wa-contributions').innerText()).includes('Fictional 0'));await page.keyboard.press('Escape');
   await page.locator('[data-coverage=alpha] [data-pair="21-45"]').click();assert.ok((await page.locator('.wa-contributions').innerText()).includes('Fictional 0'));await page.keyboard.press('Escape');
-  for(const width of [1440,390,320])for(const locale of ['en','zh-CN','zh-Hant'])for(const skin of SKINS){
+  for(const width of (process.env.WA_SKIP_VISUAL_MATRIX==='1'?[]:[1440,390,320]))for(const locale of ['en','zh-CN','zh-Hant'])for(const skin of SKINS){
     await page.setViewportSize({width,height:1000});
     await page.evaluate(async({locale,skin})=>{(await import('/src/lib/i18n.js')).setLocale(locale,{persist:false});(await import('/src/lib/appearance.js')).setSkin(skin);window.view.refreshLanguage();},{locale,skin:skin.id});
     assert.equal(await page.locator('html').getAttribute('data-skin'),skin.id);
@@ -145,6 +145,47 @@ try {
     await page.evaluate(()=>{window.readFailure=null;window.rejectRead(Error('Stale read failure'));});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     assert.equal(await page.locator('.wa-notice').innerText(),'','old read failure cannot pollute new organization');assert.equal(await page.locator('.wa-operation').count(),0);
   }
+  // Focused review regressions use a separate fictional annotated snapshot.
+  await page.evaluate(async()=>{
+    window.view.dispose();
+    const {mountWa}=await import('/src/views/wa.js');const {fixture,chart}=await import('/tests/helpers/wa-fixtures.js');
+    const {updateWaAnnotations}=await import('/src/lib/wa/model.js');
+    const snapshot=updateWaAnnotations(fixture().snapshot,{manualCommunicationEdges:[{edgeId:'legacy-edge',fromMemberId:'m00',toMemberId:'m01',assignment:'manual',sourceRef:'manual-source'}]});
+    const host=document.createElement('section');document.body.append(host);
+    window.reviewSaved=snapshot;
+    const repository={list:async()=>[snapshot],get:async()=>snapshot,save:async next=>{window.reviewSaved=structuredClone(next);return next;}};
+    window.view=mountWa(host,{repository,peopleStore:{list:()=>[...window.people.values()],get:id=>window.people.get(id),subscribe:()=>()=>{}},computeChart:async()=>({chart:chart([21,45])})});
+  });
+  await load();await openManual();await page.locator('[data-manual-section=g0]>summary').click();
+  await page.locator('[data-action=analyze]').click();await page.waitForSelector('[data-coverage=all]');
+  const fields=[['[data-title]','中文组织'],['[data-group-title=g0]','中文分组'],['[data-manual-field=specificProblem]','跨组沟通问题'],['[data-manual-field=personalManagementNotes]','个人管理记录'],['[data-manual-field=communicationPlan]','繁體溝通計畫'],['[data-area=g0][data-manual-field=workScope]','工作范围'],['[data-area=g0][data-manual-field=demand]','每周需求'],['[data-area=g0][data-manual-field=requiredSkills]','倾听\n记录']];
+  for(const [selector,value] of fields){
+    const check=await page.locator(selector).evaluate((node,value)=>{
+      node.focus();node.dispatchEvent(new CompositionEvent('compositionstart',{bubbles:true,data:''}));
+      node.value='zhong';node.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertCompositionText',isComposing:true,data:'zhong'}));
+      const retained=node.isConnected&&document.activeElement===node;
+      const cleared=!document.querySelector('.wa-theme')&&document.querySelector('.wa-results').getAttribute('aria-busy')==='false';
+      node.value=value;node.dispatchEvent(new CompositionEvent('compositionupdate',{bubbles:true,data:value}));
+      node.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertCompositionText',isComposing:true,data:value}));
+      node.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:value}));
+      node.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',isComposing:false,data:value}));
+      return {retained,cleared,finalRetained:node.isConnected&&document.activeElement===node,value:node.value};
+    },value);
+    assert.deepEqual(check,{retained:true,cleared:true,finalRetained:true,value},`IME retains native node: ${selector}`);
+  }
+  await page.locator('[data-action=save]').click();await page.waitForFunction(()=>!document.querySelector('[data-action=save]').disabled);
+  const composed=await page.evaluate(()=>window.reviewSaved);
+  assert.equal(composed.title,'中文组织');assert.equal(composed.pentas[0].title,'中文分组');
+  assert.equal(composed.consultation.specificProblem,'跨组沟通问题');assert.equal(composed.consultation.personalManagementNotes,'个人管理记录');assert.equal(composed.consultation.communicationPlan,'繁體溝通計畫');assert.deepEqual(composed.consultation.businessAreas[0],{pentaId:'g0',workScope:'工作范围',demand:'每周需求',requiredSkills:['倾听','记录']});
+  const saveReview=async()=>{await page.locator('[data-action=save]').click();await page.waitForFunction(()=>!document.querySelector('[data-action=save]').disabled);return page.evaluate(()=>window.reviewSaved.manualCommunicationEdges);};
+  await page.locator('[data-edit-edge=legacy-edge]').click();await page.locator('[data-save-record]').click();
+  let edge=(await saveReview())[0];assert.equal(Object.hasOwn(edge,'label'),false);assert.equal(Object.hasOwn(edge,'note'),false);assert.equal(edge.sourceRef,'manual-source');
+  await page.locator('[data-edit-edge=legacy-edge]').click();await page.locator('[name=toMemberId]').selectOption('m02');await page.locator('[data-save-record]').click();
+  edge=(await saveReview())[0];assert.equal(edge.toMemberId,'m02');assert.equal(Object.hasOwn(edge,'label'),false);assert.equal(Object.hasOwn(edge,'note'),false);assert.equal(edge.sourceRef,'manual-source');
+  await page.locator('[data-edit-edge=legacy-edge]').click();await page.locator('[name=label]').fill('中文联系');await page.locator('[data-save-record]').click();await saveReview();
+  await page.locator('[data-edit-edge=legacy-edge]').click();await page.locator('[name=label]').fill('');await page.locator('[data-save-record]').click();
+  edge=(await saveReview())[0];assert.equal(edge.label,'');assert.equal(Object.hasOwn(edge,'note'),false);assert.equal(edge.sourceRef,'manual-source');
+  await page.locator('[data-action=add-edge]').click();await page.locator('[data-save-record]').click();edge=(await saveReview()).at(-1);assert.equal(Object.hasOwn(edge,'label'),false);assert.equal(Object.hasOwn(edge,'note'),false);
   assert.deepEqual(errors,[]);
-  console.log(`Wa v2 UI passed: annotations, stable IDs, reload, restore warning/history, reference cancel/cleanup, backup downloads, group/Alpha scopes, provider errors/stale, protected v1, CAS; ${3*3*SKINS.length} actual Skin/locale/viewport checks.`);
+  console.log(`Wa v2 UI passed: annotations, stable IDs, reload, restore warning/history, reference cancel/cleanup, backup downloads, group/Alpha scopes, provider errors/stale, protected v1, CAS; IME node identity/Chinese save and optional-edge absence/explicit clear; ${process.env.WA_SKIP_VISUAL_MATRIX==='1'?0:3*3*SKINS.length} actual Skin/locale/viewport checks.`);
 } finally {await browser.close();}
