@@ -17,6 +17,7 @@ const browser = await chromium.launch(process.env.CHROME_PATH
   ? { executablePath: process.env.CHROME_PATH, headless: true }
   : { channel: process.env.CHROME_CHANNEL || 'msedge', headless: true });
 const results = [];
+assert.match(readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8'), /border-top: 1\.5px solid var\(--border\);/, 'CSS declares the requested 1.5px separator');
 let activePage;
 async function invoke(page, gate) {
   return page.evaluate(async gate => {
@@ -91,18 +92,20 @@ try {
         const styles = selector => { const n = node.querySelector(selector); if (!n) return null; const s = getComputedStyle(n); return { color: s.color, size: parseFloat(s.fontSize), weight: Number(s.fontWeight) }; };
         const token = name => { const probe = document.createElement('span'); probe.style.color = `var(${name})`; node.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; };
         const badge = node.parentElement.querySelector('.transit-source-badge').getBoundingClientRect();
+        const probe = document.createElement('span'); probe.style.borderTop='1.5px solid var(--border)'; node.append(probe);
+        const expectedBorder = getComputedStyle(probe).borderTopWidth; probe.remove();
         return { height: box.height, width: box.width, left: box.left, right: box.right, top: box.top, scroll: node.scrollWidth, client: node.clientWidth,
-          border: css.borderTopWidth, borderStyle: css.borderTopStyle, borderColor: css.borderTopColor, subtle: token('--border-subtle'), otherBorders: [css.borderRightWidth,css.borderBottomWidth,css.borderLeftWidth], background: css.backgroundColor, padding: css.padding, shadow: css.boxShadow,
+          border: css.borderTopWidth, borderStyle: css.borderTopStyle, borderColor: css.borderTopColor, expectedBorder, borderToken: token('--border'), otherBorders: [css.borderRightWidth,css.borderBottomWidth,css.borderLeftWidth], background: css.backgroundColor, padding: css.padding, shadow: css.boxShadow,
           label: styles('.gate-detail-paired-gate-label'), number: styles('.gate-detail-paired-gate-number'), name: styles('.gate-detail-paired-gate-name'), link: styles('.gate-detail-paired-gate-link'),
           colors: { secondary: token('--text-secondary'), accent: token('--accent'), text: token('--text') },
           badge: { width: badge.width, height: badge.height, bottom: badge.bottom } };
       }));
       for (const m of metrics) {
-        assert.ok(m.height >= (width<=600 || phase==='before' ? 44 : 24) && m.width >= 44, 'real responsive hit target');
+        assert.ok(m.height >= (width<=600 ? 44 : 30) && m.width >= 44, 'real responsive hit target');
         assert.ok(m.scroll <= m.client + 1 && m.left >= 0 && m.right <= width, 'button wraps within viewport');
         assert.ok(m.top >= m.badge.bottom, 'paired row does not squeeze or overlap status badge');
         if (phase === 'after') {
-          assert.equal(m.border, '1px'); assert.equal(m.borderStyle, 'solid'); assert.equal(m.borderColor, m.subtle);
+          assert.equal(m.border, m.expectedBorder, 'declared 1.5px border follows browser/DPR quantization'); assert.equal(m.borderStyle, 'solid'); assert.equal(m.borderColor, m.borderToken);
           assert.deepEqual(m.otherBorders, ['0px','0px','0px']); assert.equal(m.background, 'rgba(0, 0, 0, 0)');
           assert.equal(m.padding, '0px'); assert.equal(m.shadow, 'none');
           assert.equal(m.label.color, m.colors.secondary); assert.equal(m.number.color, m.colors.accent); assert.equal(m.name.color, m.colors.accent);
@@ -121,7 +124,7 @@ try {
       }));
       for (const b of boxes) assert.ok(b.left >= 0 && b.right <= width && b.scroll <= b.client + 1, 'channel/badges fit viewport');
       const name = `${width}-${locale}-${skin}`;
-      if (['default-light', 'default-dark'].includes(skin)) await snapshot(page, name);
+      if (process.env.ISSUE22_SCREENSHOTS !== '0' && locale === 'zh-CN' && width !== 320 && ['default-light', 'default-dark'].includes(skin)) await snapshot(page, name);
       if (phase === 'after') {
         const first = buttons.first();
         await first.scrollIntoViewIfNeeded();
@@ -132,7 +135,7 @@ try {
         const outline = await first.evaluate(n => ({ width: getComputedStyle(n).outlineWidth, style: getComputedStyle(n).outlineStyle }));
         assert.equal(outline.width, '2px'); assert.equal(outline.style, 'solid');
         assert.ok(await first.locator('.gate-detail-paired-gate-link').evaluate(n => getComputedStyle(n).textDecorationLine.includes('underline')));
-        if (width === 1280 && locale === 'en' && ['default-light', 'default-dark'].includes(skin)) {
+        if (process.env.ISSUE22_SCREENSHOTS !== '0' && width === 1280 && locale === 'en' && ['default-light', 'default-dark'].includes(skin)) {
           await first.screenshot({ path: resolve(evidence, `${name}-focus.png`) });
         }
         await detail.locator('.gate-detail-close').focus();

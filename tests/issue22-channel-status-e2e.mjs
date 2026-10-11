@@ -80,11 +80,21 @@ async function compare(page, metadata, expected = null) {
       return { height: b.height, width: b.width, left: b.left, right: b.right, top: b.top, statusBottom: s.bottom,
         scroll: node.scrollWidth, client: node.clientWidth, padding: getComputedStyle(node).padding, background: getComputedStyle(node).backgroundColor };
     });
-    assert.ok(geometry.height >= (metadata.width<=600 ? 44 : 24) && geometry.width >= 44);
+    assert.ok(geometry.height >= (metadata.width<=600 ? 44 : 30) && geometry.width >= 44);
     assert.ok(geometry.left >= 0 && geometry.right <= metadata.width && geometry.scroll <= geometry.client + 1);
     assert.ok(geometry.top >= geometry.statusBottom, 'paired entry remains below status');
     assert.equal(geometry.padding, '0px');
     assert.equal(geometry.background, 'rgba(0, 0, 0, 0)');
+    const headerLayout = await row.evaluate(n => {
+      const header = n.querySelector('.gate-detail-channel-header'), title = header?.querySelector('[data-channel]'), badges = header?.querySelector('.channel-circuit-badges'), status = n.querySelector('.transit-source-badge');
+      if (!header || !title || !badges) return null;
+      const h=header.getBoundingClientRect(), t=title.getBoundingClientRect(), b=badges.getBoundingClientRect(), s=status.getBoundingClientRect();
+      return { independent:status.parentElement===n, gap:s.top-h.bottom, fits:t.width+b.width+8<=h.width+0.02,
+        sameRow:Math.min(t.bottom,b.bottom)>Math.max(t.top,b.top), wrapGap:b.top-t.bottom };
+    });
+    assert.ok(headerLayout?.independent && headerLayout.gap>=4 && headerLayout.gap<=6, 'status remains its own row across birth/transits/timeline');
+    assert.equal(headerLayout.sameRow,headerLayout.fits,'header title and badges share a row whenever they fit');
+    if (!headerLayout.fits) assert.ok(headerLayout.wrapGap>=4,'narrow header wraps naturally');
     await row.locator('[data-channel]').click();
     const full = await status(detail(page).locator('.tl-detail-channel-status'));
     assert.deepEqual(list, full, `${metadata.entry}/${key}: exact text/classes/computed typography, color, background and spacing`);
@@ -150,7 +160,7 @@ try {
       for (const source of ['natal', 'completed', 'transit', 'inactive']) {
         await invoke(page, 'fixture', source);
         await compare(page, { width, locale, skin, entry: 'fixture', gate: 57 }, source);
-        if (width === 320 && locale === 'zh-CN' && ['default-light', 'default-dark'].includes(skin) && source === 'completed') {
+        if (process.env.ISSUE22_SCREENSHOTS !== '0' && width === 320 && locale === 'zh-CN' && ['default-light', 'default-dark'].includes(skin) && source === 'completed') {
           await detail(page).locator('[data-lens="gk"]').click();
           await detail(page).locator('[data-paired-gate]').last().scrollIntoViewIfNeeded();
           await page.screenshot({ path: resolve(evidence, `320-zh-CN-${skin}.png`) });
