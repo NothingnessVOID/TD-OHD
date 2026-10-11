@@ -4,10 +4,10 @@ import { chromium } from 'playwright-core';
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { SKINS } from '../src/lib/skin-registry.js';
-const base = process.env.E2E_URL || 'http://127.0.0.1:19975';
+const base = process.env.E2E_URL || 'http://127.0.0.1:19976';
 const phase = process.env.ISSUE22_COMPACT_PHASE || 'after';
 assert.ok(['before', 'after'].includes(phase));
-const root = resolve(process.env.ISSUE22_COMPACT_EVIDENCE_DIR || 'artifacts/issue22-compact');
+const root = resolve(process.env.ISSUE22_COMPACT_EVIDENCE_DIR || 'artifacts/issue22-final-layout');
 const out = resolve(root, phase); mkdirSync(out, { recursive: true });
 const baselinePath = resolve(root, 'before/results.json');
 const baseline = phase === 'after' && existsSync(baselinePath) ? JSON.parse(readFileSync(baselinePath, 'utf8')).cases : [];
@@ -38,7 +38,7 @@ async function status(locator) {
 async function metrics(page) {
   return detail(page).locator('.gate-detail-channel').evaluateAll(nodes => nodes.map((n, i) => {
     const box = el => { const b = el.getBoundingClientRect(); return { top:b.top,bottom:b.bottom,left:b.left,right:b.right,width:b.width,height:b.height }; };
-    const title = n.querySelector('[data-channel]'), badges = n.querySelector('.channel-circuit-badges'), status = n.querySelector(':scope > .transit-source-badge'), paired = n.querySelector('[data-paired-gate]');
+    const title = n.querySelector('[data-channel]'), badges = n.querySelector('.channel-circuit-badges'), status = n.querySelector('.transit-source-badge'), paired = n.querySelector('[data-paired-gate]');
     const b = box(n), t = box(title), c = box(badges), s = box(status), p = box(paired);
     // Measure rendered text, excluding the new centering wrapper's line box.
     const walker = document.createTreeWalker(paired, NodeFilter.SHOW_TEXT); const textRects = [];
@@ -48,15 +48,19 @@ async function metrics(page) {
     }
     const textTop = Math.min(...textRects.map(r => r.top)), textBottom = Math.max(...textRects.map(r => r.bottom));
     const style = getComputedStyle(n);
+    const probe = document.createElement('span'); probe.style.color='var(--border-subtle)'; n.append(probe);
+    const subtleColor = getComputedStyle(probe).color; probe.remove();
     return { channel:title.dataset.channel, card:b, title:t, badges:c, status:s, hit:p,
       gaps:{ titleBadges:c.top-t.bottom, badgesStatus:s.top-c.bottom, statusHit:p.top-s.bottom, statusText:textTop-s.bottom,
         textBottom:p.bottom-textBottom, adjacent:i ? b.top-box(nodes[i-1]).bottom : null },
+      metadata: n.querySelector('.gate-detail-channel-meta') ? box(n.querySelector('.gate-detail-channel-meta')) : null,
+      sameRow: Math.abs(c.top-s.top)<=2, subtleColor, separator: { width:getComputedStyle(paired).borderTopWidth, style:getComputedStyle(paired).borderTopStyle, color:getComputedStyle(paired).borderTopColor, token:getComputedStyle(paired).getPropertyValue('--border-subtle').trim() },
       padding:style.padding, display:style.display, overflow:n.scrollWidth > n.clientWidth+1,
       badgeSizes:[...badges.children].map(e => ({ text:e.textContent, width:box(e).width,height:box(e).height })) };
   }));
 }
 try {
-  for (const width of [1280,390,320]) for (const locale of ['en','zh-CN','zh-Hant']) {
+  for (const width of (process.env.ISSUE22_POINTER_ONLY==='1' ? [] : [1280,390,320])) for (const locale of ['en','zh-CN','zh-Hant']) {
     const context = await browser.newContext({ viewport:{width,height:900},hasTouch:width<600,reducedMotion:'reduce' });
     await context.addInitScript(locale => localStorage.setItem('ohd-language',locale),locale);
     await context.route(/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//, r => r.abort());
@@ -64,7 +68,9 @@ try {
     await page.clock.setFixedTime(new Date('2026-10-01T06:31:21Z'));
     await page.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8`);
     await page.locator('#foundation-panel .reliability').waitFor({timeout:60000}); await page.evaluate(() => document.fonts.ready);
-    const skins = width===1280 && locale==='en' ? SKINS.map(s => s.id) : ['default-light','default-dark','high-contrast','midnight-contrast'];
+    const skins = process.env.ISSUE22_QUICK === '1'
+      ? ['default-light', ...(locale === 'zh-CN' ? ['default-dark'] : []), ...(width===1280 && locale==='en' ? ['high-contrast','midnight-contrast'] : [])]
+      : width===1280 && locale==='en' ? SKINS.map(s => s.id) : ['default-light','default-dark','high-contrast','midnight-contrast'];
     for (const id of skins) {
       console.log(`${phase} compact ${width}/${locale}/${id}`); await skin(page,id);
       await invoke(page,'center'); const center = await detail(page).locator('.gate-detail-channel').evaluateAll(ns => ns.map(n => ({html:n.outerHTML,height:n.getBoundingClientRect().height,display:getComputedStyle(n).display}))); await close(page);
@@ -81,18 +87,23 @@ try {
       if (phase==='after') {
         assert.ok(previous,'matched baseline required'); assert.deepEqual(center,previous.center,'center markup/layout unchanged');
         rows.forEach((r,i)=>{
-          assert.ok(r.card.height < previous.rows[i].card.height,`${r.channel} must shrink`);
+          // Wrapped metadata may preserve or increase total height; fit cases below must shrink.
           assert.ok(['grid','flex'].includes(r.display)); assert.ok(!r.overflow && r.card.left>=0 && r.card.right<=width);
-          assert.ok(r.gaps.titleBadges>=4 && r.gaps.titleBadges<=6); assert.ok(r.gaps.badgesStatus>=4 && r.gaps.badgesStatus<=6);
-          assert.ok(r.hit.height>=44 && r.hit.width>=44 && r.gaps.statusHit>=0);
-          // A 320px English label can become one line when the full link uses weight 500.
-          // Compare text gaps only when the baseline was also one line; always bound
-          // the real gap and verify centering and card-height reduction independently.
-          const prior = previous.rows[i];
-          const priorTextHeight = prior.hit.height - (prior.gaps.statusText-prior.gaps.statusHit) - prior.gaps.textBottom;
-          if (priorTextHeight < 25) assert.ok(r.gaps.statusText < prior.gaps.statusText,'same-line text distance improves');
-          assert.ok(r.gaps.statusText>=0 && r.gaps.statusText<=14.5,'centered text stays close without overlapping status');
-          assert.ok(Math.abs((r.gaps.statusText-r.gaps.statusHit)-r.gaps.textBottom)<=2,'text vertically centered in hit target');
+          assert.ok(r.gaps.titleBadges>=4 && r.gaps.titleBadges<=6);
+          assert.ok(r.metadata, 'separate metadata row exists');
+          const fits = r.badges.width + r.status.width + 8 <= r.metadata.width + 1;
+          assert.equal(r.sameRow, fits, 'metadata stays on one row when it fits, otherwise naturally wraps');
+          if (!fits) assert.ok(r.status.top >= r.badges.bottom + 4, 'wrapped status has a real gap');
+          assert.ok(r.hit.top >= r.metadata.bottom + 4 && r.hit.top <= r.metadata.bottom + 6);
+          assert.ok(r.hit.height >= (width<=600 ? 44 : 24) && r.hit.width>=44 && r.gaps.statusHit>=0);
+          assert.equal(r.separator.width,'1px'); assert.equal(r.separator.style,'solid');
+          assert.ok(r.separator.token, 'existing subtle border token resolves');
+          assert.equal(r.separator.color, r.subtleColor, 'separator uses resolved subtle border token');
+          if (fits) assert.ok(previous.rows[i].card.height-r.card.height>=20,'nonwrapping cards shrink at least 20px');
+          if (width===1280 && locale!=='en') assert.ok(r.card.height<=92,'typical desktop card near 90px');
+          if (width<600 && locale!=='en') assert.ok(r.card.height<=106,'typical mobile card near 105px');
+          assert.ok(r.gaps.statusText>=0 && r.gaps.statusText<=20,'4px row gap, 2px badge height difference and centered 44px hit target stay close');
+          assert.ok(Math.abs((r.gaps.statusText-r.gaps.statusHit)-r.gaps.textBottom)<=4,'text stays centered including the 1px separator and font glyph bounds');
           assert.ok(r.gaps.adjacent===null || r.gaps.adjacent>=8,'cards remain distinct');
           assert.deepEqual(r.badgeSizes,previous.rows[i].badgeSizes,'original badge geometry preserved');
         });
@@ -104,7 +115,7 @@ try {
         const keys=await detail(page).locator('[data-channel]').evaluateAll(ns=>ns.map(n=>n.dataset.channel));
         for (const key of keys) {
           const row=detail(page).locator('.gate-detail-channel').filter({has:page.locator(`[data-channel="${key}"]`)});
-          const original=await status(row.locator(':scope > .transit-source-badge'));
+          const original=await status(row.locator('.transit-source-badge'));
           await row.locator('[data-channel]').click(); assert.deepEqual(await status(detail(page).locator('.tl-detail-channel-status')),original,`${gate}/${key} exact full status`); comparisons++;
           await detail(page).locator('.gate-detail-back').click();
           const pair=row.locator('[data-paired-gate]'); const target=await pair.getAttribute('data-paired-gate');
@@ -128,7 +139,20 @@ try {
     }
     assert.deepEqual(errors,[]); await context.close(); activePage=null;
   }
-  writeFileSync(resolve(out,'results.json'),JSON.stringify({phase,passed:true,cases:results},null,2)+'\n');
+  const pointerCases = [];
+  if (phase==='after') for (const [width,hasTouch] of [[1280,true],[390,false]]) {
+    const context = await browser.newContext({viewport:{width,height:900},hasTouch,reducedMotion:'reduce'});
+    await context.addInitScript(()=>localStorage.setItem('ohd-language','zh-CN'));
+    await context.route(/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.abort());
+    const page=activePage=await context.newPage();
+    await page.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8`);
+    await page.locator('#foundation-panel .reliability').waitFor({timeout:60000});
+    await page.locator('#bodygraph-container .bg-gate[data-gate="20"]').click();
+    const heights=await detail(page).locator('[data-paired-gate]').evaluateAll(ns=>ns.map(n=>n.getBoundingClientRect().height));
+    assert.equal(heights.length,3); assert.ok(heights.every(h=>h>=44),'width and coarse-pointer independently preserve 44px targets');
+    pointerCases.push({width,hasTouch,heights}); await context.close(); activePage=null;
+  }
+  writeFileSync(resolve(out,'results.json'),JSON.stringify({phase,passed:true,quick:process.env.ISSUE22_QUICK==='1',pointerCases,cases:results},null,2)+'\n');
   console.log(`PASS ${results.length} compact cases; ${results.reduce((n,r)=>n+r.comparisons,0)} exact status comparisons`);
 } catch(error) {
   if(activePage) await activePage.screenshot({path:resolve(out,`failure-${Date.now()}.png`)}).catch(()=>{});

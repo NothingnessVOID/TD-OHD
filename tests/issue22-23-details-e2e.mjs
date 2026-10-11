@@ -163,7 +163,7 @@ try {
 
     // Deterministic inactive and active transit states, using the production graph model.
     await invoke(page, 'fixture', { gate: 57, active: false });
-    assert.equal(await detail(page).locator('.gate-detail-channel > .inactive').count(), 3);
+    assert.equal(await detail(page).locator('.gate-detail-channel .transit-source-badge.inactive').count(), 3);
     await checkPairs(page, 57, [10, 20, 34], 'transit', mode);
     assert.equal(await page.evaluate(() => window.issue22Closed), 0);
     await close(page);
