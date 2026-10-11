@@ -6,7 +6,7 @@ import { waIntegrationBase, waIntegrationHead, waPreparationHead, waAddedPaths,
   waIntegrationPaths, integrationAddedPaths, assertWaIntegrationApproval,
   assertWaIntegrationSource as assertV1WaSource, waIntegrationProjection as v1WaProjection,
   waSnapshotBytes } from './helpers/wa-integration-projection.js';
-import { v2SourceProjection } from './helpers/penta-wa-v2-review.js';
+import { finalSourceProjection as v2SourceProjection, finalAddedPaths } from './helpers/penta-wa-v2-final-review.js';
 const assertWaIntegrationSource = (source, file) => assertV1WaSource(v2SourceProjection(source, file), file);
 const waIntegrationProjection = (source, file) => v1WaProjection(v2SourceProjection(source, file), file);
 import { waAdaptedAuditPaths, waNewAuditPaths, assertWaAuditApproval,
@@ -23,7 +23,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
 const baseInventory = git('ls-tree', '-r', '--name-only', waIntegrationBase)
   .toString().trim().split('\n').filter(protectedPath);
 // f278 already contains the two Penta additions; append only Wa here.
-const inventory = [...baseInventory, ...waAddedPaths];
+const inventory = [...baseInventory, ...waAddedPaths, ...finalAddedPaths];
 function rejectsBytes(file, source) {
   assert.notDeepEqual(source, read(file), 'Negative must change actual current bytes');
   assert.throws(() => validateReleaseIncrement(auditRoot, {

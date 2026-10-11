@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { v2RootBase, v2PhaseA, v2Phases, v2ActivePhases, v2PendingPhases, v2SourcePaths,
-  v2AddedPaths, assertV2SourceApproval, assertV2Source, v2SourceProjection,
+  v2AddedPaths, assertV2SourceApproval, assertV2Source, v2SourceProjection as phaseAProjection,
   v2SnapshotBytes } from './helpers/penta-wa-v2-review.js';
+import { finalSourceProjection as v2SourceProjection, finalAddedPaths } from './helpers/penta-wa-v2-final-review.js';
 import { assertV2AuditApproval, v2AuditHistoricalSource, v2AdaptedAuditPaths }
   from './helpers/penta-wa-v2-audit-compat.js';
 import { v2AuditHead } from './helpers/penta-wa-v2-audit-approval.js';
@@ -20,11 +21,11 @@ const read = file => readFileSync(new URL('../' + file, import.meta.url));
 const git = (...args) => execFileSync('git', args, { cwd: auditRoot, maxBuffer: 32 * 1024 * 1024 });
 const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(file)
   || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
-const inventory = git('ls-tree', '-r', '--name-only', v2RootBase).toString().trim().split('\n').filter(protectedPath);
+const inventory = [...git('ls-tree', '-r', '--name-only', v2RootBase).toString().trim().split('\n').filter(protectedPath), ...finalAddedPaths];
 const targetError = file => error => error.code === 'ERR_ASSERTION'
   && error.message.startsWith(`Unreviewed increment source: ${file}`);
 
-test('A alone is explicitly active with an immutable parent-approved five-file range and no additions', () => {
+test('historical A record remains explicitly active with its immutable five-file range and no additions', () => {
   assert.equal(v2RootBase, 'c379fbe6b9a1b4b472b900aeedc691275407c3f8');
   assert.equal(v2PhaseA.head, '9b01fb87fce51648b4fddf4d0dcdd9defe8867c7');
   assert.equal(v2PhaseA.base, v2RootBase);
@@ -67,7 +68,7 @@ test('each A file validates before older projections; flipped, appended and stal
     for (const changed of [flipped, Buffer.concat([source, Buffer.from('\n// unreviewed\n')]),
       v2SnapshotBytes(v2RootBase, file)]) {
       assert.notDeepEqual(changed, source);
-      for (const project of [assertV2Source, v2SourceProjection, pairedCardHeaderProjection, incrementProjection])
+      for (const project of [assertV2Source, phaseAProjection, v2SourceProjection, pairedCardHeaderProjection, incrementProjection])
         assert.throws(() => project(changed, file), targetError(file));
       assert.throws(() => validateReleaseIncrement(auditRoot, {
         files: inventory, read: p => p === file ? changed : read(p),
@@ -88,7 +89,7 @@ test('inventory retains all old additions and rejects missing, duplicated, and u
   }), /Unreviewed increment source inventory/);
 });
 
-test('pending B/C and package files still reject unapproved current bytes', () => {
+test('later B/C and package files still reject unapproved current bytes', () => {
   for (const file of ['src/lib/wa/model.js', 'src/lib/wa/analysis.js', 'src/views/wa.js',
     'src/lib/wa/messages.js', 'src/styles/wa.css', 'package.json', 'package-lock.json']) {
     const changed = Buffer.concat([read(file), Buffer.from('\n// unapproved later phase\n')]);
