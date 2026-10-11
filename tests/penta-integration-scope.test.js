@@ -5,7 +5,11 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { pentaIntegrationBase, pentaIntegrationHead, pentaContentHead, pentaContentPaths,
   pentaIntegrationPaths, pentaAddedPaths, assertPentaIntegrationApproval,
-  assertPentaIntegrationSource, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
+  assertPentaIntegrationSource as assertV1PentaSource,
+  pentaIntegrationProjection as v1PentaProjection } from './helpers/penta-integration-projection.js';
+import { v2SourceProjection } from './helpers/penta-wa-v2-review.js';
+const assertPentaIntegrationSource = (source, file) => assertV1PentaSource(v2SourceProjection(source, file), file);
+const pentaIntegrationProjection = (source, file) => v1PentaProjection(v2SourceProjection(source, file), file);
 import { pairedCardHeaderProjection } from './helpers/paired-card-header-projection.js';
 import { historicalAuditSource } from './helpers/penta-audit-history-projection.js';
 import { auditRoot, incrementBase, incrementManifestPath, snapshotBytes, incrementProjection,
@@ -29,14 +33,14 @@ test('Penta pins the full final parent SHA, twelve source paths and two addition
   assert.equal(pentaIntegrationPaths.length, 12);
   assert.deepEqual(pentaAddedPaths, ['src/lib/knowledge/content/penta-v1.json', 'src/lib/knowledge/penta-reading-policy.js']);
   assertPentaIntegrationApproval();
-  for (const file of pentaContentPaths) assert.deepEqual(read(file), snapshotBytes(pentaContentHead, file));
+  for (const file of pentaContentPaths) assert.deepEqual(v2SourceProjection(read(file), file), snapshotBytes(pentaContentHead, file));
 });
 
 test('all existing files validate before historical normalization; new files have no invented historical blob', () => {
   for (const file of pentaIntegrationPaths) {
     const source = read(file);
     assertPentaIntegrationSource(source, file);
-    assert.deepEqual(source, snapshotBytes(pentaIntegrationHead, file));
+    assert.deepEqual(v2SourceProjection(source, file), snapshotBytes(pentaIntegrationHead, file));
     if (pentaAddedPaths.includes(file)) {
       assert.throws(() => pentaIntegrationProjection(source, file), /no historical projection/);
       assert.throws(() => incrementProjection(source, file), /no historical projection/);

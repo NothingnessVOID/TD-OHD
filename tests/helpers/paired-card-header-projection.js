@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { pentaIntegrationProjection } from './penta-integration-projection.js';
 import { waIntegrationProjection } from './wa-integration-projection.js';
+import { v2SourceProjection } from './penta-wa-v2-review.js';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -93,6 +94,7 @@ export function assertPairedCardHeaderApproval() {
 
 /** Validate header source first, restoring aee before all immutable older approvals. */
 export function pairedCardHeaderProjection(source, file) {
+  source = v2SourceProjection(source, file);
   source = waIntegrationProjection(source, file);
   source = pentaIntegrationProjection(source, file);
   if (!pairedCardHeaderPaths.includes(file)) return source;
