@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
+import { integrationAddedPaths, finalSourceProjection } from './helpers/penta-wa-v2-final-review.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -134,7 +134,7 @@ test('restoring pre-visual bytes or pre-issue bug bytes cannot bypass the new ou
 test('visual projection passes all other paths through while older source and inventory guards still reject them', () => {
   for (const file of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(file);
-    assert.deepEqual(pairedGateVisualProjection(current, file), pentaIntegrationProjection(current, file));
+    assert.deepEqual(pairedGateVisualProjection(current, file), pentaIntegrationProjection(finalSourceProjection(current, file), file));
     const mutated = Buffer.concat([current, Buffer.from('\n// outside visual scope\n')]);
     if (pentaIntegrationPaths.includes(file)) assert.throws(() => pairedGateVisualProjection(mutated, file), /Unreviewed increment source/);
     else assert.strictEqual(pairedGateVisualProjection(mutated, file), mutated);

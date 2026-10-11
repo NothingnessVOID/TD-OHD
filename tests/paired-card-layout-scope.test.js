@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
+import { integrationAddedPaths, finalSourceProjection } from './helpers/penta-wa-v2-final-review.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -117,7 +117,7 @@ test('compact grid scope, centered hit target and unified link regressions fail 
 test('unrelated paths pass through compact while source and inventory guards remain active', () => {
   for (const file of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(file);
-    assert.deepEqual(pairedCardLayoutProjection(current, file), pentaIntegrationProjection(current, file));
+    assert.deepEqual(pairedCardLayoutProjection(current, file), pentaIntegrationProjection(finalSourceProjection(current, file), file));
     const mutated = Buffer.concat([current, Buffer.from('\n// outside compact scope\n')]);
     if (pentaIntegrationPaths.includes(file)) assert.throws(() => pairedCardLayoutProjection(mutated, file), /Unreviewed increment source/);
     else assert.strictEqual(pairedCardLayoutProjection(mutated, file), mutated);
