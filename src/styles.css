@@ -1794,12 +1794,21 @@ body.modal-open { overflow: hidden; }
 }
 
 .gate-detail-channel p { margin-top: 4px; font-size: 12.5px; }
-.gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display:flex; flex-wrap:wrap; margin:4px 0; }
+/* Explicit rows avoid the anonymous line box around the inline channel title.
+   The paired row owns a centered 44px target, so it needs no extra outer gap. */
+.gate-detail-channel:has(.gate-detail-paired-gate) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: 8px;
+}
+.gate-detail-channel:has(.gate-detail-paired-gate) > .gate-link { justify-self: start; text-align: left; line-height: 1.5; }
+.gate-detail-channel:has(.gate-detail-paired-gate) .channel-circuit-badges { display: flex; flex-wrap: wrap; margin: 4px 0; }
 .gate-detail-paired-gate {
-  display: block;
+  display: flex;
+  align-items: center;
   max-width: 100%;
   min-height: 44px;
-  margin-top: 2px;
+  margin: 0;
   padding: 0;
   border: 0;
   border-radius: 2px;
@@ -1813,12 +1822,11 @@ body.modal-open { overflow: hidden; }
   cursor: pointer;
 }
 .gate-detail-paired-gate-label { font-size: 12px; color: var(--text-secondary); }
-.gate-detail-paired-gate-number { color: var(--accent); font-weight: 500; }
-.gate-detail-paired-gate-name { color: var(--text); font-weight: 600; }
+.gate-detail-paired-gate-link { color: var(--accent); font-weight: 500; }
 .gate-detail-paired-gate:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.gate-detail-paired-gate:focus-visible .gate-detail-paired-gate-number { text-decoration: underline; text-underline-offset: 3px; }
+.gate-detail-paired-gate:focus-visible .gate-detail-paired-gate-link { text-decoration: underline; text-underline-offset: 3px; }
 @media (hover: hover) {
-  .gate-detail-paired-gate:hover .gate-detail-paired-gate-number { text-decoration: underline; text-underline-offset: 3px; }
+  .gate-detail-paired-gate:hover .gate-detail-paired-gate-link { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 .gate-detail-harmonic { margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); }
