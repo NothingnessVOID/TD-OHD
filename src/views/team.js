@@ -95,9 +95,9 @@ async function analyze() {
 }
 function renderResult() {
  if (!latest) return;
- const selection = matrix?.selection || null, highlighted = matrix?.highlightedMemberId || null;
+ const highlighted = matrix?.highlightedMemberId || null;
  matrix?.dispose(); $('team-content').replaceChildren(); $('team-analysis').replaceChildren();
- matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis'), detailAdapter: pentaDetailAdapter, initialSelection: selection, onMemberFocusChange: renderControls });
+ matrix = createPentaMatrix($('team-content'), { ...latest, analysisContainer: $('team-analysis'), detailAdapter: pentaDetailAdapter, onMemberFocusChange: renderControls });
  if (highlighted) matrix.setHighlightedMemberId(highlighted);
  renderControls();
 }
@@ -217,4 +217,4 @@ export function setupTeamView() {
  reset();
 }
 export function renderTeamView() { if ($('team-current')) schedule(false); }
-export function refreshTeamLanguage() { closeLayer?.(); if (!$('team-current')) return; document.querySelector('#team-view .view-subtitle').textContent = t('Team members and Penta structure'); renderControls(); if(latest) renderResult(); else schedule(false); }
+export function refreshTeamLanguage() { closeLayer?.(); if (!$('team-current')) return; document.querySelector('#team-view .view-subtitle').textContent = t('Team members and Penta structure'); renderControls(); if(latest) matrix?.refreshLanguage(); else schedule(false); }

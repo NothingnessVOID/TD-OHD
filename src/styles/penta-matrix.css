@@ -13,8 +13,6 @@
 #team-view .penta-gate.penta-selected-target rect { stroke:var(--accent); stroke-width:4; fill:var(--accent-soft); }
 #team-view .penta-member-muted { opacity:.35; }
 #team-view .penta-gate.penta-selected-target, #team-view .penta-edge.penta-selected-target { opacity:1; }
-#team-view .penta-edge.penta-selected-target line:not(.penta-hit) { stroke:var(--accent); stroke-width:4.5; }
-#team-view .penta-edge.penta-selected-target .penta-edge-symbol { stroke:var(--accent); stroke-width:2; fill:var(--accent-soft); }
 #team-view .penta-gate, #team-view .penta-edge { transition:opacity 120ms ease; }
 #team-view .penta-gate text { fill:var(--text); font-family:inherit; }
 #team-view .penta-number { font-size:19px; font-weight:700; }
@@ -26,6 +24,10 @@
 #team-view .penta-edge.penta-crossMemberOnly line:not(.penta-hit) { stroke:var(--accent); stroke-dasharray:7 3; }
 #team-view .penta-edge.penta-selfComplete line:not(.penta-hit), #team-view .penta-edge.penta-both line:not(.penta-hit) { stroke:var(--accent); }
 #team-view .penta-edge-symbol { fill:var(--bg-elevated); stroke:var(--border); }
+/* Temporary hover / open-detail emphasis follows base coverage styles. Keep
+   status dash patterns and restore their paint when the target is cleared. */
+#team-view .penta-edge.penta-selected-target line:not(.penta-hit) { stroke:var(--accent); stroke-width:4.5; }
+#team-view .penta-edge.penta-selected-target .penta-edge-symbol { stroke:var(--accent); stroke-width:2; fill:var(--accent-soft); }
 #team-view .penta-status-icon { width:24px; height:24px; flex:none; color:var(--text); vertical-align:middle; }
 #team-view .penta-canvas .penta-status-icon { width:16px; height:16px; overflow:visible; }
 #team-view .penta-hit { stroke:transparent; stroke-width:22; }
