@@ -28,7 +28,12 @@ test('localized shared headings are used by Penta, with canonical badges and no 
       assert.ok(html.indexOf('data-penta-channel-state') < html.indexOf('data-shared-channel-reading'));
       assert.ok(html.indexOf('data-shared-channel-reading') < html.indexOf('data-shared-gate-select='));
       const entry = getKnowledgeEntry({ domain: 'human-design', objectType: 'penta', objectId: `channel:${channel.channelId}` });
-      if (entry.properties.interpretationStatus !== 'verified') assert.doesNotMatch(html, /data-penta-specific/);
+      assert.equal(entry.properties.interpretationStatus, 'editorial-reviewed');
+      assert.equal(entry.reviewStatus, 'reviewed');
+      assert.equal(entry.properties.editorialReview.status, 'complete');
+      assert.match(html, /data-penta-specific/);
+      assert.ok(html.indexOf('data-penta-channel-state') < html.indexOf('data-penta-specific'));
+      assert.ok(html.indexOf('data-penta-specific') < html.indexOf('data-shared-channel-reading'));
     }
   }
 });

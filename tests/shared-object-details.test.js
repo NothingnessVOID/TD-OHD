@@ -38,7 +38,8 @@ test('all twelve gates and six channels have dedicated readings before canonical
     assert.equal((html.match(/data-shared-gate-select=/g) || []).length, 2);
   }
   assert.equal(listKnowledgeEntries().length, 70);
-  assert.equal(listKnowledgeEntries({ includePenta: true }).length, 99);
+  assert.equal(listKnowledgeEntries({ includePenta: true }).length, 100);
+  assert.equal(listKnowledgeEntries({ includePenta: true }).filter(entry => entry.id === 'hd.penta.triggering').length, 1);
 });
 test('six channels require reviewed evidence, verified interpretation and reviewed nonempty slots; accepted reading precedes canonical text', () => {
   for (const channel of PENTA_CHANNELS) {
