@@ -66,6 +66,10 @@ Penta 的对象选中高亮绑定详情生命周期；关闭时清理点击选�
 
 `chart.js` 的 `renderChannelJump()` 为闸门详情接收可选来源闸门，逐条提供对应闸门入口；中心详情继续使用原有通道列表。对应闸门入口复用已有 `Harmonic gate:` 三语言文案（简中显示“谐波闸门”）；视觉精修后使用局部无边框、透明背景文字行，提示／编号／名称分别沿用 `--text-secondary`／`--accent`／`--text`，保留 44px 点击高度及独立 hover、focus-visible 反馈；它与通道卡片均沿用出生图／行运的现有详情历史栈，名称来自 `gateName()`。通道内两张闸门卡片复用 `.detail-label`、`.detail-name` 和现有操作文案，窄屏允许单列，保留来源状态。
 
+## 关联通道状态复用
+
+闸门详情底部的关联通道状态复用完整通道详情的 `tl-activation-label`、`tl-detail-channel-status` 及出生来源类；出生完整通道沿用 `Birth activations`，其他来源和未完整文案保留原上下文判断。复用现有 CSS，不修改中心详情、回路标签、谐波入口、通道标题或持续时间布局。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
