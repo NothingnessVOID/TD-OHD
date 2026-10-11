@@ -56,4 +56,10 @@ The first v2 run exposed a real details-toggle re-render race; fixed by reading 
 
 The existing `tests/wa-ui-e2e.mjs` suite is unchanged and passed after prepare integration with real WASM, 18 responsive screenshots, save/list/history/restore/conflict and stale/person races. It also passed against final UI source `e6dfef4` plus B compatibility fix `9302bb0`. B's `tests/wa-v2-prepare-e2e.mjs` passed with real WASM for missing legacy time flags, optional runtime undefined fields and explicit unknown-time noon handling. The full v2 UI matrix passed on that same combined tree. The static build passed against source `3715854` using the existing engine output; no fresh .NET engine compilation is claimed. Build warnings remain for two baseline font.css references and the existing oversized application chunk; they were not altered in this task.
 
-No push, main merge, deployment, external publishing or reference-engine copy was performed. Parent integration is responsible for combined A/B/C/UI source audit and shared preview acceptance.
+## Final integration follow-up
+
+`df0b96c` (integrated as `81ae135`) preserves the native text-input DOM nodes, selection, undo history and Chinese composition session across title, group and manual-body edits. Text changes invalidate analysis immediately through a local refresh. Manual-edge editing tracks actual input so absent unedited label/note stay absent; explicit clearing remains an empty string and sourceRef survives. Eight input categories, no-op/endpoint-only edits, explicit clearing and new optional fields have targeted regression coverage.
+
+The parent ran the final combined source on `http://127.0.0.1:9961/`: v2 main workflow including IME/optional-field assertions and all 99 Skin/language/viewport cases passed; the original real-WASM Wa UI suite also passed. The final static build and private-client bundle exclusion check passed, retaining the existing font/chunk warnings.
+
+No main merge, deployment, external publishing or reference-engine copy was performed. Feature-branch delivery and final audit results are recorded in `PENTA-WA-V2-DELIVERY.md`.
