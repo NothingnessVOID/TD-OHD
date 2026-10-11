@@ -82,17 +82,19 @@ test('ordinary reference inventory and categories remain separate from Penta', (
   const catalog=referenceEntries();
   assert.equal(catalog.filter(e=>e.kind==='gate').length,64);
   assert.equal(catalog.filter(e=>e.kind==='channel').length,36);
-  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,64); // 70 foundation records minus six cognition entries.
-  assert.ok(catalog.every(e=>!String(e.id).startsWith('hd.penta.')));
+  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,93); // 64 public foundation records + 29 Penta records.
+  assert.equal(catalog.filter(e=>String(e.id).startsWith('hd.penta.')).length,29);
   assert.equal(listKnowledgeEntries().length,70);
   assert.deepEqual(listKnowledgeEntries().map(e=>e.id),listKnowledgeEntries({includePenta:false}).map(e=>e.id));
   assert.ok(listKnowledgeEntries().every(e=>e.objectType!=='penta'));
   assert.equal(listKnowledgeEntries({includePenta:true}).length,99);
   const view=readFileSync(new URL('../src/views/penta-matrix.js',import.meta.url),'utf8');
-  assert.match(view,/getKnowledgeDetail\(query\(id\)\)/);
+  assert.match(view,/const knowledgeBody = renderPentaReading/);
   assert.match(view,/qualifiedSummary\(`gate:\$\{gate\.gate\}`\)/);
   assert.match(view,/qualifiedSummary\(`channel:\$\{channel\.channelId\}`\)/);
-  assert.match(view,/interpretationStatus !== 'verified'/);
+  assert.match(view,/const qualifiedSummary = renderPentaSummary/);
+  const policy=readFileSync(new URL('../src/lib/knowledge/penta-reading-policy.js',import.meta.url),'utf8');
+  assert.match(policy,/editorial-reviewed/);
   assert.match(view,/detailAdapter\[kind\]\(record, context\)/);
   const home=readFileSync(new URL('../src/views/chart.js',import.meta.url),'utf8');
   assert.doesNotMatch(home,/penta-foundation|pentaContent/);

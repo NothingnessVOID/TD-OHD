@@ -70,6 +70,12 @@ Penta 的对象选中高亮绑定详情生命周期；关闭时清理点击选�
 
 闸门详情底部的关联通道状态复用完整通道详情的 `tl-activation-label`、`tl-detail-channel-status` 及出生来源类；出生完整通道沿用 `Birth activations`，其他来源和未完整文案保留原上下文判断。复用现有 CSS，不修改中心详情、回路标签、谐波入口、通道标题或持续时间布局。
 
+## Penta 内容包 v1 接入
+
+原有 `hd.penta.*` 21条身份扩充正文并追加8条机制，共29条（12门、6连接、11机制）。内容与来源登记保存在 `knowledge/content/penta-v1.json`，由原 `penta-foundation` 记录接口接入，结构证据与编辑审核分开。`knowledge/penta-reading-policy.js` 统一审查资格及独立摘要读取；公共 Knowledge 文章与安全段落渲染器承载正文，不新建资料弹窗系统。
+
+Team 增加一个 Penta 资料库入口，原背景区增加更多机制入口；资料库提供 Penta 知识及机制分类。图形、成员贡献及布局保持原实现，条目采用 Penta 专属名称，卦名复用 `hexagramName()`。Summary与Detail不互相回退，缺失／未知来源继续拒绝。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
