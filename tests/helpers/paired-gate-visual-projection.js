@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { channelStatusProjection } from './channel-status-projection.js';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -25,6 +26,7 @@ assert.deepEqual(changed, [...pairedGateVisualPaths].sort(), 'Unreviewed paired-
 
 /** Validate current bytes before the unchanged issue/release guards; other paths retain their input. */
 export function pairedGateVisualProjection(source, file) {
+  source = channelStatusProjection(source, file);
   if (!pairedGateVisualPaths.includes(file)) return source;
   assert.equal(sha(source), sha(bytes(pairedGateVisualHead, file)), `Unreviewed increment source: ${file} (paired-gate visual)`);
   return bytes(pairedGateVisualBase, file);
