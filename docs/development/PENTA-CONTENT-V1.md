@@ -38,3 +38,5 @@ Referenced source keys: GAP02, PV2-S05, PV2-S07, penta-structure, website-hd-cat
 ## Validation
 
 Targeted tests: `node --test tests/penta-content-v1.test.js tests/penta-knowledge.test.js tests/knowledge-layer.test.js`. Dependency directory is a junction to the root checkout's node_modules. Full suite, source guard and UI checks belong to parent integration. New tests are delivered in a follow-up commit to unblock UI work with the source commit first.
+
+Executed: the three targeted test files pass all 19 tests (7 new content tests, 3 updated Penta tests, 9 existing knowledge-layer tests). A direct deep-equality comparison confirms all 29 raw records, 14 source entries and both review histories match the supplied package. Vite's JS transform accepts the JSON import syntax. Mechanism classification explicitly checks all 11 topics: original three retain their existing kinds; eight new topics have kind `mechanism`, never `gate`. No full build or full suite was run.
