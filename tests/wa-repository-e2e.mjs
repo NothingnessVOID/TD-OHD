@@ -92,6 +92,80 @@ try {
   assert.deepEqual(Object.keys(persisted.head.members[0]).sort(), ['labelSnapshot', 'memberId', 'personId']);
   console.log('PASS page reload retains immutable history and references-only snapshots');
 
+  await page.evaluate(async () => {
+    const { createWaDraft, updateWaAnnotations } = await import('/src/lib/wa/model.js');
+    const { createWaRepository } = await import('/src/lib/wa/repository.js');
+    const check = (condition, message) => { if (!condition) throw new Error(message); };
+    const openV1 = name => new Promise((resolve, reject) => {
+      const request = indexedDB.open(name, 1);
+      request.onupgradeneeded = () => {
+        request.result.createObjectStore('heads', { keyPath: 'organizationId' });
+        const revisions = request.result.createObjectStore('revisions', { keyPath: ['organizationId', 'revisionId'] });
+        revisions.createIndex('organizationId', 'organizationId', { unique: false });
+        revisions.createIndex('organizationRevision', ['organizationId', 'revision'], { unique: true });
+      };
+      request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+    });
+    const name = 'wa-legacy-v1-test';
+    const legacy = { ...createWaDraft({ organizationId: 'legacy-synthetic', title: 'legacy untouched' }),
+      revision: 1, revisionId: 'legacy-r1', savedAt: '2025-10-01T10:30:00+08:00' };
+    const old = await openV1(name);
+    await new Promise((resolve, reject) => {
+      const tx = old.transaction(['heads', 'revisions'], 'readwrite');
+      tx.objectStore('heads').put(legacy); tx.objectStore('revisions').add(legacy);
+      tx.oncomplete = resolve; tx.onabort = () => reject(tx.error);
+    });
+    // Exercise the old app's versionchange close contract.
+    let versionChanged = false;
+    old.onversionchange = () => { versionChanged = true; old.close(); };
+    const repo = createWaRepository({ databaseName: name });
+    check(JSON.stringify(await repo.get(legacy.organizationId)) === JSON.stringify(legacy), 'Upgrade altered legacy head');
+    check(versionChanged, 'Old connection did not receive versionchange');
+    check(JSON.stringify((await repo.history(legacy.organizationId))[0]) === JSON.stringify(legacy), 'Upgrade altered legacy history');
+    const edited = await repo.save({ ...legacy, title: 'v1 edit remains v1' }, { expectedRevision: 1 });
+    check(edited.schema === 'wa-refs-v1', 'v1 edit forced schema upgrade');
+    const annotated = updateWaAnnotations(edited, { consultation: { assignment: 'manual', origin: 'manual', specificProblem: 'keep human text' }, manualCommunicationEdges: [] });
+    const third = await repo.save(annotated, { expectedRevision: 2 });
+    const fourth = await repo.save({ ...third, title: 'edited v2' }, { expectedRevision: 3 });
+    const restored = await repo.restore(legacy.organizationId, third.revisionId, { expectedRevision: 4 });
+    check(restored.schema === 'wa-refs-v2' && restored.consultation.specificProblem === 'keep human text', 'Restore lost v2 annotations');
+    check(restored.parentRevisionId === fourth.revisionId, 'Restore broke revision chain');
+    const restoreLegacy = await repo.restore(legacy.organizationId, legacy.revisionId, { expectedRevision: 5 });
+    check(restoreLegacy.schema === 'wa-refs-v1' && !Object.hasOwn(restoreLegacy, 'consultation'), 'Legacy restore invented annotations');
+    const backup = await repo.exportOrganization(legacy.organizationId);
+    check(backup.revisions.length === 6 && backup.annotations.revisions.length === 6, 'Incomplete organization export');
+    check(backup.annotations.revisions[2].annotations.consultation.specificProblem === 'keep human text', 'Historical annotations lost from export');
+    check(JSON.stringify(backup.revisions[0]) === JSON.stringify(legacy), 'Old history was mutated');
+    let code;
+    try { await repo.exportV1Organization(legacy.organizationId); } catch (error) { code = error.code; }
+    check(code === 'ANNOTATION_DOWNGRADE_CONFIRMATION_REQUIRED', 'History downgrade lacked confirmation');
+    const v1 = await repo.exportV1Organization(legacy.organizationId, { confirmAnnotationRemoval: true });
+    check(v1.revisions.every(row => row.schema === 'wa-refs-v1' && !Object.hasOwn(row, 'consultation')), 'Invalid v1 backup');
+    check(v1.annotations.revisions[2].annotations.consultation.specificProblem === 'keep human text', 'Downgrade did not preserve annotation sidecar');
+    check(JSON.stringify(await repo.exportOrganization(legacy.organizationId)) === JSON.stringify(backup), 'Export mutated storage');
+    let oldError;
+    try { const db = await openV1(name); db.close(); } catch (error) { oldError = error.name; }
+    check(oldError === 'VersionError', 'Old client was not fenced');
+
+    // A stubborn old tab blocks upgrade; rejection must not upgrade later in the background.
+    const blockedName = 'wa-legacy-blocked-test';
+    const blocker = await openV1(blockedName);
+    const blockedRepo = createWaRepository({ databaseName: blockedName });
+    let blockedCode;
+    try { await blockedRepo.list(); } catch (error) { blockedCode = error.code; }
+    check(blockedCode === 'STORAGE_BLOCKED', 'Blocked upgrade must reject explicitly');
+    blocker.close();
+    // IndexedDB processes this open after the prior pending upgrade: successful v1 proves abort.
+    const stillV1 = await openV1(blockedName);
+    check(stillV1.version === 1, 'Rejected blocked request upgraded in background');
+    stillV1.close();
+    await blockedRepo.list(); // explicit retry may now upgrade
+    for (const dbName of [name, blockedName]) await new Promise((resolve, reject) => {
+      const request = indexedDB.deleteDatabase(dbName); request.onsuccess = resolve; request.onerror = () => reject(request.error);
+    });
+  });
+  console.log('PASS seeded legacy v1 head/history load-edit-save-restore, v2 annotations, complete export, explicit downgrade, old-client fence, blocked-upgrade rollback');
+
   await page.evaluate(databaseName => new Promise((resolve, reject) => {
     const request = indexedDB.deleteDatabase(databaseName);
     request.onsuccess = () => resolve();

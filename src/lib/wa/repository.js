@@ -1,8 +1,8 @@
-import { assertWaSnapshot } from './model.js';
+import { assertWaSnapshot, exportWaAnnotations, downgradeWaSnapshot } from './model.js';
 import { createUuid } from '../uuid.js';
 
 export const WA_DATABASE_NAME = 'ohd-wa-refs-v1';
-export const WA_DATABASE_VERSION = 1;
+export const WA_DATABASE_VERSION = 2;
 export class WaRepositoryError extends Error {
   constructor(code, message, details = {}) {
     super(message);
@@ -33,14 +33,19 @@ export function createWaRepository({ indexedDB: factory, databaseName = WA_DATAB
       } catch (error) { reject(error instanceof WaRepositoryError ? error : new WaRepositoryError('STORAGE_UNAVAILABLE', error.message)); return; }
       let blocked = false;
       request.onupgradeneeded = () => {
+        // A rejected blocked open must not silently upgrade after another tab closes.
+        if (blocked) { request.transaction.abort(); return; }
         const db = request.result;
-        db.createObjectStore('heads', { keyPath: 'organizationId' });
-        const revisions = db.createObjectStore('revisions', { keyPath: ['organizationId', 'revisionId'] });
-        revisions.createIndex('organizationId', 'organizationId', { unique: false });
-        revisions.createIndex('organizationRevision', ['organizationId', 'revision'], { unique: true });
+        if (!db.objectStoreNames.contains('heads')) db.createObjectStore('heads', { keyPath: 'organizationId' });
+        if (!db.objectStoreNames.contains('revisions')) {
+          const revisions = db.createObjectStore('revisions', { keyPath: ['organizationId', 'revisionId'] });
+          revisions.createIndex('organizationId', 'organizationId', { unique: false });
+          revisions.createIndex('organizationRevision', ['organizationId', 'revision'], { unique: true });
+        }
+        // v1 -> v2 is solely an old-client fence; existing heads and history stay byte-for-byte unchanged.
       };
       request.onblocked = () => { blocked = true; reject(new WaRepositoryError('STORAGE_BLOCKED', 'Close other outdated Wa database connections.')); };
-      request.onerror = () => reject(new WaRepositoryError('STORAGE_OPEN_FAILED', request.error?.message ?? 'Cannot open Wa database.'));
+      request.onerror = () => reject(new WaRepositoryError(request.error?.name === 'VersionError' ? 'STORAGE_VERSION_UNSUPPORTED' : 'STORAGE_OPEN_FAILED', request.error?.message ?? 'Cannot open Wa database.'));
       request.onsuccess = () => {
         const db = request.result;
         if (blocked) { db.close(); return; }
@@ -126,7 +131,28 @@ export function createWaRepository({ indexedDB: factory, databaseName = WA_DATAB
       });
     }));
   }
-  return Object.freeze({ list, get, history, save, restore });
+  async function exportOrganization(organizationId) {
+    idRequired(organizationId);
+    // One readonly transaction captures a consistent head and full immutable history.
+    return transaction('readonly', (tx, watch, done) => watch(tx.objectStore('heads').get(organizationId), head => {
+      if (!head) fail('NOT_FOUND', 'Wa organization does not exist.');
+      watch(tx.objectStore('revisions').index('organizationId').getAll(organizationId), rows => {
+        const current = snapshotCopy(head);
+        const revisions = rows.map(snapshotCopy).sort((a, b) => a.revision - b.revision);
+        done({ schema: 'wa-organization-backup-v2', organizationId, head: current, revisions,
+          annotations: { head: exportWaAnnotations(current), revisions: revisions.map(exportWaAnnotations) } });
+      });
+    }));
+  }
+  async function exportV1Organization(organizationId, { confirmAnnotationRemoval = false } = {}) {
+    const backup = await exportOrganization(organizationId);
+    const options = { confirmAnnotationRemoval };
+    return { schema: 'wa-organization-downgrade-v1', organizationId,
+      head: downgradeWaSnapshot(backup.head, options).snapshot,
+      revisions: backup.revisions.map(row => downgradeWaSnapshot(row, options).snapshot),
+      annotations: backup.annotations };
+  }
+  return Object.freeze({ list, get, history, save, restore, exportOrganization, exportV1Organization });
 }
 const defaultRepository = createWaRepository();
 export const listWaOrganizations = () => defaultRepository.list();
@@ -134,3 +160,5 @@ export const getWaOrganization = id => defaultRepository.get(id);
 export const listWaRevisions = id => defaultRepository.history(id);
 export const saveWaOrganization = (input, options) => defaultRepository.save(input, options);
 export const restoreWaRevision = (id, revisionId, options) => defaultRepository.restore(id, revisionId, options);
+export const exportWaOrganization = id => defaultRepository.exportOrganization(id);
+export const exportWaV1Organization = (id, options) => defaultRepository.exportV1Organization(id, options);

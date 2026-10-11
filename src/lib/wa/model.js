@@ -5,6 +5,8 @@ import { createUuid } from '../uuid.js';
 import { createMember } from '../human-design/team-members.js';
 
 export const WA_SCHEMA = 'wa-refs-v1';
+export const WA_ANNOTATED_SCHEMA = 'wa-refs-v2';
+export const WA_ANNOTATION_FIELDS = Object.freeze(['manualCommunicationEdges', 'consultation']);
 export const WA_ROLES = Object.freeze(['foundation', 'expansion', 'coordinating']);
 const ajv = new Ajv2020({ allErrors: true, strict: true });
 addFormats(ajv);
@@ -111,8 +113,33 @@ export function validateWaSnapshot(snapshot) {
   }
   if (snapshot.alphaId !== null && !members.has(snapshot.alphaId)) issues.push(issue('UNKNOWN_ALPHA', 'alphaId', snapshot.alphaId));
   if (assigned.has(snapshot.alphaId)) issues.push(issue('ALPHA_IN_PENTA', 'alphaId', snapshot.alphaId));
-  for (const entry of snapshot.manualMetadata?.powerBases ?? []) {
-    if (!members.has(entry.memberId)) issues.push(issue('UNKNOWN_METADATA_MEMBER', 'manualMetadata.powerBases', entry.memberId));
+  for (const [index, entry] of (snapshot.manualMetadata?.powerBases ?? []).entries()) {
+    if (!members.has(entry.memberId)) issues.push({ ...issue('UNKNOWN_METADATA_MEMBER', `manualMetadata.powerBases/${index}`, entry.memberId), annotation: structuredClone(entry) });
+  }
+  const participants = new Set(assigned);
+  if (snapshot.alphaId !== null) participants.add(snapshot.alphaId);
+  const edgeIds = new Set(), edgePairs = new Set();
+  for (const [index, edge] of (snapshot.manualCommunicationEdges ?? []).entries()) {
+    if (!participants.has(edge.fromMemberId) || !participants.has(edge.toMemberId)) issues.push({ ...issue('MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT', `manualCommunicationEdges/${index}`, edge.edgeId), annotation: structuredClone(edge) });
+    if (edge.fromMemberId === edge.toMemberId) issues.push(issue('MANUAL_EDGE_SELF_LINK', 'manualCommunicationEdges', edge.edgeId));
+    const pair = JSON.stringify([edge.fromMemberId, edge.toMemberId]);
+    if (edgeIds.has(edge.edgeId) || edgePairs.has(pair)) issues.push(issue('DUPLICATE_MANUAL_EDGE', 'manualCommunicationEdges', edge.edgeId));
+    edgeIds.add(edge.edgeId); edgePairs.add(pair);
+  }
+  const consultation = snapshot.consultation;
+  for (const [index, id] of (consultation?.keyAllyIds ?? []).entries()) {
+    if (!participants.has(id)) issues.push({ ...issue('ALLY_NOT_PARTICIPANT', `consultation.keyAllyIds/${index}`, id), annotation: id });
+  }
+  const areas = new Set(), intents = new Set();
+  for (const [index, area] of (consultation?.businessAreas ?? []).entries()) {
+    if (!groups.has(area.pentaId)) issues.push({ ...issue('CONSULTATION_UNKNOWN_PENTA', `consultation.businessAreas/${index}`, area.pentaId), annotation: structuredClone(area) });
+    if (areas.has(area.pentaId)) issues.push(issue('DUPLICATE_BUSINESS_AREA', 'consultation.businessAreas', area.pentaId));
+    areas.add(area.pentaId);
+  }
+  for (const [index, intent] of (consultation?.gapIntents ?? []).entries()) {
+    if (!groups.has(intent.pentaId)) issues.push({ ...issue('CONSULTATION_UNKNOWN_PENTA', `consultation.gapIntents/${index}`, intent.pentaId), annotation: structuredClone(intent) });
+    if (intents.has(intent.id)) issues.push(issue('DUPLICATE_GAP_INTENT', 'consultation.gapIntents', intent.id));
+    intents.add(intent.id);
   }
   if (snapshot.layoutMode === 'custom' || snapshot.customPolicy !== undefined) {
     issues.push(issue('CUSTOM_UNSUPPORTED', 'layoutMode', 'Custom layouts are reserved for a future version.'));
@@ -150,7 +177,7 @@ export function validateWaLayout(snapshot) {
 }
 
 /** Pure atomic move. target=null puts a member in the pool; {alpha:true} replaces Alpha. */
-export function moveWaMember(snapshot, memberId, target = null) {
+export function moveWaMember(snapshot, memberId, target = null, options = {}) {
   assertWaSnapshot(snapshot);
   if (!snapshot.members.some(member => member.memberId === memberId)) throw new WaModelError('UNKNOWN_MEMBER', memberId);
   if (target !== null && !(typeof target === 'object' && !Array.isArray(target)
@@ -164,12 +191,70 @@ export function moveWaMember(snapshot, memberId, target = null) {
   if (next.alphaId === memberId) next.alphaId = null;
   if (target?.alpha) next.alphaId = memberId;
   if (target?.pentaId) next.pentas.find(group => group.pentaId === target.pentaId).memberIds.push(memberId);
+  return reconcileWaAnnotations(next, options);
+}
+
+export function removeWaMember(snapshot, memberId, options = {}) {
+  assertWaSnapshot(snapshot);
+  if (!snapshot.members.some(member => member.memberId === memberId)) throw new WaModelError('UNKNOWN_MEMBER', memberId);
+  const next = structuredClone(snapshot);
+  next.pentas.forEach(group => { group.memberIds = group.memberIds.filter(id => id !== memberId); });
+  if (next.alphaId === memberId) next.alphaId = null;
+  next.members = next.members.filter(member => member.memberId !== memberId);
+  return reconcileWaAnnotations(next, options);
+}
+
+/** Explicit editing boundary. Never auto-upgrade schema while loading or saving. */
+export function updateWaAnnotations(snapshot, patch) {
+  assertWaSnapshot(snapshot);
+  const json = validateWaPlainJson(patch);
+  if (!json.valid || !patch || Array.isArray(patch) || typeof patch !== 'object'
+    || Object.keys(patch).some(key => !WA_ANNOTATION_FIELDS.includes(key))) {
+    throw new WaModelError('INVALID_ANNOTATION_PATCH', 'Only optional annotation fields may be patched.', json.issues);
+  }
+  const next = structuredClone(snapshot);
+  for (const [key, value] of Object.entries(patch)) next[key] = structuredClone(value);
+  next.schema = WA_ANNOTATION_FIELDS.some(key => Object.hasOwn(next, key)) ? WA_ANNOTATED_SCHEMA : WA_SCHEMA;
   return assertWaSnapshot(next);
 }
 
-export function removeWaMember(snapshot, memberId) {
-  const next = moveWaMember(snapshot, memberId, null);
-  next.members = next.members.filter(member => member.memberId !== memberId);
-  if (next.manualMetadata?.powerBases) next.manualMetadata.powerBases = next.manualMetadata.powerBases.filter(entry => entry.memberId !== memberId);
+/** Call after a structural edit. Only explicit cleanup may remove human-entered references. */
+export function reconcileWaAnnotations(snapshot, { confirmAnnotationCleanup = false } = {}) {
+  const validation = validateWaSnapshot(snapshot);
+  const referenceCodes = new Set(['MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT', 'ALLY_NOT_PARTICIPANT', 'CONSULTATION_UNKNOWN_PENTA', 'UNKNOWN_METADATA_MEMBER']);
+  const references = validation.issues.filter(item => referenceCodes.has(item.code));
+  if (validation.issues.some(item => !referenceCodes.has(item.code))) return assertWaSnapshot(snapshot);
+  if (!references.length) return assertWaSnapshot(snapshot);
+  if (confirmAnnotationCleanup !== true) throw new WaModelError('ANNOTATION_CLEANUP_REQUIRED', 'Explicit confirmation is required to remove referenced annotations.', references);
+  const next = structuredClone(snapshot);
+  const participants = new Set(next.pentas.flatMap(group => group.memberIds));
+  if (next.alphaId !== null) participants.add(next.alphaId);
+  const members = new Set(next.members.map(member => member.memberId));
+  const groups = new Set(next.pentas.map(group => group.pentaId));
+  if (next.manualCommunicationEdges) next.manualCommunicationEdges = next.manualCommunicationEdges.filter(edge => participants.has(edge.fromMemberId) && participants.has(edge.toMemberId));
+  if (next.consultation?.keyAllyIds) next.consultation.keyAllyIds = next.consultation.keyAllyIds.filter(id => participants.has(id));
+  for (const key of ['businessAreas', 'gapIntents']) {
+    if (next.consultation?.[key]) next.consultation[key] = next.consultation[key].filter(entry => groups.has(entry.pentaId));
+  }
+  if (next.manualMetadata?.powerBases) next.manualMetadata.powerBases = next.manualMetadata.powerBases.filter(entry => members.has(entry.memberId));
   return assertWaSnapshot(next);
+}
+
+export function exportWaAnnotations(snapshot) {
+  assertWaSnapshot(snapshot);
+  return { schema: 'wa-annotations-v1', organizationId: snapshot.organizationId, revision: snapshot.revision,
+    revisionId: snapshot.revisionId, parentRevisionId: snapshot.parentRevisionId, savedAt: snapshot.savedAt,
+    annotations: Object.fromEntries(WA_ANNOTATION_FIELDS.filter(key => Object.hasOwn(snapshot, key)).map(key => [key, structuredClone(snapshot[key])])) };
+}
+
+/** Pure export conversion, never a database version rollback or a storage write. */
+export function downgradeWaSnapshot(snapshot, { confirmAnnotationRemoval = false } = {}) {
+  assertWaSnapshot(snapshot);
+  if (WA_ANNOTATION_FIELDS.some(key => Object.hasOwn(snapshot, key)) && confirmAnnotationRemoval !== true) {
+    throw new WaModelError('ANNOTATION_DOWNGRADE_CONFIRMATION_REQUIRED', 'Export annotations and explicitly confirm their removal from the v1 copy.');
+  }
+  const next = structuredClone(snapshot);
+  for (const key of WA_ANNOTATION_FIELDS) delete next[key];
+  next.schema = WA_SCHEMA;
+  return { snapshot: assertWaSnapshot(next), annotations: exportWaAnnotations(snapshot) };
 }
