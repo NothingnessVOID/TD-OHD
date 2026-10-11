@@ -29,6 +29,25 @@ const sorted = values => [...values].sort();
 const numeric = values => [...values].sort((a, b) => a - b);
 const canonical = gates => numeric(gates).join('-');
 const byId = (a, b) => a.pentaId < b.pentaId ? -1 : a.pentaId > b.pentaId ? 1 : 0;
+const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+// Runtime provenance stays outside enumerable v1 results and contains no birth inputs.
+const resultActivations = new WeakMap();
+
+function groupCommunication(snapshot, activationsByMember) {
+  const view = (ids, scope) => {
+    const memberIds = sorted(new Set(ids));
+    const byGate = new Map();
+    for (const id of memberIds) for (const activation of activationsByMember.get(id) ?? []) {
+      if (!byGate.has(activation.gate)) byGate.set(activation.gate, []);
+      byGate.get(activation.gate).push({ ...activation });
+    }
+    return { scope, memberIds, pairs: WA_PAIRS.map(pair => collectPair(pair, byGate)) };
+  };
+  return { sourceScope: 'supplied_chart_activations', officialMechanics: false,
+    groups: [...snapshot.pentas].sort(byId).map(group => ({ pentaId: group.pentaId,
+      ...view(group.memberIds, 'group_members_only'),
+      withAlpha: view([...group.memberIds, ...(snapshot.alphaId === null ? [] : [snapshot.alphaId])], 'group_union_manual_alpha') })) };
+}
 
 function collectPair(pair, activationsByGate) {
   const [first, second] = pair.gates;
@@ -84,7 +103,7 @@ function schematic(snapshot, memberIds, poolMemberIds) {
 }
 
 /** Runtime-only full Sharp charts. Pool data is deliberately never inspected. */
-export function analyzeWa(snapshot, preparedMembers = []) {
+export function analyzeWa(snapshot, preparedMembers = [], options = {}) {
   const layoutValidation = validateWaLayout(snapshot);
   const base = { modelVersion: 'wa-structure-v1', organizationId: snapshot?.organizationId ?? null,
     revision: snapshot?.revision ?? null, revisionId: snapshot?.revisionId ?? null,
@@ -92,21 +111,31 @@ export function analyzeWa(snapshot, preparedMembers = []) {
   if (!layoutValidation.ready) return { ...base, status: 'layout_not_ready', issues: layoutValidation.issues };
   const { memberIds, poolMemberIds } = layoutValidation;
   const issues = [];
-  if (!Array.isArray(preparedMembers)) return { ...base, status: 'not_ready', issues: [{ code: 'INVALID_PREPARED_MEMBERS' }] };
+  if (!Array.isArray(preparedMembers)) return { ...base, status: 'not_ready',
+    issues: [{ code: 'INVALID_PREPARED_MEMBERS' }], memberIds, poolMemberIds };
   if (!memberIds.length) issues.push({ code: 'NO_PARTICIPANTS' });
   const wanted = new Set(memberIds);
   const prepared = new Map();
-  for (const member of preparedMembers) {
-    if (!wanted.has(member?.memberId)) continue;
-    if (prepared.has(member.memberId)) issues.push({ code: 'DUPLICATE_PREPARED_MEMBER', memberId: member.memberId });
-    prepared.set(member.memberId, member);
+  const seen = new Set();
+  for (const [index, member] of preparedMembers.entries()) {
+    if (!record(member) || typeof member.memberId !== 'string' || !member.memberId.trim()) {
+      issues.push({ code: 'INVALID_PREPARED_MEMBER', path: `preparedMembers[${index}]` });
+      continue;
+    }
+    if (seen.has(member.memberId)) issues.push({ code: 'DUPLICATE_PREPARED_MEMBER', memberId: member.memberId });
+    seen.add(member.memberId);
+    if (wanted.has(member.memberId)) prepared.set(member.memberId, member);
   }
+  if (issues.length) return { ...base, status: 'not_ready', issues, memberIds, poolMemberIds };
   const activationsByMember = new Map();
   const estimatedMemberIds = [];
   const uncertainMemberIds = [];
   for (const memberId of memberIds) {
     const member = prepared.get(memberId);
     if (!member) { issues.push({ code: 'MISSING_PREPARED_MEMBER', memberId }); continue; }
+    if (member.chartQuality !== undefined && !record(member.chartQuality)) {
+      issues.push({ code: 'INVALID_CHART_QUALITY', memberId, path: 'chartQuality' }); continue;
+    }
     if (member.chartQuality?.mode === 'interval') {
       issues.push({ code: 'DATA_QUALITY_REQUIRED', memberId, path: 'chartQuality.mode' }); continue;
     }
@@ -120,7 +149,8 @@ export function analyzeWa(snapshot, preparedMembers = []) {
       issues.push({ code: 'INVALID_TIME_UNKNOWN', memberId }); continue;
     }
     try { activationsByMember.set(memberId, extractTeamActivations(member)); }
-    catch (error) { issues.push({ code: error.code ?? 'INVALID_CHART', memberId, path: error.path, message: error.message }); }
+    catch (error) { issues.push({ code: error?.code ?? 'INVALID_CHART', memberId, path: error?.path,
+      message: error?.message ?? String(error) }); }
     if (member.timeUnknown || member.birthTimeConfidence === 'estimated') estimatedMemberIds.push(memberId);
     if (member.timeUnknown || member.birthTimeConfidence === undefined
       || ['estimated', 'unknown', 'not_recorded'].includes(member.birthTimeConfidence)) uncertainMemberIds.push(memberId);
@@ -150,11 +180,22 @@ export function analyzeWa(snapshot, preparedMembers = []) {
       status: validSize ? 'ready' : 'outside_standard_template',
       result: validSize ? analyzePentaStructure(ids.map(id => prepared.get(id))) : null };
   });
-  return { ...base, status: 'ready', issues: [], alphaId: snapshot.alphaId, memberIds, poolMemberIds, members, pentas,
+  // Layout's v2 readiness diagnostics must not alter a successful v1 analysis shape.
+  const { canAnalyze, participantCount, ...legacyLayoutValidation } = layoutValidation;
+  const result = { ...base, layoutValidation: legacyLayoutValidation,
+    status: 'ready', issues: [], alphaId: snapshot.alphaId, memberIds, poolMemberIds, members, pentas,
     communication: { pairs, missingGateIds: numeric(new Set(pairs.flatMap(pair => pair.missingGates))),
       incompletePairIds: pairs.filter(pair => pair.missingGates.length).map(pair => pair.channelId) },
     uncertainty: { certaintyMode: 'single_chart_conditional', estimatedMemberIds, uncertainMemberIds, intervalSupported: false },
     layout: schematic(snapshot, memberIds, poolMemberIds) };
+  if (options?.includeGroupCommunication === true) result.groupCommunication = groupCommunication(snapshot, activationsByMember);
+  if (Object.hasOwn(snapshot, 'consultation')) result.consultation = structuredClone(snapshot.consultation);
+  if (Object.hasOwn(snapshot, 'manualCommunicationEdges')) result.manualCommunication = {
+    assignment: 'manual', affectsCoverage: false, sourceVerification: 'not_performed', mechanicalActivation: false,
+    edges: structuredClone(snapshot.manualCommunicationEdges)
+  };
+  resultActivations.set(result, structuredClone([...activationsByMember.values()].flat()));
+  return result;
 }
 
 const delta = (before, after) => ({ added: after.filter(value => !before.includes(value)), removed: before.filter(value => !after.includes(value)) });
@@ -165,7 +206,7 @@ const placement = (result, id) => id === result.alphaId ? { kind: 'alpha' }
     : result.poolMemberIds.includes(id) ? { kind: 'pool' } : null;
 
 /** Compare ready results from one organization. All joins use stable IDs, never labels/order. */
-export function diffWa(previous, next) {
+export function diffWa(previous, next, options = {}) {
   if (previous?.status !== 'ready' || next?.status !== 'ready') return { status: 'not_ready', issues: [{ code: 'READY_RESULTS_REQUIRED' }] };
   if (previous.organizationId !== next.organizationId) return { status: 'invalid', issues: [{ code: 'ORGANIZATION_MISMATCH' }] };
   const participants = delta(previous.memberIds, next.memberIds);
@@ -197,10 +238,64 @@ export function diffWa(previous, next) {
       gateIds: delta(before?.gateIds ?? [], after?.gateIds ?? []),
       activeChannelIds: delta(before?.activeChannelIds ?? [], after?.activeChannelIds ?? []) }];
   });
-  return { status: 'ready', organizationId: next.organizationId, participants, memberChanges,
+  const result = { status: 'ready', organizationId: next.organizationId, participants, memberChanges,
     addedMemberIds: participants.added, removedMemberIds: participants.removed,
     pool: delta(previous.poolMemberIds, next.poolMemberIds),
     alpha: { changed: previous.alphaId !== next.alphaId, from: previous.alphaId, to: next.alphaId },
     reassignments, pentas, communication: { pairs, missingGateIds: delta(previous.communication.missingGateIds, next.communication.missingGateIds),
       incompletePairIds: delta(previous.communication.incompletePairIds, next.communication.incompletePairIds) } };
+  if (options?.includeTrace === true) result.contributionTrace = contributionTrace(previous, next);
+  return result;
+}
+
+// Identity includes each original endpoint, including line, so a line-only edit is visible.
+const activationIdentity = activation => JSON.stringify([
+  activation.memberId, activation.side, activation.planet, activation.gate, activation.line
+]);
+
+function contributionTrace(previous, next) {
+  const metadata = { sourceScope: 'supplied_chart_activations', officialMechanics: false,
+    meaning: 'member_and_input_changes_only', performanceCausality: false };
+  const before = resultActivations.get(previous);
+  const after = resultActivations.get(next);
+  // Persisted v1 results omit non-Wa activation detail. Do not invent that provenance.
+  if (!before || !after) return { ...metadata, status: 'not_available', reason: 'ANALYZE_RESULTS_REQUIRED' };
+  const beforeKeys = new Set(before.map(activationIdentity));
+  const afterKeys = new Set(after.map(activationIdentity));
+  const added = after.filter(activation => !beforeKeys.has(activationIdentity(activation)));
+  const removed = before.filter(activation => !afterKeys.has(activationIdentity(activation)));
+  const gates = numeric(new Set([...added, ...removed].map(activation => activation.gate))).map(gate => {
+    const from = before.filter(activation => activation.gate === gate);
+    const to = after.filter(activation => activation.gate === gate);
+    const oldIds = sorted(new Set(from.map(activation => activation.memberId)));
+    const newIds = sorted(new Set(to.map(activation => activation.memberId)));
+    return { gate, contributors: delta(oldIds, newIds),
+      activationCount: { from: from.length, to: to.length, delta: to.length - from.length },
+      contributorCount: { from: oldIds.length, to: newIds.length, delta: newIds.length - oldIds.length },
+      presence: { from: from.length ? 'present' : 'absent', to: to.length ? 'present' : 'absent' },
+      members: sorted(new Set([...oldIds, ...newIds])).flatMap(memberId => {
+        const oldActivations = from.filter(activation => activation.memberId === memberId);
+        const newActivations = to.filter(activation => activation.memberId === memberId);
+        const oldKeys = new Set(oldActivations.map(activationIdentity));
+        const newKeys = new Set(newActivations.map(activationIdentity));
+        const memberAdded = newActivations.filter(activation => !oldKeys.has(activationIdentity(activation)));
+        const memberRemoved = oldActivations.filter(activation => !newKeys.has(activationIdentity(activation)));
+        return memberAdded.length || memberRemoved.length ? [{ memberId,
+          activationCount: { from: oldActivations.length, to: newActivations.length, delta: newActivations.length - oldActivations.length },
+          presence: { from: oldActivations.length ? 'present' : 'absent', to: newActivations.length ? 'present' : 'absent' },
+          added: memberAdded, removed: memberRemoved }] : [];
+      }) };
+  });
+  const changedGates = new Set(gates.map(change => change.gate));
+  const pairEndpoints = WA_PAIRS.filter(pair => pair.gates.some(gate => changedGates.has(gate))).map(pair => {
+    const from = previous.communication.pairs.find(candidate => candidate.channelId === pair.channelId);
+    const to = next.communication.pairs.find(candidate => candidate.channelId === pair.channelId);
+    return { channelId: pair.channelId, status: { from: from.status, to: to.status },
+      endpoints: pair.gates.map(gate => ({ gate,
+        holders: delta(from.holdersByGate[gate], to.holdersByGate[gate]),
+        activationCount: { from: from.gateRecords.find(record => record.gate === gate).activationCount,
+          to: to.gateRecords.find(record => record.gate === gate).activationCount },
+        presence: { from: from.holdersByGate[gate].length ? 'present' : 'absent', to: to.holdersByGate[gate].length ? 'present' : 'absent' } })) };
+  });
+  return structuredClone({ ...metadata, status: 'ready', activations: { added, removed }, gates, pairEndpoints });
 }

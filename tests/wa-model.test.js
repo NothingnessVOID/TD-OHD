@@ -59,7 +59,7 @@ test('10/16 standard boundaries, unlimited unassigned pool, and observation read
   }
 });
 
-test('moves and removals preserve IDs, never mutate input, clean Alpha/group/manual references', () => {
+test('moves and removals preserve IDs; removing manual notes requires explicit cleanup', () => {
   const { snapshot } = fixture({ pool: 1 });
   snapshot.manualMetadata = { notes: 'manual', powerBases: [{ memberId: 'm00', label: 'Direction', assignment: 'manual' }] };
   const original = structuredClone(snapshot);
@@ -70,7 +70,8 @@ test('moves and removals preserve IDs, never mutate input, clean Alpha/group/man
   const alpha = moveWaMember(snapshot, 'm01', { alpha: true });
   assert.equal(alpha.alphaId, 'm01');
   assert.ok(validateWaLayout(alpha).poolMemberIds.includes('m00'));
-  const removed = removeWaMember(snapshot, 'm00');
+  assert.throws(() => removeWaMember(snapshot, 'm00'), { code: 'ANNOTATION_CLEANUP_REQUIRED' });
+  const removed = removeWaMember(snapshot, 'm00', { confirmAnnotationCleanup: true });
   assert.equal(removed.alphaId, null);
   assert.deepEqual(removed.manualMetadata.powerBases, []);
   assert.equal(validateWaLayout(removed).ready, false);
