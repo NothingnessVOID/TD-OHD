@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { pentaAddedPaths, assertPentaIntegrationApproval, assertPentaIntegrationSource } from './penta-integration-projection.js';
 import { integrationAddedPaths, waAddedPaths, assertWaIntegrationApproval, assertWaIntegrationSource } from './wa-integration-projection.js';
-import { v2AddedPaths, assertV2SourceApproval, assertV2Source, v2SourceProjection } from './penta-wa-v2-review.js';
+import { finalAddedPaths as v2AddedPaths, assertFinalSourceApproval as assertV2SourceApproval,
+  assertFinalSource as assertV2Source, finalSourceProjection as v2SourceProjection } from './penta-wa-v2-final-review.js';
 import {issueDetailsProjection} from './issue-details-projection.js';
 import {validationHead,validationPaths,validationProjection} from './release-validation-projection.js';
 import { createHash } from 'node:crypto';

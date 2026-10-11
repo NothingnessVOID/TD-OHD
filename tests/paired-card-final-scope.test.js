@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
+import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import { historicalAuditSource } from './helpers/penta-audit-history-projection.js';
 import assert from 'node:assert/strict';

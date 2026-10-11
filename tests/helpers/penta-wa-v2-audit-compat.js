@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { v2AuditHead } from './penta-wa-v2-audit-approval.js';
+import { finalAuditHistoricalSource } from './penta-wa-v2-final-audit-compat.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const sourceBase = '9b01fb87fce51648b4fddf4d0dcdd9defe8867c7';
@@ -32,7 +33,7 @@ export function assertV2AuditSnapshot(ref) {
     .trim().split('\n').filter(Boolean).sort(), [...v2AdaptedAuditPaths, ...v2NewAuditPaths].sort(),
   'Unreviewed v2 audit snapshot paths');
   for (const file of [...v2AdaptedAuditPaths, ...v2NewAuditPaths].filter(file => file !== approvalPath))
-    assert.deepEqual(read(file), bytes(ref, file), `Unreviewed historical audit source: ${file}`);
+    assert.deepEqual(finalAuditHistoricalSource(file, read(file)), bytes(ref, file), `Unreviewed historical audit source: ${file}`);
   assert.equal(read(approvalPath).toString(), bytes(ref, approvalPath).toString()
     .replace("'PENDING_PARENT_V2_AUDIT_APPROVAL'", `'${v2AuditHead}'`),
   'Unreviewed v2 audit approval edits');
@@ -47,6 +48,7 @@ export function assertV2AuditApproval() {
 }
 /** One flat approved adapter layer; old Wa and Penta checks continue unchanged after it. */
 export function v2AuditHistoricalSource(file, source = read(file)) {
+  source = finalAuditHistoricalSource(file, source);
   if (!v2AdaptedAuditPaths.includes(file)) return source;
   assertV2AuditApproval();
   assert.deepEqual(source, bytes(v2AuditHead, file), `Unreviewed historical audit source: ${file}`);
