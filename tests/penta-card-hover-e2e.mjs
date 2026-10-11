@@ -13,11 +13,11 @@ try{
    if(!mobile){await row.hover();assert.notEqual((await style(row)).background,before.background);await page.mouse.move(1,1);assert.equal((await style(row)).background,before.background);}
    if(mobile)await row.tap();else await row.click();await page.locator('.penta-detail:not(.hidden)').waitFor();await page.locator('.penta-detail .gate-detail-close').click();
    await page.mouse.move(1,1);const after=await style(row);assert.equal(after.active,false);assert.equal(after.background,before.background);assert.equal(after.border,before.border);if(!after.focus)assert.equal(after.outline,'none');
-   assert.ok(await page.locator('.penta-selected-target').count()>0,'left graph selection preserved');await row.screenshot({path:`${out}/${mobile?'mobile':'desktop'}-${kind}-closed.png`});
+   assert.equal(await page.locator('.penta-selected-target').count(),0,'left graph selection cleared after close');assert.equal(await page.locator('.penta-canvas [aria-pressed="true"]').count(),0,'graph buttons released after close');await row.screenshot({path:`${out}/${mobile?'mobile':'desktop'}-${kind}-closed.png`});
    await row.focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert.equal((await style(row)).focus,true);assert.notEqual((await style(row)).outline,'none');
    await row.press('Enter');await page.locator('.penta-detail:not(.hidden)').waitFor();await page.keyboard.press('Escape');assert.equal(await row.evaluate(n=>n===document.activeElement),true);assert.equal((await style(row)).active,false);await row.screenshot({path:`${out}/${mobile?'mobile':'desktop'}-${kind}-keyboard.png`});
   }
   assert.deepEqual(errors,[]);await context.close();
  }
- console.log('PASS gate/channel pointer hover resets, click/close no selected card fill/border, left graph selection preserved, focus-visible Enter/Escape return, mobile tap');
+ console.log('PASS gate/channel pointer hover resets, click/close no selected card fill/border, left graph selection cleared, focus-visible Enter/Escape return, mobile tap');
 }finally{await browser.close();}

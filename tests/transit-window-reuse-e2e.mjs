@@ -31,7 +31,7 @@ try {
 
       await page.locator('#transit-stage .tl-planet[data-planet="sun"]').click();
       await page.locator('#gate-detail [data-planet-gate]').click();
-      assert.equal(await page.locator('#gate-detail .tl-activation-natal').innerText(), '出生图未激活');
+      assert.equal(await page.locator('#gate-detail .tl-detail-statuses .tl-activation-natal').innerText(), '出生图未激活');
       await page.keyboard.press('Escape');
 
       const natalPlanet = page.locator('#transit-stage .tl-birth-value[data-gate]').first();
@@ -78,7 +78,7 @@ try {
       await page.locator('.nav-link[data-view="chart"]').click();
       await page.locator('#bodygraph-container .bg-planet-row[data-gate]').first().click();
       await page.locator('#gate-detail [data-planet-gate]').click();
-      assert.equal(await page.locator('#gate-detail .tl-activation-natal').innerText(), '出生图激活');
+      assert.equal(await page.locator('#gate-detail .tl-detail-statuses .tl-activation-natal').innerText(), '出生图激活');
       assert.equal(await page.locator('#gate-detail .tl-activation-transit').count(), 0);
       await page.keyboard.press('Escape');
       await page.locator('.nav-link[data-view="transits"]').click();

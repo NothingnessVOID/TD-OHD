@@ -17,12 +17,14 @@ const query = objectId => ({ domain: 'human-design', objectType: 'penta', object
 /** Presentation only: calculations, topology and provenance stay in Phase 1A. */
 export function createPentaMatrix(container, {
   result, people, groupLabel, analysisContainer = container, detailAdapter = null,
-  initialSelection = null, onMemberFocusChange = null
+  onMemberFocusChange = null
 }) {
   let selected = null;
-  let selectedTarget = initialSelection ? { ...initialSelection, id: String(initialSelection.id) } : null;
+  // Object selection belongs to this renderer's open detail, never a previous instance.
+  let selectedTarget = null;
   let hoverTarget = null;
   let currentDetail = null;
+  let detailTrigger = null;
   let detailHistory = [];
   let disposeDialog = null;
   let disposed = false;
@@ -123,9 +125,10 @@ export function createPentaMatrix(container, {
   function selectObject(kind, id, { focus = false } = {}) {
     const item = kind === 'gate' ? gateFor(id) : kind === 'channel' ? channelFor(id) : getKnowledgeEntry(query(id));
     if (!item) return;
-    selectedTarget = { kind, id: String(kind === 'channel' ? item.channelId : id) };
+    const canonicalId = String(kind === 'channel' ? item.channelId : id);
+    selectedTarget = currentDetail ? { kind, id: canonicalId } : null;
     applyHighlights();
-    const target = [...analysis.querySelectorAll('[data-detail-kind]')].find(node => node.dataset.detailKind === kind && node.dataset.detailId === selectedTarget.id);
+    const target = [...analysis.querySelectorAll('[data-detail-kind]')].find(node => node.dataset.detailKind === kind && node.dataset.detailId === canonicalId);
     if (!target) return;
     if (focus) target.focus({ preventScroll: true });
   }
@@ -135,6 +138,23 @@ export function createPentaMatrix(container, {
     const content = getKnowledgeDetail(query(id)) || getKnowledgeSummary(query(id));
     return `<div class="detail-label">Penta</div><div class="detail-name">${esc(entry.name)}</div>${content?.content ? `<p class="gate-detail-desc">${esc(content.content)}</p>` : ''}`;
   }
+  function rememberTrigger() {
+    const node = document.activeElement;
+    const root = graph.contains(node) ? graph : analysis.contains(node) ? analysis : null;
+    if (!root) return null;
+    const selector = node.matches('button[data-select-kind]') ? 'button[data-select-kind]'
+      : node.matches('.penta-analysis-card') ? '.penta-analysis-card'
+      : node.matches('button[data-open-kind]') ? 'button[data-open-kind]' : null;
+    return selector ? { node, root, selector, kind: node.dataset.selectKind || node.dataset.detailKind || node.dataset.openKind,
+      id: node.dataset.selectId || node.dataset.detailId || node.dataset.openId } : null;
+  }
+  function restoreTrigger(trigger) {
+    if (!trigger || disposed || trigger.node.isConnected) return;
+    const replacement = [...trigger.root.querySelectorAll(trigger.selector)].find(node =>
+      (node.dataset.selectKind || node.dataset.detailKind || node.dataset.openKind) === trigger.kind &&
+      (node.dataset.selectId || node.dataset.detailId || node.dataset.openId) === trigger.id);
+    replacement?.focus({ preventScroll: true });
+  }
   function showDetail(kind, id, pushHistory = true) {
     if (disposed) return;
     const record = kind === 'gate' ? gateFor(id) : kind === 'channel' ? channelFor(id) : getKnowledgeEntry(query(id));
@@ -142,8 +162,10 @@ export function createPentaMatrix(container, {
     const canonicalId = String(kind === 'channel' ? record.channelId : id);
     const target = { kind, id: canonicalId };
     if (pushHistory && currentDetail && (currentDetail.kind !== kind || currentDetail.id !== canonicalId)) detailHistory.push(currentDetail);
+    if (!currentDetail) detailTrigger = rememberTrigger();
     currentDetail = target;
-    selectObject(kind, canonicalId, { scroll: false });
+    hoverTarget = null;
+    selectObject(kind, canonicalId);
     disposeDialog?.(); disposeDialog = null;
     prepareDetailDialog(dialog, 'penta');
     const context = detailContext();
@@ -153,7 +175,15 @@ export function createPentaMatrix(container, {
     const bound = detailAdapter?.bind?.(dialog, context);
     if (typeof bound === 'function') disposeDialog = bound;
     if (!detailAdapter?.bind) dialog.querySelector('[data-shared-back]')?.addEventListener('click', goBack);
-    openDetailDialog(dialog, () => { disposeDialog?.(); disposeDialog = null; currentDetail = null; detailHistory = []; }, { owner: 'penta', label: title });
+    openDetailDialog(dialog, () => {
+      disposeDialog?.(); disposeDialog = null;
+      currentDetail = null; detailHistory = [];
+      selectedTarget = null; hoverTarget = null;
+      applyHighlights();
+      // Language rendering replaces the DOM node held by the shared controller.
+      // Restore its stable object identity locally when that original is detached.
+      restoreTrigger(detailTrigger); detailTrigger = null;
+    }, { owner: 'penta', label: title });
     fitDetailSheetHeight(dialog.querySelector('.gate-detail-card'));
   }
   function goBack() { const previous = detailHistory.pop(); if (previous) showDetail(previous.kind, previous.id, false); }
@@ -178,7 +208,11 @@ export function createPentaMatrix(container, {
     if (!event.repeat) showDetail(row.dataset.detailKind, row.dataset.detailId);
   }
   function handleHover(event) {
-    const target = event.target.closest('[data-select-kind], .penta-analysis-card');
+    // Touch compatibility mouse events must not become a persistent hover.
+    if (disposed || currentDetail || event.pointerType === 'touch' || !window.matchMedia('(any-hover: hover)').matches) return;
+    const node = event.type === 'pointerout' ? event.relatedTarget : event.target;
+    const target = node instanceof Element && event.currentTarget.contains(node)
+      ? node.closest('[data-select-kind], .penta-analysis-card') : null;
     hoverTarget = target ? { kind: target.dataset.selectKind || target.dataset.detailKind, id: target.dataset.selectId || target.dataset.detailId } : null;
     applyHighlights();
   }
@@ -191,8 +225,10 @@ export function createPentaMatrix(container, {
   for (const root of [graph, analysis]) {
     root.addEventListener('click', handleClick);
     root.addEventListener('keydown', handleKey);
-    root.addEventListener('mouseover', handleHover);
-    root.addEventListener('mouseleave', endHover);
+    root.addEventListener('pointerover', handleHover);
+    root.addEventListener('pointerout', handleHover);
+    root.addEventListener('pointerleave', endHover);
+    root.addEventListener('pointercancel', endHover);
   }
   render();
   return {
@@ -203,12 +239,20 @@ export function createPentaMatrix(container, {
     openGateDetail: id => showDetail('gate', id),
     openChannelDetail: id => showDetail('channel', id),
     closeDetail() { if (!dialog.classList.contains('hidden')) closeDetailDialog(); },
-    refreshLanguage() { const open = currentDetail ? { ...currentDetail } : null; render(); if (open) showDetail(open.kind, open.id, false); },
+    refreshLanguage() {
+      if (disposed) return;
+      const open = currentDetail ? { ...currentDetail } : null, trigger = rememberTrigger();
+      hoverTarget = null; render();
+      if (open) showDetail(open.kind, open.id, false);
+      else restoreTrigger(trigger);
+    },
     dispose() {
       disposed = true;
       if (!dialog.classList.contains('hidden')) closeDetailDialog();
       disposeDialog?.(); disposeDialog = null;
-      for (const root of [graph, analysis]) { root.removeEventListener('click', handleClick); root.removeEventListener('keydown', handleKey); root.removeEventListener('mouseover', handleHover); root.removeEventListener('mouseleave', endHover); }
+      selectedTarget = null; hoverTarget = null; currentDetail = null; detailHistory = []; detailTrigger = null;
+      applyHighlights();
+      for (const root of [graph, analysis]) { root.removeEventListener('click', handleClick); root.removeEventListener('keydown', handleKey); root.removeEventListener('pointerover', handleHover); root.removeEventListener('pointerout', handleHover); root.removeEventListener('pointerleave', endHover); root.removeEventListener('pointercancel', endHover); }
       dialog.remove(); analysis.remove(); graph.remove();
     }
   };
