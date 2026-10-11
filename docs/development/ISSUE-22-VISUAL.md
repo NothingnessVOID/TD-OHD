@@ -49,4 +49,12 @@ Evidence stays in ignored artifacts rather than the commit:
 - `artifacts/issue22-visual/after/1280-en-default-{light,dark}-focus.png`: focused text crops (the crop excludes the outer outline).
 - `artifacts/issue22-23/results.json`: preserved behavior matrix.
 
-No push, deployment, issue closure, main-repository edit or shared-component change is part of this commit. Physical-device and non-Chromium verification remain outside this visual pass.
+## Windows 9961 integration
+
+Integrated visual source commit: `dc5fc87a2d2449b9a66923b63b842818fdeb810c` on `dev/windows-development`. The identified project Vite listener was restarted after source integration to avoid stale HMR module instances; preview remains `http://127.0.0.1:9961/` and `http://192.168.10.99:9961/`.
+
+The same real-SVG capture script recorded Chinese gate 57 at 1280/390/320 before and after integration: `artifacts/issue22-visual/{before,after}/{width}-gate57.png`. Screenshots were staged for user comparison. Integrated Chromium Penta hover/card/graph selection cleanup, keyboard focus return and mobile tap regression passed, preserving Issue 27.
+
+Local static frontend build, Pages bundle exclusion check and 23 localization tests passed. Existing font CSS runtime-resolution and large-chunk build warnings remain. The build is local only. Source changes outside the paired button template and CSS block remain guarded by the exact fixed visual audit layer; Issue 23 card markup and styling are unchanged.
+
+Development branch delivery is authorized; main merge, issue closure and all deployment remain excluded. No terminology change was made: this entry uses the existing UI catalog rather than introducing a new Knowledge Term. Physical-device and non-Chromium verification, and a complete local all-feature suite, remain outside this visual pass.
