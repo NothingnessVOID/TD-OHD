@@ -82,6 +82,14 @@ Team 增加一个 Penta 资料库入口，原背景区增加更多机制入口�
 
 `src/lib/wa/model.js` 与 `schema.json` 提供 refs-only 配置和标准／观察布局校验；`repository.js` 使用独立 IndexedDB 事务保存与恢复追加修订，不修改 TeamRepository v2。`analysis.js` 使用现有激活提取与 Penta 子组分析，Wa 六门对覆盖和 diff 单独计算；`content.js` 映射14篇三语资料与 canonical 门对，缺语种不回退。自动 Alpha、正式 Gap、Triggering、自动 Powerbases 和评分排名仍为明确未支持的扩展边界。
 
+## Penta / Wa v2 增量
+
+Penta 资料沿用原有 registry、独立 Summary/Detail 与严格语种读取，增至30条；Wa 仍14条。新增 Triggering 仅提供资料，不新增图形或算法。v1 身份及历史来源保留，当前正文使用独立 v2 来源记录。
+
+Wa 的人工记录折叠区复用既有表单、按钮、Operation Dialog 和 Skin Token；咨询、分组业务说明、Gap 意向、盟友及有向人工联系都经 `updateWaAnnotations()` 更新。文字输入保持原 DOM 节点，支持中文组合输入和原生撤销；引用清理确认绑定显示时的草稿快照与代次。恢复旧修订时使用同一确认弹窗提示注释差异。
+
+组内沟通和手动 Alpha 并入观察复用六主题卡片，作为两个独立范围呈现；贡献追踪只解释输入变化。`prepareWaMembers()` 是新增的输入准备边界，调用原出生图 provider，不复制算法。DB2 保留原 stores/history 并阻止旧客户端覆盖新字段，refs-only v1 不编辑新字段时保持旧契约。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
