@@ -1,6 +1,6 @@
 # Wa v1 implementation contract (prepared during Penta integration)
 
-This document defines stage 2 interfaces. It is not a claim that Wa code/UI exists. Implementation begins after stage 1 Penta delivery is reported.
+This document records the stage 2 design prepared before implementation. Wa v1 is now implemented after the Penta stage delivery. Final APIs and validated limits are recorded in WA-CORE-V1.md, WA-UI-V1.md and PENTA-WA-INTEGRATION-V1.md; the decisions below remain the design baseline.
 
 ## Persistence and existing Team compatibility
 
@@ -8,9 +8,9 @@ Existing `TeamRepository v2` remains `kind: penta` under `ohd-teams-v1`. Wa uses
 
 Reuse PeopleStore lookup/subscriptions, birthFromPerson, computeChart, createUuid, team member identity helpers, extractTeamActivations, Penta structure calculation, shared operation/details controls, i18n and Skin tokens. Existing private Team repository validators cannot be imported; Wa validators follow compatible reference semantics without changing Penta storage. Member pool may include unresolved birth input; only assigned participants require calculation readiness.
 
-Draft shape validation is followed by cross-field identity validation. Unknown fields, duplicate identity/person, dangling assignment, duplicate role/group and cross-group duplicate assignments are rejected. A standard draft may be incomplete and still saved. Analysis readiness separately requires foundation/expansion/coordinating groups of 3–5 with a manually selected Alpha outside those groups. Observation supports nonstandard size without claiming mechanical formation; custom requires explicit reason and policy. Unassigned pool never contributes to analysis.
+Draft shape validation is followed by cross-field identity validation. Unknown fields, duplicate identity/person, dangling assignment, duplicate role/group and cross-group duplicate assignments are rejected. A standard draft may be incomplete and still saved. Analysis readiness separately requires foundation/expansion/coordinating groups of 3–5 with a manually selected Alpha outside those groups. Observation supports nonstandard size without claiming mechanical formation. Custom remains explicitly unsupported in v1; a future custom policy must carry a reason and reviewed rules. Unassigned pool never contributes to analysis.
 
-Repository API: list(), get(id), history(id), save(draft,{expectedRevision}), restore(id,revisionId,{expectedRevision}). Use an IndexedDB transaction to atomically compare head revision, append an immutable snapshot and update head. Restore creates a new revision; it never overwrites historical revisions. A conflict retains local edits. Person updates/deletion are resolved at render/analysis time, not by rewriting old snapshots. Restoring relations uses current people data and does not promise the historical calculated chart.
+Repository API: list(), get(id), history(id), save(draft,{expectedRevision}), restore(id,revisionId,{expectedRevision}). Use an IndexedDB transaction to atomically compare head revision, append an immutable snapshot and update head. Restore creates a new revision linked to the current head; it never overwrites historical revisions. V1 does not add a separate restored-from revision field. A conflict retains local edits. Person updates/deletion are resolved at render/analysis time, not by rewriting old snapshots. Restoring relations uses current people data and does not promise the historical calculated chart.
 
 ## Runtime analysis and future rule boundary
 
