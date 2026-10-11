@@ -30,6 +30,7 @@ export function mountWa(container, options = {}) {
   let result = null, previousReady = null, comparison = [], currentReady = null, trace = null;
   let busy = false, saving = false, notice = '', errorText = '', closeLayer = null, detailOpen = false;
   const collapsed = new Set(), expandedManual = new Set();
+  let composing = null, renderAfterComposition = false;
   let selectedGroup = '', showGroupAlpha = true;
   const personFor = member => people.get(member.personId);
   const nameOf = member => member ? personFor(member)?.name || member.labelSnapshot : t('No Alpha selected');
@@ -43,6 +44,19 @@ export function mountWa(container, options = {}) {
   const closeReading = () => { if (detailOpen) closeDetailDialog(); };
   const clearAnalysis = () => { generation++; busy = false; result = null; trace = null; currentReady = null; closeReading(); };
   function changed() { clearAnalysis(); dirty = true; notice = ''; errorText = ''; render(); }
+  // Text editing must retain the native input node, selection, undo and IME session.
+  function textChanged() {
+    clearAnalysis();dirty=true;notice='';errorText='';
+    container.querySelector('.wa-notice').textContent='';
+    container.querySelector('.wa-draft-status').textContent=`${t('Unsaved changes')} · r${draft.revision}`;
+    const layout=validateWaLayout(draft);
+    container.querySelector('[data-wa-state]').textContent=t(layout.ready?'Wa draft':'Layout incomplete');
+    container.querySelector('[data-action=analyze]').disabled=!layout.ready;
+    const results=container.querySelector('.wa-results');results.setAttribute('aria-busy','false');
+    if(!results.querySelector('[data-wa-empty]'))results.innerHTML=`<h2>${text('Communication themes')}</h2>${resultHtml()}`;
+    container.querySelector('[data-action=remove-consultation]').hidden=!draft.consultation;
+    container.querySelectorAll('[data-remove-area]').forEach(button=>{button.hidden=!draft.consultation?.businessAreas?.some(area=>area.pentaId===button.dataset.removeArea);});
+  }
   function failure(error) {
     const conflict = /conflict|revision/i.test(error?.code || '') || /conflict/i.test(error?.name || '');
     notice = conflict ? 'Wa save conflict' : 'Wa data error';
@@ -64,15 +78,16 @@ export function mountWa(container, options = {}) {
   }
   function manualHtml() {
     const record = draft.consultation;
-    return `<details class="wa-panel wa-manual" data-manual-section="records" ${expandedManual.has('records')?'open':''}><summary>${text('Manual records')}</summary><p class="wa-empty">${text('Manual records note')}</p><div class="wa-actions"><button type="button" data-action="export-annotations">${text('Export manual annotations')}</button><button type="button" data-action="export-backup">${text('Export backup')}</button>${record?`<button type="button" data-action="remove-consultation">${text('Delete consultation')}</button>`:''}</div><h3>${text('Consultation')} · ${text('Manual')}</h3><div class="wa-manual-fields">${manualField('specificProblem','Specific problem',record?.specificProblem)}${manualField('personalManagementNotes','Personal management notes',record?.personalManagementNotes)}${manualField('communicationPlan','Communication plan',record?.communicationPlan)}</div><h3>${text('Business areas')}</h3>${draft.pentas.map(group=>{
+    return `<details class="wa-panel wa-manual" data-manual-section="records" ${expandedManual.has('records')?'open':''}><summary>${text('Manual records')}</summary><p class="wa-empty">${text('Manual records note')}</p><div class="wa-actions"><button type="button" data-action="export-annotations">${text('Export manual annotations')}</button><button type="button" data-action="export-backup">${text('Export backup')}</button><button type="button" data-action="remove-consultation" ${record?'':'hidden'}>${text('Delete consultation')}</button></div><h3>${text('Consultation')} · ${text('Manual')}</h3><div class="wa-manual-fields">${manualField('specificProblem','Specific problem',record?.specificProblem)}${manualField('personalManagementNotes','Personal management notes',record?.personalManagementNotes)}${manualField('communicationPlan','Communication plan',record?.communicationPlan)}</div><h3>${text('Business areas')}</h3>${draft.pentas.map(group=>{
       const area=record?.businessAreas?.find(item=>item.pentaId===group.pentaId);
-      return `<details data-manual-section="${esc(group.pentaId)}" ${expandedManual.has(group.pentaId)?'open':''}><summary>${esc(roleName(group))}</summary><div class="wa-manual-fields">${manualField('workScope','Work scope',area?.workScope,`data-area="${esc(group.pentaId)}"`)}${manualField('demand','Demand',area?.demand,`data-area="${esc(group.pentaId)}"`)}${manualField('requiredSkills','Required skills, one per line',area?.requiredSkills?.join('\n'),`data-area="${esc(group.pentaId)}"`)}</div>${area?`<button type="button" data-remove-area="${esc(group.pentaId)}">${text('Delete business area')}</button>`:''}</details>`;
+      return `<details data-manual-section="${esc(group.pentaId)}" ${expandedManual.has(group.pentaId)?'open':''}><summary>${esc(roleName(group))}</summary><div class="wa-manual-fields">${manualField('workScope','Work scope',area?.workScope,`data-area="${esc(group.pentaId)}"`)}${manualField('demand','Demand',area?.demand,`data-area="${esc(group.pentaId)}"`)}${manualField('requiredSkills','Required skills, one per line',area?.requiredSkills?.join('\n'),`data-area="${esc(group.pentaId)}"`)}</div><button type="button" data-remove-area="${esc(group.pentaId)}" ${area?'':'hidden'}>${text('Delete business area')}</button></details>`;
     }).join('')}<h3>${text('Gap intentions')}</h3><div class="wa-record-list">${(record?.gapIntents||[]).map(item=>`<article><strong>${esc(item.theme||t('Untitled intention'))}</strong><p>${esc(destinationName(draft,item.pentaId))} · ${text(`Gap stage ${item.stage}`)}</p><p>${esc(item.note||'')}</p><div class="wa-actions"><button type="button" data-edit-intent="${esc(item.id)}">${text('Edit')}</button><button type="button" data-remove-intent="${esc(item.id)}">${text('Delete')}</button></div></article>`).join('')}</div><button type="button" data-action="add-intent">${text('Add Gap intention')}</button><fieldset class="wa-allies"><legend>${text('Key allies')} · ${text('Manual')}</legend>${participating().map(member=>`<label><input type="checkbox" data-ally="${esc(member.memberId)}" ${(record?.keyAllyIds||[]).includes(member.memberId)?'checked':''}><span>${esc(nameOf(member))}</span></label>`).join('')||`<p>${text('Assign participants first')}</p>`}</fieldset><h3>${text('Manual communication links')}</h3><div class="wa-record-list">${(draft.manualCommunicationEdges||[]).map(edge=>`<article><strong>${esc(nameOf(memberById(edge.fromMemberId)))} → ${esc(nameOf(memberById(edge.toMemberId)))}</strong><p>${esc(edge.label||'')} · ${text('Manual')}</p><p>${esc(edge.note||'')}</p><div class="wa-actions"><button type="button" data-edit-edge="${esc(edge.edgeId)}">${text('Edit')}</button><button type="button" data-remove-edge="${esc(edge.edgeId)}">${text('Delete')}</button></div></article>`).join('')}</div><button type="button" data-action="add-edge" ${participating().length<2?'disabled':''}>${text('Add manual link')}</button></details>`;
   }
   function editRecord(kind, id) {
     const intent=kind==='intent', records=intent?draft.consultation?.gapIntents:draft.manualCommunicationEdges;
     const existing=records?.find(item=>(intent?item.id:item.edgeId)===id);
-    const item=clone(existing || (intent?{id:createUuid(),pentaId:draft.pentas[0].pentaId,theme:'',stage:'wish_list',note:''}:{edgeId:createUuid(),fromMemberId:participating()[0]?.memberId,toMemberId:participating()[1]?.memberId,assignment:'manual',label:'',note:''}));
+    const item=clone(existing || (intent?{id:createUuid(),pentaId:draft.pentas[0].pentaId,theme:'',stage:'wish_list',note:''}:{edgeId:createUuid(),fromMemberId:participating()[0]?.memberId,toMemberId:participating()[1]?.memberId,assignment:'manual'}));
+    const editedFields=new Set();
     const options=(list,value)=>list.map(entry=>`<option value="${esc(entry.id)}" ${entry.id===value?'selected':''}>${esc(entry.name)}</option>`).join('');
     const field=(key,label)=>`<label>${text(label)}<textarea name="${key}" rows="3">${esc(item[key]||'')}</textarea></label>`;
     const select=(key,label,list)=>`<label>${text(label)}<select name="${key}">${options(list,item[key])}</select></label>`;
@@ -80,10 +95,13 @@ export function mountWa(container, options = {}) {
     const inputGeneration=generation;
     const {root,close}=layer(intent?'Gap intentions':'Manual communication links',`<form class="wa-record-form"><p>${text('Manual')}</p>${intent?`${select('pentaId','Penta name',draft.pentas.map(group=>({id:group.pentaId,name:roleName(group)})))}${field('theme','Intention theme')}${select('stage','Reported stage',['wish_list','configured','observed'].map(stage=>({id:stage,name:t(`Gap stage ${stage}`)})))}`:`${select('fromMemberId','From participant',members)}${select('toMemberId','To participant',members)}${field('label','Link label')}`} ${field('note','Note')}<div class="wa-actions"><button type="submit" data-save-record>${text('Save record')}</button><button type="button" data-cancel-record>${text('Cancel')}</button></div></form>`);
     root.querySelector('[data-cancel-record]').addEventListener('click',close);
+    root.querySelector('form').addEventListener('input',event=>{if(event.target.name)editedFields.add(event.target.name);});
     root.querySelector('form').addEventListener('submit',event=>{
       event.preventDefault();
       if(generation!==inputGeneration){root.querySelector('.wa-layer-error').textContent=t('Wa input changed');return;}
-      const updated={...item,...Object.fromEntries(new FormData(event.target))};
+      const values=Object.fromEntries(new FormData(event.target));
+      if(!intent)for(const key of ['label','note'])if(!editedFields.has(key))delete values[key];
+      const updated={...item,...values};
       if(!intent&&updated.fromMemberId===updated.toMemberId){root.querySelector('.wa-layer-error').textContent=t('Choose different participants');return;}
       preserveReady();
       try {
@@ -121,6 +139,7 @@ export function mountWa(container, options = {}) {
   }
   function render() {
     if (disposed) return;
+    if(composing?.isConnected){renderAfterComposition=true;return;}
     container.querySelectorAll('[data-manual-section]').forEach(node=>{if(node.open)expandedManual.add(node.dataset.manualSection);else expandedManual.delete(node.dataset.manualSection);});
     const layout = validateWaLayout(draft), pool = draft.members.filter(member=>!destination(draft,member.memberId));
     const active = container.contains(document.activeElement) ? document.activeElement : null;
@@ -298,13 +317,24 @@ export function mountWa(container, options = {}) {
       preserveReady();const record=consultation(), key=node.dataset.manualField;
       if(node.dataset.area){record.businessAreas ||= [];let area=record.businessAreas.find(item=>item.pentaId===node.dataset.area);if(!area){area={pentaId:node.dataset.area,workScope:'',demand:'',requiredSkills:[]};record.businessAreas.push(area);}area[key]=key==='requiredSkills'?node.value.split('\n'):node.value;}
       else record[key]=node.value;
-      updateConsultation(record);changed();
+      updateConsultation(record);textChanged();
     }
-    if(node.matches('[data-title]')){preserveReady();draft.title=node.value;changed();}
-    if(node.matches('[data-group-title]')){preserveReady();draft.pentas.find(group=>group.pentaId===node.dataset.groupTitle).title=node.value;changed();}
+    if(node.matches('[data-title]')){preserveReady();draft.title=node.value;textChanged();}
+    if(node.matches('[data-group-title]')){
+      preserveReady();const group=draft.pentas.find(group=>group.pentaId===node.dataset.groupTitle);group.title=node.value;textChanged();
+      container.querySelectorAll('[data-assign] option,[data-communication-group] option').forEach(option=>{if(option.value===group.pentaId)option.textContent=roleName(group);});
+      container.querySelectorAll('[data-manual-section]').forEach(section=>{if(section.dataset.manualSection===group.pentaId)section.querySelector('summary').textContent=roleName(group);});
+    }
+  }
+  function onCompositionStart(event) {if(event.target.matches('[data-title],[data-group-title],[data-manual-field]'))composing=event.target;}
+  function onCompositionEnd(event) {
+    if(composing!==event.target)return;
+    onInput(event);composing=null;
+    if(renderAfterComposition){renderAfterComposition=false;render();}
   }
   container.addEventListener('click',onClick);container.addEventListener('change',onChange);container.addEventListener('input',onInput);
+  container.addEventListener('compositionstart',onCompositionStart);container.addEventListener('compositionend',onCompositionEnd);
   const unsubscribe=people.subscribe?.(()=>{if(disposed)return;preserveReady();clearAnalysis();notice='Wa input changed';render();});
   render();
-  return {render,refreshLanguage(){closeReading();closeLayer?.();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;unsubscribe?.();closeReading();closeLayer?.();detail.remove();container.removeEventListener('click',onClick);container.removeEventListener('change',onChange);container.removeEventListener('input',onInput);container.replaceChildren();}};
+  return {render,refreshLanguage(){closeReading();closeLayer?.();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;unsubscribe?.();closeReading();closeLayer?.();detail.remove();container.removeEventListener('click',onClick);container.removeEventListener('change',onChange);container.removeEventListener('input',onInput);container.removeEventListener('compositionstart',onCompositionStart);container.removeEventListener('compositionend',onCompositionEnd);container.replaceChildren();}};
 }
