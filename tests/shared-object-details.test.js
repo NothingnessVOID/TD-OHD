@@ -24,21 +24,21 @@ test('three locales reuse exact canonical readings and preserve lens meaning', (
     assert.match(html, /12:00/);
     assert.match(html, /D \(/);
     assert.match(html, /31\.3/);
-    assert.doesNotMatch(html, /https?:|hd\.penta\.|data-penta-specific|data-detail-status|penta-knowledge-missing/);
+    assert.doesNotMatch(html, /https?:|data-detail-status|penta-knowledge-missing/);
     assert.match(html, /data-shared-channel-select="7-31"/);
   }
 });
-test('all twelve missing gates and six structural-only channel summaries are omitted until interpretation is verified', () => {
-  for (const { gate } of PENTA_GATES) assert.doesNotMatch(adapter.gate(record(gate), ctx), /data-penta-specific/);
+test('all twelve gates and six channels have dedicated readings before canonical content', () => {
+  for (const { gate } of PENTA_GATES) assert.match(adapter.gate(record(gate), ctx), /data-penta-specific/);
   for (const channel of PENTA_CHANNELS) {
     const html = adapter.channel({ ...channel, status: 'crossMemberOnly', holdersByGate: { [channel.gates[0]]: ['m1'] } }, ctx);
-    assert.doesNotMatch(html, /data-penta-specific/);
+    assert.match(html, /data-penta-specific/);
     assert.ok(html.indexOf('data-penta-channel-state') < html.indexOf('data-shared-channel-reading'));
-    assert.doesNotMatch(html, /https?:|hd\.penta\.|data-detail-status/);
+    assert.doesNotMatch(html, /https?:|data-detail-status/);
     assert.equal((html.match(/data-shared-gate-select=/g) || []).length, 2);
   }
   assert.equal(listKnowledgeEntries().length, 70);
-  assert.equal(listKnowledgeEntries({ includePenta: true }).length, 91);
+  assert.equal(listKnowledgeEntries({ includePenta: true }).length, 99);
 });
 test('six channels require reviewed evidence, verified interpretation and reviewed nonempty slots; accepted reading precedes canonical text', () => {
   for (const channel of PENTA_CHANNELS) {
@@ -46,7 +46,9 @@ test('six channels require reviewed evidence, verified interpretation and review
     const original = { properties: entry.properties, reviewStatus: entry.reviewStatus, summary: entry.summary, detail: entry.detail };
     const render = () => adapter.channel({ ...channel, status: 'crossMemberOnly', holdersByGate: {} }, ctx);
     try {
-      const properties = original.properties();
+      const properties = { evidence: { status: 'verified' } };
+      entry.detail = null;
+      entry.summary = { ...original.summary, evidenceStatus: 'verified' };
       entry.properties = () => ({ ...properties, interpretationStatus: 'verified' });
       const accepted = render();
       assert.match(accepted, /data-penta-specific/);
@@ -61,7 +63,7 @@ test('six channels require reviewed evidence, verified interpretation and review
       assert.doesNotMatch(render(), /data-penta-specific/);
       entry.reviewStatus = original.reviewStatus;
       for (const patch of [{ reviewStatus: 'unreviewed' }, { evidenceStatus: 'missing' }, { read: () => '   ' }]) {
-        entry.summary = { ...original.summary, ...patch };
+        entry.summary = { ...original.summary, evidenceStatus: 'verified', ...patch };
         assert.doesNotMatch(render(), /data-penta-specific/);
       }
     } finally { Object.assign(entry, original); }
