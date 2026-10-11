@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { pairedCardHeaderProjection } from './helpers/paired-card-header-projection.js';
 import { pairedCardFinalBase, pairedCardFinalHead, pairedCardFinalPaths, pairedCardFinalEdits,
   pairedCardFinalProjection, assertPairedCardFinalApproval, assertPairedCardFinalDelta } from './helpers/paired-card-final-projection.js';
 import { pairedCardLayoutBase, pairedCardLayoutHead, pairedCardLayoutProjection } from './helpers/paired-card-layout-projection.js';
@@ -59,7 +60,7 @@ test('final normalizes 7ff before all immutable historical approvals', () => {
   assertPairedCardFinalApproval();
   for (const file of pairedCardFinalPaths) {
     const current = read(file);
-    assert.deepEqual(current, snapshotBytes(pairedCardFinalHead, file));
+    assert.deepEqual(pairedCardHeaderProjection(current, file), snapshotBytes(pairedCardFinalHead, file));
     assert.notDeepEqual(current, snapshotBytes(pairedCardFinalBase, file));
     assert.deepEqual(snapshotBytes(pairedCardFinalBase, file), snapshotBytes(pairedCardLayoutHead, file));
     for (const [project, ref] of [
@@ -135,7 +136,7 @@ test('final leaves Center renderChannelJump HTML byte-identical across source an
 
 test('gate metadata wraps only badges/status while preserving every other rendered byte', () => {
   const before = channelRenderer(snapshotBytes(pairedCardFinalBase, 'src/views/chart.js'));
-  const after = channelRenderer(read('src/views/chart.js'));
+  const after = channelRenderer(pairedCardHeaderProjection(read('src/views/chart.js'), 'src/views/chart.js'));
   const channel = { gates: [1, 8] };
   for (const active of [false, true]) {
     const chart = { channels: active ? [channel] : [] };
@@ -170,7 +171,9 @@ test('final metadata condition, scoped flex row, separator and desktop/mobile ta
     ['src/styles.css', '  border: 0;\n  border-top: 1px solid var(--border-subtle);\n  border-radius: 2px;', '  border: 0;\n  border-top: 0;\n  border-radius: 2px;'],
     ['src/styles.css', '@media (max-width: 600px), (pointer: coarse) {\n  .gate-detail-paired-gate { min-height: 44px; }', '@media (max-width: 600px) {\n  .gate-detail-paired-gate { min-height: 30px; }'],
   ]) {
-    const changed = mutateUnique(read(file), before, after);
+    const historical = pairedCardHeaderProjection(read(file), file);
+    const changed = mutateUnique(historical, before, after);
+    assert.notDeepEqual(changed, historical, 'Historical negative must mutate its fixture');
     rejectsSource(file, changed);
     assert.throws(() => assertPairedCardFinalDelta(snapshotBytes(pairedCardFinalBase, file), changed, file));
   }

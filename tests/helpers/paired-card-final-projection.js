@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { pairedCardHeaderProjection } from './paired-card-header-projection.js';
 
 // Fixed parent-supplied source commit, independently checked against 7ff.
 // Never derive approval from HEAD, the environment, current bytes or an editable manifest.
@@ -98,6 +99,7 @@ export function assertPairedCardFinalApproval() {
 
 /** Validate final bytes first, restoring 7ff before the immutable compact approval. */
 export function pairedCardFinalProjection(source, file) {
+  source = pairedCardHeaderProjection(source, file);
   if (!pairedCardFinalPaths.includes(file)) return source;
   assertPairedCardFinalApproval();
   assert.equal(sha(source), sha(bytes(pairedCardFinalHead, file)), `Unreviewed increment source: ${file} (paired-card final)`);
