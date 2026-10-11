@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -16,7 +17,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
   || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const oldInventory = git('ls-tree', '-r', '--name-only', pentaIntegrationBase)
   .toString().trim().split('\n').filter(protectedPath);
-const inventory = [...oldInventory, ...pentaAddedPaths];
+const inventory = [...oldInventory, ...integrationAddedPaths];
 const incrementBasePaths = new Set(git('ls-tree', '-r', '--name-only', incrementBase).toString().trim().split('\n'));
 
 test('Penta pins the full final parent SHA, twelve source paths and two additions independently of HEAD', () => {

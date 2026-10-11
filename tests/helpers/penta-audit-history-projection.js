@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { waAuditHistoricalSource } from './wa-audit-history-projection.js';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
@@ -156,6 +157,7 @@ const edits = {
   ]
 };
 export function historicalAuditSource(file, source = readFileSync(path.join(root, file))) {
+  source = waAuditHistoricalSource(file, source);
   if (!Object.hasOwn(edits, file)) return source;
   let text = source.toString();
   for (const { oldText, newText } of edits[file]) {
