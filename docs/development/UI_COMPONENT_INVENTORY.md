@@ -60,6 +60,16 @@ Penta六通道使用`detail-label/detail-name`的两级标题，名称取`channe
 
 Penta六通道卡片在600px以下将状态放到标题下方，18px图标与可自然换行的文字首行对齐；仅Penta详情的独立状态badge清除左margin，不全局重置其他badge。状态文字、SVG内容、算法和成员颜色未改。
 
+## Issue #27、#22、#23 详情交互增量
+
+Penta 的对象选中高亮绑定详情生命周期；关闭时清理点击选中及其 `aria-pressed`，Hover、键盘 `:focus-visible` 和成员聚焦独立保留。沿用 `detail-dialog.js` 的关闭、Escape、遮罩，不新增弹窗类型；语言刷新复用矩阵并按稳定对象身份恢复被重绘替换的触发控件焦点。
+
+`chart.js` 的 `renderChannelJump()` 为闸门详情接收可选来源闸门，逐条提供对应闸门入口；中心详情继续使用原有通道列表。对应闸门入口复用已有 `Harmonic gate:` 三语言文案（简中显示“谐波闸门”）；关联卡片仅在含谐波入口时采用三行结构：Flex 左对齐且可换行的标题与回路标签、独立的原状态行、分隔线后的谐波入口。入口保持左对齐及透明背景，顶线使用 `1.5px solid var(--border)`；提示沿用 `--text-secondary`，编号、分隔符与名称放入同一个 `--accent` 链接容器，统一字重及 hover／focus-visible 下划线。桌面点击高度至少30px，手机／粗指针至少44px，文字垂直居中；它与通道卡片均沿用出生图／行运的现有详情历史栈，名称来自 `gateName()`。通道内两张闸门卡片复用 `.detail-label`、`.detail-name` 和现有操作文案，窄屏允许单列，保留来源状态。
+
+## 关联通道状态复用
+
+闸门详情底部的关联通道状态复用完整通道详情的 `tl-activation-label`、`tl-detail-channel-status` 及出生来源类；出生完整通道沿用 `Birth activations`，其他来源和未完整文案保留原上下文判断。复用现有 CSS，不修改中心详情、回路标签、谐波入口、通道标题或持续时间布局。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。

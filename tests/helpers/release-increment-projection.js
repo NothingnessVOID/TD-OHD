@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {issueDetailsProjection} from './issue-details-projection.js';
 import {validationHead,validationPaths,validationProjection} from './release-validation-projection.js';
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -31,6 +32,7 @@ const manifest = validateIncrementManifest();
 const basePaths = new Set(git('ls-tree', '-r', '--name-only', incrementBase).toString().trim().split('\n'));
 /** Current bytes must pass BEFORE any historical projection. Never infer approval from current hashes. */
 export function incrementProjection(source, file) {
+  source = issueDetailsProjection(source, file);
   source = validationProjection(source, file);
   if (!Object.hasOwn(manifest.files, file)) return Buffer.isBuffer(source) ? source : Buffer.from(source);
   assert.equal(sha256(source), sha256(snapshotBytes(incrementHead, file)), `Unreviewed increment source: ${file}`);
@@ -53,7 +55,7 @@ export function validateReleaseIncrement(root = auditRoot, { read = file => read
     files = files.filter(file => !ignored.has(file) || expected.includes(file)).concat(['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production']);
   }
   assert.deepEqual(files.slice().sort(), expected, 'Unreviewed increment source inventory');
-  for (const file of expected) assert.equal(sha256(read(file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
+  for (const file of expected) assert.equal(sha256(issueDetailsProjection(read(file), file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
   // Historical proof inputs must not be editable behind the isolated snapshot.
   for (const file of [...basePaths].filter(file => /^(docs|tests\/fixtures)\/.*\.json$/.test(file)))
     assert.deepEqual(read(file), snapshotBytes(incrementBase, file), `Historical audit input changed: ${file}`);
