@@ -10,11 +10,11 @@ import { gateReading, channelReading } from '../src/lib/reference-content.js';
 import { hexagramName } from '../src/lib/vocabulary.js';
 import { esc } from '../src/lib/format.js';
 
-test('all 29 Penta entries expose distinct reviewed summary/detail and safe multi-paragraph articles in three locales', () => {
+test('all 30 Penta entries expose distinct reviewed summary/detail and safe multi-paragraph articles in three locales', () => {
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const entries = listKnowledgeEntries({ includePenta: true }).filter(e => e.objectType === 'penta');
-    assert.equal(entries.length, 29);
+    assert.equal(entries.length, 30);
     assert.equal(listKnowledgeEntries().length, 70);
     for (const entry of entries) {
       const accepted = pentaReadingEntry(entry.objectId);

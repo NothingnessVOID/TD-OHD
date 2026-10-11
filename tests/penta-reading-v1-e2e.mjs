@@ -23,7 +23,7 @@ try {
     for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
       await page.evaluate(async locale => (await import('/src/lib/i18n.js')).setLocale(locale, { persist: false }), locale);
       const entries = await page.evaluate(async () => (await import('/src/lib/knowledge/registry.js')).listKnowledgeEntries({ includePenta: true }).filter(e => e.objectType === 'penta'));
-      assert.equal(entries.length, 29);
+      assert.equal(entries.length, 30);
       assert.equal(await page.locator('.penta-background-note').count(), 3);
       const focus = page.locator('[data-focus-member]').first();
       if (await focus.getAttribute('aria-pressed') !== 'true') await focus.click();
@@ -64,10 +64,10 @@ try {
       }
       await page.locator('#team-penta-library').click();
       await page.locator('#library-view:not(.hidden)').waitFor();
-      assert.equal(await page.locator('.reference-result').count(), 29);
+      assert.equal(await page.locator('.reference-result').count(), 30);
       await page.locator('.reference-filter-toggle').click();
       await page.locator('[data-reference-filter="penta-mechanism"]').click();
-      assert.equal(await page.locator('.reference-result').count(), 11);
+      assert.equal(await page.locator('.reference-result').count(), 12);
       for (const entry of entries.filter(e => !/^(gate|channel):/.test(e.objectId))) {
         await page.locator(`.reference-result[data-reference-id="${entry.id}"]`).click();
         assert.equal(normalize(await page.locator('#reference-detail .knowledge-body').innerText()), normalize(entry.detail.content));
@@ -78,7 +78,7 @@ try {
         if (entry.objectId === 'three-paths-six-links') await page.screenshot({ path: `${out}/${width}-${locale}-mechanism.png`, animations: 'disabled' });
         await page.locator(width <= 640 ? '#reference-mobile-detail .gate-detail-back' : '#reference-detail .reference-back').click();
         await page.locator('#reference-detail .reference-empty').waitFor({ state: 'attached' });
-        assert.equal(await page.locator('.reference-result').count(), 11);
+        assert.equal(await page.locator('.reference-result').count(), 12);
         checks++;
       }
       await page.screenshot({ path: `${out}/${width}-${locale}-library.png`, animations: 'disabled' });
@@ -89,5 +89,5 @@ try {
     assert.deepEqual(errors, []);
     await page.close();
   }
-  console.log(`PASS ${checks} entry/viewport/locale reads; 1440/390/320; gate lenses and gate-channel-back; focus/close/member context; 11 mechanism library; 27 screenshots`);
+  console.log(`PASS ${checks} entry/viewport/locale reads; 1440/390/320; gate lenses and gate-channel-back; focus/close/member context; 12 mechanism library; 27 screenshots`);
 } finally { await browser.close(); }

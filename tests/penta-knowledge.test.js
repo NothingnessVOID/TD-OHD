@@ -9,9 +9,9 @@ import { setLocale, getLocale } from '../src/lib/i18n.js';
 import { referenceEntries } from '../src/lib/reference-catalog.js';
 const q = objectId => ({domain:'human-design',objectType:'penta',objectId});
 
-test('Penta preserves 21 stable identities and adds eight attributed editorial topics', () => {
-  assert.equal(pentaRecords.length,29);
-  assert.equal(new Set(pentaRecords.map(r=>r.id)).size,29);
+test('Penta preserves 21 stable identities and adds nine attributed editorial topics', () => {
+  assert.equal(pentaRecords.length,30);
+  assert.equal(new Set(pentaRecords.map(r=>r.id)).size,30);
   for (const gate of PENTA_GATES) {
     const entry=getKnowledgeEntry(q(`gate:${gate.gate}`));
     assert.equal(entry.id,`hd.penta.gate.${gate.gate}`);
@@ -33,7 +33,7 @@ test('Penta preserves 21 stable identities and adds eight attributed editorial t
     const entry=getKnowledgeEntry(q(`channel:${channel.channelId}`));
     assert.equal(entry.id,`hd.penta.channel.${channel.channelId}`);
     assert.deepEqual(entry.properties.gates,channel.gates);
-    assert.equal(entry.summary.sourceId,'penta-wa-development-v1');
+    assert.equal(entry.summary.sourceId,'penta-wa-development-v2');
     assert.ok(entry.summary.content);
     assert.ok(entry.detail.content);
     assert.equal(entry.detailStatus,'available');
@@ -51,7 +51,7 @@ test('Penta preserves 21 stable identities and adds eight attributed editorial t
     assert.equal(entry.summary.sourceId,entry.detail.sourceId);
   }
   const column=getKnowledgeEntry(q('powerColumn'));
-  assert.equal(column.detail.sourceId,'penta-wa-development-v1');
+  assert.equal(column.detail.sourceId,'penta-wa-development-v2');
   assert.deepEqual(column.properties.structuralEvidence.sourceIds,['J1','P1','P2']);
   assert.equal(column.properties.interpretationStatus,'editorial-reviewed');
   assert.deepEqual(SOURCES['penta-power-column-public'].urls,column.properties.structuralEvidence.urls.slice(1));
@@ -78,16 +78,16 @@ test('locale content stays independent with complete gate and channel readings',
 });
 
 test('ordinary reference inventory and categories remain separate from Penta', () => {
-  assert.equal(listKnowledgeEntries({includePenta:true}).filter(e=>e.objectType==='penta').length,29);
+  assert.equal(listKnowledgeEntries({includePenta:true}).filter(e=>e.objectType==='penta').length,30);
   const catalog=referenceEntries();
   assert.equal(catalog.filter(e=>e.kind==='gate').length,64);
   assert.equal(catalog.filter(e=>e.kind==='channel').length,36);
-  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,93); // 64 public foundation records + 29 Penta records.
-  assert.equal(catalog.filter(e=>String(e.id).startsWith('hd.penta.')).length,29);
+  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,94); // 64 public foundation records + 30 Penta records.
+  assert.equal(catalog.filter(e=>String(e.id).startsWith('hd.penta.')).length,30);
   assert.equal(listKnowledgeEntries().length,70);
   assert.deepEqual(listKnowledgeEntries().map(e=>e.id),listKnowledgeEntries({includePenta:false}).map(e=>e.id));
   assert.ok(listKnowledgeEntries().every(e=>e.objectType!=='penta'));
-  assert.equal(listKnowledgeEntries({includePenta:true}).length,99);
+  assert.equal(listKnowledgeEntries({includePenta:true}).length,100);
   const view=readFileSync(new URL('../src/views/penta-matrix.js',import.meta.url),'utf8');
   assert.match(view,/const knowledgeBody = renderPentaReading/);
   assert.match(view,/qualifiedSummary\(`gate:\$\{gate\.gate\}`\)/);
