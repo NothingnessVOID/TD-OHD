@@ -38,7 +38,7 @@ try {
     await page.setViewportSize({ width, height: 844 });
     await page.locator('.penta-gate-hit[data-gate="31"]').click();
     const root = page.locator('.penta-detail');
-    assert.equal(await root.locator('.detail-name').textContent(), birthHeading);
+    assert.equal(await root.locator(':scope > .gate-detail-card > .gate-detail-body > header .detail-name').textContent(), birthHeading);
     assert.match(await root.locator('[data-penta-activations]').innerText(), /fiction-a/);
     for (const lens of ['iching', 'gk', 'meridian', 'hd']) {
       await root.locator(`[data-shared-lens="${lens}"]`).click();
@@ -47,7 +47,8 @@ try {
     await page.screenshot({ path: path.join(artifacts, `penta-gate-${width}.png`) });
     await root.locator('[data-shared-channel-select="7-31"]').click();
     assert.equal(await root.locator('.channel-detail-heading .circuit-badge').count(), 2);
-    assert.equal(await root.locator('[data-penta-specific]').count(), 0);
+    assert.equal(await root.locator('[data-penta-specific]').count(), 1);
+    assert.ok((await root.locator('[data-penta-specific]').innerText()).trim().length > 100, 'completed Penta interpretation is readable');
     await page.screenshot({ path: path.join(artifacts, `penta-channel-${width}.png`) });
     await root.locator('[data-shared-back]').click();
     assert.equal(await root.locator('[data-shared-gate="31"]').count(), 1);
