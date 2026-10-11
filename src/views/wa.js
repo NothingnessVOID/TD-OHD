@@ -26,7 +26,7 @@ export function mountWa(container, options = {}) {
   const calculate = options.computeChart || computeChart;
   const analyze = options.analyzeWa || analyzeWa;
   const repository = options.repository || createWaRepository();
-  let draft = createWaDraft(), dirty = false, disposed = false, generation = 0, operation = 0;
+  let draft = createWaDraft(), dirty = false, disposed = false, generation = 0, operation = 0, saveGeneration = 0;
   let result = null, previousReady = null, comparison = [], currentReady = null;
   let busy = false, saving = false, notice = '', errorText = '', closeLayer = null, detailOpen = false;
   const collapsed = new Set();
@@ -65,6 +65,7 @@ export function mountWa(container, options = {}) {
   function changeText(change) {
     if (change.kind === 'contribution') return `${waPairLabel(change.id,getLocale())}: ${t('Contribution changed')}`;
     if (change.kind === 'group') return `${change.name}: ${t('Group structure changed')}`;
+    if (change.kind === 'member') return `${change.name}: ${t('Member structure changed')}`;
     return `${change.name}: ${t(change.kind==='move'?'Moved':change.kind==='join'?'Joined':'Left')}${change.kind==='move' ? ` · ${destinationName(change.before,change.from)} → ${destinationName(change.after,change.to)}` : ''}`;
   }
   function render() {
@@ -93,6 +94,7 @@ export function mountWa(container, options = {}) {
       return {kind:!change.from?'join':!change.to?'leave':'move',name:nameOf(member),from:destination(before.snapshot,change.memberId),to:destination(after.snapshot,change.memberId),before:before.snapshot,after:after.snapshot};
     });
     for(const group of diff.pentas)changes.push({kind:'group',name:destinationName(after.snapshot,group.pentaId)});
+    for(const member of diff.members || [])changes.push({kind:'member',name:nameOf(after.snapshot.members.find(item=>item.memberId===member.memberId)||before.snapshot.members.find(item=>item.memberId===member.memberId))});
     for(const pair of diff.communication.pairs)changes.push({kind:'contribution',id:pair.channelId});
     return changes;
   }
@@ -127,16 +129,16 @@ export function mountWa(container, options = {}) {
   }
   function preserveReady() { if(currentReady)previousReady=currentReady; }
   async function save(asNew=false) {
-    if(saving)return; const token=++operation, capturedGeneration=generation;
+    if(saving)return; const token=++saveGeneration, capturedGeneration=generation;
     const snapshot=clone(draft);
     if(asNew)Object.assign(snapshot,{organizationId:createUuid(),revision:0,revisionId:null,parentRevisionId:null,savedAt:null});
     saving=true;notice='';render();
     try {
       const saved=await repository.save(snapshot,{expectedRevision:asNew?0:snapshot.revision});
-      if(disposed||token!==operation)return;
+      if(disposed||token!==saveGeneration)return;
       if(capturedGeneration===generation){draft=clone(saved);dirty=false;} else if(!asNew && draft.organizationId===snapshot.organizationId) { for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key]; }
       notice='Wa saved';
-    }catch(error){if(token===operation)failure(error);}finally{if(token===operation&&!disposed){saving=false;render();}}
+    }catch(error){if(token===saveGeneration&&!disposed)failure(error);}finally{if(token===saveGeneration&&!disposed){saving=false;render();}}
   }
   function layer(title, body) {
     closeLayer?.(); const opened=openOperationDialog({content:`<section class="modal wa-operation" aria-label="${text(title)}"><header><h2>${text(title)}</h2><button type="button" data-close aria-label="${text('Close')}">×</button></header>${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(closeLayer===opened.close)closeLayer=null;}});closeLayer=opened.close;return opened;
@@ -191,5 +193,5 @@ export function mountWa(container, options = {}) {
   container.addEventListener('click',onClick);container.addEventListener('change',onChange);container.addEventListener('input',onInput);
   const unsubscribe=people.subscribe?.(()=>{if(disposed)return;preserveReady();clearAnalysis();notice='Wa input changed';render();});
   render();
-  return {render,refreshLanguage(){closeReading();closeLayer?.();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;unsubscribe?.();closeReading();closeLayer?.();detail.remove();container.removeEventListener('click',onClick);container.removeEventListener('change',onChange);container.removeEventListener('input',onInput);container.replaceChildren();}};
+  return {render,refreshLanguage(){closeReading();closeLayer?.();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;unsubscribe?.();closeReading();closeLayer?.();detail.remove();container.removeEventListener('click',onClick);container.removeEventListener('change',onChange);container.removeEventListener('input',onInput);container.replaceChildren();}};
 }
