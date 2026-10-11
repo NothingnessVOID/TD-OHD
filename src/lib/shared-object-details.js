@@ -1,7 +1,10 @@
 import { gateReading, channelReading, channelsForGate, channelById } from './reference-content.js';
 import { renderGateLensSwitch } from './gate-lenses.js';
 import { getKnowledgeEntry } from './knowledge/registry.js';
+import { pentaPackage, PENTA_CONTENT_SOURCE } from './knowledge/content/penta.js';
 import { gateName, channelName, planetName } from './vocabulary.js';
+import { renderKnowledgeArticle, renderProse } from './knowledge/detail-renderer.js';
+import './penta-reading-messages.js';
 import { renderGateDetailHeading, renderChannelDetailHeading, renderDetailNavigation } from './object-detail-heading.js';
 import { GATES } from './human-design/catalog.js';
 import { esc } from './format.js';
@@ -33,16 +36,38 @@ const gateLink = gate => `<button type="button" class="transit-detail-link" data
 const channelLinks = gate => `<h3>${text('Related channels')}</h3><div class="reference-links">${channelsForGate(gate).map(ch => `<button type="button" class="reference-link" data-shared-channel-select="${ch.gates.join('-')}">${ch.gates.join('–')} · ${esc(channelName(ch.gates))}</button>`).join('')}</div>`;
 const query = objectId => ({ domain: 'human-design', objectType: 'penta', objectId });
 
-/** Only reviewed, verified text is shown. Provenance stays in the Knowledge Layer. */
-function specificReading(objectId) {
+/** Editorial acceptance is explicit; it never upgrades evidence to verified. */
+export function pentaReadingEntry(objectId) {
   const entry = getKnowledgeEntry(query(objectId));
-  if (!entry || entry.reviewStatus !== 'reviewed' || entry.properties.evidence?.status !== 'verified') return '';
-  // A verified topology/course reference is not yet a specialist interpretation.
-  if (/^(gate|channel):/.test(objectId) && entry.properties.interpretationStatus !== 'verified') return '';
-  const slots = [entry.detail || entry.summary].filter(slot => slot?.reviewStatus === 'reviewed' && slot.evidenceStatus === 'verified' && slot.content?.trim());
-  if (!slots.length) return '';
-  return `<section data-penta-specific><h3>${text('Penta specific reading')}</h3>${slots.map(slot => `<p>${esc(slot.content)}</p>`).join('')}</section>`;
+  if (!entry || entry.reviewStatus !== 'reviewed') return null;
+  const p = entry.properties;
+  const reviewed = slot => slot?.reviewStatus === 'reviewed' && Boolean(slot.content?.trim());
+  const editorial = p.interpretationStatus === 'editorial-reviewed'
+    && p.contentPackage === pentaPackage.contentPackage && p.contentVersion === pentaPackage.contentVersion
+    && p.editorialReview?.status === 'complete' && p.editorialReview.actor === pentaPackage.editorialReview.actor
+    && Array.isArray(p.sourceRefs) && p.sourceRefs.length > 0
+    && p.sourceRefs.every(ref => typeof ref.sourceId === 'string' && Object.hasOwn(pentaPackage.sourceRegistry, ref.sourceId)
+      && typeof ref.locator === 'string' && Boolean(ref.locator.trim())
+      && typeof (ref.scope ?? ref.use) === 'string' && Boolean((ref.scope ?? ref.use).trim()))
+    && [entry.summary, entry.detail].every(slot => reviewed(slot) && slot.sourceId === PENTA_CONTENT_SOURCE && slot.evidenceStatus === 'editorial-reviewed')
+    && entry.summary.content.trim() !== entry.detail.content.trim();
+  const verified = p.evidence?.status === 'verified'
+    && (!/^(gate|channel):/.test(objectId) || p.interpretationStatus === 'verified');
+  if (!editorial && !verified) return null;
+  const accepted = slot => reviewed(slot) && (editorial || slot.evidenceStatus === 'verified');
+  return { ...entry, summary: accepted(entry.summary) ? entry.summary : null, detail: accepted(entry.detail) ? entry.detail : null };
 }
+const pentaProse = renderProse;
+export function renderPentaSummary(objectId) {
+  const entry = pentaReadingEntry(objectId);
+  return entry?.summary ? `<div class="penta-context-note" data-penta-summary>${pentaProse(entry.summary)}</div>` : '';
+}
+export function renderPentaReading(objectId) {
+  const entry = pentaReadingEntry(objectId);
+  if (!entry || (!entry.summary && !entry.detail)) return '';
+  return `<section data-penta-specific>${renderKnowledgeArticle(entry)}</section>`;
+}
+const specificReading = renderPentaReading;
 function member(id, ctx) {
   const person = (ctx.people || []).find(item => item.memberId === id);
   const index = person?.displayIndex || (ctx.people || []).findIndex(item => item.memberId === id) + 1;
@@ -86,7 +111,7 @@ export const pentaDetailAdapter = Object.freeze({
   knowledge(objectId, ctx = {}) {
     const entry = getKnowledgeEntry(query(objectId));
     if (!entry) return '';
-    return `<header><h2>${esc(entry.name)}</h2>${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}</header>${specificReading(objectId)}`;
+    return `${ctx.groupLabel ? `<p>${esc(ctx.groupLabel)}</p>` : ''}${specificReading(objectId)}`;
   },
   bind: bindSharedObjectDetails
 });

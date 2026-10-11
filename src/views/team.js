@@ -39,6 +39,7 @@ function status(message = '', personId = null) {
 function currentRepository() { return !teamId || getTeam(teamId)?.revision === revision; }
 function reset() { teamId = null; revision = null; teamName = ''; members = []; groups = [freshGroup()]; selectedId = groups[0].pentaId; dirty = false; schedule(false); }
 function renderControls() {
+ if ($('team-penta-library')) $('team-penta-library').textContent = t('Penta knowledge');
  const focusId = document.activeElement?.dataset?.focusMember;
  const slots = currentMemberSlots();
  const title = teamName ? `${teamName} / ${group()?.label || 'Penta A'}` : (!teamId && groups.length === 1 && group()?.label === 'Penta A' ? t('Penta temporary') : group()?.label || t('Penta temporary'));
@@ -206,6 +207,10 @@ function manage() {
 export function setupTeamView() {
  const subtitle = document.querySelector('#team-view .view-subtitle');
  subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
+ const libraryLink = $('team-penta-library') || document.createElement('a');
+ libraryLink.id = 'team-penta-library'; libraryLink.className = 'reference-link';
+ libraryLink.href = '#library?filter=penta'; libraryLink.textContent = t('Penta knowledge');
+ subtitle.after(libraryLink);
  const previousContent = $('team-content');
  if (previousContent && !$('team-form').contains(previousContent)) previousContent.remove();
  $('team-form').innerHTML = `<div class="team-management panel"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p></div><div class="team-workspace chart-layout"><div class="team-graph-column chart-column"><div id="team-content" class="bodygraph-container"></div></div><div class="team-results info-column"><div id="team-analysis"></div></div></div>`;
