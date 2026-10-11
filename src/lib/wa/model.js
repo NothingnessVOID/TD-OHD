@@ -88,7 +88,8 @@ export function validateWaLayout(snapshot) {
   if (!validation.valid) return { ...validation, ready: false, standardTemplateSatisfied: false, memberIds: [], poolMemberIds: [], groups: [] };
   const assigned = new Set(snapshot.pentas.flatMap(group => group.memberIds));
   if (snapshot.alphaId !== null) assigned.add(snapshot.alphaId);
-  const groups = snapshot.pentas.map(group => ({ pentaId: group.pentaId, role: group.role,
+  const groups = [...snapshot.pentas].sort((a, b) => a.pentaId < b.pentaId ? -1 : a.pentaId > b.pentaId ? 1 : 0)
+    .map(group => ({ pentaId: group.pentaId, role: group.role,
     memberCount: group.memberIds.length, ready: group.memberIds.length >= 3 && group.memberIds.length <= 5 }));
   const deviations = [];
   if (snapshot.alphaId === null) deviations.push(issue('ALPHA_REQUIRED', 'alphaId', 'Choose an Alpha manually.'));
