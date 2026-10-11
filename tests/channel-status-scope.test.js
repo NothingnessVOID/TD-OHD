@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -14,7 +15,7 @@ const file = 'src/views/chart.js';
 const read = p => readFileSync(path.join(auditRoot, p));
 const protectedPath = p => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(p) || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(p);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', channelStatusBase], { cwd: auditRoot }).toString().trim().split('\n').filter(protectedPath);
-inventory.push(...pentaAddedPaths);
+inventory.push(...integrationAddedPaths);
 
 // Exact status-only delta reviewed against the fixed parent-supplied source snapshot.
 const approvedStatusBlock = [

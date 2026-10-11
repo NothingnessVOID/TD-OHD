@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import { historicalAuditSource } from './helpers/penta-audit-history-projection.js';
 import assert from 'node:assert/strict';
@@ -20,7 +21,7 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
   || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', pairedCardHeaderBase], { cwd: auditRoot })
   .toString().trim().split('\n').filter(protectedPath);
-inventory.push(...pentaAddedPaths);
+inventory.push(...integrationAddedPaths);
 function rejectsSource(file, mutated) {
   assert.notDeepEqual(mutated, read(file), 'Negative case must change current bytes');
   for (const project of projects) assert.throws(() => project(mutated, file), /Unreviewed increment source/);

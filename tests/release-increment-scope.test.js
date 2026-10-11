@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { integrationAddedPaths } from './helpers/wa-integration-projection.js';
 import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -9,7 +10,7 @@ const read = file => readFileSync(path.join(auditRoot, file));
 import {validationPaths,validationHead} from './helpers/release-validation-projection.js';
 const inventory = execFileSync('git', ['ls-tree','-r','--name-only',incrementHead], {cwd:auditRoot}).toString().trim().split('\n').filter(file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(file) || ['index.html','package.json','package-lock.json','vite.config.js','.env.production'].includes(file));
 inventory.push(...validationPaths.filter(file=>!inventory.includes(file)));
-inventory.push(...pentaAddedPaths);
+inventory.push(...integrationAddedPaths);
 const validateMutation = (file, transform) => {
  const original = read(file), mutated = Buffer.from(transform(original.toString()));
  assert.notDeepEqual(mutated, original, 'Mutation must actually change bytes');
