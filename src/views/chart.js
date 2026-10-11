@@ -458,9 +458,9 @@ function renderChannelJump(channel, chart, model = null, sourceGate = null) {
     ? channel.gates.find(gate => gate !== sourceGate) : null;
   return `
     <div class="gate-detail-channel">
-      <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
-      ${pairedGate == null ? '' : '<div class="gate-detail-channel-meta">'}${renderChannelCircuitBadges(channel)}
-      <span class="circuit-badge transit-source-badge ${source}${statusClass}">${natalStatus ? t('Birth activations') : statusLabel}</span>${pairedGate == null ? '' : '</div>'}
+      ${pairedGate == null ? '' : '<div class="gate-detail-channel-header">'}<button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
+      ${renderChannelCircuitBadges(channel)}${pairedGate == null ? '' : '</div>'}
+      <span class="circuit-badge transit-source-badge ${source}${statusClass}">${natalStatus ? t('Birth activations') : statusLabel}</span>
       ${pairedGate == null ? '' : `<button type="button" class="gate-detail-paired-gate" data-paired-gate="${pairedGate}"><span><span class="gate-detail-paired-gate-label">${t('Harmonic gate:')}</span> <span class="gate-detail-paired-gate-link"><span class="gate-detail-paired-gate-number">${t('Gate {gate}', { gate: pairedGate })}</span> · <span class="gate-detail-paired-gate-name">${esc(gateName(pairedGate))}</span></span></span></button>`}
     </div>
   `;
