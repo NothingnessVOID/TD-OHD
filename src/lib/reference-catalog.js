@@ -3,6 +3,8 @@ import { GATES, CHANNELS, CENTERS } from './human-design/catalog.js';
 import { localeResources } from '../locales/index.js';
 import { getLocale } from './i18n.js';
 import { listKnowledgeEntries } from './knowledge/registry.js';
+import { pentaRecords } from './knowledge/penta-foundation.js';
+import { readPentaSummary } from './knowledge/penta-reading-policy.js';
 import { gateName, channelName, centerName, circuitName, circuitGroupName, hexagramName, planetName } from './vocabulary.js';
 import { PLANET_ORDER, PLANET_NAMES, ACTIVATION_CONCEPT_IDS, activationConceptName, activationConceptAliases } from './planet-reference.js';
 import { channelById } from './reference-content.js';
@@ -17,11 +19,14 @@ export function referenceEntries() {
   return [
     ...ACTIVATION_CONCEPT_IDS.map(id => ({ kind: 'concept', category: 'basic', id,
       name: activationConceptName(id, getLocale()), aliases: activationConceptAliases(id) })),
-    ...listKnowledgeEntries({ includePenta: true }).filter(entry => entry.objectType !== 'cognition').map(entry => ({
+    ...listKnowledgeEntries().filter(entry => entry.objectType !== 'cognition').map(entry => ({
       kind: 'knowledge', category: entry.objectType,
       id: entry.id, name: entry.name, summary: entry.summary?.content ?? '', hasDetail: entry.hasDetail,
       objectType: entry.objectType, objectId: entry.objectId, aliases: [entry.objectId, entry.id]
     })),
+    ...pentaRecords.map(entry => ({ kind: 'knowledge', category: 'penta', id: entry.id,
+      name: entry.name.read(), summary: readPentaSummary(entry.objectId)?.content ?? '', hasDetail: Boolean(entry.detail),
+      objectType: 'penta', objectId: entry.objectId, aliases: [entry.objectId, entry.id] })),
     ...Object.keys(CENTERS).map(id => ({ kind: 'center', id, name: centerName(id),
       aliases: [CENTERS[id].name, ...names('centerName', id)] })),
     ...CHANNELS.map(channel => ({ kind: 'channel', id: channel.gates.join('-'), name: channelName(channel.gates),

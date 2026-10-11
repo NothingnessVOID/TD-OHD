@@ -4,7 +4,7 @@ import { t } from '../i18n.js';
 import { variableDirection } from '../variable-arrows.js';
 import { esc } from '../format.js';
 import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
-import { centerName } from '../vocabulary.js';
+import { centerName, hexagramName } from '../vocabulary.js';
 
 const categoryLabels = { penta:'Penta specific reading', type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
 const variableLabels = { overview:'Variable', determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
@@ -57,7 +57,9 @@ function renderOverview(entry) {
 function renderHeader(entry) {
   const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
   const name=entry.objectType==='profile'&&!entry.properties.publicOverview?`${entry.objectId} ${entry.name}`:entry.name;
-  return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>`;
+  const hexagram = entry.objectType === 'penta' && /^gate:\d+$/.test(entry.objectId)
+    ? `<p class="label-soft" data-penta-hexagram>${esc(hexagramName(Number(entry.objectId.slice(5))))}</p>` : '';
+  return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>${hexagram}`;
 }
 function renderSummary(entry) {
   return entry.summary?`<aside class="knowledge-summary-callout"><div class="knowledge-summary-label">${esc(t('Overview'))}</div><p class="knowledge-summary knowledge-summary-text">${esc(entry.summary.content)}</p></aside>`:'';
