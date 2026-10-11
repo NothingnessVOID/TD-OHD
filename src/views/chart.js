@@ -332,7 +332,7 @@ export function refreshTransitDetail(context) {
   if (!currentDetail || detailContext !== context) return;
   const { kind, id } = currentDetail;
   if (kind === 'planet') showPlanetDetail(currentDetail, false);
-  else if (kind === 'gate') showGateDetail(id, false);
+  else if (kind === 'gate') showGateDetail(id, false, currentDetail.source);
   else if (kind === 'channel') showTransitChannelDetail(id, false);
   else showCenterDetail(id, false);
 }
@@ -354,8 +354,9 @@ function showTransitChannelDetail(id, pushHistory = true) {
       <span class="circuit-badge transit-source-badge ${source}">${t(model ? active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view' : active ? 'Defined' : 'Not defined in this view')}</span>
       <p class="gate-detail-desc">${t(active ? 'Both gates are active, so the full channel is connected in this view.' : 'A full channel needs both gates. At least one is inactive in this view.')}</p>
       ${renderSharedChannelReading(id)}
-      <div class="transit-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}" aria-label="${esc(t('Gate {gate}', { gate: g }))}">
-        <span class="transit-detail-gate"><strong>${t('Gate {gate}', { gate: g })}</strong>${model?.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model?.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
+      <div class="transit-channel-gates chart-channel-gates">${channel.gates.map(g => `<button type="button" class="transit-detail-link" data-channel-gate="${g}">
+        <span class="transit-detail-gate"><span class="detail-label">${t('Gate {gate}', { gate: g })}</span>${model?.transitGates.has(g) ? `<span class="circuit-badge transit-source-badge">${t('Transit')}</span>` : model?.gateSource(g) === 'inactive' ? `<span class="circuit-badge transit-source-badge inactive">${t('Inactive')}</span>` : ''}</span>
+        <span class="detail-name">${esc(gateName(g))}</span>
         <span class="transit-detail-action">${t('View gate details')}</span>
       </button>`).join('')}</div>
       ${model ? `<p class="lens-note">${t('Transit additions do not change your birth chart.')}</p>` : ''}
@@ -442,18 +443,21 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
 }
 
 // Shared channel navigation for Gate and Center details.
-function renderChannelJump(channel, chart, model = null) {
+function renderChannelJump(channel, chart, model = null, sourceGate = null) {
   const key = channel.gates.join('-');
   const active = (model?.channels || chart.channels).some(ch => ch.gates.join('-') === key);
   const source = model && active ? model.channelSource(channel) : active ? 'defined' : 'inactive';
   const statusLabel = model
     ? t(active ? TRANSIT_SOURCE_LABELS[source] : 'No complete channel in this view')
     : t(active ? 'Defined' : 'Not defined in this view');
+  const pairedGate = channel.gates.includes(sourceGate)
+    ? channel.gates.find(gate => gate !== sourceGate) : null;
   return `
     <div class="gate-detail-channel">
       <button type="button" class="gate-link" data-channel="${key}">${t('Channel {channel}', { channel: key })} · ${esc(channelName(channel.gates))}</button>
       ${renderChannelCircuitBadges(channel)}
       <span class="circuit-badge transit-source-badge ${source}">${statusLabel}</span>
+      ${pairedGate == null ? '' : `<button type="button" class="reference-link gate-detail-paired-gate" data-paired-gate="${pairedGate}">${t('Harmonic gate:')} ${t('Gate {gate}', { gate: pairedGate })} · ${esc(gateName(pairedGate))}</button>`}
     </div>
   `;
 }
@@ -485,7 +489,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
     .map(([planet, g]) => `<span>${PLANET_GLYPHS[planet] || ''} ${t('Transit')} ${esc(planetName(planet))} — ${gateNum}.${g.line}${lineTag(g.line)}</span>`);
 
   const inChannels = channelsForGate(gateNum);
-  const channelHtml = inChannels.map(ch => renderChannelJump(ch, chart, detailContext?.model)).join('');
+  const channelHtml = inChannels.map(ch => renderChannelJump(ch, chart, detailContext?.model, gateNum)).join('');
 
   detail.innerHTML = `
     <div class="gate-detail-card">
@@ -505,6 +509,7 @@ export function showGateDetail(gateNum, pushHistory = true, source = null) {
   detailGraph()?.setPinned?.({ kind: 'gate', id: gateNum });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   disposeSharedDetails = bindSharedObjectDetails(detail, { onLensChange: lens => { currentLens = lens; } });
+  detail.querySelectorAll('[data-paired-gate]').forEach(btn => btn.addEventListener('click', () => showGateDetail(Number(btn.dataset.pairedGate))));
   detail.querySelectorAll('[data-channel]').forEach(btn => btn.addEventListener('click', () => showTransitChannelDetail(btn.dataset.channel)));
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
