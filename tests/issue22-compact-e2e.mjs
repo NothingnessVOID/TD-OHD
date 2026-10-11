@@ -9,7 +9,7 @@ const phase = process.env.ISSUE22_COMPACT_PHASE || 'after';
 assert.ok(['before', 'after'].includes(phase));
 const root = resolve(process.env.ISSUE22_COMPACT_EVIDENCE_DIR || 'artifacts/issue22-final-layout');
 const out = resolve(root, phase); mkdirSync(out, { recursive: true });
-const baselinePath = resolve(root, 'before/results.json');
+const baselinePath = resolve(process.env.ISSUE22_COMPACT_BASELINE || resolve(root, 'before/results.json'));
 const baseline = phase === 'after' && existsSync(baselinePath) ? JSON.parse(readFileSync(baselinePath, 'utf8')).cases : [];
 const browser = await chromium.launch({ channel: process.env.CHROME_CHANNEL || 'msedge', headless: true });
 const results = []; let activePage;
@@ -48,13 +48,15 @@ async function metrics(page) {
     }
     const textTop = Math.min(...textRects.map(r => r.top)), textBottom = Math.max(...textRects.map(r => r.bottom));
     const style = getComputedStyle(n);
-    const probe = document.createElement('span'); probe.style.color='var(--border-subtle)'; n.append(probe);
-    const subtleColor = getComputedStyle(probe).color; probe.remove();
+    const probe = document.createElement('span'); probe.style.cssText='color:var(--border);border-top:1.5px solid var(--border)'; n.append(probe);
+    const borderColor = getComputedStyle(probe).color, expectedBorderWidth = getComputedStyle(probe).borderTopWidth; probe.remove();
+    const header = n.querySelector('.gate-detail-channel-header');
     return { channel:title.dataset.channel, card:b, title:t, badges:c, status:s, hit:p,
       gaps:{ titleBadges:c.top-t.bottom, badgesStatus:s.top-c.bottom, statusHit:p.top-s.bottom, statusText:textTop-s.bottom,
         textBottom:p.bottom-textBottom, adjacent:i ? b.top-box(nodes[i-1]).bottom : null },
-      metadata: n.querySelector('.gate-detail-channel-meta') ? box(n.querySelector('.gate-detail-channel-meta')) : null,
-      sameRow: Math.abs(c.top-s.top)<=2, subtleColor, separator: { width:getComputedStyle(paired).borderTopWidth, style:getComputedStyle(paired).borderTopStyle, color:getComputedStyle(paired).borderTopColor, token:getComputedStyle(paired).getPropertyValue('--border-subtle').trim() },
+      header: header ? box(header) : null, statusIndependent: status.parentElement === n,
+      sameRow: Math.min(t.bottom,c.bottom) > Math.max(t.top,c.top), borderColor, expectedBorderWidth,
+      separator: { width:getComputedStyle(paired).borderTopWidth, style:getComputedStyle(paired).borderTopStyle, color:getComputedStyle(paired).borderTopColor, token:getComputedStyle(paired).getPropertyValue('--border').trim() },
       padding:style.padding, display:style.display, overflow:n.scrollWidth > n.clientWidth+1,
       badgeSizes:[...badges.children].map(e => ({ text:e.textContent, width:box(e).width,height:box(e).height })) };
   }));
@@ -79,7 +81,7 @@ try {
       const rows = await metrics(page); assert.deepEqual(rows.map(r=>r.channel),['10-20','20-34','20-57']);
       writeFileSync(resolve(out,`${width}-${locale}-${id}-metrics.json`),JSON.stringify(rows,null,2)+'\n');
       const previous = baseline.find(r=>r.width===width && r.locale===locale && r.skin===id);
-      if (['default-light','default-dark'].includes(id)) {
+      if (process.env.ISSUE22_SCREENSHOTS !== '0' && locale==='zh-CN' && width!==320 && ['default-light','default-dark'].includes(id)) {
         await page.screenshot({path:resolve(out,`${width}-${locale}-${id}-sheet.png`)});
         const first=rows[0].card,last=rows.at(-1).card;
         await page.screenshot({path:resolve(out,`${width}-${locale}-${id}-rows.png`),clip:{x:first.left,y:first.top,width:first.width,height:last.bottom-first.top}});
@@ -87,21 +89,28 @@ try {
       if (phase==='after') {
         assert.ok(previous,'matched baseline required'); assert.deepEqual(center,previous.center,'center markup/layout unchanged');
         rows.forEach((r,i)=>{
-          // Wrapped metadata may preserve or increase total height; fit cases below must shrink.
           assert.ok(['grid','flex'].includes(r.display)); assert.ok(!r.overflow && r.card.left>=0 && r.card.right<=width);
-          assert.ok(r.gaps.titleBadges>=4 && r.gaps.titleBadges<=6);
-          assert.ok(r.metadata, 'separate metadata row exists');
-          const fits = r.badges.width + r.status.width + 8 <= r.metadata.width + 1;
-          assert.equal(r.sameRow, fits, 'metadata stays on one row when it fits, otherwise naturally wraps');
-          if (!fits) assert.ok(r.status.top >= r.badges.bottom + 4, 'wrapped status has a real gap');
-          assert.ok(r.hit.top >= r.metadata.bottom + 4 && r.hit.top <= r.metadata.bottom + 6);
-          assert.ok(r.hit.height >= (width<=600 ? 44 : 24) && r.hit.width>=44 && r.gaps.statusHit>=0);
-          assert.equal(r.separator.width,'1px'); assert.equal(r.separator.style,'solid');
-          assert.ok(r.separator.token, 'existing subtle border token resolves');
-          assert.equal(r.separator.color, r.subtleColor, 'separator uses resolved subtle border token');
-          if (fits) assert.ok(previous.rows[i].card.height-r.card.height>=20,'nonwrapping cards shrink at least 20px');
-          if (width===1280 && locale!=='en') assert.ok(r.card.height<=92,'typical desktop card near 90px');
-          if (width<600 && locale!=='en') assert.ok(r.card.height<=106,'typical mobile card near 105px');
+          assert.ok(r.header, 'title and badges share a header');
+          const fits = r.title.width + r.badges.width + 8 <= r.header.width + 0.02;
+          assert.equal(r.sameRow, fits, 'title and badges stay together when they fit, otherwise naturally wrap');
+          if (fits) assert.ok(r.badges.left-r.title.right>=6 && r.badges.left-r.title.right<=8.1, 'natural flex-start header gap');
+          else assert.ok(r.badges.top >= r.title.bottom + 4, 'wrapped badges have a real gap');
+          assert.ok(r.statusIndependent && r.status.top >= r.header.bottom+4 && r.status.top<=r.header.bottom+6, 'status has an independent second row');
+          assert.ok(r.hit.top >= r.status.bottom + 4 && r.hit.top <= r.status.bottom + 6);
+          assert.ok(r.hit.height >= (width<=600 ? 44 : 30) && r.hit.width>=44 && r.gaps.statusHit>=0);
+          assert.equal(r.separator.width,r.expectedBorderWidth, '1.5px uses the same browser/DPR quantization as a declared border probe'); assert.equal(r.separator.style,'solid');
+          assert.ok(r.separator.token, 'existing border token resolves');
+          assert.equal(r.separator.color, r.borderColor, 'separator uses resolved border token');
+          r.heightDeltaFromThreeRow = r.card.height-previous.rows[i].card.height;
+          // Moving badges from the metadata row to the title changes each row's max height.
+          const oldMiddle = previous.rows[i].metadata?.height ?? previous.rows[i].header?.height;
+          assert.ok(Number.isFinite(oldMiddle), 'explicit three-row baseline required');
+          const expectedDelta = r.header.height+r.status.height-previous.rows[i].title.height-oldMiddle
+            + parseFloat(r.separator.width)-parseFloat(previous.rows[i].separator.width);
+          assert.ok(Math.abs(r.heightDeltaFromThreeRow-expectedDelta)<=1, 'height change follows the restored header rather than an obsolete 20px shrink target');
+          if (fits && width===1280 && locale!=='en') assert.ok(r.card.height<=92,'typical desktop card near 90px');
+          if (fits && width<600 && locale!=='en') assert.ok(r.card.height<=106,'typical mobile card near 103px');
+          if (!fits) assert.ok(r.card.height<=106+r.badges.height+4+(width<600?14:0),'narrow wrapping remains compact');
           assert.ok(r.gaps.statusText>=0 && r.gaps.statusText<=20,'4px row gap, 2px badge height difference and centered 44px hit target stay close');
           assert.ok(Math.abs((r.gaps.statusText-r.gaps.statusHit)-r.gaps.textBottom)<=4,'text stays centered including the 1px separator and font glyph bounds');
           assert.ok(r.gaps.adjacent===null || r.gaps.adjacent>=8,'cards remain distinct');

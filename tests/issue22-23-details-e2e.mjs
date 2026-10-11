@@ -144,11 +144,11 @@ try {
     await invoke(page, 'gate', 57);
     await checkPairs(page, 57, [10, 20, 34], 'birth', mode);
     await detail(page).locator('.tl-detail-header').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `${evidence}/${width}-${locale}-birth-gate57-top.png` });
+    if (process.env.ISSUE22_SCREENSHOTS !== '0') await page.screenshot({ path: `${evidence}/${width}-${locale}-birth-gate57-top.png` });
     await noOverflow(page, width);
     await detail(page).locator('[data-lens="gk"]').click();
     await paired(page, 34).scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `${evidence}/${width}-${locale}-birth-pairs.png` });
+    if (process.env.ISSUE22_SCREENSHOTS !== '0') await page.screenshot({ path: `${evidence}/${width}-${locale}-birth-pairs.png` });
     await detail(page).locator('[data-lens="hd"]').click();
     await close(page, 'button');
 
@@ -170,8 +170,10 @@ try {
     assert.equal(await page.evaluate(() => window.issue22Closed), 1);
     assert.equal(await page.evaluate(() => window.issue22Pins.at(-1)), null);
 
-    const skins = width === 1380 && locale === 'en' ? SKINS.map(skin => skin.id)
-      : ['default-light', 'default-dark', 'high-contrast', 'midnight-contrast'];
+    const skins = process.env.ISSUE22_QUICK === '1'
+      ? ['default-light', ...(locale === 'zh-CN' ? ['default-dark'] : []), ...(width===1380 && locale==='en' ? ['high-contrast','midnight-contrast'] : [])]
+      : width === 1380 && locale === 'en' ? SKINS.map(skin => skin.id)
+        : ['default-light', 'default-dark', 'high-contrast', 'midnight-contrast'];
     for (const skin of skins) {
       await selectSkin(page, skin);
       await invoke(page, 'fixture', { gate: 37, active: true });
@@ -181,7 +183,7 @@ try {
       const labels = await invoke(page, 'labels', 37);
       assert.equal(await detail(page).locator('[data-channel-gate="37"] .transit-source-badge').textContent(), labels.transit);
       assert.equal(await detail(page).locator('[data-channel-gate="40"] .transit-source-badge').textContent(), labels.inactive);
-      if (['default-light', 'default-dark'].includes(skin)) {
+      if (process.env.ISSUE22_SCREENSHOTS !== '0' && ['default-light', 'default-dark'].includes(skin)) {
         await detail(page).locator('.chart-channel-gates').scrollIntoViewIfNeeded();
         await page.screenshot({ path: `${evidence}/${width}-${locale}-${skin}-channel.png` });
         await detail(page).locator('.chart-channel-gates').screenshot({ path: `${evidence}/${width}-${locale}-${skin}-cards.png` });
