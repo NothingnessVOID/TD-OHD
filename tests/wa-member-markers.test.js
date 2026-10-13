@@ -151,6 +151,8 @@ test('six-column readable marker rows fit the adaptive viewBox with clear next-r
       const rowCounts = new Map();
       for (const badge of badges) {
         const cy = badge.body.match(/cy="([\d.]+)"/)[1];
+        const textY=Number(badge.body.match(/<text[^>]* y="([\d.]+)"/)[1]);
+        assert.equal(textY,Number(cy)+4.5,'larger numerals stay vertically centered in their marker');
         rowCounts.set(cy, (rowCounts.get(cy) ?? 0) + 1);
       }
       assert.ok([...rowCounts.values()].every(value => value <= 6));
