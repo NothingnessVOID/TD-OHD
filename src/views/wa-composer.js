@@ -21,7 +21,7 @@ export async function prepareWaSelectionChange(snapshot,patch,peopleMap,{isCurre
   try {return {next:replaceWaSelection(captured,patch,peopleMap),annotationChanges:[]};}
   catch(error){
     if(error.code!=='ANNOTATION_CLEANUP_REQUIRED')throw error;
-    const name=id=>{const ref=captured.members.find(member=>member.memberId===id);return ref?.labelSnapshot||id;};
+    const name=id=>{const ref=captured.members.find(member=>member.memberId===id);const person=peopleMap instanceof Map?peopleMap.get(ref?.personId):peopleMap?.[ref?.personId];return person?.name||ref?.labelSnapshot||id;};
     const labels={MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT:'edge',ALLY_NOT_PARTICIPANT:'ally',UNKNOWN_METADATA_MEMBER:'metadata',CONSULTATION_UNKNOWN_PENTA:'area'};
     const items=error.issues.map(issue=>{
       const value=issue.annotation;

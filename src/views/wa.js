@@ -13,11 +13,11 @@ import { esc } from '../lib/format.js';
 import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
-import { createWaDetailRenderer } from './wa-detail-content.js';
+import { createWaDetailRenderer, renderWaReading } from './wa-detail-content.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { renderProse } from '../lib/knowledge/detail-renderer.js';
 import { gateName, hexagramName } from '../lib/vocabulary.js';
-import { readWaContent, listWaContent } from '../lib/wa/content.js';
+import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
 import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
@@ -47,7 +47,7 @@ export function mountWa(container, options = {}) {
   let graphResizeObserver=null,stickyFrame=0;
   const expanded = new Set(), annotationRecovery = [];
   const detail = document.createElement('div');
-  detail.className = 'modal-overlay hidden wa-detail';
+  detail.className = 'gate-detail hidden wa-detail';
   document.body.append(detail);
   const members = () => new Map(draft.members.map(member => [member.memberId, member]));
   let markerRefs=null,markerMap=null;
@@ -245,10 +245,7 @@ export function mountWa(container, options = {}) {
     download({schema:'wa-ui-backup-v2',draft:snapshot,saved,annotationRecovery:recovery},'wa-current-draft-backup.json');
   }
 
-  function readingHtml(id) {
-    const entry=readWaContent(id,getLocale());
-    return entry?`<h2>${esc(entry.name)}</h2><div class="knowledge-summary-callout">${renderProse({content:entry.summary})}</div><div class="knowledge-body">${renderProse({content:entry.detail})}</div>`:`<p>${text('Wa reading unavailable')}</p>`;
-  }
+  const readingHtml=id=>renderWaReading(id);
   function detailBody(item) {
     if(item.type==='library')return `<h2>${text('OC16 explore readings')}</h2><div class="wa-reading-list">${listWaContent(getLocale()).map(entry=>`<button class="btn-secondary" data-wa-reading="${esc(entry.objectId)}">${esc(entry.name)}</button>`).join('')}</div>`;
     if(item.type==='reading')return readingHtml(item.id);
@@ -301,7 +298,8 @@ export function mountWa(container, options = {}) {
     const frame=detailStack.at(-1);if(!frame)return;
     if(['gate','pair','department'].includes(item.type))selected=item;
     prepareDetailDialog(detail,'wa');
-    detail.innerHTML=`<section class="modal wa-reading-sheet"><nav class="gate-detail-nav"><button class="btn-secondary" data-wa-back ${detailStack.length<2?'hidden':''}>${text('Back')}</button><span class="wa-kicker">WA / OC16 · ${esc(scopeLabel())}</span><button class="ui-icon-button gate-detail-close" aria-label="${text('Close')}">×</button></nav><div class="gate-detail-body">${detailBody(item)}</div></section>`;
+    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
+    detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
     detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
     openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
@@ -310,11 +308,12 @@ export function mountWa(container, options = {}) {
     if(!push)findFocus(frame.focus,detail)?.focus({preventScroll:true});
     detail.querySelector('.gate-detail-body').scrollTop=frame.scrollTop;
   }
-  const unbindDetails=bindSharedObjectDetails(detail,{onGateSelect:gate=>showDetail({type:'gate',id:gate}),onChannelSelect:id=>{if(pairs.some(pair=>pair.channelId===id))showDetail({type:'pair',id});},onLensChange:()=>fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'))});
+  function backDetail() {if(detailStack.length<2)return;detailStack.pop();showDetail(detailStack.at(-1).item,false);}
+  const unbindDetails=bindSharedObjectDetails(detail,{onBack:backDetail,onGateSelect:gate=>showDetail({type:'gate',id:gate}),onChannelSelect:id=>{if(pairs.some(pair=>pair.channelId===id))showDetail({type:'pair',id});},onLensChange:()=>fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'))});
   function detailClick(event) {
     const node=event.target.closest('button');if(!node)return;
-    if(node.hasAttribute('data-wa-back')){if(detailStack.length<2)return;detailStack.pop();showDetail(detailStack.at(-1).item,false);}
-    else if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
+    if(node.hasAttribute('data-shared-back'))return;
+    if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
     else if(node.dataset.waPair)showDetail({type:'pair',id:node.dataset.waPair});
     else if(node.dataset.waReading)showDetail({type:'reading',id:node.dataset.waReading});
     else if(node.dataset.waDepartment)showDetail({type:'department',id:node.dataset.waDepartment});

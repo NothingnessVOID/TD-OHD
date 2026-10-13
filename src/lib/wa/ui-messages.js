@@ -26,6 +26,8 @@ const messages={
  'Wa UI more channels':['展开其他 {count} 条通道','展開其他 {count} 條通道','Show {count} more channels'],
  'Wa UI hide channels':['收起其他通道','收起其他通道','Hide other channels'],
  'Wa UI complete channel':['完整通道','完整通道','Complete channel'],
- 'Wa UI incomplete channel':['暂未形成完整通道','尚未形成完整通道','Channel not yet complete']
+ 'Wa UI incomplete channel':['暂未形成完整通道','尚未形成完整通道','Channel not yet complete'],
+ 'Wa UI channel reading':['Wa 通道资料','Wa 通道資料','Wa channel reading'],
+ 'Wa UI department reading':['所属部门的 Wa 资料','所屬部門的 Wa 資料','Wa reading for this department']
 };
 for(const [i,locale] of ['zh-CN','zh-Hant','en'].entries())registerMessages(locale,Object.fromEntries(Object.entries(messages).map(([key,value])=>[key,value[i]])));
