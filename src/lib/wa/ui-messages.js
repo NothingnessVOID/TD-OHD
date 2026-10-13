@@ -19,6 +19,13 @@ const messages={
  'Wa UI gate active':['有成员激活','有成員啟動','Members activate this gate'],
  'Wa UI gate inactive':['暂无成员激活','暫無成員啟動','No active members'],
  'Wa UI member legend':['成员编号','成員編號','Member numbers'],
- 'Wa UI marker rule':['编号对应成员，颜色帮助查找。','編號對應成員，顏色幫助查找。','Numbers identify people; colors help you find them.']
+ 'Wa UI marker rule':['编号对应成员，颜色帮助查找。','編號對應成員，顏色幫助查找。','Numbers identify people; colors help you find them.'],
+ 'Wa UI left gate':['左侧闸门','左側閘門','Left gate'],
+ 'Wa UI right gate':['右侧闸门','右側閘門','Right gate'],
+ 'Wa UI no participants':['暂无参与成员','暫無參與成員','No participating members'],
+ 'Wa UI more channels':['展开其他 {count} 条通道','展開其他 {count} 條通道','Show {count} more channels'],
+ 'Wa UI hide channels':['收起其他通道','收起其他通道','Hide other channels'],
+ 'Wa UI complete channel':['完整通道','完整通道','Complete channel'],
+ 'Wa UI incomplete channel':['暂未形成完整通道','尚未形成完整通道','Channel not yet complete']
 };
 for(const [i,locale] of ['zh-CN','zh-Hant','en'].entries())registerMessages(locale,Object.fromEntries(Object.entries(messages).map(([key,value])=>[key,value[i]])));

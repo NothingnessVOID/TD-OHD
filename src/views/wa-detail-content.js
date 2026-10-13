@@ -1,8 +1,10 @@
 import '../lib/wa/oc16-messages.js';
 import '../lib/wa/detail-messages.js';
+import '../lib/wa/ui-messages.js';
+import { renderWaMemberMarker } from '../lib/wa/member-markers.js';
 import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { gateName, hexagramName, planetName } from '../lib/vocabulary.js';
+import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { renderGateDetailHeading } from '../lib/object-detail-heading.js';
 import { renderSharedGateReading, renderSharedChannelReading } from '../lib/shared-object-details.js';
 import { renderProse } from '../lib/knowledge/detail-renderer.js';
@@ -12,12 +14,20 @@ import { waStateText, waStateSymbol } from './wa-diagram.js';
 
 const pairs = OC16_DEPARTMENTS.flatMap(department => department.pairs);
 const statuses = new Set(['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both']);
-const text = key => esc(t(key));
+const text = (key,params) => esc(t(key,params));
 const unknown = () => text('OC16 unknown');
 const displayName = (id, nameOf) => esc(nameOf(id) || id);
-const person = (id, nameOf) => `<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span>`;
-const names = (ids, nameOf, emptyKey = 'OC16 inactive') => Array.isArray(ids)
-  ? ids.map(id => person(id, nameOf)).join(' ') || text(emptyKey) : unknown();
+const person = (id, nameOf, markerOf=()=>null) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span></span>`;
+const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null) => Array.isArray(ids)
+  ? ids.map(id => person(id, nameOf, markerOf)).join(' ') || text(emptyKey) : unknown();
+export function waChannelTitle(channelId) {
+  const pair=pairs.find(pair=>pair.channelId===channelId);if(!pair)return '';
+  if(pair.role!=='core')return channelName(channelId);
+  const entry=readWaContent(channelId,getLocale());if(!entry)return t(`OC16 ${pair.departmentId}`);
+  const prefix=entry.packageId.replace('-','–')+' ';
+  const title=entry.name.startsWith(prefix)?entry.name.slice(prefix.length):entry.name;
+  return getLocale()==='en'?title:title.split('｜').at(-1);
+}
 const stateHtml = value => {
   const state = statuses.has(value?.status) ? value.status : 'unknown';
   return `<span class="wa-detail-state" data-wa-state="${state}">${waStateSymbol(state)}<span>${esc(waStateText(state))}</span></span>`;
@@ -50,7 +60,7 @@ function pairReading(pair) {
 }
 
 /** Pure HTML only. Each method takes one fresh snapshot from the host's current scope. */
-export function createWaDetailRenderer({ getResult, nameOf = id => id }) {
+export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=()=>null }) {
   function context() {
     const candidate = getResult();
     const result = ['ready', 'empty'].includes(candidate?.status) ? candidate : null;
@@ -60,13 +70,13 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id }) {
       pairs: new Map((result?.pairs || []).map(record => [record.channelId, record]))
     };
   }
-  function endpoint(gate, ids, { link = true } = {}) {
+  function endpoint(gate, ids, { link = true, side = null } = {}) {
     const label = link ? `<button type="button" class="wa-detail-link" data-wa-gate="${gate}">${gateLabel(gate)}</button>` : gateLabel(gate);
-    return `<div class="wa-detail-endpoint" data-wa-endpoint="${gate}" data-wa-covered="${Array.isArray(ids) ? ids.length > 0 : 'unknown'}"><div class="wa-detail-gate-label">${label}</div><div class="wa-detail-members">${names(ids, nameOf)}</div></div>`;
+    return `<div class="wa-detail-endpoint" data-wa-endpoint="${gate}" data-wa-covered="${Array.isArray(ids) ? ids.length > 0 : 'unknown'}">${side?`<div class="wa-endpoint-side">${text(`Wa UI ${side} gate`)}</div>`:''}<div class="wa-detail-gate-label">${label}</div><div class="wa-detail-members">${names(ids, nameOf,'OC16 inactive',markerOf)}</div></div>`;
   }
   function endpoints(pair, ctx, options) {
     const record = ctx.pairs.get(pair.channelId);
-    return `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => endpoint(gate, record?.holdersByGate?.[gate], options)).join('')}</div>`;
+    return `<div class="wa-detail-endpoints">${pair.displayGates.map((gate,index) => endpoint(gate, record?.holdersByGate?.[gate], {...options,side:index?'right':'left'})).join('')}</div>`;
   }
   function activationFold(gate, ctx) {
     const record = ctx.gates.get(gate);
@@ -92,7 +102,18 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id }) {
       : `<p>${Array.isArray(record?.complementaryMemberPairs) ? text('Wa detail none') : unknown()}</p>`;
     return `<section class="wa-detail-relationships"><h3>${text('Wa detail relationships')}</h3><h4>${text('OC16 covered by one')}</h4><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none')}</div><h4>${text('Wa detail combinations')}</h4>${combinations}</section>`;
   }
+  function channelCard(pair,ctx) {
+    const record=ctx.pairs.get(pair.channelId);
+    const ids=Array.isArray(record?.contributorIds)?record.contributorIds:Array.isArray(record?.gateRecords)&&record.gateRecords.every(row=>Array.isArray(row.memberIds))?[...new Set(record.gateRecords.flatMap(row=>row.memberIds))]:null;
+    const count=record?.contributorCount??(ids?ids.length:'—');
+    return `<article class="wa-channel-card" data-pair-row="${pair.channelId}" data-participant-count="${count}"><header><button type="button" class="wa-channel-open" data-wa-pair="${pair.channelId}"><span class="wa-channel-kind">${text(pair.role==='core'?'OC16 core':'OC16 support')}</span><strong>${pair.displayGates.join('–')} <span>${esc(waChannelTitle(pair.channelId))}</span></strong></button><span class="wa-channel-status" data-wa-state="${record?.status||'unknown'}">${text(!record?'OC16 unknown':['selfComplete','crossMemberOnly','both'].includes(record.status)?'Wa UI complete channel':'Wa UI incomplete channel')}</span></header>${endpoints(pair,ctx)}<footer><span class="wa-channel-people-count">${text('Wa UI participants count',{count})}</span><div class="wa-channel-people" data-channel-participants>${names(ids,nameOf,'Wa UI no participants',markerOf)}</div><button type="button" class="wa-link-button" data-wa-pair="${pair.channelId}">${text('OC16 inspect')} ↗</button></footer></article>`;
+  }
   return Object.freeze({
+    renderChannelCards(department,{kind='all'}={}) {
+      const catalog=OC16_DEPARTMENTS.find(row=>row.id===(typeof department==='string'?department:department?.id));
+      if(!catalog)return '';
+      const ctx=context();return catalog.pairs.filter(pair=>kind==='core'?pair.role==='core':kind==='other'?pair.role!=='core':true).map(pair=>channelCard(pair,ctx)).join('');
+    },
     renderPairRows(department, options = {}) {
       const catalog = typeof department === 'string' ? OC16_DEPARTMENTS.find(row => row.id === department)
         : OC16_DEPARTMENTS.find(row => row.id === department?.id);
