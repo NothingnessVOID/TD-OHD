@@ -1,5 +1,8 @@
 import { registerMessages } from '../i18n.js';
 const messages = {
+ 'nav.team':['团队','團隊','Team'],
+ 'nav.organization':['组织','組織','Organization'],
+ 'OC16 scope count':['{scope} · {count} 人','{scope} · {count} 人','{scope} · {count} people'],
  'Team · Penta':['团队 · Penta','團隊 · Penta'],
  'Organization · Wa':['组织 · Wa','組織 · Wa'],
  'OC16 organization subtitle':['选好负责人和小组，查看实际闸门与成员贡献。','選好負責人與小組，查看實際閘門及成員貢獻。','Choose a leader and groups to explore gates and member contributions.'],

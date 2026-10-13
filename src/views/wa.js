@@ -18,6 +18,7 @@ import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../
 import { createWaRepository } from '../lib/wa/repository.js';
 import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
+import { resolveWaViewScope } from '../lib/wa/view-scope.js';
 import { openWaComposer } from './wa-composer.js';
 import { renderWaDiagram, renderWaLegend, waStateText, waStateSymbol, WA_PILLAR_LABELS } from './wa-diagram.js';
 
@@ -37,7 +38,7 @@ export function mountWa(container, options = {}) {
   const storage = options.storage === undefined ? (() => { try { return globalThis.localStorage; } catch { return null; } })() : options.storage;
   let draft = createWaDraft(), dirty = false, saving = false, disposed = false, busy = false;
   let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null;
-  let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = true;
+  let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = false;
   let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = null;
   let selected = null, detailOpen = false, detailStack = [], detailFocus = null;
   const expanded = new Set(), annotationRecovery = [];
@@ -51,7 +52,9 @@ export function mountWa(container, options = {}) {
   const measuredPair = id => known() ? result.pairs.find(pair => pair.channelId === id) : null;
   const measuredGate = gate => known() ? result.gateRecords.find(record => record.gate === gate) : null;
   const covered = gate => Boolean(measuredGate(gate)?.memberIds.length);
-  const scopeName = () => selectedGroup ? `${groupName(draft.pentas.find(group => group.pentaId === selectedGroup))}${includeAlpha ? ' + Alpha' : ''}` : t('OC16 all');
+  const viewScope = () => resolveWaViewScope(draft,{pentaId:selectedGroup,includeAlpha});
+  const scopeName = () => selectedGroup ? `${groupName(draft.pentas.find(group => group.pentaId === selectedGroup))}${viewScope().includeAlpha ? ' + Alpha' : ''}` : t('OC16 all');
+  const scopeLabel = () => t('OC16 scope count',{scope:scopeName(),count:viewScope().memberCount});
   const hasAnnotations = () => ['consultation','manualCommunicationEdges','manualMetadata'].some(key => Object.hasOwn(draft,key));
   const retainedPool = () => validateWaLayout(draft).poolMemberIds.length;
   const remember = id => { try { storage?.setItem(LAST_ORGANIZATION,id); } catch { notice='OC16 remember failed'; errorText=''; } };
@@ -104,14 +107,15 @@ export function mountWa(container, options = {}) {
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
-    container.innerHTML=`<div class="wa-page" data-wa-page><header class="wa-header"><div><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button><button class="btn-secondary" data-action="edit" data-focus="edit" ${saving?'disabled':''}>${text('OC16 edit members')}</button><button class="btn-primary" data-action="save" data-focus="save" ${saving?'disabled':''}>${text('Save')}</button></div></header>${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column"><section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2><span class="wa-kicker">WA / OC16</span></div><div class="wa-scope-control"><label>${text('OC16 scope')}<select data-scope data-focus="scope"><option value="">${text('OC16 all')}</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${group.pentaId===selectedGroup?'selected':''}>${esc(groupName(group))}</option>`).join('')}</select></label>${selectedGroup?`<label><input type="checkbox" data-include-alpha ${includeAlpha?'checked':''}>${text('OC16 with alpha')}</label>`:''}</div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected)}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}</section></aside><main class="wa-results">${overviewHtml()}${pillarsHtml()}<section class="panel"><h2>${text('OC16 departments')}</h2><p class="wa-small-note">${text('OC16 groups vs departments')}</p><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div><p class="wa-small-note">${text('OC16 support note')}</p></section>${selectedHtml()}<section class="panel"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button><p class="wa-small-note">${text('OC16 origin note')}</p>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}${hasAnnotations()?`<p class="wa-small-note">${text('OC16 retained annotations')}</p>`:''}</section></main></div></div>`;
+    container.innerHTML=`<div class="wa-page" data-wa-page><header class="wa-header"><div><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button><button class="btn-secondary" data-action="edit" data-focus="edit" ${saving?'disabled':''}>${text('OC16 edit members')}</button><button class="btn-primary" data-action="save" data-focus="save" ${saving?'disabled':''}>${text('Save')}</button></div></header>${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column"><section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2><span class="wa-kicker">WA / OC16</span></div><div class="wa-scope-control"><label>${text('OC16 scope')}<select data-scope data-focus="scope"><option value="">${text('OC16 all')}</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${group.pentaId===selectedGroup?'selected':''}>${esc(groupName(group))}</option>`).join('')}</select></label>${selectedGroup?`<label><input type="checkbox" data-include-alpha ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}</div><p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected)}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}</section></aside><main class="wa-results">${overviewHtml()}${pillarsHtml()}<section class="panel"><h2>${text('OC16 departments')}</h2><p class="wa-small-note">${text('OC16 groups vs departments')}</p><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div><p class="wa-small-note">${text('OC16 support note')}</p></section>${selectedHtml()}<section class="panel"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button><p class="wa-small-note">${text('OC16 origin note')}</p>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}${hasAnnotations()?`<p class="wa-small-note">${text('OC16 retained annotations')}</p>`:''}</section></main></div></div>`;
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
     if(focus){const replacement=[...container.querySelectorAll('[data-focus]')].find(node=>node.dataset.focus===focus);replacement?.focus({preventScroll:true});if(start!=null&&replacement?.setSelectionRange)replacement.setSelectionRange(start,end);}
   }
 
   function refreshScope() {
-    result=analyzeOC16(draft,prepared,{pentaId:selectedGroup,includeAlpha:selectedGroup?includeAlpha:true});
+    const scope=viewScope();
+    result=analyzeOC16(draft,prepared,{pentaId:scope.pentaId,includeAlpha:scope.includeAlpha});
     render();
   }
   function schedule() {
@@ -142,7 +146,7 @@ export function mountWa(container, options = {}) {
   }
   function load(snapshot) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
-    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=true;expanded.clear();remember(draft.organizationId);schedule();
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;expanded.clear();remember(draft.organizationId);schedule();
   }
   async function save() {
     if(saving)return;
@@ -247,7 +251,7 @@ export function mountWa(container, options = {}) {
     if(push)detailStack.push(item);
     if(['gate','pair','department'].includes(item.type))selected=item;
     prepareDetailDialog(detail,'wa');
-    detail.innerHTML=`<section class="modal wa-reading-sheet"><nav class="gate-detail-nav"><button class="btn-secondary" data-wa-back ${detailStack.length<2?'hidden':''}>${text('Back')}</button><span class="wa-kicker">WA / OC16 · ${esc(scopeName())}</span><button class="ui-icon-button gate-detail-close" aria-label="${text('Close')}">×</button></nav><div class="gate-detail-body">${detailBody(item)}</div></section>`;
+    detail.innerHTML=`<section class="modal wa-reading-sheet"><nav class="gate-detail-nav"><button class="btn-secondary" data-wa-back ${detailStack.length<2?'hidden':''}>${text('Back')}</button><span class="wa-kicker">WA / OC16 · ${esc(scopeLabel())}</span><button class="ui-icon-button gate-detail-close" aria-label="${text('Close')}">×</button></nav><div class="gate-detail-body">${detailBody(item)}</div></section>`;
     detailOpen=true;
     openDetailDialog(detail,()=>{detailOpen=false;detailStack=[];render();if(detailFocus?.isConnected)detailFocus.focus({preventScroll:true});else if(selected){const attr=selected.type==='gate'?'data-wa-gate':selected.type==='pair'?'data-wa-pair':'data-wa-department';[...container.querySelectorAll(`[${attr}]`)].find(node=>node.getAttribute(attr)===String(selected.id))?.focus({preventScroll:true});}},{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
@@ -276,12 +280,12 @@ export function mountWa(container, options = {}) {
         case 'open':await archives();break;
         case 'retry':schedule();break;
         case 'knowledge':showDetail({type:'library'});break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=true;expanded.clear();try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;expanded.clear();try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }
   function change(event) {
-    if(event.target.hasAttribute('data-scope')){selectedGroup=event.target.value||null;closeReading();selected=null;if(prepared)refreshScope();else render();}
+    if(event.target.hasAttribute('data-scope')){closeReading();selectedGroup=event.target.value||null;includeAlpha=false;selected=null;if(prepared)refreshScope();else render();}
     if(event.target.hasAttribute('data-include-alpha')){includeAlpha=event.target.checked;closeReading();selected=null;if(prepared)refreshScope();else render();}
   }
   function input(event) {

@@ -40,6 +40,7 @@
 .wa-scope-control > label { display:flex; align-items:center; gap:7px; }
 .wa-scope-control select { font:inherit; min-width:0; max-width:100%; min-height:36px; border:1px solid var(--border); border-radius:var(--radius-sm,6px); background:var(--bg-sunken); color:var(--text); padding:5px 7px; }
 .wa-scope-control input { accent-color:var(--accent); }
+.wa-scope-label { font-size:13px; font-weight:500; line-height:1.6; margin:10px 0 0; color:var(--text); }
 .wa-figure { margin:14px 0 0; }
 .wa-core-svg { display:block; width:min(100%,390px,calc((100dvh - var(--header-height,56px) - 290px) * 360 / 454)); margin:0 auto; overflow:visible; font-family:inherit; }
 .wa-diagram-name { fill:var(--text); font-size:14px; font-weight:600; }
