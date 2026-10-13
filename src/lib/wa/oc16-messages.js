@@ -86,6 +86,17 @@ const messages = {
  'OC16 recovery retained':['本次清理前的配置已暂存，可在“打开”窗口导出；原已存历史仍完整保留。','本次清理前的配置已暫存，可在「開啟」視窗匯出；原已存歷史仍完整保留。','A pre-cleanup copy is retained for this session; export it from Open. Saved history remains intact.'],
  'OC16 remember failed':['配置已保留，但无法记住下次自动打开的位置。','配置已保留，但無法記住下次自動開啟的位置。','The configuration is retained, but the last-opened location could not be remembered.'],
  'OC16 invalid birth':['出生资料不完整或格式有误','出生資料不完整或格式有誤','Birth details are incomplete or invalid'],
+ 'OC16 gaps':['结构缺口','結構缺口','Structural gaps'],
+ 'OC16 gaps count':['{count} 个闸门未覆盖','{count} 個閘門未覆蓋','Not covered: {count}'],
+ 'OC16 gaps none':['64 个闸门已全部覆盖。','64 個閘門已全部覆蓋。','All 64 gates are covered.'],
+ 'OC16 gaps hint':['点击闸门查看所属门对与部门。','點選閘門查看所屬門對與部門。','Select a gate to see its pair and department.'],
+ 'OC16 people':['{count} 人','{count} 人','{count} people'],
+ 'OC16 group size':['需 3–5 人','需 3–5 人','Needs 3–5'],
+ 'OC16 gates unit':['闸门','閘門','gates'],
+ 'OC16 pairs unit':['门对','門對','pairs'],
+ 'OC16 show members':['展开成员明细','展開成員明細','Show contributors'],
+ 'OC16 hide members':['收起成员明细','收起成員明細','Hide contributors'],
+ 'OC16 legend':['图例','圖例','Legend'],
  'OC16 uncertain':['含出生时间未知成员，结果使用既有中午估算，请按条件性覆盖阅读。','含出生時間未知成員，結果使用既有中午估算，請按條件性覆蓋閱讀。','Unknown birth times use the existing noon estimate; coverage is conditional.']
 };
 registerMessages('en', Object.fromEntries(Object.entries(messages).map(([key, value]) => [key, value[2] || key])));
