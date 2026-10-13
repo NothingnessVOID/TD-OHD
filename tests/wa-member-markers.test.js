@@ -196,4 +196,5 @@ test('legend follows organization numbers, while the legacy diagram signature an
   const css = readFileSync(new URL('../src/styles/wa-members.css', import.meta.url), 'utf8');
   for (let slot = 1; slot <= 5; slot++) assert.ok(css.includes(`var(--team-member-${slot})`));
   assert.ok(css.includes('var(--team-member-on)'));
+  assert.match(css,/\.wa-gate-member-marker text\s*\{[^}]*font-size:12\.5px/);
 });
