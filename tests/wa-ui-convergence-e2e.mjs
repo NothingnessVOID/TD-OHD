@@ -263,7 +263,7 @@ async function main() {
     });
     await page.goto(`${base}/?view=wa`);await root().locator('[data-wa-page]').waitFor();
     // Vite raw imports expose the served source bytes; compare against the parent root.
-    for(const resource of ['/src/views/wa.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/styles/wa-members.css','/src/lib/wa/content-data.json','/src/lib/wa/reading-presentation.js']){
+    for(const resource of ['/src/views/wa.js','/src/views/wa-diagram.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/styles/wa-members.css','/src/lib/wa/content-data.json','/src/lib/wa/reading-presentation.js']){
       const servedRaw=await page.evaluate(async resource=>(await import(`${resource}?raw&import`)).default,resource);
       assert.equal(servedRaw,await readFile(path.join(rootSource,resource.slice(1)),'utf8'),`9961 serves parent root ${resource}`);
       const response=await page.request.get(`${base}${resource}`);assert.ok(response.ok());const text=await response.text();sourceHashes.set(resource,createHash('sha256').update(text).digest('hex'));
