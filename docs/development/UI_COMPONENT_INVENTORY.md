@@ -92,11 +92,19 @@ Wa 的人工记录折叠区复用既有表单、按钮、Operation Dialog 和 Sk
 
 ## Wa OC16 配置编辑器（preview-first 阶段一）
 
-`src/views/wa-composer.js` 提供 `openWaComposer({snapshot, peopleStore?, listTeams?, target?, mode?, validate?, onCommit, onClose?})`，返回 `{close,getDraft}`。`target` 是 `'alpha'` 或稳定 pentaId；`mode:'import'` 配合 pentaId 直接打开导入，默认 `'people'` 打开人物选择。外层组织名称、Alpha 与 Penta A/B/C 卡片持有独立草稿，子选择器采用 Team 成熟的搜索、多选、显式确认原则；公共 Operation Dialog 负责嵌套、Escape、inert、焦点与滚动，公共 Person Editor 保存人物后返回原选择器。新增 `.wa-composer` scoped 样式使用 Skin Token，专属消息在 `composer-messages.js` 注册三语，不更改 Team 或主 Wa 消息。
+`src/views/wa-composer.js` 提供 `openWaComposer({snapshot, peopleStore?, listTeams?, target?, mode?, validate?, onCommit, onClose?})`，返回 `{close,getDraft}`。`target` 是 `'alpha'` 或稳定 pentaId；`mode:'import'` 配合 pentaId 直接打开导入，默认 `'people'` 打开人物选择。`quickCommit:true` 让主页面目标入口一次确认即提交；完整编辑入口仍保留外层草稿。Alpha 使用可直接替换的单选，跨组占用继续明确拒绝。外层组织名称、Alpha 与 Penta A/B/C 卡片持有独立草稿，子选择器采用 Team 成熟的搜索、多选、显式确认原则；公共 Operation Dialog 负责嵌套、Escape、inert、焦点与滚动，公共 Person Editor 保存人物后返回原选择器。新增 `.wa-composer` scoped 样式使用 Skin Token，专属消息在 `composer-messages.js` 注册三语，不更改 Team 或主 Wa 消息。
 
 `src/lib/wa/configuration.js` 的 `replaceWaSelection(snapshot,patch,peopleMap,{confirmAnnotationCleanup})` 原子克隆后只映射 personId 至 Wa memberId，保留原成员池、组 ID 和全部未受影响的人工记录；跨目标冲突拒绝，不静默移动。`ensureWaComposerSlots()` 仅补缺失角色，`waPersonIdsFromTeamGroup()` 按已保存团队的 group 解析人物引用，不复制 Team memberId、birth 或 chart。单组最多五人，允许零至两人；Alpha 可空，不提供模式选择器。
 
 `validate()` 应捕获宿主对象与代次，组件在选择、清理确认后及提交前核对。`onCommit(next, {originalSnapshot,annotationChanges,isCurrent})` 只更新宿主草稿，返回 false 或抛错保留编辑器。每条 `annotationChanges` 包含 `{beforeSnapshot,issues}`；用户确认后才能清理失效引用，宿主负责保留历史。异步宿主回调应在最终更新前再次调用 `isCurrent()`。组件不调用 WaRepository，不触发整份组织保存，不删除人物资料。公共人物编辑器的保存独立于配置取消，并在 UI 中明示。
+
+## Wa / OC16 分析页（首轮视觉验收候选）
+
+旧 Wa 管理/人工表单界面由 `wa.js` 重做为顶部配置、左侧 Sticky 主图、右侧自然滚动分析。手机人员编组默认收起为摘要，图形与结果上下排布。`wa-diagram.js` 是纯 SVG 展示层，六条真实核心门对互不额外连接，四支柱仅加环标识；状态图例复用 `renderPentaStateSymbol()` 并补单端符号。支柱、核心和支持门对都通过公共 Detail Dialog 展示具体成员/行星/人格设计/爻来源，并接现有 gate/hexagram 词汇与共享知识阅读。
+
+`oc16-catalog.js` 固定用户提供的6部门、32门对、64门一次性分区；`oc16-analysis.js` 复用既有 `collectPair`、激活提取和 Penta 分析。预览仅对原快照验证后的运行时副本使用 observation，标准状态与覆盖统计分离，不回写模式。`analysis.js` 原算法唯一变化是导出既有 collector。
+
+Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保留，修订/备份集中在打开组织的次级界面；已确认清理前的临时配置可在当前页面实例导出，已保存历史不会被删除。新首轮浏览器用例为 `wa-oc16-preview-e2e.mjs`，完整矩阵及旧固定源码审计的后继适配等待用户视觉确认。
 
 ## 数据边界
 
