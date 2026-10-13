@@ -90,6 +90,14 @@ Wa 的人工记录折叠区复用既有表单、按钮、Operation Dialog 和 Sk
 
 组内沟通和手动 Alpha 并入观察复用六主题卡片，作为两个独立范围呈现；贡献追踪只解释输入变化。`prepareWaMembers()` 是新增的输入准备边界，调用原出生图 provider，不复制算法。DB2 保留原 stores/history 并阻止旧客户端覆盖新字段，refs-only v1 不编辑新字段时保持旧契约。
 
+## Wa OC16 配置编辑器（preview-first 阶段一）
+
+`src/views/wa-composer.js` 提供 `openWaComposer({snapshot, peopleStore?, listTeams?, target?, mode?, validate?, onCommit, onClose?})`，返回 `{close,getDraft}`。`target` 是 `'alpha'` 或稳定 pentaId；`mode:'import'` 配合 pentaId 直接打开导入，默认 `'people'` 打开人物选择。外层组织名称、Alpha 与 Penta A/B/C 卡片持有独立草稿，子选择器采用 Team 成熟的搜索、多选、显式确认原则；公共 Operation Dialog 负责嵌套、Escape、inert、焦点与滚动，公共 Person Editor 保存人物后返回原选择器。新增 `.wa-composer` scoped 样式使用 Skin Token，专属消息在 `composer-messages.js` 注册三语，不更改 Team 或主 Wa 消息。
+
+`src/lib/wa/configuration.js` 的 `replaceWaSelection(snapshot,patch,peopleMap,{confirmAnnotationCleanup})` 原子克隆后只映射 personId 至 Wa memberId，保留原成员池、组 ID 和全部未受影响的人工记录；跨目标冲突拒绝，不静默移动。`ensureWaComposerSlots()` 仅补缺失角色，`waPersonIdsFromTeamGroup()` 按已保存团队的 group 解析人物引用，不复制 Team memberId、birth 或 chart。单组最多五人，允许零至两人；Alpha 可空，不提供模式选择器。
+
+`validate()` 应捕获宿主对象与代次，组件在选择、清理确认后及提交前核对。`onCommit(next, {originalSnapshot,annotationChanges,isCurrent})` 只更新宿主草稿，返回 false 或抛错保留编辑器。每条 `annotationChanges` 包含 `{beforeSnapshot,issues}`；用户确认后才能清理失效引用，宿主负责保留历史。异步宿主回调应在最终更新前再次调用 `isCurrent()`。组件不调用 WaRepository，不触发整份组织保存，不删除人物资料。公共人物编辑器的保存独立于配置取消，并在 UI 中明示。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
