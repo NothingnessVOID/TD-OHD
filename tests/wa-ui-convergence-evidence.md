@@ -1,110 +1,153 @@
-# Wa UI convergence targeted acceptance
+# Wa UI convergence acceptance — frozen b2b3019
 
-Status: **PREPARED / BROWSER NOT RUN**. This document is a preparation record, not product acceptance evidence.
+**Result: 19/19 targeted browser groups PASS.** Actual Chromium, parent root `http://127.0.0.1:9961`, frozen product `b2b3019ad4071738ae4e73c8be08cdf56d198225`. Final acceptance run: `2026-10-13T12-37-33-452Z-b2b3019a`. No product changes, old-test changes, push, server replacement, full suite or product build by this task.
 
-## Ownership and source boundary
+## Ownership and reproducibility
 
-- Product baseline: `df45d2e`.
-- Acceptance branch: `feature/wa-ui-convergence-acceptance`.
-- Acceptance worktree starts at `b905028` in `../TD-OHD-worktrees/wa-ui-convergence-acceptance`.
-- Owned additions: `tests/wa-ui-convergence-e2e.mjs` and this document only.
-- Product truth: parent `TD-OHD`, branch `feature/penta-wa-integration-v1`, served at `http://127.0.0.1:9961`.
-- `node_modules` is a junction to the parent's existing installation. No dependency installation or product modification.
-- Parent uncommitted `src/views/wa.js`, `src/styles/wa.css`, `src/lib/wa/ui-messages.js` and convergence notes remain untouched.
-- AGENTS.md and engineering standards were read before implementation. Explicit task instructions override the default push rule: **no push**.
-- A/B/C/D sequencing remains parent-owned. Preparation observed B in progress; C/D were not assumed complete.
+Acceptance branch `feature/wa-ui-convergence-acceptance`, worktree `../TD-OHD-worktrees/wa-ui-convergence-acceptance`, originally created from `b905028`. Only owned files are this document and `tests/wa-ui-convergence-e2e.mjs`. Existing parent node_modules is reused through a junction. Parent product was consumed read-only from root 9961; no stale worktree product imports. AGENTS and engineering standards were read first.
 
-## Execution gate
-
-The script refuses to import Playwright or contact HTTP unless all of these hold:
-
-1. Parent explicitly confirms D frozen and root 9961 ready.
-2. `WA_D_FROZEN=1` and `WA_9961_READY=1`.
-3. The script's C/D `ADAPTER` is reconciled against frozen source and marked ready.
-4. `WA_SOURCE_COMMIT` is the full frozen parent commit; parent branch and HEAD match, and `src` / `public` have no uncommitted changes.
-5. Origin remains exactly `http://127.0.0.1:9961`.
-
-No server is started, stopped or replaced. The isolated browser uses a new non-persistent context, so it does not seed a user's existing profile. Browser-side product imports always come from the parent origin. Vite `?raw` source is compared with the parent root bytes; served hashes and root HEAD are checked again at the end.
-
-After parent authorization and adapter reconciliation, run from this worktree in PowerShell:
+Parent explicitly authorized D freeze and 9961 readiness before execution. Script validates the full root commit, root branch `feature/penta-wa-integration-v1`, clean tracked `src/public`, served raw bytes against root source, and served hashes at completion. Author JSON bytes equal baseline `df45d2e`. Parent's untracked convergence documentation remains untouched.
 
 ```powershell
 $env:WA_D_FROZEN = '1'
 $env:WA_9961_READY = '1'
-$env:WA_SOURCE_COMMIT = '<full frozen parent SHA>'
+$env:WA_SOURCE_COMMIT = 'b2b3019ad4071738ae4e73c8be08cdf56d198225'
 $env:WA_ROOT_SOURCE = 'C:/Users/Administrator/OH-WorkSpace/hanako-2/TD-OHD'
-$env:WA_EVIDENCE_DIR = 'artifacts/visual-review/wa-ui-convergence'
+$env:WA_EVIDENCE_DIR = 'artifacts/visual-review/ui-convergence/final-b2b3019'
+$env:WA_VISUAL_ONLY = '0'
 node tests/wa-ui-convergence-e2e.mjs
 ```
 
-Setting environment flags alone does not authorize execution and does not bypass `ADAPTER.ready=false`.
+`WA_VISUAL_ONLY=1` performs a separately labeled supplementary framing run with a new real-WASM seed and selected detail assertions. It reports `PASS_VISUAL`, never 19/19. Final changes after the complete acceptance run only added/refined this supplementary screenshot path. Final script passed syntax checking and supplementary execution.
 
-## Independent oracle
+## Independent oracle and adapted contracts
 
-The twelve fictional names, varied dates, birth times and Shanghai-location numeric inputs are transcribed from `wa-oc16-details-e2e.mjs`. People are labeled `虚构·…`. Each actual WASM `computeChart` result supplies exactly 26 original records: thirteen planets on each personality/design side. Validation checks planet uniqueness per side and gate/line ranges.
+Twelve clearly fictional varied birth inputs are transcribed from `wa-oc16-details-e2e.mjs`; ten initially assigned, two retained references. Actual WASM `computeChart` produces 26 raw records per person, thirteen distinct planets on each P/D side. Gate and line ranges are validated. Expected holders, channel states, original activation rows and unique people counts are derived directly from raw records, never `analyzeOC16`, `collectPair`, product analysis or renderer results.
 
-Expected gate holders, per-person duplicate suppression, original activation rows, channel status and unique participant totals are derived solely from these raw records. No `analyzeOC16`, `collectPair`, `extractTeamActivations`, product renderer or product computed result supplies expected data. Public vocabulary supplies only localized planet and source labels.
+Number/color expectations derive from the full twelve-member snapshot array: index + 1 and index % 5 + 1. Actual repeated planetary activation at a core gate is required as a witness. Every marker gate/member/number and color class matches the independently derived current scope. Legend IDs, names and numbers match. Moving/unassigning/replacing Alpha retains pool numbering.
 
-Twelve references are seeded; ten are initially assigned to Alpha plus three groups of three. The remaining two exercise replacement and adding. Marker numbers come from the complete saved twelve-reference array index + 1, and color slots cycle 1..5. Moving or unassigning a person never renumbers the expected map. Repeated real planet activations must have a fixture witness; the script will fail if none exists.
+C is checked through `.wa-channel-card[data-pair-row][data-participant-count]`, `.wa-channel-people-count` visible count and `[data-channel-participants] [data-wa-member]` pure names. Marker `data-wa-marker-member` is never counted as a second person. Exact left/right endpoint holder IDs/names remain independently asserted. Six core cards stay visible collapsed; all 32 appear expanded. No activation source rows or long readings occur in the right column.
 
-The parent's eight marker unit tests already cover the separate sixteen-person fixture. This task does not duplicate those tests or fabricate sixteen births for screenshots. Existing `wa-composer-e2e.mjs` retains stale/duplicate/annotation positive and negative cases; this script exercises the normal real configuration/save/reopen path without rerunning that whole suite.
+D uses `.gate-detail-card.wa-reading-sheet`, `.wa-channel-number`, public back with compatibility attribute, original activation attributes and pure h4 names. All 32 channel / 64 gate details use their department's Wa source. Each article retains original source ID/title/refs, `wa-reading-ui-v1`, exact paragraph indices and selected object identity. The test independently encodes reviewed paragraph choices and precise wording substitutions against baseline author JSON; it does not get expected excerpts from the DOM or the product presentation function. All fourteen source articles across three locales are additionally opened through the actual reading library and compared exactly.
 
-## Nineteen acceptance groups
+## Completed acceptance groups
 
-All rows below are **NOT RUN**, pending parent freeze, service readiness and adapter reconciliation.
-
-| # | Check | Required evidence |
+| # | Check | Result |
 |---|---|---|
-| 01 | Twelve real WASM seeds, 26 records each, ten initially assigned | Raw fixture and records in evidence JSON |
-| 02 | Four on-page targets, one lightweight picker, no outer Apply/composer workspace | Organization and picker screenshots |
-| 03 | Alpha replace, clear, restore | Marker/card/detail oracle after each change |
-| 04 | All three groups add/remove/import, stable Wa identity | Oracle after each change, single-dialog checks |
-| 05 | Shared person editor replaces picker and returns | Single operation dialog and restored search |
-| 06 | Actual IDB save/reopen, refs-only data and unchanged People | Saved revision/schema and reopened exact data |
-| 07 | Every core gate has exact people once; legend same number/name | SVG attributes, five slots, repeated-planet witness, geometry 45 at x180 / 21 at x306 / canonical 21-45 |
-| 08 | Full organization, group A, group A + Alpha | Exact scope IDs, markers/cards/details |
-| 09 | Membership removal, movement and replacement | Persistent pool numbers across assignments |
-| 10 | Six cores always visible; other 26 expandable | Exact endpoint people and visible unique counts; no inline source rows/prose |
-| 11 | All 32 channel and 64 gate details | Original P/D/planet/line/name records, Wa-only excerpt, original source ID/title |
-| 12 | Shared detail shell and back/Escape/focus | Original trigger focus and document scroll preserved |
-| 13 | 1440×1000 bounded sticky | Start, early natural scroll, middle sticky, past workspace bottom |
-| 14 | 1280×640 short desktop sticky | Dynamic top formula, same bounded geometry, font measurements |
-| 15 | 390/320 stacked phone layouts | No horizontal overflow; graph precedes results; measured SVG font sizes |
-| 16 | Simplified/Traditional/English | Expanded visible-copy scan for all channels and gates; localized screenshots |
-| 17 | Eleven skins, actual P/D badges | Birth tokens, border, bg-elevated, actual contrast ≥4.5; light/dark/high-contrast samples |
-| 18 | Actual People birth replacement | Raw WASM changes, live detail freshness, graph/card/detail oracle updates |
-| 19 | Frozen source and clean runtime | Root HEAD/source stability, served-source hashes, no page errors |
+| 01 | Actual WASM twelve people, each 26 original records, ten assigned | PASS |
+| 02 | Four on-page targets, one lightweight picker, no outer Apply/composer | PASS |
+| 03 | Alpha replace/clear/restore; markers/cards/details after each | PASS |
+| 04 | Each of three groups add/remove/import; stable IDs | PASS |
+| 05 | Public person editor replaces picker, cancel restores search | PASS |
+| 06 | Actual IDB save r2 and reload; refs-only members, unchanged People | PASS |
+| 07 | Every core gate's exact distinct holders, stable colors/numbers, legend | PASS |
+| 08 | Full organization, group A, group A + Alpha | PASS |
+| 09 | Removal/move/replacement preserve pool numbers and current results | PASS |
+| 10 | Six cores always visible, other 26 expandable, exact unique counts | PASS |
+| 11 | All 32 channel/64 gate details: raw P/D/planet/line/name and Wa prose | PASS |
+| 12 | Shared shell, Back once, Escape, original focus/document scroll | PASS |
+| 13 | 1440×1000 natural scroll, middle sticky, bounded workspace exit | PASS |
+| 14 | 1280×640 long-graph sticky and dynamic top | PASS |
+| 15 | 390/320 stacked layout, no horizontal overflow, effective font metrics | PASS |
+| 16 | Three-locale page/details copy; 14×3 library excerpts; original metadata | PASS |
+| 17 | All eleven skins, actual P/D birth tokens/borders and contrast ≥4.5 | PASS |
+| 18 | Actual birth replacement; missing-person natural copy, unknown, recovery | PASS |
+| 19 | Frozen root/served source identity, no uncaught page errors | PASS |
 
-Sticky assertions require `position: sticky`, `top = floor(min(header height + 16, viewport height - graph-column height - 16))` within rounding tolerance, normal document scrolling and no trapping ancestor overflow. The graph bottom must remain within workspace bottom and leave with the workspace after the sticky interval. A temporary, test-only 2400px tail after the page allows scrolling past the region; it is removed in `finally`. Neither workspace height nor product CSS is modified to manufacture a passing sticky interval. A region too short to exercise real middle sticking is a failure, not silently skipped.
+The canonical `21-45` graph has gate 45 at x=180 and gate 21 at x=306, display order 45–21. Source records preserve P/D, planet and line without algorithm changes. For missing reference, `li[data-wa-issue="MISSING_PERSON_REFERENCE"]` includes the fictional name, visible copy excludes the code, gates/channels become unknown, old gate markers disappear, and restoring the person recovers consistent current data.
 
-Phone marker font sizes are measured with SVG screen transforms and retained for the parent's visual review. The script does not invent a readability threshold or assert human approval based on positive dimensions.
+## Measured layout and color evidence
 
-Visible-copy checks include `门对`, `門對`, `支持门对`, `覆盖`, `覆蓋`, `不同成员共同覆盖`, `不代表正式`, `仅供参考`, `僅供參考`, `尚未证实`, `仅实验性`, English coverage/pair/supporting pair/disclaimer terms and representative English disclaimer phrases. Internal attributes and unchanged source JSON are not treated as visible copy. All reading folds are opened before copy checks.
+Sticky graph height in the tested expanded state: **1135.859375px**. The expected dynamic top is checked using `min(headerHeight + 16, innerHeight - graphHeight - 16)` within floor rounding tolerance.
 
-## C/D contract reconciliation still required
+| Viewport | Applied top | Middle graph bottom | Past-region behavior |
+|---|---:|---:|---|
+| 1440×1000 | -152px | 983.859375px | Graph bottom equals workspace bottom; top moves to about -331.92px |
+| 1280×640 | -512px | 623.859375px | Graph bottom equals workspace bottom; top moves to about -691.92px |
 
-The initial adapter intentionally fails closed. Confirm these from the final parent code rather than loosening assertions after failures:
+Actual document scrolling is asserted at early/middle/past-bottom samples. Position must be sticky, ancestors cannot introduce a scroll container, and bottom cannot exceed workspace bottom. Only a temporary 2400px tail after the page provides scroll room; it is removed in finally. No workspace or product CSS is adjusted to manufacture a pass.
 
-- C visible unique-person count selector. Proposed placeholder: `[data-wa-contributor-count]`.
-- C endpoint container structure. Current adapter expects a direct `.wa-detail-endpoints` container with `[data-wa-endpoint]` children containing `[data-wa-member]` labels.
-- C core rows stay present and visible under collapsed departments; 32 rows become visible when all expand.
-- D `.gate-detail-card.wa-reading-sheet`, public `[data-shared-back]` or compat `[data-wa-back]`, `.gate-detail-close`.
-- D source article `[data-wa-reading-id]`, heading selector, source refs, explicit display-map attribute, and exact approved summary/detail excerpts for all three locales.
-- Proposed department source mapping, to confirm: management `wa.communication.45-21`, competition `wa.communication.51-25`, direction `wa.communication.2-14`, interaction `wa.communication.59-6`, logic `wa.communication.27-50`, innovation `wa.communication.3-60`. The 26 additional channels cite their department's original source/title. Gate details are provisionally checked against their department's Wa source; reconcile with the frozen D contract.
-- D display-map expected text must be independently reviewed and pinned in the test adapter, not copied from the DOM under test during execution. Source JSON must remain unchanged.
-- Any selector reconciliation must preserve exact holder/activation/source/copy checks. Do not add force clicks, skip missing content, accept old personal prose or weaken expected counts.
+Minimum effective SVG marker fonts: desktop **11.91646px**, 390 phone **9.9px**, 320 phone **8.37215px**. Geometry and no-overflow assertions pass. **320 readability remains a parent visual-review item; automated PASS does not approve small typography.** Final unobstructed real-WASM graph crops are supplied for that review.
 
-## Evidence preservation and delivery
+All eleven skins' actual personality/design badges match birth text tokens, birth border color and bg-elevated. Lowest measured ratio **4.503735875377304 (delve)**. Light **4.94114**, dark **5.25111**, high contrast **4.96356**. Full color records are in evidence.json. No custom-color/full skin suite rerun; the earlier eleven-skin tests remain separate evidence.
 
-Each actual run creates a fresh timestamp-plus-commit directory. Existing output is never cleared or overwritten. Failures retain the failing case/stack, viewport screenshot, DOM, geometry, preceding screenshots, raw data and source hashes. No forced clicks or retries hiding a product failure.
+## Preserved runs and diagnostics
 
-Planned screenshot names include `1440-organization-edit.png`, `1440-lightweight-alpha-picker.png`, `1440-graph-markers-legend.png`, `1440-inline-channel-cards.png`, `1440-wa-45-21.png`, `1440-gate-45.png`, `1440-wa-54-32-department-source.png`, desktop sticky early/middle/past-bottom images, `1280x640-short-desktop.png`, `390-mobile-organization-graph.png`, `320-mobile-organization-graph.png`, corresponding mobile reading images, locale samples and source-badge samples.
+Evidence root, relative to acceptance worktree:
 
-These are **planned names only**. Actual screenshot filenames: **none**. No 9961 access occurred during preparation. Stage only real generated evidence after execution and report its exact filenames and unresolved failures. Stage the two new test files for the current preparation handoff. Final parent cherry-pick must contain tests only; no push.
+`artifacts/visual-review/ui-convergence/final-b2b3019/`
 
-## Checks completed during preparation
+| Run directory | Status | Explanation |
+|---|---|---|
+| `2026-10-13T12-34-42-663Z-b2b3019a` | FAIL, zero cases | Harness source-identity import: JSON `?raw` served application/json. Diagnosed with HTTP headers/body; corrected to `?raw&import`. Failure viewport/DOM/JSON retained. No product failure concealed. |
+| `2026-10-13T12-35-17-031Z-b2b3019a` | PASS 19/19 | First full targeted run, 30 screenshots. Retained before adding missing-person/library coverage. Also contains a labeled review crop derived from a real screenshot. |
+| `2026-10-13T12-37-33-452Z-b2b3019a` | **PASS 19/19 final** | Includes missing-person/recovery, all 42 library readings and mobile gate45. 34 screenshots. |
+| `2026-10-13T12-39-54-104Z-b2b3019a` | PASS_VISUAL | 28 supplemental images, selected real oracle checks. Tall element screenshots included fixed header crossing part of graph; retained, superseded for graph review below. |
+| `2026-10-13T12-41-13-282Z-b2b3019a` | **PASS_VISUAL final framing** | 28 supplemental images. Graph/config are crops of unchanged full-page screenshot captured at document top, avoiding auto-scroll/fixed-header capture artifact. No CSS hiding or DOM edits. |
 
-- `node --check tests/wa-ui-convergence-e2e.mjs`: PASS.
-- `git diff --cached --check`: PASS for exactly the two newly added test files.
-- Real browser tests, full suites, marker tests, skin tests and product builds: **NOT RUN**.
-- Product acceptance status: **PENDING**. No claim of 19/19, skin contrast success, sticky correctness or screenshot review.
+All runs remain intact. No force clicks, assertion weakening, discarded failure directories or product edits. Browser contexts are fresh nonpersistent contexts; actual user profiles and their IDB are untouched.
+
+## Actual screenshots delivered
+
+Final acceptance directory `2026-10-13T12-37-33-452Z-b2b3019a` contains these real files:
+
+```text
+1440-organization-edit.png
+1440-lightweight-alpha-picker.png
+1440-graph-markers-legend.png
+1440-inline-channel-cards.png
+1440-wa-45-21.png
+1440-gate-45.png
+1440-wa-54-32-department-source.png
+1440x1000-sticky-early.png
+1440x1000-sticky-middle.png
+1440x1000-sticky-past-bottom.png
+1280x640-sticky-early.png
+1280x640-sticky-middle.png
+1280x640-sticky-past-bottom.png
+1280x640-short-desktop.png
+390-mobile-organization-graph.png
+390-mobile-wa-45-21.png
+320-mobile-organization-graph.png
+320-mobile-wa-45-21.png
+1440-zh-CN-default-light-main.png
+1440-zh-CN-default-light-gate-45.png
+1440-zh-CN-default-light-21-45.png
+1440-zh-CN-default-light-32-54.png
+390-zh-Hant-default-dark-main.png
+390-zh-Hant-default-dark-gate-45.png
+390-zh-Hant-default-dark-21-45.png
+390-zh-Hant-default-dark-32-54.png
+320-en-high-contrast-main.png
+320-en-high-contrast-gate-45.png
+320-en-high-contrast-21-45.png
+320-en-high-contrast-32-54.png
+1280-default-light-source-badges.png
+1280-default-dark-source-badges.png
+1280-high-contrast-source-badges.png
+missing-reference-unknown.png
+```
+
+Final framing directory `2026-10-13T12-41-13-282Z-b2b3019a` contains seven files for each exact prefix `1440x1000-zh-CN`, `1280x640-zh-CN`, `390x900-zh-Hant`, `320x900-en`:
+
+```text
+<prefix>-configuration-framed.png
+<prefix>-graph-legend-framed.png
+<prefix>-21-45-heading.png
+<prefix>-21-45-Wa-prose.png
+<prefix>-gate45-Wa-prose.png
+<prefix>-32-54-heading.png
+<prefix>-32-54-Wa-prose.png
+```
+
+Prefer these framed prose views when reviewing 45–21 and supporting 54–32: earlier viewport screenshots sometimes ended at the prose heading because activation lists consumed the viewport. Framed detail images scroll to the opened knowledge summary without modifying content. The 54–32 article visibly retains the original **45–21 Management** source title, as required.
+
+## Remaining limits and checks
+
+- No unresolved automated product failure in the final targeted run.
+- Parent review remains required for 320 marker readability (~8.37px); no arbitrary new threshold was invented.
+- Ten assigned real people exercised the browser. Sixteen-person overflow remains the parent's existing eight unit tests/synthetic visual fixture, not claimed as this task's real-WASM browser result.
+- Old annotation stale/duplicate negative and positive suites were not rerun; retained parent composer tests cover them. Public person-editor cancellation/return is covered here; full editor mutation suite is not repeated.
+- No full regression, product build or private-bundle build by this task. Parent-reported 39 unit/build results remain parent evidence.
+- `node --check tests/wa-ui-convergence-e2e.mjs`: PASS; cached whitespace/diff-scope checks performed before final commit.
+- Deliver source/evidence files plus the full evidence root, including the preserved initial harness failure. Only the two owned test files enter Git; screenshots and run artifacts remain outside the commit.

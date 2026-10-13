@@ -5,16 +5,16 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// PREPARATION ONLY until parent freezes D and supplies the display-map contract.
+// Parent authorized frozen b2b3019 on 2026-10-13. Root-served product only.
 // No product imports from this worktree, no server management, no persistent user profile.
-// Change this adapter only after reading the parent's frozen implementation.
+// Adapter reconciled against frozen renderer and reading-presentation unit contracts.
 const ADAPTER = Object.freeze({
-  ready: false,
-  participantCount: '[data-wa-contributor-count]', // C: confirm visible unique-person summary selector.
+  ready: true,
+  participantCount: '.wa-channel-people-count',
   reading: '[data-wa-reading-id]',
   readingTitle: 'h3',
-  displayMapAttribute: null, // D: exact attribute and independently reviewed excerpt map pending.
-  displayMap: null, // { locale: { sourceID: { summary: string, detail: string } } }
+  displayMapAttribute: 'data-wa-display-map',
+  displayMap: 'wa-reading-ui-v1',
   back: '[data-wa-back], [data-shared-back]',
 });
 const base = process.env.E2E_URL || 'http://127.0.0.1:9961';
@@ -37,6 +37,25 @@ const coreGates = pairs.filter(p => p.core).flatMap(p => p.displayGates);
 const sourceByDepartment = { management:'45-21', competition:'51-25', direction:'2-14', interaction:'59-6', logic:'27-50', innovation:'3-60' };
 const forbidden = /门对|門對|支持门对|覆盖|覆蓋|不同成员共同覆盖|不代表正式|仅供参考|僅供參考|尚未证实|仅实验性|\b(?:coverage|pairs?|supporting\s+pairs?|disclaimers?)\b|for reference only|not (?:official|proven|verified)|experimental only/i;
 const normalize = value => value.replace(/\s+/g,' ').trim();
+// Reviewed independently from frozen presentation rules; expected text uses author JSON,
+// never DOM or readWaReadingExcerpt output. These are the six department sources.
+function excerptOracle(source,locale) {
+  const indices=['51-25','scale-and-template','powerbases'].includes(source.objectId)?[0]:source.objectId==='membership'?[1]:[0,1];
+  let detail=indices.map(i=>source.locales[locale].detail.split(/\n\n+/)[i]).join('\n\n');
+  if(locale==='en' && source.objectId==='2-14') {assert.equal(detail.split('same pair').length-1,2);detail=detail.replaceAll('same pair','same channel');}
+  if(locale==='en' && source.objectId==='51-25') {assert.equal(detail.split('pairs it with Powerbase study').length-1,1);detail=detail.replace('pairs it with Powerbase study','teaches it alongside Powerbase study');}
+  const rules={
+    'penta-and-wa:en':['group coverage','group activation patterns'],
+    'gapping:zh-CN':['实际成员进入后形成什么覆盖','实际成员进入后激活哪些闸门'],
+    'gapping:zh-Hant':['實際成員加入後形成何種覆蓋','實際成員加入後啟動哪些閘門'],
+    'gapping:en':['Coverage produced by the actual members','The gates activated by the actual members'],
+    'membership:zh-CN':['组内覆盖','组内闸门的激活情况'],
+    'membership:zh-Hant':['組內覆蓋','組內閘門的啟動情況'],
+    'membership:en':['headcount and coverage','headcount and active gates'],
+  };
+  const rule=rules[`${source.objectId}:${locale}`];if(rule){assert.equal(detail.split(rule[0]).length-1,1);detail=detail.replace(rule[0],rule[1]);}
+  return {...source.locales[locale],summary:['alpha','scale-and-template'].includes(source.objectId)?null:source.locales[locale].summary,detail,indices};
+}
 
 // Expected values use raw computeChart gates only, never product analysis/renderer output.
 export function gateOracle(raw, ids, gate) {
@@ -110,6 +129,9 @@ async function main() {
   assert.equal(git('branch','--show-current'),'feature/penta-wa-integration-v1');
   assert.equal(git('status','--porcelain','--','src','public'),'','Commit frozen product before acceptance');
   const sourceHashes = new Map();
+  const authorBytes=await readFile(path.join(rootSource,'src/lib/wa/content-data.json'));
+  assert.deepEqual(authorBytes,execFileSync('git',['-C',rootSource,'show','df45d2e:src/lib/wa/content-data.json']),'author JSON unchanged');
+  const authorRecords=JSON.parse(authorBytes);
   const stamp = new Date().toISOString().replace(/[:.]/g,'-');
   const output=path.resolve(process.env.WA_EVIDENCE_DIR||'artifacts/visual-review/wa-ui-convergence',`${stamp}-${sourceCommit.slice(0,8)}`);
   await mkdir(output,{recursive:true});
@@ -122,7 +144,7 @@ async function main() {
   const root=()=>page.locator('#wa-view'), sheet=()=>page.locator('.wa-reading-sheet'), picker=()=>page.locator('.wa-target-picker');
   const ready=()=>page.waitForFunction(()=>document.querySelector('#wa-view .wa-workspace')?.getAttribute('aria-busy')==='false'&&!document.querySelector('#wa-view .wa-error'));
   const settle=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  const check=async(name,fn)=>{const entry={name,status:'RUNNING'};evidence.cases.push(entry);try{await fn();entry.status='PASS';}catch(e){entry.status='FAIL';entry.error=e.stack;throw e;}};
+  const check=async(name,fn)=>{const entry={name,status:'RUNNING'};evidence.cases.push(entry);console.log(`START ${name}`);try{await fn();entry.status='PASS';console.log(`PASS ${name}`);}catch(e){entry.status='FAIL';entry.error=e.stack;throw e;}};
   const close=async()=>{if(await sheet().isVisible())await page.keyboard.press('Escape');};
   const copy=async locator=>assert.doesNotMatch(await locator.innerText(),forbidden,'visible copy forbidden vocabulary');
   const shot=async name=>{const filename=`${name}.png`;await page.screenshot({path:path.join(output,filename),fullPage:!await sheet().isVisible()&&!await picker().isVisible()});evidence.screenshots.push({filename,viewport:page.viewportSize(),locale:await page.evaluate(()=>document.documentElement.lang),sourceCommit});};
@@ -140,7 +162,7 @@ async function main() {
     for(const i of indices)await picker().locator(`[data-person="${data.fixture[i].id}"]`).click();
     await picker().locator('[data-selection]').click();await picker().waitFor({state:'detached'});await ready();};
   const expand=async department=>{const toggle=root().locator(`[data-department-toggle="${department}"]`);if(await toggle.getAttribute('aria-expanded')!=='true')await toggle.click();};
-  const openPair=async pair=>{await close();await expand(pair.department);await root().locator(`[data-pair-row="${pair.channelId}"] [data-wa-pair="${pair.channelId}"]`).click();await sheet().waitFor();};
+  const openPair=async pair=>{await close();await expand(pair.department);await root().locator(`[data-pair-row="${pair.channelId}"] .wa-channel-open[data-wa-pair="${pair.channelId}"]`).click();await sheet().waitFor();};
   const validateMarkers=async()=>{
     const actual=await root().locator('.wa-core-svg [data-wa-gate]').evaluateAll(nodes=>nodes.map(n=>({gate:Number(n.dataset.waGate),active:n.dataset.covered,
       markers:[...n.querySelectorAll('[data-wa-gate-marker]')].map(m=>({gate:Number(m.dataset.waGateMarker),id:m.dataset.waMarkerMember,number:Number(m.dataset.markerNumber),classes:m.getAttribute('class'),text:m.querySelector('text')?.textContent.trim()}))})));
@@ -159,7 +181,10 @@ async function main() {
   const validateCards=async()=>{assert.equal(await root().locator('.wa-results li[data-activation-side],.wa-results [data-wa-knowledge],.wa-results [data-wa-prose]').count(),0,'right column excludes source rows and long readings');
     for(const pair of pairs){const row=root().locator(`[data-pair-row="${pair.channelId}"]`);if(!await row.isVisible())continue;
       const expected=pairOracle(data.raw,ids(),pair);await validateEndpoints(row,expected);
-      assert.equal(normalize(await row.locator(`[data-wa-pair="${pair.channelId}"]`).innerText()),pair.displayGates.join('–'));
+      assert.equal(await row.locator('.wa-channel-open > strong').evaluate(n=>n.firstChild.textContent.trim()),pair.displayGates.join('–'));
+      assert.equal(Number(await row.getAttribute('data-participant-count')),expected.memberIds.length);
+      const participants=await row.locator('[data-channel-participants] [data-wa-member]').evaluateAll(nodes=>nodes.map(n=>({id:n.dataset.waMember,name:n.textContent.trim()})));
+      assert.deepEqual(sorted(participants.map(m=>m.id)),expected.memberIds);for(const m of participants)assert.equal(m.name,data.names[m.id]);
       assert.equal(await row.locator('[data-wa-state]').getAttribute('data-wa-state'),expected.status);
       const count=row.locator(ADAPTER.participantCount);assert.equal(await count.count(),1);
       assert.equal(Number((await count.innerText()).match(/\d+/)?.[0]),expected.memberIds.length,'visible unique participant summary');}
@@ -180,14 +205,20 @@ async function main() {
     const source=await page.evaluate(async({source,locale})=>(await import(window.waAcceptanceLive('/src/lib/wa/content.js'))).readWaContent(source,locale),{source:sourceByDepartment[pair.department],locale});
     assert.equal(normalize(await article.locator(ADAPTER.readingTitle).innerText()),normalize(source.name),'original department title retained');
     assert.equal(await article.getAttribute('data-wa-source-refs'),source.sourceRefs.join(' '));
-    const expected=ADAPTER.displayMap[locale]?.[expectedSource];assert.ok(expected,`reviewed excerpt missing ${locale}/${expectedSource}`);
-    assert.ok(await article.getAttribute(ADAPTER.displayMapAttribute),'explicit display adapter identity');
+    const expected=excerptOracle(authorRecords.find(s=>s.id===expectedSource),locale);
+    assert.equal(await article.getAttribute(ADAPTER.displayMapAttribute),ADAPTER.displayMap,'explicit display adapter identity');
+    assert.equal(await article.getAttribute('data-wa-paragraphs'),expected.indices.join(','));
+    const fold=sheet().locator('[data-wa-knowledge]');
+    const selected=sheet().locator('[data-wa-detail]');const type=await selected.getAttribute('data-wa-detail');const selectedId=await selected.getAttribute('data-wa-detail-id');
+    assert.equal(await fold.getAttribute('data-wa-content-id'),canonical(sourceByDepartment[pair.department].split('-').map(Number)));
+    assert.equal(await fold.getAttribute('data-wa-reading-for'),type==='gate'?`gate:${selectedId}`:selectedId);
+    assert.equal(await fold.getAttribute('data-wa-knowledge'),type==='pair'&&pair.core?'wa':'wa-department');
     for(const part of ['summary','detail'])assert.equal(normalize(await article.locator(`[data-wa-prose="${part}"]`).innerText()),normalize(expected[part]),'exact approved Wa-only excerpt');
     assert.equal(await sheet().locator('[data-shared-lens]').count(),0,'no ordinary personal reading');await copy(sheet());
   };
   const validatePair=async pair=>{const expected=pairOracle(data.raw,ids(),pair);const detail=sheet().locator('[data-wa-detail="pair"]');
     assert.equal(await sheet().evaluate(n=>n.classList.contains('gate-detail-card')),true,'shared public detail shell');
-    assert.equal(await detail.getAttribute('data-wa-detail-id'),pair.channelId);assert.equal(normalize(await detail.locator(':scope > h2').innerText()),pair.displayGates.join('–'));
+    assert.equal(await detail.getAttribute('data-wa-detail-id'),pair.channelId);assert.equal(normalize(await detail.locator('.wa-channel-number').innerText()),pair.displayGates.join('–'));
     assert.equal(await detail.locator(':scope > [data-wa-state]').getAttribute('data-wa-state'),expected.status);
     await validateEndpoints(detail,expected);await expandFolds();await validateActivations(pair.displayGates);await validateReading(pair);};
   const validateCurrent=async()=>{await validateMarkers();await validateCards();await openPair(pairs[0]);await validatePair(pairs[0]);await close();};
@@ -207,13 +238,38 @@ async function main() {
     });
     await page.goto(`${base}/?view=wa`);await root().locator('[data-wa-page]').waitFor();
     // Vite raw imports expose the served source bytes; compare against the parent root.
-    for(const resource of ['/src/views/wa.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/lib/wa/content-data.json']){
-      const servedRaw=await page.evaluate(async resource=>(await import(`${resource}?raw`)).default,resource);
+    for(const resource of ['/src/views/wa.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/lib/wa/content-data.json','/src/lib/wa/reading-presentation.js']){
+      const servedRaw=await page.evaluate(async resource=>(await import(`${resource}?raw&import`)).default,resource);
       assert.equal(servedRaw,await readFile(path.join(rootSource,resource.slice(1)),'utf8'),`9961 serves parent root ${resource}`);
       const response=await page.request.get(`${base}${resource}`);assert.ok(response.ok());const text=await response.text();sourceHashes.set(resource,createHash('sha256').update(text).digest('hex'));
     }
     evidence.servedHashes=Object.fromEntries(sourceHashes);
     await check('01 actual WASM 12-person seed and independent 26-activation oracle',async()=>{data=await seed(page);validateRaw(data);expectedDraft=structuredClone(data.draft);markers=markerOracle(data.draft.members);evidence.raw=data.raw;evidence.fixture=data.fixture;await page.reload();await ready();await scope(null);assert.equal(ids().length,10);});
+    if(process.env.WA_VISUAL_ONLY==='1') {
+      // Supplementary framing only: does not claim the nineteen-case run.
+      evidence.mode='supplementary visual';
+      for(const [width,height,locale] of [[1440,1000,'zh-CN'],[1280,640,'zh-CN'],[390,900,'zh-Hant'],[320,900,'en']]) {
+        await page.setViewportSize({width,height});await page.evaluate(async locale=>(await import(window.waAcceptanceLive('/src/lib/i18n.js'))).setLocale(locale,{persist:false}),locale);await ready();await configuration();await settle();
+        const prefix=`${width}x${height}-${locale}`;
+        for(const [name,locator] of [['configuration',root().locator('.wa-configuration')],['graph-legend',root().locator('.wa-graph-panel')]]) {
+          // Full-page capture at document top avoids a fixed header crossing a tall
+          // element screenshot after Playwright's automatic scrollIntoView.
+          await page.evaluate(()=>scrollTo(0,0));await settle();
+          const rect=await locator.boundingBox();assert.ok(rect);
+          const full=await page.screenshot({fullPage:true});const filename=`${prefix}-${name}-framed.png`;
+          const sharp=(await import('sharp')).default;await sharp(full).extract({left:Math.floor(rect.x),top:Math.floor(rect.y),width:Math.ceil(rect.width),height:Math.ceil(rect.height)}).toFile(path.join(output,filename));
+          evidence.screenshots.push({filename,viewport:page.viewportSize(),locale,kind:'crop of unmodified full-page screenshot at scrollY=0',sourceCommit});
+        }
+        for(const pair of [pairs[0],pairs[1]]) {
+          await openPair(pair);await validatePair(pair);
+          await sheet().locator('.gate-detail-body').evaluate(n=>{n.scrollTop=0;});await shot(`${prefix}-${pair.channelId}-heading`);
+          await sheet().locator('[data-wa-knowledge] > summary').scrollIntoViewIfNeeded();await shot(`${prefix}-${pair.channelId}-Wa-prose`);
+          if(pair.core) {await sheet().locator('[data-wa-endpoint="45"] [data-wa-gate="45"]').click();await expandFolds();await validateActivations([45]);await validateReading(pair);await sheet().locator('[data-wa-knowledge] > summary').scrollIntoViewIfNeeded();await shot(`${prefix}-gate45-Wa-prose`);}
+          await close();
+        }
+      }
+      assert.equal(git('rev-parse','HEAD'),sourceCommit);assert.deepEqual(evidence.errors,[]);evidence.status='PASS_VISUAL';console.log(`PASS supplementary framed screenshots: ${output}`);return;
+    }
     await check('02 one-page configuration and one lightweight picker',async()=>{await configuration();assert.equal(await root().locator('[data-wa-target]').count(),4);assert.equal(await page.locator('.wa-composer-cards,[data-apply]').count(),0);await shot('1440-organization-edit');await root().locator('[data-compose="alpha"]').click();assert.equal(await page.locator('.operation-dialog').count(),1);await copy(picker());await shot('1440-lightweight-alpha-picker');await page.keyboard.press('Escape');});
     await check('03 Alpha replace clear restore updates all views',async()=>{await choose('alpha',[10]);expectedDraft.alphaId=id(10);await validateCurrent();await root().locator('[data-clear-alpha]').click();expectedDraft.alphaId=null;await ready();await validateCurrent();await choose('alpha',[0]);expectedDraft.alphaId=id(0);await validateCurrent();});
     await check('04 three groups add remove import preserve IDs',async()=>{for(let i=0;i<3;i++){const group=expectedDraft.pentas[i],removed=id(1+i*3);await choose(group.pentaId,[11]);group.memberIds.push(id(11));await validateCurrent();await root().locator(`[data-remove-wa="${id(11)}"]`).click();group.memberIds=group.memberIds.filter(m=>m!==id(11));await ready();await validateCurrent();await root().locator(`[data-remove-wa="${removed}"]`).click();group.memberIds=group.memberIds.filter(m=>m!==removed);await ready();await validateCurrent();await root().locator(`[data-import="${group.pentaId}"]`).click();assert.equal(await page.locator('.operation-dialog').count(),1);await picker().locator('[data-import-index]').filter({hasText:`Fictional import ${i}`}).click();group.memberIds=[0,1,2].map(j=>id(1+i*3+j));await picker().waitFor({state:'detached'});await ready();await validateCurrent();}});
@@ -228,9 +284,21 @@ async function main() {
     await check('13 bounded sticky 1440 desktop',async()=>{await sticky(1440,1000);});
     await check('14 bounded sticky 1280 short desktop',async()=>{await sticky(1280,640);await recordFonts('1280x640');await shot('1280x640-short-desktop');});
     await check('15 390 and 320 stacked without horizontal overflow',async()=>{for(const width of [390,320]){await page.setViewportSize({width,height:900});await settle();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);const geometry=await root().evaluate(n=>{const a=n.querySelector('.wa-graph-column'),b=n.querySelector('.wa-results'),r=a.getBoundingClientRect(),s=b.getBoundingClientRect();return {position:getComputedStyle(a).position,graphBottom:r.bottom,rightTop:s.top};});assert.notEqual(geometry.position,'fixed');assert.notEqual(geometry.position,'sticky');assert.ok(geometry.rightTop>=geometry.graphBottom-1);await recordFonts(`${width}-phone`);await shot(`${width}-mobile-organization-graph`);await openPair(pairs[0]);await validatePair(pairs[0]);assert.equal(await sheet().evaluate(n=>n.scrollWidth<=n.clientWidth+1),true);await shot(`${width}-mobile-wa-45-21`);await close();}});
-    await check('16 three locale visible-copy scan all details',async()=>{for(const [locale,width,skin] of [['zh-CN',1440,'default-light'],['zh-Hant',390,'default-dark'],['en',320,'high-contrast']]){await page.setViewportSize({width,height:900});await page.evaluate(async({locale,skin})=>{(await import(window.waAcceptanceLive('/src/lib/i18n.js'))).setLocale(locale,{persist:false});(await import(window.waAcceptanceLive('/src/lib/appearance.js'))).setSkin(skin);},{locale,skin});await ready();await copy(root());await shot(`${width}-${locale}-${skin}-main`);for(const pair of pairs){await openPair(pair);await expandFolds();await validateReading(pair);for(const gate of pair.displayGates){await sheet().locator(`[data-wa-endpoint="${gate}"] [data-wa-gate="${gate}"]`).click();await expandFolds();await validateReading(pair);await sheet().locator(ADAPTER.back).click();}if(['21-45','32-54'].includes(pair.channelId))await shot(`${width}-${locale}-${skin}-${pair.channelId}`);}await close();}});
+    await check('16 three locale visible-copy scan all details',async()=>{for(const [locale,width,skin] of [['zh-CN',1440,'default-light'],['zh-Hant',390,'default-dark'],['en',320,'high-contrast']]){await page.setViewportSize({width,height:900});await page.evaluate(async({locale,skin})=>{(await import(window.waAcceptanceLive('/src/lib/i18n.js'))).setLocale(locale,{persist:false});(await import(window.waAcceptanceLive('/src/lib/appearance.js'))).setSkin(skin);},{locale,skin});await ready();await copy(root());await shot(`${width}-${locale}-${skin}-main`);for(const pair of pairs){await openPair(pair);await expandFolds();await validateReading(pair);for(const gate of pair.displayGates){await sheet().locator(`[data-wa-endpoint="${gate}"] [data-wa-gate="${gate}"]`).click();await expandFolds();await validateReading(pair);if(gate===45)await shot(`${width}-${locale}-${skin}-gate-45`);await sheet().locator(ADAPTER.back).click();}if(['21-45','32-54'].includes(pair.channelId))await shot(`${width}-${locale}-${skin}-${pair.channelId}`);}await close();
+      await root().locator('[data-action="knowledge"]').click();await copy(sheet());
+      assert.equal(await sheet().locator('[data-wa-reading]').count(),14);
+      for(const source of authorRecords){await sheet().locator(`[data-wa-reading="${source.objectId}"]`).click();const article=sheet().locator('[data-wa-reading-id]');const expected=excerptOracle(source,locale);assert.equal(await article.getAttribute('data-wa-reading-id'),source.id);assert.equal(await article.locator('h3').innerText(),source.locales[locale].name);assert.equal(await article.getAttribute('data-wa-display-map'),'wa-reading-ui-v1');assert.equal(await article.getAttribute('data-wa-paragraphs'),expected.indices.join(','));assert.equal(await article.getAttribute('data-wa-source-refs'),source.sourceRefs.join(' '));assert.equal(normalize(await article.locator('[data-wa-prose="detail"]').innerText()),normalize(expected.detail));if(expected.summary===null)assert.equal(await article.locator('[data-wa-prose="summary"]').count(),0);else assert.equal(normalize(await article.locator('[data-wa-prose="summary"]').innerText()),normalize(expected.summary));await copy(sheet());await sheet().locator(ADAPTER.back).click();}await close();}});
     await check('17 eleven skins cheap source tokens and actual P D badges',async()=>{await page.setViewportSize({width:1280,height:900});await openPair(pairs[0]);await expandFolds();const skins=await page.evaluate(async()=>(await import(window.waAcceptanceLive('/src/lib/skin-registry.js'))).SKINS.map(s=>s.id));assert.equal(skins.length,11);for(const skin of skins){await page.evaluate(async skin=>{const a=await import(window.waAcceptanceLive('/src/lib/appearance.js'));a.setSkin(skin);a.restoreCurrentSkin();},skin);const colors=await page.evaluate(async()=>{const {resolveRGB,contrastRatio}=await import(window.waAcceptanceLive('/src/lib/source-contrast.js'));return ['personality','design'].map(side=>{const n=document.querySelector(`.wa-reading-sheet [data-wa-side="${side}"]`);if(!n)throw Error(`Missing actual ${side} badge`);const s=getComputedStyle(n),rgb=resolveRGB(s.color),bg=resolveRGB(s.backgroundColor);return {side,rgb,bg,border:resolveRGB(s.borderLeftColor),borderWidth:parseFloat(s.borderLeftWidth),expected:resolveRGB(s.getPropertyValue(`--source-birth${side==='personality'?'Personality':'Design'}-text`)),birth:resolveRGB(s.getPropertyValue(`--hd-birth-${side}`)),elevated:resolveRGB(s.getPropertyValue('--bg-elevated')),contrast:contrastRatio(rgb,bg)};});});for(const c of colors){assert.deepEqual(c.rgb,c.expected);assert.deepEqual(c.bg,c.elevated);assert.deepEqual(c.border,c.birth);assert.ok(c.borderWidth>0);assert.ok(c.contrast>=4.5,`${skin}/${c.side}: ${c.contrast}`);}evidence.colors.push({skin,colors});if(['default-light','default-dark','high-contrast'].includes(skin))await shot(`1280-${skin}-source-badges`);}await close();});
-    await check('18 birth replacement updates graph cards and fresh details',async()=>{await scope(null);await openPair(pairs[0]);const replacement={...data.fixture[1],birthDate:data.fixture[10].birthDate,birthTime:data.fixture[10].birthTime};const raw=await page.evaluate(async person=>{(await import(window.waAcceptanceLive('/src/lib/people.js'))).savePerson(person);const {chart}=await(await import(window.waAcceptanceLive('/src/lib/chartdata.js'))).computeChart(person);return ['personality','design'].flatMap(side=>Object.entries(chart.gates[side]).map(([planet,a])=>({memberId:'convergence-member-1',side,planet,gate:a.gate,line:a.line})));},replacement);assert.notDeepEqual(raw,data.raw[id(1)]);data.raw[id(1)]=raw;await ready();if(await sheet().isVisible())await validatePair(pairs[0]);await close();await validateCurrent();evidence.replacementRaw=raw;});
+    await check('18 birth replacement updates graph cards and fresh details',async()=>{await scope(null);await openPair(pairs[0]);const replacement={...data.fixture[1],birthDate:data.fixture[10].birthDate,birthTime:data.fixture[10].birthTime};const raw=await page.evaluate(async person=>{(await import(window.waAcceptanceLive('/src/lib/people.js'))).savePerson(person);const {chart}=await(await import(window.waAcceptanceLive('/src/lib/chartdata.js'))).computeChart(person);return ['personality','design'].flatMap(side=>Object.entries(chart.gates[side]).map(([planet,a])=>({memberId:'convergence-member-1',side,planet,gate:a.gate,line:a.line})));},replacement);assert.notDeepEqual(raw,data.raw[id(1)]);data.raw[id(1)]=raw;await ready();if(await sheet().isVisible())await validatePair(pairs[0]);await close();await validateCurrent();evidence.replacementRaw=raw;
+      await page.evaluate(async()=>(await import(window.waAcceptanceLive('/src/lib/people.js'))).deletePerson('fictional-convergence-9'));
+      await root().locator('[data-wa-issue="MISSING_PERSON_REFERENCE"]').waitFor();
+      assert.ok((await root().locator('[data-wa-issue="MISSING_PERSON_REFERENCE"]').innerText()).includes(data.names[id(9)]));
+      assert.doesNotMatch(await root().locator('.wa-errors').innerText(),/MISSING_PERSON_REFERENCE/);
+      for(const value of await root().locator('.wa-core-svg [data-wa-gate]').evaluateAll(nodes=>nodes.map(n=>n.dataset.covered)))assert.equal(value,'unknown');
+      for(const value of await root().locator('.wa-core-svg [data-wa-pair]').evaluateAll(nodes=>nodes.map(n=>n.dataset.state)))assert.equal(value,'unknown');
+      assert.equal(await root().locator('.wa-core-svg [data-wa-gate-marker]').count(),0);await shot('missing-reference-unknown');
+      await page.evaluate(async person=>(await import(window.waAcceptanceLive('/src/lib/people.js'))).savePerson(person),data.fixture[9]);await ready();await validateCurrent();
+    });
     await check('19 frozen-source identity and no uncaught errors',async()=>{assert.equal(git('rev-parse','HEAD'),sourceCommit);assert.equal(git('status','--porcelain','--','src','public'),'');for(const [resource,hash]of sourceHashes){const response=await page.request.get(`${base}${resource}`);assert.ok(response.ok());assert.equal(createHash('sha256').update(await response.text()).digest('hex'),hash,`served source changed ${resource}`);}assert.deepEqual(evidence.errors,[]);assert.equal(evidence.cases.length,19);});
     evidence.status='PASS';console.log(`PASS targeted Wa convergence: ${output}`);
   } catch(error) {
