@@ -24,13 +24,12 @@ import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
-import { renderWaDiagram, renderWaLegend, waStateText, waStateSymbol } from './wa-diagram.js';
+import { renderWaDiagram, renderWaLegend } from './wa-diagram.js';
 
 const clone = value => structuredClone(value);
 const text = (key, params) => esc(t(key, params));
 const pairs = OC16_DEPARTMENTS.flatMap(department => department.pairs);
 const LAST_ORGANIZATION = 'ohd-wa-last-organization-v1';
-const percentage = value => `${Number(value.toFixed(1))}%`;
 
 /** Instance-owned refs configuration + runtime-only OC16 presentation. */
 export function mountWa(container, options = {}) {
@@ -56,7 +55,6 @@ export function mountWa(container, options = {}) {
   const nameOf = id => { const member = members().get(id); return member ? people.get(member.personId)?.name || member.labelSnapshot : ''; };
   const groupName = group => group.title || `Penta ${String.fromCharCode(65 + WA_ROLES.indexOf(group.role))}`;
   const known = () => !busy && ['ready','empty'].includes(result?.status);
-  const measuredPair = id => known() ? result.pairs.find(pair => pair.channelId === id) : null;
   const measuredGate = gate => known() ? result.gateRecords.find(record => record.gate === gate) : null;
   const covered = gate => Boolean(measuredGate(gate)?.memberIds.length);
   const viewScope = () => resolveWaViewScope(draft,{pentaId:selectedGroup,includeAlpha});
@@ -66,8 +64,7 @@ export function mountWa(container, options = {}) {
   const remember = id => { try { storage?.setItem(LAST_ORGANIZATION,id); } catch { notice='OC16 remember failed'; errorText=''; } };
   const closeReading = () => { if (detailOpen) closeDetailDialog(); };
   const fail = error => { notice=/conflict|revision/i.test(error?.code || '')?'Wa save conflict':'Wa data error'; errorText=error?.message || ''; };
-  const stateHtml = pair => `<span class="wa-state">${waStateSymbol(pair?.status)}<span>${esc(waStateText(pair?.status))}</span></span>`;
-  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf});
+  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf,markerOf:id=>markers().get(id)});
 
   function memberChip(id,alpha=false) {
     return `<li class="wa-member-chip" data-wa-member-chip="${esc(id)}">${renderWaMemberMarker(markers().get(id),{name:nameOf(id)})}<span class="wa-member-chip-name">${esc(nameOf(id))}</span><button class="wa-member-remove" ${alpha?'data-clear-alpha':`data-remove-wa="${esc(id)}"`} data-focus="remove-${esc(id)}" aria-label="${alpha?text('Wa UI clear alpha'):text('Wa UI remove member',{name:nameOf(id)})}" ${saving?'disabled':''}>×</button></li>`;
@@ -85,18 +82,13 @@ export function mountWa(container, options = {}) {
   function pillarsHtml() {
     return `<section class="panel"><h2>${text('OC16 pillars')}</h2><div class="wa-pillars">${WA_PILLARS.map(pillar=>`<button class="wa-pillar" data-wa-gate="${pillar.gate}" data-focus="pillar-${pillar.gate}" data-covered="${known()?covered(pillar.gate):'unknown'}"><span class="wa-pillar-number">${pillar.gate}</span><span><strong>${text(`OC16 ${pillar.id}`)}</strong><small>${esc(hexagramName(pillar.gate))}</small><small>${known()?text(covered(pillar.gate)?'OC16 active':'OC16 inactive'):text('OC16 unknown')}</small></span></button>`).join('')}</div></section>`;
   }
-  function metric(label, count, total, percent) {
-    return `<div>${text(label)}<div class="wa-metric-value"><strong>${known()?`${count} / ${total}`:`— / ${total}`}</strong><small>${known()?percentage(percent):'—'}</small></div><span class="wa-meter"><i style="width:${known()?percent:0}%"></i></span></div>`;
-  }
-  const pairRows=department=>details.renderPairRows(department,{compact:true});
   function departmentHtml(department) {
-    const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
-    const core = department.pairs[0], open=expanded.has(department.id);
-    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-department-title"><strong>${text(`OC16 ${department.id}`)}${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</strong><span aria-hidden="true">${open?'−':'+'}</span></span><span class="wa-department-sub">${text('OC16 core')} · ${core.displayGates.join('–')} ${stateHtml(measuredPair(core.channelId))}</span><span class="wa-metrics">${metric('OC16 gate coverage',summary?.gateCount,department.pairs.length*2,summary?.gatePercentage)}${metric('OC16 pair coverage',summary?.pairCount,department.pairs.length,summary?.pairPercentage)}</span></button><div id="wa-department-${department.id}" class="wa-department-detail" ${open?'':'hidden'}>${pairRows(department)}<button class="wa-link-button" data-wa-department="${department.id}">${text('OC16 open department')}</button></div></article>`;
+    const summary=known()?result.departments.find(row=>row.id===department.id):null,open=expanded.has(department.id);
+    return `<section class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}"><header class="wa-department-title"><h3>${text(`OC16 ${department.id}`)}</h3><button class="wa-link-button" data-wa-department="${department.id}">${text('OC16 open department')} ↗</button></header>${details.renderChannelCards(department,{kind:'core'})}<button class="wa-more-channels" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}">${text(open?'Wa UI hide channels':'Wa UI more channels',{count:department.pairs.length-1})}<span aria-hidden="true">${open?'−':'+'}</span></button><div id="wa-department-${department.id}" class="wa-other-channels" ${open?'':'hidden'}>${details.renderChannelCards(department,{kind:'other'})}</div></section>`;
   }
   function errorIssuesHtml() {
     const keys={MISSING_PERSON_REFERENCE:'Missing reference',PERSON_LOOKUP_FAILED:'Missing reference',INVALID_BIRTH:'OC16 invalid birth',INVALID_TIME_UNKNOWN:'OC16 invalid birth',CHART_CALCULATION_FAILED:'Chart calculation failed',INVALID_PROVIDER_RESULT:'Invalid chart provider result'};
-    return `<ul class="wa-errors">${(result?.issues||[]).map(issue=>`<li>${issue.memberId?`<strong>${esc(nameOf(issue.memberId)||issue.memberId)}</strong> · `:''}${text(keys[issue.code]||'Wa data error')} <small>(${esc(issue.code)})</small></li>`).join('')}</ul>`;
+    return `<ul class="wa-errors">${(result?.issues||[]).map(issue=>`<li data-wa-issue="${esc(issue.code)}">${issue.memberId?`<strong>${esc(nameOf(issue.memberId)||issue.memberId)}</strong> · `:''}${text(keys[issue.code]||'Wa data error')}</li>`).join('')}</ul>`;
   }
   function calloutHtml() {
     if(busy)return `<div class="wa-empty-callout" role="status">${text('OC16 loading')}</div>`;

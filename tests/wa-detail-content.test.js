@@ -50,7 +50,7 @@ for (const [status, left, right, self, combinations] of [
   const result = fixture({ status, left, right, self, combinations });
   const html = renderer(result).renderPair('21-45');
   assert.match(html, new RegExp(`data-wa-state="${status}"`));
-  assert.ok(html.includes(t(`OC16 ${status}`)));
+  assert.ok(html.includes(t(`Wa UI state ${status}`)));
   assert.ok(html.indexOf('data-wa-endpoint="45"') < html.indexOf('data-wa-endpoint="21"'));
   for (const [gate, ids] of [[21, left], [45, right]]) {
     const section = endpoint(html, gate);
@@ -71,7 +71,9 @@ test('canonical combinations are projected into reversed display order without i
   assert.equal(occurrences(c, 'data-wa-combination-right='), 2);
   assert.match(c, /data-wa-combination-right="a"/);
   assert.match(c, /data-wa-combination-right="b"/);
-  assert.match(html, /data-wa-self-complete><span class="wa-detail-member" data-wa-member="b">Fictional B/);
+  const self = html.split('data-wa-self-complete>')[1].split('</div>')[0];
+  assert.match(self, /class="wa-detail-member" data-wa-member="b">Fictional B/);
+  assert.doesNotMatch(self, /data-wa-member="(?:a|c)"/);
   // Same holders, deliberately fewer source records: presentation must not reconstruct their Cartesian product.
   const sparse = renderer(fixture({ combinations: [{ firstMemberId: 'b', secondMemberId: 'c' }] })).renderPair('21-45');
   assert.equal(occurrences(sparse, 'data-wa-combination-right='), 1);

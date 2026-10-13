@@ -96,6 +96,25 @@
 .wa-pillar small { display:block; margin-top:3px; color:var(--text-secondary); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
 .wa-department-list { display:grid; gap:10px; margin-top:14px; }
 .wa-department-card { border:1px solid var(--border); border-radius:var(--radius-sm,6px); overflow:hidden; }
+.wa-department-card > .wa-department-title { padding:12px 14px; border-bottom:1px solid var(--border); background:var(--bg-sunken); }
+.wa-department-card > .wa-department-title h3 { margin:0; font-size:17px; }
+.wa-more-channels { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; min-height:44px; padding:8px 14px; background:transparent; color:var(--accent); border:0; border-top:1px solid var(--border); cursor:pointer; font-size:13px; }
+.wa-other-channels { border-top:1px solid var(--border); }
+.wa-channel-card { padding:14px; }
+.wa-channel-card + .wa-channel-card { border-top:1px solid var(--border); }
+.wa-channel-card > header { display:flex; align-items:start; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.wa-channel-open { border:0; padding:0; background:transparent; color:var(--text); text-align:left; cursor:pointer; min-width:0; }
+.wa-channel-open > strong { display:block; font-size:16px; line-height:1.5; color:var(--accent-strong); }
+.wa-channel-open > strong > span { display:block; font-size:14px; font-weight:500; }
+.wa-channel-kind { display:block; font-size:12px; color:var(--text-secondary); margin-bottom:3px; }
+.wa-channel-status { flex:none; max-width:42%; color:var(--text-secondary); font-size:12px; line-height:1.5; }
+.wa-channel-card .wa-detail-endpoint { padding:0; border:0; background:transparent; }
+.wa-channel-card footer { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-top:12px; padding-top:10px; border-top:1px solid var(--border); }
+.wa-channel-card footer > .wa-link-button { margin-left:auto; }
+.wa-channel-people-count { color:var(--text-secondary); font-size:12px; }
+.wa-channel-people { display:flex; flex-wrap:wrap; gap:5px; }
+.wa-person-ref { display:inline-flex; align-items:center; gap:4px; min-width:0; border-radius:var(--radius-sm,6px); padding:3px 6px; background:var(--bg-sunken); font-size:13px; line-height:1.45; }
+.wa-endpoint-side { color:var(--text-secondary); font-size:12px; margin-bottom:4px; }
 .wa-department-head { border:0; background:transparent; color:var(--text); width:100%; text-align:left; cursor:pointer; padding:14px; }
 .wa-department-title { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .wa-department-title strong { font-size:17px; }
