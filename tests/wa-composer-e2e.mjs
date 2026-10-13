@@ -36,10 +36,10 @@ try {
     ] }];
     window.commits = [];
     window.valid = true;
-    window.launch = (target = null, mode = 'people') => {
+    window.launch = (target = null, mode = 'people', quickCommit = false) => {
       document.querySelector('#trigger').focus();
-      window.composer = openWaComposer({ snapshot: window.snapshot, peopleStore: { list: listPeople, get: getPerson }, listTeams: () => window.teams, target, mode, validate: () => window.valid,
-        onCommit: (next, context) => { if (!context.isCurrent()) return false; window.commits.push({ next, originalSnapshot: context.originalSnapshot, annotationChanges: context.annotationChanges }); }
+      window.composer = openWaComposer({ snapshot: window.snapshot, peopleStore: { list: listPeople, get: getPerson }, listTeams: () => window.teams, target, mode, quickCommit, validate: () => window.valid,
+        onCommit: (next, context) => { if (!context.isCurrent() || window.rejectCommit) return false; window.commits.push({ next, originalSnapshot: context.originalSnapshot, annotationChanges: context.annotationChanges }); }
       });
     };
     window.readPeople = listPeople;
@@ -119,6 +119,88 @@ try {
   assert.ok((await top().innerText()).includes('Fictional Person 3 edited'));
   assert.equal(await page.evaluate(() => window.commits.length), 2);
   await page.evaluate(() => window.composer.close());
+
+  // Quick target editing: one confirmation, complete cancellation, guarded cleanup.
+  const quickStart = await page.evaluate(() => window.commits.length);
+  await page.evaluate(() => window.launch('alpha', 'people', true));
+  assert.equal(await top().locator('[data-person=fictional-composer-3]').isDisabled(), false, 'occupied Alpha permits direct replacement');
+  assert.equal(await top().locator('[data-person=fictional-composer-0]').isDisabled(), true, 'cross-group conflict stays disabled');
+  await top().locator('[data-person=fictional-composer-3]').click();
+  assert.equal(await top().locator('[data-person=fictional-composer-2]').getAttribute('aria-pressed'), 'false');
+  assert.equal(await top().locator('[data-chips] button').count(), 1);
+  await top().locator('[data-selection]').click();
+  assert.equal(await page.locator('.wa-composer').count(), 0, 'quick confirm closes every layer');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 1);
+  assert.equal(await page.evaluate(() => { const next = window.commits.at(-1).next; return next.members.find(member => member.memberId === next.alphaId).personId; }), 'fictional-composer-3');
+
+  await page.evaluate(() => window.launch('alpha', 'people', true));
+  await top().locator('[data-person=fictional-composer-4]').click();
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.wa-composer').count(), 0, 'quick picker cancel exits outer draft');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 1);
+
+  await page.evaluate(() => {
+    window.teams = [{ name: 'Fictional quick import', members: [{ memberId: 'team-quick', personId: 'fictional-composer-4' }], groups: [{ pentaId: 'quick', label: 'Fictional quick group', memberIds: ['team-quick'] }] }];
+    window.launch('fictional-g1', 'import', true);
+  });
+  await top().locator('[data-import-index="0"]').click();
+  assert.equal(await page.locator('.wa-composer').count(), 0, 'quick import commits without outer apply');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 2);
+  await page.evaluate(() => window.launch('fictional-g1', 'import', true));
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.wa-composer').count(), 0);
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 2);
+
+  await page.evaluate(() => window.launch('fictional-g0', 'people', true));
+  await top().locator('[data-deselect=fictional-composer-0]').click();
+  await top().locator('[data-selection]').click();
+  assert.equal(await page.locator('[data-cleanup]').count(), 1, 'quick path still asks for annotation cleanup');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.wa-composer').count(), 2, 'cleanup cancel returns to picker');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 2);
+  await top().locator('[data-selection]').click();
+  await page.evaluate(() => { window.valid = false; });
+  await top().locator('[data-cleanup]').click();
+  assert.ok((await top().locator('[data-error]').innerText()).includes('original configuration changed'));
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 2);
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => { window.valid = true; window.launch('fictional-g0', 'people', true); });
+  await top().locator('[data-deselect=fictional-composer-0]').click();
+  await top().locator('[data-selection]').click();
+  await top().locator('[data-cleanup]').click();
+  assert.equal(await page.locator('.wa-composer').count(), 0);
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 3);
+  assert.equal(await page.evaluate(() => window.commits.at(-1).annotationChanges.length), 1);
+
+  await page.evaluate(() => { window.rejectCommit = true; window.launch('alpha', 'people', true); });
+  await top().locator('[data-person=fictional-composer-5]').click();
+  await top().locator('[data-selection]').click();
+  assert.ok((await top().locator('[data-error]').innerText()).includes('original configuration changed'));
+  assert.equal(await page.locator('.wa-composer').count(), 2, 'host rejection stays in target picker');
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => { window.rejectCommit = false; window.launch('alpha', 'people', true); });
+  await top().locator('[data-person=fictional-composer-4]').click();
+  await top().locator('[data-create]').click();
+  await page.locator('#edit-cancel').click();
+  assert.equal(await page.locator('.wa-composer').count(), 2, 'new person cancel does not cancel quick draft');
+  assert.equal(await top().locator('[data-person=fictional-composer-4]').getAttribute('aria-pressed'), 'true');
+  await top().locator('[data-edit=fictional-composer-4]').click();
+  await page.locator('#edit-name').fill('Fictional Person 4 quick edited');
+  await page.locator('#edit-save').click();
+  assert.equal(await page.locator('.wa-composer').count(), 2, 'person save returns without committing Wa');
+  assert.equal(await top().locator('[data-person=fictional-composer-4]').getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 3);
+  await top().locator('[data-selection]').click();
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 4);
+  assert.equal(await page.locator('.wa-composer').count(), 0);
+
+  await page.evaluate(() => window.launch(null, 'people', true));
+  await page.locator('[data-pick=alpha]').click();
+  await top().locator('[data-person=fictional-composer-6]').click();
+  await top().locator('[data-selection]').click();
+  assert.equal(await page.locator('.wa-composer').count(), 1, 'without target, full editor still requires Apply');
+  assert.equal(await page.evaluate(() => window.commits.length), quickStart + 4);
+  await page.keyboard.press('Escape');
 
   // Focused visual samples, not an all-skin/locale matrix.
   for (const [locale, skin, width] of [['en', 'default-light', 1280], ['zh-CN', 'default-dark', 390], ['zh-Hant', 'high-contrast', 390]]) {

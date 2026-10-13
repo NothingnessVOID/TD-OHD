@@ -21,12 +21,14 @@ const text = (key, params) => esc(msg(key, params));
  * chart computation or birth persistence is owned here (only the public person editor).
  * validate() should capture the host's object/generation token. An async onCommit must
  * check context.isCurrent() immediately before its mutation. close() disposes children.
+ * quickCommit + target commits from the target picker/import; cancelling it closes all.
  */
 export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get: getPerson },
-  listTeams = savedTeams, target = null, mode = 'people', validate = () => true, onCommit, onClose = null } = {}) {
+  listTeams = savedTeams, target = null, mode = 'people', quickCommit = false, validate = () => true, onCommit, onClose = null } = {}) {
   if (typeof onCommit !== 'function') throw new TypeError('Wa composer requires onCommit.');
   const originalSnapshot = clone(assertWaSnapshot(snapshot));
   const originalIdentity = JSON.stringify(snapshot);
+  const quick = quickCommit === true && target !== null;
   let draft = ensureWaComposerSlots(snapshot), generation = 0, closed = false, committing = false;
   let editorRoot = null;
   const children = new Set(), annotationChanges = [];
@@ -74,6 +76,7 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       onClose?.(reason);
     }
   });
+  const targetDismissed = reason => { if (quick && !closed && reason !== 'confirm') main.close(reason); };
   main.root.querySelector('[data-org-title]').oninput = event => { draft.title = event.target.value; generation++; };
   function renderCards() {
     const focused = document.activeElement;
@@ -124,7 +127,8 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       }
       checkCurrent();
       draft = next; generation++;
-      opened.close('confirm'); renderCards();
+      if (quick) await commit(opened.root);
+      else { opened.close('confirm'); renderCards(); }
     } catch (error) { if (opened.root.isConnected) errorAt(opened.root, error); }
     finally { opened.busy = false; }
   }
@@ -134,7 +138,7 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       errorAt(main.root, new Error()); return;
     }
     const selection = { ids: idsFor(targetId), search: '' }, max = targetId === 'alpha' ? 1 : 5;
-    const opened = child(`${msg('select')} · ${groupName(targetId)}`, `<label class="modal-field">${text('search')}<input data-search type="search"></label><p data-count role="status"></p><div data-chips class="wa-composer-chips"></div><button type="button" data-create>${text('create')}</button><p class="wa-composer-note">${text('person hint')}</p><div data-results class="wa-composer-results"></div>${actions('selection', 'confirm')}`);
+    const opened = child(`${msg('select')} · ${groupName(targetId)}`, `<label class="modal-field">${text('search')}<input data-search type="search"></label><p data-count role="status"></p><div data-chips class="wa-composer-chips"></div><button type="button" data-create>${text('create')}</button><p class="wa-composer-note">${text('person hint')}</p><div data-results class="wa-composer-results"></div>${actions('selection', 'confirm')}`, targetDismissed);
     const { root } = opened;
     const render = () => {
       if (closed || !root.isConnected) return;
@@ -143,7 +147,7 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       const results = peopleStore.list().filter(record => `${record.name} ${record.birthDate || ''} ${record.id}`.toLowerCase().includes(selection.search.toLowerCase()));
       root.querySelector('[data-results]').innerHTML = results.map(record => {
         const selected = selection.ids.includes(record.id), assigned = assignment(record.id), conflict = assigned && assigned !== targetId;
-        return `<div class="wa-composer-person"><button type="button" class="btn-secondary wa-composer-choice" data-person="${esc(record.id)}" aria-pressed="${selected}" ${!selected && (selection.ids.length >= max || conflict) ? 'disabled' : ''}><span aria-hidden="true">${selected ? '☑' : '☐'}</span><span><strong>${esc(record.name)}</strong><small>${esc(record.birthDate || '')} · ${esc(record.id.slice(-6))}${conflict ? ` · ${text('assigned', { target: groupName(assigned) })}` : ''}</small></span></button><button type="button" class="btn-secondary" data-edit="${esc(record.id)}">${text('edit')}</button></div>`;
+        return `<div class="wa-composer-person"><button type="button" class="btn-secondary wa-composer-choice" data-person="${esc(record.id)}" aria-pressed="${selected}" ${!selected && ((max > 1 && selection.ids.length >= max) || conflict) ? 'disabled' : ''}><span aria-hidden="true">${max === 1 ? (selected ? '●' : '○') : (selected ? '☑' : '☐')}</span><span><strong>${esc(record.name)}</strong><small>${esc(record.birthDate || '')} · ${esc(record.id.slice(-6))}${conflict ? ` · ${text('assigned', { target: groupName(assigned) })}` : ''}</small></span></button><button type="button" class="btn-secondary" data-edit="${esc(record.id)}">${text('edit')}</button></div>`;
       }).join('') || `<p class="wa-composer-note">${text('no results')}</p>`;
     };
     const edit = id => {
@@ -158,7 +162,8 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
           onSaved: saved => {
             editorRoot = null;
             if (closed || !root.isConnected) return;
-            if (!id && selection.ids.length < max && !selection.ids.includes(saved.id)) selection.ids.push(saved.id);
+            if (!id && max === 1) selection.ids = [saved.id];
+            else if (!id && selection.ids.length < max && !selection.ids.includes(saved.id)) selection.ids.push(saved.id);
             render(); renderCards();
           }
         });
@@ -172,7 +177,8 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       if (!button || button.disabled) return;
       const id = button.dataset.person || button.dataset.deselect;
       if (id) {
-        if (selection.ids.includes(id)) selection.ids = selection.ids.filter(item => item !== id);
+        if (max === 1 && button.dataset.person) selection.ids = [id];
+        else if (selection.ids.includes(id)) selection.ids = selection.ids.filter(item => item !== id);
         else if (selection.ids.length < max) selection.ids.push(id);
         render();
         [...root.querySelectorAll('[data-person]')].find(item => item.dataset.person === id)?.focus();
@@ -183,7 +189,7 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
     render(); root.querySelector('[data-search]').focus();
   }
   async function importer(targetId) {
-    const opened = child(`${msg('import')} · ${groupName(targetId)}`, `<p class="wa-composer-note">${text('origin', { origin: location.origin })}</p><p>${text('import hint')}</p><div data-import-list class="wa-composer-imports" aria-busy="true"></div><div class="modal-actions"><button type="button" data-close>${text('cancel')}</button></div>`);
+    const opened = child(`${msg('import')} · ${groupName(targetId)}`, `<p class="wa-composer-note">${text('origin', { origin: location.origin })}</p><p>${text('import hint')}</p><div data-import-list class="wa-composer-imports" aria-busy="true"></div><div class="modal-actions"><button type="button" data-close>${text('cancel')}</button></div>`, targetDismissed);
     try {
       const teams = clone(await listTeams());
       if (closed || !opened.root.isConnected) return;
@@ -203,7 +209,7 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
     } catch (error) { if (opened.root.isConnected) errorAt(opened.root, error); }
     finally { opened.root.querySelector('[data-import-list]').setAttribute('aria-busy', 'false'); }
   }
-  main.root.querySelector('[data-apply]').onclick = async () => {
+  async function commit(errorRoot = main.root) {
     if (committing) return;
     try {
       checkCurrent(); assertWaSnapshot(draft);
@@ -214,9 +220,10 @@ export function openWaComposer({ snapshot, peopleStore = { list: listPeople, get
       const accepted = await onCommit(clone(draft), context);
       if (accepted === false) throw Object.assign(new Error(), { code: 'COMPOSER_STALE' });
       if (!closed) main.close('commit');
-    } catch (error) { if (!closed) errorAt(main.root, error); }
+    } catch (error) { if (!closed && errorRoot.isConnected) errorAt(errorRoot, error); }
     finally { committing = false; if (!closed) main.root.querySelector('[data-apply]').disabled = false; }
-  };
+  }
+  main.root.querySelector('[data-apply]').onclick = () => commit();
   renderCards();
   if (target !== null) {
     if (mode === 'import' && draft.pentas.some(group => group.pentaId === target)) importer(target);
