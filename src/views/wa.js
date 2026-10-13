@@ -1,340 +1,310 @@
 import '../styles/wa.css';
 import '../lib/wa/messages.js';
+import '../lib/wa/oc16-messages.js';
 import { listPeople, getPerson, onPeopleChange } from '../lib/people.js';
+import { listTeams } from '../lib/team-repository.js';
 import { computeChart } from '../lib/chartdata.js';
 import { effectiveTeamBirth } from './team-birth.js';
 import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { createUuid } from '../lib/uuid.js';
 import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
-import { openDetailDialog, closeDetailDialog, prepareDetailDialog } from '../lib/detail-dialog.js';
+import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
+import { renderGateDetailHeading } from '../lib/object-detail-heading.js';
+import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { renderProse } from '../lib/knowledge/detail-renderer.js';
-import { readWaContent, listWaContent, WA_PAIR_IDS, waPairLabel } from '../lib/wa/content.js';
-import { createWaDraft, createWaMember, moveWaMember, removeWaMember, validateWaLayout, updateWaAnnotations, exportWaAnnotations, downgradeWaSnapshot } from '../lib/wa/model.js';
-import { prepareWaMembers } from '../lib/wa/prepare.js';
-import { analyzeWa, diffWa } from '../lib/wa/analysis.js';
+import { gateName, hexagramName, planetName } from '../lib/vocabulary.js';
+import { readWaContent, listWaContent } from '../lib/wa/content.js';
+import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
+import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
+import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
+import { openWaComposer } from './wa-composer.js';
+import { renderWaDiagram, renderWaLegend, waStateText, waStateSymbol, WA_PILLAR_LABELS } from './wa-diagram.js';
 
-const roles = { foundation:'Foundation', expansion:'Expansion', coordinating:'Coordinating' };
 const clone = value => structuredClone(value);
 const text = (key, params) => esc(t(key, params));
+const pairs = OC16_DEPARTMENTS.flatMap(department => department.pairs);
+const LAST_ORGANIZATION = 'ohd-wa-last-organization-v1';
+const percentage = value => `${Number(value.toFixed(1))}%`;
 
-/** Independent, instance-owned Wa view. No chart/team store or routing ownership. */
+/** Instance-owned refs configuration + runtime-only OC16 presentation. */
 export function mountWa(container, options = {}) {
   if (!container) throw new TypeError('Wa requires a container.');
   const people = options.peopleStore || { list:listPeople, get:getPerson, subscribe:onPeopleChange };
   const calculate = options.computeChart || computeChart;
-  const analyze = options.analyzeWa || analyzeWa;
   const repository = options.repository || createWaRepository();
-  let draft = createWaDraft(), dirty = false, disposed = false, generation = 0, operation = 0, saveGeneration = 0;
-  let result = null, previousReady = null, comparison = [], currentReady = null, trace = null;
-  let busy = false, saving = false, notice = '', errorText = '', closeLayer = null, detailOpen = false;
-  const collapsed = new Set(), expandedManual = new Set();
-  let composing = null, renderAfterComposition = false;
-  let selectedGroup = '', showGroupAlpha = true;
-  const personFor = member => people.get(member.personId);
-  const nameOf = member => member ? personFor(member)?.name || member.labelSnapshot : t('No Alpha selected');
-  const memberById = id => draft.members.find(member => member.memberId === id);
-  const roleName = group => group.title || t(roles[group.role]);
-  const destination = (snapshot, id) => snapshot.alphaId === id ? 'alpha' : snapshot.pentas.find(group => group.memberIds.includes(id))?.pentaId || '';
-  const destinationName = (snapshot, id) => id === 'alpha' ? 'Alpha' : snapshot.pentas.find(group => group.pentaId === id)?.title || t(roles[snapshot.pentas.find(group => group.pentaId === id)?.role] || 'Unassigned pool');
+  const teams = options.listTeams || listTeams;
+  const storage = options.storage === undefined ? (() => { try { return globalThis.localStorage; } catch { return null; } })() : options.storage;
+  let draft = createWaDraft(), dirty = false, saving = false, disposed = false, busy = false;
+  let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null;
+  let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = true;
+  let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = null;
+  let selected = null, detailOpen = false, detailStack = [], detailFocus = null;
+  const expanded = new Set(), annotationRecovery = [];
   const detail = document.createElement('div');
-  detail.className = 'wa-detail modal-overlay hidden';
+  detail.className = 'modal-overlay hidden wa-detail';
   document.body.append(detail);
+  const members = () => new Map(draft.members.map(member => [member.memberId, member]));
+  const nameOf = id => { const member = members().get(id); return member ? people.get(member.personId)?.name || member.labelSnapshot : ''; };
+  const groupName = group => group.title || `Penta ${String.fromCharCode(65 + WA_ROLES.indexOf(group.role))}`;
+  const known = () => !busy && ['ready','empty'].includes(result?.status);
+  const measuredPair = id => known() ? result.pairs.find(pair => pair.channelId === id) : null;
+  const measuredGate = gate => known() ? result.gateRecords.find(record => record.gate === gate) : null;
+  const covered = gate => Boolean(measuredGate(gate)?.memberIds.length);
+  const scopeName = () => selectedGroup ? `${groupName(draft.pentas.find(group => group.pentaId === selectedGroup))}${includeAlpha ? ' + Alpha' : ''}` : t('OC16 all');
+  const hasAnnotations = () => ['consultation','manualCommunicationEdges','manualMetadata'].some(key => Object.hasOwn(draft,key));
+  const retainedPool = () => validateWaLayout(draft).poolMemberIds.length;
+  const remember = id => { try { storage?.setItem(LAST_ORGANIZATION,id); } catch { notice='OC16 remember failed'; errorText=''; } };
   const closeReading = () => { if (detailOpen) closeDetailDialog(); };
-  const clearAnalysis = () => { generation++; busy = false; result = null; trace = null; currentReady = null; closeReading(); };
-  function changed() { clearAnalysis(); dirty = true; notice = ''; errorText = ''; render(); }
-  // Text editing must retain the native input node, selection, undo and IME session.
-  function textChanged() {
-    clearAnalysis();dirty=true;notice='';errorText='';
-    container.querySelector('.wa-notice').textContent='';
-    container.querySelector('.wa-draft-status').textContent=`${t('Unsaved changes')} · r${draft.revision}`;
-    const layout=validateWaLayout(draft);
-    container.querySelector('[data-wa-state]').textContent=t(layout.ready?'Wa draft':'Layout incomplete');
-    container.querySelector('[data-action=analyze]').disabled=!layout.ready;
-    const results=container.querySelector('.wa-results');results.setAttribute('aria-busy','false');
-    if(!results.querySelector('[data-wa-empty]'))results.innerHTML=`<h2>${text('Communication themes')}</h2>${resultHtml()}`;
-    container.querySelector('[data-action=remove-consultation]').hidden=!draft.consultation;
-    container.querySelectorAll('[data-remove-area]').forEach(button=>{button.hidden=!draft.consultation?.businessAreas?.some(area=>area.pentaId===button.dataset.removeArea);});
+  const fail = error => { notice=/conflict|revision/i.test(error?.code || '')?'Wa save conflict':'Wa data error'; errorText=error?.message || ''; };
+  const stateHtml = pair => `<span class="wa-state">${waStateSymbol(pair?.status)}<span>${esc(waStateText(pair?.status))}</span></span>`;
+  const tags = ids => `<div class="wa-contributor-list">${ids.map(id=>`<span class="wa-person-tag">${esc(nameOf(id))}</span>`).join('')}</div>`;
+
+  function configurationHtml() {
+    const alpha = draft.alphaId ? nameOf(draft.alphaId) : t('OC16 no alpha');
+    return `<section class="panel wa-configuration" aria-label="${text('OC16 edit members')}"><div class="wa-config-top"><label class="wa-title-field"><span>${text('Organization title')}</span><input data-title data-focus="title" maxlength="300" value="${esc(draft.title)}" placeholder="${text('Wa organization')}"></label><span class="wa-draft-status">${text(dirty?'Unsaved changes':'Wa draft')} · r${draft.revision}</span></div><details class="wa-config-details" ${window.innerWidth>600||configExpanded===true?'open':''}><summary>${text('OC16 configuration')} · ${validateWaLayout(draft).memberIds.length} ${text('OC16 participants')}<span>${esc(alpha)}</span></summary><div class="wa-config-grid"><section class="wa-config-card"><h2>${text('OC16 alpha')}</h2><p class="wa-config-names"><strong>${esc(alpha)}</strong></p><div class="wa-config-actions"><button class="wa-link-button" data-compose="alpha" data-focus="alpha">${text('OC16 choose alpha')}</button></div></section>${draft.pentas.map(group=>`<section class="wa-config-card"><h2>${esc(groupName(group))}<small>${group.memberIds.length} / 3–5</small></h2><p class="wa-config-names">${group.memberIds.length?`<strong>${group.memberIds.map(id=>esc(nameOf(id))).join(' · ')}</strong>`:text('OC16 empty group')}</p><div class="wa-config-actions"><button class="wa-link-button" data-compose="${esc(group.pentaId)}" data-focus="people-${esc(group.pentaId)}">${text('OC16 choose people')}</button><button class="wa-link-button" data-import="${esc(group.pentaId)}" data-focus="import-${esc(group.pentaId)}">${text('OC16 import Penta')}</button></div></section>`).join('')}</div></details></section>`;
   }
-  function failure(error) {
-    const conflict = /conflict|revision/i.test(error?.code || '') || /conflict/i.test(error?.name || '');
-    notice = conflict ? 'Wa save conflict' : 'Wa data error';
-    errorText = conflict ? '' : String(error?.message || '');
+  function overviewHtml() {
+    const layout = validateWaLayout(draft), ready = known();
+    return `<section class="panel"><div class="wa-panel-heading"><h2>${text('OC16 overview')}</h2><span class="wa-state-badge">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span></div><p class="wa-state-note">${text(layout.standardTemplateSatisfied?'OC16 standard note':'OC16 preview note')}</p><dl class="wa-overview-stats"><div><dt>${text('OC16 participants')}</dt><dd>${ready?result.memberIds.length:'—'}</dd></div><div><dt>${text('OC16 gate coverage')}</dt><dd data-oc16-gates>${ready?result.gateCount:'—'} <small>/ 64</small></dd></div><div><dt>${text('OC16 pair coverage')}</dt><dd data-oc16-pairs>${ready?result.pairCount:'—'} <small>/ 32</small></dd></div></dl><p class="wa-small-note">${text('OC16 statistics note')}</p>${result?.coreWa?.uncertainty?.estimatedMemberIds.length?`<p class="wa-small-note">≈ ${text('OC16 uncertain')}</p>`:''}</section>`;
   }
-  function memberRow(member) {
-    const assigned = destination(draft, member.memberId), person = personFor(member);
-    return `<div class="wa-member" data-member="${esc(member.memberId)}"><div class="wa-member-name"><strong>${esc(nameOf(member))}</strong>${!person ? `<small>${text('Missing reference')}</small>` : person.timeUnknown ? `<small>≈ ${text('Estimated at noon')}</small>` : ''}</div><label><span class="wa-sr-only">${text('Assignment')} ${esc(nameOf(member))}</span><select data-assign="${esc(member.memberId)}"><option value="" ${!assigned?'selected':''}>${text('Unassigned pool')}</option><option value="alpha" ${assigned==='alpha'?'selected':''}>Alpha</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${assigned===group.pentaId?'selected':''}>${esc(roleName(group))}</option>`).join('')}</select></label><button type="button" data-remove="${esc(member.memberId)}" aria-label="${text('Remove')} ${esc(nameOf(member))}" title="${text('Remove')}">×</button></div>`;
+  function pillarsHtml() {
+    return `<section class="panel"><h2>${text('OC16 pillars')}</h2><div class="wa-pillars">${WA_PILLARS.map(pillar=>`<button class="wa-pillar" data-wa-gate="${pillar.gate}" data-focus="pillar-${pillar.gate}" data-covered="${known()?covered(pillar.gate):'unknown'}"><span class="wa-pillar-number">${pillar.gate}</span><span><strong>${text(`OC16 ${pillar.id}`)}</strong><small>${esc(hexagramName(pillar.gate))}</small><small>${known()?text(covered(pillar.gate)?'OC16 active':'OC16 inactive'):text('OC16 unknown')}</small></span></button>`).join('')}</div></section>`;
   }
-  function schematic() {
-    return `<figure class="wa-schematic"><svg viewBox="0 0 660 180" role="img" aria-label="${text('Organization schematic')}"><title>${text('Organization schematic')}</title><g class="wa-schematic-edges"><path d="M330 55 V90 H110 V110 M330 90 V110 M330 90 H550 V110"/></g><rect x="230" y="10" width="200" height="45" rx="12"/><text x="330" y="39" text-anchor="middle">Alpha · ${draft.alphaId?'✓':'—'}</text>${draft.pentas.map((group,index)=>`<rect x="${10+index*220}" y="110" width="200" height="55" rx="12"/><text x="${110+index*220}" y="144" text-anchor="middle">${text(roles[group.role])} · ${group.memberIds.length}</text>`).join('')}</svg><figcaption>${text('Schematic edges show manual organization only.')}</figcaption></figure>`;
+  function metric(label, count, total, percent) {
+    return `<div>${text(label)}<div class="wa-metric-value"><strong>${known()?`${count} / ${total}`:`— / ${total}`}</strong><small>${known()?percentage(percent):'—'}</small></div><span class="wa-meter"><i style="width:${known()?percent:0}%"></i></span></div>`;
   }
-  const participating = () => draft.members.filter(member => destination(draft, member.memberId));
-  const consultation = () => clone(draft.consultation || { assignment:'manual', origin:'manual' });
-  function updateConsultation(record) { draft=updateWaAnnotations(draft,{consultation:record}); }
-  function updateEdges(edges) { draft=updateWaAnnotations(draft,{manualCommunicationEdges:edges}); }
-  function manualField(key, label, value = '', extra = '') {
-    return `<label>${text(label)}<textarea data-manual-field="${key}" data-focus="manual-${key}-${esc(extra)}" ${extra} rows="3">${esc(value)}</textarea></label>`;
+  function pairRows(department) {
+    return `<div class="wa-pair-list">${department.pairs.map(pair=>`<div class="wa-pair-row" data-pair-row="${pair.channelId}"><div class="wa-pair-title"><button class="wa-pair-button" data-wa-pair="${pair.channelId}">${waStateSymbol(measuredPair(pair.channelId)?.status)}<strong>${pair.displayGates.join('–')}</strong></button><span class="wa-pair-kind">${text(pair.role==='core'?'OC16 core':'OC16 support')}</span></div><div class="wa-pair-gates">${pair.displayGates.map(gate=>`<button class="wa-gate-button ${covered(gate)?'is-covered':''}" data-wa-gate="${gate}"><strong>${gate}</strong><span>${esc(gateName(gate))} · ${esc(hexagramName(gate))}</span></button>`).join('')}</div><p class="wa-small-note">${esc(waStateText(measuredPair(pair.channelId)?.status))}</p></div>`).join('')}</div>`;
   }
-  function manualHtml() {
-    const record = draft.consultation;
-    return `<details class="wa-panel wa-manual" data-manual-section="records" ${expandedManual.has('records')?'open':''}><summary>${text('Manual records')}</summary><p class="wa-empty">${text('Manual records note')}</p><div class="wa-actions"><button type="button" data-action="export-annotations">${text('Export manual annotations')}</button><button type="button" data-action="export-backup">${text('Export backup')}</button><button type="button" data-action="remove-consultation" ${record?'':'hidden'}>${text('Delete consultation')}</button></div><h3>${text('Consultation')} · ${text('Manual')}</h3><div class="wa-manual-fields">${manualField('specificProblem','Specific problem',record?.specificProblem)}${manualField('personalManagementNotes','Personal management notes',record?.personalManagementNotes)}${manualField('communicationPlan','Communication plan',record?.communicationPlan)}</div><h3>${text('Business areas')}</h3>${draft.pentas.map(group=>{
-      const area=record?.businessAreas?.find(item=>item.pentaId===group.pentaId);
-      return `<details data-manual-section="${esc(group.pentaId)}" ${expandedManual.has(group.pentaId)?'open':''}><summary>${esc(roleName(group))}</summary><div class="wa-manual-fields">${manualField('workScope','Work scope',area?.workScope,`data-area="${esc(group.pentaId)}"`)}${manualField('demand','Demand',area?.demand,`data-area="${esc(group.pentaId)}"`)}${manualField('requiredSkills','Required skills, one per line',area?.requiredSkills?.join('\n'),`data-area="${esc(group.pentaId)}"`)}</div><button type="button" data-remove-area="${esc(group.pentaId)}" ${area?'':'hidden'}>${text('Delete business area')}</button></details>`;
-    }).join('')}<h3>${text('Gap intentions')}</h3><div class="wa-record-list">${(record?.gapIntents||[]).map(item=>`<article><strong>${esc(item.theme||t('Untitled intention'))}</strong><p>${esc(destinationName(draft,item.pentaId))} · ${text(`Gap stage ${item.stage}`)}</p><p>${esc(item.note||'')}</p><div class="wa-actions"><button type="button" data-edit-intent="${esc(item.id)}">${text('Edit')}</button><button type="button" data-remove-intent="${esc(item.id)}">${text('Delete')}</button></div></article>`).join('')}</div><button type="button" data-action="add-intent">${text('Add Gap intention')}</button><fieldset class="wa-allies"><legend>${text('Key allies')} · ${text('Manual')}</legend>${participating().map(member=>`<label><input type="checkbox" data-ally="${esc(member.memberId)}" ${(record?.keyAllyIds||[]).includes(member.memberId)?'checked':''}><span>${esc(nameOf(member))}</span></label>`).join('')||`<p>${text('Assign participants first')}</p>`}</fieldset><h3>${text('Manual communication links')}</h3><div class="wa-record-list">${(draft.manualCommunicationEdges||[]).map(edge=>`<article><strong>${esc(nameOf(memberById(edge.fromMemberId)))} → ${esc(nameOf(memberById(edge.toMemberId)))}</strong><p>${esc(edge.label||'')} · ${text('Manual')}</p><p>${esc(edge.note||'')}</p><div class="wa-actions"><button type="button" data-edit-edge="${esc(edge.edgeId)}">${text('Edit')}</button><button type="button" data-remove-edge="${esc(edge.edgeId)}">${text('Delete')}</button></div></article>`).join('')}</div><button type="button" data-action="add-edge" ${participating().length<2?'disabled':''}>${text('Add manual link')}</button></details>`;
+  function departmentHtml(department) {
+    const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
+    const core = department.pairs[0], open=expanded.has(department.id);
+    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-department-title"><strong>${text(`OC16 ${department.id}`)}${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</strong><span aria-hidden="true">${open?'−':'+'}</span></span><span class="wa-department-sub">${text('OC16 core')} · ${core.displayGates.join('–')} ${stateHtml(measuredPair(core.channelId))}</span><span class="wa-metrics">${metric('OC16 gate coverage',summary?.gateCount,department.pairs.length*2,summary?.gatePercentage)}${metric('OC16 pair coverage',summary?.pairCount,department.pairs.length,summary?.pairPercentage)}</span></button><div id="wa-department-${department.id}" class="wa-department-detail" ${open?'':'hidden'}>${pairRows(department)}<p class="wa-small-note">${text('OC16 contributed by')}</p>${summary?.contributorIds.length?tags(summary.contributorIds):`<p class="wa-small-note">${text(known()?'OC16 no department contributions':'OC16 unknown')}</p>`}<button class="wa-link-button" data-wa-department="${department.id}">${text('OC16 open department')}</button></div></article>`;
   }
-  function editRecord(kind, id) {
-    const intent=kind==='intent', records=intent?draft.consultation?.gapIntents:draft.manualCommunicationEdges;
-    const existing=records?.find(item=>(intent?item.id:item.edgeId)===id);
-    const item=clone(existing || (intent?{id:createUuid(),pentaId:draft.pentas[0].pentaId,theme:'',stage:'wish_list',note:''}:{edgeId:createUuid(),fromMemberId:participating()[0]?.memberId,toMemberId:participating()[1]?.memberId,assignment:'manual'}));
-    const editedFields=new Set();
-    const options=(list,value)=>list.map(entry=>`<option value="${esc(entry.id)}" ${entry.id===value?'selected':''}>${esc(entry.name)}</option>`).join('');
-    const field=(key,label)=>`<label>${text(label)}<textarea name="${key}" rows="3">${esc(item[key]||'')}</textarea></label>`;
-    const select=(key,label,list)=>`<label>${text(label)}<select name="${key}">${options(list,item[key])}</select></label>`;
-    const members=participating().map(member=>({id:member.memberId,name:nameOf(member)}));
-    const inputGeneration=generation;
-    const {root,close}=layer(intent?'Gap intentions':'Manual communication links',`<form class="wa-record-form"><p>${text('Manual')}</p>${intent?`${select('pentaId','Penta name',draft.pentas.map(group=>({id:group.pentaId,name:roleName(group)})))}${field('theme','Intention theme')}${select('stage','Reported stage',['wish_list','configured','observed'].map(stage=>({id:stage,name:t(`Gap stage ${stage}`)})))}`:`${select('fromMemberId','From participant',members)}${select('toMemberId','To participant',members)}${field('label','Link label')}`} ${field('note','Note')}<div class="wa-actions"><button type="submit" data-save-record>${text('Save record')}</button><button type="button" data-cancel-record>${text('Cancel')}</button></div></form>`);
-    root.querySelector('[data-cancel-record]').addEventListener('click',close);
-    root.querySelector('form').addEventListener('input',event=>{if(event.target.name)editedFields.add(event.target.name);});
-    root.querySelector('form').addEventListener('submit',event=>{
-      event.preventDefault();
-      if(generation!==inputGeneration){root.querySelector('.wa-layer-error').textContent=t('Wa input changed');return;}
-      const values=Object.fromEntries(new FormData(event.target));
-      if(!intent)for(const key of ['label','note'])if(!editedFields.has(key))delete values[key];
-      const updated={...item,...values};
-      if(!intent&&updated.fromMemberId===updated.toMemberId){root.querySelector('.wa-layer-error').textContent=t('Choose different participants');return;}
-      preserveReady();
-      try {
-        if(intent){const target=consultation();target.gapIntents=(target.gapIntents||[]).map(entry=>entry.id===updated.id?updated:entry);if(!existing)target.gapIntents.push(updated);updateConsultation(target);}
-        else {const edges=(draft.manualCommunicationEdges||[]).map(entry=>entry.edgeId===updated.edgeId?updated:entry);if(!existing)edges.push(updated);updateEdges(edges);}
-        close();changed();
-      } catch {root.querySelector('.wa-layer-error').textContent=t('Invalid manual record');}
-    });
+  function selectedHtml() {
+    let label='';
+    if(selected?.type==='gate')label=`${selected.id} · ${gateName(selected.id)} · ${hexagramName(selected.id)}`;
+    if(selected?.type==='pair')label=pairs.find(pair=>pair.channelId===selected.id)?.displayGates.join('–');
+    if(selected?.type==='department')label=t(`OC16 ${selected.id}`);
+    return `<section class="panel"><h2>${text('OC16 selected detail')}</h2>${label?`<div class="wa-selected"><p>${esc(label)}</p><button class="wa-link-button" data-reopen-detail>${text('OC16 inspect')}</button></div>`:`<p class="wa-small-note">${text('OC16 selected hint')}</p>`}</section>`;
   }
-  function pairRecords(value = result) { return value?.communication?.pairs || []; }
-  function pairById(id, value = result) { return pairRecords(value).find(pair => pair.channelId === id); }
-  function pairHolders(pair, gate) { return pair?.holdersByGate?.[gate] || []; }
-  function pairCoverage(pair, id) { const gates = id.split('-'); return gates.filter(gate => pairHolders(pair, gate).length).length; }
-  function themeCards(pairs, scope) {
-    return `<div class="wa-themes" data-coverage="${scope}">${WA_PAIR_IDS.map(id=>{const pair=pairs.find(item=>item.channelId===id), coverage=pairCoverage(pair,id);return `<button type="button" class="wa-theme" data-pair="${id}" data-pair-scope="${scope}"><span class="wa-source-label">Wa</span><strong>${esc(waPairLabel(id,getLocale()))}</strong><span>${text(coverage===2?'Both endpoints present':coverage===1?'Partial endpoint coverage':'No endpoint coverage')}</span><small>${id.split('-').map(gate=>`${gate}: ${pairHolders(pair,gate).length}`).join(' · ')}</small></button>`;}).join('')}</div>`;
+  function errorIssuesHtml() {
+    const keys={MISSING_PERSON_REFERENCE:'Missing reference',PERSON_LOOKUP_FAILED:'Missing reference',INVALID_BIRTH:'OC16 invalid birth',INVALID_TIME_UNKNOWN:'OC16 invalid birth',CHART_CALCULATION_FAILED:'Chart calculation failed',INVALID_PROVIDER_RESULT:'Invalid chart provider result'};
+    return `<ul class="wa-errors">${(result?.issues||[]).map(issue=>`<li>${issue.memberId?`<strong>${esc(nameOf(issue.memberId)||issue.memberId)}</strong> · `:''}${text(keys[issue.code]||'Wa data error')} <small>(${esc(issue.code)})</small></li>`).join('')}</ul>`;
   }
-  function traceHtml() {
-    if(trace?.status!=='ready'||!trace.gates.length)return '';
-    return `<details class="wa-trace"><summary>${text('Activation changes')} · ${trace.activations.added.length} / ${trace.activations.removed.length}</summary><ul>${trace.gates.map(gate=>`<li>${text('Gate {gate}',{gate:gate.gate})} · ${text('Activations')} ${gate.activationCount.from} → ${gate.activationCount.to}<ul>${gate.members.map(member=>`<li>${esc(nameOf(memberById(member.memberId)||previousReady?.snapshot.members.find(item=>item.memberId===member.memberId)))}: +${member.added.length} / −${member.removed.length}${[...member.removed,...member.added].length?` · ${esc([...new Set([...member.removed,...member.added].map(item=>`${item.gate}.${item.line}`))].join(', '))}`:''}</li>`).join('')}</ul></li>`).join('')}</ul></details>`;
-  }
-  function resultHtml() {
-    if (!result) return `<p class="wa-empty" data-wa-empty>${text('Wa empty result')}</p>`;
-    const group=result.groupCommunication?.groups.find(item=>item.pentaId===selectedGroup);
-    return `${result.uncertainty.uncertainMemberIds.length?`<p class="wa-conditional">≈ ${text('Wa conditional result')}</p>`:''}<h3>${text('Structural coverage')}</h3><label>${text('Communication group')}<select data-communication-group><option value="">${text('All participants')}</option>${draft.pentas.map(item=>`<option value="${esc(item.pentaId)}" ${selectedGroup===item.pentaId?'selected':''}>${esc(roleName(item))}</option>`).join('')}</select></label>${group?`<label class="wa-alpha-toggle"><input type="checkbox" data-group-alpha ${showGroupAlpha?'checked':''}>${text('Show group with Alpha')}</label><section class="wa-coverage-section"><h3>${text('Group members only')}</h3>${themeCards(group.pairs,'group')}</section>${showGroupAlpha?`<section class="wa-coverage-section"><h3>${text('Group with manual Alpha')}</h3>${themeCards(group.withAlpha.pairs,'alpha')}</section>`:''}`:themeCards(pairRecords(),'all')}<section class="wa-comparison"><h3>${text('Compared with previous ready analysis')}</h3>${previousReady ? comparison.length ? `<ul>${comparison.map(change=>`<li>${esc(changeText(change))}</li>`).join('')}</ul>` : `<p>${text('No structural changes')}</p>` : `<p>${text('First ready analysis')}</p>`}${traceHtml()}</section>`;
-  }
-  function changeText(change) {
-    if (change.kind === 'contribution') return `${waPairLabel(change.id,getLocale())}: ${t('Contribution changed')}`;
-    if (change.kind === 'group') return `${change.name}: ${t('Group structure changed')}`;
-    if (change.kind === 'member') return `${change.name}: ${t('Member structure changed')}`;
-    return `${change.name}: ${t(change.kind==='move'?'Moved':change.kind==='join'?'Joined':'Left')}${change.kind==='move' ? ` · ${destinationName(change.before,change.from)} → ${destinationName(change.after,change.to)}` : ''}`;
-  }
-  function readingList() {
-    try {return listWaContent(getLocale()).map(entry=>`<button type="button" data-reading="${esc(entry.objectId)}">${esc(entry.name)}</button>`).join('');}
-    catch {return `<p>${text('Wa reading unavailable')}</p>`;}
+  function calloutHtml() {
+    if(busy)return `<div class="wa-empty-callout" role="status">${text('OC16 loading')}</div>`;
+    if(result?.status==='not_ready')return `<section class="wa-empty-callout wa-error" role="alert"><h2>${text('OC16 unavailable')}</h2><p>${text('OC16 error note')}</p>${errorIssuesHtml()}<button class="btn-secondary" data-action="edit">${text('OC16 edit members')}</button> <button class="btn-secondary" data-action="retry">${text('OC16 retry')}</button></section>`;
+    if(!validateWaLayout(draft).memberIds.length)return `<section class="wa-empty-callout"><h2>${text('OC16 empty title')}</h2><p>${text('OC16 empty note')}</p><button class="btn-primary" data-action="edit">${text('OC16 choose people')}</button></section>`;
+    return '';
   }
   function render() {
-    if (disposed) return;
-    if(composing?.isConnected){renderAfterComposition=true;return;}
-    container.querySelectorAll('[data-manual-section]').forEach(node=>{if(node.open)expandedManual.add(node.dataset.manualSection);else expandedManual.delete(node.dataset.manualSection);});
-    const layout = validateWaLayout(draft), pool = draft.members.filter(member=>!destination(draft,member.memberId));
-    const active = container.contains(document.activeElement) ? document.activeElement : null;
-    const focus = active?.getAttribute('data-focus'), start = active?.selectionStart, end = active?.selectionEnd;
-    const state = busy ? 'Wa calculating' : result ? draft.layoutMode==='observation'?'Observation ready':'Structural analysis ready' : !layout.ready?'Layout incomplete':'Wa draft';
-    container.innerHTML = `<div class="wa-page" data-wa-page><header class="wa-header"><div><p class="wa-eyebrow">WA · ${text('Organization schematic')}</p><h1>${text('Wa organization')}</h1></div><div class="wa-actions"><button type="button" data-action="new">${text('New organization')}</button><button type="button" data-action="list">${text('Saved organizations')}</button><button type="button" data-action="history">${text('Revision history')}</button></div></header><p class="wa-scope">${text('Wa scope')}</p><section class="wa-panel wa-settings"><label>${text('Organization title')}<input data-title data-focus="title" maxlength="300" value="${esc(draft.title)}" placeholder="${text('Wa organization')}"></label><label>${text('Layout mode')}<select data-mode><option value="standard" ${draft.layoutMode==='standard'?'selected':''}>${text('Standard layout')}</option><option value="observation" ${draft.layoutMode==='observation'?'selected':''}>${text('Observation layout')}</option></select></label><div class="wa-save-actions"><button type="button" class="btn-primary" data-action="save" ${saving?'disabled':''}>${text('Save')}</button><button type="button" data-action="save-new" ${saving?'disabled':''}>${text('Save as new')}</button></div><p class="wa-draft-status">${text(dirty?'Unsaved changes':'Wa draft')} · r${draft.revision}</p></section><p class="wa-notice" role="status" aria-live="polite">${notice?text(notice):''}${errorText?` <span>${esc(errorText)}</span>`:''}</p><div class="wa-workspace"><aside class="wa-panel wa-pool"><h2>${text('Member pool')} <small>${draft.members.length}</small></h2><p>${text('Pool is excluded from analysis.')}</p><label>${text('Choose saved people')}<select data-person><option value="">${text('Choose saved people')}</option>${people.list().filter(person=>!draft.members.some(member=>member.personId===person.id)).map(person=>`<option value="${esc(person.id)}">${esc(person.name)} · ${esc(person.birthDate || '')}</option>`).join('')}</select></label><button type="button" data-action="add">${text('Add to pool')}</button>${!people.list().length?`<p>${text('No saved people')}</p>`:''}<h3>${text('Unassigned pool')} · ${pool.length}</h3>${pool.map(memberRow).join('')}</aside><main class="wa-layout"><section class="wa-panel wa-alpha"><label>${text('Manual Alpha')}<select data-alpha><option value="">${text('No Alpha selected')}</option>${draft.members.map(member=>`<option value="${esc(member.memberId)}" ${draft.alphaId===member.memberId?'selected':''}>${esc(nameOf(member))}</option>`).join('')}</select></label>${draft.alphaId?memberRow(memberById(draft.alphaId)):''}</section><div class="wa-groups">${draft.pentas.map(group=>`<details class="wa-panel wa-group" data-group="${esc(group.pentaId)}" ${collapsed.has(group.pentaId)?'':'open'}><summary><strong>${text(roles[group.role])}</strong><span>${group.memberIds.length}${draft.layoutMode==='standard'?'/3–5':''}</span></summary><label>${text('Penta name')}<input data-group-title="${esc(group.pentaId)}" data-focus="${esc(group.pentaId)}" value="${esc(group.title)}" placeholder="${text(roles[group.role])}"></label>${group.memberIds.map(id=>memberRow(memberById(id))).join('') || `<p class="wa-empty">${text('Assignment')} · 0</p>`}</details>`).join('')}</div><section class="wa-panel">${schematic()}<div class="wa-analyze-controls"><span data-wa-state>${text(state)}</span><button type="button" class="btn-primary" data-action="analyze" ${busy || !layout.ready?'disabled':''}>${text('Analyze structure')}</button></div></section></main></div><section class="wa-panel wa-results" aria-busy="${busy}"><h2>${text('Communication themes')}</h2>${resultHtml()}</section>${manualHtml()}<details class="wa-panel wa-library"><summary>${text('Wa reading')} · 14</summary><p>${text('Manual Powerbase note')}</p><div>${readingList()}</div></details></div>`;
-    container.querySelectorAll('[data-group]').forEach(node=>node.addEventListener('toggle',()=>{if(!node.isConnected)return;if(node.open)collapsed.delete(node.dataset.group);else collapsed.add(node.dataset.group);}));
-    container.querySelectorAll('[data-manual-section]').forEach(node=>node.addEventListener('toggle',()=>{if(!node.isConnected)return;if(node.open)expandedManual.add(node.dataset.manualSection);else expandedManual.delete(node.dataset.manualSection);}));
-    if (focus) { const replacement=[...container.querySelectorAll('[data-focus]')].find(node=>node.dataset.focus===focus); replacement?.focus({preventScroll:true}); if (replacement && start!=null && replacement.setSelectionRange) replacement.setSelectionRange(start,end); }
+    if(disposed)return;
+    if(composing){deferredRender=true;return;}
+    const active=container.contains(document.activeElement)?document.activeElement:null;
+    const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
+    container.innerHTML=`<div class="wa-page" data-wa-page><header class="wa-header"><div><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button><button class="btn-secondary" data-action="edit" data-focus="edit" ${saving?'disabled':''}>${text('OC16 edit members')}</button><button class="btn-primary" data-action="save" data-focus="save" ${saving?'disabled':''}>${text('Save')}</button></div></header>${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column"><section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2><span class="wa-kicker">WA / OC16</span></div><div class="wa-scope-control"><label>${text('OC16 scope')}<select data-scope data-focus="scope"><option value="">${text('OC16 all')}</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${group.pentaId===selectedGroup?'selected':''}>${esc(groupName(group))}</option>`).join('')}</select></label>${selectedGroup?`<label><input type="checkbox" data-include-alpha ${includeAlpha?'checked':''}>${text('OC16 with alpha')}</label>`:''}</div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected)}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}</section></aside><main class="wa-results">${overviewHtml()}${pillarsHtml()}<section class="panel"><h2>${text('OC16 departments')}</h2><p class="wa-small-note">${text('OC16 groups vs departments')}</p><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div><p class="wa-small-note">${text('OC16 support note')}</p></section>${selectedHtml()}<section class="panel"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button><p class="wa-small-note">${text('OC16 origin note')}</p>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}${hasAnnotations()?`<p class="wa-small-note">${text('OC16 retained annotations')}</p>`:''}</section></main></div></div>`;
+    const configDetails=container.querySelector('.wa-config-details');
+    configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
+    if(focus){const replacement=[...container.querySelectorAll('[data-focus]')].find(node=>node.dataset.focus===focus);replacement?.focus({preventScroll:true});if(start!=null&&replacement?.setSelectionRange)replacement.setSelectionRange(start,end);}
   }
-  function showReading(id, withContributions = false, scope = 'all') {
-    let entry;
-    try {entry = readWaContent(id,getLocale());if(!entry)throw Error('Unavailable');}
-    catch {notice='Wa reading unavailable';errorText='';render();return;}
-    prepareDetailDialog(detail,'wa');
-    const group=result?.groupCommunication?.groups.find(item=>item.pentaId===selectedGroup);
-    const pair = withContributions ? (scope==='group'?group?.pairs:scope==='alpha'?group?.withAlpha.pairs:pairRecords())?.find(item=>item.channelId===id) : null;
-    const contributors = pair ? `<section class="wa-contributions"><h3>${text('Wa contributions')}</h3><dl>${id.split('-').map(gate=>`<div><dt>${text('Gate {gate}',{gate})}</dt><dd>${pairHolders(pair,gate).map(memberId=>{ const member=memberById(typeof memberId==='string'?memberId:memberId.memberId); return `<span>${esc(nameOf(member))}${member&&personFor(member)?.timeUnknown?` · ≈ ${text('Estimated at noon')}`:''}</span>`; }).join('') || text('No contributions')}</dd></div>`).join('')}</dl><p>${text('Within-person coverage')}: ${pair.selfCompleteMemberIds.length} · ${text('Cross-member pairs')}: ${pair.complementaryMemberPairs.length}</p></section>` : '';
-    detail.innerHTML = `<section class="modal wa-reading-sheet"><header><span class="wa-source-label">Wa</span><button type="button" class="gate-detail-close" aria-label="${text('Close')}">×</button></header><div class="gate-detail-body"><h2>${esc(withContributions?waPairLabel(id,getLocale()):entry.name)}</h2>${contributors}<div class="knowledge-summary-callout">${renderProse({content:entry.summary})}</div><div class="knowledge-body">${renderProse({content:entry.detail})}</div><details><summary>${text('Source references')}</summary><p>${entry.sourceRefs.map(esc).join(' · ')}</p></details></div></section>`;
-    detailOpen=true; openDetailDialog(detail,()=>{detailOpen=false;},{owner:'wa',label:entry.name});
+
+  function refreshScope() {
+    result=analyzeOC16(draft,prepared,{pentaId:selectedGroup,includeAlpha:selectedGroup?includeAlpha:true});
+    render();
   }
-  function compare(before, after) {
-    if (!before) return [];
-    const diff=diffWa(before.result,after.result,{includeTrace:true}); if(diff.status!=='ready')return [];
-    trace=diff.contributionTrace;
-    const changes=diff.reassignments.map(change=>{
-      const member=after.snapshot.members.find(m=>m.memberId===change.memberId)||before.snapshot.members.find(m=>m.memberId===change.memberId);
-      return {kind:!change.from?'join':!change.to?'leave':'move',name:nameOf(member),from:destination(before.snapshot,change.memberId),to:destination(after.snapshot,change.memberId),before:before.snapshot,after:after.snapshot};
-    });
-    for(const group of diff.pentas)changes.push({kind:'group',name:destinationName(after.snapshot,group.pentaId)});
-    for(const member of diff.memberChanges)changes.push({kind:'member',name:nameOf(after.snapshot.members.find(item=>item.memberId===member.memberId)||before.snapshot.members.find(item=>item.memberId===member.memberId))});
-    for(const pair of diff.communication.pairs)changes.push({kind:'contribution',id:pair.channelId});
-    return changes;
+  function schedule() {
+    generation++;clearTimeout(timer);closeReading();prepared=null;result=null;selected=null;
+    const ids=validateWaLayout(draft).memberIds;
+    if(!ids.length){busy=false;prepared=[];refreshScope();return;}
+    busy=true;render();const token=generation;
+    timer=setTimeout(()=>runAnalysis(token),130);
   }
-  async function runAnalysis() {
-    clearAnalysis(); const token=generation, snapshot=clone(draft), layout=validateWaLayout(snapshot);
-    if (!layout.ready) { notice='Layout incomplete'; render(); return; }
-    busy=true; notice=''; errorText=''; render();
-    let candidates=[];
-    const valid=()=>!disposed && token===generation && candidates.every(candidate=>JSON.stringify(people.get(candidate.personId))===candidate.personSnapshot);
+  async function runAnalysis(token) {
+    const snapshot=clone(draft), layout=validateWaLayout(snapshot);
+    const identities=new Map(layout.memberIds.map(id=>{const ref=snapshot.members.find(member=>member.memberId===id);return [ref.personId,JSON.stringify(people.get(ref.personId))];}));
     try {
-      candidates=layout.memberIds.map(id=>{const member=snapshot.members.find(item=>item.memberId===id);return {personId:member.personId,personSnapshot:JSON.stringify(people.get(member.personId))};});
-      const prepared=await prepareWaMembers(snapshot,{getPerson:id=>people.get(id),effectiveBirth:effectiveTeamBirth,calculateBirth:async birth=>{
-        if(!valid())throw Error('Input changed');
-        return calculate(birth);
-      }});
-      if (!valid()) { if(token===generation)notice='Wa input changed'; return; }
-      if(prepared.status!=='ready'){
-        notice='Analysis unavailable';
-        errorText=prepared.issues.map(issue=>`${nameOf(snapshot.members.find(member=>member.memberId===issue.memberId))}: ${t(({CHART_CALCULATION_FAILED:'Chart calculation failed',INVALID_PROVIDER_RESULT:'Invalid chart provider result',MISSING_PERSON_REFERENCE:'Missing reference',PERSON_LOOKUP_FAILED:'Missing reference'})[issue.code]||'Missing assigned data')}`).join(' · ');
-        return;
-      }
-      const output=await analyze(snapshot,prepared.members,{includeGroupCommunication:true});
-      if (!valid()) { if(token===generation)notice='Wa input changed'; return; }
-      if (output?.status !== 'ready') { notice='Missing assigned data'; return; }
-      const ready={snapshot,layout,result:output}; previousReady=currentReady || previousReady;
-      comparison=compare(previousReady,ready); result=output; currentReady=ready;
-    } catch(error) { if(token===generation){notice='Analysis unavailable';errorText=error?.message || t('Chart calculation failed');result=null;} }
-    finally { if(token===generation&&!disposed){busy=false;render();} }
+      const input=await prepareWaPreview(snapshot,{getPerson:id=>people.get(id),calculateBirth:calculate,effectiveBirth:effectiveTeamBirth});
+      if(disposed||token!==generation)return;
+      if([...identities].some(([id,value])=>JSON.stringify(people.get(id))!==value)){schedule();return;}
+      prepared=input;busy=false;refreshScope();
+    }catch(error){if(disposed||token!==generation)return;busy=false;prepared=null;result={status:'not_ready',issues:[{code:'CHART_CALCULATION_FAILED',message:error?.message}]};render();}
   }
-  function preserveReady() { if(currentReady)previousReady=currentReady; }
-  function confirmAnnotationChange(body, confirmLabel) {
-    return new Promise(resolve=>{
-      const opened=openOperationDialog({content:`<section class="modal wa-operation"><header><h2>${text('Manual record changes')}</h2></header>${body}<div class="wa-actions"><button type="button" data-close>${text('Cancel')}</button><button type="button" data-confirm-cleanup>${text(confirmLabel)}</button></div></section>`,onClose:reason=>resolve(reason==='confirm')});
-      opened.root.querySelector('[data-confirm-cleanup]').addEventListener('click',()=>opened.close('confirm'));
+  function compose(target=null,mode='people') {
+    composer?.close();closeReading();operation++;
+    const original=draft,identity=JSON.stringify(draft),inputVersion=version;
+    composer=openWaComposer({snapshot:draft,peopleStore:people,listTeams:teams,target,mode,quickCommit:target!==null,
+      validate:()=>!disposed&&!saving&&draft===original&&version===inputVersion&&JSON.stringify(draft)===identity,
+      onCommit:(next,context)=>{if(!context.isCurrent())return false;assertWaSnapshot(next);annotationRecovery.push(...clone(context.annotationChanges).map(change=>({organizationId:next.organizationId,...change})));draft=clone(next);version++;dirty=true;notice=context.annotationChanges.length?'OC16 recovery retained':'';errorText='';if(!draft.pentas.some(group=>group.pentaId===selectedGroup))selectedGroup=null;schedule();return true;},
+      onClose:()=>{composer=null;}
     });
   }
-  function cleanupReport(issues) {
-    const groups=[['MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT','Manual communication links'],['ALLY_NOT_PARTICIPANT','Key allies'],['UNKNOWN_METADATA_MEMBER','Powerbase notes']];
-    return `<p>${text('Manual references will be removed')}</p>${groups.map(([code,label])=>{
-      const matches=issues.filter(issue=>issue.code===code);if(!matches.length)return '';
-      return `<h3>${text(label)} · ${matches.length}</h3><ul>${matches.map(issue=>{const annotation=issue.annotation;return `<li>${esc(code==='MANUAL_EDGE_ENDPOINT_NOT_PARTICIPANT'?`${nameOf(memberById(annotation.fromMemberId))} → ${nameOf(memberById(annotation.toMemberId))}${annotation.label?` · ${annotation.label}`:''}`:code==='ALLY_NOT_PARTICIPANT'?nameOf(memberById(annotation)):`${nameOf(memberById(annotation.memberId))} · ${annotation.label}`)}</li>`;}).join('')}</ul>`;
-    }).join('')}`;
+  function load(snapshot) {
+    assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=true;expanded.clear();remember(draft.organizationId);schedule();
   }
-  async function changeMember(memberId, target, remove=false) {
-    const inputGeneration=generation, original=draft, captured=clone(draft), identity=JSON.stringify(captured);
-    const apply=options=>remove?removeWaMember(captured,memberId,options):moveWaMember(captured,memberId,target,options);
-    try {const next=apply();preserveReady();draft=next;changed();}
-    catch(error){
-      if(error?.code!=='ANNOTATION_CLEANUP_REQUIRED')throw error;
-      // Keep the underlying select accurate while the shared confirmation owns focus.
-      render();
-      const confirmed=await confirmAnnotationChange(cleanupReport(error.issues),'Remove affected records and continue');
-      if(!confirmed||disposed)return;
-      if(inputGeneration!==generation||draft!==original||JSON.stringify(draft)!==identity){notice='Wa input changed';render();return;}
-      const next=apply({confirmAnnotationCleanup:true});preserveReady();draft=next;changed();
-    }
+  async function save() {
+    if(saving)return;
+    operation++; // A user save supersedes any pending last-organization autoload.
+    const snapshot=clone(draft),inputVersion=version,token=++saveGeneration;
+    saving=true;notice='';errorText='';render();
+    try {
+      const saved=await repository.save(snapshot,{expectedRevision:snapshot.revision});
+      if(disposed||token!==saveGeneration)return;
+      if(draft.organizationId===snapshot.organizationId){
+        if(version===inputVersion){draft=clone(saved);dirty=false;}else for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key];
+        notice='Wa saved';remember(saved.organizationId);
+      }
+    }catch(error){if(!disposed&&token===saveGeneration)fail(error);}
+    finally {if(!disposed&&token===saveGeneration){saving=false;render();}}
   }
-  async function exportRecords(backup=false) {
-    const snapshot=clone(draft);
-    const data=backup?{schema:'wa-ui-backup-v2',draft:snapshot,saved:snapshot.revision?await repository.exportOrganization(snapshot.organizationId):null}:exportWaAnnotations(snapshot);
+  function layer(title,body,onClose=null) {
+    layerClose?.();
+    const opened=openOperationDialog({content:`<section class="modal wa-archive-dialog" aria-label="${text(title)}"><header><h2>${text(title)}</h2><button class="ui-icon-button" data-close aria-label="${text('Close')}">×</button></header>${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(layerClose===opened.close)layerClose=null;onClose?.();}});
+    layerClose=opened.close;return opened;
+  }
+  async function archives() {
+    closeReading();const token=++operation,inputVersion=version;
+    try {
+      const saved=await repository.list();if(disposed||token!==operation||inputVersion!==version)return;
+      const {root,close}=layer('Saved organizations',`<p class="wa-small-note">${text('OC16 origin note')}</p><button class="btn-secondary" data-backup-draft>${text('OC16 export draft')}</button><div class="wa-archive-list">${saved.map(item=>`<section class="wa-archive-row"><button data-open-org="${esc(item.organizationId)}">${esc(item.title||t('Wa organization'))}<small>${validateWaLayout(item).memberIds.length} ${text('OC16 participants')} · r${item.revision}</small></button><button data-history-org="${esc(item.organizationId)}">${text('Revision history')}</button><button data-backup-org="${esc(item.organizationId)}">${text('Export backup')}</button></section>`).join('')||`<p>${text('OC16 empty saved')}</p>`}</div>`);
+      root.addEventListener('click',async event=>{
+        const button=event.target.closest('button');if(!button)return;
+        if(button.hasAttribute('data-backup-draft')){try{await exportDraft();}catch(error){if(root.isConnected)root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');}return;}
+        const id=button.dataset.openOrg||button.dataset.historyOrg||button.dataset.backupOrg;if(!id)return;
+        try {
+          if(button.dataset.backupOrg){await exportBackup(id);return;}
+          if(button.dataset.historyOrg){await history(saved.find(item=>item.organizationId===id),token);return;}
+          if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;
+          if(disposed||!root.isConnected||token!==operation||version!==inputVersion)return;
+          const loaded=await repository.get(id);
+          if(disposed||!root.isConnected||token!==operation||version!==inputVersion)return;
+          if(!loaded)throw Error(t('Missing reference'));close();load(loaded);
+        }catch(error){if(root.isConnected&&token===operation)root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');}
+      });
+    }catch(error){if(!disposed&&token===operation&&inputVersion===version){fail(error);render();}}
+  }
+  async function history(head,token) {
+    const inputVersion=version,versions=await repository.history(head.organizationId);
+    if(disposed||token!==operation||inputVersion!==version)return;
+    const {root,close}=layer('Revision history',`<p class="wa-small-note">${text('Wa restore note')}</p><div class="wa-archive-list">${versions.map(item=>`<button data-restore="${esc(item.revisionId)}">r${item.revision} · ${esc(item.title||t('Wa organization'))}<small>${esc(item.savedAt)}</small></button>`).join('')}</div>`);
+    root.addEventListener('click',async event=>{
+      const button=event.target.closest('[data-restore]');if(!button||button.disabled)return;
+      const previous=versions.find(item=>item.revisionId===button.dataset.restore);
+      try {
+        if(!await confirmOperation(t('OC16 restore warning')))return;
+        if(disposed||!root.isConnected||token!==operation||inputVersion!==version)return;
+        button.disabled=true;
+        const restored=await repository.restore(head.organizationId,previous.revisionId,{expectedRevision:head.revision});
+        if(disposed||!root.isConnected||token!==operation||inputVersion!==version)return;
+        close();load(restored);notice='Wa restored';render();
+      }catch(error){if(root.isConnected&&token===operation){root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');button.disabled=false;}}
+    });
+  }
+  function download(data,name) {
     if(disposed)return;
     const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-    const link=document.createElement('a');link.href=url;link.download=`wa-${backup?'backup':'annotations'}-${snapshot.organizationId.replace(/[^a-zA-Z0-9_-]/g,'_')}-r${snapshot.revision}.json`;link.hidden=true;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
-  function restoreReport(previous) {
-    const changedFields=['consultation','manualCommunicationEdges','manualMetadata'].filter(key=>JSON.stringify(draft[key])!==JSON.stringify(previous[key])&&draft[key]!==undefined);
-    if(!changedFields.length)return '';
-    const record=draft.consultation;
-    return `<p>${text('Restore annotation warning')}</p><ul>${changedFields.includes('consultation')?`<li>${text('Consultation')}: ${['specificProblem','personalManagementNotes','communicationPlan'].filter(key=>record[key]).length} · ${text('Business areas')}: ${record.businessAreas?.length||0} · ${text('Gap intentions')}: ${record.gapIntents?.length||0} · ${text('Key allies')}: ${(record.keyAllyIds||[]).map(id=>esc(nameOf(memberById(id)))).join(', ')||'0'}</li>`:''}${changedFields.includes('manualCommunicationEdges')?`<li>${text('Manual communication links')}: ${draft.manualCommunicationEdges.length}<ul>${draft.manualCommunicationEdges.map(edge=>`<li>${esc(nameOf(memberById(edge.fromMemberId)))} → ${esc(nameOf(memberById(edge.toMemberId)))}</li>`).join('')}</ul></li>`:''}${changedFields.includes('manualMetadata')?`<li>${text('Powerbase notes')}: ${draft.manualMetadata.powerBases?.length||0}</li>`:''}</ul>${!previous.consultation&&!previous.manualCommunicationEdges?`<p>${text('Revision has no v2 annotations')}</p>`:''}`;
+  async function exportBackup(id) {
+    download(await repository.exportOrganization(id),`wa-backup-${id.replace(/[^a-zA-Z0-9_-]/g,'_')}.json`);
   }
-  async function save(asNew=false) {
-    if(saving)return; const token=++saveGeneration, capturedGeneration=generation;
-    const snapshot=clone(draft);
-    if(asNew)Object.assign(snapshot,{organizationId:createUuid(),revision:0,revisionId:null,parentRevisionId:null,savedAt:null});
-    saving=true;notice='';render();
+  async function exportDraft() {
+    const snapshot=clone(draft), recovery=clone(annotationRecovery);
+    const saved=snapshot.revision?await repository.exportOrganization(snapshot.organizationId):null;
+    download({schema:'wa-ui-backup-v2',draft:snapshot,saved,annotationRecovery:recovery},'wa-current-draft-backup.json');
+  }
+
+  function contributionHtml(gate) {
+    const record=measuredGate(gate);
+    if(!record)return `<p class="wa-small-note">${text('OC16 unknown')}</p>`;
+    if(!record.memberIds.length)return `<p class="wa-small-note">${text('OC16 no contributions')}</p>`;
+    return record.memberIds.map(id=>`<section class="wa-activation-person"><strong>${esc(nameOf(id))}</strong><div class="wa-activation-records">${record.activations.filter(activation=>activation.memberId===id).map(activation=>`<span>${text(`OC16 ${activation.side}`)} · ${esc(planetName(activation.planet))} <b>${activation.gate}.${activation.line}</b></span>`).join('')}</div></section>`).join('');
+  }
+  function readingHtml(id) {
+    const entry=readWaContent(id,getLocale());
+    return entry?`<h2>${esc(entry.name)}</h2><div class="knowledge-summary-callout">${renderProse({content:entry.summary})}</div><div class="knowledge-body">${renderProse({content:entry.detail})}</div>`:`<p>${text('Wa reading unavailable')}</p>`;
+  }
+  function detailBody(item) {
+    if(item.type==='library')return `<h2>${text('OC16 explore readings')}</h2><div class="wa-reading-list">${listWaContent(getLocale()).map(entry=>`<button class="btn-secondary" data-wa-reading="${esc(entry.objectId)}">${esc(entry.name)}</button>`).join('')}</div>`;
+    if(item.type==='reading')return readingHtml(item.id);
+    if(item.type==='department'){
+      const department=OC16_DEPARTMENTS.find(department=>department.id===item.id);
+      const value=known()?result.departments.find(row=>row.id===item.id):null;
+      return `<h2>${text(`OC16 ${department.id}`)}</h2><p class="wa-small-note">${text('OC16 support note')}</p>${pairRows(department)}<h3>${text('OC16 contributed by')}</h3>${value?.contributorIds.length?tags(value.contributorIds):text(known()?'OC16 no department contributions':'OC16 unknown')}`;
+    }
+    if(item.type==='pair'){
+      const pair=pairs.find(pair=>pair.channelId===item.id),value=measuredPair(item.id);
+      return `<div class="detail-label">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role==='core'?'OC16 core':'OC16 support')}</div><h2>${pair.displayGates.join('–')}</h2>${stateHtml(value)}<p class="wa-small-note">${text('OC16 collective note')}</p>${pairRows({pairs:[pair]})}${value?.selfCompleteMemberIds.length?`<h3>${text('OC16 covered by one')}</h3>${tags(value.selfCompleteMemberIds)}`:''}${pair.displayGates.map(gate=>`<h3><button class="wa-link-button" data-wa-gate="${gate}">${gate} · ${esc(gateName(gate))} · ${esc(hexagramName(gate))}</button></h3>${contributionHtml(gate)}`).join('')}<h3>${text('OC16 reference')}</h3>${pair.role==='core'?readingHtml(pair.channelId):renderSharedChannelReading(pair.channelId)}`;
+    }
+    const gate=item.id,pair=pairs.find(pair=>pair.gates.includes(gate));
+    const record=measuredGate(gate);
+    return `${renderGateDetailHeading(gate)}${WA_PILLAR_LABELS[gate]?`<p class="wa-state-badge">${text('OC16 pillar')} · ${text(`OC16 ${WA_PILLAR_LABELS[gate]}`)}</p>`:''}<p class="wa-small-note">${text(`OC16 ${pair.departmentId}`)} · <button class="wa-link-button" data-wa-pair="${pair.channelId}">${pair.displayGates.join('–')} ${text(pair.role==='core'?'OC16 core':'OC16 support')}</button></p><h3>${text('OC16 activation sources')}</h3>${contributionHtml(gate)}<h3>${text('OC16 reference')}</h3>${renderSharedGateReading(gate,{activeLines:[...new Set(record?.activations.map(activation=>activation.line)||[])]})}`;
+  }
+  function showDetail(item,push=true) {
+    if(!detailOpen){detailStack=[];detailFocus=document.activeElement;}
+    if(push)detailStack.push(item);
+    if(['gate','pair','department'].includes(item.type))selected=item;
+    prepareDetailDialog(detail,'wa');
+    detail.innerHTML=`<section class="modal wa-reading-sheet"><nav class="gate-detail-nav"><button class="btn-secondary" data-wa-back ${detailStack.length<2?'hidden':''}>${text('Back')}</button><span class="wa-kicker">WA / OC16 · ${esc(scopeName())}</span><button class="ui-icon-button gate-detail-close" aria-label="${text('Close')}">×</button></nav><div class="gate-detail-body">${detailBody(item)}</div></section>`;
+    detailOpen=true;
+    openDetailDialog(detail,()=>{detailOpen=false;detailStack=[];render();if(detailFocus?.isConnected)detailFocus.focus({preventScroll:true});else if(selected){const attr=selected.type==='gate'?'data-wa-gate':selected.type==='pair'?'data-wa-pair':'data-wa-department';[...container.querySelectorAll(`[${attr}]`)].find(node=>node.getAttribute(attr)===String(selected.id))?.focus({preventScroll:true});}},{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
+    fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
+  }
+  const unbindDetails=bindSharedObjectDetails(detail,{onGateSelect:gate=>showDetail({type:'gate',id:gate}),onChannelSelect:id=>{if(pairs.some(pair=>pair.channelId===id))showDetail({type:'pair',id});},onLensChange:()=>fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'))});
+  function detailClick(event) {
+    const node=event.target.closest('button');if(!node)return;
+    if(node.hasAttribute('data-wa-back')){detailStack.pop();showDetail(detailStack.at(-1),false);}
+    else if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
+    else if(node.dataset.waPair)showDetail({type:'pair',id:node.dataset.waPair});
+    else if(node.dataset.waReading)showDetail({type:'reading',id:node.dataset.waReading});
+  }
+  async function click(event) {
+    const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
-      const saved=await repository.save(snapshot,{expectedRevision:asNew?0:snapshot.revision});
-      if(disposed||token!==saveGeneration)return;
-      if(capturedGeneration===generation){if(asNew){clearAnalysis();previousReady=null;comparison=[];}draft=clone(saved);dirty=false;} else if(!asNew && draft.organizationId===snapshot.organizationId) { for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key]; }
-      notice='Wa saved';
-    }catch(error){if(token===saveGeneration&&!disposed)failure(error);}finally{if(token===saveGeneration&&!disposed){saving=false;render();}}
-  }
-  function layer(title, body) {
-    closeLayer?.(); const opened=openOperationDialog({content:`<section class="modal wa-operation" aria-label="${text(title)}"><header><h2>${text(title)}</h2><button type="button" data-close aria-label="${text('Close')}">×</button></header>${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(closeLayer===opened.close)closeLayer=null;}});closeLayer=opened.close;return opened;
-  }
-  async function savedList() {
-    const token=++operation, inputGeneration=generation;
-    try { const list=await repository.list(); if(disposed||token!==operation||inputGeneration!==generation)return;
-      const {root,close}=layer('Saved organizations',list.length?`<div class="wa-saved-list">${list.map(item=>`<button type="button" data-load="${esc(item.organizationId)}">${esc(item.title || t('Wa organization'))} · r${item.revision}</button>`).join('')}</div>`:`<p>${text('No saved organizations')}</p>`);
-      root.addEventListener('click',async event=>{const id=event.target.closest('[data-load]')?.dataset.load;if(!id)return;const loadGeneration=generation;
-        try{if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;const requestGeneration=generation;const loaded=await repository.get(id);if(!loaded||disposed||!root.isConnected||token!==operation||requestGeneration!==generation)return;close();load(loaded);}catch(error){if(!disposed&&root.isConnected&&token===operation&&loadGeneration===generation)root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');}});
-    }catch(error){if(!disposed&&token===operation&&inputGeneration===generation){failure(error);render();}}
-  }
-  async function history() {
-    const token=++operation, organizationId=draft.organizationId, requestGeneration=generation;
-    try { const versions=await repository.history(organizationId);if(disposed||token!==operation||requestGeneration!==generation||organizationId!==draft.organizationId)return;
-      const {root,close}=layer('Revision history',`<p>${text('Wa restore note')}</p>${versions.length?`<div class="wa-saved-list">${versions.map(item=>`<button type="button" data-restore="${esc(item.revisionId)}">${text('Restore revision')} · r${item.revision}<small>${esc(item.title)} · ${esc(item.savedAt)}</small></button>`).join('')}</div>`:`<p>${text('No revision history')}</p>`}`);
-      root.addEventListener('click',async event=>{const button=event.target.closest('[data-restore]');if(!button||button.disabled)return;const restoreGeneration=generation;
-        try {const inputGeneration=generation;const previous=versions.find(item=>item.revisionId===button.dataset.restore);const report=restoreReport(previous);if(report){if(!await confirmAnnotationChange(report,'Restore with these changes'))return;}else if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;if(disposed||inputGeneration!==generation||organizationId!==draft.organizationId||!root.isConnected)return;const expectedRevision=draft.revision;button.disabled=true;const restored=await repository.restore(organizationId,button.dataset.restore,{expectedRevision});if(disposed||!root.isConnected)return;if(inputGeneration!==generation){if(draft.organizationId===organizationId){for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=restored[key];}notice='Wa input changed';close();render();return;}close();load(restored);notice='Wa restored';render();}catch(error){if(!disposed&&root.isConnected&&token===operation&&restoreGeneration===generation){failure(error);root.querySelector('.wa-layer-error').textContent=t(notice);button.disabled=false;}}});
-    }catch(error){if(!disposed&&token===operation&&requestGeneration===generation&&organizationId===draft.organizationId){failure(error);render();}}
-  }
-  function load(snapshot) { operation++;closeLayer?.();preserveReady();clearAnalysis();if(snapshot.organizationId!==draft.organizationId)previousReady=null;draft=clone(snapshot);selectedGroup='';dirty=false;notice='';errorText='';render(); }
-  async function onClick(event) {
-    const button=event.target.closest('button');if(!button||!container.contains(button))return;
-    try {
-      if(button.dataset.editIntent){editRecord('intent',button.dataset.editIntent);return;}
-      if(button.dataset.editEdge){editRecord('edge',button.dataset.editEdge);return;}
-      if(button.dataset.removeIntent){preserveReady();const record=consultation();record.gapIntents=record.gapIntents.filter(item=>item.id!==button.dataset.removeIntent);updateConsultation(record);changed();return;}
-      if(button.dataset.removeEdge){preserveReady();updateEdges(draft.manualCommunicationEdges.filter(item=>item.edgeId!==button.dataset.removeEdge));changed();return;}
-      if(button.dataset.removeArea){preserveReady();const record=consultation();record.businessAreas=record.businessAreas.filter(item=>item.pentaId!==button.dataset.removeArea);updateConsultation(record);changed();return;}
-      if(button.dataset.pair){showReading(button.dataset.pair,true,button.dataset.pairScope);return;}
-      if(button.dataset.reading){showReading(button.dataset.reading);return;}
-      if(button.dataset.remove){await changeMember(button.dataset.remove,null,true);return;}
-      switch(button.dataset.action){
-        case 'export-annotations':await exportRecords();break;
-        case 'export-backup':await exportRecords(true);break;
-        case 'add-intent':editRecord('intent');break;
-        case 'add-edge':editRecord('edge');break;
-        case 'remove-consultation':{const inputGeneration=generation;if(await confirmOperation(t('Delete consultation?'))&&!disposed&&inputGeneration===generation){preserveReady();const base=downgradeWaSnapshot(draft,{confirmAnnotationRemoval:true}).snapshot;draft=Object.hasOwn(draft,'manualCommunicationEdges')?updateWaAnnotations(base,{manualCommunicationEdges:draft.manualCommunicationEdges}):base;changed();}break;}
-        case 'add': {const person=people.get(container.querySelector('[data-person]').value);if(person&&!draft.members.some(m=>m.personId===person.id)){preserveReady();draft.members.push(createWaMember({personId:person.id,labelSnapshot:person.name}));changed();}break;}
-        case 'analyze':preserveReady();await runAnalysis();break;
+      if(node.dataset.waGate){showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
+      if(node.dataset.waPair){showDetail({type:'pair',id:node.dataset.waPair});return;}
+      if(node.dataset.waDepartment){showDetail({type:'department',id:node.dataset.waDepartment});return;}
+      if(node.hasAttribute('data-reopen-detail')&&selected){showDetail(selected);return;}
+      if(node.dataset.departmentToggle){const id=node.dataset.departmentToggle;expanded.has(id)?expanded.delete(id):expanded.add(id);selected={type:'department',id};render();return;}
+      if(node.dataset.compose){compose(node.dataset.compose);return;}
+      if(node.dataset.import){compose(node.dataset.import,'import');return;}
+      switch(node.dataset.action){
+        case 'edit':compose();break;
         case 'save':await save();break;
-        case 'save-new':await save(true);break;
-        case 'list':await savedList();break;
-        case 'history':await history();break;
-        case 'new':if(!dirty||await confirmOperation(t('Wa discard changes?')))load(createWaDraft());break;
+        case 'open':await archives();break;
+        case 'retry':schedule();break;
+        case 'knowledge':showDetail({type:'library'});break;
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=true;expanded.clear();try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
-    }catch(error){failure(error);render();}
+    }catch(error){if(!disposed){fail(error);render();}}
   }
-  async function onChange(event) {
-    const node=event.target;
-    try {
-      if(node.matches('[data-group-alpha]')){showGroupAlpha=node.checked;closeReading();render();return;}
-      if(node.matches('[data-communication-group]')){selectedGroup=node.value;closeReading();render();return;}
-      if(node.matches('[data-ally]')){preserveReady();const record=consultation();record.keyAllyIds=(record.keyAllyIds||[]).filter(id=>id!==node.dataset.ally);if(node.checked)record.keyAllyIds.push(node.dataset.ally);updateConsultation(record);changed();}
-      if(node.matches('[data-mode]')){preserveReady();draft.layoutMode=node.value;changed();}
-      if(node.matches('[data-alpha]')){if(node.value)await changeMember(node.value,{alpha:true});else if(draft.alphaId)await changeMember(draft.alphaId,null);}
-      if(node.matches('[data-assign]'))await changeMember(node.dataset.assign,node.value==='alpha'?{alpha:true}:node.value?{pentaId:node.value}:null);
-    }catch(error){failure(error);render();}
+  function change(event) {
+    if(event.target.hasAttribute('data-scope')){selectedGroup=event.target.value||null;closeReading();selected=null;if(prepared)refreshScope();else render();}
+    if(event.target.hasAttribute('data-include-alpha')){includeAlpha=event.target.checked;closeReading();selected=null;if(prepared)refreshScope();else render();}
   }
-  function onInput(event) {
-    const node=event.target;
-    if(node.matches('[data-manual-field]')){
-      preserveReady();const record=consultation(), key=node.dataset.manualField;
-      if(node.dataset.area){record.businessAreas ||= [];let area=record.businessAreas.find(item=>item.pentaId===node.dataset.area);if(!area){area={pentaId:node.dataset.area,workScope:'',demand:'',requiredSkills:[]};record.businessAreas.push(area);}area[key]=key==='requiredSkills'?node.value.split('\n'):node.value;}
-      else record[key]=node.value;
-      updateConsultation(record);textChanged();
-    }
-    if(node.matches('[data-title]')){preserveReady();draft.title=node.value;textChanged();}
-    if(node.matches('[data-group-title]')){
-      preserveReady();const group=draft.pentas.find(group=>group.pentaId===node.dataset.groupTitle);group.title=node.value;textChanged();
-      container.querySelectorAll('[data-assign] option,[data-communication-group] option').forEach(option=>{if(option.value===group.pentaId)option.textContent=roleName(group);});
-      container.querySelectorAll('[data-manual-section]').forEach(section=>{if(section.dataset.manualSection===group.pentaId)section.querySelector('summary').textContent=roleName(group);});
-    }
+  function input(event) {
+    if(event.target.hasAttribute('data-title')){draft.title=event.target.value;version++;dirty=true;container.querySelector('.wa-draft-status').textContent=`${t('Unsaved changes')} · r${draft.revision}`;}
   }
-  function onCompositionStart(event) {if(event.target.matches('[data-title],[data-group-title],[data-manual-field]'))composing=event.target;}
-  function onCompositionEnd(event) {
-    if(composing!==event.target)return;
-    onInput(event);composing=null;
-    if(renderAfterComposition){renderAfterComposition=false;render();}
+  function keyboard(event) {
+    if(['Enter',' '].includes(event.key)&&event.target.matches('g[role="button"]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
   }
-  container.addEventListener('click',onClick);container.addEventListener('change',onChange);container.addEventListener('input',onInput);
-  container.addEventListener('compositionstart',onCompositionStart);container.addEventListener('compositionend',onCompositionEnd);
-  const unsubscribe=people.subscribe?.(()=>{if(disposed)return;preserveReady();clearAnalysis();notice='Wa input changed';render();});
+  const compositionStart=()=>{composing=true;};
+  const compositionEnd=()=>{composing=false;if(deferredRender){deferredRender=false;render();}};
+  container.addEventListener('click',click);container.addEventListener('change',change);container.addEventListener('input',input);container.addEventListener('keydown',keyboard);
+  container.addEventListener('compositionstart',compositionStart);container.addEventListener('compositionend',compositionEnd);detail.addEventListener('click',detailClick);
+  const unsubscribe=people.subscribe?.(()=>{if(!disposed)schedule();});
+  const compactViewport=window.matchMedia('(max-width:600px)'), resize=()=>render();
+  compactViewport.addEventListener('change',resize);
   render();
-  return {render,refreshLanguage(){closeReading();closeLayer?.();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;unsubscribe?.();closeReading();closeLayer?.();detail.remove();container.removeEventListener('click',onClick);container.removeEventListener('change',onChange);container.removeEventListener('input',onInput);container.removeEventListener('compositionstart',onCompositionStart);container.removeEventListener('compositionend',onCompositionEnd);container.replaceChildren();}};
+  // Only the saved organization ID is remembered. Never cache charts, births or drafts here.
+  if(options.restoreLast!==false){
+    const token=operation,inputVersion=version;
+    Promise.resolve().then(async()=>{let id;try{id=storage?.getItem(LAST_ORGANIZATION);}catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}return;}if(!id)return;
+      try{const snapshot=await repository.get(id);if(disposed||token!==operation||version!==inputVersion)return;if(snapshot)load(snapshot);else{notice='Missing reference';render();}}
+      catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}}
+    });
+  }
+  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
 }
