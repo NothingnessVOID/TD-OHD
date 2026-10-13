@@ -88,7 +88,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id }) {
       if (!groups.has(left)) groups.set(left, []);
       groups.get(left).push(right);
     }
-    const combinations = groups.size ? `<p class="wa-detail-note">${pair.displayGates.join(' ↔ ')}</p><ul class="wa-detail-combinations">${[...groups].map(([left, rights]) => `<li data-wa-combination-left="${esc(left)}" data-wa-left-gate="${pair.displayGates[0]}" data-wa-right-gate="${pair.displayGates[1]}">${person(left, nameOf)} <span aria-hidden="true">↔</span> <span>${rights.map(right => `<span data-wa-combination-right="${esc(right)}">${person(right, nameOf)}</span>`).join(' ')}</span></li>`).join('')}</ul>`
+    const combinations = groups.size ? `<p class="wa-detail-note">${pair.displayGates.join(' ↔ ')}</p><ul class="wa-detail-combinations">${[...groups].map(([left, rights]) => `<li data-wa-combination-left="${esc(left)}" data-wa-left-gate="${pair.displayGates[0]}" data-wa-right-gate="${pair.displayGates[1]}"><span><small>${pair.displayGates[0]}</small> ${person(left, nameOf)}</span> <span aria-hidden="true">↔</span> <span><small>${pair.displayGates[1]}</small> ${rights.map(right => `<span data-wa-combination-right="${esc(right)}">${person(right, nameOf)}</span>`).join(' ')}</span></li>`).join('')}</ul>`
       : `<p>${Array.isArray(record?.complementaryMemberPairs) ? text('Wa detail none') : unknown()}</p>`;
     return `<section class="wa-detail-relationships"><h3>${text('Wa detail relationships')}</h3><h4>${text('OC16 covered by one')}</h4><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none')}</div><h4>${text('Wa detail combinations')}</h4>${combinations}</section>`;
   }
