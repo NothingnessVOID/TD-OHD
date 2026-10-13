@@ -156,10 +156,11 @@
 .wa-archive-row { display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--border); padding-bottom:10px; }
 .wa-archive-row > button:first-child { flex:1; text-align:left; min-width:140px; }
 .wa-archive-row small { display:block; margin-top:4px; color:var(--text-secondary); }
-.modal.wa-reading-sheet { width:min(680px,calc(100vw - 36px)); max-width:680px; max-height:85dvh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
-.wa-reading-sheet .gate-detail-nav { position:static; inset:auto; flex-direction:row; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 18px; flex:none; border-bottom:1px solid var(--border); }
-.wa-reading-sheet .gate-detail-nav button { min-height:36px; flex:0 0 auto; }
-.wa-reading-sheet .gate-detail-nav .wa-kicker { min-width:0; overflow-wrap:anywhere; }
+.gate-detail.wa-detail:not(.hidden) .wa-reading-sheet { width:100%; max-width:680px; max-height:82dvh; margin:auto; }
+.wa-reading-sheet .gate-detail-nav { position:static; inset:auto; display:flex; flex-direction:column; flex:none; padding:0; border-bottom:1px solid var(--border); }
+.wa-reading-sheet .gate-detail-nav-buttons { padding:10px 14px; }
+.wa-reading-sheet .gate-detail-nav button { flex:0 0 auto; }
+.wa-detail-scope { margin:0 0 12px; font-size:12px; line-height:1.5; color:var(--text-secondary); }
 [data-wa-selection-summary]:empty { display:none; }
 .wa-reading-sheet .gate-detail-body { overflow:auto; padding:18px 22px 24px; min-height:0; }
 .wa-reading-sheet h2 { margin:4px 0 12px; font-size:22px; line-height:1.4; }
@@ -208,7 +209,8 @@
  .wa-overview-stats { gap:7px; }
  .wa-overview-stats > div + div { padding-left:7px; }
  .wa-overview-stats dd { font-size:24px; }
- .modal.wa-reading-sheet { position:fixed; bottom:0; left:0; right:0; width:100%; max-height:82dvh; border-radius:var(--radius) var(--radius) 0 0; }
+ .gate-detail.wa-detail:not(.hidden) .wa-reading-sheet { max-width:100%; margin:0; }
+ .wa-reading-sheet .gate-detail-close { width:44px; height:44px; }
  .wa-reading-sheet .gate-detail-body { padding:15px 16px 22px; }
  .wa-reading-sheet .gate-detail-nav button { min-height:44px; }
 }
