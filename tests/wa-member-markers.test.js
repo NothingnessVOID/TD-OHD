@@ -123,15 +123,15 @@ test('unknown results suppress stale markers, positive activation and false zero
   assert.match(svg, /No member active/);
 });
 
-test('seven-column marker rows, nodes and hit areas fit the adaptive viewBox with clear next-row label space', () => {
+test('six-column readable marker rows fit the adaptive viewBox with clear next-row label space', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
-  for (const count of [0, 1, 7, 8, 14, 15, 16]) {
+  for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
-    const markerRows = Math.max(1, Math.ceil(count / 7));
-    assert.equal(height, 6 * (88 + 14 * (markerRows - 1)) + 8);
+    const markerRows = Math.max(1, Math.ceil(count / 6));
+    assert.equal(height, 6 * (92 + 18 * (markerRows - 1)) + 8);
     assert.equal(markerNodes(svg).length, 12 * count);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
@@ -141,7 +141,7 @@ test('seven-column marker rows, nodes and hit areas fit the adaptive viewBox wit
     const centers = [...svg.matchAll(/class="wa-node-face" cx="180" cy="(\d+)"/g)].map(match => Number(match[1]));
     assert.equal(centers.length, 6);
     for (let i = 0; i < centers.length - 1; i++) {
-      const lastBadgeBottom = centers[i] + 36 + 14 * (markerRows - 1) + 6.75;
+      const lastBadgeBottom = centers[i] + 36 + 18 * (markerRows - 1) + 8.75;
       // Pillar baseline is next center - 32; reserve its full 10px font above it.
       assert.ok(lastBadgeBottom + 3 <= centers[i + 1] - 32 - 10);
       assert.ok(lastBadgeBottom < centers[i + 1] - 30);
@@ -153,8 +153,8 @@ test('seven-column marker rows, nodes and hit areas fit the adaptive viewBox wit
         const cy = badge.body.match(/cy="([\d.]+)"/)[1];
         rowCounts.set(cy, (rowCounts.get(cy) ?? 0) + 1);
       }
-      assert.ok([...rowCounts.values()].every(value => value <= 7));
-      assert.equal(rowCounts.size, Math.ceil(count / 7));
+      assert.ok([...rowCounts.values()].every(value => value <= 6));
+      assert.equal(rowCounts.size, Math.ceil(count / 6));
     }
   }
 });
