@@ -58,7 +58,9 @@ function verifyGate(actual, expected, names, label) {
 }
 function verifyPair(actual, expected, names, label) {
   assert.equal(actual.channelId, expected.channelId, `${label}: canonical source ID`);
-  assert.equal(actual.contentId, expected.channelId, `${label}: canonical reading source ID`);
+  // Non-core channels read their department's Wa theme, keyed by the core channel's source ID.
+  const readingId = canonical(departments[pairs.find(p => p.channelId === expected.channelId).department][0]);
+  assert.equal(actual.contentId, readingId, `${label}: canonical reading source ID`);
   assert.deepEqual(actual.displayGates, expected.displayGates, `${label}: display order`);
   assert.equal(actual.status, expected.status, `${label}: actual renderer state`);
   assert.deepEqual(sorted(actual.selfCompleteMemberIds), expected.selfCompleteMemberIds, `${label}: self-complete members`);
@@ -98,7 +100,7 @@ async function readDetailDOM(page, type) {
     const canonicalGates = channelId.split('-').map(Number);
     const endpointNodes = [...node.querySelectorAll(':scope > .wa-detail-endpoints [data-wa-endpoint]')];
     const endpoints = endpointNodes.map(n => gateRecord(Number(required(n,'data-wa-endpoint')),n));
-    const displayGates = node.querySelector(':scope > h2').textContent.trim().split('–').map(Number);
+    const heading = node.querySelector(':scope > h2'), displayGates = (heading.querySelector('.wa-channel-number') || heading).textContent.trim().split('–').map(Number);
     const combinations = [], crossNames = [];
     for (const left of node.querySelectorAll('[data-wa-combination-left]')) {
       const leftGate = Number(required(left,'data-wa-left-gate')), rightGate = Number(required(left,'data-wa-right-gate'));
@@ -136,6 +138,32 @@ async function readPairRows(locator) {
           planet:n.dataset.activationPlanet,gate:Number(n.dataset.activationGate),line:Number(n.dataset.activationLine)}))};
     })
   })));
+}
+async function readInlineRows(locator) {
+  return locator.locator('[data-pair-row]').evaluateAll(rows => rows.map(row => ({
+    channelId:row.getAttribute('data-pair-row'),
+    status:row.getAttribute('data-wa-state'),
+    displayText:row.querySelector('[data-wa-pair]')?.textContent.trim(),
+    endpoints:[...row.querySelectorAll('[data-wa-endpoint]')].map(endpoint => ({gate:Number(endpoint.getAttribute('data-wa-endpoint')),covered:endpoint.getAttribute('data-wa-covered'),
+      memberIds:[...endpoint.querySelectorAll('[data-wa-marker-member]')].map(n => n.dataset.waMarkerMember)}))
+  })));
+}
+// Inline rows show holders only; full planetary sources are verified in the department dialog.
+function verifyInlineRows(actual, expected, label) {
+  assert.equal(actual.length,expected.length,`${label}: number of displayed pairs`);
+  actual.forEach((row,i) => {
+    const pair = expected[i];
+    assert.equal(row.channelId,pair.channelId,`${label}: row canonical ID`);
+    assert.equal(row.displayText,pair.displayGates.join('–'),`${label}: display order`);
+    assert.equal(row.status,pair.status,`${label}: actual row status`);
+    assert.equal(row.endpoints.length,2);
+    row.endpoints.forEach((endpoint,j) => {
+      const want = pair.endpoints[j];
+      assert.equal(endpoint.gate,want.gate,`${label}/${pair.channelId}: endpoint order`);
+      assert.equal(endpoint.covered,String(want.memberIds.length>0),`${label}/${pair.channelId}/${want.gate}: covered`);
+      assert.deepEqual(sorted(endpoint.memberIds),want.memberIds,`${label}/${pair.channelId}/${want.gate}: exact holders (no duplicates)`);
+    });
+  });
 }
 function verifyRows(actual, expected, names, label) {
   assert.equal(actual.length,expected.length,`${label}: number of displayed pairs`);
@@ -251,7 +279,7 @@ async function main() {
     const scopeIds = (group, alpha) => group === null ? all : [...data.draft.pentas[group].memberIds, ...(alpha ? [data.draft.alphaId] : [])];
     const scope = async (group, alpha = false) => {
       await close();
-      await root().locator('[data-scope]').selectOption(group === null ? '' : groupIds[group]);
+      await root().locator(`[data-scope-option="${group === null ? '' : groupIds[group]}"]`).click();
       if (group !== null) {
         assert.equal(await root().locator('[data-include-alpha]').isChecked(),false,'every Penta selection resets Alpha false');
         if (alpha) await root().locator('[data-include-alpha]').check();
@@ -276,8 +304,8 @@ async function main() {
     await sheet().locator('[data-wa-gate="45"]').first().click();
     await keyboardKnowledge('gate smoke');
     const navGeometry = await sheet().evaluate(n => {
-      const nav=n.querySelector('.gate-detail-nav'),a=n.getBoundingClientRect(),b=nav.getBoundingClientRect(),s=getComputedStyle(nav);
-      return {sheet:{x:a.x,y:a.y,width:a.width,height:a.height},nav:{x:b.x,y:b.y,width:b.width,height:b.height},position:s.position,direction:s.flexDirection};
+      const nav=n.querySelector('.gate-detail-nav'),row=nav.querySelector('.gate-detail-nav-buttons')||nav,a=n.getBoundingClientRect(),b=nav.getBoundingClientRect(),s=getComputedStyle(nav);
+      return {sheet:{x:a.x,y:a.y,width:a.width,height:a.height},nav:{x:b.x,y:b.y,width:b.width,height:b.height},position:s.position,direction:getComputedStyle(row).flexDirection};
     });
     assert.equal(navGeometry.position,'static','Wa nav stays in sheet flow');
     assert.equal(navGeometry.direction,'row','Wa nav horizontal');
@@ -298,7 +326,7 @@ async function main() {
         await close();
         const toggle = card.locator('[data-department-toggle]');
         if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
-        verifyRows(await readPairRows(card),expected,data.names,`${label}/${department}/inline`);
+        verifyInlineRows(await readInlineRows(card),expected,`${label}/${department}/inline`);
         await card.locator('[data-wa-department]').click();
         const detail = sheet().locator('[data-wa-detail="department"]');
         assert.equal(await detail.getAttribute('data-wa-detail-id'),department);

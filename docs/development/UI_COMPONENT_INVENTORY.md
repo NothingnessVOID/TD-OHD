@@ -114,7 +114,7 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 公共 Detail Dialog 生命周期不改；Wa 自己的历史 frame 保存滚动、折叠、阅读 lens 和焦点键，关闭恢复最初入口与页面位置。主图 SVG 字节保留，短屏取消过度压缩并使用正常文档流；页面删除无选择时的独立面板和反复声明，异常、数据损失确认与存档警告保留。当前为第二轮体验验收候选，完整回归仍在用户确认之后。
 
-## Wa 页面交互收口（当前候选）
+## Wa 页面交互收口（当前候选，合并 PR #29 布局）
 
 组织配置现在直接显示在页面：Alpha 更换/清空，Penta 各组独立成员 chip、添加、移除、导入及组名输入；保存位于组织名称旁。旧的统一 composer 窗口已退出实现，`openWaMemberPicker()` 只处理一个目标，选择/导入共享单层 Operation Dialog。公共 Person Editor 临时替换选择窗并返回，原始人员资料与组织保存仍独立。`prepareWaSelectionChange()` 复用原模型的原子替换与注释清理确认，不清库、不删除人物。
 
@@ -127,3 +127,5 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
+
+PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
