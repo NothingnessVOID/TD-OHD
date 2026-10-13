@@ -1,0 +1,72 @@
+/* Host imports this stylesheet once. All rules are scoped to the Wa detail fragments. */
+.wa-detail-content,
+.wa-detail-pair-rows,
+.wa-detail-selected {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.wa-detail-content { display: grid; gap: 18px; }
+.wa-detail-content :is(h2, h3, h4, p),
+.wa-detail-pair-rows :is(h3, h4, p),
+.wa-detail-selected p { margin: 0; }
+.wa-detail-content h2 { font-size: 22px; line-height: 1.3; }
+.wa-detail-content h3 { font-size: 16px; margin-bottom: 8px; }
+.wa-detail-content h4,
+.wa-detail-pair-rows h4 { font-size: 14px; margin: 10px 0 6px; }
+.wa-detail-content .detail-label { font-size: 14px; }
+.wa-detail-content .detail-name { font-size: 22px; }
+.wa-detail-content .detail-hexagram { font-size: 16px; }
+.wa-detail-note { color: var(--text-secondary); font-size: 13px; }
+.wa-detail-endpoints,
+.wa-detail-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.wa-detail-endpoint,
+.wa-detail-endpoint-cell { min-width: 0; }
+.wa-detail-endpoint { padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; }
+.wa-detail-gate-label { margin-bottom: 6px; }
+.wa-detail-members,
+.wa-detail-content [data-wa-self-complete] { display: flex; flex-wrap: wrap; gap: 5px 8px; }
+.wa-detail-member { display: inline-block; color: var(--text); }
+.wa-detail-member + .wa-detail-member::before { content: '·'; margin-right: 8px; color: var(--text-tertiary); }
+.wa-detail-link { display: inline; border: 0; border-radius: 4px; padding: 2px 0; background: transparent; color: var(--accent-strong); font: inherit; text-align: start; cursor: pointer; }
+.wa-detail-link:hover { text-decoration: underline; }
+.wa-detail-link:focus-visible,
+.wa-detail-fold > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.wa-detail-pair-rows { display: grid; gap: 16px; }
+.wa-detail-pair-row { display: grid; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); }
+.wa-detail-pair-row:last-child { padding-bottom: 0; border-bottom: 0; }
+.wa-detail-row-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 13px; }
+.wa-detail-row-heading > .wa-detail-link { font-size: 16px; }
+.wa-detail-state { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 13px; }
+.wa-detail-state svg { flex: 0 0 auto; }
+.wa-detail-metrics > div { padding: 10px 12px; background: var(--bg-elevated); border-radius: 8px; }
+.wa-detail-metrics dt { color: var(--text-secondary); font-size: 13px; }
+.wa-detail-metrics dd { margin: 0; font-weight: 600; font-size: 18px; }
+.wa-detail-fold { margin-top: 8px; min-width: 0; }
+.wa-detail-fold > summary { color: var(--accent-strong); cursor: pointer; padding: 8px 0; font-size: 14px; }
+.wa-detail-fold[open] > summary { margin-bottom: 6px; }
+.wa-detail-activations { display: grid; gap: 10px; }
+.wa-detail-activation-member ul { display: grid; gap: 7px; padding: 0; margin: 0; list-style: none; }
+.wa-detail-activation { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 14px; }
+.wa-detail-source { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-elevated); color: var(--text-secondary); font-size: 13px; }
+/* Birth hues can differ from general HD hues. Text uses the existing contrast-adjusted birth tokens. */
+.wa-detail-source[data-wa-side="personality"] { border-color: var(--hd-birth-personality, var(--hd-personality)); color: var(--source-birthPersonality-text, var(--text)); }
+.wa-detail-source[data-wa-side="design"] { border-color: var(--hd-birth-design, var(--hd-design)); color: var(--source-birthDesign-text, var(--text)); }
+.wa-detail-source[data-wa-side="personality"]::before,
+.wa-detail-source[data-wa-side="design"]::before { content: ''; width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--hd-birth-personality, var(--hd-personality)); }
+.wa-detail-source[data-wa-side="design"]::before { background: var(--hd-birth-design, var(--hd-design)); }
+.wa-detail-combinations { display: grid; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+.wa-detail-combinations li { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 2fr); gap: 10px; }
+.wa-detail-combinations [data-wa-combination-right] { display: inline-block; margin-right: 8px; }
+.wa-detail-selected { display: grid; gap: 8px; padding: 12px 0; }
+.wa-detail-compact { gap: 12px; font-size: 13px; }
+.wa-detail-compact .wa-detail-pair-row { gap: 8px; padding-bottom: 12px; }
+.wa-detail-compact .wa-detail-endpoint { padding: 8px 10px; }
+.wa-detail-compact .wa-detail-fold > summary { font-size: 13px; padding: 6px 0; }
+@media (max-width: 600px) {
+  .wa-detail-endpoints,
+  .wa-detail-metrics { grid-template-columns: minmax(0, 1fr); }
+  .wa-detail-content { gap: 14px; }
+  .wa-detail-link { padding-block: 7px; }
+}
