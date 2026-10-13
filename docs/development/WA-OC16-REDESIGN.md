@@ -43,4 +43,24 @@ Every configuration commit updates results automatically. Person selection suppo
 
 ## Validation schedule
 
-Before visual acceptance: mapping/coverage/configuration unit checks, build/startup, targeted browser interaction with varied fictional gates and actual WASM/IndexedDB, desktop/390/320 screenshots. No full legacy suite or broad audit re-pinning merely to approve an unaccepted UI. After acceptance: complete interaction matrix (three locales × 11 Skins), full regressions, existing export smoke and immutable source-audit extension. Prior green UI evidence describes the old page, not this redesign.
+Before visual acceptance: mapping/coverage/configuration unit checks, build/startup, targeted browser interaction with varied fictional gates and actual WASM/IndexedDB, desktop/390/320 screenshots. No full legacy suite or broad audit re-pinning merely to approve an unaccepted UI. After acceptance: complete interaction matrix (three locales × 11 Skins), full regressions and immutable source-audit extension. Prior green UI evidence describes the old page, not this redesign.
+
+## First preview delivered
+
+Stage commits: `b6e0ffb` scope, `a9d642d` atomic configuration/import, `93d1760` OC16 data, `8291ea8` quick confirmation/Alpha replacement, `282c3f3` complete replacement presentation. Parent integrated source builds successfully; existing font-path and chunk-size warnings remain. The static bundle still excludes the private local account client.
+
+The new workflow is: choose Alpha directly, select several people for a Penta or click a saved-group import, then inspect automatic results. Direct target edits confirm once; no member-pool staging, per-person assignment menus, layout-mode switch or Analyze button. The full editor remains available for editing several groups before one final commit. Mobile configuration folds to a concise name/leader/count summary.
+
+Targeted data/configuration tests: 20/20 passed (14 OC16, 6 configuration). The isolated data task additionally passed the existing analysis/v2 compatibility checks (41 including its 14 new tests); no duplicate totals are claimed. Composer browser smoke covers default and quick workflows, origin notices, cancel, person-editor return, conflict rejection, stable IDs, hidden annotation cleanup and stale confirmations.
+
+`wa-oc16-preview-e2e.mjs` passed against the real 9961 application with 12 explicitly fictional people of different dates/times. Real WASM outputs are independently reduced to gate sets in the test; each UI department count and every SVG endpoint is compared against that union for 1, 2, 3 and 10 participants, group-only/with-Alpha and Alpha replacement. For example, management coverage changes from 3/10 with one person to 5/10 with two; logic changes from 5/16 to 9/16. This is not a presence-only SVG/card test.
+
+The same focused flow exercises one-time saved-Penta imports, duplicate conflict without mutation, keyboard pillar → pair → gate → Back/Escape, refs-only v1 save, annotated v2 reload, annotation retention on edits, immutable history restoration and an assigned missing-person error that turns stats into unknown rather than zero. Desktop editor/detail widths are checked against the generic narrow-dialog cap. Three focused samples cover zh-CN/default-light/390, zh-Hant/default-dark/320 and en/high-contrast/1280, plus 1440 desktop screenshots. Full 99-case matrix remains deferred.
+
+Existing image export smoke `share-views-e2e.mjs` also passed: real PNG downloads for chart, transits, timeline, connection, Team/Penta and library, plus mobile timeline. No export implementation was changed or new export feature added.
+
+Independent static review caught and verified fixes for group-only Alpha preference leaking into organization scope, startup autoload racing a new Save, and retaining pre-cleanup annotation snapshots. Temporary recovery copies are session-only and explicitly exportable; saved DB history is unchanged. The initial browser test failure was a harness call to `people.list` instead of exported `listPeople`; corrected without changing product assertions. Later visual inspection corrected generic `.modal` width inheritance.
+
+Evidence is under `artifacts/visual-review/wa-oc16-preview/`: member-editor.png, configuration.png, six-core-channels.png, two-person-core-channels.png, six-departments.png, desktop-overview.png, 390/320/1280 samples, and coverage-evidence.json.
+
+This is a user-acceptance candidate. No new professional formulas, no full regression/old UI guard re-pinning, no main merge, Issue closure or deployment. Source and tests from the old UI remain historical evidence; do not treat their old green results as approval of this redesign.
