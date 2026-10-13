@@ -251,7 +251,7 @@ async function main() {
     const scopeIds = (group, alpha) => group === null ? all : [...data.draft.pentas[group].memberIds, ...(alpha ? [data.draft.alphaId] : [])];
     const scope = async (group, alpha = false) => {
       await close();
-      await root().locator('[data-scope]').selectOption(group === null ? '' : groupIds[group]);
+      await root().locator(`[data-scope-option="${group === null ? '' : groupIds[group]}"]`).click();
       if (group !== null) {
         assert.equal(await root().locator('[data-include-alpha]').isChecked(),false,'every Penta selection resets Alpha false');
         if (alpha) await root().locator('[data-include-alpha]').check();
