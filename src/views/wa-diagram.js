@@ -9,8 +9,8 @@ export function waStateSymbol(state, size = 22) {
   return renderPentaStateSymbol(state, {size});
 }
 
-const MARKER_COLUMNS = 7;
-const MARKER_STEP = 14;
+const MARKER_COLUMNS = 6;
+const MARKER_STEP = 18;
 
 function renderGateMarkers(gate, records, x, y, nameOf) {
   return records.map((record, index) => {
@@ -20,7 +20,7 @@ function renderGateMarkers(gate, records, x, y, nameOf) {
     const cx = x + (column - (columns - 1) / 2) * MARKER_STEP;
     const cy = y + 36 + row * MARKER_STEP;
     const label = esc(`${nameOf(record.memberId) ?? record.memberId} · ${record.number}`);
-    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}"><circle cx="${cx}" cy="${cy}" r="6.5"><title>${label}</title></circle><text x="${cx}" y="${cy + 3}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
+    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}"><circle cx="${cx}" cy="${cy}" r="8.5"><title>${label}</title></circle><text x="${cx}" y="${cy + 3}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
   }).join('');
 }
 
@@ -40,8 +40,8 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     const endpointMarkers = display.map(gate => [...new Set(gateRecords.get(gate)?.memberIds ?? [])]
       .map(id => markers?.get(id)).filter(Boolean).sort((a, b) => a.number - b.number));
     const markerRows = Math.max(1, ...endpointMarkers.map(records => Math.ceil(records.length / MARKER_COLUMNS)));
-    // 88 leaves space between the last badge and the next pillar label/hit area.
-    const rowHeight = 88 + MARKER_STEP * (markerRows - 1);
+    // Keep the larger, readable badges clear of the next pillar label/hit area.
+    const rowHeight = 92 + MARKER_STEP * (markerRows - 1);
     const y = top + 43;
     top += rowHeight;
     const isSelected = selected?.type === 'pair' && selected.id === pair.channelId || selected?.type === 'department' && selected.id === department.id;
