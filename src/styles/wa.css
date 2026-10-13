@@ -41,8 +41,11 @@
 .wa-notice { margin:0; font-size:13px; line-height:1.65; }
 .wa-notice:not(:empty) { margin:0 0 14px; padding:10px 14px; border:1px solid var(--border); background:var(--bg-sunken); border-radius:var(--radius-sm,6px); }
 .wa-workspace { display:grid; grid-template-columns:minmax(0,48fr) minmax(0,52fr); gap:22px; align-items:start; }
-.wa-graph-column { position:sticky; top:calc(var(--header-height,56px) + 16px); min-width:0; }
+.wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,calc(var(--header-height,56px) + 16px)); min-width:0; }
 .wa-graph-panel { padding:18px; }
+.wa-graph-members { border-top:1px solid var(--border); margin-top:14px; padding-top:10px; }
+.wa-graph-members h3 { margin:0; font-size:13px; }
+.wa-graph-members .wa-small-note { margin-top:4px; }
 .wa-panel-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 14px; }
 .wa-panel-heading h2, .wa-results h2 { margin:0; font-size:17px; line-height:1.4; }
 .wa-kicker { font-size:12px; letter-spacing:.05em; color:var(--text-tertiary,var(--text-secondary)); font-weight:600; }
@@ -151,7 +154,6 @@
 .wa-activation-records b { color:var(--text); font-weight:500; }
 .wa-reading-sheet .wa-reading-list { display:grid; gap:7px; }
 .wa-reading-sheet .wa-reading-list button { text-align:left; min-height:44px; }
-@media (min-width:1051px) and (max-height:850px) { .wa-graph-column { position:static; } }
 @media (max-width:1050px) {
  .wa-page { padding:18px; }
  .wa-workspace { grid-template-columns:1fr; gap:18px; }

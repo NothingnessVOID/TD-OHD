@@ -2,6 +2,8 @@ import '../styles/wa.css';
 import '../lib/wa/messages.js';
 import '../lib/wa/oc16-messages.js';
 import '../lib/wa/ui-messages.js';
+import '../styles/wa-members.css';
+import { createWaMemberMarkers, renderWaMemberMarker, renderWaMemberLegend } from '../lib/wa/member-markers.js';
 import { listPeople, getPerson, onPeopleChange } from '../lib/people.js';
 import { listTeams } from '../lib/team-repository.js';
 import { computeChart } from '../lib/chartdata.js';
@@ -43,11 +45,14 @@ export function mountWa(container, options = {}) {
   let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = false;
   let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = true;
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
+  let graphResizeObserver=null,stickyFrame=0;
   const expanded = new Set(), annotationRecovery = [];
   const detail = document.createElement('div');
   detail.className = 'modal-overlay hidden wa-detail';
   document.body.append(detail);
   const members = () => new Map(draft.members.map(member => [member.memberId, member]));
+  let markerRefs=null,markerMap=null;
+  const markers=()=>{if(markerRefs!==draft.members){markerRefs=draft.members;markerMap=createWaMemberMarkers(draft.members);}return markerMap;};
   const nameOf = id => { const member = members().get(id); return member ? people.get(member.personId)?.name || member.labelSnapshot : ''; };
   const groupName = group => group.title || `Penta ${String.fromCharCode(65 + WA_ROLES.indexOf(group.role))}`;
   const known = () => !busy && ['ready','empty'].includes(result?.status);
@@ -65,7 +70,7 @@ export function mountWa(container, options = {}) {
   const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf});
 
   function memberChip(id,alpha=false) {
-    return `<li class="wa-member-chip" data-wa-member-chip="${esc(id)}"><span class="wa-member-chip-name">${esc(nameOf(id))}</span><button class="wa-member-remove" ${alpha?'data-clear-alpha':`data-remove-wa="${esc(id)}"`} data-focus="remove-${esc(id)}" aria-label="${alpha?text('Wa UI clear alpha'):text('Wa UI remove member',{name:nameOf(id)})}" ${saving?'disabled':''}>×</button></li>`;
+    return `<li class="wa-member-chip" data-wa-member-chip="${esc(id)}">${renderWaMemberMarker(markers().get(id),{name:nameOf(id)})}<span class="wa-member-chip-name">${esc(nameOf(id))}</span><button class="wa-member-remove" ${alpha?'data-clear-alpha':`data-remove-wa="${esc(id)}"`} data-focus="remove-${esc(id)}" aria-label="${alpha?text('Wa UI clear alpha'):text('Wa UI remove member',{name:nameOf(id)})}" ${saving?'disabled':''}>×</button></li>`;
   }
   function configurationHtml() {
     return `<section class="panel wa-configuration" aria-label="${text('OC16 configuration')}"><div class="wa-config-top"><label class="wa-title-field"><span>${text('Organization title')}</span><input data-title data-focus="title" maxlength="300" value="${esc(draft.title)}" placeholder="${text('Wa organization')}"></label><div class="wa-config-save"><span class="wa-draft-status">${text(dirty?'Unsaved changes':'Wa draft')} · r${draft.revision}</span><button class="btn-primary" data-action="save" data-focus="save" ${saving?'disabled':''}>${text('Wa UI save organization')}</button></div></div><details class="wa-config-details" ${configExpanded?'open':''}><summary>${text('OC16 configuration')} · ${validateWaLayout(draft).memberIds.length} ${text('OC16 participants')}</summary><div class="wa-config-grid"><section class="wa-config-card" data-wa-target="alpha"><h2>${text('OC16 alpha')}<small>${draft.alphaId?'1':'0'} / 1</small></h2><ul class="wa-member-chips">${draft.alphaId?memberChip(draft.alphaId,true):`<li class="wa-config-empty">${text('OC16 no alpha')}</li>`}</ul><div class="wa-config-actions"><button class="btn-secondary" data-compose="alpha" data-focus="alpha" ${saving?'disabled':''}>${text(draft.alphaId?'Wa UI replace alpha':'Wa UI choose alpha')}</button></div></section>${draft.pentas.map(group=>{
@@ -99,12 +104,21 @@ export function mountWa(container, options = {}) {
     if(!validateWaLayout(draft).memberIds.length)return `<section class="wa-empty-callout"><h2>${text('OC16 empty title')}</h2><p>${text('OC16 empty note')}</p><button class="btn-primary" data-action="edit">${text('OC16 choose people')}</button></section>`;
     return '';
   }
+  function updateSticky() {
+    if(disposed)return;
+    const column=container.querySelector('.wa-graph-column');if(!column)return;
+    const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
+    const top=Math.min(header,window.innerHeight-column.getBoundingClientRect().height-16);
+    column.style.setProperty('--wa-sticky-top',`${Math.floor(top)}px`);
+  }
+  function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
   function render() {
     if(disposed)return;
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
-    container.innerHTML=`<div class="wa-page" data-wa-page><header class="wa-header"><div><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button></div></header>${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column"><section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2><span class="wa-kicker">WA / OC16</span></div><div class="wa-scope-control"><label>${text('OC16 scope')}<select data-scope data-focus="scope"><option value="">${text('OC16 all')}</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${group.pentaId===selectedGroup?'selected':''}>${esc(groupName(group))}</option>`).join('')}</select></label>${selectedGroup?`<label><input type="checkbox" data-include-alpha ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}</div><p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected)}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}<div data-wa-selection-summary>${details.renderSelected(selected)}</div></section></aside><main class="wa-results">${overviewHtml()}${pillarsHtml()}<section class="panel"><h2>${text('OC16 departments')}</h2><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section><section class="panel"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}</section></main></div></div>`;
+    container.innerHTML=`<div class="wa-page" data-wa-page><header class="wa-header"><div><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button></div></header>${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column"><section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2><span class="wa-kicker">WA / OC16</span></div><div class="wa-scope-control"><label>${text('OC16 scope')}<select data-scope data-focus="scope"><option value="">${text('OC16 all')}</option>${draft.pentas.map(group=>`<option value="${esc(group.pentaId)}" ${group.pentaId===selectedGroup?'selected':''}>${esc(groupName(group))}</option>`).join('')}</select></label>${selectedGroup?`<label><input type="checkbox" data-include-alpha ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}</div><p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}<div class="wa-graph-members"><h3>${text('Wa UI member legend')}</h3><p class="wa-small-note">${text('Wa UI marker rule')}</p>${renderWaMemberLegend(viewScope().memberIds,markers(),nameOf)}</div><div data-wa-selection-summary>${details.renderSelected(selected)}</div></section></aside><main class="wa-results">${overviewHtml()}${pillarsHtml()}<section class="panel"><h2>${text('OC16 departments')}</h2><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section><section class="panel"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}</section></main></div></div>`;
+    graphResizeObserver?.disconnect();graphResizeObserver?.observe(container.querySelector('.wa-graph-panel'));queueSticky();
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
     if(focus){const replacement=[...container.querySelectorAll('[data-focus]')].find(node=>node.dataset.focus===focus);replacement?.focus({preventScroll:true});if(start!=null&&replacement?.setSelectionRange)replacement.setSelectionRange(start,end);}
@@ -359,6 +373,7 @@ export function mountWa(container, options = {}) {
   const unsubscribe=people.subscribe?.(()=>{if(!disposed)schedule();});
   const compactViewport=window.matchMedia('(max-width:600px)'), resize=()=>{render();if(detailOpen)fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));};
   compactViewport.addEventListener('change',resize);
+  graphResizeObserver=new ResizeObserver(queueSticky);window.addEventListener('resize',queueSticky);
   render();
   // Only the saved organization ID is remembered. Never cache charts, births or drafts here.
   if(options.restoreLast!==false){
@@ -368,5 +383,5 @@ export function mountWa(container, options = {}) {
       catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}}
     });
   }
-  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
+  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
 }
