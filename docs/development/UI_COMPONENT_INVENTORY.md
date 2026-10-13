@@ -106,6 +106,14 @@ Wa 的人工记录折叠区复用既有表单、按钮、Operation Dialog 和 Sk
 
 Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保留，修订/备份集中在打开组织的次级界面；已确认清理前的临时配置可在当前页面实例导出，已保存历史不会被删除。新首轮浏览器用例为 `wa-oc16-preview-e2e.mjs`，完整矩阵及旧固定源码审计的后继适配等待用户视觉确认。
 
+## Wa / OC16 第二轮：范围与贡献详情
+
+`resolveWaViewScope()` 只映射查看范围和成员身份：全组织固定含 Alpha，切到任一组默认不含 Alpha，当前范围及人数用于图形、概览、详情同一条数据链。`nav.team` / `nav.organization` 是独立导航文案，不覆盖页面内 Penta、Wa 专业名称。
+
+`createWaDetailRenderer({getResult,nameOf})` 为部门门对行、部门/通道/闸门详情和紧凑图下摘要复用纯展示函数；`renderActivationRows()` 按 memberId 分组但保留每条行星/侧别/门爻记录。端点直接消费已有 holders/gateRecords，跨成员组合先按 canonical gate 归属再转换展示顺序，不重新计算或补组合。人格/设计来源使用出生图的 `--hd-birth-*` 色点/边框和 `--source-birth*-text` 可读文字Token，随Skin、自定义颜色实时更新。
+
+公共 Detail Dialog 生命周期不改；Wa 自己的历史 frame 保存滚动、折叠、阅读 lens 和焦点键，关闭恢复最初入口与页面位置。主图 SVG 字节保留，短屏取消过度压缩并使用正常文档流；页面删除无选择时的独立面板和反复声明，异常、数据损失确认与存档警告保留。当前为第二轮体验验收候选，完整回归仍在用户确认之后。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
