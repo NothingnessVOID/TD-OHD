@@ -85,12 +85,12 @@ try {
   await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.querySelector('.wa-composer'));
   await verify([0,1,2,3,4,5,6,7,8,9],'conflicting import leaves organization intact');
   // Single Penta defaults to its own members; Alpha is always explicit.
-  await root().locator('[data-scope]').selectOption(groupIds[0]);
+  await root().locator(`[data-scope-option="${groupIds[0]}"]`).click();
   assert.equal(await root().locator('[data-include-alpha]').isChecked(),false);
   await verify([1,2,3],'group A alone by default');
   await root().locator('[data-include-alpha]').check();await verify([0,1,2,3],'group A with explicit Alpha');
   await root().locator('[data-include-alpha]').uncheck();await verify([1,2,3],'group A alone');
-  await root().locator('[data-scope]').selectOption('');
+  await root().locator('[data-scope-option=""]').click();
   // Returning to all participants restores Alpha inclusion.
   await verify([0,1,2,3,4,5,6,7,8,9],'all participants after group-only');
   // Shared details: pillar -> actual pair -> other endpoint -> Back -> Escape.
@@ -142,10 +142,10 @@ try {
   // The whole-organization Core Wa uncertainty metadata must not leak into a group-only view.
   await page.evaluate(async()=>{const people=await import('/src/lib/people.js');const person=people.getPerson('fictional-oc16-0');window.exactAlpha={...person,timezone:person.location.timezone};people.savePerson({...window.exactAlpha,timeUnknown:true});});
   await waitReady();assert.equal(await root().locator('[data-wa-uncertainty]').count(),1);
-  await root().locator('[data-scope]').selectOption(groupIds[0]);assert.equal(await root().locator('[data-wa-uncertainty]').count(),0);
+  await root().locator(`[data-scope-option="${groupIds[0]}"]`).click();assert.equal(await root().locator('[data-wa-uncertainty]').count(),0);
   await root().locator('[data-include-alpha]').check();assert.equal(await root().locator('[data-wa-uncertainty]').count(),1);
   await page.evaluate(async()=>{(await import('/src/lib/people.js')).savePerson(window.exactAlpha);});await waitReady();
-  await root().locator('[data-scope]').selectOption('');assert.equal(await root().locator('[data-wa-uncertainty]').count(),0);
+  await root().locator('[data-scope-option=""]').click();assert.equal(await root().locator('[data-wa-uncertainty]').count(),0);
   // Three focused visual samples only; full Skin/language matrix follows user acceptance.
   for(const [locale,skin,width] of [['zh-CN','default-light',390],['zh-Hant','default-dark',320],['en','high-contrast',1280]]){
     await page.setViewportSize({width,height:900});
