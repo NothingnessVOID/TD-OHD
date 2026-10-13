@@ -114,6 +114,10 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 公共 Detail Dialog 生命周期不改；Wa 自己的历史 frame 保存滚动、折叠、阅读 lens 和焦点键，关闭恢复最初入口与页面位置。主图 SVG 字节保留，短屏取消过度压缩并使用正常文档流；页面删除无选择时的独立面板和反复声明，异常、数据损失确认与存档警告保留。当前为第二轮体验验收候选，完整回归仍在用户确认之后。
 
+## Wa / OC16 第三轮：页面布局
+
+查看范围改为页面级分段按钮（`.wa-segmented` / `[data-scope-option]`），概览合并四支柱与新增“结构缺口”闸门列表，六部门卡片以门对标记（`.wa-pair-token`）直接显示两端覆盖并打开既有门对详情。仅为 Wa 页面局部样式，复用 Skin Token、i18n、`gateName()` 与既有详情渲染；未提取为全站组件。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
