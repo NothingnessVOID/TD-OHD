@@ -223,6 +223,31 @@ async function main() {
     await validateEndpoints(detail,expected);await expandFolds();await validateActivations(pair.displayGates);await validateReading(pair);};
   const validateCurrent=async()=>{await validateMarkers();await validateCards();await openPair(pairs[0]);await validatePair(pairs[0]);await close();};
   const recordFonts=async label=>{const fonts=await root().locator('.wa-core-svg [data-wa-gate-marker] text').evaluateAll(nodes=>nodes.map(n=>({text:n.textContent,css:parseFloat(getComputedStyle(n).fontSize),effective:parseFloat(getComputedStyle(n).fontSize)*Math.hypot(n.getScreenCTM().a,n.getScreenCTM().b),width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height})));assert.ok(fonts.length);assert.ok(fonts.every(f=>f.effective>0&&f.width>0&&f.height>0));evidence.fonts.push({label,fonts,review:'parent visual approval required; no invented readability threshold'});};
+  const verifyMarkerFont=async label=>{
+    await recordFonts(label);
+    const measurement=await root().locator('.wa-core-svg').evaluate(svg=>{
+      const sr=svg.getBoundingClientRect();
+      const rect=r=>({x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom});
+      return {svg:rect(sr),markers:[...svg.querySelectorAll('[data-wa-gate-marker]')].map(m=>{
+        const text=m.querySelector('text'),circle=m.querySelector('circle'),b=text.getBBox(),t=text.getBoundingClientRect(),c=circle.getBoundingClientRect(),s=getComputedStyle(text);
+        return {number:Number(m.dataset.markerNumber),memberId:m.dataset.waMarkerMember,gate:Number(m.dataset.waGateMarker),css:parseFloat(s.fontSize),bbox:{x:b.x,y:b.y,width:b.width,height:b.height},diameter:circle.r.baseVal.value*2,text:rect(t),circle:rect(c),visible:s.display!=='none'&&s.visibility==='visible'&&Number(s.opacity)>0};
+      })};
+    });
+    evidence.markerBounds??=[];evidence.markerBounds.push({label,...measurement});
+    assert.deepEqual([...new Set(measurement.markers.map(m=>m.number))].sort((a,b)=>a-b),Array.from({length:12},(_,i)=>i+1),'real core-gate markers must exercise every number 1..12');
+    for(const m of measurement.markers){
+      assert.equal(m.css,12.5,`${label}/${m.number}: new CSS actually applied`);
+      assert.ok(m.bbox.width<=m.diameter&&m.bbox.height<=m.diameter,`${label}/${m.number}: text bbox ${m.bbox.width}x${m.bbox.height} exceeds circle diameter ${m.diameter}`);
+      assert.ok(m.visible&&m.text.width>0&&m.text.height>0,`${label}/${m.number}: visible text`);
+      // Preserve the strict position check, but defer its failure until all requested
+      // viewports/screenshots have been collected. Do not turn a failure into a pass.
+      if(!(m.text.x>=m.circle.x-0.5&&m.text.right<=m.circle.right+0.5&&m.text.y>=m.circle.y-0.5&&m.text.bottom<=m.circle.bottom+0.5)) {
+        evidence.markerPositionFailures??=[];evidence.markerPositionFailures.push({label,number:m.number,gate:m.gate,topOverhang:m.circle.y-m.text.y,bottomOverhang:m.text.bottom-m.circle.bottom,leftOverhang:m.circle.x-m.text.x,rightOverhang:m.text.right-m.circle.right});
+      }
+      assert.ok(m.circle.x>=measurement.svg.x-0.5&&m.circle.right<=measurement.svg.right+0.5&&m.circle.y>=measurement.svg.y-0.5&&m.circle.bottom<=measurement.svg.bottom+0.5,`${label}/${m.number}: circle inside SVG bounds`);
+    }
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,`${label}: no horizontal overflow`);
+  };
   const sticky=async(width,height)=>{await close();await page.setViewportSize({width,height});await settle();await page.evaluate(()=>{const n=document.createElement('div');n.id='wa-acceptance-tail';n.style.height='2400px';n.setAttribute('aria-hidden','true');document.body.append(n);scrollTo(0,0);});await settle();
     const geometry=()=>page.evaluate(()=>{const n=document.querySelector('.wa-graph-column'),w=document.querySelector('.wa-workspace'),r=n.getBoundingClientRect(),b=w.getBoundingClientRect(),s=getComputedStyle(n);const ancestors=[];for(let a=n.parentElement;a;a=a.parentElement){const c=getComputedStyle(a);ancestors.push({tag:a.tagName,class:a.className,overflowY:c.overflowY,scrollTop:a.scrollTop});}return {y:scrollY,height:innerHeight,header:document.querySelector('.header')?.getBoundingClientRect().height||56,position:s.position,cssTop:parseFloat(s.top),left:{top:r.top,bottom:r.bottom,height:r.height},workspace:{top:b.top,bottom:b.bottom,height:b.height},ancestors};});
     try{const start=await geometry(),wanted=Math.min(start.header+16,height-start.left.height-16);assert.equal(start.position,'sticky');assert.ok(Math.abs(start.cssTop-wanted)<=1.1);assert.ok(start.left.top>start.cssTop+20,'initial natural scroll before sticking');
@@ -238,7 +263,7 @@ async function main() {
     });
     await page.goto(`${base}/?view=wa`);await root().locator('[data-wa-page]').waitFor();
     // Vite raw imports expose the served source bytes; compare against the parent root.
-    for(const resource of ['/src/views/wa.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/lib/wa/content-data.json','/src/lib/wa/reading-presentation.js']){
+    for(const resource of ['/src/views/wa.js','/src/views/wa-detail-content.js','/src/lib/wa/member-markers.js','/src/styles/wa.css','/src/styles/wa-members.css','/src/lib/wa/content-data.json','/src/lib/wa/reading-presentation.js']){
       const servedRaw=await page.evaluate(async resource=>(await import(`${resource}?raw&import`)).default,resource);
       assert.equal(servedRaw,await readFile(path.join(rootSource,resource.slice(1)),'utf8'),`9961 serves parent root ${resource}`);
       const response=await page.request.get(`${base}${resource}`);assert.ok(response.ok());const text=await response.text();sourceHashes.set(resource,createHash('sha256').update(text).digest('hex'));
@@ -247,11 +272,17 @@ async function main() {
     await check('01 actual WASM 12-person seed and independent 26-activation oracle',async()=>{data=await seed(page);validateRaw(data);expectedDraft=structuredClone(data.draft);markers=markerOracle(data.draft.members);evidence.raw=data.raw;evidence.fixture=data.fixture;await page.reload();await ready();await scope(null);assert.equal(ids().length,10);});
     if(process.env.WA_VISUAL_ONLY==='1') {
       // Supplementary framing only: does not claim the nineteen-case run.
-      evidence.mode='supplementary visual';
+      evidence.mode='supplementary visual and 12.5px marker font';
+      // Assign both retained real-WASM people through the ordinary picker, so
+      // double-digit 10/11/12 are measured on real core gates, not synthetic text.
+      await choose(expectedDraft.pentas[0].pentaId,[10,11]);expectedDraft.pentas[0].memberIds.push(id(10),id(11));
+      await validateMarkers();
+      evidence.visualMemberIds=ids();
       for(const [width,height,locale] of [[1440,1000,'zh-CN'],[1280,640,'zh-CN'],[390,900,'zh-Hant'],[320,900,'en']]) {
         await page.setViewportSize({width,height});await page.evaluate(async locale=>(await import(window.waAcceptanceLive('/src/lib/i18n.js'))).setLocale(locale,{persist:false}),locale);await ready();await configuration();await settle();
         const prefix=`${width}x${height}-${locale}`;
-        for(const [name,locator] of [['configuration',root().locator('.wa-configuration')],['graph-legend',root().locator('.wa-graph-panel')]]) {
+        await verifyMarkerFont(prefix);await validateMarkers();await validateCards();
+        for(const [name,locator] of [['configuration',root().locator('.wa-configuration')],['graph-legend',root().locator('.wa-graph-panel')],['rightCards',root().locator('.wa-results')]]) {
           // Full-page capture at document top avoids a fixed header crossing a tall
           // element screenshot after Playwright's automatic scrollIntoView.
           await page.evaluate(()=>scrollTo(0,0));await settle();
@@ -268,7 +299,9 @@ async function main() {
           await close();
         }
       }
-      assert.equal(git('rev-parse','HEAD'),sourceCommit);assert.deepEqual(evidence.errors,[]);evidence.status='PASS_VISUAL';console.log(`PASS supplementary framed screenshots: ${output}`);return;
+      assert.equal(git('rev-parse','HEAD'),sourceCommit);assert.equal(git('status','--porcelain','--','src','public'),'');
+      for(const [resource,hash]of sourceHashes){const response=await page.request.get(`${base}${resource}`);assert.ok(response.ok());assert.equal(createHash('sha256').update(await response.text()).digest('hex'),hash,`served source changed ${resource}`);}
+      assert.deepEqual(evidence.errors,[]);assert.deepEqual(evidence.markerPositionFailures||[],[],'strict text-position containment: inspect recorded overhangs; all screenshots preserved');evidence.status='PASS_VISUAL';console.log(`PASS supplementary framed screenshots: ${output}`);return;
     }
     await check('02 one-page configuration and one lightweight picker',async()=>{await configuration();assert.equal(await root().locator('[data-wa-target]').count(),4);assert.equal(await page.locator('.wa-composer-cards,[data-apply]').count(),0);await shot('1440-organization-edit');await root().locator('[data-compose="alpha"]').click();assert.equal(await page.locator('.operation-dialog').count(),1);await copy(picker());await shot('1440-lightweight-alpha-picker');await page.keyboard.press('Escape');});
     await check('03 Alpha replace clear restore updates all views',async()=>{await choose('alpha',[10]);expectedDraft.alphaId=id(10);await validateCurrent();await root().locator('[data-clear-alpha]').click();expectedDraft.alphaId=null;await ready();await validateCurrent();await choose('alpha',[0]);expectedDraft.alphaId=id(0);await validateCurrent();});
