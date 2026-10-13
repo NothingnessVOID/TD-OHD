@@ -30,6 +30,15 @@ const renderer = result => createWaDetailRenderer({ getResult: () => result, nam
 const occurrences = (html, needle) => html.split(needle).length - 1;
 const endpoint = (html, gate) => html.split(`data-wa-endpoint="${gate}"`)[1]?.split('</div></div>')[0];
 
+test('native disclosure summaries participate in the existing public dialog focus trap', () => {
+  const details = renderer(fixture());
+  for (const html of [details.renderGate(45), details.renderPair('21-45'), details.renderDepartment('management')]) {
+    const summaries = [...html.matchAll(/<summary\b[^>]*>/g)].map(match => match[0]);
+    assert.ok(summaries.length > 0);
+    for (const summary of summaries) assert.match(summary, /tabindex="0"/);
+  }
+});
+
 for (const [status, left, right, self, combinations] of [
   ['absent', [], [], [], []],
   ['hanging', ['a'], [], [], []],

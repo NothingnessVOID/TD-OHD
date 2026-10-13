@@ -23,7 +23,7 @@ const stateHtml = value => {
   return `<span class="wa-detail-state" data-wa-state="${state}">${waStateSymbol(state)}<span>${esc(waStateText(state))}</span></span>`;
 };
 const gateLabel = gate => `<strong>${gate}</strong> · ${esc(gateName(gate))} · ${esc(hexagramName(gate))}`;
-const fold = (label, body, attributes = '') => `<details class="wa-detail-fold" ${attributes}><summary>${text(label)}</summary>${body}</details>`;
+const fold = (label, body, attributes = '') => `<details class="wa-detail-fold" ${attributes}><summary tabindex="0">${text(label)}</summary>${body}</details>`;
 
 /** Shared by inline rows, department, pair and gate details. Preserve every source row, including duplicates. */
 export function renderActivationRows(activations, { nameOf = id => id } = {}) {

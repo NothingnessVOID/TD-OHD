@@ -1,4 +1,5 @@
 /* Wa/OC16 uses the shared surfaces, controls and document-scroll layout. */
+#wa-view.view-section { padding:0; }
 .wa-page { width:100%; max-width:var(--max-width,1200px); margin:0 auto; padding:22px 24px 36px; color:var(--text); }
 .wa-page *, .wa-reading-sheet * { box-sizing:border-box; }
 .wa-page .panel { margin:0; }
