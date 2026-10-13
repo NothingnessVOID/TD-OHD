@@ -5,7 +5,7 @@ import { createWaDetailRenderer, renderActivationRows } from '../src/views/wa-de
 import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
 import { readWaContent } from '../src/lib/wa/content.js';
 import { renderProse } from '../src/lib/knowledge/detail-renderer.js';
-import { renderSharedGateReading, renderSharedChannelReading } from '../src/lib/shared-object-details.js';
+import { readWaReadingExcerpt } from '../src/lib/wa/reading-presentation.js';
 import { renderGateDetailHeading } from '../src/lib/object-detail-heading.js';
 import { gateName, hexagramName, planetName } from '../src/lib/vocabulary.js';
 import { setLocale, t } from '../src/lib/i18n.js';
@@ -50,7 +50,7 @@ for (const [status, left, right, self, combinations] of [
   const result = fixture({ status, left, right, self, combinations });
   const html = renderer(result).renderPair('21-45');
   assert.match(html, new RegExp(`data-wa-state="${status}"`));
-  assert.ok(html.includes(t(`OC16 ${status}`)));
+  assert.ok(html.includes(t(`Wa UI state ${status}`)));
   assert.ok(html.indexOf('data-wa-endpoint="45"') < html.indexOf('data-wa-endpoint="21"'));
   for (const [gate, ids] of [[21, left], [45, right]]) {
     const section = endpoint(html, gate);
@@ -71,7 +71,9 @@ test('canonical combinations are projected into reversed display order without i
   assert.equal(occurrences(c, 'data-wa-combination-right='), 2);
   assert.match(c, /data-wa-combination-right="a"/);
   assert.match(c, /data-wa-combination-right="b"/);
-  assert.match(html, /data-wa-self-complete><span class="wa-detail-member" data-wa-member="b">Fictional B/);
+  const self = html.split('data-wa-self-complete>')[1].split('</div>')[0];
+  assert.match(self, /class="wa-detail-member" data-wa-member="b">Fictional B/);
+  assert.doesNotMatch(self, /data-wa-member="(?:a|c)"/);
   // Same holders, deliberately fewer source records: presentation must not reconstruct their Cartesian product.
   const sparse = renderer(fixture({ combinations: [{ firstMemberId: 'b', secondMemberId: 'c' }] })).renderPair('21-45');
   assert.equal(occurrences(sparse, 'data-wa-combination-right='), 1);
@@ -156,30 +158,34 @@ test('department counts are consumed, core precedes support, no trailing blanket
   assert.match(html, /data-wa-pair-count="3">3 \/ 5/);
   assert.equal(occurrences(html, 'data-pair-row='), 5);
   assert.ok(html.indexOf('data-pair-row="21-45"') < html.indexOf('data-pair-row="32-54"'));
-  assert.doesNotMatch(html, /outsider|wa-contributor-list|data-wa-knowledge/);
+  assert.doesNotMatch(html, /outsider|wa-contributor-list/);
+  assert.match(html, /data-wa-knowledge="wa-department" data-wa-content-id="21-45"/);
 });
 
-test('three languages retain exact collapsed Wa/standard/gate readings and source IDs', () => {
+test('three languages retain exact collapsed Wa excerpts and source IDs, never personal channel/gate prose', () => {
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const view = renderer(fixture());
     const core = view.renderPair('21-45'), support = view.renderPair('32-54'), gate = view.renderGate(45);
     const entry = readWaContent('21-45', locale);
-    assert.match(core, /<details class="wa-detail-fold" data-wa-knowledge="wa" data-wa-content-id="21-45">/);
+    const excerpt = readWaReadingExcerpt('21-45',locale);
+    assert.match(core, /<details class="wa-detail-fold" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45">/);
     assert.ok(core.includes(`data-wa-reading-id="${entry.id}"`));
     assert.ok(core.includes(`data-wa-package-id="${entry.packageId}"`));
     assert.ok(core.includes(`data-wa-source-refs="${entry.sourceRefs.join(' ')}"`));
     assert.ok(core.includes(renderProse({ content: entry.summary })));
-    assert.ok(core.includes(renderProse({ content: entry.detail })));
-    assert.match(support, /<details class="wa-detail-fold" data-wa-knowledge="channel" data-wa-content-id="32-54">/);
-    assert.ok(support.includes(renderSharedChannelReading('32-54')));
+    assert.ok(core.includes(renderProse({ content: excerpt.detail })));
+    assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
+    assert.match(support, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54">/);
+    assert.ok(support.includes(renderProse({content:excerpt.detail})));
+    assert.ok(support.includes(`data-wa-reading-id="${entry.id}"`));
     assert.ok(gate.includes(renderGateDetailHeading(45)));
-    assert.ok(gate.includes(renderSharedGateReading(45, { activeLines: [1] })));
-    assert.match(gate, /<details class="wa-detail-fold" data-wa-knowledge="gate" data-wa-content-id="45">/);
+    assert.ok(gate.includes(renderProse({content:excerpt.detail})));
+    assert.match(gate, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="gate:45">/);
     assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
     assert.ok(gate.indexOf('wa-detail-related') < gate.indexOf('data-wa-knowledge'));
-    assert.match(gate, /data-shared-lens="iching"/);
+    for (const html of [core,support,gate]) assert.doesNotMatch(html,/data-shared-lens|data-shared-gate=|data-shared-channel-reading/);
     for (const html of [core, support, gate]) assert.doesNotMatch(html, /<details[^>]*\bopen(?:\s|>|=)|Wa detail |OC16 /);
     assert.ok(core.includes(t('Wa detail combinations')));
     assert.ok(core.includes(t('OC16 personality')));

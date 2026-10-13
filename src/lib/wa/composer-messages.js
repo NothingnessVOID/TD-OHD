@@ -2,7 +2,9 @@ import { registerMessages } from '../i18n.js';
 
 // Namespaced to keep the main Wa page's copy independently owned.
 const messages = {
-  'Wa composer title': ['编辑组织成员', '編輯組織成員', 'Edit organization members'],
+  'Wa composer leader': ['负责人 Alpha', '負責人 Alpha', 'Alpha'],
+  'Wa composer pick people': ['选择人物', '選擇人物', 'Choose people'],
+  'Wa composer title': ['选择成员', '選擇成員', 'Choose members'],
   'Wa composer organization': ['组织名称', '組織名稱', 'Organization name'],
   'Wa composer group name': ['小组名称', '小組名稱', 'Group name'],
   'Wa composer select': ['选择', '選擇', 'Select'],
@@ -30,13 +32,13 @@ const messages = {
   'Wa composer duplicate': ['导入包含重复人物，未修改草稿。', '匯入包含重複人物，未修改草稿。', 'The import contains duplicate people. The draft was not changed.'],
   'Wa composer changed': ['原配置已变化，请关闭后重新打开编辑器。此处草稿未提交。', '原配置已變更，請關閉後重新開啟編輯器。此處草稿尚未提交。', 'The original configuration changed. Close and reopen the editor. This draft was not committed.'],
   'Wa composer failed': ['操作未完成，草稿已保留。', '操作尚未完成，草稿已保留。', 'The operation did not complete. Your draft is retained.'],
-  'Wa composer no teams': ['当前来源没有已保存的小组。请取消返回，在 Team / Penta 页面保存小组后再来导入。', '目前來源沒有已儲存的小組。請取消返回，在 Team / Penta 頁面儲存小組後再來匯入。', 'No saved groups at this origin. Cancel and return to Team / Penta to save a group, then import it here.'],
-  'Wa composer import hint': ['导入一次性复制人物引用，替换目标组选择。保留本组名称，不复制出生资料，也不建立团队同步。', '匯入一次性複製人物引用，取代目標組選擇。保留本組名稱，不複製出生資料，也不建立團隊同步。', 'Import replaces this group’s selection with a one-time copy of person references. It keeps the target name and does not copy birth data or link team updates.'],
+  'Wa composer no teams': ['当前网址没有已保存的小组。也可以直接选择人物。', '目前網址沒有已儲存的小組，也可以直接選擇人物。', 'No groups are saved at this address. You can choose people directly.'],
+  'Wa composer import hint': ['选择一个已存小组，替换本组成员。', '選擇一個已存小組，取代本組成員。', 'Choose a saved group to replace the people in this group.'],
   'Wa composer import count': ['{count} 人', '{count} 人', '{count} people'],
   'Wa composer unnamed team': ['未命名团队', '未命名團隊', 'Untitled team'],
   'Wa composer unnamed group': ['未命名小组', '未命名小組', 'Untitled group'],
   'Wa composer cleanup title': ['确认人工引用变更', '確認人工引用變更', 'Review annotation changes'],
-  'Wa composer cleanup hint': ['以下人工引用将从新草稿中移除。完整原配置与每次变更前的快照会随提交交付给页面保留历史。取消则保持当前配置。', '以下人工引用將從新草稿中移除。完整原配置與每次變更前的快照會隨提交交付給頁面保留歷史。取消則保持目前配置。', 'The listed references will be removed from the new draft. The full original configuration and snapshots before each change accompany the commit for history retention. Cancel keeps the current configuration.'],
+  'Wa composer cleanup hint': ['此操作也会移除下面列出的关联记录。已保存的历史保留，清理前副本可在“打开组织”中导出。是否继续？', '此操作也會移除下面列出的關聯紀錄。已儲存歷史保留，清理前副本可在「開啟組織」中匯出。是否繼續？', 'This also removes the linked records below. Saved history remains available; a pre-change copy can be exported from Open organization. Continue?'],
   'Wa composer cleanup confirm': ['保留历史并继续', '保留歷史並繼續', 'Retain history and continue'],
   'Wa composer edge': ['人工联系', '人工聯繫', 'Manual link'],
   'Wa composer ally': ['关键盟友', '關鍵盟友', 'Key ally'],

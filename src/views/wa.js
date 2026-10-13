@@ -1,6 +1,9 @@
 import '../styles/wa.css';
 import '../lib/wa/messages.js';
 import '../lib/wa/oc16-messages.js';
+import '../lib/wa/ui-messages.js';
+import '../styles/wa-members.css';
+import { createWaMemberMarkers, renderWaMemberMarker } from '../lib/wa/member-markers.js';
 import { listPeople, getPerson, onPeopleChange } from '../lib/people.js';
 import { listTeams } from '../lib/team-repository.js';
 import { computeChart } from '../lib/chartdata.js';
@@ -10,18 +13,18 @@ import { esc } from '../lib/format.js';
 import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
-import { createWaDetailRenderer } from './wa-detail-content.js';
+import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { renderProse } from '../lib/knowledge/detail-renderer.js';
 import { gateName, hexagramName } from '../lib/vocabulary.js';
-import { readWaContent, listWaContent } from '../lib/wa/content.js';
+import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
 import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
-import { openWaComposer } from './wa-composer.js';
-import { renderWaDiagram, renderWaLegend, waStateText } from './wa-diagram.js';
+import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
+import { renderWaDiagram, renderWaLegend } from './wa-diagram.js';
 
 const clone = value => structuredClone(value);
 const text = (key, params) => esc(t(key, params));
@@ -39,17 +42,20 @@ export function mountWa(container, options = {}) {
   let draft = createWaDraft(), dirty = false, saving = false, disposed = false, busy = false;
   let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null;
   let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = false;
-  let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = null;
+  let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = true;
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
-  const expanded = new Set(), annotationRecovery = [];
+  let graphResizeObserver=null,stickyFrame=0;
+  let focusMember = null;
+  const collapsed = new Set(), annotationRecovery = [];
   const detail = document.createElement('div');
-  detail.className = 'modal-overlay hidden wa-detail';
+  detail.className = 'gate-detail hidden wa-detail';
   document.body.append(detail);
   const members = () => new Map(draft.members.map(member => [member.memberId, member]));
+  let markerRefs=null,markerMap=null;
+  const markers=()=>{if(markerRefs!==draft.members){markerRefs=draft.members;markerMap=createWaMemberMarkers(draft.members);}return markerMap;};
   const nameOf = id => { const member = members().get(id); return member ? people.get(member.personId)?.name || member.labelSnapshot : ''; };
   const groupName = group => group.title || `Penta ${String.fromCharCode(65 + WA_ROLES.indexOf(group.role))}`;
   const known = () => !busy && ['ready','empty'].includes(result?.status);
-  const measuredPair = id => known() ? result.pairs.find(pair => pair.channelId === id) : null;
   const measuredGate = gate => known() ? result.gateRecords.find(record => record.gate === gate) : null;
   const covered = gate => Boolean(measuredGate(gate)?.memberIds.length);
   const viewScope = () => resolveWaViewScope(draft,{pentaId:selectedGroup,includeAlpha});
@@ -59,28 +65,32 @@ export function mountWa(container, options = {}) {
   const remember = id => { try { storage?.setItem(LAST_ORGANIZATION,id); } catch { notice='OC16 remember failed'; errorText=''; } };
   const closeReading = () => { if (detailOpen) closeDetailDialog(); };
   const fail = error => { notice=/conflict|revision/i.test(error?.code || '')?'Wa save conflict':'Wa data error'; errorText=error?.message || ''; };
-  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf});
+  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf,markerOf:id=>markers().get(id)});
 
-  const chips = ids => `<span class="wa-chip-list">${ids.map(id=>`<span class="wa-chip">${esc(nameOf(id))}</span>`).join('')}</span>`;
+  const markerHtml = id => renderWaMemberMarker(markers().get(id),{name:nameOf(id)});
   const groupSizeState = count => count === 0 ? 'empty' : count >= 3 && count <= 5 ? 'ok' : 'warn';
+  const groupLetter = group => String.fromCharCode(65 + WA_ROLES.indexOf(group.role));
+  function memberChip(id,alpha=false) {
+    return `<li class="wa-member-chip" data-wa-member-chip="${esc(id)}">${markerHtml(id)}<span class="wa-member-chip-name">${esc(nameOf(id))}</span><button class="wa-member-remove" ${alpha?'data-clear-alpha':`data-remove-wa="${esc(id)}"`} data-focus="remove-${esc(id)}" aria-label="${alpha?text('Wa UI clear alpha'):text('Wa UI remove member',{name:nameOf(id)})}" ${saving?'disabled':''}>×</button></li>`;
+  }
   function headerHtml() {
     return `<header class="wa-header"><div class="wa-header-text"><h1>${text('Organization · Wa')}</h1><p>${text('OC16 organization subtitle')}</p></div><div class="wa-actions"><span class="wa-draft-status" data-dirty="${dirty}">${text(dirty?'Unsaved changes':'Wa draft')} · r${draft.revision}</span><button class="btn-secondary" data-action="new" data-focus="new" ${saving?'disabled':''}>${text('New organization')}</button><button class="btn-secondary" data-action="open" data-focus="open" ${saving?'disabled':''}>${text('OC16 open')}</button><button class="btn-primary" data-action="save" data-focus="save" ${saving?'disabled':''}>${text('Save')}</button></div></header>`;
   }
+  function configSummary() {
+    const alpha = draft.alphaId ? `<span class="wa-summary-item">${markerHtml(draft.alphaId)}${esc(nameOf(draft.alphaId))}</span>` : `<span class="wa-summary-item is-empty">${text('OC16 no alpha')}</span>`;
+    return `<span class="wa-summary-label">${text('Wa config people',{count:validateWaLayout(draft).memberIds.length})}</span><span class="wa-summary-items"><span class="wa-summary-key">Alpha</span>${alpha}${draft.pentas.map(group=>`<span class="wa-summary-key">${esc(groupName(group))}</span><span class="wa-summary-item">${text('OC16 people',{count:group.memberIds.length})}</span>`).join('')}</span><span class="wa-summary-toggle">${text(configExpanded?'Wa config collapse':'Wa config expand')}<span class="wa-chevron" aria-hidden="true"></span></span>`;
+  }
   function configurationHtml() {
-    const alpha = draft.alphaId ? nameOf(draft.alphaId) : t('OC16 no alpha');
-    const alphaCard = `<section class="wa-config-card is-alpha"><header><h2>${text('OC16 alpha')}</h2></header><div class="wa-config-names">${draft.alphaId?chips([draft.alphaId]):`<span class="wa-config-empty">${esc(alpha)}</span>`}</div><div class="wa-config-actions"><button class="wa-link-button" data-compose="alpha" data-focus="alpha">${text('OC16 choose alpha')}</button></div></section>`;
+    const alphaCard = `<section class="wa-config-card is-alpha" data-wa-target="alpha"><header><h2>${text('OC16 alpha')}</h2></header><ul class="wa-member-chips">${draft.alphaId?memberChip(draft.alphaId,true):''}<li><button class="wa-add-chip" data-compose="alpha" data-focus="alpha" ${saving?'disabled':''}>${text(draft.alphaId?'Wa UI replace alpha':'Wa UI choose alpha')}</button></li></ul></section>`;
     const groupCard = group => {
       const count = group.memberIds.length, state = groupSizeState(count);
-      return `<section class="wa-config-card"><header><h2>${esc(groupName(group))}</h2><span class="wa-count-badge" data-state="${state}" ${state==='warn'?`title="${text('OC16 group size')}"`:''}>${count} / 3–5</span></header><div class="wa-config-names">${count?chips(group.memberIds):`<span class="wa-config-empty">${text('OC16 empty group')}</span>`}</div><div class="wa-config-actions"><button class="wa-link-button" data-compose="${esc(group.pentaId)}" data-focus="people-${esc(group.pentaId)}">${text('OC16 choose people')}</button><button class="wa-link-button" data-import="${esc(group.pentaId)}" data-focus="import-${esc(group.pentaId)}">${text('OC16 import Penta')}</button></div></section>`;
+      return `<section class="wa-config-card" data-wa-target="${esc(group.pentaId)}"><header><span class="wa-group-letter" aria-hidden="true">${groupLetter(group)}</span><input class="wa-group-title" aria-label="${text('Wa UI group name',{group:`Penta ${groupLetter(group)}`})}" data-group-title="${esc(group.pentaId)}" data-focus="group-${esc(group.pentaId)}" maxlength="300" value="${esc(group.title)}" placeholder="Penta ${groupLetter(group)}"><span class="wa-count-badge" data-state="${state}" ${state==='warn'?`title="${text('OC16 group size')}"`:''}>${count} / 3–5</span></header><ul class="wa-member-chips">${group.memberIds.map(id=>memberChip(id)).join('')}${count<5?`<li><button class="wa-add-chip" data-compose="${esc(group.pentaId)}" data-focus="people-${esc(group.pentaId)}" ${saving?'disabled':''}>${text('Wa UI add member')}</button></li>`:''}</ul><button class="wa-link-button wa-import-link" data-import="${esc(group.pentaId)}" data-focus="import-${esc(group.pentaId)}" ${saving?'disabled':''}>${text('OC16 import Penta')}</button></section>`;
     };
-    return `<section class="panel wa-configuration" aria-label="${text('OC16 configuration')}"><div class="wa-config-top"><label class="wa-title-field"><span>${text('Organization title')}</span><input data-title data-focus="title" maxlength="300" value="${esc(draft.title)}" placeholder="${text('Wa organization')}"></label><button class="btn-secondary wa-config-edit" data-action="edit" data-focus="edit" ${saving?'disabled':''}>${text('OC16 edit members')}</button></div><details class="wa-config-details" ${window.innerWidth>600||configExpanded===true?'open':''}><summary>${text('OC16 configuration')} · ${validateWaLayout(draft).memberIds.length} ${text('OC16 participants')}<span>${esc(alpha)}</span></summary><div class="wa-config-grid">${alphaCard}${draft.pentas.map(groupCard).join('')}</div></details></section>`;
+    return `<section class="panel wa-configuration" aria-label="${text('OC16 configuration')}"><div class="wa-config-top"><label class="wa-title-field"><span>${text('Organization title')}</span><input data-title data-focus="title" maxlength="300" value="${esc(draft.title)}" placeholder="${text('Wa organization')}"></label></div><details class="wa-config-details" ${configExpanded?'open':''}><summary data-focus="config-toggle">${configSummary()}</summary><div class="wa-config-grid">${alphaCard}${draft.pentas.map(groupCard).join('')}</div></details></section>`;
   }
   function scopeBarHtml() {
     if (!validateWaLayout(draft).memberIds.length) return `<p class="wa-scope-label" data-scope-label role="status" hidden>${esc(scopeLabel())}</p>`;
-    const option = (id, label) => {
-      const active = (selectedGroup || '') === id;
-      return `<button type="button" class="wa-segment" data-scope-option="${esc(id)}" data-focus="scope-${esc(id)}" aria-pressed="${active}">${esc(label)}</button>`;
-    };
+    const option = (id, label) => `<button type="button" class="wa-segment" data-scope-option="${esc(id)}" data-focus="scope-${esc(id)}" aria-pressed="${(selectedGroup || '') === id}">${esc(label)}</button>`;
     return `<section class="wa-scope-bar" aria-label="${text('OC16 scope')}"><span class="wa-scope-title">${text('OC16 scope')}</span><div class="wa-segmented" role="group" aria-label="${text('OC16 scope')}">${option('',t('OC16 all'))}${draft.pentas.map(group=>option(group.pentaId,groupName(group))).join('')}</div>${selectedGroup?`<label class="wa-alpha-toggle"><input type="checkbox" data-include-alpha data-focus="include-alpha" ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}<p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p></section>`;
   }
   function stat(label, value, total, percent, attribute = '') {
@@ -88,40 +98,65 @@ export function mountWa(container, options = {}) {
     return `<div><dt>${text(label)}</dt><dd ${attribute}>${ready?value:'—'}${total?` <small>/ ${total}</small>`:''}</dd>${total?`<span class="wa-meter" aria-hidden="true"><i style="width:${ready?percent:0}%"></i></span>`:''}</div>`;
   }
   function pillarsHtml() {
-    return `<h3 class="wa-subheading">${text('OC16 pillars')}</h3><div class="wa-pillars">${WA_PILLARS.map(pillar=>`<button class="wa-pillar" data-wa-gate="${pillar.gate}" data-focus="pillar-${pillar.gate}" data-covered="${known()?covered(pillar.gate):'unknown'}"><span class="wa-pillar-number">${pillar.gate}</span><span class="wa-pillar-text"><strong>${text(`OC16 ${pillar.id}`)}</strong><small>${esc(hexagramName(pillar.gate))}</small><small class="wa-pillar-state">${known()?text(covered(pillar.gate)?'OC16 active':'OC16 inactive'):text('OC16 unknown')}</small></span></button>`).join('')}</div>`;
+    return `<h3 class="wa-subheading">${text('OC16 pillars')}</h3><div class="wa-pillars">${WA_PILLARS.map(pillar=>`<button class="wa-pillar" data-wa-gate="${pillar.gate}" data-focus="pillar-${pillar.gate}" data-covered="${known()?covered(pillar.gate):'unknown'}"><span class="wa-pillar-number">${pillar.gate}</span><span class="wa-pillar-text"><strong>${text(`OC16 ${pillar.id}`)}</strong><small>${esc(hexagramName(pillar.gate))}</small><small class="wa-pillar-state">${known()?text(covered(pillar.gate)?'Wa legend active':'Wa legend inactive'):text('OC16 unknown')}</small></span></button>`).join('')}</div>`;
   }
   function gapsHtml() {
     if (!known() || !result.memberIds.length) return '';
     const rows = OC16_DEPARTMENTS.map(department => ({ department, gates:department.pairs.flatMap(pair => pair.displayGates).filter(gate => !covered(gate)) })).filter(row => row.gates.length);
     const missing = rows.reduce((sum, row) => sum + row.gates.length, 0);
-    const body = rows.length ? `<div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div><p class="wa-small-note">${text('OC16 gaps hint')}</p>` : `<p class="wa-gap-none">${text('OC16 gaps none')}</p>`;
+    const body = rows.length ? `<div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>` : `<p class="wa-gap-none">${text('OC16 gaps none')}</p>`;
     return `<h3 class="wa-subheading">${text('OC16 gaps')}${missing?`<small>${text('OC16 gaps count',{count:missing})}</small>`:''}</h3>${body}`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('OC16 overview')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div>${!selectedGroup&&!layout.standardTemplateSatisfied?`<p class="wa-state-note">${text('OC16 preview note')}</p>`:''}<dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,64,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,32,ready?result.pairPercentage:0,'data-oc16-pairs')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${pillarsHtml()}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,64,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,32,ready?result.pairPercentage:0,'data-oc16-pairs')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${pillarsHtml()}${gapsHtml()}</section>`;
   }
-  const pairRows=department=>details.renderPairRows(department,{compact:true});
+  const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
+  const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
+  const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
   function pairToken(pair) {
-    const state = known() ? measuredPair(pair.channelId)?.status || 'absent' : 'unknown';
-    const label = `${pair.displayGates.join('–')} · ${t(pair.role==='core'?'OC16 core':'OC16 support')} · ${waStateText(state)}`;
-    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':''}" data-wa-pair="${pair.channelId}" data-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}">${gate}</span>`).join('<span class="wa-pair-bridge" aria-hidden="true"></span>')}</button>`;
+    const state = pairState(pair);
+    const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
+    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':''}" data-wa-pair="${pair.channelId}" data-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join('<span class="wa-pair-bridge" aria-hidden="true">–</span>')}</button>`;
+  }
+  function channelRow(pair) {
+    const state = pairState(pair), row = rowState(state);
+    const gateCell = gate => {
+      const ids = holders(pair, gate);
+      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(markerHtml).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
+    };
+    return `<li class="wa-channel-row ${pair.role==='core'?'is-core':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}${pair.role==='core'?`<small>${text('OC16 core')}</small>`:''}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
   function departmentHtml(department) {
     const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
-    const open = expanded.has(department.id), gates = department.pairs.length*2;
+    const open = !collapsed.has(department.id), gates = department.pairs.length*2;
     const value = count => summary ? count : '—';
-    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span><span class="wa-department-toggle-text">${text(open?'OC16 hide members':'OC16 show members')}<span class="wa-chevron" aria-hidden="true"></span></span></button><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span><div class="wa-pair-strip">${department.pairs.map(pairToken).join('')}</div><div id="wa-department-${department.id}" class="wa-department-detail" ${open?'':'hidden'}>${pairRows(department)}<button class="wa-link-button" data-wa-department="${department.id}">${text('OC16 open department')} →</button></div></article>`;
+    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-chevron" aria-hidden="true"></span><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></button><button class="wa-link-button wa-department-open" data-wa-department="${department.id}">${text('OC16 open department')}</button></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span>${open?'':`<div class="wa-pair-strip">${department.pairs.map(pairToken).join('')}</div>`}<ul id="wa-department-${department.id}" class="wa-channel-rows" ${open?'':'hidden'}>${department.pairs.map(channelRow).join('')}</ul></article>`;
   }
   function departmentsHtml() {
-    return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('OC16 active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('OC16 inactive')}</span><span><i class="wa-pair-token is-core"></i>${text('OC16 core')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
+    return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
+  }
+  function memberLegendHtml() {
+    const ids = [...new Set(viewScope().memberIds)].filter(id => markers().has(id)).sort((a, b) => markers().get(a).number - markers().get(b).number);
+    if (!ids.length) return '';
+    return `<div class="wa-graph-members"><h3>${text('Wa UI member legend')}<small>${text('Wa member focus hint')}</small></h3><ul class="wa-member-legend">${ids.map(id=>`<li><button type="button" class="wa-member-focus" data-member-focus="${esc(id)}" data-focus="member-${esc(id)}" aria-pressed="${focusMember===id}">${markerHtml(id)}<span class="wa-member-legend-name">${esc(nameOf(id))}</span></button></li>`).join('')}</ul></div>`;
   }
   function graphHtml() {
-    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected)}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${renderWaLegend()}<div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
+    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${memberLegendHtml()}<details class="wa-legend-fold"><summary>${text('OC16 legend')}</summary>${renderWaLegend()}</details><div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
+  }
+  function applyMemberFocus() {
+    const page = container.querySelector('.wa-page');if(!page)return;
+    if (focusMember && !viewScope().memberIds.includes(focusMember)) focusMember = null;
+    page.classList.toggle('has-member-focus', Boolean(focusMember));
+    page.querySelectorAll('[data-member-focus]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.memberFocus===focusMember)));
+    page.querySelectorAll('[data-wa-marker-member]').forEach(node=>node.classList.toggle('is-focus',node.dataset.waMarkerMember===focusMember));
+    page.querySelectorAll('.wa-diagram-gate').forEach(node=>node.classList.toggle('is-member-gate',Boolean(focusMember)&&[...node.querySelectorAll('[data-wa-marker-member]')].some(marker=>marker.dataset.waMarkerMember===focusMember)));
+    page.querySelectorAll('[data-wa-members]').forEach(node=>node.classList.toggle('is-member-gate',Boolean(focusMember)&&node.dataset.waMembers.split(' ').includes(focusMember)));
+    page.querySelectorAll('.wa-channel-row').forEach(node=>node.classList.toggle('has-focus-member',Boolean(focusMember)&&Boolean(node.querySelector(`[data-wa-marker-member="${CSS.escape(focusMember)}"]`))));
   }
   function errorIssuesHtml() {
     const keys={MISSING_PERSON_REFERENCE:'Missing reference',PERSON_LOOKUP_FAILED:'Missing reference',INVALID_BIRTH:'OC16 invalid birth',INVALID_TIME_UNKNOWN:'OC16 invalid birth',CHART_CALCULATION_FAILED:'Chart calculation failed',INVALID_PROVIDER_RESULT:'Invalid chart provider result'};
-    return `<ul class="wa-errors">${(result?.issues||[]).map(issue=>`<li>${issue.memberId?`<strong>${esc(nameOf(issue.memberId)||issue.memberId)}</strong> · `:''}${text(keys[issue.code]||'Wa data error')} <small>(${esc(issue.code)})</small></li>`).join('')}</ul>`;
+    return `<ul class="wa-errors">${(result?.issues||[]).map(issue=>`<li data-wa-issue="${esc(issue.code)}">${issue.memberId?`<strong>${esc(nameOf(issue.memberId)||issue.memberId)}</strong> · `:''}${text(keys[issue.code]||'Wa data error')}</li>`).join('')}</ul>`;
   }
   function calloutHtml() {
     if(busy)return `<div class="wa-empty-callout" role="status">${text('OC16 loading')}</div>`;
@@ -129,14 +164,24 @@ export function mountWa(container, options = {}) {
     if(!validateWaLayout(draft).memberIds.length)return `<section class="wa-empty-callout"><h2>${text('OC16 empty title')}</h2><p>${text('OC16 empty note')}</p><button class="btn-primary" data-action="edit">${text('OC16 choose people')}</button></section>`;
     return '';
   }
+  function updateSticky() {
+    if(disposed)return;
+    const column=container.querySelector('.wa-graph-column');if(!column)return;
+    const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
+    const top=Math.min(header,window.innerHeight-column.getBoundingClientRect().height-16);
+    column.style.setProperty('--wa-sticky-top',`${Math.floor(top)}px`);
+  }
+  function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
   function render() {
     if(disposed)return;
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
     container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}<footer class="wa-results-footer"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}</footer></main></div></div>`;
+    graphResizeObserver?.disconnect();graphResizeObserver?.observe(container.querySelector('.wa-graph-panel'));queueSticky();
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
+    applyMemberFocus();
     if(focus){const replacement=[...container.querySelectorAll('[data-focus]')].find(node=>node.dataset.focus===focus);replacement?.focus({preventScroll:true});if(start!=null&&replacement?.setSelectionRange)replacement.setSelectionRange(start,end);}
   }
 
@@ -162,18 +207,40 @@ export function mountWa(container, options = {}) {
       prepared=input;busy=false;refreshScope();
     }catch(error){if(disposed||token!==generation)return;busy=false;prepared=null;result={status:'not_ready',issues:[{code:'CHART_CALCULATION_FAILED',message:error?.message}]};render();}
   }
-  function compose(target=null,mode='people') {
+  function showConfiguration() {
+    configExpanded=true;const node=container.querySelector('.wa-config-details');node.open=true;
+    container.querySelector('.wa-configuration').scrollIntoView({block:'start'});
+    container.querySelector('[data-compose="alpha"]')?.focus({preventScroll:true});
+  }
+  function acceptConfiguration(next,changes=[]) {
+    assertWaSnapshot(next);annotationRecovery.push(...clone(changes).map(change=>({organizationId:next.organizationId,...change})));
+    draft=clone(next);version++;dirty=true;notice=changes.length?'OC16 recovery retained':'';errorText='';
+    if(!draft.pentas.some(group=>group.pentaId===selectedGroup))selectedGroup=null;schedule();
+  }
+  function focusTarget(target) {if(!disposed)[...container.querySelectorAll('[data-compose]')].find(node=>node.dataset.compose===target)?.focus({preventScroll:true});}
+  function compose(target,mode='people') {
+    if(!target)return showConfiguration();
     composer?.close();closeReading();operation++;
     const original=draft,identity=JSON.stringify(draft),inputVersion=version;
-    composer=openWaComposer({snapshot:draft,peopleStore:people,listTeams:teams,target,mode,quickCommit:target!==null,
+    composer=openWaMemberPicker({snapshot:draft,peopleStore:people,listTeams:teams,target,mode,
       validate:()=>!disposed&&!saving&&draft===original&&version===inputVersion&&JSON.stringify(draft)===identity,
-      onCommit:(next,context)=>{if(!context.isCurrent())return false;assertWaSnapshot(next);annotationRecovery.push(...clone(context.annotationChanges).map(change=>({organizationId:next.organizationId,...change})));draft=clone(next);version++;dirty=true;notice=context.annotationChanges.length?'OC16 recovery retained':'';errorText='';if(!draft.pentas.some(group=>group.pentaId===selectedGroup))selectedGroup=null;schedule();return true;},
-      onClose:()=>{composer=null;}
+      onCommit:(next,context)=>{if(!context.isCurrent())return false;acceptConfiguration(next,context.annotationChanges);return true;},
+      onClose:()=>{composer=null;focusTarget(target);}
     });
+  }
+  async function removeAssignment(id) {
+    const original=draft,identity=JSON.stringify(draft),inputVersion=version;
+    const group=draft.pentas.find(group=>group.memberIds.includes(id));
+    if(id!==draft.alphaId&&!group)return;
+    const target=id===draft.alphaId?'alpha':group.pentaId;
+    const patch=target==='alpha'?{alphaPersonId:null}:{groups:[{pentaId:group.pentaId,personIds:group.memberIds.filter(memberId=>memberId!==id).map(memberId=>members().get(memberId).personId)}]};
+    const current=()=>!disposed&&!saving&&draft===original&&version===inputVersion&&JSON.stringify(draft)===identity;
+    const edit=await prepareWaSelectionChange(original,patch,new Map(people.list().map(person=>[person.id,person])),{isCurrent:current});
+    if(edit&&current()){acceptConfiguration(edit.next,edit.annotationChanges);focusTarget(target);}
   }
   function load(snapshot) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
-    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;expanded.clear();remember(draft.organizationId);schedule();
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;remember(draft.organizationId);schedule();
   }
   async function save() {
     if(saving)return;
@@ -247,10 +314,7 @@ export function mountWa(container, options = {}) {
     download({schema:'wa-ui-backup-v2',draft:snapshot,saved,annotationRecovery:recovery},'wa-current-draft-backup.json');
   }
 
-  function readingHtml(id) {
-    const entry=readWaContent(id,getLocale());
-    return entry?`<h2>${esc(entry.name)}</h2><div class="knowledge-summary-callout">${renderProse({content:entry.summary})}</div><div class="knowledge-body">${renderProse({content:entry.detail})}</div>`:`<p>${text('Wa reading unavailable')}</p>`;
-  }
+  const readingHtml=id=>renderWaReading(id);
   function detailBody(item) {
     if(item.type==='library')return `<h2>${text('OC16 explore readings')}</h2><div class="wa-reading-list">${listWaContent(getLocale()).map(entry=>`<button class="btn-secondary" data-wa-reading="${esc(entry.objectId)}">${esc(entry.name)}</button>`).join('')}</div>`;
     if(item.type==='reading')return readingHtml(item.id);
@@ -303,7 +367,8 @@ export function mountWa(container, options = {}) {
     const frame=detailStack.at(-1);if(!frame)return;
     if(['gate','pair','department'].includes(item.type))selected=item;
     prepareDetailDialog(detail,'wa');
-    detail.innerHTML=`<section class="modal wa-reading-sheet"><nav class="gate-detail-nav"><button class="btn-secondary" data-wa-back ${detailStack.length<2?'hidden':''}>${text('Back')}</button><span class="wa-kicker">WA / OC16 · ${esc(scopeLabel())}</span><button class="ui-icon-button gate-detail-close" aria-label="${text('Close')}">×</button></nav><div class="gate-detail-body">${detailBody(item)}</div></section>`;
+    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
+    detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
     detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
     openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
@@ -312,11 +377,12 @@ export function mountWa(container, options = {}) {
     if(!push)findFocus(frame.focus,detail)?.focus({preventScroll:true});
     detail.querySelector('.gate-detail-body').scrollTop=frame.scrollTop;
   }
-  const unbindDetails=bindSharedObjectDetails(detail,{onGateSelect:gate=>showDetail({type:'gate',id:gate}),onChannelSelect:id=>{if(pairs.some(pair=>pair.channelId===id))showDetail({type:'pair',id});},onLensChange:()=>fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'))});
+  function backDetail() {if(detailStack.length<2)return;detailStack.pop();showDetail(detailStack.at(-1).item,false);}
+  const unbindDetails=bindSharedObjectDetails(detail,{onBack:backDetail,onGateSelect:gate=>showDetail({type:'gate',id:gate}),onChannelSelect:id=>{if(pairs.some(pair=>pair.channelId===id))showDetail({type:'pair',id});},onLensChange:()=>fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'))});
   function detailClick(event) {
     const node=event.target.closest('button');if(!node)return;
-    if(node.hasAttribute('data-wa-back')){if(detailStack.length<2)return;detailStack.pop();showDetail(detailStack.at(-1).item,false);}
-    else if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
+    if(node.hasAttribute('data-shared-back'))return;
+    if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
     else if(node.dataset.waPair)showDetail({type:'pair',id:node.dataset.waPair});
     else if(node.dataset.waReading)showDetail({type:'reading',id:node.dataset.waReading});
     else if(node.dataset.waDepartment)showDetail({type:'department',id:node.dataset.waDepartment});
@@ -324,28 +390,39 @@ export function mountWa(container, options = {}) {
   async function click(event) {
     const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
-      if(node.hasAttribute('data-scope-option')){const next=node.dataset.scopeOption||null;if(next===selectedGroup)return;closeReading();selectedGroup=next;includeAlpha=false;selected=null;if(prepared)refreshScope();else render();return;}
       if(node.dataset.waGate){node.focus({preventScroll:true});showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
+      if(node.dataset.waPairOpen){showDetail({type:'pair',id:node.dataset.waPairOpen});return;}
       if(node.dataset.waPair){node.focus({preventScroll:true});showDetail({type:'pair',id:node.dataset.waPair});return;}
       if(node.dataset.waDepartment){showDetail({type:'department',id:node.dataset.waDepartment});return;}
-      if(node.dataset.departmentToggle){const id=node.dataset.departmentToggle;expanded.has(id)?expanded.delete(id):expanded.add(id);selected={type:'department',id};render();return;}
+      if(node.dataset.memberFocus){focusMember=focusMember===node.dataset.memberFocus?null:node.dataset.memberFocus;applyMemberFocus();return;}
+      if(node.dataset.scopeOption!==undefined){closeReading();selectedGroup=node.dataset.scopeOption||null;includeAlpha=false;selected=null;if(prepared)refreshScope();else render();return;}
+      if(node.dataset.departmentToggle){const id=node.dataset.departmentToggle;collapsed.has(id)?collapsed.delete(id):collapsed.add(id);render();return;}
+      if(node.dataset.removeWa){await removeAssignment(node.dataset.removeWa);return;}
+      if(node.hasAttribute('data-clear-alpha')){if(draft.alphaId)await removeAssignment(draft.alphaId);return;}
       if(node.dataset.compose){compose(node.dataset.compose);return;}
       if(node.dataset.import){compose(node.dataset.import,'import');return;}
       switch(node.dataset.action){
-        case 'edit':compose();break;
+        case 'edit':showConfiguration();break;
         case 'save':await save();break;
         case 'open':await archives();break;
         case 'retry':schedule();break;
         case 'knowledge':showDetail({type:'library'});break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;expanded.clear();try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }
   function change(event) {
     if(event.target.hasAttribute('data-include-alpha')){includeAlpha=event.target.checked;closeReading();selected=null;if(prepared)refreshScope();else render();}
   }
+  function markDirty() {const status=container.querySelector('.wa-draft-status');status.textContent=`${t('Unsaved changes')} · r${draft.revision}`;status.dataset.dirty='true';}
   function input(event) {
-    if(event.target.hasAttribute('data-title')){draft.title=event.target.value;version++;dirty=true;const status=container.querySelector('.wa-draft-status');status.textContent=`${t('Unsaved changes')} · r${draft.revision}`;status.dataset.dirty='true';}
+    if(event.target.hasAttribute('data-title')){draft.title=event.target.value;version++;dirty=true;markDirty();}
+    if(event.target.hasAttribute('data-group-title')){
+      const group=draft.pentas.find(group=>group.pentaId===event.target.dataset.groupTitle);group.title=event.target.value;version++;dirty=true;
+      markDirty();
+      const segment=[...container.querySelectorAll('[data-scope-option]')].find(node=>node.dataset.scopeOption===group.pentaId);if(segment)segment.textContent=groupName(group);
+      container.querySelector('[data-scope-label]').textContent=scopeLabel();
+    }
   }
   function keyboard(event) {
     if(['Enter',' '].includes(event.key)&&event.target.matches('g[role="button"]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
@@ -359,6 +436,7 @@ export function mountWa(container, options = {}) {
   const unsubscribe=people.subscribe?.(()=>{if(!disposed)schedule();});
   const compactViewport=window.matchMedia('(max-width:600px)'), resize=()=>{render();if(detailOpen)fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));};
   compactViewport.addEventListener('change',resize);
+  graphResizeObserver=new ResizeObserver(queueSticky);window.addEventListener('resize',queueSticky);
   render();
   // Only the saved organization ID is remembered. Never cache charts, births or drafts here.
   if(options.restoreLast!==false){
@@ -368,5 +446,5 @@ export function mountWa(container, options = {}) {
       catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}}
     });
   }
-  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
+  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
 }
