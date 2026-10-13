@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { resolveWaViewScope } from '../src/lib/wa/view-scope.js';
+import { resolveWaViewScope, hasScopedWaEstimate } from '../src/lib/wa/view-scope.js';
 import { analyzeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { fixture, chart } from './helpers/wa-fixtures.js';
 import { setLocale, t } from '../src/lib/i18n.js';
@@ -32,6 +32,14 @@ test('view scopes drive exactly corresponding coverage, sources and counts; chan
  const changed=analyze();
  assert.deepEqual(changed.gateRecords,whole.gateRecords);assert.deepEqual(changed.pairs,whole.pairs);assert.deepEqual(changed.departments,whole.departments);
  assert.notDeepEqual(analyze({pentaId:'g0'}).gateRecords,group.gateRecords);
+});
+test('estimated-time notice excludes out-of-scope Alpha and never leaks a previous result into errors',()=>{
+ const {snapshot,prepared}=fixture();prepared[0].timeUnknown=true;
+ const all=analyzeOC16(snapshot,prepared,resolveWaViewScope(snapshot));
+ const group=analyzeOC16(snapshot,prepared,resolveWaViewScope(snapshot,{pentaId:'g0'}));
+ const plus=analyzeOC16(snapshot,prepared,resolveWaViewScope(snapshot,{pentaId:'g0',includeAlpha:true}));
+ assert.equal(hasScopedWaEstimate(all),true);assert.equal(hasScopedWaEstimate(group),false);assert.equal(hasScopedWaEstimate(plus),true);
+ assert.equal(hasScopedWaEstimate(null),false);assert.equal(hasScopedWaEstimate({...plus,status:'not_ready'}),false);
 });
 test('dedicated navigation keys have exact three-language names without changing technical page names',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
