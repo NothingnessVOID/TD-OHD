@@ -49,7 +49,7 @@ function groupCommunication(snapshot, activationsByMember) {
       withAlpha: view([...group.memberIds, ...(snapshot.alphaId === null ? [] : [snapshot.alphaId])], 'group_union_manual_alpha') })) };
 }
 
-function collectPair(pair, activationsByGate) {
+export function collectPair(pair, activationsByGate) {
   const [first, second] = pair.gates;
   const gateRecords = pair.gates.map(gate => {
     const activations = activationsByGate.get(gate) ?? [];
