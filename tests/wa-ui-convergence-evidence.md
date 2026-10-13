@@ -1,6 +1,6 @@
 # Wa UI convergence acceptance — frozen b2b3019
 
-Latest supplement: e56b099 font-only visual run collected all 32 requested images; size/visibility assertions pass, but an additional strict text-position containment assertion FAILS on desktop and 390. See the appended supplement. Historical 19/19 below belongs exclusively to b2b3019.
+Latest supplement: **72e2702 PASS_VISUAL**, all four sizes and all 164 real marker instances pass the unchanged size/visibility/0.5px position-containment assertions. All 32 final screenshots are delivered. The e56b099 failure remains preserved below as history; the parent baseline correction resolves it. Historical 19/19 belongs exclusively to b2b3019.
 
 **Result: 19/19 targeted browser groups PASS.** Actual Chromium, parent root `http://127.0.0.1:9961`, frozen product `b2b3019ad4071738ae4e73c8be08cdf56d198225`. Final acceptance run: `2026-10-13T12-37-33-452Z-b2b3019a`. No product changes, old-test changes, push, server replacement, full suite or product build by this task.
 
@@ -199,4 +199,36 @@ Exact screenshot prefixes: `1440x1000-zh-CN`, `1280x640-zh-CN`, `390x900-zh-Hant
 
 Graph/config/rightCards images are crops of unchanged full-page screenshots at document top. Detail captures use ordinary scrolling to the heading/prose. No hidden header CSS, force clicks or synthetic SVG alterations. Only the new e56b099 directory and changed test/evidence files are staged; previously delivered b2b3019 images are left as history and are not restaged.
 
-Reproduction uses the prior environment setup with `WA_SOURCE_COMMIT=e56b099ef59f34e516cf1dd44bf4e23f0872a896`, `WA_EVIDENCE_DIR=artifacts/visual-review/ui-convergence/final-e56b099`, and `WA_VISUAL_ONLY=1`. Current expected process result is nonzero until the measured position issue is resolved or explicitly adjudicated; the script intentionally preserves this finding.
+Reproduction uses the prior environment setup with `WA_SOURCE_COMMIT=e56b099ef59f34e516cf1dd44bf4e23f0872a896`, `WA_EVIDENCE_DIR=artifacts/visual-review/ui-convergence/final-e56b099`, and `WA_VISUAL_ONLY=1`. For that historical e56b099 source, the process result is nonzero; the script intentionally preserves the finding. The following 72e2702 run verifies the parent's correction without relaxing the check.
+
+## 72e2702 final baseline correction — PASS_VISUAL
+
+Frozen root/source: `72e27025d0bdcfeaa38d7c0f132decdd43fd9644`; parent product fix `609271e`. Read-only Git diff from e56b099 confirms only SVG marker text baseline changed from `cy + 3` to `cy + 4.5` in `src/views/wa-diagram.js`. Circle radius/position, marker numbers, member data and other geometry are unchanged. The diagram module is now also included in root-served raw-byte and end-of-run source-hash checks.
+
+Executed exactly the visual-only path with `WA_VISUAL_ONLY=1`, new `WA_EVIDENCE_DIR=artifacts/visual-review/ui-convergence/final-72e2702` and the full frozen SHA. **PASS_VISUAL**, zero page errors, zero marker-position failures. Twelve actual WASM people, 41 real core-gate marker instances per viewport, every number 1..12 exercised. All four viewports pass bbox width/height ≤ circle diameter 17, visible text, SVG bounds, exact raw-oracle markers/cards, no horizontal page overflow, and selected 45–21 / gate45 / 54–32 source-reading checks. The **original 0.5 CSS-pixel position tolerance is unchanged**.
+
+| Viewport / locale | Effective font px | Minimum top inset px | Minimum bottom inset px | Minimum left / right inset px | Result |
+|---|---:|---:|---:|---:|---|
+| 1440×1000 zh-CN | 13.54143415 | 1.08301 | 1.33325 | 0.45032 / 0.21252 | PASS |
+| 1280×640 zh-CN | 13.54143415 | 1.08301 | 1.33325 | 0.45035 / 0.21252 | PASS |
+| 390×900 zh-Hant | 11.25 | 0.69995 | 0.59998 | 0.37656 / -0.34950 | PASS within existing 0.5px tolerance |
+| 320×900 en | **9.51381138** | 0.89435 | 1.04443 | 0.32092 / 0.32092 | PASS |
+
+Negative right inset at 390 means a measured ~0.350px font-box overhang, within the unchanged 0.5px rule; it is not hidden or claimed to be exact zero. Previously failing top overhangs are eliminated. Max bbox widths/heights remain at most 16.969944 × 15.555556 SVG units across all sizes, below the 17-unit diameter. The final 320 graph was visually inspected and has all six departments, visible single/double digit markers and matching legend.
+
+Run directory: `artifacts/visual-review/ui-convergence/final-72e2702/2026-10-13T13-00-39-729Z-72e27025/`.
+
+Contains `evidence.json` and **32 actual final screenshots**. For each exact prefix `1440x1000-zh-CN`, `1280x640-zh-CN`, `390x900-zh-Hant`, `320x900-en`, files are:
+
+```text
+<prefix>-configuration-framed.png
+<prefix>-graph-legend-framed.png
+<prefix>-rightCards-framed.png
+<prefix>-21-45-heading.png
+<prefix>-21-45-Wa-prose.png
+<prefix>-gate45-Wa-prose.png
+<prefix>-32-54-heading.png
+<prefix>-32-54-Wa-prose.png
+```
+
+Only this new directory and the incrementally changed test/evidence files are delivered now. All earlier b2b3019/e56b099 screenshots and failures remain untouched and are not restaged. No product edits, push, full suite or full nineteen-case rerun. Current claim is **b2b3019 historical functional 19/19 + 72e2702 final font/baseline PASS_VISUAL**, not 72e2702 full functional 19/19. No unresolved failure in this visual supplement. Final syntax and cached whitespace checks pass before the tests-only commit.
