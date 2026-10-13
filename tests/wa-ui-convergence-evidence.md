@@ -1,5 +1,7 @@
 # Wa UI convergence acceptance — frozen b2b3019
 
+Latest supplement: e56b099 font-only visual run collected all 32 requested images; size/visibility assertions pass, but an additional strict text-position containment assertion FAILS on desktop and 390. See the appended supplement. Historical 19/19 below belongs exclusively to b2b3019.
+
 **Result: 19/19 targeted browser groups PASS.** Actual Chromium, parent root `http://127.0.0.1:9961`, frozen product `b2b3019ad4071738ae4e73c8be08cdf56d198225`. Final acceptance run: `2026-10-13T12-37-33-452Z-b2b3019a`. No product changes, old-test changes, push, server replacement, full suite or product build by this task.
 
 ## Ownership and reproducibility
@@ -151,3 +153,50 @@ Prefer these framed prose views when reviewing 45–21 and supporting 54–32: e
 - No full regression, product build or private-bundle build by this task. Parent-reported 39 unit/build results remain parent evidence.
 - `node --check tests/wa-ui-convergence-e2e.mjs`: PASS; cached whitespace/diff-scope checks performed before final commit.
 - Deliver source/evidence files plus the full evidence root, including the preserved initial harness failure. Only the two owned test files enter Git; screenshots and run artifacts remain outside the commit.
+
+## e56b099 font-only supplement
+
+Source: `e56b099ef59f34e516cf1dd44bf4e23f0872a896`. Parent authorized `WA_VISUAL_ONLY=1` against root 9961. Read-only Git diff against b2b3019 confirmed the sole product difference is `.wa-gate-member-marker text` font-size 11px → 12.5px in `src/styles/wa-members.css`. That CSS was added to served-byte identity and end-of-run hash checks. No product edit, full suite or nineteen-case rerun occurred. Parent had already reviewed b2b3019 19/19 and picked the prior two commits.
+
+The supplementary browser uses the same twelve actual WASM people. It assigns the two retained people through the normal group picker, giving twelve assigned people and **41 actual core-gate marker instances**. Every number 1..12 occurs at a real gate in every measured viewport; none is synthetic text. Expected markers/names still derive from raw activations. Selected 45–21, gate45 and supporting 54–32 details and inline cards retain their existing exact oracle checks.
+
+### Actual measurements
+
+Computed SVG text font-size is exactly 12.5px in every row. Circle diameter is 17 SVG units.
+
+| Viewport / locale | Effective font px | Largest text bbox width × height (SVG units) | Maximum text-box top overhang (CSS px) | Size ≤ diameter | Position within 0.5px tolerance |
+|---|---:|---:|---:|---|---|
+| 1440×1000 zh-CN | 13.54143415 | 16.38802338 × 14.76948357 | 0.54199219 | PASS | FAIL |
+| 1280×640 zh-CN | 13.54143415 | 16.38802338 × 14.76948357 | 0.54190063 | PASS | FAIL |
+| 390×900 zh-Hant | 11.25 | 16.96994400 × 15.55555630 | 0.65002441 | PASS | FAIL |
+| 320×900 en | **9.51381138** | 16.15661049 × 14.45267296 | 0.24731445 | PASS | PASS |
+
+All 164 measured marker instances have positive visible text dimensions, circles inside SVG bounds, and exact expected identities/numbers. All four page widths pass horizontal overflow checks. Double digits fit the requested width/height constraint, including the tightest measured width 16.969944 < 17 at 390. The strict rectangle position check additionally finds the text font box slightly above the circle bounding rectangle at desktop/390. There are 123 recorded position failures (41 per affected viewport). This is a geometric font-box overhang; the measurement alone does not establish visible glyph clipping. The inspected 320 screenshot shows all numbers, including 10/11/12, fully present.
+
+**Overall supplement status remains FAIL due to the additional position assertion.** No tolerance was widened and no assertion removed to claim a pass. Parent should review the recorded overhang and decide whether the unchanged text baseline needs adjustment. No such product adjustment was made by this task. Historical b2b3019 functional 19/19 remains intact; e56b099 is not described as 19/19.
+
+### Runs retained and delivered
+
+New root: `artifacts/visual-review/ui-convergence/final-e56b099/`.
+
+- `2026-10-13T12-52-25-596Z-e56b099e`: first supplemental FAIL on desktop position assertion; evidence.json, failure DOM and viewport retained. No requested framed images had yet been captured.
+- `2026-10-13T12-53-09-665Z-e56b099e`: collection run, **FAIL after all 32 screenshots**. The same position assertion is deferred until collection completes; its full failing measurements remain in `markerPositionFailures`. Dimension/visibility/SVG-bound/no-overflow checks remain immediate. No error was converted into PASS.
+
+The collection evidence contains actual raw births/activations, source hashes, font measurements, every marker's SVG bbox, CSS-pixel text/circle rectangles, the list of failing overhangs, selected detail checks, and the complete screenshot manifest. Browser uncaught errors are empty and root/served-source stability checks passed before the final assertion.
+
+Exact screenshot prefixes: `1440x1000-zh-CN`, `1280x640-zh-CN`, `390x900-zh-Hant`, `320x900-en`. Each has these eight real files:
+
+```text
+<prefix>-configuration-framed.png
+<prefix>-graph-legend-framed.png
+<prefix>-rightCards-framed.png
+<prefix>-21-45-heading.png
+<prefix>-21-45-Wa-prose.png
+<prefix>-gate45-Wa-prose.png
+<prefix>-32-54-heading.png
+<prefix>-32-54-Wa-prose.png
+```
+
+Graph/config/rightCards images are crops of unchanged full-page screenshots at document top. Detail captures use ordinary scrolling to the heading/prose. No hidden header CSS, force clicks or synthetic SVG alterations. Only the new e56b099 directory and changed test/evidence files are staged; previously delivered b2b3019 images are left as history and are not restaged.
+
+Reproduction uses the prior environment setup with `WA_SOURCE_COMMIT=e56b099ef59f34e516cf1dd44bf4e23f0872a896`, `WA_EVIDENCE_DIR=artifacts/visual-review/ui-convergence/final-e56b099`, and `WA_VISUAL_ONLY=1`. Current expected process result is nonzero until the measured position issue is resolved or explicitly adjudicated; the script intentionally preserves this finding.
