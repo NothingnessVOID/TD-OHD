@@ -20,7 +20,7 @@ function renderGateMarkers(gate, records, x, y, nameOf) {
     const cx = x + (column - (columns - 1) / 2) * MARKER_STEP;
     const cy = y + 36 + row * MARKER_STEP;
     const label = esc(`${nameOf(record.memberId) ?? record.memberId} · ${record.number}`);
-    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}"><circle cx="${cx}" cy="${cy}" r="8.5"><title>${label}</title></circle><text x="${cx}" y="${cy + 3}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
+    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}"><circle cx="${cx}" cy="${cy}" r="8.5"><title>${label}</title></circle><text x="${cx}" y="${cy + 4.5}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
   }).join('');
 }
 
