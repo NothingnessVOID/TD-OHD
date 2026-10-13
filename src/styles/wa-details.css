@@ -44,6 +44,9 @@
 .wa-detail-metrics dt { color: var(--text-secondary); font-size: 13px; }
 .wa-detail-metrics dd { margin: 0; font-weight: 600; font-size: 18px; }
 .wa-detail-fold { margin-top: 8px; min-width: 0; }
+/* Closed native details can still report child rects in Chromium. Keep the shared
+   dialog focus filter aligned with what the user can actually see and tab to. */
+.wa-detail-fold:not([open]) > :not(summary) { display: none; }
 .wa-detail-fold > summary { color: var(--accent-strong); cursor: pointer; padding: 8px 0; font-size: 14px; }
 .wa-detail-fold[open] > summary { margin-bottom: 6px; }
 .wa-detail-activations { display: grid; gap: 10px; }

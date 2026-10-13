@@ -126,7 +126,7 @@
 .wa-archive-row > button:first-child { flex:1; text-align:left; min-width:140px; }
 .wa-archive-row small { display:block; margin-top:4px; color:var(--text-secondary); }
 .modal.wa-reading-sheet { width:min(680px,calc(100vw - 36px)); max-width:680px; max-height:85dvh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
-.wa-reading-sheet .gate-detail-nav { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 18px; flex:none; border-bottom:1px solid var(--border); }
+.wa-reading-sheet .gate-detail-nav { position:static; inset:auto; flex-direction:row; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 18px; flex:none; border-bottom:1px solid var(--border); }
 .wa-reading-sheet .gate-detail-nav button { min-height:36px; flex:0 0 auto; }
 .wa-reading-sheet .gate-detail-nav .wa-kicker { min-width:0; overflow-wrap:anywhere; }
 [data-wa-selection-summary]:empty { display:none; }
