@@ -1,4 +1,7 @@
-.modal.wa-composer { width:min(640px,calc(100vw - 40px)); max-width:640px; color:var(--text); background:var(--bg-elevated); }
+.modal.wa-composer { width:min(640px,calc(100vw - 40px)); max-width:640px; max-height:calc(100dvh - 40px); color:var(--text); background:var(--bg-elevated); display:flex; flex-direction:column; overflow:hidden; }
+.wa-composer .wa-composer-body { flex:1 1 auto; min-height:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; }
+.wa-composer .ui-dialog-header, .wa-composer > .modal-actions { flex:none; }
+.wa-composer > .modal-actions { position:relative; margin-top:0; padding-top:12px; border-top:1px solid var(--border-subtle,var(--border)); background:var(--bg-elevated); }
 .wa-composer .wa-composer-note { color:var(--text-secondary); font-size:13px; line-height:1.6; overflow-wrap:anywhere; }
 .wa-composer .modal-field { display:flex; flex-direction:column; gap:6px; margin:12px 0; font-size:14px; }
 .wa-composer input { box-sizing:border-box; width:100%; min-width:0; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm,6px); padding:9px 10px; font:inherit; }
@@ -21,7 +24,7 @@
 .wa-composer button { white-space:normal; }
 .wa-composer button:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
 @media (max-width:600px) {
- .modal.wa-composer { width:100%; }
+ .modal.wa-composer { width:100%; max-height:calc(100dvh - 24px); }
  .wa-composer .wa-composer-person > [data-edit] { padding:8px; }
  .wa-composer .wa-composer-import-row { grid-template-columns:minmax(0,1fr); }
  .wa-composer .modal-actions { justify-content:flex-start; }
