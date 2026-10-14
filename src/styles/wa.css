@@ -77,9 +77,9 @@
 
 /* Six core channel SVG (accepted geometry; styling only) */
 .wa-figure { margin:6px 0 0; }
-.wa-core-svg { display:block; width:min(100%,340px); margin:0 auto; overflow:visible; font-family:inherit; }
-.wa-diagram-name { fill:var(--text); font-size:12px; font-weight:600; }
-.wa-diagram-sub { fill:var(--text-secondary); font-size:10px; }
+.wa-core-svg { display:block; width:min(100%,380px); margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-diagram-name { fill:var(--text); font-size:12.5px; font-weight:600; }
+.wa-diagram-sub { fill:var(--text-secondary); font-size:10.5px; }
 .wa-diagram-channel, .wa-diagram-gate { cursor:pointer; outline:none; }
 .wa-node-hit, .wa-link-hit { fill:transparent; stroke:transparent; }
 .wa-link-base { fill:none; stroke:var(--border); stroke-width:6; stroke-linecap:round; }
@@ -89,15 +89,15 @@
 .wa-link-joint { fill:none; stroke:var(--bg-elevated); stroke-width:2; stroke-linecap:round; }
 .wa-diagram-channel[data-state="unknown"] .wa-link-base, .wa-diagram-channel[data-state="absent"] .wa-link-base { stroke-dasharray:3 6; }
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.6; }
-.wa-node-number { fill:var(--text-secondary); font-size:12px; font-weight:600; pointer-events:none; }
+.wa-node-number { fill:var(--text-secondary); font-size:14px; font-weight:600; pointer-events:none; }
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on); }
 .wa-pillar-ring { fill:none; stroke:var(--accent); stroke-width:1.6; pointer-events:none; }
-.wa-node-pillar { fill:var(--text-secondary); font-size:9px; pointer-events:none; }
+.wa-node-pillar { fill:var(--text-secondary); font-size:9.5px; pointer-events:none; }
 .wa-diagram-row.is-selected .wa-diagram-name { fill:var(--accent-strong,var(--accent)); }
 .wa-diagram-channel:hover .wa-link-hit, .wa-diagram-channel:focus-visible .wa-link-hit, .wa-diagram-row.is-selected .wa-link-hit { fill:var(--accent-soft,transparent); stroke:var(--focus,var(--accent)); stroke-width:1; stroke-dasharray:3 3; }
 .wa-diagram-gate:hover .wa-node-hit, .wa-diagram-gate:focus-visible .wa-node-hit, .wa-diagram-gate.is-selected .wa-node-hit { stroke:var(--focus,var(--accent)); stroke-width:2; }
-.wa-figure figcaption { color:var(--text-secondary); font-size:11px; line-height:1.5; margin:6px 0 8px; text-align:center; }
+.wa-figure figcaption { color:var(--text-secondary); font-size:12px; line-height:1.55; margin:8px 0 10px; text-align:center; }
 .wa-state { display:flex; align-items:center; gap:6px; min-width:0; }
 .wa-state svg { flex:none; color:var(--accent); }
 [data-wa-selection-summary]:empty { display:none; }
@@ -206,16 +206,10 @@
 .wa-config-card header .wa-group-title:hover, .wa-config-card header .wa-group-title:focus { border-color:var(--border); background:var(--bg-sunken); }
 .wa-import-link { align-self:flex-start; min-height:28px!important; font-size:12px!important; }
 
-/* Member legend & focus */
-.wa-graph-members { border-top:1px solid var(--border-subtle,var(--border)); margin-top:8px; padding-top:8px; }
-.wa-graph-members h3 { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 8px; margin:0 0 2px; font-size:12px; }
-.wa-graph-members h3 small { color:var(--text-tertiary,var(--text-secondary)); font-size:11px; font-weight:400; }
-.wa-graph-members .wa-member-legend { gap:3px 6px; margin:4px 0 0; }
-.wa-member-focus { display:inline-flex; align-items:center; gap:4px; min-height:26px; max-width:100%; padding:1px 8px 1px 4px; border:1px solid transparent; border-radius:999px; background:var(--bg-sunken); color:var(--text); font-size:11.5px!important; cursor:pointer; }
-.wa-member-focus:hover { border-color:var(--border); }
-.wa-member-focus[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-soft,var(--bg-sunken)); font-weight:600; }
-.wa-member-focus .wa-member-legend-name { max-width:6.5em; }
+/* Member focus highlight (toggled from diagram / row markers) */
 .has-member-focus .wa-gate-member-marker:not(.is-focus), .has-member-focus .wa-row-markers .wa-member-marker:not(.is-focus) { opacity:.22; }
+.wa-gate-member-marker { cursor:pointer; outline:none; }
+.wa-gate-member-marker:focus-visible circle { stroke:var(--focus,var(--accent)); stroke-width:1.5; }
 .has-member-focus .wa-diagram-gate:not(.is-member-gate) .wa-node-face { opacity:.4; }
 .has-member-focus .wa-pair-end:not(.is-member-gate) { opacity:.4; }
 .has-member-focus .wa-channel-row:not(.has-focus-member) { opacity:.5; }
