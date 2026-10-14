@@ -24,7 +24,7 @@ import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
-import { renderWaDiagram, renderWaLegend } from './wa-diagram.js';
+import { renderWaDiagram } from './wa-diagram.js';
 
 const clone = value => structuredClone(value);
 const text = (key, params) => esc(t(key, params));
@@ -142,7 +142,7 @@ export function mountWa(container, options = {}) {
     return `<div class="wa-graph-members"><h3>${text('Wa UI member legend')}<small>${text('Wa member focus hint')}</small></h3><ul class="wa-member-legend">${ids.map(id=>`<li><button type="button" class="wa-member-focus" data-member-focus="${esc(id)}" data-focus="member-${esc(id)}" aria-pressed="${focusMember===id}">${markerHtml(id)}<span class="wa-member-legend-name">${esc(nameOf(id))}</span></button></li>`).join('')}</ul></div>`;
   }
   function graphHtml() {
-    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${memberLegendHtml()}<details class="wa-legend-fold"><summary>${text('OC16 legend')}</summary>${renderWaLegend()}</details><div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
+    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${memberLegendHtml()}<div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
   }
   function applyMemberFocus() {
     const page = container.querySelector('.wa-page');if(!page)return;
@@ -168,8 +168,8 @@ export function mountWa(container, options = {}) {
     if(disposed)return;
     const column=container.querySelector('.wa-graph-column');if(!column)return;
     const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
-    const top=Math.min(header,window.innerHeight-column.getBoundingClientRect().height-16);
-    column.style.setProperty('--wa-sticky-top',`${Math.floor(top)}px`);
+    // Keep sticky top at the site header; tall graph content scrolls inside the column.
+    column.style.setProperty('--wa-sticky-top',`${Math.floor(header)}px`);
   }
   function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
   function render() {

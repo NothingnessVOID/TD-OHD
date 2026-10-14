@@ -58,6 +58,3 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
   return `<svg class="wa-core-svg" viewBox="0 0 360 ${top + 8}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${rows}</svg>`;
 }
 
-export function renderWaLegend() {
-  return `<div class="wa-legend">${['absent','hanging','selfComplete','crossMemberOnly','both'].map(state=>`<span>${waStateSymbol(state)}<span>${esc(waStateText(state))}</span></span>`).join('')}<span><i class="wa-pillar-swatch" aria-hidden="true"></i><span>${esc(t('OC16 pillar'))}</span></span></div>`;
-}
