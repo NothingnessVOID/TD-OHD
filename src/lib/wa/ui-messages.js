@@ -1,5 +1,6 @@
 import { registerMessages } from '../i18n.js';
 const messages={
+ 'Wa UI show names':['显示姓名','顯示姓名','Show names'],
  'Wa UI add member':['＋ 添加成员','＋ 新增成員','＋ Add members'],
  'Wa UI replace alpha':['更换负责人','更換負責人','Change Alpha'],
  'Wa UI choose alpha':['选择负责人','選擇負責人','Choose Alpha'],

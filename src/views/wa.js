@@ -30,6 +30,7 @@ const clone = value => structuredClone(value);
 const text = (key, params) => esc(t(key, params));
 const pairs = OC16_DEPARTMENTS.flatMap(department => department.pairs);
 const LAST_ORGANIZATION = 'ohd-wa-last-organization-v1';
+export const SHOW_NAMES_PREF = 'ohd-wa-ui-show-member-names-v1';
 
 /** Instance-owned refs configuration + runtime-only OC16 presentation. */
 export function mountWa(container, options = {}) {
@@ -46,6 +47,7 @@ export function mountWa(container, options = {}) {
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
+  let showNames = (() => { try { return storage?.getItem(SHOW_NAMES_PREF) === '1'; } catch { return false; } })();
   const collapsed = new Set(), annotationRecovery = [];
   const detail = document.createElement('div');
   detail.className = 'gate-detail hidden wa-detail';
@@ -123,7 +125,7 @@ export function mountWa(container, options = {}) {
     const state = pairState(pair), row = rowState(state);
     const gateCell = gate => {
       const ids = holders(pair, gate);
-      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(markerHtml).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
+      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
     };
     return `<li class="wa-channel-row ${pair.role==='core'?'is-core':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}${pair.role==='core'?`<small>${text('OC16 core')}</small>`:''}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
@@ -134,7 +136,7 @@ export function mountWa(container, options = {}) {
     return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-chevron" aria-hidden="true"></span><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></button><button class="wa-link-button wa-department-open" data-wa-department="${department.id}">${text('OC16 open department')}</button></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span>${open?'':`<div class="wa-pair-strip">${department.pairs.map(pairToken).join('')}</div>`}<ul id="wa-department-${department.id}" class="wa-channel-rows" ${open?'':'hidden'}>${department.pairs.map(channelRow).join('')}</ul></article>`;
   }
   function departmentsHtml() {
-    return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
+    return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
   }
   function graphHtml() {
     return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure><div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
@@ -430,6 +432,7 @@ export function mountWa(container, options = {}) {
     }catch(error){if(!disposed){fail(error);render();}}
   }
   function change(event) {
+    if(event.target.hasAttribute('data-wa-show-names')){showNames=event.target.checked;try{storage?.setItem(SHOW_NAMES_PREF,showNames?'1':'0');}catch{}render();return;}
     if(event.target.hasAttribute('data-include-alpha')){includeAlpha=event.target.checked;closeReading();selected=null;if(prepared)refreshScope();else render();}
   }
   function markDirty() {const status=container.querySelector('.wa-draft-status');if(!status)return;status.textContent=`${t(saving?'Wa saving':'Unsaved changes')} · r${draft.revision}`;status.dataset.dirty='true';}
