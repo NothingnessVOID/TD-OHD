@@ -31,6 +31,8 @@ import { setupReferenceView, renderReferenceView, openReference, deactivateRefer
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 import { setupAppearanceControls } from './lib/appearance-controls.js';
 import { onFontPreferenceChange } from './lib/font-preference.js';
+// Unified UI system last, so shared header/dialog/navigation rules win over feature CSS.
+import './styles/ui-system.css';
 
 // ==========================================
 // State

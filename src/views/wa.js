@@ -10,7 +10,7 @@ import { computeChart } from '../lib/chartdata.js';
 import { effectiveTeamBirth } from './team-birth.js';
 import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
+import { openOperationDialog, confirmOperation, renderDialogHeader } from '../lib/operation-dialog.js';
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
@@ -259,7 +259,7 @@ export function mountWa(container, options = {}) {
   }
   function layer(title,body,onClose=null) {
     layerClose?.();
-    const opened=openOperationDialog({content:`<section class="modal wa-archive-dialog" aria-label="${text(title)}"><header><h2>${text(title)}</h2><button class="ui-icon-button" data-close aria-label="${text('Close')}">×</button></header>${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(layerClose===opened.close)layerClose=null;onClose?.();}});
+    const opened=openOperationDialog({content:`<section class="modal wa-archive-dialog" aria-label="${text(title)}">${renderDialogHeader(t(title))}${body}<p class="wa-layer-error" role="alert"></p></section>`,onClose:()=>{if(layerClose===opened.close)layerClose=null;onClose?.();}});
     layerClose=opened.close;return opened;
   }
   async function archives() {

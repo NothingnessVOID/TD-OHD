@@ -7,8 +7,8 @@
 
 /* Header */
 .wa-header { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-bottom:18px; }
-.wa-header h1 { margin:0 0 4px; font-size:26px; line-height:1.25; letter-spacing:-.02em; }
-.wa-header p { color:var(--text-secondary); font-size:13px; line-height:1.6; margin:0; }
+.wa-header h1 { margin:0 0 4px; }
+.wa-header p { margin:0; }
 .wa-actions { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
 .wa-header .wa-actions { flex:none; }
 .wa-header .wa-actions button { width:auto; margin:0; min-height:38px; }
@@ -240,17 +240,14 @@
 
 /* Secondary dialogs */
 .modal.wa-archive-dialog { width:min(680px,94vw); max-width:680px; max-height:85dvh; overflow:auto; }
-.wa-archive-dialog header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .wa-archive-list { display:grid; gap:10px; margin:16px 0; }
 .wa-archive-row { display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--border); padding-bottom:10px; }
 .wa-archive-row > button:first-child { flex:1; text-align:left; min-width:140px; }
 .wa-archive-row small { display:block; margin-top:4px; color:var(--text-secondary); }
 .gate-detail.wa-detail:not(.hidden) .wa-reading-sheet { width:100%; max-width:680px; max-height:82dvh; margin:auto; }
-.wa-reading-sheet .gate-detail-nav { position:static; inset:auto; display:flex; flex-direction:column; flex:none; padding:0; border-bottom:1px solid var(--border); }
-.wa-reading-sheet .gate-detail-nav-buttons { padding:10px 14px; }
-.wa-reading-sheet .gate-detail-nav button { flex:0 0 auto; }
+/* Navigation row geometry comes from the shared detail sheet (ui-system.css). */
 .wa-detail-scope { margin:0 0 12px; font-size:12px; line-height:1.5; color:var(--text-secondary); }
-.wa-reading-sheet .gate-detail-body { overflow:auto; padding:18px 22px 24px; min-height:0; }
+.wa-reading-sheet .gate-detail-body { overflow:auto; min-height:0; }
 .wa-reading-sheet h2 { margin:4px 0 12px; font-size:22px; line-height:1.4; }
 .wa-reading-sheet h3 { font-size:15px; margin:22px 0 10px; }
 .wa-reading-sheet .detail-label { font-size:12px; }
@@ -273,7 +270,6 @@
  .wa-config-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (max-width:600px) {
- .wa-header h1 { font-size:23px; }
  .wa-header .wa-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; }
  .wa-header .wa-actions .wa-draft-status { grid-column:1 / -1; justify-self:start; }
  .wa-header .wa-actions button { min-height:44px; padding-inline:6px; }
@@ -313,9 +309,6 @@
  .wa-department-top { flex-wrap:wrap; }
  .wa-pair-end { min-width:30px; height:30px; }
  .gate-detail.wa-detail:not(.hidden) .wa-reading-sheet { max-width:100%; margin:0; }
- .wa-reading-sheet .gate-detail-close { width:44px; height:44px; }
- .wa-reading-sheet .gate-detail-body { padding:15px 16px 22px; }
- .wa-reading-sheet .gate-detail-nav button { min-height:44px; }
 }
 @media (max-width:360px) {
  .wa-page { padding:14px 10px 28px; }
