@@ -9,27 +9,40 @@ export function waStateSymbol(state, size = 22) {
   return renderPentaStateSymbol(state, {size});
 }
 
-/** Near-original board size; markers fan inward along the channel so row height stays fixed. */
+/** Near-original board size; member identity sits on gate count badges, not on the channel line. */
 const VIEW_WIDTH = 360;
 const ROW_HEIGHT = 86;
 const LEFT_GATE = 176;
 const RIGHT_GATE = 298;
 const NODE_R = 18;
 const HIT_R = 28;
-const MARKER_COLUMNS = 4;
-const MARKER_STEP = 12;
-const MARKER_R = 7;
+const COUNT_R = 9;
 
-function renderGateMarkers(gate, records, gateX, gateY, nameOf, side) {
-  const rows = Math.max(1, Math.ceil(records.length / MARKER_COLUMNS));
-  return records.map((record, index) => {
-    const column = index % MARKER_COLUMNS;
-    const row = Math.floor(index / MARKER_COLUMNS);
-    const cx = gateX + side * (NODE_R + 6 + column * MARKER_STEP);
-    const cy = gateY + (row - (rows - 1) / 2) * MARKER_STEP;
-    const label = esc(`${nameOf(record.memberId) ?? record.memberId} · ${record.number}`);
-    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}" role="button" tabindex="0" aria-label="${label}"><circle cx="${cx}" cy="${cy}" r="${MARKER_R}"><title>${label}</title></circle><text x="${cx}" y="${cy + 3.8}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
-  }).join('');
+/** Compact count at the outer-upper corner of a covered gate. pointer-events none so the gate hit stays. */
+function renderGateCountBadge(gate, records, gateX, gateY, nameOf, side) {
+  if (!records.length) return '';
+  const count = records.length;
+  // Outer-lower corner keeps clear of pillar labels above the node.
+  const cx = gateX - side * (NODE_R + 1);
+  const cy = gateY + NODE_R + 1;
+  const names = records.map(record => `${nameOf(record.memberId) ?? record.memberId} · ${record.number}`).join(' · ');
+  const label = esc(t('Wa UI gate member count', { count }));
+  return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true"><circle cx="${cx}" cy="${cy}" r="${COUNT_R}"/><text x="${cx}" y="${cy + 3.5}" text-anchor="middle">${count}</text><title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
+}
+
+/** Midpoint glyphs: topology only. No parallel secondary stroke for `both`. */
+function renderMidpointGlyph(state, mid, y) {
+  if (state === 'selfComplete') {
+    return `<path class="wa-link-diamond" d="M${mid} ${y - 6}l5 6-5 6-5-6z"/>`;
+  }
+  if (state === 'crossMemberOnly') {
+    return `<path class="wa-link-joint" d="M${mid - 4} ${y - 5}l8 10m0-10l-8 10"/>`;
+  }
+  if (state === 'both') {
+    // Diamond (self-complete) + small X (cross) side by side — not a second parallel line.
+    return `<path class="wa-link-diamond" d="M${mid - 7} ${y - 6}l5 6-5 6-5-6z"/><path class="wa-link-joint" d="M${mid + 1} ${y - 5}l8 10m0-10l-8 10"/>`;
+  }
+  return '';
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.
@@ -54,14 +67,18 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     const label = `${t(`OC16 ${department.id}`)} · ${display.join('–')} · ${waStateText(state)}`;
     const mid = (LEFT_GATE + RIGHT_GATE) / 2;
     const endpoints = display.map((gate, sideIndex) => {
-      const side = sideIndex ? -1 : 1; // Fan inward along the channel so labels stay clear.
+      const side = sideIndex ? -1 : 1; // Outer badge sits opposite the channel interior.
       const x = sideIndex ? RIGHT_GATE : LEFT_GATE;
       const covered = active(gate), pillar = WA_PILLAR_LABELS[gate];
       const focused = selected?.type === 'gate' && selected.id === gate;
       const activationLabel = known ? t(covered ? 'Wa UI gate active' : 'Wa UI gate inactive') : waStateText('unknown');
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}" role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}`)}"><circle class="wa-node-hit" cx="${x}" cy="${y}" r="${HIT_R}"/>${pillar?`<circle class="wa-pillar-ring" cx="${x}" cy="${y}" r="${NODE_R + 5}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${y}" r="${NODE_R}"/><text class="wa-node-number" x="${x}" y="${y + 5.5}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${y - NODE_R - 10}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateMarkers(gate, endpointMarkers[sideIndex], x, y, nameOf, side)}</g>`;
+      const records = endpointMarkers[sideIndex];
+      const membersAttr = records.length
+        ? ` data-wa-members="${esc(records.map(record => record.memberId).join(' '))}"`
+        : '';
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}`)}"><circle class="wa-node-hit" cx="${x}" cy="${y}" r="${HIT_R}"/>${pillar?`<circle class="wa-pillar-ring" cx="${x}" cy="${y}" r="${NODE_R + 5}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${y}" r="${NODE_R}"/><text class="wa-node-number" x="${x}" y="${y + 5.5}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${y - NODE_R - 10}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateCountBadge(gate, records, x, y, nameOf, side)}</g>`;
     }).join('');
-    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}"><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${LEFT_GATE - 28}" y="${y - 28}" width="${RIGHT_GATE - LEFT_GATE + 56}" height="56" rx="14"/><path class="wa-link-base" d="M${LEFT_GATE} ${y}H${RIGHT_GATE}"/><path class="wa-link-half ${active(display[0])?'is-covered':''}" d="M${LEFT_GATE} ${y}H${mid}"/><path class="wa-link-half ${active(display[1])?'is-covered':''}" d="M${mid} ${y}H${RIGHT_GATE}"/>${state==='crossMemberOnly'||state==='both'?`<path class="wa-link-joint" d="M${mid - 4} ${y - 5}l8 10m0-10l-8 10"/>`:''}${state==='both'?`<path class="wa-link-secondary" d="M${LEFT_GATE + 16} ${y - 7}H${RIGHT_GATE - 16}"/>`:''}<text class="wa-diagram-name" x="12" y="${y - 4}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" x="12" y="${y + 13}">${esc(t('Wa UI participants count', { count }))}</text></g>${endpoints}</g>`;
+    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}"><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${LEFT_GATE - 28}" y="${y - 28}" width="${RIGHT_GATE - LEFT_GATE + 56}" height="56" rx="14"/><path class="wa-link-base" d="M${LEFT_GATE} ${y}H${RIGHT_GATE}"/><path class="wa-link-half ${active(display[0])?'is-covered':''}" d="M${LEFT_GATE} ${y}H${mid}"/><path class="wa-link-half ${active(display[1])?'is-covered':''}" d="M${mid} ${y}H${RIGHT_GATE}"/>${renderMidpointGlyph(state, mid, y)}<text class="wa-diagram-name" x="12" y="${y - 4}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" x="12" y="${y + 13}">${esc(t('Wa UI participants count', { count }))}</text></g>${endpoints}</g>`;
   }).join('');
   return `<svg class="wa-core-svg" viewBox="0 0 ${VIEW_WIDTH} ${top + 6}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${rows}</svg>`;
 }

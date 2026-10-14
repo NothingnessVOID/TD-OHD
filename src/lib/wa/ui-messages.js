@@ -18,6 +18,7 @@ const messages={
  'Wa UI state unknown':['等待计算','等待計算','Awaiting calculation'],
  'Wa UI gate active':['有成员激活','有成員啟動','Members activate this gate'],
  'Wa UI gate inactive':['暂无成员激活','暫無成員啟動','No active members'],
+ 'Wa UI gate member count':['{count} 人','{count} 人','{count} people'],
  'Wa UI member legend':['成员编号','成員編號','Member numbers'],
  'Wa UI marker rule':['编号对应成员，颜色帮助查找。','編號對應成員，顏色幫助查找。','Numbers identify people; colors help you find them.'],
  'Wa UI left gate':['左侧闸门','左側閘門','Left gate'],

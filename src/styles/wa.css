@@ -84,9 +84,12 @@
 .wa-node-hit, .wa-link-hit { fill:transparent; stroke:transparent; }
 .wa-link-base { fill:none; stroke:var(--border); stroke-width:6; stroke-linecap:round; }
 .wa-link-half { fill:none; stroke:var(--border); stroke-width:4; stroke-linecap:round; }
-.wa-link-half.is-covered, .wa-link-secondary { stroke:var(--accent); }
-.wa-link-secondary { stroke-width:2; fill:none; }
+.wa-link-half.is-covered { stroke:var(--accent); }
 .wa-link-joint { fill:none; stroke:var(--bg-elevated); stroke-width:2; stroke-linecap:round; }
+.wa-link-diamond { fill:var(--accent); stroke:none; }
+.wa-gate-count { pointer-events:none; }
+.wa-gate-count circle { fill:var(--accent-strong,var(--accent)); stroke:var(--bg-elevated); stroke-width:1.5; }
+.wa-gate-count text { fill:var(--accent-on,#fff); font-size:10px; font-weight:700; font-variant-numeric:tabular-nums; }
 .wa-diagram-channel[data-state="unknown"] .wa-link-base, .wa-diagram-channel[data-state="absent"] .wa-link-base { stroke-dasharray:3 6; }
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.6; }
 .wa-node-number { fill:var(--text-secondary); font-size:14px; font-weight:600; pointer-events:none; }
