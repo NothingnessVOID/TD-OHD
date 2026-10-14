@@ -1,0 +1,96 @@
+/* Unified UI system: page headers, dialog headers and navigation controls.
+   Loaded after every feature stylesheet (see main.js) so one definition wins.
+   Colors come only from Skin semantic tokens; sizes are shared --ui-* tokens. */
+:root {
+  --ui-control-sm: 32px;
+  --ui-control: 38px;
+  --ui-control-touch: 44px;
+  --ui-icon-size: 36px;
+  --ui-radius-pill: 999px;
+  --ui-dialog-radius: var(--radius-lg, 16px);
+  --ui-dialog-pad: 22px;
+  --ui-title-weight: 650;
+  --ui-title-tracking: -0.02em;
+}
+@media (--phone) {
+  :root { --ui-icon-size: var(--ui-control-touch); --ui-control: var(--ui-control-touch); --ui-dialog-pad: 18px; }
+}
+
+/* ---------- Page header (the 组织 · Wa style, now site-wide) ---------- */
+.view-title, .reference-heading h1, .wa-header h1, .ui-page-title {
+  font-family: var(--font);
+  font-size: 26px;
+  font-weight: var(--ui-title-weight);
+  line-height: 1.25;
+  letter-spacing: var(--ui-title-tracking);
+  color: var(--text);
+}
+.view-subtitle, .reference-heading p, .wa-header p, .ui-page-subtitle {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+#team-view .view-title { font-size: 26px; }
+@media (--phone) {
+  .view-title, .reference-heading h1, .wa-header h1, .ui-page-title, #team-view .view-title { font-size: 23px; }
+}
+
+/* ---------- Dialog surface + header (operation dialogs) ---------- */
+.modal { border-radius: var(--ui-dialog-radius); padding: var(--ui-dialog-pad); }
+.modal > header, .ui-dialog-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 0 0 16px; min-height: var(--ui-icon-size);
+}
+.modal-title, .modal > header :is(h2, h3), .ui-dialog-title {
+  margin: 0; font-family: var(--font); font-size: 18px; font-weight: var(--ui-title-weight);
+  line-height: 1.35; letter-spacing: -0.01em; color: var(--text); overflow-wrap: anywhere;
+}
+
+/* ---------- Close (icon) and Back buttons: one size, one look ---------- */
+.ui-icon-button, .gate-detail-close, .ui-close-button {
+  display: grid; place-items: center; flex: none;
+  width: var(--ui-icon-size); height: var(--ui-icon-size);
+  min-width: var(--ui-icon-size); min-height: var(--ui-icon-size);
+  padding: 0; border-radius: 50%;
+  background: var(--ui-icon-background, var(--bg-sunken));
+  border: 1px solid var(--ui-icon-border, var(--border-subtle, var(--border)));
+  color: var(--ui-icon-color, var(--text-secondary));
+  font-family: var(--font); font-size: 18px; line-height: 1;
+  cursor: pointer; transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.gate-detail-close, .skin-settings-close, .sync-popover-close,
+.operation-dialog [data-close].ui-icon-button { width: var(--ui-icon-size); height: var(--ui-icon-size); }
+.ui-icon-button:hover, .gate-detail-close:hover, .ui-close-button:hover {
+  color: var(--text); background: var(--bg-elevated); border-color: var(--border);
+}
+.ui-back-button, .gate-detail-back {
+  display: inline-flex; align-items: center; gap: 4px;
+  min-height: var(--ui-control-sm); padding: 4px 12px 4px 10px;
+  border-radius: var(--ui-radius-pill);
+  background: var(--bg-sunken); border: 1px solid var(--border-subtle, var(--border));
+  color: var(--text-secondary); font-family: var(--font); font-size: 13px; line-height: 1.2;
+  cursor: pointer; transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.ui-back-button:hover, .gate-detail-back:hover { color: var(--text); background: var(--bg-elevated); border-color: var(--border); }
+:is(.ui-icon-button, .gate-detail-close, .ui-back-button, .gate-detail-back):focus-visible {
+  outline: 2px solid var(--focus, var(--accent)); outline-offset: 2px;
+}
+@media (--phone) { .ui-back-button, .gate-detail-back { min-height: var(--ui-control-touch); padding-inline: 14px 16px; } }
+@media (prefers-reduced-motion: reduce) {
+  .ui-icon-button, .gate-detail-close, .ui-back-button, .gate-detail-back { transition: none; }
+}
+
+/* ---------- Detail sheets: one navigation row geometry ---------- */
+.gate-detail-nav-buttons { padding: 12px; gap: 8px; }
+.gate-detail-body > .detail-label, .gate-detail-body > .detail-name,
+.gate-detail-body > .panel-title, .gate-detail-body > :first-child:not(.channel-detail-heading) {
+  padding-right: calc(var(--ui-icon-size) + 36px);
+}
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > :first-child { padding-right: calc(var(--ui-icon-size) + 120px); }
+.operation-dialog :is(.ui-icon-button, .ui-close-button) {
+  width: var(--ui-icon-size); height: var(--ui-icon-size); min-width: var(--ui-icon-size); min-height: var(--ui-icon-size);
+}
+.modal > header + p, .ui-dialog-header + p { margin-top: 0; }
+.wa-archive-dialog .wa-small-note { margin: 0 0 12px; }
+/* Header chrome keeps its compact circle next to the logo. */
+.mobile-menu-toggle.ui-icon-button { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }

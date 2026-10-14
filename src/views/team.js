@@ -9,7 +9,7 @@ import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
 import { listPeople, getPerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
 import { openPersonEditor } from '../lib/person-editor.js';
-import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
+import { openOperationDialog, confirmOperation, renderDialogHeader } from '../lib/operation-dialog.js';
 import '../lib/team-selection-messages.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
@@ -104,7 +104,7 @@ function renderResult() {
 }
 function layer(title, body, bind) {
  closeLayer?.();
- const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}"><header><h3 class="modal-title">${txt(title)}</h3><button type="button" class="ui-icon-button" data-close aria-label="${txt('Close')}">×</button></header>${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
+ const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}">${renderDialogHeader(t(title))}${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
  closeLayer = close; bind(root, close); return root;
 }
 function editPerson(id = null) {

@@ -1,5 +1,5 @@
 import '../styles/person-editor.css';
-import { openOperationDialog } from './operation-dialog.js';
+import { openOperationDialog, renderDialogHeader } from './operation-dialog.js';
 import { createPlaceSearch } from './placesearch.js';
 import { savePerson, getAiAccess, setAiAccess } from './people.js';
 import { localMode } from './local-store.js';
@@ -11,7 +11,7 @@ export function openPersonEditor(birth = {}, { create = false, onSaved = null, o
   if (!birth.id && !create) return;
   const title = create ? 'Team create person' : 'Edit chart';
   const content = `<form class="modal person-editor" role="dialog" aria-modal="true" aria-label="${esc(t(title))}">
-    <header><div class="modal-title">${esc(t(title))}</div><button type="button" class="ui-icon-button" data-close aria-label="${esc(t('Close'))}">×</button></header>
+    ${renderDialogHeader(t(title))}
     <label class="modal-field">${t('Name')}<input id="edit-name" value="${esc(birth.name || '')}" required></label>
     <label class="modal-field">${t('Birth Date')}<input id="edit-date" type="date" value="${esc(birth.birthDate || '')}" required></label>
     <label class="modal-field">${t('Birth Time')}<input id="edit-time" type="time" value="${esc(birth.birthTime || '')}" required></label>

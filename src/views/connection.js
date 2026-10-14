@@ -6,6 +6,7 @@ import { saveTemporaryBirth } from '../lib/temporary-birth.js';
  */
 
 import { openDetailDialog, closeDetailDialog } from '../lib/detail-dialog.js';
+import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import { compareHumanDesign } from '../lib/human-design/connection.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
@@ -350,11 +351,11 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     }).filter(Boolean).join('');
     detail.innerHTML = `
       <div class="gate-detail-card" data-gate="${g}">
-        <button class="gate-detail-close" title="${t('Close')}">&times;</button>
+        <div class="gate-detail-nav">${renderDetailNavigation()}</div><div class="gate-detail-body">
         <div class="panel-title">${t('Gate {gate}', { gate: g })}${gate?.name ? ' — ' + esc(gateName(g)) : ''}</div>
         <div class="conn-detail-who">${t('Carried by')} <strong>${esc(whoName(owner))}</strong></div>
         ${rows || `<p class="gate-detail-inactive">${t('This gate doesn’t complete a channel between you.')}</p>`}
-      </div>`;
+      </div></div>`;
     detail.classList.remove('hidden');
     api.setPinned?.({ kind: 'gate', id: g });
     openDetail();
@@ -372,11 +373,11 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
 
     detail.innerHTML = `
       <div class="gate-detail-card center-detail-card" data-center="${key}" data-center-state="${dyn.status}" data-created="${dyn.created}">
-        <button class="gate-detail-close" title="${t('Close')}">&times;</button>
+        <div class="gate-detail-nav">${renderDetailNavigation()}</div><div class="gate-detail-body">
         <div class="panel-title">${esc(t('{center} Center', { center: dn }))}</div>
         <div class="center-detail-head"><span class="conn-center-tag ${owner || 'open'}">${esc(tag)}</span></div>
         <p class="gate-detail-desc">${esc(txt)}</p>
-      </div>`;
+      </div></div>`;
     detail.classList.remove('hidden');
     api.setPinned?.({ kind: 'center', id: key });
     openDetail();

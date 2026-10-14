@@ -619,12 +619,8 @@ body {
 
 .view-container { max-width: 720px; }
 
-.view-title {
-  font-family: var(--font-serif);
-  font-size: 28px;
-  font-weight: 300;
-  margin-bottom: 4px;
-}
+/* Typography for .view-title / .view-subtitle: src/styles/ui-system.css. */
+.view-title { margin-bottom: 4px; }
 
 .view-subtitle {
   color: var(--text-secondary);
@@ -1413,38 +1409,7 @@ body.modal-open { overflow: hidden; }
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .detail-name,
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .knowledge-detail > .detail-name { padding-right: 142px; }
 
-/* Shared navigation primitives; feature selectors keep their positioning. */
-.ui-back-button, .gate-detail-back {
-  display: flex;
-  align-items: center;
-  min-height: 32px;
-  gap: 4px;
-  background: var(--bg-sunken);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 13px;
-  font-family: var(--font);
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 5px 12px;
-}
-.ui-back-button:hover, .gate-detail-back:hover { color: var(--text); border-color: var(--text-secondary); }
-
-.ui-icon-button, .gate-detail-close {
-  display: grid;
-  place-items: center;
-  background: var(--ui-icon-background, var(--bg-sunken));
-  border: 1px solid var(--ui-icon-border, var(--border));
-  border-radius: 50%;
-  font-size: 17px;
-  line-height: 1;
-  color: var(--ui-icon-color, var(--text-tertiary));
-  cursor: pointer;
-  padding: 0;
-  flex-shrink: 0;
-}
-.gate-detail-close, .skin-settings-close, .sync-popover-close { width: 32px; height: 32px; }
-.ui-icon-button:hover, .gate-detail-close:hover { color: var(--text); border-color: var(--text-secondary); }
+/* Back / close / icon buttons live in src/styles/ui-system.css (unified UI system). */
 
 /* Title hierarchy: accent label + large name */
 .detail-label {
@@ -1652,7 +1617,7 @@ body.modal-open { overflow: hidden; }
 .selected-activation { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
 .reference-heading { margin: 0 0 10px; display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
-.reference-heading h1 { margin: 0 0 5px; font-size: 25px; }
+.reference-heading h1 { margin: 0 0 5px; }
 .reference-heading p { color: var(--text-secondary); margin: 0; font-size: 12px; text-align: right; }
 #library-view { padding-top: 12px; padding-bottom: 12px; }
 .reference-layout { display: grid; grid-template-columns: minmax(230px, 29%) minmax(0, 1fr); gap: 12px; height: calc(100dvh - var(--header-height) - 78px); min-height: 330px; align-items: stretch; }
