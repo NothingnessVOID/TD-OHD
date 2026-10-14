@@ -90,7 +90,6 @@ export function openWaMemberPicker({snapshot,target,mode='people',peopleStore={l
   }
   function renderPeople(root) {
     root.querySelector('[data-count]').textContent=msg('count',{count:ids.length,max});
-    root.querySelector('[data-chips]').innerHTML=ids.map(id=>`<button type="button" class="wa-composer-chip" data-deselect="${esc(id)}" aria-label="${text('remove',{name:personName(id)})}">${esc(personName(id))} ×</button>`).join('');
     root.querySelector('[data-results]').innerHTML=peopleStore.list().filter(person=>`${person.name} ${person.birthDate||''}`.toLowerCase().includes(search.toLowerCase())).map(person=>{
       const selected=ids.includes(person.id),owner=assigned(person.id),conflict=owner&&owner!==target;
       return `<div class="wa-composer-person"><button type="button" class="btn-secondary wa-composer-choice" data-person="${esc(person.id)}" aria-pressed="${selected}" ${!selected&&(conflict||(max>1&&ids.length>=max))?'disabled':''}><span aria-hidden="true">${max===1?selected?'●':'○':selected?'☑':'☐'}</span><span><strong>${esc(person.name)}</strong><small>${esc(person.birthDate||'')}${conflict?` · ${text('assigned',{target:groupName(owner)})}`:''}</small></span></button><button type="button" class="btn-secondary" data-edit="${esc(person.id)}">${text('edit')}</button></div>`;
@@ -99,7 +98,7 @@ export function openWaMemberPicker({snapshot,target,mode='people',peopleStore={l
   function show() {
     if(!current())return finish();
     const token=++request;
-    const body=mode==='import'?`<p class="wa-composer-note">${text('import hint')}</p><div data-import-list class="wa-composer-imports" aria-busy="true"></div><p class="wa-composer-note">${text('origin',{origin:location.origin})}</p>`:`<label class="modal-field">${text('search')}<input type="search" data-search value="${esc(search)}"></label><p data-count role="status"></p><div class="wa-composer-chips" data-chips></div><button type="button" class="btn-secondary" data-create>${text('create')}</button><div class="wa-composer-results" data-results></div>`;
+    const body=mode==='import'?`<p class="wa-composer-note">${text('import hint')}</p><div data-import-list class="wa-composer-imports" aria-busy="true"></div><p class="wa-composer-note">${text('origin',{origin:location.origin})}</p>`:`<label class="modal-field">${text('search')}<input type="search" data-search value="${esc(search)}"></label><div class="wa-composer-toolbar"><p data-count role="status"></p><button type="button" class="btn-secondary" data-create>${text('create')}</button></div><div class="wa-composer-results" data-results></div>`;
     opened=openOperationDialog({content:`<section class="modal wa-composer wa-target-picker" aria-label="${esc(targetName)}">${renderDialogHeader(`${msg(mode==='import'?'import':'select')} · ${targetName}`)}<div class="wa-composer-body">${body}<p class="wa-composer-error" data-error role="alert"></p></div><div class="modal-actions">${target==='alpha'?'':`<button class="btn-secondary" data-switch-mode>${text(mode==='import'?'pick people':'import')}</button>`}<button class="btn-secondary" data-close>${text('cancel')}</button>${mode==='people'?`<button class="btn-primary" data-selection>${text('confirm')}</button>`:''}</div></section>`,onClose:reason=>{if(reason!=='person-editor'&&reason!=='switch'&&!closed)finish(reason);}});
     const root=opened.root;
     root.querySelector('[data-switch-mode]')?.addEventListener('click',()=>{const dialog=opened;opened=null;dialog.close('switch');mode=mode==='import'?'people':'import';show();});
@@ -115,8 +114,8 @@ export function openWaMemberPicker({snapshot,target,mode='people',peopleStore={l
       root.querySelector('[data-create]').addEventListener('click',()=>editor());
       root.querySelector('[data-selection]').addEventListener('click',()=>commit(ids));
       root.addEventListener('click',event=>{const button=event.target.closest('button');if(!button||button.disabled)return;
-        const id=button.dataset.person||button.dataset.deselect;
-        if(id){if(max===1&&button.dataset.person)ids=[id];else if(ids.includes(id))ids=ids.filter(value=>value!==id);else if(ids.length<max)ids.push(id);renderPeople(root);[...root.querySelectorAll('[data-person]')].find(node=>node.dataset.person===id)?.focus();}
+        const id=button.dataset.person;
+        if(id){if(max===1)ids=[id];else if(ids.includes(id))ids=ids.filter(value=>value!==id);else if(ids.length<max)ids.push(id);renderPeople(root);[...root.querySelectorAll('[data-person]')].find(node=>node.dataset.person===id)?.focus();}
         if(button.dataset.edit)editor(button.dataset.edit);
       });
       renderPeople(root);root.querySelector('[data-search]').focus();
