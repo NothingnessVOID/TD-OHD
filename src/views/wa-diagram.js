@@ -9,26 +9,26 @@ export function waStateSymbol(state, size = 22) {
   return renderPentaStateSymbol(state, {size});
 }
 
-/** Compact fixed board: markers fan outward beside each gate so row height never grows. */
+/** Near-original board size; markers fan inward along the channel so row height stays fixed. */
 const VIEW_WIDTH = 360;
-const ROW_HEIGHT = 58;
-const LEFT_GATE = 152;
-const RIGHT_GATE = 276;
-const NODE_R = 14;
-const HIT_R = 22;
+const ROW_HEIGHT = 86;
+const LEFT_GATE = 176;
+const RIGHT_GATE = 298;
+const NODE_R = 18;
+const HIT_R = 28;
 const MARKER_COLUMNS = 4;
-const MARKER_STEP = 8;
-const MARKER_R = 5;
+const MARKER_STEP = 12;
+const MARKER_R = 7;
 
 function renderGateMarkers(gate, records, gateX, gateY, nameOf, side) {
   const rows = Math.max(1, Math.ceil(records.length / MARKER_COLUMNS));
   return records.map((record, index) => {
     const column = index % MARKER_COLUMNS;
     const row = Math.floor(index / MARKER_COLUMNS);
-    const cx = gateX + side * (NODE_R + 5 + column * MARKER_STEP);
+    const cx = gateX + side * (NODE_R + 6 + column * MARKER_STEP);
     const cy = gateY + (row - (rows - 1) / 2) * MARKER_STEP;
     const label = esc(`${nameOf(record.memberId) ?? record.memberId} · ${record.number}`);
-    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}"><circle cx="${cx}" cy="${cy}" r="${MARKER_R}"><title>${label}</title></circle><text x="${cx}" y="${cy + 3.2}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
+    return `<g class="wa-gate-member-marker wa-member-color-${record.colorSlot}" data-wa-gate-marker="${gate}" data-wa-marker-member="${esc(record.memberId)}" data-marker-number="${record.number}" role="button" tabindex="0" aria-label="${label}"><circle cx="${cx}" cy="${cy}" r="${MARKER_R}"><title>${label}</title></circle><text x="${cx}" y="${cy + 3.8}" text-anchor="middle" aria-hidden="true">${record.number}</text></g>`;
   }).join('');
 }
 
@@ -59,9 +59,9 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const covered = active(gate), pillar = WA_PILLAR_LABELS[gate];
       const focused = selected?.type === 'gate' && selected.id === gate;
       const activationLabel = known ? t(covered ? 'Wa UI gate active' : 'Wa UI gate inactive') : waStateText('unknown');
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}" role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}`)}"><circle class="wa-node-hit" cx="${x}" cy="${y}" r="${HIT_R}"/>${pillar?`<circle class="wa-pillar-ring" cx="${x}" cy="${y}" r="${NODE_R + 4}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${y}" r="${NODE_R}"/><text class="wa-node-number" x="${x}" y="${y + 4.5}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${y - NODE_R - 8}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateMarkers(gate, endpointMarkers[sideIndex], x, y, nameOf, side)}</g>`;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}" role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}`)}"><circle class="wa-node-hit" cx="${x}" cy="${y}" r="${HIT_R}"/>${pillar?`<circle class="wa-pillar-ring" cx="${x}" cy="${y}" r="${NODE_R + 5}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${y}" r="${NODE_R}"/><text class="wa-node-number" x="${x}" y="${y + 5.5}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${y - NODE_R - 10}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateMarkers(gate, endpointMarkers[sideIndex], x, y, nameOf, side)}</g>`;
     }).join('');
-    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}"><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${LEFT_GATE - 28}" y="${y - 24}" width="${RIGHT_GATE - LEFT_GATE + 56}" height="48" rx="12"/><path class="wa-link-base" d="M${LEFT_GATE} ${y}H${RIGHT_GATE}"/><path class="wa-link-half ${active(display[0])?'is-covered':''}" d="M${LEFT_GATE} ${y}H${mid}"/><path class="wa-link-half ${active(display[1])?'is-covered':''}" d="M${mid} ${y}H${RIGHT_GATE}"/>${state==='crossMemberOnly'||state==='both'?`<path class="wa-link-joint" d="M${mid - 4} ${y - 4}l8 8m0-8l-8 8"/>`:''}${state==='both'?`<path class="wa-link-secondary" d="M${LEFT_GATE + 14} ${y - 6}H${RIGHT_GATE - 14}"/>`:''}<text class="wa-diagram-name" x="10" y="${y - 3}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" x="10" y="${y + 11}">${esc(t('Wa UI participants count', { count }))}</text></g>${endpoints}</g>`;
+    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}"><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${LEFT_GATE - 28}" y="${y - 28}" width="${RIGHT_GATE - LEFT_GATE + 56}" height="56" rx="14"/><path class="wa-link-base" d="M${LEFT_GATE} ${y}H${RIGHT_GATE}"/><path class="wa-link-half ${active(display[0])?'is-covered':''}" d="M${LEFT_GATE} ${y}H${mid}"/><path class="wa-link-half ${active(display[1])?'is-covered':''}" d="M${mid} ${y}H${RIGHT_GATE}"/>${state==='crossMemberOnly'||state==='both'?`<path class="wa-link-joint" d="M${mid - 4} ${y - 5}l8 10m0-10l-8 10"/>`:''}${state==='both'?`<path class="wa-link-secondary" d="M${LEFT_GATE + 16} ${y - 7}H${RIGHT_GATE - 16}"/>`:''}<text class="wa-diagram-name" x="12" y="${y - 4}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" x="12" y="${y + 13}">${esc(t('Wa UI participants count', { count }))}</text></g>${endpoints}</g>`;
   }).join('');
-  return `<svg class="wa-core-svg" viewBox="0 0 ${VIEW_WIDTH} ${top + 4}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${rows}</svg>`;
+  return `<svg class="wa-core-svg" viewBox="0 0 ${VIEW_WIDTH} ${top + 6}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${rows}</svg>`;
 }

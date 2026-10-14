@@ -136,13 +136,8 @@ export function mountWa(container, options = {}) {
   function departmentsHtml() {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
   }
-  function memberLegendHtml() {
-    const ids = [...new Set(viewScope().memberIds)].filter(id => markers().has(id)).sort((a, b) => markers().get(a).number - markers().get(b).number);
-    if (!ids.length) return '';
-    return `<div class="wa-graph-members"><h3>${text('Wa UI member legend')}<small>${text('Wa member focus hint')}</small></h3><ul class="wa-member-legend">${ids.map(id=>`<li><button type="button" class="wa-member-focus" data-member-focus="${esc(id)}" data-focus="member-${esc(id)}" aria-pressed="${focusMember===id}" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-member-legend-name">${esc(nameOf(id))}</span></button></li>`).join('')}</ul></div>`;
-  }
   function graphHtml() {
-    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${memberLegendHtml()}<div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
+    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure><div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
   }
   function applyMemberFocus() {
     const page = container.querySelector('.wa-page');if(!page)return;
@@ -168,7 +163,7 @@ export function mountWa(container, options = {}) {
     if(disposed)return;
     const column=container.querySelector('.wa-graph-column');if(!column)return;
     const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
-    // Keep sticky top at the site header; the compact graph should fit without an inner scrollbar.
+    // Sticky under the site header; diagram is fixed size so the column needs no inner scrollbar.
     column.style.setProperty('--wa-sticky-top',`${Math.floor(header)}px`);
   }
   function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
@@ -404,6 +399,13 @@ export function mountWa(container, options = {}) {
     else if(node.dataset.waDepartment)showDetail({type:'department',id:node.dataset.waDepartment});
   }
   async function click(event) {
+    const marker=event.target.closest('[data-wa-marker-member]');
+    if(marker&&container.contains(marker)){
+      event.preventDefault();
+      focusMember=focusMember===marker.dataset.waMarkerMember?null:marker.dataset.waMarkerMember;
+      applyMemberFocus();
+      return;
+    }
     const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
       if(node.dataset.waGate){node.focus({preventScroll:true});showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
