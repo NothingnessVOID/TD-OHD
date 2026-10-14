@@ -6,7 +6,7 @@
 .wa-member-color-5 { --wa-member-color:var(--team-member-5); }
 .wa-member-marker { display:inline-flex; flex:none; align-items:center; justify-content:center; min-width:17px; height:17px; padding:0 2px; box-sizing:border-box; border:1px solid var(--team-member-border); border-radius:50%; background:var(--wa-member-color); color:var(--team-member-on); font-size:11px; line-height:1; font-weight:700; font-variant-numeric:tabular-nums; vertical-align:middle; }
 .wa-gate-member-marker circle { fill:var(--wa-member-color); stroke:var(--team-member-border); stroke-width:.5; }
-.wa-gate-member-marker text { fill:var(--team-member-on); font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; pointer-events:none; }
-.wa-member-legend { display:flex; flex-wrap:wrap; gap:6px 12px; list-style:none; margin:10px 0; padding:0; color:var(--text-secondary); font-size:12px; line-height:1.5; }
-.wa-member-legend > li { display:flex; align-items:baseline; gap:5px; min-width:0; max-width:100%; }
-.wa-member-legend-name { min-width:0; overflow-wrap:anywhere; }
+.wa-gate-member-marker text { fill:var(--team-member-on); font-size:9px; font-weight:700; font-variant-numeric:tabular-nums; pointer-events:none; }
+.wa-member-legend { display:flex; flex-wrap:wrap; gap:4px 8px; list-style:none; margin:8px 0 0; padding:0; color:var(--text-secondary); font-size:11.5px; line-height:1.4; }
+.wa-member-legend > li { display:flex; align-items:center; gap:4px; min-width:0; max-width:100%; }
+.wa-member-legend-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:7.5em; }

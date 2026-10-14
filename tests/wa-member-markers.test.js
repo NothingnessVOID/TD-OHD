@@ -123,40 +123,48 @@ test('unknown results suppress stale markers, positive activation and false zero
   assert.match(svg, /No member active/);
 });
 
-test('six-column readable marker rows fit the adaptive viewBox with clear next-row label space', () => {
+test('fixed compact board keeps constant height; markers fan beside gates without growing rows', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
+  const ROW_HEIGHT = 58;
+  const VIEW_WIDTH = 360;
+  const LEFT_GATE = 152;
+  const RIGHT_GATE = 276;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
-    const markerRows = Math.max(1, Math.ceil(count / 6));
-    assert.equal(height, 6 * (92 + 18 * (markerRows - 1)) + 8);
+    assert.equal(width, VIEW_WIDTH);
+    assert.equal(height, 6 * ROW_HEIGHT + 4);
     assert.equal(markerNodes(svg).length, 12 * count);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
       assert.ok(x - r >= 0 && x + r <= width, `circle x=${x}, r=${r}`);
       assert.ok(y - r >= 0 && y + r <= height, `circle y=${y}, r=${r}`);
     }
-    const centers = [...svg.matchAll(/class="wa-node-face" cx="180" cy="(\d+)"/g)].map(match => Number(match[1]));
-    assert.equal(centers.length, 6);
-    for (let i = 0; i < centers.length - 1; i++) {
-      const lastBadgeBottom = centers[i] + 36 + 18 * (markerRows - 1) + 8.75;
-      // Pillar baseline is next center - 32; reserve its full 10px font above it.
-      assert.ok(lastBadgeBottom + 3 <= centers[i + 1] - 32 - 10);
-      assert.ok(lastBadgeBottom < centers[i + 1] - 30);
-    }
+    const leftCenters = [...svg.matchAll(/class="wa-node-face" cx="152" cy="([\d.]+)"/g)].map(match => Number(match[1]));
+    assert.equal(leftCenters.length, 6);
+    for (let i = 0; i < leftCenters.length - 1; i++) assert.equal(leftCenters[i + 1] - leftCenters[i], ROW_HEIGHT);
     for (const gate of coreGates) {
       const badges = markerNodes(svg).filter(node => node.gate === gate);
-      const rowCounts = new Map();
+      assert.equal(badges.length, count);
       for (const badge of badges) {
-        const cy = badge.body.match(/cy="([\d.]+)"/)[1];
-        const textY=Number(badge.body.match(/<text[^>]* y="([\d.]+)"/)[1]);
-        assert.equal(textY,Number(cy)+4.5,'larger numerals stay vertically centered in their marker');
-        rowCounts.set(cy, (rowCounts.get(cy) ?? 0) + 1);
+        const cy = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
+        const textY = Number(badge.body.match(/<text[^>]* y="([\d.]+)"/)[1]);
+        assert.equal(textY, cy + 3.2);
+        const rowIndex = leftCenters.findIndex(center => Math.abs(center - cy) <= 22);
+        assert.ok(rowIndex >= 0, `marker cy=${cy} should stay near a row center`);
+        assert.ok(Math.abs(cy - leftCenters[rowIndex]) <= 22);
       }
-      assert.ok([...rowCounts.values()].every(value => value <= 6));
-      assert.equal(rowCounts.size, Math.ceil(count / 6));
+    }
+    if (count > 0) {
+      // Markers fan inward along the channel.
+      const leftGate = coreGates[0];
+      const rightGate = coreGates[1];
+      const leftBadges = markerNodes(svg).filter(node => node.gate === leftGate);
+      const rightBadges = markerNodes(svg).filter(node => node.gate === rightGate);
+      if (leftBadges.length) assert.ok(leftBadges.every(node => Number(node.body.match(/cx="([\d.]+)"/)[1]) > LEFT_GATE));
+      if (rightBadges.length) assert.ok(rightBadges.every(node => Number(node.body.match(/cx="([\d.]+)"/)[1]) < RIGHT_GATE));
     }
   }
 });
@@ -198,5 +206,5 @@ test('legend follows organization numbers, while the legacy diagram signature an
   const css = readFileSync(new URL('../src/styles/wa-members.css', import.meta.url), 'utf8');
   for (let slot = 1; slot <= 5; slot++) assert.ok(css.includes(`var(--team-member-${slot})`));
   assert.ok(css.includes('var(--team-member-on)'));
-  assert.match(css,/\.wa-gate-member-marker text\s*\{[^}]*font-size:12\.5px/);
+  assert.match(css,/\.wa-gate-member-marker text\s*\{[^}]*font-size:9px/);
 });

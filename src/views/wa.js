@@ -40,7 +40,7 @@ export function mountWa(container, options = {}) {
   const teams = options.listTeams || listTeams;
   const storage = options.storage === undefined ? (() => { try { return globalThis.localStorage; } catch { return null; } })() : options.storage;
   let draft = createWaDraft(), dirty = false, saving = false, disposed = false, busy = false;
-  let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null;
+  let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null, autoSaveTimer = null;
   let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = false;
   let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = true;
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
@@ -139,7 +139,7 @@ export function mountWa(container, options = {}) {
   function memberLegendHtml() {
     const ids = [...new Set(viewScope().memberIds)].filter(id => markers().has(id)).sort((a, b) => markers().get(a).number - markers().get(b).number);
     if (!ids.length) return '';
-    return `<div class="wa-graph-members"><h3>${text('Wa UI member legend')}<small>${text('Wa member focus hint')}</small></h3><ul class="wa-member-legend">${ids.map(id=>`<li><button type="button" class="wa-member-focus" data-member-focus="${esc(id)}" data-focus="member-${esc(id)}" aria-pressed="${focusMember===id}">${markerHtml(id)}<span class="wa-member-legend-name">${esc(nameOf(id))}</span></button></li>`).join('')}</ul></div>`;
+    return `<div class="wa-graph-members"><h3>${text('Wa UI member legend')}<small>${text('Wa member focus hint')}</small></h3><ul class="wa-member-legend">${ids.map(id=>`<li><button type="button" class="wa-member-focus" data-member-focus="${esc(id)}" data-focus="member-${esc(id)}" aria-pressed="${focusMember===id}" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-member-legend-name">${esc(nameOf(id))}</span></button></li>`).join('')}</ul></div>`;
   }
   function graphHtml() {
     return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div><figcaption>${text('OC16 graph caption')}</figcaption></figure>${memberLegendHtml()}<div data-wa-selection-summary>${details.renderSelected(selected)}</div></section>`;
@@ -168,7 +168,7 @@ export function mountWa(container, options = {}) {
     if(disposed)return;
     const column=container.querySelector('.wa-graph-column');if(!column)return;
     const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
-    // Keep sticky top at the site header; tall graph content scrolls inside the column.
+    // Keep sticky top at the site header; the compact graph should fit without an inner scrollbar.
     column.style.setProperty('--wa-sticky-top',`${Math.floor(header)}px`);
   }
   function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
@@ -215,7 +215,7 @@ export function mountWa(container, options = {}) {
   function acceptConfiguration(next,changes=[]) {
     assertWaSnapshot(next);annotationRecovery.push(...clone(changes).map(change=>({organizationId:next.organizationId,...change})));
     draft=clone(next);version++;dirty=true;notice=changes.length?'OC16 recovery retained':'';errorText='';
-    if(!draft.pentas.some(group=>group.pentaId===selectedGroup))selectedGroup=null;schedule();
+    if(!draft.pentas.some(group=>group.pentaId===selectedGroup))selectedGroup=null;queueAutoSave();schedule();
   }
   function focusTarget(target) {if(!disposed)[...container.querySelectorAll('[data-compose]')].find(node=>node.dataset.compose===target)?.focus({preventScroll:true});}
   function compose(target,mode='people') {
@@ -242,17 +242,51 @@ export function mountWa(container, options = {}) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
     dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;remember(draft.organizationId);schedule();
   }
-  async function save() {
+  function escapeTitlePattern(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+  async function nextOrganizationTitle() {
+    const base = t('Wa organization');
+    let next = 1;
+    try {
+      const saved = await repository.list();
+      const pattern = new RegExp(`^${escapeTitlePattern(base)}\\s*(\\d+)$`);
+      const numbers = [];
+      for (const item of saved) {
+        const title = String(item.title || '').trim();
+        if (title === base) numbers.push(1);
+        else {
+          const match = title.match(pattern);
+          if (match) numbers.push(Number(match[1]));
+        }
+      }
+      if (numbers.length) next = Math.max(...numbers) + 1;
+    } catch { /* Keep 1 when the archive cannot be read. */ }
+    return `${base} ${next}`;
+  }
+  async function createNumberedDraft() {
+    const title = await nextOrganizationTitle();
+    return createWaDraft({ title });
+  }
+  function queueAutoSave() {
+    if (disposed || !dirty) return;
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => {
+      if (!disposed && dirty && !saving) save({ silent: true });
+    }, 700);
+  }
+  async function save({ silent = false } = {}) {
     if(saving)return;
+    clearTimeout(autoSaveTimer);
     operation++; // A user save supersedes any pending last-organization autoload.
     const snapshot=clone(draft),inputVersion=version,token=++saveGeneration;
-    saving=true;notice='';errorText='';render();
+    saving=true;notice=silent?'Wa saving':'';errorText='';render();
     try {
       const saved=await repository.save(snapshot,{expectedRevision:snapshot.revision});
       if(disposed||token!==saveGeneration)return;
       if(draft.organizationId===snapshot.organizationId){
         if(version===inputVersion){draft=clone(saved);dirty=false;}else for(const key of ['revision','revisionId','parentRevisionId','savedAt'])draft[key]=saved[key];
-        notice='Wa saved';remember(saved.organizationId);
+        notice=silent?'Wa autosaved':'Wa saved';remember(saved.organizationId);
       }
     }catch(error){if(!disposed&&token===saveGeneration)fail(error);}
     finally {if(!disposed&&token===saveGeneration){saving=false;render();}}
@@ -266,14 +300,13 @@ export function mountWa(container, options = {}) {
     closeReading();const token=++operation,inputVersion=version;
     try {
       const saved=await repository.list();if(disposed||token!==operation||inputVersion!==version)return;
-      const {root,close}=layer('Saved organizations',`<p class="wa-small-note">${text('OC16 origin note')}</p><button class="btn-secondary" data-backup-draft>${text('OC16 export draft')}</button><div class="wa-archive-list">${saved.map(item=>`<section class="wa-archive-row"><button data-open-org="${esc(item.organizationId)}">${esc(item.title||t('Wa organization'))}<small>${validateWaLayout(item).memberIds.length} ${text('OC16 participants')} · r${item.revision}</small></button><button data-history-org="${esc(item.organizationId)}">${text('Revision history')}</button><button data-backup-org="${esc(item.organizationId)}">${text('Export backup')}</button></section>`).join('')||`<p>${text('OC16 empty saved')}</p>`}</div>`);
+      const {root,close}=layer('Saved organizations',`<p class="wa-small-note">${text('OC16 origin note')}</p><button class="btn-secondary" data-backup-draft>${text('OC16 export draft')}</button><div class="wa-archive-list">${saved.map(item=>`<section class="wa-archive-row"><button data-open-org="${esc(item.organizationId)}">${esc(item.title||t('Wa organization'))}<small>${validateWaLayout(item).memberIds.length} ${text('OC16 participants')} · r${item.revision}</small></button><button data-backup-org="${esc(item.organizationId)}">${text('Export backup')}</button></section>`).join('')||`<p>${text('OC16 empty saved')}</p>`}</div>`);
       root.addEventListener('click',async event=>{
         const button=event.target.closest('button');if(!button)return;
         if(button.hasAttribute('data-backup-draft')){try{await exportDraft();}catch(error){if(root.isConnected)root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');}return;}
-        const id=button.dataset.openOrg||button.dataset.historyOrg||button.dataset.backupOrg;if(!id)return;
+        const id=button.dataset.openOrg||button.dataset.backupOrg;if(!id)return;
         try {
           if(button.dataset.backupOrg){await exportBackup(id);return;}
-          if(button.dataset.historyOrg){await history(saved.find(item=>item.organizationId===id),token);return;}
           if(dirty&&!await confirmOperation(t('Wa discard changes?')))return;
           if(disposed||!root.isConnected||token!==operation||version!==inputVersion)return;
           const loaded=await repository.get(id);
@@ -282,23 +315,6 @@ export function mountWa(container, options = {}) {
         }catch(error){if(root.isConnected&&token===operation)root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');}
       });
     }catch(error){if(!disposed&&token===operation&&inputVersion===version){fail(error);render();}}
-  }
-  async function history(head,token) {
-    const inputVersion=version,versions=await repository.history(head.organizationId);
-    if(disposed||token!==operation||inputVersion!==version)return;
-    const {root,close}=layer('Revision history',`<p class="wa-small-note">${text('Wa restore note')}</p><div class="wa-archive-list">${versions.map(item=>`<button data-restore="${esc(item.revisionId)}">r${item.revision} · ${esc(item.title||t('Wa organization'))}<small>${esc(item.savedAt)}</small></button>`).join('')}</div>`);
-    root.addEventListener('click',async event=>{
-      const button=event.target.closest('[data-restore]');if(!button||button.disabled)return;
-      const previous=versions.find(item=>item.revisionId===button.dataset.restore);
-      try {
-        if(!await confirmOperation(t('OC16 restore warning')))return;
-        if(disposed||!root.isConnected||token!==operation||inputVersion!==version)return;
-        button.disabled=true;
-        const restored=await repository.restore(head.organizationId,previous.revisionId,{expectedRevision:head.revision});
-        if(disposed||!root.isConnected||token!==operation||inputVersion!==version)return;
-        close();load(restored);notice='Wa restored';render();
-      }catch(error){if(root.isConnected&&token===operation){root.querySelector('.wa-layer-error').textContent=error?.message||t('Wa data error');button.disabled=false;}}
-    });
   }
   function download(data,name) {
     if(disposed)return;
@@ -407,19 +423,19 @@ export function mountWa(container, options = {}) {
         case 'open':await archives();break;
         case 'retry':schedule();break;
         case 'knowledge':showDetail({type:'library'});break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){operation++;version++;draft=createWaDraft();dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }
   function change(event) {
     if(event.target.hasAttribute('data-include-alpha')){includeAlpha=event.target.checked;closeReading();selected=null;if(prepared)refreshScope();else render();}
   }
-  function markDirty() {const status=container.querySelector('.wa-draft-status');status.textContent=`${t('Unsaved changes')} · r${draft.revision}`;status.dataset.dirty='true';}
+  function markDirty() {const status=container.querySelector('.wa-draft-status');if(!status)return;status.textContent=`${t(saving?'Wa saving':'Unsaved changes')} · r${draft.revision}`;status.dataset.dirty='true';}
   function input(event) {
-    if(event.target.hasAttribute('data-title')){draft.title=event.target.value;version++;dirty=true;markDirty();}
+    if(event.target.hasAttribute('data-title')){draft.title=event.target.value;version++;dirty=true;markDirty();queueAutoSave();}
     if(event.target.hasAttribute('data-group-title')){
       const group=draft.pentas.find(group=>group.pentaId===event.target.dataset.groupTitle);group.title=event.target.value;version++;dirty=true;
-      markDirty();
+      markDirty();queueAutoSave();
       const segment=[...container.querySelectorAll('[data-scope-option]')].find(node=>node.dataset.scopeOption===group.pentaId);if(segment)segment.textContent=groupName(group);
       container.querySelector('[data-scope-label]').textContent=scopeLabel();
     }
@@ -441,10 +457,27 @@ export function mountWa(container, options = {}) {
   // Only the saved organization ID is remembered. Never cache charts, births or drafts here.
   if(options.restoreLast!==false){
     const token=operation,inputVersion=version;
-    Promise.resolve().then(async()=>{let id;try{id=storage?.getItem(LAST_ORGANIZATION);}catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}return;}if(!id)return;
-      try{const snapshot=await repository.get(id);if(disposed||token!==operation||version!==inputVersion)return;if(snapshot)load(snapshot);else{notice='Missing reference';render();}}
-      catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}}
+    Promise.resolve().then(async()=>{let id;try{id=storage?.getItem(LAST_ORGANIZATION);}catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}return;}
+      if(id){
+        try{const snapshot=await repository.get(id);if(disposed||token!==operation||version!==inputVersion)return;if(snapshot){load(snapshot);return;}notice='Missing reference';render();}
+        catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}return;}
+      }
+      if(disposed||token!==operation||version!==inputVersion||draft.title.trim())return;
+      try{
+        const titled=await createNumberedDraft();
+        if(disposed||token!==operation||version!==inputVersion||draft.title.trim())return;
+        draft=titled;render();
+      }catch(error){if(!disposed&&token===operation&&version===inputVersion){fail(error);render();}}
+    });
+  }else if(!draft.title.trim()){
+    const token=operation,inputVersion=version;
+    Promise.resolve().then(async()=>{
+      try{
+        const titled=await createNumberedDraft();
+        if(disposed||token!==operation||version!==inputVersion||draft.title.trim())return;
+        draft=titled;render();
+      }catch{ /* Leave the empty title if naming fails. */ }
     });
   }
-  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
+  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);clearTimeout(autoSaveTimer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
 }

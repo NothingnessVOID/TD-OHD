@@ -5,9 +5,10 @@
 .wa-composer .wa-composer-note { color:var(--text-secondary); font-size:13px; line-height:1.6; overflow-wrap:anywhere; }
 .wa-composer .modal-field { display:flex; flex-direction:column; gap:6px; margin:12px 0; font-size:14px; }
 .wa-composer input { box-sizing:border-box; width:100%; min-width:0; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm,6px); padding:9px 10px; font:inherit; }
-.wa-composer .wa-composer-chips { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
-.wa-composer .wa-composer-chip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:var(--radius-sm,6px); padding:4px 8px; background:var(--bg-sunken); color:var(--text); font-size:13px; overflow-wrap:anywhere; max-width:100%; }
-.wa-composer .wa-composer-results { display:grid; gap:8px; margin:16px 0; }
+.wa-composer .wa-composer-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:4px 0 10px; }
+.wa-composer .wa-composer-toolbar [data-count] { margin:0; color:var(--text-secondary); font-size:13px; font-variant-numeric:tabular-nums; }
+.wa-composer .wa-composer-toolbar [data-create] { flex:none; }
+.wa-composer .wa-composer-results { display:grid; gap:8px; margin:8px 0 16px; }
 .wa-composer .wa-composer-person { display:flex; align-items:stretch; gap:8px; min-width:0; }
 .wa-composer .wa-composer-choice { display:flex; flex:1; align-items:center; gap:10px; text-align:start; min-width:0; padding:10px; }
 .wa-composer .wa-composer-choice > span:last-child { min-width:0; }
