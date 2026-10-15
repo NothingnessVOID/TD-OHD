@@ -1,7 +1,6 @@
 /* Host imports this stylesheet once. All rules are scoped to the Wa detail fragments. */
 .wa-detail-content,
-.wa-detail-pair-rows,
-.wa-detail-selected {
+.wa-detail-pair-rows {
   color: var(--text);
   font-size: 14px;
   line-height: 1.6;
@@ -9,8 +8,7 @@
 }
 .wa-detail-content { display: grid; gap: 18px; }
 .wa-detail-content :is(h2, h3, h4, p),
-.wa-detail-pair-rows :is(h3, h4, p),
-.wa-detail-selected p { margin: 0; }
+.wa-detail-pair-rows :is(h3, h4, p) { margin: 0; }
 .wa-detail-content h2 { font-size: 22px; line-height: 1.3; }
 .wa-channel-number { display:block; }
 .wa-channel-reading-title { display:block; font-size:20px; margin-top:5px; }
@@ -78,7 +76,6 @@
 .wa-detail-combinations li { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 2fr); gap: 10px; }
 .wa-detail-combinations small { color: var(--text-secondary); font-size: 12px; }
 .wa-detail-combinations [data-wa-combination-right] { display: inline-block; margin-right: 8px; }
-.wa-detail-selected { display: grid; gap: 8px; padding: 12px 0; }
 .wa-detail-compact { gap: 12px; font-size: 13px; }
 .wa-detail-compact .wa-detail-pair-row { gap: 8px; padding-bottom: 12px; }
 .wa-detail-compact .wa-detail-endpoint:not(.wa-detail-endpoint--flat) { padding: 8px 10px; }
