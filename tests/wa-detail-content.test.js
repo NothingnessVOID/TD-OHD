@@ -61,23 +61,17 @@ for (const [status, left, right, self, combinations] of [
   }
 });
 
-test('canonical combinations are projected into reversed display order without inventing missing combinations', () => {
+test('pair sheet keeps self-complete near the top and omits cross-member combination lists', () => {
   const html = renderer(fixture()).renderPair('21-45');
-  assert.match(html, /data-wa-combination-left="b" data-wa-left-gate="45" data-wa-right-gate="21"/);
-  const b = html.split('data-wa-combination-left="b"')[1].split('</li>')[0];
-  const c = html.split('data-wa-combination-left="c"')[1].split('</li>')[0];
-  assert.match(b, /data-wa-combination-right="a"/);
-  assert.doesNotMatch(b, /data-wa-combination-right="b|data-wa-combination-right="c/);
-  assert.equal(occurrences(c, 'data-wa-combination-right='), 2);
-  assert.match(c, /data-wa-combination-right="a"/);
-  assert.match(c, /data-wa-combination-right="b"/);
+  assert.doesNotMatch(html, /data-wa-combination-left|data-wa-combination-right|wa-detail-combinations/);
+  assert.ok(!html.includes(t('Wa detail combinations')));
+  assert.ok(!html.includes(t('Wa detail relationships')));
   const self = html.split('data-wa-self-complete>')[1].split('</div>')[0];
   assert.match(self, /class="wa-detail-member" data-wa-member="b">Fictional B/);
   assert.doesNotMatch(self, /data-wa-member="(?:a|c)"/);
-  // Same holders, deliberately fewer source records: presentation must not reconstruct their Cartesian product.
-  const sparse = renderer(fixture({ combinations: [{ firstMemberId: 'b', secondMemberId: 'c' }] })).renderPair('21-45');
-  assert.equal(occurrences(sparse, 'data-wa-combination-right='), 1);
-  assert.doesNotMatch(sparse, /data-wa-combination-left="b"/);
+  assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-endpoint='));
+  assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-knowledge'));
+  assert.match(html, /<details class="wa-detail-fold" open data-wa-knowledge="wa"/);
 });
 
 test('all activation rows survive planet multiplicity, P/D and exact duplicates in every detail location', () => {
@@ -176,7 +170,7 @@ test('three languages retain exact collapsed Wa excerpts and source IDs, never p
     const core = view.renderPair('21-45'), support = view.renderPair('32-54'), gate = view.renderGate(45);
     const entry = readWaContent('21-45', locale);
     const excerpt = readWaReadingExcerpt('21-45',locale);
-    assert.match(core, /<details class="wa-detail-fold" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45">/);
+    assert.match(core, /<details class="wa-detail-fold" open data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45">/);
     assert.ok(core.includes(`data-wa-reading-id="${entry.id}"`));
     assert.ok(core.includes(`data-wa-package-id="${entry.packageId}"`));
     assert.ok(core.includes(`data-wa-source-refs="${entry.sourceRefs.join(' ')}"`));
@@ -184,17 +178,19 @@ test('three languages retain exact collapsed Wa excerpts and source IDs, never p
     assert.ok(core.includes(renderProse({ content: excerpt.detail })));
     assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
     assert.match(support, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54">/);
+    assert.doesNotMatch(support, /<details[^>]*\bopen(?:\s|>|=)/);
     assert.ok(support.includes(renderProse({content:excerpt.detail})));
     assert.ok(support.includes(`data-wa-reading-id="${entry.id}"`));
     assert.ok(gate.includes(renderGateDetailHeading(45)));
     assert.ok(gate.includes(renderProse({content:excerpt.detail})));
     assert.match(gate, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="gate:45">/);
+    assert.doesNotMatch(gate, /<details[^>]*\bopen(?:\s|>|=)/);
     assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
     assert.ok(gate.indexOf('wa-detail-related') < gate.indexOf('data-wa-knowledge'));
     for (const html of [core,support,gate]) assert.doesNotMatch(html,/data-shared-lens|data-shared-gate=|data-shared-channel-reading/);
-    for (const html of [core, support, gate]) assert.doesNotMatch(html, /<details[^>]*\bopen(?:\s|>|=)|Wa detail |OC16 /);
-    assert.ok(core.includes(t('Wa detail combinations')));
+    for (const html of [core, support, gate]) assert.doesNotMatch(html, /Wa detail |OC16 /);
+    assert.ok(core.includes(t('OC16 covered by one')));
     assert.ok(core.includes(t('OC16 personality')));
   }
   setLocale('en', { persist: false });

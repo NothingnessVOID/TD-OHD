@@ -65,8 +65,9 @@ function verifyPair(actual, expected, names, label) {
   assert.equal(actual.status, expected.status, `${label}: actual renderer state`);
   assert.deepEqual(sorted(actual.selfCompleteMemberIds), expected.selfCompleteMemberIds, `${label}: self-complete members`);
   assert.deepEqual(sorted(actual.selfCompleteNames), sorted(expected.selfCompleteMemberIds.map(id => names[id])), `${label}: self names`);
-  assert.deepEqual(sorted(actual.complementaryMemberPairs.map(pairKey)), sorted(expected.complementaryMemberPairs.map(pairKey)), `${label}: canonical cross-member mapping`);
-  assert.deepEqual(sorted(actual.crossNames), sorted(expected.complementaryMemberPairs.map(p => JSON.stringify([names[p.firstMemberId], names[p.secondMemberId]]))), `${label}: cross names`);
+  // Cross-member who-pairs lists are no longer rendered in the pair sheet.
+  assert.deepEqual(actual.complementaryMemberPairs, [], `${label}: combination lists omitted from sheet`);
+  assert.deepEqual(actual.crossNames, [], `${label}: combination names omitted from sheet`);
   assert.deepEqual(actual.endpointLinks, expected.displayGates, `${label}: endpoint navigation order`);
   assert.equal(actual.endpoints.length, 2, `${label}: both endpoints exist`);
   actual.endpoints.forEach((endpoint, i) => verifyGate(endpoint, expected.endpoints[i], names, `${label}/${endpoint.gate}`));
