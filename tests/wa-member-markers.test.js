@@ -134,13 +134,13 @@ test('unknown results suppress stale badges, positive activation and false zero 
 test('fixed board keeps constant height; contributor strips stay inside the board without growing rows', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
-  const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_TOP, MAX_DOTS } = WA_DIAGRAM_GEOMETRY;
+  const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_TOP, PAD_BOTTOM, MAX_DOTS, NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA } = WA_DIAGRAM_GEOMETRY;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
     assert.equal(width, VIEW_WIDTH);
-    assert.equal(height, 6 * ROW_HEIGHT + 2 * PAD_TOP);
+    assert.equal(height, 6 * ROW_HEIGHT + PAD_TOP + PAD_BOTTOM);
     assert.equal(countBadges(svg).length, count ? 12 : 0);
     assert.doesNotMatch(svg, /wa-link-diamond|wa-link-joint|wa-link-secondary|wa-row-bg/);
     assert.equal((svg.match(/wa-tube-mid/g) ?? []).length, 6);
@@ -216,6 +216,29 @@ test('contributor dots grow inward toward the channel midline', () => {
   assert.ok(rightXs[1] < rightXs[0], 'right strip grows leftward (inward)');
 });
 
+test('contributor dots sit clear below gate face, halo and hit; mid diamond CSS stays luminous', () => {
+  const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
+  prepared[0].chart = chart([45, 21]);
+  prepared[1].chart = chart([45]);
+  const markers = createWaMemberMarkers(snapshot.members);
+  const svg = render(analyzeOC16(snapshot, prepared), markers);
+  const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE } = WA_DIAGRAM_GEOMETRY;
+  const faceY = Number(svg.match(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`))[1]);
+  const badge = countBadges(svg).find(row => row.gate === 45);
+  const dotY = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
+  assert.equal(dotY, faceY + NODE_R + DOT_GAP);
+  assert.ok(DOT_GAP >= 18, `DOT_GAP=${DOT_GAP} should keep dots clear of the tube`);
+  // Halo / hit bottom edges must sit above the top of contributor dots.
+  assert.ok(faceY + NODE_R + NODE_HALO_EXTRA + 1 < dotY - 4, 'halo must clear dots');
+  assert.ok(faceY + NODE_R + NODE_HIT_EXTRA + 1 < dotY - 4, 'hit ring must clear dots');
+  assert.match(svg, /wa-mid-halo/);
+  assert.match(svg, /wa-tube-mid is-filled/);
+  const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
+  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
+  assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*accent-on/);
+  assert.match(waCss, /\.wa-mid-halo\s*\{/);
+});
+
 test('left diagram contributors stay as dots even when showNames is requested', () => {
   const { snapshot, prepared, markers } = sixteen([45]);
   const svg = renderWaDiagram(OC16_DEPARTMENTS, analyzeOC16(snapshot, prepared), null, { markers, nameOf: id => `N${id}`, showNames: true });
@@ -272,6 +295,9 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-tube\s*\{/);
   assert.match(waCss, /\.wa-tube-mid\.is-hollow/);
   assert.match(waCss, /\.wa-tube-mid\.is-filled/);
+  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
+  assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*var\(--accent-on/);
+  assert.match(waCss, /\.wa-mid-halo\s*\{/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });
