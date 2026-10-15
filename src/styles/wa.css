@@ -78,6 +78,7 @@
 /* Six core channel SVG (accepted geometry; styling only) */
 .wa-figure { margin:4px 0 0; }
 .wa-core-svg { display:block; width:min(100%,420px); margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-diagram-name, .wa-diagram-sub { pointer-events:none; }
 .wa-diagram-name { fill:var(--text); font-size:13px; font-weight:600; }
 .wa-diagram-sub { fill:var(--text-secondary); font-size:11px; }
 .wa-diagram-channel, .wa-diagram-gate { cursor:pointer; outline:none; }
@@ -103,9 +104,6 @@
 .wa-figure figcaption { display:none; }
 .wa-state { display:flex; align-items:center; gap:6px; min-width:0; }
 .wa-state svg { flex:none; color:var(--accent); }
-[data-wa-selection-summary]:empty { display:none; }
-[data-wa-selection-summary] { margin-top:12px; border-top:1px solid var(--border-subtle,var(--border)); }
-
 /* Results column */
 .wa-results { display:grid; gap:16px; min-width:0; }
 .wa-results > .panel { padding:18px; }
@@ -194,7 +192,6 @@
 .wa-row-state[data-state="partial"] { color:var(--status-caution,var(--text)); background:var(--status-caution-soft,var(--bg-sunken)); }
 .wa-department-top { display:flex; align-items:center; gap:10px; }
 .wa-department-top .wa-department-head { flex:1; margin:0; grid-template-columns:auto minmax(0,1fr) auto; }
-.wa-department-open { flex:none; font-size:12px!important; }
 
 /* Configuration chips */
 .wa-member-chips { display:flex; flex-wrap:wrap; gap:5px; list-style:none; margin:0 0 6px; padding:0; }

@@ -144,9 +144,9 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       const pair = pairs.find(row => row.channelId === channelId);
       if (!pair) return '';
       const ctx = context(), record = ctx.pairs.get(channelId);
-      const records = pair.displayGates.map(gate => ctx.gates.get(gate));
-      const activations = records.every(row => Array.isArray(row?.activations)) ? records.flatMap(row => row.activations) : undefined;
-      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2><p class="wa-detail-note">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>${stateHtml(record)}${endpoints(pair, ctx)}<section><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(activations, { nameOf, markerOf })}</section>${relationships(pair, record)}${pairReading(pair)}</section>`;
+      // Flat endpoints match department rows: no bordered gate cards; activations always visible.
+      const flat = `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
+      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2><p class="wa-detail-note">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>${stateHtml(record)}${flat}${relationships(pair, record)}${pairReading(pair)}</section>`;
     },
     renderGate(input) {
       const gate = Number(input), pair = pairs.find(row => row.gates.includes(gate));
@@ -154,15 +154,6 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       const ctx = context(), record = ctx.gates.get(gate);
       const state = Array.isArray(record?.memberIds) ? record.memberIds.length ? 'active' : 'inactive' : 'unknown';
       return `<section class="wa-detail-content" data-wa-detail="gate" data-wa-detail-id="${gate}"><header>${renderGateDetailHeading(gate)}</header><p class="wa-detail-state" data-wa-gate-state="${state}">${text(`OC16 ${state}`)}</p><section><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(record?.activations, { nameOf, markerOf })}</section><section class="wa-detail-related"><h3>${text('Wa detail related')}</h3><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}">${pair.displayGates.join('–')} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</button><span> · </span><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button></section>${pairReading(pair,gate)}</section>`;
-    },
-    renderSelected(selection) {
-      if (!selection || !['gate', 'pair'].includes(selection.type)) return '';
-      const pair = selection.type === 'pair' ? pairs.find(row => row.channelId === selection.id) : pairs.find(row => row.gates.includes(Number(selection.id)));
-      if (!pair) return '';
-      const ctx = context();
-      const body = selection.type === 'gate' ? endpoint(Number(selection.id), ctx.gates.get(Number(selection.id))?.memberIds, { link: false })
-        : `<div class="wa-detail-row-heading"><strong>${pair.displayGates.join('–')}</strong>${stateHtml(ctx.pairs.get(pair.channelId))}</div>${endpoints(pair, ctx, { link: false })}`;
-      return `<div class="wa-detail-selected" data-wa-selected="${selection.type}" data-wa-selected-id="${esc(selection.id)}">${body}</div>`;
     }
   });
 }

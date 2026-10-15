@@ -86,11 +86,23 @@ async function readDetailDOM(page, type) {
     });
     const gateRecord = (gate, endpoint) => {
       const sources = activations.filter(a => a.gate === gate);
-      const members = endpoint ? [...endpoint.querySelectorAll('.wa-detail-members [data-wa-member]')]
-        : [...node.querySelectorAll('[data-wa-activation-member]')];
-      const memberIds = members.map(n => required(n,endpoint ? 'data-wa-member' : 'data-wa-activation-member'));
-      const names = members.map(n => endpoint ? n.textContent.trim() : n.querySelector('h4')?.textContent.trim());
-      return {gate,memberIds,names,activations:sources,contributorCount:members.length,activationCount:sources.length,
+      let memberIds, names;
+      if (endpoint) {
+        const chips = [...endpoint.querySelectorAll('.wa-detail-members [data-wa-member]')];
+        const activationMembers = [...endpoint.querySelectorAll('[data-wa-activation-member]')];
+        if (chips.length) {
+          memberIds = chips.map(n => required(n, 'data-wa-member'));
+          names = chips.map(n => n.textContent.trim());
+        } else {
+          memberIds = activationMembers.map(n => required(n, 'data-wa-activation-member'));
+          names = activationMembers.map(n => n.querySelector('h4')?.textContent.trim() || '');
+        }
+      } else {
+        const members = [...node.querySelectorAll('[data-wa-activation-member]')];
+        memberIds = members.map(n => required(n, 'data-wa-activation-member'));
+        names = members.map(n => n.querySelector('h4')?.textContent.trim());
+      }
+      return {gate,memberIds,names,activations:sources,contributorCount:memberIds.length,activationCount:sources.length,
         covered:endpoint ? required(endpoint,'data-wa-covered') : undefined};
     };
     if (type === 'gate') return {...gateRecord(Number(required(node,'data-wa-detail-id'))),
@@ -124,25 +136,6 @@ async function readDetailDOM(page, type) {
       complementaryMemberPairs:combinations,crossNames,contentId:required(reading,'data-wa-content-id')};
   },type);
 }
-async function readPairRows(locator) {
-  return locator.locator('[data-pair-row]').evaluateAll(rows => rows.map(row => ({
-    channelId:row.getAttribute('data-pair-row'),
-    status:row.querySelector('[data-wa-state]')?.getAttribute('data-wa-state'),
-    displayText:row.querySelector('[data-wa-pair]')?.textContent.trim(),
-    endpoints:[...row.querySelectorAll('[data-wa-endpoint]')].map(endpoint => {
-      const gate = Number(endpoint.getAttribute('data-wa-endpoint'));
-      const chipMembers = [...endpoint.querySelectorAll('.wa-detail-members [data-wa-member]')];
-      const activationMembers = [...endpoint.querySelectorAll('[data-wa-activation-member]')];
-      const members = chipMembers.length
-        ? chipMembers.map(n => ({id:n.dataset.waMember, name:n.textContent.trim()}))
-        : activationMembers.map(n => ({id:n.dataset.waActivationMember, name:n.querySelector('h4')?.textContent.trim() || ''}));
-      const sourceRows = [...row.querySelectorAll(`li[data-activation-gate="${gate}"]`)];
-      return {gate,covered:endpoint.getAttribute('data-wa-covered'),memberIds:members.map(m => m.id),names:members.map(m => m.name),
-        contributorCount:members.length,activationCount:sourceRows.length,activations:sourceRows.map(n => ({memberId:n.dataset.waMember,side:n.dataset.activationSide,
-          planet:n.dataset.activationPlanet,gate:Number(n.dataset.activationGate),line:Number(n.dataset.activationLine)}))};
-    })
-  })));
-}
 async function readInlineRows(locator) {
   return locator.locator('[data-pair-row]').evaluateAll(rows => rows.map(row => ({
     channelId:row.getAttribute('data-pair-row'),
@@ -152,7 +145,7 @@ async function readInlineRows(locator) {
       memberIds:[...endpoint.querySelectorAll('[data-wa-marker-member]')].map(n => n.dataset.waMarkerMember)}))
   })));
 }
-// Inline rows show holders only; full planetary sources are verified in the department dialog.
+// Inline rows show holders only; full planetary sources are verified in the pair/gate sheet.
 function verifyInlineRows(actual, expected, label) {
   assert.equal(actual.length,expected.length,`${label}: number of displayed pairs`);
   actual.forEach((row,i) => {
@@ -167,17 +160,6 @@ function verifyInlineRows(actual, expected, label) {
       assert.equal(endpoint.covered,String(want.memberIds.length>0),`${label}/${pair.channelId}/${want.gate}: covered`);
       assert.deepEqual(sorted(endpoint.memberIds),want.memberIds,`${label}/${pair.channelId}/${want.gate}: exact holders (no duplicates)`);
     });
-  });
-}
-function verifyRows(actual, expected, names, label) {
-  assert.equal(actual.length,expected.length,`${label}: number of displayed pairs`);
-  actual.forEach((row,i) => {
-    const pair = expected[i];
-    assert.equal(row.channelId,pair.channelId,`${label}: row canonical ID`);
-    assert.equal(row.displayText,pair.displayGates.join('–'),`${label}: display order`);
-    assert.equal(row.status,pair.status,`${label}: actual row status`);
-    assert.equal(row.endpoints.length,2);
-    row.endpoints.forEach((endpoint,j) => verifyGate(endpoint,pair.endpoints[j],names,`${label}/${pair.channelId}`));
   });
 }
 async function readPairDOM(page) { return readDetailDOM(page,'pair'); }
@@ -331,11 +313,8 @@ async function main() {
         const toggle = card.locator('[data-department-toggle]');
         if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
         verifyInlineRows(await readInlineRows(card),expected,`${label}/${department}/inline`);
-        await card.locator('[data-wa-department]').click();
-        const detail = sheet().locator('[data-wa-detail="department"]');
-        assert.equal(await detail.getAttribute('data-wa-detail-id'),department);
-        verifyRows(await readPairRows(detail),expected,data.names,`${label}/${department}/detail`);
-        await close();
+        // Department sheet entry removed: expand card → open channel/gate for deep detail.
+        assert.equal(await card.locator('[data-wa-department]').count(), 0, `${label}/${department}: no department detail button`);
       }
       for (const pair of pairs) {
         const expected = pairOracle(data.raw, ids, pair);
@@ -396,10 +375,10 @@ async function main() {
     assert.equal(await sheet().locator('[data-wa-knowledge="gate"]').evaluate(n => n.open),true,'Back preserves reading fold');
     await close();
     assert.equal(await trigger.evaluate(n => document.activeElement === n && n === window.waOriginalTrigger),true,'original gate trigger DOM preserved and restored');
-    const selection = root().locator('[data-wa-selection-summary] [data-wa-selected="gate"]');
-    assert.equal(await selection.getAttribute('data-wa-selected-id'),'45','selected gate footer follows navigation');
-    const footerNames = await selection.locator('[data-wa-endpoint="45"] .wa-detail-members [data-wa-member]').allTextContents();
-    assert.deepEqual(sorted(footerNames.map(n => n.trim())),sorted(gateOracle(data.raw,all,45).memberIds.map(id => data.names[id])),'selected footer names');
+    assert.equal(await root().locator('[data-wa-selection-summary]').count(), 0, 'selection summary panel removed');
+    const selectedGate = root().locator('.wa-core-svg .wa-diagram-gate[data-wa-gate="45"]');
+    assert.equal(await selectedGate.getAttribute('aria-pressed'), 'true', 'diagram keeps selected gate after sheet close');
+    assert.ok(await selectedGate.evaluate(n => n.classList.contains('is-selected')), 'diagram selected class follows navigation');
     assert.ok(Math.abs(await page.evaluate(() => window.scrollY)-beforeScroll) <= 2,'viewport scroll preserved');
 
     await scope(repeatedPD.group,repeatedPD.alpha);

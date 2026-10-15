@@ -95,8 +95,12 @@ test('all activation rows survive planet multiplicity, P/D and exact duplicates 
     assert.match(html, /data-wa-side="personality"/);
   }
   const pair = view.renderPair('21-45');
-  assert.equal(occurrences(pair, 'data-wa-activation-member="b"'), 1);
+  // Flat pair sheet: activations live under each gate column (b on both 21 and 45).
+  assert.equal(occurrences(pair, 'data-wa-activation-member="b"'), 2);
   assert.equal(occurrences(pair, 'class="wa-detail-activation"'), 7);
+  assert.match(pair, /wa-detail-endpoint--flat/);
+  assert.match(pair, /data-wa-gate-activations="45"/);
+  assert.doesNotMatch(pair, /<h3>[^<]*OC16 activation sources|OC16 activation sources/);
   assert.match(view.renderPairRows('management', { compact: true }), /wa-detail-compact/);
   const department = view.renderDepartment('management');
   assert.match(department, /data-wa-gate-activations="45"/);
@@ -123,7 +127,7 @@ test('scope changes use one fresh result per render and never retain prior peopl
   current = fixture({ status: 'selfComplete', left: ['a'], right: ['a'], self: ['a'], combinations: [] });
   const snapshot = JSON.stringify(current);
   const methods = [() => view.renderPair('21-45'), () => view.renderGate(45), () => view.renderDepartment('management'),
-    () => view.renderPairRows('management'), () => view.renderSelected({ type: 'pair', id: '21-45' })];
+    () => view.renderPairRows('management')];
   for (const render of methods) {
     const before = calls, html = render();
     assert.equal(calls, before + 1);
@@ -196,19 +200,19 @@ test('three languages retain exact collapsed Wa excerpts and source IDs, never p
   setLocale('en', { persist: false });
 });
 
-test('selected summary is compact, has actual holders, and creates no empty panel or duplicate open controls', () => {
+test('pair sheet endpoints are flat like department rows with always-visible activations', () => {
   const view = renderer(fixture());
-  assert.equal(view.renderSelected(null), '');
-  assert.equal(view.renderSelected({ type: 'department', id: 'management' }), '');
-  assert.equal(view.renderSelected({ type: 'pair', id: 'invalid' }), '');
-  const pair = view.renderSelected({ type: 'pair', id: '21-45' });
+  const pair = view.renderPair('21-45');
   assert.equal(occurrences(pair, 'data-wa-endpoint='), 2);
-  assert.match(endpoint(pair, 45), /Fictional B.*Fictional C/);
-  assert.doesNotMatch(endpoint(pair, 45), /Fictional A/);
-  const gate = view.renderSelected({ type: 'gate', id: '45' });
-  assert.equal(occurrences(gate, 'data-wa-endpoint='), 1);
-  assert.match(gate, /Fictional B.*Fictional C/);
-  for (const html of [pair, gate]) assert.doesNotMatch(html, /<button|<details|data-wa-knowledge|class="panel"/);
+  assert.equal(occurrences(pair, 'wa-detail-endpoint--flat'), 2);
+  assert.match(pair, /data-wa-gate-activations="45"/);
+  assert.match(pair, /data-wa-gate-activations="21"/);
+  const gate45 = pair.split('data-wa-gate-activations="45"')[1].split('data-wa-gate-activations="21"')[0];
+  assert.match(gate45, /data-wa-activation-member="b"/);
+  assert.match(gate45, /data-wa-activation-member="c"/);
+  assert.doesNotMatch(gate45, /data-wa-activation-member="a"/);
+  assert.doesNotMatch(pair, /OC16 activation sources/);
+  assert.ok(!view.renderSelected);
 });
 
 test('styles keep birth overrides and accessible text tokens scoped, with desktop/phone grids', () => {
