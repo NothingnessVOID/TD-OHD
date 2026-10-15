@@ -13,19 +13,27 @@ export function waStateSymbol(state, size = 22) {
 /** Fixed compact board: six tube rows between gate nodes.
  * State is carried by the tube fill; a small mid diamond marks full connection. */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
-  VIEW_WIDTH: 380, ROW_HEIGHT: 84, LEFT_GATE: 186, RIGHT_GATE: 344,
-  NODE_R: 15, TUBE_H: 8, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
-  MID_R: 4.5, PAD_TOP: 4, PILLAR_RING_R: 20.5
+  VIEW_WIDTH: 380, ROW_HEIGHT: 94, LEFT_GATE: 186, RIGHT_GATE: 344,
+  NODE_R: 15, TUBE_H: 8.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
+  MID_R: 4.75, PAD_TOP: 6, PAD_BOTTOM: 14, PILLAR_RING_R: 20.5,
+  /** Clearance from node face edge down to contributor-dot centers. */
+  DOT_GAP: 24,
+  NODE_HALO_EXTRA: 2.5,
+  NODE_HIT_EXTRA: 5,
+  LINK_HIT_HALF: 10
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
 const fmt = n => Math.round(n * 10) / 10;
 
-/** Midpoint mark: hollow when not fully connected; solid (with CSS halo) when both ends are active. */
+/** Midpoint mark: hollow when not fully connected; solid + soft halo when both ends are active.
+ * Fill stays luminous on every skin (never --accent-on, which is dark on several dark skins). */
 function renderMidMark(fill, mid, y) {
   const r = G.MID_R;
   const filled = fill === 'full';
-  return `<path class="wa-tube-mid ${filled ? 'is-filled' : 'is-hollow'}" d="M${fmt(mid)} ${fmt(y - r)}l${r} ${r}-${r} ${r}-${r}-${r}z" aria-hidden="true"/>`;
+  const diamond = `<path class="wa-tube-mid ${filled ? 'is-filled' : 'is-hollow'}" d="M${fmt(mid)} ${fmt(y - r)}l${r} ${r}-${r} ${r}-${r}-${r}z" aria-hidden="true"/>`;
+  if (!filled) return diamond;
+  return `<circle class="wa-mid-halo" cx="${fmt(mid)}" cy="${fmt(y)}" r="${fmt(r + 3.2)}" aria-hidden="true"/>${diamond}`;
 }
 
 /** Contributor strip under a gate: coloured dots only. Grow inward toward the channel midline. */
@@ -34,7 +42,7 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   const count = records.length;
   const names = records.map(record => `${nameOf(record.memberId) ?? record.memberId} · ${record.number}`).join(' · ');
   const label = esc(t('Wa UI gate member count', { count }));
-  const cy = y + G.NODE_R + 11;
+  const cy = y + G.NODE_R + G.DOT_GAP;
   const shown = records.slice(0, G.MAX_DOTS);
   const rest = count - shown.length;
   // Inward: left gate grows right, right gate grows left.
@@ -67,7 +75,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     const display = pair.displayGates || pair.gates;
     const endpointMarkers = display.map(gate => [...new Set(gateRecords.get(gate)?.memberIds ?? [])]
       .map(id => markers?.get(id)).filter(Boolean).sort((a, b) => a.number - b.number));
-    const y = top + G.ROW_HEIGHT / 2 + 4;
+    const y = top + G.ROW_HEIGHT / 2 + 2;
     top += G.ROW_HEIGHT;
     const isSelected = selected?.type === 'pair' && selected.id === pair.channelId || selected?.type === 'department' && selected.id === department.id;
     const count = known ? measured?.contributorCount ?? 0 : '—';
@@ -93,11 +101,14 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const pillarMark = pillar
         ? `<circle class="wa-pillar-ring" cx="${x}" cy="${fmt(y)}" r="${G.PILLAR_RING_R}"/>`
         : '';
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 7}"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 4}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      const haloR = G.NODE_R + G.NODE_HALO_EXTRA;
+      const hitR = G.NODE_R + G.NODE_HIT_EXTRA;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${hitR}"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept name stays calm.
-    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}" data-fill="${fill}"><text class="wa-diagram-name" x="14" y="${fmt(y - 3)}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" data-fill="${fill}" x="14" y="${fmt(y + 14)}">${esc(t(`Wa UI line ${state}`))}</text><g class="wa-diagram-channel ${isSelected?'is-selected':''}" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${x0}" y="${fmt(y - 16)}" width="${w}" height="32" rx="10"/><rect class="wa-tube" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}"/>${tubeFill}${renderMidMark(fill, mid, y)}</g>${endpoints}</g>`;
+    const hitHalf = G.LINK_HIT_HALF;
+    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}" data-fill="${fill}"><text class="wa-diagram-name" x="14" y="${fmt(y - 3)}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" data-fill="${fill}" x="14" y="${fmt(y + 14)}">${esc(t(`Wa UI line ${state}`))}</text><g class="wa-diagram-channel ${isSelected?'is-selected':''}" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${x0}" y="${fmt(y - hitHalf)}" width="${w}" height="${hitHalf * 2}" rx="9"/><rect class="wa-tube" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}"/>${tubeFill}${renderMidMark(fill, mid, y)}</g>${endpoints}</g>`;
   }).join('');
-  const height = top + G.PAD_TOP;
+  const height = top + G.PAD_BOTTOM;
   return `<svg class="wa-core-svg" viewBox="0 0 ${G.VIEW_WIDTH} ${height}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${defs.length?`<defs>${defs.join('')}</defs>`:''}${rows}</svg>`;
 }
