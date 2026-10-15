@@ -222,21 +222,28 @@ test('contributor dots sit clear below gate face, halo and hit; mid diamond CSS 
   prepared[1].chart = chart([45]);
   const markers = createWaMemberMarkers(snapshot.members);
   const svg = render(analyzeOC16(snapshot, prepared), markers);
-  const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE } = WA_DIAGRAM_GEOMETRY;
+  const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE, PILLAR_RING_R } = WA_DIAGRAM_GEOMETRY;
   const faceY = Number(svg.match(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`))[1]);
   const badge = countBadges(svg).find(row => row.gate === 45);
   const dotY = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
   assert.equal(dotY, faceY + NODE_R + DOT_GAP);
-  assert.ok(DOT_GAP >= 18, `DOT_GAP=${DOT_GAP} should keep dots clear of the tube`);
-  // Halo / hit bottom edges must sit above the top of contributor dots.
+  assert.ok(DOT_GAP >= 24, `DOT_GAP=${DOT_GAP} should keep dots clear of hover/focus frames`);
+  // Halo / hit / focus-ring bottoms must sit above the top of contributor dots.
   assert.ok(faceY + NODE_R + NODE_HALO_EXTRA + 1 < dotY - 4, 'halo must clear dots');
   assert.ok(faceY + NODE_R + NODE_HIT_EXTRA + 1 < dotY - 4, 'hit ring must clear dots');
+  assert.ok(faceY + PILLAR_RING_R + 3.25 + 1 < dotY - 4, 'pillar focus ring must clear dots');
   assert.match(svg, /wa-mid-halo/);
   assert.match(svg, /wa-tube-mid is-filled/);
+  assert.match(svg, /class="wa-node-focus-ring"/);
+  assert.equal((svg.match(/class="wa-node-focus-ring"/g) ?? []).length, 12);
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
   assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
   assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*accent-on/);
   assert.match(waCss, /\.wa-mid-halo\s*\{/);
+  assert.match(waCss, /\.wa-node-focus-ring\s*\{/);
+  assert.match(waCss, /\.wa-diagram-gate:hover \.wa-node-focus-ring/);
+  assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
+  assert.doesNotMatch(waCss, /\.wa-diagram-row:hover \.wa-row-bg|\.wa-row-bg\s*\{/);
 });
 
 test('left diagram contributors stay as dots even when showNames is requested', () => {
@@ -298,6 +305,9 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
   assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*var\(--accent-on/);
   assert.match(waCss, /\.wa-mid-halo\s*\{/);
+  assert.match(waCss, /\.wa-node-focus-ring\s*\{/);
+  assert.match(waCss, /\.wa-diagram-gate:hover \.wa-node-focus-ring/);
+  assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });

@@ -105,17 +105,36 @@
   filter:drop-shadow(0 0 2.6px color-mix(in srgb, var(--accent) 65%, #fff)) drop-shadow(0 0 1.1px rgba(255,255,255,.95));
 }
 .wa-diagram-channel[data-state="hanging"] .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.5; }
-/* Hover / selection: channel graphic only; hit/halo kept tight so they clear contributor dots. */
+/* Hover / selection: channel + gate frames only — never wash the dept-name text. */
+.wa-diagram-channel:hover .wa-link-hit, .wa-diagram-channel:focus-visible .wa-link-hit,
+.wa-diagram-channel.is-selected .wa-link-hit {
+  fill:color-mix(in srgb, var(--accent) 12%, transparent);
+  stroke:color-mix(in srgb, var(--accent) 72%, transparent);
+  stroke-width:1.45;
+}
+.wa-diagram-channel.is-selected .wa-link-hit {
+  fill:color-mix(in srgb, var(--accent) 16%, transparent);
+  stroke:var(--accent);
+  stroke-width:1.7;
+}
 .wa-diagram-channel:hover .wa-tube, .wa-diagram-channel:focus-visible .wa-tube,
-.wa-diagram-channel.is-selected .wa-tube { stroke:var(--accent); stroke-width:1.55; filter:drop-shadow(0 0 2px color-mix(in srgb, var(--accent) 40%, transparent)); }
+.wa-diagram-channel.is-selected .wa-tube {
+  stroke:var(--accent);
+  stroke-width:1.85;
+  filter:drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 55%, transparent));
+}
 .wa-diagram-channel:hover .wa-tube-fill:not(.is-partial), .wa-diagram-channel:focus-visible .wa-tube-fill:not(.is-partial),
-.wa-diagram-channel.is-selected .wa-tube-fill:not(.is-partial) { filter:drop-shadow(0 0 3.2px color-mix(in srgb, var(--accent) 70%, transparent)); }
-.wa-diagram-channel:hover .wa-tube-mid.is-hollow, .wa-diagram-channel:focus-visible .wa-tube-mid.is-hollow { stroke:var(--accent); }
+.wa-diagram-channel.is-selected .wa-tube-fill:not(.is-partial) {
+  filter:drop-shadow(0 0 4.2px color-mix(in srgb, var(--accent) 78%, transparent));
+}
+.wa-diagram-channel:hover .wa-tube-mid.is-hollow, .wa-diagram-channel:focus-visible .wa-tube-mid.is-hollow,
+.wa-diagram-channel.is-selected .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.85; }
 .wa-diagram-channel:hover .wa-tube-mid.is-filled, .wa-diagram-channel:focus-visible .wa-tube-mid.is-filled,
-.wa-diagram-channel.is-selected .wa-tube-mid.is-filled { filter:drop-shadow(0 0 3.4px color-mix(in srgb, var(--accent) 75%, #fff)) drop-shadow(0 0 1.4px rgba(255,255,255,1)); }
+.wa-diagram-channel.is-selected .wa-tube-mid.is-filled {
+  filter:drop-shadow(0 0 4.2px color-mix(in srgb, var(--accent) 80%, #fff)) drop-shadow(0 0 1.8px rgba(255,255,255,1));
+}
 .wa-diagram-channel:hover .wa-mid-halo, .wa-diagram-channel:focus-visible .wa-mid-halo,
-.wa-diagram-channel.is-selected .wa-mid-halo { fill-opacity:.5; }
-.wa-diagram-channel:focus-visible .wa-link-hit, .wa-diagram-channel.is-selected .wa-link-hit { stroke:var(--focus,var(--accent)); stroke-width:1.35; stroke-dasharray:3 3; }
+.wa-diagram-channel.is-selected .wa-mid-halo { fill-opacity:.62; }
 /* Gate nodes: hollow when inactive, solid accent when covered. */
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.5; transition:stroke .15s ease, stroke-width .15s ease, filter .15s ease; }
 .wa-diagram-gate[data-covered="false"] .wa-node-face, .wa-diagram-gate[data-covered="unknown"] .wa-node-face { stroke-dasharray:2.5 2.5; }
@@ -123,16 +142,36 @@
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); filter:drop-shadow(0 0 1.4px color-mix(in srgb, var(--accent) 40%, transparent)); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on,#fff); }
 .wa-node-halo { fill:var(--accent); fill-opacity:.12; pointer-events:none; }
-/* Four-pillar calibration: accent ring around the node. */
+/* Dedicated outer focus frame — idle invisible; hover/selected obviously framed (distinct from pillar ring). */
+.wa-node-focus-ring {
+  fill:transparent;
+  stroke:transparent;
+  stroke-width:2.35;
+  pointer-events:none;
+  transition:stroke .14s ease, stroke-width .14s ease, fill .14s ease, filter .14s ease;
+}
+.wa-diagram-gate:hover .wa-node-focus-ring, .wa-diagram-gate:focus-visible .wa-node-focus-ring {
+  stroke:var(--accent);
+  stroke-width:2.45;
+  fill:color-mix(in srgb, var(--accent) 14%, transparent);
+  filter:drop-shadow(0 0 2.8px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+.wa-diagram-gate.is-selected .wa-node-focus-ring {
+  stroke:var(--accent);
+  stroke-width:2.85;
+  fill:color-mix(in srgb, var(--accent) 20%, transparent);
+  filter:drop-shadow(0 0 3.4px color-mix(in srgb, var(--accent) 65%, transparent));
+}
+/* Four-pillar calibration: accent ring around the node (always on; not the hover frame). */
 .wa-pillar-ring { fill:none; stroke:var(--accent); stroke-width:1.7; pointer-events:none; opacity:.92; }
 .wa-diagram-gate.is-pillar.is-covered .wa-pillar-ring { opacity:1; stroke-width:1.85; }
 .wa-diagram-gate.is-pillar[data-covered="false"] .wa-pillar-ring,
 .wa-diagram-gate.is-pillar[data-covered="unknown"] .wa-pillar-ring { opacity:.72; }
 .wa-node-pillar { fill:var(--accent-strong,var(--accent)); font-size:9px; letter-spacing:.06em; font-weight:600; pointer-events:none; }
-.wa-diagram-gate:hover .wa-node-face { stroke:var(--accent); stroke-width:2; }
-.wa-diagram-gate.is-covered:hover .wa-node-face { filter:drop-shadow(0 0 2.2px color-mix(in srgb, var(--accent) 50%, transparent)); }
-.wa-diagram-gate:focus-visible .wa-node-hit, .wa-diagram-gate.is-selected .wa-node-hit { stroke:var(--focus,var(--accent)); stroke-width:1.75; }
-.wa-diagram-gate.is-selected .wa-node-face { stroke:var(--accent); stroke-width:2.15; }
+.wa-diagram-gate:hover .wa-node-face { stroke:var(--accent); stroke-width:2.05; }
+.wa-diagram-gate.is-covered:hover .wa-node-face { filter:drop-shadow(0 0 2.8px color-mix(in srgb, var(--accent) 58%, transparent)); }
+.wa-diagram-gate.is-selected .wa-node-face { stroke:var(--accent); stroke-width:2.25; }
+.wa-diagram-gate.is-covered.is-selected .wa-node-face { filter:drop-shadow(0 0 3.2px color-mix(in srgb, var(--accent) 68%, transparent)); }
 /* Contributors: member-colour dots under each gate (names never shown here). Clear of hit/halo. */
 .wa-gate-count { pointer-events:none; }
 .wa-gate-dot { fill:var(--wa-member-color); stroke:var(--team-member-border,transparent); stroke-width:.5; }
