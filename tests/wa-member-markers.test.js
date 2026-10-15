@@ -77,7 +77,7 @@ test('pool retention preserves numbers through group moves, Alpha replacement an
   assert.deepEqual(createWaMemberMarkers(reselected.members), before);
 });
 
-test('each covered gate shows one contributor strip for distinct members; no per-person markers on the line', () => {
+test('each covered gate shows one count badge for distinct members; no per-person dots on the line', () => {
   const { snapshot, prepared, markers } = sixteen();
   const result = analyzeOC16(snapshot, prepared);
   const record = result.gateRecords.find(row => row.gate === 45);
@@ -87,8 +87,8 @@ test('each covered gate shows one contributor strip for distinct members; no per
   assert.equal(badges.length, 1);
   assert.equal(badges[0].gate, 45);
   assert.equal(badges[0].count, 16);
-  assert.match(svg, /Participants: 16</);
-  assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary|wa-link-joint|wa-tube/);
+  assert.match(svg, /Participants: 16"/);
+  assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary/);
   assert.equal((svg.match(/role="button"/g) ?? []).length, 18);
   assert.match(svg, /data-wa-gate="45"[^>]*data-wa-members="/);
   assert.match(svg, /data-wa-members="m00 m01 m02 m03 m04 m05 m06 m07 m08 m09 m10 m11 m12 m13 m14 m15"/);
@@ -108,8 +108,8 @@ test('per-gate attribution does not borrow pair or department contributors and c
   const result = analyzeOC16(snapshot, prepared);
   const svg = render(result, createWaMemberMarkers(snapshot.members));
   assert.deepEqual(countBadges(svg).map(({ gate, count }) => [gate, count]), [[45, 1], [21, 1]]);
-  assert.match(svg, /Participants: 2</);
-  assert.doesNotMatch(svg, /Participants: 3</);
+  assert.match(svg, /Participants: 2"/);
+  assert.doesNotMatch(svg, /Participants: 3"/);
 });
 
 test('unknown results suppress stale badges, positive activation and false zero counts; known empty stays empty', () => {
@@ -131,18 +131,19 @@ test('unknown results suppress stale badges, positive activation and false zero 
   assert.match(svg, /No member active/);
 });
 
-test('fixed board keeps constant height; contributor dots stay inside the board without growing rows', () => {
+test('fixed board keeps constant height; contributor strips stay inside the board without growing rows', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
-  const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_BOTTOM, MAX_DOTS } = WA_DIAGRAM_GEOMETRY;
+  const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_TOP, MAX_DOTS } = WA_DIAGRAM_GEOMETRY;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
     assert.equal(width, VIEW_WIDTH);
-    assert.equal(height, 6 * ROW_HEIGHT + PAD_BOTTOM);
+    assert.equal(height, 6 * ROW_HEIGHT + 2 * PAD_TOP);
     assert.equal(countBadges(svg).length, count ? 12 : 0);
-    assert.doesNotMatch(svg, /wa-link-joint|wa-link-secondary|wa-tube|wa-row-bg/);
+    assert.doesNotMatch(svg, /wa-link-diamond|wa-link-joint|wa-link-secondary|wa-row-bg/);
+    assert.equal((svg.match(/wa-tube-mid/g) ?? []).length, 6);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
       assert.ok(x - r >= -2 && x + r <= width + 2, `circle x=${x}, r=${r}`);
@@ -159,45 +160,39 @@ test('fixed board keeps constant height; contributor dots stay inside the board 
   }
 });
 
-test('single-line channel uses half coverage with hollow→solid midpoint diamond', () => {
+test('channel tube encodes state by fill: full when defined, gradient from the active side when half, empty when open', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
   const markers = createWaMemberMarkers(snapshot.members);
-  const { LEFT_GATE, RIGHT_GATE } = WA_DIAGRAM_GEOMETRY;
-  const mid = (LEFT_GATE + RIGHT_GATE) / 2;
+  const rowFill = (svg, department) => svg.match(new RegExp(`data-department="${department}" data-fill="(\\w+)"`))[1];
   prepared[0].chart = chart([45, 21]);
   prepared[1].chart = chart([50]);
   prepared[2].chart = chart([6]);
   const selfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(selfSvg, /data-state="selfComplete"/);
-  assert.match(selfSvg, /wa-link-base/);
-  const mgmtSelf = selfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0];
-  assert.equal((mgmtSelf.match(/wa-link-half is-covered/g) ?? []).length, 2);
-  assert.match(mgmtSelf, /wa-link-diamond is-filled/);
-  assert.doesNotMatch(selfSvg, /wa-link-joint|wa-tube|wa-row-bg/);
-  assert.equal((selfSvg.match(/wa-link-diamond/g) ?? []).length, 6);
+  assert.equal(rowFill(selfSvg, 'management'), 'full');
+  assert.equal(rowFill(selfSvg, 'competition'), 'none');
+  assert.match(selfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-filled/);
+  assert.match(selfSvg.match(/data-department="competition"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-hollow/);
+  assert.doesNotMatch(selfSvg, /wa-link-diamond|wa-link-joint|wa-row-bg/);
+  assert.equal((selfSvg.match(/wa-tube-mid/g) ?? []).length, 6);
 
   prepared[0].chart = chart([45]);
   prepared[1].chart = chart([21]);
   const crossSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(crossSvg, /data-state="crossMemberOnly"/);
-  assert.equal((crossSvg.match(/data-department="management"[\s\S]*?wa-link-half is-covered[\s\S]*?wa-link-half is-covered/) ?? []).length, 1);
-  assert.match(crossSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-link-diamond is-filled/);
+  assert.equal(rowFill(crossSvg, 'management'), 'full');
+  assert.match(crossSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-filled/);
 
   prepared[1].chart = chart([50]);
   const halfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(halfSvg, /data-state="hanging"/);
-  // Only the left half of management should be covered (gate 45); diamond stays hollow.
-  const mgmt = halfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0];
-  assert.match(mgmt, /wa-link-half is-covered/);
-  assert.equal((mgmt.match(/wa-link-half is-covered/g) ?? []).length, 1);
-  assert.match(mgmt, /wa-link-diamond is-hollow/);
-  assert.doesNotMatch(mgmt, /wa-link-diamond is-filled/);
+  assert.equal(rowFill(halfSvg, 'management'), 'left');
+  assert.match(halfSvg, /<linearGradient id="wa-tube-21-45"/);
+  assert.match(halfSvg, /class="wa-tube-fill is-partial"[^>]*fill="url\(#wa-tube-21-45\)"/);
+  assert.match(halfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-hollow/);
 
-  // Absent channels are hollow; diamond stays centered on the channel midline.
-  const absent = halfSvg.match(/data-department="competition"[\s\S]*?(?=data-department="|$)/)[0];
-  assert.match(absent, /data-state="absent"/);
-  assert.match(absent, /wa-link-diamond is-hollow/);
-  assert.match(absent, new RegExp(`wa-link-diamond[^>]*d="M${mid} `));
+  const unknownSvg = render(null, markers);
+  assert.doesNotMatch(unknownSvg, /wa-tube-fill|<defs/);
 });
 
 test('contributor dots grow inward toward the channel midline', () => {
@@ -227,9 +222,8 @@ test('left diagram contributors stay as dots even when showNames is requested', 
   const [badge] = countBadges(svg);
   assert.match(badge.body, /wa-gate-dot/);
   assert.doesNotMatch(badge.body, /wa-gate-names|<text class="wa-gate-name"/);
-  // Visible markers are dots + overflow count only; names live in <title> for hover.
   assert.doesNotMatch(badge.body.replace(/<title>[\s\S]*?<\/title>/, ''), /Nm\d+/);
-  assert.match(badge.body, /\+11|\+15/);
+  assert.match(badge.body, /\+11|\+15/); // overflow marker, never a name string
   assert.match(svg, /class="wa-pillar-ring"/);
   assert.equal((svg.match(/class="wa-pillar-ring"/g) ?? []).length, 4);
 });
@@ -275,11 +269,9 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.ok(css.includes('var(--team-member-on)'));
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
   assert.match(waCss, /\.wa-gate-count\s*\{[^}]*pointer-events:\s*none/);
-  assert.match(waCss, /\.wa-link-half/);
-  assert.match(waCss, /\.wa-link-base\s*\{[^}]*stroke-width:\s*8/);
-  assert.match(waCss, /\.wa-link-half\s*\{[^}]*stroke-width:\s*5\.5/);
-  assert.match(waCss, /\.wa-link-diamond\.is-hollow/);
-  assert.match(waCss, /\.wa-link-diamond\.is-filled/);
-  assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-tube\s*\{|\.wa-link-joint\s*\{/);
+  assert.match(waCss, /\.wa-tube\s*\{/);
+  assert.match(waCss, /\.wa-tube-mid\.is-hollow/);
+  assert.match(waCss, /\.wa-tube-mid\.is-filled/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
+  assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });

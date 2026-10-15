@@ -10,29 +10,31 @@ export function waStateSymbol(state, size = 22) {
   return renderPentaStateSymbol(state, {size});
 }
 
-/** Single-line board: thicker channel + hollow→solid midpoint diamond; contributor dots grow inward. */
+/** Fixed compact board: six tube rows between gate nodes.
+ * State is carried by the tube fill; a small mid diamond marks full connection. */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
-  VIEW_WIDTH: 380, ROW_HEIGHT: 98, LEFT_GATE: 186, RIGHT_GATE: 318,
-  NODE_R: 20, HIT_R: 30, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5, DIAMOND_R: 5.5, PAD_BOTTOM: 6
+  VIEW_WIDTH: 380, ROW_HEIGHT: 84, LEFT_GATE: 186, RIGHT_GATE: 344,
+  NODE_R: 15, TUBE_H: 8, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
+  MID_R: 4.5, PAD_TOP: 4, PILLAR_RING_R: 20.5
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
 const fmt = n => Math.round(n * 10) / 10;
 
-/** Midpoint diamond: hollow until both gates are active, then solid. One rule only. */
-function renderMidpointGlyph(state, mid, y) {
-  const r = G.DIAMOND_R;
-  const filled = DEFINED.has(state);
-  return `<path class="wa-link-diamond ${filled ? 'is-filled' : 'is-hollow'}" d="M${fmt(mid)} ${fmt(y - r)}l${r} ${r}-${r} ${r}-${r}-${r}z" aria-hidden="true"/>`;
+/** Midpoint mark: hollow when not fully connected; solid (with CSS halo) when both ends are active. */
+function renderMidMark(fill, mid, y) {
+  const r = G.MID_R;
+  const filled = fill === 'full';
+  return `<path class="wa-tube-mid ${filled ? 'is-filled' : 'is-hollow'}" d="M${fmt(mid)} ${fmt(y - r)}l${r} ${r}-${r} ${r}-${r}-${r}z" aria-hidden="true"/>`;
 }
 
-/** Contributor strip under a gate: coloured dots only. First under the gate, then grow toward the channel midline. */
-function renderGateContributors(gate, records, gateX, gateY, nameOf, sideIndex) {
+/** Contributor strip under a gate: coloured dots only. Grow inward toward the channel midline. */
+function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   if (!records.length) return '';
   const count = records.length;
   const names = records.map(record => `${nameOf(record.memberId) ?? record.memberId} · ${record.number}`).join(' · ');
   const label = esc(t('Wa UI gate member count', { count }));
-  const cy = gateY + G.NODE_R + 11;
+  const cy = y + G.NODE_R + 11;
   const shown = records.slice(0, G.MAX_DOTS);
   const rest = count - shown.length;
   // Inward: left gate grows right, right gate grows left.
@@ -56,7 +58,8 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
   const known = ['ready', 'empty'].includes(result?.status);
   const gateRecords = new Map((known ? result.gateRecords ?? [] : []).map(row => [row.gate, row]));
   const active = gate => Boolean(gateRecords.get(gate)?.memberIds?.length);
-  let top = 0;
+  let top = G.PAD_TOP;
+  const defs = [];
   const rows = departments.map(department => {
     const pair = department.pairs.find(pair => pair.role === 'core');
     const measured = result?.pairs?.find(row => row.channelId === pair.channelId);
@@ -64,25 +67,37 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     const display = pair.displayGates || pair.gates;
     const endpointMarkers = display.map(gate => [...new Set(gateRecords.get(gate)?.memberIds ?? [])]
       .map(id => markers?.get(id)).filter(Boolean).sort((a, b) => a.number - b.number));
-    const y = top + G.ROW_HEIGHT / 2;
+    const y = top + G.ROW_HEIGHT / 2 + 4;
     top += G.ROW_HEIGHT;
     const isSelected = selected?.type === 'pair' && selected.id === pair.channelId || selected?.type === 'department' && selected.id === department.id;
     const count = known ? measured?.contributorCount ?? 0 : '—';
-    const label = `${t(`OC16 ${department.id}`)} · ${display.join('–')} · ${waStateText(state)} · ${t('Wa UI participants count', { count })}`;
-    const mid = (G.LEFT_GATE + G.RIGHT_GATE) / 2;
+    const fill = !known ? 'none' : DEFINED.has(state) ? 'full' : active(display[0]) ? 'left' : active(display[1]) ? 'right' : 'none';
+    const label = `${t(`OC16 ${department.id}`)} · ${display.join('–')} · ${t(`Wa UI line ${state}`)} · ${t('Wa UI participants count', { count })}`;
+    const x0 = G.LEFT_GATE + G.NODE_R - 2, x1 = G.RIGHT_GATE - G.NODE_R + 2, w = x1 - x0, h = G.TUBE_H;
+    const mid = (x0 + x1) / 2;
+    const gid = `wa-tube-${String(pair.channelId).replace(/[^\w-]/g, '')}`;
+    let tubeFill = '';
+    if (fill === 'full') tubeFill = `<rect class="wa-tube-fill" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}"/>`;
+    else if (fill !== 'none') {
+      const fromLeft = fill === 'left';
+      defs.push(`<linearGradient id="${gid}" x1="${fromLeft ? 0 : 1}" y1="0" x2="${fromLeft ? 1 : 0}" y2="0"><stop offset="0" style="stop-color:var(--accent);stop-opacity:1"/><stop offset=".42" style="stop-color:var(--accent);stop-opacity:.85"/><stop offset=".72" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient>`);
+      tubeFill = `<rect class="wa-tube-fill is-partial" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}" fill="url(#${gid})"/>`;
+    }
     const endpoints = display.map((gate, sideIndex) => {
       const x = sideIndex ? G.RIGHT_GATE : G.LEFT_GATE;
       const covered = active(gate), pillar = WA_PILLAR_LABELS[gate];
       const focused = selected?.type === 'gate' && selected.id === gate;
       const activationLabel = known ? t(covered ? 'Wa UI gate active' : 'Wa UI gate inactive') : waStateText('unknown');
       const records = endpointMarkers[sideIndex];
-      const membersAttr = records.length
-        ? ` data-wa-members="${esc(records.map(record => record.memberId).join(' '))}"`
+      const membersAttr = records.length ? ` data-wa-members="${esc(records.map(record => record.memberId).join(' '))}"` : '';
+      const pillarMark = pillar
+        ? `<circle class="wa-pillar-ring" cx="${x}" cy="${fmt(y)}" r="${G.PILLAR_RING_R}"/>`
         : '';
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${y}" r="${G.HIT_R}"/>${pillar?`<circle class="wa-pillar-ring" cx="${x}" cy="${y}" r="${G.NODE_R + 5}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${y}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${y + 6}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${y - G.NODE_R - 11}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 7}"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 4}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
-    // Department name sits outside the channel hit target so clicking「管理」does not open the pair sheet.
-    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}"><text class="wa-diagram-name" x="12" y="${y - 4}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" x="12" y="${y + 13}">${esc(t('Wa UI participants count', { count }))}</text><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${G.LEFT_GATE - 30}" y="${y - 31}" width="${G.RIGHT_GATE - G.LEFT_GATE + 60}" height="62" rx="16"/><path class="wa-link-base" d="M${G.LEFT_GATE} ${y}H${G.RIGHT_GATE}"/><path class="wa-link-half ${active(display[0])?'is-covered':''}" d="M${G.LEFT_GATE} ${y}H${mid}"/><path class="wa-link-half ${active(display[1])?'is-covered':''}" d="M${mid} ${y}H${G.RIGHT_GATE}"/>${renderMidpointGlyph(state, mid, y)}</g>${endpoints}</g>`;
+    // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept name stays calm.
+    return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}" data-fill="${fill}"><text class="wa-diagram-name" x="14" y="${fmt(y - 3)}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" data-fill="${fill}" x="14" y="${fmt(y + 14)}">${esc(t(`Wa UI line ${state}`))}</text><g class="wa-diagram-channel ${isSelected?'is-selected':''}" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${x0}" y="${fmt(y - 16)}" width="${w}" height="32" rx="10"/><rect class="wa-tube" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}"/>${tubeFill}${renderMidMark(fill, mid, y)}</g>${endpoints}</g>`;
   }).join('');
-  return `<svg class="wa-core-svg" viewBox="0 0 ${G.VIEW_WIDTH} ${top + G.PAD_BOTTOM}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${rows}</svg>`;
+  const height = top + G.PAD_TOP;
+  return `<svg class="wa-core-svg" viewBox="0 0 ${G.VIEW_WIDTH} ${height}" role="group" aria-label="${esc(t('OC16 graph title'))}"><title>${esc(t('OC16 graph title'))}</title>${defs.length?`<defs>${defs.join('')}</defs>`:''}${rows}</svg>`;
 }
