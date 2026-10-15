@@ -32,11 +32,14 @@ const endpoint = (html, gate) => html.split(`data-wa-endpoint="${gate}"`)[1]?.sp
 
 test('native disclosure summaries participate in the existing public dialog focus trap', () => {
   const details = renderer(fixture());
-  for (const html of [details.renderGate(45), details.renderPair('21-45'), details.renderDepartment('management')]) {
+  // Gate and support-channel sheets jump to department reading; only department + core channel keep folds.
+  for (const html of [details.renderPair('21-45'), details.renderDepartment('management')]) {
     const summaries = [...html.matchAll(/<summary\b[^>]*>/g)].map(match => match[0]);
     assert.ok(summaries.length > 0);
     for (const summary of summaries) assert.match(summary, /tabindex="0"/);
   }
+  assert.doesNotMatch(details.renderGate(45), /<summary\b/);
+  assert.doesNotMatch(details.renderPair('32-54'), /<summary\b/);
 });
 
 for (const [status, left, right, self, combinations] of [
@@ -163,7 +166,7 @@ test('department counts are consumed, core precedes support, no trailing blanket
   assert.match(html, /data-wa-knowledge="wa-department" data-wa-content-id="21-45"/);
 });
 
-test('three languages retain exact collapsed Wa excerpts and source IDs, never personal channel/gate prose', () => {
+test('three languages retain exact Wa excerpts on core sheets and jump cards for department reading', () => {
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const view = renderer(fixture());
@@ -177,17 +180,23 @@ test('three languages retain exact collapsed Wa excerpts and source IDs, never p
     assert.ok(core.includes(renderProse({ content: entry.summary })));
     assert.ok(core.includes(renderProse({ content: excerpt.detail })));
     assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
-    assert.match(support, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54">/);
-    assert.doesNotMatch(support, /<details[^>]*\bopen(?:\s|>|=)/);
-    assert.ok(support.includes(renderProse({content:excerpt.detail})));
-    assert.ok(support.includes(`data-wa-reading-id="${entry.id}"`));
+    // Support/gate: department Wa reading is a jump card, not a nested accordion with prose.
+    assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54"/);
+    assert.doesNotMatch(support, /<details\b/);
+    assert.ok(!support.includes(renderProse({content:excerpt.detail})));
+    assert.ok(support.includes(t('Wa UI department reading')));
+    assert.ok(support.includes(t('Wa jump open department')));
     assert.ok(gate.includes(renderGateDetailHeading(45)));
-    assert.ok(gate.includes(renderProse({content:excerpt.detail})));
-    assert.match(gate, /<details class="wa-detail-fold" data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="gate:45">/);
-    assert.doesNotMatch(gate, /<details[^>]*\bopen(?:\s|>|=)/);
+    assert.doesNotMatch(gate, /<details\b/);
+    assert.ok(!gate.includes(renderProse({content:excerpt.detail})));
+    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
+    assert.match(gate, /data-wa-pair="21-45"/);
     assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
     assert.ok(gate.indexOf('wa-detail-related') < gate.indexOf('data-wa-knowledge'));
+    assert.match(core, /data-wa-related-jumps/);
+    assert.match(core, /data-wa-gate="45"/);
+    assert.match(core, /data-wa-gate="21"/);
     for (const html of [core,support,gate]) assert.doesNotMatch(html,/data-shared-lens|data-shared-gate=|data-shared-channel-reading/);
     for (const html of [core, support, gate]) assert.doesNotMatch(html, /Wa detail |OC16 /);
     assert.ok(core.includes(t('OC16 covered by one')));

@@ -6,7 +6,7 @@ const messages = {
   'Wa detail none': ['无', '無', 'None'],
   'Wa detail channel reading': ['通道解读', '通道解讀', 'Channel reading'],
   'Wa detail gate reading': ['闸门知识', '閘門知識', 'Gate knowledge'],
-  'Wa detail related': ['对应通道与部门', '對應通道與部門', 'Related channel and department'],
+  'Wa detail related': ['关联跳转', '關聯跳轉', 'Related'],
   'Wa detail unavailable': ['资料暂不可用', '資料暫不可用', 'Reading unavailable'],
   'Wa detail unknown source': ['来源未知', '來源未知', 'Unknown source']
 };
