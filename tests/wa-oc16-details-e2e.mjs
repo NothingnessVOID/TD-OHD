@@ -131,9 +131,13 @@ async function readPairRows(locator) {
     displayText:row.querySelector('[data-wa-pair]')?.textContent.trim(),
     endpoints:[...row.querySelectorAll('[data-wa-endpoint]')].map(endpoint => {
       const gate = Number(endpoint.getAttribute('data-wa-endpoint'));
-      const members = [...endpoint.querySelectorAll('.wa-detail-members [data-wa-member]')];
+      const chipMembers = [...endpoint.querySelectorAll('.wa-detail-members [data-wa-member]')];
+      const activationMembers = [...endpoint.querySelectorAll('[data-wa-activation-member]')];
+      const members = chipMembers.length
+        ? chipMembers.map(n => ({id:n.dataset.waMember, name:n.textContent.trim()}))
+        : activationMembers.map(n => ({id:n.dataset.waActivationMember, name:n.querySelector('h4')?.textContent.trim() || ''}));
       const sourceRows = [...row.querySelectorAll(`li[data-activation-gate="${gate}"]`)];
-      return {gate,covered:endpoint.getAttribute('data-wa-covered'),memberIds:members.map(n => n.dataset.waMember),names:members.map(n => n.textContent.trim()),
+      return {gate,covered:endpoint.getAttribute('data-wa-covered'),memberIds:members.map(m => m.id),names:members.map(m => m.name),
         contributorCount:members.length,activationCount:sourceRows.length,activations:sourceRows.map(n => ({memberId:n.dataset.waMember,side:n.dataset.activationSide,
           planet:n.dataset.activationPlanet,gate:Number(n.dataset.activationGate),line:Number(n.dataset.activationLine)}))};
     })

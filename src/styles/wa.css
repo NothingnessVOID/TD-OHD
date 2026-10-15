@@ -76,10 +76,10 @@
 .wa-kicker { font-size:12px; letter-spacing:.05em; color:var(--text-tertiary,var(--text-secondary)); font-weight:600; }
 
 /* Six core channel SVG (accepted geometry; styling only) */
-.wa-figure { margin:6px 0 0; }
-.wa-core-svg { display:block; width:min(100%,380px); margin:0 auto; overflow:visible; font-family:inherit; }
-.wa-diagram-name { fill:var(--text); font-size:12.5px; font-weight:600; }
-.wa-diagram-sub { fill:var(--text-secondary); font-size:10.5px; }
+.wa-figure { margin:4px 0 0; }
+.wa-core-svg { display:block; width:min(100%,420px); margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-diagram-name { fill:var(--text); font-size:13px; font-weight:600; }
+.wa-diagram-sub { fill:var(--text-secondary); font-size:11px; }
 .wa-diagram-channel, .wa-diagram-gate { cursor:pointer; outline:none; }
 .wa-node-hit, .wa-link-hit { fill:transparent; stroke:transparent; }
 .wa-link-base { fill:none; stroke:var(--border); stroke-width:6; stroke-linecap:round; }
@@ -92,7 +92,7 @@
 .wa-gate-count text { fill:var(--accent-on,#fff); font-size:10px; font-weight:700; font-variant-numeric:tabular-nums; }
 .wa-diagram-channel[data-state="unknown"] .wa-link-base, .wa-diagram-channel[data-state="absent"] .wa-link-base { stroke-dasharray:3 6; }
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.6; }
-.wa-node-number { fill:var(--text-secondary); font-size:14px; font-weight:600; pointer-events:none; }
+.wa-node-number { fill:var(--text-secondary); font-size:15px; font-weight:600; pointer-events:none; }
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on); }
 .wa-pillar-ring { fill:none; stroke:var(--accent); stroke-width:1.6; pointer-events:none; }
@@ -100,7 +100,7 @@
 .wa-diagram-row.is-selected .wa-diagram-name { fill:var(--accent-strong,var(--accent)); }
 .wa-diagram-channel:hover .wa-link-hit, .wa-diagram-channel:focus-visible .wa-link-hit, .wa-diagram-row.is-selected .wa-link-hit { fill:var(--accent-soft,transparent); stroke:var(--focus,var(--accent)); stroke-width:1; stroke-dasharray:3 3; }
 .wa-diagram-gate:hover .wa-node-hit, .wa-diagram-gate:focus-visible .wa-node-hit, .wa-diagram-gate.is-selected .wa-node-hit { stroke:var(--focus,var(--accent)); stroke-width:2; }
-.wa-figure figcaption { color:var(--text-secondary); font-size:12px; line-height:1.55; margin:8px 0 10px; text-align:center; }
+.wa-figure figcaption { display:none; }
 .wa-state { display:flex; align-items:center; gap:6px; min-width:0; }
 .wa-state svg { flex:none; color:var(--accent); }
 [data-wa-selection-summary]:empty { display:none; }

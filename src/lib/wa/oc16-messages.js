@@ -19,7 +19,6 @@ const messages = {
  'OC16 empty group':['直接多选人物，或导入已存小组','直接多選人物，或匯入已存小組','Select people or import a saved group'],
  'OC16 auto analysis':['选人后自动分析','選人後自動分析','Analyzes automatically'],
  'OC16 graph title':['六条核心 Wa 通道','六條核心 Wa 通道','Six core Wa channels'],
- 'OC16 graph caption':['点击闸门或通道查看详情。','點選閘門或通道查看詳情。','Select a gate or channel for details.'],
  'OC16 all':['整个组织','整個組織','Organization'],
  'OC16 with alpha':['包含负责人 Alpha','包含負責人 Alpha','Include Alpha'],
  'OC16 scope':['查看范围','查看範圍','Analysis scope'],

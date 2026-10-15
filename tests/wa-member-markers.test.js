@@ -134,11 +134,11 @@ test('unknown results suppress stale badges, positive activation and false zero 
 test('fixed board keeps constant height; count badges sit at outer corners without growing rows', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
-  const ROW_HEIGHT = 86;
-  const VIEW_WIDTH = 360;
-  const LEFT_GATE = 176;
-  const RIGHT_GATE = 298;
-  const NODE_R = 18;
+  const ROW_HEIGHT = 98;
+  const VIEW_WIDTH = 380;
+  const LEFT_GATE = 186;
+  const RIGHT_GATE = 318;
+  const NODE_R = 20;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
@@ -152,7 +152,7 @@ test('fixed board keeps constant height; count badges sit at outer corners witho
       assert.ok(x - r >= -2 && x + r <= width + 2, `circle x=${x}, r=${r}`);
       assert.ok(y - r >= 0 && y + r <= height, `circle y=${y}, r=${r}`);
     }
-    const leftCenters = [...svg.matchAll(/class="wa-node-face" cx="176" cy="([\d.]+)"/g)].map(match => Number(match[1]));
+    const leftCenters = [...svg.matchAll(/class="wa-node-face" cx="186" cy="([\d.]+)"/g)].map(match => Number(match[1]));
     assert.equal(leftCenters.length, 6);
     for (let i = 0; i < leftCenters.length - 1; i++) assert.equal(leftCenters[i + 1] - leftCenters[i], ROW_HEIGHT);
     for (const badge of countBadges(svg)) {
