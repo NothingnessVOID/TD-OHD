@@ -1,7 +1,6 @@
 import { registerMessages } from '../i18n.js';
 
 const messages = {
-  'Wa detail activations': ['展开激活明细', '展開啟動明細', 'Show activation details'],
   'Wa detail relationships': ['参与成员的连接情况', '參與成員的連接情況', 'How people connect the channel'],
   'Wa detail combinations': ['两端的成员组合', '兩端的成員組合', 'People activating the two gates'],
   'Wa detail none': ['无', '無', 'None'],

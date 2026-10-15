@@ -28,6 +28,17 @@
 .wa-detail-endpoint,
 .wa-detail-endpoint-cell { min-width: 0; }
 .wa-detail-endpoint { padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; }
+/* Department pair rows: no card chrome — height no longer fights uneven member counts. */
+.wa-detail-endpoint--flat {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.wa-detail-endpoint--flat .wa-detail-gate-label { margin-bottom: 8px; }
+.wa-detail-endpoint--flat .wa-detail-activations { gap: 12px; }
+.wa-detail-endpoint--flat .wa-activation-heading { margin: 0 0 4px; }
+.wa-detail-endpoint--flat .wa-detail-activation-member ul { gap: 5px; }
 .wa-detail-gate-label { margin-bottom: 6px; }
 .wa-detail-members,
 .wa-detail-content [data-wa-self-complete] { display: flex; flex-wrap: wrap; gap: 5px 8px; }
@@ -70,7 +81,8 @@
 .wa-detail-selected { display: grid; gap: 8px; padding: 12px 0; }
 .wa-detail-compact { gap: 12px; font-size: 13px; }
 .wa-detail-compact .wa-detail-pair-row { gap: 8px; padding-bottom: 12px; }
-.wa-detail-compact .wa-detail-endpoint { padding: 8px 10px; }
+.wa-detail-compact .wa-detail-endpoint:not(.wa-detail-endpoint--flat) { padding: 8px 10px; }
+.wa-detail-compact .wa-detail-endpoint--flat { padding: 0; }
 .wa-detail-compact .wa-detail-fold > summary { font-size: 13px; padding: 6px 0; }
 @media (max-width: 600px) {
   .wa-detail-endpoints,

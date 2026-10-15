@@ -81,15 +81,26 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
     const record = ctx.pairs.get(pair.channelId);
     return `<div class="wa-detail-endpoints">${pair.displayGates.map((gate,index) => endpoint(gate, record?.holdersByGate?.[gate], {...options,side:index?'right':'left'})).join('')}</div>`;
   }
-  function activationFold(gate, ctx) {
+  /** Department rows: gate title + always-visible activations (no card chrome, no expand). */
+  function gateActivationColumn(gate, ids, ctx) {
     const record = ctx.gates.get(gate);
-    if (record?.memberIds?.length === 0) return '';
-    return fold('Wa detail activations', renderActivationRows(record?.activations, { nameOf, markerOf }), `data-wa-gate-activations="${gate}"`);
+    const covered = Array.isArray(ids) ? ids.length > 0 : 'unknown';
+    const label = `<button type="button" class="wa-detail-link" data-wa-gate="${gate}">${gateLabel(gate)}</button>`;
+    let body;
+    if (Array.isArray(record?.memberIds) && record.memberIds.length === 0) {
+      body = `<div class="wa-detail-members"><span class="wa-detail-note">${text('OC16 inactive')}</span></div>`;
+    } else if (!Array.isArray(record?.activations)) {
+      body = `<div class="wa-detail-members"><span class="wa-detail-note">${unknown()}</span></div>`;
+    } else {
+      // One name line then its activation lines — no separate chip list above.
+      body = renderActivationRows(record.activations, { nameOf, markerOf });
+    }
+    return `<div class="wa-detail-endpoint wa-detail-endpoint--flat" data-wa-endpoint="${gate}" data-wa-covered="${covered}" data-wa-gate-activations="${gate}"><div class="wa-detail-gate-label">${label}</div>${body}</div>`;
   }
   function pairRows(department, ctx, { compact = false } = {}) {
     if (!department?.pairs) return '';
     return `<div class="wa-detail-pair-rows${compact ? ' wa-detail-compact' : ''}">${department.pairs.map(pair =>
-      `<article class="wa-detail-pair-row" data-pair-row="${pair.channelId}"><header class="wa-detail-row-heading"><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}"><strong>${pair.displayGates.join('–')}</strong></button><span>${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</span>${stateHtml(ctx.pairs.get(pair.channelId))}</header><div class="wa-detail-endpoints">${pair.displayGates.map(gate => `<div class="wa-detail-endpoint-cell">${endpoint(gate, ctx.pairs.get(pair.channelId)?.holdersByGate?.[gate])}${activationFold(gate, ctx)}</div>`).join('')}</div></article>`
+      `<article class="wa-detail-pair-row" data-pair-row="${pair.channelId}"><header class="wa-detail-row-heading"><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}"><strong>${pair.displayGates.join('–')}</strong></button><span>${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</span>${stateHtml(ctx.pairs.get(pair.channelId))}</header><div class="wa-detail-endpoints">${pair.displayGates.map(gate => `<div class="wa-detail-endpoint-cell">${gateActivationColumn(gate, ctx.pairs.get(pair.channelId)?.holdersByGate?.[gate], ctx)}</div>`).join('')}</div></article>`
     ).join('')}</div>`;
   }
   function relationships(pair, record) {

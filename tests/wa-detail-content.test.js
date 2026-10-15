@@ -98,7 +98,10 @@ test('all activation rows survive planet multiplicity, P/D and exact duplicates 
   assert.equal(occurrences(pair, 'data-wa-activation-member="b"'), 1);
   assert.equal(occurrences(pair, 'class="wa-detail-activation"'), 7);
   assert.match(view.renderPairRows('management', { compact: true }), /wa-detail-compact/);
-  assert.match(view.renderDepartment('management'), /<details class="wa-detail-fold" data-wa-gate-activations="45">/);
+  const department = view.renderDepartment('management');
+  assert.match(department, /data-wa-gate-activations="45"/);
+  assert.doesNotMatch(department, /<details class="wa-detail-fold" data-wa-gate-activations=/);
+  assert.match(department, /wa-detail-endpoint--flat/);
 });
 
 test('all user values including raw-source attributes are escaped', () => {
