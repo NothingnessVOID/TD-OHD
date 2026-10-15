@@ -88,7 +88,7 @@ test('each covered gate shows one contributor strip for distinct members; no per
   assert.equal(badges[0].gate, 45);
   assert.equal(badges[0].count, 16);
   assert.match(svg, /Participants: 16</);
-  assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary|wa-link-diamond|wa-link-joint|wa-tube/);
+  assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary|wa-link-joint|wa-tube/);
   assert.equal((svg.match(/role="button"/g) ?? []).length, 18);
   assert.match(svg, /data-wa-gate="45"[^>]*data-wa-members="/);
   assert.match(svg, /data-wa-members="m00 m01 m02 m03 m04 m05 m06 m07 m08 m09 m10 m11 m12 m13 m14 m15"/);
@@ -142,7 +142,7 @@ test('fixed board keeps constant height; contributor dots stay inside the board 
     assert.equal(width, VIEW_WIDTH);
     assert.equal(height, 6 * ROW_HEIGHT + PAD_BOTTOM);
     assert.equal(countBadges(svg).length, count ? 12 : 0);
-    assert.doesNotMatch(svg, /wa-link-diamond|wa-link-joint|wa-link-secondary|wa-tube|wa-row-bg/);
+    assert.doesNotMatch(svg, /wa-link-joint|wa-link-secondary|wa-tube|wa-row-bg/);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
       assert.ok(x - r >= -2 && x + r <= width + 2, `circle x=${x}, r=${r}`);
@@ -159,9 +159,11 @@ test('fixed board keeps constant height; contributor dots stay inside the board 
   }
 });
 
-test('single-line channel uses half coverage; no midpoint glyphs', () => {
+test('single-line channel uses half coverage with hollow→solid midpoint diamond', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
   const markers = createWaMemberMarkers(snapshot.members);
+  const { LEFT_GATE, RIGHT_GATE } = WA_DIAGRAM_GEOMETRY;
+  const mid = (LEFT_GATE + RIGHT_GATE) / 2;
   prepared[0].chart = chart([45, 21]);
   prepared[1].chart = chart([50]);
   prepared[2].chart = chart([6]);
@@ -170,21 +172,53 @@ test('single-line channel uses half coverage; no midpoint glyphs', () => {
   assert.match(selfSvg, /wa-link-base/);
   const mgmtSelf = selfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0];
   assert.equal((mgmtSelf.match(/wa-link-half is-covered/g) ?? []).length, 2);
-  assert.doesNotMatch(selfSvg, /wa-link-diamond|wa-link-joint|wa-tube|wa-row-bg/);
+  assert.match(mgmtSelf, /wa-link-diamond is-filled/);
+  assert.doesNotMatch(selfSvg, /wa-link-joint|wa-tube|wa-row-bg/);
+  assert.equal((selfSvg.match(/wa-link-diamond/g) ?? []).length, 6);
 
   prepared[0].chart = chart([45]);
   prepared[1].chart = chart([21]);
   const crossSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(crossSvg, /data-state="crossMemberOnly"/);
   assert.equal((crossSvg.match(/data-department="management"[\s\S]*?wa-link-half is-covered[\s\S]*?wa-link-half is-covered/) ?? []).length, 1);
+  assert.match(crossSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-link-diamond is-filled/);
 
   prepared[1].chart = chart([50]);
   const halfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(halfSvg, /data-state="hanging"/);
-  // Only the left half of management should be covered (gate 45).
+  // Only the left half of management should be covered (gate 45); diamond stays hollow.
   const mgmt = halfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0];
   assert.match(mgmt, /wa-link-half is-covered/);
   assert.equal((mgmt.match(/wa-link-half is-covered/g) ?? []).length, 1);
+  assert.match(mgmt, /wa-link-diamond is-hollow/);
+  assert.doesNotMatch(mgmt, /wa-link-diamond is-filled/);
+
+  // Absent channels are hollow; diamond stays centered on the channel midline.
+  const absent = halfSvg.match(/data-department="competition"[\s\S]*?(?=data-department="|$)/)[0];
+  assert.match(absent, /data-state="absent"/);
+  assert.match(absent, /wa-link-diamond is-hollow/);
+  assert.match(absent, new RegExp(`wa-link-diamond[^>]*d="M${mid} `));
+});
+
+test('contributor dots grow inward toward the channel midline', () => {
+  const { snapshot, prepared } = fixture({ size: 5, groupSizes: [3, 0, 0] });
+  prepared[0].chart = chart([45]);
+  prepared[1].chart = chart([45]);
+  prepared[2].chart = chart([21]);
+  prepared[3].chart = chart([21]);
+  const markers = createWaMemberMarkers(snapshot.members);
+  const svg = render(analyzeOC16(snapshot, prepared), markers);
+  const { LEFT_GATE, RIGHT_GATE, DOT_STEP } = WA_DIAGRAM_GEOMETRY;
+  const left = countBadges(svg).find(badge => badge.gate === 45);
+  const right = countBadges(svg).find(badge => badge.gate === 21);
+  assert.equal(left?.count, 2);
+  assert.equal(right?.count, 2);
+  const leftXs = [...left.body.matchAll(/cx="([\d.]+)"/g)].map(m => Number(m[1]));
+  const rightXs = [...right.body.matchAll(/cx="([\d.]+)"/g)].map(m => Number(m[1]));
+  assert.deepEqual(leftXs, [LEFT_GATE, LEFT_GATE + DOT_STEP]);
+  assert.deepEqual(rightXs, [RIGHT_GATE, RIGHT_GATE - DOT_STEP]);
+  assert.ok(leftXs[1] > leftXs[0], 'left strip grows rightward (inward)');
+  assert.ok(rightXs[1] < rightXs[0], 'right strip grows leftward (inward)');
 });
 
 test('left diagram contributors stay as dots even when showNames is requested', () => {
@@ -242,6 +276,10 @@ test('legend follows organization numbers, while the diagram signature and paren
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
   assert.match(waCss, /\.wa-gate-count\s*\{[^}]*pointer-events:\s*none/);
   assert.match(waCss, /\.wa-link-half/);
-  assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-tube\s*\{/);
+  assert.match(waCss, /\.wa-link-base\s*\{[^}]*stroke-width:\s*8/);
+  assert.match(waCss, /\.wa-link-half\s*\{[^}]*stroke-width:\s*5\.5/);
+  assert.match(waCss, /\.wa-link-diamond\.is-hollow/);
+  assert.match(waCss, /\.wa-link-diamond\.is-filled/);
+  assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-tube\s*\{|\.wa-link-joint\s*\{/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
 });

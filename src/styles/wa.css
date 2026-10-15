@@ -83,9 +83,13 @@
 .wa-diagram-sub { fill:var(--text-secondary); font-size:11px; }
 .wa-diagram-channel, .wa-diagram-gate { cursor:pointer; outline:none; }
 .wa-node-hit, .wa-link-hit { fill:transparent; stroke:transparent; }
-.wa-link-base { fill:none; stroke:var(--border); stroke-width:6; stroke-linecap:round; }
-.wa-link-half { fill:none; stroke:var(--border); stroke-width:4; stroke-linecap:round; }
+.wa-link-base { fill:none; stroke:var(--border); stroke-width:8; stroke-linecap:round; }
+.wa-link-half { fill:none; stroke:var(--border); stroke-width:5.5; stroke-linecap:round; }
 .wa-link-half.is-covered { stroke:var(--accent); }
+.wa-link-diamond { pointer-events:none; }
+.wa-link-diamond.is-hollow { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.7; }
+.wa-link-diamond.is-filled { fill:var(--accent); stroke:none; }
+.wa-diagram-channel[data-state="hanging"] .wa-link-diamond.is-hollow { stroke:var(--accent); }
 .wa-diagram-channel[data-state="unknown"] .wa-link-base, .wa-diagram-channel[data-state="absent"] .wa-link-base { stroke-dasharray:3 6; }
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.6; }
 .wa-node-number { fill:var(--text-secondary); font-size:15px; font-weight:600; pointer-events:none; }
