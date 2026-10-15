@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createWaMemberMarkers, renderWaMemberMarker, renderWaMemberLegend } from '../src/lib/wa/member-markers.js';
-import { renderWaDiagram, waStateText } from '../src/views/wa-diagram.js';
+import { renderWaDiagram, waStateText, WA_DIAGRAM_GEOMETRY } from '../src/views/wa-diagram.js';
 import { analyzeOC16, scopeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
 import { replaceWaSelection } from '../src/lib/wa/configuration.js';
@@ -87,7 +87,7 @@ test('each covered gate shows one count badge for distinct members; no per-perso
   assert.equal(badges.length, 1);
   assert.equal(badges[0].gate, 45);
   assert.equal(badges[0].count, 16);
-  assert.match(svg, />Participants: 16<\/text>/);
+  assert.match(svg, /Participants: 16"/);
   assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary/);
   assert.equal((svg.match(/role="button"/g) ?? []).length, 18);
   assert.match(svg, /data-wa-gate="45"[^>]*data-wa-members="/);
@@ -108,8 +108,8 @@ test('per-gate attribution does not borrow pair or department contributors and c
   const result = analyzeOC16(snapshot, prepared);
   const svg = render(result, createWaMemberMarkers(snapshot.members));
   assert.deepEqual(countBadges(svg).map(({ gate, count }) => [gate, count]), [[45, 1], [21, 1]]);
-  assert.match(svg, />Participants: 2<\/text>/);
-  assert.doesNotMatch(svg, />Participants: 3<\/text>/);
+  assert.match(svg, /Participants: 2"/);
+  assert.doesNotMatch(svg, /Participants: 3"/);
 });
 
 test('unknown results suppress stale badges, positive activation and false zero counts; known empty stays empty', () => {
@@ -131,72 +131,70 @@ test('unknown results suppress stale badges, positive activation and false zero 
   assert.match(svg, /No member active/);
 });
 
-test('fixed board keeps constant height; count badges sit at outer corners without growing rows', () => {
+test('fixed board keeps constant height; contributor strips stay inside the board without growing rows', () => {
   const { snapshot, prepared, markers } = sixteen(coreGates);
   const result = analyzeOC16(snapshot, prepared);
-  const ROW_HEIGHT = 98;
-  const VIEW_WIDTH = 380;
-  const LEFT_GATE = 186;
-  const RIGHT_GATE = 318;
-  const NODE_R = 20;
+  const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_TOP, MAX_DOTS } = WA_DIAGRAM_GEOMETRY;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
     const current = scopeOC16(result, snapshot.members.slice(0, count).map(member => member.memberId));
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
     assert.equal(width, VIEW_WIDTH);
-    assert.equal(height, 6 * ROW_HEIGHT + 6);
+    assert.equal(height, 6 * ROW_HEIGHT + 2 * PAD_TOP);
     assert.equal(countBadges(svg).length, count ? 12 : 0);
-    assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary/);
+    assert.doesNotMatch(svg, /wa-link-diamond|wa-link-joint|wa-link-secondary/);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
       assert.ok(x - r >= -2 && x + r <= width + 2, `circle x=${x}, r=${r}`);
       assert.ok(y - r >= 0 && y + r <= height, `circle y=${y}, r=${r}`);
     }
-    const leftCenters = [...svg.matchAll(/class="wa-node-face" cx="186" cy="([\d.]+)"/g)].map(match => Number(match[1]));
+    const leftCenters = [...svg.matchAll(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`, 'g'))].map(match => Number(match[1]));
     assert.equal(leftCenters.length, 6);
     for (let i = 0; i < leftCenters.length - 1; i++) assert.equal(leftCenters[i + 1] - leftCenters[i], ROW_HEIGHT);
     for (const badge of countBadges(svg)) {
       assert.equal(badge.count, count);
-      const cx = Number(badge.body.match(/cx="([\d.]+)"/)[1]);
-      const cy = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
-      const isLeft = coreGates.indexOf(badge.gate) % 2 === 0;
-      const gateX = isLeft ? LEFT_GATE : RIGHT_GATE;
-      const side = isLeft ? 1 : -1;
-      assert.equal(cx, gateX - side * (NODE_R + 1));
-      const rowIndex = leftCenters.findIndex(center => Math.abs(center - (cy - NODE_R - 1)) < 1);
-      assert.ok(rowIndex >= 0, `badge cy=${cy} should sit below a row center`);
+      assert.equal((badge.body.match(/class="wa-gate-dot/g) ?? []).length, Math.min(count, MAX_DOTS));
+      if (count > MAX_DOTS) assert.match(badge.body, new RegExp(`\\+${count - MAX_DOTS}<`));
     }
   }
 });
 
-test('midpoint glyphs mark selfComplete, cross, and both without a parallel secondary line', () => {
+test('channel tube encodes state by fill: full when defined, gradient from the active side when half, empty when open', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
-  // m00 holds both ends of 45–21 → selfComplete; alone on that pair.
+  const markers = createWaMemberMarkers(snapshot.members);
+  const rowFill = (svg, department) => svg.match(new RegExp(`data-department="${department}" data-fill="(\\w+)"`))[1];
   prepared[0].chart = chart([45, 21]);
   prepared[1].chart = chart([50]);
   prepared[2].chart = chart([6]);
-  const selfSvg = render(analyzeOC16(snapshot, prepared), createWaMemberMarkers(snapshot.members));
+  const selfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(selfSvg, /data-state="selfComplete"/);
-  assert.match(selfSvg, /wa-link-diamond/);
-  assert.doesNotMatch(selfSvg, /wa-link-secondary/);
+  assert.equal(rowFill(selfSvg, 'management'), 'full');
+  assert.equal(rowFill(selfSvg, 'competition'), 'none');
+  assert.doesNotMatch(selfSvg, /wa-link-diamond|wa-link-joint/);
 
-  // Different people on each end → crossMemberOnly.
   prepared[0].chart = chart([45]);
   prepared[1].chart = chart([21]);
-  const crossSvg = render(analyzeOC16(snapshot, prepared), createWaMemberMarkers(snapshot.members));
+  const crossSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(crossSvg, /data-state="crossMemberOnly"/);
-  assert.match(crossSvg, /wa-link-joint/);
-  assert.doesNotMatch(crossSvg, /wa-link-diamond|wa-link-secondary/);
+  assert.equal(rowFill(crossSvg, 'management'), 'full');
 
-  // One person complete + another covering an end → both.
-  prepared[0].chart = chart([45, 21]);
-  prepared[1].chart = chart([45]);
-  prepared[2].chart = chart([21]);
-  const bothSvg = render(analyzeOC16(snapshot, prepared), createWaMemberMarkers(snapshot.members));
-  assert.match(bothSvg, /data-state="both"/);
-  assert.match(bothSvg, /wa-link-diamond/);
-  assert.match(bothSvg, /wa-link-joint/);
-  assert.doesNotMatch(bothSvg, /wa-link-secondary/);
+  prepared[1].chart = chart([50]);
+  const halfSvg = render(analyzeOC16(snapshot, prepared), markers);
+  assert.match(halfSvg, /data-state="hanging"/);
+  assert.equal(rowFill(halfSvg, 'management'), 'left');
+  assert.match(halfSvg, /<linearGradient id="wa-tube-21-45"/);
+  assert.match(halfSvg, /class="wa-tube-fill is-partial"[^>]*fill="url\(#wa-tube-21-45\)"/);
+
+  const unknownSvg = render(null, markers);
+  assert.doesNotMatch(unknownSvg, /wa-tube-fill|<defs/);
+});
+
+test('show names swaps contributor dots for a compact name label', () => {
+  const { snapshot, prepared, markers } = sixteen([45]);
+  const svg = renderWaDiagram(OC16_DEPARTMENTS, analyzeOC16(snapshot, prepared), null, { markers, nameOf: id => `N${id}`, showNames: true });
+  const [badge] = countBadges(svg);
+  assert.doesNotMatch(badge.body, /wa-gate-dot/);
+  assert.match(badge.body, /class="wa-gate-names"[^>]*>Nm00 \+15</);
 });
 
 test('HTML badges, compact legend and SVG count titles escape names and IDs without inventing missing members', () => {
@@ -230,7 +228,7 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.equal(countBadges(svg).length, 0); // no markers map → no badges
   assert.match(svg, /data-wa-gate="45"[^>]*aria-pressed="true"[^>]*Member active/);
   assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 6);
-  assert.equal((svg.match(/class="wa-pillar-ring"/g) ?? []).length, 4);
+  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 4);
   for (const state of ['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both', 'unknown']) {
     assert.equal(waStateText(state), `UI state: ${state}`);
   }
@@ -240,6 +238,5 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.ok(css.includes('var(--team-member-on)'));
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
   assert.match(waCss, /\.wa-gate-count\s*\{[^}]*pointer-events:\s*none/);
-  assert.match(waCss, /\.wa-link-diamond/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{/);
 });

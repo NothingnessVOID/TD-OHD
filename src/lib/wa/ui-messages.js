@@ -1,5 +1,11 @@
 import { registerMessages } from '../i18n.js';
 const messages={
+ 'Wa UI line selfComplete':['一人贯通','一人貫通','Complete in one person'],
+ 'Wa UI line crossMemberOnly':['接力贯通','接力貫通','Bridged by two people'],
+ 'Wa UI line both':['贯通 · 多人支撑','貫通 · 多人支撐','Complete · well supported'],
+ 'Wa UI line hanging':['差一端','差一端','One gate missing'],
+ 'Wa UI line absent':['未连通','未連通','Not connected'],
+ 'Wa UI line unknown':['等待计算','等待計算','Awaiting calculation'],
  'Wa UI show names':['显示姓名','顯示姓名','Show names'],
  'Wa UI add member':['＋ 添加成员','＋ 新增成員','＋ Add members'],
  'Wa UI replace alpha':['更换负责人','更換負責人','Change Alpha'],
