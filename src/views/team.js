@@ -102,9 +102,10 @@ function renderResult() {
  if (highlighted) matrix.setHighlightedMemberId(highlighted);
  renderControls();
 }
-function layer(title, body, bind) {
+function layer(title, body, bind, extraClass = '') {
  closeLayer?.();
- const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}">${renderDialogHeader(t(title))}${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
+ const cls = extraClass ? ` ${extraClass}` : '';
+ const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog${cls}" aria-label="${txt(title)}">${renderDialogHeader(t(title))}${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
  closeLayer = close; bind(root, close); return root;
 }
 function editPerson(id = null) {
@@ -116,7 +117,6 @@ function editPerson(id = null) {
 function picker(draft = null) {
  draft ||= { ids: selectedMembers().map(m => m.personId), search: '', pentaId: selectedId, revision, teamId };
  layer('Team add person', `<div class="team-picker-body"><label class="modal-field">${txt('Team search people')}<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"></label><div class="team-picker-toolbar"><p id="team-selection-count" role="status"></p><button type="button" class="btn-secondary" id="team-person-create">${txt('Team create person')}</button></div><div id="team-person-results" class="team-picker-results"></div><p class="team-layer-error" role="alert"></p></div><div class="modal-actions"><button type="button" class="btn-secondary" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
-  root.classList.add('team-member-picker');
   const search = root.querySelector('input'); search.value = draft.search;
   const error = message => { root.querySelector('.team-layer-error').textContent = message; };
   const render = () => {
@@ -152,7 +152,7 @@ function picker(draft = null) {
    nextGroups.find(g => g.pentaId === selectedId).memberIds = ids;
    members = nextMembers; groups = nextGroups; close(); schedule();
   };
- });
+ }, 'team-member-picker');
 }
 function load(team, pentaId) { teamId = team.teamId; revision = team.revision; teamName = team.name; members = team.members.map(m => ({ ...m })); groups = team.groups.map(g => ({ ...g, memberIds: [...g.memberIds] })); if (!groups.length) groups.push(freshGroup()); selectedId = pentaId || groups[0].pentaId; dirty = false; schedule(false); }
 function switcher() {
