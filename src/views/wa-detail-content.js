@@ -55,12 +55,52 @@ export function renderWaReading(id) {
   const entry=excerpt.source;
   return `<article data-wa-reading-id="${esc(entry.id)}" data-wa-package-id="${esc(entry.packageId)}" data-wa-source-refs="${esc(entry.sourceRefs.join(' '))}" data-wa-display-map="${excerpt.presentationVersion}" data-wa-paragraphs="${excerpt.paragraphIndexes.join(',')}"><h3>${esc(entry.name)}</h3>${excerpt.summary===null?'':`<div class="knowledge-summary-callout" data-wa-prose="summary">${renderProse({content:excerpt.summary})}</div>`}<div class="knowledge-body" data-wa-prose="detail">${renderProse({content:excerpt.detail})}</div></article>`;
 }
-function pairReading(pair,gate=null) {
-  const core=OC16_DEPARTMENTS.find(department=>department.id===pair.departmentId).pairs[0];
-  const own=pair.role==='core'&&gate===null;
-  // Channel reading starts open so Wa资料 is visible without an extra click; department reading stays collapsed.
-  return fold(own?'Wa UI channel reading':'Wa UI department reading',renderWaReading(core.channelId),
-    `${own?'open ':''}data-wa-knowledge="${own?'wa':'wa-department'}" data-wa-content-id="${core.channelId}" data-wa-reading-for="${gate===null?pair.channelId:`gate:${gate}`}"`);
+/** Birth-chart / knowledge jump-card pattern: navigate instead of nesting department reading. */
+const jumpCard = (attrs, title, action) =>
+  `<button type="button" class="knowledge-jump-card wa-jump-card" ${attrs}><span class="wa-jump-card-copy"><span class="wa-jump-card-title">${title}</span><span class="wa-jump-card-action">${action}</span></span><span aria-hidden="true">→</span></button>`;
+
+function relatedJumps(items) {
+  if (!items.length) return '';
+  return `<section class="wa-detail-related"><h3>${text('Wa detail related')}</h3><nav class="wa-detail-jumps" data-wa-related-jumps>${items.join('')}</nav></section>`;
+}
+
+/** Core channel keeps its own Wa reading open. Support/gate sheets jump to the department sheet instead of embedding a collapsed department accordion. */
+function channelOwnReading(pair) {
+  if (pair.role !== 'core') return '';
+  return fold('Wa UI channel reading', renderWaReading(pair.channelId),
+    `open data-wa-knowledge="wa" data-wa-content-id="${pair.channelId}" data-wa-reading-for="${pair.channelId}"`);
+}
+
+function departmentJump(pair, readingFor) {
+  const core = OC16_DEPARTMENTS.find(department => department.id === pair.departmentId).pairs[0];
+  return jumpCard(
+    `data-wa-department="${pair.departmentId}" data-wa-knowledge="wa-department" data-wa-content-id="${core.channelId}" data-wa-reading-for="${readingFor}"`,
+    text('Wa UI department reading'),
+    `${text(`OC16 ${pair.departmentId}`)} · ${text('Wa jump open department')}`
+  );
+}
+
+function pairRelated(pair) {
+  const gates = pair.displayGates.map(gate => jumpCard(
+    `data-wa-gate="${gate}"`,
+    gateLabel(gate),
+    text('Wa jump open gate')
+  ));
+  return relatedJumps([
+    departmentJump(pair, pair.channelId),
+    ...gates
+  ]);
+}
+
+function gateRelated(pair, gate) {
+  return relatedJumps([
+    jumpCard(
+      `data-wa-pair="${pair.channelId}"`,
+      `<strong>${pair.displayGates.join('–')}</strong> · ${esc(waChannelTitle(pair.channelId))} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}`,
+      text('Wa jump open channel')
+    ),
+    departmentJump(pair, `gate:${gate}`)
+  ]);
 }
 
 /** Pure HTML only. Each method takes one fresh snapshot from the host's current scope. */
@@ -136,16 +176,17 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       const pair = pairs.find(row => row.channelId === channelId);
       if (!pair) return '';
       const ctx = context(), record = ctx.pairs.get(channelId);
-      // Flat endpoints match department rows; self-complete sits near the top; reading opens by default.
+      // Flat endpoints match department rows; self-complete near the top; department Wa reading is a jump, not an accordion.
       const flat = `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
-      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2><p class="wa-detail-note">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>${stateHtml(record)}${selfCompleteBlock(record)}${flat}${pairReading(pair)}</section>`;
+      const note = `<p class="wa-detail-note"><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button> · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>`;
+      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2>${note}${stateHtml(record)}${selfCompleteBlock(record)}${flat}${pairRelated(pair)}${channelOwnReading(pair)}</section>`;
     },
     renderGate(input) {
       const gate = Number(input), pair = pairs.find(row => row.gates.includes(gate));
       if (!pair) return '';
       const ctx = context(), record = ctx.gates.get(gate);
       const state = Array.isArray(record?.memberIds) ? record.memberIds.length ? 'active' : 'inactive' : 'unknown';
-      return `<section class="wa-detail-content" data-wa-detail="gate" data-wa-detail-id="${gate}"><header>${renderGateDetailHeading(gate)}</header><p class="wa-detail-state" data-wa-gate-state="${state}">${text(`OC16 ${state}`)}</p><section><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(record?.activations, { nameOf, markerOf })}</section><section class="wa-detail-related"><h3>${text('Wa detail related')}</h3><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}">${pair.displayGates.join('–')} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</button><span> · </span><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button></section>${pairReading(pair,gate)}</section>`;
+      return `<section class="wa-detail-content" data-wa-detail="gate" data-wa-detail-id="${gate}"><header>${renderGateDetailHeading(gate)}</header><p class="wa-detail-state" data-wa-gate-state="${state}">${text(`OC16 ${state}`)}</p><section><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(record?.activations, { nameOf, markerOf })}</section>${gateRelated(pair, gate)}</section>`;
     }
   });
 }

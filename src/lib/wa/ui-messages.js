@@ -36,6 +36,9 @@ const messages={
  'Wa UI complete channel':['完整通道','完整通道','Complete channel'],
  'Wa UI incomplete channel':['暂未形成完整通道','尚未形成完整通道','Channel not yet complete'],
  'Wa UI channel reading':['Wa 通道资料','Wa 通道資料','Wa channel reading'],
- 'Wa UI department reading':['所属部门的 Wa 资料','所屬部門的 Wa 資料','Wa reading for this department']
+ 'Wa UI department reading':['所属部门的 Wa 资料','所屬部門的 Wa 資料','Wa reading for this department'],
+ 'Wa jump open department':['查看部门详情','查看部門詳情','Open department'],
+ 'Wa jump open channel':['查看通道详情','查看通道詳情','Open channel'],
+ 'Wa jump open gate':['查看闸门详情','查看閘門詳情','Open gate']
 };
 for(const [i,locale] of ['zh-CN','zh-Hant','en'].entries())registerMessages(locale,Object.fromEntries(Object.entries(messages).map(([key,value])=>[key,value[i]])));
