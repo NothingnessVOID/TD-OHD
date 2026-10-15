@@ -189,12 +189,15 @@ test('channel tube encodes state by fill: full when defined, gradient from the a
   assert.doesNotMatch(unknownSvg, /wa-tube-fill|<defs/);
 });
 
-test('show names swaps contributor dots for a compact name label', () => {
+test('left diagram contributors stay as dots even when showNames is requested', () => {
   const { snapshot, prepared, markers } = sixteen([45]);
   const svg = renderWaDiagram(OC16_DEPARTMENTS, analyzeOC16(snapshot, prepared), null, { markers, nameOf: id => `N${id}`, showNames: true });
   const [badge] = countBadges(svg);
-  assert.doesNotMatch(badge.body, /wa-gate-dot/);
-  assert.match(badge.body, /class="wa-gate-names"[^>]*>Nm00 \+15</);
+  assert.match(badge.body, /wa-gate-dot/);
+  assert.doesNotMatch(badge.body, /wa-gate-names/);
+  assert.match(badge.body, /\+11|\+15/); // overflow marker, never a name string
+  assert.match(svg, /class="wa-pillar-ring"/);
+  assert.equal((svg.match(/class="wa-pillar-ring"/g) ?? []).length, 4);
 });
 
 test('HTML badges, compact legend and SVG count titles escape names and IDs without inventing missing members', () => {

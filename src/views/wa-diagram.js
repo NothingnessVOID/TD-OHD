@@ -12,44 +12,34 @@ export function waStateSymbol(state, size = 22) {
 
 /** Fixed compact board: six rows, each a single channel "tube" between two gate nodes.
  * State is carried by the tube itself (full / filled from one side / empty) so it reads without a legend. */
-export const WA_DIAGRAM_GEOMETRY = Object.freeze({ VIEW_WIDTH: 380, ROW_HEIGHT: 84, LEFT_GATE: 186, RIGHT_GATE: 344, NODE_R: 15, TUBE_H: 8, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5, PAD_TOP: 4 });
+export const WA_DIAGRAM_GEOMETRY = Object.freeze({ VIEW_WIDTH: 380, ROW_HEIGHT: 84, LEFT_GATE: 186, RIGHT_GATE: 344, NODE_R: 15, TUBE_H: 8, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5, PAD_TOP: 4, PILLAR_RING_R: 20.5 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
 const fmt = n => Math.round(n * 10) / 10;
 
-/** Contributor strip under a gate: overlapping member-colour dots (or names), pointer-events none. */
-function renderGateContributors(gate, records, gateX, y, nameOf, showNames, side) {
+/** Contributor strip under a gate: overlapping member-colour dots only (never names). Hover title carries full names. */
+function renderGateContributors(gate, records, gateX, y, nameOf, side) {
   if (!records.length) return '';
   const count = records.length;
   const names = records.map(record => `${nameOf(record.memberId) ?? record.memberId} · ${record.number}`).join(' · ');
   const label = esc(t('Wa UI gate member count', { count }));
   const cy = y + G.NODE_R + 11;
-  // Strip starts under the node's outer edge and runs toward the board centre.
-  const anchor = side < 0 ? 'start' : 'end';
-  let body;
-  if (showNames) {
-    const shown = records.slice(0, 1).map(record => nameOf(record.memberId) ?? record.memberId);
-    const rest = count - shown.length;
-    const text = shown.map(name => String(name).length > 6 ? `${String(name).slice(0, 6)}…` : name).join('、') + (rest > 0 ? ` +${rest}` : '');
-    body = `<text class="wa-gate-names" x="${fmt(side < 0 ? gateX - G.NODE_R : gateX + G.NODE_R)}" y="${fmt(cy + 3.5)}" text-anchor="${anchor}">${esc(text)}</text>`;
-  } else {
-    const shown = records.slice(0, G.MAX_DOTS);
-    const rest = count - shown.length;
-    // Dots laid from the outer edge of the node toward the outside of the board.
-    const dir = side < 0 ? 1 : -1;
-    const start = side < 0 ? gateX - G.NODE_R + G.DOT_R : gateX + G.NODE_R - G.DOT_R;
-    const dots = shown.map((record, index) => `<circle class="wa-gate-dot wa-member-color-${record.colorSlot}" data-wa-marker-member="${esc(record.memberId)}" cx="${fmt(start + dir * index * G.DOT_STEP)}" cy="${fmt(cy)}" r="${G.DOT_R}"/>`).join('');
-    const lastX = start + dir * (shown.length - 1) * G.DOT_STEP;
-    const more = rest > 0 ? `<text class="wa-gate-more" x="${fmt(lastX + dir * (G.DOT_R + 3))}" y="${fmt(cy + 3.5)}" text-anchor="${dir > 0 ? 'start' : 'end'}">+${rest}</text>` : '';
-    body = dots + more;
-  }
-  return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true">${body}<title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
+  const shown = records.slice(0, G.MAX_DOTS);
+  const rest = count - shown.length;
+  // Dots laid from the outer edge of the node toward the outside of the board.
+  const dir = side < 0 ? 1 : -1;
+  const start = side < 0 ? gateX - G.NODE_R + G.DOT_R : gateX + G.NODE_R - G.DOT_R;
+  const dots = shown.map((record, index) => `<circle class="wa-gate-dot wa-member-color-${record.colorSlot}" data-wa-marker-member="${esc(record.memberId)}" cx="${fmt(start + dir * index * G.DOT_STEP)}" cy="${fmt(cy)}" r="${G.DOT_R}"/>`).join('');
+  const lastX = start + dir * (shown.length - 1) * G.DOT_STEP;
+  const more = rest > 0 ? `<text class="wa-gate-more" x="${fmt(lastX + dir * (G.DOT_R + 3))}" y="${fmt(cy + 3.5)}" text-anchor="${dir > 0 ? 'start' : 'end'}">+${rest}</text>` : '';
+  return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true">${dots}${more}<title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.
  * markers comes from the complete organization reference pool; gateRecords comes
- * exclusively from the current computed scope. No per-scope renumbering. */
-export function renderWaDiagram(departments, result, selected = null, { markers, nameOf = id => id, showNames = false } = {}) {
+ * exclusively from the current computed scope. No per-scope renumbering.
+ * showNames is accepted for call-site compatibility but ignored — left diagram is always dots. */
+export function renderWaDiagram(departments, result, selected = null, { markers, nameOf = id => id } = {}) {
   const known = ['ready', 'empty'].includes(result?.status);
   const gateRecords = new Map((known ? result.gateRecords ?? [] : []).map(row => [row.gate, row]));
   const active = gate => Boolean(gateRecords.get(gate)?.memberIds?.length);
@@ -67,7 +57,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     const isSelected = selected?.type === 'pair' && selected.id === pair.channelId || selected?.type === 'department' && selected.id === department.id;
     const count = known ? measured?.contributorCount ?? 0 : '—';
     const fill = !known ? 'none' : DEFINED.has(state) ? 'full' : active(display[0]) ? 'left' : active(display[1]) ? 'right' : 'none';
-    const label = `${t(`OC16 ${department.id}`)} · ${display.join('–')} · ${waStateText(state)} · ${t('Wa UI participants count', { count })}`;
+    const label = `${t(`OC16 ${department.id}`)} · ${display.join('–')} · ${t(`Wa UI line ${state}`)} · ${t('Wa UI participants count', { count })}`;
     const x0 = G.LEFT_GATE + G.NODE_R - 2, x1 = G.RIGHT_GATE - G.NODE_R + 2, w = x1 - x0, h = G.TUBE_H;
     const gid = `wa-tube-${String(pair.channelId).replace(/[^\w-]/g, '')}`;
     let tubeFill = '';
@@ -85,7 +75,10 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const activationLabel = known ? t(covered ? 'Wa UI gate active' : 'Wa UI gate inactive') : waStateText('unknown');
       const records = endpointMarkers[sideIndex];
       const membersAttr = records.length ? ` data-wa-members="${esc(records.map(record => record.memberId).join(' '))}"` : '';
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 6}"/>${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 4}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.NODE_R - 7)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, showNames, side)}</g>`;
+      const pillarMark = pillar
+        ? `<circle class="wa-pillar-ring" cx="${x}" cy="${fmt(y)}" r="${G.PILLAR_RING_R}"/>`
+        : '';
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 7}"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R + 4}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, side)}</g>`;
     }).join('');
     // Department name sits outside the channel hit target so clicking「管理」does not open the pair sheet.
     return `<g class="wa-diagram-row ${isSelected?'is-selected':''}" data-department="${department.id}" data-fill="${fill}"><rect class="wa-row-bg" x="2" y="${fmt(y - G.ROW_HEIGHT / 2 + 3)}" width="${G.VIEW_WIDTH - 4}" height="${G.ROW_HEIGHT - 6}" rx="12"/><text class="wa-diagram-name" x="14" y="${fmt(y - 3)}">${esc(t(`OC16 ${department.id}`))}</text><text class="wa-diagram-sub" data-fill="${fill}" x="14" y="${fmt(y + 14)}">${esc(t(`Wa UI line ${state}`))}</text><g class="wa-diagram-channel" data-wa-pair="${pair.channelId}" data-state="${state}" role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${esc(label)}"><rect class="wa-link-hit" x="${x0}" y="${fmt(y - 16)}" width="${w}" height="32" rx="10"/><rect class="wa-tube" x="${x0}" y="${fmt(y - h / 2)}" width="${w}" height="${h}" rx="${h / 2}"/>${tubeFill}</g>${endpoints}</g>`;

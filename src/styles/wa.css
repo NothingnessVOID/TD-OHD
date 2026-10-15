@@ -101,13 +101,18 @@
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on,#fff); }
 .wa-node-halo { fill:var(--accent); fill-opacity:.16; pointer-events:none; }
-.wa-node-pillar { fill:var(--text-tertiary,var(--text-secondary)); font-size:9.5px; letter-spacing:.06em; pointer-events:none; }
+/* Four-pillar calibration: accent ring around the node (mirrors .wa-pillar-number outline). */
+.wa-pillar-ring { fill:none; stroke:var(--accent); stroke-width:1.7; pointer-events:none; opacity:.92; }
+.wa-diagram-gate.is-pillar.is-covered .wa-pillar-ring { opacity:1; stroke-width:1.85; }
+.wa-diagram-gate.is-pillar[data-covered="false"] .wa-pillar-ring,
+.wa-diagram-gate.is-pillar[data-covered="unknown"] .wa-pillar-ring { opacity:.72; }
+.wa-node-pillar { fill:var(--accent-strong,var(--accent)); font-size:9px; letter-spacing:.06em; font-weight:600; pointer-events:none; }
 .wa-diagram-gate:hover .wa-node-face { stroke:var(--accent); }
 .wa-diagram-gate:focus-visible .wa-node-hit, .wa-diagram-gate.is-selected .wa-node-hit { stroke:var(--focus,var(--accent)); stroke-width:1.5; }
-/* Contributors: quiet member-colour dots (or a name) under each gate. */
+/* Contributors: quiet member-colour dots under each gate (names never shown here). */
 .wa-gate-count { pointer-events:none; }
 .wa-gate-dot { fill:var(--wa-member-color); stroke:var(--team-member-border,transparent); stroke-width:.5; }
-.wa-gate-more, .wa-gate-names { fill:var(--text-secondary); font-size:10px; font-variant-numeric:tabular-nums; }
+.wa-gate-more { fill:var(--text-secondary); font-size:10px; font-variant-numeric:tabular-nums; }
 .has-member-focus .wa-gate-dot:not(.is-focus) { opacity:.25; }
 .wa-figure figcaption { display:none; }
 .wa-state { display:flex; align-items:center; gap:6px; min-width:0; }
