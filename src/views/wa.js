@@ -139,7 +139,7 @@ export function mountWa(container, options = {}) {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
   }
   function graphHtml() {
-    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf,showNames})}</div></figure></section>`;
+    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div></figure></section>`;
   }
   function applyMemberFocus() {
     const page = container.querySelector('.wa-page');if(!page)return;
