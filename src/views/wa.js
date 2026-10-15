@@ -106,8 +106,9 @@ export function mountWa(container, options = {}) {
     if (!known() || !result.memberIds.length) return '';
     const rows = OC16_DEPARTMENTS.map(department => ({ department, gates:department.pairs.flatMap(pair => pair.displayGates).filter(gate => !covered(gate)) })).filter(row => row.gates.length);
     const missing = rows.reduce((sum, row) => sum + row.gates.length, 0);
-    const body = rows.length ? `<div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>` : `<p class="wa-gap-none">${text('OC16 gaps none')}</p>`;
-    return `<h3 class="wa-subheading">${text('OC16 gaps')}${missing?`<small>${text('OC16 gaps count',{count:missing})}</small>`:''}</h3>${body}`;
+    // Hide the whole block when every gate is active — no empty "尚未激活的闸门" section.
+    if (!missing) return '';
+    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
