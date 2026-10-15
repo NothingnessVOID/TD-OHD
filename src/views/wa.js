@@ -381,7 +381,8 @@ export function mountWa(container, options = {}) {
     prepareDetailDialog(detail,'wa');
     detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
     detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
-    detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
+    // Fresh frames keep markup defaults (channel reading starts open); back navigation restores captured state.
+    if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
     openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();

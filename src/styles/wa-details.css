@@ -72,10 +72,8 @@
 .wa-detail-source[data-wa-side="personality"]::before,
 .wa-detail-source[data-wa-side="design"]::before { content: ''; width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--hd-birth-personality, var(--hd-personality)); }
 .wa-detail-source[data-wa-side="design"]::before { background: var(--hd-birth-design, var(--hd-design)); }
-.wa-detail-combinations { display: grid; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
-.wa-detail-combinations li { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 2fr); gap: 10px; }
-.wa-detail-combinations small { color: var(--text-secondary); font-size: 12px; }
-.wa-detail-combinations [data-wa-combination-right] { display: inline-block; margin-right: 8px; }
+.wa-detail-self-complete { display: grid; gap: 6px; }
+.wa-detail-self-complete h3 { margin: 0; }
 .wa-detail-compact { gap: 12px; font-size: 13px; }
 .wa-detail-compact .wa-detail-pair-row { gap: 8px; padding-bottom: 12px; }
 .wa-detail-compact .wa-detail-endpoint:not(.wa-detail-endpoint--flat) { padding: 8px 10px; }

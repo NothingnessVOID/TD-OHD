@@ -58,8 +58,9 @@ export function renderWaReading(id) {
 function pairReading(pair,gate=null) {
   const core=OC16_DEPARTMENTS.find(department=>department.id===pair.departmentId).pairs[0];
   const own=pair.role==='core'&&gate===null;
+  // Channel reading starts open so Wa资料 is visible without an extra click; department reading stays collapsed.
   return fold(own?'Wa UI channel reading':'Wa UI department reading',renderWaReading(core.channelId),
-    `data-wa-knowledge="${own?'wa':'wa-department'}" data-wa-content-id="${core.channelId}" data-wa-reading-for="${gate===null?pair.channelId:`gate:${gate}`}"`);
+    `${own?'open ':''}data-wa-knowledge="${own?'wa':'wa-department'}" data-wa-content-id="${core.channelId}" data-wa-reading-for="${gate===null?pair.channelId:`gate:${gate}`}"`);
 }
 
 /** Pure HTML only. Each method takes one fresh snapshot from the host's current scope. */
@@ -103,18 +104,9 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       `<article class="wa-detail-pair-row" data-pair-row="${pair.channelId}"><header class="wa-detail-row-heading"><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}"><strong>${pair.displayGates.join('–')}</strong></button><span>${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</span>${stateHtml(ctx.pairs.get(pair.channelId))}</header><div class="wa-detail-endpoints">${pair.displayGates.map(gate => `<div class="wa-detail-endpoint-cell">${gateActivationColumn(gate, ctx.pairs.get(pair.channelId)?.holdersByGate?.[gate], ctx)}</div>`).join('')}</div></article>`
     ).join('')}</div>`;
   }
-  function relationships(pair, record) {
-    // first/second belong to canonical result gates, never to the visual left/right positions.
-    const groups = new Map();
-    for (const combination of record?.complementaryMemberPairs || []) {
-      const membersByGate = new Map([[record.gates[0], combination.firstMemberId], [record.gates[1], combination.secondMemberId]]);
-      const left = membersByGate.get(pair.displayGates[0]), right = membersByGate.get(pair.displayGates[1]);
-      if (!groups.has(left)) groups.set(left, []);
-      groups.get(left).push(right);
-    }
-    const combinations = groups.size ? `<p class="wa-detail-note">${pair.displayGates.join(' ↔ ')}</p><ul class="wa-detail-combinations">${[...groups].map(([left, rights]) => `<li data-wa-combination-left="${esc(left)}" data-wa-left-gate="${pair.displayGates[0]}" data-wa-right-gate="${pair.displayGates[1]}"><span><small>${pair.displayGates[0]}</small> ${person(left, nameOf, markerOf)}</span> <span aria-hidden="true">↔</span> <span><small>${pair.displayGates[1]}</small> ${rights.map(right => `<span data-wa-combination-right="${esc(right)}">${person(right, nameOf, markerOf)}</span>`).join(' ')}</span></li>`).join('')}</ul>`
-      : `<p>${Array.isArray(record?.complementaryMemberPairs) ? text('Wa detail none') : unknown()}</p>`;
-    return `<section class="wa-detail-relationships"><h3>${text('Wa detail relationships')}</h3><h4>${text('OC16 covered by one')}</h4><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none', markerOf)}</div><h4>${text('Wa detail combinations')}</h4>${combinations}</section>`;
+  /** Self-complete members only — cross-member who-pairs-with-whom lists were removed as redundant. */
+  function selfCompleteBlock(record) {
+    return `<section class="wa-detail-self-complete"><h3>${text('OC16 covered by one')}</h3><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none', markerOf)}</div></section>`;
   }
   function channelCard(pair,ctx) {
     const record=ctx.pairs.get(pair.channelId);
@@ -144,9 +136,9 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       const pair = pairs.find(row => row.channelId === channelId);
       if (!pair) return '';
       const ctx = context(), record = ctx.pairs.get(channelId);
-      // Flat endpoints match department rows: no bordered gate cards; activations always visible.
+      // Flat endpoints match department rows; self-complete sits near the top; reading opens by default.
       const flat = `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
-      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2><p class="wa-detail-note">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>${stateHtml(record)}${flat}${relationships(pair, record)}${pairReading(pair)}</section>`;
+      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2><p class="wa-detail-note">${text(`OC16 ${pair.departmentId}`)} · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>${stateHtml(record)}${selfCompleteBlock(record)}${flat}${pairReading(pair)}</section>`;
     },
     renderGate(input) {
       const gate = Number(input), pair = pairs.find(row => row.gates.includes(gate));
