@@ -320,6 +320,7 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
   assert.match(waCss, /\.wa-gate-chip-bg\s*\{/);
-  assert.match(waCss, /\.wa-dept-title-bg\s*\{/);
+  assert.match(waCss, /\.wa-dept-title-rule\s*\{/);
+  assert.doesNotMatch(waCss, /\.wa-dept-title-bg\s*\{/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });

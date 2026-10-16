@@ -11,7 +11,7 @@ export function waStateSymbol(state, size = 22) {
   return renderPentaStateSymbol(state, {size});
 }
 
-/** Fixed board: six tube rows; v2 soft chips outside focus rings; dept titles in a wider left column. */
+/** Fixed board: six tube rows; v2 soft chips outside focus rings; dept titles as strong type (no frame). */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   VIEW_WIDTH: 600, ROW_HEIGHT: 94, LEFT_GATE: 272, RIGHT_GATE: 430,
   NODE_R: 15, TUBE_H: 8.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
@@ -32,10 +32,8 @@ export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   CHIP_GAP: 28,
   CHIP_H: 22,
   CHIP_PAD_X: 10,
-  /** Left column for department title chips (exclusive of gate chips). */
-  TITLE_X: 14,
-  TITLE_CHIP_H: 28,
-  TITLE_PAD_X: 12
+  /** Left column for department titles (exclusive of gate chips). */
+  TITLE_X: 14
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
@@ -97,16 +95,20 @@ function renderGateChip(gate, x, y, sideIndex, focusR) {
   return `<g class="wa-gate-chip" data-wa-gate-chip="${gate}" aria-hidden="true"><rect class="wa-gate-chip-bg" x="${fmt(chipX)}" y="${fmt(chipY)}" width="${w}" height="${h}" rx="${h / 2}"/><text class="wa-gate-chip-text" x="${fmt(tx)}" y="${fmt(y + 4.2)}" text-anchor="middle">${esc(label)}</text></g>`;
 }
 
-/** Department title as a stronger left title chip + secondary state line (clear of gate chips). */
+/** Department title: typography + short accent rule (no frame chip); status line clear below. */
 function renderDeptTitle(departmentId, state, fill, y) {
   const name = t(`OC16 ${departmentId}`);
   const sub = t(`Wa UI line ${state}`);
-  const textW = estimateTextWidth(name, { cjk: 15, ascii: 8.2, soft: 6 });
-  const w = Math.max(48, Math.ceil(textW + G.TITLE_PAD_X * 2));
-  const h = G.TITLE_CHIP_H;
   const x = G.TITLE_X;
-  const chipY = y - h / 2 - 2;
-  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" aria-hidden="true"><rect class="wa-dept-title-bg" x="${x}" y="${fmt(chipY)}" width="${w}" height="${h}" rx="8"/><rect class="wa-dept-title-accent" x="${x}" y="${fmt(chipY + 5)}" width="3" height="${h - 10}" rx="1.5"/><text class="wa-diagram-name" x="${fmt(x + w / 2 + 1)}" y="${fmt(y + 1.5)}" text-anchor="middle">${esc(name)}</text><text class="wa-diagram-sub" data-fill="${fill}" x="${x}" y="${fmt(y + 22)}">${esc(sub)}</text></g>`;
+  // Title sits above the tube midline; status baseline stays well below title descenders + rule.
+  const nameY = y - 10;
+  const ruleY = nameY + 6;
+  const subY = y + 18;
+  const textW = estimateTextWidth(name, { cjk: 15.5, ascii: 8.2, soft: 6 });
+  // letter-spacing on .wa-diagram-name (~0.14em) widens the painted title beyond glyph estimate.
+  const letterExtra = Math.max(0, [...String(name)].length - 1) * 2.4;
+  const ruleW = Math.max(28, Math.ceil(textW + letterExtra));
+  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" aria-hidden="true"><text class="wa-diagram-name" x="${x}" y="${fmt(nameY)}">${esc(name)}</text><line class="wa-dept-title-rule" x1="${x}" y1="${fmt(ruleY)}" x2="${fmt(x + ruleW)}" y2="${fmt(ruleY)}"/><text class="wa-diagram-sub" data-fill="${fill}" x="${x}" y="${fmt(subY)}">${esc(sub)}</text></g>`;
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.
