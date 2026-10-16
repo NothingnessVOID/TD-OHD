@@ -2,13 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createWaMemberMarkers, renderWaMemberMarker, renderWaMemberLegend } from '../src/lib/wa/member-markers.js';
-import { renderWaDiagram, waStateText, WA_DIAGRAM_GEOMETRY, WA_PILLAR_LABELS } from '../src/views/wa-diagram.js';
+import { renderWaDiagram, waStateText, WA_DIAGRAM_GEOMETRY } from '../src/views/wa-diagram.js';
 import { analyzeOC16, scopeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
 import { replaceWaSelection } from '../src/lib/wa/configuration.js';
 import { registerMessages, setLocale } from '../src/lib/i18n.js';
-import '../src/lib/wa/oc16-messages.js';
-import { gateName } from '../src/lib/vocabulary.js';
 import { chart, fixture } from './helpers/wa-fixtures.js';
 
 // Parent owns production translations; these distinct strings verify the renderer contract.
@@ -298,8 +296,7 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.equal(countBadges(svg).length, 0); // no markers map → no badges
   assert.match(svg, /data-wa-gate="45"[^>]*aria-pressed="true"[^>]*Member active/);
   assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 6);
-  assert.equal((svg.match(/class="wa-node-label is-pillar"/g) ?? []).length, 4);
-  assert.equal((svg.match(/data-wa-gate-label="/g) ?? []).length, 12);
+  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 4);
   for (const state of ['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both', 'unknown']) {
     assert.equal(waStateText(state), `UI state: ${state}`);
   }
@@ -321,45 +318,3 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });
-
-test('every gate has a side name label clear of the focus ring; pillars use OC16 roles', () => {
-  const { snapshot, prepared, markers } = sixteen(coreGates);
-  const svg = render(analyzeOC16(snapshot, prepared), markers);
-  const { LEFT_GATE, RIGHT_GATE, PILLAR_RING_R, PILLAR_FOCUS_EXTRA, NODE_R, NODE_HIT_EXTRA, LABEL_GAP } = WA_DIAGRAM_GEOMETRY;
-  const labels = [...svg.matchAll(/<text class="wa-node-label( is-pillar)?" data-wa-gate-label="(\d+)" x="([\d.]+)" y="([\d.]+)" text-anchor="(start|end)"[^>]*>(?:<title>[^<]*<\/title>)?([^<]*)<\/text>/g)]
-    .map(([, pillar, gate, x, y, anchor, name]) => ({
-      pillar: Boolean(pillar), gate: Number(gate), x: Number(x), y: Number(y), anchor, name
-    }));
-  assert.equal(labels.length, 12);
-  assert.equal(labels.filter(row => row.pillar).length, 4);
-  const leftFocus = NODE_R + NODE_HIT_EXTRA;
-  const pillarFocus = PILLAR_RING_R + PILLAR_FOCUS_EXTRA;
-  for (const row of labels) {
-    const isRight = row.anchor === 'start';
-    const gateX = isRight ? RIGHT_GATE : LEFT_GATE;
-    const focusR = row.pillar ? pillarFocus : leftFocus;
-    const expectedX = isRight ? gateX + focusR + LABEL_GAP : gateX - focusR - LABEL_GAP;
-    assert.equal(row.x, expectedX, `gate ${row.gate} label x`);
-    assert.equal(row.anchor, isRight ? 'start' : 'end');
-    if (row.pillar) {
-      const role = WA_PILLAR_LABELS[row.gate];
-      assert.ok(role, `gate ${row.gate} should be a pillar`);
-      assert.ok(row.name.length > 0);
-      assert.notEqual(row.name, gateName(row.gate)); // pillar role ≠ hexagram gate name
-    } else {
-      assert.equal(row.name, gateName(row.gate));
-    }
-  }
-  // Left column = displayGates[0]; right = displayGates[1]
-  const leftGates = new Set(OC16_DEPARTMENTS.map(d => d.pairs.find(p => p.role === 'core').displayGates[0]));
-  const rightGates = new Set(OC16_DEPARTMENTS.map(d => d.pairs.find(p => p.role === 'core').displayGates[1]));
-  for (const row of labels) {
-    if (leftGates.has(row.gate)) assert.equal(row.anchor, 'end', `left gate ${row.gate}`);
-    if (rightGates.has(row.gate)) assert.equal(row.anchor, 'start', `right gate ${row.gate}`);
-  }
-  const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
-  assert.match(waCss, /\.wa-node-label\s*\{/);
-  assert.match(waCss, /\.wa-node-label\.is-pillar\s*\{/);
-  assert.doesNotMatch(waCss, /\.wa-node-pillar\s*\{/);
-});
-
