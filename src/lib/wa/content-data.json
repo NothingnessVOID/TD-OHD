@@ -1,0 +1,827 @@
+[
+  {
+    "id": "wa.topic.penta-and-wa",
+    "objectType": "wa-topic",
+    "objectId": "penta-and-wa",
+    "name_original": "Penta and Wa",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "S09",
+      "GAP01",
+      "WV2_IHDS_SOCIOLOGY"
+    ],
+    "semantics": {
+      "scope": "group-structure",
+      "configuration": "manual",
+      "natalInterpretation": false
+    },
+    "limitations": [
+      "组织阅读框架不等于实证绩效模型。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "Penta与Wa：从小组协作到跨组组织",
+        "summary": "Penta聚焦三至五人的小组协作；Wa把注意力扩展到多个小组之间的方向、资源、沟通与统筹关系。",
+        "detail": "在人类图的群体框架中，Penta是三至五人构成的小组单位，关注这组人共同呈现的工作方式。Wa把视角移到多个小组怎样组成更大的组织：各组完成自己的任务，同时需要共同方向、资源协调，以及能够在组间流动的信息。个体图、小组图与组织布局由此承担不同的阅读任务。\n\n可以用一次联合活动来理解：一组准备内容，一组安排场地，一组协调参与者。各组内部的配合属于小组层面；场地改变如何影响内容安排，参与人数如何影响资源分配，则需要组织层面的沟通。Alpha统筹者负责让这些决定彼此衔接，保持各组与整体目标的联系。\n\n使用模块时，先把成员安排到实际协作的小组，再为各组选择基础、扩展或协调角色。图表覆盖提供可观察的结构信息，组名、职责和统筹关系则由组织参与者明确填写。这样可以同时看见每个小组的边界与组间联系，避免把所有成员合成一张图后丢失真实分工。"
+      },
+      "zh-Hant": {
+        "name": "Penta與Wa：從小組協作到跨組組織",
+        "summary": "Penta聚焦三至五人的小組協作；Wa將注意力擴展到多個小組之間的方向、資源、溝通與統籌關係。",
+        "detail": "在人類圖的群體框架中，Penta是三至五人構成的小組單位，關注這組人共同呈現的工作方式。Wa將視角移到多個小組如何組成更大的組織：各組完成自己的任務，同時需要共同方向、資源協調，以及能在組間流動的資訊。個體圖、小組圖與組織布局因此承擔不同的閱讀任務。\n\n可以用一次聯合活動理解：一組準備內容，一組安排場地，一組協調參與者。各組內部的配合屬於小組層面；場地變更如何影響內容安排，參與人數如何影響資源分配，則需要組織層面的溝通。Alpha統籌者負責讓這些決定彼此銜接，保持各組與整體目標的聯繫。\n\n使用模組時，先將成員安排到實際協作的小組，再為各組選擇基礎、擴展或協調角色。圖表覆蓋提供可觀察的結構資訊，組名、職責與統籌關係則由組織參與者明確填寫。如此可同時看見各小組的邊界與組間聯繫，避免將所有成員合成一張圖後失去真實分工。"
+      },
+      "en": {
+        "name": "Penta and Wa: From Teamwork to Organization",
+        "summary": "Penta describes a working group of three to five. Wa extends the view to direction, resources, communication and coordination between groups.",
+        "detail": "Within the Human Design group framework, a Penta is a small group of three to five people considered as a working unit. Its reading concerns the combination that those people bring together. A Wa view expands the frame: several groups carry out their own work while participating in shared direction, resource decisions and communication. Individual charts, group coverage and an organization layout therefore answer different questions.\n\nConsider a joint event with one team developing the content, another arranging the venue and another coordinating participants. Cooperation inside each team belongs to the small-group view. A venue change that affects the program, or a change in attendance that affects resources, requires communication across the organization. The Alpha is the designated coordinator who keeps these decisions connected to the overall purpose.\n\nStart by placing people in the groups in which they actually collaborate. Then assign each group a foundational, expansion or coordinating role. Chart coverage supplies observable structural information; names, responsibilities and reporting relationships come from an explicit configuration made by the participants. Keeping those layers separate makes the layout useful for discussion. It preserves both the identity of each team and the connections between teams, rather than losing the actual division of work in one undifferentiated group chart."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.scale-and-template",
+    "objectType": "wa-topic",
+    "objectId": "scale-and-template",
+    "name_original": "OC16 Structure and Scale",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "GAP01",
+      "S07",
+      "S08",
+      "GAP02",
+      "S09",
+      "S14"
+    ],
+    "semantics": {
+      "standardTemplate": "three-pentas-plus-alpha",
+      "pentaMin": 3,
+      "pentaMax": 5,
+      "explorationTemplate": "observation",
+      "explorationExample": "two-pentas",
+      "observationGroupRange": [
+        0,
+        3
+      ],
+      "formationThreshold": null
+    },
+    "limitations": [
+      "人数口径对应不同情境；布局合规不宣称跨能量场已经形成。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "规模与16命名：用布局理解人数",
+        "summary": "OC16以三个五人小组加一位统筹者解释16这一名称。模块按当前人数与配置条件显示布局，不用单一人数判断群体现象。",
+        "detail": "OC是Organizing Channels的缩写。BG5公开文章以三个各三至五人的小组配合一位Alpha统筹者描述组织结构，并用三个五人组加一人解释OC16的名称。16因此提供一个满员模板的参照；阅读布局时，还应看小组是否成形、成员是否重复，以及统筹者如何计入总人数。\n\n标准Wa模板设置三个Penta，每组严格三至五人，并另行指定一位不在这三组内的Alpha。按这个产品配置，总人数为十至十六人。九人以上、十人以上及超过五人的表述，在公开材料中分别用于群体概述、认证课程与咨询服务范围；十五名学生与十六人现场则是活动案例的不同计数对象。\n\n探索模式可以先建立两个Penta，观察未来的扩展安排。界面同时显示去重后的总人数、每组人数、Alpha状态，以及当前布局满足哪些条件。三组与统筹者尚未配置齐全时，可以继续保存和比较方案，只需标明探索布局。人数和配置提示由此成为组织设计的信息，而不会把边界争议变成阻止使用的门槛。"
+      },
+      "zh-Hant": {
+        "name": "規模與16命名：用布局理解人數",
+        "summary": "OC16以三個五人小組加一位統籌者解釋16這個名稱。模組依目前人數與配置條件顯示布局，不以單一人數判定群體現象。",
+        "detail": "OC是Organizing Channels的縮寫。BG5公開文章以三個各三至五人的小組配合一位Alpha統籌者描述組織結構，並以三個五人組加一人解釋OC16的名稱。16因此提供滿員模板的參照；閱讀布局時，也應看小組是否成形、成員是否重複，以及統籌者如何計入總人數。\n\n標準Wa模板設置三個Penta，每組嚴格三至五人，另行指定一位不在這三組內的Alpha。按照這個產品配置，總人數為十至十六人。九人以上、十人以上及超過五人的表述，在公開材料中分別用於群體概述、認證課程與諮詢服務範圍；十五名學生與十六人現場則是活動案例的不同計數對象。\n\n探索模式可先建立兩個Penta，觀察未來的擴展安排。介面同時顯示去重後的總人數、每組人數、Alpha狀態，以及目前布局符合哪些條件。三組與統籌者尚未配置齊全時，仍可保存和比較方案，並標明探索布局。人數與配置提示因此成為組織設計資訊，不會讓邊界爭議阻止使用。"
+      },
+      "en": {
+        "name": "Scale and the OC16 Name: Read the Layout",
+        "summary": "The OC16 name is explained through three groups of five plus an Alpha. The module displays headcount and layout conditions without declaring a universal formation threshold.",
+        "detail": "OC stands for Organizing Channels. A public BG5 explanation describes three groups of three to five working with an Alpha, and explains the name OC16 through three full groups plus that additional person. Sixteen is therefore a reference for the full template. Reading a layout also requires checking group size, duplicate membership and how the coordinator is counted.\n\nThe standard template in this product contains three Pentas, each with three to five members, and one separately assigned Alpha outside those groups. Under these explicit configuration rules, its total is ten to sixteen people. Public references also use nine or more for a broad group description, ten or more for certification scope and more than five for a consulting service. The immersion's fifteen students and sixteen people in the room count different participants.\n\nExploration mode permits a two-Penta arrangement for considering expansion. The interface should show distinct people, each group's membership count, the Alpha assignment and the conditions currently satisfied. An unfinished standard configuration can still be saved and compared as an exploratory layout. This makes numbers informative during organization design while leaving the unresolved formation question outside the validator. A valid layout means that the chosen template's conditions are met; it is not a measurement of an invisible group phenomenon."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.penta-roles",
+    "objectType": "wa-topic",
+    "objectId": "penta-roles",
+    "name_original": "Foundational, Expansion and Coordinating Penta",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "S07",
+      "PDF_BG5_BROCHURE",
+      "WAS2_BG5_S2",
+      "WAS2_MANUAL2"
+    ],
+    "semantics": {
+      "roles": [
+        "foundation",
+        "expansion",
+        "coordinating"
+      ],
+      "roleAssignment": "manual",
+      "automaticGateRoleMapping": false,
+      "roleMeaningStatus": "confirmed_source_statement",
+      "roleTaskMappingStatus": "editorial_inference",
+      "roleAssignmentInputs": [
+        "businessPurpose",
+        "workAreas",
+        "tasksThatBelongTogether",
+        "demand",
+        "skillset"
+      ],
+      "fixedDepartmentMapping": false
+    },
+    "limitations": [
+      "角色解释为编辑性组织阅读，不构成通道到管理层级的判定公式。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "三组角色：从业务构造基础、扩展与协调Penta",
+        "summary": "三组角色属于OC16的发展构造。先说明业务、需求和应放在一起的工作，再为Penta选择基础、扩展或协调角色。",
+        "detail": "OC16公开课程将基础Penta、扩展Penta与协调Penta放在一条发展路径中：建立基础组，观察成长与扩展，再建立协调组。角色表达的是组在整体构造中的位置；把基础组称为生产部、扩展组称为销售部，或把协调组等同行政部，都会过早固定实际分工。\n\n第二学期的公开作业提供了更具体的起点：说明业务是什么，怎样分成三部分，哪些工作应当放在一起，需求在哪里，以及需要什么技能组合。然后才讨论适合这些工作的缺口配置。例如同样是服务机构，新的需求可能来自交付量、客户接触或内部支持，扩展组承接的内容就会不同。三个角色应随组织问题说明，而非只凭名称安排人员。\n\n使用模块时，为每组填写工作范围、需求与需要交出的结果，再手动选择角色并配置成员。组角色与管理职位分别记录，基础与扩展也不表示地位高低。重组时保存业务分解和角色变更理由，让比较同时呈现图表覆盖与真实分工；这样才能看见一个组为何被建立，以及它与其他组有什么依赖。"
+      },
+      "zh-Hant": {
+        "name": "三組角色：從業務構造基礎、擴展與協調Penta",
+        "summary": "三組角色屬於OC16的發展構造。先說明業務、需求及應放在一起的工作，再為Penta選擇基礎、擴展或協調角色。",
+        "detail": "OC16公開課程將基礎Penta、擴展Penta與協調Penta放在一條發展路徑中：建立基礎組，觀察成長與擴展，再建立協調組。角色表達的是小組在整體構造中的位置；將基礎組稱為生產部、擴展組稱為銷售部，或將協調組等同行政部，都會過早固定實際分工。\n\n第二學期公開作業提供更具體的起點：說明業務是什麼、如何分成三部分、哪些工作應放在一起、需求在哪裡，以及需要何種技能組合。接著才討論適合這些工作的缺口配置。例如同樣是服務機構，新需求可能來自交付量、客戶接觸或內部支持，擴展組承接的內容便會不同。三種角色應隨組織問題說明，不宜只憑名稱安排人員。\n\n使用模組時，為每組填寫工作範圍、需求與需要交出的成果，再手動選擇角色並配置成員。組角色與管理職位分別記錄，基礎及擴展也不表示地位高低。重組時保存業務分解與角色變更理由，讓比較同時呈現圖表覆蓋和真實分工，看見一個組為何成立，以及與其他組有何依賴。"
+      },
+      "en": {
+        "name": "Three Penta Roles: Start with the Work",
+        "summary": "Foundation, expansion and coordination describe positions in an OC16 development process. Establish the work, demand and required skills before assigning those roles.",
+        "detail": "The public OC16 curriculum places the Foundational, Expansion and Coordinating Penta in a development sequence: establish the foundation, consider growth and expansion, then build coordination. These roles describe positions in the overall construct. Treating them automatically as production, sales and administration would fix the division of work before the organization has been examined.\n\nThe Semester 2 project provides a more concrete starting point. Describe the business, how its work separates into three areas, what belongs together, where demand arises and which skillsets are needed. Gap configuration is then considered in relation to that work. Two service organizations may face very different demands: increased delivery volume, more contact with customers or greater internal support. Their expansion groups need not perform identical activities simply because they share a role label.\n\nIn the module, describe each group's work area, demand and intended output before manually choosing a role and placing members. Keep the group role separate from management position; foundation and expansion do not establish personal rank. When reorganizing, preserve the work breakdown and the reason for changing a role. A comparison can then display both chart coverage and the actual division of responsibilities, making it clear why a group exists and how its work depends on the others."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.alpha",
+    "objectType": "wa-topic",
+    "objectId": "alpha",
+    "name_original": "Alpha",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "GAP01",
+      "S07",
+      "PDF_BG5_BROCHURE",
+      "WAS2_BG5_S3",
+      "WAS2_LAVEENA_COLOR"
+    ],
+    "semantics": {
+      "alphaAssignment": "manual",
+      "alphaSeparateInStandardTemplate": true,
+      "typeRequirement": null,
+      "channelRequirement": null,
+      "alphaAssignmentStatus": "manual",
+      "alphaLockStatus": "unsupported_algorithm",
+      "alphaLockConfirmed": null,
+      "consultationFields": [
+        "specificProblem",
+        "personalManagementNotes",
+        "keyAllies",
+        "communicationPlan"
+      ]
+    },
+    "limitations": [
+      "本地投射者文字作为背景；不转换成类型限制。7–31名称与Wa角色分开。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "Alpha统筹者：从具体问题建立沟通方案",
+        "summary": "Alpha工作从一个真实组织问题展开，连接个人管理、三组配置、关键盟友与持续沟通。手动指定角色不等于完成Alpha Lock判断。",
+        "detail": "OC16第三学期的公开项目要求与一个十人以上、由Alpha提出具体问题的组织合作。工作先建立信任与团队描述，再看统筹者的个人管理、基础团队管理，以及其受到的Wa影响和沟通方式。这个顺序让Alpha成为有具体处境的负责人，避免只把名字放在组织图顶端便视为分析完成。\n\n后续工作将三Penta与缺口配置、关键盟友、沟通线和持续辅导连在一起。例如一项决定总在组间交接时失去重点，可以分别记录统筹者希望解决的问题、谁能帮助解释信息、哪些小组需要接收，以及之后如何检查理解是否一致。盟友在这里是围绕任务明确的人际支持关系，不能由某条通道自动指定。\n\n模块保留人工Alpha选择，并可附加问题、盟友与沟通计划。个人7–31名称、45–21管理主题和实际授权分别显示。Alpha Lock是另一个需有机制条件支持的概念，当前角色配置不能显示为锁定已确认；个人动机等咨询备注也应与覆盖数据分栏，让结构工具准确表达自己已经完成的工作。"
+      },
+      "zh-Hant": {
+        "name": "Alpha統籌者：從具體問題建立溝通方案",
+        "summary": "Alpha工作從真實組織問題展開，連接個人管理、三組配置、關鍵盟友及持續溝通。手動指定角色不等於完成Alpha Lock判斷。",
+        "detail": "OC16第三學期公開專案要求與一個十人以上、由Alpha提出具體問題的組織合作。工作先建立信任和團隊描述，再看統籌者的個人管理、基礎團隊管理，以及其受到的Wa影響和溝通方式。這個順序使Alpha成為有具體處境的負責人，避免只把姓名放在組織圖頂端便視為分析完成。\n\n後續工作將三Penta與缺口配置、關鍵盟友、溝通線及持續輔導連在一起。例如一項決定總在組間交接時失去重點，可分別記錄統籌者想解決的問題、誰能協助解釋資訊、哪些小組需要接收，以及之後如何檢查理解是否一致。盟友在此是圍繞任務明確的人際支持關係，不能由某條通道自動指定。\n\n模組保留人工Alpha選擇，可附加問題、盟友及溝通計畫。個人7–31名稱、45–21管理主題與實際授權分別顯示。Alpha Lock是另一個需要機制條件支持的概念，目前角色配置不能顯示為鎖定已確認；個人動機等諮詢註記也應與覆蓋資料分欄，讓結構工具準確表達已完成的工作。"
+      },
+      "en": {
+        "name": "Alpha: Build Communication Around a Specific Problem",
+        "summary": "Alpha work begins with a concrete organizational problem and connects personal management, team configuration, key allies and ongoing communication. Assignment is distinct from Alpha Lock.",
+        "detail": "The public OC16 Semester 3 project asks students to work with an organization of ten or more whose Alpha has a specific problem to address. It begins with trust and a team description, then considers personal management, basic team management, the Alpha's experience of Wa dynamics and their way of communicating. This makes the leader a person in a particular situation rather than a name placed at the top of a finished diagram.\n\nSubsequent work connects the three-Penta construct and Gap configuration with key allies, communication lines and continuing support. If a decision repeatedly loses its meaning during handoffs, record the problem the Alpha wants to solve, who can help communicate it, which groups need the information and how shared understanding will be checked afterwards. Allies are explicit relationships around the task, not people automatically selected by one channel.\n\nThe module retains manual Alpha selection and can attach the problem, allies and communication plan. The personal 7–31 name, the 45–21 Management theme and actual authority remain separate. Alpha Lock requires its own mechanical conditions; assigning a coordinator must not display it as confirmed. Consultation notes about personal motivation should also remain separate from coverage data, so the structural tool accurately represents the work it has actually performed."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.gapping",
+    "objectType": "wa-topic",
+    "objectId": "gapping",
+    "name_original": "Gapping",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "S09",
+      "S07",
+      "PDF_BG5_BROCHURE",
+      "GAP02",
+      "WAS2_BG5_S2",
+      "WAS2_BG5_S3"
+    ],
+    "semantics": {
+      "gapAnnotation": "manual",
+      "automaticGapDiagnosis": false,
+      "coverageIsGap": false,
+      "gapIntentStages": [
+        "wish_list",
+        "configured",
+        "observed"
+      ],
+      "gapIntentAssignment": "manual",
+      "triggeringStatus": "unsupported_algorithm",
+      "skillsetToGapRule": null
+    },
+    "limitations": [
+      "图表覆盖缺失与业务技能缺失分开；无自动最少缺口分组。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "Gapping缺口配置：从业务需求到工作焦点",
+        "summary": "缺口配置先问业务需要什么，再讨论希望形成怎样的焦点。愿望清单、实际成员配置与合作观察应分别记录。",
+        "detail": "Wa讲述把Gap联系到群体注意力的去向，OC16课程则将这种关注推进到组织工程。第二学期的公开作业要求先理解业务、工作归组、需求与技能组合，再提出适合该组合的Gap愿望清单。这给缺口配置一个明确方向：围绕要完成的工作说明意图，而不是先寻找图上所有空白。\n\n例如一组承担对外展示，可以先记录希望完成的交付、需要的支持，以及咨询者希望观察的焦点。希望形成的缺口主题属于方案意图，实际成员进入后形成什么覆盖属于结构记录，合作中反复出现什么问题则属于观察结果。三层信息并列，才能知道某项判断来自计划、图表还是经验，而不会把理想安排误认为已经发生。\n\n模块可将人工缺口说明标为愿望清单、已配置或已观察，并保留目标技能与变更理由。官方作业还要求考虑单任务与多任务人员，这里可填写实际工作方式，但不凭激活数量自动分类。图表未覆盖不直接生成技能不足诊断；缺口选择、触发与消除的公式也不由这些业务问题代替。"
+      },
+      "zh-Hant": {
+        "name": "Gapping缺口配置：從業務需求到工作焦點",
+        "summary": "缺口配置先問業務需要什麼，再討論希望形成何種焦點。願望清單、實際成員配置與合作觀察應分別記錄。",
+        "detail": "Wa講述將Gap連到群體注意力的去向，OC16課程則把這種關注推進至組織工程。第二學期公開作業要求先理解業務、工作歸組、需求與技能組合，再提出適合該組合的Gap願望清單。這讓缺口配置有了明確方向：圍繞要完成的工作說明意圖，而非先尋找圖上所有空白。\n\n例如一組承擔對外展示，可先記錄預期交付、需要的支持，以及諮詢者希望觀察的焦點。希望形成的缺口主題屬於方案意圖，實際成員加入後形成何種覆蓋屬於結構紀錄，合作中反覆出現什麼問題則屬於觀察結果。三層資訊並列，才能辨認判斷來自計畫、圖表還是經驗，不把理想安排誤認為已經發生。\n\n模組可將人工缺口說明標為願望清單、已配置或已觀察，保留目標技能與變更理由。官方作業也要求考慮單任務和多任務人員，此處可填寫實際工作方式，不依啟動數量自動分類。圖表未覆蓋不直接產生技能不足診斷；缺口選擇、觸發及消除公式也不由這些業務問題代替。"
+      },
+      "en": {
+        "name": "Gapping: From Business Demand to a Working Focus",
+        "summary": "Gap configuration begins with the work and required skills. Keep the desired focus, actual membership configuration and subsequent observations as distinct records.",
+        "detail": "The Wa lecture associates a Gap with the direction of group attention. OC16 training takes that concern into organizational engineering. Its public Semester 2 project first asks about the business, which work belongs together, where demand lies and which skillset is required. Only then does it ask for a wish list of suitable Gaps. This gives configuration a purpose grounded in the work rather than starting with every blank position on a chart.\n\nFor a group responsible for presenting results publicly, record its intended output, required support and the focus a consultant proposes to observe. The desired Gap theme belongs to the plan. Coverage produced by the actual members belongs to the structural record. Questions that recur during collaboration belong to experience. Keeping these layers together but distinguishable shows whether an interpretation came from intention, chart data or observation.\n\nManual Gap notes can therefore be marked as a wish list, configured or observed, with the target skillset and reason for changes retained. The official assignment also asks about single-tasking and multitasking employees. Actual working arrangements can be recorded without classifying people from activation counts. Uncovered positions do not automatically diagnose missing skills. Likewise, these business questions do not supply an algorithm for selecting, triggering or removing a Gap; they structure the human work around those questions."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.powerbases",
+    "objectType": "wa-topic",
+    "objectId": "powerbases",
+    "name_original": "Powerbases",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "S07",
+      "PDF_BG5_BROCHURE",
+      "WV2_IHDS_SOCIOLOGY",
+      "WAS2_BG5_S1",
+      "WAS2_LAVEENA_COLOR",
+      "WAS2_BG5_S3"
+    ],
+    "semantics": {
+      "powerbaseAssignment": "manual",
+      "automaticPowerbaseScore": false,
+      "communicationThemes": [
+        "management",
+        "competition",
+        "direction",
+        "innovation",
+        "interaction",
+        "logic"
+      ],
+      "analysisScope": "coverage-only",
+      "powerbaseMembershipStatus": "unsupported_algorithm",
+      "powerbaseMembers": null,
+      "powerbaseDataAvailability": "not_available",
+      "businessSupportNotesArePowerbase": false,
+      "personalConsultationLayer": "manual-separate"
+    },
+    "limitations": [
+      "不提供未经正文确认的Powerbase成员通道表或权重。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "Powerbases力量基础：区分专业结构与业务支持",
+        "summary": "力量基础是组织通道的专业结构课题。课程对45与21分别讨论力量基础，提醒我们不能把六主题、资源清单与力量基础成员表混为一谈。",
+        "detail": "BG5具体课程为各组织通道安排力量基础教学，并在管理部分分别讨论45及其力量基础、21及其力量基础。因此阅读时应保留部门、通道与端点层次，不能仅把所有激活合并成六个数字，就视为完成了力量基础分析。六条主题清单说明研究入口，完整组成还需要相应结构资料。\n\n在实际组织讨论中，时间、预算、经验与联系人都可以帮助某组开展工作，但这些属于业务支持记录。它们可以与图表并排查看，却不应被标作Powerbase的通道成员或权重。教师LaVeena Archers还把个人动机和跨组关系纳入OC16咨询；本模块把这类个人解释保留在独立人工备注中，不由覆盖数量替代。\n\n界面先显示已经掌握的通道覆盖与来源成员。若专业力量基础组成未提供，应显示资料未提供，而不是零分、空集合或无力量基础。业务支持与个人咨询说明分别保存，便于日后补入有来源的结构。这样既能继续使用当前布局，又能清楚辨认哪些内容是已算出的覆盖，哪些仍是由人填写的组织观察。"
+      },
+      "zh-Hant": {
+        "name": "Powerbases力量基礎：區分專業結構與業務支持",
+        "summary": "力量基礎是組織通道的專業結構課題。課程對45和21分別討論力量基礎，提醒我們不能混同六主題、資源清單與力量基礎成員表。",
+        "detail": "BG5具體課程為各組織通道安排力量基礎教學，管理部分更分別討論45及其力量基礎、21及其力量基礎。因此閱讀時應保留部門、通道及端點層次，不能只把所有啟動合併成六個數字，便視為完成力量基礎分析。六主題清單說明研究入口，完整組成仍需相應結構資料。\n\n在實際組織討論中，時間、預算、經驗及聯絡人都可協助小組工作，但它們屬於業務支持紀錄。這些資料可與圖表並排查看，不應標作Powerbase的通道成員或權重。教師LaVeena Archers也將個人動機和跨組關係納入OC16諮詢；本模組把這類個人解釋保留在獨立人工註記中，不以覆蓋數量替代。\n\n介面先顯示已掌握的通道覆蓋與來源成員。若未提供專業力量基礎組成，應顯示資料未提供，不是零分、空集合或無力量基礎。業務支持與個人諮詢說明分別保存，便於日後補入有來源的結構。如此既可繼續使用目前布局，也能清楚辨認哪些是已算出的覆蓋，哪些仍由人填寫的組織觀察。"
+      },
+      "en": {
+        "name": "Powerbases: Separate Structural Knowledge from Business Support",
+        "summary": "Powerbases are a specialized structural subject. Separate lessons on 45 and 21 show why six themes, ordinary resources and Powerbase membership tables must remain distinguishable.",
+        "detail": "The detailed BG5 schedule gives each organizing channel dedicated Powerbase study. Within Management it separately addresses gate 45 and its Powerbase, then gate 21 and its Powerbase. A reading should therefore preserve department, channel and endpoint levels. Combining all activations into six totals does not amount to a completed Powerbase analysis. The theme list provides entry points; the complete composition requires the corresponding structural information.\n\nTime, budget, experience and contacts can all support a group's actual work. These belong to business-support notes, which can be viewed beside a chart without being labeled as Powerbase channel members or weights. Teacher LaVeena Archers also includes personal motivation and relationships between groups in her account of OC16 consulting. Such personal interpretation stays in a separate manual layer rather than being replaced by a coverage count.\n\nThe interface should first display the channel coverage and contributing members it can actually establish. If a professional Powerbase membership table has not been supplied, show information not available instead of a zero, an empty set or an absent Powerbase. Keep business support and personal consultation notes separate so sourced structural information can be added later. The current layout remains usable while readers can distinguish computed coverage from the organizational observations entered by people."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.membership",
+    "objectType": "wa-topic",
+    "objectId": "membership",
+    "name_original": "Membership and Change",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "S09",
+      "GAP01"
+    ],
+    "semantics": {
+      "membershipAssignment": "manual",
+      "memberIdentity": "stable-id",
+      "standardTemplateOverlap": false,
+      "changeComparison": "coverage-and-explicit-structure"
+    },
+    "limitations": [
+      "结构变化与实际效果分别记录，不预测成员替换的绩效影响。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "成员归属与变化：保留每次配置的真实结构",
+        "summary": "相同人数可以构成不同小组。清楚记录成员身份、所属Penta与统筹角色，才能准确比较新增、退出、替换和调组。",
+        "detail": "Wa布局首先是一份明确的成员配置。每个人使用稳定身份标识，Penta保留自己的成员名单，Alpha单独记录。标准模板中，同一人只属于一个Penta，统筹者也不重复计入组内。这样显示的总人数来自真实成员去重，而每组人数说明当前是否满足三至五人的配置条件。\n\n成员变化至少有四种：增加一人、移除一人、用另一人替换，以及将同一人调到另一组。它们对总人数和组内覆盖的影响可能不同。S09的现场讲述中，学生说明自己替换了另一位成员后，讲者修正了对该Penta变化的判断，这提醒我们保留实际发生的变更，而不只看人数是否相同。\n\n比较方案时，界面可并列显示成员进出、组别调整、覆盖改变和人工角色变更，并保留使用者填写的调整理由。例如两组交换成员后，总人数不变，但各组的覆盖及交接安排值得重新查看。观察记录可在实际合作后补充，让结构对比与真实经验相互参照，而不由一次图表变化预言团队表现。"
+      },
+      "zh-Hant": {
+        "name": "成員歸屬與變化：保留每次配置的真實結構",
+        "summary": "相同人數可以構成不同小組。清楚記錄成員身分、所屬Penta與統籌角色，才能比較新增、退出、替換及調組。",
+        "detail": "Wa布局首先是一份明確的成員配置。每人使用穩定身分標識，Penta保留自己的成員名單，Alpha另行記錄。標準模板中，同一人僅屬於一個Penta，統籌者也不重複計入組內。因此總人數來自真實成員去重，各組人數則說明目前是否符合三至五人的配置條件。\n\n成員變動至少有四種：新增一人、移除一人、以另一人替換，以及將同一人調至另一組。它們對總人數與組內覆蓋的影響可能不同。S09現場講述中，學生說明自己替換了另一位成員後，講者修正了對該Penta變化的判斷，提醒我們保存實際發生的變更，而非只看人數是否相同。\n\n比較方案時，介面可並列顯示成員進出、組別調整、覆蓋改變與人工角色變更，並保留使用者填寫的調整理由。例如兩組交換成員後，總人數不變，但各組覆蓋及交接安排值得重新查看。觀察紀錄可在實際合作後補充，讓結構比較與真實經驗相互參照，不以一次圖表變化預言團隊表現。"
+      },
+      "en": {
+        "name": "Membership and Change: Preserve the Actual Configuration",
+        "summary": "Equal headcounts can describe different groups. Stable identities, explicit Penta membership and a separate coordinator record make changes understandable.",
+        "detail": "A Wa layout begins with an explicit membership configuration. Each person has a stable identity, every Penta has its own member list, and the Alpha is recorded separately. In the standard template, a person belongs to one Penta and the coordinator is not counted again inside a group. The overall number therefore represents distinct people, while each group count indicates whether the three-to-five condition is satisfied.\n\nThere are at least four different changes: adding someone, removing someone, replacing one person with another, and moving the same person between groups. These can affect headcount and coverage differently. In the S09 immersion excerpt, a student explains that he replaced another participant, prompting the speaker to correct a statement about the Penta. The example makes the actual change worth preserving instead of recording only whether the number stayed constant.\n\nA comparison view can show arrivals, departures, group moves, coverage differences and manually changed roles, together with the reason entered for the adjustment. If two groups exchange members, the total stays the same while their coverage and handoff arrangements may need another look. Observations can be added after the people work together. This connects an explicit structural comparison with actual experience without predicting performance from a chart difference or treating a proposed configuration as a measured outcome."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.topic.extension-and-context",
+    "objectType": "wa-topic",
+    "objectId": "extension-and-context",
+    "name_original": "Organizational Extension and Context",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-body+editorial-synthesis",
+    "sourceRefs": [
+      "GAP01",
+      "WV2_IHDS_SOCIOLOGY"
+    ],
+    "semantics": {
+      "contextOptions": [
+        "business",
+        "family",
+        "community"
+      ],
+      "organizationUnits": "explicit",
+      "recursiveFormula": null
+    },
+    "limitations": [
+      "无固定Gene Pool人数公式；跨单元链接表示实际安排，不自动推导更高阶Wa。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "组织扩展与家商语境：让结构适应真实合作",
+        "summary": "更大的组织可以包含多个OC16分组或部门。家庭、商业与社群各有目的，使用共同结构语言时，应保留不同的责任和沟通方式。",
+        "detail": "BG5公开文章说明，组织成长时可以建立更多OC16分组或部门。扩展视图因此关注多个单元之间的关系：哪些任务由各单元独立承担，哪些资源需要共享，哪些信息必须跨单元传递。单个模板的十六人满员配置，不是整间企业或整个社群的人数上限。\n\nIHDS将Wa放在家族、商业和大型社会环境中讨论。商业团队可能围绕交付、预算和客户组织沟通；家庭可能围绕照顾、共同活动与日常安排；社群则可能关注参与、公共事务和轮值责任。使用同一张结构图时，组名与职责可以随情境改变，避免把公司职位直接套到亲属或志愿者身上。\n\n产品可先建立多个明确命名的组织单元，再由人填写协作联系、共享事项与负责沟通的人。例如两个服务团队各有自己的小组安排，同时通过共同活动计划保持联系。新增单元时，保留原有成员配置，并说明联系如何变化。扩展依据实际组织决定进行，不依一个递归人数公式自动生成层级，也不把更多人数当作更高价值。"
+      },
+      "zh-Hant": {
+        "name": "組織擴展與家商語境：讓結構適應真實合作",
+        "summary": "較大的組織可包含多個OC16分組或部門。家庭、商業與社群各有目的，使用共同結構語言時，應保留不同責任與溝通方式。",
+        "detail": "BG5公開文章說明，組織成長時可建立更多OC16分組或部門。擴展視圖因此關注多個單元間的關係：哪些任務由各單元獨立承擔，哪些資源需要共享，哪些資訊必須跨單元傳遞。單一模板的十六人滿員配置，不是整間企業或整個社群的人數上限。\n\nIHDS將Wa放在家族、商業與大型社會環境中討論。商業團隊可能圍繞交付、預算及客戶組織溝通；家庭可能圍繞照顧、共同活動及日常安排；社群則可能關注參與、公共事務與輪值責任。使用同一張結構圖時，組名和職責可隨情境改變，避免將公司職位直接套在親屬或志工身上。\n\n產品可先建立多個明確命名的組織單元，再由人填寫協作聯繫、共享事項與負責溝通的人。例如兩個服務團隊各有小組安排，並透過共同活動計畫保持聯繫。新增單元時保留原有成員配置，說明聯繫如何改變。擴展依實際組織決定進行，不以遞迴人數公式自動生成層級，也不把更多人數視為更高價值。"
+      },
+      "en": {
+        "name": "Extension and Context: Fit the Structure to the Collaboration",
+        "summary": "Larger organizations may contain multiple OC16 groupings or departments. Family, business and community settings share structural questions while retaining different purposes.",
+        "detail": "A public BG5 article explains that more OC16 groupings or departments can be created as an organization grows. An extended view therefore concerns relationships between units: which tasks remain local, which resources are shared and which information must cross the boundary. The full sixteen-person configuration of a single template is not a headcount ceiling for an entire enterprise or community.\n\nIHDS discusses Wa in clan-family, business and wider social settings. A business may organize communication around delivery, budgets and customers. A family may focus on care, shared activities and everyday arrangements. A community may be concerned with participation, public matters and rotating responsibilities. Group names and duties should follow the setting rather than transferring corporate job titles directly onto relatives or volunteers.\n\nThe product can begin with several explicitly named units and let participants describe their collaboration links, shared concerns and contact people. Two service teams, for example, may maintain their own membership arrangements while coordinating a joint program. Adding a unit should preserve earlier configurations and record how the connections have changed. Extension follows an actual organizational decision; it does not require an automatic recursive headcount formula. The resulting view helps people navigate the collaboration that exists, without suggesting that a larger structure has greater human value or must be preferable for everyone involved."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.communication.45-21",
+    "objectType": "wa-communication",
+    "objectId": "45-21",
+    "name_original": "The 45-21: Management",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "S07",
+      "GAP01",
+      "DEV_HDB_MANAGEMENT",
+      "WAS2_BG5_S1",
+      "WAS2_MANUAL1",
+      "WAS2_BG5_S3"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        45,
+        21
+      ],
+      "theme": "management",
+      "labelOriginal": "Management",
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "alphaEligibility": null,
+      "canonicalChannelId": "21-45",
+      "sourceGateOrder": [
+        45,
+        21
+      ],
+      "facets": [
+        "education",
+        "implementation",
+        "tension-points"
+      ],
+      "facetAssignmentStatus": "editorial_inference",
+      "endpointPowerbaseScope": [
+        45,
+        21
+      ],
+      "endpointPowerbaseMembers": null,
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "algorithmStatus": "unsupported_algorithm",
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "45–21 Management｜管理、教育与实施",
+        "summary": "管理主题连接共同资源、教育与实施。除了决定怎样分配，还要让各组理解安排，并观察从说明到行动之间的张力。",
+        "detail": "45–21在Wa中以Management为主题。BG5具体课程把它与张力点、教育，以及45和21各自的力量基础联系起来；原教材商品介绍另列教育与实施。这使管理阅读从资源分配扩展到安排怎样被说明、理解和落实。教育在此可作为组织中传达目的、方法与边界的讨论入口，实施则关注各组怎样承接已经确认的安排。\n\n例如基础组与扩展组共享预算，除了确定额度，还需要说明为什么这样安排、哪些决定可由组内处理、何种变化应返回统筹讨论。如果通知已经发出，行动却持续偏离，可以分别查看说明是否被理解、执行条件是否齐备，以及责任是否有人承接。把这些环节分开，有助于看见管理中的具体张力。\n\n模块可为管理主题保存说明、实施责任与反馈记录，并显示45和21的覆盖来源。课程分别讨论两端的力量基础，不表示已取得其完整成员表，也不宜把教育固定分给45、实施固定分给21。实际权限、负责人和Alpha仍由人确认；覆盖变化用于结构比较，不自动推出管理能力或职位。"
+      },
+      "zh-Hant": {
+        "name": "45–21 Management｜管理、教育與實施",
+        "summary": "管理主題連接共同資源、教育及實施。除了決定如何分配，也要讓各組理解安排，並觀察從說明到行動間的張力。",
+        "detail": "45–21在Wa中以Management為主題。BG5具體課程將它與張力點、教育，以及45和21各自的力量基礎連在一起；原教材商品介紹另列教育與實施。這使管理閱讀從資源分配擴展到安排如何被說明、理解與落實。教育在此可作為組織傳達目的、方法和邊界的討論入口，實施則關注各組如何承接已確認的安排。\n\n例如基礎組與擴展組共用預算，除了決定額度，也需說明為何如此安排、哪些決定可在組內處理、何種變化應回到統籌討論。若通知已經發出，行動卻持續偏離，可分別查看說明是否被理解、執行條件是否齊備，以及責任是否有人承接。將環節分開，有助看見管理中的具體張力。\n\n模組可保存管理說明、實施責任及回饋紀錄，顯示45和21的覆蓋來源。課程分別討論兩端力量基礎，不表示已取得完整成員表，也不宜將教育固定分給45、實施固定分給21。實際權限、負責人及Alpha仍由人確認；覆蓋變化供結構比較，不自動推出管理能力或職位。"
+      },
+      "en": {
+        "name": "45–21 Management: Education and Implementation",
+        "summary": "Management connects resources with education and implementation. Groups need to understand an arrangement as well as act on it, making the tensions between explanation and action visible.",
+        "detail": "Management is the Wa theme for 45–21. The detailed BG5 course schedule connects it with tension points, education and separate study of gate 45 and gate 21 with their respective Powerbases. The original-manual catalog also lists education and implementation. This expands the reading beyond resource allocation into how an arrangement is explained, understood and carried out. Education offers a discussion of shared purpose, methods and boundaries; implementation concerns how groups take up the confirmed arrangement.\n\nWhen foundational and expansion groups share a budget, setting amounts is only one step. Participants also need to understand the reason for the allocation, which choices belong within each group and which changes should return to the coordinator. If announcements are clear but action repeatedly diverges, consider understanding, available implementation conditions and actual responsibility separately. This makes specific management tensions easier to discuss.\n\nThe module can retain explanations, implementation responsibilities and feedback alongside coverage of gates 45 and 21. Studying their Powerbases separately does not provide the complete membership sets, nor does it justify automatically assigning education to 45 and implementation to 21. Actual authority, contacts and the Alpha remain human assignments. Coverage changes support structural comparison without becoming a calculation of management talent or an instruction to appoint someone to a position."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  },
+  {
+    "id": "wa.communication.51-25",
+    "objectType": "wa-communication",
+    "objectId": "51-25",
+    "name_original": "The 51-25: Competitiveness",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "GAP01",
+      "S07",
+      "WAS2_BG5_S1"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        51,
+        25
+      ],
+      "theme": "competition",
+      "labelOriginal": "Competitiveness",
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "canonicalChannelId": "25-51",
+      "sourceGateOrder": [
+        51,
+        25
+      ],
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "不把竞争主题推成忠诚、勇气、护卫或胜负能力的个人评分。",
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "51–25 Competitiveness｜竞争",
+        "summary": "竞争主题关注组织如何回应挑战、比较方案并调动投入。清楚的共同目标与竞争边界，能让不同小组的差异进入有用的讨论。",
+        "detail": "51–25的Competitiveness对应已由BG5官方具体课表确认，课程同时讨论其力量基础；产品介绍以competition概括该主题。放在组织层面，可以观察挑战从哪里出现、各组怎样回应，以及比较是否围绕共同目标进行。竞争可能发生在面对外部机会时，也可能体现在组间提出不同方案、争取资源或展示成果的过程中。\n\n例如两个小组都提出活动方案，可以先约定比较的是服务目标、所需支持和可检验的结果，再说明谁汇总信息、谁作决定、落选方案的有用部分如何保留。GAP01将组间竞争放在组织沟通的讨论中；本模块据此把竞争作为可被明确表达的关系，而不把激烈对抗本身当作理想状态。\n\n界面可为这条主题记录挑战、参与组、比较条件与后续反馈，并并列显示51和25的覆盖情况。谁代表某组、谁支持哪个提议，由实际选择填写。阅读时关注不同意见如何进入共同工作，避免仅凭通道覆盖推断某人必然忠于领导、擅长进攻或适合特定职位。"
+      },
+      "zh-Hant": {
+        "name": "51–25 Competitiveness｜競爭",
+        "summary": "競爭主題關注組織如何回應挑戰、比較方案及調動投入。清楚的共同目標與競爭邊界，讓不同小組的差異進入有用的討論。",
+        "detail": "51–25的Competitiveness對應已由BG5官方具體課表確認，課程也討論其力量基礎；產品介紹以competition概括此主題。放在組織層面，可觀察挑戰從哪裡出現、各組如何回應，以及比較是否圍繞共同目標進行。競爭可能發生在面對外部機會時，也可能呈現在組間提出不同方案、爭取資源或展示成果的過程。\n\n例如兩個小組都提出活動方案，可先約定比較的是服務目標、所需支持與可檢驗的結果，再說明誰彙整資訊、誰作決定、未採用方案中的有用部分如何保留。GAP01把組間競爭放在組織溝通的討論中；本模組據此將競爭作為可明確表達的關係，不把激烈對抗本身當成理想狀態。\n\n介面可記錄挑戰、參與組、比較條件及後續回饋，並列顯示51與25的覆蓋。誰代表某組、誰支持哪項提議，由實際選擇填寫。閱讀時關注不同意見如何進入共同工作，避免僅憑覆蓋推斷某人必然忠於領導、擅長進攻或適合特定職位。"
+      },
+      "en": {
+        "name": "51–25 Competitiveness",
+        "summary": "Competitiveness concerns how an organization responds to challenges, compares alternatives and mobilizes participation. Shared aims give differences between groups a useful setting.",
+        "detail": "The detailed BG5 schedule confirms 51–25 as Competitiveness and pairs it with Powerbase study; the product overview uses competition for the theme. At an organizational level, the reading can consider where a challenge arises, how groups respond and whether comparisons remain connected to a common purpose. Competition may concern an external opportunity, or appear when teams propose alternatives, request resources or present the results of their work.\n\nIf two groups propose different events, begin by agreeing what is being compared: the intended benefit, support required and outcomes that can be examined. Identify who gathers information, who decides and how useful elements of the unselected proposal can be retained. GAP01 discusses competition between groups within its account of organizational communication. This module develops that context as an explicit relationship to explore, rather than treating stronger confrontation as inherently better.\n\nA theme note can record the challenge, participating groups, comparison conditions and subsequent feedback, with coverage of gates 51 and 25 displayed beside it. Who represents a group or supports a proposal is entered from actual choices. The practical focus is how differences become part of shared work. Chart coverage does not establish personal loyalty, courage, aggression or fitness for a particular position, and it should not be used to rank those qualities among members."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    },
+    "revisionVersion": "penta-wa-development-v2"
+  },
+  {
+    "id": "wa.communication.2-14",
+    "objectType": "wa-communication",
+    "objectId": "2-14",
+    "name_original": "The 2-14: Direction",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "S07",
+      "WAS2_BG5_S1"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        2,
+        14
+      ],
+      "theme": "direction",
+      "labelOriginal": "Direction",
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "canonicalChannelId": "2-14",
+      "sourceGateOrder": [
+        2,
+        14
+      ],
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "同编号也出现在Penta；本条仅解释Wa跨组方向，不复用个人天赋或资源保证。",
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "2–14 Direction｜方向",
+        "summary": "方向主题将各组正在做的事放回共同目标，关注投入往哪里去、先做什么，以及局部选择如何与整体进程保持联系。",
+        "detail": "2–14在Wa沟通框架中以Direction为标签，BG5具体课表也用14–2确认同一对闸门及其力量基础课题。虽然同一编号也出现在Penta讨论中，此处着眼于跨组方向：当不同小组各自推进任务时，组织如何保持对目标、优先顺序和资源去向的共同理解。方向不只是一句愿景，也体现在眼前愿意投入时间与精力的选择中。\n\n例如基础组需要稳定服务，扩展组希望进入新领域，协调组则看到时间表已经拥挤。方向讨论可把三种信息放在一起，明确本阶段优先维持什么、试验什么，以及哪些事情暂缓。它帮助各组理解彼此的选择，使局部任务能够对应到同一段组织进程，而非各自追逐互不相连的目标。\n\n在模块中，可以为Direction写下阶段目标、涉及的小组、资源安排与回看时间，并查看2和14在当前配置中的覆盖。目标与任务顺序由人确认，覆盖不承诺财富、正确道路或领导资格。比较方案时，重点查看各组是否仍能解释自己的工作与共同目标的关系，以及方向改变后哪些联系需要同步更新。"
+      },
+      "zh-Hant": {
+        "name": "2–14 Direction｜方向",
+        "summary": "方向主題將各組正在做的事放回共同目標，關注投入往哪裡去、先做什麼，以及局部選擇如何與整體進程保持聯繫。",
+        "detail": "2–14在Wa溝通框架中以Direction為標籤，BG5具體課表也以14–2確認同一對閘門與其力量基礎課題。雖然同一編號也出現在Penta討論，此處著眼於跨組方向：不同小組各自推進任務時，組織如何保持對目標、優先順序與資源去向的共同理解。方向不只是一句願景，也體現在眼前願意投入時間及精力的選擇中。\n\n例如基礎組需要穩定服務，擴展組希望進入新領域，協調組則看見時間表已經擁擠。方向討論可把三種資訊放在一起，明確本階段優先維持什麼、試驗什麼，以及哪些事情暫緩。它協助各組理解彼此選擇，使局部任務對應同一段組織進程，避免各自追逐互不相連的目標。\n\n模組可為Direction寫下階段目標、涉及小組、資源安排及回看時間，並查看2與14在目前配置中的覆蓋。目標和任務順序由人確認，覆蓋不保證財富、正確道路或領導資格。比較方案時，可查看各組是否仍能說明自己的工作與共同目標的關係，以及方向改變後哪些聯繫需要同步更新。"
+      },
+      "en": {
+        "name": "2–14 Direction",
+        "summary": "Direction connects what each group is doing to a shared purpose. It concerns where effort goes, what takes priority and how local choices fit the organization's current stage.",
+        "detail": "In the Wa communication framework, 2–14 carries the label Direction. The detailed BG5 schedule confirms the same pair as 14–2 and includes its Powerbase. The same pair also appears in Penta material, but this entry addresses direction across groups: how people maintain a shared understanding of aims, priorities and resource commitments while different teams pursue their own tasks. Direction is expressed not only in an ambition but also in the choices that receive time and attention now.\n\nFor example, the foundational group may need continuity of service, the expansion group may want to enter a new field, and the coordinating group may see an already crowded schedule. A Direction discussion brings those observations together. It clarifies what should be sustained, what can be tested and what will wait during this stage. Local assignments can then relate to the same organizational process instead of developing into disconnected priorities.\n\nThe module can attach a current objective, involved groups, resource arrangements and a review date to this theme, alongside coverage of gates 2 and 14. People confirm the objective and sequence of work. Coverage promises neither wealth nor a correct path, and it does not appoint a strategist. When comparing configurations, examine whether each team can explain how its work relates to the shared aim and which connections must be updated when that aim changes."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    },
+    "revisionVersion": "penta-wa-development-v2"
+  },
+  {
+    "id": "wa.communication.3-60",
+    "objectType": "wa-communication",
+    "objectId": "3-60",
+    "name_original": "The 3-60: Innovation",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "S07",
+      "WAS2_BG5_S1",
+      "WAS2_MANUAL1"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        3,
+        60
+      ],
+      "theme": "innovation",
+      "labelOriginal": "Innovation",
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "canonicalChannelId": "3-60",
+      "sourceGateOrder": [
+        3,
+        60
+      ],
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "不由覆盖预测创新能力、突变时点或项目成功率。",
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "3–60 Innovation｜创新",
+        "summary": "创新主题关注新做法怎样进入已有组织：需要改变什么、保留什么，试验如何获得支持，以及结果怎样反馈给其他小组。",
+        "detail": "3–60在Wa中保留Innovation标签，BG5具体课表确认该编号并安排其力量基础课程。组织层面的创新，需要让新的可能与现有安排发生联系。阅读这条沟通主题时，可以观察新提议如何被提出，哪些限制需要说明，以及谁会受到改变的影响。它提供讨论更新的入口，让提出想法、试验做法与组织接纳之间的过程更清楚。\n\n例如扩展组想尝试新的服务流程，而基础组必须维持当日交付。创新讨论可先明确试验范围、可用时间、不能中断的工作，以及什么结果值得继续。协调组帮助安排交接，Alpha统筹者处理需要整体同意的事项。试验完成后，既要记录新方法带来的变化，也要说明哪些原有安排仍然有用。\n\n在模块中，可为Innovation添加提议、参与组、限制条件和回看记录，并与3和60的覆盖并排查看。通道覆盖不等于某人一定擅长研发，也不会决定何时必须改变。比较不同配置时，重点是新信息是否有入口、试验是否有明确边界，以及经验能否转化为各组都理解的后续安排。"
+      },
+      "zh-Hant": {
+        "name": "3–60 Innovation｜創新",
+        "summary": "創新主題關注新做法如何進入既有組織：需要改變什麼、保留什麼，試驗如何取得支持，以及結果如何回饋其他小組。",
+        "detail": "3–60在Wa中保留Innovation標籤，BG5具體課表確認此編號並安排其力量基礎課程。組織層面的創新，需要讓新的可能與現有安排產生聯繫。閱讀此溝通主題時，可觀察新提議如何提出、哪些限制需要說明，以及誰會受到改變影響。它提供討論更新的入口，讓提出想法、試驗做法與組織接納間的過程更清楚。\n\n例如擴展組想嘗試新的服務流程，基礎組卻必須維持當日交付。創新討論可先明確試驗範圍、可用時間、不能中斷的工作，以及什麼結果值得繼續。協調組協助安排交接，Alpha統籌者處理需要整體同意的事項。試驗完成後，既記錄新方法帶來的變化，也說明哪些原有安排仍然有用。\n\n模組可為Innovation加入提議、參與組、限制條件與回看紀錄，並與3及60的覆蓋並排查看。覆蓋不代表某人一定擅長研發，也不決定何時必須改變。比較配置時，可注意新資訊是否有入口、試驗是否有明確邊界，以及經驗能否成為各組都理解的後續安排。"
+      },
+      "en": {
+        "name": "3–60 Innovation",
+        "summary": "Innovation concerns how new approaches enter an existing organization: what changes, what is retained, how a trial is supported and how its results reach other groups.",
+        "detail": "The Wa label for 3–60 is Innovation, confirmed by the detailed BG5 course schedule alongside study of its Powerbase. At an organizational level, an emerging possibility needs a relationship with the arrangements already in place. Reading this communication theme means looking at how a proposal is raised, which constraints are made explicit and who will be affected by a change. It creates a way to discuss the passage from an idea through a trial to a possible shared practice.\n\nSuppose the expansion group wants to try a new service process while the foundational group must maintain daily delivery. An Innovation discussion can establish the trial's scope, available time, work that must continue and results that would justify another step. The coordinating group can arrange handoffs, while the Alpha addresses matters requiring agreement across the whole layout. Afterwards, the record should include both what the experiment changed and which existing arrangements remain useful.\n\nThe module can attach a proposal, participating groups, constraints and review notes to Innovation, alongside coverage of gates 3 and 60. Coverage neither identifies a guaranteed inventor nor determines when change must occur. When comparing configurations, examine whether new information has an entry point, whether experimentation has clear boundaries and whether experience can become a subsequent arrangement understood by the groups that need to use it."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    },
+    "revisionVersion": "penta-wa-development-v2"
+  },
+  {
+    "id": "wa.communication.59-6",
+    "objectType": "wa-communication",
+    "objectId": "59-6",
+    "name_original": "The 59-6: Interaction",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "S07",
+      "GAP01",
+      "WAS2_BG5_S1",
+      "WAS2_BG5_S3"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        59,
+        6
+      ],
+      "theme": "interaction",
+      "labelOriginal": "Interaction",
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "canonicalChannelId": "6-59",
+      "sourceGateOrder": [
+        59,
+        6
+      ],
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "不复述个人亲密或生殖解读；不以覆盖推断关系意愿或情绪能力。",
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "59–6 Interaction｜互动",
+        "summary": "互动主题关注组与组怎样建立联系、交流需求并处理边界。明确联系人和交接方式，有助于把组织中的接触变成可持续合作。",
+        "detail": "59–6的Interaction对应已由BG5具体课表确认，第三学期另设互动沟通线课程。此处阅读组织内外的互动关系。多个小组各有工作节奏，也需要知道怎样接近彼此、提出需求和回应变化。互动主题让这些接触成为可以说明的安排：谁先联系谁，哪些信息需要共享，哪些事情应留在各组自行处理。\n\n例如参与者向一个小组提出问题，但解决它需要另一组的信息。有效的互动记录应让人看见接收者、转交对象、必要说明和回应方式，减少消息在组间失去归属的情况。如果双方出现摩擦，可以先辨认是需求不清、时间安排不同，还是职责边界尚未约定，再决定如何沟通，而不急于把问题归因于某个人。\n\n模块可将Interaction连接到实际联系人、组间交接与反馈记录，并显示59和6的覆盖来源。这些信息帮助观察联系如何发生，不决定成员应该亲近谁，也不评价谁更有社交或情绪能力。阅读重点是合作入口是否清楚、边界是否被理解，以及关系变化后原有沟通安排是否需要更新。"
+      },
+      "zh-Hant": {
+        "name": "59–6 Interaction｜互動",
+        "summary": "互動主題關注組與組如何建立聯繫、交換需求並處理邊界。明確聯絡人和交接方式，可讓組織中的接觸成為持續合作。",
+        "detail": "59–6的Interaction對應已由BG5具體課表確認，第三學期另設互動溝通線課程。此處閱讀組織內外的互動關係。多個小組各有工作節奏，也需知道如何接近彼此、提出需求及回應變化。互動主題讓這些接觸成為可說明的安排：誰先聯繫誰、哪些資訊需要共享，以及哪些事情留在各組自行處理。\n\n例如參與者向一個小組提出問題，解決它卻需要另一組的資訊。有效的互動紀錄應讓人看見接收者、轉交對象、必要說明與回應方式，減少訊息在組間失去歸屬。若雙方出現摩擦，可先辨認是需求不清、時間安排不同，還是職責邊界尚未約定，再決定如何溝通，不急著把問題歸因於某個人。\n\n模組可將Interaction連至實際聯絡人、組間交接與回饋紀錄，並顯示59和6的覆蓋來源。這些資訊協助觀察聯繫如何發生，不決定成員應親近誰，也不評價誰更有社交或情緒能力。閱讀重點是合作入口是否清楚、邊界是否被理解，以及關係改變後是否需要更新原有溝通安排。"
+      },
+      "en": {
+        "name": "59–6 Interaction",
+        "summary": "Interaction concerns how groups make contact, exchange needs and establish boundaries. Named contacts and clear handoffs turn encounters into workable collaboration.",
+        "detail": "The detailed BG5 schedule confirms 59–6 as Interaction, and Semester 3 includes its communication lines. Here the reading concerns relationships within and around an organization. Several groups can have different working rhythms while still needing ways to approach one another, make requests and respond to change. This theme makes contact arrangements explicit: who approaches whom, what information is shared and which matters remain within each group's responsibility.\n\nA participant may raise a question with one team that needs information held by another. A useful Interaction record identifies the initial recipient, the next contact, the explanation that should accompany the request and the way a response returns. This reduces the chance of a message losing ownership between teams. When friction appears, the discussion can examine unclear needs, different schedules or unagreed responsibilities before attributing the difficulty to an individual's character.\n\nIn the module, Interaction can connect actual contacts, group handoffs and feedback notes, with the coverage sources for gates 59 and 6 displayed alongside them. These records help people observe how contact occurs. They do not prescribe intimacy, infer willingness to form a relationship or rank social and emotional ability. The organizational focus is whether collaboration has a clear entry point, whether boundaries are understood and whether changed relationships require an update to the communication arrangements."
+      }
+    },
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    },
+    "revisionVersion": "penta-wa-development-v2"
+  },
+  {
+    "id": "wa.communication.27-50",
+    "objectType": "wa-communication",
+    "objectId": "27-50",
+    "name_original": "The 27-50: Logic",
+    "editorialStatus": "complete",
+    "releaseDecision": "editorial-ready",
+    "sourceStatus": "source-course-mapping+editorial-synthesis",
+    "sourceRefs": [
+      "WV2_THE_WA_SAMPLE",
+      "WV2_THE_WA_PRODUCT",
+      "S07",
+      "WAS2_BG5_S1",
+      "WAS2_BG5_S3"
+    ],
+    "semantics": {
+      "scope": "wa-communication",
+      "gatePair": [
+        27,
+        50
+      ],
+      "theme": "logic",
+      "labelOriginal": "Logic",
+      "natalCircuitReclassification": false,
+      "coverageOnly": true,
+      "automaticJobMapping": false,
+      "canonicalChannelId": "27-50",
+      "sourceGateOrder": [
+        27,
+        50
+      ],
+      "aliases": [
+        "Logical Enforcement"
+      ],
+      "labelEvidenceStatus": "confirmed_source_statement",
+      "explanationStatus": "editorial_inference",
+      "algorithmStatus": "unsupported_algorithm",
+      "enforcementIsPersonnelJudgment": false,
+      "fullMechanismEvidence": "not_available"
+    },
+    "limitations": [
+      "Logic保留Wa原标签，不改个人回路归属；流程示例为编辑综合，无智力或合规评分。",
+      "官方具体课表已确认编号与部门映射；完整课内机制未读，组织示例仍为编辑综合。"
+    ],
+    "locales": {
+      "zh-CN": {
+        "name": "27–50 Logic｜逻辑与落实",
+        "summary": "Logic在当前官方课程中也称Logical Enforcement，关注共同约定怎样被理解、遵循和落实，以及偏离安排时如何反馈与调整。",
+        "detail": "27–50保留The Wa中的Logic标签。BG5当前课程将这一主题写为Logical Enforcement，并专列相应沟通线课程。因此组织阅读既要看安排能否说明，也要看约定怎样进入共同工作：谁需要理解、由谁维持执行，以及实际偏离原安排时如何回应。这里的逻辑是Wa部门主题，不重新定义个人图的回路归属。\n\n例如多个小组共用场地，写出预约顺序只是第一步；还要明确谁确认预约、冲突时谁协调，以及临时变更怎样通知相关组。规则如果被不同小组各自解释，可以把具体事件带回讨论，区分约定本身不清、资源不足和交接遗漏，再决定是补充说明还是修改安排。这是对逻辑执行主题的组织化应用。\n\n模块可记录共同约定、执行联系人、例外和反馈时间，并与27及50的覆盖并排展示。观察的是约定在组织中的运行过程，不据覆盖判断成员是否守规矩、道德高低或适合审计职位。修订后保留旧约定及原因，帮助新成员理解当前做法，也让各组知道哪些改变已获得共同确认。"
+      },
+      "zh-Hant": {
+        "name": "27–50 Logic｜邏輯與落實",
+        "summary": "Logic在目前官方課程也稱Logical Enforcement，關注共同約定如何被理解、遵循與落實，以及偏離安排時如何回饋和調整。",
+        "detail": "27–50保留The Wa中的Logic標籤。BG5目前課程將此主題寫為Logical Enforcement，並專列相應溝通線課程。因此組織閱讀既要看安排能否說明，也要看約定如何進入共同工作：誰需要理解、由誰維持執行，以及實際偏離原安排時如何回應。此處邏輯是Wa部門主題，不重新定義個體圖的迴路歸屬。\n\n例如多個小組共用場地，寫出預約順序只是第一步；還需明確誰確認預約、衝突時誰協調，以及臨時變更如何通知相關組。若規則被不同小組各自解讀，可將具體事件帶回討論，區分約定不清、資源不足與交接遺漏，再決定補充說明或修改安排。這是邏輯執行主題的組織化應用。\n\n模組可記錄共同約定、執行聯絡人、例外及回饋時間，並與27和50的覆蓋並排展示。觀察的是約定在組織中的運作，不依覆蓋判斷成員是否守規矩、道德高低或適合稽核職位。修訂後保存舊約定與原因，協助新成員理解目前做法，也讓各組知道哪些改變已取得共同確認。"
+      },
+      "en": {
+        "name": "27–50 Logic: Logical Enforcement",
+        "summary": "Current official training also names this theme Logical Enforcement. It concerns how shared arrangements are understood, followed and maintained, including feedback when practice departs from them.",
+        "detail": "The 27–50 entry retains the Logic label from The Wa. Current BG5 training also uses Logical Enforcement and dedicates a communication lesson to that theme. An organizational reading therefore considers more than whether an arrangement can be explained: who needs to understand it, who maintains its implementation and how departures from the agreement are addressed. Logic here is a Wa department theme, not a reclassification of individual circuitry.\n\nIf several groups share a venue, writing a booking priority is only a beginning. The organization also needs to know who confirms reservations, who coordinates conflicts and how last-minute changes reach affected groups. When different teams interpret the arrangement differently, specific incidents can return to the discussion. Distinguish unclear agreements, resource shortages and missed handoffs before deciding whether explanation or revision is needed. This is an editorial application of the enforcement theme to everyday collaboration.\n\nThe module can record agreements, implementation contacts, exceptions and feedback dates beside coverage of gates 27 and 50. The observation concerns how an arrangement operates, not whether a member is morally reliable, compliant or suited to an audit position. Preserve the previous agreement and the reason for revision so new participants can understand current practice and every group can identify which changes have been jointly confirmed."
+      }
+    },
+    "revisionVersion": "penta-wa-development-v2",
+    "version": "penta-wa-development-v2",
+    "evidenceClassification": {
+      "sourceStatements": "confirmed_source_statement",
+      "practicalExamples": "editorial_inference",
+      "automaticProfessionalRules": "unsupported_algorithm"
+    }
+  }
+]

@@ -4,9 +4,9 @@ import { t } from '../i18n.js';
 import { variableDirection } from '../variable-arrows.js';
 import { esc } from '../format.js';
 import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
-import { centerName } from '../vocabulary.js';
+import { centerName, hexagramName } from '../vocabulary.js';
 
-const categoryLabels = { type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
+const categoryLabels = { penta:'Penta specific reading', type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
 const variableLabels = { overview:'Variable', determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
 const profileLabels = { rightAngle:'Right Angle · Personal destiny', juxtaposition:'Juxtaposition · Fixed destiny', leftAngle:'Left Angle · Transpersonal destiny' };
 const angleLabels = { right:profileLabels.rightAngle, left:profileLabels.leftAngle, juxtaposition:profileLabels.juxtaposition };
@@ -15,7 +15,7 @@ const slice = (slot, range) => textOf(slot).slice(range.start, range.end);
 const badge = (text, extra='') => `<span class="knowledge-badge${extra ? ' '+extra : ''}">${esc(text)}</span>`;
 const chips = values => `<div class="knowledge-chips">${values.map(value=>`<span class="knowledge-chip">${esc(value)}</span>`).join('')}</div>`;
 const surface = (title, body, id='') => `<section class="knowledge-surface"${id ? ` data-section="${id}"` : ''}>${title ? `<h3>${esc(title)}</h3>` : ''}${body}</section>`;
-function renderProse(slot, range=null) {
+export function renderProse(slot, range=null) {
   const text=range?slice(slot,range):textOf(slot);
   return text.split(/\n\n+/).filter(part=>part.trim()).map(part=>`<p>${resolveKnowledgeText(part,{rich:true}).replaceAll('\n','<br>')}</p>`).join('');
 }
@@ -57,7 +57,9 @@ function renderOverview(entry) {
 function renderHeader(entry) {
   const label=entry.objectType==='variable'?variableLabels[entry.properties.kind]:categoryLabels[entry.objectType];
   const name=entry.objectType==='profile'&&!entry.properties.publicOverview?`${entry.objectId} ${entry.name}`:entry.name;
-  return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>`;
+  const hexagram = entry.objectType === 'penta' && /^gate:\d+$/.test(entry.objectId)
+    ? `<p class="label-soft" data-penta-hexagram>${esc(hexagramName(Number(entry.objectId.slice(5))))}</p>` : '';
+  return `<div class="detail-label">${esc(t(label))}</div><h2 class="detail-name">${esc(name)}</h2>${hexagram}`;
 }
 function renderSummary(entry) {
   return entry.summary?`<aside class="knowledge-summary-callout"><div class="knowledge-summary-label">${esc(t('Overview'))}</div><p class="knowledge-summary knowledge-summary-text">${esc(entry.summary.content)}</p></aside>`:'';
@@ -159,6 +161,10 @@ function renderGeometry(entry) {
 /** One shared article renderer; object identity and explicit metadata select the visual structure. */
 export function renderKnowledgeDetail(query,{variableContext=null,definitionComponents=null,contextText=''}={}) {
   const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
+  return renderKnowledgeArticle(entry, {variableContext,definitionComponents,contextText});
+}
+/** Render an already resolved entry; callers may supply independently qualified slots. */
+export function renderKnowledgeArticle(entry,{variableContext=null,definitionComponents=null,contextText=''}={}) {
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
   const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
   const source=entry.objectType==='variable'&&!entry.properties.publicOverview?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;

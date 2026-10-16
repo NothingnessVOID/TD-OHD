@@ -70,6 +70,70 @@ Penta 的对象选中高亮绑定详情生命周期；关闭时清理点击选�
 
 闸门详情底部的关联通道状态复用完整通道详情的 `tl-activation-label`、`tl-detail-channel-status` 及出生来源类；出生完整通道沿用 `Birth activations`，其他来源和未完整文案保留原上下文判断。复用现有 CSS，不修改中心详情、回路标签、谐波入口、通道标题或持续时间布局。
 
+## Penta 内容包 v1 接入
+
+原有 `hd.penta.*` 21条身份扩充正文并追加8条机制，共29条（12门、6连接、11机制）。内容与来源登记保存在 `knowledge/content/penta-v1.json`，由原 `penta-foundation` 记录接口接入，结构证据与编辑审核分开。`knowledge/penta-reading-policy.js` 统一审查资格及独立摘要读取；公共 Knowledge 文章与安全段落渲染器承载正文，不新建资料弹窗系统。
+
+Team 增加一个 Penta 资料库入口，原背景区增加更多机制入口；资料库提供 Penta 知识及机制分类。图形、成员贡献及布局保持原实现，条目采用 Penta 专属名称，卦名复用 `hexagramName()`。Summary与Detail不互相回退，缺失／未知来源继续拒绝。
+
+## Wa v1 独立组织工作区
+
+`src/views/wa.js` 的 `mountWa()` 接入独立导航，复用 PeopleStore、现有出生图计算、Operation Dialog、Detail Dialog、公共安全段落、i18n 与 Skin Token。组织示意图仅表示手动 Alpha 与三个分组；六沟通主题及贡献独立显示，成员列表承担实际分配操作。
+
+`src/lib/wa/model.js` 与 `schema.json` 提供 refs-only 配置和标准／观察布局校验；`repository.js` 使用独立 IndexedDB 事务保存与恢复追加修订，不修改 TeamRepository v2。`analysis.js` 使用现有激活提取与 Penta 子组分析，Wa 六门对覆盖和 diff 单独计算；`content.js` 映射14篇三语资料与 canonical 门对，缺语种不回退。自动 Alpha、正式 Gap、Triggering、自动 Powerbases 和评分排名仍为明确未支持的扩展边界。
+
+## Penta / Wa v2 增量
+
+Penta 资料沿用原有 registry、独立 Summary/Detail 与严格语种读取，增至30条；Wa 仍14条。新增 Triggering 仅提供资料，不新增图形或算法。v1 身份及历史来源保留，当前正文使用独立 v2 来源记录。
+
+Wa 的人工记录折叠区复用既有表单、按钮、Operation Dialog 和 Skin Token；咨询、分组业务说明、Gap 意向、盟友及有向人工联系都经 `updateWaAnnotations()` 更新。文字输入保持原 DOM 节点，支持中文组合输入和原生撤销；引用清理确认绑定显示时的草稿快照与代次。恢复旧修订时使用同一确认弹窗提示注释差异。
+
+组内沟通和手动 Alpha 并入观察复用六主题卡片，作为两个独立范围呈现；贡献追踪只解释输入变化。`prepareWaMembers()` 是新增的输入准备边界，调用原出生图 provider，不复制算法。DB2 保留原 stores/history 并阻止旧客户端覆盖新字段，refs-only v1 不编辑新字段时保持旧契约。
+
+## Wa OC16 配置编辑器（preview-first 阶段一）
+
+`src/views/wa-composer.js` 提供 `openWaComposer({snapshot, peopleStore?, listTeams?, target?, mode?, validate?, onCommit, onClose?})`，返回 `{close,getDraft}`。`target` 是 `'alpha'` 或稳定 pentaId；`mode:'import'` 配合 pentaId 直接打开导入，默认 `'people'` 打开人物选择。`quickCommit:true` 让主页面目标入口一次确认即提交；完整编辑入口仍保留外层草稿。Alpha 使用可直接替换的单选，跨组占用继续明确拒绝。外层组织名称、Alpha 与 Penta A/B/C 卡片持有独立草稿，子选择器采用 Team 成熟的搜索、多选、显式确认原则；公共 Operation Dialog 负责嵌套、Escape、inert、焦点与滚动，公共 Person Editor 保存人物后返回原选择器。新增 `.wa-composer` scoped 样式使用 Skin Token，专属消息在 `composer-messages.js` 注册三语，不更改 Team 或主 Wa 消息。
+
+`src/lib/wa/configuration.js` 的 `replaceWaSelection(snapshot,patch,peopleMap,{confirmAnnotationCleanup})` 原子克隆后只映射 personId 至 Wa memberId，保留原成员池、组 ID 和全部未受影响的人工记录；跨目标冲突拒绝，不静默移动。`ensureWaComposerSlots()` 仅补缺失角色，`waPersonIdsFromTeamGroup()` 按已保存团队的 group 解析人物引用，不复制 Team memberId、birth 或 chart。单组最多五人，允许零至两人；Alpha 可空，不提供模式选择器。
+
+`validate()` 应捕获宿主对象与代次，组件在选择、清理确认后及提交前核对。`onCommit(next, {originalSnapshot,annotationChanges,isCurrent})` 只更新宿主草稿，返回 false 或抛错保留编辑器。每条 `annotationChanges` 包含 `{beforeSnapshot,issues}`；用户确认后才能清理失效引用，宿主负责保留历史。异步宿主回调应在最终更新前再次调用 `isCurrent()`。组件不调用 WaRepository，不触发整份组织保存，不删除人物资料。公共人物编辑器的保存独立于配置取消，并在 UI 中明示。
+
+## Wa / OC16 分析页（首轮视觉验收候选）
+
+旧 Wa 管理/人工表单界面由 `wa.js` 重做为顶部配置、左侧 Sticky 主图、右侧自然滚动分析。手机人员编组默认收起为摘要，图形与结果上下排布。`wa-diagram.js` 是纯 SVG 展示层，六条真实核心门对互不额外连接，四支柱仅加环标识；状态图例复用 `renderPentaStateSymbol()` 并补单端符号。支柱、核心和支持门对都通过公共 Detail Dialog 展示具体成员/行星/人格设计/爻来源，并接现有 gate/hexagram 词汇与共享知识阅读。
+
+`oc16-catalog.js` 固定用户提供的6部门、32门对、64门一次性分区；`oc16-analysis.js` 复用既有 `collectPair`、激活提取和 Penta 分析。预览仅对原快照验证后的运行时副本使用 observation，标准状态与覆盖统计分离，不回写模式。`analysis.js` 原算法唯一变化是导出既有 collector。
+
+Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保留，修订/备份集中在打开组织的次级界面；已确认清理前的临时配置可在当前页面实例导出，已保存历史不会被删除。新首轮浏览器用例为 `wa-oc16-preview-e2e.mjs`，完整矩阵及旧固定源码审计的后继适配等待用户视觉确认。
+
+## Wa / OC16 第二轮：范围与贡献详情
+
+`resolveWaViewScope()` 只映射查看范围和成员身份：全组织固定含 Alpha，切到任一组默认不含 Alpha，当前范围及人数用于图形、概览、详情同一条数据链。`nav.team` / `nav.organization` 是独立导航文案，不覆盖页面内 Penta、Wa 专业名称。
+
+`createWaDetailRenderer({getResult,nameOf})` 为部门门对行、部门/通道/闸门详情和紧凑图下摘要复用纯展示函数；`renderActivationRows()` 按 memberId 分组但保留每条行星/侧别/门爻记录。端点直接消费已有 holders/gateRecords，跨成员组合先按 canonical gate 归属再转换展示顺序，不重新计算或补组合。人格/设计来源使用出生图的 `--hd-birth-*` 色点/边框和 `--source-birth*-text` 可读文字Token，随Skin、自定义颜色实时更新。
+
+公共 Detail Dialog 生命周期不改；Wa 自己的历史 frame 保存滚动、折叠、阅读 lens 和焦点键，关闭恢复最初入口与页面位置。主图 SVG 字节保留，短屏取消过度压缩并使用正常文档流；页面删除无选择时的独立面板和反复声明，异常、数据损失确认与存档警告保留。当前为第二轮体验验收候选，完整回归仍在用户确认之后。
+
+## Wa 页面交互收口（当前候选，合并 PR #29 布局）
+
+组织配置现在直接显示在页面：Alpha 更换/清空，Penta 各组独立成员 chip、添加、移除、导入及组名输入；保存位于组织名称旁。旧的统一 composer 窗口已退出实现，`openWaMemberPicker()` 只处理一个目标，选择/导入共享单层 Operation Dialog。公共 Person Editor 临时替换选择窗并返回，原始人员资料与组织保存仍独立。`prepareWaSelectionChange()` 复用原模型的原子替换与注释清理确认，不清库、不删除人物。
+
+`createWaMemberMarkers()` 从完整组织引用池生成编号，并复用 Penta 的五个成员色 Token；同一编号贯穿编辑 chip、SVG 闸门、图例和通道卡片。图只取当前真实 gateRecords 的成员；多行星不重复人数，编号不随查看范围和编组切换。六条核心连接保留，行高随标记行数增长。图作为分析 grid 内的 sticky item，ResizeObserver 只调整偏移，长图自然滚动后粘住并受分析区域底部约束，无独立滚动工作台。
+
+右栏 `renderChannelCards()` 是轻量通道/两端成员/参与人数卡片；核心常显，其他通道展开。明细只在公共 `gate-detail` / `gate-detail-card` 阅读层显示，返回/关闭使用 `renderDetailNavigation()` 与原 Detail Dialog。人格/设计仍取出生来源颜色，成员编号取独立成员色，互不混用。
+
+`reading-presentation.js` 是受审查的展示摘录，不改作者 JSON。六核心读取自己的 Wa 记录；其他通道及闸门读取所属部门的 Wa 主题，保留原标题和源 ID，不回退到个人通道或闸门正文。固定段落选择保留主题与组织例子，精确短语映射改为自然表达，工程说明保留在原数据中。未来原文段落/词句漂移会拒绝未经审核的展示映射。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
+
+PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
+
+## 全站 UI 统一（2026-10-14，design/unified-ui）
+
+| 组件 | 位置 / API | 消费者 | 说明 |
+| --- | --- | --- | --- |
+| UI System 样式层 | `src/styles/ui-system.css`（`main.js` 最后导入），`--ui-control*`、`--ui-icon-size`、`--ui-dialog-*` | 全站页面标题、`.modal`、关闭/返回按钮、详情导航行 | 唯一定义处；功能 CSS 不再覆盖尺寸 |
+| 操作弹窗标题栏 | `operation-dialog.js` `renderDialogHeader(title,{level})` | Team、人物编辑、Wa 档案/历史/成员选择、确认框 | 标题+统一关闭，`data-close` 由生命周期绑定 |
+| 详情导航 | `renderDetailNavigation()` 扩展到关系详情与知识详情 | 出生图、行运、Penta、Wa、关系、资料库 | 详见 UI-UNIFICATION-2026-10-14.md |

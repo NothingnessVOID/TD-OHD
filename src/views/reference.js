@@ -13,10 +13,10 @@ import { renderPlanetReading, renderActivationReference, activationConceptRefere
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { circuitReference } from '../lib/reference-supplements.js';
-import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
+import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails, renderPentaReading } from '../lib/shared-object-details.js';
 
-const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable'];
-const labels = { all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
+const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable', 'penta', 'penta-mechanism'];
+const labels = { penta: 'Penta knowledge', 'penta-mechanism': 'Penta mechanisms', all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
 let category = 'all';
 let filtersExpanded = false;
 let query = '';
@@ -88,13 +88,14 @@ function route() {
   const params = new URLSearchParams(search);
   if (params.has('line') && !/^[1-6]$/.test(params.get('line'))) return { invalid: true };
   const line = params.has('line') && /^[1-6]$/.test(params.get('line')) ? Number(params.get('line')) : null;
-  return { kind: parts.length === 3 ? parts[1] : null, id, line,
+  return { kind: parts.length === 3 ? parts[1] : null, id, line, filter: categories.includes(params.get('filter')) ? params.get('filter') : null,
     invalid: parts.length !== 1 && parts.length !== 3 };
 }
 
 function address(kind = null, id = null, line = null) {
   const params = new URLSearchParams();
   if (line) params.set('line', String(line));
+  if (['penta', 'penta-mechanism'].includes(category)) params.set('filter', category);
   const suffix = kind && id ? `/${kind}/${encodeURIComponent(id)}` : '';
   return `${location.pathname}#library${suffix}${params.size ? `?${params}` : ''}`;
 }
@@ -173,7 +174,7 @@ function renderDetail() {
   }
   if (entry.kind === 'knowledge') {
     article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
-      <div class="reference-detail-body">${renderKnowledgeDetail(entry.id)}</div>`;
+      <div class="reference-detail-body">${entry.objectType === 'penta' ? renderPentaReading(entry.objectId) || `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>` : renderKnowledgeDetail(entry.id)}</div>`;
     article.scrollTop = 0;
     clearTimeout(lineHighlightTimer);
     return;
@@ -238,6 +239,8 @@ function build() {
 }
 
 export function renderReferenceView({ languageChange = false } = {}) {
+  const selectedFilter = route()?.filter;
+  if (selectedFilter && selectedFilter !== category) { category = selectedFilter; query = ''; limit = 60; }
   const previousScroll = built ? document.querySelector('.reference-results')?.scrollTop || 0 : 0;
   const focused = document.activeElement?.id === 'reference-search';
   const focusedResult = document.activeElement?.classList.contains('reference-result');
@@ -272,7 +275,12 @@ export function setupReferenceView() {
     }
     if (event.target.closest('[data-reference-filter-toggle]')) { filtersExpanded = !filtersExpanded; renderFilters(); return; }
     const filter = event.target.closest('[data-reference-filter]');
-    if (filter) { category = filter.dataset.referenceFilter; limit = 60; filtersExpanded = false; renderReferenceView(); return; }
+    if (filter) {
+      category = filter.dataset.referenceFilter; limit = 60; filtersExpanded = false;
+      const selected = route();
+      history.replaceState(history.state, '', address(selected?.kind, selected?.id, selected?.line));
+      renderReferenceView(); return;
+    }
     if (event.target.closest('[data-reference-more]')) { limit += 60; renderResults(); }
     if (event.target.closest('[data-reference-back]')) {
       if ((history.state?.ohdReferenceDepth ?? 0) > 0) history.back();

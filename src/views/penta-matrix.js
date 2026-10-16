@@ -2,10 +2,11 @@ import '../styles/penta-matrix.css';
 import '../lib/penta-reading-messages.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
-import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
+import { hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { prepareDetailDialog, openDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
-import { getKnowledgeEntry, getKnowledgeSummary, getKnowledgeDetail } from '../lib/knowledge/registry.js';
+import { getKnowledgeEntry } from '../lib/knowledge/registry.js';
+import { renderPentaSummary, renderPentaReading } from '../lib/shared-object-details.js';
 import './team-messages.js';
 
 const states = { absent: 'Not covered', selfComplete: 'One member covers both gates', crossMemberOnly: 'Covered across members', both: 'Covered individually and across members' };
@@ -53,13 +54,8 @@ export function createPentaMatrix(container, {
     onChannelSelect: id => showDetail('channel', id),
     onBack: goBack
   });
-  function qualifiedSummary(id) {
-    const entry = getKnowledgeEntry(query(id));
-    if (entry?.properties?.evidence?.status !== 'verified') return '';
-    if (/^(gate|channel):/.test(id) && entry.properties.interpretationStatus !== 'verified') return '';
-    const value = getKnowledgeSummary(query(id));
-    return value?.content ? `<p class="penta-context-note">${esc(value.content)}</p>` : '';
-  }
+  const qualifiedSummary = renderPentaSummary;
+  const pentaName = id => getKnowledgeEntry(query(id))?.name || '';
   function activationGroups(gate) {
     if (!gate.activations.length) return `<p class="penta-muted">${label('No Penta contributors')}</p>`;
     const ids = [...new Set([...people.map(p => p.memberId), ...gate.activations.map(a => a.memberId)])];
@@ -70,12 +66,12 @@ export function createPentaMatrix(container, {
     }).join('')}</div>`;
   }
   function gateSummary(gate) {
-    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(gateName(gate.gate))}" class="penta-analysis-card penta-gate-reading" data-detail-kind="gate" data-detail-id="${gate.gate}"><header class="penta-item-heading"><div class="penta-object-title">${label('Gate {gate}', { gate: gate.gate })}<span>${esc(gateName(gate.gate))} · ${esc(hexagramName(gate.gate))}</span></div><span class="penta-state-text">${label(gate.status === 'present' ? 'Activated' : 'Inactive')}</span></header>${activationGroups(gate)}${qualifiedSummary(`gate:${gate.gate}`)}</article>`;
+    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Gate {gate}', { gate: gate.gate })} · ${esc(pentaName(`gate:${gate.gate}`))}" class="penta-analysis-card penta-gate-reading" data-detail-kind="gate" data-detail-id="${gate.gate}"><header class="penta-item-heading"><div class="penta-object-title">${label('Gate {gate}', { gate: gate.gate })}<span>${esc(pentaName(`gate:${gate.gate}`))} · ${esc(hexagramName(gate.gate))}</span></div><span class="penta-state-text">${label(gate.status === 'present' ? 'Activated' : 'Inactive')}</span></header>${activationGroups(gate)}${qualifiedSummary(`gate:${gate.gate}`)}</article>`;
   }
   function channelSummary(channel) {
     const complete = channel.selfCompleteMemberIds || [];
     const pairs = channel.complementaryMemberPairs || [];
-    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })} · ${esc(channelName(channel.channelId))}" class="penta-analysis-card penta-channel-reading" data-detail-kind="channel" data-detail-id="${esc(channel.channelId)}"><header class="penta-item-heading"><div class="penta-channel-title"><div class="detail-label">${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })}</div><h4 class="detail-name">${esc(channelName(channel.channelId))}</h4></div><span class="penta-state-text">${renderPentaStateSymbol(channel.status)}<span>${label(states[channel.status])}</span></span></header><dl class="penta-channel-holders">${channel.gates.map(gate => `<div><dt>${label('Gate {gate}', { gate })}</dt><dd>${names(channel.holdersByGate[gate] || [])}</dd></div>`).join('')}</dl>${complete.length ? `<p class="penta-relation"><strong>${label('Self complete members')}</strong> ${names(complete)}</p>` : ''}${pairs.length ? `<div class="penta-relation"><strong>${label('Complementary member pairs')}</strong><ul>${pairs.map(pair => `<li><span>${identity(pair.upperMemberId)}</span> <span aria-hidden="true">↔</span> <span>${identity(pair.lowerMemberId)}</span></li>`).join('')}</ul></div>` : ''}${channel.missingGates.length ? `<p class="penta-muted">${label('Missing gates')}: ${esc(channel.missingGates.join(' · '))}</p>` : ''}${qualifiedSummary(`channel:${channel.channelId}`)}</article>`;
+    return `<article tabindex="0" role="button" aria-haspopup="dialog" aria-label="${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })} · ${esc(pentaName(`channel:${channel.channelId}`))}" class="penta-analysis-card penta-channel-reading" data-detail-kind="channel" data-detail-id="${esc(channel.channelId)}"><header class="penta-item-heading"><div class="penta-channel-title"><div class="detail-label">${label('Channel {channel}', { channel: channel.channelId.replace('-', '–') })}</div><h4 class="detail-name">${esc(pentaName(`channel:${channel.channelId}`))}</h4></div><span class="penta-state-text">${renderPentaStateSymbol(channel.status)}<span>${label(states[channel.status])}</span></span></header><dl class="penta-channel-holders">${channel.gates.map(gate => `<div><dt>${label('Gate {gate}', { gate })}</dt><dd>${names(channel.holdersByGate[gate] || [])}</dd></div>`).join('')}</dl>${complete.length ? `<p class="penta-relation"><strong>${label('Self complete members')}</strong> ${names(complete)}</p>` : ''}${pairs.length ? `<div class="penta-relation"><strong>${label('Complementary member pairs')}</strong><ul>${pairs.map(pair => `<li><span>${identity(pair.upperMemberId)}</span> <span aria-hidden="true">↔</span> <span>${identity(pair.lowerMemberId)}</span></li>`).join('')}</ul></div>` : ''}${channel.missingGates.length ? `<p class="penta-muted">${label('Missing gates')}: ${esc(channel.missingGates.join(' · '))}</p>` : ''}${qualifiedSummary(`channel:${channel.channelId}`)}</article>`;
   }
   function renderAnalysis() {
     const estimated = people.filter(p => p.timeUnknown).map(p => p.displayName);
@@ -87,7 +83,7 @@ export function createPentaMatrix(container, {
       const entry = getKnowledgeEntry(query(id));
       return `<article class="penta-background-note" data-detail-kind="knowledge" data-detail-id="${id}" tabindex="-1"><h4>${esc(entry.name)}</h4>${summary}<button type="button" class="penta-open-detail" data-open-kind="knowledge" data-open-id="${id}">${label('Penta open reading')} ↗</button></article>`;
     }).join('');
-    analysis.innerHTML = `<section class="penta-overview penta-reading-section"><div class="penta-reading-heading"><h2>${label('Penta reading title')}</h2><p>${esc(groupLabel)} · ${people.length}</p></div><dl class="penta-overview-stats"><div><dt>${label('Penta reading members')}</dt><dd>${people.length}</dd></div><div><dt>${label('Penta reading gates covered')}</dt><dd>${result.summary.presentGateCount}<small> / 12</small></dd></div><div><dt>${label('Penta reading channels covered')}</dt><dd>${result.summary.coveredChannelCount}<small> / 6</small></dd></div></dl>${estimated.length ? `<p class="penta-estimate-note">≈ ${label('Penta noon notice', { names: estimated.join('、') })}</p>` : ''}</section><section class="penta-reading-section"><h3>${label('Penta reading channels')}</h3>${channelGroup('Penta upper group', ['7-31', '1-8', '13-33'])}${channelGroup('Penta lower group', ['5-15', '2-14', '29-46'])}</section><section class="penta-reading-section"><h3>${label('Penta reading gates')}</h3>${gateGroups.map(([center, title]) => `<div class="penta-reading-subgroup"><h4 class="penta-subheading">${label(title)}</h4>${result.gates.filter(gate => gate.center === center).sort((a,b) => a.row-b.row || a.column-b.column).map(gateSummary).join('')}</div>`).join('')}</section><section class="penta-reading-section"><h3>${label('Penta reading contributions')}</h3>${people.map(p => `<article class="penta-contribution-row" data-source-id="${esc(p.memberId)}"><h4 class="penta-person-inline">${identity(p.memberId)}</h4><div>${result.gates.filter(gate => gate.memberIds.includes(p.memberId)).map(gate => `<button type="button" class="penta-gate-reference" data-select-kind="gate" data-select-id="${gate.gate}">${gate.gate}</button>`).join('') || `<span class="penta-muted">${label('No Penta contributors')}</span>`}</div></article>`).join('')}</section>${background ? `<section class="penta-reading-section"><h3>${label('Penta reading background')}</h3>${background}</section>` : ''}`;
+    analysis.innerHTML = `<section class="penta-overview penta-reading-section"><div class="penta-reading-heading"><h2>${label('Penta reading title')}</h2><p>${esc(groupLabel)} · ${people.length}</p></div><dl class="penta-overview-stats"><div><dt>${label('Penta reading members')}</dt><dd>${people.length}</dd></div><div><dt>${label('Penta reading gates covered')}</dt><dd>${result.summary.presentGateCount}<small> / 12</small></dd></div><div><dt>${label('Penta reading channels covered')}</dt><dd>${result.summary.coveredChannelCount}<small> / 6</small></dd></div></dl>${estimated.length ? `<p class="penta-estimate-note">≈ ${label('Penta noon notice', { names: estimated.join('、') })}</p>` : ''}</section><section class="penta-reading-section"><h3>${label('Penta reading channels')}</h3>${channelGroup('Penta upper group', ['7-31', '1-8', '13-33'])}${channelGroup('Penta lower group', ['5-15', '2-14', '29-46'])}</section><section class="penta-reading-section"><h3>${label('Penta reading gates')}</h3>${gateGroups.map(([center, title]) => `<div class="penta-reading-subgroup"><h4 class="penta-subheading">${label(title)}</h4>${result.gates.filter(gate => gate.center === center).sort((a,b) => a.row-b.row || a.column-b.column).map(gateSummary).join('')}</div>`).join('')}</section><section class="penta-reading-section"><h3>${label('Penta reading contributions')}</h3>${people.map(p => `<article class="penta-contribution-row" data-source-id="${esc(p.memberId)}"><h4 class="penta-person-inline">${identity(p.memberId)}</h4><div>${result.gates.filter(gate => gate.memberIds.includes(p.memberId)).map(gate => `<button type="button" class="penta-gate-reference" data-select-kind="gate" data-select-id="${gate.gate}">${gate.gate}</button>`).join('') || `<span class="penta-muted">${label('No Penta contributors')}</span>`}</div></article>`).join('')}</section>${background ? `<section class="penta-reading-section"><h3>${label('Penta reading background')}</h3>${background}<a class="reference-link" href="#library?filter=penta-mechanism">${label('Penta more mechanisms')} →</a></section>` : ''}`;
   }
   function renderGraph() {
     const gates = new Map(result.gates.map(gate => [gate.gate, gate]));
@@ -132,12 +128,7 @@ export function createPentaMatrix(container, {
     if (!target) return;
     if (focus) target.focus({ preventScroll: true });
   }
-  function knowledgeBody(id) {
-    const entry = getKnowledgeEntry(query(id));
-    if (!entry || entry.properties?.evidence?.status !== 'verified') return '';
-    const content = getKnowledgeDetail(query(id)) || getKnowledgeSummary(query(id));
-    return `<div class="detail-label">Penta</div><div class="detail-name">${esc(entry.name)}</div>${content?.content ? `<p class="gate-detail-desc">${esc(content.content)}</p>` : ''}`;
-  }
+  const knowledgeBody = renderPentaReading;
   function rememberTrigger() {
     const node = document.activeElement;
     const root = graph.contains(node) ? graph : analysis.contains(node) ? analysis : null;

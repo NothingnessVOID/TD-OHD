@@ -37,7 +37,8 @@ try {
   const root = page.locator('#synthetic-dialog');
   assert.match(await root.innerText(), /Only Penta Person/);
   assert.match(await root.innerText(), /12:00/);
-  assert.equal(await root.locator('[data-penta-specific]').count(), 0);
+  assert.equal(await root.locator('[data-penta-specific]').count(), 1);
+  assert.ok((await root.locator('[data-penta-specific]').innerText()).trim().length > 100, 'completed group reading accompanies canonical gate reading');
   assert.equal(await root.locator('[data-shared-reading]').innerText(), chartText);
   assert.equal(await root.locator('[data-penta-activations] li').count(), 1);
   assert.match(await root.locator('[data-penta-activations]').innerText(), /31\.4/);

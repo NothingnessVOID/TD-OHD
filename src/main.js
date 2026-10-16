@@ -23,6 +23,7 @@ import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguag
 import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
+import { mountWa } from './views/wa.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
 import { setupTimelineView, timelineLanguageOptions } from './views/timeline.js';
@@ -30,6 +31,8 @@ import { setupReferenceView, renderReferenceView, openReference, deactivateRefer
 import { getTheme, initAppearance, onAppearanceChange, setTheme } from './lib/appearance.js';
 import { setupAppearanceControls } from './lib/appearance-controls.js';
 import { onFontPreferenceChange } from './lib/font-preference.js';
+// Unified UI system last, so shared header/dialog/navigation rules win over feature CSS.
+import './styles/ui-system.css';
 
 // ==========================================
 // State
@@ -40,6 +43,7 @@ let loadingPersonId = null;
 let pendingCompare = false; // a connection invite is waiting for the visitor's own chart
 let entryApi = null;
 let timelineView = null;
+let waView = null;
 const shareDataProviders = { transits: getCurrentTransitExportData, timeline: () => timelineView?.getCurrentTransitExportData() };
 let localAccountUi = null;
 let initialized = false;
@@ -78,6 +82,7 @@ function setupLanguageSwitcher() {
     entryApi?.refreshLanguage();
     refreshConnectionLanguage();
     refreshTeamLanguage();
+    waView?.refreshLanguage();
     refreshTransitLanguage();
     timelineView?.setLanguage(timelineLanguageOptions());
     if (!document.getElementById('library-view').classList.contains('hidden')) renderReferenceView({ languageChange: true });
@@ -107,7 +112,7 @@ function toggleTheme() {
 // ==========================================
 // Navigation
 // ==========================================
-const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'library'];
+const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'wa', 'library'];
 
 function showView(view, { fromHistory = false } = {}) {
   if (!VIEWS.includes(view)) return;
@@ -141,7 +146,7 @@ function showView(view, { fromHistory = false } = {}) {
   document.getElementById('chart-required-view').classList.add('hidden');
   document.getElementById('birth-entry').classList.toggle('hidden', !!currentData || view !== 'chart');
 
-  if (!currentData && view !== 'library' && view !== 'team') {
+  if (!currentData && !['library', 'team', 'wa'].includes(view)) {
     if (view !== 'chart') document.getElementById('chart-required-view').classList.remove('hidden');
     return;
   }
@@ -151,6 +156,7 @@ function showView(view, { fromHistory = false } = {}) {
   if (view === 'transits') renderTransits();
   if (view === 'connection') renderConnectionView();
   if (view === 'team') renderTeamView();
+  if (view === 'wa') waView?.render();
   if (view === 'timeline') timelineView?.activate();
   if (view === 'library') {
     renderReferenceView();
@@ -425,6 +431,7 @@ async function init() {
   setupTransitView();
   setupConnectionView();
   setupTeamView();
+  waView = mountWa(document.getElementById('wa-view'));
   setupReferenceView();
   timelineView = setupTimelineView();
   setupPeopleSwitcher();
@@ -464,11 +471,11 @@ async function init() {
       invalidateConnection(); setLastPersonId(null);
       history.replaceState(null, '', window.location.pathname);
       renderPeopleSwitcher();
-      showView(['team', 'library'].includes(visibleView) ? visibleView : 'chart');
+      showView(['team', 'library', 'wa'].includes(visibleView) ? visibleView : 'chart');
       return;
     }
     currentData = null;
-    if (!['team', 'library'].includes(visibleView)) document.querySelectorAll('.view-section, .chart-view').forEach(section => section.classList.add('hidden'));
+    if (!['team', 'library', 'wa'].includes(visibleView)) document.querySelectorAll('.view-section, .chart-view').forEach(section => section.classList.add('hidden'));
     loadBirth(birthFromPerson(change.after), { preserveView: true }).then(data => {
       if (data) refreshConnectionPeople(change, { currentReloaded: true });
     });
@@ -558,11 +565,12 @@ async function init() {
     if (person) {
       await loadBirth(birthFromPerson(person), { save: false });
       if (libraryLink) { history.replaceState(null, '', `${location.pathname}${libraryLink}`); showView('library'); }
+      else if (deepLinkView === 'wa') showView('wa');
       return;
     }
   }
   renderPeopleSwitcher();
-  showView(libraryLink ? 'library' : 'chart');
+  showView(libraryLink ? 'library' : deepLinkView === 'wa' ? 'wa' : 'chart');
 }
 
 async function boot() {
