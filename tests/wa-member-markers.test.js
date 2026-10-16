@@ -220,7 +220,7 @@ test('contributor dots start on the outer face rim and pack inward toward the ch
   assert.ok(rightXs[1] < rightXs[0], 'right strip grows leftward (inward)');
 });
 
-test('contributor dots sit clear below gate face, halo and hit; mid diamond CSS stays luminous', () => {
+test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge stays luminous, no glow', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
   prepared[0].chart = chart([45, 21]);
   prepared[1].chart = chart([45]);
@@ -239,14 +239,17 @@ test('contributor dots sit clear below gate face, halo and hit; mid diamond CSS 
   assert.ok(faceY + PILLAR_RING_R + focusExtra + 1 < dotY - 4, 'pillar focus ring must clear dots');
   assert.equal(NODE_R + WA_DIAGRAM_GEOMETRY.NODE_HIT_EXTRA, PILLAR_RING_R + focusExtra, 'pillar and plain focus share outer radius');
   assert.ok(Math.abs((PILLAR_RING_R - NODE_R) - focusExtra) <= 0.5, 'solid→pillar and pillar→focus gaps stay near-even');
-  assert.match(svg, /wa-mid-halo/);
-  assert.match(svg, /wa-tube-mid is-filled/);
+  assert.doesNotMatch(svg, /wa-mid-halo/);
+  assert.match(svg, /wa-tube-mid is-filled wa-mid-lozenge wa-mid-warm/);
+  assert.match(svg, /wa-mid-spine is-filled/);
   assert.match(svg, /class="wa-node-focus-ring"/);
   assert.equal((svg.match(/class="wa-node-focus-ring"/g) ?? []).length, 12);
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
-  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
+  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*color-mix/);
   assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*accent-on/);
-  assert.match(waCss, /\.wa-mid-halo\s*\{/);
+  assert.match(waCss, /\.wa-mid-halo\s*\{[^}]*display:\s*none/);
+  assert.match(waCss, /\.wa-mid-spine/);
+  assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*drop-shadow/);
   assert.match(waCss, /\.wa-node-focus-ring\s*\{/);
   assert.match(waCss, /\.wa-diagram-gate:hover \.wa-node-focus-ring/);
   assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
@@ -312,9 +315,11 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-tube\s*\{/);
   assert.match(waCss, /\.wa-tube-mid\.is-hollow/);
   assert.match(waCss, /\.wa-tube-mid\.is-filled/);
-  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*#fff/);
+  assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*color-mix/);
   assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*var\(--accent-on/);
-  assert.match(waCss, /\.wa-mid-halo\s*\{/);
+  assert.match(waCss, /\.wa-mid-halo\s*\{[^}]*display:\s*none/);
+  assert.match(waCss, /\.wa-mid-spine/);
+  assert.match(waCss, /\.wa-tube-mid\.wa-mid-warm/);
   assert.match(waCss, /\.wa-node-focus-ring\s*\{/);
   assert.match(waCss, /\.wa-diagram-gate:hover \.wa-node-focus-ring/);
   assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);

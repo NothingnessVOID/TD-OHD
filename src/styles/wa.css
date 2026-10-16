@@ -118,21 +118,43 @@
 .wa-diagram-channel[data-state="unknown"] .wa-tube { fill:none; stroke:var(--border); stroke-dasharray:3 4; }
 .wa-tube-fill:not(.is-partial) { fill:var(--accent); filter:drop-shadow(0 0 2.4px color-mix(in srgb, var(--accent) 55%, transparent)); }
 .wa-tube-fill.is-partial { filter:drop-shadow(0 0 1.4px color-mix(in srgb, var(--accent) 35%, transparent)); }
-/* Mid diamond: always luminous (never --accent-on — that is near-black on several dark skins). */
-.wa-tube-mid { pointer-events:none; }
-.wa-mid-halo { fill:var(--accent); fill-opacity:.38; pointer-events:none; filter:blur(1.1px); }
+/* Mid: warm hollow lozenge (refine-3). No glow; luminous cream/white on every skin (never --accent-on). */
+.wa-tube-mid { pointer-events:none; stroke-linejoin:round; stroke-linecap:round; }
+.wa-mid-halo { display:none; } /* legacy; mid no longer emits a glow halo */
 .wa-tube-mid.is-hollow {
-  fill:color-mix(in srgb, var(--bg-elevated) 72%, #fff 28%);
-  stroke:color-mix(in srgb, var(--accent) 42%, #fff 58%);
-  stroke-width:1.4;
+  fill:color-mix(in srgb, var(--accent-soft,#F4E6D5) 62%, #fff 38%);
+  stroke:color-mix(in srgb, var(--accent) 58%, var(--border));
+  stroke-width:1.5;
+  filter:none;
 }
 .wa-tube-mid.is-filled {
-  fill:#fff;
-  stroke:color-mix(in srgb, var(--accent) 28%, #fff);
-  stroke-width:.7;
-  filter:drop-shadow(0 0 2.6px color-mix(in srgb, var(--accent) 65%, #fff)) drop-shadow(0 0 1.1px rgba(255,255,255,.95));
+  fill:color-mix(in srgb, #fff 78%, var(--accent-soft,#F4E6D5) 22%);
+  stroke:color-mix(in srgb, var(--accent) 62%, #5a3412 10%);
+  stroke-width:1.45;
+  filter:none;
 }
-.wa-diagram-channel[data-state="hanging"] .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.5; }
+.wa-tube-mid.wa-mid-warm.is-filled {
+  fill:color-mix(in srgb, #fff 78%, var(--accent-soft,#F4E6D5) 22%);
+  stroke:color-mix(in srgb, var(--accent) 62%, #5a3412 10%);
+  stroke-width:1.45;
+}
+.wa-tube-mid.wa-mid-warm.is-hollow {
+  fill:color-mix(in srgb, var(--accent-soft,#F4E6D5) 62%, #fff 38%);
+  stroke:color-mix(in srgb, var(--accent) 58%, var(--border));
+  stroke-width:1.5;
+}
+.wa-mid-spine { pointer-events:none; stroke-linecap:round; filter:none; }
+.wa-mid-spine.is-filled {
+  stroke:color-mix(in srgb, var(--accent) 68%, #3a2814);
+  stroke-width:1.05;
+  opacity:.92;
+}
+.wa-mid-spine.is-hollow {
+  stroke:color-mix(in srgb, var(--accent) 50%, var(--border));
+  stroke-width:.95;
+  opacity:.85;
+}
+.wa-diagram-channel[data-state="hanging"] .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.55; }
 /* Hover / selection: channel + gate frames only — never wash the dept-name text. */
 .wa-diagram-channel:hover .wa-link-hit, .wa-diagram-channel:focus-visible .wa-link-hit,
 .wa-diagram-channel.is-selected .wa-link-hit {
@@ -156,17 +178,19 @@
   filter:drop-shadow(0 0 4.2px color-mix(in srgb, var(--accent) 78%, transparent));
 }
 .wa-diagram-channel:hover .wa-tube-mid.is-hollow, .wa-diagram-channel:focus-visible .wa-tube-mid.is-hollow,
-.wa-diagram-channel.is-selected .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.85; }
+.wa-diagram-channel.is-selected .wa-tube-mid.is-hollow { stroke:var(--accent); stroke-width:1.75; filter:none; }
 .wa-diagram-channel:hover .wa-tube-mid.is-filled, .wa-diagram-channel:focus-visible .wa-tube-mid.is-filled,
 .wa-diagram-channel.is-selected .wa-tube-mid.is-filled {
-  filter:drop-shadow(0 0 4.2px color-mix(in srgb, var(--accent) 80%, #fff)) drop-shadow(0 0 1.8px rgba(255,255,255,1));
+  stroke:var(--accent);
+  stroke-width:1.7;
+  filter:none;
 }
-.wa-diagram-channel:hover .wa-mid-halo, .wa-diagram-channel:focus-visible .wa-mid-halo,
-.wa-diagram-channel.is-selected .wa-mid-halo { fill-opacity:.62; }
+.wa-diagram-channel:hover .wa-mid-spine, .wa-diagram-channel:focus-visible .wa-mid-spine,
+.wa-diagram-channel.is-selected .wa-mid-spine { stroke:var(--accent); opacity:1; }
 /* Gate nodes: hollow when inactive, solid accent when covered. */
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.5; transition:stroke .15s ease, stroke-width .15s ease, filter .15s ease; }
 .wa-diagram-gate[data-covered="false"] .wa-node-face, .wa-diagram-gate[data-covered="unknown"] .wa-node-face { stroke-dasharray:2.5 2.5; }
-.wa-node-number { fill:var(--text-secondary); font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums; pointer-events:none; }
+.wa-node-number { fill:var(--text-secondary); font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums; pointer-events:none; }
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); filter:drop-shadow(0 0 1.4px color-mix(in srgb, var(--accent) 40%, transparent)); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on,#fff); }
 .wa-node-halo { fill:var(--accent); fill-opacity:.12; pointer-events:none; }
