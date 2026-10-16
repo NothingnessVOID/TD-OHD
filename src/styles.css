@@ -21,6 +21,7 @@
 @import './styles/center-palettes/base.css';
 @import './styles/appearance-controls.css';
 @import './styles/tokens/team.css';
+@import './styles/vars.css';
 
 /* Layout and typography stay here. Site and Human Design skin values live in
    separate token files, allowing future skins without component rewrites. */
@@ -428,6 +429,12 @@ body {
   padding: 24px;
   box-shadow: var(--shadow-sm);
   min-height: 200px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* =============================================
@@ -966,6 +973,11 @@ body {
 :root .bg-tooltip :is(.bg-tt-source.transit, .bg-tt-source-transit) { color: var(--source-transit-tooltip-text); }
 :root .bg-root[data-transit-source-mode="unified-natal"] .bg-tooltip :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
 /* Preserve approved Skin fills while making small text readable. */
+
+/* Gate hover state */
+.bg-gate-group { cursor: pointer; transition: opacity 0.15s ease; }
+.bg-gate-group:hover { opacity: 0.85; }
+.bg-gate-group:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 :root[data-skin] #chart-view .act-design { color: var(--source-birthDesign-text); }
 :root[data-skin] .tl :is(.bg-planets-design .bg-planets-head, .bg-planets-design .bg-planet-act, .act-design) { color: var(--source-design-text); }
 
