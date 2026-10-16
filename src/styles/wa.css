@@ -456,12 +456,14 @@
  .wa-department-score { grid-column:1 / -1; grid-row:2; }
  .wa-department-toggle-text { grid-column:2; grid-row:1; }
  .wa-pair-token { padding:4px; }
- .wa-channel-row { grid-template-columns:auto minmax(0,1fr) auto; }
+ /* Two equal columns keep both gate-number columns on a shared vertical axis,
+    independent of how many member markers a gate holds. Name and state share
+    row 1; both gates are pinned to row 2 (col 1 and col 2). */
+ .wa-channel-row { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .wa-channel-row > .wa-pair-token { display:none; }
- .wa-channel-row .wa-row-gate { grid-column:span 1; }
- .wa-channel-row .wa-row-gate:first-of-type { grid-column:1 / 3; }
- .wa-channel-row .wa-row-name { grid-column:1 / 3; }
- .wa-channel-row .wa-row-state { grid-column:3; grid-row:1; }
+ .wa-channel-row .wa-row-name { grid-column:1; grid-row:1; }
+ .wa-channel-row .wa-row-state { grid-column:2; grid-row:1; justify-self:end; }
+ .wa-channel-row .wa-row-gate { grid-column:auto; grid-row:2; }
  .wa-department-top { flex-wrap:wrap; }
  .wa-pair-end { min-width:30px; height:30px; }
  .gate-detail.wa-detail:not(.hidden) .wa-reading-sheet { width:100%; max-width:100%; max-height:min(82dvh,calc(100dvh - 24px)); margin:0; }
