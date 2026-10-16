@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { integrationAddedPaths, finalSourceProjection } from './helpers/penta-wa-v2-final-review.js';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -13,6 +15,7 @@ import { auditRoot, incrementBase, incrementManifestPath, snapshotBytes, increme
 const read = file => readFileSync(path.join(auditRoot, file));
 const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(file) || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', pairedCardLayoutBase], { cwd: auditRoot }).toString().trim().split('\n').filter(protectedPath);
+inventory.push(...integrationAddedPaths);
 function rejectsSource(file, mutated) {
   assert.notDeepEqual(mutated, read(file), 'Negative case must change current bytes');
   for (const project of [pairedCardLayoutProjection, channelStatusProjection, pairedGateVisualProjection, issueDetailsProjection, incrementProjection]) {
@@ -114,9 +117,10 @@ test('compact grid scope, centered hit target and unified link regressions fail 
 test('unrelated paths pass through compact while source and inventory guards remain active', () => {
   for (const file of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(file);
-    assert.strictEqual(pairedCardLayoutProjection(current, file), current);
+    assert.deepEqual(pairedCardLayoutProjection(current, file), pentaIntegrationProjection(finalSourceProjection(current, file), file));
     const mutated = Buffer.concat([current, Buffer.from('\n// outside compact scope\n')]);
-    assert.strictEqual(pairedCardLayoutProjection(mutated, file), mutated);
+    if (pentaIntegrationPaths.includes(file)) assert.throws(() => pairedCardLayoutProjection(mutated, file), /Unreviewed increment source/);
+    else assert.strictEqual(pairedCardLayoutProjection(mutated, file), mutated);
     assert.throws(() => validateReleaseIncrement(auditRoot, {
       files: inventory, read: p => p === file ? mutated : read(p),
     }), /Unreviewed increment source/);

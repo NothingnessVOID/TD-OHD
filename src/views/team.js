@@ -9,7 +9,7 @@ import { analyzePentaStructure } from '../lib/human-design/penta-structure.js';
 import { computeChart } from '../lib/chartdata.js';
 import { listPeople, getPerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
 import { openPersonEditor } from '../lib/person-editor.js';
-import { openOperationDialog, confirmOperation } from '../lib/operation-dialog.js';
+import { openOperationDialog, confirmOperation, renderDialogHeader } from '../lib/operation-dialog.js';
 import '../lib/team-selection-messages.js';
 import { esc } from '../lib/format.js';
 import { t } from '../lib/i18n.js';
@@ -39,6 +39,7 @@ function status(message = '', personId = null) {
 function currentRepository() { return !teamId || getTeam(teamId)?.revision === revision; }
 function reset() { teamId = null; revision = null; teamName = ''; members = []; groups = [freshGroup()]; selectedId = groups[0].pentaId; dirty = false; schedule(false); }
 function renderControls() {
+ if ($('team-penta-library')) $('team-penta-library').textContent = t('Penta knowledge');
  const focusId = document.activeElement?.dataset?.focusMember;
  const slots = currentMemberSlots();
  const title = teamName ? `${teamName} / ${group()?.label || 'Penta A'}` : (!teamId && groups.length === 1 && group()?.label === 'Penta A' ? t('Penta temporary') : group()?.label || t('Penta temporary'));
@@ -101,9 +102,10 @@ function renderResult() {
  if (highlighted) matrix.setHighlightedMemberId(highlighted);
  renderControls();
 }
-function layer(title, body, bind) {
+function layer(title, body, bind, extraClass = '') {
  closeLayer?.();
- const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog" aria-label="${txt(title)}"><header><h3 class="modal-title">${txt(title)}</h3><button type="button" class="ui-icon-button" data-close aria-label="${txt('Close')}">×</button></header>${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
+ const cls = extraClass ? ` ${extraClass}` : '';
+ const { root, close } = openOperationDialog({ content: `<section class="modal team-control-dialog${cls}" aria-label="${txt(title)}">${renderDialogHeader(t(title))}${body}<p class="team-layer-error" role="alert"></p></section>`, onClose: () => { if (closeLayer === close) closeLayer = null; } });
  closeLayer = close; bind(root, close); return root;
 }
 function editPerson(id = null) {
@@ -114,12 +116,12 @@ function editPerson(id = null) {
 }
 function picker(draft = null) {
  draft ||= { ids: selectedMembers().map(m => m.personId), search: '', pentaId: selectedId, revision, teamId };
- layer('Team add person', `<label class="modal-field">${txt('Team search people')}<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"></label><p id="team-selection-count" role="status"></p><button type="button" id="team-person-create">${txt('Team create person')}</button><div id="team-person-results"></div><div class="modal-actions"><button type="button" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
+ layer('Team add person', `<div class="team-picker-body"><label class="modal-field">${txt('Team search people')}<input id="team-person-search" type="search" placeholder="${txt('Team search people')}" aria-label="${txt('Team search people')}"></label><div class="team-picker-toolbar"><p id="team-selection-count" role="status"></p><button type="button" class="btn-secondary" id="team-person-create">${txt('Team create person')}</button></div><div id="team-person-results" class="team-picker-results"></div><p class="team-layer-error" role="alert"></p></div><div class="modal-actions"><button type="button" class="btn-secondary" data-close>${txt('Cancel')}</button><button type="button" id="team-selection-confirm" class="btn-primary">${txt('Confirm')}</button></div>`, (root, close) => {
   const search = root.querySelector('input'); search.value = draft.search;
   const error = message => { root.querySelector('.team-layer-error').textContent = message; };
   const render = () => {
    root.querySelector('#team-selection-count').textContent = t('Team selected count', { count: draft.ids.length });
-   root.querySelector('#team-person-results').innerHTML = listPeople().filter(p => `${p.name} ${p.birthDate} ${p.id}`.toLowerCase().includes(draft.search.toLowerCase())).map(p => `<div class="team-picker-row"><button type="button" class="btn-secondary team-picker-choice" data-add-person="${esc(p.id)}" aria-pressed="${draft.ids.includes(p.id)}" ${draft.ids.length >= 5 && !draft.ids.includes(p.id) ? 'disabled' : ''}><span class="team-picker-check" aria-hidden="true">${draft.ids.includes(p.id) ? '☑' : '☐'}</span><strong>${esc(p.name)}</strong><small>${esc(p.birthDate)} · ${esc(p.timeUnknown ? t('Team estimated time') : p.birthTime)} · ${esc(p.id.slice(-6))}</small></button><button type="button" class="btn-secondary" data-edit-person="${esc(p.id)}">${txt('Edit chart')}</button></div>`).join('');
+   root.querySelector('#team-person-results').innerHTML = listPeople().filter(p => `${p.name} ${p.birthDate} ${p.id}`.toLowerCase().includes(draft.search.toLowerCase())).map(p => `<div class="team-picker-row"><button type="button" class="btn-secondary team-picker-choice" data-add-person="${esc(p.id)}" aria-pressed="${draft.ids.includes(p.id)}" ${draft.ids.length >= 5 && !draft.ids.includes(p.id) ? 'disabled' : ''}><span class="team-picker-check" aria-hidden="true">${draft.ids.includes(p.id) ? '☑' : '☐'}</span><span><strong>${esc(p.name)}</strong><small>${esc(p.birthDate)} · ${esc(p.timeUnknown ? t('Team estimated time') : p.birthTime)} · ${esc(p.id.slice(-6))}</small></span></button><button type="button" class="btn-secondary" data-edit-person="${esc(p.id)}">${txt('Edit chart')}</button></div>`).join('');
   };
   const editor = id => {
    const person = id ? getPerson(id) : null;
@@ -150,7 +152,7 @@ function picker(draft = null) {
    nextGroups.find(g => g.pentaId === selectedId).memberIds = ids;
    members = nextMembers; groups = nextGroups; close(); schedule();
   };
- });
+ }, 'team-member-picker');
 }
 function load(team, pentaId) { teamId = team.teamId; revision = team.revision; teamName = team.name; members = team.members.map(m => ({ ...m })); groups = team.groups.map(g => ({ ...g, memberIds: [...g.memberIds] })); if (!groups.length) groups.push(freshGroup()); selectedId = pentaId || groups[0].pentaId; dirty = false; schedule(false); }
 function switcher() {
@@ -206,6 +208,10 @@ function manage() {
 export function setupTeamView() {
  const subtitle = document.querySelector('#team-view .view-subtitle');
  subtitle.removeAttribute('data-i18n'); subtitle.textContent = t('Team members and Penta structure');
+ const libraryLink = $('team-penta-library') || document.createElement('a');
+ libraryLink.id = 'team-penta-library'; libraryLink.className = 'reference-link';
+ libraryLink.href = '#library?filter=penta'; libraryLink.textContent = t('Penta knowledge');
+ subtitle.after(libraryLink);
  const previousContent = $('team-content');
  if (previousContent && !$('team-form').contains(previousContent)) previousContent.remove();
  $('team-form').innerHTML = `<div class="team-management panel"><div class="team-current-toolbar"><button type="button" id="team-current"></button><button type="button" id="team-save">${txt('Save')}</button><button type="button" id="team-manage" aria-label="${txt('Team manage')}">…</button></div><div id="team-member-caption" class="team-member-caption"></div><div id="team-selected-chips"></div><button type="button" id="team-add-saved-person">${txt('Team add person')}</button><p id="team-flow-status" role="status" aria-live="polite"></p></div><div class="team-workspace chart-layout"><div class="team-graph-column chart-column"><div id="team-content" class="bodygraph-container"></div></div><div class="team-results info-column"><div id="team-analysis"></div></div></div>`;

@@ -3,6 +3,12 @@ import './operation-dialog-messages.js';
 import { esc } from './format.js';
 import { t } from './i18n.js';
 
+/** Shared operation-dialog header: title + the unified close button. */
+export function renderDialogHeader(title, { level = 2 } = {}) {
+ const tag = level === 3 ? 'h3' : 'h2';
+ return `<header class="ui-dialog-header"><${tag} class="modal-title ui-dialog-title">${esc(title)}</${tag}><button type="button" class="ui-icon-button ui-close-button" data-close aria-label="${esc(t('Close'))}" title="${esc(t('Close'))}">×</button></header>`;
+}
+
 const stack = [];
 let previousOverflow;
 let background = [];
@@ -50,7 +56,7 @@ export function openOperationDialog({ content, onClose = null, initialFocus = nu
 
 export function confirmOperation(message) {
  return new Promise(resolve => {
-  const { root, close } = openOperationDialog({ content: `<section class="modal operation-confirm" aria-label="${esc(t('Confirm'))}"><div class="modal-title">${esc(t('Confirm'))}</div><p class="operation-message"></p><div class="modal-actions"><button type="button" class="btn-secondary" data-close>${esc(t('Cancel'))}</button><button type="button" class="btn-primary" data-confirm>${esc(t('Confirm'))}</button></div></section>`, onClose: reason => resolve(reason === 'confirm') });
+  const { root, close } = openOperationDialog({ content: `<section class="modal operation-confirm" aria-label="${esc(t('Confirm'))}">${renderDialogHeader(t('Confirm'))}<p class="operation-message"></p><div class="modal-actions"><button type="button" class="btn-secondary" data-close>${esc(t('Cancel'))}</button><button type="button" class="btn-primary" data-confirm>${esc(t('Confirm'))}</button></div></section>`, onClose: reason => resolve(reason === 'confirm') });
   root.querySelector('.operation-message').textContent = message;
   root.querySelector('[data-confirm]').onclick = () => close('confirm');
  });

@@ -10,7 +10,7 @@ import {execFileSync} from 'node:child_process';
 const file=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const base='686a5966bd5c36f37dd4a80f5c51786c4f847a31';
 test('Knowledge uses the actual shared Back class and no duplicate CSS identity',()=>{
- const controller=file('src/lib/knowledge/detail-controller.js');assert.match(controller,/class="gate-detail-back"/);assert.doesNotMatch(controller+file('src/lib/knowledge/detail-access.css'),/knowledge-back/);
+ const controller=file('src/lib/knowledge/detail-controller.js');assert.match(controller,/renderDetailNavigation\(\{ canGoBack: knowledgeDetailHistory\.length > 0 \}\)/);assert.match(controller,/querySelector\('\.gate-detail-back'\)/);assert.doesNotMatch(controller+file('src/lib/knowledge/detail-access.css'),/knowledge-back/);
  assert.match(file('src/styles.css'),/:has\(\.gate-detail-back\) \.gate-detail-body > \.knowledge-detail > \.detail-name/);
 });
 test('approved shared styles retain the existing primitives after approved skin projection',()=>{

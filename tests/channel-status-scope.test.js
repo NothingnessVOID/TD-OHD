@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { integrationAddedPaths, finalSourceProjection } from './helpers/penta-wa-v2-final-review.js';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -13,6 +15,7 @@ const file = 'src/views/chart.js';
 const read = p => readFileSync(path.join(auditRoot, p));
 const protectedPath = p => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(p) || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(p);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', channelStatusBase], { cwd: auditRoot }).toString().trim().split('\n').filter(protectedPath);
+inventory.push(...integrationAddedPaths);
 
 // Exact status-only delta reviewed against the fixed parent-supplied source snapshot.
 const approvedStatusBlock = [
@@ -108,9 +111,10 @@ test('other paths pass through identically while historical and inventory guards
   }), /Unreviewed increment source/);
   for (const p of ['src/styles/penta-matrix.css', 'src/views/penta-matrix.js', 'src/views/team.js', 'engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const current = read(p);
-    assert.strictEqual(channelStatusProjection(current, p), current);
+    assert.deepEqual(channelStatusProjection(current, p), pentaIntegrationProjection(finalSourceProjection(current, p), p));
     const mutated = Buffer.concat([current, Buffer.from('\n// outside channel status scope\n')]);
-    assert.strictEqual(channelStatusProjection(mutated, p), mutated);
+    if (pentaIntegrationPaths.includes(p)) assert.throws(() => channelStatusProjection(mutated, p), /Unreviewed increment source/);
+    else assert.strictEqual(channelStatusProjection(mutated, p), mutated);
     assert.throws(() => validateReleaseIncrement(auditRoot, {
       files: inventory, read: q => q === p ? mutated : read(q),
     }), /Unreviewed increment source/);

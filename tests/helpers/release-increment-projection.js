@@ -1,4 +1,8 @@
 import assert from 'node:assert/strict';
+import { pentaAddedPaths, assertPentaIntegrationApproval, assertPentaIntegrationSource } from './penta-integration-projection.js';
+import { integrationAddedPaths, waAddedPaths, assertWaIntegrationApproval, assertWaIntegrationSource } from './wa-integration-projection.js';
+import { finalAddedPaths as v2AddedPaths, assertFinalSourceApproval as assertV2SourceApproval,
+  assertFinalSource as assertV2Source, finalSourceProjection as v2SourceProjection } from './penta-wa-v2-final-review.js';
 import {issueDetailsProjection} from './issue-details-projection.js';
 import {validationHead,validationPaths,validationProjection} from './release-validation-projection.js';
 import { createHash } from 'node:crypto';
@@ -46,7 +50,8 @@ const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\
 /** Complete current source inventory plus fixed blobs catches mutations in unchanged algorithms and new paths too. */
 export function validateReleaseIncrement(root = auditRoot, { read = file => readFileSync(path.join(root, file)), files = null } = {}) {
   const reviewed = validateIncrementManifest(read(incrementManifestPath));
-  const expected = [...new Set([...git('ls-tree', '-r', '--name-only', incrementHead).toString().trim().split('\n').filter(protectedPath), ...validationPaths])].sort();
+  const historicalExpected = [...new Set([...git('ls-tree', '-r', '--name-only', incrementHead).toString().trim().split('\n').filter(protectedPath), ...validationPaths])].sort();
+  const expected = [...historicalExpected, ...integrationAddedPaths, ...v2AddedPaths].sort();
   if (!files) {
     const walk = relative => readdirSync(path.join(root, relative), { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? walk(`${relative}/${entry.name}`) : [`${relative}/${entry.name}`]);
     files = ['src', 'engine-core', 'engine-tools', 'engine-wasm', 'jovian-engine', 'scripts', 'third_party', 'public/transit-data'].flatMap(walk).filter(file => !/(^|\/)(bin|obj|node_modules)\//.test(file));
@@ -55,12 +60,29 @@ export function validateReleaseIncrement(root = auditRoot, { read = file => read
     files = files.filter(file => !ignored.has(file) || expected.includes(file)).concat(['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production']);
   }
   assert.deepEqual(files.slice().sort(), expected, 'Unreviewed increment source inventory');
-  for (const file of expected) assert.equal(sha256(issueDetailsProjection(read(file), file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
+  assertV2SourceApproval();
+  assertPentaIntegrationApproval();
+  assertWaIntegrationApproval();
+  for (const file of expected) {
+    if (v2AddedPaths.includes(file)) {
+      assertV2Source(read(file), file);
+      continue;
+    }
+    if (waAddedPaths.includes(file)) {
+      assertWaIntegrationSource(v2SourceProjection(read(file), file), file);
+      continue;
+    }
+    if (pentaAddedPaths.includes(file)) {
+      assertPentaIntegrationSource(v2SourceProjection(read(file), file), file);
+      continue;
+    }
+    assert.equal(sha256(issueDetailsProjection(read(file), file)), sha256(snapshotBytes(validationPaths.includes(file) ? validationHead : incrementHead, file)), `Unreviewed increment source: ${file}`);
+  }
   // Historical proof inputs must not be editable behind the isolated snapshot.
   for (const file of [...basePaths].filter(file => /^(docs|tests\/fixtures)\/.*\.json$/.test(file)))
     assert.deepEqual(read(file), snapshotBytes(incrementBase, file), `Historical audit input changed: ${file}`);
   for (const file of reviewed.evidence) assert.deepEqual(read(file), snapshotBytes(incrementHead, file), `Increment evidence changed: ${file}`);
-  const invariantPaths = expected.filter(file => /^(engine-|jovian-engine\/|src\/lib\/(chart-engine|knowledge|human-design)\/)/.test(file) && file !== 'src/lib/human-design/team-members.js');
+  const invariantPaths = historicalExpected.filter(file => /^(engine-|jovian-engine\/|src\/lib\/(chart-engine|knowledge|human-design)\/)/.test(file) && file !== 'src/lib/human-design/team-members.js');
   for (const file of invariantPaths) assert.deepEqual(snapshotBytes(incrementHead, file), snapshotBytes(incrementBase, file), `Unauthorized algorithm or knowledge delta: ${file}`);
   return { reviewedFiles: Object.keys(reviewed.files).length, protectedFiles: expected.length, unchangedInvariants: invariantPaths.length };
 }

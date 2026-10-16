@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { integrationAddedPaths } from './helpers/penta-wa-v2-final-review.js';
+import { pentaAddedPaths, pentaIntegrationPaths, pentaIntegrationProjection } from './helpers/penta-integration-projection.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -10,6 +12,7 @@ import { auditRoot, incrementBase, incrementManifestPath, snapshotBytes, increme
 const read = file => readFileSync(path.join(auditRoot, file));
 const protectedPath = file => /^(src\/|engine-core\/|engine-tools\/|engine-wasm\/|jovian-engine\/|scripts\/|third_party\/|public\/transit-data\/)/.test(file) || ['index.html', 'package.json', 'package-lock.json', 'vite.config.js', '.env.production'].includes(file);
 const inventory = execFileSync('git', ['ls-tree', '-r', '--name-only', issueDetailsHead], { cwd: auditRoot }).toString().trim().split('\n').filter(protectedPath);
+inventory.push(...integrationAddedPaths);
 function rejectsSource(file, mutated) {
   assert.notDeepEqual(mutated, read(file), 'Negative case must change current bytes');
   assert.throws(() => validateReleaseIncrement(auditRoot, {
@@ -64,7 +67,8 @@ test('targeted navigation, locale and temporary selection regressions fail befor
 test('unknown paths are passed through, never exempted from engine, knowledge or store protection', () => {
   for (const file of ['engine-core/TransitCore.cs', 'src/lib/human-design/penta-structure.js', 'src/lib/knowledge/content/penta.js', 'src/lib/local-store.js', 'src/lib/team-repository.js', 'src/lib/profile-storage.js']) {
     const mutated = Buffer.concat([read(file), Buffer.from('\n// outside issue scope\n')]);
-    assert.strictEqual(issueDetailsProjection(mutated, file), mutated);
+    if (pentaIntegrationPaths.includes(file)) assert.throws(() => issueDetailsProjection(mutated, file), /Unreviewed increment source/);
+    else assert.strictEqual(issueDetailsProjection(mutated, file), mutated);
     rejectsSource(file, mutated);
   }
   for (const file of ['src/lib/unreviewed.js', 'src/lib/issue-details-messages.js', 'engine-core/Unreviewed.cs']) {

@@ -3,6 +3,7 @@ import { getKnowledgeEntry, getKnowledgeEntryById } from './registry.js';
 import { renderKnowledgeDetail } from './detail-renderer.js';
 import { openDetailDialog, prepareDetailDialog, closeDetailDialog, fitDetailSheetHeight } from '../detail-dialog.js';
 import { t } from '../i18n.js';
+import { renderDetailNavigation } from '../object-detail-heading.js';
 import { esc } from '../format.js';
 
 let currentQuery = null;
@@ -27,7 +28,7 @@ export const getKnowledgeDetailState = () => currentQuery ? { query: currentQuer
 
 function render() {
   const detail = document.getElementById('gate-detail');
-  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav"><span class="gate-detail-handle" aria-hidden="true"></span><div class="gate-detail-nav-buttons">${knowledgeDetailHistory.length ? `<button type="button" class="gate-detail-back">← ${esc(t('Back'))}</button>` : '<span></span>'}<button type="button" class="gate-detail-close" title="${esc(t('Close'))}">&times;</button></div></div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable, definitionComponents: currentContext?.definitionComponents })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
+  detail.innerHTML = `<div class="gate-detail-card"><div class="gate-detail-nav">${renderDetailNavigation({ canGoBack: knowledgeDetailHistory.length > 0 }).replace(" data-shared-back", "")}</div><div class="gate-detail-body">${renderKnowledgeDetail(currentQuery, { variableContext: currentContext?.variable, definitionComponents: currentContext?.definitionComponents })}<button type="button" class="reference-link knowledge-library-link">${esc(t('View in the library'))}</button></div></div>`;
   detail.querySelector('.gate-detail-back')?.addEventListener('click', () => {
     const previous = knowledgeDetailHistory.pop();
     currentQuery = previous.query; currentContext = previous.context; currentLibraryId = previous.libraryId;
