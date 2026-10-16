@@ -30,16 +30,13 @@ const renderer = result => createWaDetailRenderer({ getResult: () => result, nam
 const occurrences = (html, needle) => html.split(needle).length - 1;
 const endpoint = (html, gate) => html.split(`data-wa-endpoint="${gate}"`)[1]?.split('</div></div>')[0];
 
-test('native disclosure summaries participate in the existing public dialog focus trap', () => {
+test('channel and department readings stay expanded without disclosure folds; gate and support stay fold-free', () => {
   const details = renderer(fixture());
-  // Gate and support-channel sheets jump to department reading; only department + core channel keep folds.
-  for (const html of [details.renderPair('21-45'), details.renderDepartment('management')]) {
-    const summaries = [...html.matchAll(/<summary\b[^>]*>/g)].map(match => match[0]);
-    assert.ok(summaries.length > 0);
-    for (const summary of summaries) assert.match(summary, /tabindex="0"/);
+  for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('32-54')]) {
+    assert.doesNotMatch(html, /<details\b|<summary\b/);
   }
-  assert.doesNotMatch(details.renderGate(45), /<summary\b/);
-  assert.doesNotMatch(details.renderPair('32-54'), /<summary\b/);
+  assert.match(details.renderPair('21-45'), /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.match(details.renderDepartment('management'), /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-department"/);
 });
 
 for (const [status, left, right, self, combinations] of [
@@ -74,7 +71,11 @@ test('pair sheet keeps self-complete near the top and omits cross-member combina
   assert.doesNotMatch(self, /data-wa-member="(?:a|c)"/);
   assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-endpoint='));
   assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-knowledge'));
-  assert.match(html, /<details class="wa-detail-fold" open data-wa-knowledge="wa"/);
+  // People (endpoints) → Wa reading → related jumps
+  assert.ok(html.indexOf('data-wa-endpoint=') < html.indexOf('data-wa-knowledge="wa"'));
+  assert.ok(html.indexOf('data-wa-knowledge="wa"') < html.indexOf('data-wa-related-jumps'));
+  assert.match(html, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.doesNotMatch(html, /<details\b/);
 });
 
 test('all activation rows survive planet multiplicity, P/D and exact duplicates in every detail location', () => {
@@ -173,7 +174,10 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
     const core = view.renderPair('21-45'), support = view.renderPair('32-54'), gate = view.renderGate(45);
     const entry = readWaContent('21-45', locale);
     const excerpt = readWaReadingExcerpt('21-45',locale);
-    assert.match(core, /<details class="wa-detail-fold" open data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45">/);
+    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45"/);
+    assert.doesNotMatch(core, /<details\b/);
+    assert.ok(core.indexOf('data-wa-endpoint=') < core.indexOf('data-wa-knowledge="wa"'));
+    assert.ok(core.indexOf('data-wa-knowledge="wa"') < core.indexOf('data-wa-related-jumps'));
     assert.ok(core.includes(`data-wa-reading-id="${entry.id}"`));
     assert.ok(core.includes(`data-wa-package-id="${entry.packageId}"`));
     assert.ok(core.includes(`data-wa-source-refs="${entry.sourceRefs.join(' ')}"`));

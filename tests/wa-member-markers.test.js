@@ -195,7 +195,7 @@ test('channel tube encodes state by fill: full when defined, gradient from the a
   assert.doesNotMatch(unknownSvg, /wa-tube-fill|<defs/);
 });
 
-test('contributor dots grow inward toward the channel midline', () => {
+test('contributor dots start on the outer face rim and pack inward toward the channel', () => {
   const { snapshot, prepared } = fixture({ size: 5, groupSizes: [3, 0, 0] });
   prepared[0].chart = chart([45]);
   prepared[1].chart = chart([45]);
@@ -203,15 +203,19 @@ test('contributor dots grow inward toward the channel midline', () => {
   prepared[3].chart = chart([21]);
   const markers = createWaMemberMarkers(snapshot.members);
   const svg = render(analyzeOC16(snapshot, prepared), markers);
-  const { LEFT_GATE, RIGHT_GATE, DOT_STEP } = WA_DIAGRAM_GEOMETRY;
+  const { LEFT_GATE, RIGHT_GATE, DOT_STEP, DOT_OUTER_OFFSET } = WA_DIAGRAM_GEOMETRY;
   const left = countBadges(svg).find(badge => badge.gate === 45);
   const right = countBadges(svg).find(badge => badge.gate === 21);
   assert.equal(left?.count, 2);
   assert.equal(right?.count, 2);
   const leftXs = [...left.body.matchAll(/cx="([\d.]+)"/g)].map(m => Number(m[1]));
   const rightXs = [...right.body.matchAll(/cx="([\d.]+)"/g)].map(m => Number(m[1]));
-  assert.deepEqual(leftXs, [LEFT_GATE, LEFT_GATE + DOT_STEP]);
-  assert.deepEqual(rightXs, [RIGHT_GATE, RIGHT_GATE - DOT_STEP]);
+  const leftStart = LEFT_GATE - DOT_OUTER_OFFSET;
+  const rightStart = RIGHT_GATE + DOT_OUTER_OFFSET;
+  assert.deepEqual(leftXs, [leftStart, leftStart + DOT_STEP]);
+  assert.deepEqual(rightXs, [rightStart, rightStart - DOT_STEP]);
+  assert.ok(leftXs[0] < LEFT_GATE, 'left strip starts outside the gate center');
+  assert.ok(rightXs[0] > RIGHT_GATE, 'right strip starts outside the gate center');
   assert.ok(leftXs[1] > leftXs[0], 'left strip grows rightward (inward)');
   assert.ok(rightXs[1] < rightXs[0], 'right strip grows leftward (inward)');
 });
@@ -231,7 +235,10 @@ test('contributor dots sit clear below gate face, halo and hit; mid diamond CSS 
   // Halo / hit / focus-ring bottoms must sit above the top of contributor dots.
   assert.ok(faceY + NODE_R + NODE_HALO_EXTRA + 1 < dotY - 4, 'halo must clear dots');
   assert.ok(faceY + NODE_R + NODE_HIT_EXTRA + 1 < dotY - 4, 'hit ring must clear dots');
-  assert.ok(faceY + PILLAR_RING_R + 3.25 + 1 < dotY - 4, 'pillar focus ring must clear dots');
+  const focusExtra = WA_DIAGRAM_GEOMETRY.PILLAR_FOCUS_EXTRA;
+  assert.ok(faceY + PILLAR_RING_R + focusExtra + 1 < dotY - 4, 'pillar focus ring must clear dots');
+  assert.equal(NODE_R + WA_DIAGRAM_GEOMETRY.NODE_HIT_EXTRA, PILLAR_RING_R + focusExtra, 'pillar and plain focus share outer radius');
+  assert.ok(Math.abs((PILLAR_RING_R - NODE_R) - focusExtra) <= 0.5, 'solid→pillar and pillar→focus gaps stay near-even');
   assert.match(svg, /wa-mid-halo/);
   assert.match(svg, /wa-tube-mid is-filled/);
   assert.match(svg, /class="wa-node-focus-ring"/);

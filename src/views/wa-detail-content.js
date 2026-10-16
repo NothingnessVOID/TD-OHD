@@ -33,7 +33,6 @@ const stateHtml = value => {
   return `<span class="wa-detail-state" data-wa-state="${state}">${waStateSymbol(state)}<span>${esc(waStateText(state))}</span></span>`;
 };
 const gateLabel = gate => `<strong>${gate}</strong> · ${esc(gateName(gate))} · ${esc(hexagramName(gate))}`;
-const fold = (label, body, attributes = '') => `<details class="wa-detail-fold" ${attributes}><summary tabindex="0">${text(label)}</summary>${body}</details>`;
 
 /** Shared by inline rows, department, pair and gate details. Preserve every source row, including duplicates. */
 export function renderActivationRows(activations, { nameOf = id => id, markerOf=()=>null } = {}) {
@@ -64,11 +63,10 @@ function relatedJumps(items) {
   return `<section class="wa-detail-related"><h3>${text('Wa detail related')}</h3><nav class="wa-detail-jumps" data-wa-related-jumps>${items.join('')}</nav></section>`;
 }
 
-/** Core channel keeps its own Wa reading open. Support/gate sheets jump to the department sheet instead of embedding a collapsed department accordion. */
+/** Core channel shows its Wa reading always expanded (no accordion) under the people block. */
 function channelOwnReading(pair) {
   if (pair.role !== 'core') return '';
-  return fold('Wa UI channel reading', renderWaReading(pair.channelId),
-    `open data-wa-knowledge="wa" data-wa-content-id="${pair.channelId}" data-wa-reading-for="${pair.channelId}"`);
+  return `<section class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="${pair.channelId}" data-wa-reading-for="${pair.channelId}"><h3>${text('Wa UI channel reading')}</h3>${renderWaReading(pair.channelId)}</section>`;
 }
 
 function departmentJump(pair, readingFor) {
@@ -170,16 +168,16 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       if (!department) return '';
       const ctx = context(), value = ctx.result?.departments?.find(row => row.id === id);
       const count = value => Number.isInteger(value) && value >= 0 ? value : '—';
-      return `<section class="wa-detail-content" data-wa-detail="department" data-wa-detail-id="${department.id}"><h2>${text(department.nameKey)}</h2><dl class="wa-detail-metrics"><div><dt>${text('OC16 gate coverage')}</dt><dd data-wa-gate-count="${count(value?.gateCount)}">${count(value?.gateCount)} / ${department.pairs.length * 2}</dd></div><div><dt>${text('OC16 pair coverage')}</dt><dd data-wa-pair-count="${count(value?.pairCount)}">${count(value?.pairCount)} / ${department.pairs.length}</dd></div></dl>${value ? '' : `<p class="wa-detail-note">${unknown()}</p>`}${pairRows(department, ctx)}${fold('Wa UI department reading',renderWaReading(department.pairs[0].channelId),`data-wa-knowledge="wa-department" data-wa-content-id="${department.pairs[0].channelId}" data-wa-reading-for="${department.id}"`)}</section>`;
+      return `<section class="wa-detail-content" data-wa-detail="department" data-wa-detail-id="${department.id}"><h2>${text(department.nameKey)}</h2><dl class="wa-detail-metrics"><div><dt>${text('OC16 gate coverage')}</dt><dd data-wa-gate-count="${count(value?.gateCount)}">${count(value?.gateCount)} / ${department.pairs.length * 2}</dd></div><div><dt>${text('OC16 pair coverage')}</dt><dd data-wa-pair-count="${count(value?.pairCount)}">${count(value?.pairCount)} / ${department.pairs.length}</dd></div></dl>${value ? '' : `<p class="wa-detail-note">${unknown()}</p>`}${pairRows(department, ctx)}<section class="wa-detail-reading" data-wa-knowledge="wa-department" data-wa-content-id="${department.pairs[0].channelId}" data-wa-reading-for="${department.id}"><h3>${text('Wa UI department reading')}</h3>${renderWaReading(department.pairs[0].channelId)}</section></section>`;
     },
     renderPair(channelId) {
       const pair = pairs.find(row => row.channelId === channelId);
       if (!pair) return '';
       const ctx = context(), record = ctx.pairs.get(channelId);
-      // Flat endpoints match department rows; self-complete near the top; department Wa reading is a jump, not an accordion.
+      // Flat endpoints match department rows; self-complete near the top; own Wa reading under people; related jumps at bottom.
       const flat = `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
       const note = `<p class="wa-detail-note"><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button> · ${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</p>`;
-      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2>${note}${stateHtml(record)}${selfCompleteBlock(record)}${flat}${pairRelated(pair)}${channelOwnReading(pair)}</section>`;
+      return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2>${note}${stateHtml(record)}${selfCompleteBlock(record)}${flat}${channelOwnReading(pair)}${pairRelated(pair)}</section>`;
     },
     renderGate(input) {
       const gate = Number(input), pair = pairs.find(row => row.gates.includes(gate));
