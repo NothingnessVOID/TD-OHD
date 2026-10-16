@@ -167,7 +167,7 @@
 .wa-diagram-gate.is-pillar.is-covered .wa-pillar-ring { opacity:1; stroke-width:1.85; }
 .wa-diagram-gate.is-pillar[data-covered="false"] .wa-pillar-ring,
 .wa-diagram-gate.is-pillar[data-covered="unknown"] .wa-pillar-ring { opacity:.72; }
-.wa-node-pillar { fill:var(--accent-strong,var(--accent)); font-size:9px; letter-spacing:.06em; font-weight:600; pointer-events:none; }
+.wa-node-pillar { fill:var(--text-secondary); font-size:11.5px; letter-spacing:.02em; font-weight:500; pointer-events:none; }
 .wa-diagram-gate:hover .wa-node-face { stroke:var(--accent); stroke-width:2.05; }
 .wa-diagram-gate.is-covered:hover .wa-node-face { filter:drop-shadow(0 0 2.8px color-mix(in srgb, var(--accent) 58%, transparent)); }
 .wa-diagram-gate.is-selected .wa-node-face { stroke:var(--accent); stroke-width:2.25; }
