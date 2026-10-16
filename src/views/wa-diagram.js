@@ -14,10 +14,13 @@ export function waStateSymbol(state, size = 22) {
 /** Fixed board: six tube rows; v2 soft chips outside focus rings; dept titles as strong type (no frame). */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   VIEW_WIDTH: 600, ROW_HEIGHT: 94, LEFT_GATE: 272, RIGHT_GATE: 430,
-  NODE_R: 15, TUBE_H: 8.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
-  MID_R: 4.75, PAD_TOP: 6, PAD_BOTTOM: 14,
+  /** Gate face radius — bumped slightly so numbers/tubes/mid read larger (not board zoom). */
+  NODE_R: 17, TUBE_H: 10.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
+  /** Warm hollow-lozenge mid (refine-3); radii scaled with thicker tube. */
+  MID_RX: 8.2, MID_RY: 8.2, MID_CR: 2.7, MID_IRX: 3.25, MID_IRY: 3.25, MID_ICR: 1.25,
+  PAD_TOP: 6, PAD_BOTTOM: 14,
   /** Middle pillar ring — even gap from NODE_R (≈4.5) and to outer focus (same gap). */
-  PILLAR_RING_R: 19.5,
+  PILLAR_RING_R: 21.5,
   /** Clearance from node face edge down to contributor-dot centers. */
   DOT_GAP: 28,
   NODE_HALO_EXTRA: 2.5,
@@ -26,8 +29,8 @@ export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   /** Extra beyond pillar ring so solid → pillar → focus gaps stay even (~4.5 / 5). */
   PILLAR_FOCUS_EXTRA: 5,
   /** First contributor dot sits on the outer face rim, then packs toward the channel. */
-  DOT_OUTER_OFFSET: 15,
-  LINK_HIT_HALF: 12,
+  DOT_OUTER_OFFSET: 17,
+  LINK_HIT_HALF: 14,
   /** Gap from outer focus ring to the near edge of a gate name chip. */
   CHIP_GAP: 28,
   CHIP_H: 22,
@@ -50,14 +53,49 @@ function estimateTextWidth(label, { cjk = 13, ascii = 7.4, soft = 6 } = {}) {
   return w;
 }
 
-/** Midpoint mark: hollow when not fully connected; solid + soft halo when both ends are active.
- * Fill stays luminous on every skin (never --accent-on, which is dark on several dark skins). */
+/** Rounded rhombus path (N-E-S-W) with corner radius along each edge. */
+function roundedRhombusPath(cx, cy, rx, ry, cr) {
+  const N = { x: cx, y: cy - ry };
+  const E = { x: cx + rx, y: cy };
+  const S = { x: cx, y: cy + ry };
+  const W = { x: cx - rx, y: cy };
+  const verts = [N, E, S, W];
+  const edgeLen = Math.hypot(rx, ry);
+  const t = Math.min(cr / edgeLen, 0.48);
+  const parts = [];
+  for (let i = 0; i < 4; i++) {
+    const prev = verts[(i + 3) % 4];
+    const cur = verts[i];
+    const next = verts[(i + 1) % 4];
+    const ax = cur.x + (prev.x - cur.x) * t;
+    const ay = cur.y + (prev.y - cur.y) * t;
+    const bx = cur.x + (next.x - cur.x) * t;
+    const by = cur.y + (next.y - cur.y) * t;
+    if (i === 0) parts.push(`M${fmt(ax)} ${fmt(ay)}`);
+    else parts.push(`L${fmt(ax)} ${fmt(ay)}`);
+    parts.push(`Q${fmt(cur.x)} ${fmt(cur.y)} ${fmt(bx)} ${fmt(by)}`);
+  }
+  parts.push('Z');
+  return parts.join('');
+}
+
+/** Midpoint mark: warm hollow lozenge (refine-3). No glow.
+ * Short horizontal spine only inside the hollow. Fill stays luminous on every skin. */
 function renderMidMark(fill, mid, y) {
-  const r = G.MID_R;
   const filled = fill === 'full';
-  const diamond = `<path class="wa-tube-mid ${filled ? 'is-filled' : 'is-hollow'}" d="M${fmt(mid)} ${fmt(y - r)}l${r} ${r}-${r} ${r}-${r}-${r}z" aria-hidden="true"/>`;
-  if (!filled) return diamond;
-  return `<circle class="wa-mid-halo" cx="${fmt(mid)}" cy="${fmt(y)}" r="${fmt(r + 3.2)}" aria-hidden="true"/>${diamond}`;
+  const scale = filled ? 1 : 0.92;
+  const rx = G.MID_RX * scale;
+  const ry = G.MID_RY * scale;
+  const cr = G.MID_CR * scale;
+  const irx = G.MID_IRX * scale;
+  const iry = G.MID_IRY * scale;
+  const icr = G.MID_ICR * scale;
+  const cls = filled ? 'is-filled' : 'is-hollow';
+  const outer = roundedRhombusPath(mid, y, rx, ry, cr);
+  const inner = roundedRhombusPath(mid, y, irx, iry, icr);
+  const spineHalf = irx * 0.72;
+  const spine = `<line class="wa-mid-spine ${cls}" x1="${fmt(mid - spineHalf)}" y1="${fmt(y)}" x2="${fmt(mid + spineHalf)}" y2="${fmt(y)}" aria-hidden="true"/>`;
+  return `<path class="wa-tube-mid ${cls} wa-mid-lozenge wa-mid-warm" fill-rule="evenodd" d="${outer}${inner}" aria-hidden="true"/>${spine}`;
 }
 
 /** Contributor strip under a gate: coloured dots only. Start on the outer face rim, pack inward. */
@@ -160,7 +198,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const name = gateName(gate);
       const ariaName = pillar ? `${t(`OC16 ${pillar}`)} · ${name}` : name;
       // Pillars: ring only (no above-node text). Gate chips carry vocabulary names for every gate.
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 5)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept title stays calm.
     const hitHalf = G.LINK_HIT_HALF;
