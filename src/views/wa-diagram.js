@@ -15,12 +15,18 @@ export function waStateSymbol(state, size = 22) {
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   VIEW_WIDTH: 380, ROW_HEIGHT: 94, LEFT_GATE: 186, RIGHT_GATE: 344,
   NODE_R: 15, TUBE_H: 8.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
-  MID_R: 4.75, PAD_TOP: 6, PAD_BOTTOM: 14, PILLAR_RING_R: 20.5,
+  MID_R: 4.75, PAD_TOP: 6, PAD_BOTTOM: 14,
+  /** Middle pillar ring — even gap from NODE_R (≈4.5) and to outer focus (same gap). */
+  PILLAR_RING_R: 19.5,
   /** Clearance from node face edge down to contributor-dot centers. */
   DOT_GAP: 28,
   NODE_HALO_EXTRA: 2.5,
-  /** Hit/focus ring sits outside the face (and pillar ring) so hover frame is obvious. */
-  NODE_HIT_EXTRA: 8.5,
+  /** Outer focus/hit ring beyond face; matches pillar+gap so channel/gate frames share a size. */
+  NODE_HIT_EXTRA: 9.5,
+  /** Extra beyond pillar ring so solid → pillar → focus gaps stay even (~4.5 / 5). */
+  PILLAR_FOCUS_EXTRA: 5,
+  /** First contributor dot sits on the outer face rim, then packs toward the channel. */
+  DOT_OUTER_OFFSET: 15,
   LINK_HIT_HALF: 12
 });
 const G = WA_DIAGRAM_GEOMETRY;
@@ -37,7 +43,7 @@ function renderMidMark(fill, mid, y) {
   return `<circle class="wa-mid-halo" cx="${fmt(mid)}" cy="${fmt(y)}" r="${fmt(r + 3.2)}" aria-hidden="true"/>${diamond}`;
 }
 
-/** Contributor strip under a gate: coloured dots only. Grow inward toward the channel midline. */
+/** Contributor strip under a gate: coloured dots only. Start on the outer face rim, pack inward. */
 function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   if (!records.length) return '';
   const count = records.length;
@@ -46,9 +52,9 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   const cy = y + G.NODE_R + G.DOT_GAP;
   const shown = records.slice(0, G.MAX_DOTS);
   const rest = count - shown.length;
-  // Inward: left gate grows right, right gate grows left.
+  // From the outer face rim inward: left gate grows right, right gate grows left.
   const dir = sideIndex ? -1 : 1;
-  const start = gateX;
+  const start = gateX - dir * G.DOT_OUTER_OFFSET;
   const dots = shown.map((record, index) =>
     `<circle class="wa-gate-dot wa-member-color-${record.colorSlot}" data-wa-marker-member="${esc(record.memberId)}" cx="${fmt(start + dir * index * G.DOT_STEP)}" cy="${fmt(cy)}" r="${G.DOT_R}"/>`
   ).join('');
@@ -104,7 +110,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
         : '';
       const haloR = G.NODE_R + G.NODE_HALO_EXTRA;
       const hitR = G.NODE_R + G.NODE_HIT_EXTRA;
-      const focusR = pillar ? G.PILLAR_RING_R + 3.25 : hitR;
+      const focusR = pillar ? G.PILLAR_RING_R + G.PILLAR_FOCUS_EXTRA : hitR;
       return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept name stays calm.

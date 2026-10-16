@@ -46,6 +46,8 @@
 .wa-detail-link:hover { text-decoration: underline; }
 /* Reuse knowledge-jump-card chrome; pin accent so Wa sheets work outside .knowledge-detail. */
 .wa-detail-related { --knowledge-color: var(--accent); display: grid; gap: 10px; }
+.wa-detail-reading { display: grid; gap: 10px; min-width: 0; }
+.wa-detail-reading > h3 { margin: 0; }
 .wa-detail-jumps { display: grid; gap: 10px; }
 .wa-detail-content .wa-jump-card {
   margin: 0;

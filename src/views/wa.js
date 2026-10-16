@@ -365,7 +365,7 @@ export function mountWa(container, options = {}) {
     container.querySelectorAll('.wa-diagram-gate').forEach(node=>{const active=selected?.type==='gate'&&String(selected.id)===node.dataset.waGate;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});
   }
   function detailClosed() {
-    detailOpen=false;detailStack=[];
+    detailOpen=false;detailStack=[];selected=null;
     if(disposed)return;
     syncSelection();
     const target=detailOrigin?.node?.isConnected?detailOrigin.node:findFocus(detailOrigin?.key,container);
@@ -382,10 +382,11 @@ export function mountWa(container, options = {}) {
     prepareDetailDialog(detail,'wa');
     detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
     detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
-    // Fresh frames keep markup defaults (channel reading starts open); back navigation restores captured state.
+    // Back navigation restores captured fold state when any details remain; channel/dept readings are always expanded.
     if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
     openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
+    syncSelection();
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
     if(!push)findFocus(frame.focus,detail)?.focus({preventScroll:true});
