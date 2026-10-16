@@ -362,7 +362,7 @@ export function mountWa(container, options = {}) {
       const active=selected?.type==='pair'&&selected.id===channel.dataset.waPair||selected?.type==='department'&&selected.id===row.dataset.department;
       row.classList.toggle('is-selected',Boolean(active));channel.setAttribute('aria-pressed',String(Boolean(active)));
     });
-    container.querySelectorAll('.wa-diagram-gate').forEach(node=>{const active=selected?.type==='gate'&&String(selected.id)===node.dataset.waGate;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});
+    container.querySelectorAll('.wa-diagram-gate').forEach(node=>{const active=selected?.type==='gate'&&String(selected.id)===node.dataset.waGate;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});container.querySelectorAll('.wa-dept-title[data-wa-department]').forEach(node=>{const active=selected?.type==='department'&&selected.id===node.dataset.waDepartment;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});
   }
   function detailClosed() {
     detailOpen=false;detailStack=[];selected=null;

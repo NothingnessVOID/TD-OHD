@@ -35,8 +35,14 @@ test('channel and department readings stay expanded without disclosure folds; ga
   for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('32-54')]) {
     assert.doesNotMatch(html, /<details\b|<summary\b/);
   }
-  assert.match(details.renderPair('21-45'), /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
-  assert.match(details.renderDepartment('management'), /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-department"/);
+  // Department ≡ core channel: one Wa reading (same content-data), not a second department copy.
+  const core = details.renderPair('21-45');
+  const dept = details.renderDepartment('management');
+  assert.match(core, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.match(dept, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.match(dept, /data-wa-merged-dept="management"/);
+  assert.match(core, /data-wa-core-pair="21-45"/);
+  assert.equal(core, dept);
 });
 
 for (const [status, left, right, self, combinations] of [
@@ -161,10 +167,13 @@ test('department counts are consumed, core precedes support, no trailing blanket
   const html = renderer(result).renderDepartment('management');
   assert.match(html, /data-wa-gate-count="7">7 \/ 10/);
   assert.match(html, /data-wa-pair-count="3">3 \/ 5/);
-  assert.equal(occurrences(html, 'data-pair-row='), 5);
-  assert.ok(html.indexOf('data-pair-row="21-45"') < html.indexOf('data-pair-row="32-54"'));
+  // Core is the primary sheet; support pairs listed below (4 support rows for management).
+  assert.equal(occurrences(html, 'data-pair-row='), 4);
+  assert.match(html, /data-wa-core-pair="21-45"/);
+  assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="32-54"'));
   assert.doesNotMatch(html, /outsider|wa-contributor-list/);
-  assert.match(html, /data-wa-knowledge="wa-department" data-wa-content-id="21-45"/);
+  assert.match(html, /data-wa-knowledge="wa" data-wa-content-id="21-45"/);
+  assert.equal(occurrences(html, 'data-wa-reading-id="'), 1);
 });
 
 test('three languages retain exact Wa excerpts on core sheets and jump cards for department reading', () => {
@@ -174,7 +183,9 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
     const core = view.renderPair('21-45'), support = view.renderPair('32-54'), gate = view.renderGate(45);
     const entry = readWaContent('21-45', locale);
     const excerpt = readWaReadingExcerpt('21-45',locale);
-    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="21-45"/);
+    // Core pair and department are the same merged sheet; reading-for is the department id.
+    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="management"/);
+    assert.equal(core, view.renderDepartment('management'));
     assert.doesNotMatch(core, /<details\b/);
     assert.ok(core.indexOf('data-wa-endpoint=') < core.indexOf('data-wa-knowledge="wa"'));
     assert.ok(core.indexOf('data-wa-knowledge="wa"') < core.indexOf('data-wa-related-jumps'));
@@ -184,7 +195,8 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
     assert.ok(core.includes(renderProse({ content: entry.summary })));
     assert.ok(core.includes(renderProse({ content: excerpt.detail })));
     assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
-    // Support/gate: department Wa reading is a jump card, not a nested accordion with prose.
+    assert.equal(occurrences(core, 'data-wa-reading-id="'), 1);
+    // Support: department Wa reading is a jump card to the merged sheet, not nested prose.
     assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54"/);
     assert.doesNotMatch(support, /<details\b/);
     assert.ok(!support.includes(renderProse({content:excerpt.detail})));
@@ -193,11 +205,10 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
     assert.ok(gate.includes(renderGateDetailHeading(45)));
     assert.doesNotMatch(gate, /<details\b/);
     assert.ok(!gate.includes(renderProse({content:excerpt.detail})));
-    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
-    assert.match(gate, /data-wa-pair="21-45"/);
+    // Gate jumps to merged dept≡core (one card).
+    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
     assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
-    assert.ok(gate.indexOf('wa-detail-related') < gate.indexOf('data-wa-knowledge'));
     assert.match(core, /data-wa-related-jumps/);
     assert.match(core, /data-wa-gate="45"/);
     assert.match(core, /data-wa-gate="21"/);
@@ -212,11 +223,13 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
 test('pair sheet endpoints are flat like department rows with always-visible activations', () => {
   const view = renderer(fixture());
   const pair = view.renderPair('21-45');
-  assert.equal(occurrences(pair, 'data-wa-endpoint='), 2);
-  assert.equal(occurrences(pair, 'wa-detail-endpoint--flat'), 2);
-  assert.match(pair, /data-wa-gate-activations="45"/);
-  assert.match(pair, /data-wa-gate-activations="21"/);
-  const gate45 = pair.split('data-wa-gate-activations="45"')[1].split('data-wa-gate-activations="21"')[0];
+  // Core endpoints live in the primary flat block before support-pair rows.
+  const coreFlat = pair.split('data-wa-support-pairs')[0];
+  assert.equal(occurrences(coreFlat, 'data-wa-endpoint='), 2);
+  assert.equal(occurrences(coreFlat, 'wa-detail-endpoint--flat'), 2);
+  assert.match(coreFlat, /data-wa-gate-activations="45"/);
+  assert.match(coreFlat, /data-wa-gate-activations="21"/);
+  const gate45 = coreFlat.split('data-wa-gate-activations="45"')[1].split('data-wa-gate-activations="21"')[0];
   assert.match(gate45, /data-wa-activation-member="b"/);
   assert.match(gate45, /data-wa-activation-member="c"/);
   assert.doesNotMatch(gate45, /data-wa-activation-member="a"/);

@@ -13,30 +13,22 @@ export function waStateSymbol(state, size = 22) {
 
 /** Fixed board: six tube rows; v2 soft chips outside focus rings; dept titles as strong type (no frame). */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
-  VIEW_WIDTH: 600, ROW_HEIGHT: 94, LEFT_GATE: 272, RIGHT_GATE: 430,
-  /** Gate face radius — bumped slightly so numbers/tubes/mid read larger (not board zoom). */
-  NODE_R: 17, TUBE_H: 10.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
-  /** Warm hollow-lozenge mid (refine-3); radii scaled with thicker tube. */
-  MID_RX: 8.2, MID_RY: 8.2, MID_CR: 2.7, MID_IRX: 3.25, MID_IRY: 3.25, MID_ICR: 1.25,
-  PAD_TOP: 6, PAD_BOTTOM: 14,
-  /** Middle pillar ring — even gap from NODE_R (≈4.5) and to outer focus (same gap). */
-  PILLAR_RING_R: 21.5,
-  /** Clearance from node face edge down to contributor-dot centers. */
-  DOT_GAP: 28,
-  NODE_HALO_EXTRA: 2.5,
-  /** Outer focus/hit ring beyond face; matches pillar+gap so channel/gate frames share a size. */
-  NODE_HIT_EXTRA: 9.5,
-  /** Extra beyond pillar ring so solid → pillar → focus gaps stay even (~4.5 / 5). */
+  /** Layout v3+: ~50% column via CSS; taller rows + enlarged marks fill the viewport. */
+  VIEW_WIDTH: 640, ROW_HEIGHT: 122, LEFT_GATE: 298, RIGHT_GATE: 508,
+  NODE_R: 21, TUBE_H: 13.5, DOT_R: 4.5, DOT_STEP: 10.5, MAX_DOTS: 5,
+  MID_RX: 10.5, MID_RY: 10.5, MID_CR: 3.2, MID_IRX: 4.1, MID_IRY: 4.1, MID_ICR: 1.45,
+  PAD_TOP: 10, PAD_BOTTOM: 18,
+  PILLAR_RING_R: 26,
+  DOT_GAP: 32,
+  NODE_HALO_EXTRA: 3,
+  NODE_HIT_EXTRA: 10,
   PILLAR_FOCUS_EXTRA: 5,
-  /** First contributor dot sits on the outer face rim, then packs toward the channel. */
-  DOT_OUTER_OFFSET: 17,
-  LINK_HIT_HALF: 14,
-  /** Gap from outer focus ring to the near edge of a gate name chip. */
-  CHIP_GAP: 28,
-  CHIP_H: 22,
-  CHIP_PAD_X: 10,
-  /** Left column for department titles (exclusive of gate chips). */
-  TITLE_X: 14
+  DOT_OUTER_OFFSET: 21,
+  LINK_HIT_HALF: 16,
+  CHIP_GAP: 22,
+  CHIP_H: 26,
+  CHIP_PAD_X: 12,
+  TITLE_X: 12
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
@@ -120,9 +112,9 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true">${dots}${more}<title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
 }
 
-/** Soft chip outside the focus ring: `编号 · vocabulary gateName` (shared HD names). */
+/** Soft chip outside the focus ring: vocabulary gateName only (circle still shows the number). */
 function renderGateChip(gate, x, y, sideIndex, focusR) {
-  const label = `${gate} · ${gateName(gate)}`;
+  const label = `${gateName(gate)}`;
   const textW = estimateTextWidth(label);
   const w = Math.max(52, Math.ceil(textW + G.CHIP_PAD_X * 2));
   const h = G.CHIP_H;
@@ -130,23 +122,26 @@ function renderGateChip(gate, x, y, sideIndex, focusR) {
   const chipX = sideIndex ? near : near - w;
   const chipY = y - h / 2;
   const tx = chipX + w / 2;
-  return `<g class="wa-gate-chip" data-wa-gate-chip="${gate}" aria-hidden="true"><rect class="wa-gate-chip-bg" x="${fmt(chipX)}" y="${fmt(chipY)}" width="${w}" height="${h}" rx="${h / 2}"/><text class="wa-gate-chip-text" x="${fmt(tx)}" y="${fmt(y + 4.2)}" text-anchor="middle">${esc(label)}</text></g>`;
+  return `<g class="wa-gate-chip" data-wa-gate-chip="${gate}" aria-hidden="true"><rect class="wa-gate-chip-bg" x="${fmt(chipX)}" y="${fmt(chipY)}" width="${w}" height="${h}" rx="${h / 2}"/><text class="wa-gate-chip-text" x="${fmt(tx)}" y="${fmt(y + 5)}" text-anchor="middle">${esc(label)}</text></g>`;
 }
 
-/** Department title: typography + short accent rule (no frame chip); status line clear below. */
+/** Department title: clickable; name optically centered on tube midline y. */
 function renderDeptTitle(departmentId, state, fill, y) {
   const name = t(`OC16 ${departmentId}`);
   const sub = t(`Wa UI line ${state}`);
   const x = G.TITLE_X;
-  // Title sits above the tube midline; status baseline stays well below title descenders + rule.
-  const nameY = y - 10;
-  const ruleY = nameY + 6;
-  const subY = y + 18;
-  const textW = estimateTextWidth(name, { cjk: 15.5, ascii: 8.2, soft: 6 });
-  // letter-spacing on .wa-diagram-name (~0.14em) widens the painted title beyond glyph estimate.
-  const letterExtra = Math.max(0, [...String(name)].length - 1) * 2.4;
-  const ruleW = Math.max(28, Math.ceil(textW + letterExtra));
-  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" aria-hidden="true"><text class="wa-diagram-name" x="${x}" y="${fmt(nameY)}">${esc(name)}</text><line class="wa-dept-title-rule" x1="${x}" y1="${fmt(ruleY)}" x2="${fmt(x + ruleW)}" y2="${fmt(ruleY)}"/><text class="wa-diagram-sub" data-fill="${fill}" x="${x}" y="${fmt(subY)}">${esc(sub)}</text></g>`;
+  // CJK ~19px: baseline ≈ mid + 6.5 so glyph center matches tube centerline.
+  const nameY = y + 6.5;
+  const ruleY = nameY + 8;
+  const subY = y + 26;
+  const textW = estimateTextWidth(name, { cjk: 17.5, ascii: 9, soft: 6 });
+  const letterExtra = Math.max(0, [...String(name)].length - 1) * 2.7;
+  const ruleW = Math.max(32, Math.ceil(textW + letterExtra));
+  const hitW = Math.max(ruleW + 10, 84);
+  const hitH = 52;
+  const hitY = y - 24;
+  const aria = `${name} · ${sub}`;
+  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" data-wa-department="${esc(departmentId)}" role="button" tabindex="0" aria-label="${esc(aria)}"><rect class="wa-dept-title-hit" x="${x - 4}" y="${fmt(hitY)}" width="${hitW}" height="${hitH}" rx="8"/><text class="wa-diagram-name" x="${x}" y="${fmt(nameY)}">${esc(name)}</text><line class="wa-dept-title-rule" x1="${x}" y1="${fmt(ruleY)}" x2="${fmt(x + ruleW)}" y2="${fmt(ruleY)}"/><text class="wa-diagram-sub" data-fill="${fill}" x="${x}" y="${fmt(subY)}">${esc(sub)}</text></g>`;
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.
@@ -198,7 +193,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const name = gateName(gate);
       const ariaName = pillar ? `${t(`OC16 ${pillar}`)} · ${name}` : name;
       // Pillars: ring only (no above-node text). Gate chips carry vocabulary names for every gate.
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 5)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 6)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept title stays calm.
     const hitHalf = G.LINK_HIT_HALF;
