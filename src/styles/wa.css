@@ -70,15 +70,18 @@
 /* Workspace */
 .wa-workspace { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; align-items:start; }
 .wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,calc(var(--header-height,56px) + 16px)); min-width:0; overflow:visible; }
-.wa-graph-panel { padding:12px 14px 14px; }
+.wa-graph-panel { padding:16px 16px 18px; }
 .wa-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px; margin:0 0 12px; }
 .wa-panel-heading h2, .wa-results h2 { margin:0; font-size:17px; line-height:1.4; }
+/* Left diagram header leads the column; row lockups sit just under it. */
+.wa-graph-panel .wa-panel-heading { margin:0 0 2px; }
+.wa-graph-panel .wa-panel-heading h2 { font-size:18px; font-weight:650; letter-spacing:-0.01em; }
 .wa-kicker { font-size:12px; letter-spacing:.05em; color:var(--text-tertiary,var(--text-secondary)); font-weight:600; }
 
 /* Six core channel SVG — tube board with channel-only hover; dots clear of halos */
-.wa-figure { margin:4px 0 0; }
+.wa-figure { margin:0; }
 .wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,72px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
-.wa-diagram-name, .wa-diagram-sub { pointer-events:none; }
+.wa-diagram-name, .wa-diagram-sub, .wa-diagram-status-dot { pointer-events:none; }
 /* Dept title opens the same department detail sheet as right-column dept entry. */
 .wa-dept-title { pointer-events:auto; cursor:pointer; outline:none; }
 .wa-dept-title-hit { fill:transparent; stroke:transparent; pointer-events:auto; }
@@ -87,29 +90,32 @@
 }
 .wa-dept-title.is-selected .wa-dept-title-hit {
   fill:color-mix(in srgb, var(--accent) 12%, transparent);
-  stroke:color-mix(in srgb, var(--accent) 35%, transparent);
+  stroke:color-mix(in srgb, var(--accent) 28%, transparent);
   stroke-width:1;
 }
 .wa-dept-title:hover .wa-diagram-name, .wa-dept-title:focus-visible .wa-diagram-name,
 .wa-dept-title.is-selected .wa-diagram-name { fill:var(--accent); }
-.wa-dept-title:hover .wa-dept-title-rule, .wa-dept-title:focus-visible .wa-dept-title-rule,
-.wa-dept-title.is-selected .wa-dept-title-rule { opacity:1; stroke-width:2.6; }
-/* Strong title type + short accent rule — no framed chip (framed look overlapped the status line). */
-.wa-dept-title-rule {
-  stroke:var(--accent);
-  stroke-width:2.25;
-  stroke-linecap:round;
-  opacity:.88;
-}
+/* Name + status are one lockup. Status is a dot and type — no framed chip, no underline. */
 .wa-diagram-name {
   fill:var(--accent-strong,var(--text));
   font-size:19px;
-  font-weight:780;
-  letter-spacing:.14em;
+  font-weight:760;
+  letter-spacing:.06em;
 }
-.wa-diagram-sub { fill:var(--text-tertiary,var(--text-secondary)); font-size:12px; }
-.wa-diagram-sub[data-fill="full"] { fill:var(--accent-strong,var(--accent)); font-weight:600; }
-.wa-diagram-sub[data-fill="left"], .wa-diagram-sub[data-fill="right"] { fill:var(--text-secondary); }
+.wa-diagram-sub {
+  fill:var(--text-secondary);
+  font-size:14.5px;
+  font-weight:640;
+  letter-spacing:.02em;
+}
+.wa-diagram-sub[data-fill="full"] { fill:var(--accent-strong,var(--accent)); font-weight:680; }
+.wa-diagram-sub[data-fill="left"], .wa-diagram-sub[data-fill="right"] { fill:var(--status-caution,var(--text)); }
+.wa-diagram-sub[data-line="unknown"] { fill:var(--text-tertiary,var(--text-secondary)); font-weight:580; }
+.wa-diagram-status-dot { fill:var(--text-tertiary,var(--text-secondary)); }
+.wa-diagram-status-dot[data-fill="full"] { fill:var(--accent); }
+.wa-diagram-status-dot[data-fill="left"], .wa-diagram-status-dot[data-fill="right"] { fill:var(--status-caution,var(--accent)); }
+.wa-diagram-status-dot[data-fill="none"] { fill:none; stroke:var(--text-tertiary,var(--text-secondary)); stroke-width:1.4; }
+.wa-diagram-status-dot[data-line="unknown"] { fill:none; stroke:var(--text-tertiary,var(--text-secondary)); stroke-width:1.25; stroke-dasharray:1.6 1.5; }
 /* Soft outer gate chips — warm like wa-chip / knowledge-jump */
 /* Chip is inside .wa-diagram-gate — clicks open the same gate detail sheet. */
 .wa-gate-chip { pointer-events:auto; cursor:pointer; }
@@ -127,8 +133,8 @@
 }
 .wa-gate-chip-text {
   fill:var(--accent-strong,var(--text));
-  font-size:13.5px;
-  font-weight:550;
+  font-size:14px;
+  font-weight:560;
   letter-spacing:.01em;
   pointer-events:none;
 }

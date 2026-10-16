@@ -17,18 +17,18 @@ export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   VIEW_WIDTH: 640, ROW_HEIGHT: 122, LEFT_GATE: 298, RIGHT_GATE: 508,
   NODE_R: 21, TUBE_H: 13.5, DOT_R: 4.5, DOT_STEP: 10.5, MAX_DOTS: 5,
   MID_RX: 10.5, MID_RY: 10.5, MID_CR: 3.2, MID_IRX: 4.1, MID_IRY: 4.1, MID_ICR: 1.45,
-  PAD_TOP: 10, PAD_BOTTOM: 18,
+  PAD_TOP: 8, PAD_BOTTOM: 16,
   PILLAR_RING_R: 26,
-  DOT_GAP: 32,
+  DOT_GAP: 26,
   NODE_HALO_EXTRA: 3,
   NODE_HIT_EXTRA: 10,
   PILLAR_FOCUS_EXTRA: 5,
   DOT_OUTER_OFFSET: 21,
   LINK_HIT_HALF: 16,
   CHIP_GAP: 22,
-  CHIP_H: 26,
-  CHIP_PAD_X: 12,
-  TITLE_X: 12
+  CHIP_H: 28,
+  CHIP_PAD_X: 13,
+  TITLE_X: 4
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
@@ -115,8 +115,8 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
 /** Soft chip outside the focus ring: vocabulary gateName only (circle still shows the number). */
 function renderGateChip(gate, x, y, sideIndex, focusR) {
   const label = `${gateName(gate)}`;
-  const textW = estimateTextWidth(label);
-  const w = Math.max(52, Math.ceil(textW + G.CHIP_PAD_X * 2));
+  const textW = estimateTextWidth(label, { cjk: 14, ascii: 7.8, soft: 4.5 });
+  const w = Math.max(56, Math.ceil(textW + G.CHIP_PAD_X * 2));
   const h = G.CHIP_H;
   const near = x + (sideIndex ? 1 : -1) * (focusR + G.CHIP_GAP);
   const chipX = sideIndex ? near : near - w;
@@ -125,23 +125,27 @@ function renderGateChip(gate, x, y, sideIndex, focusR) {
   return `<g class="wa-gate-chip" data-wa-gate-chip="${gate}" aria-hidden="true"><rect class="wa-gate-chip-bg" x="${fmt(chipX)}" y="${fmt(chipY)}" width="${w}" height="${h}" rx="${h / 2}"/><text class="wa-gate-chip-text" x="${fmt(tx)}" y="${fmt(y + 5)}" text-anchor="middle">${esc(label)}</text></g>`;
 }
 
-/** Department title: clickable; name optically centered on tube midline y. */
+/** Department lockup: name + status as one block, optically centered on tube midline y.
+ * A leading status dot carries state; there is no underline and no framed chip. */
 function renderDeptTitle(departmentId, state, fill, y) {
   const name = t(`OC16 ${departmentId}`);
   const sub = t(`Wa UI line ${state}`);
   const x = G.TITLE_X;
-  // CJK ~19px: baseline ≈ mid + 6.5 so glyph center matches tube centerline.
-  const nameY = y + 6.5;
-  const ruleY = nameY + 8;
-  const subY = y + 26;
-  const textW = estimateTextWidth(name, { cjk: 17.5, ascii: 9, soft: 6 });
-  const letterExtra = Math.max(0, [...String(name)].length - 1) * 2.7;
-  const ruleW = Math.max(32, Math.ceil(textW + letterExtra));
-  const hitW = Math.max(ruleW + 10, 84);
+  // 19px name sits above the line, 14.5px status below; weighted glyph centers land on y.
+  const nameY = y - 5;
+  const subY = y + 18;
+  const dotR = 3.6;
+  const dotCx = x + dotR;
+  const dotCy = subY - 5;
+  const subX = x + dotR * 2 + 6.5;
+  const nameW = estimateTextWidth(name, { cjk: 18.2, ascii: 9.4, soft: 5 });
+  const subW = dotR * 2 + 6.5 + estimateTextWidth(sub, { cjk: 14.5, ascii: 7.6, soft: 4 });
+  const blockW = Math.max(nameW, subW);
+  const hitW = Math.max(72, Math.ceil(blockW + 14));
   const hitH = 52;
-  const hitY = y - 24;
+  const hitY = y - 26;
   const aria = `${name} · ${sub}`;
-  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" data-wa-department="${esc(departmentId)}" role="button" tabindex="0" aria-label="${esc(aria)}"><rect class="wa-dept-title-hit" x="${x - 4}" y="${fmt(hitY)}" width="${hitW}" height="${hitH}" rx="8"/><text class="wa-diagram-name" x="${x}" y="${fmt(nameY)}">${esc(name)}</text><line class="wa-dept-title-rule" x1="${x}" y1="${fmt(ruleY)}" x2="${fmt(x + ruleW)}" y2="${fmt(ruleY)}"/><text class="wa-diagram-sub" data-fill="${fill}" x="${x}" y="${fmt(subY)}">${esc(sub)}</text></g>`;
+  return `<g class="wa-dept-title" data-department-title="${esc(departmentId)}" data-wa-department="${esc(departmentId)}" data-line="${esc(state)}" role="button" tabindex="0" aria-label="${esc(aria)}"><rect class="wa-dept-title-hit" x="${fmt(x - 6)}" y="${fmt(hitY)}" width="${hitW}" height="${hitH}" rx="10"/><text class="wa-diagram-name" x="${x}" y="${fmt(nameY)}">${esc(name)}</text><circle class="wa-diagram-status-dot" data-fill="${fill}" data-line="${esc(state)}" cx="${fmt(dotCx)}" cy="${fmt(dotCy)}" r="${dotR}" aria-hidden="true"/><text class="wa-diagram-sub" data-fill="${fill}" data-line="${esc(state)}" x="${fmt(subX)}" y="${fmt(subY)}">${esc(sub)}</text></g>`;
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.

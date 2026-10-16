@@ -1,11 +1,12 @@
 import { registerMessages } from '../i18n.js';
 const messages={
+ // Diagram lines stay short enough to clear the gate chips. Sheets use Wa UI state.
  'Wa UI line selfComplete':['已贯通','已貫通','Connected'],
  'Wa UI line crossMemberOnly':['已贯通','已貫通','Connected'],
  'Wa UI line both':['已贯通','已貫通','Connected'],
- 'Wa UI line hanging':['差一端','差一端','One gate missing'],
+ 'Wa UI line hanging':['差一端','差一端','Missing end'],
  'Wa UI line absent':['未连通','未連通','Not connected'],
- 'Wa UI line unknown':['等待计算','等待計算','Awaiting calculation'],
+ 'Wa UI line unknown':['等待计算','等待計算','Waiting'],
  'Wa UI show names':['显示姓名','顯示姓名','Show names'],
  'Wa UI add member':['＋ 添加成员','＋ 新增成員','＋ Add members'],
  'Wa UI replace alpha':['更换负责人','更換負責人','Change Alpha'],
