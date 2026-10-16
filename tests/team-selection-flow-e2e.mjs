@@ -17,7 +17,7 @@ try {
  assert.equal(await chips.count(),0); assert.match(await page.locator('#team-selection-count').innerText(),/2\/5/);
  assert.equal(await page.locator('.team-picker-row').count(),10);
  assert.equal(await page.locator('#team-person-create').getAttribute('class'),'btn-secondary');
- assert.equal(await page.locator('.team-control-dialog header [data-close]').getAttribute('class'),'ui-icon-button');
+ assert.equal(await page.locator('.team-control-dialog header [data-close]').evaluate(el=>el.classList.contains('ui-icon-button')&&el.classList.contains('ui-close-button')),true);
  assert.equal(await page.locator(`[data-add-person="${people[0].id}"] [aria-hidden]`).innerText(),'☑');
  await page.setViewportSize({width:390,height:844});
  await page.locator('#team-selection-confirm').scrollIntoViewIfNeeded();
@@ -25,7 +25,7 @@ try {
  await page.setViewportSize({width:1440,height:960});
  await page.evaluate(async id=>(await import('/src/lib/people.js')).deletePerson(id),people[9].id);
  await page.locator(`[data-edit-person="${people[9].id}"]`).click();
- assert.equal(await page.locator('.person-editor').count(),0); assert.match(await page.locator('.team-layer-error').innerText(),/Missing reference/);
+ assert.equal(await page.locator('.person-editor').count(),0); assert.equal(await page.locator('.team-layer-error').filter({hasText:'Missing reference'}).count(),1);
  await page.locator('#team-person-search').fill(people[1].id); await page.locator(`[data-edit-person="${people[1].id}"]`).click(); await page.locator('.person-editor header .ui-icon-button[data-close]').click();
  assert.equal(await page.locator('#team-person-search').inputValue(),people[1].id); assert.match(await page.locator('#team-selection-count').innerText(),/2\/5/);
  await page.keyboard.press('Escape'); assert.equal(await chips.count(),0); assert.equal(await page.locator('#team-add-saved-person').evaluate(n=>n===document.activeElement),true); assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
@@ -39,7 +39,7 @@ try {
  await page.locator('#team-save').click(); await page.locator('#team-save-name').fill('Fictional Team'); await page.locator('#team-save-form button[type=submit]').click();
  const saved=await page.evaluate(async()=> (await import('/src/lib/team-repository.js')).listTeams()[0]); assert.equal(saved.members.length,5);
  await page.locator('#team-current').click(); await page.locator('#team-new-group').click(); await page.locator('.team-control-dialog button[type=submit]').click(); assert.equal(await chips.count(),0);
- await page.locator('#team-add-saved-person').click(); await page.locator(`[data-add-person="${people[0].id}"]`).click(); await page.locator(`[data-add-person="${people[1].id}"]`).click(); await page.locator('#team-selection-confirm').click(); assert.equal(await chips.count(),0); assert.match(await page.locator('.operation-message').innerText(),/\n/); await page.locator('.operation-confirm [data-close]').click(); assert.equal(await chips.count(),0); await page.locator('.team-control-dialog [data-close]').first().click();
+ await page.locator('#team-add-saved-person').click(); await page.locator(`[data-add-person="${people[0].id}"]`).click(); await page.locator(`[data-add-person="${people[1].id}"]`).click(); await page.locator('#team-selection-confirm').click(); assert.equal(await chips.count(),0); assert.match(await page.locator('.operation-message').innerText(),/\n/); await page.locator('.operation-confirm .modal-actions [data-close]').click(); assert.equal(await chips.count(),0); await page.locator('.team-control-dialog [data-close]').first().click();
  await add(0); await page.locator('[data-confirm]').click(); assert.equal(await chips.count(),1);
  await add(5); await add(6);
  await page.locator('#team-save').click(); await page.locator('#team-save-form button[type=submit]').click();
@@ -61,10 +61,10 @@ try {
  await page.locator('#team-add-saved-person').click(); await page.locator(`[data-add-person="${people[0].id}"]`).click(); await page.locator('#team-selection-confirm').click();
  const beforeConflict = await page.locator('#team-selected-chips').innerText();
  await page.evaluate(async id=>{ const api=await import('/src/lib/team-repository.js'); api.saveTeam({...api.getTeam(id),name:'Fictional conflict'}); },saved.teamId);
- await page.locator('[data-confirm]').click(); assert.equal(await page.locator('#team-selected-chips').innerText(),beforeConflict); assert.match(await page.locator('.team-layer-error').innerText(),/revision/i); await page.keyboard.press('Escape');
+ await page.locator('[data-confirm]').click(); assert.equal(await page.locator('#team-selected-chips').innerText(),beforeConflict); assert.equal(await page.locator('.team-layer-error').filter({hasText:/revision/i}).count(),1); await page.keyboard.press('Escape');
  await page.locator('#team-save').click();
  await page.evaluate(async id=>{const api=await import('/src/lib/team-repository.js');const current=api.getTeam(id);api.saveTeam({...current,name:'Fictional external'});},saved.teamId);
- await page.locator('#team-save-form button[type=submit]').click(); assert.match(await page.locator('.team-layer-error').innerText(),/revision/i); assert.equal(await page.locator('.team-control-dialog').count(),1);
+ await page.locator('#team-save-form button[type=submit]').click(); assert.equal(await page.locator('.team-layer-error').filter({hasText:/revision/i}).count(),1); assert.equal(await page.locator('.team-control-dialog').count(),1);
  await page.keyboard.press('Escape'); assert.equal(await page.locator('.team-control-dialog').count(),0);
  await page.locator('#team-add-saved-person').click();
  for (const [language,skin] of [['en','default-light'],['zh-CN','default-dark'],['zh-Hant','high-contrast']]) {

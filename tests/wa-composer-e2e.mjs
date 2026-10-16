@@ -74,11 +74,11 @@ try {
  await page.evaluate(()=>window.launch('guard-g1'));
  assert.equal(await picker().locator('[data-person="fictional-direct-0"]').isDisabled(),true);assert.equal(await picker().locator('[data-person="fictional-direct-1"]').isDisabled(),true);
  await page.keyboard.press('Escape');
- await page.evaluate(()=>window.launch('guard-g0'));await picker().locator('[data-deselect="fictional-direct-1"]').click();await picker().locator('[data-selection]').click();
+ await page.evaluate(()=>window.launch('guard-g0'));await picker().locator('[data-person="fictional-direct-1"]').click();await picker().locator('[data-selection]').click();
  await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>window.commits.length),0);
  await picker().locator('[data-selection]').click();await page.evaluate(()=>window.guardValid=false);await page.locator('[data-confirm]').click();
  assert.ok((await picker().locator('[data-error]').innerText()).includes('changed'));assert.equal(await page.evaluate(()=>window.commits.length),0);await page.keyboard.press('Escape');
- await page.evaluate(()=>{window.guardValid=true;window.launch('guard-g0');});await picker().locator('[data-deselect="fictional-direct-1"]').click();await picker().locator('[data-selection]').click();await page.locator('[data-confirm]').click();
+ await page.evaluate(()=>{window.guardValid=true;window.launch('guard-g0');});await picker().locator('[data-person="fictional-direct-1"]').click();await picker().locator('[data-selection]').click();await page.locator('[data-confirm]').click();
  const cleanup=await page.evaluate(()=>window.commits.at(-1));assert.equal(cleanup.changes.length,1);assert.equal(cleanup.changes[0].beforeSnapshot.consultation.keyAllyIds.length,1);assert.equal(cleanup.next.consultation.keyAllyIds.length,0);assert.equal(cleanup.next.members.length,cleanup.original.members.length);
  await page.evaluate(()=>{window.rejectGuard=true;window.launch('alpha');});await picker().locator('[data-person="fictional-direct-3"]').click();await picker().locator('[data-selection]').click();assert.ok((await picker().locator('[data-error]').innerText()).includes('changed'));assert.equal(await picker().count(),1);await page.keyboard.press('Escape');
  await page.evaluate(()=>{window.rejectGuard=false;window.guardTeams=[{name:'Fictional duplicate team',members:[{memberId:'source',personId:'fictional-direct-3'}],groups:[{pentaId:'g',label:'Fictional duplicate',memberIds:['source','source']}]}];window.launch('guard-g1','import');});await picker().locator('[data-import-index="0"]').click();assert.ok((await picker().locator('[data-error]').innerText()).includes('duplicate'));await page.keyboard.press('Escape');
