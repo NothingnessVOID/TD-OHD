@@ -89,7 +89,7 @@ test('each covered gate shows one count badge for distinct members; no per-perso
   assert.equal(badges[0].count, 16);
   assert.match(svg, /Participants: 16"/);
   assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary/);
-  assert.equal((svg.match(/role="button"/g) ?? []).length, 18);
+  assert.equal((svg.match(/role="button"/g) ?? []).length, 24); // 6 dept titles + 6 channels + 12 gates
   assert.match(svg, /data-wa-gate="45"[^>]*data-wa-members="/);
   assert.match(svg, /data-wa-members="m00 m01 m02 m03 m04 m05 m06 m07 m08 m09 m10 m11 m12 m13 m14 m15"/);
 

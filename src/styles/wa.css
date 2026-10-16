@@ -1,6 +1,6 @@
 /* Wa/OC16 uses the shared surfaces, controls and document-scroll layout. */
 #wa-view.view-section { padding:0; }
-.wa-page { width:100%; max-width:var(--max-width,1200px); margin:0 auto; padding:24px 24px 48px; color:var(--text); }
+.wa-page { width:100%; max-width:var(--max-width,1380px); margin:0 auto; padding:24px 24px 48px; color:var(--text); }
 .wa-page *, .wa-reading-sheet * { box-sizing:border-box; }
 .wa-page .panel { margin:0; }
 .wa-page button, .wa-reading-sheet button { font:inherit; }
@@ -68,18 +68,32 @@
 .wa-scope-label { margin:0 0 0 auto; color:var(--text-secondary); font-size:13px; font-variant-numeric:tabular-nums; }
 
 /* Workspace */
-.wa-workspace { display:grid; grid-template-columns:minmax(0,40fr) minmax(0,60fr); gap:16px; align-items:start; }
+.wa-workspace { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; align-items:start; }
 .wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,calc(var(--header-height,56px) + 16px)); min-width:0; overflow:visible; }
-.wa-graph-panel { padding:14px 16px 16px; }
+.wa-graph-panel { padding:12px 14px 14px; }
 .wa-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px; margin:0 0 12px; }
 .wa-panel-heading h2, .wa-results h2 { margin:0; font-size:17px; line-height:1.4; }
 .wa-kicker { font-size:12px; letter-spacing:.05em; color:var(--text-tertiary,var(--text-secondary)); font-weight:600; }
 
 /* Six core channel SVG — tube board with channel-only hover; dots clear of halos */
 .wa-figure { margin:4px 0 0; }
-.wa-core-svg { display:block; width:min(100%,600px); max-height:min(560px,calc(100dvh - var(--wa-sticky-top,72px) - 120px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,72px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
 .wa-diagram-name, .wa-diagram-sub { pointer-events:none; }
-.wa-dept-title { pointer-events:none; }
+/* Dept title opens the same department detail sheet as right-column dept entry. */
+.wa-dept-title { pointer-events:auto; cursor:pointer; outline:none; }
+.wa-dept-title-hit { fill:transparent; stroke:transparent; pointer-events:auto; }
+.wa-dept-title:hover .wa-dept-title-hit, .wa-dept-title:focus-visible .wa-dept-title-hit {
+  fill:color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.wa-dept-title.is-selected .wa-dept-title-hit {
+  fill:color-mix(in srgb, var(--accent) 12%, transparent);
+  stroke:color-mix(in srgb, var(--accent) 35%, transparent);
+  stroke-width:1;
+}
+.wa-dept-title:hover .wa-diagram-name, .wa-dept-title:focus-visible .wa-diagram-name,
+.wa-dept-title.is-selected .wa-diagram-name { fill:var(--accent); }
+.wa-dept-title:hover .wa-dept-title-rule, .wa-dept-title:focus-visible .wa-dept-title-rule,
+.wa-dept-title.is-selected .wa-dept-title-rule { opacity:1; stroke-width:2.6; }
 /* Strong title type + short accent rule — no framed chip (framed look overlapped the status line). */
 .wa-dept-title-rule {
   stroke:var(--accent);
@@ -89,24 +103,31 @@
 }
 .wa-diagram-name {
   fill:var(--accent-strong,var(--text));
-  font-size:16.5px;
+  font-size:19px;
   font-weight:780;
   letter-spacing:.14em;
 }
-.wa-diagram-sub { fill:var(--text-tertiary,var(--text-secondary)); font-size:11px; }
+.wa-diagram-sub { fill:var(--text-tertiary,var(--text-secondary)); font-size:12px; }
 .wa-diagram-sub[data-fill="full"] { fill:var(--accent-strong,var(--accent)); font-weight:600; }
 .wa-diagram-sub[data-fill="left"], .wa-diagram-sub[data-fill="right"] { fill:var(--text-secondary); }
 /* Soft outer gate chips — warm like wa-chip / knowledge-jump */
-.wa-gate-chip { pointer-events:none; }
+/* Chip is inside .wa-diagram-gate — clicks open the same gate detail sheet. */
+.wa-gate-chip { pointer-events:auto; cursor:pointer; }
 .wa-gate-chip-bg {
   fill:var(--accent-soft,var(--bg-sunken));
   stroke:color-mix(in srgb, var(--accent) 28%, var(--border-subtle,var(--border)));
   stroke-width:1;
   filter:drop-shadow(0 1px 3px rgba(30,27,24,.07));
+  pointer-events:auto;
+}
+.wa-diagram-gate:hover .wa-gate-chip-bg, .wa-diagram-gate:focus-visible .wa-gate-chip-bg,
+.wa-diagram-gate.is-selected .wa-gate-chip-bg {
+  stroke:color-mix(in srgb, var(--accent) 55%, var(--border));
+  filter:drop-shadow(0 1px 4px rgba(30,27,24,.1));
 }
 .wa-gate-chip-text {
   fill:var(--accent-strong,var(--text));
-  font-size:12px;
+  font-size:13.5px;
   font-weight:550;
   letter-spacing:.01em;
   pointer-events:none;
@@ -190,7 +211,7 @@
 /* Gate nodes: hollow when inactive, solid accent when covered. */
 .wa-node-face { fill:var(--bg-elevated); stroke:var(--border); stroke-width:1.5; transition:stroke .15s ease, stroke-width .15s ease, filter .15s ease; }
 .wa-diagram-gate[data-covered="false"] .wa-node-face, .wa-diagram-gate[data-covered="unknown"] .wa-node-face { stroke-dasharray:2.5 2.5; }
-.wa-node-number { fill:var(--text-secondary); font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums; pointer-events:none; }
+.wa-node-number { fill:var(--text-secondary); font-size:15.5px; font-weight:600; font-variant-numeric:tabular-nums; pointer-events:none; }
 .wa-diagram-gate.is-covered .wa-node-face { fill:var(--accent); stroke:var(--accent); filter:drop-shadow(0 0 1.4px color-mix(in srgb, var(--accent) 40%, transparent)); }
 .wa-diagram-gate.is-covered .wa-node-number { fill:var(--accent-on,#fff); }
 .wa-node-halo { fill:var(--accent); fill-opacity:.12; pointer-events:none; }

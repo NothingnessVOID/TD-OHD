@@ -38,12 +38,19 @@ test('supporting channels and gates cite their actual Wa department article, nev
    const core=department.pairs[0],source=readWaContent(core.channelId,locale);
    for(const pair of department.pairs){
     const html=view.renderPair(pair.channelId);
-    assert.ok(html.includes(`data-wa-content-id="${core.channelId}"`));assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
-    assert.ok(html.includes(`data-wa-reading-id="${source.id}"`));assert.ok(html.includes(source.name));
+    assert.ok(html.includes(`data-wa-content-id="${core.channelId}"`));
+    // Core pair ≡ department sheet: reading-for is the department id. Support keeps jump reading-for=channelId.
+    if(pair.role==='core') assert.ok(html.includes(`data-wa-reading-for="${department.id}"`));
+    else assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
+    if(pair.role==='core'){
+      assert.ok(html.includes(`data-wa-reading-id="${source.id}"`));
+      assert.ok(html.includes(source.name));
+    } else {
+      assert.ok(html.includes(t('Wa UI department reading')));
+    }
     assert.doesNotMatch(html,/data-shared-channel-reading|data-shared-gate=|data-shared-lens/);
     assert.doesNotMatch(html.replace(/<[^>]*>/g,''),forbidden);
-    if(pair.role!=='core')assert.ok(html.includes(t('Wa UI department reading')));
-    for(const gate of pair.gates){const gateHtml=view.renderGate(gate);assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));assert.ok(gateHtml.includes(`data-wa-reading-id="${source.id}"`));assert.doesNotMatch(gateHtml,/data-shared-gate=|data-shared-lens/);}
+    for(const gate of pair.gates){const gateHtml=view.renderGate(gate);assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));assert.ok(gateHtml.includes(`data-wa-content-id="${core.channelId}"`));assert.doesNotMatch(gateHtml,/data-shared-gate=|data-shared-lens/);}
    }
   }
  }
