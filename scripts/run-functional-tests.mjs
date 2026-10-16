@@ -30,6 +30,6 @@ const historicalNames = [
 const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const files = readdirSync('tests').filter(name => name.endsWith('.test.js') && !historicalFiles.has(name)).sort();
 console.log(`Functional release suite: ${files.length} files; ${historicalFiles.size} historical audit files retired; ${historicalNames.length} named source-freeze assertions excluded. No functional failure is ignored.`);
-const result = spawnSync(process.execPath, ['--test', '--test-concurrency=2', `--test-skip-pattern=^(?:${historicalNames.map(escape).join('|')})$`, ...files.map(name => `tests/${name}`)], { stdio: 'inherit', env: process.env });
+const result = spawnSync(process.execPath, ['--test', '--test-concurrency=1', `--test-skip-pattern=^(?:${historicalNames.map(escape).join('|')})$`, ...files.map(name => `tests/${name}`)], { stdio: 'inherit', env: process.env });
 if (result.error) throw result.error;
 process.exit(result.status ?? 1);
