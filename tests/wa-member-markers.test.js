@@ -325,7 +325,17 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
   assert.match(waCss, /\.wa-gate-chip-bg\s*\{/);
-  assert.match(waCss, /\.wa-dept-title-rule\s*\{/);
+  assert.match(waCss, /\.wa-diagram-status-dot\s*\{/);
+  assert.match(svg, /class="wa-diagram-status-dot"/);
+  assert.equal((svg.match(/class="wa-diagram-status-dot"/g) ?? []).length, 6);
+  assert.doesNotMatch(svg, /wa-dept-title-rule/);
   assert.doesNotMatch(waCss, /\.wa-dept-title-bg\s*\{/);
+  const { LEFT_GATE: titleGate } = WA_DIAGRAM_GEOMETRY;
+  const nameY = Number(svg.match(/class="wa-diagram-name" x="[\d.]+" y="([\d.]+)"/)[1]);
+  const subY = Number(svg.match(/class="wa-diagram-sub"[^>]* y="([\d.]+)"/)[1]);
+  const faceY = Number(svg.match(new RegExp(`class="wa-node-face" cx="${titleGate}" cy="([\\d.]+)"`))[1]);
+  assert.ok(nameY < faceY, 'department name sits above the tube centerline');
+  assert.ok(subY > faceY, 'status sits below the tube centerline');
+  assert.ok(subY - nameY < 24, 'name and status stay one lockup');
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });
