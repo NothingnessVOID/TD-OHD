@@ -1,6 +1,5 @@
 import { t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { gateName } from '../lib/vocabulary.js';
 import { renderPentaStateSymbol } from '../lib/penta-state-symbol.js';
 
 export const WA_PILLAR_LABELS = Object.freeze({60:'structure',50:'safety',6:'interaction',45:'hierarchy'});
@@ -12,10 +11,9 @@ export function waStateSymbol(state, size = 22) {
 }
 
 /** Fixed compact board: six tube rows between gate nodes.
- * State is carried by the tube fill; a small mid diamond marks full connection.
- * Side labels sit outside the focus rings (left of left gates, right of right gates). */
+ * State is carried by the tube fill; a small mid diamond marks full connection. */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
-  VIEW_WIDTH: 540, ROW_HEIGHT: 94, LEFT_GATE: 238, RIGHT_GATE: 400,
+  VIEW_WIDTH: 380, ROW_HEIGHT: 94, LEFT_GATE: 186, RIGHT_GATE: 344,
   NODE_R: 15, TUBE_H: 8.5, DOT_R: 4, DOT_STEP: 9.5, MAX_DOTS: 5,
   MID_R: 4.75, PAD_TOP: 6, PAD_BOTTOM: 14,
   /** Middle pillar ring — even gap from NODE_R (≈4.5) and to outer focus (same gap). */
@@ -29,9 +27,7 @@ export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   PILLAR_FOCUS_EXTRA: 5,
   /** First contributor dot sits on the outer face rim, then packs toward the channel. */
   DOT_OUTER_OFFSET: 15,
-  LINK_HIT_HALF: 12,
-  /** Gap from outer focus ring to the near edge of the side name label. */
-  LABEL_GAP: 20
+  LINK_HIT_HALF: 12
 });
 const G = WA_DIAGRAM_GEOMETRY;
 const DEFINED = new Set(['selfComplete', 'crossMemberOnly', 'both']);
@@ -67,22 +63,6 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
     ? `<text class="wa-gate-more" x="${fmt(lastX + dir * (G.DOT_R + 3))}" y="${fmt(cy + 3.5)}" text-anchor="${dir > 0 ? 'start' : 'end'}">+${rest}</text>`
     : '';
   return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true">${dots}${more}<title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
-}
-
-/** Display name beside a gate: OC16 pillar role for the four pillars, otherwise vocabulary gateName. */
-function gateSideName(gate, pillar) {
-  return pillar ? t(`OC16 ${pillar}`) : gateName(gate);
-}
-
-/** Side label outside the focus ring — left gates face left, right gates face right. */
-function renderGateLabel(gate, pillar, x, y, sideIndex, focusR) {
-  const name = gateSideName(gate, pillar);
-  const labelX = sideIndex ? x + focusR + G.LABEL_GAP : x - focusR - G.LABEL_GAP;
-  const anchor = sideIndex ? 'start' : 'end';
-  const klass = pillar ? 'wa-node-label is-pillar' : 'wa-node-label';
-  const tip = pillar ? `${gate} · ${name} · ${gateName(gate)}` : `${gate} · ${name}`;
-  // Optical baseline for ~11–13px caps; numbers in the face use +4.5.
-  return `<text class="${klass}" data-wa-gate-label="${gate}" x="${fmt(labelX)}" y="${fmt(y + 3.8)}" text-anchor="${anchor}"><title>${esc(tip)}</title>${esc(name)}</text>`;
 }
 
 /** Pure presentation: six separate real pairs, no implied links between departments.
@@ -131,9 +111,7 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const haloR = G.NODE_R + G.NODE_HALO_EXTRA;
       const hitR = G.NODE_R + G.NODE_HIT_EXTRA;
       const focusR = pillar ? G.PILLAR_RING_R + G.PILLAR_FOCUS_EXTRA : hitR;
-      const sideName = gateSideName(gate, pillar);
-      const ariaName = pillar ? `${sideName} · ${gateName(gate)}` : sideName;
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${renderGateLabel(gate, pillar, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${pillar?t(`OC16 ${pillar}`)+' · ':''}${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 4.5)}" text-anchor="middle">${gate}</text>${pillar?`<text class="wa-node-pillar" x="${x}" y="${fmt(y - G.PILLAR_RING_R - 5)}" text-anchor="middle">${esc(t(`OC16 ${pillar}`))}</text>`:''}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept name stays calm.
     const hitHalf = G.LINK_HIT_HALF;
