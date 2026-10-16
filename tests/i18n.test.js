@@ -29,7 +29,7 @@ test('localized navigation keeps Timeline after Transits with stable translation
   const items = [...nav.matchAll(/data-view="([^"]+)" data-i18n="([^"]+)"/g)]
     .map(match => [match[1], match[2]]);
   assert.deepEqual(items, [['chart', 'My Chart'], ['transits', 'Transits'],
-    ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'Team'], ['wa', 'Wa'], ['library', 'Reference Library']]);
+    ['timeline', 'Timeline'], ['connection', 'Connection'], ['team', 'nav.team'], ['wa', 'nav.organization'], ['library', 'Reference Library']]);
 });
 
 test('locale preference, saved preference and Chinese default independent of browser languages', () => {
