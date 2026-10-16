@@ -296,7 +296,10 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.equal(countBadges(svg).length, 0); // no markers map → no badges
   assert.match(svg, /data-wa-gate="45"[^>]*aria-pressed="true"[^>]*Member active/);
   assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 6);
-  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 4);
+  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 0); // ring-only pillars
+  assert.equal((svg.match(/class="wa-gate-chip"/g) ?? []).length, 12);
+  assert.match(svg, /data-wa-gate-chip="45"/);
+  assert.match(svg, /class="wa-dept-title"/);
   for (const state of ['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both', 'unknown']) {
     assert.equal(waStateText(state), `UI state: ${state}`);
   }
@@ -316,5 +319,7 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-diagram-gate:hover \.wa-node-focus-ring/);
   assert.match(waCss, /\.wa-diagram-channel:hover \.wa-link-hit/);
   assert.match(waCss, /\.wa-graph-column\s*\{[^}]*overflow:\s*visible/);
+  assert.match(waCss, /\.wa-gate-chip-bg\s*\{/);
+  assert.match(waCss, /\.wa-dept-title-bg\s*\{/);
   assert.doesNotMatch(waCss, /\.wa-link-secondary\s*\{|\.wa-row-bg\s*\{|\.wa-link-half\s*\{|\.wa-link-base\s*\{/);
 });
