@@ -54,6 +54,8 @@ jobs:
           node tests/font-export-proof-e2e.mjs
           node tests/channel-label-layout-e2e.mjs
           node tests/reference-mobile-sheet-e2e.mjs
+          node tests/wa-composer-e2e.mjs
+          node tests/release-responsive-e2e.mjs
       - name: Serve built Pages subpath
         run: |
           node scripts/serve-pages-check.mjs > /tmp/pages-subpath.log 2>&1 &
