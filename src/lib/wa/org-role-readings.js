@@ -4,6 +4,7 @@
  * Do not put natal chart prose or the four-foundation (1/7/13/33) summary here.
  */
 import { getLocale, registerMessages, t } from '../i18n.js';
+import { gateName } from '../vocabulary.js';
 import { OC16_DEPARTMENTS } from './oc16-catalog.js';
 
 const locales = ['zh-CN', 'zh-Hant', 'en'];
@@ -23,15 +24,15 @@ const gateRoles = {
   45: ['统治者', '統治者', 'Ruler'],
   21: ['控制者', '控制者', 'Controller'],
   51: ['冲击', '衝擊', 'Shock'],
-  25: ['天真 / 无私', '天真 / 無私', 'Innocence / selflessness'],
+  25: ['天真', '天真', 'Innocence'],
   14: ['大蓄', '大畜', 'Great provision'],
-  2: ['坤 / 方向', '坤 / 方向', 'Receptive / direction'],
+  2: ['方向', '方向', 'Direction'],
   59: ['亲密', '親密', 'Intimacy'],
-  6: ['冲突 / 调和', '衝突 / 調和', 'Friction / reconciliation'],
+  6: ['调和', '調和', 'Reconciliation'],
   50: ['价值观', '價值觀', 'Values'],
   27: ['滋养', '滋養', 'Nourishment'],
   60: ['限制', '限制', 'Limitation'],
-  3: ['秩序 / 突变', '秩序 / 突變', 'Ordering / mutation'],
+  3: ['秩序', '秩序', 'Ordering'],
   44: ['识人', '識人', 'Recognizing people'],
   26: ['经营', '經營', 'Stewardship']
 };
@@ -247,6 +248,16 @@ export function orgChannelCopy(channelId, locale = getLocale()) {
       body: t(`OC16 org gate body ${gate}`)
     }))
   };
+}
+
+
+/** Display name on the organization page only — never used by natal/chart vocabulary. */
+export function orgGateName(gate, locale = getLocale()) {
+  const id = Number(gate);
+  if (Number.isInteger(id) && gateRoles[id] && locales.includes(locale)) {
+    return t(`OC16 org gate role ${id}`);
+  }
+  return gateName(id);
 }
 
 export function orgGateCopy(gate, locale = getLocale()) {

@@ -16,7 +16,7 @@ import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { gateName, hexagramName } from '../lib/vocabulary.js';
+import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
@@ -113,7 +113,7 @@ export function mountWa(container, options = {}) {
       const [leftGate, rightGate] = pair.displayGates;
       const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
       const stateLabel = state === 'complete' ? 'Wa legend active' : state === 'partial' ? 'Wa row partial' : state === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
-      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="mechanism-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${pairToken(pair, { tag: 'span' })}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => hexagramName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
+      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="mechanism-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${pairToken(pair, { tag: 'span' })}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => orgGateName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
     }).join('')}</div>`;
   }
   function gapsHtml() {
@@ -122,7 +122,7 @@ export function mountWa(container, options = {}) {
     const missing = rows.reduce((sum, row) => sum + row.gates.length, 0);
     // Hide the whole block when every gate is active — no empty "尚未激活的闸门" section.
     if (!missing) return '';
-    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
+    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
@@ -148,7 +148,7 @@ export function mountWa(container, options = {}) {
     const state = pairState(pair), row = rowState(state);
     const gateCell = gate => {
       const ids = holders(pair, gate);
-      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
+      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${orgGateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
     };
     return `<li class="wa-channel-row ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
@@ -407,7 +407,7 @@ export function mountWa(container, options = {}) {
     // Back navigation restores captured fold state when any details remain; channel/dept readings are always expanded.
     if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
-    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
+    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:t('Organization · Wa')});
     syncSelection();
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));

@@ -6,8 +6,8 @@ import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
 import { readWaContent } from '../src/lib/wa/content.js';
 import { renderProse } from '../src/lib/knowledge/detail-renderer.js';
 import { readWaReadingExcerpt } from '../src/lib/wa/reading-presentation.js';
-import { renderGateDetailHeading } from '../src/lib/object-detail-heading.js';
-import { gateName, hexagramName, planetName } from '../src/lib/vocabulary.js';
+import { hexagramName, planetName } from '../src/lib/vocabulary.js';
+import { orgGateName } from '../src/lib/wa/org-role-readings.js';
 import { setLocale, t } from '../src/lib/i18n.js';
 
 // Fictional runtime presentation fixtures. No birth inputs or new analysis rules.
@@ -62,7 +62,7 @@ for (const [status, left, right, self, combinations] of [
     const section = endpoint(html, gate);
     for (const id of ['a', 'b', 'c']) assert.equal(section.includes(`data-wa-member="${id}"`), ids.includes(id));
     assert.ok(section.includes(hexagramName(gate)));
-    assert.ok(section.includes(gateName(gate)));
+    assert.ok(section.includes(orgGateName(gate)));
     if (!ids.length) assert.ok(section.includes(t('OC16 inactive')));
   }
 });
@@ -199,7 +199,9 @@ test('three languages show organization role readings on core sheets and jump ca
     assert.ok(support.includes('data-wa-org-reading="channel"'));
     assert.ok(support.includes(t('Wa UI department reading')));
     assert.ok(support.includes(t('Wa jump open department')));
-    assert.ok(gate.includes(renderGateDetailHeading(45)));
+    assert.ok(gate.includes(orgGateName(45)));
+    assert.ok(gate.includes(hexagramName(45)));
+    assert.match(gate, /class="detail-name"/);
     assert.doesNotMatch(gate, /<details\b/);
     assert.ok(gate.includes('data-wa-org-reading="gate"'));
     assert.ok(gate.includes(t('OC16 org gate role 45')));
