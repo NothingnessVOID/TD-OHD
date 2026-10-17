@@ -1455,6 +1455,7 @@ body.modal-open { overflow: hidden; }
 .gate-detail-body {
   padding: 16px 24px 20px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   flex: 1;
 }
 
@@ -1650,7 +1651,7 @@ body.modal-open { overflow: hidden; }
 .reference-result:hover, .reference-result:focus-visible { background: var(--bg-sunken); border-color: var(--border); }
 .reference-result small { display: block; color: var(--text-tertiary); font-size: 11px; }
 .reference-result strong { display: block; font-weight: 600; font-size: 13px; }
-.reference-detail { min-height: 0; padding: clamp(18px, 3vw, 30px); overflow-y: auto; overscroll-behavior: contain; }
+.reference-detail { min-height: 0; padding: clamp(18px, 3vw, 30px); overflow-y: auto; scrollbar-gutter: stable; overscroll-behavior: contain; }
 .reference-detail h2 { font-size: 24px; margin: 7px 0 12px; }
 .reference-detail h3 { font-size: 15px; margin: 22px 0 9px; }
 .reference-detail-body { max-width: 780px; }
