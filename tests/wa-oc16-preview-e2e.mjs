@@ -104,7 +104,6 @@ try {
   await page.locator('[data-wa-back]').click();
   await page.keyboard.press('Escape');
   assert.equal(await page.evaluate(()=>document.activeElement?.dataset.waPair||document.activeElement?.dataset.waGate),'60','closing returns to the original gate trigger, not the last visited pair');
-  await root().locator('[data-department-toggle="management"]').click();
   await root().locator('[data-pair-row="26-44"] [data-wa-pair]').click();
   assert.ok((await page.locator('.wa-reading-sheet').innerText()).includes('人事'));
   await page.keyboard.press('Escape');

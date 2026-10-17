@@ -48,7 +48,7 @@ export function mountWa(container, options = {}) {
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
   let showNames = (() => { try { return storage?.getItem(SHOW_NAMES_PREF) === '1'; } catch { return false; } })();
-  const collapsed = new Set(), annotationRecovery = [];
+  const annotationRecovery = [];
   const detail = document.createElement('div');
   detail.className = 'gate-detail hidden wa-detail';
   document.body.append(detail);
@@ -154,9 +154,9 @@ export function mountWa(container, options = {}) {
   }
   function departmentHtml(department) {
     const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
-    const open = !collapsed.has(department.id), gates = department.pairs.length*2;
+    const gates = department.pairs.length*2;
     const value = count => summary ? count : '—';
-    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-chevron" aria-hidden="true"></span><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></button></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span>${open?'':`<div class="wa-pair-strip">${department.pairs.map(pairToken).join('')}</div>`}<ul id="wa-department-${department.id}" class="wa-channel-rows" ${open?'':'hidden'}>${department.pairs.map(channelRow).join('')}</ul></article>`;
+    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><div class="wa-department-head" data-focus="department-${department.id}"><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></div></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span><ul id="wa-department-${department.id}" class="wa-channel-rows">${department.pairs.map(channelRow).join('')}</ul></article>`;
   }
   function departmentsHtml() {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
@@ -197,7 +197,7 @@ export function mountWa(container, options = {}) {
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
-    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}<footer class="wa-results-footer"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}</footer></main></div></div>`;
+    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}${retainedPool()?`<footer class="wa-results-footer"><p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p></footer>`:''}</main></div></div>`;
     graphResizeObserver?.disconnect();graphResizeObserver?.observe(container.querySelector('.wa-graph-panel'));queueSticky();
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
@@ -260,7 +260,7 @@ export function mountWa(container, options = {}) {
   }
   function load(snapshot) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
-    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;remember(draft.organizationId);schedule();
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;remember(draft.organizationId);schedule();
   }
   function escapeTitlePattern(value) {
     return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -361,7 +361,7 @@ export function mountWa(container, options = {}) {
   function focusKey(node,root) {
     if(!node||!root.contains(node))return null;
     if(node.matches('summary'))return {summary:[...root.querySelectorAll('summary')].indexOf(node)};
-    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-department-toggle','data-wa-reading','data-shared-lens','data-focus','data-action']){
+    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-shared-lens','data-focus','data-action']){
       if(node.hasAttribute(attribute)){const value=node.getAttribute(attribute);return {attribute,value,index:[...root.querySelectorAll(`[${attribute}]`)].filter(item=>item.getAttribute(attribute)===value).indexOf(node)};}
     }
     return null;
@@ -440,7 +440,6 @@ export function mountWa(container, options = {}) {
       if(node.dataset.waDepartment){showDetail({type:'department',id:node.dataset.waDepartment});return;}
       if(node.dataset.memberFocus){focusMember=focusMember===node.dataset.memberFocus?null:node.dataset.memberFocus;applyMemberFocus();return;}
       if(node.dataset.scopeOption!==undefined){closeReading();selectedGroup=node.dataset.scopeOption||null;includeAlpha=false;selected=null;if(prepared)refreshScope();else render();return;}
-      if(node.dataset.departmentToggle){const id=node.dataset.departmentToggle;collapsed.has(id)?collapsed.delete(id):collapsed.add(id);render();return;}
       if(node.dataset.removeWa){await removeAssignment(node.dataset.removeWa);return;}
       if(node.hasAttribute('data-clear-alpha')){if(draft.alphaId)await removeAssignment(draft.alphaId);return;}
       if(node.dataset.compose){compose(node.dataset.compose);return;}
@@ -450,8 +449,7 @@ export function mountWa(container, options = {}) {
         case 'save':await save();break;
         case 'open':await archives();break;
         case 'retry':schedule();break;
-        case 'knowledge':showDetail({type:'library'});break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }
