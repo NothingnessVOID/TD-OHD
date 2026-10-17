@@ -321,8 +321,26 @@
 .wa-pair-end { display:grid; place-items:center; min-width:26px; height:26px; padding:0 3px; border:1px dashed var(--border); border-radius:999px; background:var(--bg-elevated); color:var(--text-tertiary,var(--text-secondary)); font-size:11.5px; font-weight:600; font-style:normal; font-variant-numeric:tabular-nums; }
 .wa-pair-end[data-covered="true"] { border:1px solid var(--accent); background:var(--accent); color:var(--accent-on); }
 .wa-pair-end[data-covered="unknown"] { border-style:dotted; }
-.wa-pair-bridge { width:8px; height:2px; background:var(--border); font-size:0; color:transparent; overflow:hidden; }
-.wa-pair-token:is([data-state="selfComplete"],[data-state="crossMemberOnly"],[data-state="both"]) .wa-pair-bridge { background:var(--accent); height:3px; }
+.wa-pair-bridge {
+  width:12px; height:2px; border-radius:999px; background:var(--border); font-size:0; color:transparent; overflow:hidden;
+  transition:background .18s ease, box-shadow .18s ease, height .15s ease, filter .18s ease;
+}
+.wa-pair-bridge[data-lit="both"],
+.wa-pair-token:is([data-state="selfComplete"],[data-state="crossMemberOnly"],[data-state="both"]) .wa-pair-bridge {
+  height:3px; background:var(--accent);
+  box-shadow:0 0 4px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+/* Half-lit from the active end — matches diagram tube partial gradient. */
+.wa-pair-bridge[data-lit="left"] {
+  height:3px;
+  background:linear-gradient(90deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 88%, transparent) 40%, color-mix(in srgb, var(--accent) 0%, transparent) 78%, var(--border) 100%);
+  box-shadow:-1px 0 3.5px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+.wa-pair-bridge[data-lit="right"] {
+  height:3px;
+  background:linear-gradient(270deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 88%, transparent) 40%, color-mix(in srgb, var(--accent) 0%, transparent) 78%, var(--border) 100%);
+  box-shadow:1px 0 3.5px color-mix(in srgb, var(--accent) 42%, transparent);
+}
 .wa-department-detail { border-top:1px solid var(--border-subtle,var(--border)); padding-top:10px; }
 .wa-department-detail > .wa-link-button { margin-top:6px; }
 .wa-results-footer { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 16px; padding:0 4px; }
@@ -330,8 +348,45 @@
 
 /* Channel rows: who activates each end */
 .wa-channel-rows { display:grid; list-style:none; margin:0; padding:0; border-top:1px solid var(--border-subtle,var(--border)); }
-.wa-channel-row { display:grid; grid-template-columns:auto minmax(0,1fr) minmax(0,.9fr) minmax(0,.9fr) auto; align-items:center; gap:6px 10px; padding:7px 0; border-bottom:1px solid var(--border-subtle,var(--border)); }
-.wa-channel-row:last-child { border-bottom:0; padding-bottom:0; }
+.wa-channel-row {
+  display:grid; grid-template-columns:auto minmax(0,1fr) minmax(0,.9fr) minmax(0,.9fr) auto; align-items:center; gap:6px 10px;
+  margin:0 -8px; padding:8px 8px; border-radius:10px; border-bottom:1px solid var(--border-subtle,var(--border));
+  position:relative; isolation:isolate;
+  transition:background .18s ease, box-shadow .2s ease, transform .18s ease, border-color .18s ease, filter .18s ease;
+}
+.wa-channel-row:last-child { border-bottom-color:transparent; padding-bottom:8px; }
+/* Polished hover / focus-within / forced is-hover for review shots — warm accent lift + soft glow. */
+.wa-channel-row:is(:hover, .is-hover, :focus-within) {
+  z-index:1; border-bottom-color:transparent;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--bg-elevated)) 0%, color-mix(in srgb, var(--accent-soft, var(--accent)) 22%, transparent) 55%, color-mix(in srgb, var(--bg-elevated) 88%, transparent) 100%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent),
+    0 8px 22px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 1px 0 color-mix(in srgb, #fff 35%, transparent) inset;
+  transform:translateY(-1px);
+}
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-pair-token {
+  border-color:var(--accent);
+  background:color-mix(in srgb, var(--accent-soft, var(--bg)) 55%, var(--bg));
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent), 0 0 12px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-pair-bridge[data-lit="both"],
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-pair-bridge[data-lit="left"],
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-pair-bridge[data-lit="right"] {
+  filter:drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 70%, transparent));
+}
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-row-name { color:var(--accent-strong,var(--accent)); }
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-row-state {
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.wa-channel-row:is(:hover, .is-hover, :focus-within) .wa-row-gate[data-wa-covered="true"] .wa-row-gate-number {
+  border-color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent);
+}
+@media (prefers-reduced-motion:reduce) {
+  .wa-channel-row, .wa-pair-bridge { transition:none; }
+  .wa-channel-row:is(:hover, .is-hover, :focus-within) { transform:none; }
+}
 .wa-row-name { min-width:0; border:0; padding:2px 0; background:transparent; color:var(--text); text-align:left; font-size:13px!important; line-height:1.4; cursor:pointer; overflow-wrap:anywhere; }
 .wa-row-name small { display:block; color:var(--accent-strong,var(--accent)); font-size:11px; }
 .wa-row-name:hover { color:var(--accent-strong,var(--accent)); }
