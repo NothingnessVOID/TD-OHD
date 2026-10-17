@@ -125,7 +125,10 @@ export function mountWa(container, options = {}) {
   function pairToken(pair) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
-    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-wa-pair="${pair.channelId}" data-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join('<span class="wa-pair-bridge" aria-hidden="true">–</span>')}</button>`;
+    const [leftGate, rightGate] = pair.displayGates;
+    const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+    const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
+    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge)}</button>`;
   }
   function channelRow(pair) {
     const state = pairState(pair), row = rowState(state);
