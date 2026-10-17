@@ -7,8 +7,8 @@ const shared = await response.json();
 localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(shared));
 let writes = Promise.resolve();
 function persist(operation) {
-  writes = writes.then(async () => {
-    const result = await fetch('/__preview/people', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(operation) });
+  writes = writes.catch(() => {}).then(async () => {
+    const result = await fetch('/__preview/people', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(operation) });
     if (!result.ok) throw new Error('预览人物保存失败');
   });
   writes.catch(error => { console.error(error); window.dispatchEvent(new CustomEvent('preview-people-save-error', { detail: error.message })); });
