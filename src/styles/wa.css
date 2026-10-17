@@ -274,14 +274,57 @@
 .wa-meter i { display:block; height:100%; background:var(--accent); border-radius:2px; transition:width .3s ease; }
 @media (prefers-reduced-motion:reduce) { .wa-meter i { transition:none; } }
 
-/* Four pillars (overview): reuse department channel-row + pair-bridge half-lit. */
-.wa-mechanism.wa-channel-rows {
-  border-top:0;
-  margin:0 -4px;
+/* Four pillars (overview): card chrome + department pairToken (no split-capsule / channel-row). */
+.wa-pillars { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.wa-pillar {
+  display:flex; gap:12px; align-items:center; text-align:left; min-width:0; padding:12px 14px;
+  border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px);
+  background:transparent; color:var(--text); cursor:pointer; position:relative; isolation:isolate;
+  transition:background .2s ease, border-color .2s ease, box-shadow .22s ease, transform .18s ease, filter .18s ease;
 }
-.wa-mechanism .wa-channel-row:last-child {
-  border-bottom-color:var(--border-subtle,var(--border));
-  padding-bottom:8px;
+.wa-pillar > .wa-pair-token { flex:none; pointer-events:none; cursor:inherit; }
+.wa-pillar-text { min-width:0; display:grid; gap:2px; }
+.wa-pillar strong { display:block; font-size:14px; font-weight:650; }
+.wa-pillar small { display:block; color:var(--text-secondary); font-size:11.5px; line-height:1.45; overflow-wrap:anywhere; }
+.wa-pillar[data-row-state="partial"] .wa-pillar-state { color:var(--status-caution,var(--accent)); }
+.wa-pillar[data-row-state="none"] .wa-pillar-state,
+.wa-pillar[data-covered="false"] .wa-pillar-state { color:var(--status-caution,var(--text-secondary)); }
+.wa-pillar[data-row-state="complete"] .wa-pillar-state { color:var(--status-success,var(--accent-strong,var(--accent))); }
+.wa-pillar[data-lit="left"] {
+  background:linear-gradient(105deg, color-mix(in srgb, var(--accent) 10%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 48%, transparent 82%);
+  border-color:color-mix(in srgb, var(--accent) 28%, var(--border-subtle,var(--border)));
+}
+.wa-pillar[data-lit="right"] {
+  background:linear-gradient(255deg, color-mix(in srgb, var(--accent) 10%, transparent) 0%, color-mix(in srgb, var(--accent) 4%, transparent) 48%, transparent 82%);
+  border-color:color-mix(in srgb, var(--accent) 28%, var(--border-subtle,var(--border)));
+}
+.wa-pillar[data-lit="both"] {
+  background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, transparent) 0%, color-mix(in srgb, var(--accent-soft, var(--accent)) 12%, transparent) 55%, transparent 100%);
+  border-color:color-mix(in srgb, var(--accent) 36%, var(--border-subtle,var(--border)));
+}
+.wa-pillar:is(:hover, .is-hover, :focus-visible) {
+  z-index:1; transform:translateY(-2px);
+  border-color:color-mix(in srgb, var(--accent) 58%, var(--border));
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 10px 26px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 0 28px color-mix(in srgb, var(--accent) 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent);
+}
+.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pillar-text strong { color:var(--accent-strong,var(--accent)); }
+.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pair-token {
+  border-color:var(--accent);
+  background:color-mix(in srgb, var(--accent-soft, var(--bg)) 55%, var(--bg));
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent), 0 0 12px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pair-bridge[data-lit="both"],
+.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pair-bridge[data-lit="left"],
+.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pair-bridge[data-lit="right"] {
+  filter:drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 70%, transparent));
+}
+@media (prefers-reduced-motion:reduce) {
+  .wa-pillar { transition:none; }
+  .wa-pillar:is(:hover, .is-hover, :focus-visible) { transform:none; }
 }
 
 .wa-gap-rows { display:grid; gap:8px; }
@@ -468,6 +511,7 @@
 .wa-reading-sheet .wa-reading-list { display:grid; gap:7px; }
 .wa-reading-sheet .wa-reading-list button { text-align:left; min-height:44px; }
 
+@media (max-width:1200px) and (min-width:1051px) { .wa-pillars { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:1050px) {
  .wa-page { padding:18px; }
  .wa-workspace { grid-template-columns:1fr; gap:16px; }
@@ -498,6 +542,7 @@
  .wa-overview-stats { gap:6px; }
  .wa-overview-stats > div { padding:10px; }
  .wa-overview-stats dd { font-size:23px; }
+ .wa-pillars { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .wa-gap-row { grid-template-columns:1fr; gap:4px; }
  .wa-gap-department { padding-top:0; }
  .wa-gap-chip { min-height:36px; }
@@ -518,6 +563,7 @@
 @media (max-width:360px) {
  .wa-page { padding:14px 10px 28px; }
  .wa-configuration, .wa-graph-panel, .wa-results > .panel { padding:12px; }
+ .wa-pillars { grid-template-columns:1fr; }
  .wa-header .wa-actions { grid-template-columns:1fr 1fr; }
  .wa-header .wa-actions .btn-primary { grid-column:1 / -1; }
 }

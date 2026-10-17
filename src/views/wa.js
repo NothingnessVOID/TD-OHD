@@ -16,7 +16,7 @@ import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { gateName } from '../lib/vocabulary.js';
+import { gateName, hexagramName } from '../lib/vocabulary.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
@@ -100,15 +100,21 @@ export function mountWa(container, options = {}) {
     return `<div><dt>${text(label)}</dt><dd ${attribute}>${ready?value:'—'}${total?` <small>/ ${total}</small>`:''}</dd>${total?`<span class="wa-meter" aria-hidden="true"><i style="width:${ready?percent:0}%"></i></span>`:''}</div>`;
   }
   function mechanismHtml() {
-    // Same channel-row + pair-token half-lit bridge as the six departments (no split-capsule).
-    const mechanismPairs = WA_MANAGEMENT_MECHANISM.map(item => {
-      const fromDept = pairs.find(pair => pair.channelId === item.channelId);
-      if (fromDept) return fromDept;
-      return { channelId: item.channelId, displayGates: item.displayGates, departmentId: 'management',
+    // Same card chrome as before; glyph is department pairToken (circles + half-lit bridge), not split-capsule / channel-row.
+    return `<h3 class="wa-subheading">${text('OC16 management mechanism')}</h3><div class="wa-pillars wa-mechanism">${WA_MANAGEMENT_MECHANISM.map(item => {
+      const pair = pairs.find(row => row.channelId === item.channelId) || {
+        channelId: item.channelId, displayGates: item.displayGates, departmentId: 'management',
         role: item.id === 'personnel' ? 'personnel' : 'core',
-        gates: Object.freeze([...item.displayGates].sort((a, b) => a - b)) };
-    });
-    return `<h3 class="wa-subheading">${text('OC16 management mechanism')}</h3><ul class="wa-channel-rows wa-mechanism">${mechanismPairs.map(channelRow).join('')}</ul>`;
+        gates: Object.freeze([...item.displayGates].sort((a, b) => a - b))
+      };
+      const measured = known() ? result.pairs.find(row => row.channelId === item.channelId) : null;
+      const complete = Boolean(measured && measured.missingGates.length === 0);
+      const state = !known() ? 'unknown' : complete ? 'complete' : measured?.status === 'hanging' ? 'partial' : 'none';
+      const [leftGate, rightGate] = pair.displayGates;
+      const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+      const stateLabel = state === 'complete' ? 'Wa legend active' : state === 'partial' ? 'Wa row partial' : state === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
+      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="mechanism-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${pairToken(pair, { tag: 'span' })}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => hexagramName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
+    }).join('')}</div>`;
   }
   function gapsHtml() {
     if (!known() || !result.memberIds.length) return '';
@@ -125,13 +131,18 @@ export function mountWa(container, options = {}) {
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
   const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
-  function pairToken(pair) {
+  function pairToken(pair, { tag = 'button' } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
     const [leftGate, rightGate] = pair.displayGates;
     const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
     const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
-    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge)}</button>`;
+    const roleClass = pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':'';
+    const ends = pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge);
+    if (tag === 'span') {
+      return `<span class="wa-pair-token ${roleClass}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
+    }
+    return `<button type="button" class="wa-pair-token ${roleClass}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${ends}</button>`;
   }
   function channelRow(pair) {
     const state = pairState(pair), row = rowState(state);
