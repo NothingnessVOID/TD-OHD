@@ -14,9 +14,10 @@ test('show-names toggle is localized in all three locales', () => {
   }
 });
 
-test('show-names is a UI-only localStorage pref, default off, rendering number + escaped truncated name', () => {
+test('show-names is a UI-only localStorage pref, default on, rendering number + escaped truncated name', () => {
   assert.match(source, /SHOW_NAMES_PREF = 'ohd-wa-ui-show-member-names-v1'/);
-  assert.match(source, /getItem\(SHOW_NAMES_PREF\) === '1'/);
+  assert.match(source, /getItem\(SHOW_NAMES_PREF\)/);
+  assert.match(source, /if \(v == null\) return true/);
   assert.match(source, /data-wa-show-names/);
   assert.match(source, /wa-row-member-name">\$\{esc\(nameOf\(id\)\)\}/);
   assert.match(css, /\.wa-row-member-name \{[^}]*text-overflow:ellipsis/);

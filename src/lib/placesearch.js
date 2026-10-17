@@ -185,8 +185,11 @@ export function createPlaceSearch(mount, { placeholder = 'Birth place', getDateT
     refreshLanguage,
     setBirthLocation(location, timezone = location?.timezone) {
       ++seqCounter; controller?.abort(); clearTimeout(debounce); clearResults();
-      manualMode = !location?.iana;
-      selected = location?.iana ? { label: location.name || location.iana, latitude: location.lat, longitude: location.lon, timezone: location.iana } : null;
+      // Place search is the default. Manual offset only when we already have an
+      // offset and no IANA place (empty create / blank birth stays in place mode).
+      const hasIana = Boolean(location?.iana);
+      manualMode = !hasIana && timezone != null && timezone !== '';
+      selected = hasIana ? { label: location.name || location.iana, latitude: location.lat, longitude: location.lon, timezone: location.iana } : null;
       input.value = selected?.label || '';
       manual.value = timezone == null ? '' : String(timezone);
       manual.disabled = !manualMode;

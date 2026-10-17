@@ -2,7 +2,7 @@ import { validateWaLayout } from './model.js';
 import { prepareWaMembers } from './prepare.js';
 import { analyzeWa, collectPair } from './analysis.js';
 import { extractTeamActivations } from '../human-design/team-activation.js';
-import { OC16_DEPARTMENTS, WA_PILLARS } from './oc16-catalog.js';
+import { OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM } from './oc16-catalog.js';
 
 const sorted = values => [...new Set(values)].sort();
 const provenance = new WeakMap();
@@ -44,7 +44,7 @@ function coverage(memberIds, activations, scope) {
     const result = collectPair(pair, byGate);
     return { ...pair, ...result, contributorIds: sorted(result.gateRecords.flatMap(record => record.memberIds)) };
   }));
-  // Every catalog gate occurs once, so the shared pair collector supplies all 64 gate records.
+  // Every catalog gate occurs once; the shared pair collector supplies the organizing-channel records only.
   const gateRecords = pairs.flatMap(pair => pair.gateRecords)
     .map(record => ({ ...record, contributorIds: [...record.memberIds] })).sort((a, b) => a.gate - b.gate);
   const departments = OC16_DEPARTMENTS.map(department => {
@@ -53,11 +53,14 @@ function coverage(memberIds, activations, scope) {
     const records = gateRecords.filter(record => gates.has(record.gate));
     return { ...department, pairs: departmentPairs, gateRecords: records, ...counts(records, departmentPairs) };
   });
-  const pillars = WA_PILLARS.map(pillar => {
-    const record = gateRecords.find(record => record.gate === pillar.gate);
-    return { ...pillar, ...record, present: record.activationCount > 0 };
+  const managementMechanism = WA_MANAGEMENT_MECHANISM.map(item => {
+    const pair = pairs.find(row => row.channelId === item.channelId);
+    return { ...item, status: pair?.status ?? 'absent', present: Boolean(pair && pair.missingGates.length === 0),
+      missingGates: pair?.missingGates ?? [...item.displayGates], contributorIds: pair?.contributorIds ?? [],
+      gateRecords: pair?.gateRecords ?? [] };
   });
-  return { ...classification, scope, memberIds: ids, gateRecords, pairs, departments, pillars, ...counts(gateRecords, pairs) };
+  return { ...classification, scope, memberIds: ids, gateRecords, pairs, departments, managementMechanism,
+    ...counts(gateRecords, pairs) };
 }
 
 /** Original layout diagnostics and activation coverage deliberately have independent readiness. */

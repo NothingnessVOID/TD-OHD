@@ -14,11 +14,7 @@ const canonical = gates => [...gates].sort((a, b) => a - b).join('-');
 const activationKey = a => JSON.stringify([a.memberId, a.side, a.planet, a.gate, a.line]);
 const pairKey = p => JSON.stringify([p.firstMemberId, p.secondMemberId]);
 const departments = {
-  management: [[45,21],[54,32],[44,26],[19,49],[37,40]],
-  competition: [[51,25],[10,34]], direction: [[14,2],[61,24],[43,23],[8,1]],
-  interaction: [[59,6],[64,47],[11,56],[35,36],[30,41],[53,42],[29,46],[13,33]],
-  logic: [[27,50],[63,4],[17,62],[48,16],[18,58],[9,52],[5,15],[7,31]],
-  innovation: [[3,60],[38,28],[57,20],[39,55],[22,12]],
+  management:[[45,21],[44,26]],competition:[[51,25]],direction:[[14,2]],interaction:[[59,6]],logic:[[27,50]],innovation:[[3,60]],
 };
 const pairs = Object.entries(departments).flatMap(([department, values]) => values.map(displayGates => ({
   department, displayGates, channelId: canonical(displayGates), gates: [...displayGates].sort((a,b) => a-b),
@@ -279,8 +275,6 @@ async function main() {
     };
     const openPair = async pair => {
       await close();
-      const toggle = root().locator(`[data-department-toggle="${pair.department}"]`);
-      if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
       await root().locator(`[data-pair-row="${pair.channelId}"] [data-wa-pair]`).click();
       await sheet().waitFor();
     };
@@ -301,7 +295,7 @@ async function main() {
     console.log('PASS early keyboard/geometry: pair+gate Tab/Enter/cycle, static horizontal nav within sheet');
     await close();
     const seenStates = new Map(); let repeatedPD;
-    // Actual UI across all organization/Penta scopes, all 32 pairs and 64 gates.
+    // Actual UI across all organization/Penta scopes, all 7 organizing channels and 14 gates.
     for (const [group, alpha] of [[null,false],[0,false],[0,true],[1,false],[1,true],[2,false],[2,true]]) {
       const ids = await scope(group,alpha);
       const label = group === null ? 'organization' : `Penta-${group}-${alpha ? 'alpha' : 'alone'}`;
@@ -311,10 +305,9 @@ async function main() {
         assert.equal(Number(await card.getAttribute('data-gate-count')),expected.flatMap(p => p.endpoints).filter(e => e.memberIds.length).length,`${label}/${department}: coverage gates`);
         assert.equal(Number(await card.getAttribute('data-pair-count')),expected.filter(p => p.endpoints.every(e => e.memberIds.length)).length,`${label}/${department}: coverage pairs`);
         await close();
-        const toggle = card.locator('[data-department-toggle]');
-        if (await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click();
+        assert.equal(await card.locator('[data-department-toggle]').count(), 0, `${label}/${department}: no department toggle`);
         verifyInlineRows(await readInlineRows(card),expected,`${label}/${department}/inline`);
-        // Department sheet entry removed: expand card → open channel/gate for deep detail.
+        // Department sheet entry removed: channel rows always visible → open channel/gate for deep detail.
         assert.equal(await card.locator('[data-wa-department]').count(), 0, `${label}/${department}: no department detail button`);
       }
       for (const pair of pairs) {
@@ -342,19 +335,14 @@ async function main() {
     evidence.stateWitnesses = Object.fromEntries(seenStates); evidence.repeatedPD = repeatedPD;
 
     await scope(null);
-    for (const department of Object.keys(departments)) {
-      const toggle = root().locator(`[data-department-toggle="${department}"]`);
-      if (await toggle.getAttribute('aria-expanded') === 'true') await toggle.click();
-    }
     await page.setViewportSize({width:1440,height:1000}); await page.evaluate(() => scrollTo(0,0)); await shot('1440-whole-organization');
     await page.setViewportSize({width:1280,height:900});
     await scope(0); await shot('1280-penta-A');
     await scope(0,true); await shot('1280-penta-A-alpha');
     await scope(1); // A+Alpha -> B must reset false.
     await scope(null); // Global remains all ten regardless of the previous checkbox.
-    const management = root().locator('[data-department-toggle="management"]');
-    if (await management.getAttribute('aria-expanded') !== 'true') await management.click();
-    await shot('1280-management-expanded');
+    await root().locator('[data-department-card="management"]').scrollIntoViewIfNeeded();
+    await shot('1280-management-channels');
     await openPair(pairs[0]); await shot('1280-pair-45-21');
     await keyboardKnowledge('pair');
     await sheet().locator('[data-wa-gate="45"]').first().click(); await shot('1280-gate-45');
