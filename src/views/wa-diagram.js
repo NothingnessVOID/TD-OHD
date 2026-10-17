@@ -1,6 +1,6 @@
 import { t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { gateName } from '../lib/vocabulary.js';
+import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { renderPentaStateSymbol } from '../lib/penta-state-symbol.js';
 
 export const waStateText = state => t(`Wa UI state ${state || 'unknown'}`);
@@ -109,9 +109,9 @@ function renderGateContributors(gate, records, gateX, y, nameOf, sideIndex) {
   return `<g class="wa-gate-count" data-wa-gate-count="${gate}" data-count="${count}" aria-hidden="true">${dots}${more}<title>${label}${names ? ` — ${esc(names)}` : ''}</title></g>`;
 }
 
-/** Soft chip outside the focus ring: vocabulary gateName only (circle still shows the number). */
+/** Soft chip outside the focus ring: org role name only (circle still shows the number). */
 function renderGateChip(gate, x, y, sideIndex, focusR) {
-  const label = `${gateName(gate)}`;
+  const label = `${orgGateName(gate)}`;
   const textW = estimateTextWidth(label, { cjk: 14, ascii: 7.8, soft: 4.5 });
   const w = Math.max(56, Math.ceil(textW + G.CHIP_PAD_X * 2));
   const h = G.CHIP_H;
@@ -188,8 +188,8 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
       const haloR = G.NODE_R + G.NODE_HALO_EXTRA;
       const hitR = G.NODE_R + G.NODE_HIT_EXTRA;
       const focusR = hitR;
-      const name = gateName(gate);
-      // Gate chips carry vocabulary names for every gate. No pillar accent rings.
+      const name = orgGateName(gate);
+      // Gate chips carry organization role names. No pillar accent rings.
       return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${name} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${hitR}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 6)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept title stays calm.

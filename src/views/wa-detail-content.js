@@ -4,11 +4,10 @@ import '../lib/wa/ui-messages.js';
 import { renderWaMemberMarker } from '../lib/wa/member-markers.js';
 import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
-import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
-import { renderGateDetailHeading } from '../lib/object-detail-heading.js';
+import { hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { renderProse } from '../lib/knowledge/detail-renderer.js';
 import { readWaReadingExcerpt } from '../lib/wa/reading-presentation.js';
-import { orgChannelCopy, orgGateCopy } from '../lib/wa/org-role-readings.js';
+import { orgChannelCopy, orgGateCopy, orgGateName } from '../lib/wa/org-role-readings.js';
 import { OC16_DEPARTMENTS } from '../lib/wa/oc16-catalog.js';
 import { waStateText } from './wa-diagram.js';
 
@@ -33,7 +32,14 @@ const stateHtml = value => {
   const state = statuses.has(value?.status) ? value.status : 'unknown';
   return `<span class="wa-detail-state" data-wa-state="${state}"><span class="wa-detail-state-mark" aria-hidden="true"></span><span class="wa-detail-state-label">${esc(waStateText(state))}</span></span>`;
 };
-const gateLabel = gate => `<strong>${gate}</strong> · ${esc(gateName(gate))} · ${esc(hexagramName(gate))}`;
+const gateLabel = gate => `<strong>${gate}</strong> · ${esc(orgGateName(gate))} · ${esc(hexagramName(gate))}`;
+/** Organization-page gate heading: org role primary, classical hexagram secondary. */
+function renderOrgGateDetailHeading(gate) {
+  const id = Number(gate);
+  const zh = getLocale().startsWith('zh');
+  return `<div class="detail-label">${esc(t('Gate {gate}', { gate: id }))}</div>
+    <div class="detail-name">${esc(orgGateName(id))} <span class="detail-hexagram">${zh ? '（' : '('}${esc(hexagramName(id))}${zh ? '）' : ')'}</span></div>`;
+}
 
 /** Shared by inline rows, department, pair and gate details. Preserve every source row, including duplicates. */
 export function renderActivationRows(activations, { nameOf = id => id, markerOf=()=>null } = {}) {
@@ -239,7 +245,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       const ctx = context(), record = ctx.gates.get(gate);
       const state = Array.isArray(record?.memberIds) ? record.memberIds.length ? 'active' : 'inactive' : 'unknown';
       const orgReading = `<section class="wa-detail-reading" data-wa-knowledge="wa-org" data-wa-content-id="${pair.channelId}" data-wa-reading-for="gate:${gate}"><h3>${text('Wa org gate reading')}</h3>${renderOrgGateReading(gate)}</section>`;
-      return `<section class="wa-detail-content" data-wa-detail="gate" data-wa-detail-id="${gate}"><header class="wa-detail-heading">${renderGateDetailHeading(gate)}</header><p class="wa-detail-state" data-wa-gate-state="${state}">${text(`OC16 ${state}`)}</p>${orgReading}<div class="wa-detail-divider" aria-hidden="true"></div><section class="wa-detail-activations-block"><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(record?.activations, { nameOf, markerOf })}</section>${gateRelated(pair, gate)}</section>`;
+      return `<section class="wa-detail-content" data-wa-detail="gate" data-wa-detail-id="${gate}"><header class="wa-detail-heading">${renderOrgGateDetailHeading(gate)}</header><p class="wa-detail-state" data-wa-gate-state="${state}">${text(`OC16 ${state}`)}</p>${orgReading}<div class="wa-detail-divider" aria-hidden="true"></div><section class="wa-detail-activations-block"><h3>${text('OC16 activation sources')}</h3>${renderActivationRows(record?.activations, { nameOf, markerOf })}</section>${gateRelated(pair, gate)}</section>`;
     }
   });
 }
