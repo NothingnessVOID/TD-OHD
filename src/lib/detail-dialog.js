@@ -29,7 +29,7 @@ export function openDetailDialog(element, onClose, { owner = 'bodygraph', label 
   // hidden → visible transition only, so it is driven by a class on the sheet that
   // is cleared as soon as it has played; a later innerHTML swap finds no class and
   // stays still.
-  const wasHidden = element.classList.contains('hidden');
+  const wasHidden = element.classList?.contains?.('hidden') ?? true;
   if (!active) {
     closeDetailDialog();
     const trigger = document.activeElement;
@@ -76,7 +76,7 @@ export function openDetailDialog(element, onClose, { owner = 'bodygraph', label 
   const card = element.querySelector('.gate-detail-card');
   if (card && wasHidden) {
     const done = () => element.classList.remove('sheet-entering');
-    card.addEventListener('animationend', done, { once: true });
+    card.addEventListener?.('animationend', done, { once: true });
     // Reduced motion (or a missing animation) never fires animationend; clear anyway.
     setTimeout(done, 400);
   }
