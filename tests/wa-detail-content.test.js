@@ -32,7 +32,7 @@ const endpoint = (html, gate) => html.split(`data-wa-endpoint="${gate}"`)[1]?.sp
 
 test('channel and department readings stay expanded without disclosure folds; gate and support stay fold-free', () => {
   const details = renderer(fixture());
-  for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('32-54')]) {
+  for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('26-44')]) {
     assert.doesNotMatch(html, /<details\b|<summary\b/);
   }
   // Department ≡ core channel: one Wa reading (same content-data), not a second department copy.
@@ -145,8 +145,8 @@ test('unknown and partial records never become false zero coverage; true empty r
   for (const result of [null, { ...fixture(), status: 'not_ready' }, { status: 'ready' }]) {
     const view = renderer(result);
     const html = view.renderDepartment('management');
-    assert.match(html, /data-wa-gate-count="—">— \/ 10/);
-    assert.match(html, /data-wa-pair-count="—">— \/ 5/);
+    assert.match(html, /data-wa-gate-count="—">— \/ 4/);
+    assert.match(html, /data-wa-pair-count="—">— \/ 2/);
     assert.doesNotMatch(html, /data-wa-state="absent"|data-wa-covered="false"|Fictional/);
     assert.match(view.renderPair('21-45'), /data-wa-state="unknown"/);
     assert.match(view.renderGate(45), /data-wa-gate-state="unknown"/);
@@ -154,23 +154,23 @@ test('unknown and partial records never become false zero coverage; true empty r
   const empty = fixture({ status: 'absent', left: [], right: [], self: [], combinations: [] });
   empty.status = 'empty';
   empty.departments[0] = { id: 'management', gateCount: 0, pairCount: 0 };
-  assert.match(renderer(empty).renderDepartment('management'), /data-wa-gate-count="0">0 \/ 10/);
+  assert.match(renderer(empty).renderDepartment('management'), /data-wa-gate-count="0">0 \/ 4/);
   const wrong = fixture({ status: 'unrecognized' });
   assert.match(renderer(wrong).renderPair('21-45'), /data-wa-state="unknown"/);
   for (const call of [v => v.renderGate('wrong'), v => v.renderPair('45-21'), v => v.renderDepartment('<wrong>'), v => v.renderPairRows({ id: 'wrong' })]) assert.equal(call(renderer(wrong)), '');
 });
 
-test('department counts are consumed, core precedes support, no trailing blanket contributors', () => {
+test('department counts are consumed, core precedes personnel, no trailing blanket contributors', () => {
   const result = fixture();
   // Preserve summary fields even when fixture rows are partial; the renderer must not derive new counts.
   result.departments[0] = { id: 'management', gateCount: 7, pairCount: 3, contributorIds: ['outsider'] };
   const html = renderer(result).renderDepartment('management');
-  assert.match(html, /data-wa-gate-count="7">7 \/ 10/);
-  assert.match(html, /data-wa-pair-count="3">3 \/ 5/);
-  // Core is the primary sheet; support pairs listed below (4 support rows for management).
-  assert.equal(occurrences(html, 'data-pair-row='), 4);
+  assert.match(html, /data-wa-gate-count="7">7 \/ 4/);
+  assert.match(html, /data-wa-pair-count="3">3 \/ 2/);
+  // Core is the primary sheet; personnel 44–26 listed below management.
+  assert.equal(occurrences(html, 'data-pair-row='), 1);
   assert.match(html, /data-wa-core-pair="21-45"/);
-  assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="32-54"'));
+  assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="26-44"'));
   assert.doesNotMatch(html, /outsider|wa-contributor-list/);
   assert.match(html, /data-wa-knowledge="wa" data-wa-content-id="21-45"/);
   assert.equal(occurrences(html, 'data-wa-reading-id="'), 1);
@@ -180,7 +180,7 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const view = renderer(fixture());
-    const core = view.renderPair('21-45'), support = view.renderPair('32-54'), gate = view.renderGate(45);
+    const core = view.renderPair('21-45'), support = view.renderPair('26-44'), gate = view.renderGate(45);
     const entry = readWaContent('21-45', locale);
     const excerpt = readWaReadingExcerpt('21-45',locale);
     // Core pair and department are the same merged sheet; reading-for is the department id.
@@ -197,7 +197,7 @@ test('three languages retain exact Wa excerpts on core sheets and jump cards for
     assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
     assert.equal(occurrences(core, 'data-wa-reading-id="'), 1);
     // Support: department Wa reading is a jump card to the merged sheet, not nested prose.
-    assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="32-54"/);
+    assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="26-44"/);
     assert.doesNotMatch(support, /<details\b/);
     assert.ok(!support.includes(renderProse({content:excerpt.detail})));
     assert.ok(support.includes(t('Wa UI department reading')));
