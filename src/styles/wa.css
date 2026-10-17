@@ -411,8 +411,8 @@
 /* Channel rows: who activates each end */
 .wa-channel-rows { display:grid; list-style:none; margin:0; padding:0; }
 .wa-channel-row {
-  display:grid; grid-template-columns:auto minmax(0,1fr) minmax(0,.9fr) minmax(0,.9fr) auto; align-items:center; gap:6px 10px;
-  margin:0 -8px; padding:8px 8px; border-radius:10px; border-bottom:1px solid var(--border-subtle,var(--border));
+  display:grid; grid-template-columns:auto minmax(0,1.15fr) minmax(0,.85fr) minmax(0,.85fr) auto; align-items:center; gap:8px 12px;
+  margin:0 -8px; padding:10px 8px; border-radius:10px; border-bottom:1px solid var(--border-subtle,var(--border));
   position:relative; isolation:isolate;
 }
 .wa-channel-row:last-child { border-bottom-color:transparent; padding-bottom:8px; }
@@ -420,8 +420,11 @@
 @media (prefers-reduced-motion:reduce) {
   .wa-pair-bridge { transition:none; }
 }
-.wa-row-name { min-width:0; border:0; padding:2px 0; background:transparent; color:var(--text); text-align:left; font-size:13px!important; line-height:1.4; cursor:pointer; overflow-wrap:anywhere; }
-.wa-row-name small { display:block; color:var(--accent-strong,var(--accent)); font-size:11px; }
+.wa-row-name {
+  min-width:0; border:0; padding:2px 0; background:transparent; color:var(--text); text-align:left;
+  font-size:15px!important; font-weight:650!important; line-height:1.35; letter-spacing:.01em; cursor:pointer; overflow-wrap:anywhere;
+}
+.wa-row-name small { display:none; } /* channel role sublabels removed from the list */
 .wa-row-name:hover { color:var(--accent-strong,var(--accent)); }
 .wa-row-gate { display:flex; align-items:center; gap:5px; min-width:0; }
 .wa-row-gate-number {
@@ -451,7 +454,7 @@
 }
 .wa-row-markers { display:flex; flex-wrap:wrap; gap:3px; min-width:0; }
 .wa-row-empty { color:var(--text-tertiary,var(--text-secondary)); font-size:12px; }
-.wa-row-state { justify-self:end; padding:1px 8px; border-radius:999px; background:var(--bg-sunken); color:var(--text-secondary); font-size:11px; line-height:1.7; white-space:nowrap; }
+.wa-row-state { justify-self:end; align-self:center; padding:3px 10px; border-radius:999px; background:var(--bg-sunken); color:var(--text-secondary); font-size:12px; font-weight:550; line-height:1.5; white-space:nowrap; }
 .wa-row-state[data-state="complete"] { color:var(--status-success,var(--text)); background:var(--status-success-soft,var(--bg-sunken)); }
 .wa-row-state[data-state="partial"] { color:var(--status-caution,var(--text)); background:var(--status-caution-soft,var(--bg-sunken)); }
 .wa-department-top { display:flex; align-items:center; gap:10px; }
@@ -513,8 +516,9 @@
 /* Navigation row geometry comes from the shared detail sheet (ui-system.css). */
 .wa-detail-scope { margin:0 0 12px; font-size:12px; line-height:1.5; color:var(--text-secondary); }
 .wa-reading-sheet .gate-detail-body { overflow:auto; min-height:0; flex:1 1 auto; -webkit-overflow-scrolling:touch; }
-.wa-reading-sheet h2 { margin:4px 0 12px; font-size:22px; line-height:1.4; }
-.wa-reading-sheet h3 { font-size:15px; margin:22px 0 10px; }
+.wa-reading-sheet h2 { margin:0; font-size:22px; line-height:1.3; font-weight:650; }
+.wa-reading-sheet h3 { font-size:15px; margin:0; }
+.wa-reading-sheet .gate-detail-body { padding-bottom:8px; }
 .wa-reading-sheet .detail-label { font-size:12px; }
 .wa-reading-sheet .detail-name { font-size:20px; }
 .wa-reading-sheet .detail-hexagram { font-size:14px; }

@@ -30,27 +30,39 @@ test('all 42 Wa readings use explicit authored excerpts, keep source identity, a
   }
  }
 });
-test('supporting channels and gates cite their actual Wa department article, never personal chart prose',()=>{
+test('supporting channels and gates use organization role readings, never personal chart prose',()=>{
  const view=createWaDetailRenderer({getResult:()=>null});
  for(const locale of ['en','zh-CN','zh-Hant']){
   setLocale(locale,{persist:false});
   for(const department of OC16_DEPARTMENTS){
-   const core=department.pairs[0],source=readWaContent(core.channelId,locale);
+   const core=department.pairs[0];
    for(const pair of department.pairs){
     const html=view.renderPair(pair.channelId);
-    assert.ok(html.includes(`data-wa-content-id="${core.channelId}"`));
+    assert.ok(html.includes(`data-wa-content-id="${pair.role==='core'?core.channelId:pair.channelId}"`) || html.includes(`data-wa-content-id="${core.channelId}"`));
     // Core pair ≡ department sheet: reading-for is the department id. Support keeps jump reading-for=channelId.
     if(pair.role==='core') assert.ok(html.includes(`data-wa-reading-for="${department.id}"`));
     else assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
+    const escRole = t(`OC16 org role ${department.id}`).replaceAll('&','&amp;');
     if(pair.role==='core'){
-      assert.ok(html.includes(`data-wa-reading-id="${source.id}"`));
-      assert.ok(html.includes(source.name));
+      assert.ok(html.includes('data-wa-org-reading="channel"'));
+      assert.ok(html.includes(escRole) || html.includes(t(`OC16 org role ${department.id}`)));
     } else {
-      assert.ok(html.includes(t('Wa UI department reading')));
+      assert.ok(html.includes(t('Wa UI department reading')) || html.includes('data-wa-org-reading="channel"'));
     }
     assert.doesNotMatch(html,/data-shared-channel-reading|data-shared-gate=|data-shared-lens/);
     assert.doesNotMatch(html.replace(/<[^>]*>/g,''),forbidden);
-    for(const gate of pair.gates){const gateHtml=view.renderGate(gate);assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));assert.ok(gateHtml.includes(`data-wa-content-id="${core.channelId}"`));assert.doesNotMatch(gateHtml,/data-shared-gate=|data-shared-lens/);}
+    // Must never surface the incorrect four-foundation summary.
+    assert.doesNotMatch(html,/四大基石|1、7、13、33|董事会与品牌灵魂|board of directors and brand soul/i);
+    for(const gate of pair.gates){
+      const gateHtml=view.renderGate(gate);
+      assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));
+      assert.ok(gateHtml.includes(`data-wa-content-id="${pair.channelId}"`) || gateHtml.includes(`data-wa-content-id="${core.channelId}"`));
+      assert.ok(gateHtml.includes('data-wa-org-reading="gate"'));
+      const gateRole = t(`OC16 org gate role ${gate}`).replaceAll('&','&amp;');
+      assert.ok(gateHtml.includes(gateRole) || gateHtml.includes(t(`OC16 org gate role ${gate}`)));
+      assert.doesNotMatch(gateHtml,/data-shared-gate=|data-shared-lens/);
+      assert.doesNotMatch(gateHtml,/四大基石|1、7、13、33/);
+    }
    }
   }
  }

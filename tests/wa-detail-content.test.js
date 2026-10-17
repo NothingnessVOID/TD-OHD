@@ -35,11 +35,11 @@ test('channel and department readings stay expanded without disclosure folds; ga
   for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('26-44')]) {
     assert.doesNotMatch(html, /<details\b|<summary\b/);
   }
-  // Department ≡ core channel: one Wa reading (same content-data), not a second department copy.
+  // Department ≡ core channel: one organization role reading, not a second department copy.
   const core = details.renderPair('21-45');
   const dept = details.renderDepartment('management');
-  assert.match(core, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
-  assert.match(dept, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.match(core, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-org"/);
+  assert.match(dept, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-org"/);
   assert.match(dept, /data-wa-merged-dept="management"/);
   assert.match(core, /data-wa-core-pair="21-45"/);
   assert.equal(core, dept);
@@ -78,9 +78,9 @@ test('pair sheet keeps self-complete near the top and omits cross-member combina
   assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-endpoint='));
   assert.ok(html.indexOf('data-wa-self-complete') < html.indexOf('data-wa-knowledge'));
   // People (endpoints) → Wa reading → related jumps
-  assert.ok(html.indexOf('data-wa-endpoint=') < html.indexOf('data-wa-knowledge="wa"'));
-  assert.ok(html.indexOf('data-wa-knowledge="wa"') < html.indexOf('data-wa-related-jumps'));
-  assert.match(html, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa"/);
+  assert.ok(html.indexOf('data-wa-endpoint=') < html.indexOf('data-wa-knowledge="wa-org"'));
+  assert.ok(html.indexOf('data-wa-knowledge="wa-org"') < html.indexOf('data-wa-related-jumps'));
+  assert.match(html, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-org"/);
   assert.doesNotMatch(html, /<details\b/);
 });
 
@@ -172,42 +172,42 @@ test('department counts are consumed, core precedes personnel, no trailing blank
   assert.match(html, /data-wa-core-pair="21-45"/);
   assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="26-44"'));
   assert.doesNotMatch(html, /outsider|wa-contributor-list/);
-  assert.match(html, /data-wa-knowledge="wa" data-wa-content-id="21-45"/);
-  assert.equal(occurrences(html, 'data-wa-reading-id="'), 1);
+  assert.match(html, /data-wa-knowledge="wa-org" data-wa-content-id="21-45"/);
+  assert.equal(occurrences(html, 'data-wa-org-reading="channel"'), 1);
 });
 
-test('three languages retain exact Wa excerpts on core sheets and jump cards for department reading', () => {
+test('three languages show organization role readings on core sheets and jump cards for department reading', () => {
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const view = renderer(fixture());
     const core = view.renderPair('21-45'), support = view.renderPair('26-44'), gate = view.renderGate(45);
-    const entry = readWaContent('21-45', locale);
-    const excerpt = readWaReadingExcerpt('21-45',locale);
     // Core pair and department are the same merged sheet; reading-for is the department id.
-    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="management"/);
+    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="management"/);
     assert.equal(core, view.renderDepartment('management'));
     assert.doesNotMatch(core, /<details\b/);
-    assert.ok(core.indexOf('data-wa-endpoint=') < core.indexOf('data-wa-knowledge="wa"'));
-    assert.ok(core.indexOf('data-wa-knowledge="wa"') < core.indexOf('data-wa-related-jumps'));
-    assert.ok(core.includes(`data-wa-reading-id="${entry.id}"`));
-    assert.ok(core.includes(`data-wa-package-id="${entry.packageId}"`));
-    assert.ok(core.includes(`data-wa-source-refs="${entry.sourceRefs.join(' ')}"`));
-    assert.ok(core.includes(renderProse({ content: entry.summary })));
-    assert.ok(core.includes(renderProse({ content: excerpt.detail })));
-    assert.ok(!core.includes(renderProse({content:entry.detail.split('\n\n')[2]})), 'engineering paragraph is retained in source, not shown as reading');
-    assert.equal(occurrences(core, 'data-wa-reading-id="'), 1);
-    // Support: department Wa reading is a jump card to the merged sheet, not nested prose.
+    assert.ok(core.indexOf('data-wa-endpoint=') < core.indexOf('data-wa-knowledge="wa-org"'));
+    assert.ok(core.indexOf('data-wa-knowledge="wa-org"') < core.indexOf('data-wa-related-jumps'));
+    assert.ok(core.includes('data-wa-org-reading="channel"'));
+    assert.ok(core.includes(t('OC16 org role management')));
+    assert.ok(core.includes(t('OC16 org gate role 45')));
+    assert.ok(core.includes(t('OC16 org gate body 45')));
+    assert.doesNotMatch(core, /四大基石|1、7、13、33|董事会与品牌灵魂/);
+    assert.equal(occurrences(core, 'data-wa-org-reading="channel"'), 1);
+    // Support: own personnel org reading + jump card to the merged department sheet.
     assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="26-44"/);
     assert.doesNotMatch(support, /<details\b/);
-    assert.ok(!support.includes(renderProse({content:excerpt.detail})));
+    assert.ok(support.includes('data-wa-org-reading="channel"'));
     assert.ok(support.includes(t('Wa UI department reading')));
     assert.ok(support.includes(t('Wa jump open department')));
     assert.ok(gate.includes(renderGateDetailHeading(45)));
     assert.doesNotMatch(gate, /<details\b/);
-    assert.ok(!gate.includes(renderProse({content:excerpt.detail})));
+    assert.ok(gate.includes('data-wa-org-reading="gate"'));
+    assert.ok(gate.includes(t('OC16 org gate role 45')));
+    assert.ok(gate.includes(t('OC16 org gate body 45')));
     // Gate jumps to merged dept≡core (one card).
-    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
-    assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-activations'));
+    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
+    assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-org-reading="gate"'));
+    assert.ok(gate.indexOf('data-wa-org-reading="gate"') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
     assert.match(core, /data-wa-related-jumps/);
     assert.match(core, /data-wa-gate="45"/);
