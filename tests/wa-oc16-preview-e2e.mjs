@@ -35,7 +35,7 @@ try {
     }
     window.gateSets={};window.rawActivations={};
     for(const person of window.fixturePeople){const {chart}=await window.compute(person);const activations=['personality','design'].flatMap(side=>Object.entries(chart.gates[side]).map(([planet,activation])=>({side,planet,gate:activation.gate,line:activation.line})));window.rawActivations[person.id]=activations;window.gateSets[person.id]=[...new Set(activations.map(a=>a.gate))];}
-    window.referencePairs={management:[[45,21],[54,32],[44,26],[19,49],[37,40]],competition:[[51,25],[10,34]],direction:[[14,2],[61,24],[43,23],[8,1]],interaction:[[59,6],[64,47],[11,56],[35,36],[30,41],[53,42],[29,46],[13,33]],logic:[[27,50],[63,4],[17,62],[48,16],[18,58],[9,52],[5,15],[7,31]],innovation:[[3,60],[38,28],[57,20],[39,55],[22,12]]};
+    window.referencePairs={management:[[45,21],[44,26]],competition:[[51,25]],direction:[[14,2]],interaction:[[59,6]],logic:[[27,50]],innovation:[[3,60]]};
   });
   await root().locator('[data-title]').fill('虚构组织 · OC16 结构实验');
   const groupIds=await root().locator('[data-import]').evaluateAll(nodes=>nodes.map(node=>node.dataset.import));
@@ -93,7 +93,7 @@ try {
   await root().locator('[data-scope-option=""]').click();
   // Returning to all participants restores Alpha inclusion.
   await verify([0,1,2,3,4,5,6,7,8,9],'all participants after group-only');
-  // Shared details: pillar -> actual pair -> other endpoint -> Back -> Escape.
+  // Shared details: core gate -> channel -> other endpoint -> Back -> Escape.
   await root().locator('.wa-core-svg [data-wa-gate="60"]').focus();await page.keyboard.press('Enter');
   assert.ok(await page.locator('.wa-reading-sheet').isVisible());
   assert.ok((await page.locator('.wa-reading-sheet').boundingBox()).width>600,'desktop details use the shared wide sheet');
@@ -104,9 +104,8 @@ try {
   await page.locator('[data-wa-back]').click();
   await page.keyboard.press('Escape');
   assert.equal(await page.evaluate(()=>document.activeElement?.dataset.waPair||document.activeElement?.dataset.waGate),'60','closing returns to the original gate trigger, not the last visited pair');
-  await root().locator('[data-department-toggle="management"]').click();
-  await root().locator('[data-pair-row="32-54"] [data-wa-pair]').click();
-  assert.ok((await page.locator('.wa-reading-sheet').innerText()).includes('支持门对'));
+  await root().locator('[data-pair-row="26-44"] [data-wa-pair]').click();
+  assert.ok((await page.locator('.wa-reading-sheet').innerText()).includes('人事'));
   await page.keyboard.press('Escape');
   // Real v1 save -> annotated v2 load -> Alpha replacement preserves all annotations.
   await root().locator('[data-action="save"]').click();await page.waitForFunction(()=>document.querySelector('.wa-draft-status')?.textContent.includes('r1'));
@@ -122,7 +121,7 @@ try {
   await quickSelect('alpha',[10]);
   // Oracle seed stays outside the app and is restored after reload without affecting displayed results.
   const captured=await page.evaluate(async()=>{const people=await import('/src/lib/people.js');const {computeChart}=await import('/src/lib/chartdata.js');return Promise.all(people.listPeople().map(async person=>{const {chart}=await computeChart({...person,timezone:person.location.timezone});return {id:person.id,gates:[...new Set(['personality','design'].flatMap(side=>Object.values(chart.gates[side]).map(a=>a.gate)))]};}));});
-  await page.evaluate(captured=>{window.gateSets=Object.fromEntries(captured.map(p=>[p.id,p.gates]));window.referencePairs={management:[[45,21],[54,32],[44,26],[19,49],[37,40]],competition:[[51,25],[10,34]],direction:[[14,2],[61,24],[43,23],[8,1]],interaction:[[59,6],[64,47],[11,56],[35,36],[30,41],[53,42],[29,46],[13,33]],logic:[[27,50],[63,4],[17,62],[48,16],[18,58],[9,52],[5,15],[7,31]],innovation:[[3,60],[38,28],[57,20],[39,55],[22,12]]};},captured);
+  await page.evaluate(captured=>{window.gateSets=Object.fromEntries(captured.map(p=>[p.id,p.gates]));window.referencePairs={management:[[45,21],[44,26]],competition:[[51,25]],direction:[[14,2]],interaction:[[59,6]],logic:[[27,50]],innovation:[[3,60]]};},captured);
   await verify([10,1,2,3,4,5,6,7,8,9],'direct Alpha replacement');
   await root().locator('[data-action="save"]').click();await page.waitForFunction(()=>document.querySelector('.wa-draft-status')?.textContent.includes('r3'));
   const persisted=await page.evaluate(async id=>{const repo=(await import('/src/lib/wa/repository.js')).createWaRepository();return {head:await repo.get(id),history:await repo.history(id)};},organizationId);

@@ -4,7 +4,7 @@
 .wa-member-color-3 { --wa-member-color:var(--team-member-3); }
 .wa-member-color-4 { --wa-member-color:var(--team-member-4); }
 .wa-member-color-5 { --wa-member-color:var(--team-member-5); }
-.wa-member-marker { display:inline-flex; flex:none; align-items:center; justify-content:center; min-width:17px; height:17px; padding:0 2px; box-sizing:border-box; border:1px solid var(--team-member-border); border-radius:50%; background:var(--wa-member-color); color:var(--team-member-on); font-size:11px; line-height:1; font-weight:700; font-variant-numeric:tabular-nums; vertical-align:middle; }
+.wa-member-marker { display:inline-flex; flex:none; flex-shrink:0; align-items:center; justify-content:center; box-sizing:border-box; aspect-ratio:1; width:18px; height:18px; min-width:18px; max-width:18px; padding:0; border:1px solid var(--team-member-border); border-radius:50%; background:var(--wa-member-color); color:var(--team-member-on); font-size:10px; line-height:1; font-weight:700; font-variant-numeric:tabular-nums; vertical-align:middle; }
 .wa-gate-member-marker circle { fill:var(--wa-member-color); stroke:var(--team-member-border); stroke-width:.5; }
 .wa-gate-member-marker text { fill:var(--team-member-on); font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; pointer-events:none; }
 .wa-member-legend { display:flex; flex-wrap:wrap; gap:4px 8px; list-style:none; margin:8px 0 0; padding:0; color:var(--text-secondary); font-size:11.5px; line-height:1.4; }

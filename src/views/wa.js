@@ -16,11 +16,11 @@ import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { gateName, hexagramName } from '../lib/vocabulary.js';
+import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
-import { OC16_DEPARTMENTS, WA_PILLARS } from '../lib/wa/oc16-catalog.js';
+import { OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
@@ -47,8 +47,8 @@ export function mountWa(container, options = {}) {
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
-  let showNames = (() => { try { return storage?.getItem(SHOW_NAMES_PREF) === '1'; } catch { return false; } })();
-  const collapsed = new Set(), annotationRecovery = [];
+  let showNames = (() => { try { const v = storage?.getItem(SHOW_NAMES_PREF); if (v == null) return true; return v === '1'; } catch { return true; } })();
+  const annotationRecovery = [];
   const detail = document.createElement('div');
   detail.className = 'gate-detail hidden wa-detail';
   document.body.append(detail);
@@ -99,8 +99,22 @@ export function mountWa(container, options = {}) {
     const ready = known();
     return `<div><dt>${text(label)}</dt><dd ${attribute}>${ready?value:'—'}${total?` <small>/ ${total}</small>`:''}</dd>${total?`<span class="wa-meter" aria-hidden="true"><i style="width:${ready?percent:0}%"></i></span>`:''}</div>`;
   }
-  function pillarsHtml() {
-    return `<h3 class="wa-subheading">${text('OC16 pillars')}</h3><div class="wa-pillars">${WA_PILLARS.map(pillar=>`<button class="wa-pillar" data-wa-gate="${pillar.gate}" data-focus="pillar-${pillar.gate}" data-covered="${known()?covered(pillar.gate):'unknown'}"><span class="wa-pillar-number">${pillar.gate}</span><span class="wa-pillar-text"><strong>${text(`OC16 ${pillar.id}`)}</strong><small>${esc(hexagramName(pillar.gate))}</small><small class="wa-pillar-state">${known()?text(covered(pillar.gate)?'Wa legend active':'Wa legend inactive'):text('OC16 unknown')}</small></span></button>`).join('')}</div>`;
+  function mechanismHtml() {
+    // Same card chrome as before; glyph is department pairToken (circles + half-lit bridge), not split-capsule / channel-row.
+    return `<h3 class="wa-subheading">${text('OC16 management mechanism')}</h3><div class="wa-pillars wa-mechanism">${WA_MANAGEMENT_MECHANISM.map(item => {
+      const pair = pairs.find(row => row.channelId === item.channelId) || {
+        channelId: item.channelId, displayGates: item.displayGates, departmentId: 'management',
+        role: item.id === 'personnel' ? 'personnel' : 'core',
+        gates: Object.freeze([...item.displayGates].sort((a, b) => a - b))
+      };
+      const measured = known() ? result.pairs.find(row => row.channelId === item.channelId) : null;
+      const complete = Boolean(measured && measured.missingGates.length === 0);
+      const state = !known() ? 'unknown' : complete ? 'complete' : measured?.status === 'hanging' ? 'partial' : 'none';
+      const [leftGate, rightGate] = pair.displayGates;
+      const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+      const stateLabel = state === 'complete' ? 'Wa legend active' : state === 'partial' ? 'Wa row partial' : state === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
+      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="mechanism-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${pairToken(pair, { tag: 'span' })}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => orgGateName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
+    }).join('')}</div>`;
   }
   function gapsHtml() {
     if (!known() || !result.memberIds.length) return '';
@@ -108,33 +122,41 @@ export function mountWa(container, options = {}) {
     const missing = rows.reduce((sum, row) => sum + row.gates.length, 0);
     // Hide the whole block when every gate is active — no empty "尚未激活的闸门" section.
     if (!missing) return '';
-    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(gateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
+    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,64,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,32,ready?result.pairPercentage:0,'data-oc16-pairs')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${pillarsHtml()}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${mechanismHtml()}${gapsHtml()}</section>`;
   }
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
   const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
-  function pairToken(pair) {
+  function pairToken(pair, { tag = 'button' } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
-    return `<button type="button" class="wa-pair-token ${pair.role==='core'?'is-core':''}" data-wa-pair="${pair.channelId}" data-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join('<span class="wa-pair-bridge" aria-hidden="true">–</span>')}</button>`;
+    const [leftGate, rightGate] = pair.displayGates;
+    const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+    const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
+    const roleClass = pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':'';
+    const ends = pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge);
+    if (tag === 'span') {
+      return `<span class="wa-pair-token ${roleClass}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
+    }
+    return `<button type="button" class="wa-pair-token ${roleClass}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${ends}</button>`;
   }
   function channelRow(pair) {
     const state = pairState(pair), row = rowState(state);
     const gateCell = gate => {
       const ids = holders(pair, gate);
-      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${gateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
+      return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${orgGateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
     };
-    return `<li class="wa-channel-row ${pair.role==='core'?'is-core':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}${pair.role==='core'?`<small>${text('OC16 core')}</small>`:''}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
+    return `<li class="wa-channel-row ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
   function departmentHtml(department) {
     const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
-    const open = !collapsed.has(department.id), gates = department.pairs.length*2;
+    const gates = department.pairs.length*2;
     const value = count => summary ? count : '—';
-    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><button class="wa-department-head" data-department-toggle="${department.id}" data-focus="department-${department.id}" aria-expanded="${open}" aria-controls="wa-department-${department.id}"><span class="wa-chevron" aria-hidden="true"></span><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></button></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span>${open?'':`<div class="wa-pair-strip">${department.pairs.map(pairToken).join('')}</div>`}<ul id="wa-department-${department.id}" class="wa-channel-rows" ${open?'':'hidden'}>${department.pairs.map(channelRow).join('')}</ul></article>`;
+    return `<article class="wa-department-card" data-department-card="${department.id}" data-gate-count="${summary?.gateCount??'unknown'}" data-pair-count="${summary?.pairCount??'unknown'}" data-complete="${Boolean(summary&&summary.gateCount===gates)}"><header class="wa-department-top"><div class="wa-department-head" data-focus="department-${department.id}"><span class="wa-department-name"><strong>${text(`OC16 ${department.id}`)}</strong>${getLocale()==='en'?'':`<small>${department.id.charAt(0).toUpperCase()+department.id.slice(1)}</small>`}</span><span class="wa-department-score"><span><b>${value(summary?.gateCount)}</b>/${gates} ${text('OC16 gates unit')}</span><span><b>${value(summary?.pairCount)}</b>/${department.pairs.length} ${text('OC16 pairs unit')}</span></span></div></header><span class="wa-meter" aria-hidden="true"><i style="width:${summary?summary.gatePercentage:0}%"></i></span><ul id="wa-department-${department.id}" class="wa-channel-rows">${department.pairs.map(channelRow).join('')}</ul></article>`;
   }
   function departmentsHtml() {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
@@ -175,7 +197,7 @@ export function mountWa(container, options = {}) {
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
-    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}<footer class="wa-results-footer"><button class="wa-link-button" data-action="knowledge">${text('OC16 explore readings')} ↗</button>${retainedPool()?`<p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p>`:''}</footer></main></div></div>`;
+    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}${retainedPool()?`<footer class="wa-results-footer"><p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p></footer>`:''}</main></div></div>`;
     graphResizeObserver?.disconnect();graphResizeObserver?.observe(container.querySelector('.wa-graph-panel'));queueSticky();
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
@@ -238,7 +260,7 @@ export function mountWa(container, options = {}) {
   }
   function load(snapshot) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
-    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;remember(draft.organizationId);schedule();
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;remember(draft.organizationId);schedule();
   }
   function escapeTitlePattern(value) {
     return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -339,7 +361,7 @@ export function mountWa(container, options = {}) {
   function focusKey(node,root) {
     if(!node||!root.contains(node))return null;
     if(node.matches('summary'))return {summary:[...root.querySelectorAll('summary')].indexOf(node)};
-    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-department-toggle','data-wa-reading','data-shared-lens','data-focus','data-action']){
+    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-shared-lens','data-focus','data-action']){
       if(node.hasAttribute(attribute)){const value=node.getAttribute(attribute);return {attribute,value,index:[...root.querySelectorAll(`[${attribute}]`)].filter(item=>item.getAttribute(attribute)===value).indexOf(node)};}
     }
     return null;
@@ -385,7 +407,7 @@ export function mountWa(container, options = {}) {
     // Back navigation restores captured fold state when any details remain; channel/dept readings are always expanded.
     if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
-    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${gateName(item.id)}`:t('Organization · Wa')});
+    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:t('Organization · Wa')});
     syncSelection();
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
@@ -418,7 +440,6 @@ export function mountWa(container, options = {}) {
       if(node.dataset.waDepartment){showDetail({type:'department',id:node.dataset.waDepartment});return;}
       if(node.dataset.memberFocus){focusMember=focusMember===node.dataset.memberFocus?null:node.dataset.memberFocus;applyMemberFocus();return;}
       if(node.dataset.scopeOption!==undefined){closeReading();selectedGroup=node.dataset.scopeOption||null;includeAlpha=false;selected=null;if(prepared)refreshScope();else render();return;}
-      if(node.dataset.departmentToggle){const id=node.dataset.departmentToggle;collapsed.has(id)?collapsed.delete(id):collapsed.add(id);render();return;}
       if(node.dataset.removeWa){await removeAssignment(node.dataset.removeWa);return;}
       if(node.hasAttribute('data-clear-alpha')){if(draft.alphaId)await removeAssignment(draft.alphaId);return;}
       if(node.dataset.compose){compose(node.dataset.compose);return;}
@@ -428,8 +449,7 @@ export function mountWa(container, options = {}) {
         case 'save':await save();break;
         case 'open':await archives();break;
         case 'retry':schedule();break;
-        case 'knowledge':showDetail({type:'library'});break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;collapsed.clear();focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }

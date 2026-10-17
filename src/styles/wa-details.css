@@ -113,3 +113,49 @@
   .wa-detail-fold > summary { min-height: 44px; }
   .wa-detail-content .wa-jump-card { min-height: 44px; padding: 12px 14px; }
 }
+
+/* Organization role readings + sheet polish */
+.wa-detail-heading { display:grid; gap:6px; }
+.wa-detail-heading .wa-channel-number { color:var(--text-secondary); font-size:13px; font-weight:600; letter-spacing:.02em; }
+.wa-detail-heading .wa-channel-reading-title { display:block; margin-top:2px; font-size:20px; font-weight:650; color:var(--text); }
+.wa-detail-role {
+  margin:0; color:var(--accent-strong,var(--accent)); font-size:13px; font-weight:600; line-height:1.45;
+}
+.wa-detail-divider {
+  height:1px; margin:2px 0; background:var(--border-subtle,var(--border)); border:0;
+}
+.wa-detail-reading {
+  display:grid; gap:12px; padding:14px 16px; border-radius:12px;
+  background:var(--bg-sunken); border:1px solid var(--border-subtle,var(--border));
+}
+.wa-detail-reading > h3 {
+  margin:0; font-size:13px; font-weight:700; letter-spacing:.04em;
+  color:var(--accent-strong,var(--accent)); text-transform:none;
+}
+.wa-org-reading { display:grid; gap:12px; min-width:0; }
+.wa-org-intro { margin:0; font-size:14px; line-height:1.7; color:var(--text); }
+.wa-org-gate-lines { display:grid; gap:10px; }
+.wa-org-gate-line { margin:0; font-size:14px; line-height:1.7; color:var(--text); }
+.wa-org-gate-line strong { font-variant-numeric:tabular-nums; }
+.wa-org-gate-role { color:var(--text-secondary); font-weight:550; }
+.wa-detail-content .knowledge-summary-callout {
+  margin:0; padding:12px 14px; background:var(--bg-elevated); border-inline-start:3px solid var(--accent);
+  border-radius:var(--radius,8px);
+}
+.wa-detail-content .knowledge-summary-label {
+  margin-bottom:6px; font-size:12px; font-weight:700; letter-spacing:.04em; color:var(--accent-strong,var(--accent));
+}
+.wa-detail-content .knowledge-summary-text,
+.wa-detail-content .knowledge-summary { margin:0; font-size:14px; line-height:1.7; color:var(--text); }
+.wa-detail-activations-block { display:grid; gap:10px; }
+.wa-detail-activations-block > h3 { margin:0; font-size:15px; }
+.wa-detail-related { margin-top:2px; }
+.wa-detail-metrics { gap:10px; }
+.wa-detail-metrics > div {
+  padding:12px 14px; background:var(--bg-elevated); border:1px solid var(--border-subtle,var(--border)); border-radius:10px;
+}
+.wa-detail-self-complete {
+  padding:12px 14px; border-radius:10px; background:var(--bg-elevated);
+  border:1px solid var(--border-subtle,var(--border));
+}
+.wa-detail-content > .wa-detail-state { margin:0; }
