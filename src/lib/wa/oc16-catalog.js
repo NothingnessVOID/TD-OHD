@@ -1,5 +1,5 @@
 // User-supplied reference classification. Structural grouping only; no Powerbase inference.
-// OC16 organizing scope: six core Wa channels + 人事管理 44–26 under management.
+// OC16 organizing scope: six core Wa channels + 人事 44–26 under management.
 const department = (id, displayPairs) => Object.freeze({
   id, nameKey: `OC16 ${id}`,
   displayPairs: Object.freeze(displayPairs.map(pair => Object.freeze([...pair]))),
@@ -20,7 +20,7 @@ export const OC16_DEPARTMENTS = Object.freeze([
   department('innovation', [[3, 60]])
 ]);
 
-/** Management mechanism: core 45–21 plus 人事管理 44–26 (replaces the old four-pillar gates). */
+/** Four pillars (overview): core 45–21 plus 人事 44–26 (replaces the old four single-gate pillars). */
 export const WA_MANAGEMENT_MECHANISM = Object.freeze([
   Object.freeze({ id: 'management', channelId: '21-45',
     displayGates: Object.freeze([45, 21]), nameKey: 'OC16 management' }),

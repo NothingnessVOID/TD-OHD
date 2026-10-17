@@ -274,119 +274,15 @@
 .wa-meter i { display:block; height:100%; background:var(--accent); border-radius:2px; transition:width .3s ease; }
 @media (prefers-reduced-motion:reduce) { .wa-meter i { transition:none; } }
 
-.wa-pillars { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
-/* Management mechanism cards — split capsule (no bridge tube; distinct from dept pair-bridge). */
-.wa-pillar {
-  display:flex; gap:10px; align-items:center; text-align:left; min-width:0; padding:11px 12px;
-  border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px);
-  background:transparent; color:var(--text); cursor:pointer; position:relative; isolation:isolate; overflow:hidden;
-  transition:background .2s ease, border-color .2s ease, box-shadow .22s ease, transform .18s ease, filter .18s ease;
+/* Four pillars (overview): reuse department channel-row + pair-bridge half-lit. */
+.wa-mechanism.wa-channel-rows {
+  border-top:0;
+  margin:0 -4px;
 }
-.wa-pillar-text { min-width:0; }
-.wa-pillar strong { display:block; font-size:14px; }
-.wa-pillar small { display:block; margin-top:1px; color:var(--text-secondary); font-size:11.5px; line-height:1.45; overflow-wrap:anywhere; }
-.wa-pillar[data-row-state="partial"] .wa-pillar-state { color:var(--status-caution,var(--accent)); }
-.wa-pillar[data-row-state="none"] .wa-pillar-state,
-.wa-pillar[data-covered="false"] .wa-pillar-state { color:var(--status-caution,var(--text-secondary)); }
-.wa-pillar[data-row-state="complete"] .wa-pillar-state { color:var(--status-success,var(--accent-strong,var(--accent))); }
-
-/* Soft chrome wash from the active end — card-level half-lit, not a center tube. */
-.wa-pillar[data-lit="left"] {
-  background:linear-gradient(105deg, color-mix(in srgb, var(--accent) 16%, transparent) 0%, color-mix(in srgb, var(--accent) 7%, transparent) 42%, transparent 78%);
-  border-color:color-mix(in srgb, var(--accent) 34%, var(--border-subtle,var(--border)));
+.wa-mechanism .wa-channel-row:last-child {
+  border-bottom-color:var(--border-subtle,var(--border));
+  padding-bottom:8px;
 }
-.wa-pillar[data-lit="right"] {
-  background:linear-gradient(255deg, color-mix(in srgb, var(--accent) 16%, transparent) 0%, color-mix(in srgb, var(--accent) 7%, transparent) 42%, transparent 78%);
-  border-color:color-mix(in srgb, var(--accent) 34%, var(--border-subtle,var(--border)));
-}
-.wa-pillar[data-lit="both"] {
-  background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent) 0%, color-mix(in srgb, var(--accent-soft, var(--accent)) 18%, transparent) 55%, transparent 100%);
-  border-color:color-mix(in srgb, var(--accent) 42%, var(--border-subtle,var(--border)));
-}
-.wa-pillar[data-lit="none"],
-.wa-pillar[data-lit="unknown"] { background:transparent; }
-
-/* Split capsule: two independently lit halves with a seam notch (not a pair-bridge). */
-.wa-mech-capsule {
-  flex:none; display:inline-grid; grid-template-columns:1fr auto 1fr; align-items:stretch;
-  min-width:58px; height:32px; border-radius:999px; overflow:hidden;
-  border:1px solid var(--border); background:var(--bg-sunken,var(--bg));
-  box-shadow:inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent);
-  transition:border-color .18s ease, box-shadow .2s ease, filter .18s ease;
-}
-.wa-mech-half {
-  display:grid; place-items:center; min-width:24px; padding:0 7px;
-  font-size:11.5px; font-weight:650; font-variant-numeric:tabular-nums; letter-spacing:.01em;
-  color:var(--text-tertiary,var(--text-secondary));
-  transition:background .18s ease, color .18s ease, box-shadow .18s ease;
-}
-.wa-mech-half[data-covered="false"] { background:transparent; }
-.wa-mech-half[data-covered="unknown"] { color:var(--text-tertiary,var(--text-secondary)); opacity:.85; }
-.wa-mech-half[data-covered="true"] {
-  background:var(--accent); color:var(--accent-on);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent);
-}
-.wa-mech-seam {
-  width:1px; align-self:stretch; margin:5px 0;
-  background:color-mix(in srgb, var(--border) 88%, var(--text-secondary));
-  opacity:.9;
-}
-.wa-mech-capsule[data-lit="left"] .wa-mech-seam,
-.wa-mech-capsule[data-lit="right"] .wa-mech-seam {
-  background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 55%, var(--border)), transparent);
-}
-.wa-mech-capsule[data-lit="both"] {
-  border-color:var(--accent);
-  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent), inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent);
-}
-.wa-mech-capsule[data-lit="both"] .wa-mech-seam {
-  background:color-mix(in srgb, var(--accent-on) 35%, transparent); opacity:1;
-}
-.wa-mech-capsule[data-lit="left"],
-.wa-mech-capsule[data-lit="right"] {
-  border-color:color-mix(in srgb, var(--accent) 48%, var(--border));
-}
-.wa-mech-capsule[data-lit="none"] {
-  border-style:dashed; border-color:var(--border);
-}
-
-/* Cool mechanism hover — card lift + amber ring; distinct from channel-row wash. */
-.wa-pillar:is(:hover, .is-hover, :focus-visible) {
-  z-index:1; transform:translateY(-2px);
-  border-color:color-mix(in srgb, var(--accent) 58%, var(--border));
-  box-shadow:
-    0 0 0 1.5px color-mix(in srgb, var(--accent) 45%, transparent),
-    0 10px 26px color-mix(in srgb, var(--accent) 22%, transparent),
-    0 0 28px color-mix(in srgb, var(--accent) 16%, transparent),
-    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent);
-}
-.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-pillar-text strong { color:var(--accent-strong,var(--accent)); }
-.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-mech-capsule {
-  border-color:var(--accent);
-  filter:drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 45%, transparent));
-  box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px 0 color-mix(in srgb, #fff 28%, transparent);
-}
-.wa-pillar:is(:hover, .is-hover, :focus-visible) .wa-mech-half[data-covered="true"] {
-  box-shadow:inset 0 0 10px color-mix(in srgb, #fff 22%, transparent), 0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.wa-pillar:is(:hover, .is-hover, :focus-visible)[data-lit="left"] {
-  background:linear-gradient(105deg, color-mix(in srgb, var(--accent) 24%, transparent) 0%, color-mix(in srgb, var(--accent) 10%, transparent) 48%, color-mix(in srgb, var(--bg-elevated) 70%, transparent) 100%);
-}
-.wa-pillar:is(:hover, .is-hover, :focus-visible)[data-lit="right"] {
-  background:linear-gradient(255deg, color-mix(in srgb, var(--accent) 24%, transparent) 0%, color-mix(in srgb, var(--accent) 10%, transparent) 48%, color-mix(in srgb, var(--bg-elevated) 70%, transparent) 100%);
-}
-.wa-pillar:is(:hover, .is-hover, :focus-visible)[data-lit="both"] {
-  background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, transparent) 0%, color-mix(in srgb, var(--accent-soft, var(--accent)) 28%, transparent) 50%, color-mix(in srgb, var(--bg-elevated) 75%, transparent) 100%);
-}
-@media (prefers-reduced-motion:reduce) {
-  .wa-pillar, .wa-mech-capsule, .wa-mech-half { transition:none; }
-  .wa-pillar:is(:hover, .is-hover, :focus-visible) { transform:none; }
-}
-
-/* Legacy single-number pillar chip (unused by mechanism split capsule; kept for safety). */
-.wa-pillar-number { flex:none; display:grid; place-items:center; width:30px; height:30px; border:1px solid var(--border); border-radius:50%; outline:1px solid var(--accent); outline-offset:2px; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
-.wa-pillar[data-covered="true"] .wa-pillar-number { background:var(--accent); border-color:var(--accent); color:var(--accent-on); }
-.wa-pillar[data-covered="false"] .wa-pillar-number { border-style:dashed; color:var(--text-secondary); }
 
 .wa-gap-rows { display:grid; gap:8px; }
 .wa-gap-row { display:grid; grid-template-columns:4.5em minmax(0,1fr); gap:10px; align-items:start; }
@@ -572,7 +468,6 @@
 .wa-reading-sheet .wa-reading-list { display:grid; gap:7px; }
 .wa-reading-sheet .wa-reading-list button { text-align:left; min-height:44px; }
 
-@media (max-width:1200px) and (min-width:1051px) { .wa-pillars { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:1050px) {
  .wa-page { padding:18px; }
  .wa-workspace { grid-template-columns:1fr; gap:16px; }
@@ -603,7 +498,6 @@
  .wa-overview-stats { gap:6px; }
  .wa-overview-stats > div { padding:10px; }
  .wa-overview-stats dd { font-size:23px; }
- .wa-pillars { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .wa-gap-row { grid-template-columns:1fr; gap:4px; }
  .wa-gap-department { padding-top:0; }
  .wa-gap-chip { min-height:36px; }
@@ -624,7 +518,6 @@
 @media (max-width:360px) {
  .wa-page { padding:14px 10px 28px; }
  .wa-configuration, .wa-graph-panel, .wa-results > .panel { padding:12px; }
- .wa-pillars { grid-template-columns:1fr; }
  .wa-header .wa-actions { grid-template-columns:1fr 1fr; }
  .wa-header .wa-actions .btn-primary { grid-column:1 / -1; }
 }
