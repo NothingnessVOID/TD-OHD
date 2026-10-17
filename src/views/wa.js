@@ -47,7 +47,7 @@ export function mountWa(container, options = {}) {
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
-  let showNames = (() => { try { return storage?.getItem(SHOW_NAMES_PREF) === '1'; } catch { return false; } })();
+  let showNames = (() => { try { const v = storage?.getItem(SHOW_NAMES_PREF); if (v == null) return true; return v === '1'; } catch { return true; } })();
   const annotationRecovery = [];
   const detail = document.createElement('div');
   detail.className = 'gate-detail hidden wa-detail';

@@ -7,7 +7,6 @@ import { esc } from '../lib/format.js';
 import { gateName, hexagramName, planetName, channelName } from '../lib/vocabulary.js';
 import { renderGateDetailHeading } from '../lib/object-detail-heading.js';
 import { renderProse } from '../lib/knowledge/detail-renderer.js';
-import { readWaContent } from '../lib/wa/content.js';
 import { readWaReadingExcerpt } from '../lib/wa/reading-presentation.js';
 import { orgChannelCopy, orgGateCopy } from '../lib/wa/org-role-readings.js';
 import { OC16_DEPARTMENTS } from '../lib/wa/oc16-catalog.js';
@@ -24,12 +23,10 @@ const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null) => Ar
   ? ids.map(id => person(id, nameOf, markerOf)).join(' ') || text(emptyKey) : unknown();
 export function waChannelTitle(channelId) {
   const pair=pairs.find(pair=>pair.channelId===channelId);if(!pair)return '';
+  // Personnel keeps the short「人事」label; core rows use department positioning phrases.
   if(pair.role==='personnel')return t('OC16 personnel');
-  if(pair.role!=='core')return channelName(channelId);
-  const entry=readWaContent(channelId,getLocale());if(!entry)return t(`OC16 ${pair.departmentId}`);
-  const prefix=entry.packageId.replace('-','–')+' ';
-  const title=entry.name.startsWith(prefix)?entry.name.slice(prefix.length):entry.name;
-  return getLocale()==='en'?title:title.split('｜').at(-1);
+  if(pair.role==='core')return t(`OC16 org role ${pair.departmentId}`);
+  return channelName(channelId);
 }
 /** Status pill uses left-diagram language (已贯通 / 差一端 / …); no Penta barbell icon. */
 const stateHtml = value => {
