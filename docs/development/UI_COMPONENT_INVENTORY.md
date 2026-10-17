@@ -30,6 +30,7 @@
 | Team多选：独立业务草稿，公共弹窗承载 | `src/views/team.js` `picker()`；`person-editor.js`增加兼容`onCancel` | Team当前组合；搜索/多选/满员替换，编辑返回 | 确认才提交组合，人物资料保存本身独立；全局选择器、首页chips、关系选择器仍有不同业务语义 |
 | Team成员Token：集中语义，不借用回路色 | `src/styles/tokens/team.css`，注册于`skin-registry.js` team组 | 图上成员序号、已选chips、贡献列表、闸门和通道详情 | 恢复Phase1C五种分类色，白色编号；图、Chip、分析及body级详情共享。显示层按memberId维护当前组合的颜色槽，移除其他成员不重编号；不更改存储契约。与P/D来源色分开 |
 | 阅读详情可访问性：扩展既有控制器 | `src/lib/detail-dialog.js` | 既有阅读详情消费者 | Tab只枚举可见可用元素；手机高度切换遵守Reduced Motion |
+| 字号/间距/圆角尺度：集中 Token，非Skin层 | `src/styles.css` `:root` 的 `--font-size-*`、`--space-*`、`--radius-*` | 出生图与行运的常用组件：panel tabs/content、foundation、center-card、channel/gate 行、表单、按钮、导航、行运日期选择器与完成卡、闸门详情正文 | 尺度不随 Skin 变化，故不放进 `src/styles/skins/`。`--radius`/`--radius-lg` 仍由 new-warm-paper 覆盖为 2px/3px，组件规则继续读 `--radius` 才能继承该覆盖；`--radius-base` 只是同值的命名档位，不是替代品。12.5px/13.5px 半档尚未纳入，留待下一阶段 |
 
 旧 `team-members.css`、`team-visual-polish.css` 作为历史文件保留，Team不再导入。`penta-matrix.css`清除了挂载到body后失效的`#team-view .penta-detail`选择器及已不生成的旧卡片/图例规则。
 
