@@ -243,7 +243,7 @@ body {
 .form-group input,
 .form-group select {
   padding: 10px var(--space-3);
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border, var(--border));
   border-radius: var(--radius);
   font-size: var(--font-size-base);
   font-family: var(--font);
@@ -843,7 +843,7 @@ body {
 
 .team-member-row input {
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border, var(--border));
   border-radius: var(--radius);
   font-size: 13px;
   font-family: var(--font);
@@ -1177,7 +1177,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border, var(--border));
   border-radius: var(--radius);
   font-size: 13px;
   font-family: var(--font);
@@ -1265,7 +1265,7 @@ body {
   box-sizing: border-box;
   margin-top: 5px;
   padding: 9px 11px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border, var(--border));
   border-radius: var(--radius);
   font-size: 14px;
   font-family: var(--font);
@@ -1702,7 +1702,7 @@ body.modal-open { overflow: hidden; }
 .reference-sidebar, .reference-detail { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 .reference-sidebar { padding: 14px; display: flex; flex-direction: column; min-height: 0; }
 .reference-sidebar label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-.reference-sidebar input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+.reference-sidebar input { width: 100%; padding: 10px 12px; border: 1px solid var(--control-border, var(--border)); border-radius: var(--radius); background: var(--bg); color: var(--text); }
 .reference-filter-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 13px; padding: 8px 0; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--text-secondary); font: inherit; cursor: pointer; }
 .reference-filter-toggle:hover { color: var(--text); border-color: var(--text-secondary); }
 .reference-filter-current { margin: 8px 0 13px; color: var(--text-secondary); font-size: 13px; }
@@ -2324,7 +2324,7 @@ body.modal-open { overflow: hidden; }
 .sync-popover #sync-email {
   width: 100%;
   padding: 9px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--control-border, var(--border));
   border-radius: var(--radius);
   font-size: 13px;
   font-family: var(--font);
@@ -2573,6 +2573,21 @@ body.modal-open { overflow: hidden; }
   color: var(--status-error);
   font-size: 12px;
   margin-top: 4px;
+  /* The warning glyph gives the message weight at a glance without adding an
+     extra element to every form; it is decorative, so it stays out of the
+     accessibility tree and screen readers still read the text alone. */
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.field-error::before {
+  content: '⚠';
+  flex: none;
+  font-size: 12px;
+  line-height: inherit;
+  color: var(--status-error);
+  speak: never;
 }
 input[aria-invalid="true"] { border-color: var(--status-error) !important; }
 
