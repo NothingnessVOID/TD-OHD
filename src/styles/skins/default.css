@@ -13,6 +13,11 @@
   --text-secondary: #625D57;
   --text-tertiary: #8A837B;
   --border: #DDD7CF;
+  /* Interactive controls need a stronger edge than decorative hairlines. Same hue
+     family as --border, deepened toward the page ink so the edge reads on both
+     --bg and --bg-elevated. --border itself is left untouched, so decorative
+     hairlines keep their weight. */
+  --control-border: #A89989;
   --border-subtle: #EAE6E0;
 
   --accent: #B86F2C;
@@ -58,6 +63,7 @@
   --text-secondary: #AAA197;
   --text-tertiary: #7E766D;
   --border: #332E28;
+  --control-border: #7A6E60;
   --border-subtle: #29251F;
 
   --accent: #D69A55;
