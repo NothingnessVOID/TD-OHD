@@ -104,7 +104,14 @@ export function mountWa(container, options = {}) {
       const measured = known() ? result.pairs.find(row => row.channelId === item.channelId) : null;
       const complete = Boolean(measured && measured.missingGates.length === 0);
       const state = !known() ? 'unknown' : complete ? 'complete' : measured?.status === 'hanging' ? 'partial' : 'none';
-      return `<button type="button" class="wa-pillar" data-wa-pair="${item.channelId}" data-focus="mechanism-${item.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}"><span class="wa-pillar-number">${item.displayGates.join('–')}</span><span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => hexagramName(gate)).join(' · '))}</small><small class="wa-pillar-state">${known()?text(complete?'Wa legend active':'Wa legend inactive'):text('OC16 unknown')}</small></span></button>`;
+      const [leftGate, rightGate] = item.displayGates;
+      const leftOn = known() && covered(leftGate);
+      const rightOn = known() && covered(rightGate);
+      const lit = !known() ? 'unknown' : leftOn && rightOn ? 'both' : leftOn ? 'left' : rightOn ? 'right' : 'none';
+      const stateLabel = state === 'complete' ? 'Wa legend active' : state === 'partial' ? 'Wa row partial' : state === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
+      const half = (gate, side, on) => `<span class="wa-mech-half" data-side="${side}" data-covered="${known()?on:'unknown'}">${gate}</span>`;
+      const capsule = `<span class="wa-mech-capsule" data-lit="${lit}" aria-hidden="true">${half(leftGate,'left',leftOn)}<span class="wa-mech-seam"></span>${half(rightGate,'right',rightOn)}</span>`;
+      return `<button type="button" class="wa-pillar" data-wa-pair="${item.channelId}" data-focus="mechanism-${item.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${capsule}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => hexagramName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
     }).join('')}</div>`;
   }
   function gapsHtml() {
