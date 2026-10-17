@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "start:local": "node local/server.mjs",
-    "preview:local": "node scripts/start-preview.mjs",
     "dev": "npm run build:engine && vite",
     "build:engine": "node scripts/build-sharp-engine.mjs",
     "build": "npm run build:engine && vite build",
