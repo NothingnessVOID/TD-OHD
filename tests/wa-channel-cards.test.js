@@ -32,8 +32,9 @@ test('core and additional channel cards remain distinct and all three locales av
    assert.doesNotMatch(html,/data-wa-knowledge|data-activation-side/);
   }
   const other=render.renderChannelCards('management',{kind:'other'});
-  assert.equal((other.match(/data-pair-row=/g)||[]).length,4);assert.doesNotMatch(other,/data-pair-row="21-45"/);
-  assert.ok(waChannelTitle('21-45'));assert.ok(waChannelTitle('32-54'));
+  assert.equal((other.match(/data-pair-row=/g)||[]).length,1);assert.doesNotMatch(other,/data-pair-row="21-45"/);
+  assert.match(other,/data-pair-row="26-44"/);
+  assert.ok(waChannelTitle('21-45'));assert.ok(waChannelTitle('26-44'));
  }
 });
 test('changing scope removes out-of-scope names from quick cards; failures remain unknown not zero',()=>{

@@ -15,6 +15,7 @@ import { waStateText } from './wa-diagram.js';
 const pairs = OC16_DEPARTMENTS.flatMap(department => department.pairs);
 const statuses = new Set(['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both']);
 const text = (key,params) => esc(t(key,params));
+const roleLabel = role => role === 'core' ? 'OC16 core' : role === 'personnel' ? 'OC16 personnel' : 'OC16 support';
 const unknown = () => text('OC16 unknown');
 const displayName = (id, nameOf) => esc(nameOf(id) || id);
 const person = (id, nameOf, markerOf=()=>null) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span></span>`;
@@ -22,6 +23,7 @@ const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null) => Ar
   ? ids.map(id => person(id, nameOf, markerOf)).join(' ') || text(emptyKey) : unknown();
 export function waChannelTitle(channelId) {
   const pair=pairs.find(pair=>pair.channelId===channelId);if(!pair)return '';
+  if(pair.role==='personnel')return t('OC16 personnel');
   if(pair.role!=='core')return channelName(channelId);
   const entry=readWaContent(channelId,getLocale());if(!entry)return t(`OC16 ${pair.departmentId}`);
   const prefix=entry.packageId.replace('-','–')+' ';
@@ -107,7 +109,7 @@ function gateRelated(pair, gate) {
   return relatedJumps([
     jumpCard(
       `data-wa-pair="${pair.channelId}"`,
-      `<strong>${pair.displayGates.join('–')}</strong> · ${esc(waChannelTitle(pair.channelId))} · ${text('OC16 support')}`,
+      `<strong>${pair.displayGates.join('–')}</strong> · ${esc(waChannelTitle(pair.channelId))} · ${text(roleLabel(pair.role))}`,
       text('Wa jump open channel')
     ),
     departmentJump(pair, `gate:${gate}`)
@@ -152,7 +154,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
   function pairRows(department, ctx, { compact = false } = {}) {
     if (!department?.pairs) return '';
     return `<div class="wa-detail-pair-rows${compact ? ' wa-detail-compact' : ''}">${department.pairs.map(pair =>
-      `<article class="wa-detail-pair-row" data-pair-row="${pair.channelId}"><header class="wa-detail-row-heading"><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}"><strong>${pair.displayGates.join('–')}</strong></button><span>${text(pair.role === 'core' ? 'OC16 core' : 'OC16 support')}</span>${stateHtml(ctx.pairs.get(pair.channelId))}</header><div class="wa-detail-endpoints">${pair.displayGates.map(gate => `<div class="wa-detail-endpoint-cell">${gateActivationColumn(gate, ctx.pairs.get(pair.channelId)?.holdersByGate?.[gate], ctx)}</div>`).join('')}</div></article>`
+      `<article class="wa-detail-pair-row" data-pair-row="${pair.channelId}"><header class="wa-detail-row-heading"><button type="button" class="wa-detail-link" data-wa-pair="${pair.channelId}"><strong>${pair.displayGates.join('–')}</strong></button><span>${text(roleLabel(pair.role))}</span>${stateHtml(ctx.pairs.get(pair.channelId))}</header><div class="wa-detail-endpoints">${pair.displayGates.map(gate => `<div class="wa-detail-endpoint-cell">${gateActivationColumn(gate, ctx.pairs.get(pair.channelId)?.holdersByGate?.[gate], ctx)}</div>`).join('')}</div></article>`
     ).join('')}</div>`;
   }
   /** Self-complete members only — cross-member who-pairs-with-whom lists were removed as redundant. */
@@ -163,7 +165,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
     const record=ctx.pairs.get(pair.channelId);
     const ids=Array.isArray(record?.contributorIds)?record.contributorIds:Array.isArray(record?.gateRecords)&&record.gateRecords.every(row=>Array.isArray(row.memberIds))?[...new Set(record.gateRecords.flatMap(row=>row.memberIds))]:null;
     const count=record?.contributorCount??(ids?ids.length:'—');
-    return `<article class="wa-channel-card" data-pair-row="${pair.channelId}" data-participant-count="${count}"><header><button type="button" class="wa-channel-open" data-wa-pair="${pair.channelId}"><span class="wa-channel-kind">${text(pair.role==='core'?'OC16 core':'OC16 support')}</span><strong>${pair.displayGates.join('–')} <span>${esc(waChannelTitle(pair.channelId))}</span></strong></button><span class="wa-channel-status" data-wa-state="${record?.status||'unknown'}">${text(!record?'OC16 unknown':['selfComplete','crossMemberOnly','both'].includes(record.status)?'Wa UI complete channel':'Wa UI incomplete channel')}</span></header>${endpoints(pair,ctx)}<footer><span class="wa-channel-people-count">${text('Wa UI participants count',{count})}</span><div class="wa-channel-people" data-channel-participants>${names(ids,nameOf,'Wa UI no participants',markerOf)}</div><button type="button" class="wa-link-button" data-wa-pair="${pair.channelId}">${text('OC16 inspect')} ↗</button></footer></article>`;
+    return `<article class="wa-channel-card" data-pair-row="${pair.channelId}" data-participant-count="${count}"><header><button type="button" class="wa-channel-open" data-wa-pair="${pair.channelId}"><span class="wa-channel-kind">${text(roleLabel(pair.role))}</span><strong>${pair.displayGates.join('–')} <span>${esc(waChannelTitle(pair.channelId))}</span></strong></button><span class="wa-channel-status" data-wa-state="${record?.status||'unknown'}">${text(!record?'OC16 unknown':['selfComplete','crossMemberOnly','both'].includes(record.status)?'Wa UI complete channel':'Wa UI incomplete channel')}</span></header>${endpoints(pair,ctx)}<footer><span class="wa-channel-people-count">${text('Wa UI participants count',{count})}</span><div class="wa-channel-people" data-channel-participants>${names(ids,nameOf,'Wa UI no participants',markerOf)}</div><button type="button" class="wa-link-button" data-wa-pair="${pair.channelId}">${text('OC16 inspect')} ↗</button></footer></article>`;
   }
   function mergedDeptCore(department) {
     const core = department.pairs.find(pair => pair.role === 'core') || department.pairs[0];
@@ -173,8 +175,10 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
     const count = v => Number.isInteger(v) && v >= 0 ? v : '—';
     const flat = `<div class="wa-detail-endpoints">${core.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
     const support = { ...department, pairs: department.pairs.filter(pair => pair.role !== 'core') };
+    const supportHeading = support.pairs.every(pair => pair.role === 'personnel')
+      ? 'OC16 personnel' : 'OC16 support';
     const supportRows = support.pairs.length
-      ? `<section class="wa-detail-support-pairs" data-wa-support-pairs><h3>${text('OC16 support')}</h3>${pairRows(support, ctx)}</section>`
+      ? `<section class="wa-detail-support-pairs" data-wa-support-pairs><h3>${text(supportHeading)}</h3>${pairRows(support, ctx)}</section>`
       : '';
     // Single Wa reading — same content-data entry for department and core channel.
     const reading = `<section class="wa-detail-reading" data-wa-knowledge="wa" data-wa-content-id="${core.channelId}" data-wa-reading-for="${department.id}" data-wa-merged-dept="${department.id}"><h3>${text('Wa UI channel reading')}</h3>${renderWaReading(core.channelId)}</section>`;
@@ -207,7 +211,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
       }
       const ctx = context(), record = ctx.pairs.get(channelId);
       const flat = `<div class="wa-detail-endpoints">${pair.displayGates.map(gate => gateActivationColumn(gate, record?.holdersByGate?.[gate], ctx)).join('')}</div>`;
-      const note = `<p class="wa-detail-note"><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button> · ${text('OC16 support')}</p>`;
+      const note = `<p class="wa-detail-note"><button type="button" class="wa-detail-link" data-wa-department="${pair.departmentId}">${text(`OC16 ${pair.departmentId}`)}</button> · ${text(roleLabel(pair.role))}</p>`;
       return `<section class="wa-detail-content" data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"><h2><span class="wa-channel-number">${pair.displayGates.join('–')}</span><span class="wa-channel-reading-title">${esc(waChannelTitle(pair.channelId))}</span></h2>${note}${stateHtml(record)}${selfCompleteBlock(record)}${flat}${pairRelated(pair)}</section>`;
     },
     renderGate(input) {

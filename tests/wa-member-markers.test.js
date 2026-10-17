@@ -226,7 +226,7 @@ test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge
   prepared[1].chart = chart([45]);
   const markers = createWaMemberMarkers(snapshot.members);
   const svg = render(analyzeOC16(snapshot, prepared), markers);
-  const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE, PILLAR_RING_R } = WA_DIAGRAM_GEOMETRY;
+  const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE } = WA_DIAGRAM_GEOMETRY;
   const faceY = Number(svg.match(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`))[1]);
   const badge = countBadges(svg).find(row => row.gate === 45);
   const dotY = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
@@ -235,10 +235,6 @@ test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge
   // Halo / hit / focus-ring bottoms must sit above the top of contributor dots.
   assert.ok(faceY + NODE_R + NODE_HALO_EXTRA + 1 < dotY - 4, 'halo must clear dots');
   assert.ok(faceY + NODE_R + NODE_HIT_EXTRA + 1 < dotY - 4, 'hit ring must clear dots');
-  const focusExtra = WA_DIAGRAM_GEOMETRY.PILLAR_FOCUS_EXTRA;
-  assert.ok(faceY + PILLAR_RING_R + focusExtra + 1 < dotY - 4, 'pillar focus ring must clear dots');
-  assert.equal(NODE_R + WA_DIAGRAM_GEOMETRY.NODE_HIT_EXTRA, PILLAR_RING_R + focusExtra, 'pillar and plain focus share outer radius');
-  assert.ok(Math.abs((PILLAR_RING_R - NODE_R) - focusExtra) <= 0.5, 'solid→pillar and pillar→focus gaps stay near-even');
   assert.doesNotMatch(svg, /wa-mid-halo/);
   assert.match(svg, /wa-tube-mid is-filled wa-mid-lozenge wa-mid-warm/);
   assert.match(svg, /wa-mid-spine is-filled/);
@@ -264,8 +260,7 @@ test('left diagram contributors stay as dots even when showNames is requested', 
   assert.doesNotMatch(badge.body, /wa-gate-names|<text class="wa-gate-name"/);
   assert.doesNotMatch(badge.body.replace(/<title>[\s\S]*?<\/title>/, ''), /Nm\d+/);
   assert.match(badge.body, /\+11|\+15/); // overflow marker, never a name string
-  assert.match(svg, /class="wa-pillar-ring"/);
-  assert.equal((svg.match(/class="wa-pillar-ring"/g) ?? []).length, 4);
+  assert.doesNotMatch(svg, /wa-pillar-ring|is-pillar/);
 });
 
 test('HTML badges, compact legend and SVG count titles escape names and IDs without inventing missing members', () => {
@@ -299,7 +294,8 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.equal(countBadges(svg).length, 0); // no markers map → no badges
   assert.match(svg, /data-wa-gate="45"[^>]*aria-pressed="true"[^>]*Member active/);
   assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 6);
-  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 0); // ring-only pillars
+  assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 0);
+  assert.doesNotMatch(svg, /wa-pillar-ring|is-pillar/);
   assert.equal((svg.match(/class="wa-gate-chip"/g) ?? []).length, 12);
   assert.match(svg, /data-wa-gate-chip="45"/);
   assert.match(svg, /class="wa-dept-title"/);

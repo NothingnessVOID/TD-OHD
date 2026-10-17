@@ -3,7 +3,6 @@ import { esc } from '../lib/format.js';
 import { gateName } from '../lib/vocabulary.js';
 import { renderPentaStateSymbol } from '../lib/penta-state-symbol.js';
 
-export const WA_PILLAR_LABELS = Object.freeze({60:'structure',50:'safety',6:'interaction',45:'hierarchy'});
 export const waStateText = state => t(`Wa UI state ${state || 'unknown'}`);
 /** Detail sheets still use the shared state symbol; the left diagram does not. */
 export function waStateSymbol(state, size = 22) {
@@ -18,11 +17,9 @@ export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   NODE_R: 21, TUBE_H: 13.5, DOT_R: 4.5, DOT_STEP: 10.5, MAX_DOTS: 5,
   MID_RX: 10.5, MID_RY: 10.5, MID_CR: 3.2, MID_IRX: 4.1, MID_IRY: 4.1, MID_ICR: 1.45,
   PAD_TOP: 8, PAD_BOTTOM: 16,
-  PILLAR_RING_R: 26,
   DOT_GAP: 26,
   NODE_HALO_EXTRA: 3,
   NODE_HIT_EXTRA: 10,
-  PILLAR_FOCUS_EXTRA: 5,
   DOT_OUTER_OFFSET: 21,
   LINK_HIT_HALF: 16,
   CHIP_GAP: 22,
@@ -183,21 +180,17 @@ export function renderWaDiagram(departments, result, selected = null, { markers,
     }
     const endpoints = display.map((gate, sideIndex) => {
       const x = sideIndex ? G.RIGHT_GATE : G.LEFT_GATE;
-      const covered = active(gate), pillar = WA_PILLAR_LABELS[gate];
+      const covered = active(gate);
       const focused = selected?.type === 'gate' && selected.id === gate;
       const activationLabel = known ? t(covered ? 'Wa UI gate active' : 'Wa UI gate inactive') : waStateText('unknown');
       const records = endpointMarkers[sideIndex];
       const membersAttr = records.length ? ` data-wa-members="${esc(records.map(record => record.memberId).join(' '))}"` : '';
-      const pillarMark = pillar
-        ? `<circle class="wa-pillar-ring" cx="${x}" cy="${fmt(y)}" r="${G.PILLAR_RING_R}"/>`
-        : '';
       const haloR = G.NODE_R + G.NODE_HALO_EXTRA;
       const hitR = G.NODE_R + G.NODE_HIT_EXTRA;
-      const focusR = pillar ? G.PILLAR_RING_R + G.PILLAR_FOCUS_EXTRA : hitR;
+      const focusR = hitR;
       const name = gateName(gate);
-      const ariaName = pillar ? `${t(`OC16 ${pillar}`)} · ${name}` : name;
-      // Pillars: ring only (no above-node text). Gate chips carry vocabulary names for every gate.
-      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${pillar?'is-pillar':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${ariaName} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${Math.max(hitR, focusR)}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${pillarMark}${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 6)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
+      // Gate chips carry vocabulary names for every gate. No pillar accent rings.
+      return `<g class="wa-diagram-gate ${covered?'is-covered':''} ${focused?'is-selected':''}" data-wa-gate="${gate}" data-covered="${known?covered:'unknown'}"${membersAttr} role="button" tabindex="0" aria-pressed="${focused}" aria-label="${esc(`${gate} · ${name} · ${activationLabel}${records.length?` · ${t('Wa UI gate member count',{count:records.length})}`:''}`)}"><circle class="wa-node-hit" cx="${x}" cy="${fmt(y)}" r="${hitR}"/><circle class="wa-node-focus-ring" cx="${x}" cy="${fmt(y)}" r="${fmt(focusR)}" aria-hidden="true"/>${covered?`<circle class="wa-node-halo" cx="${x}" cy="${fmt(y)}" r="${haloR}"/>`:''}<circle class="wa-node-face" cx="${x}" cy="${fmt(y)}" r="${G.NODE_R}"/><text class="wa-node-number" x="${x}" y="${fmt(y + 6)}" text-anchor="middle">${gate}</text>${renderGateChip(gate, x, y, sideIndex, focusR)}${renderGateContributors(gate, records, x, y, nameOf, sideIndex)}</g>`;
     }).join('');
     // No whole-row wash: only the channel graphic carries hover/selection emphasis. Dept title stays calm.
     const hitHalf = G.LINK_HIT_HALF;
