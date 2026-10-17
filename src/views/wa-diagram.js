@@ -13,7 +13,7 @@ export function waStateSymbol(state, size = 22) {
 /** Fixed board: six tube rows; v2 soft chips outside focus rings; dept titles as strong type (no frame). */
 export const WA_DIAGRAM_GEOMETRY = Object.freeze({
   /** Layout v3+: ~50% column via CSS; taller rows + enlarged marks fill the viewport. */
-  VIEW_WIDTH: 640, ROW_HEIGHT: 122, LEFT_GATE: 298, RIGHT_GATE: 508,
+  VIEW_WIDTH: 590, ROW_HEIGHT: 122, LEFT_GATE: 236, RIGHT_GATE: 446,
   NODE_R: 21, TUBE_H: 13.5, DOT_R: 4.5, DOT_STEP: 10.5, MAX_DOTS: 5,
   MID_RX: 10.5, MID_RY: 10.5, MID_CR: 3.2, MID_IRX: 4.1, MID_IRY: 4.1, MID_ICR: 1.45,
   PAD_TOP: 8, PAD_BOTTOM: 16,
