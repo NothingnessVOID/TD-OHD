@@ -618,6 +618,13 @@ export function renderBodygraph(container, chart, opts = {}) {
     for (const node of [...Object.values(gatePathEls), ...spanEls]) node.classList.remove('bg-lit');
     for (const node of Object.values(gateCircleEls)) node.classList.remove('bg-lit');
     for (const node of Object.values(centerPathEls)) node.classList.remove('bg-lit');
+    // `bg-selected` marks the gate that owns the open detail card, so it can keep a
+    // visible ring after the pointer leaves. It is derived from `pinned` only, never
+    // from hover, and it survives the dimming that hover previews apply.
+    const selectedGate = pinned?.kind === 'gate' ? Number(pinned.id) : null;
+    for (const [gate, node] of Object.entries(gateCircleEls)) {
+      node.classList.toggle('bg-selected', selectedGate != null && Number(gate) === selectedGate);
+    }
     if (!sel) { svg.classList.remove('bg-dimmed'); return { gates: [], centers: [] }; }
     svg.classList.add('bg-dimmed');
     const { gates, centers } = litFor(sel);

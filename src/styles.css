@@ -981,6 +981,27 @@ body {
 .bodygraph-svg .bg-gate-path,
 .bodygraph-svg .bg-gate-circle { transition: opacity 0.12s; }
 
+/* Gate hover: a ring on the visible circle, drawn with the skin's focus colour so it
+   stays legible on every palette. Only the stroke changes, so the fill, the number
+   backing and the dimming/lighting driven by highlightGate are all untouched. */
+.bodygraph-svg .bg-gate { outline: none; }
+.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; stroke: transparent; }
+.bodygraph-svg .bg-gate:hover .bg-gate-circle,
+.bodygraph-svg .bg-gate:focus-visible .bg-gate-circle {
+  stroke: var(--focus);
+  stroke-width: 2;
+}
+/* Touch has no hover; the synthetic hover a tap produces would leave a ring behind. */
+@media (hover: none) {
+  .bodygraph-svg .bg-gate:hover .bg-gate-circle { stroke: transparent; }
+}
+/* A pinned gate keeps its ring while its detail card is open, independent of hover. */
+.bodygraph-svg .bg-gate.bg-selected .bg-gate-circle {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+.bodygraph-svg.bg-dimmed .bg-gate.bg-selected .bg-gate-circle { opacity: 1; }
+
 /* Relational highlight reaches the centers too: when a gate (and its channel)
    lights up, the center(s) it touches stay lit while the rest settle back. */
 .bodygraph-svg .bg-center { transition: opacity 0.12s; }
@@ -1404,6 +1425,21 @@ body.modal-open { overflow: hidden; }
   width: 100%;
   max-height: 82vh;
   margin: auto;
+}
+
+/* Entrance: a short rise from below when a sheet opens. The host only adds
+   .sheet-entering on the hidden → visible transition (see detail-dialog.js), so
+   navigating inside an open sheet (gate → channel → back) does not replay it.
+   Reduced motion keeps the sheet completely still. */
+@keyframes sheet-rise-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gate-detail.sheet-entering .gate-detail-card {
+  animation: sheet-rise-in 0.22s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gate-detail.sheet-entering .gate-detail-card { animation: none; }
 }
 
 /* =============================================
@@ -2518,7 +2554,12 @@ body.modal-open { overflow: hidden; }
 /* Tab-switch ease-in (P2-21), motion-safe */
 @keyframes panel-in { from { opacity: 0; transform: translateY(4px); } }
 .panel-content > * { animation: panel-in 0.18s ease both; }
-@media (prefers-reduced-motion: reduce) { .panel-content > * { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .panel-content > * { animation: none; }
+  /* The tab strip's own colour/background/shadow easing is also motion; keep the
+     state change instant for users who ask for reduced motion. */
+  .panel-tab { transition: none; }
+}
 
 
 .entry-explain {
