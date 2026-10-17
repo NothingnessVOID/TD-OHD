@@ -24,6 +24,12 @@ export function prepareDetailDialog(element, owner = 'bodygraph') {
 
 export function openDetailDialog(element, onClose, { owner = 'bodygraph', label = t('Bodygraph details') } = {}) {
   prepareDetailDialog(element, owner);
+  // Content renderers rewrite innerHTML (and therefore the card element) on every
+  // navigation step inside an open sheet. The entrance animation belongs to the
+  // hidden → visible transition only, so it is driven by a class on the sheet that
+  // is cleared as soon as it has played; a later innerHTML swap finds no class and
+  // stays still.
+  const wasHidden = element.classList.contains('hidden');
   if (!active) {
     closeDetailDialog();
     const trigger = document.activeElement;
@@ -50,12 +56,30 @@ export function openDetailDialog(element, onClose, { owner = 'bodygraph', label 
     } };
   }
   element.classList.remove('hidden');
+  // Play the entrance only when the sheet itself was closed before this call.
+  // Steps taken while it is already open (gate → channel → back) keep the card steady.
+  if (wasHidden) {
+    element.classList.remove('sheet-entering');
+    // Force a style flush so a reopened sheet restarts the animation instead of
+    // inheriting a finished one.
+    void element.offsetWidth;
+    element.classList.add('sheet-entering');
+  }
   element.setAttribute('role', 'dialog');
   element.setAttribute('aria-modal', 'true');
   element.setAttribute('aria-label', label);
   element.dataset.detailOwner = owner;
   document.body.classList.add('modal-open');
   element.querySelector('.gate-detail-close')?.addEventListener('click', closeDetailDialog);
+  // Drop the entrance class once the animation has run, so a later content swap inside
+  // the same open sheet cannot replay it.
+  const card = element.querySelector('.gate-detail-card');
+  if (card && wasHidden) {
+    const done = () => element.classList.remove('sheet-entering');
+    card.addEventListener('animationend', done, { once: true });
+    // Reduced motion (or a missing animation) never fires animationend; clear anyway.
+    setTimeout(done, 400);
+  }
   element.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
