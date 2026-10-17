@@ -82,11 +82,21 @@
 
 /* ---------- Detail sheets: one navigation row geometry ---------- */
 .gate-detail-nav-buttons { padding: 12px; gap: 8px; }
+/* The close/back controls float over the sheet's top-right corner, so the heading
+   row has to stop short of them. This clearance belongs to headings only. A content
+   wrapper that happens to be the first child (knowledge article, penta reading) must
+   keep the full card width; padding the wrapper pushes every line of the article
+   inward and leaves a dead strip down the right edge of the sheet. Knowledge
+   headings get their own clearance from detail-access.css. */
 .gate-detail-body > .detail-label, .gate-detail-body > .detail-name,
-.gate-detail-body > .panel-title, .gate-detail-body > :first-child:not(.channel-detail-heading) {
+.gate-detail-body > .panel-title,
+.gate-detail-body > :is(.tl-detail-header, header, p):first-child {
   padding-right: calc(var(--ui-icon-size) + 36px);
 }
-.gate-detail-card:has(.gate-detail-back) .gate-detail-body > :first-child { padding-right: calc(var(--ui-icon-size) + 120px); }
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > :is(.detail-label, .detail-name),
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > :is(.tl-detail-header, header, p):first-child {
+  padding-right: calc(var(--ui-icon-size) + 120px);
+}
 .operation-dialog :is(.ui-icon-button, .ui-close-button) {
   width: var(--ui-icon-size); height: var(--ui-icon-size); min-width: var(--ui-icon-size); min-height: var(--ui-icon-size);
 }
