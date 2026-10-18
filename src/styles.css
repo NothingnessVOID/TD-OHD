@@ -470,6 +470,36 @@ body {
   min-height: 200px;
 }
 
+/* On a wide screen the right column used to stack every card in one 2,000px
+   column while the sticky chart on the left ended at ~590px, leaving a large
+   empty area under the graph. Two columns halve that height and use the width
+   the column actually has. Only multi-item card lists opt in, so tables
+   (planets), grids (variable) and prose keep their own layout. */
+@media (min-width: 1200px) {
+  .panel-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    column-gap: var(--space-4);
+    row-gap: 0;
+  }
+  /* Headings, intros and wide single-object blocks span the full width so the grid
+     starts at the cards. Tables and prose panels need the whole column: splitting
+     them in two would clip their columns. */
+  .panel-content > :is(.panel-title, .panel-intro, .panel-heading, .planet-table, .hanging-gates, .variable-grid, .knowledge-jump-card) {
+    grid-column: 1 / -1;
+  }
+  /* Cards in a two-up grid must not keep the single-column bottom margin. */
+  .panel-content > :is(.center-card, .channel-item, .gate-item) {
+    margin-bottom: var(--space-3);
+    align-self: start;
+  }
+  /* A trailing odd card should not stretch to fill the empty cell. */
+  .panel-content > :is(.center-card, .channel-item, .gate-item):last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
 /* =============================================
    Foundation Grid
    ============================================= */
