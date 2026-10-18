@@ -1752,6 +1752,24 @@ body.modal-open { overflow: hidden; }
 .reference-detail-body { max-width: 780px; }
 .reference-back { display: inline-flex; position: sticky; top: -1px; z-index: 2; margin-bottom: 9px; }
 .reference-empty, .reference-note { color: var(--text-secondary); }
+/* With no entry selected the detail pane is 755x816px and held a single 9-character
+   line at the top, which reads like a failed load. Centre it and add one line that
+   explains the pane's role, so the empty state looks intentional. */
+.reference-detail:has(> .reference-empty) {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 6px;
+}
+.reference-detail > .reference-empty { font-size: 14px; line-height: 1.7; }
+.reference-detail > .reference-empty::after {
+  content: attr(data-hint);
+  display: block;
+  margin-top: 6px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  line-height: 1.7;
+}
 .reference-reading { margin-top: 16px; }
 .reference-line-target { border-color: var(--accent); background: var(--accent-soft); }
 @media (prefers-reduced-motion: no-preference) { .reference-line-target { animation: reference-line-glow 1.7s ease-out both; } }
