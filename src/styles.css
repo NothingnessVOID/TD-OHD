@@ -2566,7 +2566,14 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 350px) {
   .header-inner { padding-inline: 6px; gap: 3px; }
-  .header-actions { gap: 3px; }
+  /* At 320px the fixed-width people switcher plus the icon buttons pushed
+     .header-actions 8px past the viewport and produced a horizontal scroll. The
+     action group may shrink here, and the switcher gives up width first. */
+  .header-actions { gap: 3px; flex-shrink: 1; min-width: 0; }
+  .people-switcher { width: 92px; min-width: 76px; max-width: 92px; font-size: 10.5px; }
+  /* The header may shrink here, so the sync button must not break its label over
+     two lines; it gives up padding instead of wrapping. */
+  .header-actions .btn-small { white-space: nowrap; padding-inline: 7px; }
   .mobile-menu-toggle { width: 32px; height: 32px; }
   .logo { gap: 2px; }
   .logo-mark { font-size: 17px; }
