@@ -1027,7 +1027,7 @@ body {
 }
 /* A pinned gate keeps its ring while its detail card is open, independent of hover. */
 .bodygraph-svg .bg-gate.bg-selected .bg-gate-circle {
-  stroke: var(--accent);
+  stroke: var(--focus);
   stroke-width: 2.5;
 }
 .bodygraph-svg.bg-dimmed .bg-gate.bg-selected .bg-gate-circle { opacity: 1; }
