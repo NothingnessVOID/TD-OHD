@@ -28,7 +28,13 @@ const messages = {
     'Penta unsaved changes': 'Unsaved changes',
     'Penta temporary': 'Temporary Penta',
     'Penta empty guide': 'Choose at least three people to see the group analysis. Your current selections are kept.',
-    'Penta repair guide': 'Correct the person highlighted on the left to continue. The other selected members are kept.'
+    'Penta repair guide': 'Correct the person highlighted on the left to continue. The other selected members are kept.',
+    'Penta step 1': 'Add three to five people',
+    'Penta step 1 detail': 'Use “Add person” above the graph. Saved charts can be picked in one go.',
+    'Penta step 2': 'Read the group structure',
+    'Penta step 2 detail': 'The graph shows which of the twelve Penta gates the group covers, and how.',
+    'Penta step 3': 'Open any gate or channel',
+    'Penta step 3 detail': 'Each one explains what the group carries together and who brings it.'
   },
   'zh-CN': {
     'Penta knowledge': 'Penta 知识',
@@ -57,7 +63,13 @@ const messages = {
     'Penta unsaved changes': '未保存修改',
     'Penta temporary': '临时 Penta',
     'Penta empty guide': '选满三位人物后，群体分析会自动显示。当前选择会保留。',
-    'Penta repair guide': '修正左侧提示的人物资料后即可继续，其他已选成员会保留。'
+    'Penta repair guide': '修正左侧提示的人物资料后即可继续，其他已选成员会保留。',
+    'Penta step 1': '先选三到五个人',
+    'Penta step 1 detail': '用图上方的「添加人物」，已保存的人类图可以一次多选。',
+    'Penta step 2': '看群体结构',
+    'Penta step 2 detail': '图上会显示这十二个 Penta 闸门里，群体覆盖了哪些、怎么覆盖的。',
+    'Penta step 3': '点开任意闸门或通道',
+    'Penta step 3 detail': '每个都会说明这个群体一起携带什么，以及是谁带来的。'
   },
   'zh-Hant': {
     'Penta knowledge': 'Penta 知識',
@@ -86,7 +98,13 @@ const messages = {
     'Penta unsaved changes': '未儲存修改',
     'Penta temporary': '臨時 Penta',
     'Penta empty guide': '選滿三位人物後，群體分析會自動顯示。目前選擇會保留。',
-    'Penta repair guide': '修正左側提示的人物資料後即可繼續，其他已選成員會保留。'
+    'Penta repair guide': '修正左側提示的人物資料後即可繼續，其他已選成員會保留。',
+    'Penta step 1': '先選三到五個人',
+    'Penta step 1 detail': '用圖上方的「加入人物」，已儲存的人類圖可以一次多選。',
+    'Penta step 2': '看群體結構',
+    'Penta step 2 detail': '圖上會顯示這十二個 Penta 閘門裡，群體覆蓋了哪些、怎麼覆蓋的。',
+    'Penta step 3': '點開任意閘門或通道',
+    'Penta step 3 detail': '每個都會說明這個群體一起攜帶什麼，以及是誰帶來的。'
   }
 };
 for (const [locale, values] of Object.entries(messages)) registerMessages(locale, values);

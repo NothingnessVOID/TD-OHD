@@ -89,6 +89,13 @@
 #team-analysis[aria-busy="true"] { transition: opacity 120ms ease; }
 #team-view .penta-empty-guide h2 { margin:0 0 10px; font-size:21px; }
 #team-view .penta-empty-guide p { margin:0; color:var(--text-secondary); font-size:14px; line-height:1.7; }
+/* Three numbered steps fill the empty right column and explain the next action. */
+#team-view .penta-empty-lead { max-width:52ch; }
+#team-view .penta-empty-steps { display:grid; gap:14px; margin:22px 0 0; padding:0; list-style:none; }
+#team-view .penta-empty-step { display:grid; grid-template-columns:28px minmax(0,1fr); gap:12px; align-items:start; padding:14px 16px; border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px); background:var(--bg-sunken); }
+#team-view .penta-empty-step-index { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--accent-soft,var(--bg-elevated)); color:var(--accent-strong,var(--accent)); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+#team-view .penta-empty-step h3 { margin:0 0 3px; font-size:14px; font-weight:600; color:var(--text); }
+#team-view .penta-empty-step p { margin:0; font-size:13px; line-height:1.65; color:var(--text-secondary); }
 #team-view .team-member-caption { margin-bottom:-4px; }
 #team-view :is(input, select, button, a):focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 #team-view [aria-invalid="true"] { border-color: var(--status-error); }
