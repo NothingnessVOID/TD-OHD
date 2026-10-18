@@ -561,6 +561,11 @@
  .wa-overview-stats > div { padding:10px; }
  .wa-overview-stats dd { font-size:23px; }
  .wa-pillars { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ /* At 390px a pillar card is ~158px wide. Side by side, the pair token left only 34px
+    for the name and every character wrapped onto its own line. Stacking the token
+    above the text gives the name the full card width. */
+ .wa-pillar { flex-direction:column; align-items:flex-start; gap:8px; }
+ .wa-pillar-text { width:100%; }
  .wa-gap-row { grid-template-columns:1fr; gap:4px; }
  .wa-gap-department { padding-top:0; }
  .wa-gap-chip { min-height:36px; }
