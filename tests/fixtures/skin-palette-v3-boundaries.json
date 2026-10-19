@@ -324,7 +324,27 @@
       "--status-info": "#2E75D4",
       "--status-info-soft": "#EEF4FC",
       "--status-caution": "#A36F2B",
-      "--status-caution-soft": "#FAF5EA"
+      "--status-caution-soft": "#FAF5EA",
+      "--text-tertiary": "#6C6C6C",
+      "--control-border": "#8F8F8F"
+    },
+    "high-contrast": {
+      "--text-tertiary": "#696D71"
+    },
+    "grass-aroma": {
+      "--text-tertiary": "#656F6A"
+    },
+    "contemplation": {
+      "--text-tertiary": "#646C74"
+    },
+    "absolutely": {
+      "--text-tertiary": "#6B6864"
+    },
+    "deep-think": {
+      "--text-tertiary": "#6B6B70"
+    },
+    "coral": {
+      "--text-tertiary": "#606F7C"
     }
   },
   "delveAzureBaseline": {
@@ -459,7 +479,9 @@
       "--status-caution-soft": "#FAF5EA",
       "--hd-defined-fill": "#111111",
       "--hd-detail-border": "#111111",
-      "--hd-timeline-transit": "#1F4F85"
+      "--hd-timeline-transit": "#1F4F85",
+      "--control-border": "#8F8F8F",
+      "--text-tertiary": "#6C6C6C"
     }
   }
 }
