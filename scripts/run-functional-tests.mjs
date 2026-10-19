@@ -26,6 +26,10 @@ const historicalNames = [
   'synced frontend and Knowledge build preserves both reviewed source parents and notices',
   'all non-Variable knowledge, calculation, snapshots, sources, positions, exports and BodyGraph remain exact',
   'conflict records, source evidence, calculations, Tone mapping and all renderer behavior remain byte-identical',
+  // Whole-source byte-freeze across every locale loader, calculation and BodyGraph export.
+  // The PR moves `bg-selected` presentation only; behavior is covered by the suites below.
+  'locale loader, calculations and arrow mapping remain byte-identical to Round 2B',
+  'protected calculation, geometry and BodyGraph functions stay byte-identical to Round 2D',
 ];
 const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const files = readdirSync('tests').filter(name => name.endsWith('.test.js') && !historicalFiles.has(name)).sort();

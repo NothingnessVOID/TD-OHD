@@ -13,8 +13,9 @@
   --bg-sunken: #F0F0F0;
   --text: #1A1A1A;
   --text-secondary: #6E6E6E;
-  --text-tertiary: #999999;
+  --text-tertiary: #6C6C6C;
   --border: rgba(0,0,0,0.10);
+  --control-border: #8F8F8F;
   --border-subtle: #DFDFE0;
   --accent: #111111;
   --accent-strong: #000000;

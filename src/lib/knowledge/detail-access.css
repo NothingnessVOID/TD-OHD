@@ -19,6 +19,10 @@
 .knowledge-context { font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; }
 .knowledge-library-link { margin-top: 12px; }
 .knowledge-result-summary { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A span is inline, where overflow/text-overflow have no effect: the box simply
+   grows to fit its text and pushes the list wider than the viewport. Making it a
+   block with a constrained inline size gives the ellipsis something to clip. */
+.reference-result .knowledge-result-summary { display: block; max-width: 100%; min-width: 0; }
 
 .knowledge-section h3 { font-size: 0.9375rem; line-height: 1.6; margin: 20px 0 10px; }
 .knowledge-yours { display: inline-block; margin-inline-start: 10px; font-size: 0.75rem; font-weight: 400; color: var(--accent); }
