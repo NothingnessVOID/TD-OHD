@@ -351,10 +351,18 @@ body {
 }
 
 /* Issue 33 lives only on the birth chart page. The left column used to take
-   min(50vw, 610px) even though the graph inside stopped at 360px; a narrower
-   band hands the freed width to the right column and lets the graph grow. */
+   min(50vw, 610px) even though the graph inside stopped at 360px, which on wide
+   windows left the graph boxed in at ~410px while the card below it stayed
+   empty. This page now lets the layout grow with the window and lets the left
+   column follow the graph's height-derived width, while the right column keeps
+   the larger share. */
 #chart-view .chart-layout {
-  grid-template-columns: minmax(320px, min(42vw, var(--bg-natal-left, 560px))) minmax(0, 1fr);
+  max-width: min(1680px, calc(100vw - 32px));
+  /* The left band is derived from the graph's height-driven width plus both
+     rails and insets, and is capped at 48% so the right column always keeps the
+     larger share. The value is written from views/chart.js and never measured
+     back, so the graph cannot feed its own budget. */
+  grid-template-columns: minmax(320px, min(48%, var(--bg-natal-column-target, 620px))) minmax(0, 1fr);
 }
 
 .chart-column {
@@ -414,8 +422,10 @@ body {
   #bodygraph-container .bg-grid {
     position: relative;
     display: grid;
-    grid-template-columns: var(--bg-rail-w, 90px) minmax(0, 1fr) var(--bg-rail-w, 90px);
-    gap: 0;
+    /* Rails hold the planet columns; on wide windows they stay a fixed readable
+       width while the graph column takes everything else. */
+    grid-template-columns: var(--bg-rail-w, 92px) minmax(0, 1fr) var(--bg-rail-w, 92px);
+    gap: 4px;
     align-items: start;
   }
   /* Wrap hugs the SVG's own box so the absolutely positioned arrows keep their
@@ -425,8 +435,10 @@ body {
   #bodygraph-container .bg-svg-wrap {
     grid-column: 2;
     grid-row: 1;
-    width: min(100%, var(--bg-natal-size, 480px));
-    max-width: none;
+    /* Height-derived width is authoritative; it is set on #bodygraph-container by
+       views/chart.js and never measured back from the column, so no feedback. */
+    width: var(--bg-natal-size, 480px);
+    max-width: 100%;
     justify-self: center;
     align-self: start;
   }

@@ -105,25 +105,44 @@ function armNatalFit() {
 
   const apply = () => {
     if (!wrap.isConnected) return;
-    // Measure from the chart layout's own document position, not the sticky
-    // column: once the column sticks, its viewport top is frozen at the offset
-    // and would drift as the page scrolls.
-    const layout = column.closest('.chart-layout') || column;
-    const layoutTop = layout.getBoundingClientRect().top + window.scrollY;
-    const columnOffset = column.getBoundingClientRect().top - layout.getBoundingClientRect().top;
+    // Budget from the sticky resting position, not from the banner's document
+    // top. The graph is inside a sticky column whose top offset is fixed, so the
+    // height it can occupy once the page scrolls is viewport - header - that
+    // offset. Measuring against the banner instead pinned the graph to the
+    // never-scrolled layout and left the card's lower half empty on tall
+    // windows; it also changed as the column stuck, which made it unstable.
+    const columnStyle = getComputedStyle(column);
+    const stickyTop = parseFloat(columnStyle.top) || 0;
     const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
     const cs = getComputedStyle(container);
     const padding = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
       + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
-    const available = viewport - layoutTop - columnOffset - padding;
+    // Bottom breathing room is ordinary whitespace, not another sticky offset:
+    // subtracting the full sticky top here would double-count the header.
+    const bottomGap = 20;
+    const available = viewport - stickyTop - bottomGap - padding;
     if (!Number.isFinite(available) || available <= 0) return;
     // Short windows are allowed to fall back to page scrolling; only claim a fit
     // when the height budget can actually hold the graph.
     if (available < 228) return;
-    // Reserve a little breathing room so the last row never sits on the edge.
-    const height = available - 8;
+    const height = Math.max(200, available - 8);
     const width = Math.round(height * NATAL_RATIO);
+    // Two values, two scopes:
+    //  - on the wrap: the SVG width itself
+    //  - on #chart-view: the whole left band, i.e. graph + both rails + gaps + insets
+    // Writing the wide value on the wrap would make the wrap wider than its column.
     wrap.style.setProperty('--bg-natal-size', `${width}px`);
+    const view = document.getElementById('chart-view');
+    if (view) {
+      const styles = getComputedStyle(container);
+      const rail = parseFloat(styles.getPropertyValue('--bg-rail-w')) || 92;
+      const gridEl = container.querySelector('.bg-grid');
+      const gap = gridEl ? (parseFloat(getComputedStyle(gridEl).columnGap) || 0) : 0;
+      const inset = (parseFloat(styles.paddingLeft) || 0) + (parseFloat(styles.paddingRight) || 0)
+        + (parseFloat(styles.borderLeftWidth) || 0) + (parseFloat(styles.borderRightWidth) || 0);
+      const target = width + rail * 2 + gap * 2 + inset;
+      view.style.setProperty('--bg-natal-column-target', `${Math.round(target)}px`);
+    }
   };
 
   apply();
