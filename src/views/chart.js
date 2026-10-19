@@ -79,6 +79,74 @@ export function refreshChartLanguage() {
   }
 }
 
+const NATAL_RATIO = 883.41 / 1341.4;
+let natalFitObserver = null;
+
+/** Drop the natal sizing observers; safe to call when nothing was armed. */
+export function teardownNatalFit() {
+  natalFitObserver?.disconnect();
+  natalFitObserver = null;
+}
+
+/**
+ * Size the natal graph from the height it actually gets, never from a fixed
+ * width. The graph keeps its viewBox ratio, so the only free variable is the
+ * width derived from the space between the chart's real top and the viewport
+ * bottom. Observers watch the banner and the viewport only: scrolling must not
+ * resize the graph, so nothing observes the body. Re-armed per render and
+ * disconnected by teardownNatalFit.
+ */
+function armNatalFit() {
+  teardownNatalFit();
+  const container = document.getElementById('bodygraph-container');
+  const wrap = container?.querySelector('.bg-svg-wrap');
+  const column = container?.closest('.chart-column');
+  if (!container || !wrap || !column) return;
+
+  const apply = () => {
+    if (!wrap.isConnected) return;
+    // Measure from the chart layout's own document position, not the sticky
+    // column: once the column sticks, its viewport top is frozen at the offset
+    // and would drift as the page scrolls.
+    const layout = column.closest('.chart-layout') || column;
+    const layoutTop = layout.getBoundingClientRect().top + window.scrollY;
+    const columnOffset = column.getBoundingClientRect().top - layout.getBoundingClientRect().top;
+    const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
+    const cs = getComputedStyle(container);
+    const padding = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
+      + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
+    const available = viewport - layoutTop - columnOffset - padding;
+    if (!Number.isFinite(available) || available <= 0) return;
+    // Short windows are allowed to fall back to page scrolling; only claim a fit
+    // when the height budget can actually hold the graph.
+    if (available < 228) return;
+    // Reserve a little breathing room so the last row never sits on the edge.
+    const height = available - 8;
+    const width = Math.round(height * NATAL_RATIO);
+    wrap.style.setProperty('--bg-natal-size', `${width}px`);
+  };
+
+  apply();
+  // A hidden view reports zero rects; measuring then would write a bogus size.
+  // Only measure when the chart view is actually displayed.
+  const hidden = () => document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length;
+  const guarded = () => { if (hidden()) return; apply(); };
+  // Viewport height is not observable through the document element (its size
+  // does not change when only the window does), so listen to the window.
+  window.addEventListener('resize', guarded);
+  window.visualViewport?.addEventListener('resize', guarded);
+  const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(guarded) : null;
+  const banner = document.getElementById('type-banner');
+  if (observer && banner) observer.observe(banner);
+  natalFitObserver = {
+    disconnect: () => {
+      window.removeEventListener('resize', guarded);
+      window.visualViewport?.removeEventListener('resize', guarded);
+      observer?.disconnect();
+    }
+  };
+}
+
 export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   if (!preserveOtherDialog) closeDetailDialog();
   current = data;
@@ -110,6 +178,9 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   renderFoundation(chart, data.sensitivity, birth);
   const activeTab = document.querySelector('.panel-tab.active');
   renderPanelContent(activeTab ? activeTab.dataset.panel : 'centers');
+  // After the graph and the banner exist, size the natal graph to the height it
+  // actually has. Runs once per render and on banner/viewport changes only.
+  armNatalFit();
 }
 
 export function rerenderBodygraph(transitGates = null) {
@@ -124,6 +195,9 @@ export function rerenderBodygraph(transitGates = null) {
     onHighlight: highlightPanelRows,
     transitGates: transitGates || undefined
   });
+  // Every redraw replaces the wrap element, so the height-derived size has to
+  // be re-applied to the new node (the old one is gone with its property).
+  armNatalFit();
   return bodygraphApi;
 }
 
@@ -882,6 +956,7 @@ function renderCrossPanel(container) {
  */
 export function clearCurrentChart() {
   // Only dismiss our own sheet; other views may own the shared dialog.
+  teardownNatalFit();
   const detail = document.getElementById('gate-detail');
   if (detail?.dataset.detailOwner === 'bodygraph') closeDetailDialog();
   if (currentDetail || detailContext || disposeSharedDetails) resetDetail();
