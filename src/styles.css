@@ -350,6 +350,13 @@ body {
   align-items: start;
 }
 
+/* Issue 33 lives only on the birth chart page. The left column used to take
+   min(50vw, 610px) even though the graph inside stopped at 360px; a narrower
+   band hands the freed width to the right column and lets the graph grow. */
+#chart-view .chart-layout {
+  grid-template-columns: minmax(320px, min(42vw, var(--bg-natal-left, 560px))) minmax(0, 1fr);
+}
+
 .chart-column {
   position: sticky;
   top: calc(var(--header-height) + 24px);
@@ -392,6 +399,43 @@ body {
 #bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
 #bodygraph-container .bg-planets-personality .bg-planets-head,
 #bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
+
+/* Issue 33: float the planet columns over the graph's empty top flanks so the
+   graph can grow. Same structure as .transit-graph .bg-grid, kept inside this
+   page's id scope. Only above the phone breakpoint and only while the column
+   still fits the flank, so tricky sizes fall back to the plain grid above.
+   The rows stay pointer targets; the rest of the column ignores pointers. */
+@media (--above-phone) and (min-width: 900px) {
+  #bodygraph-container .bg-grid { position: relative; display: block; }
+  #bodygraph-container .bg-svg-wrap { width: min(100%, var(--bg-natal-max, 480px)); max-width: none; margin-inline: auto; }
+  #bodygraph-container .bg-planets {
+    position: absolute; z-index: 2;
+    /* The top arrow row is in normal flow above the canvas and measures 40-46px
+       depending on width; start the columns just past it plus its own margin. */
+    top: calc(var(--bg-arrow-band, 52px) - 6px);
+    /* Width stays inside the free flank; no height cap and no hidden overflow,
+       so every planet row remains visible and reachable. */
+    width: clamp(64px, 18%, 88px); padding-top: 0;
+    pointer-events: none;
+  }
+  #bodygraph-container .bg-planets > * { pointer-events: auto; }
+  #bodygraph-container .bg-planets-design { left: 0; }
+  #bodygraph-container .bg-planets-personality { right: 0; }
+  /* Both variable rows return to normal flow. The top row already precedes the
+     SVG in DOM order, so it lands just above the canvas and the bottom row stays
+     below it; neither sits on the graph or the planet columns. Static (not
+     absolute) also keeps the wrap's auto height out of a percentage-top loop. */
+  #bodygraph-container .bg-variable-row {
+    position: static; inset-inline: auto; top: auto;
+    margin: 6px 0 0; pointer-events: auto;
+  }
+  #bodygraph-container .bg-variable-bottom { margin: 4px 0 0; }
+}
+
+/* Tall viewports get a little more of the flank, never less than the column needs. */
+@media (--above-phone) and (min-width: 900px) and (min-height: 1200px) {
+  #bodygraph-container .bg-svg-wrap { width: min(100%, 520px); }
+}
 
 /* =============================================
    Info Panels
@@ -1088,13 +1132,18 @@ body {
   .bg-planets { flex-direction: row; flex-wrap: wrap; padding-top: 0; }
   .bg-planets-head, .bg-planets-date { width: 100%; }
   .bg-planet-row { padding: 2px 4px; }
-  #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
-  #bodygraph-container .bg-grid { max-width: 471px; margin-inline: auto; }
+  #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; width: 100%; }
   #bodygraph-container .bg-planets,
   .transit-graph .bg-planets { flex-direction: column; flex-wrap: nowrap; }
   #bodygraph-container .bg-planets-head,
   #bodygraph-container .bg-planets-date,
   .transit-graph .bg-planets-head { width: auto; }
+  /* Phone: the graph fills the width, so the floating flanks no longer fit.
+     Return to the three-column flow this page had before Issue 33. */
+  #bodygraph-container .bg-grid { display: grid; position: static; grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); max-width: 471px; margin-inline: auto; }
+  #bodygraph-container .bg-planets { position: static; width: auto; max-height: none; pointer-events: auto; }
+  #bodygraph-container .bg-variable-row { position: absolute; inset-inline: 8px; top: 14px; }
+  #bodygraph-container .bg-variable-bottom { margin-top: 0; top: 80px; }
   .transit-graph .bg-svg-wrap { grid-column: auto; grid-row: auto; }
 }
 
@@ -2450,6 +2499,11 @@ body.modal-open { overflow: hidden; }
   .chart-layout {
     grid-template-columns: 1fr;
   }
+  /* #chart-view .chart-layout above outranks the plain class here, so the phone
+     single-column rule has to repeat the id to actually collapse. */
+  #chart-view .chart-layout {
+    grid-template-columns: 1fr;
+  }
 
   .chart-column {
     position: static;
@@ -2562,9 +2616,9 @@ body.modal-open { overflow: hidden; }
 
   .header-actions { flex-shrink: 0; gap: 5px; }
   .people-switcher { width: 96px; min-width: 96px; max-width: 96px; font-size: 11px; }
-  #bodygraph-container .bg-grid { grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); }
+  #bodygraph-container .bg-grid { display: grid; position: static; grid-template-columns: minmax(44px, 16%) minmax(0, 68%) minmax(44px, 16%); }
   #bodygraph-container .bg-svg-wrap { grid-column: auto; grid-row: auto; }
-  #bodygraph-container .bg-planets { flex-direction: column; flex-wrap: nowrap; }
+  #bodygraph-container .bg-planets { position: static; width: auto; max-height: none; pointer-events: auto; flex-direction: column; flex-wrap: nowrap; }
   #bodygraph-container .bg-planets-head, #bodygraph-container .bg-planets-date { width: auto; }
   #bodygraph-container .bg-planets-date { display: none; }
   #bodygraph-container .bg-planet-row { font-size: 9px; }
