@@ -52,6 +52,22 @@ export function setupEntryView({ onSubmit }) {
 
   dateInput.addEventListener('change', placeSearch.updateDateTime);
   timeInput.addEventListener('change', placeSearch.updateDateTime);
+
+  // Date → time hand-off. A native date field is only complete once all three
+  // segments are filled, and `change` fires at that point. Moving focus forward
+  // saves a tap on a phone keyboard; it never skips a field the user still needs
+  // to correct, because the jump only happens when the value is actually complete.
+  dateInput.addEventListener('change', () => {
+    if (!dateInput.value) return;
+    if (timeUnknown.checked) { placeInput.focus(); return; }
+    if (!timeInput.value) timeInput.focus();
+  });
+  // Time → place hand-off. Browsers fire `change` on a complete HH:MM value; an
+  // incomplete segment keeps focus where it is so typing is not interrupted.
+  timeInput.addEventListener('change', () => {
+    if (timeUnknown.checked || !timeInput.value) return;
+    if (!placeInput.value) placeInput.focus();
+  });
   timeUnknown.addEventListener('change', () => {
     timeInput.disabled = timeUnknown.checked;
     if (timeUnknown.checked) timeInput.value = '12:00';

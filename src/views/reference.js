@@ -164,7 +164,7 @@ function renderDetail() {
   document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind || selected?.invalid));
   article.setAttribute('aria-label', selected?.kind ? t('Reference Library') : t('Select an entry to read.'));
   if (!selected?.kind && !selected?.invalid) {
-    article.innerHTML = `<p class="reference-empty">${t('Select an entry to read.')}</p>`;
+    article.innerHTML = `<p class="reference-empty" data-hint="${esc(t('Use the search or a category on the left to open a reading.'))}">${t('Select an entry to read.')}</p>`;
     return;
   }
   const entry = selected.invalid ? null : referenceEntry(selected.kind, selected.id);

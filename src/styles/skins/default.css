@@ -11,8 +11,17 @@
   --bg-sunken: #EFEBE6;
   --text: #1E1B18;
   --text-secondary: #625D57;
-  --text-tertiary: #8A837B;
+  /* Tertiary text carries real information (result counts, metadata, units),
+     so it has to clear 4.5:1 on --bg, --bg-elevated and --bg-sunken. Every Skin
+     keeps its own hue and is deepened toward its own ink; new-warm-paper and
+     midnight-contrast already passed and are unchanged. */
+  --text-tertiary: #6E6862;
   --border: #DDD7CF;
+  /* Interactive controls need a stronger edge than decorative hairlines. Same hue
+     family as --border, deepened toward the page ink so the edge reads on both
+     --bg and --bg-elevated. --border itself is left untouched, so decorative
+     hairlines keep their weight. */
+  --control-border: #A89989;
   --border-subtle: #EAE6E0;
 
   --accent: #B86F2C;
@@ -56,8 +65,9 @@
   --bg-sunken: #0F0D0C;
   --text: #F0EBE4;
   --text-secondary: #AAA197;
-  --text-tertiary: #7E766D;
+  --text-tertiary: #8D867D;
   --border: #332E28;
+  --control-border: #7A6E60;
   --border-subtle: #29251F;
 
   --accent: #D69A55;

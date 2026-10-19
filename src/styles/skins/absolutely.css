@@ -10,8 +10,9 @@
   --bg-sunken: #EDEAE2;
   --text: #2D2B28;
   --text-secondary: #6B6864;
-  --text-tertiary: #9B9793;
+  --text-tertiary: #6B6864;
   --border: rgba(177,173,161,0.28);
+  --control-border: #A5A093;
   --border-subtle: #E4E0D8;
   --accent: #D97757;
   --accent-strong: #B9573E;

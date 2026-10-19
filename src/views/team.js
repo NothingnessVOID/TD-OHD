@@ -57,7 +57,15 @@ function renderControls() {
 function placeholder(error = false) {
  matrix?.dispose(); matrix = null; latest = null;
  renderPentaPlaceholder($('team-content'), { error });
- $('team-analysis').innerHTML = `<section class="panel penta-reading-section penta-empty-guide"><h2>${txt('Penta reading title')}</h2><p>${txt(error ? 'Penta repair guide' : 'Penta empty guide')}</p></section>`;
+ // The empty right column used to hold a single 117px note next to a 637px graph,
+ // leaving most of the panel blank. The three steps turn that space into guidance:
+ // they explain what to do next instead of only stating that nothing is selected yet.
+ const steps = [
+  ['Penta step 1', 'Penta step 1 detail'],
+  ['Penta step 2', 'Penta step 2 detail'],
+  ['Penta step 3', 'Penta step 3 detail']
+ ].map(([title, detail], index) => `<li class="penta-empty-step"><span class="penta-empty-step-index" aria-hidden="true">${index + 1}</span><div><h3>${txt(title)}</h3><p>${txt(detail)}</p></div></li>`).join('');
+ $('team-analysis').innerHTML = `<section class="panel penta-reading-section penta-empty-guide"><h2>${txt('Penta reading title')}</h2><p class="penta-empty-lead">${txt(error ? 'Penta repair guide' : 'Penta empty guide')}</p>${error ? '' : `<ol class="penta-empty-steps">${steps}</ol>`}</section>`;
 }
 function schedule(markDirty = true) {
  if (markDirty) dirty = true;
