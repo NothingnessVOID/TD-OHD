@@ -355,6 +355,7 @@ body {
 #chart-view .chart-layout {
   max-width: min(2400px, calc(100vw - 32px));
   grid-template-columns: minmax(320px, min(620px, 42%)) minmax(0, 1fr);
+  column-gap: 12px;
 }
 
 @media (--above-phone) {
