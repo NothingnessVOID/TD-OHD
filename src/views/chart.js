@@ -79,7 +79,9 @@ export function refreshChartLanguage() {
   }
 }
 
-const NATAL_RATIO = 883.41 / 1341.4;
+const NATAL_STAGE_WIDTH = 510;
+const NATAL_STAGE_HEIGHT = 774;
+const NATAL_ASPECT = 883.41 / 1341.4;
 let natalFitObserver = null;
 
 /** Drop the natal sizing observers; safe to call when nothing was armed. */
@@ -88,94 +90,110 @@ export function teardownNatalFit() {
   natalFitObserver = null;
 }
 
-/**
- * Size the natal graph from the height it actually gets, never from a fixed
- * width. The graph keeps its viewBox ratio, so the only free variable is the
- * width derived from the space between the chart's real top and the viewport
- * bottom. Observers watch the banner and the viewport only: scrolling must not
- * resize the graph, so nothing observes the body. Re-armed per render and
- * disconnected by teardownNatalFit.
- */
+function ensureNatalStage(container) {
+  const graph = container.matches('.bg-root') ? container : container.querySelector('.bg-root');
+  const grid = graph?.querySelector('.bg-grid');
+  if (!graph || !grid) return null;
+  let shell = graph.querySelector('.bg-stage-shell');
+  let stage = shell?.querySelector('.bg-stage');
+  if (stage?.contains(grid)) return { shell, stage, grid };
+  shell = document.createElement('div');
+  shell.className = 'bg-stage-shell';
+  stage = document.createElement('div');
+  stage.className = 'bg-stage';
+  grid.replaceWith(shell);
+  shell.appendChild(stage);
+  stage.appendChild(grid);
+  return { shell, stage, grid };
+}
+
 function armNatalFit() {
   teardownNatalFit();
   const container = document.getElementById('bodygraph-container');
-  const wrap = container?.querySelector('.bg-svg-wrap');
   const column = container?.closest('.chart-column');
-  if (!container || !wrap || !column) return;
+  const stageParts = container && ensureNatalStage(container);
+  if (!container || !column || !stageParts) return;
+  const { shell, stage, grid } = stageParts;
 
   const apply = () => {
-    if (!wrap.isConnected || document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length) return;
-    // Height-driven, like the transit canvas: the graph occupies everything under
-    // the header that the column can hold. The card's own padding and the sticky
-    // column's resting offset are the only things taken out of the viewport.
+    if (!shell.isConnected || document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length) return;
+    const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
     const columnStyle = getComputedStyle(column);
     const stickyTop = parseFloat(columnStyle.top) || 0;
-    const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
     const cs = getComputedStyle(container);
-    const padding = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
-      + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
-    const available = viewport - stickyTop - padding - 12;
-    // The grid is the card's inner content surface. Measure that element directly;
-    // subtract the card's border-box padding only if it is the measured container.
-    const grid = container.querySelector('.bg-grid');
-    const contentWidth = Math.max(1, grid?.clientWidth || container.clientWidth
+    const verticalInsets = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
+      + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0) + 12;
+    const availableHeight = Math.max(1, viewport - stickyTop - verticalInsets);
+    const phoneLayout = window.matchMedia('(max-width: 640px)').matches;
+    const availableWidth = Math.max(1, container.clientWidth
       - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0));
-    // Phones keep the established three-column layout and intrinsic sizing.
-    if (window.matchMedia('(max-width: 640px)').matches) {
-      container.classList.remove('is-natal-compact', 'is-arrow-flow');
-      container.style.removeProperty('--bg-natal-canvas-width');
-      container.style.removeProperty('--bg-natal-canvas-height');
-      container.style.removeProperty('--bg-natal-flow-bands');
-      return;
+    const planetColumns = [...container.querySelectorAll('.bg-stage .bg-planets')];
+    const arrowRows = [...container.querySelectorAll('.bg-stage .bg-variable-row')];
+    const tight = availableHeight < 620 || availableWidth < 420;
+    const planetGap = tight ? 0 : 1;
+    const planetPadding = tight ? 0 : 2;
+    const rowPitch = tight ? 21 : 23.5;
+    const planetWidthFit = tight ? 76 : 88;
+    const arrowWidth = tight ? 54 : 68;
+    container.style.setProperty('--bg-planet-gap', `${planetGap}px`);
+    container.style.setProperty('--bg-planet-padding', `${planetPadding}px`);
+    container.style.setProperty('--bg-planet-pitch', `${rowPitch}px`);
+    container.style.setProperty('--bg-planet-width', `${planetWidthFit}px`);
+    container.style.setProperty('--bg-arrow-width', `${arrowWidth}px`);
+    const fontMetric = document.createElement('span');
+    fontMetric.textContent = 'M';
+    fontMetric.style.cssText = 'position:absolute;visibility:hidden;font-size:10px;line-height:normal';
+    stage.appendChild(fontMetric);
+    const rowHeight = parseFloat(getComputedStyle(fontMetric).lineHeight) || 12;
+    fontMetric.remove();
+    const planetHeight = Math.max(...planetColumns.map(node => node.scrollHeight), 0);
+    const arrowTop = [14, 80];
+    const arrowBottom = arrowRows.reduce((max, row, i) => Math.max(max, arrowTop[i] + row.scrollHeight + 4), 0);
+    const desiredCardWidth = Math.min(availableWidth, NATAL_STAGE_WIDTH);
+    const heightFitWidth = Math.min(desiredCardWidth, availableHeight * NATAL_ASPECT);
+    const widthCandidates = phoneLayout
+      ? [heightFitWidth]
+      : [...new Set([heightFitWidth, desiredCardWidth, desiredCardWidth * .95, desiredCardWidth * .9])];
+    let chosen = null;
+    for (const widthFactor of widthCandidates) {
+      const svgWidth = widthFactor;
+      const svgHeight = svgWidth / NATAL_ASPECT;
+      // The stage follows the card content width. Planet columns anchor to its
+      // outer edges while the independently fitted SVG stays centred inside.
+      const stageWidth = availableWidth;
+      const stageHeight = Math.max(svgHeight, planetHeight, arrowBottom);
+      const requiredScale = Math.min(1, availableWidth / stageWidth, availableHeight / stageHeight);
+      const candidate = { svgWidth, svgHeight, stageWidth, stageHeight, requiredScale };
+      if (!chosen || requiredScale > chosen.requiredScale
+        || (requiredScale === chosen.requiredScale && svgWidth > chosen.svgWidth)) chosen = candidate;
+      if (requiredScale >= .999) break;
     }
-    // Compact is a card-width mode only. A short viewport shrinks the SVG while
-    // leaving the planet columns anchored to the card's upper edge.
-    const compact = contentWidth < 400;
-    container.classList.toggle('is-natal-compact', compact);
-    const arrowFlow = !compact && available * NATAL_RATIO < 280;
-    container.classList.toggle('is-arrow-flow', arrowFlow);
-    container.style.removeProperty('--bg-natal-flow-bands');
-    if (!Number.isFinite(available) || available <= 0) {
-      container.style.removeProperty('--bg-natal-canvas-width');
-      container.style.removeProperty('--bg-natal-canvas-height');
-      return;
-    }
-    let availableForCanvas = available;
-    if (compact) {
-      const topBand = container.querySelector('.bg-variable-top');
-      const bottomBand = container.querySelector('.bg-variable-bottom');
-      const flowBands = (topBand?.getBoundingClientRect().height || 0)
-        + (bottomBand?.getBoundingClientRect().height || 0) + 16;
-      availableForCanvas = Math.max(1, available - flowBands);
-      container.style.setProperty('--bg-natal-flow-bands', `${flowBands}px`);
-    } else if (arrowFlow) {
-      // Flow mode gives each arrow row real height before measuring its budget.
-      const topBand = container.querySelector('.bg-variable-top');
-      const bottomBand = container.querySelector('.bg-variable-bottom');
-      const flowBands = (topBand?.getBoundingClientRect().height || 0)
-        + (bottomBand?.getBoundingClientRect().height || 0)
-        + (parseFloat(getComputedStyle(wrap).rowGap) || 0) * 2;
-      availableForCanvas = Math.max(1, available - flowBands);
-      container.style.setProperty('--bg-natal-flow-bands', `${flowBands}px`);
-    }
-    const canvasWidth = Math.min(contentWidth, availableForCanvas * NATAL_RATIO);
-    const canvasHeight = canvasWidth / NATAL_RATIO;
-    container.style.setProperty('--bg-natal-canvas-width', `${canvasWidth}px`);
-    container.style.setProperty('--bg-natal-canvas-height', `${canvasHeight}px`);
+    const scale = chosen.requiredScale;
+    const frameWidth = chosen.stageWidth * scale;
+    const frameHeight = chosen.stageHeight * scale;
+    const svgWidth = chosen.svgWidth;
+    const svgHeight = chosen.svgHeight;
+    container.style.setProperty('--bg-stage-base-width', `${chosen.stageWidth}px`);
+    container.style.setProperty('--bg-stage-base-height', `${chosen.stageHeight}px`);
+    container.style.setProperty('--bg-svg-width', `${svgWidth}px`);
+    container.style.setProperty('--bg-svg-height', `${svgHeight}px`);
+    container.style.setProperty('--bg-planet-width', `${planetWidthFit}px`);
+    container.style.setProperty('--bg-stage-scale', String(scale));
+    container.style.setProperty('--bg-stage-width', `${frameWidth}px`);
+    container.style.setProperty('--bg-stage-height', `${frameHeight}px`);
   };
 
   apply();
-  // A hidden view reports zero rects; measuring then would write a bogus size.
-  // Only measure when the chart view is actually displayed.
   const hidden = () => document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length;
-  const guarded = () => { if (hidden()) return; apply(); };
-  // Viewport height is not observable through the document element (its size
-  // does not change when only the window does), so listen to the window.
+  const guarded = () => { if (!hidden()) apply(); };
   window.addEventListener('resize', guarded);
   window.visualViewport?.addEventListener('resize', guarded);
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(guarded) : null;
-  const banner = document.getElementById('type-banner');
-  if (observer && banner) observer.observe(banner);
+  if (observer) {
+    observer.observe(container);
+    const chartLayout = container.closest('.chart-layout');
+    if (chartLayout) observer.observe(chartLayout);
+  }
   natalFitObserver = {
     disconnect: () => {
       window.removeEventListener('resize', guarded);

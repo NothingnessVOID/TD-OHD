@@ -406,124 +406,103 @@ body {
 #bodygraph-container .bg-planets-personality .bg-planets-head,
 #bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
 
-/* Issue 33: the natal page uses the same structure as the transit graph —
-   a fixed-height canvas with the SVG at 100% x 100% and preserveAspectRatio, so
-   the graph fills the height under the header and nothing reserves width for
-   the planet columns. The columns are absolutely positioned over the canvas's
-   own empty flanks instead of taking grid rails, which is what squeezed the
-   graph to 362px before. Canvas height comes from --bg-natal-canvas (set in
-   views/chart.js from the real viewport), so scrolling the page does not resize
-   it. No inner scrolling anywhere on this page. */
-#chart-view .chart-column {
-  max-height: none;
-  overflow: visible;
+/* Natal card stage: the complete SVG, both 13-row planet columns and four
+   arrows share one 510x774 reference canvas and one measured scale. */
+#chart-view .chart-column { min-width:0; max-height:none; overflow:visible; }
+#chart-view #bodygraph-container { min-width:0; width:100%; }
+#chart-view #bodygraph-container .bg-stage-shell {
+  position:relative;
+  min-width:0; max-width:100%;
+  width:var(--bg-stage-width,510px);
+  height:var(--bg-stage-height,774px);
+  margin-inline:auto;
+  overflow:visible;
+}
+#chart-view #bodygraph-container .bg-stage {
+  position:absolute;
+  top:0;
+  left:50%;
+  width:var(--bg-stage-base-width,510px);
+  height:var(--bg-stage-base-height,774px);
+  transform:translateX(-50%) scale(var(--bg-stage-scale,1));
+  transform-origin:top center;
+}
+#chart-view #bodygraph-container .bg-stage .bg-grid {
+  position:relative;
+  display:block;
+  width:var(--bg-stage-base-width,510px);
+  height:var(--bg-stage-base-height,774px);
+  min-height:0;
+  margin:0;
+}
+#chart-view #bodygraph-container .bg-stage .bg-planets,
+#chart-view #bodygraph-container .bg-stage .bg-svg-wrap { top:0; }
+@media (--phone) {
+  #chart-view #bodygraph-container .bg-stage .bg-grid {
+    display:block; position:relative; grid-template-columns:none; width:var(--bg-stage-base-width,510px);
+    max-width:none; margin:0;
+  }
+  #chart-view #bodygraph-container .bg-stage .bg-svg-wrap {
+    position:absolute; display:block; grid-column:auto; grid-row:auto;
+    width:var(--bg-svg-width,510px); max-width:none;
+  }
+  #chart-view #bodygraph-container .bg-stage .bg-planets {
+    position:absolute; width:var(--bg-planet-width,88px); max-height:none;
+    flex-direction:column; flex-wrap:nowrap; pointer-events:none;
+  }
+  #chart-view #bodygraph-container .bg-stage .bg-planets-head,
+  #chart-view #bodygraph-container .bg-stage .bg-planets-date { width:auto; }
+  #chart-view #bodygraph-container .bg-stage .bg-planet-row { width:100%; padding:var(--bg-planet-padding,2px) 0; }
+  #chart-view #bodygraph-container .bg-stage .bg-variable-row { position:absolute; inset-inline:0; }
+}
+#chart-view #bodygraph-container .bg-stage .bg-svg-wrap {
+  position:absolute;
+  top:0;
+  left:50%;
+  width:var(--bg-svg-width,510px);
+  height:var(--bg-svg-height,774px);
+  max-width:none;
+  aspect-ratio:883.41 / 1341.4;
+  margin:0;
+  transform:translateX(-50%);
+}
+#chart-view #bodygraph-container .bg-stage .bg-svg-wrap > svg {
+  display:block;
+  width:100%;
+  height:100%;
+}
+#chart-view #bodygraph-container .bg-stage .bg-planets {
+  position:absolute;
+  top:0;
+  z-index:2;
+  width:var(--bg-planet-width,88px);
+  max-height:none;
+  padding-top:0;
+  gap:var(--bg-planet-gap,1px);
+  pointer-events:none;
+}
+#chart-view #bodygraph-container .bg-stage .bg-planet-row {
+  height:var(--bg-planet-pitch,23.5px); min-height:0;
+  padding:var(--bg-planet-padding,2px) 0; gap:0; font-size:10px; line-height:1.15;
+}
+#chart-view #bodygraph-container .bg-stage .bg-planets-head { margin-bottom:0; }
+#chart-view #bodygraph-container .bg-stage .bg-planets-date { display:block; width:100%; margin:0 0 2px; line-height:1.2; }
+#chart-view #bodygraph-container .bg-stage .bg-planets > * { pointer-events:auto; }
+#chart-view #bodygraph-container .bg-stage .bg-planets-design { left:0; right:auto; }
+#chart-view #bodygraph-container .bg-stage .bg-planets-personality { left:auto; right:0; }
+#chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planet-row { justify-content:flex-end; }
+#chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planets-head,
+#chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planets-date { text-align:right; }
+#chart-view #bodygraph-container .bg-stage .bg-variable-row { inset-inline:0; }
+#chart-view #bodygraph-container .bg-stage .bg-variable-arrow[data-source="design"] {
+  position:absolute; left:27.8%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
+}
+#chart-view #bodygraph-container .bg-stage .bg-variable-arrow[data-source="personality"] {
+  position:absolute; left:72.2%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
 }
 
-@media (--above-phone) {
-  #bodygraph-container .bg-grid {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: auto;
-    min-height: 305px;
-    margin-inline: auto;
-  }
-  #bodygraph-container .bg-svg-wrap {
-    position: relative;
-    width: var(--bg-natal-canvas-width, 100%);
-    height: var(--bg-natal-canvas-height, auto);
-    max-width: 100%;
-    aspect-ratio: 883.41 / 1341.4;
-    margin-inline: auto;
-  }
-  #bodygraph-container .bg-svg-wrap svg,
-  #bodygraph-container .bg-svg-wrap > svg { display:block; width:100%; height:100%; }
-  /* Columns sit in the side bands the canvas margin leaves inside the grid, so
-     they read as part of the graph without covering the drawing. */
-  #bodygraph-container .bg-planets {
-    position: absolute;
-    /* The measured top silhouette leaves >111px flanks through the 39.5% column
-       height. Put the 88px planet rows at y=0; the arrow pairs start inward at
-       x=108px, leaving a 12px horizontal gap without splitting their row pairs. */
-    top: 0;
-    z-index: 2;
-    width: 88px;
-    padding-top: 0;
-    pointer-events: none;
-  }
-  #bodygraph-container .bg-planets > * { pointer-events: auto; }
-  /* Measured contour: the upper silhouette remains within the centre x~203..301
-     through y=28%; the 88px planet columns at x=8..96 (mirrored) stay in the
-     empty upper flanks through their 305px height, clear of ink and arrow rows. */
-  #bodygraph-container .bg-planets-design { left: 0; right: auto; }
-  #bodygraph-container .bg-planets-personality { right: 0; left: auto; }
-  #bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
-  #bodygraph-container .bg-planets-personality .bg-planets-head,
-  #bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
-  /* Arrow pair centres track the SVG normalized coordinates 25% / 75%; their
-     two row layers remain together above the upper centre geometry. */
-  #chart-view #bodygraph-container .bg-variable-row { inset-inline: 0; }
-  #chart-view #bodygraph-container .bg-variable-arrow[data-source="design"] { position:absolute; left:27.8%; width:clamp(54px,13.3%,68px); transform:translateX(-50%); }
-  #chart-view #bodygraph-container .bg-variable-arrow[data-source="personality"] { position:absolute; left:72.2%; width:clamp(54px,13.3%,68px); transform:translateX(-50%); }
-  /* Compact: preserve all planet rows in ordinary page flow once 88px columns
-     or the paired arrows no longer fit the measured empty upper flanks. */
-  #chart-view #bodygraph-container.is-natal-compact .bg-grid {
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    width:100%; height:auto; row-gap:8px;
-  }
-  #chart-view #bodygraph-container.is-natal-compact .bg-svg-wrap { display:contents; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-grid { display:block; width:100%; height:auto; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-svg-wrap {
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    grid-template-rows:auto auto var(--bg-natal-canvas-height); column-gap:0; row-gap:8px;
-    width:100%; height:auto; aspect-ratio:auto; justify-items:stretch;
-  }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-variable-row {
-    position:static; inset:auto; grid-column:1/-1;
-    width:max(var(--bg-natal-canvas-width),108px); min-width:108px;
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); justify-self:center;
-  }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-variable-top { grid-row:1; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-variable-bottom { grid-row:2; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-variable-arrow[data-source] {
-    position:static; left:auto; width:clamp(54px,13.3%,68px); transform:none; justify-self:center;
-  }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-svg-wrap > svg {
-    grid-row:3; grid-column:1/-1; width:var(--bg-natal-canvas-width);
-    height:var(--bg-natal-canvas-height); justify-self:center;
-  }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-planets { position:absolute; top:0; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-planets-design { left:0; }
-  #chart-view #bodygraph-container.is-arrow-flow .bg-planets-personality { right:0; }
-  /* Compact DOM order: both absolute-arrow wrappers become rows 1 and 2,
-     followed by the graph SVG in row 3 and planets in row 4. */
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-top { order:-4; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-bottom { order:-3; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-row {
-    position:static; inset:auto; grid-column:1/-1; width:100%;
-    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  }
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-arrow[data-source] {
-    position:static; left:auto; width:clamp(54px,11%,68px); transform:none; justify-self:center;
-  }
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-top { grid-row:1; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-variable-bottom { grid-row:2; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-svg-wrap > svg {
-    grid-column:1/-1; grid-row:3; width:min(100%,var(--bg-natal-canvas-width,100%));
-    height:auto; max-height:none; aspect-ratio:883.41 / 1341.4; justify-self:center;
-  }
-  #chart-view #bodygraph-container.is-natal-compact .bg-planets {
-    position:static; width:100%; max-height:none; pointer-events:auto;
-    grid-row:4; align-self:start;
-  }
-  #chart-view #bodygraph-container.is-natal-compact .bg-planets-design { grid-column:1; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-planets-personality { grid-column:2; }
-  #chart-view #bodygraph-container.is-natal-compact .bg-planets-date { display:block; }
-}
-
-/* The canvas height is the only sizing input: views/chart.js writes
-   --bg-natal-canvas from the viewport under the header, and the SVG fits inside
-   by its own ratio, so a taller window simply yields a taller graph. */
+/* Tight-first keeps source text at its native size. It reduces SVG whitespace
+   first; whole-stage scaling is reserved for frame containment fallback. */
 
 /* =============================================
    Info Panels
