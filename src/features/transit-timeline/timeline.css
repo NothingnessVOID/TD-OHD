@@ -383,6 +383,7 @@
   body.timeline-active .tl-mobile-controls-panel .tl-event-nav { display: none; }
   body.timeline-active #timeline-view .tl-mobile-exit {
     position: absolute; z-index: 8; display: grid;
+    --ui-icon-size: 36px;
     --ui-icon-background: var(--tl-surface); --ui-icon-border: var(--tl-line); --ui-icon-color: var(--text);
     top: 9px; left: 10px; width: 36px; min-height: 36px; height: 36px;
     font-size: 17px; box-shadow: none;

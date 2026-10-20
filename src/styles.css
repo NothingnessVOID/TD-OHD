@@ -493,12 +493,16 @@ body {
 #chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planet-row { justify-content:flex-end; }
 #chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planets-head,
 #chart-view #bodygraph-container .bg-stage .bg-planets-personality .bg-planets-date { text-align:right; }
-#chart-view #bodygraph-container .bg-stage .bg-variable-row { inset-inline:0; }
+#chart-view #bodygraph-container .bg-stage .bg-variable-row {
+  inset-inline:auto;
+  left:calc((var(--bg-svg-width,510px) - var(--bg-stage-base-width,510px)) / 2);
+  width:var(--bg-stage-base-width,510px);
+}
 #chart-view #bodygraph-container .bg-stage .bg-variable-arrow[data-source="design"] {
-  position:absolute; left:27.8%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
+  position:absolute; left:31.5%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
 }
 #chart-view #bodygraph-container .bg-stage .bg-variable-arrow[data-source="personality"] {
-  position:absolute; left:72.2%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
+  position:absolute; left:68.5%; width:var(--bg-arrow-width,68px); transform:translateX(-50%);
 }
 
 /* Tight-first keeps source text at its native size. It reduces SVG whitespace
