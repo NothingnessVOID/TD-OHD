@@ -114,22 +114,54 @@ function armNatalFit() {
     const cs = getComputedStyle(container);
     const padding = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
       + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
-    const available = viewport - stickyTop - padding;
-    if (!Number.isFinite(available) || available <= 0) return;
-    // Short windows fall back to page scrolling rather than squeezing the graph.
-    if (available < 260) { container.style.removeProperty('--bg-natal-canvas'); return; }
-    // Leave a small margin so the card never touches the viewport edge. The
-    // canvas stays ratio-locked; the left column only needs that canvas plus its
-    // own inline padding/border. Planet columns overlap the upper flanks and add
-    // no fixed rails.
-    const canvasHeight = Math.round(available - 12);
-    const canvasWidth = Math.round(canvasHeight * NATAL_RATIO);
-    container.style.setProperty('--bg-natal-canvas', `${canvasHeight}px`);
-    const layout = column.closest('.chart-layout');
-    const styles = getComputedStyle(container);
-    const inset = (parseFloat(styles.paddingLeft) || 0) + (parseFloat(styles.paddingRight) || 0)
-      + (parseFloat(styles.borderLeftWidth) || 0) + (parseFloat(styles.borderRightWidth) || 0);
-    layout?.style.setProperty('--bg-natal-column-target', `${canvasWidth + inset}px`);
+    const available = viewport - stickyTop - padding - 12;
+    // The grid is the card's inner content surface. Measure that element directly;
+    // subtract the card's border-box padding only if it is the measured container.
+    const grid = container.querySelector('.bg-grid');
+    const contentWidth = Math.max(1, grid?.clientWidth || container.clientWidth
+      - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0));
+    // Phones keep the established three-column layout and intrinsic sizing.
+    if (window.matchMedia('(max-width: 640px)').matches) {
+      container.classList.remove('is-natal-compact', 'is-arrow-flow');
+      container.style.removeProperty('--bg-natal-canvas-width');
+      container.style.removeProperty('--bg-natal-canvas-height');
+      container.style.removeProperty('--bg-natal-flow-bands');
+      return;
+    }
+    // Compact is a card-width mode only. A short viewport shrinks the SVG while
+    // leaving the planet columns anchored to the card's upper edge.
+    const compact = contentWidth < 400;
+    container.classList.toggle('is-natal-compact', compact);
+    const arrowFlow = !compact && available * NATAL_RATIO < 280;
+    container.classList.toggle('is-arrow-flow', arrowFlow);
+    container.style.removeProperty('--bg-natal-flow-bands');
+    if (!Number.isFinite(available) || available <= 0) {
+      container.style.removeProperty('--bg-natal-canvas-width');
+      container.style.removeProperty('--bg-natal-canvas-height');
+      return;
+    }
+    let availableForCanvas = available;
+    if (compact) {
+      const topBand = container.querySelector('.bg-variable-top');
+      const bottomBand = container.querySelector('.bg-variable-bottom');
+      const flowBands = (topBand?.getBoundingClientRect().height || 0)
+        + (bottomBand?.getBoundingClientRect().height || 0) + 16;
+      availableForCanvas = Math.max(1, available - flowBands);
+      container.style.setProperty('--bg-natal-flow-bands', `${flowBands}px`);
+    } else if (arrowFlow) {
+      // Flow mode gives each arrow row real height before measuring its budget.
+      const topBand = container.querySelector('.bg-variable-top');
+      const bottomBand = container.querySelector('.bg-variable-bottom');
+      const flowBands = (topBand?.getBoundingClientRect().height || 0)
+        + (bottomBand?.getBoundingClientRect().height || 0)
+        + (parseFloat(getComputedStyle(wrap).rowGap) || 0) * 2;
+      availableForCanvas = Math.max(1, available - flowBands);
+      container.style.setProperty('--bg-natal-flow-bands', `${flowBands}px`);
+    }
+    const canvasWidth = Math.min(contentWidth, availableForCanvas * NATAL_RATIO);
+    const canvasHeight = canvasWidth / NATAL_RATIO;
+    container.style.setProperty('--bg-natal-canvas-width', `${canvasWidth}px`);
+    container.style.setProperty('--bg-natal-canvas-height', `${canvasHeight}px`);
   };
 
   apply();
