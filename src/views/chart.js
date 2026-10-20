@@ -104,45 +104,32 @@ function armNatalFit() {
   if (!container || !wrap || !column) return;
 
   const apply = () => {
-    if (!wrap.isConnected) return;
-    // Budget from the sticky resting position, not from the banner's document
-    // top. The graph is inside a sticky column whose top offset is fixed, so the
-    // height it can occupy once the page scrolls is viewport - header - that
-    // offset. Measuring against the banner instead pinned the graph to the
-    // never-scrolled layout and left the card's lower half empty on tall
-    // windows; it also changed as the column stuck, which made it unstable.
+    if (!wrap.isConnected || document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length) return;
+    // Height-driven, like the transit canvas: the graph occupies everything under
+    // the header that the column can hold. The card's own padding and the sticky
+    // column's resting offset are the only things taken out of the viewport.
     const columnStyle = getComputedStyle(column);
     const stickyTop = parseFloat(columnStyle.top) || 0;
     const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
     const cs = getComputedStyle(container);
     const padding = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
       + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
-    // Bottom breathing room is ordinary whitespace, not another sticky offset:
-    // subtracting the full sticky top here would double-count the header.
-    const bottomGap = 20;
-    const available = viewport - stickyTop - bottomGap - padding;
+    const available = viewport - stickyTop - padding;
     if (!Number.isFinite(available) || available <= 0) return;
-    // Short windows are allowed to fall back to page scrolling; only claim a fit
-    // when the height budget can actually hold the graph.
-    if (available < 228) return;
-    const height = Math.max(200, available - 8);
-    const width = Math.round(height * NATAL_RATIO);
-    // Two values, two scopes:
-    //  - on the wrap: the SVG width itself
-    //  - on #chart-view: the whole left band, i.e. graph + both rails + gaps + insets
-    // Writing the wide value on the wrap would make the wrap wider than its column.
-    wrap.style.setProperty('--bg-natal-size', `${width}px`);
-    const view = document.getElementById('chart-view');
-    if (view) {
-      const styles = getComputedStyle(container);
-      const rail = parseFloat(styles.getPropertyValue('--bg-rail-w')) || 92;
-      const gridEl = container.querySelector('.bg-grid');
-      const gap = gridEl ? (parseFloat(getComputedStyle(gridEl).columnGap) || 0) : 0;
-      const inset = (parseFloat(styles.paddingLeft) || 0) + (parseFloat(styles.paddingRight) || 0)
-        + (parseFloat(styles.borderLeftWidth) || 0) + (parseFloat(styles.borderRightWidth) || 0);
-      const target = width + rail * 2 + gap * 2 + inset;
-      view.style.setProperty('--bg-natal-column-target', `${Math.round(target)}px`);
-    }
+    // Short windows fall back to page scrolling rather than squeezing the graph.
+    if (available < 260) { container.style.removeProperty('--bg-natal-canvas'); return; }
+    // Leave a small margin so the card never touches the viewport edge. The
+    // canvas stays ratio-locked; the left column only needs that canvas plus its
+    // own inline padding/border. Planet columns overlap the upper flanks and add
+    // no fixed rails.
+    const canvasHeight = Math.round(available - 12);
+    const canvasWidth = Math.round(canvasHeight * NATAL_RATIO);
+    container.style.setProperty('--bg-natal-canvas', `${canvasHeight}px`);
+    const layout = column.closest('.chart-layout');
+    const styles = getComputedStyle(container);
+    const inset = (parseFloat(styles.paddingLeft) || 0) + (parseFloat(styles.paddingRight) || 0)
+      + (parseFloat(styles.borderLeftWidth) || 0) + (parseFloat(styles.borderRightWidth) || 0);
+    layout?.style.setProperty('--bg-natal-column-target', `${canvasWidth + inset}px`);
   };
 
   apply();
@@ -199,6 +186,11 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   renderPanelContent(activeTab ? activeTab.dataset.panel : 'centers');
   // After the graph and the banner exist, size the natal graph to the height it
   // actually has. Runs once per render and on banner/viewport changes only.
+  armNatalFit();
+}
+
+export function refreshNatalFit() {
+  if (!current) return;
   armNatalFit();
 }
 
