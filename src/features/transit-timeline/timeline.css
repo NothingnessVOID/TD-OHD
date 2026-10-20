@@ -235,7 +235,7 @@
 .tl-calculation[data-state="error"] .tl-loading-meter { display: none; }
 .tl-calculation [data-action="retry"] { margin-top: 16px; }
 @media (max-width: 1050px) {
-  .tl { padding: 12px 16px 24px; --tl-canvas-height: clamp(490px, calc(100dvh - 212px), 620px); }
+  .tl { padding: 12px 24px 24px; --tl-canvas-height: clamp(490px, calc(100dvh - 212px), 620px); }
   .tl-workspace { grid-template-columns: minmax(350px, .95fr) minmax(0, 1.2fr); gap: 12px; }
   .tl-birth-column { width: 120px; right: 7px; }
   .tl-transit-column { left: 7px; width: 57px; }
@@ -244,16 +244,18 @@
   .tl-birth-row { height: 16px; }
 }
 @media (--above-phone) and (max-width: 740px) {
-  .tl { padding-inline: 8px; }
   .tl-workspace { grid-template-columns: minmax(310px, .95fr) minmax(0, 1fr); gap: 8px; }
   .tl-birth-column { width: 110px; }
   .tl-transit-column { width: 50px; }
+}
+@media (--above-phone) and (max-width: 768px) {
+  .tl { padding-inline: 6px; }
 }
 @media (--phone) {
   .tl-target-popover { position: relative; top: auto; width: 100%; max-height: min(46dvh, 360px); }
   .tl-target-options { max-height: min(30dvh, 250px); }
   .tl-workspace { display: block; }
-  .tl { --tl-canvas-height: 430px; }
+  .tl { --tl-canvas-height: 430px; padding-inline: 10px; }
   .tl-stage { position: static; margin-bottom: 12px; }
   .tl-graph-panel { max-width: 500px; margin: auto; }
   .tl-tracks-panel { height: 430px; }
