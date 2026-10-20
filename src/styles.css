@@ -2574,6 +2574,9 @@ body.modal-open { overflow: hidden; }
      single-column rule has to repeat the id to actually collapse. */
   #chart-view .chart-layout {
     grid-template-columns: 1fr;
+    max-width: 100%;
+    margin-inline: 0;
+    padding-inline: 10px;
   }
 
   .chart-column {
@@ -2645,11 +2648,17 @@ body.modal-open { overflow: hidden; }
   .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
   .nav-link { flex-shrink: 0; white-space: nowrap; }
+  /* Narrow windows follow the header's own content edge instead of adding a
+     separate shell margin on top of the page padding. */
+  #chart-view .chart-layout { max-width: 100%; margin-inline: 0; }
 }
 
 @media (--above-phone) and (max-width: 768px) {
   .header-inner { padding-inline: 6px; gap: 4px; }
   .nav-link { padding-inline: 4px; }
+  /* Below 768 the header gutter is 6px. The chart page drops its extra shell
+     margin and follows that edge instead of stacking two insets. */
+  #chart-view .chart-layout { max-width: 100%; margin-inline: 0; padding-inline: 6px; }
 }
 
 @media (--above-phone) and (max-width: 680px) {
@@ -2709,6 +2718,7 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 350px) {
   .header-inner { padding-inline: 6px; gap: 3px; }
+  #chart-view .chart-layout { padding-inline: 6px; }
   /* At 320px the fixed-width people switcher plus the icon buttons pushed
      .header-actions 8px past the viewport and produced a horizontal scroll. The
      action group may shrink here, and the switcher gives up width first. */
