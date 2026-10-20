@@ -350,18 +350,11 @@ body {
   align-items: start;
 }
 
-/* Issue 33 lives only on the birth chart page. The left column used to take
-   min(50vw, 610px) even though the graph inside stopped at 360px, which on wide
-   windows left the graph boxed in at ~410px while the card below it stayed
-   empty. This page now lets the layout grow with the window and lets the left
-   column follow the graph's height-derived width, while the right column keeps
-   the larger share. */
+/* Issue 33 lives only on the birth chart page. The left band follows the
+   aspect-derived canvas with only its own padding added: planet columns overlay
+   measured empty flanks instead of consuming two fixed rails. */
 #chart-view .chart-layout {
-  max-width: min(1680px, calc(100vw - 32px));
-  /* The left band is derived from the graph's height-driven width plus both
-     rails and insets, and is capped at 48% so the right column always keeps the
-     larger share. The value is written from views/chart.js and never measured
-     back, so the graph cannot feed its own budget. */
+  max-width: min(2400px, calc(100vw - 32px));
   grid-template-columns: minmax(320px, min(48%, var(--bg-natal-column-target, 620px))) minmax(0, 1fr);
 }
 
@@ -408,11 +401,14 @@ body {
 #bodygraph-container .bg-planets-personality .bg-planets-head,
 #bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
 
-/* Issue 33: the natal page sizes the graph from the height it actually gets,
-   with two safe side rails for the planet columns. The rails are real grid
-   columns, so the graph never sits under them, and the graph keeps its own
-   aspect ratio (viewBox 883.41 x 1341.4) instead of being stretched.
-   No inner scrolling: the chart column stops being a scroll box on this page. */
+/* Issue 33: the natal page uses the same structure as the transit graph —
+   a fixed-height canvas with the SVG at 100% x 100% and preserveAspectRatio, so
+   the graph fills the height under the header and nothing reserves width for
+   the planet columns. The columns are absolutely positioned over the canvas's
+   own empty flanks instead of taking grid rails, which is what squeezed the
+   graph to 362px before. Canvas height comes from --bg-natal-canvas (set in
+   views/chart.js from the real viewport), so scrolling the page does not resize
+   it. No inner scrolling anywhere on this page. */
 #chart-view .chart-column {
   max-height: none;
   overflow: visible;
@@ -421,47 +417,60 @@ body {
 @media (--above-phone) and (min-width: 900px) {
   #bodygraph-container .bg-grid {
     position: relative;
-    display: grid;
-    /* Rails hold the planet columns; on wide windows they stay a fixed readable
-       width while the graph column takes everything else. */
-    grid-template-columns: var(--bg-rail-w, 92px) minmax(0, 1fr) var(--bg-rail-w, 92px);
-    gap: 4px;
-    align-items: start;
+    display: block;
+    /* Grid matches the canvas: planet columns overlap only the measured empty
+       upper flanks instead of adding two width-consuming rails. */
+    width: min(100%, calc(var(--bg-natal-canvas, 70vh) * 0.6586));
+    margin-inline: auto;
   }
-  /* Wrap hugs the SVG's own box so the absolutely positioned arrows keep their
-     original offsets (top 14 / top 80) relative to the graph. --bg-natal-size is
-     the height-derived width computed in views/chart.js; the fallback keeps the
-     previous behaviour when the measure has not run yet. */
   #bodygraph-container .bg-svg-wrap {
-    grid-column: 2;
-    grid-row: 1;
-    /* Height-derived width is authoritative; it is set on #bodygraph-container by
-       views/chart.js and never measured back from the column, so no feedback. */
-    width: var(--bg-natal-size, 480px);
-    max-width: 100%;
-    justify-self: center;
-    align-self: start;
+    /* Canvas height comes from the viewport; the width follows the graph's own
+       ratio (883.41 / 1341.4), so the SVG never stretches. It is centred inside
+       the wider grid, leaving one column's worth of margin on each side. */
+    width: min(100%, calc(var(--bg-natal-canvas, 70vh) * 0.6586));
+    max-width: none;
+    height: var(--bg-natal-canvas, 70vh);
+    margin-inline: auto;
   }
+  #bodygraph-container .bg-svg-wrap svg,
+  #bodygraph-container .bg-svg-wrap > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  /* Columns sit in the side bands the canvas margin leaves inside the grid, so
+     they read as part of the graph without covering the drawing. */
   #bodygraph-container .bg-planets {
-    position: static;
-    width: auto;
-    max-height: none;
+    position: absolute;
+    /* The measured top silhouette leaves >111px flanks through the 39.5% column
+       height. Put the 88px planet rows at y=0; the arrow pairs start inward at
+       x=108px, leaving a 12px horizontal gap without splitting their row pairs. */
+    top: 0;
+    z-index: 2;
+    width: 88px;
     padding-top: 0;
-    pointer-events: auto;
+    pointer-events: none;
   }
-  #bodygraph-container .bg-planets-design { grid-column: 1; grid-row: 1; }
-  #bodygraph-container .bg-planets-personality { grid-column: 3; grid-row: 1; }
+  #bodygraph-container .bg-planets > * { pointer-events: auto; }
+  /* Measured contour: the upper silhouette remains within the centre x~203..301
+     through y=28%; the 88px planet columns at x=8..96 (mirrored) stay in the
+     empty upper flanks through their 305px height, clear of ink and arrow rows. */
+  #bodygraph-container .bg-planets-design { left: 8px; right: auto; }
+  #bodygraph-container .bg-planets-personality { right: 8px; left: auto; }
+  #bodygraph-container .bg-planets-personality .bg-planet-row { justify-content: flex-end; }
+  #bodygraph-container .bg-planets-personality .bg-planets-head,
+  #bodygraph-container .bg-planets-personality .bg-planets-date { text-align: right; }
+  /* Arrows keep their shared absolute rows (top 14 / top 80, one
+     design/personality pair each) and only their inline insets move inward, so
+     they sit with the columns instead of hugging the card edges. Desktop only:
+     on phones the two 54px pairs cannot afford the inset. */
+  /* The arrows sit immediately inside the planet columns with a 12px gap. */
+  #chart-view #bodygraph-container .bg-variable-row { inset-inline: 108px; }
 }
 
-/* Variable arrows keep the shared rules from variable-arrows.css: absolute rows
-   at top 14 and top 80, one design/personality pair per row, inside the wrap.
-   Nothing here moves them. */
-
-/* On tall viewports the graph may use a bit more width, never more than the
-   height allows (views/chart.js raises --bg-natal-size from the same measure). */
-@media (--above-phone) and (min-width: 900px) and (min-height: 1200px) {
-  #bodygraph-container .bg-svg-wrap { width: min(100%, var(--bg-natal-size, 520px)); }
-}
+/* The canvas height is the only sizing input: views/chart.js writes
+   --bg-natal-canvas from the viewport under the header, and the SVG fits inside
+   by its own ratio, so a taller window simply yields a taller graph. */
 
 /* =============================================
    Info Panels
