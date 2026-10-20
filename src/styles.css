@@ -26,6 +26,12 @@
    separate token files, allowing future skins without component rewrites. */
 :root {
   --max-width: 1200px;
+  /* Shared outer page frame: header and the two-column work pages read the
+     same values so their content edges stay on one vertical ruler. */
+  --page-max-width: 1500px;
+  --page-gutter: 24px;
+  --page-gap: 12px;
+  --page-columns: minmax(320px, 42fr) minmax(0, 58fr);
   --header-height: 56px;
   --font: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Crimson Pro', Georgia, serif;
@@ -112,9 +118,9 @@ body {
 }
 
 .header-inner {
-  max-width: var(--max-width);
+  max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--page-gutter);
   height: var(--header-height);
   display: flex;
   align-items: center;
@@ -353,15 +359,32 @@ body {
 /* Column share depends only on viewport width; changing height resizes the
    canvas but never changes the left/right split. */
 #chart-view .chart-layout {
-  max-width: min(2400px, calc(100vw - 32px));
-  grid-template-columns: minmax(320px, min(620px, 42%)) minmax(0, 1fr);
-  column-gap: 12px;
+  max-width: var(--page-max-width);
+  padding-inline: var(--page-gutter);
+  grid-template-columns: var(--page-columns);
+  column-gap: var(--page-gap);
 }
 
 @media (--above-phone) {
   #chart-view .chart-layout {
-    grid-template-columns: minmax(320px, min(620px, 42%)) minmax(0, 1fr);
+    grid-template-columns: var(--page-columns);
   }
+}
+
+@media (--above-phone) and (max-width: 768px) {
+  :root { --page-gutter: 6px; }
+}
+
+@media (--phone) {
+  :root { --page-gutter: 10px; }
+}
+
+@media (max-width: 350px) {
+  :root { --page-gutter: 6px; }
+}
+
+@media (max-width: 1050px) {
+  :root { --page-gap: 8px; }
 }
 
 .chart-column {
@@ -2575,9 +2598,6 @@ body.modal-open { overflow: hidden; }
      single-column rule has to repeat the id to actually collapse. */
   #chart-view .chart-layout {
     grid-template-columns: 1fr;
-    max-width: 100%;
-    margin-inline: 0;
-    padding-inline: 10px;
   }
 
   .chart-column {
@@ -2649,17 +2669,11 @@ body.modal-open { overflow: hidden; }
   .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
   .nav-link { flex-shrink: 0; white-space: nowrap; }
-  /* Narrow windows follow the header's own content edge instead of adding a
-     separate shell margin on top of the page padding. */
-  #chart-view .chart-layout { max-width: 100%; margin-inline: 0; }
 }
 
 @media (--above-phone) and (max-width: 768px) {
-  .header-inner { padding-inline: 6px; gap: 4px; }
+  .header-inner { gap: 4px; }
   .nav-link { padding-inline: 4px; }
-  /* Below 768 the header gutter is 6px. The chart page drops its extra shell
-     margin and follows that edge instead of stacking two insets. */
-  #chart-view .chart-layout { max-width: 100%; margin-inline: 0; padding-inline: 6px; }
 }
 
 @media (--above-phone) and (max-width: 680px) {
@@ -2673,7 +2687,7 @@ body.modal-open { overflow: hidden; }
 
 @media (--phone) {
   .header-inner {
-    padding: 0 10px;
+    padding: 0 var(--page-gutter);
     gap: 6px;
   }
 
@@ -2718,8 +2732,7 @@ body.modal-open { overflow: hidden; }
 }
 
 @media (max-width: 350px) {
-  .header-inner { padding-inline: 6px; gap: 3px; }
-  #chart-view .chart-layout { padding-inline: 6px; }
+  .header-inner { gap: 3px; }
   /* At 320px the fixed-width people switcher plus the icon buttons pushed
      .header-actions 8px past the viewport and produced a horizontal scroll. The
      action group may shrink here, and the switcher gives up width first. */
