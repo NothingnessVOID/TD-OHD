@@ -19,7 +19,7 @@ import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } f
 import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
-import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage, clearCurrentChart } from './views/chart.js';
+import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage, refreshNatalFit, clearCurrentChart } from './views/chart.js';
 import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
@@ -151,6 +151,7 @@ function showView(view, { fromHistory = false } = {}) {
     return;
   }
   document.getElementById(`${view}-view`).classList.remove('hidden');
+  if (view === 'chart') refreshNatalFit();
 
   // Per-view refresh on open
   if (view === 'transits') renderTransits();
