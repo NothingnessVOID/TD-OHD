@@ -17,6 +17,11 @@ import { renderKnowledgeDetail } from '../src/lib/knowledge/detail-renderer.js';
 import { chartKnowledgeQuery } from '../src/lib/knowledge/access.js';
 const base='66185da8071a64b679ce51857c7029556957f038';
 const bytes=p=>incrementHistoricalSource(p);
+// Current source for the four protected detail functions: the guard compares function bodies, so it
+// must read today's file instead of a whole-file freeze projection.
+const currentSource=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+// Fixed independently reviewed snapshot this guard was written against; its chart.js is the baseline.
+const protectedDetailBaseline='fafec304a2c0553df8bd1b91561e6db3d345bc97';
 const original=p=>preservedSource(p,base);
 const approvedSkin=p=>skinProjection(p,base);
 const q=(objectType,objectId)=>({objectType,objectId});
@@ -27,7 +32,7 @@ test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
  assert.deepEqual(bytes('src/lib/bodygraph-detail-layout.js'),approvedSkin('src/lib/bodygraph-detail-layout.js'));
- const before=extract(original('src/views/chart.js').toString()),after=extract(bytes('src/views/chart.js').toString());
+ const before=extract(execFileSync('git',['show',`${protectedDetailBaseline}:src/views/chart.js`]).toString()),after=extract(currentSource('src/views/chart.js'));
  for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail',]){assert.ok(before.has(name),name);assert.equal(after.get(name),before.get(name),name);}
 });
 test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F editorial ranges',()=>{
