@@ -11,6 +11,13 @@
 - Browser profiles are origin-specific. Keep one consistent address per browser; localhost and LAN-IP libraries do not automatically synchronize.
 - Preserve LF line endings. Engine signatures hash file contents, so automatic CRLF conversion can change generated signatures without a logic change.
 
+## Cursor Cloud specific instructions
+
+- Node.js 24.21.0 is installed at `/usr/local/bin`. A login shell can still resolve an older Node first (`/exec-daemon/node` or nvm). Prepend `/usr/local/bin` to `PATH` before `npm`, Vite, or test commands.
+- The .NET 10 SDK (`dotnet-sdk-10.0`, currently 10.0.112 from Ubuntu packages) is already installed. `engine-wasm` publishes with `WasmBuildNative` disabled, so the `wasm-tools` workload is not required; `dotnet publish` warns that size optimizations are skipped. `npm run build:engine` publishes the browser engine and verifies the two pinned Swiss Ephemeris files.
+- `npm test` reads `dist/`. Run `npm run build:pages` before the suite. Release checks fail when that directory is missing.
+- `npm run dev` rebuilds the engine, then serves http://127.0.0.1:9961/ (`strictPort`). Chart calculation runs in the browser; a share link such as `/?n=Demo%20Chart&d=1990-06-15&t=14:30&tz=-6` opens a fictional chart without place search.
+
 ## Parallel implementation
 
 - Authorized implementation tasks that need edits, installs, tests or commits start in fresh `write`-permission instances. Do not reuse a historical read-only research instance for development.
