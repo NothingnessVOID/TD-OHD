@@ -1171,7 +1171,7 @@
 .pg-gk-ladder {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
   /* The tier has to be three *distinguishable* lightness steps and every step has
      to clear 3:1 as a graphic. --accent-strong alone sits at 3.3:1 on the lightest
      Skins, so no lighter step of it can pass; the base is therefore the accent
@@ -1187,7 +1187,15 @@
   align-items: center;
   gap: 8px;
   min-height: 26px;
+  padding-block: 4px;
 }
+/* A hairline between the tiers. The three lightness steps sit close together by
+   necessity (every step has to clear 3:1), so the boundary itself carries the
+   "these are three separate rungs" reading. Decorative line, not a data mark. */
+/* --border-subtle measured 1.09:1 against the dark panel, i.e. invisible exactly
+   where the compressed lightness steps need the boundary most. --border is the
+   decorative-but-visible step. */
+.pg-gk-band + .pg-gk-band { border-top: 1px solid var(--border); }
 .pg-gk-band-rule {
   display: block;
   align-self: stretch;
@@ -1209,7 +1217,10 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  overflow-wrap: anywhere;
+  /* break-word, not anywhere: an English word may hyphenate at a syllable but
+     must not be split mid-token ("Interf ere"). The two-line clamp plus the
+     title attribute already guarantee the full word is reachable. */
+  overflow-wrap: break-word;
 }
 
 /* ---------- Variable compass ---------- */

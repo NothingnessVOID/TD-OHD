@@ -103,6 +103,9 @@ const WIDE = [
   { key: 'gene keys gift tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="gift"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },
   { key: 'gene keys siddhi tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="siddhi"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },
   { key: 'gene keys word text', tab: 'cross', profile: 'main', selector: '.pg-gk-word', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
+  // The tier divider is a decorative hairline, but it is what separates the three
+  // rungs now that the lightness steps are compressed, so it has to be visible.
+  { key: 'gene keys tier divider', tab: 'cross', profile: 'main', selector: '.pg-gk-band + .pg-gk-band', prop: 'borderTopColor', min: 1.2, kind: 'graphic', note: 'decorative boundary between tiers' },
   { key: 'variable arrow ink', tab: 'variable', profile: 'main', selector: '.pg-var-corner[data-direction] .pg-var-arrow', prop: 'color', over: 'parent-bg', min: 3, kind: 'graphic' },
   { key: 'variable empty slot edge', tab: 'variable', profile: 'main', selector: '.pg-var-corner--empty', prop: 'borderTopColor', min: 1.2, kind: 'graphic', optional: true, note: 'dashed empty state, not a value' },
   { key: 'variable corner name', tab: 'variable', profile: 'main', selector: '.pg-var-name', prop: 'color', over: 'parent-bg', min: 4.5, kind: 'text' }

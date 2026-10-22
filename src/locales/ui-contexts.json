@@ -12,7 +12,7 @@
     "Center formula": "Nine-center formula",
     "Created centers": "Created centers",
     "{count} created channels": "{count} created channels",
-    "Each row reports defined or open status in person A, person B, and the composite. Created channels are listed as structural facts.": "Each row reports defined, undefined, or open status in person A, person B, and the composite. Created channels are listed as structural facts.",
+    "Each row reports defined or open status in person A, person B, and the composite. Created channels are listed as structural facts.": "Each row reports defined or open status in person A, person B, and the composite. Created channels are listed as structural facts.",
     "Center formula {formula}; Created centers {centers}; Created channels {channels}; electromagnetic channels {electromagnetic}; A bridging {statusA}; B bridging {statusB}.": "Center formula {formula}; Created centers {centers}; Created channels {channels}; electromagnetic channels {electromagnetic}; A bridging {statusA}; B bridging {statusB}.",
     "Not applicable": "Not applicable",
     "Fully bridged": "Fully bridged",
@@ -27,7 +27,6 @@
     "Definition:": "Definition:",
     "Channel groups describe computable gate and channel structure; they do not measure attraction strength.": "Channel groups describe computable gate and channel structure; they do not measure attraction strength.",
     "Center states": "Center states",
-    "Each row reports defined or open status in person A, person B, and the composite. Created channels are listed as structural facts.": "Each row reports defined or open status in person A, person B, and the composite. Created channels are listed as structural facts.",
     "Defined": "Defined",
     "Undefined": "Undefined",
     "Open": "Open",
@@ -120,7 +119,14 @@
     "Night Bloom": "Night Bloom",
     "Night color": "Night color",
     "Newly defined in the relationship": "Newly defined in the relationship",
-    "Center Paper": "Paper"
+    "Center Paper": "Paper",
+    "Gene Keys tier: shadow": "Shadow",
+    "Gene Keys tier: gift": "Gift",
+    "Gene Keys tier: siddhi": "Siddhi",
+    "Variable tag: determination": "Intake",
+    "Variable tag: motivation": "Drive",
+    "Variable tag: environment": "Place",
+    "Variable tag: perspective": "View"
   },
   "zh-CN": {
     "connection.heading": "关系合图",

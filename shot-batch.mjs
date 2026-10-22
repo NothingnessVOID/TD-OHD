@@ -191,7 +191,10 @@ try {
           locale: document.documentElement.lang || null
         }));
 
-        const file = `${size.label}x${size.h}-${tab}${skin === 'light' ? '' : '-' + skin}.png`;
+        // Non-default locales get their own file name; otherwise an English run
+        // would overwrite the Chinese screenshot it is meant to be compared with.
+        const localeTag = locale === 'zh-CN' ? '' : `-${locale.split('-')[0]}`;
+        const file = `${size.label}x${size.h}-${tab}${skin === 'light' ? '' : '-' + skin}${localeTag}.png`;
         // Inject the flattening rule, capture, then drop it so the next tab and
         // the live page see the real layout again.
         const flattenHandle = await flattenForCapture(page);

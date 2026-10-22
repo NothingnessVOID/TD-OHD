@@ -850,7 +850,7 @@ export function renderPanelContent(panel) {
   const container = document.getElementById('panel-content');
   // Graphics panels own their own one-column flow; the two-up card grid on
   // .panel-content belongs to the list panels that still use it.
-  container.classList.toggle('panel-flow', ['centers', 'channels', 'gates', 'planets'].includes(panel));
+  container.classList.toggle('panel-flow', ['centers', 'channels', 'gates', 'planets', 'cross', 'variable'].includes(panel));
   switch (panel) {
     case 'centers': renderCentersPanel(container); break;
     case 'channels': renderChannelsPanel(container); break;
