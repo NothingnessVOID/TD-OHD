@@ -31,30 +31,21 @@ const verbose = process.argv.includes('--verbose');
 const CENTRES = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
 
 // ------------------------------------------------------------------ thresholds
-// HUE_DRIFT_MAX: a project threshold, not a standard. The question it answers is
-// "would a reader still call this the same colour family as the centre colour".
-// 12 degrees is roughly the width of one hue-name boundary in the classic
-// Berlin & Kay basic-colour categories for the non-primary regions, and it is
-// deliberately looser than a just-noticeable hue shift (~2-4 degrees in OKLCH for
-// saturated colours), because the mark is a 1.5px stroke rather than a large fill
-// and is always printed next to the centre name.
-const HUE_DRIFT_MAX = 12;
-// SEPARATION_MIN: a project threshold, OKLab dE x100. 2 is about the
-// just-noticeable level for OKLab, so 10 is five times that.
-//
-// BUT the absolute floor turned out to be the wrong test: several Center Palettes
-// deliberately repeat a colour for different centres (classic paints Head and G
-// both #E2C754, and Throat/Spleen/Solar/Root all #CA9963), so a nine-way
-// separation demand asks the panel to fix something the graphic itself does not
-// have. The check therefore runs against the palette's own separation: the marks
-// must not collapse two centres that the palette kept apart. A pair the palette
-// never separated is reported, not failed.
-const SEPARATION_MIN = 10;
-// RETENTION_MIN: how much of the palette's own separation the marks must keep.
-// Mixing every colour with the same ink pulls them all toward that ink, so some
-// convergence is unavoidable; 60% is the point where the ordering of "these two
-// look closer than those two" is still preserved.
+// Both numbers below are PROJECT thresholds, chosen here and waiting for
+// validation against real thin-stroke samples. They are not WCAG, not
+// CIEDE2000's guidance and not a published perceptual standard. OKLab/OKLCH is
+// used because it is far better suited to this comparison than HSL (whose hue is
+// not perceptually uniform) and because CSS Color 4 specifies both spaces - but
+// the specification backs the colour space, not these two numbers.
+const HUE_DRIFT_MAX = 12;      // degrees; "still the same colour family" budget
 const RETENTION_MIN = Number(process.argv.find(arg => arg.startsWith('--retention='))?.slice(12) || 0.6);
+// A pair whose palette colours are already this close has no separation to keep.
+// 0.5 in OKLab dE x100 is well under any usable difference, so such a pair is
+// recorded as exempt instead of being asked to retain a fraction of nothing.
+const BASELINE_EQUAL_MAX = 0.5;
+// Below this chroma the hue angle is numerically unstable and an angle-based
+// verdict would be noise, so those centres are reported as not applicable.
+const CHROMA_MIN = 0.01;
 
 // ------------------------------------------------------------------ color math
 const srgbToLinear = value => (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
@@ -89,6 +80,7 @@ const deltaE = (first, second) => {
 // ------------------------------------------------------------------ collect
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const rows = [];
+const pairs = [];
 for (const skin of SKINS) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
@@ -153,74 +145,85 @@ for (const skin of SKINS) {
   for (const key of usable) {
     const centre = rgbToOklch(resolved.out[key].centre);
     const mark = rgbToOklch(resolved.out[key].mark);
+    // Near zero chroma the hue angle is noise; reporting a number there would be
+    // inventing precision.
+    const na = centre.C < CHROMA_MIN || mark.C < CHROMA_MIN;
+    const drift = na ? null : Math.round(hueDelta(centre.h, mark.h) * 10) / 10;
     rows.push({
       skin: skin.id, theme: resolved.theme, centre: key,
       centreHue: Math.round(centre.h * 10) / 10, markHue: Math.round(mark.h * 10) / 10,
-      drift: Math.round(hueDelta(centre.h, mark.h) * 10) / 10,
+      drift, na,
       centreChroma: Math.round(centre.C * 1000) / 1000, markChroma: Math.round(mark.C * 1000) / 1000,
-      driftPass: hueDelta(centre.h, mark.h) <= HUE_DRIFT_MAX
+      driftPass: na ? true : drift <= HUE_DRIFT_MAX
     });
   }
-  // Closest pair among this Skin's marks on one screen, and the same pair in the
-  // untouched palette, so convergence can be measured instead of assumed.
-  const centres = usable.map(key => ({ key, rgb: resolved.out[key].centre }));
-  const closestOf = list => {
-    let best = null;
-    for (let i = 0; i < list.length; i++) {
-      for (let j = i + 1; j < list.length; j++) {
-        const distance = deltaE(list[i].rgb, list[j].rgb);
-        if (!best || distance < best.distance) best = { a: list[i].key, b: list[j].key, distance };
-      }
+  // 36 pairs, each judged against its own baseline. A single repeated palette
+  // colour must not exempt the other pairs, which is what a "closest pair" test
+  // did: one duplicate made the whole Skin pass.
+  for (let i = 0; i < usable.length; i++) {
+    for (let j = i + 1; j < usable.length; j++) {
+      const a = usable[i], b = usable[j];
+      const baseline = deltaE(resolved.out[a].centre, resolved.out[b].centre);
+      const actual = deltaE(resolved.out[a].mark, resolved.out[b].mark);
+      const exempt = baseline <= BASELINE_EQUAL_MAX;
+      const retention = baseline > 0 ? Math.round((actual / baseline) * 100) / 100 : null;
+      pairs.push({
+        skin: skin.id, theme: resolved.theme, a, b, baseline, actual, retention,
+        exempt,
+        pass: exempt ? true : actual >= baseline * RETENTION_MIN
+      });
     }
-    return best;
-  };
-  const markClosest = closestOf(marks);
-  const paletteClosest = closestOf(centres);
-  const paletteDistinct = paletteClosest.distance >= SEPARATION_MIN;
-  rows.push({
-    skin: skin.id, theme: resolved.theme,
-    separation: {
-      ...markClosest,
-      paletteDistance: paletteClosest.distance,
-      palettePair: `${paletteClosest.a}/${paletteClosest.b}`,
-      retention: paletteClosest.distance > 0 ? Math.round((markClosest.distance / paletteClosest.distance) * 100) / 100 : null,
-      // A pair the palette never separated is not the panel's to fix.
-      pass: paletteClosest.distance < SEPARATION_MIN ? true : markClosest.distance >= SEPARATION_MIN * RETENTION_MIN
-    }
-  });
+  }
 }
 await browser.close();
 
 // ------------------------------------------------------------------ report
 const driftRows = rows.filter(row => row.centre && !row.error);
-const sepRows = rows.filter(row => row.separation);
+const errorRows = rows.filter(row => row.error);
+const judged = pairs.filter(pair => !pair.exempt);
+const exemptPairs = pairs.filter(pair => pair.exempt);
+const pairFails = judged.filter(pair => !pair.pass);
 const driftFails = driftRows.filter(row => !row.driftPass);
-const sepFails = sepRows.filter(row => !row.separation.pass);
+const driftSkipped = driftRows.filter(row => row.na);
 
-console.log(`skins ${sepRows.length} · centres ${CENTRES.length} · drift measurements ${driftRows.length}`);
-console.log(`thresholds: hue drift <= ${HUE_DRIFT_MAX} deg, pairwise OKLab dE x100 >= ${SEPARATION_MIN}\n`);
+console.log(`skins ${new Set(rows.map(row => row.skin)).size} · centres ${CENTRES.length}`);
+console.log(`hue drift <= ${HUE_DRIFT_MAX}° · pair retention >= ${Math.round(RETENTION_MIN * 100)}% of the palette pair · baseline-equal <= ${BASELINE_EQUAL_MAX}\n`);
 
-for (const row of sepRows) {
-  const drifts = driftRows.filter(item => item.skin === row.skin);
-  const worst = drifts.reduce((acc, item) => (!acc || item.drift > acc.drift ? item : acc), null);
-  const closest = row.separation;
-  const flag = worst.drift > HUE_DRIFT_MAX || !closest.pass ? 'FAIL' : ' ok ';
-  const baseline = closest.paletteDistance < SEPARATION_MIN ? 'palette never separated' : `retains ${Math.round(closest.retention * 100)}%`;
-  console.log(`${flag} ${row.skin.padEnd(19)} ${row.theme.padEnd(5)} drift ${String(worst.drift).padStart(5)}° (${worst.centre}) · marks ${String(closest.distance).padStart(4)} vs palette ${String(closest.paletteDistance).padStart(4)} (${closest.palettePair}) — ${baseline}`);
+const skinsSeen = [...new Set(rows.map(row => row.skin))];
+for (const skin of skinsSeen) {
+  const drifts = driftRows.filter(row => row.skin === skin);
+  const worst = drifts.reduce((acc, row) => (!acc || row.drift > acc.drift ? row : acc), null);
+  const skinPairs = judged.filter(pair => pair.skin === skin);
+  const worstPair = skinPairs.reduce((acc, pair) => (!acc || pair.retention < acc.retention ? pair : acc), null);
+  const driftFlag = worst.drift > HUE_DRIFT_MAX ? 'FAIL' : ' ok ';
+  const pairFlag = skinPairs.some(pair => !pair.pass) ? 'FAIL' : ' ok ';
+  console.log(`drift ${driftFlag} ${skin.padEnd(19)} worst ${String(worst.drift).padStart(5)}° (${worst.centre})`);
+  if (worstPair) console.log(`pairs ${pairFlag} ${skin.padEnd(19)} worst retention ${String(Math.round(worstPair.retention * 100)).padStart(4)}% (${worstPair.a}/${worstPair.b}) · ${skinPairs.filter(pair => !pair.pass).length} failing of ${skinPairs.length}`);
 }
+
+console.log(`\n36-pair accounting: ${pairs.length} pairs total = ${exemptPairs.length} exempt (palette already identical) + ${judged.length} judged`);
+console.log(`exempt pairs: ${[...new Set(exemptPairs.map(pair => `${pair.a}/${pair.b} (dE ${pair.baseline})`))].join(', ') || 'none'}`);
 
 if (driftFails.length) {
   console.log(`\nhue drift above ${HUE_DRIFT_MAX}° (${driftFails.length}):`);
   for (const row of driftFails) console.log(`  ${row.skin.padEnd(19)} ${row.centre.padEnd(7)} ${row.centreHue}° -> ${row.markHue}° = ${row.drift}°`);
 }
-if (sepFails.length) {
-  console.log(`\nseparation lost beyond the floor (${sepFails.length}):`);
-  for (const row of sepFails) console.log(`  ${row.skin.padEnd(19)} ${row.separation.a}/${row.separation.b} = ${row.separation.distance} (palette ${row.separation.paletteDistance})`);
+if (driftSkipped.length) {
+  console.log(`\nhue not applicable, chroma below ${CHROMA_MIN} (${driftSkipped.length}):`);
+  for (const row of driftSkipped) console.log(`  ${row.skin.padEnd(19)} ${row.centre.padEnd(7)} chroma ${row.centreChroma}/${row.markChroma}`);
 }
-if (verbose) {
-  console.log('\nper-centre drift (--verbose):');
-  for (const row of driftRows) {
-    console.log(`  ${row.skin.padEnd(19)} ${row.centre.padEnd(7)} ${String(row.centreHue).padStart(6)}° -> ${String(row.markHue).padStart(6)}°  drift ${String(row.drift).padStart(5)}°  chroma ${row.centreChroma} -> ${row.markChroma}`);
-  }
+if (pairFails.length) {
+  console.log(`\npairs below retention (${pairFails.length}):`);
+  for (const pair of pairFails) console.log(`  ${pair.skin.padEnd(19)} ${pair.a}/${pair.b}: palette ${pair.baseline} -> marks ${pair.actual} = ${Math.round(pair.retention * 100)}%`);
 }
-process.exit(driftFails.length || sepFails.length ? 1 : 0);
+if (errorRows.length) {
+  console.log(`\nunresolved tokens (${errorRows.length}):`);
+  for (const row of errorRows) console.log(`  ${row.skin.padEnd(19)} ${row.centre}: ${row.error}`);
+}
+
+// Coverage is asserted, not assumed: 9 centres per Skin must be measured, and a
+// token that would not resolve is a failure rather than a quiet omission.
+const expectedDrift = skinsSeen.length * CENTRES.length;
+const coverageOk = driftRows.length === expectedDrift && errorRows.length === 0;
+console.log(`\ncoverage: ${driftRows.length} / ${expectedDrift} drift measurements${coverageOk ? '' : ' — INCOMPLETE'}`);
+process.exit(driftFails.length || pairFails.length || errorRows.length || !coverageOk ? 1 : 0);

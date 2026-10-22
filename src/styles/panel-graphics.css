@@ -289,6 +289,15 @@
 .pg-band-label { font-size: 11px; color: var(--text-tertiary); letter-spacing: .04em; }
 .pg-band-value { font-size: 14px; color: var(--text); white-space: nowrap; }
 .pg-band-note { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+/* Its own line, and allowed to wrap: inside the inline-flex row with nowrap it ran
+   past the identity band's right edge on the mental and lunar authority tracks. */
+.pg-band-explain {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  margin: 2px 0 0;
+}
 
 /* Nine dots in CENTER_KEYS order; the authority centre is solid and tinted. */
 .pg-authority-track { display: inline-flex; gap: 4px; align-items: center; }
@@ -519,7 +528,11 @@
     padding-inline-start: 0;
     padding-top: 10px;
   }
-  .pg-band-row { gap: 6px; }
+  /* At this tier the label, the authority name and the nine-dot track can just
+     exceed the band; wrapping is cheaper than shrinking the dotted track, which is
+     the thing the row exists to show. */
+  .pg-band-row { gap: 6px; flex-wrap: wrap; }
+  .pg-band-value { min-width: 0; }
   .panel-center-line { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .panel-center-row { grid-template-columns: 24px minmax(0, 1fr) 8px 24px; }
 }
