@@ -43,7 +43,13 @@ const WIDE = [
   { key: 'grid personality cell', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="personality"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
   { key: 'grid both hatch (design stripe)', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="both"]', prop: 'backgroundImage', sample: 'design', min: 3, kind: 'graphic' },
   { key: 'grid both hatch (personality stripe)', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="both"]', prop: 'backgroundImage', sample: 'personality', min: 3, kind: 'graphic' },
-  { key: 'grid inactive cell fill+ring', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'backgroundColor', min: 1.2, kind: 'graphic', note: 'empty slot: identified by its ring, recorded so the .4 opacity is not invisible' },
+  // The fill is an auxiliary surface: an empty cell is identified by its ring, not
+  // by a tint that is 3% away from the panel. Recorded at the auxiliary floor so
+  // the value is not lost, with the ring measured separately below.
+  { key: 'grid inactive cell fill', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'auxiliary surface; the ring carries the reading' },
+  // The 0.5px inset ring is what actually identifies an empty cell, and until now
+  // it was claimed to carry that role without being measured.
+  { key: 'grid inactive cell ring', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'boxShadow', min: 1.2, kind: 'graphic', note: 'the ring that identifies an empty cell' },
   // gate pill
   { key: 'gate pill number', tab: 'gates', profile: 'main', selector: '.panel-gate-number', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
   { key: 'gate pill ladder active tick', tab: 'gates', profile: 'main', selector: '.panel-gate-pill .pg-tick[data-active="true"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
@@ -131,33 +137,36 @@ const RESOLVER = () => {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 1;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const SENTINEL = '#010203';
+  // Two samples (over black, over white) solve for colour AND alpha. The black
+  // sample is ONLY an intermediate: compositing it as the page foreground would
+  // darken every translucent mark and overstate its contrast.
   const sample = css => {
-    ctx.clearRect(0, 0, 1, 1);
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, 1, 1);
+    if (typeof css !== 'string' || !css.trim()) return null;
+    // An invalid fillStyle leaves the previous value in place, so prove the
+    // assignment took before trusting any number that follows.
+    ctx.fillStyle = SENTINEL;
+    const sentinel = ctx.fillStyle;
     ctx.fillStyle = css;
-    ctx.fillRect(0, 0, 1, 1);
-    const overBlack = [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3);
-    ctx.clearRect(0, 0, 1, 1);
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, 1, 1);
-    ctx.fillStyle = css;
-    ctx.fillRect(0, 0, 1, 1);
-    const overWhite = [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3);
-    // overBlack = c·a, overWhite = c·a + 255·(1−a)
-    const deltas = overWhite.map((value, index) => value - overBlack[index]);
-    const alpha = 1 - deltas.reduce((sum, value) => sum + value, 0) / (3 * 255);
-    if (alpha <= 0.002) return { rgb: [0, 0, 0], alpha: 0 };
+    if (ctx.fillStyle === sentinel) return null;
+    const read = background => {
+      ctx.clearRect(0, 0, 1, 1);
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, 1, 1);
+      ctx.fillStyle = css;
+      ctx.fillRect(0, 0, 1, 1);
+      return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3);
+    };
+    const overBlack = read('#000');
+    const overWhite = read('#fff');
+    const alpha = 1 - overWhite.map((value, i) => value - overBlack[i]).reduce((sum, v) => sum + v, 0) / (3 * 255);
+    if (alpha <= 0.002) return { rgb: overBlack, alpha: 0 };
     const rgb = overBlack.map(value => Math.min(255, Math.round(value / alpha)));
     return { rgb, alpha: Math.min(1, Math.max(0, alpha)) };
   };
   const composite = (front, back) => front.rgb.map((value, index) =>
     Math.round(value * front.alpha + back.rgb[index] * (1 - front.alpha)));
-  const parse = css => {
-    // Pull a colour out of a gradient when the property is a background-image.
-    const match = /(#[0-9a-f]{3,8}|rgba?\([^)]*\)|color\([^)]*\)|hsla?\([^)]*\))/i.exec(css || '');
-    return sample(match ? match[1] : css);
-  };
+  const parse = css => sample(css);
   const opacityOf = node => {
     let value = 1;
     for (let current = node; current && current.nodeType === 1; current = current.parentElement) {
@@ -165,18 +174,44 @@ const RESOLVER = () => {
     }
     return value;
   };
-  const backdrop = node => {
-    // Composite every ancestor background, bottom-up, over white.
-    const stack = [];
+  const COLOUR = /(#[0-9a-f]{3,8}|rgba?\([^)]*\)|color\([^)]*\)|hsla?\([^)]*\))/gi;
+  /**
+   * The page backdrop behind a node: every ancestor's background-color AND its
+   * background-image, bottom-up. The identity band paints a gradient, so ignoring
+   * background-image would measure the authority dot against the wrong surface.
+   * A gradient is collapsed to the alpha-weighted mean of its colour stops, which
+   * is the honest approximation available without sampling pixels.
+   */
+  const backdropOf = node => {
+    const layers = [];
     for (let current = node?.parentElement; current; current = current.parentElement) {
-      const colour = parse(getComputedStyle(current).backgroundColor);
-      if (colour.alpha > 0) stack.push(colour);
+      const style = getComputedStyle(current);
+      const colour = parse(style.backgroundColor);
+      if (colour && colour.alpha > 0) layers.push(colour);
+      const image = style.backgroundImage;
+      if (image && image !== 'none' && /gradient/i.test(image)) {
+        const stops = [...String(image).matchAll(COLOUR)].map(match => parse(match[1])).filter(Boolean).filter(stop => stop.alpha > 0);
+        if (stops.length) {
+          const total = stops.reduce((sum, stop) => sum + stop.alpha, 0);
+          const rgb = [0, 1, 2].map(channel =>
+            Math.round(stops.reduce((sum, stop) => sum + stop.rgb[channel] * stop.alpha, 0) / total));
+          layers.push({ rgb, alpha: Math.min(1, total / stops.length) });
+        }
+      }
     }
     let result = { rgb: [255, 255, 255], alpha: 1 };
-    for (const layer of stack.reverse()) result = { rgb: composite(layer, result), alpha: 1 };
+    for (const layer of layers.reverse()) result = { rgb: composite(layer, result), alpha: 1 };
     return result;
   };
-  window.__pgAudit = { sample, parse, composite, opacityOf, backdrop };
+  /** A node's own surface, composited over what is behind it. */
+  const surfaceOf = node => {
+    if (!node) return { rgb: [255, 255, 255], alpha: 1 };
+    const behind = backdropOf(node);
+    const colour = parse(getComputedStyle(node).backgroundColor);
+    if (!colour || colour.alpha === 0) return behind;
+    return { rgb: composite(colour, behind), alpha: 1 };
+  };
+  window.__pgAudit = { sample, parse, composite, opacityOf, backdropOf, surfaceOf };
 };
 
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -185,40 +220,64 @@ const missing = [];
 
 const runProbe = async (page, probe) => {
   const measured = await page.evaluate(({ selector, prop, over, sample }) => {
-    const { parse, composite, opacityOf, backdrop } = window.__pgAudit;
-    const node = document.querySelector(selector);
-    if (!node) return null;
-    const style = getComputedStyle(node);
-    let raw = style[prop];
-    if (prop === 'backgroundImage' && sample) {
-      // A hatch: pick the stripe of the requested side by order of appearance.
-      const colours = [...String(raw).matchAll(/(#[0-9a-f]{3,8}|rgba?\([^)]*\)|color\([^)]*\))/gi)].map(match => match[1]);
-      raw = colours[sample === 'personality' ? 1 : 0] ?? colours[0] ?? 'transparent';
+    const { parse, composite, opacityOf, backdropOf, surfaceOf } = window.__pgAudit;
+    // Every matching node is measured, not just the first: one probe slot can
+    // stand for nine centres or several rows, and reporting the first would
+    // describe one node while claiming the group.
+    const nodes = [...document.querySelectorAll(selector)];
+    if (!nodes.length) return { absent: true };
+    const readings = [];
+    for (const node of nodes) {
+      const style = getComputedStyle(node);
+      let raw = style[prop];
+      // A shadow serialises as "<colour> 0px 0px 0px .5px inset"; the colour has to
+      // be lifted out of it or the canvas rejects the whole string.
+      if (prop === 'boxShadow') {
+        const first = String(raw).match(/(#[0-9a-f]{3,8}|rgba?\([^)]*\)|color\([^)]*\))/i);
+        raw = first ? first[1] : 'transparent';
+      }
+      if (prop === 'backgroundImage' && sample) {
+        const colours = [...String(raw).matchAll(/(#[0-9a-f]{3,8}|rgba?\([^)]*\)|color\([^)]*\))/gi)].map(match => match[1]);
+        raw = colours[sample === 'personality' ? 1 : 0] ?? colours[0] ?? 'transparent';
+      }
+      const front = parse(raw);
+      // An unparsable colour is a failure, not a skip: a validation that cannot
+      // read its input must not look like "nothing to check here".
+      if (!front) { readings.push({ unresolved: true, raw: String(raw).slice(0, 60) }); continue; }
+      if (front.alpha === 0) { readings.push({ transparent: true, raw: String(raw).slice(0, 60) }); continue; }
+      const alpha = front.alpha * opacityOf(node);
+      let back;
+      if (over === 'self-bg') back = surfaceOf(node);
+      else if (over === 'parent-bg') back = surfaceOf(node.parentElement);
+      else back = backdropOf(node);
+      // The foreground is composited over the surface it actually sits on. Using
+      // the black sample here would darken every translucent mark.
+      const solid = { rgb: composite({ rgb: front.rgb, alpha }, back), alpha: 1 };
+      readings.push({ front: solid.rgb, back: back.rgb, alpha });
     }
-    const front = parse(raw);
-    if (front.alpha === 0) return { unresolved: true, raw };
-    front.alpha *= opacityOf(node);
-    let back;
-    if (over === 'self-bg') back = { rgb: parse(style.backgroundColor).rgb, alpha: 1 };
-    else if (over === 'parent-bg') back = { rgb: parse(getComputedStyle(node.parentElement).backgroundColor).rgb, alpha: 1 };
-    else back = backdrop(node);
-    const frontSolid = { rgb: composite(front, { rgb: [0, 0, 0], alpha: 1 }), alpha: 1 };
-    return { front: frontSolid.rgb, back: back.rgb, alpha: front.alpha, raw };
+    return { readings, count: nodes.length };
   }, { selector: probe.selector, prop: probe.prop, over: probe.over || 'panel', sample: probe.sample });
 
-  if (!measured || measured.unresolved) {
-    const reason = measured ? `unresolved colour: ${measured.raw}` : 'element absent on this fixture';
-    if (!probe.optional) { missing.push(`${probe.key}: ${reason}`); return; }
-    // An optional probe that this fixture cannot produce is still counted, so a
-    // shrinking coverage number can never read as a pass.
-    rows.push({ key: probe.key, skin: currentSkin, skipped: reason, pass: true, min: probe.min, ratio: null });
+  if (!measured || measured.absent) {
+    if (!probe.optional) { missing.push(`${probe.key}: element absent (${probe.selector})`); return; }
+    rows.push({ key: probe.key, skin: currentSkin, skipped: 'element absent on this fixture', pass: true, min: probe.min, ratio: null });
     return;
   }
-  const ratio = contrastRatio(measured.front, measured.back);
+  const bad = measured.readings.filter(reading => reading.unresolved || reading.transparent);
+  if (bad.length) {
+    if (!probe.optional) { missing.push(`${probe.key}: ${bad[0].unresolved ? 'unresolved colour' : 'fully transparent'} ${bad[0].raw}`); return; }
+    rows.push({ key: probe.key, skin: currentSkin, skipped: `unresolved: ${bad[0].raw}`, pass: true, min: probe.min, ratio: null });
+    return;
+  }
+  // The probe passes only if every matching node passes; the reported ratio is the
+  // worst one, and the count is carried so coverage can be checked.
+  const ratios = measured.readings.map(reading => ({ ratio: contrastRatio(reading.front, reading.back), alpha: reading.alpha }));
+  const worst = ratios.reduce((acc, item) => (item.ratio < acc.ratio ? item : acc), ratios[0]);
   rows.push({
-    key: probe.key, skin: currentSkin, ratio: Math.round(ratio * 100) / 100,
+    key: probe.key, skin: currentSkin, ratio: Math.round(worst.ratio * 100) / 100,
     min: probe.min, kind: probe.kind, note: probe.note, pending: probe.pending,
-    alpha: Math.round(measured.alpha * 100) / 100, pass: ratio >= probe.min
+    alpha: Math.round(worst.alpha * 100) / 100, nodes: measured.count,
+    pass: worst.ratio >= probe.min, ratios: ratios.map(item => Math.round(item.ratio * 100) / 100)
   });
 };
 

@@ -54,7 +54,7 @@ const SEPARATION_MIN = 10;
 // Mixing every colour with the same ink pulls them all toward that ink, so some
 // convergence is unavoidable; 60% is the point where the ordering of "these two
 // look closer than those two" is still preserved.
-const RETENTION_MIN = 0.6;
+const RETENTION_MIN = Number(process.argv.find(arg => arg.startsWith('--retention='))?.slice(12) || 0.6);
 
 // ------------------------------------------------------------------ color math
 const srgbToLinear = value => (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);

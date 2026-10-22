@@ -91,7 +91,8 @@ const html = `<!doctype html><meta charset="utf-8">
 </style>
 <h1>Centre colour vs panel mark</h1>
 <p class="lead">Left swatch = the Centre Palette colour the bodygraph paints. Right swatch = the panel mark token derived from it. Both on the panel background.</p>
-<div class="legend"><span><i></i>palette centre colour</span><span><i></i>panel mark (darker)</span></div>
+<div class="legend"><span><i></i>palette</span><span><i></i>panel mark</span></div>
+<p class="lead" style="margin-top:-6px">On light Skins the mark is darker than the palette; on the two dark Skins (midnight-contrast, and default-dark if present) the ink is lighter than the palette, so the mark is <em>lighter</em>. The direction is always "toward the Skin's ink".</p>
 ${rows}`;
 
 mkdirSync(outDir, { recursive: true });
