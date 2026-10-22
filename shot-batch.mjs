@@ -68,6 +68,9 @@ const PROFILES = {
   // Fixing coverage: this birth carries 54.4, the one gate.line with no fixing
   // rule, so the planet table shows an `unknown` badge next to `none` ones.
   'synthetic-d': { id: 'style-ref-d', name: 'Style Reference D', birthDate: '1975-03-25', birthTime: '08:30' },
+  // Mental (outer) authority: no single centre anchors the track, so the nine
+  // dots stay hollow and the panel has to say so in words.
+  'synthetic-mental': { id: 'style-ref-mental', name: 'Style Reference M', birthDate: '1985-03-07', birthTime: '09:00' },
   // Third centre state: this birth has fully open centres (no definition and no
   // activated gate), which synthetic-b never exercises.
   'synthetic-e': { id: 'style-ref-e', name: 'Style Reference E', birthDate: '1993-09-07', birthTime: '11:15' }
@@ -194,7 +197,10 @@ try {
         // Non-default locales get their own file name; otherwise an English run
         // would overwrite the Chinese screenshot it is meant to be compared with.
         const localeTag = locale === 'zh-CN' ? '' : `-${locale.split('-')[0]}`;
-        const file = `${size.label}x${size.h}-${tab}${skin === 'light' ? '' : '-' + skin}${localeTag}.png`;
+        // A non-default profile also needs its own name: two empty-state profiles
+        // both shot the centres tab and the second overwrote the first.
+        const profileTag = profileId === 'synthetic-b' ? '' : `-${profileId.replace('synthetic-', '')}`;
+        const file = `${size.label}x${size.h}-${tab}${skin === 'light' ? '' : '-' + skin}${localeTag}${profileTag}.png`;
         // Inject the flattening rule, capture, then drop it so the next tab and
         // the live page see the real layout again.
         const flattenHandle = await flattenForCapture(page);

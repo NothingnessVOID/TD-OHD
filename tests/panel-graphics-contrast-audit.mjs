@@ -23,6 +23,7 @@ import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
 // argument that is not a flag.
 const url = process.argv.slice(2).find(arg => !arg.startsWith('--')) || 'http://127.0.0.1:5216/';
 const verbose = process.argv.includes('--verbose');
+const showNotes = process.argv.includes('--notes');
 const profiles = {
   // Full chart: channels, gates, planets, both fixing states that occur here.
   main: { id: 'style-ref-b', name: 'B', birthDate: '1979-11-04', birthTime: '06:05' },
@@ -303,12 +304,37 @@ if (skipped.length) {
 // Every relaxed-floor row is printed: the value of this audit is that a later
 // reader can check the number, and a truncated list throws that away.
 const weak = measuredRows.filter(row => row.pass && row.min <= 1.2);
-console.log(`\nrecorded at the relaxed floor (${weak.length}, informational, full list):`);
-for (const row of weak) console.log(`  note ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 (alpha ${row.alpha})${row.note ? '  — ' + row.note : ''}`);
+// The console may be short; the file never is. Every row goes to the JSON below,
+// and --notes adds the relaxed-floor list to stdout as well.
+if (showNotes) {
+  console.log(`\nrecorded at the relaxed floor (${weak.length}, informational, full list):`);
+  for (const row of weak) console.log(`  note ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 (alpha ${row.alpha})${row.note ? '  — ' + row.note : ''}`);
+} else {
+  console.log(`\n${weak.length} relaxed-floor rows (informational) — pass --notes to print them; all rows are in the JSON.`);
+}
 if (verbose) {
   const passing = measuredRows.filter(row => row.pass && row.min > 1.2);
   console.log(`\npassing rows (${passing.length}, --verbose):`);
   for (const row of passing) console.log(`  ok   ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 >= ${row.min}:1`);
+}
+
+// Full evidence file: every measured row, whatever the console showed.
+try {
+  const { mkdirSync, writeFileSync } = await import('node:fs');
+  const dir = process.argv.find(arg => arg.startsWith('--out='))?.slice(6) || '/tmp/ohd-audit';
+  mkdirSync(dir, { recursive: true });
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const file = `${dir}/contrast-${stamp}.json`;
+  writeFileSync(file, JSON.stringify({
+    generatedAt: new Date().toISOString(), url,
+    thresholds: { graphic: 3, text: 4.5 },
+    totals: { expected, measured: rows.length, applicable: measuredRows.length, skipped: rows.length - measuredRows.length,
+      pass: measuredRows.filter(row => row.pass).length, fail: real.length, pending: pending.length },
+    rows
+  }, null, 1));
+  console.log(`\nfull evidence: ${file}`);
+} catch (error) {
+  console.error(`could not write the audit file: ${error.message}`);
 }
 
 if (missing.length) {

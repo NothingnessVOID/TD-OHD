@@ -418,7 +418,8 @@ function renderFoundationBand(chart, summaries = {}) {
         <div class="pg-band-row" data-panel-fact="authority" data-knowledge-object="authority" title="${esc(summaries.authority || '')}">
           <span class="pg-band-label">${t('Authority')}</span>
           <span class="pg-band-value">${esc(authorityLabel(chart))}</span>
-          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(t('Authority centre'))}">${track}</span></span>
+          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(t('Authority centre'))}">${track}</span>${
+            anchor ? '' : `<span class="pg-band-note">${esc(t('No single centre anchors this authority'))}</span>`}</span>
         </div>
         <div class="pg-band-row" data-panel-fact="definition" data-knowledge-object="definition">
           <span class="pg-band-label">${t('Definition')}</span>
