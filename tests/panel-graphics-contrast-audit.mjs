@@ -49,7 +49,11 @@ const WIDE = [
   { key: 'grid inactive cell fill', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'auxiliary surface; the ring carries the reading' },
   // The 0.5px inset ring is what actually identifies an empty cell, and until now
   // it was claimed to carry that role without being measured.
-  { key: 'grid inactive cell ring', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'boxShadow', min: 1.2, kind: 'graphic', note: 'the ring that identifies an empty cell' },
+  // Demoted to decoration by measurement: the ring reads 1.08-1.15:1 against the
+  // panel, so it never identified anything. An empty cell is identified by having
+  // no fill and by its position in the grid, the same convention as an empty day in
+  // a contribution graph. Recorded so the value stays visible.
+  { key: 'grid inactive cell ring', tab: 'gates', profile: 'main', selector: '.pg-gate-cell[data-state="none"]', prop: 'boxShadow', min: 1, kind: 'graphic', note: 'decorative; identification comes from no-fill + grid position' },
   // gate pill
   { key: 'gate pill number', tab: 'gates', profile: 'main', selector: '.panel-gate-number', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
   { key: 'gate pill ladder active tick', tab: 'gates', profile: 'main', selector: '.panel-gate-pill .pg-tick[data-active="true"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },

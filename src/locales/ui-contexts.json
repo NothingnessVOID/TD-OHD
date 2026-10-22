@@ -127,7 +127,8 @@
     "Variable tag: motivation": "Drive",
     "Variable tag: environment": "Place",
     "Variable tag: perspective": "View",
-    "No single centre anchors this authority": "No single centre anchors this authority"
+    "No single centre anchors this authority": "No single centre anchors this authority",
+    "Blank = not activated": "Blank = not activated"
   },
   "zh-CN": {
     "connection.heading": "关系合图",

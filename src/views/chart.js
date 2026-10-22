@@ -1112,6 +1112,7 @@ function renderGatesPanel(container) {
         label: summary,
         title: cell => `${t('Gate {gate}', { gate: cell.gate })} · ${sourceLabel[cell.state]}`
       })}
+      <p class="pg-panel-note">${t('Blank = not activated')}</p>
     </div>
     <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
     <div class="pg-gate-list">

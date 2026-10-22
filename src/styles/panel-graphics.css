@@ -23,14 +23,27 @@
   --pd-center-mark-sacral: color-mix(in srgb, var(--hd-center-sacral) var(--pd-mark-mix), var(--text));
   --pd-center-mark-root: color-mix(in srgb, var(--hd-center-root) var(--pd-mark-mix), var(--text));
 }
-/* Three Skins drift past the tolerance at the default 56%: their palette hues sit
-   far from their ink's hue, so mixing pulls them across a hue-name boundary. Each
-   value below is the smallest mix that brings every centre back under 12 degrees
-   (tests/panel-graphics-mark-mix-offline.mjs). Hue carries identity, contrast
-   carries legibility; when they collide, identity wins and contrast is recorded. */
-[data-skin="coral"] { --pd-mark-mix: 76%; }
+/* Per-Skin centre-colour share. 100% would mean "no mixing at all", which is what
+   a Skin wants when its own palette already clears 3:1 - but measured against
+   --bg-elevated, none of the eleven do (the best is deep-think at 3.09:1, the
+   worst default-light at 1.65:1), so every Skin needs some ink. What differs is
+   how much: each value below is the LARGEST share that still clears 3:1, i.e. the
+   least ink that does the job. Less ink means less hue drift and less convergence
+   between the nine marks, which is why the dark Skins sit near 90%.
+   Source: tests/panel-graphics-mark-mix-offline.mjs (offline, over the CSS tokens).
+   grass-aroma is the exception: no share satisfies both floors, so it takes the
+   smallest share that holds drift under 12 degrees and pays with contrast. */
+[data-skin="absolutely"] { --pd-mark-mix: 80%; }
 [data-skin="contemplation"] { --pd-mark-mix: 62%; }
+[data-skin="coral"] { --pd-mark-mix: 80%; }
+[data-skin="deep-think"] { --pd-mark-mix: 100%; }
+[data-skin="default-light"] { --pd-mark-mix: 68%; }
+[data-skin="default-dark"] { --pd-mark-mix: 92%; }
+[data-skin="delve"] { --pd-mark-mix: 96%; }
 [data-skin="grass-aroma"] { --pd-mark-mix: 68%; }
+[data-skin="high-contrast"] { --pd-mark-mix: 68%; }
+[data-skin="midnight-contrast"] { --pd-mark-mix: 76%; }
+[data-skin="new-warm-paper"] { --pd-mark-mix: 72%; }
 /* =============================================================
    Right column graphics (issue #34)
    Shape / Segbar / Ladder / Corner / islands + the Foundation

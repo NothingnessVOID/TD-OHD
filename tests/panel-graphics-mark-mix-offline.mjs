@@ -11,7 +11,7 @@ import { contrastRatio } from '../src/lib/source-contrast.js';
 
 const root = new URL('../src/styles/', import.meta.url);
 const CENTRES = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
-const MIXES = [56, 62, 68, 72, 76, 80, 84, 88, 92, 96];
+const MIXES = [100, 96, 92, 88, 84, 80, 76, 72, 68, 62, 56, 50, 44];
 
 const srgbToLinear = v => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
 function rgbToOklab([r, g, b]) {
@@ -75,6 +75,7 @@ const paletteFor = id => {
 
 console.log('skin                 mix   worst drift (centre)    worst contrast   verdict');
 const best = [];
+const rows = [];
 for (const skin of skins) {
   const registry = SKINS.find(item => item.id === skin.id);
   const palette = paletteFor(registry?.defaultCenterPalette || 'classic');
@@ -90,11 +91,17 @@ for (const skin of skins) {
     const driftPass = drift <= 12, contrastPass = worstContrast >= 3;
     const verdict = driftPass && contrastPass ? 'ok' : driftPass ? 'contrast<3' : contrastPass ? 'drift>12' : 'both';
     if (driftPass && contrastPass) best.push({ skin: skin.id, mix: mixPct });
+    rows.push({ skin: skin.id, mix: mixPct, worstContrast, worstCentre: contrastCentre, drift });
     console.log(`${skin.id.padEnd(19)} ${String(mixPct).padStart(3)}%  ${drift.toFixed(1).padStart(5)}° (${driftCentre.padEnd(7)})  ${worstContrast.toFixed(2).padStart(5)}:1 (${contrastCentre.padEnd(7)}) ${verdict}`);
   }
 }
-console.log('\nsmallest mix that satisfies both, per skin:');
+// The share is how much of the CENTRE colour survives; 100% means "no mixing at
+// all", which is what a Skin wants whenever its own palette already clears 3:1.
+// The chosen value is the LARGEST passing share: least ink, least hue drift.
+console.log('\nchosen centre-colour share (largest that still clears 3:1):');
 for (const skin of skins) {
-  const ok = best.filter(item => item.skin === skin.id).sort((a, b) => a.mix - b.mix)[0];
-  console.log(`  ${skin.id.padEnd(19)} ${ok ? ok.mix + '%' : 'none — the two constraints collide'}`);
+  const passing = best.filter(item => item.skin === skin.id).sort((a, b) => b.mix - a.mix);
+  const chosen = passing[0];
+  const at100 = rows.find(row => row.skin === skin.id && row.mix === 100);
+  console.log(`  ${skin.id.padEnd(19)} ${chosen ? String(chosen.mix).padStart(3) + '%' : 'none — constraints collide'}   (unmixed: ${at100.worstContrast}:1 at ${at100.worstCentre})`);
 }
