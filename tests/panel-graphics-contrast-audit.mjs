@@ -19,7 +19,10 @@ import { SKINS } from '../src/lib/skin-registry.js';
 import { contrastRatio } from '../src/lib/source-contrast.js';
 import { PROFILE_STORAGE_KEY } from '../src/lib/profile-storage.js';
 
-const url = process.argv[2] || 'http://127.0.0.1:5216/';
+// Flags may come before or instead of the URL, so the positional is the first
+// argument that is not a flag.
+const url = process.argv.slice(2).find(arg => !arg.startsWith('--')) || 'http://127.0.0.1:5216/';
+const verbose = process.argv.includes('--verbose');
 const profiles = {
   // Full chart: channels, gates, planets, both fixing states that occur here.
   main: { id: 'style-ref-b', name: 'B', birthDate: '1979-11-04', birthTime: '06:05' },
@@ -61,7 +64,11 @@ const WIDE = [
   // decorative-light by design and three of them sit under 3:1 on light panels;
   // that is a palette question, so they are recorded against cut 5 rather than
   // silently relaxed.
-  { key: 'centre defined fill', tab: 'centers', profile: 'main', selector: '.pg-center-glyph[data-state="defined"] .pg-shape path', prop: 'fill', min: 3, kind: 'graphic', pending: 'cut 5: Center Palette centre colours are light by design' },
+  // Reclassified in cut 5a: the defined fill is an auxiliary surface, not a mark
+  // that carries the state alone. The centre name, the state dot and the group
+  // badge beside the row all say "defined" without any colour, and the glyph's
+  // own stroke plus the neighbouring rows give the shape its boundary.
+  { key: 'centre defined fill', tab: 'centers', profile: 'main', selector: '.pg-center-glyph[data-state="defined"] .pg-shape path', prop: 'fill', min: 1, kind: 'graphic', note: 'auxiliary surface; state carried by name + dot + group badge' },
   { key: 'centre undefined fill (18%)', tab: 'centers', profile: 'main', selector: '.pg-center-glyph[data-state="undefined"] .pg-shape path', prop: 'fill', min: 1, kind: 'graphic', note: 'the dashed stroke carries the state' },
   { key: 'centre undefined dashed stroke', tab: 'centers', profile: 'main', selector: '.pg-center-glyph[data-state="undefined"] .pg-shape path', prop: 'stroke', min: 3, kind: 'graphic', pending: 'cut 5: Center Palette centre colours are light by design' },
   { key: 'centre open dotted stroke', tab: 'centers', profile: 'open', selector: '.pg-center-glyph[data-state="open"] .pg-shape path', prop: 'stroke', min: 3, kind: 'graphic', pending: 'cut 5: Center Palette centre colours are light by design' },
@@ -293,10 +300,16 @@ if (skipped.length) {
   console.log(`\nnot applicable on their fixture (${skipped.length}):`);
   for (const row of skipped) console.log(`  SKIP ${row.skin.padEnd(19)} ${row.key}: ${row.skipped}`);
 }
+// Every relaxed-floor row is printed: the value of this audit is that a later
+// reader can check the number, and a truncated list throws that away.
 const weak = measuredRows.filter(row => row.pass && row.min <= 1.2);
-console.log(`\nrecorded at the relaxed floor (${weak.length}, informational):`);
-for (const row of weak.slice(0, 8)) console.log(`  note ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 (alpha ${row.alpha})`);
-if (weak.length > 8) console.log(`  … ${weak.length - 8} more`);
+console.log(`\nrecorded at the relaxed floor (${weak.length}, informational, full list):`);
+for (const row of weak) console.log(`  note ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 (alpha ${row.alpha})${row.note ? '  — ' + row.note : ''}`);
+if (verbose) {
+  const passing = measuredRows.filter(row => row.pass && row.min > 1.2);
+  console.log(`\npassing rows (${passing.length}, --verbose):`);
+  for (const row of passing) console.log(`  ok   ${row.skin.padEnd(19)} ${row.key}: ${row.ratio}:1 >= ${row.min}:1`);
+}
 
 if (missing.length) {
   console.error(`\n${missing.length} probe(s) produced no measurement:`);

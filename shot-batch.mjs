@@ -19,7 +19,7 @@
 // screenshot is taken.
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { PROFILE_STORAGE_KEY } from './src/lib/profile-storage.js';
 
@@ -212,11 +212,27 @@ try {
   stopPreview();
 }
 
-const summaryPath = join(outDir, 'summary.json');
+// One file per run, never overwritten, plus an append-only index. Overwriting a
+// single summary.json meant a later cross-tab run erased the variable-tab evidence
+// from the same afternoon, and the loss was invisible.
+const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+const runId = `${flag('run-id', 'run')}-${stamp}`;
+const summaryPath = join(outDir, `summary-${runId}.json`);
 writeFileSync(summaryPath, JSON.stringify({
+  runId,
   profile: { id: profile.id, birthDate: profile.birthDate, birthTime: profile.birthTime, location: profile.location.name, timezone: 'UTC+0 (Europe/London)' },
+  locale, sizes: sizes.map(size => `${size.w}x${size.h}`), tabs, skins: skins.map(skin => SKIN_IDS[skin]),
   url, generatedAt: new Date().toISOString(), shots: report
 }, null, 1));
+const indexPath = join(outDir, 'summary-index.json');
+let index = { runs: [] };
+try { index = JSON.parse(readFileSync(indexPath, 'utf8')); } catch { /* first run in this directory */ }
+index.runs.push({
+  runId, file: summaryPath.split('/').pop(), generatedAt: new Date().toISOString(),
+  profile: profile.id, locale, sizes: sizes.map(size => `${size.w}x${size.h}`), tabs, skins: skins.map(skin => SKIN_IDS[skin]),
+  shots: report.length, errors: report.filter(shot => shot.errs.length).length
+});
+writeFileSync(indexPath, JSON.stringify(index, null, 1));
 
 const failing = report.filter(shot => shot.errs.length);
 for (const shot of report) {

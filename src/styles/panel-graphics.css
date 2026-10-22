@@ -1,3 +1,27 @@
+
+/* =============================================================
+   Panel mark tokens (cut 5a)
+   These exist because a centre colour is chosen to fill a shape on the
+   bodygraph, not to be a 1px stroke on a panel. They are derived here from the
+   palette variable plus the Skin's ink, so every Skin *and* every Center Palette
+   resolves its own value without touching either file - the bodygraph keeps
+   painting with the untouched --hd-center-* values.
+   ============================================================= */
+:root {
+  /* 62% measured 2.94:1 on contemplation's anchor dot, just under the floor;
+     56% keeps a clear centre-colour majority and clears 3:1 everywhere. */
+  --pd-mark-mix: 56%;
+  --pd-mark-neutral: color-mix(in srgb, var(--text-tertiary) 55%, var(--text));
+  --pd-center-mark-head: color-mix(in srgb, var(--hd-center-head) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-ajna: color-mix(in srgb, var(--hd-center-ajna) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-throat: color-mix(in srgb, var(--hd-center-throat) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-g: color-mix(in srgb, var(--hd-center-g) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-heart: color-mix(in srgb, var(--hd-center-heart) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-spleen: color-mix(in srgb, var(--hd-center-spleen) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-solar: color-mix(in srgb, var(--hd-center-solar) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-sacral: color-mix(in srgb, var(--hd-center-sacral) var(--pd-mark-mix), var(--text));
+  --pd-center-mark-root: color-mix(in srgb, var(--hd-center-root) var(--pd-mark-mix), var(--text));
+}
 /* =============================================================
    Right column graphics (issue #34)
    Shape / Segbar / Ladder / Corner / islands + the Foundation
@@ -28,12 +52,15 @@
 }
 [data-state="undefined"] > .pg-shape path {
   fill: color-mix(in srgb, var(--pg-center) 18%, transparent);
-  stroke: var(--pg-center);
+  /* Stroke uses the panel mark token: a centre colour is chosen to fill a large
+     shape, and as a 1.5px line it measured 1.6-2.3:1. The fill keeps the centre
+     colour, so "which centre is this" is still carried by hue. */
+  stroke: var(--pg-mark, var(--pg-center));
   stroke-dasharray: 3 2;
 }
 [data-state="open"] > .pg-shape path {
   fill: none;
-  stroke: var(--pg-center);
+  stroke: var(--pg-mark, var(--pg-center));
   stroke-dasharray: 1 2;
   stroke-linecap: round;
   /* No extra transparency: the dotted pattern is what says "open". Fading the
@@ -42,15 +69,15 @@
 
 /* Centre colour per centre. These are the same nine variables the bodygraph
    paints with, so a Center Palette switch moves both together. */
-[data-center-glyph="head"] { --pg-center: var(--hd-center-head); }
-[data-center-glyph="ajna"] { --pg-center: var(--hd-center-ajna); }
-[data-center-glyph="throat"] { --pg-center: var(--hd-center-throat); }
-[data-center-glyph="g"] { --pg-center: var(--hd-center-g); }
-[data-center-glyph="heart"] { --pg-center: var(--hd-center-heart); }
-[data-center-glyph="spleen"] { --pg-center: var(--hd-center-spleen); }
-[data-center-glyph="solar"] { --pg-center: var(--hd-center-solar); }
-[data-center-glyph="sacral"] { --pg-center: var(--hd-center-sacral); }
-[data-center-glyph="root"] { --pg-center: var(--hd-center-root); }
+[data-center-glyph="head"] { --pg-center: var(--hd-center-head); --pg-mark: var(--pd-center-mark-head); }
+[data-center-glyph="ajna"] { --pg-center: var(--hd-center-ajna); --pg-mark: var(--pd-center-mark-ajna); }
+[data-center-glyph="throat"] { --pg-center: var(--hd-center-throat); --pg-mark: var(--pd-center-mark-throat); }
+[data-center-glyph="g"] { --pg-center: var(--hd-center-g); --pg-mark: var(--pd-center-mark-g); }
+[data-center-glyph="heart"] { --pg-center: var(--hd-center-heart); --pg-mark: var(--pd-center-mark-heart); }
+[data-center-glyph="spleen"] { --pg-center: var(--hd-center-spleen); --pg-mark: var(--pd-center-mark-spleen); }
+[data-center-glyph="solar"] { --pg-center: var(--hd-center-solar); --pg-mark: var(--pd-center-mark-solar); }
+[data-center-glyph="sacral"] { --pg-center: var(--hd-center-sacral); --pg-mark: var(--pd-center-mark-sacral); }
+[data-center-glyph="root"] { --pg-center: var(--hd-center-root); --pg-mark: var(--pd-center-mark-root); }
 
 .pg-center-glyph {
   position: relative;
@@ -268,15 +295,15 @@
   border-color: var(--pg-dot);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--pg-dot) 22%, transparent);
 }
-.pg-authority-dot[data-center="head"] { --pg-dot: var(--hd-center-head); }
-.pg-authority-dot[data-center="ajna"] { --pg-dot: var(--hd-center-ajna); }
-.pg-authority-dot[data-center="throat"] { --pg-dot: var(--hd-center-throat); }
-.pg-authority-dot[data-center="g"] { --pg-dot: var(--hd-center-g); }
-.pg-authority-dot[data-center="heart"] { --pg-dot: var(--hd-center-heart); }
-.pg-authority-dot[data-center="spleen"] { --pg-dot: var(--hd-center-spleen); }
-.pg-authority-dot[data-center="solar"] { --pg-dot: var(--hd-center-solar); }
-.pg-authority-dot[data-center="sacral"] { --pg-dot: var(--hd-center-sacral); }
-.pg-authority-dot[data-center="root"] { --pg-dot: var(--hd-center-root); }
+.pg-authority-dot[data-center="head"] { --pg-dot: var(--pd-center-mark-head); }
+.pg-authority-dot[data-center="ajna"] { --pg-dot: var(--pd-center-mark-ajna); }
+.pg-authority-dot[data-center="throat"] { --pg-dot: var(--pd-center-mark-throat); }
+.pg-authority-dot[data-center="g"] { --pg-dot: var(--pd-center-mark-g); }
+.pg-authority-dot[data-center="heart"] { --pg-dot: var(--pd-center-mark-heart); }
+.pg-authority-dot[data-center="spleen"] { --pg-dot: var(--pd-center-mark-spleen); }
+.pg-authority-dot[data-center="solar"] { --pg-dot: var(--pd-center-mark-solar); }
+.pg-authority-dot[data-center="sacral"] { --pg-dot: var(--pd-center-mark-sacral); }
+.pg-authority-dot[data-center="root"] { --pg-dot: var(--pd-center-mark-root); }
 
 /* ---------- fact rail ---------- */
 .panel-fact-rail {
@@ -981,10 +1008,11 @@
   border-bottom: 4px solid var(--text-secondary);
 }
 .pg-fixing[data-state="none"] {
-  /* Control-strength edge, not the decorative hairline: --border is 1.2–2.7:1
-     against the panel in seven skins. Still below 3:1 in six of them, which is a
-     Skin token question for cut 5, not something this component can solve. */
-  border: 1.5px solid var(--control-border);
+  /* A panel-only neutral: --border measured 1.2-2.7:1 and --control-border
+     2.2-2.9:1 against the panel, both under the 3:1 floor for this mark. Neither
+     of those tokens is changed here - they have other consumers - so the panel
+     gets its own ink. */
+  border: 1.5px solid var(--pd-mark-neutral);
   border-radius: 1px;
 }
 .pg-fixing[data-state="unknown"] {
