@@ -545,34 +545,19 @@
 }
 .pg-tube[data-full="true"] .pg-tube-mid { display: block; }
 
-/* Hanging gate: the open end is pulled inward and a dashed stub points past it. */
-.pg-tube-stub { display: none; }
-.pg-tube[data-hanging="right"] .pg-tube-track { inset-inline-end: 24px; }
-.pg-tube[data-hanging="right"] .pg-tube-end[data-side="right"] { inset-inline-end: 20px; }
-.pg-tube[data-hanging="right"] .pg-tube-stub[data-side="right"] {
+/* Hanging gate: a hollow ring only. It does not encode a partner — the partner
+   numbers are printed next to it, because a gate can wait on more than one. */
+.pg-hollow-ring {
   display: block;
-  position: absolute;
-  inset-inline-end: 1px;
-  top: 50%;
-  width: 15px;
-  height: 0;
-  margin-top: -0.75px;
-  border-top: 1.5px dashed var(--pg-ink);
-  opacity: .65;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--hd-circuit-individual);
+  background: transparent;
 }
-.pg-tube[data-hanging="left"] .pg-tube-track { inset-inline-start: 24px; }
-.pg-tube[data-hanging="left"] .pg-tube-end[data-side="left"] { inset-inline-start: 20px; }
-.pg-tube[data-hanging="left"] .pg-tube-stub[data-side="left"] {
-  display: block;
-  position: absolute;
-  inset-inline-start: 1px;
-  top: 50%;
-  width: 15px;
-  height: 0;
-  margin-top: -0.75px;
-  border-top: 1.5px dashed var(--pg-ink);
-  opacity: .65;
-}
+.pg-hollow-ring[data-circuit="collective"] { border-color: var(--hd-circuit-collective); }
+.pg-hollow-ring[data-circuit="tribal"] { border-color: var(--hd-circuit-tribal); }
+.pg-hollow-ring[data-circuit="individual"] { border-color: var(--hd-circuit-individual); }
 
 /* Empty state: no fill, dashed capsule, both ends hollow. */
 .pg-tube[data-empty="true"] .pg-tube-track {
@@ -606,7 +591,6 @@
   color: var(--text-tertiary);
   padding: 0 2px 4px;
 }
-.pg-channel-group-count { font-weight: 600; color: var(--text-secondary); }
 
 .panel-channel-row {
   border-top: 1px solid var(--border-subtle);
@@ -655,7 +639,7 @@
 .pg-hanging-list { display: flex; flex-direction: column; gap: 2px; }
 .panel-hanging-row {
   display: grid;
-  grid-template-columns: 64px auto auto minmax(0, 1fr);
+  grid-template-columns: 16px auto auto minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   min-height: 32px;
@@ -692,8 +676,9 @@
 /* Tier C keeps the partner numbers: the tube only loses its width. */
 @container infocol (max-width: 379px) {
   .panel-channel-main { grid-template-columns: 44px minmax(0, 1fr); gap: 10px; }
-  .panel-hanging-row { grid-template-columns: 44px auto auto minmax(0, 1fr); gap: 8px; }
+  .panel-hanging-row { grid-template-columns: 16px auto auto minmax(0, 1fr); gap: 8px; }
   .panel-channel-detail { padding-inline-start: 54px; }
+  .panel-channel-theme { display: none; }
   .pg-channel-empty { flex-direction: column; gap: 10px; }
 }
 
@@ -729,4 +714,250 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+/* =============================================================
+   Cut 3 — gate grid, gate pills, planet table
+   ============================================================= */
+
+/* ---------- 64-cell gate grid ---------- */
+.pg-gate-overview { margin-bottom: 16px; }
+.pg-gate-grid-head {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 318px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+/* 8px cells on a 10px step: 32 per row inside 318px, the two-row form the wide
+   column needs (750px of content width would otherwise draw a one-row hairline).
+   Narrow columns fall to 25 per row on their own, giving three rows. */
+.pg-gate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 8px);
+  gap: 2px;
+  max-width: 318px;
+}
+.pg-gate-cell {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--bg-sunken);
+  box-shadow: inset 0 0 0 0.5px var(--border);
+  opacity: .4;
+}
+.pg-gate-cell[data-state="design"] { background: var(--hd-design); box-shadow: none; opacity: 1; }
+.pg-gate-cell[data-state="personality"] { background: var(--hd-personality); box-shadow: none; opacity: 1; }
+.pg-gate-cell[data-state="both"] {
+  background: repeating-linear-gradient(135deg,
+    var(--hd-design) 0 3px,
+    var(--hd-personality) 3px 6px);
+  box-shadow: inset 0 0 0 0.5px var(--hd-both);
+  opacity: 1;
+}
+.pg-gate-cell.row-lit,
+.pg-gate-cell:hover { outline: 1.5px solid var(--accent); outline-offset: 1px; opacity: 1; }
+
+/* ---------- gate pills ---------- */
+.pg-gate-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel-gate-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 4px 10px 4px 11px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  --pg-source: var(--text-tertiary);
+}
+.panel-gate-pill::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  width: 3px;
+  border-start-start-radius: var(--radius-sm);
+  border-end-start-radius: var(--radius-sm);
+  background: var(--pg-source);
+}
+.panel-gate-pill[data-source="design"] { --pg-source: var(--hd-design); }
+.panel-gate-pill[data-source="personality"] { --pg-source: var(--hd-personality); }
+.panel-gate-pill[data-source="both"] {
+  --pg-source: linear-gradient(180deg, var(--hd-design) 50%, var(--hd-personality) 50%);
+}
+.panel-gate-pill:hover { background: var(--bg-sunken); }
+.panel-gate-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.panel-gate-pill.row-lit { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.panel-gate-number { font-weight: 600; font-variant-numeric: tabular-nums; }
+.panel-gate-lines { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+/* Horizontal ladder: six ticks left to right, the active line(s) filled. */
+.pg-ladder[data-orientation="horizontal"] { flex-direction: row; width: auto; gap: 2px; }
+.pg-ladder[data-orientation="horizontal"] .pg-tick { width: 5px; height: 8px; }
+
+/* ---------- planet table ---------- */
+.pg-planet-table { display: flex; flex-direction: column; }
+.panel-planet-row {
+  display: grid;
+  grid-template-columns: 2px auto auto minmax(0, 1fr) auto auto 2px 16px;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 2px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.panel-planet-row:first-child { border-top: none; }
+.panel-planet-head {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: .05em;
+  min-height: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.pg-planet-bar {
+  width: 2px;
+  height: 18px;
+  border-radius: 1px;
+  justify-self: center;
+}
+.pg-planet-bar[data-side="design"] { background: var(--hd-design); }
+.pg-planet-bar[data-side="personality"] { background: var(--hd-personality); }
+.panel-planet-act {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 0 2px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+}
+.panel-planet-act[data-empty="true"] { color: var(--text-tertiary); cursor: default; }
+.panel-planet-act:hover:not([data-empty="true"]) { background: var(--bg-sunken); }
+.panel-planet-value { font-variant-numeric: tabular-nums; }
+.panel-planet-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+.panel-planet-glyph { font-size: 14px; color: var(--text-secondary); }
+.panel-planet-ctb { display: inline-flex; justify-content: center; min-width: 30px; }
+.panel-planet-detail {
+  grid-column: 2 / -1;
+  padding: 0 0 6px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.panel-planet-detail[hidden] { display: none; }
+.panel-planet-row[data-expanded="true"] { background: var(--bg-sunken); }
+.pg-planet-overlap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  font-size: 9px;
+  line-height: 1;
+  color: #fff;
+}
+.pg-planet-overlap[data-on="true"] { background: var(--hd-both); }
+.pg-planet-unknown { color: var(--status-caution); }
+
+/* ---------- c.t.b micro-bar ---------- */
+.pg-micro-bar { display: inline-flex; gap: 1px; align-items: center; }
+.pg-micro-cell {
+  width: 4px;
+  height: 10px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--text-tertiary) 22%, transparent);
+}
+.pg-micro-cell[data-active="true"] {
+  /* accent-strong, not accent: the plain accent sits at 2.7–3.0:1 on three light
+     skins and fails WCAG 1.4.11 for a graphic mark. */
+  background: var(--accent-strong);
+  height: 13px;
+}
+
+/* ---------- fixing badges (8 × 8, drawn not typographic) ---------- */
+.pg-fixing {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+}
+.pg-fixing[data-state="exalted"]::before,
+.pg-fixing[data-state="detriment"]::before,
+.pg-fixing[data-state="juxtaposed"]::before,
+.pg-fixing[data-state="juxtaposed"]::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  border-inline: 4px solid transparent;
+}
+.pg-fixing[data-state="exalted"]::before {
+  inset-block-end: 0;
+  border-bottom: 7px solid var(--accent-strong);
+}
+.pg-fixing[data-state="detriment"]::before {
+  inset-block-start: 0;
+  border-top: 7px solid var(--text-tertiary);
+}
+.pg-fixing[data-state="juxtaposed"]::before {
+  inset-block-start: 0;
+  border-top: 4px solid var(--text-secondary);
+}
+.pg-fixing[data-state="juxtaposed"]::after {
+  inset-block-end: 0;
+  border-bottom: 4px solid var(--text-secondary);
+}
+.pg-fixing[data-state="none"] {
+  /* Control-strength edge, not the decorative hairline: --border is 1.2–2.7:1
+     against the panel in seven skins. Still below 3:1 in six of them, which is a
+     Skin token question for cut 5, not something this component can solve. */
+  border: 1.5px solid var(--control-border);
+  border-radius: 1px;
+}
+.pg-fixing[data-state="unknown"] {
+  border: 1.5px dashed var(--text-tertiary);
+  border-radius: var(--radius-full);
+  opacity: .45;
+}
+.pg-fixing[data-state="unknown"]::before {
+  content: '?';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  line-height: 1;
+  color: var(--text-tertiary);
+}
+
+/* Narrow column: the side bars and the c.t.b micro-bars fold into the row detail. */
+@container infocol (max-width: 379px) {
+  .panel-planet-row { grid-template-columns: auto minmax(0, 1fr) auto 16px; gap: 6px; }
+  .pg-planet-bar,
+  .panel-planet-ctb { display: none; }
+  .panel-planet-detail { grid-column: 1 / -1; }
 }

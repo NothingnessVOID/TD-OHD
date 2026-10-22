@@ -9,5 +9,16 @@
   "Show details": "展開詳情",
   "Hide details": "收起詳情",
   "Natal · counted by channel · adds up": "本命 · 按通道計 · 可相加",
-  "No complete channels in this chart": "這張圖裡沒有完整通道"
+  "No complete channels in this chart": "這張圖裡沒有完整通道",
+  "{gates} gates ({activations} activations)": "{gates} 個閘門（{activations} 處激活）",
+  "{gates} gates · {both} both · {design} design · {personality} personality": "{gates} 個閘門 · {both} 處雙側 · {design} 處設計 · {personality} 處人格",
+  "Counted by gate · de-duplicated within": "按閘門計 · 組內去重",
+  "{actual} / {total} activations": "{actual} / {total} 處激活",
+  "{count} unknown": "{count} 處未知",
+  "Both sides": "兩側重疊",
+  "Exalted": "擢升",
+  "Detriment": "落陷",
+  "Juxtaposed": "兩極並存",
+  "No polarity": "無極性",
+  "Not computable": "無法計算"
 }

@@ -5,8 +5,9 @@
  *   left cap filled  = gates[0] is activated
  *   right cap filled = gates[1] is activated
  *   mid diamond      = both ends active, i.e. the channel itself is complete
- *   hollow cap + short dashed stub = a hanging gate, the open end reaching
- *     toward a partner that is not in this chart
+ * A hanging gate deliberately does NOT get a tube: one tube can only point at
+ * one partner, and a gate can hang toward three. It gets a hollow ring instead
+ * (see .pg-hollow-ring), so the graphic never claims a single partner.
  *
  * The capsule colour is the circuit group's soft token, the caps and diamond use
  * the solid one, so the row still says which circuit it belongs to without a
@@ -18,9 +19,9 @@ const CIRCUIT_ATTR = { individual: 'individual', collective: 'collective', triba
 
 /**
  * @param {{ circuit?: string, left: boolean, right: boolean,
- *           hanging?: 'left'|'right'|null, empty?: boolean, label?: string }} options
+ *           empty?: boolean, label?: string }} options
  */
-export function tube({ circuit = 'individual', left = false, right = false, hanging = null, empty = false, label = '' }) {
+export function tube({ circuit = 'individual', left = false, right = false, empty = false, label = '' }) {
   const group = CIRCUIT_ATTR[circuit] || 'individual';
   const full = left && right && !empty;
   const attributes = [
@@ -28,19 +29,14 @@ export function tube({ circuit = 'individual', left = false, right = false, hang
     `data-left="${left && !empty ? 'on' : 'off'}"`,
     `data-right="${right && !empty ? 'on' : 'off'}"`,
     `data-full="${full ? 'true' : 'false'}"`,
-    hanging ? `data-hanging="${hanging}"` : '',
     empty ? 'data-empty="true"' : '',
     'aria-hidden="true"'
   ].filter(Boolean).join(' ');
-  const stub = hanging
-    ? `<span class="pg-tube-stub" data-side="${hanging}"></span>`
-    : '';
   return `<span class="pg-tube" ${attributes} title="${esc(label)}">` +
     '<span class="pg-tube-track"></span>' +
     '<span class="pg-tube-end" data-side="left"></span>' +
     '<span class="pg-tube-mid"></span>' +
     '<span class="pg-tube-end" data-side="right"></span>' +
-    stub +
     '</span>';
 }
 
@@ -50,20 +46,14 @@ export function channelTube(channel, activeSet, circuit, label = '') {
   return tube({ circuit, left: activeSet.has(first), right: activeSet.has(second), label });
 }
 
-/** A hanging gate: its own end is lit, the partner end is an open ring. */
-export function hangingTube(gate, partner, activeSet, circuit, label = '') {
-  const first = channelSide(gate, partner);
-  return tube({
-    circuit,
-    left: first === 0 ? activeSet.has(gate) : activeSet.has(partner),
-    right: first === 0 ? activeSet.has(partner) : activeSet.has(gate),
-    hanging: first === 0 ? 'right' : 'left',
-    label
-  });
+/**
+ * A hanging gate's open end. No tube and no partner direction: the gate may be
+ * waiting on more than one partner, and the partner numbers are printed next to
+ * this ring as plain text.
+ */
+export function hollowRing(circuit = 'individual', label = '') {
+  return `<span class="pg-hollow-ring" data-circuit="${circuit}" aria-hidden="true" title="${esc(label)}"></span>`;
 }
-
-/** Which end of the pair sits on the left; the smaller gate does. */
-const channelSide = (a, b) => (a <= b ? 0 : 1);
 
 /** Empty state: a tube with no fill and both ends hollow. */
 export function emptyTube(circuit = 'individual', label = '') {

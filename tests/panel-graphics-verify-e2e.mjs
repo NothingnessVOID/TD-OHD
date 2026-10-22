@@ -86,6 +86,8 @@ const skinSwitchOn = async panel => {
 };
 results.skinSwitchCentres = await skinSwitchOn('centers');
 results.skinSwitchChannels = await skinSwitchOn('channels');
+results.skinSwitchGates = await skinSwitchOn('gates');
+results.skinSwitchPlanets = await skinSwitchOn('planets');
 
 // ---------- 2. Left graph → right column ----------
 await openTab('centers');
@@ -141,6 +143,56 @@ results.channelsLinkage = await page.evaluate(async () => {
   return { gate, litRows, litHanging, litOnGraph, expanded, collapsedAgain: row?.dataset.expanded === 'false' };
 });
 
+// ---------- 4b. Gates tab: grid geometry, grid ↔ list, graph ↔ grid ----------
+await openTab('gates');
+results.gateGrid = await page.evaluate(async () => {
+  const grid = document.querySelector('.pg-gate-grid');
+  const cells = [...document.querySelectorAll('.pg-gate-cell')];
+  const rows = new Set(cells.map(cell => Math.round(cell.getBoundingClientRect().top)));
+  const first = cells[0]?.getBoundingClientRect();
+  const perRow = cells.filter(cell => Math.round(cell.getBoundingClientRect().top) === Math.round(first?.top ?? 0)).length;
+  // Hover one cell: the graph should light and the matching pill should light.
+  const target = cells.find(cell => cell.dataset.state === 'design' || cell.dataset.state === 'both' || cell.dataset.state === 'personality');
+  target?.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'mouse' }));
+  await new Promise(done => setTimeout(done, 150));
+  const litPill = document.querySelector(`.panel-gate-pill[data-gate="${target?.dataset.gate}"].row-lit`);
+  const graphLit = !!document.querySelector('.bg-svg-wrap svg .bg-lit');
+  target?.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'mouse' }));
+  // Graph → grid: light a gate from the bodygraph side.
+  const gate = target?.dataset.gate;
+  document.querySelector('.bg-svg-wrap svg')?.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, pointerType: 'mouse' }));
+  const svgGate = document.querySelector(`.bg-svg-wrap svg [data-gate="${gate}"]`);
+  svgGate?.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, pointerType: 'mouse' }));
+  await new Promise(done => setTimeout(done, 150));
+  const litCell = document.querySelector(`.pg-gate-cell[data-gate="${gate}"].row-lit`);
+  const litPillFromGraph = document.querySelector(`.panel-gate-pill[data-gate="${gate}"].row-lit`);
+  return {
+    cells: cells.length, rows: rows.size, perRow,
+    gridHeight: Math.round(grid?.getBoundingClientRect().height ?? 0),
+    litPill: !!litPill, graphLit, litCell: !!litCell, litPillFromGraph: !!litPillFromGraph
+  };
+});
+
+// ---------- 4c. Planets tab: ctb micro-bar expands back to the raw text ----------
+await openTab('planets');
+results.planetRows = await page.evaluate(async () => {
+  const rows = [...document.querySelectorAll('.panel-planet-row[data-planet]')];
+  const first = rows[0];
+  first?.querySelector('.panel-planet-id')?.click();
+  await new Promise(done => setTimeout(done, 80));
+  const expanded = first?.dataset.expanded === 'true' && !first.querySelector('.panel-planet-detail')?.hidden;
+  const detailText = first?.querySelector('.panel-planet-detail')?.textContent?.trim() ?? '';
+  first?.querySelector('.panel-planet-id')?.click();
+  const bars = document.querySelectorAll('.pg-planet-bar').length;
+  const microBars = document.querySelectorAll('.pg-micro-bar').length;
+  const fixings = [...document.querySelectorAll('.pg-fixing')].map(node => node.dataset.state);
+  return {
+    count: rows.length, expanded, collapsedAgain: first?.dataset.expanded === 'false',
+    detailHasCtb: /\d\.\d\.\d/.test(detailText), bars, microBars,
+    fixingStates: [...new Set(fixings)]
+  };
+});
+
 // ---------- 5. Touch target floor (24 × 24), measured not inferred ----------
 const measureTargets = () => page.evaluate(() => {
   const nodes = [...document.querySelectorAll(
@@ -177,6 +229,18 @@ if (!results.channelsLinkage.litOnGraph) failures.push('channel row hover did no
 if (!results.channelsLinkage.expanded) failures.push('channel row did not expand');
 if (!results.channelsLinkage.collapsedAgain) failures.push('channel row did not collapse again');
 if (!results.channelsLinkage.litHanging) failures.push('no hanging gate rows rendered');
+for (const key of ['skinSwitchGates', 'skinSwitchPlanets']) {
+  if (results[key].foundationMutations !== 0) failures.push(`${key}: foundation mutated on skin switch`);
+  if (results[key].panelMutations !== 0) failures.push(`${key}: panel-content mutated on skin switch`);
+}
+if (results.gateGrid.cells !== 64) failures.push(`gate grid has ${results.gateGrid.cells} cells`);
+if (!results.gateGrid.litPill) failures.push('grid hover did not light its pill');
+if (!results.gateGrid.graphLit) failures.push('grid hover did not light the graph');
+if (!results.gateGrid.litCell) failures.push('graph gate hover did not light the grid cell');
+if (!results.gateGrid.litPillFromGraph) failures.push('graph gate hover did not light the pill');
+if (!results.planetRows.expanded || !results.planetRows.detailHasCtb) failures.push('planet row does not expand back to c.t.b');
+if (results.planetRows.count !== 13) failures.push(`planet table has ${results.planetRows.count} rows`);
+if (!results.planetRows.bars || !results.planetRows.microBars) failures.push('planet bars or micro-bars missing');
 if (!results.graphToPanel.litRows.some(row => row.center === 'sacral')) failures.push('centre hover did not light the row');
 if (!results.graphToPanel.litCross.includes('44')) failures.push('gate hover did not light the cross cell');
 if (!results.panelToGraph.centerLitOnGraph) failures.push('row hover did not light the graph');

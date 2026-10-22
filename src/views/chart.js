@@ -37,9 +37,10 @@ import { esc, formatBirth } from '../lib/format.js';
 import { CENTER_KEYS } from '../lib/center-palette-registry.js';
 import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
 import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
-import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup } from '../lib/panel-graphics/counts.js';
-import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
-import { segbar, lineLadder, cornerArrows } from '../lib/panel-graphics/primitives.js';
+import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup, gateSourceCounts, activationSlots } from '../lib/panel-graphics/counts.js';
+import { records as activationRecords, byGate, byPlanet, fixingCounts } from '../lib/panel-graphics/activations.js';
+import { channelTube, hollowRing, emptyTube } from '../lib/panel-graphics/channel-tube.js';
+import { segbar, lineLadder, cornerArrows, gateGrid, microBar, fixingBadge } from '../lib/panel-graphics/primitives.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
@@ -845,7 +846,7 @@ export function renderPanelContent(panel) {
   const container = document.getElementById('panel-content');
   // Graphics panels own their own one-column flow; the two-up card grid on
   // .panel-content belongs to the list panels that still use it.
-  container.classList.toggle('panel-flow', panel === 'centers' || panel === 'channels');
+  container.classList.toggle('panel-flow', ['centers', 'channels', 'gates', 'planets'].includes(panel));
   switch (panel) {
     case 'centers': renderCentersPanel(container); break;
     case 'channels': renderChannelsPanel(container); break;
@@ -982,7 +983,7 @@ function renderChannelsPanel(container) {
           </span>
         </button>
         <div class="panel-channel-detail" hidden title="${esc(centersTitle)}">
-          <p class="panel-channel-centers">${esc(centersTitle)}</p>
+          <p class="panel-channel-centers">${esc(contentText(channel.theme))} · ${esc(centersTitle)}</p>
           ${desc ? `<p>${esc(desc.description)}</p><p><em>${esc(desc.whenDefined)}</em></p>` : ''}
         </div>
       </div>`;
@@ -994,7 +995,6 @@ function renderChannelsPanel(container) {
       <div class="pg-channel-group" data-group="${key}">
         <div class="pg-channel-group-head">
           <span class="pg-channel-group-name">${esc(circuitName(key))}</span>
-          <span class="pg-channel-group-count">${count}</span>
         </div>
         ${groups[key].map(channelRow).join('')}
       </div>`;
@@ -1005,7 +1005,7 @@ function renderChannelsPanel(container) {
     const labels = partners.map(item => item.partner).join(' · ');
     return `
       <button type="button" class="panel-hanging-row" data-gate="${gate}" aria-label="${esc(`${t('Gate {gate}', { gate })} → ${labels}`)}">
-        <span class="panel-hanging-tube">${hangingTube(gate, first.partner, activeSet, first.circuit, labels)}</span>
+        <span class="panel-hanging-ring">${hollowRing(first.circuit, labels)}</span>
         <span class="panel-hanging-gate">${t('Gate {gate}', { gate })}</span>
         <span class="panel-hanging-arrow" aria-hidden="true">→</span>
         <span class="panel-hanging-partner">${labels}</span>
@@ -1067,86 +1067,150 @@ function renderChannelsPanel(container) {
 
 function renderGatesPanel(container) {
   const { chart } = current;
-  const allGates = [...chart.gates.all].sort((a, b) => a - b);
+  const gateMap = byGate(chart);
+  const sources = gateSourceCounts(chart);
+  const sourceOf = gate => sources.both.includes(gate) ? 'both'
+    : sources.onlyDesign.includes(gate) ? 'design'
+    : sources.onlyPersonality.includes(gate) ? 'personality' : 'none';
+  const sourceLabel = { both: t('Both sides'), design: t('Design'), personality: t('Personality'), none: t('None') };
+  const cells = Array.from({ length: 64 }, (_, index) => ({ gate: index + 1, state: sourceOf(index + 1) }));
+  const summary = t('{gates} gates · {both} both · {design} design · {personality} personality', {
+    gates: sources.total,
+    both: sources.both.length,
+    design: sources.onlyDesign.length,
+    personality: sources.onlyPersonality.length
+  });
+  const activationTotal = activationRecords(chart).length;
 
-  const gatesHtml = allGates.map(gateNum => {
-    const desc = GATE_DESCRIPTIONS[gateNum];
-    const acts = [];
-    for (const [planet, g] of Object.entries(chart.gates.design)) {
-      if (g?.gate === gateNum) acts.push(`<span class="act-design">${PLANET_GLYPHS[planet]} ${gateNum}.${g.line}</span>`);
-    }
-    for (const [planet, g] of Object.entries(chart.gates.personality)) {
-      if (g?.gate === gateNum) acts.push(`<span class="act-personality">${PLANET_GLYPHS[planet]} ${gateNum}.${g.line}</span>`);
-    }
+  const pill = gate => {
+    const list = gateMap.get(gate) || [];
+    const lines = [...new Set(list.map(record => record.line))].sort((a, b) => a - b);
+    const source = sourceOf(gate);
+    const planets = list.map(record => `${planetName(record.planet)} ${gate}.${record.line}`).join(' · ');
     return `
-      <div class="gate-item" data-gate="${gateNum}">
-        <div class="gate-name">${t('Gate {gate}: {name}', { gate: gateNum, name: esc(desc?.keynote || GATES[gateNum]?.name || '') })}</div>
-        <div class="gate-meta">${acts.join(' ')}</div>
-      </div>
-    `;
-  }).join('');
+      <button type="button" class="panel-gate-pill" data-gate="${gate}" data-source="${source}"
+        aria-label="${esc(`${t('Gate {gate}', { gate })} — ${sourceLabel[source]} — ${planets}`)}">
+        <span class="panel-gate-number">${gate}</span>
+        ${lineLadder({ lines, orientation: 'horizontal', label: lines.map(line => t('Line {line}', { line })).join(' ') })}
+        <span class="panel-gate-lines">${lines.map(line => `· ${line}`).join(' ')}</span>
+      </button>`;
+  };
 
   container.innerHTML = `
-    <div class="panel-title">${t('Active Gates ({count})', { count: allGates.length })}</div>
+    <div class="panel-title">${t('{gates} gates ({activations} activations)', { gates: sources.total, activations: activationTotal })}</div>
+    <p class="pg-panel-note">${t('Counted by gate · de-duplicated within')}</p>
+    <div class="pg-gate-overview">
+      <div class="pg-gate-grid-head"><span>${esc(summary)}</span></div>
+      ${gateGrid(cells, { label: summary })}
+    </div>
     <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
-    ${gatesHtml}
+    <div class="pg-gate-list">
+      ${sources.all.map(pill).join('')}
+    </div>
   `;
-  container.querySelectorAll('.gate-item').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
-    wireRowHover(item, parseInt(item.dataset.gate));
+  // The grid is presentational: hover previews on the graph and lights the pill,
+  // the pill stays the only click target (8 × 8 px is not a tap target).
+  container.querySelectorAll('.pg-gate-cell[data-gate]').forEach(cell => {
+    const gate = parseInt(cell.dataset.gate);
+    cell.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      bodygraphApi?.highlightGate?.(gate);
+    });
+    cell.addEventListener('pointerleave', event => {
+      if (event.pointerType !== 'touch') bodygraphApi?.highlightGate?.(null);
+    });
+  });
+  container.querySelectorAll('.panel-gate-pill[data-gate]').forEach(pillButton => {
+    pillButton.addEventListener('click', () => showGateDetail(parseInt(pillButton.dataset.gate)));
+    wireRowHover(pillButton, parseInt(pillButton.dataset.gate));
   });
 }
 
 function renderPlanetsPanel(container) {
   const { chart } = current;
-  const fixings = calculateLineFixings(chart);
-  const activationCell = (activation, side, planet) => {
-    const state = fixings[side]?.[planet]?.natalState;
-    const symbol = ({ exalted: '▲', detriment: '▼', juxtaposed: '▲▼', unknown: '?' })[state] || '';
-    return `<span class="planet-cell-number">${activation ? `${activation.gate}.${activation.line}` : '—'}<span class="planet-cell-fixing" data-state="${state || ''}" aria-hidden="true">${symbol}</span></span>`;
+  // Both tabs project the same record list, so a planet row and a gate pill can
+  // never disagree about a line or a fixing state.
+  const planetMap = byPlanet(chart);
+  const list = activationRecords(chart);
+  const fixings = fixingCounts(list);
+  const total = activationSlots();
+  const fixingLabel = state => t({
+    exalted: 'Exalted', detriment: 'Detriment', juxtaposed: 'Juxtaposed', none: 'No polarity', unknown: 'Not computable'
+  }[state] || 'Not computable');
+  const ctbText = record => (record && record.color != null
+    ? `${record.color}.${record.tone}.${record.base}`
+    : '—');
+
+  const activationCell = (record, side, planet) => {
+    if (!record) return `<span class="panel-planet-act" data-side="${side}" data-empty="true">—</span>`;
+    return `<button type="button" class="panel-planet-act" data-side="${side}" data-gate="${record.gate}"
+      data-planet="${planet}" data-line="${record.line}" title="${esc(`${gateName(record.gate)} · ${t('Color · Tone · Base')} ${ctbText(record)}`)}">
+      <span class="panel-planet-value">${record.gate}.${record.line}</span>
+      ${fixingBadge(record.fixing, { label: `${t('Exalted')} / ${t('Detriment')} — ${fixingLabel(record.fixing)}` })}
+    </button>`;
   };
-  // Substructure tooltip: gate.line then color/tone/base (the 6/6/6/5 layers)
-  const sub = (g) => g && g.color
-    ? t('Color {color} · Tone {tone} · Base {base}', { color: g.color, tone: g.tone, base: g.base })
-    : '';
-  const subCell = (g) => g && g.color ? `${g.color}.${g.tone}.${g.base}` : '';
+
   const rows = PLANET_ORDER.map(planet => {
-    const d = chart.gates.design[planet];
-    const p = chart.gates.personality[planet];
+    const sides = planetMap.get(planet) || { design: null, personality: null };
+    const d = sides.design;
+    const p = sides.personality;
+    const overlap = d && p && d.gate === p.gate;
     return `
-      <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${activationCell(d, 'design', planet)}</span>
-        <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
-        <span class="planet-cell-identity"><span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span><span class="planet-cell-name">${esc(planetName(planet))}</span></span>
-        <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${activationCell(p, 'personality', planet)}</span>
-      </div>
-    `;
+      <div class="panel-planet-row" data-planet="${planet}" data-expanded="false">
+        <span class="pg-planet-bar" data-side="design" aria-hidden="true"></span>
+        ${activationCell(d, 'design', planet)}
+        <span class="panel-planet-ctb">${microBar(d?.color ?? null, { label: `c.t.b ${ctbText(d)}` })}</span>
+        <button type="button" class="panel-planet-id" aria-expanded="false">
+          <span class="panel-planet-glyph" aria-hidden="true">${PLANET_GLYPHS[planet]}</span>
+          <span class="panel-planet-name">${esc(planetName(planet))}</span>
+        </button>
+        <span class="panel-planet-ctb">${microBar(p?.color ?? null, { label: `c.t.b ${ctbText(p)}` })}</span>
+        ${activationCell(p, 'personality', planet)}
+        <span class="pg-planet-bar" data-side="personality" aria-hidden="true"></span>
+        <span class="pg-planet-overlap"${overlap ? ' data-on="true"' : ''} aria-hidden="true">${overlap ? '=' : ''}</span>
+        <div class="panel-planet-detail" hidden>
+          <p>${t('Design')} c.t.b ${esc(ctbText(d))} · ${t('Personality')} c.t.b ${esc(ctbText(p))}</p>
+        </div>
+      </div>`;
   }).join('');
 
   const dDate = chart.positions?.design?.date;
   container.innerHTML = `
-    <div class="panel-title">${t('Planetary Activations')}</div>
+    <div class="panel-title">${t('{actual} / {total} activations', { actual: list.length, total })}</div>
+    <p class="pg-panel-note">${t('Planetary Activations')} · ${t('Color · Tone · Base')}</p>
+    ${fixings.unknown ? `<p class="pg-panel-note pg-planet-unknown">${t('{count} unknown', { count: fixings.unknown })}</p>` : ''}
     <p class="panel-intro">${t('Each planet activates a gate and line. Design was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
-    <div class="planet-table">
-      <div class="planet-table-row planet-table-head">
-        <span class="planet-cell act-design">${t('Design')}</span>
-        <span class="planet-cell-sub">c.t.b</span>
-        <span></span>
-        <span class="planet-cell-sub">c.t.b</span>
-        <span class="planet-cell act-personality">${t('Personality')}</span>
+    <div class="planet-table pg-planet-table">
+      <div class="panel-planet-row panel-planet-head">
+        <span class="pg-planet-bar" aria-hidden="true"></span>
+        <span class="panel-planet-act act-design">${t('Design')}</span>
+        <span class="panel-planet-ctb">c.t.b</span>
+        <span class="panel-planet-id"><span class="panel-planet-name"></span></span>
+        <span class="panel-planet-ctb">c.t.b</span>
+        <span class="panel-planet-act act-personality">${t('Personality')}</span>
+        <span class="pg-planet-bar" aria-hidden="true"></span>
+        <span class="pg-planet-overlap" aria-hidden="true"></span>
       </div>
       ${rows}
     </div>
   `;
-  container.querySelectorAll('.planet-cell[data-gate]').forEach(cell => {
-    const g = parseInt(cell.dataset.gate);
-    if (g) {
-      cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showPlanetDetail({ source: cell.dataset.side,
-        planet: cell.dataset.planet, activation: chart.gates[cell.dataset.side]?.[cell.dataset.planet] }));
-      wireRowHover(cell, g);
-    }
+  container.querySelectorAll('.panel-planet-row[data-planet]').forEach(row => {
+    const planet = row.dataset.planet;
+    row.querySelectorAll('.panel-planet-act[data-gate]').forEach(cell => {
+      const gate = parseInt(cell.dataset.gate);
+      cell.addEventListener('click', () => showPlanetDetail({
+        source: cell.dataset.side, planet, activation: chart.gates[cell.dataset.side]?.[planet]
+      }));
+      wireRowHover(cell, gate);
+    });
+    const identity = row.querySelector('.panel-planet-id');
+    const detail = row.querySelector('.panel-planet-detail');
+    identity?.addEventListener('click', () => {
+      const open = row.dataset.expanded !== 'true';
+      row.dataset.expanded = String(open);
+      identity.setAttribute('aria-expanded', String(open));
+      if (detail) detail.hidden = !open;
+    });
   });
 }
 

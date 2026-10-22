@@ -99,13 +99,50 @@ export function segbar(segments, { label = '', className = '' } = {}) {
 }
 
 /**
- * Ladder: six ticks, one active line. Two ladders stacked express Profile
- * (personality solid, design hollow) without inventing a scale.
+ * Ladder: six ticks, the active line(s) filled. `lines` takes an array because a
+ * gate can be activated on two lines by two different planets — the ladder shows
+ * both, it never picks one.
  */
-export function lineLadder({ line, state = 'personality', label = '' }) {
+export function lineLadder({ line, lines, state = 'personality', orientation = 'vertical', label = '' }) {
+  const active = lines || (line == null ? [] : [line]);
   const marks = [1, 2, 3, 4, 5, 6].map(step =>
-    `<span class="pg-tick"${step === line ? ' data-active="true"' : ''}></span>`).join('');
-  return `<span class="pg-ladder" data-ladder="${state}" role="img" aria-label="${label}">${marks}</span>`;
+    `<span class="pg-tick"${active.includes(step) ? ' data-active="true"' : ''}></span>`).join('');
+  return `<span class="pg-ladder" data-ladder="${state}" data-orientation="${orientation}" role="img" aria-label="${label}">${marks}</span>`;
+}
+
+/**
+ * Grid: 64 cells, one gate each, four states. Purely presentational — every
+ * cell is aria-hidden and has no click target (8 × 8 px breaks the 24 × 24
+ * floor); the pill list below is the way in.
+ */
+export function gateGrid(cells, { label = '' } = {}) {
+  const body = cells.map(cell =>
+    `<span class="pg-gate-cell" data-gate="${cell.gate}" data-state="${cell.state}" aria-hidden="true"></span>`).join('');
+  return `<div class="pg-gate-grid" role="img" aria-label="${label}">${body}</div>`;
+}
+
+/**
+ * Micro-bar: six cells, the filled one sits at the value's position. Used for
+ * Color / Tone / Base, where the number is a position in a fixed six-step
+ * scale — no percentage is implied.
+ */
+export function microBar(value, { steps = 6, label = '', className = '' } = {}) {
+  const cells = Array.from({ length: steps }, (_, index) =>
+    `<span class="pg-micro-cell"${index + 1 === value ? ' data-active="true"' : ''}></span>`).join('');
+  return `<span class="pg-micro-bar ${className}" role="img" aria-label="${esc(label)}">${cells}</span>`;
+}
+
+/**
+ * fixing: five states, each drawn as its own 8 × 8 mark by CSS (solid triangle
+ * up / down, both stacked, an empty square, a dashed circle with a question
+ * mark). `none` is a square, never a circle — the hollow ring already means
+ * "hanging gate's open end", and the two must not read alike.
+ */
+const FIXING_STATES = new Set(['exalted', 'detriment', 'juxtaposed', 'none', 'unknown']);
+
+export function fixingBadge(state, { label = '' } = {}) {
+  const key = FIXING_STATES.has(state) ? state : 'unknown';
+  return `<span class="pg-fixing" data-state="${key}" aria-hidden="true" title="${esc(label)}"></span>`;
 }
 
 /**
@@ -114,7 +151,12 @@ export function lineLadder({ line, state = 'personality', label = '' }) {
  */
 export function cornerArrows(slots) {
   return `<div class="pg-corners">${slots.map(slot => `
-    <span class="pg-corner" data-position="${slot.position}" data-direction="${slot.direction || 'none'}" title="${slot.label}" aria-hidden="true">${slot.direction === 'left' ? '←' : slot.direction === 'right' ? '→' : '·'}</span>`).join('')}</div>`;
+    <span class="pg-corner" data-position="${slot.position}" data-direction="${slot.direction || 'none'}" title="${esc(slot.label)}" aria-hidden="true">${slot.direction === 'left' ? '←' : slot.direction === 'right' ? '→' : '·'}</span>`).join('')}</div>`;
+}
+
+/** Escape helper: primitives are string builders and must not trust input. */
+function esc(value) {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 /** A cluster of dots: one dot per real item, never a fill to look busy. */

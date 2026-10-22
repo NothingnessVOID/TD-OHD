@@ -82,9 +82,38 @@ export function activationCount(chart) {
   return count;
 }
 
+/**
+ * Where each activated gate comes from: both sides, design only, personality
+ * only. The gate grid and the pill list both read this, so the caption and the
+ * pills can never disagree.
+ */
+export function gateSourceCounts(chart) {
+  const design = new Set();
+  const personality = new Set();
+  for (const side of ['design', 'personality']) {
+    const target = side === 'design' ? design : personality;
+    for (const activation of Object.values(chart?.gates?.[side] || {})) {
+      if (Number.isInteger(activation?.gate)) target.add(activation.gate);
+    }
+  }
+  const all = [...new Set([...design, ...personality])].sort((a, b) => a - b);
+  return {
+    all,
+    both: all.filter(gate => design.has(gate) && personality.has(gate)),
+    onlyDesign: all.filter(gate => design.has(gate) && !personality.has(gate)),
+    onlyPersonality: all.filter(gate => personality.has(gate) && !design.has(gate)),
+    total: all.length
+  };
+}
+
 /** Rows in the planet table — read from the catalog, never hard-coded. */
 export function planetRows() {
   return PLANET_ORDER.length;
+}
+
+/** Denominator for "N / M activations": 13 planets on each of the two sides. */
+export function activationSlots() {
+  return PLANET_ORDER.length * 2;
 }
 
 /** Defined / undefined / open centre counts as the three row segments read them. */

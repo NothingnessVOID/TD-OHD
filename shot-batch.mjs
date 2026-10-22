@@ -56,7 +56,10 @@ const PROFILES = {
   'synthetic-b': { id: 'style-ref-b', name: 'Style Reference B', birthDate: '1979-11-04', birthTime: '06:05' },
   // Empty-state coverage: Reflector, lunar authority, no defined centre and no
   // complete channel. Everything the panels draw an empty state for.
-  'synthetic-c': { id: 'style-ref-c', name: 'Style Reference C', birthDate: '1988-03-18', birthTime: '15:00' }
+  'synthetic-c': { id: 'style-ref-c', name: 'Style Reference C', birthDate: '1988-03-18', birthTime: '15:00' },
+  // Fixing coverage: this birth carries 54.4, the one gate.line with no fixing
+  // rule, so the planet table shows an `unknown` badge next to `none` ones.
+  'synthetic-d': { id: 'style-ref-d', name: 'Style Reference D', birthDate: '1975-03-25', birthTime: '08:30' }
 };
 const profileBase = PROFILES[profileId] || PROFILES['synthetic-b'];
 const profile = {
