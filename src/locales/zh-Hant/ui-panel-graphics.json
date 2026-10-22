@@ -1,0 +1,11 @@
+{
+  "Complete channel count distribution": "完整通道數量分布",
+  "Counted by channel · adds up": "按通道計 · 可相加",
+  "Tied for most: {names} — {count} channels each": "並列最多：{names}，各 {count} 條",
+  "No dominant circuit": "無主導回路",
+  "{count} island": "{count} 個島",
+  "{count} islands": "{count} 個島",
+  "Authority centre": "權威中心",
+  "Show details": "展開詳情",
+  "Hide details": "收起詳情"
+}

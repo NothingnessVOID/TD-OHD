@@ -34,7 +34,11 @@ import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
-import { channelCircuit } from '../lib/circuit-topology.js';
+import { CENTER_KEYS } from '../lib/center-palette-registry.js';
+import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
+import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
+import { circuitCounts, dominantCircuits, centerStateCounts } from '../lib/panel-graphics/counts.js';
+import { segbar, lineLadder, cornerArrows } from '../lib/panel-graphics/primitives.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
@@ -329,78 +333,151 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <span>${t("Your chart is solid. One fine detail — your <strong>{detail}</strong> — sits right on a line, so it's the only thing a birth time off by 15+ minutes could nudge. Everything else holds no matter what. If your time came from a birth certificate, even that is settled.", { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
       </div>`;
   }
-  const crossDisplay = chart.incarnationCross
-    ? crossName(chart.incarnationCross)
-    : 'Unknown';
-  const crossParts = crossDisplay.match(/^(.*?)([（(][^（）()]*[）)])$/s);
-  const crossDisplayHtml = crossParts
-    ? `${esc(crossParts[1].trim())}<br>${esc(crossParts[2])}`
-    : esc(crossDisplay);
-  const circuitCounts = { individual: 0, collective: 0, tribal: 0 };
-  for (const channel of chart.channels || []) circuitCounts[channelCircuit(channel).group]++;
-  const [dominantName, dominantCount] = Object.entries(circuitCounts).sort((a, b) => b[1] - a[1])[0];
-  const circuitDominant = dominantCount ? { name: dominantName, channelCount: dominantCount } : null;
-  const circuitText = circuitDominant
-    ? formatDisplay('circuitSummary', circuitName(circuitDominant.name), countLabel(circuitDominant.channelCount, '{count} channel', '{count} channels'))
-    : t('None');
-
+  // The band shows the short facts; the Summary text stays attached to each
+  // fact as its description (and the Knowledge detail behind the same click),
+  // so nothing the card wall said is dropped. Home reads Summary only.
+  const summaries = {
+    type: foundationSummary(chart, 'type'),
+    authority: foundationSummary(chart, 'authority'),
+    profile: foundationSummary(chart, 'profile')
+  };
   panel.innerHTML = `
     <div class="panel-title">${t('Foundation')}</div>
     ${reliabilityHtml}
-    <div class="foundation-grid">
-      <div class="foundation-item" data-knowledge-object="type">
-        <div class="label">${t('Type')}</div>
-        <div class="value">${esc(typeName(chart.type.name))}</div>
-        <div class="detail">${esc(foundationSummary(chart, 'type'))}</div>
-      </div>
-      <div class="foundation-item" data-knowledge-object="strategy">
-        <div class="label">${t('Strategy')}</div>
-        <div class="value">${esc(strategy(chart.type.name))}</div>
-        <div class="detail">${t('Signature:')} ${esc(signature(chart.type.name))} · ${t('Not-Self:')} ${esc(notSelf(chart.type.name))}</div>
-      </div>
-      <div class="foundation-item" data-knowledge-object="authority">
-        <div class="label">${t('Authority')}</div>
-        <div class="value">${esc(authorityLabel(chart))}</div>
-        <div class="detail">${esc(foundationSummary(chart, 'authority'))}</div>
-      </div>
-      <div class="foundation-item" data-knowledge-object="profile">
-        <div class="label">${t('Profile')}</div>
-        <div class="value">${esc(chart.profile.numbers)} ${esc(profileName(chart.profile.numbers))}</div>
-        <div class="detail">${esc(foundationSummary(chart, 'profile'))}</div>
-      </div>
-      <div class="foundation-item" data-knowledge-object="definition">
-        <div class="label">${t('Definition')}</div>
-        <div class="value">${esc(definitionName(chart.definition))}</div>
-        <div class="detail">${countLabel(chart.centers.definedNames.length, '{count} defined center', '{count} defined centers')}, ${countLabel(chart.channels.length, '{count} channel', '{count} channels')}</div>
-      </div>
-      <div class="foundation-item">
-        <div class="label">${t('Dominant Circuit')}</div>
-        <div class="value">${esc(circuitText)}</div>
-        <div class="detail">${circuitDominant ? esc(contentText(circuitDominant.theme || '')) : t('No defined channels')}</div>
-      </div>
-      <div class="foundation-item" data-knowledge-object="cross">
-        <div class="label">${t('Incarnation Cross')}</div>
-        <div class="value">${crossDisplayHtml}</div>
-        <div class="detail">${t('Gates')} ${chart.incarnationCross?.gates?.join(' / ') || '—'}</div>
-      </div>
-      <div class="foundation-item foundation-variable-card">
-        <div class="label">${t('Variable')}</div>
-        ${chart.variable?.notation ? `<div class="foundation-variable-notation">${esc(t('Standard notation:'))} ${esc(chart.variable.notation)}</div>` : ''}
-        <div class="value foundation-variable-arrows">${[
-          { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
-          { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
-        ].map(group => `<div class="foundation-variable-group" data-source="${group.source}">
-          <div class="foundation-variable-heading">${esc(t(group.label))}</div>
-          <div class="foundation-variable-pair">${group.keys.map(key => {
-            const item = variableArrows(chart.variable).find(item => item.key === key);
-            const label = { motivation: 'Motivation', perspective: 'Perspective', determination: 'Determination', environment: 'Environment' }[key];
-            return `<div class="foundation-variable-slot" data-knowledge-variable="${key}"><span data-variable="${key}" data-source="${group.source}" aria-label="${esc(t(label))}">${item ? (item.direction === 'left' ? 'L' : 'R') : '—'}</span><div class="foundation-variable-caption" title="${esc(t(label))}">${esc(t(label))}</div></div>`;
-          }).join('')}</div>
-        </div>`).join('')}</div>
-      </div>
+    <div class="panel-foundation" data-type="${esc(chart.type.id || '')}">
+      ${renderFoundationBand(chart, summaries)}
+      ${renderFoundationFacts(chart, summaries)}
     </div>
   `;
   wireKnowledgeTargets(panel, chart);
+}
+
+// The identity band holds Type, Strategy, Signature / Not-Self, Authority and
+// Definition. Everything in it is drawn from the chart contract; the only
+// drawing decision is which end of the range the Strategy arc curves toward.
+const STRATEGY_ARC = {
+  // Wait to respond: the arc gathers inward.
+  generator: 'M5 23C10 10 20 10 25 23',
+  // Wait to respond, then inform: both directions at once.
+  manifestingGenerator: 'M15 5v9M9 11l6-7 6 7M15 25v-9M9 19l6 7 6-7',
+  // Inform: the arc opens outward.
+  manifestor: 'M5 20C10 5 20 5 25 20M15 3v4M7 7l2 3M23 7l-2 3',
+  // Wait for invitation: one directed line.
+  projector: 'M4 15h17M15 8l7 7-7 7',
+  // Wait a lunar cycle: a closed cycle.
+  reflector: 'M15 4a11 11 0 1 0 0 22 11 11 0 1 0 0-22'
+};
+
+// Which centre carries each authority. Mental and Lunar authorities are outer
+// authorities with no single centre, so the nine-dot track stays empty there.
+const AUTHORITY_CENTER = {
+  emotional: 'solar', sacral: 'sacral', splenic: 'spleen',
+  egoManifested: 'heart', egoProjected: 'heart', selfProjected: 'g',
+  mental: null, lunar: null
+};
+
+function renderFoundationBand(chart, summaries = {}) {
+  const typeId = chart.type?.id || 'generator';
+  const arc = STRATEGY_ARC[typeId] || STRATEGY_ARC.generator;
+  const authorityId = chart.calculation?.authority?.id ?? chart.authority?.id ?? null;
+  const anchor = AUTHORITY_CENTER[authorityId] ?? null;
+  const components = chart.definitionComponents || [];
+  const track = CENTER_KEYS.map(key =>
+    `<span class="pg-authority-dot" data-center="${key}"${key === anchor ? ' data-anchor="true"' : ''}></span>`).join('');
+  return `
+    <div class="panel-foundation-band" data-panel-fact="type">
+      <div class="pg-strategy-arc" aria-hidden="true">
+        <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="${arc}"/></svg>
+      </div>
+      <div class="pg-identity" data-knowledge-object="type" title="${esc(summaries.type || '')}">
+        <div class="pg-type-name">${esc(typeName(chart.type.name))}</div>
+        <div class="pg-strategy-line">${esc(strategy(chart.type.name))}</div>
+        <div class="pg-signals">
+          <span class="pg-signal" data-signal="signature"><span class="pg-signal-dot" aria-hidden="true"></span>${esc(signature(chart.type.name))}</span>
+          <span class="pg-signal" data-signal="notself"><span class="pg-signal-dot" aria-hidden="true"></span>${esc(notSelf(chart.type.name))}</span>
+        </div>
+      </div>
+      <div class="pg-band-stats">
+        <div class="pg-band-row" data-panel-fact="authority" data-knowledge-object="authority" title="${esc(summaries.authority || '')}">
+          <span class="pg-band-label">${t('Authority')}</span>
+          <span class="pg-band-value">${esc(authorityLabel(chart))}</span>
+          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(t('Authority centre'))}">${track}</span></span>
+        </div>
+        <div class="pg-band-row" data-panel-fact="definition" data-knowledge-object="definition">
+          <span class="pg-band-label">${t('Definition')}</span>
+          <span class="pg-band-value">${esc(definitionName(chart.definition))}</span>
+          <span class="pg-band-graphic">${definitionIslands(components)}<span class="pg-band-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))}</span></span>
+        </div>
+      </div>
+    </div>`;
+}
+
+// The fact rail holds the four facts that read as numbers: Profile, Dominant
+// Circuit, Incarnation Cross, Variable. Each graphic sits next to its own text.
+function renderFoundationFacts(chart, summaries = {}) {
+  const numbers = String(chart.profile?.numbers || '');
+  const [personalityLine, designLine] = numbers.split('/').map(Number);
+  const groups = circuitCounts(chart);
+  const dominants = dominantCircuits(chart);
+  const dominantText = !dominants.length
+    ? t('No dominant circuit')
+    : dominants.length > 1
+      ? t('Tied for most: {names} — {count} channels each', {
+        names: formatDisplay('list', dominants.map(group => circuitName(group.key))),
+        count: dominants[0].count
+      })
+      : formatDisplay('circuitSummary', circuitName(dominants[0].key), countLabel(dominants[0].count, '{count} channel', '{count} channels'));
+  const circuitSegbar = segbar(
+    groups.map(group => ({ key: group.key, count: group.count })),
+    { label: t('Complete channel count distribution') });
+  const cross = chart.incarnationCross;
+  const angleShort = { right: 'RA', left: 'LA', juxtaposition: 'JX' }[cross?.angle] || '';
+  const arms = variableArrows(chart.variable);
+  const corners = [
+    { key: 'determination', position: 'top-left', label: 'Determination' },
+    { key: 'motivation', position: 'top-right', label: 'Motivation' },
+    { key: 'environment', position: 'bottom-left', label: 'Environment' },
+    { key: 'perspective', position: 'bottom-right', label: 'Perspective' }
+  ].map(slot => ({
+    ...slot,
+    direction: arms.find(arm => arm.key === slot.key)?.direction || null,
+    label: `${t(slot.label)} ${arms.find(arm => arm.key === slot.key)?.direction === 'left' ? '←' : arms.find(arm => arm.key === slot.key)?.direction === 'right' ? '→' : '—'}`
+  }));
+  return `
+    <div class="panel-fact-rail">
+      <div class="panel-fact" data-panel-fact="profile" data-knowledge-object="profile" title="${esc(summaries.profile || '')}">
+        <div class="panel-fact-label">${t('Profile')}</div>
+        <div class="panel-fact-graphic pg-profile-graphic">
+          <span class="pg-profile-lines">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality') })}${lineLadder({ line: designLine, state: 'design', label: t('Design') })}</span>
+          <span class="pg-profile-number">${esc(numbers)}</span>
+        </div>
+        <div class="panel-fact-note">${esc(profileName(numbers))}</div>
+      </div>
+      <div class="panel-fact" data-panel-fact="circuit">
+        <div class="panel-fact-label">${t('Dominant Circuit')}</div>
+        <div class="panel-fact-graphic">${circuitSegbar}</div>
+        <div class="panel-fact-value">${esc(dominantText)}</div>
+        <div class="panel-fact-note">${t('Complete channel count distribution')} · ${t('Counted by channel · adds up')}</div>
+      </div>
+      <div class="panel-fact" data-panel-fact="cross">
+        <div class="panel-fact-label">${t('Incarnation Cross')}</div>
+        <div class="panel-fact-graphic">
+          <div class="pg-cross-mini" data-angle="${esc(cross?.angle || '')}" aria-hidden="true">
+            ${(cross?.gates || []).map((gate, index) => `<span class="pg-cross-cell" data-gate="${gate}" data-side="${index < 2 ? 'personality' : 'design'}">${gate}</span>`).join('')}
+          </div>
+        </div>
+        <button type="button" class="panel-fact-value" data-knowledge-object="cross">${esc(crossName(cross) || t('None'))}</button>
+        <div class="panel-fact-note">${esc(angleShort)} · ${esc(t('Gates'))} ${(cross?.gates || []).join(' / ') || '—'}</div>
+      </div>
+      <div class="panel-fact" data-panel-fact="variable">
+        <div class="panel-fact-label">${t('Variable')}</div>
+        <div class="panel-fact-graphic">
+          ${cornerArrows(corners)}
+          <span class="panel-fact-value">${esc(chart.variable?.notation || '—')}</span>
+        </div>
+        <div class="panel-fact-note">${t('Determination · Environment · Perspective · Motivation')}</div>
+      </div>
+    </div>`;
 }
 
 function wireKnowledgeTargets(container, chart) {
@@ -750,6 +827,9 @@ export function setupPanelTabs() {
 export function renderPanelContent(panel) {
   if (!current) return;
   const container = document.getElementById('panel-content');
+  // A graphics panel owns its own one-column flow; the two-up card grid on
+  // .panel-content belongs to the list panels that still use it.
+  container.classList.toggle('panel-flow', panel === 'centers');
   switch (panel) {
     case 'centers': renderCentersPanel(container); break;
     case 'channels': renderChannelsPanel(container); break;
@@ -762,28 +842,79 @@ export function renderPanelContent(panel) {
 
 function renderCentersPanel(container) {
   const { chart } = current;
+  const counts = centerStateCounts(chart);
+  const components = chart.definitionComponents || [];
+  const groupIndex = componentIndexByCenter(components);
   const statusLabel = status => t(status === 'defined' ? 'Defined' : status === 'undefined' ? 'Undefined' : 'Open');
-  const card = (c, status, extra = '') => `
-    <div class="center-card ${status}" data-center="${c.key}" tabindex="0" role="button" aria-label="${esc(formatDisplay('centerAria', centerName(c.key), status, statusLabel(status)))}">
-      <div class="center-status ${status}">${statusLabel(status)}</div>
-      <div class="center-name">${esc(centerName(c.key))}</div>
-      <p>${esc(contentText(status === 'defined' ? (c.definedMeaning || c.pressure) : status === 'undefined' ? c.undefinedMeaning : c.openMeaning))}</p>
-      ${extra}
-    </div>
-  `;
-  const notSelf = c => `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>`;
+  const statusSegments = [
+    { key: 'defined', count: counts.defined },
+    { key: 'undefined', count: counts.undefined },
+    { key: 'open', count: counts.open }
+  ];
+  const meaningFor = (c, status) => contentText(status === 'defined'
+    ? (c.definedMeaning || c.pressure)
+    : status === 'undefined' ? c.undefinedMeaning : c.openMeaning);
+  // One line, cut at the first sentence break. The full reading keeps its own
+  // expandable block below the row, so nothing is dropped by the shortening.
+  const oneLine = text => {
+    const clean = String(text || '').replace(/\s+/g, ' ').trim();
+    const first = clean.split(/[。；;]/)[0];
+    return first.length > 24 ? first.slice(0, 24) + '…' : first;
+  };
+  const row = (c, status) => {
+    const detailId = `pg-center-detail-${c.key}`;
+    const meaning = meaningFor(c, status);
+    return `
+    <div class="panel-center-row" data-center="${c.key}" data-state="${status}" data-group="${groupIndex.get(c.key) || ''}">
+      ${centerGlyph(c.key, { state: status, group: status === 'defined' ? (groupIndex.get(c.key) || 0) : 0 })}
+      <button type="button" class="panel-center-main" aria-label="${esc(formatDisplay('centerAria', centerName(c.key), status, statusLabel(status)))}">
+        <span class="panel-center-name">${esc(centerName(c.key))}</span>
+        <span class="panel-center-line">${esc(oneLine(meaning))}</span>
+      </button>
+      <span class="panel-center-state" data-state="${status}" aria-hidden="true"></span>
+      <button type="button" class="panel-center-more" aria-expanded="false" aria-controls="${detailId}" aria-label="${esc(t('Show details'))}">＋</button>
+      <div class="panel-center-detail" id="${detailId}" hidden>
+        <p>${esc(meaning)}</p>
+        ${c.notSelfQuestion ? `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>` : ''}
+      </div>
+    </div>`;
+  };
+  const group = (key, label, centers) => centers.length ? `
+    <div class="pg-center-group" data-group="${key}">
+      <div class="pg-group-head">${label}</div>
+      ${centers.map(c => row(c, key)).join('')}
+    </div>` : '';
 
   container.innerHTML = `
-    <div class="panel-title">${t('Centers ({defined} defined · {undefined} undefined · {open} open)', { defined: chart.centers.definedNames.length, undefined: chart.centers.undefinedNames.length, open: chart.centers.openNames.length })}</div>
+    <div class="panel-title">${t('Centers')}</div>
+    <div class="pg-center-counts">
+      ${segbar(statusSegments, { label: t('Centers') })}
+      <div class="pg-counts-legend">
+        <span data-legend="defined"><i aria-hidden="true"></i>${t('Defined')} ${counts.defined}</span>
+        <span data-legend="undefined"><i aria-hidden="true"></i>${t('Undefined')} ${counts.undefined}</span>
+        <span data-legend="open"><i aria-hidden="true"></i>${t('Open')} ${counts.open}</span>
+      </div>
+    </div>
     <p class="panel-intro">${t("Defined centers are consistent energy you radiate. Undefined and open centers are where you take in — and amplify — the energy around you; they're your deepest learning. Click any center to see it on your body.")}</p>
-    ${chart.centers.defined.map(c => card(c, 'defined')).join('')}
-    ${chart.centers.undefined.map(c => card(c, 'undefined', notSelf(c))).join('')}
-    ${chart.centers.open.map(c => card(c, 'open', notSelf(c))).join('')}
+    ${group('defined', t('Defined'), chart.centers.defined)}
+    ${group('undefined', t('Undefined'), chart.centers.undefined)}
+    ${group('open', t('Open'), chart.centers.open)}
   `;
-  container.querySelectorAll('.center-card[data-center]').forEach(el => {
-    el.addEventListener('click', () => showCenterDetail(el.dataset.center));
-    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showCenterDetail(el.dataset.center); } });
-    wireCenterHover(el, el.dataset.center);
+  // Leak discipline: only nodes inserted by this render are wired, never
+  // document or window.
+  container.querySelectorAll('.panel-center-row[data-center]').forEach(el => {
+    const key = el.dataset.center;
+    el.querySelector('.panel-center-main')?.addEventListener('click', () => showCenterDetail(key));
+    const more = el.querySelector('.panel-center-more');
+    const detail = el.querySelector('.panel-center-detail');
+    more?.addEventListener('click', () => {
+      const open = more.getAttribute('aria-expanded') !== 'true';
+      more.setAttribute('aria-expanded', String(open));
+      more.textContent = open ? '－' : '＋';
+      more.setAttribute('aria-label', t(open ? 'Hide details' : 'Show details'));
+      detail.hidden = !open;
+    });
+    wireCenterHover(el, key);
   });
 }
 

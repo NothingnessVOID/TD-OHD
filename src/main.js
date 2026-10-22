@@ -10,6 +10,9 @@ import { syncPopoverHeading, setupSyncPopoverDismiss } from './lib/sync-popover-
 import { closeDetailDialog } from './lib/detail-dialog.js';
 import { refreshKnowledgeDetail } from './lib/knowledge/detail-controller.js';
 import './lib/knowledge/detail-access.css';
+// Right-column graphics (issue #34). Imported from JS like the timeline CSS so
+// src/styles.css keeps its reviewed instruction order untouched.
+import './styles/panel-graphics.css';
 import { computeChart, sensitivityCheck, invalidateBirth } from './lib/chartdata.js';
 import { openPersonEditor } from './lib/person-editor.js';
 import { presentationIdentity } from './lib/person-input.js';
@@ -97,6 +100,11 @@ function setupLanguageSwitcher() {
 function refreshAppearanceGraphs() {
   // SVG colors are read from skin tokens at render time. CSS-only details,
   // legends and planetary rows update as soon as the root attributes change.
+  // The right column (#foundation-panel, #panel-content) is deliberately absent:
+  // panel-graphics marks are SVG filled through CSS variables, so a Skin switch
+  // repaints them without rebuilding a single node. Adding them here would make
+  // every Skin switch re-render the whole panel; tests/panel-graphics-verify-e2e.mjs
+  // asserts the mutation count stays at 0.
   if (currentData) {
     rerenderBodygraph();
     rerenderConnectionGraphs();

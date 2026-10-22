@@ -10,9 +10,10 @@ import staticMessages from './ui-static.json' with { type: 'json' };
 import viewMessages from './ui-views.json' with { type: 'json' };
 import transitMessages from './ui-transits.json' with { type: 'json' };
 import timelineMessages from './timeline.json' with { type: 'json' };
+import panelGraphicsMessages from './ui-panel-graphics.json' with { type: 'json' };
 const messages = {
   ...runtimeMessages, ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
-  ...mainMessages, ...staticMessages, ...viewMessages, ...contexts['zh-Hant']
+  ...mainMessages, ...staticMessages, ...viewMessages, ...panelGraphicsMessages, ...contexts['zh-Hant']
 };
 export default {
   code: 'zh-Hant', label: '繁體中文', matches: language => /^zh-(?:Hant(?:-[a-z]+)?|TW|HK|MO)$/i.test(language),

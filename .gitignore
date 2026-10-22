@@ -1,5 +1,6 @@
 node_modules
 dist
+dist-proto
 /public/engine/
 /engine-wasm/bin/
 /engine-wasm/obj/
