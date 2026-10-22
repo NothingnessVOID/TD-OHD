@@ -41,6 +41,7 @@ const scale = Number(flag('scale', 2));
 const distDir = flag('dist', null);
 const port = Number(flag('port', 5216));
 const profileId = flag('profile', 'synthetic-b');
+const locale = flag('locale', 'zh-CN');
 
 // Tab ids are locale-independent; the visible label is translated.
 const TAB_LABELS = {
@@ -140,16 +141,16 @@ try {
       page.on('pageerror', err => errs.push('PAGEERROR ' + err.message));
       page.on('console', msg => { if (msg.type() === 'error') errs.push('CONSOLE ' + msg.text()); });
 
-      await page.addInitScript(({ p, key, skinId }) => {
+      await page.addInitScript(({ p, key, skinId, language }) => {
         localStorage.setItem(key, JSON.stringify([p]));
         localStorage.setItem('ohd-last-person-id', p.id);
-        localStorage.setItem('ohd-language', 'zh-CN');
+        localStorage.setItem('ohd-language', language);
         localStorage.setItem('td-ohd-appearance-v3', JSON.stringify({
           version: 3, skinMode: 'manual', skinId,
           centerPaletteMode: 'skin-default', overridesBySkin: {}, preferences: {}
         }));
         localStorage.removeItem('bodygraph-theme');
-      }, { p: profile, key: PROFILE_STORAGE_KEY, skinId: SKIN_IDS[skin] });
+      }, { p: profile, key: PROFILE_STORAGE_KEY, skinId: SKIN_IDS[skin], language: locale });
 
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
         .catch(err => errs.push('GOTO ' + err.message));

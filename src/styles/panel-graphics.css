@@ -1093,7 +1093,7 @@
   min-height: 48px;
   padding: 6px 8px;
   background: color-mix(in srgb, var(--pg-side, var(--border)) 10%, var(--bg-elevated));
-  border: 1px solid color-mix(in srgb, var(--pg-side, var(--border)) 78%, transparent);
+  border: 1px solid var(--pg-side, var(--border));
   border-inline-start-width: 3px;
   border-radius: var(--radius-xs);
   font-family: inherit;
@@ -1117,6 +1117,9 @@
 
 .pg-cross-role { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
 .pg-cross-gate { font-size: 14px; font-weight: 500; white-space: nowrap; }
+/* The measure word and its number are one token: "第 44 闸门" must not break
+   between 第 and 44. A bare "44" would be indistinguishable from the other bare
+   numbers in the panel (c.t.b, line ticks). */
 .pg-cross-name {
   font-size: 11px;
   color: var(--text-secondary);
@@ -1196,8 +1199,8 @@
    100 / 84 / 68 keeps the order readable without dropping the last one under the
    contrast floor (58/30 measured 1.4-2.6:1). */
 .pg-gk-band[data-tier="shadow"] { --pg-gk-tier: var(--pg-gk-base); }
-.pg-gk-band[data-tier="gift"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 82%, var(--bg-elevated)); }
-.pg-gk-band[data-tier="siddhi"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 64%, var(--bg-elevated)); }
+.pg-gk-band[data-tier="gift"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 88%, var(--bg-elevated)); }
+.pg-gk-band[data-tier="siddhi"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 74%, var(--bg-elevated)); }
 .pg-gk-tier { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
 .pg-gk-word {
   font-size: 12px;
@@ -1217,6 +1220,9 @@
   gap: 8px;
   max-width: 520px;
   margin-bottom: 20px;
+  /* Centred: full width would pull the four arrows apart and break the compact
+     compass reading; flush left leaves the right half of the column empty. */
+  margin-inline: auto;
 }
 .pg-var-corner {
   display: flex;
@@ -1289,7 +1295,7 @@
 @container infocol (max-width: 379px) {
   .pg-cross-quad { padding: 6px; gap: 4px; }
   .pg-cross-palace { padding: 4px 6px; min-height: 44px; }
-  .pg-cross-name { max-width: 6em; }
+  .pg-cross-name { max-width: 4em; }
   .pg-gk-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .pg-var-quad { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); grid-template-rows: auto 32px auto; }
   .pg-var-arrow { font-size: 24px; }

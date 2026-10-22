@@ -20,7 +20,7 @@ test('approved shared styles retain the existing primitives after approved skin 
 });
 test('Cross Panel uses one Basics button while preserving Gate wiring and no inline basics',()=>{
  // Current source must still render the single Basics entry and keep Gate wiring.
- const s=file('src/views/chart.js').split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.match(s,/wireRowHover\(item, parseInt\(item.dataset.gate\)\)/);
+ const s=file('src/views/chart.js').split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.match(s,/data-cross-basics/);assert.match(s,/openKnowledgeDetail\(\{objectType:'cross',objectId:'introduction'\}\)/);assert.match(s,/wireRowHover\((?:item|palace), parseInt\((?:item|palace)\.dataset\.gate\)\)/);
  // The no-inline-basics rule belongs to the reviewed Cross snapshot it was written for.
  const reviewed=execFileSync('git',['show',`${incrementBase}:src/views/chart.js`]).toString().split('function renderCrossPanel')[1].split('export function getCurrentChart')[0];assert.doesNotMatch(reviewed,/getKnowledgeSummary|\.summary|\.detail/);
 });

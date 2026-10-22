@@ -228,7 +228,7 @@ results.crossQuad = await page.evaluate(() => {
     angleFull: document.querySelector('.pg-cross-angle-full')?.textContent?.trim().slice(0, 40) ?? null,
     ladderBands: document.querySelectorAll('.pg-gk-band').length,
     // Equal width is the point: the three tiers must not encode a ratio.
-    ladderWidths: [...document.querySelectorAll('.pg-gk-ladder:first-of-type .pg-gk-band')].map(node => Math.round(node.getBoundingClientRect().width))
+    ladderWidths: [...(document.querySelector('.pg-gk-ladder')?.querySelectorAll('.pg-gk-band') || [])].map(node => Math.round(node.getBoundingClientRect().width))
   };
 });
 await openTab('variable');
