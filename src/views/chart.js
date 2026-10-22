@@ -37,7 +37,8 @@ import { esc, formatBirth } from '../lib/format.js';
 import { CENTER_KEYS } from '../lib/center-palette-registry.js';
 import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
 import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
-import { circuitCounts, dominantCircuits, centerStateCounts } from '../lib/panel-graphics/counts.js';
+import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup } from '../lib/panel-graphics/counts.js';
+import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
 import { segbar, lineLadder, cornerArrows } from '../lib/panel-graphics/primitives.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
@@ -350,6 +351,17 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
     </div>
   `;
   wireKnowledgeTargets(panel, chart);
+  // Narrow columns keep the fact name and its graphic, and fold the detail
+  // line away behind a 24px toggle (CSS decides whether the toggle exists).
+  panel.querySelectorAll('.panel-fact-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const fact = button.closest('.panel-fact');
+      const open = fact.dataset.open !== 'true';
+      fact.dataset.open = String(open);
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', t(open ? 'Hide details' : 'Show details'));
+    });
+  });
 }
 
 // The identity band holds Type, Strategy, Signature / Not-Self, Authority and
@@ -452,12 +464,14 @@ function renderFoundationFacts(chart, summaries = {}) {
           <span class="pg-profile-number">${esc(numbers)}</span>
         </div>
         <div class="panel-fact-note">${esc(profileName(numbers))}</div>
+        <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
       <div class="panel-fact" data-panel-fact="circuit">
         <div class="panel-fact-label">${t('Dominant Circuit')}</div>
         <div class="panel-fact-graphic">${circuitSegbar}</div>
-        <div class="panel-fact-value">${esc(dominantText)}</div>
+        <div class="panel-fact-value" title="${esc(dominantText)}">${esc(dominantText)}</div>
         <div class="panel-fact-note">${t('Complete channel count distribution')} · ${t('Counted by channel · adds up')}</div>
+        <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
       <div class="panel-fact" data-panel-fact="cross">
         <div class="panel-fact-label">${t('Incarnation Cross')}</div>
@@ -468,6 +482,7 @@ function renderFoundationFacts(chart, summaries = {}) {
         </div>
         <button type="button" class="panel-fact-value" data-knowledge-object="cross">${esc(crossName(cross) || t('None'))}</button>
         <div class="panel-fact-note">${esc(angleShort)} · ${esc(t('Gates'))} ${(cross?.gates || []).join(' / ') || '—'}</div>
+        <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
       <div class="panel-fact" data-panel-fact="variable">
         <div class="panel-fact-label">${t('Variable')}</div>
@@ -476,6 +491,7 @@ function renderFoundationFacts(chart, summaries = {}) {
           <span class="panel-fact-value">${esc(chart.variable?.notation || '—')}</span>
         </div>
         <div class="panel-fact-note">${t('Determination · Environment · Perspective · Motivation')}</div>
+        <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
     </div>`;
 }
@@ -827,9 +843,9 @@ export function setupPanelTabs() {
 export function renderPanelContent(panel) {
   if (!current) return;
   const container = document.getElementById('panel-content');
-  // A graphics panel owns its own one-column flow; the two-up card grid on
+  // Graphics panels own their own one-column flow; the two-up card grid on
   // .panel-content belongs to the list panels that still use it.
-  container.classList.toggle('panel-flow', panel === 'centers');
+  container.classList.toggle('panel-flow', panel === 'centers' || panel === 'channels');
   switch (panel) {
     case 'centers': renderCentersPanel(container); break;
     case 'channels': renderChannelsPanel(container); break;
@@ -920,53 +936,133 @@ function renderCentersPanel(container) {
 
 function renderChannelsPanel(container) {
   const { chart } = current;
-  // Hanging gates: for every channel where exactly one gate is active,
-  // the active gate "hangs", seeking its partner. Gates in multiple
-  // channels (10, 20, 34, 57) can hang toward several partners at once.
   const activeSet = new Set(chart.gates.all);
-  const hangingMap = new Map(); // gate -> [partners]
+  const groups = channelsByGroup(chart);
+  const counts = circuitCounts(chart);
+  const dominants = dominantCircuits(chart);
+  const total = chart.channels.length;
+
+  // Hanging gates: for every channel where exactly one gate is active, the
+  // active gate hangs toward the absent partner. Gates in several channels
+  // (10, 20, 34, 57) hang toward several partners at once.
+  const hangingMap = new Map();
   for (const ch of CHANNELS) {
     const [a, b] = ch.gates;
-    if (activeSet.has(a) && !activeSet.has(b)) (hangingMap.get(a) || hangingMap.set(a, []).get(a)).push(b);
-    if (activeSet.has(b) && !activeSet.has(a)) (hangingMap.get(b) || hangingMap.set(b, []).get(b)).push(a);
+    if (activeSet.has(a) && !activeSet.has(b)) (hangingMap.get(a) || hangingMap.set(a, []).get(a)).push({ partner: b, circuit: channelGroup(ch) });
+    if (activeSet.has(b) && !activeSet.has(a)) (hangingMap.get(b) || hangingMap.set(b, []).get(b)).push({ partner: a, circuit: channelGroup(ch) });
   }
   const hanging = [...hangingMap.entries()]
-    .map(([gate, partners]) => ({ gate, partners: partners.sort((x, y) => x - y) }))
+    .map(([gate, partners]) => ({ gate, partners: partners.sort((x, y) => x.partner - y.partner) }))
     .sort((x, y) => x.gate - y.gate);
 
-  const channelsHtml = chart.channels.map(ch => {
-    const key = `${ch.gates[0]}-${ch.gates[1]}`;
+  const dominantText = !dominants.length
+    ? t('No dominant circuit')
+    : dominants.length > 1
+      ? t('Tied for most: {names} — {count} channels each', {
+        names: formatDisplay('list', dominants.map(group => circuitName(group.key))),
+        count: dominants[0].count
+      })
+      : formatDisplay('circuitSummary', circuitName(dominants[0].key), countLabel(dominants[0].count, '{count} channel', '{count} channels'));
+
+  const channelRow = channel => {
+    const key = `${channel.gates[0]}-${channel.gates[1]}`;
     const desc = CHANNEL_DESCRIPTIONS[key];
+    const group = channelGroup(channel);
+    const centersTitle = formatDisplay('channelCenters', channel.centers, channel.centers.map(centerName));
     return `
-      <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
-        <div class="channel-name">
-          ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
-          ${renderChannelCircuitBadges(ch)}
+      <div class="panel-channel-row" data-gate="${channel.gates[0]}" data-circuit="${group}" data-expanded="false">
+        <button type="button" class="panel-channel-main" aria-expanded="false">
+          <span class="panel-channel-tube">${channelTube(channel, activeSet, group, `${key} ${channelName(channel.gates)}`)}</span>
+          <span class="panel-channel-text">
+            <span class="panel-channel-name">${esc(channelName(channel.gates))} ${formatDisplay('parentheses', key)}</span>
+            <span class="panel-channel-meta">
+              <span class="panel-channel-theme">${esc(contentText(channel.theme))}</span>
+              ${renderChannelCircuitBadges(channel)}
+            </span>
+          </span>
+        </button>
+        <div class="panel-channel-detail" hidden title="${esc(centersTitle)}">
+          <p class="panel-channel-centers">${esc(centersTitle)}</p>
+          ${desc ? `<p>${esc(desc.description)}</p><p><em>${esc(desc.whenDefined)}</em></p>` : ''}
         </div>
-        <div class="channel-meta">${esc(contentText(ch.theme))} · ${esc(formatDisplay('channelCenters', ch.centers, ch.centers.map(centerName)))}</div>
-        ${desc ? `<div class="gate-description">${esc(desc.description)}<br><br><em>${esc(desc.whenDefined)}</em></div>` : ''}
+      </div>`;
+  };
+
+  const groupSection = ({ key, count }) => {
+    if (!count) return '';
+    return `
+      <div class="pg-channel-group" data-group="${key}">
+        <div class="pg-channel-group-head">
+          <span class="pg-channel-group-name">${esc(circuitName(key))}</span>
+          <span class="pg-channel-group-count">${count}</span>
+        </div>
+        ${groups[key].map(channelRow).join('')}
+      </div>`;
+  };
+
+  const hangingRow = ({ gate, partners }) => {
+    const first = partners[0];
+    const labels = partners.map(item => item.partner).join(' · ');
+    return `
+      <button type="button" class="panel-hanging-row" data-gate="${gate}" aria-label="${esc(`${t('Gate {gate}', { gate })} → ${labels}`)}">
+        <span class="panel-hanging-tube">${hangingTube(gate, first.partner, activeSet, first.circuit, labels)}</span>
+        <span class="panel-hanging-gate">${t('Gate {gate}', { gate })}</span>
+        <span class="panel-hanging-arrow" aria-hidden="true">→</span>
+        <span class="panel-hanging-partner">${labels}</span>
+      </button>`;
+  };
+
+  const emptyState = `
+    <div class="pg-channel-empty">
+      <div class="pg-channel-empty-tube" >${emptyTube('individual', t('No complete channels in this chart'))}</div>
+      <div>
+        <div class="pg-channel-empty-title">${t('No complete channels in this chart')}</div>
+        <p class="panel-intro">${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>
       </div>
-    `;
-  }).join('');
+    </div>`;
 
   container.innerHTML = `
-    <div class="panel-title">${t('Channels ({count} defined)', { count: chart.channels.length })}</div>
-    ${chart.channels.length === 0 ? `<p class="panel-intro">${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>` : ''}
-    ${channelsHtml}
+    <div class="panel-title">${t('Channels ({count} defined)', { count: total })}</div>
+    <p class="pg-panel-note">${t('Natal · counted by channel · adds up')}</p>
+    ${total ? `
+    <div class="pg-channel-summary">
+      ${segbar(counts.map(group => ({ key: group.key, count: group.count })), { label: t('Complete channel count distribution') })}
+      <div class="pg-counts-legend">
+        ${counts.map(group => `<span data-legend="${group.key}"><i aria-hidden="true"></i>${esc(circuitName(group.key))} ${group.count}</span>`).join('')}
+      </div>
+      <p class="pg-panel-note">${t('Complete channel count distribution')}</p>
+      <p class="pg-channel-dominant">${t('Dominant Circuit')}: ${dominantText}</p>
+    </div>
+    ${counts.map(groupSection).join('')}` : `
+    <div class="pg-channel-summary">
+      ${segbar(counts.map(group => ({ key: group.key, count: group.count })), { label: t('Complete channel count distribution') })}
+      <p class="pg-panel-note">${t('Complete channel count distribution')}</p>
+    </div>
+    ${emptyState}`}
     ${hanging.length ? `
-      <div class="panel-title" style="margin-top:20px">${t('Hanging Gates ({count})', { count: hanging.length })}</div>
+      <div class="panel-title pg-hanging-title">${t('Hanging Gates ({count})', { count: hanging.length })}</div>
       <p class="panel-intro">${t("Active gates waiting for their harmonic partner — you're drawn to people who carry the other half.")}</p>
-      <div class="hanging-gates">
-        ${hanging.map(h => `<button class="gate-pill" data-gate="${h.gate}">${t('Gate {gate}', { gate: h.gate })} <span class="gate-pill-partner">${t('seeks')} ${h.partners.join(' · ')}</span></button>`).join('')}
+      <div class="pg-hanging-list">
+        ${hanging.map(hangingRow).join('')}
       </div>
     ` : ''}
   `;
-  container.querySelectorAll('.gate-pill').forEach(btn => {
-    btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
-    wireRowHover(btn, parseInt(btn.dataset.gate));
+  // Only the nodes this render created are wired; no document/window listeners.
+  container.querySelectorAll('.panel-channel-row').forEach(row => {
+    const toggle = () => {
+      const detail = row.querySelector('.panel-channel-detail');
+      const open = row.dataset.expanded !== 'true';
+      row.dataset.expanded = String(open);
+      row.querySelector('.panel-channel-main')?.setAttribute('aria-expanded', String(open));
+      if (detail) detail.hidden = !open;
+    };
+    row.querySelector('.panel-channel-main')?.addEventListener('click', toggle);
+    wireRowHover(row, parseInt(row.dataset.gate));
   });
-  container.querySelectorAll('.channel-item[data-gate]').forEach(item =>
-    wireRowHover(item, parseInt(item.dataset.gate)));
+  container.querySelectorAll('.panel-hanging-row[data-gate]').forEach(row => {
+    row.addEventListener('click', () => showGateDetail(parseInt(row.dataset.gate)));
+    wireRowHover(row, parseInt(row.dataset.gate));
+  });
 }
 
 function renderGatesPanel(container) {

@@ -53,7 +53,10 @@ const PROFILES = {
   'synthetic-a': { id: 'style-ref-a', name: 'Style Reference A', birthDate: '1990-06-15', birthTime: '08:30' },
   // Wider coverage: 6 defined / 2 undefined / 1 open, 4 channels, split
   // definition (two islands), emotional authority. Exercises every panel tab.
-  'synthetic-b': { id: 'style-ref-b', name: 'Style Reference B', birthDate: '1979-11-04', birthTime: '06:05' }
+  'synthetic-b': { id: 'style-ref-b', name: 'Style Reference B', birthDate: '1979-11-04', birthTime: '06:05' },
+  // Empty-state coverage: Reflector, lunar authority, no defined centre and no
+  // complete channel. Everything the panels draw an empty state for.
+  'synthetic-c': { id: 'style-ref-c', name: 'Style Reference C', birthDate: '1988-03-18', birthTime: '15:00' }
 };
 const profileBase = PROFILES[profileId] || PROFILES['synthetic-b'];
 const profile = {

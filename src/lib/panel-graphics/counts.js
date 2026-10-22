@@ -41,6 +41,22 @@ export function circuitCounts(chart) {
   return CIRCUIT_GROUP_KEYS.map(key => ({ key, count: counted[key] }));
 }
 
+/** The circuit group of one channel; the only per-channel taxonomy read. */
+export function channelGroup(channel) {
+  return channelCircuit(channel).group;
+}
+
+/**
+ * The chart's channels bucketed by circuit group, in group order. The display
+ * layer reads its groups here instead of calling channelCircuit itself, so the
+ * taxonomy keeps exactly one consumer in the panel code.
+ */
+export function channelsByGroup(chart) {
+  const buckets = { individual: [], collective: [], tribal: [] };
+  for (const channel of chart?.channels || []) buckets[channelCircuit(channel).group].push(channel);
+  return buckets;
+}
+
 /**
  * Every group sharing the highest count. Empty array when there is no channel
  * at all (Reflector), which the caller renders as an explicit empty state.

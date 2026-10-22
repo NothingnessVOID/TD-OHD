@@ -57,6 +57,14 @@ test('a tie returns every group at the maximum instead of picking by key order',
   assert.ok(dominants.every(group => group.count === 1));
 });
 
+test('the three segments always add up to the channel list they came from', () => {
+  for (const keys of [[], ['1-8'], ['1-8', '7-31', '6-59', '2-14'], ['4-63', '19-49']]) {
+    const sample = chart(keys);
+    const total = circuitCounts(sample).reduce((sum, group) => sum + group.count, 0);
+    assert.equal(total, sample.channels.length, keys.join(',') || 'empty');
+  }
+});
+
 test('no channels is an empty dominant list, not a fabricated one', () => {
   assert.deepEqual(dominantCircuits(chart([])), []);
 });
