@@ -90,7 +90,22 @@ const WIDE = [
   { key: 'segbar digit on defined', tab: 'centers', profile: 'main', selector: '.pg-seg[data-group="defined"] .pg-seg-count', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
   // The open segment only exists when a centre is fully open, so it needs the
   // fixture that has one.
-  { key: 'segbar digit on open', tab: 'centers', profile: 'open', selector: '.pg-seg[data-group="open"] .pg-seg-count', prop: 'color', over: 'panel', min: 4.5, kind: 'text' }
+  { key: 'segbar digit on open', tab: 'centers', profile: 'open', selector: '.pg-seg[data-group="open"] .pg-seg-count', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
+  // ---- cut 4: cross palaces, axis, gene keys tiers, variable compass ----
+  { key: 'cross palace personality edge', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="personality"]', prop: 'borderInlineStartColor', min: 3, kind: 'graphic' },
+  { key: 'cross palace design edge', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="design"]', prop: 'borderInlineStartColor', min: 3, kind: 'graphic' },
+  { key: 'cross palace personality fill', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="personality"]', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'side tint; the edge carries the code' },
+  { key: 'cross palace design fill', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="design"]', prop: 'backgroundColor', min: 1, kind: 'graphic' },
+  { key: 'cross axis hairline', tab: 'cross', profile: 'main', selector: '.pg-cross-angle', prop: 'borderTopColor', min: 1.2, kind: 'graphic', note: 'guide line, and the angle is also printed' },
+  { key: 'cross angle badge text', tab: 'cross', profile: 'main', selector: '.pg-cross-angle', prop: 'color', over: 'self-bg', min: 4.5, kind: 'text' },
+  { key: 'cross palace gate text', tab: 'cross', profile: 'main', selector: '.pg-cross-gate', prop: 'color', over: 'parent-bg', min: 4.5, kind: 'text' },
+  { key: 'gene keys shadow tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="shadow"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },
+  { key: 'gene keys gift tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="gift"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },
+  { key: 'gene keys siddhi tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="siddhi"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },
+  { key: 'gene keys word text', tab: 'cross', profile: 'main', selector: '.pg-gk-word', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
+  { key: 'variable arrow ink', tab: 'variable', profile: 'main', selector: '.pg-var-corner[data-direction] .pg-var-arrow', prop: 'color', over: 'parent-bg', min: 3, kind: 'graphic' },
+  { key: 'variable empty slot edge', tab: 'variable', profile: 'main', selector: '.pg-var-corner--empty', prop: 'borderTopColor', min: 1.2, kind: 'graphic', optional: true, note: 'dashed empty state, not a value' },
+  { key: 'variable corner name', tab: 'variable', profile: 'main', selector: '.pg-var-name', prop: 'color', over: 'parent-bg', min: 4.5, kind: 'text' }
 ];
 
 // Narrow tier: the tube becomes an explicit symbol, and the fact cards fold.

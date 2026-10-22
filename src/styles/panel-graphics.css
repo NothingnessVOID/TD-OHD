@@ -1050,3 +1050,249 @@
   line-height: 1;
   color: var(--text-tertiary);
 }
+
+/* =============================================================
+   Cut 4 — Cross quad, Gene Keys ladder, Variable compass
+   ============================================================= */
+
+/* ---------- Incarnation Cross: four palaces on an axis ---------- */
+.pg-cross-heading {
+  display: block;
+  width: 100%;
+  text-align: start;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+.pg-cross-heading:hover { color: var(--accent); }
+
+.pg-cross-quad {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(44px, auto) auto;
+  gap: 6px;
+  max-width: 520px;
+  padding: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+}
+/* The angle's secondary code. Measured: 8px vs 2px moves ~14 CSS px² of corner
+   pixels, 0px vs 2px moves ~1. The radius alone is not readable, so the axis
+   badge below is the primary code and this only reinforces it. */
+.pg-cross-quad[data-angle="juxtaposition"] { border-radius: 0; }
+.pg-cross-quad[data-angle="right"] { border-radius: 8px; }
+.pg-cross-quad[data-angle="left"] { border-radius: 2px; }
+
+.pg-cross-palace {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 48px;
+  padding: 6px 8px;
+  background: color-mix(in srgb, var(--pg-side, var(--border)) 10%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--pg-side, var(--border)) 78%, transparent);
+  border-inline-start-width: 3px;
+  border-radius: var(--radius-xs);
+  font-family: inherit;
+  text-align: start;
+  color: var(--text);
+  cursor: pointer;
+}
+.pg-cross-palace[data-side="personality"] { --pg-side: var(--hd-personality); }
+.pg-cross-palace[data-side="design"] { --pg-side: var(--hd-design); }
+.pg-cross-palace:hover { background: color-mix(in srgb, var(--pg-side) 22%, var(--bg-elevated)); }
+.pg-cross-palace.row-lit { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.pg-cross-palace--empty {
+  background: var(--bg-sunken);
+  border: 1px dashed var(--border);
+  cursor: default;
+}
+.pg-cross-palace[data-place="top"] { grid-column: 2; grid-row: 1; }
+.pg-cross-palace[data-place="left"] { grid-column: 1; grid-row: 2; }
+.pg-cross-palace[data-place="right"] { grid-column: 3; grid-row: 2; }
+.pg-cross-palace[data-place="bottom"] { grid-column: 2; grid-row: 3; }
+
+.pg-cross-role { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+.pg-cross-gate { font-size: 14px; font-weight: 500; white-space: nowrap; }
+.pg-cross-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The axis: two hairlines and the angle abbreviation, which is the readable code. */
+.pg-cross-axis {
+  position: relative;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+.pg-cross-axis::before,
+.pg-cross-axis::after {
+  content: '';
+  position: absolute;
+  background: var(--border);
+}
+.pg-cross-axis::before { inset-inline: -6px; inset-block-start: 50%; height: 1px; }
+.pg-cross-axis::after { inset-block: -6px; inset-inline-start: 50%; width: 1px; }
+.pg-cross-axis-line { display: none; }
+.pg-cross-angle {
+  position: relative;
+  z-index: 1;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+}
+.pg-cross-angle-full { font-size: 14px; color: var(--text-secondary); margin-top: 8px; }
+
+/* ---------- Gene Keys ladder ---------- */
+.pg-gk-section { margin-top: 24px; }
+.pg-gk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pg-gk-item { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pg-gk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.pg-gk-sphere { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-tertiary); }
+.pg-gk-key { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; }
+.pg-gk-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* The tier has to be three *distinguishable* lightness steps and every step has
+     to clear 3:1 as a graphic. --accent-strong alone sits at 3.3:1 on the lightest
+     Skins, so no lighter step of it can pass; the base is therefore the accent
+     pulled toward the text ink, which buys the headroom the three steps need. */
+  --pg-gk-base: color-mix(in srgb, var(--accent-strong) 68%, var(--text));
+}
+/* Three equal bands. Width carries no information: Shadow, Gift and Siddhi are
+   three readings of one key, not three quantities, so a 100/70/40 split would
+   invent a ratio. The tier is the band's lightness only. */
+.pg-gk-band {
+  display: grid;
+  grid-template-columns: 6px auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+}
+.pg-gk-band-rule {
+  display: block;
+  align-self: stretch;
+  border-radius: 1px;
+  background: var(--pg-gk-tier);
+}
+/* Three lightness steps that still clear 3:1 as graphic marks. The measured
+   floor is the lightest step, so the spread is compressed rather than widened:
+   100 / 84 / 68 keeps the order readable without dropping the last one under the
+   contrast floor (58/30 measured 1.4-2.6:1). */
+.pg-gk-band[data-tier="shadow"] { --pg-gk-tier: var(--pg-gk-base); }
+.pg-gk-band[data-tier="gift"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 82%, var(--bg-elevated)); }
+.pg-gk-band[data-tier="siddhi"] { --pg-gk-tier: color-mix(in srgb, var(--pg-gk-base) 64%, var(--bg-elevated)); }
+.pg-gk-tier { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+.pg-gk-word {
+  font-size: 12px;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Variable compass ---------- */
+.pg-var-quad {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+  grid-template-rows: auto 48px auto;
+  gap: 8px;
+  max-width: 520px;
+  margin-bottom: 20px;
+}
+.pg-var-corner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 72px;
+  padding: 8px 10px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  text-align: start;
+  color: var(--text);
+  cursor: pointer;
+}
+.pg-var-corner:hover { background: var(--accent-soft); }
+.pg-var-corner:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pg-var-corner[data-position="top-left"] { grid-column: 1; grid-row: 1; }
+.pg-var-corner[data-position="top-right"] { grid-column: 3; grid-row: 1; }
+.pg-var-corner[data-position="bottom-left"] { grid-column: 1; grid-row: 3; }
+.pg-var-corner[data-position="bottom-right"] { grid-column: 3; grid-row: 3; }
+/* The arrow's job is the direction, so its ink is the readable body colour. The
+   accent stays on the tag: on several Skins accent-strong sits within 1.6:1 of
+   the sunken corner fill, which would have made the arrow disappear. */
+.pg-var-arrow { font-size: 32px; line-height: 1; color: var(--text); }
+.pg-var-tag { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text-tertiary); }
+.pg-var-name { font-size: 14px; }
+.pg-var-meta { font-size: 11px; color: var(--text-secondary); }
+/* No direction computed: the corner stays, as a dashed empty slot. */
+.pg-var-corner--empty {
+  background: none;
+  border: 1.5px dashed var(--border);
+  cursor: default;
+}
+.pg-var-shape {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-xs);
+}
+.pg-var-centre {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pg-var-centre::before,
+.pg-var-centre::after {
+  content: '';
+  position: absolute;
+  background: var(--border);
+}
+.pg-var-centre::before { inset-inline: -8px; inset-block-start: 50%; height: 1px; }
+.pg-var-centre::after { inset-block: -8px; inset-inline-start: 50%; width: 1px; }
+.pg-var-centre span {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--text-tertiary);
+  border-radius: var(--radius-full);
+}
+
+/* Narrow column: palaces keep their four positions; only the name truncates. */
+@container infocol (max-width: 379px) {
+  .pg-cross-quad { padding: 6px; gap: 4px; }
+  .pg-cross-palace { padding: 4px 6px; min-height: 44px; }
+  .pg-cross-name { max-width: 6em; }
+  .pg-gk-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pg-var-quad { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); grid-template-rows: auto 32px auto; }
+  .pg-var-arrow { font-size: 24px; }
+  .pg-var-corner { padding: 6px 8px; min-height: 64px; }
+  .pg-var-meta { display: none; }
+}

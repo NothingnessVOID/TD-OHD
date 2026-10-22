@@ -106,6 +106,8 @@ results.skinSwitchCentres = await skinSwitchOn('centers', 'default-dark');
 results.skinSwitchChannels = await skinSwitchOn('channels', 'high-contrast');
 results.skinSwitchGates = await skinSwitchOn('gates', 'default-dark');
 results.skinSwitchPlanets = await skinSwitchOn('planets', 'high-contrast');
+results.skinSwitchCross = await skinSwitchOn('cross', 'default-dark');
+results.skinSwitchVariable = await skinSwitchOn('variable', 'high-contrast');
 await switchSkinTo('default-light');
 
 // ---------- 2. Left graph → right column ----------
@@ -212,6 +214,35 @@ results.planetRows = await page.evaluate(async () => {
   };
 });
 
+// ---------- 4d. Cross + Variable: palaces, angle text, knowledge entries ----------
+await openTab('cross');
+results.crossQuad = await page.evaluate(() => {
+  const palaces = [...document.querySelectorAll('.pg-cross-palace[data-gate]')];
+  const quad = document.querySelector('.pg-cross-quad');
+  return {
+    palaces: palaces.length,
+    gates: palaces.map(node => node.dataset.gate),
+    sides: palaces.map(node => node.dataset.side),
+    angle: quad?.dataset.angle ?? null,
+    angleBadge: document.querySelector('.pg-cross-angle')?.textContent?.trim() ?? null,
+    angleFull: document.querySelector('.pg-cross-angle-full')?.textContent?.trim().slice(0, 40) ?? null,
+    ladderBands: document.querySelectorAll('.pg-gk-band').length,
+    // Equal width is the point: the three tiers must not encode a ratio.
+    ladderWidths: [...document.querySelectorAll('.pg-gk-ladder:first-of-type .pg-gk-band')].map(node => Math.round(node.getBoundingClientRect().width))
+  };
+});
+await openTab('variable');
+results.variableQuad = await page.evaluate(() => {
+  const corners = [...document.querySelectorAll('.pg-var-corner')];
+  return {
+    corners: corners.length,
+    positions: corners.map(node => node.dataset.position),
+    directions: corners.map(node => node.dataset.direction),
+    knowledge: corners.map(node => node.dataset.knowledgeVariable || null),
+    arrows: [...document.querySelectorAll('.pg-var-arrow')].length
+  };
+});
+
 // ---------- 5. Touch target floor (24 × 24), measured not inferred ----------
 const measureTargets = () => page.evaluate(() => {
   const nodes = [...document.querySelectorAll(
@@ -262,7 +293,7 @@ await page.setViewportSize({ width: 1440, height: 900 });
 await browser.close();
 
 const failures = [];
-for (const key of ['skinSwitchCentres', 'skinSwitchChannels', 'skinSwitchGates', 'skinSwitchPlanets']) {
+for (const key of ['skinSwitchCentres', 'skinSwitchChannels', 'skinSwitchGates', 'skinSwitchPlanets', 'skinSwitchCross', 'skinSwitchVariable']) {
   const run = results[key];
   if (run.error) { failures.push(`${key}: ${run.error}`); continue; }
   if (run.foundationMutations !== 0) failures.push(`${key}: foundation mutated on skin switch`);
@@ -289,6 +320,13 @@ if (!results.gateGrid.litPillFromGraph) failures.push('graph gate hover did not 
 if (!results.planetRows.expanded || !results.planetRows.detailHasCtb) failures.push('planet row does not expand back to c.t.b');
 if (results.planetRows.count !== 13) failures.push(`planet table has ${results.planetRows.count} rows`);
 if (!results.planetRows.bars || !results.planetRows.microBars) failures.push('planet bars or micro-bars missing');
+if (results.crossQuad.palaces !== 4) failures.push(`cross quad has ${results.crossQuad.palaces} palaces`);
+if (!results.crossQuad.angleBadge) failures.push('cross angle badge missing');
+if (!results.crossQuad.angleFull) failures.push('cross angle wording missing');
+if (results.crossQuad.ladderBands !== 12) failures.push(`gene keys has ${results.crossQuad.ladderBands} bands, expected 12`);
+if (new Set(results.crossQuad.ladderWidths).size !== 1) failures.push('gene keys bands are not equal width');
+if (results.variableQuad.corners !== 4) failures.push(`variable quad has ${results.variableQuad.corners} corners`);
+if (!results.variableQuad.knowledge.every(Boolean)) failures.push('a variable corner has no knowledge entry');
 // 1440: 32 + 32 cells, 18px tall. 641: 25 + 25 + 14, 28px tall. 390: 32 + 32.
 const gridExpectations = [
   ['grid1440', { rows: 2, perRow: [32, 32], height: 18 }],

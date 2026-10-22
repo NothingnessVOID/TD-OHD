@@ -41,6 +41,8 @@ import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, ch
 import { projections as activationProjections, fixingCounts } from '../lib/panel-graphics/activations.js';
 import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
 import { segbar, lineLadder, cornerArrows, gateGrid, microBar, fixingBadge } from '../lib/panel-graphics/primitives.js';
+import { crossQuad, geneKeysLadder } from '../lib/panel-graphics/cross-quad.js';
+import { variableQuad } from '../lib/panel-graphics/variable-quad.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
@@ -1253,9 +1255,17 @@ function renderVariablePanel(container) {
       ${sub || ''}
     </div>
   `; };
+  const quad = variableQuad({
+    variable: v,
+    slotName: slot => variable(slot)[0],
+    caption: key => t({ determination: 'Determination', motivation: 'Motivation', environment: 'Environment', perspective: 'Perspective' }[key]),
+    shortLabel: key => t(`Variable tag: ${key}`),
+    directionLabel: direction => t(direction === 'left' ? 'Left — focused' : 'Right — receptive')
+  });
   container.innerHTML = `
     <div class="panel-title">${t('Variable')}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
+    ${quad}
     <div class="variable-grid">
       ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${v.determination.cognition.description ? `${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}` : ''}</div>` : '')}
       ${card('motivation', v.motivation, t('Motivation'))}
@@ -1274,50 +1284,56 @@ function renderCrossPanel(container) {
     return;
   }
 
-  const labels = ['Personality Sun', 'Personality Earth', 'Design Sun', 'Design Earth'];
-  const geneKeysHtml = geneKeys ? `
-    <div style="margin-top:24px">
-      <div class="panel-title">${t('Gene Keys — Activation Sequence')}</div>
-      <p class="panel-intro">${t("The same four positions through Richard Rudd's Shadow → Gift → Siddhi lens.")}</p>
-      <div class="foundation-grid">
-        ${['lifeWork', 'evolution', 'radiance', 'purpose'].map(sphere => {
-          const s = geneKeys.activationSequence[sphere];
-          return s ? `
-            <div class="foundation-item">
-              <div class="label">${esc(contentText(s.sphere))}</div>
-              <div class="value">${t('Key {key}', { key: esc(s.keyLine || s.key) })}</div>
-              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field, { bilingual:false }) || s[field])).join(' →<br>')}</div>
-            </div>
-          ` : '';
-        }).join('')}
-      </div>
-    </div>
-  ` : '';
-
   const quarter = GATE_DESCRIPTIONS[chart.gates.personality.sun?.gate]?.quarter;
+  const angleName = contentText(cross.angleName || '');
+  const quad = crossQuad({
+    gates: cross.gates || [],
+    angle: cross.angle,
+    nameFor: gate => gateName(gate),
+    labelFor: label => t(label),
+    gateLabel: gate => t('Gate {gate}', { gate }),
+    angleLabel: `${angleName}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: contentText(quarter) })}` : ''}`
+  });
+
+  const spheres = geneKeys ? ['lifeWork', 'evolution', 'radiance', 'purpose'].flatMap(sphere => {
+    const slot = geneKeys.activationSequence?.[sphere];
+    if (!slot) return [];
+    return [{
+      id: sphere,
+      key: slot.keyLine || slot.key,
+      label: contentText(slot.sphere),
+      words: {
+        shadow: geneKeyTerm(slot.key, 'shadow', { bilingual: false }) || slot.shadow,
+        gift: geneKeyTerm(slot.key, 'gift', { bilingual: false }) || slot.gift,
+        siddhi: geneKeyTerm(slot.key, 'siddhi', { bilingual: false }) || slot.siddhi
+      }
+    }];
+  }) : [];
+  const ladder = spheres.length ? geneKeysLadder({
+    spheres,
+    tierLabel: tier => t(`Gene Keys tier: ${tier}`),
+    keyLabel: key => t('Key {key}', { key })
+  }) : '';
+
   container.innerHTML = `
     <div class="panel-title">${t('Incarnation Cross')}</div>
-    <div class="panel-heading">${esc(crossName(cross))}</div>
-    <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
-    <div style="margin-top:12px">
-      <div class="foundation-grid">
-        ${cross.gates.map((gate, i) => `
-          <div class="foundation-item foundation-clickable" data-gate="${gate}">
-            <div class="label">${t(labels[i])}</div>
-            <div class="value">${t('Gate {gate}', { gate })}</div>
-            <div class="detail">${esc(gateName(gate))}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
+    <button type="button" class="panel-heading pg-cross-heading" data-knowledge-object="cross">${esc(crossName(cross))}</button>
+    ${quad}
     <button type="button" class="knowledge-jump-card" data-cross-basics><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>
-    ${geneKeysHtml}
+    ${ladder ? `
+      <div class="pg-gk-section">
+        <div class="panel-title">${t('Gene Keys — Activation Sequence')}</div>
+        <p class="panel-intro">${t("The same four positions through Richard Rudd's Shadow → Gift → Siddhi lens.")}</p>
+        ${ladder}
+      </div>` : ''}
   `;
-  container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
-  container.querySelectorAll('.foundation-clickable').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
-    wireRowHover(item, parseInt(item.dataset.gate));
+  container.querySelectorAll('.pg-cross-palace[data-gate]').forEach(palace => {
+    palace.addEventListener('click', () => showGateDetail(parseInt(palace.dataset.gate)));
+    wireRowHover(palace, parseInt(palace.dataset.gate));
   });
+  const heading = container.querySelector('.pg-cross-heading');
+  heading?.addEventListener('click', () => openKnowledgeDetail(chartKnowledgeQuery(chart, 'cross')));
+  container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
 }
 
 /** Release the current chart when its owning person is deleted or invalidated.
