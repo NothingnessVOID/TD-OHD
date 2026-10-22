@@ -1,0 +1,675 @@
+/* Chart insight — right-column dashboard.
+   Scoped under .chart-insight so nothing leaks into the left graph or the shared
+   page shell. Colours come from existing Skin tokens; this file adds layout and
+   metrics only. Type sizes read the shared scale so text zoom keeps working. */
+
+.chart-insight {
+  --ci-gap: 12px;
+  --ci-line: var(--border-subtle);
+  --ci-figure: var(--font-size-3xl);
+  --ci-strip-h: 4px;
+  container-type: inline-size;
+  container-name: ci;
+  min-width: 0;
+  color: var(--text);
+}
+
+.chart-insight .ci-overview,
+.chart-insight .ci-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ci-gap);
+  min-width: 0;
+}
+
+/* ---------- header ---------- */
+
+.chart-insight .ci-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-insight .ci-title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.chart-insight .ci-note {
+  border-left: 3px solid var(--border);
+  background: var(--bg-sunken);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.chart-insight .ci-note[data-tone="solid"] { border-left-color: var(--accent); }
+.chart-insight .ci-note[data-tone="caution"] { border-left-color: var(--warning, var(--accent)); }
+.chart-insight .ci-note-short { display: block; }
+.chart-insight .ci-note-detail { margin-top: 6px; }
+.chart-insight .ci-note-detail summary {
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+.chart-insight .ci-note-detail p { margin: 6px 0 0; }
+
+/* ---------- identity ---------- */
+
+.chart-insight .ci-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: var(--ci-gap);
+  border-bottom: 1px solid var(--ci-line);
+}
+
+.chart-insight .ci-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chart-insight .ci-chip {
+  appearance: none;
+  border: 1px solid var(--ci-line);
+  background: var(--bg-sunken);
+  color: var(--text);
+  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  font-family: var(--font);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+.chart-insight .ci-chip:hover { background: var(--accent-soft); border-color: var(--accent); }
+.chart-insight .ci-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.chart-insight .ci-strategy {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+
+.chart-insight .ci-strategy-value {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.chart-insight .ci-strategy-facts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.chart-insight .ci-strategy-facts em {
+  font-style: normal;
+  color: var(--text-tertiary);
+}
+
+.chart-insight .ci-link {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font);
+  font-size: var(--font-size-sm);
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+
+.chart-insight .ci-link:hover { text-decoration: underline; }
+.chart-insight .ci-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+/* ---------- overview legend (used by the full gate map) ---------- */
+
+.chart-insight .ci-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.chart-insight .ci-legend-item { display: inline-flex; align-items: center; gap: 4px; }
+.chart-insight .ci-legend-item i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--ci-line);
+  background: var(--bg-sunken);
+  font-style: normal;
+  font-size: 7px;
+}
+.chart-insight .ci-legend-item[data-source="design"] i { background: color-mix(in srgb, var(--design) 22%, var(--bg-sunken)); border-color: color-mix(in srgb, var(--design) 55%, var(--ci-line)); }
+.chart-insight .ci-legend-item[data-source="personality"] i { background: color-mix(in srgb, var(--personality) 22%, var(--bg-sunken)); border-color: color-mix(in srgb, var(--personality) 55%, var(--ci-line)); }
+.chart-insight .ci-legend-item[data-source="both"] i { background: linear-gradient(135deg, color-mix(in srgb, var(--design) 30%, transparent) 0 50%, color-mix(in srgb, var(--personality) 30%, transparent) 50% 100%), var(--bg-sunken); }
+
+/* ---------- metric rows ---------- */
+
+.chart-insight .ci-metrics {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-insight .ci-metric {
+  appearance: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  width: 100%;
+  padding: 11px 2px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ci-line);
+  font-family: var(--font);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .12s ease;
+}
+
+.chart-insight .ci-metric:last-child { border-bottom: 0; }
+.chart-insight .ci-metric:hover { background: var(--bg-sunken); }
+.chart-insight .ci-metric:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius-xs); }
+
+.chart-insight .ci-metric-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.chart-insight .ci-metric-figure {
+  font-size: var(--ci-figure);
+  font-weight: 300;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  justify-self: end;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+/* Cross gates read as four figures, not a score. */
+.chart-insight .ci-cross-gate-figure { font-weight: 400; }
+.chart-insight .ci-metric-figure > span[aria-hidden] { color: var(--text-tertiary); font-size: var(--font-size-lg); }
+
+/* Variable arrows take their side's own colour; direction is not a score. */
+.chart-insight .ci-var-dir {
+  font-weight: 400;
+  font-size: var(--font-size-xl);
+  color: var(--text-tertiary);
+}
+.chart-insight .ci-var-dir[data-side="design"] { color: var(--design); }
+.chart-insight .ci-var-dir[data-side="personality"] { color: var(--personality); }
+.chart-insight .ci-var-dir[data-direction=""] { color: var(--text-tertiary); }
+.chart-insight .ci-var-side { color: var(--text-tertiary); }
+
+.chart-insight .ci-metric-note {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  overflow-wrap: anywhere;
+}
+
+.chart-insight .ci-metric-note-item { white-space: nowrap; }
+.chart-insight .ci-metric-note-item b { font-weight: 600; color: var(--text-secondary); }
+
+.chart-insight .ci-metric-of {
+  font-size: var(--font-size-lg);
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.chart-insight .ci-metric-name {
+  color: var(--text-secondary);
+}
+
+/* Real counts only: a 4px strip, no gauges or scores. */
+.chart-insight .ci-dist {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 2px;
+  height: var(--ci-strip-h);
+  margin-top: 6px;
+}
+
+.chart-insight .ci-dist i {
+  display: block;
+  flex: 0 0 var(--ci-share);
+  min-width: 3px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+}
+
+.chart-insight .ci-dist i[data-state="undefined"] { background: var(--text-tertiary); opacity: .45; }
+.chart-insight .ci-dist i[data-state="open"] { background: var(--text-tertiary); opacity: .22; }
+.chart-insight .ci-dist i[data-state="design"] { background: var(--design); }
+.chart-insight .ci-dist i[data-state="personality"] { background: var(--personality); }
+.chart-insight .ci-dist i[data-state="individual"] { background: var(--individual); }
+.chart-insight .ci-dist i[data-state="collective"] { background: var(--collective); }
+.chart-insight .ci-dist i[data-state="tribal"] { background: var(--tribal); }
+
+/* ---------- level 2 ---------- */
+
+.chart-insight .ci-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+}
+
+.chart-insight .ci-back {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font);
+  font-size: var(--font-size-sm);
+  color: var(--accent);
+  cursor: pointer;
+}
+.chart-insight .ci-back::before { content: "← "; }
+.chart-insight .ci-back:hover { text-decoration: underline; }
+.chart-insight .ci-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+.chart-insight .ci-crumb-sep { color: var(--text-tertiary); }
+.chart-insight .ci-crumb-current { color: var(--text-tertiary); }
+
+.chart-insight .ci-count { margin: 0; font-size: var(--font-size-xs); color: var(--text-tertiary); }
+
+.chart-insight .ci-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chart-insight .ci-filter {
+  appearance: none;
+  border: 1px solid var(--ci-line);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 3px 10px;
+  font-family: var(--font);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  line-height: 1.6;
+}
+
+.chart-insight .ci-filter:hover { color: var(--text); border-color: var(--text-tertiary); }
+.chart-insight .ci-filter[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chart-insight .ci-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ci-line);
+  border-left: 2px solid var(--ci-circuit, var(--accent));
+  padding-left: 10px;
+  min-width: 0;
+}
+
+.chart-insight .ci-group-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.chart-insight .ci-group-head h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--ci-circuit, var(--text));
+}
+
+.chart-insight .ci-group-figure { font-size: var(--font-size-xl); font-variant-numeric: tabular-nums; }
+.chart-insight .ci-group-note { font-size: var(--font-size-xs); color: var(--text-tertiary); }
+
+.chart-insight .ci-subs { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.chart-insight .ci-sub {
+  appearance: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1px solid var(--ci-line);
+  background: transparent;
+  border-radius: var(--radius-full);
+  padding: 2px 9px;
+  font-family: var(--font);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.chart-insight .ci-sub[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+.chart-insight .ci-sub-count { font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
+
+.chart-insight .ci-channel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-insight .ci-channel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  padding: 5px 4px;
+  border-radius: var(--radius-sm);
+  min-width: 0;
+  border-bottom: 1px solid var(--ci-line);
+}
+
+.chart-insight .ci-channel:last-child { border-bottom: 0; }
+.chart-insight .ci-channel:hover { background: var(--bg-sunken); }
+.chart-insight .ci-channel[data-status="inactive"] { opacity: .5; }
+
+.chart-insight .ci-channel-main {
+  appearance: none;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  min-width: 0;
+}
+
+.chart-insight .ci-channel-gates { font-variant-numeric: tabular-nums; font-weight: 600; font-size: var(--font-size-md); display: inline-flex; gap: 2px; }
+.chart-insight .ci-channel-gates i { font-style: normal; }
+.chart-insight .ci-channel-name { font-size: var(--font-size-sm); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chart-insight .ci-channel-meta { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+
+.chart-insight .ci-badge {
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--bg-sunken);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.chart-insight .ci-badge[data-status="complete"] { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--text); }
+.chart-insight .ci-badge[data-group="individual"] { color: var(--individual); }
+.chart-insight .ci-badge[data-group="collective"] { color: var(--collective); }
+.chart-insight .ci-badge[data-group="tribal"] { color: var(--tribal); }
+
+/* ---------- full gate map ---------- */
+
+.chart-insight .ci-gate-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.chart-insight .ci-gate-grid[data-ci-columns="6"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+.chart-insight .ci-gate {
+  appearance: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0;
+  border: 1px solid var(--ci-line);
+  border-radius: 4px;
+  background: var(--bg-sunken);
+  color: var(--text-tertiary);
+  font-family: var(--font);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+}
+
+.chart-insight .ci-gate-number { pointer-events: none; }
+
+/* Source is the only colour axis on the map; circuit colour never appears here. */
+.chart-insight .ci-gate[data-source="design"] {
+  background: color-mix(in srgb, var(--design) 18%, var(--bg-sunken));
+  border-color: color-mix(in srgb, var(--design) 55%, var(--ci-line));
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chart-insight .ci-gate[data-source="personality"] {
+  background: color-mix(in srgb, var(--personality) 18%, var(--bg-sunken));
+  border-color: color-mix(in srgb, var(--personality) 55%, var(--ci-line));
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chart-insight .ci-gate[data-source="both"] {
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--design) 26%, transparent) 0 50%,
+      color-mix(in srgb, var(--personality) 26%, transparent) 50% 100%),
+    var(--bg-sunken);
+  border-color: color-mix(in srgb, var(--both, var(--accent)) 55%, var(--ci-line));
+  color: var(--text);
+  font-weight: 700;
+}
+
+.chart-insight .ci-gate-mark {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  font-size: 8px;
+  letter-spacing: -.5px;
+  color: var(--text-tertiary);
+}
+
+.chart-insight .ci-gate:hover { border-color: var(--accent); }
+.chart-insight .ci-gate:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; z-index: 1; }
+
+/* ---------- planets ---------- */
+
+.chart-insight .ci-tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--ci-gap);
+}
+
+.chart-insight .ci-planet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.chart-insight .ci-planet-table caption {
+  text-align: left;
+  padding: 0 0 6px;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--text-tertiary);
+}
+
+.chart-insight .ci-planet-table th,
+.chart-insight .ci-planet-table td {
+  text-align: left;
+  padding: 5px 6px 5px 0;
+  font-weight: 400;
+  border-top: 1px solid var(--ci-line);
+}
+
+.chart-insight .ci-planet-table thead th { font-size: var(--font-size-xs); color: var(--text-tertiary); }
+.chart-insight .ci-planet-table tbody th { display: flex; align-items: center; gap: 5px; }
+.chart-insight .ci-planet-glyph { color: var(--text-tertiary); }
+.chart-insight .ci-planet-row[data-empty] { color: var(--text-tertiary); }
+
+.chart-insight .ci-activation {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  cursor: pointer;
+}
+.chart-insight .ci-activation:hover { text-decoration: underline; }
+.chart-insight .ci-activation:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+.chart-insight .ci-fixing { font-size: var(--font-size-xs); padding: 0 5px; border-radius: var(--radius-full); background: var(--bg-sunken); color: var(--text-tertiary); }
+.chart-insight .ci-fixing[data-state="exalted"],
+.chart-insight .ci-fixing[data-state="detriment"] { color: var(--text); }
+.chart-insight .ci-fixing[data-state="unknown"] { font-style: italic; }
+
+/* ---------- centers / variable / cross ---------- */
+
+.chart-insight .ci-centers,
+.chart-insight .ci-variables,
+.chart-insight .ci-cross-gate-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-insight .ci-center,
+.chart-insight .ci-variable-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 7px 2px;
+  border-bottom: 1px solid var(--ci-line);
+}
+
+.chart-insight .ci-center:last-child,
+.chart-insight .ci-variable-row:last-child { border-bottom: 0; }
+.chart-insight .ci-center[data-state="defined"] .ci-center-name { color: var(--text); }
+.chart-insight .ci-center[data-state="open"] .ci-center-name,
+.chart-insight .ci-center[data-state="undefined"] .ci-center-name { color: var(--text-secondary); }
+.chart-insight .ci-center-name { font-size: var(--font-size-sm); font-weight: 500; flex: 1 1 auto; }
+.chart-insight .ci-variable-name { font-size: var(--font-size-sm); font-weight: 500; min-width: 96px; }
+.chart-insight .ci-variable-value { font-size: var(--font-size-sm); color: var(--text-secondary); }
+.chart-insight .ci-variable-dir { color: var(--accent); }
+.chart-insight .ci-variable-cognition { font-size: var(--font-size-xs); color: var(--text-tertiary); }
+.chart-insight .ci-cross-full { margin: 0; font-size: var(--font-size-lg); font-family: var(--font-serif); }
+.chart-insight .ci-cross-gate-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+
+.chart-insight .ci-cross-gates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-insight .ci-cross-gate {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 6px 2px;
+  border-bottom: 1px solid var(--ci-line);
+}
+
+.chart-insight .ci-cross-gate:last-child { border-bottom: 0; }
+.chart-insight .ci-cross-position { font-size: var(--font-size-xs); color: var(--text-tertiary); min-width: 118px; }
+.chart-insight .ci-cross-gate-name { font-size: var(--font-size-sm); color: var(--text-secondary); }
+
+/* Gene Keys Activation Sequence: same four positions, second lens. */
+.chart-insight .ci-genekeys { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--ci-line); }
+.chart-insight .ci-genekeys h3 { margin: 0; font-size: var(--font-size-md); font-weight: 600; }
+.chart-insight .ci-genekeys-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.chart-insight .ci-genekey {
+  display: grid;
+  grid-template-columns: minmax(84px, auto) minmax(64px, auto) minmax(0, 1fr);
+  gap: 4px 10px;
+  padding: 6px 2px;
+  border-bottom: 1px solid var(--ci-line);
+  font-size: var(--font-size-sm);
+}
+.chart-insight .ci-genekey:last-child { border-bottom: 0; }
+.chart-insight .ci-genekey-name { color: var(--text); font-weight: 500; }
+.chart-insight .ci-genekey-key { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.chart-insight .ci-genekey-spectrum { color: var(--text-tertiary); font-size: var(--font-size-xs); overflow-wrap: anywhere; }
+
+@container ci (max-width: 340px) {
+  .chart-insight .ci-genekey { grid-template-columns: minmax(0, 1fr); }
+}
+
+.chart-insight .ci-empty,
+.chart-insight .ci-empty-inline {
+  margin: 0;
+  padding: 12px;
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ---------- container-driven layout ---------- */
+
+@container ci (min-width: 560px) {
+  .chart-insight .ci-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+  }
+  .chart-insight .ci-metric:nth-last-child(2) { border-bottom: 1px solid var(--ci-line); }
+}
+
+@container ci (max-width: 380px) {
+  .chart-insight { --ci-figure: var(--font-size-2xl); }
+  .chart-insight .ci-metric-note { white-space: normal; }
+}
+
+/* Coarse pointers need real targets; the strip grows, the grid stays 6 columns. */
+@media (pointer: coarse) {
+  .chart-insight .ci-chip,
+  .chart-insight .ci-filter { min-height: 32px; }
+  .chart-insight .ci-gate { min-height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-insight .ci-gate,
+  .chart-insight .ci-metric,
+  .chart-insight .ci-chip { transition: none; }
+}

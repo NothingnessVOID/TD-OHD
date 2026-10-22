@@ -38,6 +38,8 @@ import { channelCircuit } from '../lib/circuit-topology.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
+import { mountInsight, refreshInsight, insightBack, remeasureInsight } from '../features/chart-insight/controller.js';
+import '../features/chart-insight/messages.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -57,7 +59,6 @@ const TYPE_COLORS = {
 
 export function refreshChartLanguage() {
   if (!current) return;
-  const tab = document.querySelector('.panel-tab.active')?.dataset.panel || 'centers';
   const detail = document.getElementById('gate-detail');
   const open = currentDetail && !detail.classList.contains('hidden');
   const selected = open ? { ...currentDetail } : null;
@@ -66,8 +67,8 @@ export function refreshChartLanguage() {
   const context = detailContext;
   // A language change is not a close action: preserve feature-owned timing state.
   renderChartView(current, { preserveOtherDialog: true });
-  document.querySelectorAll('.panel-tab').forEach(button => button.classList.toggle('active', button.dataset.panel === tab));
-  renderPanelContent(tab);
+  // The insight dashboard keeps its own level and filters; re-render in place.
+  refreshInsight(document.getElementById('chart-insight'));
   if (selected) {
     detailHistory = history;
     currentLens = lens;
@@ -230,13 +231,78 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
   // --- Bodygraph ---
   rerenderBodygraph();
 
-  // --- Foundation + default tab ---
-  renderFoundation(chart, data.sensitivity, birth);
-  const activeTab = document.querySelector('.panel-tab.active');
-  renderPanelContent(activeTab ? activeTab.dataset.panel : 'centers');
+  // --- Insight dashboard (replaces the old foundation cards + tabs) ---
+  renderInsight(chart, data.sensitivity, birth, data.geneKeys);
   // After the graph and the banner exist, size the natal graph to the height it
   // actually has. Runs once per render and on banner/viewport changes only.
   armNatalFit();
+}
+
+/** Reliability wording for the dashboard: one short sentence plus optional detail. */
+function reliabilityMeta(sensitivity, birth) {
+  if (birth?.timeUnknown) return { timeUnknown: true };
+  if (!sensitivity) return null;
+  const solid = sensitivity.shifts.length === 0;
+  if (solid) {
+    return {
+      reliabilityShort: t('Solid chart — even if your birth time were off by 15 minutes, nothing here would change.')
+    };
+  }
+  const detail = humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)));
+  return {
+    reliabilityShort: t('Your chart is solid. One fine detail — your {detail} — sits right on a line, so it is the only thing a birth time off by 15+ minutes could nudge.', { detail }),
+    reliabilityDetail: t('Everything else holds no matter what. If your time came from a birth certificate, even that is settled.')
+  };
+}
+
+/** Mounts the right-column dashboard and wires it to chart feature functions. */
+function renderInsight(chart, sensitivity, birth, geneKeys = null) {
+  const host = document.getElementById('chart-insight');
+  if (!host) return;
+  // The same chart keeps its level and filters across a locale or skin refresh;
+  // a different chart (another person) starts again at the overview.
+  const identity = chartIdentity(chart);
+  const preserveLevel = host.dataset.ciIdentity === identity;
+  host.dataset.ciIdentity = identity;
+  mountInsight(host, {
+    chart,
+    geneKeys,
+    meta: reliabilityMeta(sensitivity, birth),
+    fixings: calculateLineFixings(chart),
+    preserveLevel,
+    handlers: {
+      onGate: gate => showGateDetail(gate),
+      onHoverGate: gate => bodygraphApi?.highlightGate?.(gate ?? null),
+      onChannel: key => showTransitChannelDetail(key),
+      // A channel lights both of its endpoints; that is one selection, not two.
+      onHoverChannel: key => bodygraphApi?.highlightSelection?.(key ? { kind: 'channel', id: key } : null),
+      onPlanet: ({ side, planet }) => showPlanetDetail({ source: side, planet }),
+      onCenter: center => showCenterDetail(center),
+      onVariable: kind => {
+        const query = chartKnowledgeQuery(chart, 'variable', kind);
+        if (query) openKnowledgeDetail(query, { variable: chart.variable[kind] });
+      },
+      onReadObject: kind => {
+        const query = chartKnowledgeQuery(chart, kind);
+        if (!query) return;
+        openKnowledgeDetail(query, query.objectType === 'definition'
+          ? { definitionComponents: chart.definitionComponents } : null);
+      }
+    }
+  });
+}
+
+/** Stable identity for "is this the same chart" checks across re-renders. */
+function chartIdentity(chart) {
+  return [
+    chart?.type?.id ?? '',
+    chart?.profile?.id ?? '',
+    chart?.authority?.id ?? '',
+    chart?.definition ?? '',
+    (chart?.gates?.all ?? []).join(','),
+    (chart?.channels ?? []).map(channel => channel.gates.join('-')).join(','),
+    chart?.incarnationCross?.rawId ?? ''
+  ].join('|');
 }
 
 export function refreshNatalFit() {
@@ -270,12 +336,12 @@ function highlightPanelRows(sel) {
   if (!sel) return;
   for (const g of sel.gates || []) {
     document
-      .querySelectorAll(`#panel-content [data-gate="${g}"], #foundation-panel [data-gate="${g}"], #gate-detail [data-gate="${g}"]`)
+      .querySelectorAll(`#chart-insight [data-ci-gate="${g}"], #gate-detail [data-gate="${g}"]`)
       .forEach(el => el.classList.add('row-lit'));
   }
   for (const ck of sel.centers || []) {
     document
-      .querySelectorAll(`#panel-content [data-center="${ck}"], #gate-detail [data-center="${ck}"]`)
+      .querySelectorAll(`#chart-insight [data-ci-center="${ck}"], #gate-detail [data-center="${ck}"]`)
       .forEach(el => el.classList.add('row-lit'));
   }
 }
@@ -731,285 +797,6 @@ export function showCenterDetail(centerKey, pushHistory = true) {
     wireRowHover(btn, parseInt(btn.dataset.gate));
   });
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
-}
-
-// ==========================================
-// Panel tabs
-// ==========================================
-export function setupPanelTabs() {
-  const tabs = document.querySelectorAll('.panel-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      renderPanelContent(tab.dataset.panel);
-    });
-  });
-}
-
-export function renderPanelContent(panel) {
-  if (!current) return;
-  const container = document.getElementById('panel-content');
-  switch (panel) {
-    case 'centers': renderCentersPanel(container); break;
-    case 'channels': renderChannelsPanel(container); break;
-    case 'gates': renderGatesPanel(container); break;
-    case 'planets': renderPlanetsPanel(container); break;
-    case 'variable': renderVariablePanel(container); break;
-    case 'cross': renderCrossPanel(container); break;
-  }
-}
-
-function renderCentersPanel(container) {
-  const { chart } = current;
-  const statusLabel = status => t(status === 'defined' ? 'Defined' : status === 'undefined' ? 'Undefined' : 'Open');
-  const card = (c, status, extra = '') => `
-    <div class="center-card ${status}" data-center="${c.key}" tabindex="0" role="button" aria-label="${esc(formatDisplay('centerAria', centerName(c.key), status, statusLabel(status)))}">
-      <div class="center-status ${status}">${statusLabel(status)}</div>
-      <div class="center-name">${esc(centerName(c.key))}</div>
-      <p>${esc(contentText(status === 'defined' ? (c.definedMeaning || c.pressure) : status === 'undefined' ? c.undefinedMeaning : c.openMeaning))}</p>
-      ${extra}
-    </div>
-  `;
-  const notSelf = c => `<p class="center-notself">${esc(contentText(c.notSelfQuestion))}</p>`;
-
-  container.innerHTML = `
-    <div class="panel-title">${t('Centers ({defined} defined · {undefined} undefined · {open} open)', { defined: chart.centers.definedNames.length, undefined: chart.centers.undefinedNames.length, open: chart.centers.openNames.length })}</div>
-    <p class="panel-intro">${t("Defined centers are consistent energy you radiate. Undefined and open centers are where you take in — and amplify — the energy around you; they're your deepest learning. Click any center to see it on your body.")}</p>
-    ${chart.centers.defined.map(c => card(c, 'defined')).join('')}
-    ${chart.centers.undefined.map(c => card(c, 'undefined', notSelf(c))).join('')}
-    ${chart.centers.open.map(c => card(c, 'open', notSelf(c))).join('')}
-  `;
-  container.querySelectorAll('.center-card[data-center]').forEach(el => {
-    el.addEventListener('click', () => showCenterDetail(el.dataset.center));
-    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showCenterDetail(el.dataset.center); } });
-    wireCenterHover(el, el.dataset.center);
-  });
-}
-
-function renderChannelsPanel(container) {
-  const { chart } = current;
-  // Hanging gates: for every channel where exactly one gate is active,
-  // the active gate "hangs", seeking its partner. Gates in multiple
-  // channels (10, 20, 34, 57) can hang toward several partners at once.
-  const activeSet = new Set(chart.gates.all);
-  const hangingMap = new Map(); // gate -> [partners]
-  for (const ch of CHANNELS) {
-    const [a, b] = ch.gates;
-    if (activeSet.has(a) && !activeSet.has(b)) (hangingMap.get(a) || hangingMap.set(a, []).get(a)).push(b);
-    if (activeSet.has(b) && !activeSet.has(a)) (hangingMap.get(b) || hangingMap.set(b, []).get(b)).push(a);
-  }
-  const hanging = [...hangingMap.entries()]
-    .map(([gate, partners]) => ({ gate, partners: partners.sort((x, y) => x - y) }))
-    .sort((x, y) => x.gate - y.gate);
-
-  const channelsHtml = chart.channels.map(ch => {
-    const key = `${ch.gates[0]}-${ch.gates[1]}`;
-    const desc = CHANNEL_DESCRIPTIONS[key];
-    return `
-      <div class="channel-item" data-gate="${ch.gates[0]}" onclick="this.classList.toggle('expanded')">
-        <div class="channel-name">
-          ${esc(channelName(ch.gates))} ${formatDisplay('parentheses', key)}
-          ${renderChannelCircuitBadges(ch)}
-        </div>
-        <div class="channel-meta">${esc(contentText(ch.theme))} · ${esc(formatDisplay('channelCenters', ch.centers, ch.centers.map(centerName)))}</div>
-        ${desc ? `<div class="gate-description">${esc(desc.description)}<br><br><em>${esc(desc.whenDefined)}</em></div>` : ''}
-      </div>
-    `;
-  }).join('');
-
-  container.innerHTML = `
-    <div class="panel-title">${t('Channels ({count} defined)', { count: chart.channels.length })}</div>
-    ${chart.channels.length === 0 ? `<p class="panel-intro">${t('No defined channels — as a Reflector, all of your gates are "hanging" gates that complete through the people and transits around you.')}</p>` : ''}
-    ${channelsHtml}
-    ${hanging.length ? `
-      <div class="panel-title" style="margin-top:20px">${t('Hanging Gates ({count})', { count: hanging.length })}</div>
-      <p class="panel-intro">${t("Active gates waiting for their harmonic partner — you're drawn to people who carry the other half.")}</p>
-      <div class="hanging-gates">
-        ${hanging.map(h => `<button class="gate-pill" data-gate="${h.gate}">${t('Gate {gate}', { gate: h.gate })} <span class="gate-pill-partner">${t('seeks')} ${h.partners.join(' · ')}</span></button>`).join('')}
-      </div>
-    ` : ''}
-  `;
-  container.querySelectorAll('.gate-pill').forEach(btn => {
-    btn.addEventListener('click', () => showGateDetail(parseInt(btn.dataset.gate)));
-    wireRowHover(btn, parseInt(btn.dataset.gate));
-  });
-  container.querySelectorAll('.channel-item[data-gate]').forEach(item =>
-    wireRowHover(item, parseInt(item.dataset.gate)));
-}
-
-function renderGatesPanel(container) {
-  const { chart } = current;
-  const allGates = [...chart.gates.all].sort((a, b) => a - b);
-
-  const gatesHtml = allGates.map(gateNum => {
-    const desc = GATE_DESCRIPTIONS[gateNum];
-    const acts = [];
-    for (const [planet, g] of Object.entries(chart.gates.design)) {
-      if (g?.gate === gateNum) acts.push(`<span class="act-design">${PLANET_GLYPHS[planet]} ${gateNum}.${g.line}</span>`);
-    }
-    for (const [planet, g] of Object.entries(chart.gates.personality)) {
-      if (g?.gate === gateNum) acts.push(`<span class="act-personality">${PLANET_GLYPHS[planet]} ${gateNum}.${g.line}</span>`);
-    }
-    return `
-      <div class="gate-item" data-gate="${gateNum}">
-        <div class="gate-name">${t('Gate {gate}: {name}', { gate: gateNum, name: esc(desc?.keynote || GATES[gateNum]?.name || '') })}</div>
-        <div class="gate-meta">${acts.join(' ')}</div>
-      </div>
-    `;
-  }).join('');
-
-  container.innerHTML = `
-    <div class="panel-title">${t('Active Gates ({count})', { count: allGates.length })}</div>
-    <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
-    ${gatesHtml}
-  `;
-  container.querySelectorAll('.gate-item').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
-    wireRowHover(item, parseInt(item.dataset.gate));
-  });
-}
-
-function renderPlanetsPanel(container) {
-  const { chart } = current;
-  const fixings = calculateLineFixings(chart);
-  const activationCell = (activation, side, planet) => {
-    const state = fixings[side]?.[planet]?.natalState;
-    const symbol = ({ exalted: '▲', detriment: '▼', juxtaposed: '▲▼', unknown: '?' })[state] || '';
-    return `<span class="planet-cell-number">${activation ? `${activation.gate}.${activation.line}` : '—'}<span class="planet-cell-fixing" data-state="${state || ''}" aria-hidden="true">${symbol}</span></span>`;
-  };
-  // Substructure tooltip: gate.line then color/tone/base (the 6/6/6/5 layers)
-  const sub = (g) => g && g.color
-    ? t('Color {color} · Tone {tone} · Base {base}', { color: g.color, tone: g.tone, base: g.base })
-    : '';
-  const subCell = (g) => g && g.color ? `${g.color}.${g.tone}.${g.base}` : '';
-  const rows = PLANET_ORDER.map(planet => {
-    const d = chart.gates.design[planet];
-    const p = chart.gates.personality[planet];
-    return `
-      <div class="planet-table-row">
-        <span class="planet-cell act-design" data-gate="${d ? d.gate : ''}" data-side="design" data-planet="${planet}" data-line="${d?.line || ''}" title="${esc(sub(d))}">${activationCell(d, 'design', planet)}</span>
-        <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(d)}</span>
-        <span class="planet-cell-identity"><span class="planet-cell-glyph" title="${esc(planetName(planet))}">${PLANET_GLYPHS[planet]}</span><span class="planet-cell-name">${esc(planetName(planet))}</span></span>
-        <span class="planet-cell-sub" title="${t('Color · Tone · Base')}">${subCell(p)}</span>
-        <span class="planet-cell act-personality" data-gate="${p ? p.gate : ''}" data-side="personality" data-planet="${planet}" data-line="${p?.line || ''}" title="${esc(sub(p))}">${activationCell(p, 'personality', planet)}</span>
-      </div>
-    `;
-  }).join('');
-
-  const dDate = chart.positions?.design?.date;
-  container.innerHTML = `
-    <div class="panel-title">${t('Planetary Activations')}</div>
-    <p class="panel-intro">${t('Each planet activates a gate and line. Design was calculated ~88 days before birth{date} — your unconscious, body-level themes. Personality is the moment of birth — who you know yourself to be.', { date: dDate ? esc(formatDisplay('inlineDate', dDate)) : '' })}</p>
-    <div class="planet-table">
-      <div class="planet-table-row planet-table-head">
-        <span class="planet-cell act-design">${t('Design')}</span>
-        <span class="planet-cell-sub">c.t.b</span>
-        <span></span>
-        <span class="planet-cell-sub">c.t.b</span>
-        <span class="planet-cell act-personality">${t('Personality')}</span>
-      </div>
-      ${rows}
-    </div>
-  `;
-  container.querySelectorAll('.planet-cell[data-gate]').forEach(cell => {
-    const g = parseInt(cell.dataset.gate);
-    if (g) {
-      cell.style.cursor = 'pointer';
-      cell.addEventListener('click', () => showPlanetDetail({ source: cell.dataset.side,
-        planet: cell.dataset.planet, activation: chart.gates[cell.dataset.side]?.[cell.dataset.planet] }));
-      wireRowHover(cell, g);
-    }
-  });
-}
-
-function renderVariablePanel(container) {
-  const v = current.chart.variable;
-  if (!v) {
-    container.innerHTML = `<div class="panel-title">${t('Variable')}</div><p>${t('Variable data unavailable.')}</p>`;
-    return;
-  }
-  const arrowSymbol = (dir) => dir === 'left' ? '←' : dir === 'right' ? '→' : '—';
-  const card = (key, slot, label, sub) => {
-    if (!slot) return '';
-    const direction = variableDirection(slot);
-    const [name] = variable(slot);
-    const knowledgeSummary = slot.valueId ? getKnowledgeSummary({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
-    return `
-    <div class="arrow-card" data-variable="${key}" data-knowledge-variable="${key}">
-      <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
-      <div class="arrow-label">${label}</div>
-      <div class="arrow-type">${esc(name)}</div>
-      <div class="arrow-desc">${esc(knowledgeSummary?.content ?? '')}</div>
-      <div class="arrow-meta">${t('Color {color} · Tone {tone} · Base {base}', { color: slot.color, tone: slot.tone, base: slot.base })}</div>
-      ${sub || ''}
-    </div>
-  `; };
-  container.innerHTML = `
-    <div class="panel-title">${t('Variable')}</div>
-    <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
-    <div class="variable-grid">
-      ${card('determination', v.determination, t('Determination'), v.determination?.cognition ? `<div class="arrow-desc" style="margin-top:8px"><strong>${t('Cognition:')}</strong> ${esc(cognition(v.determination.cognition.name))} ${v.determination.cognition.description ? `${formatDisplay('separator', 'cognition')} ${esc(contentText(v.determination.cognition.description))}` : ''}</div>` : '')}
-      ${card('motivation', v.motivation, t('Motivation'))}
-      ${card('environment', v.environment, t('Environment'))}
-      ${card('perspective', v.perspective, t('Perspective'))}
-    </div>
-  `;
-  wireKnowledgeTargets(container, current.chart);
-}
-
-function renderCrossPanel(container) {
-  const { chart, geneKeys } = current;
-  const cross = chart.incarnationCross;
-  if (!cross) {
-    container.innerHTML = `<div class="panel-title">${t('Incarnation Cross')}</div><p>${t('Cross data unavailable.')}</p>`;
-    return;
-  }
-
-  const labels = ['Personality Sun', 'Personality Earth', 'Design Sun', 'Design Earth'];
-  const geneKeysHtml = geneKeys ? `
-    <div style="margin-top:24px">
-      <div class="panel-title">${t('Gene Keys — Activation Sequence')}</div>
-      <p class="panel-intro">${t("The same four positions through Richard Rudd's Shadow → Gift → Siddhi lens.")}</p>
-      <div class="foundation-grid">
-        ${['lifeWork', 'evolution', 'radiance', 'purpose'].map(sphere => {
-          const s = geneKeys.activationSequence[sphere];
-          return s ? `
-            <div class="foundation-item">
-              <div class="label">${esc(contentText(s.sphere))}</div>
-              <div class="value">${t('Key {key}', { key: esc(s.keyLine || s.key) })}</div>
-              <div class="detail">${['shadow', 'gift', 'siddhi'].map(field => esc(geneKeyTerm(s.key, field, { bilingual:false }) || s[field])).join(' →<br>')}</div>
-            </div>
-          ` : '';
-        }).join('')}
-      </div>
-    </div>
-  ` : '';
-
-  const quarter = GATE_DESCRIPTIONS[chart.gates.personality.sun?.gate]?.quarter;
-  container.innerHTML = `
-    <div class="panel-title">${t('Incarnation Cross')}</div>
-    <div class="panel-heading">${esc(crossName(cross))}</div>
-    <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
-    <div style="margin-top:12px">
-      <div class="foundation-grid">
-        ${cross.gates.map((gate, i) => `
-          <div class="foundation-item foundation-clickable" data-gate="${gate}">
-            <div class="label">${t(labels[i])}</div>
-            <div class="value">${t('Gate {gate}', { gate })}</div>
-            <div class="detail">${esc(gateName(gate))}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    <button type="button" class="knowledge-jump-card" data-cross-basics><span>${esc(t('Incarnation Cross Basics'))}</span><span aria-hidden="true">→</span></button>
-    ${geneKeysHtml}
-  `;
-  container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
-  container.querySelectorAll('.foundation-clickable').forEach(item => {
-    item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
-    wireRowHover(item, parseInt(item.dataset.gate));
-  });
 }
 
 /** Release the current chart when its owning person is deleted or invalidated.

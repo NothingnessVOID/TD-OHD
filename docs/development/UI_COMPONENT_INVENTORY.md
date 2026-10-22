@@ -138,3 +138,18 @@ PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip �
 | UI System 样式层 | `src/styles/ui-system.css`（`main.js` 最后导入），`--ui-control*`、`--ui-icon-size`、`--ui-dialog-*` | 全站页面标题、`.modal`、关闭/返回按钮、详情导航行 | 唯一定义处；功能 CSS 不再覆盖尺寸 |
 | 操作弹窗标题栏 | `operation-dialog.js` `renderDialogHeader(title,{level})` | Team、人物编辑、Wa 档案/历史/成员选择、确认框 | 标题+统一关闭，`data-close` 由生命周期绑定 |
 | 详情导航 | `renderDetailNavigation()` 扩展到关系详情与知识详情 | 出生图、行运、Penta、Wa、关系、资料库 | 详见 UI-UNIFICATION-2026-10-14.md |
+
+## 出生图右栏 Chart Insight（issue #34，功能分支 chart-dashboard-issue34）
+
+右栏由 `index.html` 的 `#chart-insight` 承载，替代原 `#foundation-panel` + `.panel-tabs` + `#panel-content`。`src/features/chart-insight/` 是独立功能模块，`src/views/chart.js` 只做挂载与回调接线，不再渲染面板内容。
+
+| 组件 | 位置 / API | 消费者 | 说明 |
+| --- | --- | --- | --- |
+| Insight 模型（纯函数） | `features/chart-insight/model.js`：`buildInsightModel`、`gateMap`、`channelCandidates`、`circuitBreakdown`、`centerBreakdown`、`planetBreakdown`、`variableBreakdown`、`crossBreakdown`、`canonicalChannel` | `controller.js`、`tests/chart-insight-model.test.js` | 不读 DOM、不读 locale、不调知识接口；回路分类 import `lib/circuit-topology.js`，不复制 taxonomy |
+| Insight 视图 | `features/chart-insight/view.js`：`renderOverview`、`renderCircuits`、`renderPlanets`、`renderCenters`、`renderVariable`、`renderCross`、`renderGates` | `controller.js` | 术语全部走 `vocabulary.js`，十字标题走 `content.js` 的 `crossName()`，基因天命走 `geneKeyTerm()` |
+| Insight 控制器 | `features/chart-insight/controller.js`：`mountInsight`、`refreshInsight`、`insightLevel`、`insightBack`、`remeasureInsight` | `views/chart.js` | 每宿主 WeakMap 状态；层级、闸门筛选、回路筛选跨语言保留；换人物重置到总览 |
+| Insight 样式 | `features/chart-insight/styles.css`，scoped 在 `.chart-insight`，容器查询 `container-name: ci` | 同模块 | 只用既有 Skin Token 与 `--design`/`--personality`/`--individual`/`--collective`/`--tribal`；不新增颜色语义 |
+
+总览是六行指标，不是卡片墙：激活闸门（真实 D/P/双侧计数）、已定义中心、完整通道、行星（13+13 实际激活位置）、四箭头（四个真实方向符号，按侧别着色）、化身十字（真实译名 + 四个闸门）。首屏不再平铺激活闸门 pill；64 格闸门地图留在二级。二级回路显示完整 / 单端 / 当前显示三个独立数字，分组标题用完整 `circuitGroupName()` 并允许换行。
+
+`data-ci-read` 是唯一的阅读入口绑定（身份 chip 与阅读链接共用），`data-ci-open` 是唯一的层级入口。返回时用打开时的稳定 `data-ci-open` id 恢复焦点并回到打开时的滚动位置。旧的 `setupPanelTabs`、`foundation-panel` 渲染路径已移除。
