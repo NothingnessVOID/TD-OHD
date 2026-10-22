@@ -10,6 +10,13 @@
 //
 // Every shot records rightWidth / foundation count / console errors so a bad
 // build fails the evidence run instead of shipping a pretty screenshot.
+//
+// Sticky and fixed positioning is neutralised before the full-page capture.
+// Chromium paints a `position: sticky` header at its stuck offset when the
+// capture is taller than the viewport, which lands a nav bar across the middle
+// of the image and hides whatever sits under it. The override is injected per
+// shot and removed afterwards, so the page keeps its real layout while the
+// screenshot is taken.
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
@@ -59,7 +66,10 @@ const PROFILES = {
   'synthetic-c': { id: 'style-ref-c', name: 'Style Reference C', birthDate: '1988-03-18', birthTime: '15:00' },
   // Fixing coverage: this birth carries 54.4, the one gate.line with no fixing
   // rule, so the planet table shows an `unknown` badge next to `none` ones.
-  'synthetic-d': { id: 'style-ref-d', name: 'Style Reference D', birthDate: '1975-03-25', birthTime: '08:30' }
+  'synthetic-d': { id: 'style-ref-d', name: 'Style Reference D', birthDate: '1975-03-25', birthTime: '08:30' },
+  // Third centre state: this birth has fully open centres (no definition and no
+  // activated gate), which synthetic-b never exercises.
+  'synthetic-e': { id: 'style-ref-e', name: 'Style Reference E', birthDate: '1993-09-07', birthTime: '11:15' }
 };
 const profileBase = PROFILES[profileId] || PROFILES['synthetic-b'];
 const profile = {
@@ -96,6 +106,24 @@ function stopPreview() {
 // ---------------------------------------------------------------- capture
 const report = [];
 mkdirSync(outDir, { recursive: true });
+
+// One rule, injected right before the screenshot: anything that would paint at a
+// viewport-relative offset in a tall capture becomes a normal block. Scoped to
+// the capture so the live page is never left in this state.
+const FLATTEN_POSITIONING = `
+  .header, .chart-column, .reference-back,
+  [style*="position: fixed"], [style*="position: sticky"] {
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+  }
+  * { animation: none !important; transition: none !important; }
+`;
+
+const flattenForCapture = page => page.addStyleTag({ content: FLATTEN_POSITIONING });
 
 const url = await startPreview();
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -163,7 +191,13 @@ try {
         }));
 
         const file = `${size.label}x${size.h}-${tab}${skin === 'light' ? '' : '-' + skin}.png`;
+        // Inject the flattening rule, capture, then drop it so the next tab and
+        // the live page see the real layout again.
+        const flattenHandle = await flattenForCapture(page);
+        await page.waitForTimeout(120);
         await page.screenshot({ path: join(outDir, file), fullPage: true });
+        await flattenHandle.evaluate(node => node.remove());
+        await page.waitForTimeout(60);
         report.push({ file, viewport: `${size.w}x${size.h}`, tab, skin: SKIN_IDS[skin], ...state, errs });
       }
       await context.close();

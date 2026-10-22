@@ -36,7 +36,8 @@
   stroke: var(--pg-center);
   stroke-dasharray: 1 2;
   stroke-linecap: round;
-  opacity: .55;
+  /* No extra transparency: the dotted pattern is what says "open". Fading the
+     stroke on top of it pushed the mark under 3:1 in the dark Skins. */
 }
 
 /* Centre colour per centre. These are the same nine variables the bodygraph
@@ -78,24 +79,32 @@
 .pg-segbar {
   display: flex;
   gap: 2px;
-  height: 18px;
   width: 100%;
 }
+/* Each segment is a column: the filled rule above, its own count below on the
+   panel surface. Keeping the digit off the circuit colour means it clears 4.5:1
+   in every Skin instead of depending on how light that group's hue is. */
 .pg-seg {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
   min-width: 22px;
   flex: var(--pg-count, 1) 1 0;
-  background: var(--pg-seg-color, var(--accent));
+}
+.pg-seg::before {
+  content: '';
+  display: block;
+  height: 10px;
   border-radius: var(--radius-xs);
-  overflow: hidden;
+  background: var(--pg-seg-color, var(--accent));
 }
 .pg-seg-count {
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
-  color: var(--pg-seg-ink, var(--accent-on));
+  color: var(--text);
+  text-align: center;
   white-space: nowrap;
 }
 .pg-seg[data-group="individual"] { --pg-seg-color: var(--hd-circuit-individual); }
@@ -103,7 +112,7 @@
 .pg-seg[data-group="tribal"] { --pg-seg-color: var(--hd-circuit-tribal); }
 .pg-seg[data-group="defined"] { --pg-seg-color: var(--accent); }
 .pg-seg[data-group="undefined"] { --pg-seg-color: var(--text-tertiary); }
-.pg-seg[data-group="open"] { --pg-seg-color: var(--border); --pg-seg-ink: var(--text); }
+.pg-seg[data-group="open"] { --pg-seg-color: var(--border); }
 .pg-segbar--empty {
   align-items: center;
   height: 18px;
@@ -112,13 +121,18 @@
 }
 
 /* ---------- Ladder ---------- */
-.pg-ladder { display: inline-flex; flex-direction: column; gap: 1px; width: 16px; }
-.pg-tick { display: block; height: 3px; border-radius: 1px; background: var(--border-subtle); }
-.pg-tick[data-active="true"] { background: var(--accent); }
+.pg-ladder { display: inline-flex; flex-direction: column; gap: 2px; width: 24px; }
+.pg-tick { display: block; height: 3px; border-radius: 1px; background: var(--border); }
+.pg-tick[data-active="true"] { background: var(--accent-strong); }
 .pg-ladder[data-ladder="design"] .pg-tick[data-active="true"] {
   background: transparent;
-  box-shadow: inset 0 0 0 1px var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--accent-strong);
 }
+/* Profile's own two ladders: 6px minimum per tick so the marks read as a scale
+   rather than a texture, and the active tick clears the empty ones by lightness. */
+.pg-profile-graphic .pg-ladder { width: 100%; gap: 3px; }
+.pg-profile-graphic .pg-tick { height: 4px; min-width: 6px; }
+.pg-profile-graphic .pg-tick[data-active="true"] { background: var(--accent-strong); }
 
 /* ---------- Corner ---------- */
 .pg-corners {
@@ -516,6 +530,11 @@
      solid colour keeps the capsule legible without turning it into a bar. */
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pg-ink) 22%, transparent);
 }
+/* On a dark panel a 22% ring over a soft fill disappears; the capsule edge is
+   the only thing marking the tube's extent there. */
+[data-theme="dark"] .pg-tube-track {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
 .pg-tube-end {
   position: absolute;
   top: 50%;
@@ -545,19 +564,34 @@
 }
 .pg-tube[data-full="true"] .pg-tube-mid { display: block; }
 
-/* Hanging gate: a hollow ring only. It does not encode a partner — the partner
-   numbers are printed next to it, because a gate can wait on more than one. */
-.pg-hollow-ring {
+/* Hanging gate: the activated end stays filled, the open end is a hollow cap
+   pulled inward with a dashed stub past it — half a channel, visibly unfinished.
+   The open end is generic: it never points at one partner, the numbers do. */
+.pg-tube-stub { display: none; }
+.pg-tube[data-hanging="right"] .pg-tube-track { inset-inline-end: 22px; }
+.pg-tube[data-hanging="right"] .pg-tube-end[data-side="right"] { inset-inline-end: 18px; }
+.pg-tube[data-hanging="right"] .pg-tube-stub[data-side="right"] {
   display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
-  border: 1.5px solid var(--hd-circuit-individual);
-  background: transparent;
+  position: absolute;
+  inset-inline-end: 0;
+  top: 50%;
+  width: 13px;
+  height: 0;
+  margin-top: -0.75px;
+  border-top: 1.5px dashed var(--pg-ink);
 }
-.pg-hollow-ring[data-circuit="collective"] { border-color: var(--hd-circuit-collective); }
-.pg-hollow-ring[data-circuit="tribal"] { border-color: var(--hd-circuit-tribal); }
-.pg-hollow-ring[data-circuit="individual"] { border-color: var(--hd-circuit-individual); }
+.pg-tube[data-hanging="left"] .pg-tube-track { inset-inline-start: 22px; }
+.pg-tube[data-hanging="left"] .pg-tube-end[data-side="left"] { inset-inline-start: 18px; }
+.pg-tube[data-hanging="left"] .pg-tube-stub[data-side="left"] {
+  display: block;
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  width: 13px;
+  height: 0;
+  margin-top: -0.75px;
+  border-top: 1.5px dashed var(--pg-ink);
+}
 
 /* Empty state: no fill, dashed capsule, both ends hollow. */
 .pg-tube[data-empty="true"] .pg-tube-track {
@@ -639,7 +673,7 @@
 .pg-hanging-list { display: flex; flex-direction: column; gap: 2px; }
 .panel-hanging-row {
   display: grid;
-  grid-template-columns: 16px auto auto minmax(0, 1fr);
+  grid-template-columns: 64px auto auto minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   min-height: 32px;
@@ -676,9 +710,13 @@
 /* Tier C keeps the partner numbers: the tube only loses its width. */
 @container infocol (max-width: 379px) {
   .panel-channel-main { grid-template-columns: 44px minmax(0, 1fr); gap: 10px; }
-  .panel-hanging-row { grid-template-columns: 16px auto auto minmax(0, 1fr); gap: 8px; }
+  .panel-hanging-row { grid-template-columns: 44px auto auto minmax(0, 1fr); gap: 8px; }
   .panel-channel-detail { padding-inline-start: 54px; }
   .panel-channel-theme { display: none; }
+  /* C tier: the mini ladder degrades into a strip of ticks; the number alone
+     carries the profile. */
+  .pg-profile-lines { display: none; }
+  .pg-profile-number { font-size: 18px; }
   .pg-channel-empty { flex-direction: column; gap: 10px; }
 }
 
@@ -867,19 +905,31 @@
   color: var(--text-tertiary);
 }
 .panel-planet-detail[hidden] { display: none; }
+.panel-planet-detail-side { display: flex; align-items: center; gap: 6px; }
+.panel-planet-detail-side + .panel-planet-detail-side { margin-top: 4px; }
 .panel-planet-row[data-expanded="true"] { background: var(--bg-sunken); }
+/* The overlap badge is a semantic mark, so it follows the same floors as text:
+   11px minimum and a token for its ink. --hd-both is the two-colour hatch, so the
+   ink has to clear it in every Skin; --bg-elevated is the safe pair, and the
+   badge keeps a ring in --hd-both so the colour still reads as "both sides". */
 .pg-planet-overlap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 2px;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1;
-  color: #fff;
+  color: var(--bg-elevated);
+  font-weight: 700;
 }
-.pg-planet-overlap[data-on="true"] { background: var(--hd-both); }
+.pg-planet-overlap[data-on="true"] {
+  background: var(--bg-elevated);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1.5px var(--hd-both);
+}
+/* Design and personality share the gate: the badge is the "=" mark on the hatch. */
 .pg-planet-unknown { color: var(--status-caution); }
 
 /* ---------- c.t.b micro-bar ---------- */
@@ -888,7 +938,7 @@
   width: 4px;
   height: 10px;
   border-radius: 1px;
-  background: color-mix(in srgb, var(--text-tertiary) 22%, transparent);
+  background: var(--border);
 }
 .pg-micro-cell[data-active="true"] {
   /* accent-strong, not accent: the plain accent sits at 2.7–3.0:1 on three light
@@ -954,10 +1004,49 @@
   color: var(--text-tertiary);
 }
 
+/* C tier tube: at 44px the capsule reads as "three dots joined", which is the
+   failure mode recorded for cut 2. Below 380px the tube stops pretending to be a
+   shortened capsule and becomes an explicit symbol: two caps, the mid diamond,
+   and one 2px rule between them. No inner stroke is relied on here, so the
+   reading does not change with a Skin's soft tokens. */
+@container infocol (max-width: 379px) {
+  .pg-tube { height: 14px; }
+  .pg-tube-track {
+    inset-inline: 6px;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: var(--pg-ink);
+    box-shadow: none;
+  }
+  .pg-tube-end { width: 9px; height: 9px; margin-top: -4.5px; }
+  .pg-tube-mid { width: 6px; height: 6px; margin: -3px 0 0 -3px; }
+  /* A hanging gate keeps one hollow cap and the stub; the rule just gets shorter. */
+  .pg-tube[data-hanging="right"] .pg-tube-track { inset-inline-end: 20px; }
+  .pg-tube[data-hanging="right"] .pg-tube-end[data-side="right"] { inset-inline-end: 16px; }
+  .pg-tube[data-hanging="right"] .pg-tube-stub[data-side="right"] { width: 11px; }
+  .pg-tube[data-hanging="left"] .pg-tube-track { inset-inline-start: 20px; }
+  .pg-tube[data-hanging="left"] .pg-tube-end[data-side="left"] { inset-inline-start: 16px; }
+  .pg-tube[data-hanging="left"] .pg-tube-stub[data-side="left"] { width: 11px; }
+  .pg-tube[data-empty="true"] .pg-tube-track {
+    background: none;
+    border: 1px dashed var(--border);
+    opacity: 1;
+  }
+}
+
 /* Narrow column: the side bars and the c.t.b micro-bars fold into the row detail. */
 @container infocol (max-width: 379px) {
   .panel-planet-row { grid-template-columns: auto minmax(0, 1fr) auto 16px; gap: 6px; }
   .pg-planet-bar,
   .panel-planet-ctb { display: none; }
   .panel-planet-detail { grid-column: 1 / -1; }
+}
+
+/* ---------- island clusters with the shared circled numbers ---------- */
+.pg-island-unit { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+.pg-island-badge {
+  font-size: 11px;
+  line-height: 1;
+  color: var(--text-tertiary);
 }

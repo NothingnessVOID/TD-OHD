@@ -38,8 +38,8 @@ import { CENTER_KEYS } from '../lib/center-palette-registry.js';
 import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
 import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
 import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup, gateSourceCounts, activationSlots } from '../lib/panel-graphics/counts.js';
-import { records as activationRecords, byGate, byPlanet, fixingCounts } from '../lib/panel-graphics/activations.js';
-import { channelTube, hollowRing, emptyTube } from '../lib/panel-graphics/channel-tube.js';
+import { projections as activationProjections, fixingCounts } from '../lib/panel-graphics/activations.js';
+import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
 import { segbar, lineLadder, cornerArrows, gateGrid, microBar, fixingBadge } from '../lib/panel-graphics/primitives.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
@@ -355,7 +355,9 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
   // Narrow columns keep the fact name and its graphic, and fold the detail
   // line away behind a 24px toggle (CSS decides whether the toggle exists).
   panel.querySelectorAll('.panel-fact-toggle').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', event => {
+      // The card is also a knowledge trigger; the toggle is its own control.
+      event.stopPropagation();
       const fact = button.closest('.panel-fact');
       const open = fact.dataset.open !== 'true';
       fact.dataset.open = String(open);
@@ -1005,7 +1007,7 @@ function renderChannelsPanel(container) {
     const labels = partners.map(item => item.partner).join(' · ');
     return `
       <button type="button" class="panel-hanging-row" data-gate="${gate}" aria-label="${esc(`${t('Gate {gate}', { gate })} → ${labels}`)}">
-        <span class="panel-hanging-ring">${hollowRing(first.circuit, labels)}</span>
+        <span class="panel-hanging-tube">${hangingTube(gate, first.partner, activeSet, first.circuit, labels)}</span>
         <span class="panel-hanging-gate">${t('Gate {gate}', { gate })}</span>
         <span class="panel-hanging-arrow" aria-hidden="true">→</span>
         <span class="panel-hanging-partner">${labels}</span>
@@ -1028,7 +1030,7 @@ function renderChannelsPanel(container) {
     <div class="pg-channel-summary">
       ${segbar(counts.map(group => ({ key: group.key, count: group.count })), { label: t('Complete channel count distribution') })}
       <div class="pg-counts-legend">
-        ${counts.map(group => `<span data-legend="${group.key}"><i aria-hidden="true"></i>${esc(circuitName(group.key))} ${group.count}</span>`).join('')}
+        ${counts.map(group => `<span data-legend="${group.key}"><i aria-hidden="true"></i>${esc(circuitName(group.key))}</span>`).join('')}
       </div>
       <p class="pg-panel-note">${t('Complete channel count distribution')}</p>
       <p class="pg-channel-dominant">${t('Dominant Circuit')}: ${dominantText}</p>
@@ -1067,8 +1069,10 @@ function renderChannelsPanel(container) {
 
 function renderGatesPanel(container) {
   const { chart } = current;
-  const gateMap = byGate(chart);
-  const sources = gateSourceCounts(chart);
+  // One construction: the record list and both projections come from the same
+  // fixing pass, so this panel never resolves a line fixing twice.
+  const { list: activations, byGate: gateMap } = activationProjections(chart);
+  const sources = gateSourceCounts(chart, activations);
   const sourceOf = gate => sources.both.includes(gate) ? 'both'
     : sources.onlyDesign.includes(gate) ? 'design'
     : sources.onlyPersonality.includes(gate) ? 'personality' : 'none';
@@ -1080,7 +1084,7 @@ function renderGatesPanel(container) {
     design: sources.onlyDesign.length,
     personality: sources.onlyPersonality.length
   });
-  const activationTotal = activationRecords(chart).length;
+  const activationTotal = activations.length;
 
   const pill = gate => {
     const list = gateMap.get(gate) || [];
@@ -1101,7 +1105,10 @@ function renderGatesPanel(container) {
     <p class="pg-panel-note">${t('Counted by gate · de-duplicated within')}</p>
     <div class="pg-gate-overview">
       <div class="pg-gate-grid-head"><span>${esc(summary)}</span></div>
-      ${gateGrid(cells, { label: summary })}
+      ${gateGrid(cells, {
+        label: summary,
+        title: cell => `${t('Gate {gate}', { gate: cell.gate })} · ${sourceLabel[cell.state]}`
+      })}
     </div>
     <p class="panel-intro"><span class="act-design">${t('Design')}</span> ${t('(unconscious, body)')} · <span class="act-personality">${t('Personality')}</span> ${t('(conscious, mind). Click a gate for detail.')}</p>
     <div class="pg-gate-list">
@@ -1130,8 +1137,7 @@ function renderPlanetsPanel(container) {
   const { chart } = current;
   // Both tabs project the same record list, so a planet row and a gate pill can
   // never disagree about a line or a fixing state.
-  const planetMap = byPlanet(chart);
-  const list = activationRecords(chart);
+  const { list, byPlanet: planetMap } = activationProjections(chart);
   const fixings = fixingCounts(list);
   const total = activationSlots();
   const fixingLabel = state => t({
@@ -1169,7 +1175,14 @@ function renderPlanetsPanel(container) {
         <span class="pg-planet-bar" data-side="personality" aria-hidden="true"></span>
         <span class="pg-planet-overlap"${overlap ? ' data-on="true"' : ''} aria-hidden="true">${overlap ? '=' : ''}</span>
         <div class="panel-planet-detail" hidden>
-          <p>${t('Design')} c.t.b ${esc(ctbText(d))} · ${t('Personality')} c.t.b ${esc(ctbText(p))}</p>
+          <p class="panel-planet-detail-side">
+            <span>${t('Design')} c.t.b ${esc(ctbText(d))}</span>
+            ${microBar(d?.color ?? null, { label: `c.t.b ${ctbText(d)}` })}
+          </p>
+          <p class="panel-planet-detail-side">
+            <span>${t('Personality')} c.t.b ${esc(ctbText(p))}</span>
+            ${microBar(p?.color ?? null, { label: `c.t.b ${ctbText(p)}` })}
+          </p>
         </div>
       </div>`;
   }).join('');
@@ -1198,9 +1211,13 @@ function renderPlanetsPanel(container) {
     const planet = row.dataset.planet;
     row.querySelectorAll('.panel-planet-act[data-gate]').forEach(cell => {
       const gate = parseInt(cell.dataset.gate);
-      cell.addEventListener('click', () => showPlanetDetail({
-        source: cell.dataset.side, planet, activation: chart.gates[cell.dataset.side]?.[planet]
-      }));
+      // The click reads the record the row was drawn from, so the detail cannot
+      // disagree with the gate.line printed on the row.
+      cell.addEventListener('click', () => {
+        const record = (planetMap.get(planet) || {})[cell.dataset.side];
+        if (!record) return;
+        showPlanetDetail({ source: record.side, planet: record.planet, activation: record });
+      });
       wireRowHover(cell, gate);
     });
     const identity = row.querySelector('.panel-planet-id');

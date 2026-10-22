@@ -115,9 +115,11 @@ export function lineLadder({ line, lines, state = 'personality', orientation = '
  * cell is aria-hidden and has no click target (8 × 8 px breaks the 24 × 24
  * floor); the pill list below is the way in.
  */
-export function gateGrid(cells, { label = '' } = {}) {
-  const body = cells.map(cell =>
-    `<span class="pg-gate-cell" data-gate="${cell.gate}" data-state="${cell.state}" aria-hidden="true"></span>`).join('');
+export function gateGrid(cells, { label = '', title = () => '' } = {}) {
+  const body = cells.map(cell => {
+    const text = title(cell);
+    return `<span class="pg-gate-cell" data-gate="${cell.gate}" data-state="${cell.state}" aria-hidden="true"${text ? ` title="${esc(text)}"` : ''}></span>`;
+  }).join('');
   return `<div class="pg-gate-grid" role="img" aria-label="${label}">${body}</div>`;
 }
 

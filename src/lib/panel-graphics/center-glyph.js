@@ -19,7 +19,7 @@ export const CENTER_SHAPE_KEYS = Object.freeze({
 });
 
 /** Circled group numbers for the definition components (1-based). */
-const GROUP_BADGES = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
+export const GROUP_BADGES = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
 
 /**
  * @param {string} centerKey one of CENTER_KEYS

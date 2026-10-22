@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { records, byGate, byPlanet, fixingCounts, ACTIVATION_SIDES } from '../src/lib/panel-graphics/activations.js';
+import { records, byGate, byPlanet, fixingCounts, projections, ACTIVATION_SIDES } from '../src/lib/panel-graphics/activations.js';
 import { PLANET_ORDER } from '../src/lib/planet-reference.js';
+import { calculateLineFixings } from '../src/features/transit-timeline/line-fixing.js';
 
 /** A chart shaped like the adapter's output, with full polarities so fixing is computable. */
 function chart() {
@@ -36,8 +37,45 @@ test('two records on the same gate and line are never merged', () => {
   const sameKey = list.filter(record => record.gate === 12 && record.line === 3);
   assert.equal(sameKey.length, 2, 'Design Sun 12.3 and Personality Moon 12.3 are two records');
   assert.deepEqual(sameKey.map(record => record.side).sort(), ['design', 'personality']);
-  // Same fixing, because the fixing belongs to the planet on its side, not to the gate.
-  assert.equal(new Set(list.map(record => record.fixing)).size >= 1, true);
+});
+
+test('every record carries the fixing its own side and planet resolved', () => {
+  const source = chart();
+  const expected = calculateLineFixings(source);
+  for (const record of records(source)) {
+    assert.equal(record.fixing, expected[record.side][record.planet].natalState,
+      `${record.side} ${record.planet}`);
+  }
+});
+
+test('same side, different planets, same gate and line stay separate records with their own fixing', () => {
+  // Two design planets on the identical gate.line. Merging by {side, gate, line}
+  // would collapse them into one record and lose one planet's fixing.
+  const source = chart();
+  source.gates.design.jupiter = { gate: 12, line: 3, color: 4, tone: 2, base: 5 };
+  const list = records(source);
+  const pair = list.filter(record => record.side === 'design' && record.gate === 12 && record.line === 3);
+  assert.equal(pair.length, 2, 'both design planets keep their own record');
+  assert.deepEqual(pair.map(record => record.planet).sort(), ['jupiter', 'sun']);
+  const expected = calculateLineFixings(source);
+  for (const record of pair) {
+    assert.equal(record.fixing, expected.design[record.planet].natalState, record.planet);
+  }
+});
+
+test('one construction yields the list and both projections from a single fixing pass', () => {
+  const source = chart();
+  const built = projections(source);
+  assert.equal(built.list.length, records(source).length);
+  let grouped = 0;
+  for (const [, group] of built.byGate) grouped += group.length;
+  assert.equal(grouped, built.list.length);
+  let paired = 0;
+  for (const [, sides] of built.byPlanet) paired += (sides.design ? 1 : 0) + (sides.personality ? 1 : 0);
+  assert.equal(paired, built.list.length);
+  // The two projections must agree with the standalone helpers on the same chart.
+  assert.deepEqual([...byGate(source).keys()].sort(), [...built.byGate.keys()].sort());
+  assert.deepEqual([...byPlanet(source).keys()].sort(), [...built.byPlanet.keys()].sort());
 });
 
 test('byGate keeps every record and its total equals records().length', () => {

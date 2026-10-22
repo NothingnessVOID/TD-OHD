@@ -49,9 +49,24 @@ const openTab = async panel => {
 };
 
 // ---------- 1. Skin switch mutation count ----------
-const skinSwitchOn = async panel => {
+// Every tab starts from the baseline Skin and switches away from it, so a "0"
+// cannot come from selecting the Skin that is already active.
+const switchSkinTo = async skinId => page.evaluate(async id => {
+  document.getElementById('skin-settings').showModal();
+  await new Promise(done => setTimeout(done, 60));
+  const button = document.querySelector(`#skin-picker [data-skin-id="${id}"]`);
+  if (!button) return { error: 'no button for ' + id };
+  button.click();
+  await new Promise(done => setTimeout(done, 500));
+  document.getElementById('skin-settings').close();
+  return { skin: document.documentElement.dataset.skin };
+}, skinId);
+
+const skinSwitchOn = async (panel, targetSkin) => {
   await openTab(panel);
-  return page.evaluate(async () => {
+  const reset = await switchSkinTo('default-light');
+  if (reset.skin !== 'default-light') return { error: 'could not reset to default-light', ...reset };
+  return page.evaluate(async target => {
   const counts = { foundation: 0, panel: 0, bodygraph: 0, skinLabel: 0 };
   const watch = (node, key) => {
     const observer = new MutationObserver(records => { counts[key] += records.length; });
@@ -66,13 +81,15 @@ const skinSwitchOn = async panel => {
   ];
   document.getElementById('skin-settings').showModal();
   await new Promise(done => setTimeout(done, 50));
-  const target = document.querySelector('#skin-picker [data-skin-id="default-dark"]');
-  target?.click();
-  await new Promise(done => setTimeout(done, 600));
+  const button = document.querySelector(`#skin-picker [data-skin-id="${target}"]`);
+  if (!button) { for (const observer of observers) observer.disconnect(); return { error: 'no target skin button' }; }
+  button.click();
+  await new Promise(done => setTimeout(done, 700));
   for (const observer of observers) observer.disconnect();
   document.getElementById('skin-settings').close();
   return {
     panel: document.querySelector('.panel-tab.active')?.dataset.panel ?? null,
+    requestedSkin: target,
     foundationMutations: counts.foundation,
     panelMutations: counts.panel,
     bodygraphMutations: counts.bodygraph,
@@ -82,12 +99,14 @@ const skinSwitchOn = async panel => {
     centerRows: document.querySelectorAll('#panel-content .panel-center-row').length,
     channelRows: document.querySelectorAll('#panel-content .panel-channel-row').length
   };
-  });
+  }, targetSkin);
 };
-results.skinSwitchCentres = await skinSwitchOn('centers');
-results.skinSwitchChannels = await skinSwitchOn('channels');
-results.skinSwitchGates = await skinSwitchOn('gates');
-results.skinSwitchPlanets = await skinSwitchOn('planets');
+// Alternate the target so the switch is a real change on every tab.
+results.skinSwitchCentres = await skinSwitchOn('centers', 'default-dark');
+results.skinSwitchChannels = await skinSwitchOn('channels', 'high-contrast');
+results.skinSwitchGates = await skinSwitchOn('gates', 'default-dark');
+results.skinSwitchPlanets = await skinSwitchOn('planets', 'high-contrast');
+await switchSkinTo('default-light');
 
 // ---------- 2. Left graph → right column ----------
 await openTab('centers');
@@ -208,6 +227,30 @@ const measureTargets = () => page.evaluate(() => {
   return { total: nodes.length, undersized: small };
 });
 results.touchTargets = await measureTargets();
+// Grid geometry at every tier: the row count is measured, not inferred.
+const gridAt = async (width, height) => {
+  await page.setViewportSize({ width, height });
+  await page.waitForTimeout(350);
+  await openTab('gates');
+  return page.evaluate(() => {
+    const cells = [...document.querySelectorAll('.pg-gate-cell')];
+    const tops = [...new Set(cells.map(cell => Math.round(cell.getBoundingClientRect().top)))].sort((a, b) => a - b);
+    const perRow = tops.map(top => cells.filter(cell => Math.round(cell.getBoundingClientRect().top) === top).length);
+    const grid = document.querySelector('.pg-gate-grid');
+    return {
+      cells: cells.length,
+      rows: tops.length,
+      perRow,
+      height: Math.round(grid.getBoundingClientRect().height),
+      column: Math.round(document.querySelector('.info-column').getBoundingClientRect().width)
+    };
+  });
+};
+results.grid1440 = await gridAt(1440, 900);
+results.grid641 = await gridAt(641, 800);
+results.grid390 = await gridAt(390, 844);
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.waitForTimeout(300);
 await page.setViewportSize({ width: 390, height: 844 });
 await page.waitForTimeout(300);
 await openTab('channels');
@@ -219,11 +262,16 @@ await page.setViewportSize({ width: 1440, height: 900 });
 await browser.close();
 
 const failures = [];
-for (const key of ['skinSwitchCentres', 'skinSwitchChannels']) {
-  if (results[key].foundationMutations !== 0) failures.push(`${key}: foundation mutated on skin switch`);
-  if (results[key].panelMutations !== 0) failures.push(`${key}: panel-content mutated on skin switch`);
+for (const key of ['skinSwitchCentres', 'skinSwitchChannels', 'skinSwitchGates', 'skinSwitchPlanets']) {
+  const run = results[key];
+  if (run.error) { failures.push(`${key}: ${run.error}`); continue; }
+  if (run.foundationMutations !== 0) failures.push(`${key}: foundation mutated on skin switch`);
+  if (run.panelMutations !== 0) failures.push(`${key}: panel-content mutated on skin switch`);
+  // A zero on the right column only means something if the Skin really changed
+  // and the bodygraph really re-rendered.
+  if (run.skin !== run.requestedSkin) failures.push(`${key}: skin is ${run.skin}, wanted ${run.requestedSkin}`);
+  if (!(run.bodygraphMutations > 0)) failures.push(`${key}: bodygraph did not re-render (mutation ${run.bodygraphMutations})`);
 }
-if (results.skinSwitchChannels.skin !== 'default-dark') failures.push('skin did not switch');
 if (!results.channelsLinkage.litRows.length) failures.push('graph gate hover did not light a channel row');
 if (!results.channelsLinkage.litOnGraph) failures.push('channel row hover did not light the graph');
 if (!results.channelsLinkage.expanded) failures.push('channel row did not expand');
@@ -241,6 +289,19 @@ if (!results.gateGrid.litPillFromGraph) failures.push('graph gate hover did not 
 if (!results.planetRows.expanded || !results.planetRows.detailHasCtb) failures.push('planet row does not expand back to c.t.b');
 if (results.planetRows.count !== 13) failures.push(`planet table has ${results.planetRows.count} rows`);
 if (!results.planetRows.bars || !results.planetRows.microBars) failures.push('planet bars or micro-bars missing');
+// 1440: 32 + 32 cells, 18px tall. 641: 25 + 25 + 14, 28px tall. 390: 32 + 32.
+const gridExpectations = [
+  ['grid1440', { rows: 2, perRow: [32, 32], height: 18 }],
+  ['grid641', { rows: 3, perRow: [25, 25, 14], height: 28 }],
+  ['grid390', { rows: 2, perRow: [32, 32], height: 18 }]
+];
+for (const [key, expected] of gridExpectations) {
+  const actual = results[key];
+  if (actual.cells !== 64) failures.push(`${key}: ${actual.cells} cells`);
+  if (actual.rows !== expected.rows) failures.push(`${key}: ${actual.rows} rows, expected ${expected.rows}`);
+  if (JSON.stringify(actual.perRow) !== JSON.stringify(expected.perRow)) failures.push(`${key}: per-row ${actual.perRow.join('+')}, expected ${expected.perRow.join('+')}`);
+  if (Math.abs(actual.height - expected.height) > 1) failures.push(`${key}: grid height ${actual.height}, expected ${expected.height}`);
+}
 if (!results.graphToPanel.litRows.some(row => row.center === 'sacral')) failures.push('centre hover did not light the row');
 if (!results.graphToPanel.litCross.includes('44')) failures.push('gate hover did not light the cross cell');
 if (!results.panelToGraph.centerLitOnGraph) failures.push('row hover did not light the graph');

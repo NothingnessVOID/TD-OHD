@@ -18,6 +18,7 @@
  */
 import { channelCircuit } from '../circuit-topology.js';
 import { PLANET_ORDER } from '../planet-reference.js';
+import { records } from './activations.js';
 
 /** The only circuit groups that own channels. `integration` is a sub-circuit. */
 export const CIRCUIT_GROUP_KEYS = Object.freeze(['individual', 'collective', 'tribal']);
@@ -87,14 +88,12 @@ export function activationCount(chart) {
  * only. The gate grid and the pill list both read this, so the caption and the
  * pills can never disagree.
  */
-export function gateSourceCounts(chart) {
+export function gateSourceCounts(chart, list = records(chart)) {
   const design = new Set();
   const personality = new Set();
-  for (const side of ['design', 'personality']) {
-    const target = side === 'design' ? design : personality;
-    for (const activation of Object.values(chart?.gates?.[side] || {})) {
-      if (Number.isInteger(activation?.gate)) target.add(activation.gate);
-    }
+  for (const record of list) {
+    if (record.side === 'design') design.add(record.gate);
+    else personality.add(record.gate);
   }
   const all = [...new Set([...design, ...personality])].sort((a, b) => a - b);
   return {

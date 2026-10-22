@@ -56,10 +56,36 @@ export function records(chart) {
  * @returns {Map<number, object[]>}
  */
 export function byGate(chart) {
+  return groupByGate(records(chart));
+}
+
+/**
+ * The whole projection in one construction: build the record list once, then
+ * derive both views from it. A panel that needs both must use this instead of
+ * calling records(), byGate() and byPlanet() separately, which would resolve the
+ * line fixings once per call.
+ * @returns {{ list: object[], byGate: Map<number, object[]>,
+ *             byPlanet: Map<string, { design: object|null, personality: object|null }> }}
+ */
+export function projections(chart) {
+  const list = records(chart);
+  return { list, byGate: groupByGate(list), byPlanet: groupByPlanet(list) };
+}
+
+function groupByGate(list) {
   const grouped = new Map();
-  for (const record of records(chart)) {
+  for (const record of list) {
     if (!grouped.has(record.gate)) grouped.set(record.gate, []);
     grouped.get(record.gate).push(record);
+  }
+  return grouped;
+}
+
+function groupByPlanet(list) {
+  const grouped = new Map();
+  for (const record of list) {
+    if (!grouped.has(record.planet)) grouped.set(record.planet, { design: null, personality: null });
+    grouped.get(record.planet)[record.side] = record;
   }
   return grouped;
 }
@@ -69,12 +95,7 @@ export function byGate(chart) {
  * @returns {Map<string, { design: object|null, personality: object|null }>}
  */
 export function byPlanet(chart) {
-  const grouped = new Map();
-  for (const record of records(chart)) {
-    if (!grouped.has(record.planet)) grouped.set(record.planet, { design: null, personality: null });
-    grouped.get(record.planet)[record.side] = record;
-  }
-  return grouped;
+  return groupByPlanet(records(chart));
 }
 
 /** Fixing states that count toward a denominator. `unknown` never does. */
