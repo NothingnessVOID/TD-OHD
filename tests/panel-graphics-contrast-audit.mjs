@@ -57,13 +57,16 @@ const WIDE = [
   // gate pill
   { key: 'gate pill number', tab: 'gates', profile: 'main', selector: '.panel-gate-number', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
   { key: 'gate pill ladder active tick', tab: 'gates', profile: 'main', selector: '.panel-gate-pill .pg-tick[data-active="true"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
-  { key: 'gate pill ladder empty tick', tab: 'gates', profile: 'main', selector: '.panel-gate-pill .pg-tick:not([data-active="true"])', prop: 'backgroundColor', min: 1.2, kind: 'graphic', note: 'inactive scale step' },
+  // Decorative record floor: an empty ladder tick means "no line here", the same way
+  // an inactive grid cell means "no activation". It is not asked to reach 1.2.
+  { key: 'gate pill ladder empty tick', tab: 'gates', profile: 'main', selector: '.panel-gate-pill .pg-tick:not([data-active="true"])', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'empty scale step: absence is the meaning' },
   // planets
   { key: 'planet design side bar', tab: 'planets', profile: 'main', selector: '.pg-planet-bar[data-side="design"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
   { key: 'planet personality side bar', tab: 'planets', profile: 'main', selector: '.pg-planet-bar[data-side="personality"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
   { key: 'planet activation value', tab: 'planets', profile: 'main', selector: '.panel-planet-value', prop: 'color', over: 'panel', min: 4.5, kind: 'text' },
   { key: 'micro-bar active cell', tab: 'planets', profile: 'main', selector: '.pg-micro-cell[data-active="true"]', prop: 'backgroundColor', min: 3, kind: 'graphic' },
-  { key: 'micro-bar inactive cell', tab: 'planets', profile: 'main', selector: '.pg-micro-cell:not([data-active="true"])', prop: 'backgroundColor', min: 1.2, kind: 'graphic', note: 'empty scale step' },
+  // Same rule as the ladder tick: an empty micro-bar cell is the absence of a value.
+  { key: 'micro-bar inactive cell', tab: 'planets', profile: 'main', selector: '.pg-micro-cell:not([data-active="true"])', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'empty scale step: absence is the meaning' },
   { key: 'fixing exalted', tab: 'planets', profile: 'fixing', selector: '.pg-fixing[data-state="exalted"]', prop: 'borderBottomColor', min: 3, kind: 'graphic' },
   { key: 'fixing detriment', tab: 'planets', profile: 'fixing', selector: '.pg-fixing[data-state="detriment"]', prop: 'borderTopColor', min: 3, kind: 'graphic' },
   { key: 'fixing juxtaposed', tab: 'planets', profile: 'fixing', selector: '.pg-fixing[data-state="juxtaposed"]', prop: 'borderTopColor', min: 3, kind: 'graphic' },
@@ -114,7 +117,9 @@ const WIDE = [
   { key: 'cross palace design edge', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="design"]', prop: 'borderInlineStartColor', min: 3, kind: 'graphic' },
   { key: 'cross palace personality fill', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="personality"]', prop: 'backgroundColor', min: 1, kind: 'graphic', note: 'side tint; the edge carries the code' },
   { key: 'cross palace design fill', tab: 'cross', profile: 'main', selector: '.pg-cross-palace[data-side="design"]', prop: 'backgroundColor', min: 1, kind: 'graphic' },
-  { key: 'cross axis hairline', tab: 'cross', profile: 'main', selector: '.pg-cross-angle', prop: 'borderTopColor', min: 1.2, kind: 'graphic', note: 'guide line, and the angle is also printed' },
+  // The palaces are positioned by the grid itself and each carries its role text,
+  // so the axis is reinforcement, not the thing that makes the four places legible.
+  { key: 'cross axis hairline', tab: 'cross', profile: 'main', selector: '.pg-cross-angle', prop: 'borderTopColor', min: 1, kind: 'graphic', note: 'reinforcement: palace position comes from the grid + role text' },
   { key: 'cross angle badge text', tab: 'cross', profile: 'main', selector: '.pg-cross-angle', prop: 'color', over: 'self-bg', min: 4.5, kind: 'text' },
   { key: 'cross palace gate text', tab: 'cross', profile: 'main', selector: '.pg-cross-gate', prop: 'color', over: 'parent-bg', min: 4.5, kind: 'text' },
   { key: 'gene keys shadow tier', tab: 'cross', profile: 'main', selector: '.pg-gk-band[data-tier="shadow"] .pg-gk-band-rule', prop: 'backgroundColor', min: 3, kind: 'graphic' },

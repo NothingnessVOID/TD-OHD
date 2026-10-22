@@ -1258,7 +1258,7 @@
 /* --border-subtle measured 1.09:1 against the dark panel, i.e. invisible exactly
    where the compressed lightness steps need the boundary most. --border is the
    decorative-but-visible step. */
-.pg-gk-band + .pg-gk-band { border-top: 1px solid var(--border); }
+.pg-gk-band + .pg-gk-band { border-top: 1px solid var(--control-border); }
 .pg-gk-band-rule {
   display: block;
   align-self: stretch;

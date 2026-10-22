@@ -38,6 +38,9 @@ const CENTRES = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sac
 // not perceptually uniform) and because CSS Color 4 specifies both spaces - but
 // the specification backs the colour space, not these two numbers.
 const HUE_DRIFT_MAX = 12;      // degrees; "still the same colour family" budget
+// 60% is the strictest retention this implementation passes: at that value 0 of the
+// 344 judged pairs fail, and the worst retention is 60% (contemplation head/ajna).
+// At 80% the same run fails 201 pairs. Project threshold, not a standard.
 const RETENTION_MIN = Number(process.argv.find(arg => arg.startsWith('--retention='))?.slice(12) || 0.6);
 // A pair whose palette colours are already this close has no separation to keep.
 // 0.5 in OKLab dE x100 is well under any usable difference, so such a pair is
