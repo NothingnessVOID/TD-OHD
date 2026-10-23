@@ -244,20 +244,38 @@ results.variableQuad = await page.evaluate(() => {
 });
 
 // ---------- 5. Touch target floor (24 × 24), measured not inferred ----------
+// Sizes are NOT rounded: rounding 23.6 up to 24 would let a real failure pass.
+// Links and the tab strip are included, and every tab is measured, not just the
+// two that happened to be open.
 const measureTargets = () => page.evaluate(() => {
   const nodes = [...document.querySelectorAll(
-    '#foundation-panel button, #foundation-panel [role="button"], #panel-content button, #panel-content [role="button"]')]
+    '#foundation-panel button, #foundation-panel [role="button"], #foundation-panel a,' +
+    ' #panel-content button, #panel-content [role="button"], #panel-content a,' +
+    ' .panel-tabs button, .panel-tabs [role="tab"], .panel-tabs a')]
     // display:none controls are not rendered at this tier, so they are not targets.
     .filter(node => node.getClientRects().length);
   const small = nodes
     .map(node => {
       const box = node.getBoundingClientRect();
-      return { label: (node.getAttribute('aria-label') || node.textContent || '').trim().slice(0, 24), w: Math.round(box.width), h: Math.round(box.height) };
+      return {
+        label: (node.getAttribute('aria-label') || node.textContent || '').trim().slice(0, 24),
+        w: Number(box.width.toFixed(2)),
+        h: Number(box.height.toFixed(2))
+      };
     })
     .filter(item => item.w < 24 || item.h < 24);
   return { total: nodes.length, undersized: small };
 });
-results.touchTargets = await measureTargets();
+const PANEL_TABS = ['centers', 'channels', 'gates', 'planets', 'variable', 'cross'];
+const measureAllTabs = async () => {
+  const out = {};
+  for (const tab of PANEL_TABS) {
+    await openTab(tab);
+    out[tab] = await measureTargets();
+  }
+  return out;
+};
+results.touchTargets = await measureAllTabs();
 // Grid geometry at every tier: the row count is measured, not inferred.
 const gridAt = async (width, height) => {
   await page.setViewportSize({ width, height });
@@ -285,9 +303,29 @@ await page.waitForTimeout(300);
 await page.setViewportSize({ width: 390, height: 844 });
 await page.waitForTimeout(300);
 await openTab('channels');
-results.touchTargetsNarrow = await measureTargets();
+results.touchTargetsNarrow = await measureAllTabs();
 await openTab('centers');
-results.touchTargetsNarrowCentres = await measureTargets();
+results.touchTargetsNarrowCentres = await measureAllTabs();
+
+// ---------- 5b. B tier ----------
+// 1440 / 641 / 390 land on A / C / C, so the middle tier had zero coverage.
+// 1024 gives a column around 561px, which is genuinely B (380-599).
+await gridAt(1024, 800);
+await page.setViewportSize({ width: 1024, height: 800 });
+await page.waitForTimeout(350);
+results.columnWidthB = await page.evaluate(() => Math.round(document.querySelector('.info-column').getBoundingClientRect().width));
+results.gridB = await page.evaluate(() => {
+  const cells = [...document.querySelectorAll('.pg-gate-cell')];
+  const tops = [...new Set(cells.map(cell => Math.round(cell.getBoundingClientRect().top)))].sort((a, b) => a - b);
+  return {
+    cells: cells.length,
+    rows: tops.length,
+    perRow: tops.map(top => cells.filter(cell => Math.round(cell.getBoundingClientRect().top) === top).length),
+    height: Math.round(cells[0]?.closest('.pg-gate-grid')?.getBoundingClientRect().height ?? 0)
+  };
+});
+results.touchTargetsB = await measureAllTabs();
+
 await page.setViewportSize({ width: 1440, height: 900 });
 
 await browser.close();
@@ -343,8 +381,24 @@ for (const [key, expected] of gridExpectations) {
 if (!results.graphToPanel.litRows.some(row => row.center === 'sacral')) failures.push('centre hover did not light the row');
 if (!results.graphToPanel.litCross.includes('44')) failures.push('gate hover did not light the cross cell');
 if (!results.panelToGraph.centerLitOnGraph) failures.push('row hover did not light the graph');
-for (const key of ['touchTargets', 'touchTargetsNarrow', 'touchTargetsNarrowCentres'])
-  if (results[key].undersized.length) failures.push(`undersized touch targets (${key})`);
+
+// B tier assertions (measurements taken in section 5b, before the browser closed)
+if (!(results.columnWidthB >= 380 && results.columnWidthB < 600))
+  failures.push(`B tier not actually covered: column ${results.columnWidthB}px is not in 380-599`);
+if (results.gridB.cells !== 64) failures.push(`gridB: ${results.gridB.cells} cells`);
+if (results.gridB.rows !== 2) failures.push(`gridB: ${results.gridB.rows} rows, expected 2`);
+
+const touchKeys = ['touchTargets', 'touchTargetsNarrow', 'touchTargetsNarrowCentres', 'touchTargetsB'];
+for (const key of touchKeys) {
+  const perTab = results[key] || {};
+  for (const [tab, measurement] of Object.entries(perTab)) {
+    if (measurement.undersized.length)
+      failures.push(`undersized touch targets (${key} / ${tab}): ` +
+        measurement.undersized.map(item => `${item.label || '(no name)'} ${item.w}×${item.h}`).join('; '));
+  }
+  const covered = Object.keys(perTab);
+  if (covered.length !== 6) failures.push(`${key}: only ${covered.length} tabs measured, expected 6`);
+}
 if (consoleErrors.length) failures.push('console errors');
 
 console.log(JSON.stringify({ results, consoleErrors, failures }, null, 1));

@@ -8,7 +8,7 @@ try {
   const page=await context.newPage();
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto(`${base}/?d=2000-05-10&t=12%3A30&tz=8&n=PRIVATE_EXPORT_NAME`);
-  await page.locator('#foundation-panel .foundation-item').first().waitFor({timeout:60000});
+  await page.locator('#foundation-panel .panel-foundation').first().waitFor({timeout:60000});
   const share=async()=>{
     if(!await page.locator('#more-menu').evaluate(node=>node.open)) await page.locator('#more-toggle').click();
     if(!await page.locator('#chart-share-menu').evaluate(node=>node.open)) await page.locator('#chart-share-menu > summary').click();

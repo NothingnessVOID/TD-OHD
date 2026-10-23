@@ -2,7 +2,7 @@
   "Complete channel count distribution": "完整通道數量分布",
   "Counted by channel · adds up": "按通道計 · 可相加",
   "Tied for most: {names} — {count} channels each": "並列最多：{names}，各 {count} 條",
-  "No dominant circuit": "無主導回路",
+  "No dominant circuit": "無主要迴路",
   "{count} island": "{count} 個島",
   "{count} islands": "{count} 個島",
   "Authority centre": "權威中心",
@@ -10,10 +10,10 @@
   "Hide details": "收起詳情",
   "Natal · counted by channel · adds up": "本命 · 按通道計 · 可相加",
   "No complete channels in this chart": "這張圖裡沒有完整通道",
-  "{gates} gates ({activations} activations)": "{gates} 個閘門（{activations} 處激活）",
+  "{gates} gates ({activations} activations)": "{gates} 個閘門（{activations} 處啟動）",
   "{gates} gates · {both} both · {design} design · {personality} personality": "{gates} 個閘門 · {both} 處雙側 · {design} 處設計 · {personality} 處人格",
   "Counted by gate · de-duplicated within": "按閘門計 · 組內去重",
-  "{actual} / {total} activations": "{actual} / {total} 處激活",
+  "{actual} / {total} activations": "{actual} / {total} 處啟動",
   "{count} unknown": "{count} 處未知",
   "Both sides": "兩側重疊",
   "Exalted": "擢升",
@@ -29,5 +29,7 @@
   "Gene Keys tier: gift": "天賦",
   "Gene Keys tier: siddhi": "悉地",
   "No single centre anchors this authority": "這一權威不落在單一中心上",
-  "Blank = not activated": "空白 = 未啟用"
+  "Blank = not activated": "空白 = 未啟動",
+  "{centres} defined centres · {channels} channels": "{centres} 個已定義中心 · {channels} 條通道",
+  "Direction not computable": "方向無法計算"
 }

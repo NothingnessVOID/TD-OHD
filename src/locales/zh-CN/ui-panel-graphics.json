@@ -2,7 +2,7 @@
   "Complete channel count distribution": "完整通道数量分布",
   "Counted by channel · adds up": "按通道计 · 可相加",
   "Tied for most: {names} — {count} channels each": "并列最多：{names}，各 {count} 条",
-  "No dominant circuit": "无主导回路",
+  "No dominant circuit": "无主要回路",
   "{count} island": "{count} 个岛",
   "{count} islands": "{count} 个岛",
   "Authority centre": "权威中心",
@@ -29,5 +29,7 @@
   "Gene Keys tier: gift": "天赋",
   "Gene Keys tier: siddhi": "悉地",
   "No single centre anchors this authority": "这一权威不落在单一中心上",
-  "Blank = not activated": "空白 = 未激活"
+  "Blank = not activated": "空白 = 未激活",
+  "{centres} defined centres · {channels} channels": "{centres} 个已定义中心 · {channels} 条通道",
+  "Direction not computable": "方向无法计算"
 }

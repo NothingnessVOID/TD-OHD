@@ -399,6 +399,7 @@ function renderFoundationBand(chart, summaries = {}) {
   const authorityId = chart.calculation?.authority?.id ?? chart.authority?.id ?? null;
   const anchor = AUTHORITY_CENTER[authorityId] ?? null;
   const components = chart.definitionComponents || [];
+  const bandStates = centerStateCounts(chart);
   const track = CENTER_KEYS.map(key =>
     `<span class="pg-authority-dot" data-center="${key}"${key === anchor ? ' data-anchor="true"' : ''}></span>`).join('');
   return `
@@ -408,23 +409,25 @@ function renderFoundationBand(chart, summaries = {}) {
       </div>
       <div class="pg-identity" data-knowledge-object="type" title="${esc(summaries.type || '')}">
         <div class="pg-type-name">${esc(typeName(chart.type.name))}</div>
-        <div class="pg-strategy-line">${esc(strategy(chart.type.name))}</div>
+        <div class="pg-strategy-line"><span class="pg-band-label">${t('Strategy')}</span>${esc(strategy(chart.type.name))}</div>
         <div class="pg-signals">
-          <span class="pg-signal" data-signal="signature"><span class="pg-signal-dot" aria-hidden="true"></span>${esc(signature(chart.type.name))}</span>
-          <span class="pg-signal" data-signal="notself"><span class="pg-signal-dot" aria-hidden="true"></span>${esc(notSelf(chart.type.name))}</span>
+          <span class="pg-signal" data-signal="signature"><span class="pg-signal-dot" aria-hidden="true"></span><span class="pg-signal-label">${t('Signature')}</span>${esc(signature(chart.type.name))}</span>
+          <span class="pg-signal" data-signal="notself"><span class="pg-signal-dot" aria-hidden="true"></span><span class="pg-signal-label">${t('Not-Self Theme')}</span>${esc(notSelf(chart.type.name))}</span>
         </div>
+        ${summaries.type ? `<p class="pg-band-explain">${esc(summaries.type)}</p>` : ''}
       </div>
       <div class="pg-band-stats">
         <div class="pg-band-row" data-panel-fact="authority" data-knowledge-object="authority" title="${esc(summaries.authority || '')}">
           <span class="pg-band-label">${t('Authority')}</span>
-          <span class="pg-band-value">${esc(authorityLabel(chart))}</span>
-          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(t('Authority centre'))}">${track}</span></span>
+          <span class="pg-band-value">${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}</span>
+          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(anchor ? `${t('Authority centre')}: ${centerName(anchor)}` : t('No single centre anchors this authority'))}">${track}</span></span>
         </div>
         <div class="pg-band-row" data-panel-fact="definition" data-knowledge-object="definition">
           <span class="pg-band-label">${t('Definition')}</span>
           <span class="pg-band-value">${esc(definitionName(chart.definition))}</span>
-          <span class="pg-band-graphic">${definitionIslands(components)}<span class="pg-band-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))}</span></span>
+          <span class="pg-band-graphic">${definitionIslands(components)}<span class="pg-band-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}</span></span>
         </div>
+        ${summaries.authority ? `<p class="pg-band-explain">${esc(summaries.authority)}</p>` : ''}
         ${anchor ? '' : `<p class="pg-band-explain">${esc(t('No single centre anchors this authority'))}</p>`}
       </div>
     </div>`;
@@ -432,6 +435,17 @@ function renderFoundationBand(chart, summaries = {}) {
 
 // The fact rail holds the four facts that read as numbers: Profile, Dominant
 // Circuit, Incarnation Cross, Variable. Each graphic sits next to its own text.
+// Variable keeps the pre-graphic grouping: Motivation and Perspective belong to
+// Personality, Determination and Environment to Design.
+const VARIABLE_LABEL = {
+  determination: 'Determination', motivation: 'Motivation',
+  environment: 'Environment', perspective: 'Perspective'
+};
+const VARIABLE_GROUPS = [
+  { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
+  { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
+];
+
 function renderFoundationFacts(chart, summaries = {}) {
   const numbers = String(chart.profile?.numbers || '');
   const [personalityLine, designLine] = numbers.split('/').map(Number);
@@ -470,6 +484,7 @@ function renderFoundationFacts(chart, summaries = {}) {
           <span class="pg-profile-number">${esc(numbers)}</span>
         </div>
         <div class="panel-fact-note">${esc(profileName(numbers))}</div>
+        ${summaries.profile ? `<div class="panel-fact-note pg-fact-summary">${esc(summaries.profile)}</div>` : ''}
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
       <div class="panel-fact" data-panel-fact="circuit">
@@ -486,7 +501,7 @@ function renderFoundationFacts(chart, summaries = {}) {
             ${(cross?.gates || []).map((gate, index) => `<span class="pg-cross-cell" data-gate="${gate}" data-side="${index < 2 ? 'personality' : 'design'}">${gate}</span>`).join('')}
           </div>
         </div>
-        <button type="button" class="panel-fact-value" data-knowledge-object="cross">${esc(crossName(cross) || t('None'))}</button>
+        <button type="button" class="panel-fact-value" data-knowledge-object="cross" title="${esc(crossName(cross) || t('None'))}">${esc(crossName(cross) || t('None'))}</button>
         <div class="panel-fact-note">${esc(angleShort)} · ${esc(t('Gates'))} ${(cross?.gates || []).join(' / ') || '—'}</div>
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
@@ -494,9 +509,19 @@ function renderFoundationFacts(chart, summaries = {}) {
         <div class="panel-fact-label">${t('Variable')}</div>
         <div class="panel-fact-graphic">
           ${cornerArrows(corners)}
-          <span class="panel-fact-value">${esc(chart.variable?.notation || '—')}</span>
+          <span class="panel-fact-value">${chart.variable?.notation ? `${esc(t('Standard notation:'))} ${esc(chart.variable.notation)}` : '—'}</span>
         </div>
-        <div class="panel-fact-note">${t('Determination · Environment · Perspective · Motivation')}</div>
+        <div class="pg-var-groups">
+          ${VARIABLE_GROUPS.map(group => `
+            <div class="pg-var-group" data-source="${group.source}">
+              <span class="pg-var-group-head">${esc(t(group.label))}</span>
+              ${group.keys.map(key => {
+                const direction = arms.find(arm => arm.key === key)?.direction;
+                const name = t(VARIABLE_LABEL[key]);
+                return `<span class="pg-var-slot" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(name)}">${esc(name)} <span class="pg-var-dir" aria-hidden="true">${direction === 'left' ? '←' : direction === 'right' ? '→' : '—'}</span></span>`;
+              }).join('')}
+            </div>`).join('')}
+        </div>
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
     </div>`;
@@ -511,9 +536,16 @@ function wireKnowledgeTargets(container, chart) {
     target.tabIndex = 0;
     target.classList.add('knowledge-trigger');
     const open = () => { target.focus({ preventScroll: true }); openKnowledgeDetail(query, kind ? { variable: chart.variable[kind] } : query.objectType === 'definition' ? { definitionComponents: chart.definitionComponents } : null); };
-    target.addEventListener('click', open);
+    // A card can contain its own controls (the narrow-tier fact toggle). Keyboard
+    // events bubble just like clicks, and stopPropagation on the child's click
+    // handler does not cover Enter/Space, so the card must ignore any activation
+    // that did not start on the card itself. Without this, focusing the toggle
+    // and pressing Enter opened the knowledge detail instead of expanding.
+    const startedHere = event => event.target === target;
+    target.addEventListener('click', event => { if (startedHere(event)) open(); });
     target.addEventListener('keydown', event => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (!startedHere(event)) return;
       event.preventDefault(); open();
     });
   });
@@ -852,6 +884,9 @@ export function renderPanelContent(panel) {
   // Graphics panels own their own one-column flow; the two-up card grid on
   // .panel-content belongs to the list panels that still use it.
   container.classList.toggle('panel-flow', ['centers', 'channels', 'gates', 'planets', 'cross', 'variable'].includes(panel));
+  // Leak guard (§10): drop the previous panel's nodes before rebuilding, so
+  // listeners attached to them die with them instead of being held by a closure.
+  container.replaceChildren();
   switch (panel) {
     case 'centers': renderCentersPanel(container); break;
     case 'channels': renderChannelsPanel(container); break;
@@ -1080,6 +1115,7 @@ function renderGatesPanel(container) {
     : sources.onlyDesign.includes(gate) ? 'design'
     : sources.onlyPersonality.includes(gate) ? 'personality' : 'none';
   const sourceLabel = { both: t('Both sides'), design: t('Design'), personality: t('Personality'), none: t('None') };
+  const sideLabel = { design: t('Design'), personality: t('Personality') };
   const cells = Array.from({ length: 64 }, (_, index) => ({ gate: index + 1, state: sourceOf(index + 1) }));
   const summary = t('{gates} gates · {both} both · {design} design · {personality} personality', {
     gates: sources.total,
@@ -1093,14 +1129,28 @@ function renderGatesPanel(container) {
     const list = gateMap.get(gate) || [];
     const lines = [...new Set(list.map(record => record.line))].sort((a, b) => a - b);
     const source = sourceOf(gate);
-    const planets = list.map(record => `${planetName(record.planet)} ${gate}.${record.line}`).join(' · ');
+    const desc = GATE_DESCRIPTIONS[gate];
+    const name = desc?.keynote || GATES[gate]?.name || '';
+    // Every activation keeps its own side, planet and line as visible text. The
+    // record list is not collapsed: the pre-graphic panel showed them inline, and
+    // hiding them behind a toggle would trade a hard constraint for tidiness.
+    const acts = list.map(record => `
+        <span class="act-${record.side}"><span class="pg-gate-act-side">${esc(sideLabel[record.side])}</span>${PLANET_GLYPHS[record.planet] ?? ''} ${esc(planetName(record.planet))} ${gate}.${record.line}</span>`).join('');
+    const ariaPlanets = list
+      .map(record => `${sideLabel[record.side]} ${planetName(record.planet)} ${gate}.${record.line}`)
+      .join(' · ');
     return `
-      <button type="button" class="panel-gate-pill" data-gate="${gate}" data-source="${source}"
-        aria-label="${esc(`${t('Gate {gate}', { gate })} — ${sourceLabel[source]} — ${planets}`)}">
-        <span class="panel-gate-number">${gate}</span>
-        ${lineLadder({ lines, orientation: 'horizontal', label: lines.map(line => t('Line {line}', { line })).join(' ') })}
-        <span class="panel-gate-lines">${lines.map(line => `· ${line}`).join(' ')}</span>
-      </button>`;
+      <div class="panel-gate-row" data-gate="${gate}" data-source="${source}">
+        <button type="button" class="panel-gate-pill" data-gate="${gate}" data-source="${source}"
+          title="${esc(`${t('Gate {gate}: {name}', { gate, name })} · ${sourceLabel[source]}`)}"
+          aria-label="${esc(`${t('Gate {gate}: {name}', { gate, name })} — ${sourceLabel[source]} — ${ariaPlanets}`)}">
+          <span class="panel-gate-number">${gate}</span>
+          <span class="panel-gate-name">${esc(name)}</span>
+          ${lineLadder({ lines, orientation: 'horizontal', label: lines.map(line => t('Line {line}', { line })).join(' ') })}
+          <span class="panel-gate-lines">${lines.map(line => `· ${line}`).join(' ')}</span>
+        </button>
+        <div class="panel-gate-acts">${acts}</div>
+      </div>`;
   };
 
   container.innerHTML = `
@@ -1131,9 +1181,10 @@ function renderGatesPanel(container) {
       if (event.pointerType !== 'touch') bodygraphApi?.highlightGate?.(null);
     });
   });
-  container.querySelectorAll('.panel-gate-pill[data-gate]').forEach(pillButton => {
-    pillButton.addEventListener('click', () => showGateDetail(parseInt(pillButton.dataset.gate)));
-    wireRowHover(pillButton, parseInt(pillButton.dataset.gate));
+  container.querySelectorAll('.panel-gate-row[data-gate]').forEach(row => {
+    row.querySelector('.panel-gate-pill')
+      ?.addEventListener('click', () => showGateDetail(parseInt(row.dataset.gate)));
+    wireRowHover(row, parseInt(row.dataset.gate));
   });
 }
 
@@ -1237,8 +1288,24 @@ function renderPlanetsPanel(container) {
 
 function renderVariablePanel(container) {
   const v = current.chart.variable;
+  const quadOptions = {
+    variable: v,
+    slotName: slot => variable(slot)[0],
+    caption: key => t({ determination: 'Determination', motivation: 'Motivation', environment: 'Environment', perspective: 'Perspective' }[key]),
+    shortLabel: key => t(`Variable tag: ${key}`),
+    // A null direction must not fall into the "right" branch: that would state a
+    // direction the data never gave. It gets its own wording instead.
+    directionLabel: direction => t(direction === 'left' ? 'Left — focused'
+      : direction === 'right' ? 'Right — receptive' : 'Direction not computable')
+  };
+  // §12: when the whole field is missing the panel still draws the four dashed
+  // corner slots. Returning prose here would bypass the empty-state graphic and
+  // leave "an empty corner is information" unimplemented on the real path.
   if (!v) {
-    container.innerHTML = `<div class="panel-title">${t('Variable')}</div><p>${t('Variable data unavailable.')}</p>`;
+    container.innerHTML = `
+      <div class="panel-title">${t('Variable')}</div>
+      <p class="pg-panel-note">${t('Variable data unavailable.')}</p>
+      ${variableQuad(quadOptions)}`;
     return;
   }
   const arrowSymbol = (dir) => dir === 'left' ? '←' : dir === 'right' ? '→' : '—';
@@ -1249,7 +1316,7 @@ function renderVariablePanel(container) {
     const knowledgeSummary = slot.valueId ? getKnowledgeSummary({ domain: 'human-design', objectType: 'variable', objectId: `${key}:${slot.valueId}` }) : null;
     return `
     <div class="arrow-card" data-variable="${key}" data-knowledge-variable="${key}">
-      <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : 'Right — receptive')}</span></div>
+      <div class="arrow-direction" data-source="${key === 'determination' || key === 'environment' ? 'design' : 'personality'}"><span class="variable-direction-symbol">${arrowSymbol(direction)}</span> <span class="arrow-side">${t(direction === 'left' ? 'Left — focused' : direction === 'right' ? 'Right — receptive' : 'Direction not computable')}</span></div>
       <div class="arrow-label">${label}</div>
       <div class="arrow-type">${esc(name)}</div>
       <div class="arrow-desc">${esc(knowledgeSummary?.content ?? '')}</div>
@@ -1257,13 +1324,7 @@ function renderVariablePanel(container) {
       ${sub || ''}
     </div>
   `; };
-  const quad = variableQuad({
-    variable: v,
-    slotName: slot => variable(slot)[0],
-    caption: key => t({ determination: 'Determination', motivation: 'Motivation', environment: 'Environment', perspective: 'Perspective' }[key]),
-    shortLabel: key => t(`Variable tag: ${key}`),
-    directionLabel: direction => t(direction === 'left' ? 'Left — focused' : 'Right — receptive')
-  });
+  const quad = variableQuad(quadOptions);
   container.innerHTML = `
     <div class="panel-title">${t('Variable')}</div>
     <p class="panel-intro">${t('The four arrows describe how your body and mind are tuned: how to eat, where to thrive, how you see, and what moves you. Subtle, advanced territory — explore slowly.')}</p>
@@ -1281,8 +1342,20 @@ function renderVariablePanel(container) {
 function renderCrossPanel(container) {
   const { chart, geneKeys } = current;
   const cross = chart.incarnationCross;
+  // §12: a missing cross still draws four neutral dashed palaces rather than
+  // prose, so "no gate here" stays visible as a position, not as a sentence.
   if (!cross) {
-    container.innerHTML = `<div class="panel-title">${t('Incarnation Cross')}</div><p>${t('Cross data unavailable.')}</p>`;
+    container.innerHTML = `
+      <div class="panel-title">${t('Incarnation Cross')}</div>
+      <p class="pg-panel-note">${t('Cross data unavailable.')}</p>
+      ${crossQuad({
+        gates: [],
+        angle: '',
+        nameFor: () => '',
+        labelFor: label => t(label),
+        gateLabel: gate => t('Gate {gate}', { gate }),
+        angleLabel: ''
+      })}`;
     return;
   }
 
