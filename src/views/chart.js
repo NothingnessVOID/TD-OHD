@@ -40,7 +40,7 @@ import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
 import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup, gateSourceCounts, activationSlots } from '../lib/panel-graphics/counts.js';
 import { projections as activationProjections, fixingCounts } from '../lib/panel-graphics/activations.js';
 import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
-import { segbar, lineLadder, cornerArrows, gateGrid, microBar, fixingBadge } from '../lib/panel-graphics/primitives.js';
+import { segbar, lineLadder, gateGrid, microBar, fixingBadge } from '../lib/panel-graphics/primitives.js';
 import { crossQuad, geneKeysLadder } from '../lib/panel-graphics/cross-quad.js';
 import { variableQuad } from '../lib/panel-graphics/variable-quad.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
@@ -465,51 +465,51 @@ function renderFoundationFacts(chart, summaries = {}) {
   const cross = chart.incarnationCross;
   const angleShort = { right: 'RA', left: 'LA', juxtaposition: 'JX' }[cross?.angle] || '';
   const arms = variableArrows(chart.variable);
-  const corners = [
-    { key: 'determination', position: 'top-left', label: 'Determination' },
-    { key: 'motivation', position: 'top-right', label: 'Motivation' },
-    { key: 'environment', position: 'bottom-left', label: 'Environment' },
-    { key: 'perspective', position: 'bottom-right', label: 'Perspective' }
-  ].map(slot => ({
-    ...slot,
-    direction: arms.find(arm => arm.key === slot.key)?.direction || null,
-    label: `${t(slot.label)} ${arms.find(arm => arm.key === slot.key)?.direction === 'left' ? '←' : arms.find(arm => arm.key === slot.key)?.direction === 'right' ? '→' : '—'}`
-  }));
+  const crossGates = cross?.gates || [];
   return `
     <div class="panel-fact-rail">
-      <div class="panel-fact" data-panel-fact="profile" data-knowledge-object="profile" title="${esc(summaries.profile || '')}">
-        <div class="panel-fact-label">${t('Profile')}</div>
-        <div class="panel-fact-graphic pg-profile-graphic">
+      <div class="panel-fact panel-fact--hero" data-panel-fact="profile" data-knowledge-object="profile" title="${esc(summaries.profile || '')}">
+        <div class="pg-hero-anchor">
+          <div class="panel-fact-label">${t('Profile')}</div>
+          <div class="pg-hero-number">${numbers.split('/').map(esc).join('<i class="pg-hero-slash">/</i>')}</div>
           <span class="pg-profile-lines">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality') })}${lineLadder({ line: designLine, state: 'design', label: t('Design') })}</span>
-          <span class="pg-profile-number">${esc(numbers)}</span>
         </div>
-        <div class="panel-fact-note">${esc(profileName(numbers))}</div>
-        ${summaries.profile ? `<div class="panel-fact-note pg-fact-summary">${esc(summaries.profile)}</div>` : ''}
+        <div class="pg-hero-copy">
+          <div class="pg-hero-name">${esc(profileName(numbers))}</div>
+          ${summaries.profile ? `<div class="panel-fact-note pg-fact-summary pg-hero-desc">${esc(summaries.profile)}</div>` : ''}
+        </div>
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
-      <div class="panel-fact" data-panel-fact="circuit">
+      <div class="panel-fact-duo">
+      <div class="panel-fact panel-fact--circuit" data-panel-fact="circuit">
         <div class="panel-fact-label">${t('Dominant Circuit')}</div>
-        <div class="panel-fact-graphic">${circuitSegbar}</div>
+        <div class="panel-fact-graphic pg-segbar--rail">${circuitSegbar}</div>
+        <div class="pg-segbar-legend">${groups.map(group => `<span data-circuit="${esc(group.key)}">${esc(circuitName(group.key))} · ${group.count}</span>`).join('')}</div>
         <div class="panel-fact-value" title="${esc(dominantText)}">${esc(dominantText)}</div>
         <div class="panel-fact-note">${t('Complete channel count distribution')} · ${t('Counted by channel · adds up')}</div>
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
-      <div class="panel-fact" data-panel-fact="cross">
+      <div class="panel-fact panel-fact--cross" data-panel-fact="cross">
         <div class="panel-fact-label">${t('Incarnation Cross')}</div>
         <div class="panel-fact-graphic">
-          <div class="pg-cross-mini" data-angle="${esc(cross?.angle || '')}" aria-hidden="true">
-            ${(cross?.gates || []).map((gate, index) => `<span class="pg-cross-cell" data-gate="${gate}" data-side="${index < 2 ? 'personality' : 'design'}">${gate}</span>`).join('')}
+          <div class="pg-cross-axis-grid">
+            <span></span><span class="pg-cross-rail-label">${t('Personality')}</span><span class="pg-cross-rail-label">${t('Design')}</span>
+            <span class="pg-cross-rail-label">${esc(planetName('sun'))}</span>
+            <div class="pg-cross-mini pg-cross-mini--rail" data-angle="${esc(cross?.angle || '')}" aria-hidden="true">
+              ${[0, 2, 1, 3].map(index => `<span class="pg-cross-cell" data-gate="${crossGates[index] ?? ''}" data-side="${index < 2 ? 'personality' : 'design'}">${esc(String(crossGates[index] ?? '—'))}</span>`).join('')}
+            </div>
+            <span class="pg-cross-rail-label pg-cross-earth">${esc(planetName('earth'))}</span>
           </div>
         </div>
         <button type="button" class="panel-fact-value" data-knowledge-object="cross" title="${esc(crossName(cross) || t('None'))}">${esc(crossName(cross) || t('None'))}</button>
         <div class="panel-fact-note">${esc(angleShort)} · ${esc(t('Gates'))} ${(cross?.gates || []).join(' / ') || '—'}</div>
         <button type="button" class="panel-fact-toggle" aria-expanded="false" aria-label="${esc(t('Show details'))}">⋯</button>
       </div>
-      <div class="panel-fact" data-panel-fact="variable">
-        <div class="panel-fact-label">${t('Variable')}</div>
-        <div class="panel-fact-graphic">
-          ${cornerArrows(corners)}
-          <span class="panel-fact-value">${chart.variable?.notation ? `${esc(t('Standard notation:'))} ${esc(chart.variable.notation)}` : '—'}</span>
+      </div>
+      <div class="panel-fact panel-fact--strip" data-panel-fact="variable">
+        <div class="pg-var-notation-block">
+          <div class="panel-fact-label">${t('Variable')}</div>
+          <span class="pg-var-notation" title="${esc(t('Standard notation:'))}">${esc(chart.variable?.notation || '—')}</span>
         </div>
         <div class="pg-var-groups">
           ${VARIABLE_GROUPS.map(group => `
@@ -518,7 +518,7 @@ function renderFoundationFacts(chart, summaries = {}) {
               ${group.keys.map(key => {
                 const direction = arms.find(arm => arm.key === key)?.direction;
                 const name = t(VARIABLE_LABEL[key]);
-                return `<span class="pg-var-slot" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(name)}">${esc(name)} <span class="pg-var-dir" aria-hidden="true">${direction === 'left' ? '←' : direction === 'right' ? '→' : '—'}</span></span>`;
+                return `<span class="pg-var-slot" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(name)}" aria-label="${esc(name)} ${direction === 'left' ? '←' : direction === 'right' ? '→' : '—'}"><span class="pg-var-dial pg-var-dir" aria-hidden="true">${direction ? `<span class="pg-var-dial-tri" data-dir="${direction}"></span>` : '—'}</span><span>${esc(name)}</span></span>`;
               }).join('')}
             </div>`).join('')}
         </div>
