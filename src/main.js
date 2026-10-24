@@ -13,6 +13,9 @@ import './lib/knowledge/detail-access.css';
 // Right-column graphics (issue #34). Imported from JS like the timeline CSS so
 // src/styles.css keeps its reviewed instruction order untouched.
 import './styles/panel-graphics.css';
+// Sheet column v1 (design review): flattens the right column into one sheet.
+// Imported last so it wins the cascade over panel-graphics and styles.css.
+import './styles/sheet-column.css';
 import { computeChart, sensitivityCheck, invalidateBirth } from './lib/chartdata.js';
 import { openPersonEditor } from './lib/person-editor.js';
 import { presentationIdentity } from './lib/person-input.js';

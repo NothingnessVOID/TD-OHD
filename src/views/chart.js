@@ -337,36 +337,104 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <span>${t("Your chart is solid. One fine detail — your <strong>{detail}</strong> — sits right on a line, so it's the only thing a birth time off by 15+ minutes could nudge. Everything else holds no matter what. If your time came from a birth certificate, even that is settled.", { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
       </div>`;
   }
-  // The band shows the short facts; the Summary text stays attached to each
-  // fact as its description (and the Knowledge detail behind the same click),
-  // so nothing the card wall said is dropped. Home reads Summary only.
+  // Sheet column v1: the identity hero replaces the top type banner, and the
+  // band/fact card wall becomes one grouped list. Summary text stays reachable
+  // through the same Knowledge detail click as before.
   const summaries = {
     type: foundationSummary(chart, 'type'),
     authority: foundationSummary(chart, 'authority'),
     profile: foundationSummary(chart, 'profile')
   };
-  panel.innerHTML = `
-    <div class="panel-title">${t('Foundation')}</div>
+  panel.innerHTML = renderSheetFoundation(chart, summaries, birth, reliabilityHtml);
+  wireKnowledgeTargets(panel, chart);
+}
+
+// One continuous sheet: hero identity, trust chip, then label/value rows in a
+// single inset group. Every row that owns a Knowledge object keeps its
+// data-knowledge-object hook, so clicks open the same detail dialog.
+function renderSheetFoundation(chart, summaries, birth, reliabilityHtml) {
+  const numbers = String(chart.profile?.numbers || '');
+  const components = chart.definitionComponents || [];
+  const bandStates = centerStateCounts(chart);
+  const authorityId = chart.calculation?.authority?.id ?? chart.authority?.id ?? null;
+  const anchor = AUTHORITY_CENTER[authorityId] ?? null;
+  const groups = circuitCounts(chart);
+  const dominants = dominantCircuits(chart);
+  const dominantText = !dominants.length
+    ? t('No dominant circuit')
+    : dominants.length > 1
+      ? t('Tied for most: {names} — {count} channels each', {
+        names: formatDisplay('list', dominants.map(group => circuitName(group.key))),
+        count: dominants[0].count
+      })
+      : formatDisplay('circuitSummary', circuitName(dominants[0].key), countLabel(dominants[0].count, '{count} channel', '{count} channels'));
+  const cross = chart.incarnationCross;
+  const angleShort = { right: 'RA', left: 'LA', juxtaposition: 'JX' }[cross?.angle] || '';
+  const arms = variableArrows(chart.variable);
+  const who = birth?.name ? esc(birth.name) : '';
+  const birthLine = birth
+    ? [formatBirth(birth.birthDate, birth.timeUnknown ? null : birth.birthTime), birth.location?.name].filter(Boolean).join(' · ')
+    : '';
+
+  const row = (label, value, { object = '', dim = '' } = {}) => `
+    <div class="sc-row"${object ? ` data-knowledge-object="${object}" title="${esc(dim ? String(dim).replace(/<[^>]*>/g, '') : '')}"` : ''}>
+      <span class="sc-row-label">${esc(label)}</span>
+      <span class="sc-row-value">${value}${dim ? `<span class="sc-row-dim">${dim}</span>` : ''}</span>
+      <span class="sc-row-chev" aria-hidden="true">›</span>
+    </div>`;
+
+  const rows = [
+    row(t('Type'), esc(typeName(chart.type.name)), { object: 'type', dim: esc(summaries.type || '') }),
+    row(t('Strategy'), esc(strategy(chart.type.name)), {
+      dim: `${esc(t('Signature'))} ${esc(signature(chart.type.name))} · ${esc(t('Not-Self Theme'))} ${esc(notSelf(chart.type.name))}`
+    }),
+    row(t('Authority'), `${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}`, { object: 'authority', dim: esc(summaries.authority || '') }),
+    row(t('Profile'), `${esc(numbers)} ${esc(profileName(numbers))}`, { object: 'profile', dim: esc(summaries.profile || '') }),
+    row(t('Definition'), esc(definitionName(chart.definition)), {
+      object: 'definition',
+      dim: `${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}`
+    }),
+    row(t('Dominant Circuit'), esc(dominantText), {
+      dim: esc(groups.map(group => `${circuitName(group.key)} · ${group.count}`).join(' · '))
+    }),
+    row(t('Incarnation Cross'), esc(crossName(cross) || t('None')), {
+      object: 'cross',
+      dim: `${esc(angleShort)} · ${esc(t('Gates'))} ${esc((cross?.gates || []).join(' / ') || '—')}`
+    })
+  ].join('');
+
+  const variableRow = `
+    <div class="sc-row sc-row--variable">
+      <span class="sc-row-label">${esc(t('Variable'))}</span>
+      <span class="sc-row-value">
+        <span class="sc-var-chips">
+          ${VARIABLE_GROUPS.map(group => group.keys.map(key => {
+            const item = arms.find(arm => arm.key === key);
+            const label = t(VARIABLE_LABEL[key]);
+            const arrow = item?.direction === 'left' ? '◀' : item?.direction === 'right' ? '▶' : '—';
+            return `<span class="sc-var-chip" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(label)}"><b>${esc(label)}</b> ${arrow}</span>`;
+          }).join('')).join('')}
+        </span>
+        ${chart.variable?.notation ? `<span class="sc-row-dim" title="${esc(t('Standard notation:'))}">${esc(chart.variable.notation)}</span>` : ''}
+      </span>
+    </div>`;
+
+  return `
+    <div class="sc-hero" data-type="${esc(chart.type.id || '')}">
+      <div class="sc-hero-kicker">${who || esc(t('Foundation'))}</div>
+      <div class="sc-hero-name" data-knowledge-object="type" title="${esc(summaries.type || '')}">${esc(typeName(chart.type.name))}</div>
+      <div class="sc-hero-meta"><b>${esc(numbers)}</b> ${esc(profileName(numbers))} · <b>${esc(authorityLabel(chart))}</b> · ${esc(definitionName(chart.definition))}</div>
+      <div class="sc-hero-strategy">${esc(t('Strategy:'))} ${esc(strategy(chart.type.name))}</div>
+      ${birthLine ? `<div class="sc-hero-birth">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${esc(t('time unknown — chart uses noon'))}</em>` : ''}</div>` : ''}
+      ${summaries.type ? `<p class="sc-hero-plain">${esc(summaries.type)}</p>` : ''}
+    </div>
     ${reliabilityHtml}
-    <div class="panel-foundation" data-type="${esc(chart.type.id || '')}">
-      ${renderFoundationBand(chart, summaries)}
-      ${renderFoundationFacts(chart, summaries)}
+    <div class="sc-group">
+      <div class="sc-group-label">${esc(t('Foundation'))}</div>
+      ${rows}
+      ${variableRow}
     </div>
   `;
-  wireKnowledgeTargets(panel, chart);
-  // Narrow columns keep the fact name and its graphic, and fold the detail
-  // line away behind a 24px toggle (CSS decides whether the toggle exists).
-  panel.querySelectorAll('.panel-fact-toggle').forEach(button => {
-    button.addEventListener('click', event => {
-      // The card is also a knowledge trigger; the toggle is its own control.
-      event.stopPropagation();
-      const fact = button.closest('.panel-fact');
-      const open = fact.dataset.open !== 'true';
-      fact.dataset.open = String(open);
-      button.setAttribute('aria-expanded', String(open));
-      button.setAttribute('aria-label', t(open ? 'Hide details' : 'Show details'));
-    });
-  });
 }
 
 // The identity band holds Type, Strategy, Signature / Not-Self, Authority and
@@ -541,12 +609,11 @@ function wireKnowledgeTargets(container, chart) {
     target.tabIndex = 0;
     target.classList.add('knowledge-trigger');
     const open = () => { target.focus({ preventScroll: true }); openKnowledgeDetail(query, kind ? { variable: chart.variable[kind] } : query.objectType === 'definition' ? { definitionComponents: chart.definitionComponents } : null); };
-    // A card can contain its own controls (the narrow-tier fact toggle). Keyboard
-    // events bubble just like clicks, and stopPropagation on the child's click
-    // handler does not cover Enter/Space, so the card must ignore any activation
-    // that did not start on the card itself. Without this, focusing the toggle
-    // and pressing Enter opened the knowledge detail instead of expanding.
-    const startedHere = event => event.target === target;
+    // Rows contain their own label/value spans: a click anywhere inside the
+    // trigger opens the detail, but nested controls (buttons, links, inputs)
+    // stay their own controls and never activate the row behind them.
+    const startedHere = event => target.contains(event.target)
+      && !event.target.closest('button, a, input, select, .panel-fact-toggle');
     target.addEventListener('click', event => { if (startedHere(event)) open(); });
     target.addEventListener('keydown', event => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
