@@ -1,16 +1,71 @@
 /* ============================================================
-   Sheet Column v1 — right info column redesign (design review).
-   One continuous sheet instead of a wall of equal-weight cards:
-   identity hero + trust chip + grouped inset list, segmented
-   sticky tabs, and the tab panels flattened onto the same sheet.
-   Scoped to #chart-view so no other view is touched. Everything
-   runs on existing Skin tokens, so all skins keep working.
+   Sheet Column v2 — right info column redesign (design review).
+
+   The banner keeps the ritual: full-width identity over a faint
+   ink-wash landscape (default skins only). The right column below
+   becomes an app-like card feed: Profile hero, Authority glyph,
+   Definition, Circuit donut, Cross axis and the four Variable
+   arrows — then the sticky segmented tabs and the flat list sheet.
+
+   Scoped to #chart-view. Everything runs on Skin tokens; the two
+   banner paintings are the only raster assets, keyed to the
+   default light/dark skins.
    ============================================================ */
 
-/* The hero absorbs the banner's identity role. */
-#chart-view .type-banner { display: none; }
+/* ---- banner: the ritual ---- */
+#chart-view .type-banner {
+  position: relative;
+  overflow: hidden;
+  padding: 34px 24px 26px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+#chart-view .type-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 62%;
+  pointer-events: none;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 98%);
+}
+/* Amber Dawn / Amber Dusk wear the paintings; every other skin stays plain. */
+:root[data-skin="default-light"] #chart-view .type-banner::before,
+:root:not([data-skin]) #chart-view .type-banner::before {
+  background-image: url('/textures/banner-dawn.jpg');
+}
+:root[data-skin="default-dark"] #chart-view .type-banner::before,
+:root:not([data-skin])[data-theme="dark"] #chart-view .type-banner::before {
+  background-image: url('/textures/banner-dusk.jpg');
+  opacity: 0.5;
+}
+#chart-view .type-banner > * { position: relative; }
+#chart-view .type-banner .type-name {
+  font-size: 15px;
+  letter-spacing: 0.24em;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  font-family: var(--font);
+  font-weight: 500;
+}
+#chart-view .type-banner .type-badge {
+  font-size: 12px;
+  padding: 5px 16px;
+  margin-bottom: 10px;
+}
+#chart-view .type-banner .type-detail { font-size: 15px; }
+#chart-view .type-banner .type-plain {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15.5px;
+  color: var(--text-secondary);
+  max-width: 34em;
+  margin: 14px auto 0;
+  line-height: 1.8;
+}
 
-/* ---- the sheet ---- */
+/* ---- the sheet frame ---- */
 #chart-view .info-column {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
@@ -22,77 +77,11 @@
   background: transparent;
   border: 0;
   box-shadow: none;
-  padding: 22px 18px 8px;
+  padding: 16px 14px 2px;
   margin-bottom: 0;
 }
 
-/* ---- identity hero ---- */
-.sc-hero {
-  position: relative;
-  padding: 2px 0 14px 15px;
-  margin-bottom: 12px;
-}
-.sc-hero::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 6px; bottom: 16px;
-  width: 3px;
-  border-radius: 3px;
-  background: var(--sc-type, var(--accent));
-}
-.sc-hero[data-type="generator"] { --sc-type: var(--hd-type-generator); }
-.sc-hero[data-type="manifestingGenerator"] { --sc-type: var(--hd-type-manifesting-generator); }
-.sc-hero[data-type="manifestor"] { --sc-type: var(--hd-type-manifestor); }
-.sc-hero[data-type="projector"] { --sc-type: var(--hd-type-projector); }
-.sc-hero[data-type="reflector"] { --sc-type: var(--hd-type-reflector); }
-
-.sc-hero-kicker {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 7px;
-}
-.sc-hero-name {
-  font-family: var(--font-serif);
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 1.15;
-  color: var(--text);
-  cursor: pointer;
-  border-radius: 4px;
-}
-.sc-hero-name:hover { color: var(--accent); }
-.sc-hero-name:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.sc-hero-meta {
-  margin-top: 8px;
-  font-size: 13.5px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-.sc-hero-meta b { color: var(--text); font-weight: 600; }
-.sc-hero-strategy {
-  margin-top: 5px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--type-strategy-text);
-}
-.sc-hero-birth {
-  margin-top: 7px;
-  font-size: 11.5px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.02em;
-}
-.sc-hero-birth em { font-style: normal; opacity: 0.85; }
-.sc-hero-plain {
-  margin-top: 10px;
-  font-size: 12.5px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-/* ---- trust chip (reliability note, compacted) ---- */
+/* ---- trust chip ---- */
 #chart-view #foundation-panel .reliability {
   margin: 0 0 14px;
   padding: 7px 12px;
@@ -101,89 +90,250 @@
   line-height: 1.55;
 }
 
-/* ---- grouped inset list ---- */
-.sc-group {
+/* ---- card feed ---- */
+.pc-feed { display: flex; flex-direction: column; gap: 12px; }
+.pc-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-width: 0;
+}
+.pc-card {
   background: var(--bg);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 14px;
+  border-radius: 14px;
+  padding: 15px 16px 16px;
+  min-width: 0;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.sc-group-label {
-  padding: 11px 14px 5px;
-  font-size: 11px;
+.pc-card:hover { border-color: var(--control-border); box-shadow: var(--shadow-sm); }
+.pc-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pc-card-label {
+  font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  margin-bottom: 10px;
 }
-.sc-row {
+.pc-card-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.pc-card-note {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Profile hero card */
+.pc-card--profile { padding: 18px 20px 20px; }
+.pc-profile-main {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+}
+.pc-profile-number {
+  font-family: var(--font-serif);
+  font-size: 52px;
+  line-height: 0.95;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.pc-profile-number i {
+  font-style: normal;
+  font-size: 26px;
+  color: var(--text-tertiary);
+  margin: 0 2px;
+}
+.pc-profile-ladders {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 3px;
+}
+.pc-profile-name {
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--accent-strong);
+}
+.pc-card--profile .pc-card-note { font-size: 12.5px; }
+
+/* Authority glyph */
+.pc-authority-icon {
+  width: 46px;
+  height: 46px;
+  margin: 2px 0 12px;
+  color: var(--accent);
+}
+.pc-authority-icon .pc-authority-svg { width: 100%; height: 100%; }
+
+/* Definition */
+.pc-definition-value { margin-top: 14px; }
+
+/* Circuit donut */
+.pc-circuit-main {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 14px;
-  border-top: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-.sc-group-label + .sc-row { border-top: 0; }
-.sc-row:hover { background: var(--bg-sunken); }
-.sc-row:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
-.sc-row-label {
-  flex: 0 0 84px;
-  font-size: 12.5px;
-  color: var(--text-secondary);
-}
-.sc-row-value {
-  flex: 1;
+  gap: 14px;
   min-width: 0;
-  text-align: right;
-  font-size: 13.5px;
+}
+.pc-donut {
+  position: relative;
+  flex: 0 0 74px;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+}
+.pc-donut--empty { background: var(--border); }
+/* Centre hole painted with the card ground — no masks, skin-safe. */
+.pc-donut::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.pc-donut-center {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.pc-donut-center b {
+  font-size: 19px;
+  font-weight: 600;
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.1;
+  position: relative;
 }
-.sc-row-dim {
-  display: block;
-  margin-top: 2px;
-  font-size: 11.5px;
+.pc-donut-center i {
+  font-style: normal;
+  font-size: 9.5px;
   color: var(--text-tertiary);
-  line-height: 1.5;
+  max-width: 56px;
+  text-align: center;
+  line-height: 1.25;
+  position: relative;
+  overflow-wrap: anywhere;
 }
-.sc-row-chev {
-  flex: 0 0 auto;
-  color: var(--text-tertiary);
-  font-size: 14px;
+.pc-circuit-copy { min-width: 0; }
+.pc-circuit-copy .pc-card-value { font-size: 13.5px; }
+.pc-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
 }
-.sc-row--variable { cursor: default; }
-.sc-row--variable:hover { background: transparent; }
-
-/* ---- variable chips ---- */
-.sc-var-chips {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: flex-end;
-}
-.sc-var-chip {
+.pc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: var(--bg-sunken);
   color: var(--text-secondary);
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  white-space: nowrap;
 }
-.sc-var-chip b { color: var(--text); font-weight: 600; }
-.sc-var-chip:hover { color: var(--accent-strong); background: var(--accent-soft); }
-.sc-var-chip:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.pc-legend-item i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.pc-legend-item[data-circuit="individual"] i { background: var(--hd-circuit-individual); }
+.pc-legend-item[data-circuit="collective"] i { background: var(--hd-circuit-collective); }
+.pc-legend-item[data-circuit="tribal"] i { background: var(--hd-circuit-tribal); }
+
+/* Cross */
+.pc-cross-grid { margin: 2px 0 10px; }
+.pc-card--cross .pc-card-value {
+  font-size: 13.5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.pc-card--cross .pc-card-value:hover { color: var(--accent); }
+.pc-card--cross .pc-card-value:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Variable — four arrows, Personality ink / Design red per the skin tokens */
+.pc-card--variable { cursor: default; }
+.pc-card--variable:hover { border-color: var(--border-subtle); box-shadow: none; }
+.pc-var-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pc-var-head .pc-card-label { margin-bottom: 0; }
+.pc-var-notation {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+.pc-var-arrows {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 12px;
+}
+.pc-var-group { min-width: 0; }
+.pc-var-group-head {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  color: var(--hd-personality);
+}
+.pc-var-group[data-source="design"] .pc-var-group-head { color: var(--hd-design); }
+.pc-var-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.pc-var-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 9px 4px 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  cursor: pointer;
+  min-width: 0;
+  transition: border-color 0.15s ease;
+}
+.pc-var-slot:hover { border-color: var(--control-border); }
+.pc-var-slot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.pc-var-arrow {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--hd-personality);
+}
+.pc-var-slot[data-source="design"] .pc-var-arrow { color: var(--hd-design); }
+.pc-var-name {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
 
 /* ---- segmented tabs, sticky inside the sheet ---- */
 #chart-view .panel-tabs {
   position: sticky;
   top: calc(var(--header-height) + 8px);
   z-index: 6;
-  margin: 4px 14px 14px;
+  margin: 14px 14px 12px;
   padding: 3px;
   background: var(--bg-sunken);
   border: 1px solid var(--border-subtle);
@@ -197,7 +347,7 @@
   background: transparent;
   border: 0;
   box-shadow: none;
-  padding: 0 14px 20px;
+  padding: 0 14px 16px;
   min-height: 0;
 }
 #chart-view .panel-content > .panel-title { margin-bottom: 8px; }
@@ -208,7 +358,7 @@
   margin: 0 0 14px;
 }
 
-/* centers (and any pg group) restyle to the same inset-group language */
+/* centers (and any pg group) keep the inset-group language */
 #chart-view .pg-center-group {
   background: var(--bg);
   border: 1px solid var(--border-subtle);
@@ -229,15 +379,17 @@
 #chart-view .pg-group-head + .panel-center-row { border-top: 0; }
 #chart-view .panel-center-row:hover { background: var(--bg-sunken); }
 
-/* ---- phone ---- */
+/* ---- narrow column / phone ---- */
+@media (max-width: 1100px) {
+  .pc-pair { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
+  #chart-view .type-banner { padding: 24px 16px 20px; }
   #chart-view .info-column { border-radius: 12px; }
-  #chart-view #foundation-panel.panel { padding: 18px 12px 6px; }
-  .sc-hero { padding-left: 13px; }
-  .sc-hero-name { font-size: 24px; }
-  .sc-row { padding: 10px 12px; }
-  .sc-row-label { flex-basis: 72px; }
-  #chart-view .panel-tabs { margin: 4px 10px 12px; top: calc(var(--header-height) + 6px); }
-  #chart-view #panel-content.panel-content { padding: 0 10px 16px; }
-  .sc-group { margin-bottom: 12px; }
+  #chart-view #foundation-panel.panel { padding: 12px 10px 2px; }
+  .pc-profile-number { font-size: 42px; }
+  .pc-card { padding: 14px; }
+  #chart-view .panel-tabs { margin: 12px 10px 10px; top: calc(var(--header-height) + 6px); }
+  #chart-view #panel-content.panel-content { padding: 0 10px 14px; }
+  .pc-var-arrows { grid-template-columns: 1fr; }
 }

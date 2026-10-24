@@ -36,6 +36,7 @@ import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { CENTER_KEYS } from '../lib/center-palette-registry.js';
 import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
+import { authorityIcon } from '../lib/panel-graphics/authority-icons.js';
 import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
 import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup, gateSourceCounts, activationSlots } from '../lib/panel-graphics/counts.js';
 import { projections as activationProjections, fixingCounts } from '../lib/panel-graphics/activations.js';
@@ -337,23 +338,22 @@ function renderFoundation(chart, sensitivity = null, birth = null) {
         <span>${t("Your chart is solid. One fine detail — your <strong>{detail}</strong> — sits right on a line, so it's the only thing a birth time off by 15+ minutes could nudge. Everything else holds no matter what. If your time came from a birth certificate, even that is settled.", { detail: esc(humanList(sensitivity.shifts.map(item => formatDisplay('sensitivity', item)))) })}</span>
       </div>`;
   }
-  // Sheet column v1: the identity hero replaces the top type banner, and the
-  // band/fact card wall becomes one grouped list. Summary text stays reachable
-  // through the same Knowledge detail click as before.
+  // Sheet column v2: the banner keeps the ritual, the right column becomes an
+  // app-like card feed — Profile hero, Authority with its own glyph, Definition,
+  // Circuit donut, Cross axis and the four Variable arrows, each card opening
+  // the same Knowledge detail as before.
   const summaries = {
     type: foundationSummary(chart, 'type'),
     authority: foundationSummary(chart, 'authority'),
     profile: foundationSummary(chart, 'profile')
   };
-  panel.innerHTML = renderSheetFoundation(chart, summaries, birth, reliabilityHtml);
+  panel.innerHTML = renderFoundationCards(chart, summaries, birth, reliabilityHtml);
   wireKnowledgeTargets(panel, chart);
 }
 
-// One continuous sheet: hero identity, trust chip, then label/value rows in a
-// single inset group. Every row that owns a Knowledge object keeps its
-// data-knowledge-object hook, so clicks open the same detail dialog.
-function renderSheetFoundation(chart, summaries, birth, reliabilityHtml) {
+function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
   const numbers = String(chart.profile?.numbers || '');
+  const [personalityLine, designLine] = numbers.split('/').map(Number);
   const components = chart.definitionComponents || [];
   const bandStates = centerStateCounts(chart);
   const authorityId = chart.calculation?.authority?.id ?? chart.authority?.id ?? null;
@@ -370,72 +370,108 @@ function renderSheetFoundation(chart, summaries, birth, reliabilityHtml) {
       : formatDisplay('circuitSummary', circuitName(dominants[0].key), countLabel(dominants[0].count, '{count} channel', '{count} channels'));
   const cross = chart.incarnationCross;
   const angleShort = { right: 'RA', left: 'LA', juxtaposition: 'JX' }[cross?.angle] || '';
+  const crossGates = cross?.gates || [];
   const arms = variableArrows(chart.variable);
-  const who = birth?.name ? esc(birth.name) : '';
-  const birthLine = birth
-    ? [formatBirth(birth.birthDate, birth.timeUnknown ? null : birth.birthTime), birth.location?.name].filter(Boolean).join(' · ')
-    : '';
 
-  const row = (label, value, { object = '', dim = '' } = {}) => `
-    <div class="sc-row"${object ? ` data-knowledge-object="${object}" title="${esc(dim ? String(dim).replace(/<[^>]*>/g, '') : '')}"` : ''}>
-      <span class="sc-row-label">${esc(label)}</span>
-      <span class="sc-row-value">${value}${dim ? `<span class="sc-row-dim">${dim}</span>` : ''}</span>
-      <span class="sc-row-chev" aria-hidden="true">›</span>
+  // Circuit donut: one conic ring in the three circuit colours, hole masked in
+  // CSS, dominant count in the middle. Pure CSS variables, so skins still work.
+  const order = ['individual', 'collective', 'tribal'];
+  const total = groups.reduce((sum, group) => sum + group.count, 0);
+  let acc = 0;
+  const stops = [];
+  for (const key of order) {
+    const count = groups.find(group => group.key === key)?.count || 0;
+    if (!count) continue;
+    const from = (acc / total) * 100;
+    acc += count;
+    stops.push(`var(--hd-circuit-${key}) ${from}% ${(acc / total) * 100}%`);
+  }
+  const donut = total
+    ? `<div class="pc-donut" style="background:conic-gradient(${stops.join(',')})"><span class="pc-donut-center"><b>${dominants.length ? dominants[0].count : 0}</b><i>${esc(dominants.length ? circuitName(dominants[0].key) : t('None'))}</i></span></div>`
+    : `<div class="pc-donut pc-donut--empty"><span class="pc-donut-center"><b>0</b><i>${esc(t('None'))}</i></span></div>`;
+  const legend = order.map(key => {
+    const count = groups.find(group => group.key === key)?.count || 0;
+    return `<span class="pc-legend-item" data-circuit="${key}"><i aria-hidden="true"></i>${esc(circuitName(key))} · ${count}</span>`;
+  }).join('');
+
+  const crossGrid = `
+    <div class="pg-cross-axis-grid">
+      <span></span><span class="pg-cross-rail-label">${esc(t('Personality'))}</span><span class="pg-cross-rail-label">${esc(t('Design'))}</span>
+      <span class="pg-cross-rail-label">${esc(planetName('sun'))}</span>
+      <div class="pg-cross-mini pg-cross-mini--rail" data-angle="${esc(cross?.angle || '')}" aria-hidden="true">
+        ${[0, 2, 1, 3].map(index => `<span class="pg-cross-cell" data-gate="${crossGates[index] ?? ''}" data-side="${index < 2 ? 'personality' : 'design'}">${esc(String(crossGates[index] ?? '—'))}</span>`).join('')}
+      </div>
+      <span class="pg-cross-rail-label pg-cross-earth">${esc(planetName('earth'))}</span>
     </div>`;
 
-  const rows = [
-    row(t('Type'), esc(typeName(chart.type.name)), { object: 'type', dim: esc(summaries.type || '') }),
-    row(t('Strategy'), esc(strategy(chart.type.name)), {
-      dim: `${esc(t('Signature'))} ${esc(signature(chart.type.name))} · ${esc(t('Not-Self Theme'))} ${esc(notSelf(chart.type.name))}`
-    }),
-    row(t('Authority'), `${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}`, { object: 'authority', dim: esc(summaries.authority || '') }),
-    row(t('Profile'), `${esc(numbers)} ${esc(profileName(numbers))}`, { object: 'profile', dim: esc(summaries.profile || '') }),
-    row(t('Definition'), esc(definitionName(chart.definition)), {
-      object: 'definition',
-      dim: `${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}`
-    }),
-    row(t('Dominant Circuit'), esc(dominantText), {
-      dim: esc(groups.map(group => `${circuitName(group.key)} · ${group.count}`).join(' · '))
-    }),
-    row(t('Incarnation Cross'), esc(crossName(cross) || t('None')), {
-      object: 'cross',
-      dim: `${esc(angleShort)} · ${esc(t('Gates'))} ${esc((cross?.gates || []).join(' / ') || '—')}`
-    })
-  ].join('');
-
-  const variableRow = `
-    <div class="sc-row sc-row--variable">
-      <span class="sc-row-label">${esc(t('Variable'))}</span>
-      <span class="sc-row-value">
-        <span class="sc-var-chips">
-          ${VARIABLE_GROUPS.map(group => group.keys.map(key => {
-            const item = arms.find(arm => arm.key === key);
-            const label = t(VARIABLE_LABEL[key]);
-            const arrow = item?.direction === 'left' ? '◀' : item?.direction === 'right' ? '▶' : '—';
-            return `<span class="sc-var-chip" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(label)}"><b>${esc(label)}</b> ${arrow}</span>`;
-          }).join('')).join('')}
-        </span>
-        ${chart.variable?.notation ? `<span class="sc-row-dim" title="${esc(t('Standard notation:'))}">${esc(chart.variable.notation)}</span>` : ''}
-      </span>
-    </div>`;
+  const variableGroups = VARIABLE_GROUPS.map(group => `
+    <div class="pc-var-group" data-source="${group.source}">
+      <div class="pc-var-group-head">${esc(t(group.label))}</div>
+      <div class="pc-var-pair">${group.keys.map(key => {
+        const item = arms.find(arm => arm.key === key);
+        const label = t(VARIABLE_LABEL[key]);
+        const arrow = item?.direction === 'left' ? '←' : item?.direction === 'right' ? '→' : '—';
+        return `<span class="pc-var-slot" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(label)}"><span class="pc-var-arrow" aria-hidden="true">${arrow}</span><span class="pc-var-name">${esc(label)}</span></span>`;
+      }).join('')}</div>
+    </div>`).join('');
 
   return `
-    <div class="sc-hero" data-type="${esc(chart.type.id || '')}">
-      <div class="sc-hero-kicker">${who || esc(t('Foundation'))}</div>
-      <div class="sc-hero-name" data-knowledge-object="type" title="${esc(summaries.type || '')}">${esc(typeName(chart.type.name))}</div>
-      <div class="sc-hero-meta"><b>${esc(numbers)}</b> ${esc(profileName(numbers))} · <b>${esc(authorityLabel(chart))}</b> · ${esc(definitionName(chart.definition))}</div>
-      <div class="sc-hero-strategy">${esc(t('Strategy:'))} ${esc(strategy(chart.type.name))}</div>
-      ${birthLine ? `<div class="sc-hero-birth">${esc(birthLine)}${birth.timeUnknown ? ` · <em>${esc(t('time unknown — chart uses noon'))}</em>` : ''}</div>` : ''}
-      ${summaries.type ? `<p class="sc-hero-plain">${esc(summaries.type)}</p>` : ''}
-    </div>
     ${reliabilityHtml}
-    <div class="sc-group">
-      <div class="sc-group-label">${esc(t('Foundation'))}</div>
-      ${rows}
-      ${variableRow}
+    <div class="pc-feed">
+      <div class="pc-card pc-card--profile" data-knowledge-object="profile" title="${esc(summaries.profile || '')}">
+        <div class="pc-card-label">${esc(t('Profile'))}</div>
+        <div class="pc-profile-main">
+          <div class="pc-profile-number">${numbers.split('/').map(esc).join('<i>/</i>')}</div>
+          <div class="pc-profile-ladders">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality') })}${lineLadder({ line: designLine, state: 'design', label: t('Design') })}</div>
+        </div>
+        <div class="pc-profile-name">${esc(profileName(numbers))}</div>
+        ${summaries.profile ? `<p class="pc-card-note">${esc(summaries.profile)}</p>` : ''}
+      </div>
+
+      <div class="pc-pair">
+        <div class="pc-card pc-card--authority" data-knowledge-object="authority" title="${esc(summaries.authority || '')}">
+          <div class="pc-card-label">${esc(t('Authority'))}</div>
+          <div class="pc-authority-icon" data-authority="${esc(authorityId || '')}">${authorityIcon(authorityId)}</div>
+          <div class="pc-card-value">${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}</div>
+          ${summaries.authority ? `<p class="pc-card-note">${esc(summaries.authority)}</p>` : `<p class="pc-card-note">${esc(t('No single centre anchors this authority'))}</p>`}
+        </div>
+        <div class="pc-card pc-card--definition" data-knowledge-object="definition">
+          <div class="pc-card-label">${esc(t('Definition'))}</div>
+          <div class="pc-card-value pc-definition-value">${esc(definitionName(chart.definition))}</div>
+          <p class="pc-card-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}</p>
+        </div>
+      </div>
+
+      <div class="pc-pair">
+        <div class="pc-card pc-card--circuit">
+          <div class="pc-card-label">${esc(t('Dominant Circuit'))}</div>
+          <div class="pc-circuit-main">
+            ${donut}
+            <div class="pc-circuit-copy">
+              <div class="pc-card-value" title="${esc(dominantText)}">${esc(dominantText)}</div>
+              <div class="pc-legend">${legend}</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-card pc-card--cross">
+          <div class="pc-card-label">${esc(t('Incarnation Cross'))}</div>
+          <div class="pc-cross-grid">${crossGrid}</div>
+          <div class="pc-card-value" data-knowledge-object="cross" title="${esc(crossName(cross) || t('None'))}">${esc(crossName(cross) || t('None'))}</div>
+          <p class="pc-card-note">${esc(angleShort)} · ${esc(t('Gates'))} ${esc(crossGates.join(' / ') || '—')}</p>
+        </div>
+      </div>
+
+      <div class="pc-card pc-card--variable">
+        <div class="pc-var-head">
+          <span class="pc-card-label">${esc(t('Variable'))}</span>
+          ${chart.variable?.notation ? `<span class="pc-var-notation" title="${esc(t('Standard notation:'))}">${esc(chart.variable.notation)}</span>` : ''}
+        </div>
+        <div class="pc-var-arrows">${variableGroups}</div>
+      </div>
     </div>
   `;
 }
+
 
 // The identity band holds Type, Strategy, Signature / Not-Self, Authority and
 // Definition. Everything in it is drawn from the chart contract; the only
