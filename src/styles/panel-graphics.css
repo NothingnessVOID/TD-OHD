@@ -241,9 +241,9 @@
 .panel-foundation-band {
   position: relative;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px 16px;
-  align-items: center;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px 16px;
+  align-items: start;
   padding: 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border-subtle);
@@ -283,25 +283,21 @@
 .pg-signal[data-signal="notself"] .pg-signal-dot { background: var(--status-caution); }
 
 .pg-band-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 28px;
   min-width: 0;
-  border-inline-start: 1px solid var(--border-subtle);
-  padding-inline-start: 16px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
 }
-.pg-band-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  min-width: 0;
-  min-height: 26px;
-}
+.pg-band-row { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; font-size: 14px; min-width: 0; }
+.pg-band-main { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-width: 0; max-width: 100%; }
+.pg-band-row > * { max-width: 100%; }
 .pg-band-graphic { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
 .pg-band-label { font-size: 11px; color: var(--text-tertiary); letter-spacing: .04em; }
-.pg-band-value { font-size: 14px; color: var(--text); white-space: nowrap; }
-.pg-band-note { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+.pg-band-value { font-size: 14px; color: var(--text); white-space: normal; overflow-wrap: anywhere; line-height: 1.4; }
+.pg-band-note { font-size: 11px; color: var(--text-tertiary); white-space: normal; }
 /* Its own line, and allowed to wrap: inside the inline-flex row with nowrap it ran
    past the identity band's right edge on the mental and lunar authority tracks. */
 .pg-band-explain {
@@ -445,6 +441,10 @@
 .pg-cross-mini[data-angle="right"] .pg-cross-cell { border-radius: 6px; }
 .pg-cross-mini[data-angle="left"] .pg-cross-cell { border-radius: 2px; }
 
+/* Foundation text and graphics can wrap independently at every column width. */
+.pg-strategy-arc { align-self: start; margin-top: 2px; }
+.pg-identity { overflow-wrap: anywhere; }
+
 /* Fact rail: solo, duet, then a quiet instrument strip. */
 .panel-fact--hero {
   --fact-accent: var(--accent);
@@ -486,22 +486,19 @@
 .pg-segbar-legend [data-circuit="individual"] { --legend-color: var(--hd-circuit-individual); }
 .pg-segbar-legend [data-circuit="collective"] { --legend-color: var(--hd-circuit-collective); }
 .pg-segbar-legend [data-circuit="tribal"] { --legend-color: var(--hd-circuit-tribal); }
-.panel-fact--strip { --pg-band-fg: var(--bg); background: color-mix(in srgb, var(--text) 92%, var(--bg)); flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 88px; padding: 14px 18px; border: 0; border-radius: var(--radius-md); }
-.panel-fact--strip .panel-fact-label { color: color-mix(in srgb, var(--pg-band-fg) 75%, transparent); }
-.panel-fact--strip .pg-var-slot { color: color-mix(in srgb, var(--pg-band-fg) 85%, transparent); }
-.panel-fact--strip .pg-var-slot:hover { background: color-mix(in srgb, var(--pg-band-fg) 10%, transparent); }
-.panel-fact--strip .pg-var-slot[data-source="personality"] .pg-var-dial-tri { color: var(--pg-band-fg); }
-.panel-fact--strip .pg-var-slot[data-source="design"] .pg-var-dial-tri { color: color-mix(in srgb, var(--hd-design) 45%, var(--pg-band-fg)); }
-.panel-fact--strip .panel-fact-toggle { color: var(--pg-band-fg); }
-.panel-fact--strip .panel-fact-toggle:hover { color: var(--pg-band-fg); background: color-mix(in srgb, var(--pg-band-fg) 12%, transparent); }
+.panel-fact--strip { background: linear-gradient(100deg, color-mix(in srgb, var(--accent) 10%, transparent), color-mix(in srgb, var(--accent) 3%, transparent) 55%, transparent), var(--bg-sunken); flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 88px; padding: 14px 18px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+.panel-fact--strip .panel-fact-label, .panel-fact--strip .pg-var-slot { color: var(--text-secondary); }
+.panel-fact--strip .pg-var-slot:hover { background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated)); }
+.panel-fact--strip .pg-var-slot[data-source="personality"] .pg-var-dial-tri { color: var(--hd-personality); }
+.panel-fact--strip .pg-var-slot[data-source="design"] .pg-var-dial-tri { color: var(--hd-design); }
 .pg-var-notation-block { flex: none; }
-.pg-var-notation { display: inline-block; margin-top: 6px; padding: 4px 14px; background: var(--bg); color: var(--text); border: 0; border-radius: var(--radius-full); font: 12.5px ui-monospace, Menlo, monospace; letter-spacing: 2px; }
+.pg-var-notation { display: inline-block; margin-top: 6px; padding: 4px 14px; background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border-subtle); border-radius: var(--radius-full); font: 12.5px ui-monospace, Menlo, monospace; letter-spacing: 2px; }
 .panel-fact--strip .pg-var-groups { flex: 1; flex-direction: row; justify-content: flex-end; gap: 12px; margin: 0; }
 .panel-fact--strip .pg-var-group { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 5px; }
-.panel-fact--strip .pg-var-group + .pg-var-group { border-inline-start: 1px solid color-mix(in srgb, var(--pg-band-fg) 22%, transparent); padding-inline-start: 16px; }
-.panel-fact--strip .pg-var-group-head { grid-column: 1 / -1; font-size: 9.5px; text-align: center; margin: 0; color: color-mix(in srgb, var(--pg-band-fg) 75%, transparent); }
+.panel-fact--strip .pg-var-group + .pg-var-group { border-inline-start: 1px solid var(--border-subtle); padding-inline-start: 16px; }
+.panel-fact--strip .pg-var-group-head { grid-column: 1 / -1; font-size: 9.5px; text-align: center; margin: 0; color: var(--text-secondary); }
 .panel-fact--strip .pg-var-slot { flex-direction: column; gap: 4px; padding: 0; font-size: 9.5px; text-align: center; }
-.pg-var-dial { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--pg-band-fg) 55%, transparent); background: transparent; }
+.pg-var-dial { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--bg-elevated); }
 .pg-var-dial-tri { width: 0; height: 0; border-block: 5px solid transparent; }
 .pg-var-dial-tri[data-dir="left"] { border-inline-end: 8px solid currentColor; }
 .pg-var-dial-tri[data-dir="right"] { border-inline-start: 8px solid currentColor; }
@@ -646,20 +643,7 @@
     grid-template-columns: 30px minmax(0, 1fr);
     padding: 12px;
   }
-  .pg-band-stats {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px 20px;
-    border-inline-start: none;
-    border-top: 1px solid var(--border-subtle);
-    padding-inline-start: 0;
-    padding-top: 10px;
-  }
-  /* At this tier the label, the authority name and the nine-dot track can just
-     exceed the band; wrapping is cheaper than shrinking the dotted track, which is
-     the thing the row exists to show. */
-  .pg-band-row { gap: 6px; flex-wrap: wrap; }
+  .pg-band-stats { grid-column: 1 / -1; }
   .pg-band-value { min-width: 0; }
   .panel-center-line { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .panel-center-row { grid-template-columns: 24px minmax(0, 1fr) 8px 24px; }
@@ -670,6 +654,7 @@
    Cuts secondary information only. No graphic is removed.
    ============================================================= */
 @container infocol (max-width: 379px) {
+  .pg-band-stats { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .panel-center-row { grid-template-columns: 20px minmax(0, 1fr) 8px 24px; gap: 8px; padding-inline: 4px; }
   .pg-center-glyph { width: 20px; height: 20px; }
   .pg-center-glyph .pg-shape { width: 20px; height: 20px; }

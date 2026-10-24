@@ -419,16 +419,21 @@ function renderFoundationBand(chart, summaries = {}) {
       <div class="pg-band-stats">
         <div class="pg-band-row" data-panel-fact="authority" data-knowledge-object="authority" title="${esc(summaries.authority || '')}">
           <span class="pg-band-label">${t('Authority')}</span>
-          <span class="pg-band-value">${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}</span>
-          <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(anchor ? `${t('Authority centre')}: ${centerName(anchor)}` : t('No single centre anchors this authority'))}">${track}</span></span>
+          <span class="pg-band-main">
+            <span class="pg-band-value">${esc(authorityLabel(chart))}${anchor ? ` · ${esc(centerName(anchor))}` : ''}</span>
+            <span class="pg-band-graphic"><span class="pg-authority-track" role="img" aria-label="${esc(anchor ? `${t('Authority centre')}: ${centerName(anchor)}` : t('No single centre anchors this authority'))}">${track}</span></span>
+          </span>
+          ${summaries.authority ? `<p class="pg-band-explain">${esc(summaries.authority)}</p>` : ''}
+          ${anchor ? '' : `<p class="pg-band-explain">${esc(t('No single centre anchors this authority'))}</p>`}
         </div>
         <div class="pg-band-row" data-panel-fact="definition" data-knowledge-object="definition">
           <span class="pg-band-label">${t('Definition')}</span>
-          <span class="pg-band-value">${esc(definitionName(chart.definition))}</span>
-          <span class="pg-band-graphic">${definitionIslands(components)}<span class="pg-band-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}</span></span>
+          <span class="pg-band-main">
+            <span class="pg-band-value">${esc(definitionName(chart.definition))}</span>
+            <span class="pg-band-graphic">${definitionIslands(components)}</span>
+          </span>
+          <p class="pg-band-explain">${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}</p>
         </div>
-        ${summaries.authority ? `<p class="pg-band-explain">${esc(summaries.authority)}</p>` : ''}
-        ${anchor ? '' : `<p class="pg-band-explain">${esc(t('No single centre anchors this authority'))}</p>`}
       </div>
     </div>`;
 }

@@ -194,6 +194,9 @@ try {
           locale: document.documentElement.lang || null
         }));
 
+        const bandOverflow = await page.locator('.panel-foundation-band, .pg-band-row').evaluateAll(nodes => nodes.filter(node => node.scrollWidth > node.clientWidth + 1).map(node => ({ className: node.className, width: node.clientWidth, scroll: node.scrollWidth })));
+        if (bandOverflow.length) errs.push('BAND_OVERFLOW ' + JSON.stringify(bandOverflow));
+
         // Non-default locales get their own file name; otherwise an English run
         // would overwrite the Chinese screenshot it is meant to be compared with.
         const localeTag = locale === 'zh-CN' ? '' : `-${locale.split('-')[0]}`;
