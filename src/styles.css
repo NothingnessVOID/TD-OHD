@@ -2416,6 +2416,47 @@ body.modal-open { overflow: hidden; }
   max-width: 460px;
   margin: 8px auto 0;
 }
+
+/* Relationship composite: person A activations | combined graph | person B
+   activations. The side columns are the timeline's own Design | glyph |
+   Personality component, so both views stay visually and behaviourally equal. */
+.conn-triple {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(260px, 1.35fr) minmax(150px, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 14px;
+}
+.conn-triple .composite-graph { max-width: none; margin: 0; min-width: 0; }
+.conn-person-side {
+  min-width: 0;
+  padding: 10px 12px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.conn-person-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; min-width: 0; }
+.conn-person-name { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
+.conn-person-type { font-size: 11px; color: var(--text-secondary); line-height: 1.35; }
+.conn-person-activations { min-width: 0; }
+.conn-person-activations .tl-birth-head { height: 20px; }
+.conn-person-activations .tl-birth-row { height: 19px; }
+.conn-person-activations .tl-birth-glyph { opacity: .7; }
+.conn-person-activations .tl-birth-value { cursor: default; }
+
+@media (--above-phone) and (max-width: 1100px) {
+  .conn-triple { grid-template-columns: minmax(126px, 1fr) minmax(230px, 1.25fr) minmax(126px, 1fr); gap: 12px; }
+  .conn-person-side { padding: 8px 9px; }
+}
+
+@media (--phone) {
+  /* Narrow screens keep both people and the composite, stacking instead of
+     forcing three columns and clipping the outer activation columns. */
+  .conn-triple { display: flex; flex-direction: column; gap: 12px; }
+  .conn-triple .composite-graph { order: -1; max-width: 460px; margin-inline: auto; width: 100%; }
+  .conn-person-side { width: 100%; }
+  .conn-person-activations { max-width: 320px; margin-inline: auto; }
+}
 .composite-legend {
   display: flex;
   flex-wrap: wrap;

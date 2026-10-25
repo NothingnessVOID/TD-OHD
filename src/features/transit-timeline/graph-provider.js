@@ -1,7 +1,7 @@
 /** Graph derivation from discrete activations; no ephemeris import. */
 import { CHANNELS, CENTERS, GATES } from '../../lib/human-design/catalog.js';
 import { buildTransitGraph } from '../../lib/transit-graph.js';
-import { bridgeState } from './bridge.js';
+import { bridgeState, splitState } from './bridge.js';
 
 export function catalog() {
   return [
@@ -36,6 +36,13 @@ export function stateAt(natal, activations, mode, planet = 'all') {
   const combinedGates = new Set([...natal.gates.all, ...Object.values(effective).filter(Boolean).map(value => value.gate)]);
   const bridge = bridgeState(natal, combinedGates);
   if (bridge.connected.length) states.set('bridge:natal', JSON.stringify(bridge.connected));
+  // A single natal island cannot be bridged, so the same first row reports
+  // transient extra islands instead (Issue #38). Charts with no natal
+  // definition keep the previous behaviour and show no such row.
+  else if (bridge.islands.length === 1) {
+    const split = splitState(natal, combinedGates);
+    if (split.split) states.set('bridge:natal', JSON.stringify(split.newIslands));
+  }
   return states;
 }
 
