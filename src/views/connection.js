@@ -436,7 +436,10 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
   // One placement rule for both slots, owned by the shared shell.
   const shellRoot = container.querySelector('#conn-shell');
   connShellFit?.disconnect();
-  connShellFit = observeGraphShell(shellRoot, { aspect: COMPOSITE_ASPECT });
+  // Fit the composite to the viewport height as well as the column width: the
+  // graph column is sticky, so a graph taller than the screen would pin at the
+  // top and lose its bottom edge while the analysis scrolls past.
+  connShellFit = observeGraphShell(shellRoot, { aspect: COMPOSITE_ASPECT, fitHeight: true });
 
   renderBodygraph(container.querySelector('#conn-graph-a'), a.chart, { compact: true });
   renderBodygraph(container.querySelector('#conn-graph-b'), b.chart, { compact: true });

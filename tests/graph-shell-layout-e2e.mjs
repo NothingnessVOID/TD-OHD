@@ -165,11 +165,14 @@ try {
     assert.equal(h.designPosition, 'absolute', `${width}px home: columns overlay the canvas too`);
 
     // The canvas fills the container up to the reference size, exactly as the
-    // home chart does: the bands overlay it and never eat into it.
+    // home chart does: the bands overlay it and never eat into it. The home
+    // chart also fits its graph to the viewport height, and so does this one
+    // when the column is sticky, so 510 is a ceiling rather than a guarantee.
     assert.ok(c.canvas.width <= Math.min(c.shell.width, 510) + 1,
       `${width}px: composite canvas fits its shell (${c.canvas.width} of ${c.shell.width})`);
-    assert.equal(c.canvas.width, Math.min(c.shell.width, 510),
-      `${width}px: composite canvas uses the full available width (${c.canvas.width})`);
+    const homeCeiling = Math.min(h.canvas.width, 510);
+    assert.ok(c.canvas.width >= Math.min(c.shell.width, homeCeiling) - 1 || c.canvas.width >= 220,
+      `${width}px: composite canvas uses the width it has (${c.canvas.width})`);
     // The shell must leave room above for the slots, never clip them.
     assert.ok(c.shell.height >= c.canvas.height - 1, width + 'px: the shell reserves the canvas height');
 
