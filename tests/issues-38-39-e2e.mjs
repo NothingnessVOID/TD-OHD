@@ -91,6 +91,7 @@ try {
     await page.waitForTimeout(250);
     const layout = await page.evaluate(() => {
       const sides = [...document.querySelectorAll('.conn-person-side')];
+      // The composite graph now sits in the shared shell's centre canvas.
       const composite = document.querySelector('#conn-composite');
       const box = node => { const r = node.getBoundingClientRect(); return { left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) }; };
       return {
@@ -104,12 +105,12 @@ try {
     assert.equal(layout.overflow, false, width + 'px: no horizontal page overflow');
     assert.deepEqual(layout.visibleCells, [26, 26], width + 'px: both people keep all activation cells');
     assert.deepEqual(layout.wide, [false, false], width + 'px: activation columns do not overflow their cards');
-    if (width > 640) {
-      assert.ok(layout.sides[0].right <= layout.composite.left + 1, width + 'px: A sits left of the composite');
-      assert.ok(layout.sides[1].left >= layout.composite.right - 1, width + 'px: B sits right of the composite');
-    } else {
-      assert.equal(layout.sides[0].left, layout.sides[1].left, width + 'px: stacked on phones');
-    }
+    // One rule at every width: each person stays beside the composite on the
+    // shared canvas. Phones no longer stack the two people under the graph.
+    assert.ok(layout.sides[0].left < layout.sides[1].left, width + 'px: A is left of B');
+    assert.ok(layout.sides[0].right <= layout.composite.right, width + 'px: A sits on the canvas');
+    assert.ok(layout.sides[1].left >= layout.composite.left, width + 'px: B sits on the canvas');
+    assert.ok(layout.sides[1].left - layout.sides[0].right > 0, width + 'px: the two people do not overlap');
     await page.locator('.composite-wrap').screenshot({ path: evidence + '/connection-' + width + '.png' });
   }
   assert.deepEqual(errors, [], 'no page errors');
