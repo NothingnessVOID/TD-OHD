@@ -733,9 +733,18 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
       const centers = [...new Set(islands.length === 1
         ? groups.flat()
         : groups.flatMap(group => group.flatMap(number => islands[number - 1] || [])))];
+      // A split or bridge interval has no sheet of its own; it lights the centers
+      // it involves. The graph highlight alone is not enough — it can be a no-op
+      // when the timeline's host has no graph API — so the timeline lights its
+      // own center rows too, exactly as focusTargets does. Without this the bar
+      // is a control that appears clickable and does nothing.
+      highlight({ centers });
       context?.api?.highlightSelection({ kind: 'targets', gates: [], centers });
       clearTimeout(navigationTimer);
-      navigationTimer = setTimeout(() => context?.api?.highlightSelection(null), 1800);
+      navigationTimer = setTimeout(() => {
+        context?.api?.highlightSelection(null);
+        highlight(null);
+      }, 1800);
       return;
     }
     pendingDetail = { row, interval };
