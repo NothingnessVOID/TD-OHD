@@ -2425,35 +2425,30 @@ body.modal-open { overflow: hidden; }
 #connection-view .chart-layout {
   max-width: none;
   padding: 0;
-  /* One column until the graph column is wide enough to hold the composite and
-     both activation modules without crowding them into the graph. The outer
-     stack is the same one the phone uses: graph first, analysis after. */
-  grid-template-columns: 1fr;
 }
-/* The split starts where the graph column can hold the composite at its full
-   reference size, so the two-column desktop view never shows a smaller graph
-   than the single-column one. Below that the page keeps the phone's outer
-   stack; the graph itself still carries both activation modules beside it. */
-@media (min-width: 1200px) {
+/* Same column template as the home chart, at the same boundary: two columns
+   from the first width above the phone, one column at the phone. The graph is
+   fitted to whatever width that leaves rather than forcing the page to stack
+   early, which is why there is no page-specific breakpoint here. */
+@media (--above-phone) {
   #connection-view .chart-layout {
-    /* An even split: the composite plus its two activation modules needs as
-       much room as the analysis, unlike the natal chart's 42/58. Same frame,
-       gutter and sticky rule; one ratio changed. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: var(--page-columns);
     column-gap: var(--page-gap);
   }
 }
 /* Same column behaviour as the home chart: it sticks beside the analysis and
-   scrolls with the page, never inside its own scrollbar. */
+   scrolls with the page, never inside its own scrollbar. The phone rule that
+   makes `.chart-column` static is the site's, not this page's. */
 #connection-view .chart-column {
   min-width: 0;
   max-height: none;
   overflow: visible;
 }
-/* Once the layout stacks there is no column beside the graph to stick against,
-   so it flows like the phone's chart column instead of floating over the
-   analysis. */
-@media (max-width: 1199px) {
+/* A viewport too short to hold the pinned card is the one case where sticking
+   hurts: the card would stay permanently clipped at the bottom edge. Below this
+   height the column scrolls with the page instead, exactly as it does on the
+   phone, and the graph goes back to width-only sizing so it stays reachable. */
+@media (max-height: 480px) {
   #connection-view .chart-column { position: static; }
 }
 #connection-view .info-column { min-width: 0; }
@@ -2510,6 +2505,17 @@ body.modal-open { overflow: hidden; }
    viewport, because the graph column is its own container. */
 @container (max-width: 460px) {
   .conn-person-side { --ohd-slot-content-width: 112px; }
+}
+/* In the narrow two-column widths the graph column floors at the template's
+   320px, so the module has to fit beside a roughly 270px canvas. */
+@container (max-width: 320px) {
+  .conn-person-side { --ohd-slot-content-width: 88px; }
+  .conn-person-name { font-size: 10px; }
+  .conn-person-type { font-size: 8.5px; }
+  .conn-person-activations .tl-birth-head { height: 14px; }
+  .conn-person-activations .tl-birth-row { height: 13px; }
+  .conn-person-activations .bg-planet-row { font-size: 9px; }
+  .conn-person-activations .tl-birth-glyph { font-size: 10px; }
 }
 
 @media (--phone) {
