@@ -446,7 +446,11 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (!frame) frame = requestAnimationFrame(renderMoment);
   }
 
-  function rowSymbol(row) {
+  function rowSymbol(row, split = false) {
+    // Split reads one island becoming several, so the single filled node sits
+    // on the left and the detached pair on the right. DOM order keeps the
+    // filled node last: `.tl-split-symbol circle:last-child` fills it.
+    if (row.kind === 'bridge' && split) return '<svg class="tl-split-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="19" cy="6.5" r="2.2"/><circle cx="19" cy="17.5" r="2.2"/><path d="M16.6 6.5h-2.4M16.6 17.5h-2.4"/><path d="M11.2 4.4 8.8 12l2.4 7.6" stroke-dasharray="2.6 2.2"/><circle cx="5" cy="12" r="2.4"/></svg>';
     if (row.kind === 'bridge') return '<svg class="tl-bridge-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="4.5" cy="6.5" r="2"/><circle cx="4.5" cy="17.5" r="2"/><path d="M7 6.5h3c3.5 0 4 5.5 7 5.5M7 17.5h3c3.5 0 4-5.5 7-5.5"/><circle cx="19" cy="12" r="3"/></svg>';
     if (row.kind === 'line') return `<span class="tl-line-symbol">.${row.line}</span>`;
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;
@@ -477,22 +481,27 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const changesOnly = $('[data-field="changes"]').getAttribute('aria-pressed') === 'true';
     // Keep the row roster fixed for the completed calculation. Only bars are
     // clipped to the moving viewport, so empty tracks retain their position.
-    const rowName = row => row.kind === 'bridge' ? t('bridge') : name(row);
+    // The first row changes meaning with the natal definition: several fixed
+    // islands can be bridged into one, while a single island can only be split
+    // by transits that complete a detached island (Issue #38).
     const natalIslandCount = chart ? natalIslands(host.identity(chart.chart)).length : 0;
+    const splitRow = natalIslandCount === 1;
+    const rowName = row => row.kind === 'bridge' ? t(splitRow ? 'split' : 'bridge') : name(row);
     const rows = result.rows.filter(row => (row.kind === 'bridge' || row.intervals.length > 0) &&
       (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
       && (!query || `${rowName(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
         (row.kind === 'gate' && result.rows.some(line => line.kind === 'line' && line.gate === row.id && line.id.includes(query))))
       && (row.kind === 'bridge' || !changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
-    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}">
-      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M1 1 19 10 1 19Z"/></svg></button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
+    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}"${row.kind === 'bridge' ? ` data-relation="${splitRow ? 'split' : 'bridge'}"` : ''}>
+      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M1 1 19 10 1 19Z"/></svg></button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row, splitRow)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';
-        const bridgeCount = row.kind === 'bridge' ? t('bridgeCount', {
-          from: natalIslandCount, to: bridgedIslandCount(natalIslandCount, JSON.parse(interval.source))
-        }) : '';
+        const islandData = row.kind === 'bridge' ? JSON.parse(interval.source) : null;
+        const bridgeCount = row.kind !== 'bridge' ? '' : splitRow
+          ? t('splitCount', { from: natalIslandCount, to: natalIslandCount + islandData.length })
+          : t('bridgeCount', { from: natalIslandCount, to: bridgedIslandCount(natalIslandCount, islandData) });
         const title = `${rowName(row)}${bridgeCount ? ` · ${bridgeCount}` : ''} · ${row.kind === 'bridge' ? t('transit') : t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
         return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${row.kind === 'bridge' ? 'transit' : interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(row.kind === 'bridge' ? bridgeCount : rowName(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
@@ -718,10 +727,24 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     root.querySelector(`.tl-bar[data-key="${row.key}"][data-interval="${index}"]`)?.setAttribute('aria-pressed', 'true');
     if (row.kind === 'bridge') {
       const islands = natalIslands(host.identity(chart.chart));
-      const centers = [...new Set(JSON.parse(interval.source).flatMap(group => group.flatMap(number => islands[number - 1] || [])))];
+      // Bridging groups refer to natal island numbers; a split stores the new
+      // island centers directly, because the natal chart has only one island.
+      const groups = JSON.parse(interval.source);
+      const centers = [...new Set(islands.length === 1
+        ? groups.flat()
+        : groups.flatMap(group => group.flatMap(number => islands[number - 1] || [])))];
+      // A split or bridge interval has no sheet of its own; it lights the centers
+      // it involves. The graph highlight alone is not enough — it can be a no-op
+      // when the timeline's host has no graph API — so the timeline lights its
+      // own center rows too, exactly as focusTargets does. Without this the bar
+      // is a control that appears clickable and does nothing.
+      highlight({ centers });
       context?.api?.highlightSelection({ kind: 'targets', gates: [], centers });
       clearTimeout(navigationTimer);
-      navigationTimer = setTimeout(() => context?.api?.highlightSelection(null), 1800);
+      navigationTimer = setTimeout(() => {
+        context?.api?.highlightSelection(null);
+        highlight(null);
+      }, 1800);
       return;
     }
     pendingDetail = { row, interval };
