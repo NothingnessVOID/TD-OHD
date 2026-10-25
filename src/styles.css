@@ -2460,10 +2460,6 @@ body.modal-open { overflow: hidden; }
   padding: 24px;
   box-shadow: var(--shadow-sm);
 }
-.composite-graph {
-  max-width: 460px;
-  margin: 8px auto 0;
-}
 
 /* Relationship composite: person A activations | combined graph | person B
    activations on the shared BodyGraph shell. The shell owns all placement, so
