@@ -10,15 +10,17 @@ import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import { compareHumanDesign } from '../lib/human-design/connection.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
-import { renderBodygraph } from '../bodygraph.js';
+import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
+import { birthActivationsMarkup, renderBirthActivations } from '../features/transit-timeline/birth-activations.js';
+import { translator } from '../features/transit-timeline/messages.js';
 import { computeChart } from '../lib/chartdata.js';
 import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
 import { reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
-import { typeName, authorityName, centerName, graphCenter, gateName, channelName, profileName } from '../lib/vocabulary.js';
+import { typeName, authorityName, centerName, graphCenter, gateName, channelName, profileName, planetName } from '../lib/vocabulary.js';
 import { contentText } from '../lib/content.js';
-import { t } from '../lib/i18n.js';
+import { t, getLocaleResources } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
 
 
@@ -255,6 +257,18 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
   };
 
   const cpal = compositePalette();
+  // The same center-symmetric Design | glyph | Personality column the timeline
+  // uses, one per person, flanking the composite bodygraph (Issue #39). Each
+  // side reads only its own chart, so the two people never share activations.
+  const timelineMessages = getLocaleResources().timeline;
+  const translate = translator(timelineMessages?.messages);
+  const activationLabels = { design: t('Design'), personality: t('Personality') };
+  const activationPlanets = PLANET_ORDER.map(id => ({ id, name: planetName(id), glyph: PLANET_GLYPHS[id] }));
+  const personSide = (id, name, chart) => `
+        <section class="conn-person-side" data-person="${id}" aria-label="${esc(name)}">
+          <div class="conn-person-head"><span class="conn-person-name">${esc(name)}</span><span class="conn-person-type">${esc(typeName(chart.type?.name))} · ${esc(contentText(chart.definition?.name || chart.definition || ''))}</span></div>
+          <div class="conn-person-activations" id="conn-activations-${id}">${birthActivationsMarkup({ labels: activationLabels, locale: timelineMessages?.locale || 'en-GB' })}</div>
+        </section>`;
 
   container.innerHTML = `
     <div class="composite-wrap">
@@ -266,7 +280,11 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
         <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
         <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Newly defined in the relationship')}</span>
       </div>
-      <div id="conn-composite" class="composite-graph"></div>
+      <div class="conn-triple">
+        ${personSide('a', nameA, a.chart)}
+        <div id="conn-composite" class="composite-graph"></div>
+        ${personSide('b', nameB, b.chart)}
+      </div>
       <div id="conn-detail" class="gate-detail hidden"></div>
     </div>
 
@@ -392,6 +410,11 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     onGateClick: showCompositeGate,
     onCenterClick: showCompositeCenter
   });
+
+  renderBirthActivations({ root: container.querySelector('#conn-activations-a'), chart: a.chart,
+    planets: activationPlanets, translate });
+  renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
+    planets: activationPlanets, translate });
 
   renderBodygraph(container.querySelector('#conn-graph-a'), a.chart, { compact: true });
   renderBodygraph(container.querySelector('#conn-graph-b'), b.chart, { compact: true });

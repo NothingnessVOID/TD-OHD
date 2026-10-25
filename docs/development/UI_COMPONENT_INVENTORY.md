@@ -138,3 +138,4 @@ PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip �
 | UI System 样式层 | `src/styles/ui-system.css`（`main.js` 最后导入），`--ui-control*`、`--ui-icon-size`、`--ui-dialog-*` | 全站页面标题、`.modal`、关闭/返回按钮、详情导航行 | 唯一定义处；功能 CSS 不再覆盖尺寸 |
 | 操作弹窗标题栏 | `operation-dialog.js` `renderDialogHeader(title,{level})` | Team、人物编辑、Wa 档案/历史/成员选择、确认框 | 标题+统一关闭，`data-close` 由生命周期绑定 |
 | 详情导航 | `renderDetailNavigation()` 扩展到关系详情与知识详情 | 出生图、行运、Penta、Wa、关系、资料库 | 详见 UI-UNIFICATION-2026-10-14.md |
+| 出生激活列（中心对称） | `src/features/transit-timeline/birth-activations.js`：`birthActivationsMarkup()`、`renderBirthActivations({root, chart, planets, fixings, translate, interactive, onSelect})` | 行运时间轴的出生列、行运页的出生列（经 `graph-window.js`）、关系合图两侧各一人 | 设计｜行星｜人格的排布、来源色、固定标记与标题只此一处；只画传入的单张图，不读行运或合图状态。`fixings` 缺省时只显示激活，关系合图即用此形态 |
