@@ -76,8 +76,3 @@
   /* Keep the slots on the canvas. Only the reserved width changes. */
   .ohd-graph-shell { --ohd-shell-gutter: 2px; }
 }
-
-/* A slot that carries a structured module (for example the relationship's
-   Design | glyph | Personality block) declares its own minimum so the shell can
-   size the band from real content instead of squeezing the module. */
-.ohd-graph-slot { width: var(--ohd-shell-slot-width, 88px); }
