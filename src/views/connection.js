@@ -12,6 +12,7 @@ import { analyzeConnectionStructure } from '../lib/human-design/connection-struc
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { birthActivationsMarkup, renderBirthActivations } from '../features/transit-timeline/birth-activations.js';
+import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
 import { translator } from '../features/transit-timeline/messages.js';
 import { computeChart } from '../lib/chartdata.js';
 import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
@@ -29,6 +30,9 @@ let lastComparison = null;
 let comparisonRequest = 0;
 let comparisonPeople = null;
 let currentBirthPending = null;
+let connShellFit = null;
+// The composite SVG uses the same bodygraph aspect the home chart samples.
+const COMPOSITE_ASPECT = 883.41 / 1341.4;
 export function invalidateConnection() {
   ++comparisonRequest;
   lastComparison = null;
@@ -264,6 +268,9 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
   const translate = translator(timelineMessages?.messages);
   const activationLabels = { design: t('Design'), personality: t('Personality') };
   const activationPlanets = PLANET_ORDER.map(id => ({ id, name: planetName(id), glyph: PLANET_GLYPHS[id] }));
+  // One person per slot of the shared graph shell. The shell owns placement, so
+  // the two people sit beside the composite at every width, exactly as the home
+  // chart places its Design and Personality columns.
   const personSide = (id, name, chart) => `
         <section class="conn-person-side" data-person="${id}" aria-label="${esc(name)}">
           <div class="conn-person-head"><span class="conn-person-name">${esc(name)}</span><span class="conn-person-type">${esc(typeName(chart.type?.name))} · ${esc(contentText(chart.definition?.name || chart.definition || ''))}</span></div>
@@ -280,11 +287,13 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
         <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
         <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Newly defined in the relationship')}</span>
       </div>
-      <div class="conn-triple">
-        ${personSide('a', nameA, a.chart)}
-        <div id="conn-composite" class="composite-graph"></div>
-        ${personSide('b', nameB, b.chart)}
-      </div>
+      <div id="conn-shell" class="conn-shell">${graphShellMarkup({
+        className: 'conn-graph-shell',
+        left: personSide('a', nameA, a.chart),
+        right: personSide('b', nameB, b.chart),
+        // Keep the historical id: it is the composite graph's mount point.
+        graph: '<div id="conn-composite"></div>'
+      })}</div>
       <div id="conn-detail" class="gate-detail hidden"></div>
     </div>
 
@@ -401,7 +410,9 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     openDetail();
   }
 
-  api = renderBodygraph(container.querySelector('#conn-composite'), a.chart, {
+  // The composite graph fills the shell's centre canvas.
+  const canvas = container.querySelector('#conn-composite');
+  api = renderBodygraph(canvas, a.chart, {
     composite: {
       chartA: a.chart, chartB: b.chart, structure,
       colorA: cpal.a, colorB: cpal.b, colorBridged: cpal.bridged,
@@ -415,6 +426,11 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     planets: activationPlanets, translate });
   renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
     planets: activationPlanets, translate });
+
+  // One placement rule for both slots, owned by the shared shell.
+  const shellRoot = container.querySelector('#conn-shell');
+  connShellFit?.disconnect();
+  connShellFit = observeGraphShell(shellRoot, { aspect: COMPOSITE_ASPECT });
 
   renderBodygraph(container.querySelector('#conn-graph-a'), a.chart, { compact: true });
   renderBodygraph(container.querySelector('#conn-graph-b'), b.chart, { compact: true });
