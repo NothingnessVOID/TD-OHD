@@ -99,32 +99,40 @@
 .tl-planet-column { position: absolute; top: 62px; z-index: 2; font-variant-numeric: tabular-nums; }
 .tl-transit-column { left: 9px; width: 63px; }
 .tl-birth-column { right: 8px; width: 130px; }
+/* ---- Shared Design | glyph | Personality activation column ----
+   One component, two hosts: the timeline birth column and the relationship
+   flanks. Its internal alignment, head and source colours follow the component
+   root `.ohd-birth-activations`, not the `.tl` timeline wrapper, so both hosts
+   render the same centre-symmetric column. The transit column keeps its own
+   `.tl` rules below. */
 .tl-birth-head, .tl-birth-row { display: grid; grid-template-columns: minmax(0,1fr) 14px minmax(0,1fr); column-gap: 2px; align-items: center; }
 .tl-birth-head { height: 22px; align-items: start; }
 .tl-birth-head > :first-child { text-align: right; padding-right: 1px; }
 .tl-birth-head > :last-child { text-align: left; padding-left: 1px; }
 .tl-birth-head > span { min-width: 0; line-height: 18px; }
-.tl .tl-birth-head .bg-planets-head { display: block; margin-bottom: 4px; overflow: hidden; white-space: nowrap; text-transform: none; letter-spacing: 0; }
-.tl .tl-birth-head-en .bg-planets-head { font-size: 8px; }
+.ohd-birth-activations { min-width: 0; }
+.ohd-birth-activations .tl-birth-value { min-width: 0; }
+/* Design hugs the glyph from the right, Personality from the left: mirror. */
+.ohd-birth-activations .tl-birth-value[data-side="design"] { justify-content: flex-end; }
+.ohd-birth-activations .tl-birth-value[data-side="personality"] { justify-content: flex-start; }
 .tl-birth-row { height: 17px; }
-.tl .tl-birth-value { min-width: 0; }
-.tl .tl-birth-value[data-side="design"] { justify-content: flex-end; }
-.tl .tl-birth-value[data-side="personality"] { justify-content: flex-start; }
-.tl .tl-birth-value.bg-planets-design .bg-planet-act { color: var(--source-design-text); }
-.tl .tl-birth-value.bg-planets-personality .bg-planet-act { color: var(--source-personality-text); }
 .tl-birth-glyph { width: 14px; justify-self: center; opacity: .75; text-align: center; line-height: 1; }
-.tl .bg-planets-head { font-size: 9px; letter-spacing: .02em; line-height: 18px; margin-bottom: 4px; }
+:is(.tl, .ohd-birth-activations) .bg-planets-head { font-size: 9px; letter-spacing: .02em; line-height: 18px; margin-bottom: 4px; }
+.ohd-birth-activations .tl-birth-head .bg-planets-head { display: block; margin-bottom: 4px; overflow: hidden; white-space: nowrap; text-transform: none; letter-spacing: 0; }
+.ohd-birth-activations .tl-birth-head-en .bg-planets-head { font-size: 8px; }
 .tl-transit-column .bg-planets-head, .tl-transit-column .bg-planet-act { color: var(--source-transit-text); }
 .tl-transit-column .bg-planets-head { padding-left: 15px; }
-.tl .bg-planet-row { height: 17px; line-height: 17px; padding: 0 1px; gap: 2px; font-size: 11px; cursor: pointer; }
-.tl .bg-planet-glyph { flex: 0 0 12px; font-size: 12px; }
-.tl .bg-planet-act { min-width: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
-.tl .bg-planets { min-width: 0; }
+:is(.tl, .ohd-birth-activations) .bg-planet-row { height: 17px; line-height: 17px; padding: 0 1px; gap: 2px; font-size: 11px; cursor: pointer; }
+:is(.tl, .ohd-birth-activations) .bg-planet-glyph { flex: 0 0 12px; font-size: 12px; }
+:is(.tl, .ohd-birth-activations) .bg-planet-act { min-width: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+:is(.tl, .ohd-birth-activations) .bg-planets { min-width: 0; }
 .tl .tl-transit-column.bg-planets { padding-top: 0; gap: 0; }
 .tl-fixing-mark { flex: 0 0 7px; width: 7px; font-size: 7px; line-height: 7px; white-space: normal; overflow-wrap: anywhere; text-align: center; color: var(--text-secondary); }
-.tl .tl-birth-value[data-side="design"] .tl-fixing-mark { color: var(--source-design-text); }
-.tl .tl-birth-value[data-side="personality"] .tl-fixing-mark { color: var(--source-personality-text); }
-.tl .tl-birth-value .tl-fixing-mark[data-temporary="true"] { color: var(--source-transit-text); }
+.ohd-birth-activations .tl-birth-value.bg-planets-design .bg-planet-act { color: var(--source-design-text); }
+.ohd-birth-activations .tl-birth-value.bg-planets-personality .bg-planet-act { color: var(--source-personality-text); }
+.ohd-birth-activations .tl-birth-value[data-side="design"] .tl-fixing-mark { color: var(--source-design-text); }
+.ohd-birth-activations .tl-birth-value[data-side="personality"] .tl-fixing-mark { color: var(--source-personality-text); }
+.ohd-birth-activations .tl-birth-value .tl-fixing-mark[data-temporary="true"] { color: var(--source-transit-text); }
 :is(.tl[data-transit-source-mode="unified-natal"], .tl [data-transit-source-mode="unified-natal"]) :is(.tl-birth-head .bg-planets-head, .tl-birth-value .bg-planet-act, .tl-birth-value .tl-fixing-mark:not([data-temporary="true"])) { color: var(--source-natal-text); }
 .tl-explorer, .tl-tracks-panel { min-width: 0; }
 .tl-tracks-panel { position: relative; z-index: 0; display: flex; flex-direction: column; height: calc(var(--tl-canvas-height) + 2px); border: 1px solid var(--tl-line); border-radius: 8px; background: var(--tl-surface); overflow: hidden; }

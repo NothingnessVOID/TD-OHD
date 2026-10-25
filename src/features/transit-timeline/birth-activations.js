@@ -9,9 +9,13 @@
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const setText = (node, value) => { if (node.textContent !== value) node.textContent = value; };
 
-/** Head plus an empty body; the caller owns the outer positioning element. */
+/**
+ * Head plus an empty body, wrapped in the component's own root so its styles
+ * follow it into every host page. The caller still owns the outer positioning
+ * element (the timeline column, the relationship flank).
+ */
 export function birthActivationsMarkup({ labels, locale = 'en-GB' }) {
-  return `<div class="tl-birth-head${locale.startsWith('en') ? ' tl-birth-head-en' : ''}"><span class="bg-planets-design"><span class="bg-planets-head">${esc(labels.design)}</span></span><span aria-hidden="true"></span><span class="bg-planets-personality"><span class="bg-planets-head">${esc(labels.personality)}</span></span></div><div class="tl-birth-planets"></div>`;
+  return `<div class="ohd-birth-activations"><div class="tl-birth-head${locale.startsWith('en') ? ' tl-birth-head-en' : ''}"><span class="bg-planets-design"><span class="bg-planets-head">${esc(labels.design)}</span></span><span aria-hidden="true"></span><span class="bg-planets-personality"><span class="bg-planets-head">${esc(labels.personality)}</span></span></div><div class="tl-birth-planets"></div></div>`;
 }
 
 /**
