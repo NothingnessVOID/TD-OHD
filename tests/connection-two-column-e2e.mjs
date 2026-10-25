@@ -214,6 +214,35 @@ try {
   assert.ok(analysis.individuals, 'the per-person charts are still there');
   assert.equal(analysis.shells, 1, 'exactly one shared graph shell');
 
+  // ---- The two activation columns are read-only ----
+  // They used to render <button> cells with no click handler: a control that
+  // looks pressable and does nothing. The page has no per-person detail, and the
+  // composite's or the current person's would answer the wrong question, so the
+  // cells must be plain text and a click must open nothing.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.waitForTimeout(600);
+  const cells = await page.evaluate(() => {
+    const nodes = [...document.querySelectorAll('.conn-person-activations .tl-birth-value')];
+    return {
+      total: nodes.length,
+      buttons: nodes.filter(node => node.tagName === 'BUTTON').length,
+      focusable: nodes.filter(node => node.tabIndex >= 0).length,
+      gated: nodes.filter(node => node.dataset.gate).length,
+    };
+  });
+  assert.equal(cells.total, 52, 'both activation columns render');
+  assert.equal(cells.buttons, 0, 'no activation cell is a button');
+  assert.equal(cells.focusable, 0, 'no activation cell is in the tab order');
+  assert.ok(cells.gated > 0, 'the cells still carry their gate data');
+  const cell = page.locator('.conn-person-activations .tl-birth-value[data-gate]:not([data-gate=""])').first();
+  await cell.scrollIntoViewIfNeeded();
+  await cell.click({ force: true });
+  await page.waitForTimeout(400);
+  assert.equal(await page.evaluate(() => {
+    const detail = document.getElementById('conn-detail');
+    return detail ? !detail.classList.contains('hidden') : false;
+  }), false, 'clicking an activation cell opens no detail');
+
   // ---- Sticky graph column: pinned, and small enough to stay whole ----
   // The home chart fits its graph to the viewport height, which is why its
   // column needs no scrollbar. The composite must do the same, or a pinned

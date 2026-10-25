@@ -36,6 +36,11 @@ const COMPOSITE_ASPECT = 883.41 / 1341.4;
 export function invalidateConnection() {
   ++comparisonRequest;
   lastComparison = null;
+  // The shell fit owns a ResizeObserver and window/viewport listeners. Clearing
+  // the DOM without releasing them leaves them watching a detached node, and the
+  // next comparison would add a second set on top. Release before the nodes go.
+  connShellFit?.disconnect();
+  connShellFit = null;
   document.getElementById('connection-content')?.replaceChildren();
   closeDetailDialog();
 }
@@ -428,10 +433,17 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     onCenterClick: showCompositeCenter
   });
 
+  // Both columns are read-only on this page. The component can render buttons,
+  // but a relationship activation has no detail of its own here: the page's detail
+  // system is the composite's, and the per-person entries belong to the natal
+  // chart of whoever is loaded. Wiring either one to a relationship cell would
+  // answer a question about person A with the composite's or the current
+  // person's data, so the cells are plain text instead of buttons that go
+  // nowhere.
   renderBirthActivations({ root: container.querySelector('#conn-activations-a'), chart: a.chart,
-    planets: activationPlanets, translate });
+    planets: activationPlanets, translate, interactive: false });
   renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
-    planets: activationPlanets, translate });
+    planets: activationPlanets, translate, interactive: false });
 
   // One placement rule for both slots, owned by the shared shell.
   const shellRoot = container.querySelector('#conn-shell');
