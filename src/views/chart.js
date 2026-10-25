@@ -37,7 +37,8 @@ import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { renderPlanetReading } from '../lib/planet-reference.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
-import { PHONE_MAX_WIDTH } from '../lib/breakpoints.js';
+import { PHONE_MAX_WIDTH, PHONE_MEDIA_QUERY } from '../lib/breakpoints.js';
+import { graphFitBudget, observeGraphFit } from '../lib/graph-fit.js';
 
 let current = null; // { birth, chart, geneKeys }
 let bodygraphApi = null;
@@ -110,23 +111,23 @@ function ensureNatalStage(container) {
 function armNatalFit() {
   teardownNatalFit();
   const container = document.getElementById('bodygraph-container');
-  const column = container?.closest('.chart-column');
   const stageParts = container && ensureNatalStage(container);
-  if (!container || !column || !stageParts) return;
+  if (!container || !container.closest('.chart-column') || !stageParts) return;
   const { shell, stage, grid } = stageParts;
 
+  // What is left of the sticky column after its own padding and border is the
+  // same question every graph surface asks; `graphFitBudget` answers it once.
+  // The natal chart has always used this budget whether or not the column is
+  // pinned, because its stage is what gives the column its height.
   const apply = () => {
-    if (!shell.isConnected || document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length) return;
-    const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
-    const columnStyle = getComputedStyle(column);
-    const stickyTop = parseFloat(columnStyle.top) || 0;
+    if (!shell.isConnected) return;
     const cs = getComputedStyle(container);
     const verticalInsets = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0)
       + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0) + 12;
-    const availableHeight = Math.max(1, viewport - stickyTop - verticalInsets);
-    const phoneLayout = window.matchMedia('(max-width: 640px)').matches;
-    const availableWidth = Math.max(1, container.clientWidth
-      - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0));
+    const budget = graphFitBudget(container, { fitHeight: true, chrome: verticalInsets });
+    const availableHeight = Math.max(1, budget.availableHeight ?? 1);
+    const availableWidth = budget.availableWidth;
+    const phoneLayout = window.matchMedia(PHONE_MEDIA_QUERY).matches;
     const planetColumns = [...container.querySelectorAll('.bg-stage .bg-planets')];
     const arrowRows = [...container.querySelectorAll('.bg-stage .bg-variable-row')];
     const tight = availableHeight < 620 || availableWidth < 420;
@@ -183,24 +184,11 @@ function armNatalFit() {
     container.style.setProperty('--bg-stage-height', `${frameHeight}px`);
   };
 
-  apply();
-  const hidden = () => document.getElementById('chart-view')?.classList.contains('hidden') || !container.getClientRects().length;
-  const guarded = () => { if (!hidden()) apply(); };
-  window.addEventListener('resize', guarded);
-  window.visualViewport?.addEventListener('resize', guarded);
-  const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(guarded) : null;
-  if (observer) {
-    observer.observe(container);
-    const chartLayout = container.closest('.chart-layout');
-    if (chartLayout) observer.observe(chartLayout);
-  }
-  natalFitObserver = {
-    disconnect: () => {
-      window.removeEventListener('resize', guarded);
-      window.visualViewport?.removeEventListener('resize', guarded);
-      observer?.disconnect();
-    }
-  };
+  natalFitObserver = observeGraphFit(container, apply, {
+    fitHeight: true,
+    shouldApply: () => !document.getElementById('chart-view')?.classList.contains('hidden'),
+    alsoObserve: [container.closest('.chart-layout')]
+  });
 }
 
 export function renderChartView(data, { preserveOtherDialog = false } = {}) {
