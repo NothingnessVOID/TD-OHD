@@ -34,7 +34,12 @@ function cleanPerson(p) {
     createdAt: typeof p.createdAt === 'string' ? p.createdAt : new Date().toISOString(), updatedAt: new Date().toISOString() };
 }
 
-export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessionDays = 30, referencePages = true } = {}) {
+// `requirePassword: false` is an explicit opt-out for a single-user machine that has
+// no need for the gate. The stored password is never touched, so restoring the
+// switch restores the previous login. Anything other than an explicit `false`
+// keeps the password behaviour, including a missing or malformed value.
+export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessionDays = 30, referencePages = true, requirePassword = true } = {}) {
+  const passwordRequired = requirePassword !== false;
   if (!dataDir) throw new Error('dataDir is required');
   assertPrivatePath(dataDir);
   mkdirSync(dataDir, { recursive: true, mode: 0o700 });
@@ -92,7 +97,9 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
       if (url.pathname.startsWith('/api/') && req.headers['sec-fetch-site'] === 'cross-site') throw fail(403, '不允许跨站请求。');
       const cookie = req.headers.cookie?.split(';').map(s => s.trim()).find(s => s.startsWith('ohd_session='))?.slice(12);
       const session = cookie ? db.prepare('SELECT * FROM sessions WHERE token_hash=? AND expires>?').get(digest(cookie), Date.now()) : null;
-      const auth = () => { if (!session) throw fail(401, '请先输入本机密码。'); };
+      // Host and Origin checks above still apply; this only lifts the password gate.
+      const unlocked = !passwordRequired || !!session;
+      const auth = () => { if (!unlocked) throw fail(401, '请先输入本机密码。'); };
       const body = async () => {
         if (!req.headers['content-type']?.startsWith('application/json')) throw fail(415, '请求格式需为 JSON。');
         let text = ''; let bytes = 0;
@@ -121,8 +128,8 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
       };
       if (url.pathname === '/api/local/health' && req.method === 'GET') return json(200, { app: 'open-human-design-local', ok: true });
       if (url.pathname === '/api/local/status' && req.method === 'GET') return json(200, {
-        configured: !!setting('password'), authenticated: !!session,
-        ...(session ? { instance: setting('instance'), dataPath: dbPath, count: people().length } : {})
+        configured: !!setting('password'), passwordRequired, authenticated: unlocked,
+        ...(unlocked ? { instance: setting('instance'), dataPath: dbPath, count: people().length } : {})
       });
       if (url.pathname === '/api/local/setup' && req.method === 'POST') {
         if (setting('password')) throw fail(409, '已设置密码，请直接登录。');
@@ -140,7 +147,8 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
         issueSession(input.remember !== false); return json(200, { ok: true });
       }
       if (url.pathname === '/api/local/logout' && req.method === 'POST') {
-        auth(); db.prepare('DELETE FROM sessions WHERE token_hash=?').run(digest(cookie));
+        // Locking is a no-op when no password is required; the cookie still clears.
+        if (cookie) db.prepare('DELETE FROM sessions WHERE token_hash=?').run(digest(cookie));
         res.setHeader('Set-Cookie', 'ohd_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'); return json(200, { ok: true });
       }
       if (url.pathname === '/api/local/password' && req.method === 'POST') {
@@ -182,12 +190,12 @@ export function createLocalServer({ dataDir, distDir = join(root, 'dist'), sessi
       }
       if (url.pathname.startsWith('/api/') || url.pathname === '/mcp') throw fail(404, '没有这个接口。');
       if (!['GET','HEAD'].includes(req.method)) throw fail(405, '请求方式不支持。');
-      if (referencePages && session && url.pathname === '/chart.svg') {
+      if (referencePages && unlocked && url.pathname === '/chart.svg') {
         const { handleChartSvg } = await import('../worker/og.js');
         const response = await handleChartSvg(new Request(url));
         res.writeHead(response.status, Object.fromEntries(response.headers)); return res.end(Buffer.from(await response.arrayBuffer()));
       }
-      if (referencePages && session && url.pathname !== '/' && !extname(url.pathname)) {
+      if (referencePages && unlocked && url.pathname !== '/' && !extname(url.pathname)) {
         const { handleSeoPage } = await import('../worker/seo.js'); const response = await handleSeoPage(new Request(url));
         if (response) { res.writeHead(response.status, Object.fromEntries(response.headers)); return res.end(await response.text()); }
       }

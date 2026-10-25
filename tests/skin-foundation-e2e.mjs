@@ -39,8 +39,8 @@ async function relationship(page) {
  await page.locator('.nav-link[data-view="connection"]').click();
  await page.locator('#conn-person').selectOption({label:'Foundation Fixture'});
  await page.locator('#conn-calculate').click();
- await page.locator('#connection-content .composite-graph .bodygraph-svg').waitFor({timeout:60000});
- return page.evaluate(()=>({text:document.querySelector('#connection-content').innerText,svg:document.querySelector('#connection-content .composite-graph svg').outerHTML,colors:[...document.querySelectorAll('#connection-content .conn-mechanic-marker')].map(n=>getComputedStyle(n).backgroundColor),legend:getComputedStyle(document.querySelector('#connection-content .lg-stripe')).backgroundImage}));
+ await page.locator('#connection-content #conn-composite .bodygraph-svg').waitFor({timeout:60000});
+ return page.evaluate(()=>({text:document.querySelector('#connection-content').innerText,svg:document.querySelector('#connection-content #conn-composite svg').outerHTML,colors:[...document.querySelectorAll('#connection-content .conn-mechanic-marker')].map(n=>getComputedStyle(n).backgroundColor),legend:getComputedStyle(document.querySelector('#connection-content .lg-stripe')).backgroundImage}));
 }
 try {
  for(const width of [1224,390])for(const mode of ['light','dark']) {
@@ -61,10 +61,10 @@ try {
    assert.deepEqual(colorsAfter,colorsBefore,'relationship state colors do not follow circuit/weak text changes');
    await current.page.addStyleTag({content:':root { --hd-connection-bridged: #123456 !important; --hd-connection-both: #123456 !important; --hd-connection-a: #123456 !important; --hd-connection-b: #123456 !important; }'});
    assert.ok((await current.page.locator('#connection-content .conn-mechanic-marker').evaluateAll(ns=>ns.map(n=>getComputedStyle(n).backgroundColor))).every(c=>c==='rgb(18, 52, 86)'));
-   const previousFill=await current.page.locator('.composite-graph .bg-gate-path').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
+   const previousFill=await current.page.locator('#conn-composite .bg-gate-path').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
    await current.page.addStyleTag({content:':root { --hd-connection-a: #1234ee !important; --hd-connection-b: #ee3412 !important; }'});
    await current.page.evaluate(async()=>(await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/views/connection.js')?.name || '/src/views/connection.js')).rerenderConnectionGraphs());
-   const nextFill=await current.page.locator('.composite-graph .bg-gate-path').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
+   const nextFill=await current.page.locator('#conn-composite .bg-gate-path').evaluateAll(ns=>ns.map(n=>n.getAttribute('fill')));
    assert.notDeepEqual(nextFill,previousFill,'Relationship repaint follows source tokens');
    assert.ok(nextFill.includes('#1234ee')&&nextFill.includes('#ee3412'));
    results.push({width,mode,relationshipEqual:true,relationshipDecoupled:true});
