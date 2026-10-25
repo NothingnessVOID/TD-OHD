@@ -45,15 +45,45 @@ export function slotContentWidth(shell) {
 }
 
 /**
+ * Width the canvas may take while the sticky column still fits the viewport.
+ * Mirrors the home chart's height budget: viewport minus the column's sticky
+ * top, minus everything in the card that is not the graph. Returns Infinity
+ * when the column is not sticky, so the width rules decide alone.
+ */
+function heightFitWidth({ root, shell, aspect, fitHeight, minCanvasWidth }) {
+  if (!fitHeight) return Infinity;
+  const column = root.closest('.chart-column');
+  if (!column || getComputedStyle(column).position !== 'sticky') return Infinity;
+  const viewport = window.visualViewport?.height ?? document.documentElement.clientHeight;
+  const stickyTop = parseFloat(getComputedStyle(column).top) || 0;
+  // The card's own chrome — heading, legend, padding — is fixed, so subtracting
+  // the shell from the card leaves a constant that does not depend on the width
+  // we are about to pick.
+  const card = shell.closest('.composite-wrap');
+  const chrome = card ? Math.max(0, card.offsetHeight - shell.offsetHeight) : 0;
+  const budget = viewport - stickyTop - chrome;
+  if (!(budget > 0)) return Infinity;
+  return Math.max(minCanvasWidth, budget * aspect);
+}
+
+/**
  * Fit one shell by the home chart's rule: the canvas fills the container up to
  * its reference width and keeps its aspect ratio, while the side bands overlay
  * it from the outside edges. The bands never take width away from the graph,
  * and they never stack underneath it — on a phone they simply get narrower.
+ *
+ * With `fitHeight`, the canvas is also capped by the height the sticky column
+ * has left. That is the rest of the home chart's rule: the natal graph is sized
+ * to `viewport - sticky top - insets`, which is why its column needs no
+ * scrollbar of its own. Without it a tall graph pins at the top and loses its
+ * bottom edge off-screen.
  */
 export function fitGraphShell(root, {
   aspect,
   idealWidth = 510,
   minSlotWidth = 76,
+  fitHeight = false,
+  minCanvasWidth = 220,
 } = {}) {
   if (!root || !aspect) return null;
   const shell = root.matches('.ohd-graph-shell') ? root : root.querySelector('.ohd-graph-shell');
@@ -69,7 +99,8 @@ export function fitGraphShell(root, {
   // The home chart's rule: the canvas fills the container up to the reference
   // width, and the side bands overlay it from the outside edges. They are not
   // laid out beside the canvas, so they never take width away from the graph.
-  const canvasWidth = Math.min(available, idealWidth);
+  const canvasWidth = Math.min(available, idealWidth,
+    heightFitWidth({ root, shell, aspect, fitHeight, minCanvasWidth }));
   // A band may grow to its own content, but the pair is capped at the
   // container width so the two sides can never meet over the graph centre.
   const cap = Math.max(Math.floor(available / 2), minSlotWidth);
@@ -87,14 +118,34 @@ export function fitGraphShell(root, {
   return { slot, canvasWidth, canvasHeight, stageWidth: available, stageHeight, slotContent };
 }
 
-/** Fit on mount and whenever the shell or its container changes size. */
+/**
+ * Fit on mount, whenever the shell or its container changes size, and — when the
+ * fit depends on the viewport height — whenever the viewport itself changes.
+ * The home chart arms the same three listeners for the same reason: a column
+ * that fits the screen has to notice the screen changing.
+ */
 export function observeGraphShell(root, options) {
   const apply = () => { if (root?.isConnected && root.getClientRects().length) fitGraphShell(root, options); };
   apply();
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(apply) : null;
   observer?.observe(root);
   if (root?.parentElement) observer.observe(root.parentElement);
+  const onViewport = () => apply();
+  if (options?.fitHeight) {
+    window.addEventListener('resize', onViewport);
+    window.visualViewport?.addEventListener('resize', onViewport);
+  }
   // Slot content renders after the first fit; re-fit once it has settled.
   const settle = typeof requestAnimationFrame === 'function' ? requestAnimationFrame(apply) : null;
-  return { apply, disconnect: () => { observer?.disconnect(); if (settle) cancelAnimationFrame(settle); } };
+  return {
+    apply,
+    disconnect: () => {
+      observer?.disconnect();
+      if (options?.fitHeight) {
+        window.removeEventListener('resize', onViewport);
+        window.visualViewport?.removeEventListener('resize', onViewport);
+      }
+      if (settle) cancelAnimationFrame(settle);
+    }
+  };
 }

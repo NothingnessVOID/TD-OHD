@@ -161,8 +161,11 @@ try {
     assert.equal(layout.chart.top, layout.info.top, `${width}px: both columns start on the same line`);
     assert.equal(layout.chartPosition, 'sticky', `${width}px: the graph column follows the page`);
     assert.equal(layout.chartOverflow, 'visible', `${width}px: the graph column has no scrollbar of its own`);
-    // The graph keeps the home reference size; the split must not shrink it.
-    assert.equal(layout.canvas.width, 510, `${width}px: the composite keeps its reference width`);
+    // The split must not shrink the graph below the home reference size; the
+    // height of the viewport may. The sticky section below checks that a tall
+    // viewport still reaches the full 510.
+    assert.ok(layout.canvas.width <= 511, `${width}px: the composite never exceeds its reference width`);
+    assert.ok(layout.canvas.width >= 220, `${width}px: the composite keeps a usable width`);
   }
 
   for (const width of narrow) {
@@ -204,6 +207,93 @@ try {
   assert.ok(analysis.formula && analysis.createdCount, 'the composite summary cards are still there');
   assert.ok(analysis.individuals, 'the per-person charts are still there');
   assert.equal(analysis.shells, 1, 'exactly one shared graph shell');
+
+  // ---- Sticky graph column: pinned, and small enough to stay whole ----
+  // The home chart fits its graph to the viewport height, which is why its
+  // column needs no scrollbar. The composite must do the same, or a pinned
+  // graph taller than the screen loses its bottom edge while the analysis
+  // scrolls past.
+  const stickyRows = [];
+  for (const [width, height] of [[1440, 800], [1440, 900], [1440, 1080], [1280, 900], [1200, 800]]) {
+    await page.setViewportSize({ width, height });
+    await page.waitForTimeout(700);
+    const layoutTop = await page.evaluate(() => {
+      const layout = document.querySelector('#connection-content .chart-layout');
+      return Math.round(layout.getBoundingClientRect().top + scrollY);
+    });
+    // Scroll well into the analysis, where the graph must still be pinned.
+    await page.evaluate(top => window.scrollTo({ top: top + 700, behavior: 'instant' }), layoutTop);
+    await page.waitForTimeout(350);
+    stickyRows.push(await page.evaluate(([w, h]) => {
+      const column = document.querySelector('#connection-content .chart-column');
+      const card = document.querySelector('#connection-content .composite-wrap');
+      const canvas = document.querySelector('#conn-shell .ohd-graph-canvas');
+      const style = getComputedStyle(column);
+      const c = column.getBoundingClientRect();
+      const k = card.getBoundingClientRect();
+      return {
+        width: w, height: h,
+        position: style.position,
+        stickyTop: Math.round(parseFloat(style.top) || 0),
+        columnTop: Math.round(c.top),
+        cardTop: Math.round(k.top),
+        cardBottom: Math.round(k.bottom),
+        cardHeight: Math.round(k.height),
+        canvasWidth: Math.round(canvas.getBoundingClientRect().width),
+        cells: document.querySelectorAll('#conn-shell .tl-birth-value').length,
+        cellsA: document.querySelectorAll('#conn-activations-a .tl-birth-value').length,
+        cellsB: document.querySelectorAll('#conn-activations-b .tl-birth-value').length,
+      };
+    }, [width, height]));
+  }
+
+  for (const row of stickyRows) {
+    const tag = `${row.width}x${row.height}`;
+    assert.equal(row.position, 'sticky', `${tag}: the graph column is sticky`);
+    assert.equal(row.columnTop, row.stickyTop,
+      `${tag}: the graph column is pinned at its sticky top (${row.columnTop} vs ${row.stickyTop})`);
+    assert.ok(row.cardBottom <= row.height + 1,
+      `${tag}: the pinned graph stays inside the viewport (bottom ${row.cardBottom} of ${row.height})`);
+    assert.ok(row.cardTop >= row.stickyTop - 1, `${tag}: the pinned graph starts at the top offset`);
+    // Fitting the height must not come at the cost of the activations.
+    assert.equal(row.cells, 52, `${tag}: 52 activations while pinned`);
+    assert.equal(row.cellsA, 26, `${tag}: person A keeps 26 activations`);
+    assert.equal(row.cellsB, 26, `${tag}: person B keeps 26 activations`);
+  }
+  // A shorter viewport gets a smaller graph, not a cropped one.
+  const tall = stickyRows.find(row => row.width === 1440 && row.height === 1080);
+  const short = stickyRows.find(row => row.width === 1440 && row.height === 800);
+  assert.ok(short.canvasWidth < tall.canvasWidth,
+    `the graph shrinks with the viewport height (${short.canvasWidth} at 800 vs ${tall.canvasWidth} at 1080)`);
+  assert.equal(tall.canvasWidth, 510, 'a tall viewport still shows the graph at its reference width');
+  assert.ok(short.cardHeight <= short.height - short.stickyTop + 1,
+    'the short-viewport card fits above the fold');
+
+  // Below the split the column must not stick at all: there is no column beside
+  // it to hold the graph against, and a sticky grid item would ride over the
+  // analysis.
+  await page.setViewportSize({ width: 1024, height: 800 });
+  await page.waitForTimeout(600);
+  const stackedTop = await page.evaluate(() => Math.round(
+    document.querySelector('#connection-content .chart-layout').getBoundingClientRect().top + scrollY));
+  await page.evaluate(top => window.scrollTo({ top: top + 700, behavior: 'instant' }), stackedTop);
+  await page.waitForTimeout(300);
+  const stacked = await page.evaluate(() => {
+    const column = document.querySelector('#connection-content .chart-column');
+    const info = document.querySelector('#connection-content .info-column');
+    const canvas = document.querySelector('#conn-shell .ohd-graph-canvas');
+    return {
+      position: getComputedStyle(column).position,
+      chartBottom: Math.round(column.getBoundingClientRect().bottom),
+      infoTop: Math.round(info.getBoundingClientRect().top),
+      canvasWidth: Math.round(canvas.getBoundingClientRect().width),
+    };
+  });
+  assert.equal(stacked.position, 'static', '1024: a stacked layout does not stick');
+  assert.ok(stacked.chartBottom <= stacked.infoTop,
+    `1024: the graph never rides over the analysis (${stacked.chartBottom} vs ${stacked.infoTop})`);
+  // No height fitting when nothing is pinned: the width rule alone decides.
+  assert.equal(stacked.canvasWidth, 510, '1024: the stacked graph keeps its reference width');
 
   assert.deepEqual(errors, [], 'no page errors');
 
