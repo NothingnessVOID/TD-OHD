@@ -447,7 +447,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   function rowSymbol(row, split = false) {
-    if (row.kind === 'bridge' && split) return '<svg class="tl-split-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="6.5" r="2.2"/><circle cx="5" cy="17.5" r="2.2"/><path d="M7.4 6.5h2.4M7.4 17.5h2.4"/><path d="M12.8 4.4 15.2 12l-2.4 7.6" stroke-dasharray="2.6 2.2"/><circle cx="19" cy="12" r="2.4"/></svg>';
+    // Split reads one island becoming several, so the single filled node sits
+    // on the left and the detached pair on the right. DOM order keeps the
+    // filled node last: `.tl-split-symbol circle:last-child` fills it.
+    if (row.kind === 'bridge' && split) return '<svg class="tl-split-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="19" cy="6.5" r="2.2"/><circle cx="19" cy="17.5" r="2.2"/><path d="M16.6 6.5h-2.4M16.6 17.5h-2.4"/><path d="M11.2 4.4 8.8 12l2.4 7.6" stroke-dasharray="2.6 2.2"/><circle cx="5" cy="12" r="2.4"/></svg>';
     if (row.kind === 'bridge') return '<svg class="tl-bridge-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="4.5" cy="6.5" r="2"/><circle cx="4.5" cy="17.5" r="2"/><path d="M7 6.5h3c3.5 0 4 5.5 7 5.5M7 17.5h3c3.5 0 4-5.5 7-5.5"/><circle cx="19" cy="12" r="3"/></svg>';
     if (row.kind === 'line') return `<span class="tl-line-symbol">.${row.line}</span>`;
     if (row.kind === 'gate') return `<span class="tl-gate-symbol">${row.id}</span>`;

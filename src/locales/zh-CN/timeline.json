@@ -37,7 +37,7 @@
   "gateLine": "闸门爻线",
   "bridge": "本命定义岛桥接",
   "bridgeCount": "{from} → {to}",
-  "split": "行运新增独立定义岛（分裂）",
+  "split": "分裂",
   "splitCount": "{from} → {to} 个定义岛",
   "conditionKind": "对象类型",
   "conditionTargets": "选择目标",
