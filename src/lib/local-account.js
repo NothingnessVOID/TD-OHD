@@ -1,5 +1,6 @@
 import { syncPopoverHeading } from './sync-popover-ui.js';
-import { localApi, initializeLocal, lockLocal, flushLocal, getLocalSaveNotice } from './local-store.js';
+import { localApi, initializeLocal, lockLocal, flushLocal, getLocalSaveNotice, localAccount } from './local-store.js';
+import { shouldShowLocalGate, passwordControlsVisible } from './local-gate.js';
 import { LOCALES, getLocale, setLocale, onLocaleChange, registerMessages, translatePage, setMessage } from './i18n.js';
 import localMessages from '../locales/zh-CN/ui-local.json' with { type: 'json' };
 import traditionalLocalMessages from '../locales/zh-Hant/ui-local.json' with { type: 'json' };
@@ -41,7 +42,6 @@ export async function unlockLocal() {
   language.addEventListener('change', () => setLocale(language.value));
   translatePage(gate);
   const app = document.getElementById('app');
-  app.hidden = true; gate.hidden = false;
   const title = document.getElementById('local-auth-title');
   const intro = document.getElementById('local-auth-intro');
   const status = document.getElementById('local-auth-status');
@@ -50,6 +50,7 @@ export async function unlockLocal() {
   let info;
   try { info = await localApi('status'); }
   catch {
+    app.hidden = true; gate.hidden = false;
     setMessage(title, 'Local service is not connected');
     setMessage(intro, 'Reopen this page from the Human Design app, or refresh to try again.');
     form.hidden = true;
@@ -61,6 +62,18 @@ export async function unlockLocal() {
     gate.hidden = true; app.hidden = false;
     return true;
   };
+  // A Mac install may run without a password; then the gate never appears.
+  if (!shouldShowLocalGate(info)) {
+    try { return await start(); }
+    catch (e) {
+      app.hidden = true; gate.hidden = false;
+      setMessage(title, 'Local service is not connected');
+      setMessage(intro, e.source || 'Local service connection failed.');
+      form.hidden = true;
+      return false;
+    }
+  }
+  app.hidden = true; gate.hidden = false;
   if (info.authenticated) {
     try { return await start(); } catch (e) { setMessage(status, e.source || 'Local service connection failed.'); }
   }
@@ -96,25 +109,36 @@ export async function unlockLocal() {
 }
 
 export function setupLocalAccount() {
+  // The service reports whether it enforces a password; the popover mirrors that.
+  const passwordRequired = passwordControlsVisible(localAccount);
   setMessage(document.querySelector('.entry-subtitle'), 'Your personal library, stored on this Mac');
-  setMessage(document.querySelector('.entry-explain'), 'Enter birth details and your chart will be saved automatically. Sign in with the same local password in another browser to view it there.');
+  setMessage(document.querySelector('.entry-explain'), passwordRequired
+    ? 'Enter birth details and your chart will be saved automatically. Sign in with the same local password in another browser to view it there.'
+    : 'Enter birth details and your chart will be saved automatically. Any browser on this Mac opens the same library.');
   setMessage(document.querySelector('label[for="birth-name"] .label-soft'), '(optional; data is saved automatically)');
-  setMessage(document.querySelector('.footer > span:last-child'), 'Local password protection · Automatic saving · Shared across browsers on this computer');
+  setMessage(document.querySelector('.footer > span:last-child'), passwordRequired
+    ? 'Local password protection · Automatic saving · Shared across browsers on this computer'
+    : 'Saved on this Mac · Automatic saving · Shared across browsers on this computer');
   const button = document.getElementById('sync-button');
   const popover = document.getElementById('sync-popover');
   button.classList.remove('hidden'); setMessage(button, 'Local data');
+  const intro = passwordRequired
+    ? 'Generated charts are saved automatically. Enter the same password in another browser to see them there.'
+    : 'Generated charts are saved automatically. Any browser on this Mac opens the same library.';
+  const passwordSettings = passwordRequired ? '<details class="local-password-settings"><summary data-i18n="Change password">Change password</summary><form id="local-change-password">'
+    + '<label><span data-i18n="Current password">Current password</span><input id="local-current" type="password" autocomplete="current-password" required minlength="8" maxlength="128"></label>'
+    + '<label><span data-i18n="New password">New password</span><input id="local-next" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>'
+    + '<label><span data-i18n="Confirm new password">Confirm new password</span><input id="local-next-confirm" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>'
+    + '<button class="btn-primary btn-small" type="submit" data-i18n="Save new password">Save new password</button></form></details>' : '';
+  const lockMarkup = passwordRequired ? '<button id="local-lock" class="link-button" data-i18n="Lock and sign out of this browser">Lock and sign out of this browser</button>' : '';
   popover.innerHTML = `${syncPopoverHeading('Your local library')}
-    <p class="panel-intro" data-i18n="Generated charts are saved automatically. Enter the same password in another browser to see them there.">Generated charts are saved automatically. Enter the same password in another browser to see them there.</p>
+    <p class="panel-intro" data-i18n="${intro}">${intro}</p>
     <p class="local-storage-status" id="local-save-detail" role="status" aria-live="polite"></p>
     <div class="local-account-actions"><button id="local-retry" class="btn-secondary btn-small" data-i18n="Sync now">Sync now</button>
     <a class="btn-secondary btn-small" href="/api/local/backup" download data-i18n="Export backup">Export backup</a></div>
-    <details class="local-password-settings"><summary data-i18n="Change password">Change password</summary><form id="local-change-password">
-      <label><span data-i18n="Current password">Current password</span><input id="local-current" type="password" autocomplete="current-password" required minlength="8" maxlength="128"></label>
-      <label><span data-i18n="New password">New password</span><input id="local-next" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
-      <label><span data-i18n="Confirm new password">Confirm new password</span><input id="local-next-confirm" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
-      <button class="btn-primary btn-small" type="submit" data-i18n="Save new password">Save new password</button></form></details>
+    ${passwordSettings}
     <p id="local-account-message" role="status"></p>
-    <button id="local-lock" class="link-button" data-i18n="Lock and sign out of this browser">Lock and sign out of this browser</button>`;
+    ${lockMarkup}`;
   const status = document.getElementById('local-save-detail');
   const updateSaveStatus = ({ state, source, params }) => {
     setMessage(status, source, params); status.dataset.state = state;
@@ -136,8 +160,10 @@ export function setupLocalAccount() {
   document.addEventListener('click', event => { if (!popover.contains(event.target) && event.target !== button) popover.classList.add('hidden'); });
   const message = document.getElementById('local-account-message');
   document.getElementById('local-retry').onclick = () => flushLocal().catch(e => { setMessage(message, e.source || 'Local service connection failed.'); });
-  document.getElementById('local-lock').onclick = () => lockLocal().catch(e => { setMessage(message, e.source || 'Local service connection failed.'); });
-  document.getElementById('local-change-password').onsubmit = async event => {
+  const lockButton = document.getElementById('local-lock');
+  if (lockButton) lockButton.onclick = () => lockLocal().catch(e => { setMessage(message, e.source || 'Local service connection failed.'); });
+  const changePasswordForm = document.getElementById('local-change-password');
+  if (changePasswordForm) changePasswordForm.onsubmit = async event => {
     event.preventDefault();
     const password = document.getElementById('local-next').value;
     if (password !== document.getElementById('local-next-confirm').value) { setMessage(message, 'New passwords do not match.'); return; }
