@@ -12,6 +12,19 @@
    default light/dark skins.
    ============================================================ */
 
+/* ---- semantic data colours (tier B) ----
+   Locked across skins: personality = official ink, design = official red.
+   Skins may only shift lightness for contrast, never hue. Copper stays in
+   the chrome layer and never enters data encoding. */
+:root {
+  --act-personality: #2B2B2B;
+  --act-design: #D04948;
+}
+[data-theme="dark"] {
+  --act-personality: #E8E4DE;
+  --act-design: #E0706E;
+}
+
 /* ---- banner: the ritual ---- */
 #chart-view .type-banner {
   position: relative;
@@ -251,6 +264,44 @@
 .pc-legend-item[data-circuit="collective"] i { background: var(--hd-circuit-collective); }
 .pc-legend-item[data-circuit="tribal"] i { background: var(--hd-circuit-tribal); }
 
+/* Circuit pills — coloured dot + count + name; dominant gets an ink ring. */
+.pc-circuit-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+.pc-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.pc-pill i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+.pc-pill[data-circuit="individual"] i { background: var(--hd-circuit-individual); }
+.pc-pill[data-circuit="collective"] i { background: var(--hd-circuit-collective); }
+.pc-pill[data-circuit="tribal"] i { background: var(--hd-circuit-tribal); }
+.pc-pill[data-dominant="true"] i {
+  border: 2px solid var(--text);
+  box-shadow: 0 0 0 1.5px var(--bg);
+}
+.pc-pill b {
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pc-pill em {
+  font-style: normal;
+  color: var(--text-tertiary);
+}
+
 /* Cross */
 .pc-cross-grid { margin: 2px 0 10px; }
 .pc-card--cross .pc-card-value {
@@ -261,7 +312,9 @@
 .pc-card--cross .pc-card-value:hover { color: var(--accent); }
 .pc-card--cross .pc-card-value:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-/* Variable — four arrows, Personality ink / Design red per the skin tokens */
+/* Variable — one row of four B-style chunky arrows.
+   Data colours are locked across skins (semantic layer B):
+   personality = ink, design = official red. */
 .pc-card--variable { cursor: default; }
 .pc-card--variable:hover { border-color: var(--border-subtle); box-shadow: none; }
 .pc-var-head {
@@ -280,31 +333,16 @@
 }
 .pc-var-arrows {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 12px;
-}
-.pc-var-group { min-width: 0; }
-.pc-var-group-head {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-  color: var(--hd-personality);
-}
-.pc-var-group[data-source="design"] .pc-var-group-head { color: var(--hd-design); }
-.pc-var-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  margin-top: 12px;
 }
 .pc-var-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 9px 4px 8px;
+  gap: 6px;
+  padding: 10px 4px 9px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
@@ -314,12 +352,36 @@
 }
 .pc-var-slot:hover { border-color: var(--control-border); }
 .pc-var-slot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
-.pc-var-arrow {
-  font-size: 24px;
-  line-height: 1;
-  color: var(--hd-personality);
+/* B-style short chunky arrow, drawn in CSS so it stays crisp at small size. */
+.pc-var-arrow-b {
+  width: 30px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--act-personality, var(--hd-personality));
+  position: relative;
 }
-.pc-var-slot[data-source="design"] .pc-var-arrow { color: var(--hd-design); }
+.pc-var-arrow-b::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 17px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.pc-var-arrow-b::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-left: 13px solid currentColor;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+.pc-var-slot[data-source="design"] .pc-var-arrow-b { color: var(--act-design, var(--hd-design)); }
+.pc-var-slot[data-dir="left"] .pc-var-arrow-b { transform: scaleX(-1); }
+.pc-var-slot[data-dir="none"] .pc-var-arrow-b { opacity: 0.25; }
 .pc-var-name {
   font-size: 10.5px;
   color: var(--text-secondary);

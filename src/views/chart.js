@@ -373,25 +373,14 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
   const crossGates = cross?.gates || [];
   const arms = variableArrows(chart.variable);
 
-  // Circuit donut: one conic ring in the three circuit colours, hole masked in
-  // CSS, dominant count in the middle. Pure CSS variables, so skins still work.
+  // Circuit pills (official colour coding): one dot per circuit, count and
+  // name beside it; the dominant circuit(s) get an ink ring. Tied dominants
+  // all keep the ring, so nothing has to be arbitrarily picked.
   const order = ['individual', 'collective', 'tribal'];
-  const total = groups.reduce((sum, group) => sum + group.count, 0);
-  let acc = 0;
-  const stops = [];
-  for (const key of order) {
+  const circuitPills = order.map(key => {
     const count = groups.find(group => group.key === key)?.count || 0;
-    if (!count) continue;
-    const from = (acc / total) * 100;
-    acc += count;
-    stops.push(`var(--hd-circuit-${key}) ${from}% ${(acc / total) * 100}%`);
-  }
-  const donut = total
-    ? `<div class="pc-donut" style="background:conic-gradient(${stops.join(',')})"><span class="pc-donut-center"><b>${dominants.length ? dominants[0].count : 0}</b><i>${esc(dominants.length ? circuitName(dominants[0].key) : t('None'))}</i></span></div>`
-    : `<div class="pc-donut pc-donut--empty"><span class="pc-donut-center"><b>0</b><i>${esc(t('None'))}</i></span></div>`;
-  const legend = order.map(key => {
-    const count = groups.find(group => group.key === key)?.count || 0;
-    return `<span class="pc-legend-item" data-circuit="${key}"><i aria-hidden="true"></i>${esc(circuitName(key))} · ${count}</span>`;
+    const dom = dominants.some(group => group.key === key);
+    return `<span class="pc-pill" data-circuit="${key}"${dom ? ' data-dominant="true"' : ''}><i aria-hidden="true"></i><b>${count}</b><em>${esc(circuitName(key))}</em></span>`;
   }).join('');
 
   const crossGrid = `
@@ -404,16 +393,12 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
       <span class="pg-cross-rail-label pg-cross-earth">${esc(planetName('earth'))}</span>
     </div>`;
 
-  const variableGroups = VARIABLE_GROUPS.map(group => `
-    <div class="pc-var-group" data-source="${group.source}">
-      <div class="pc-var-group-head">${esc(t(group.label))}</div>
-      <div class="pc-var-pair">${group.keys.map(key => {
-        const item = arms.find(arm => arm.key === key);
-        const label = t(VARIABLE_LABEL[key]);
-        const arrow = item?.direction === 'left' ? '←' : item?.direction === 'right' ? '→' : '—';
-        return `<span class="pc-var-slot" data-knowledge-variable="${key}" data-source="${group.source}" title="${esc(label)}"><span class="pc-var-arrow" aria-hidden="true">${arrow}</span><span class="pc-var-name">${esc(label)}</span></span>`;
-      }).join('')}</div>
-    </div>`).join('');
+  const variableRow = VARIABLE_ROW.map(({ source, key }) => {
+    const item = arms.find(arm => arm.key === key);
+    const label = t(VARIABLE_LABEL[key]);
+    const dir = item?.direction === 'left' ? 'left' : item?.direction === 'right' ? 'right' : 'none';
+    return `<span class="pc-var-slot" data-knowledge-variable="${key}" data-source="${source}" data-dir="${dir}" title="${esc(label)}"><span class="pc-var-arrow-b" aria-hidden="true"></span><span class="pc-var-name">${esc(label)}</span></span>`;
+  }).join('');
 
   return `
     ${reliabilityHtml}
@@ -446,10 +431,9 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
         <div class="pc-card pc-card--circuit">
           <div class="pc-card-label">${esc(t('Dominant Circuit'))}</div>
           <div class="pc-circuit-main">
-            ${donut}
+            <div class="pc-circuit-pills">${circuitPills}</div>
             <div class="pc-circuit-copy">
               <div class="pc-card-value" title="${esc(dominantText)}">${esc(dominantText)}</div>
-              <div class="pc-legend">${legend}</div>
             </div>
           </div>
         </div>
@@ -466,7 +450,7 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
           <span class="pc-card-label">${esc(t('Variable'))}</span>
           ${chart.variable?.notation ? `<span class="pc-var-notation" title="${esc(t('Standard notation:'))}">${esc(chart.variable.notation)}</span>` : ''}
         </div>
-        <div class="pc-var-arrows">${variableGroups}</div>
+        <div class="pc-var-arrows">${variableRow}</div>
       </div>
     </div>
   `;
@@ -553,6 +537,13 @@ const VARIABLE_LABEL = {
 const VARIABLE_GROUPS = [
   { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
   { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
+];
+// Sheet column v2: one row of four chunky B-style arrows, personality pair first.
+const VARIABLE_ROW = [
+  { source: 'personality', key: 'motivation' },
+  { source: 'personality', key: 'perspective' },
+  { source: 'design', key: 'determination' },
+  { source: 'design', key: 'environment' }
 ];
 
 function renderFoundationFacts(chart, summaries = {}) {
