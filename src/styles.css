@@ -2405,13 +2405,65 @@ body.modal-open { overflow: hidden; }
 }
 
 /* ---- Combined (composite) connection chart ---- */
+/* The connection page uses the home page's two-column shell: the composite
+   graph keeps the left column and the analysis keeps the right one. The width
+   cap, gutter, column split and phone collapse all come from the home page's
+   `--page-*` tokens, so the two work pages sit on one vertical ruler instead of
+   the connection page growing a second layout of its own. */
+#connection-view.view-section {
+  max-width: var(--page-max-width);
+  padding-inline: var(--page-gutter);
+}
+#connection-view .view-container { max-width: none; }
+/* Only the graph and the analysis need the wide frame. The heading and the
+   entry form keep their reading width instead of stretching across it. */
+#connection-view .view-title,
+#connection-view .view-subtitle,
+#connection-view #connection-form {
+  max-width: 720px;
+}
+#connection-view .chart-layout {
+  max-width: none;
+  padding: 0;
+  /* One column until the graph column is wide enough to hold the composite and
+     both activation modules without crowding them into the graph. The outer
+     stack is the same one the phone uses: graph first, analysis after. */
+  grid-template-columns: 1fr;
+}
+/* The split starts where the graph column can hold the composite at its full
+   reference size, so the two-column desktop view never shows a smaller graph
+   than the single-column one. Below that the page keeps the phone's outer
+   stack; the graph itself still carries both activation modules beside it. */
+@media (min-width: 1200px) {
+  #connection-view .chart-layout {
+    /* An even split: the composite plus its two activation modules needs as
+       much room as the analysis, unlike the natal chart's 42/58. Same frame,
+       gutter and sticky rule; one ratio changed. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--page-gap);
+  }
+}
+/* Same column behaviour as the home chart: it sticks beside the analysis and
+   scrolls with the page, never inside its own scrollbar. */
+#connection-view .chart-column {
+  min-width: 0;
+  max-height: none;
+  overflow: visible;
+}
+/* Once the layout stacks there is no column beside the graph to stick against,
+   so it flows like the phone's chart column instead of floating over the
+   analysis. */
+@media (max-width: 1199px) {
+  #connection-view .chart-column { position: static; }
+}
+#connection-view .info-column { min-width: 0; }
+
 .composite-wrap {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  margin-bottom: 18px;
 }
 .composite-graph {
   max-width: 460px;
@@ -2436,39 +2488,38 @@ body.modal-open { overflow: hidden; }
   box-shadow: none;
 }
 .conn-person-head {
-  display: flex; flex-direction: column; gap: 1px; margin: 0 0 6px;
+  display: flex; flex-direction: column; gap: 1px; margin: 0 0 3px;
   min-width: 0; text-align: center;
 }
-.conn-person-name { font-weight: 600; font-size: 12.5px; line-height: 1.3; overflow-wrap: anywhere; }
-.conn-person-type { font-size: 11px; color: var(--text-secondary); line-height: 1.3; overflow-wrap: anywhere; }
+.conn-person-name { font-weight: 600; font-size: 11px; line-height: 1.3; overflow-wrap: anywhere; }
+.conn-person-type { font-size: 9.5px; color: var(--text-secondary); line-height: 1.3; overflow-wrap: anywhere; }
 .conn-person-activations { min-width: 0; }
 /* Two activation columns plus the glyph: the slot needs room for the whole
-   centre-symmetric module, not one list. The shell reads this to size the band. */
-/* Two activation columns plus the glyph: the slot needs room for the whole
-   centre-symmetric module, not one list. The shell reads this to size the band. */
-.conn-person-side { --ohd-slot-content-width: 172px; }
-.conn-person-activations .tl-birth-head { height: 20px; }
-.conn-person-activations .tl-birth-row { height: 19px; }
-.conn-person-activations .tl-birth-glyph { opacity: .7; }
+   centre-symmetric module, not one list. The shell reads this to size the band,
+   so the module declares what it needs here instead of the shell guessing. */
+.conn-person-side { --ohd-slot-content-width: 132px; }
+#conn-shell { container-type: inline-size; }
+.conn-person-activations .tl-birth-head { height: 16px; }
+.conn-person-activations .tl-birth-row { height: 15px; }
+.conn-person-activations .tl-birth-glyph { opacity: .7; font-size: 11px; }
+.conn-person-activations .bg-planet-row { font-size: 10px; }
 .conn-person-activations .tl-birth-value { cursor: default; }
 
+/* A phone-width column gets the narrower module so the two bands still leave
+   the graph's centre reachable. The band follows the column it sits in, not the
+   viewport, because the graph column is its own container. */
+@container (max-width: 460px) {
+  .conn-person-side { --ohd-slot-content-width: 112px; }
+}
+
 @media (--phone) {
-  /* At phone widths the card inset and the shell inset would both eat into the
-     canvas. The home chart draws its canvas to the container edge; the
-     composite follows that rule so the slots sit on the graph's own side
-     whitespace instead of over gates. */
+  /* At phone widths the card inset would eat into the canvas the slots need.
+     The home chart draws its canvas to the container edge; the composite
+     follows that rule so the slots sit on the graph's own side whitespace
+     instead of over gates. The outer layout is already a single column, and the
+     slots still flank the graph — they never drop underneath it. */
   .composite-wrap { padding: 24px 8px; }
   .conn-shell { margin-top: 10px; }
-  /* The slot still carries two activation columns plus the glyph, so it states
-     a narrower module width here rather than letting the two bands collide. */
-  .conn-person-side { --ohd-slot-content-width: 132px; }
-  .conn-person-head { margin-bottom: 3px; }
-  .conn-person-name { font-size: 11px; }
-  .conn-person-type { font-size: 9.5px; }
-  .conn-person-activations .tl-birth-head { height: 16px; }
-  .conn-person-activations .tl-birth-row { height: 15px; }
-  .conn-person-activations .bg-planet-row { font-size: 10px; }
-  .conn-person-activations .tl-birth-glyph { font-size: 11px; }
 }
 .composite-legend {
   display: flex;
