@@ -10,15 +10,18 @@ import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import { compareHumanDesign } from '../lib/human-design/connection.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
 import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
-import { renderBodygraph } from '../bodygraph.js';
+import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
+import { birthActivationsMarkup, renderBirthActivations } from '../features/transit-timeline/birth-activations.js';
+import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
+import { translator } from '../features/transit-timeline/messages.js';
 import { computeChart } from '../lib/chartdata.js';
 import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
 import { reportSaveFailure } from '../lib/local-store.js';
 import { createPlaceSearch } from '../lib/placesearch.js';
 import { esc } from '../lib/format.js';
-import { typeName, authorityName, centerName, graphCenter, gateName, channelName, profileName } from '../lib/vocabulary.js';
+import { typeName, authorityName, centerName, graphCenter, gateName, channelName, profileName, planetName } from '../lib/vocabulary.js';
 import { contentText } from '../lib/content.js';
-import { t } from '../lib/i18n.js';
+import { t, getLocaleResources } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
 
 
@@ -27,9 +30,17 @@ let lastComparison = null;
 let comparisonRequest = 0;
 let comparisonPeople = null;
 let currentBirthPending = null;
+let connShellFit = null;
+// The composite SVG uses the same bodygraph aspect the home chart samples.
+const COMPOSITE_ASPECT = 883.41 / 1341.4;
 export function invalidateConnection() {
   ++comparisonRequest;
   lastComparison = null;
+  // The shell fit owns a ResizeObserver and window/viewport listeners. Clearing
+  // the DOM without releasing them leaves them watching a detached node, and the
+  // next comparison would add a second set on top. Release before the nodes go.
+  connShellFit?.disconnect();
+  connShellFit = null;
   document.getElementById('connection-content')?.replaceChildren();
   closeDetailDialog();
 }
@@ -255,67 +266,94 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
   };
 
   const cpal = compositePalette();
+  // The same center-symmetric Design | glyph | Personality column the timeline
+  // uses, one per person, flanking the composite bodygraph (Issue #39). Each
+  // side reads only its own chart, so the two people never share activations.
+  const timelineMessages = getLocaleResources().timeline;
+  const translate = translator(timelineMessages?.messages);
+  const activationLabels = { design: t('Design'), personality: t('Personality') };
+  const activationPlanets = PLANET_ORDER.map(id => ({ id, name: planetName(id), glyph: PLANET_GLYPHS[id] }));
+  // One person per slot of the shared graph shell. The shell owns placement, so
+  // the two people sit beside the composite at every width, exactly as the home
+  // chart places its Design and Personality columns.
+  const personSide = (id, name, chart) => `
+        <section class="conn-person-side" data-person="${id}" aria-label="${esc(name)}">
+          <div class="conn-person-head"><span class="conn-person-name">${esc(name)}</span><span class="conn-person-type">${esc(typeName(chart.type?.name))} · ${esc(contentText(chart.definition?.name || chart.definition || ''))}</span></div>
+          <div class="conn-person-activations" id="conn-activations-${id}">${birthActivationsMarkup({ labels: activationLabels, locale: timelineMessages?.locale || 'en-GB' })}</div>
+        </section>`;
 
   container.innerHTML = `
-    <div class="composite-wrap">
-      <div class="panel-title">${t('Your charts combined')}</div>
-      <p class="panel-intro">${t('One body, both of you — each gate colored by who brings it. A <strong>two-tone</strong> channel shows gates contributed by both people. Hover or tap any gate, channel, or center.')}</p>
-      <div class="composite-legend">
-        <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
-        <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
-        <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
-        <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Newly defined in the relationship')}</span>
-      </div>
-      <div id="conn-composite" class="composite-graph"></div>
-      <div id="conn-detail" class="gate-detail hidden"></div>
-    </div>
-
-    <details class="composite-individuals">
-      <summary>${t('See each chart on its own')}</summary>
-      <div class="connection-graphs">
-        <div class="connection-graph">
-          <div class="connection-graph-name">${esc(nameA)}</div>
-          <div class="connection-graph-type">${esc(typeName(a.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personA?.strategy || a.chart.type?.strategy || a.chart.strategy?.name || a.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(a.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(a.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(a.chart.definition?.name || a.chart.definition || ''))}</div>
-          <div id="conn-graph-a"></div>
-        </div>
-        <div class="connection-graph">
-          <div class="connection-graph-name">${esc(nameB)}</div>
-          <div class="connection-graph-type">${esc(typeName(b.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personB?.strategy || b.chart.type?.strategy || b.chart.strategy?.name || b.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(b.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(b.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(b.chart.definition?.name || b.chart.definition || ''))}</div>
-          <div id="conn-graph-b"></div>
+    <div class="chart-layout conn-layout">
+      <div class="chart-column conn-chart-column">
+        <div class="composite-wrap">
+          <div class="panel-title">${t('Your charts combined')}</div>
+          <p class="panel-intro">${t('One body, both of you — each gate colored by who brings it. A <strong>two-tone</strong> channel shows gates contributed by both people. Hover or tap any gate, channel, or center.')}</p>
+          <div class="composite-legend">
+            <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
+            <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
+            <span class="lg"><i class="lg-stripe" style="background:var(--hd-connection-both)"></i>${t('Both have it')}</span>
+            <span class="lg"><i style="background:${cpal.bridged}"></i>${t('Newly defined in the relationship')}</span>
+          </div>
+          <div id="conn-shell" class="conn-shell">${graphShellMarkup({
+            className: 'conn-graph-shell',
+            left: personSide('a', nameA, a.chart),
+            right: personSide('b', nameB, b.chart),
+            // Keep the historical id: it is the composite graph's mount point.
+            graph: '<div id="conn-composite"></div>'
+          })}</div>
         </div>
       </div>
-    </details>
+      <div class="info-column conn-info-column">
 
-    <div class="foundation-grid" style="margin-bottom:8px">
-      <div class="foundation-item"><div class="label">${t('Composite-derived type')}</div><div class="value">${esc(typeName(cc.compositeType))}</div><div class="detail">${t('{count} channels combined', { count: cc.compositeChannelCount })}</div></div>
-      <div class="foundation-item" data-testid="connection-center-formula" data-formula="${esc(centerFormula)}"><div class="label">${t('Center formula')}</div><div class="value">${esc(centerFormula)}</div><div class="detail">${t('{count} defined · {other} undefined', { count: structure.formulas?.definedCount ?? 0, other: structure.formulas?.undefinedCount ?? 9 })}</div></div>
-      <div class="foundation-item" data-testid="connection-created-count" data-count="${createdCount}"><div class="label">${t('Created centers')}</div><div class="value">${createdCount}</div><div class="detail">${t('{count} created channels', { count: createdChannelCount })}</div></div>
+        <details class="composite-individuals">
+          <summary>${t('See each chart on its own')}</summary>
+          <div class="connection-graphs">
+            <div class="connection-graph">
+              <div class="connection-graph-name">${esc(nameA)}</div>
+              <div class="connection-graph-type">${esc(typeName(a.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personA?.strategy || a.chart.type?.strategy || a.chart.strategy?.name || a.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(a.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(a.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(a.chart.definition?.name || a.chart.definition || ''))}</div>
+              <div id="conn-graph-a"></div>
+            </div>
+            <div class="connection-graph">
+              <div class="connection-graph-name">${esc(nameB)}</div>
+              <div class="connection-graph-type">${esc(typeName(b.chart.type.name))} · ${esc(t('Connection strategy:'))} ${esc(contentText(comparison.individuals?.personB?.strategy || b.chart.type?.strategy || b.chart.strategy?.name || b.chart.strategy || ''))} · ${esc(t('Authority:'))} ${esc(authorityName(b.chart.authority?.name))} · ${esc(t('Profile:'))} ${esc(profileName(b.chart.profile?.numbers))} · ${esc(t('Definition:'))} ${esc(contentText(b.chart.definition?.name || b.chart.definition || ''))}</div>
+              <div id="conn-graph-b"></div>
+            </div>
+          </div>
+        </details>
+
+        <div class="foundation-grid" style="margin-bottom:8px">
+          <div class="foundation-item"><div class="label">${t('Composite-derived type')}</div><div class="value">${esc(typeName(cc.compositeType))}</div><div class="detail">${t('{count} channels combined', { count: cc.compositeChannelCount })}</div></div>
+          <div class="foundation-item" data-testid="connection-center-formula" data-formula="${esc(centerFormula)}"><div class="label">${t('Center formula')}</div><div class="value">${esc(centerFormula)}</div><div class="detail">${t('{count} defined · {other} undefined', { count: structure.formulas?.definedCount ?? 0, other: structure.formulas?.undefinedCount ?? 9 })}</div></div>
+          <div class="foundation-item" data-testid="connection-created-count" data-count="${createdCount}"><div class="label">${t('Created centers')}</div><div class="value">${createdCount}</div><div class="detail">${t('{count} created channels', { count: createdChannelCount })}</div></div>
+        </div>
+
+        <div class="panel-title" style="margin-top:22px">${t('Individual decision foundations')}</div>
+        <p class="panel-intro">${esc(nameA)} · ${esc(authorityName(comparison.individuals?.personA?.authority || ad.authorityA || a.chart.authority?.name))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(authorityName(comparison.individuals?.personB?.authority || ad.authorityB || b.chart.authority?.name))}</p>
+        <div class="panel-title">${t('Profiles')}</div>
+        <p class="panel-intro">${esc(nameA)} · ${esc(profileName(a.chart.profile?.numbers))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(profileName(b.chart.profile?.numbers))}</p>
+
+        <div class="panel-title" style="margin-top:22px">${t('The four ways your channels connect')}</div>
+        ${CONN_TYPES.map(connSection).join('')}
+
+        <div class="panel-title" style="margin-top:22px">${t('Center states')}</div>
+        <p class="panel-intro">${t('Each row reports defined, undefined, or open status in person A, person B, and the composite. Created channels are listed as structural facts.')}</p>
+        ${centerRows.map(c => {
+          const s = centerIndex.get(c.center || c.centerName) || c;
+          const created = (structure.composite.createdChannels || []).filter(channel => channel.centers.includes(s.center));
+          const state = value => isDefined(value) ? t('Defined') : value === 'undefined' ? t('Undefined') : value === 'open' ? t('Completely open') : t('Open');
+          return `<div class="conn-center" data-testid="connection-center-state" data-center="${esc(s.center || s.centerName)}" data-a-state="${centerStatus(s, 'A')}" data-b-state="${centerStatus(s, 'B')}" data-composite-state="${centerStatus(s, 'composite')}" data-a-defined="${isDefined(centerStatus(s, 'A'))}" data-b-defined="${isDefined(centerStatus(s, 'B'))}" data-composite-defined="${isDefined(centerStatus(s, 'composite'))}" data-created="${isCreated(s)}"><strong>${esc(centerName(s.centerName || s.center))}</strong><div>${esc(nameA)}: ${state(centerStatus(s, 'A'))} · ${esc(nameB)}: ${state(centerStatus(s, 'B'))} · ${t('Composite')}: ${state(centerStatus(s, 'composite'))}</div>${created.length ? `<div class="conn-center-theme">${t('Created channels')}: ${created.map(ch => `${esc(channelName(ch.gates))} (${ch.gates.join('–')})`).join(', ')}</div>` : ''}</div>`;
+        }).join('')}
+
+        <div class="panel-title" style="margin-top:22px">${t('Bridging by person')}</div>
+        <div class="conn-center" data-testid="connection-bridging-a" data-status="${bridgeA?.status || 'n/a'}" data-original-regions="${bridgeA?.originalRegionCount ?? 0}"><strong>${esc(nameA)}</strong> · ${t('Original regions')}: ${esc(String(bridgeA?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeA?.status)}${(bridgeA?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
+        <div class="conn-center" data-testid="connection-bridging-b" data-status="${bridgeB?.status || 'n/a'}" data-original-regions="${bridgeB?.originalRegionCount ?? 0}"><strong>${esc(nameB)}</strong> · ${t('Original regions')}: ${esc(String(bridgeB?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeB?.status)}${(bridgeB?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
+        ${(structure.composite.createdChannels || []).length ? `<div class="panel-title">${t('Created channels')}</div><div class="pills">${structure.composite.createdChannels.map(c => `<span class="pill">${esc(channelName(c.gates))}</span>`).join('')}</div>` : ''}
+
+        <div class="panel-title" style="margin-top:22px">${t('In a nutshell')}</div>
+        <p>${esc(contentText(summaryText))}</p>
+      </div>
     </div>
-
-    <div class="panel-title" style="margin-top:22px">${t('Individual decision foundations')}</div>
-    <p class="panel-intro">${esc(nameA)} · ${esc(authorityName(comparison.individuals?.personA?.authority || ad.authorityA || a.chart.authority?.name))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(authorityName(comparison.individuals?.personB?.authority || ad.authorityB || b.chart.authority?.name))}</p>
-    <div class="panel-title">${t('Profiles')}</div>
-    <p class="panel-intro">${esc(nameA)} · ${esc(profileName(a.chart.profile?.numbers))} &nbsp;|&nbsp; ${esc(nameB)} · ${esc(profileName(b.chart.profile?.numbers))}</p>
-
-    <div class="panel-title" style="margin-top:22px">${t('The four ways your channels connect')}</div>
-    ${CONN_TYPES.map(connSection).join('')}
-
-    <div class="panel-title" style="margin-top:22px">${t('Center states')}</div>
-    <p class="panel-intro">${t('Each row reports defined, undefined, or open status in person A, person B, and the composite. Created channels are listed as structural facts.')}</p>
-    ${centerRows.map(c => {
-      const s = centerIndex.get(c.center || c.centerName) || c;
-      const created = (structure.composite.createdChannels || []).filter(channel => channel.centers.includes(s.center));
-      const state = value => isDefined(value) ? t('Defined') : value === 'undefined' ? t('Undefined') : value === 'open' ? t('Completely open') : t('Open');
-      return `<div class="conn-center" data-testid="connection-center-state" data-center="${esc(s.center || s.centerName)}" data-a-state="${centerStatus(s, 'A')}" data-b-state="${centerStatus(s, 'B')}" data-composite-state="${centerStatus(s, 'composite')}" data-a-defined="${isDefined(centerStatus(s, 'A'))}" data-b-defined="${isDefined(centerStatus(s, 'B'))}" data-composite-defined="${isDefined(centerStatus(s, 'composite'))}" data-created="${isCreated(s)}"><strong>${esc(centerName(s.centerName || s.center))}</strong><div>${esc(nameA)}: ${state(centerStatus(s, 'A'))} · ${esc(nameB)}: ${state(centerStatus(s, 'B'))} · ${t('Composite')}: ${state(centerStatus(s, 'composite'))}</div>${created.length ? `<div class="conn-center-theme">${t('Created channels')}: ${created.map(ch => `${esc(channelName(ch.gates))} (${ch.gates.join('–')})`).join(', ')}</div>` : ''}</div>`;
-    }).join('')}
-
-    <div class="panel-title" style="margin-top:22px">${t('Bridging by person')}</div>
-    <div class="conn-center" data-testid="connection-bridging-a" data-status="${bridgeA?.status || 'n/a'}" data-original-regions="${bridgeA?.originalRegionCount ?? 0}"><strong>${esc(nameA)}</strong> · ${t('Original regions')}: ${esc(String(bridgeA?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeA?.status)}${(bridgeA?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
-    <div class="conn-center" data-testid="connection-bridging-b" data-status="${bridgeB?.status || 'n/a'}" data-original-regions="${bridgeB?.originalRegionCount ?? 0}"><strong>${esc(nameB)}</strong> · ${t('Original regions')}: ${esc(String(bridgeB?.originalRegionCount ?? t('N/A')))} · ${statusText(bridgeB?.status)}${(bridgeB?.witnesses || []).map(witness => `<div>${t('Path')}: ${witness.centers.map(center => esc(centerName(center))).join(' → ')} (${witness.channels.map(channel => `${esc(channelName(channel.gates))} ${channel.gates.join('–')}`).join(' → ')})</div>`).join('')}</div>
-    ${(structure.composite.createdChannels || []).length ? `<div class="panel-title">${t('Created channels')}</div><div class="pills">${structure.composite.createdChannels.map(c => `<span class="pill">${esc(channelName(c.gates))}</span>`).join('')}</div>` : ''}
-
-    <div class="panel-title" style="margin-top:22px">${t('In a nutshell')}</div>
-    <p>${esc(contentText(summaryText))}</p>
+    <div id="conn-detail" class="gate-detail hidden"></div>
   `;
   container.querySelector('.composite-individuals').open = wasExpanded;
 
@@ -383,7 +421,9 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     openDetail();
   }
 
-  api = renderBodygraph(container.querySelector('#conn-composite'), a.chart, {
+  // The composite graph fills the shell's centre canvas.
+  const canvas = container.querySelector('#conn-composite');
+  api = renderBodygraph(canvas, a.chart, {
     composite: {
       chartA: a.chart, chartB: b.chart, structure,
       colorA: cpal.a, colorB: cpal.b, colorBridged: cpal.bridged,
@@ -392,6 +432,26 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     onGateClick: showCompositeGate,
     onCenterClick: showCompositeCenter
   });
+
+  // Both columns are read-only on this page. The component can render buttons,
+  // but a relationship activation has no detail of its own here: the page's detail
+  // system is the composite's, and the per-person entries belong to the natal
+  // chart of whoever is loaded. Wiring either one to a relationship cell would
+  // answer a question about person A with the composite's or the current
+  // person's data, so the cells are plain text instead of buttons that go
+  // nowhere.
+  renderBirthActivations({ root: container.querySelector('#conn-activations-a'), chart: a.chart,
+    planets: activationPlanets, translate, interactive: false });
+  renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
+    planets: activationPlanets, translate, interactive: false });
+
+  // One placement rule for both slots, owned by the shared shell.
+  const shellRoot = container.querySelector('#conn-shell');
+  connShellFit?.disconnect();
+  // Fit the composite to the viewport height as well as the column width: the
+  // graph column is sticky, so a graph taller than the screen would pin at the
+  // top and lose its bottom edge while the analysis scrolls past.
+  connShellFit = observeGraphShell(shellRoot, { aspect: COMPOSITE_ASPECT, fitHeight: true });
 
   renderBodygraph(container.querySelector('#conn-graph-a'), a.chart, { compact: true });
   renderBodygraph(container.querySelector('#conn-graph-b'), b.chart, { compact: true });

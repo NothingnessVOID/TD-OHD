@@ -781,7 +781,10 @@ try {
 
   await log('bar and symbol open one detail sheet with interval timing', async () => {
     await ready(page);
-    await page.locator(`${root} .tl-bar:not([data-source="natal"])`).first().click();
+    // Bridge/split bars light centers instead of opening a sheet, so this needs a
+    // bar that owns interval timing; "the first non-natal bar" now depends on
+    // row order, because a split episode adds a bridge row.
+    await page.locator(`${root} .tl-bar[data-key]:not([data-source="natal"]):not([data-key^="bridge:"])`).first().click();
     assert.equal(await page.locator('#gate-detail.gate-detail[role="dialog"][aria-modal="true"]:not(.hidden) .tl-detail-timing').isVisible(), true);
     assert.equal(await page.locator(`${root} .tl-interval-detail`).count(), 0);
     assert.equal(await page.locator('#gate-detail .tl-timing-duration dd').count(), 1);

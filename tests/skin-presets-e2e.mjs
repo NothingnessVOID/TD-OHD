@@ -115,7 +115,7 @@ try {
     await page.locator('#timeline-view .tl-graph-panel').screenshot({path:`${evidence}/${skin.id}-timeline-graph.png`});
     await page.locator('#timeline-view .tl-workspace').screenshot({path:`${evidence}/${skin.id}-timeline-workspace.png`});
     await navigate('connection');await page.locator('#conn-person').selectOption({label:'Skin Fixture B'});await page.locator('#conn-calculate').click();
-    await page.locator('#connection-content .composite-graph .bodygraph-svg').waitFor({timeout:60000});
+    await page.locator('#connection-content #conn-composite .bodygraph-svg').waitFor({timeout:60000});
     for (const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries()) {
       const rows=page.locator('#connection-content .conn-section').nth(i).locator('.connection-type');
       assert.ok(await rows.count(),skin.id+' renders '+key+' fixtures');
@@ -129,7 +129,7 @@ try {
         assert.equal(painted, expected, skin.id+' '+key+' ownership marker paints the actual source');
       }
     }
-    const paint=await page.locator('#connection-content .composite-graph svg').evaluate(n=>({
+    const paint=await page.locator('#connection-content #conn-composite svg').evaluate(n=>({
       stripe:[...n.querySelectorAll('pattern[id$="-stripe-ab"] rect')].map(n=>n.getAttribute('fill')),
       both:[...n.querySelectorAll('linearGradient[id$="-cc-both"] stop')].map(n=>n.getAttribute('stop-color')),
       bridged:[...n.querySelectorAll('.bg-center')].map(n=>n.getAttribute('fill')),
@@ -149,7 +149,7 @@ try {
     assert.deepEqual(createdPaint,[actual['--hd-connection-bridged'],actual['--hd-connection-bridged']],skin.id+' preserves Created center paint');
     assert.ok(paint.fills.includes(actual['--hd-connection-a'])&&paint.fills.includes(actual['--hd-connection-b']));
     await shot(skin.id+'-relationship');
-    await page.locator('#connection-content .composite-graph').screenshot({path:`${evidence}/${skin.id}-relationship-graph.png`});
+    await page.locator('#connection-content #conn-composite').screenshot({path:`${evidence}/${skin.id}-relationship-graph.png`});
     if(['new-warm-paper','midnight-contrast','delve'].includes(skin.id)) {
       for(const [i,key] of ['electromagnetic','companionship','compromise','dominance'].entries())
         await page.locator('#connection-content .conn-section').nth(i).screenshot({path:`${evidence}/${skin.id}-relationship-${key}.png`});

@@ -35,6 +35,26 @@ export function bridgedIslandCount(natalCount, connected) {
   return natalCount - connected.reduce((merged, group) => merged + Math.max(0, new Set(group).size - 1), 0);
 }
 
+/**
+ * Natal definition split, for charts whose natal definition is a single island.
+ *
+ * A split exists only when the birth-chart-plus-transit overlay contains a
+ * complete channel component sharing no center with the natal island. Hanging
+ * gates never form a component, so they are not a split. The natal chart itself
+ * is never rewritten: this describes the overlay only.
+ */
+export function splitState(natal, activeGates, channels = CHANNELS) {
+  const islands = natalIslands(natal, channels);
+  if (islands.length !== 1) return { applicable: false, islands, natalCenters: [], newIslands: [], split: false };
+  const natalCenters = new Set(islands[0]);
+  const active = new Set(activeGates);
+  const newIslands = components(channels.filter(channel => channel.gates.every(gate => active.has(gate))))
+    .filter(group => group.every(center => !natalCenters.has(center)))
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  return { applicable: true, islands, natalCenters: [...natalCenters], newIslands,
+    split: newIslands.length > 0 };
+}
+
 /** Connected groups refer to fixed natal island numbers, not transient islands. */
 export function bridgeState(natal, activeGates, channels = CHANNELS) {
   const islands = natalIslands(natal, channels);

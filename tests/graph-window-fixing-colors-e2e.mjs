@@ -9,10 +9,13 @@ try {
   await page.waitForSelector('#more-toggle');
   const results = await page.evaluate(async () => {
     const { renderGraphColumns } = await import(performance.getEntriesByType('resource').find(e=>new URL(e.name).pathname==='/src/features/transit-timeline/graph-window.js')?.name || '/src/features/transit-timeline/graph-window.js');
+    // Use the component's own markup so the fixture cannot drift from the real DOM.
+    const { birthActivationsMarkup } = await import('/src/features/transit-timeline/birth-activations.js');
     const root = document.createElement('section');
     root.className = 'tl';
     root.style.cssText = '--hd-design:rgb(140, 30, 40);--hd-personality:rgb(40, 50, 60);--hd-transit:rgb(10, 160, 190);--hd-transit-text:color-mix(in srgb, var(--hd-transit) 65%, #16130f)';
-    root.innerHTML = '<div class="tl-transit-column"><div class="tl-planets"></div></div><div class="tl-birth-column"><div class="tl-birth-planets"></div></div>';
+    root.innerHTML = '<div class="tl-transit-column"><div class="tl-planets"></div></div><div class="tl-birth-column">'
+      + birthActivationsMarkup({ labels: { design: 'design', personality: 'personality' }, locale: 'en-GB' }) + '</div>';
     document.body.append(root);
     const chart = { gates: { design: { sun: { gate: 26, line: 6 } }, personality: { sun: { gate: 45, line: 6 } } } };
     const base = { root, chart, activations: { sun: { gate: 18, line: 5 } }, mode: 'overlay', planets: [{ id: 'sun', name: 'Sun', glyph: '☉' }], translate: key => key };

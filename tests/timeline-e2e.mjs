@@ -89,6 +89,10 @@ const moonMatches = async targetPage => {
     return actual === `${expected.gate}.${expected.line}`;
   }, null, { timeout: 10000 });
 };
+/** A transit bar that owns interval timing. Bridge/split bars light the centers
+ * they involve instead of opening a sheet, so they are not interchangeable
+ * here — picking "the first non-natal bar" depended on row order. */
+const timedBar = () => page.locator(`${tl} .tl-bar[data-key]:not([data-source="natal"]):not([data-key^="bridge:"])`).first();
 const run = async (name, fn) => {
   await fn();
   console.log(`✓ ${name}`);
@@ -210,7 +214,7 @@ try {
     await page.mouse.up();
     assert.notEqual(await instant(), before);
     await moonMatches(page);
-    await page.locator(`${tl} .tl-bar:not([data-source="natal"])`).first().click();
+    await timedBar().click();
     assert.equal(await page.locator(`${detail}:not(.hidden) ${timing.replace(`${detail} `, '')}`).isVisible(), true);
     await page.locator(`${detail} .gate-detail-close`).click();
     assert.equal(await page.locator(detail).isVisible(), false);
@@ -263,7 +267,7 @@ try {
     await natal.click();
     assert.equal(await page.locator(timing).count(), 0, 'natal detail has no transit timing');
     await page.keyboard.press('Escape');
-    const transit = page.locator(`${tl} .tl-bar:not([data-source="natal"])`).first();
+    const transit = timedBar();
     const key = await transit.getAttribute('data-key');
     const interval = await transit.getAttribute('data-interval');
     await transit.click();
@@ -308,8 +312,19 @@ try {
     assert.deepEqual(await activeSourcesMatchBars(page), [], 'source marks follow the selected time after panning');
   });
 
+  await run('a split bridge interval lights centers instead of opening a sheet', async () => {
+    const bridge = page.locator(`${tl} .tl-bar[data-key^="bridge:"]`).first();
+    if (!(await bridge.count())) return; // this fixture may have no split episode
+    await bridge.scrollIntoViewIfNeeded();
+    await bridge.click();
+    assert.equal(await page.locator(detail).isVisible(), false, 'a bridge interval opens no detail sheet');
+    assert.ok(await page.locator(`${tl} .tl-row-lit`).count() > 0, 'a bridge interval lights the centers it involves');
+    await page.waitForTimeout(1900);
+    assert.equal(await page.locator(`${tl} .tl-row-lit`).count(), 0, 'the bridge highlight clears itself');
+  });
+
   await run('single detail sheet shows interval timing and follows navigation', async () => {
-    const bar = page.locator(`${tl} .tl-bar:not([data-source="natal"])`).first();
+    const bar = timedBar();
     const source = await bar.getAttribute('data-source');
     const key = await bar.getAttribute('data-key');
     await bar.click();
