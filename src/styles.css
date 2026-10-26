@@ -8,6 +8,9 @@
 @import './styles/skins/new-warm-paper.css';
 @import './styles/skins/midnight-contrast.css';
 @import './styles/skins/coral.css';
+@import './styles/skins/direction-a.css';
+@import './styles/skins/direction-b.css';
+@import './styles/skins/direction-c.css';
 @import './styles/tokens/human-design-classic.css';
 @import './styles/center-palettes/classic.css';
 @import './styles/center-palettes/chakra.css';

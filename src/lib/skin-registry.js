@@ -54,6 +54,36 @@ export const SKINS = Object.freeze([
     id: 'coral', defaultCenterPalette: 'chakra', name: 'Coral', tagline: 'Spring paper', mode: 'light', transitSourceMode: 'split',
     preview: Object.freeze({ surface: '#FDF6EC', text: '#1A3049', accent: '#1A3049', personality: '#1A3049', design: '#6E8C7A', transit: '#F37E63', signature: '#F37E63' }),
     cssSource: 'src/styles/skins/coral.css'
+  }),
+  Object.freeze({
+    id: 'direction-a-light', defaultCenterPalette: 'classic', name: '朱砂宣纸', tagline: '方向 A · 亮', mode: 'light', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#FAF7F0', text: '#26221D', accent: '#B85C38', personality: '#2B2B2B', design: '#D04948', transit: '#2D929F', signature: '#B85C38' }),
+    cssSource: 'src/styles/skins/direction-a.css'
+  }),
+  Object.freeze({
+    id: 'direction-a-dark', defaultCenterPalette: 'mineral', name: '朱砂宣纸 · 夜', tagline: '方向 A · 暗', mode: 'dark', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#191512', text: '#EDE9E0', accent: '#D97B54', personality: '#E8E4DE', design: '#E0706E', transit: '#65B8C0', signature: '#D97B54' }),
+    cssSource: 'src/styles/skins/direction-a.css'
+  }),
+  Object.freeze({
+    id: 'direction-b-light', defaultCenterPalette: 'classic', name: '鎏铜青瓷', tagline: '方向 B · 亮', mode: 'light', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#F7F5F2', text: '#1E1B18', accent: '#B86F2C', personality: '#2B2B2B', design: '#D04948', transit: '#4F9384', signature: '#B86F2C' }),
+    cssSource: 'src/styles/skins/direction-b.css'
+  }),
+  Object.freeze({
+    id: 'direction-b-dark', defaultCenterPalette: 'mineral', name: '鎏铜青瓷 · 夜', tagline: '方向 B · 暗', mode: 'dark', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#161412', text: '#F0EBE4', accent: '#D69A55', personality: '#E8E4DE', design: '#E0706E', transit: '#8FB8A4', signature: '#D69A55' }),
+    cssSource: 'src/styles/skins/direction-b.css'
+  }),
+  Object.freeze({
+    id: 'direction-c-light', defaultCenterPalette: 'classic', name: '墨韵朱印', tagline: '方向 C · 亮', mode: 'light', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#FBFAF7', text: '#23201C', accent: '#23201C', personality: '#2B2B2B', design: '#D04948', transit: '#5B7280', signature: '#B5483A' }),
+    cssSource: 'src/styles/skins/direction-c.css'
+  }),
+  Object.freeze({
+    id: 'direction-c-dark', defaultCenterPalette: 'mineral', name: '墨韵朱印 · 夜', tagline: '方向 C · 暗', mode: 'dark', transitSourceMode: 'split',
+    preview: Object.freeze({ surface: '#141312', text: '#EDE9E0', accent: '#EDE9E0', personality: '#E8E4DE', design: '#E0706E', transit: '#8AA2B0', signature: '#D2695A' }),
+    cssSource: 'src/styles/skins/direction-c.css'
   })
 ]);
 // All approved directions are now registered; no placeholder Skins.
