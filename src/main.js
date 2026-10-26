@@ -142,7 +142,8 @@ function showView(view, { fromHistory = false } = {}) {
   document.body.classList.remove('mobile-nav-open');
   document.getElementById('mobile-menu-toggle').setAttribute('aria-expanded', 'false');
   configureShareMenu(view, currentData, shareDataProviders);
-
+  // The bodygraph/wheel switch belongs to the chart view only.
+  document.querySelector('.graph-view-toggle')?.classList.toggle('hidden', !(view === 'chart' && !!currentData));
   document.querySelectorAll('.nav-link').forEach(l =>
     l.classList.toggle('active', l.dataset.view === view));
   const activeLink = document.querySelector(`.nav-link[data-view="${view}"]`);

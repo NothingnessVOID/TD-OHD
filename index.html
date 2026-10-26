@@ -58,6 +58,10 @@
           <button class="nav-link" data-view="library" data-i18n="Reference Library">Reference Library</button>
         </nav>
         <div class="header-actions">
+          <div class="graph-view-toggle hidden" role="group" aria-label="Graph view">
+            <button type="button" class="graph-view-btn active" data-graph-view="bodygraph" data-i18n="Bodygraph">Bodygraph</button>
+            <button type="button" class="graph-view-btn" data-graph-view="mandala" data-i18n="Wheel">Wheel</button>
+          </div>
           <select id="people-switcher" class="people-switcher hidden" title="Saved charts" data-i18n-title="Saved charts"></select>
           <button id="sync-button" class="btn-secondary btn-small hidden"></button>
           <details id="more-menu" class="more-menu">
@@ -183,10 +187,6 @@
 
       <div class="chart-layout">
         <div class="chart-column">
-          <div class="graph-view-toggle" role="group" aria-label="Graph view">
-            <button type="button" class="graph-view-btn active" data-graph-view="bodygraph" data-i18n="Bodygraph">Bodygraph</button>
-            <button type="button" class="graph-view-btn" data-graph-view="mandala" data-i18n="Wheel">Wheel</button>
-          </div>
           <div id="bodygraph-container" class="bodygraph-container"></div>
           <div id="mandala-container" class="mandala-container hidden"></div>
         </div>

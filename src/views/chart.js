@@ -208,6 +208,7 @@ export function renderChartView(data, { preserveOtherDialog = false } = {}) {
 
   document.getElementById('birth-entry').classList.add('hidden');
   document.getElementById('chart-view').classList.remove('hidden');
+  document.querySelector('.graph-view-toggle')?.classList.remove('hidden');
 
   // --- Type banner ---
   const banner = document.getElementById('type-banner');
@@ -282,6 +283,8 @@ function applyGraphView() {
   const isMandala = graphView === 'mandala';
   body.classList.toggle('hidden', isMandala);
   mandala.classList.toggle('hidden', !isMandala);
+  // The wheel needs room: 2/3 graph + 1/3 info column while it is showing.
+  body.closest('.chart-layout')?.classList.toggle('mandala-mode', isMandala);
   if (isMandala) renderMandalaView();
 }
 
@@ -308,6 +311,30 @@ function renderMandalaView() {
     svg.appendChild(clone);
   }
   host.replaceChildren(svg);
+  wireMandalaInteractions(svg);
+}
+
+/**
+ * Wheel interactions, mirroring the official mandala: hovering a gate lifts it,
+ * clicking opens the same detail sheet the bodygraph uses; planet glyphs open
+ * the planet detail for their side.
+ */
+function wireMandalaInteractions(svg) {
+  svg.querySelectorAll('[data-md-gate]:not([data-md-planet])').forEach(el => {
+    el.addEventListener('click', () => {
+      const gate = Number(el.dataset.mdGate);
+      if (Number.isInteger(gate)) showGateDetail(gate);
+    });
+  });
+  svg.querySelectorAll('[data-md-planet]').forEach(el => {
+    el.addEventListener('click', ev => {
+      ev.stopPropagation();
+      const side = el.dataset.mdSide;
+      const planet = el.dataset.mdPlanet;
+      const activation = current?.chart?.gates?.[side]?.[planet];
+      if (activation) showPlanetDetail({ source: side, planet, activation });
+    });
+  });
 }
 
 // Reverse direction of the bodygraph's relational highlight: when a gate/center

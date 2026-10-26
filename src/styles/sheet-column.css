@@ -456,34 +456,34 @@
   .pc-var-arrows { grid-template-columns: 1fr; }
 }
 
-/* ---- graph view toggle: bodygraph ⇄ wheel ---- */
-#chart-view .graph-view-toggle {
+/* ---- graph view toggle: bodygraph ⇄ wheel (lives in the header) ---- */
+.graph-view-toggle {
   display: flex;
-  gap: 4px;
-  width: max-content;
-  margin: 0 auto 12px;
-  padding: 3px;
+  gap: 3px;
+  padding: 2px;
   background: var(--bg-sunken);
   border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  border-radius: 8px;
 }
-#chart-view .graph-view-btn {
+.graph-view-btn {
   border: 0;
   background: transparent;
   color: var(--text-secondary);
   font: inherit;
-  font-size: 12.5px;
-  padding: 5px 16px;
-  border-radius: 7px;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
   cursor: pointer;
+  white-space: nowrap;
   transition: background 0.15s ease, color 0.15s ease;
 }
-#chart-view .graph-view-btn.active {
+.graph-view-btn.active {
   background: var(--bg-elevated);
   color: var(--text);
   font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
+@media (max-width: 900px) { .graph-view-toggle { display: none; } }
 #chart-view .mandala-container {
   padding: 2px;
 }

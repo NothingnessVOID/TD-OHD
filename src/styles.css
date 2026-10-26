@@ -366,6 +366,15 @@ body {
   column-gap: var(--page-gap);
 }
 
+/* Wheel view: the mandala becomes the protagonist — two thirds of the row
+   for the wheel, one third for the info column. */
+#chart-view .chart-layout.mandala-mode {
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+}
+@media (--phone) {
+  #chart-view .chart-layout.mandala-mode { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (--above-phone) {
   #chart-view .chart-layout {
     grid-template-columns: var(--page-columns);

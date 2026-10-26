@@ -96,6 +96,12 @@ const CSS = `
 .md-root .md-hexagrams .undefined { opacity:.2; }
 .md-root .md-circles, .md-root .md-gates, .md-root .md-lines { stroke:#dcdcdc; }
 .md-root .md-lines line { stroke:#dcdcdc; stroke-width:1; }
+.md-root [data-md-gate] { cursor:pointer; }
+.md-root .md-gates .radial use:hover { filter:brightness(1.25); }
+.md-root .md-gates .num:hover { filter:brightness(1.6); }
+.md-root .md-hexagrams g:hover { opacity:1 !important; filter:brightness(1.8); }
+.md-root .md-planet-hit { cursor:pointer; }
+.md-root .md-planet-hit:hover use { filter:brightness(1.5) drop-shadow(0 0 6px rgba(0,0,0,.35)); }
 [data-theme="dark"] .md-root .md-gates .num { fill:#e8e4de; }
 [data-theme="dark"] .md-root .md-gates .num.b.defined { fill:#fff; }
 [data-theme="dark"] .md-root .md-hexagrams { fill:#fff; }
@@ -141,13 +147,13 @@ export function renderMandalaRings(chart) {
   let g = `<g class="md-gates"><g class="radial">`;
   for (let idx = 0; idx < 64; idx++) {
     const [id, , color] = WHEEL[idx];
-    if (gateActs[id]) g += `<use xlink:href="#md-gate" class="g${id} ${color} defined" transform="rotate(${5.625 * idx}, 1000, 1000)"/>`;
+    if (gateActs[id]) g += `<use xlink:href="#md-gate" class="g${id} ${color} defined" data-md-gate="${id}" transform="rotate(${5.625 * idx}, 1000, 1000)"/>`;
   }
   g += `</g>`;
   for (let idx = 0; idx < 64; idx++) {
     const [id, , color] = WHEEL[idx];
     const defined = Boolean(gateActs[id]);
-    g += `<text class="num${defined ? ' defined' : ''} ${color}" transform="translate(${rim(GEO.gates.center, GEO.gates.radius, idx)})">${id}</text>`;
+    g += `<text class="num${defined ? ' defined' : ''} ${color}" data-md-gate="${id}" transform="translate(${rim(GEO.gates.center, GEO.gates.radius, idx)})">${id}</text>`;
   }
   for (let idx = 0; idx < 64; idx++) {
     const [id] = WHEEL[idx];
@@ -157,7 +163,12 @@ export function renderMandalaRings(chart) {
     acts.forEach((p, slot) => {
       const pos = rim(GEO.planets.center, GEO.planets.radius[Math.min(slot, 5)], idx);
       const w = 30 - 3 * slot;
+      const side = p.activation === 1 ? 'personality' : 'design';
+      const body = BODY_ORDER[p.id] || '';
+      g += `<g class="md-planet-hit" data-md-planet="${body}" data-md-side="${side}" data-md-gate="${id}">`;
+      g += `<circle cx="0" cy="0" r="26" fill="transparent" transform="translate(${pos})"/>`;
       g += `<use class="ch_${p.chartId} act_${p.activation}" xlink:href="#md-planet-${p.id}" transform="translate(${pos})" width="${w}" height="${w}" x="${-w / 2}" y="${-w / 2}"/>`;
+      g += `</g>`;
     });
     g += `</g>`;
   }
@@ -184,7 +195,7 @@ export function renderMandalaRings(chart) {
     const pos = rim(GEO.hexagrams.center, GEO.hexagrams.radius, hx.i);
     const defined = Boolean(gateActs[hx.g]);
     const rects = arr => arr.map(r => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join('');
-    h += `<g class="g${hx.g} ${defined ? 'defined' : 'undefined'}" transform="translate(${pos})"><g>${rects(hx.a)}</g><g>${rects(hx.b)}</g></g>`;
+    h += `<g class="g${hx.g} ${defined ? 'defined' : 'undefined'}" data-md-gate="${hx.g}" transform="translate(${pos})"><g>${rects(hx.a)}</g><g>${rects(hx.b)}</g></g>`;
   }
   h += `</g>`;
   P.push(h);
