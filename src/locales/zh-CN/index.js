@@ -1,10 +1,12 @@
 import runtimeMessages from './ui-runtime.json' with { type: 'json' };
 import * as zh from './vocabulary.js';
+import * as dream from './dream.js';
 import * as readings from './content.js';
 import contexts from '../ui-contexts.json' with { type: 'json' };
 import bodygraphMessages from './ui-bodygraph.json' with { type: 'json' };
 import chartMessages from './ui-chart.json' with { type: 'json' };
 import commonMessages from './ui-common.json' with { type: 'json' };
+import dreamMessages from './ui-dream.json' with { type: 'json' };
 import mainMessages from './ui-main.json' with { type: 'json' };
 import staticMessages from './ui-static.json' with { type: 'json' };
 import viewMessages from './ui-views.json' with { type: 'json' };
@@ -12,7 +14,7 @@ import transitMessages from './ui-transits.json' with { type: 'json' };
 import timelineMessages from './timeline.json' with { type: 'json' };
 const messages = {
   ...runtimeMessages, ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
-  ...mainMessages, ...staticMessages, ...viewMessages, ...contexts['zh-CN']
+  ...mainMessages, ...staticMessages, ...viewMessages, ...dreamMessages, ...contexts['zh-CN']
 };
 export default {
   code: 'zh-CN', label: '简体中文', matches: language => /^zh(?:-(?:CN|SG|Hans(?:-[a-z]+)?))?$/i.test(language),
@@ -23,7 +25,9 @@ export default {
     centerName: zh.zhCenter, gateName: zh.zhGate, channelName: zh.zhChannel,
     circuitName: zh.zhCircuit, circuitGroupName: zh.zhCircuitGroup, planetName: zh.zhPlanet, lineName: zh.zhLine,
     variable: zh.zhVariable, cognition: zh.zhCognition,
-    typeDescription: name => zh.TYPE_PLAIN_ZH[name] || '', hexagramName: n => zh.HEXAGRAM_ZH[n] || `第 ${n} 卦`, graphCenter: zh.zhCenter },
+    typeDescription: name => zh.TYPE_PLAIN_ZH[name] || '', hexagramName: n => zh.HEXAGRAM_ZH[n] || `第 ${n} 卦`, graphCenter: zh.zhCenter,
+    dreamGateName: dream.zhDreamGate, dreamLineTheme: dream.zhDreamLine,
+    dreamRealmName: dream.zhDreamRealm, dreamTypeName: dream.zhDreamType },
   content: { data: readings, text: readings.zhText, cross: readings.zhCross, bilingualGeneKeys: true },
   format: {
     sensitivity: value => ({ Type: '类型', Authority: '权威', Profile: '人生角色', Definition: '定义', 'Incarnation Cross': '化身十字', Variable: '四箭头', Moon: '月亮闸门' })[value] || value,

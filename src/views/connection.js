@@ -13,6 +13,7 @@ import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { birthActivationsMarkup, renderBirthActivations } from '../features/transit-timeline/birth-activations.js';
 import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
+import { compositePalette } from '../lib/skin-registry.js';
 import { translator } from '../features/transit-timeline/messages.js';
 import { computeChart } from '../lib/chartdata.js';
 import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
@@ -23,6 +24,7 @@ import { typeName, authorityName, centerName, graphCenter, gateName, channelName
 import { contentText } from '../lib/content.js';
 import { t, getLocaleResources } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
+import { setDreamComparison } from './dream.js';
 
 
 let placeB = null;
@@ -169,14 +171,8 @@ export function refreshConnectionLanguage() {
 }
 
 // Relationship colors are separate from personality/design/transit sources.
-function compositePalette() {
-  const style = getComputedStyle(document.documentElement);
-  return {
-    a: style.getPropertyValue('--hd-connection-a').trim(),
-    b: style.getPropertyValue('--hd-connection-b').trim(),
-    bridged: style.getPropertyValue('--hd-connection-bridged').trim()
-  };
-}
+// Ownership colours come from the shared skin registry; the sleep composite and
+// this view must agree, so neither derives them privately.
 
 // Mechanic labels use ownership markers, never a separate four-color palette.
 function mechanicMarker(kind, owner) {
@@ -288,6 +284,9 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
         <div class="composite-wrap">
           <div class="panel-title">${t('Your charts combined')}</div>
           <p class="panel-intro">${t('One body, both of you — each gate colored by who brings it. A <strong>two-tone</strong> channel shows gates contributed by both people. Hover or tap any gate, channel, or center.')}</p>
+          <div class="conn-dream-entry" style="margin:10px 0">
+            <button type="button" id="conn-view-dreams" class="btn-secondary btn-small">${t('View both sleep charts')}</button>
+          </div>
           <div class="composite-legend">
             <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
             <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
@@ -444,6 +443,16 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     planets: activationPlanets, translate, interactive: false });
   renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
     planets: activationPlanets, translate, interactive: false });
+
+  // Sleep-chart handover. Person B may be a manual entry or a shared guest with
+  // no persisted id, so the already-computed chart travels with the request
+  // instead of being looked up or recomputed on the other side. The button is
+  // part of this render, so it is bound here: a language redraw replaces the
+  // node and a document-level listener would fire for a stale chart.
+  container.querySelector('#conn-view-dreams')?.addEventListener('click', () => {
+    setDreamComparison({ chart: b.chart, label: nameB });
+    window.dispatchEvent(new CustomEvent('ohd-dream-navigation'));
+  });
 
   // One placement rule for both slots, owned by the shared shell.
   const shellRoot = container.querySelector('#conn-shell');

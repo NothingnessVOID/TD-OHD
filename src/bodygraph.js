@@ -25,6 +25,10 @@ import { PLANET_ORDER, PLANET_GLYPHS } from './lib/planet-reference.js';
 export { PLANET_ORDER, PLANET_GLYPHS, PLANET_NAMES } from './lib/planet-reference.js';
 import { INTEGRATION_SPAN, INTEGRATION_JOINED_PATHS, INTEGRATION_LOWER_BEND_PATHS, integrationSpanGates } from './lib/bodygraph-integration.js';
 
+/** Padding the renderer adds around the viewBox on every side. Hosts that size a
+ * canvas to the graph need it to derive the drawn aspect ratio. */
+export const BODYGRAPH_PAD = 16;
+
 let graphSequence = 0;
 import { t, formatDisplay } from './lib/i18n.js';
 import { typeName, authorityName, centerName, gateName, channelName, planetName, hexagramName, graphCenter } from './lib/vocabulary.js';
@@ -44,6 +48,26 @@ function el(tag, attrs = {}, ns = null) {
 const svgEl = (tag, attrs) => el(tag, attrs, SVG_NS);
 
 const CENTER_KEYS = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
+
+/**
+ * A topology narrows what the graph draws without changing what anything means.
+ * Gate numbers, channel pairs and centre keys stay the catalog's stable IDs, so
+ * a reduced graph (the sleep design) shares this renderer, its skin tokens, its
+ * highlight machinery and its transit overlay instead of forking them.
+ *
+ * `gates` and `pathGates` are null for the full chart: every gate is drawn, and
+ * every gate keeps the half-channel path that reaches its waking partner.
+ */
+const CENTER_REVEAL_ORDER = ['Head', 'Ajna', 'Throat', 'G', 'Ego', 'Spleen', 'SolarPlexus', 'Sacral', 'Root'];
+const STANDARD_TOPOLOGY = Object.freeze({
+  id: 'standard',
+  viewBox: Object.freeze({ x: 0, y: 0, w: 851.41, h: 1309.4 }),
+  centerOrder: Object.freeze(CENTER_REVEAL_ORDER),
+  gates: null,
+  pathGates: null,
+  pathOverrides: null,
+  rotate: 0
+});
 
 // CSS owns all palette and visual-parameter values. A skin only needs to
 // provide tokens; the renderer never has to know its actual color format.
@@ -120,11 +144,17 @@ function palette(style) {
  * @param {boolean} [opts.animate] - reveal animation (default true unless compact)
  * @param {function} [opts.onGateClick] - (gateNum) => void
  * @param {Iterable<number>} [opts.transitGates] - gates to ring with transit overlay
+ * @param {object} [opts.topology] - reduced graph topology; defaults to the full nine-centre chart
+ * @param {string} [opts.ariaLabel] - override the generated graph summary
  * @returns {{ highlightGate: (g: number|null) => void }}
  */
 export function renderBodygraph(container, chart, opts = {}) {
   const graphId = ++graphSequence;
   const paint = name => `bg-${graphId}-${name}`;
+  const topology = opts.topology || STANDARD_TOPOLOGY;
+  // A reduced topology hides geometry; it never re-labels what stays visible.
+  const inTopology = gate => !topology.gates || topology.gates.has(gate);
+  const drawsChannelPath = gate => inTopology(gate) && (!topology.pathGates || topology.pathGates.has(gate));
   const interactive = !opts.compact;
   const showColumns = !opts.compact && opts.planetColumns !== false && !opts.composite;
   const animate = opts.animate !== false && !opts.compact;
@@ -228,8 +258,8 @@ export function renderBodygraph(container, chart, opts = {}) {
   const transitGates = transit?.transitGates || new Set(opts.transitGates || []);
 
   // ---------- SVG ----------
-  const pad = 16;
-  const chartSummary = transit ? t(transit.mode === 'transit-only'
+  const pad = BODYGRAPH_PAD;
+  const chartSummary = opts.ariaLabel || (transit ? t(transit.mode === 'transit-only'
     ? 'Transit only bodygraph. Transit activations are marked separately. Channels: {channels}.'
     : 'Birth chart plus transits bodygraph. Transit activations are marked separately. Channels: {channels}.', {
       channels: renderedChannels.map(ch => ch.gates.join('-')).join(', ')
@@ -248,11 +278,11 @@ export function renderBodygraph(container, chart, opts = {}) {
     chart.channels?.length
       ? t('Active channels: {channels}.', { channels: formatDisplay('separated', chart.channels.map(c => `${c.gates.join('-')} ${displayChannel(c)}`), 'channels') })
       : ''
-  ].filter(Boolean).join(' ');
+  ].filter(Boolean).join(' '));
 
   const svg = svgEl('svg', {
     class: 'bodygraph-svg',
-    viewBox: `${-pad} ${-pad} ${851.41 + pad * 2} ${1309.4 + pad * 2}`,
+    viewBox: `${topology.viewBox.x - pad} ${topology.viewBox.y - pad} ${topology.viewBox.w + pad * 2} ${topology.viewBox.h + pad * 2}`,
     role: 'img',
     'aria-label': chartSummary
   });
@@ -299,6 +329,14 @@ export function renderBodygraph(container, chart, opts = {}) {
     defs.appendChild(hatch);
   }
   svg.appendChild(defs);
+
+  // A reduced topology may turn the whole graph: geometry then lives in one
+  // rotated group, while defs, patterns and tooltips stay in page space.
+  // Gate numbers counter-rotate around their own anchors, so they stay upright.
+  const geoRoot = topology.rotate
+    ? svgEl('g', { transform: `rotate(${topology.rotate} ${topology.rotateCenter?.x || 0} ${topology.rotateCenter?.y || 0})` })
+    : svg;
+  if (geoRoot !== svg) svg.appendChild(geoRoot);
 
   const gateFill = (gateNum) => {
     if (transit?.gateSource(gateNum) === 'transit') return transitColor;
@@ -417,9 +455,12 @@ export function renderBodygraph(container, chart, opts = {}) {
   });
   for (const [gateStr, pathData] of Object.entries(GATE_PATHS)) {
     const gateNum = parseInt(gateStr);
+    // A gate with no partner in this topology would dangle toward a centre the
+    // graph does not draw, so it floats as a bare circle instead.
+    if (!drawsChannelPath(gateNum)) continue;
     const isActive = activeGates.has(gateNum);
     const path = svgEl('path', {
-      d: joinedGates.has(gateNum) ? joinedPaths[gateNum] || pathData : pathData,
+      d: joinedGates.has(gateNum) ? joinedPaths[gateNum] || pathData : topology.pathOverrides?.[gateNum] || pathData,
       fill: channelHalfFill(gateNum),
       opacity: isActive ? '1' : colors.inactiveChannelOpacity,
       'data-gate': gateNum,
@@ -430,13 +471,12 @@ export function renderBodygraph(container, chart, opts = {}) {
     if (isActive) pathGroup.appendChild(path);
     else pathGroup.prepend(path);
   }
-  svg.appendChild(pathGroup);
+  geoRoot.appendChild(pathGroup);
 
   // --- Centers (top-to-bottom order so the reveal animation flows down) ---
   const centerGroup = svgEl('g', { class: 'bg-centers' });
   const centerPathEls = {};
-  const CENTER_REVEAL_ORDER = ['Head', 'Ajna', 'Throat', 'G', 'Ego', 'Spleen', 'SolarPlexus', 'Sacral', 'Root'];
-  CENTER_REVEAL_ORDER.forEach((shapeKey, i) => {
+  topology.centerOrder.forEach((shapeKey, i) => {
     const shapeData = CENTER_SHAPES[shapeKey];
     const centerKey = SHAPE_KEY_MAP[shapeKey];
     if (!shapeData || !centerKey) return;
@@ -487,13 +527,14 @@ export function renderBodygraph(container, chart, opts = {}) {
       centerGroup.appendChild(hatch);
     }
   });
-  svg.appendChild(centerGroup);
+  geoRoot.appendChild(centerGroup);
 
   // --- Gate circles + numbers ---
   const gateGroup = svgEl('g', { class: 'bg-gates' });
   const gateCircleEls = {};
   for (const [gateStr, c] of Object.entries(GATE_CIRCLE_POSITIONS)) {
     const gateNum = parseInt(gateStr);
+    if (!inTopology(gateNum)) continue;
     const isActive = activeGates.has(gateNum);
     const fill = gateFill(gateNum);
     const inactiveFill = isActive ? null : inactiveGateFill(gateNum);
@@ -559,6 +600,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     }));
     g.appendChild(svgEl('text', {
       x: c.cx, y: c.cy,
+      ...(topology.rotate ? { transform: `rotate(${-topology.rotate} ${c.cx} ${c.cy})` } : {}),
       'dominant-baseline': 'central', opacity: '1', 'fill-opacity': '1',
       'text-anchor': 'middle', 'font-size': colors.gateNumberSize,
       'font-weight': isActive ? colors.gateActiveWeight : colors.gateInactiveWeight,
@@ -575,7 +617,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     gateCircleEls[gateNum] = g;
     gateGroup.appendChild(g);
   }
-  svg.appendChild(gateGroup);
+  geoRoot.appendChild(gateGroup);
 
   // ---------- Highlight machinery ----------
   // A selection is a gate OR a center. Selecting a gate lights it, its channel

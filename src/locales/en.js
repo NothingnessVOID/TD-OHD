@@ -13,6 +13,11 @@ const TYPE_PLAIN = {
   Reflector: 'You mirror the health of your community. Take a full lunar cycle before big decisions and choose your environments carefully.'
 };
 const CIRCUITS = { individual: 'Individual Circuit', collective: 'Collective Circuit', tribal: 'Tribal Circuit', integration: 'Integration Channels', knowing: 'Knowing Circuit', centering: 'Centering Circuit', logic: 'Logic Circuit', sensing: 'Sensing Circuit', ego: 'Ego Circuit', defense: 'Defense Circuit' };
+// DreamRave names: the same gate means something different while asleep.
+const DREAM_GATES = { 62:'Love', 20:'Sight', 57:'Attunement', 8:'Darkness', 1:'Joy', 12:'Mutation', 27:'Yearning', 50:'Sex', 5:'Time', 15:'Chaos', 19:'Environments', 53:'Flight', 42:'Dying', 38:'Aggression', 28:'Fear' };
+const DREAM_LINES = { 1:'Secrets', 2:'Possession', 3:'Turmoil', 4:'Obsession', 5:'Fantasy', 6:'Vision' };
+const DREAM_REALMS = { light:'Light Field', earth:'Earth Plane', demon:'Demon Realm' };
+const DREAM_TYPES = { generator:'Generator', projector:'Projector', reflector:'Reflector' };
 const english = {
   typeName: name => name || '—',
   strategy: name => typeFacts[typeIdByName[name]]?.strategy || '—',
@@ -31,7 +36,11 @@ const english = {
   lineName: value => engine.LINE_NAMES[value] || value,
   variable: slot => [slot?.name || '—', slot?.description || ''],
   cognition: name => name || '—',
-  typeDescription: name => TYPE_PLAIN[name] || ''
+  typeDescription: name => TYPE_PLAIN[name] || '',
+  dreamGateName: gate => DREAM_GATES[gate] || `Gate ${gate}`,
+  dreamLineTheme: line => DREAM_LINES[line] || `Line ${line}`,
+  dreamRealmName: realm => DREAM_REALMS[realm] || realm || '—',
+  dreamTypeName: id => DREAM_TYPES[id] || id || '—'
 };
 
 const graphCenters = { head:'Head', ajna:'Ajna', throat:'Throat', g:'G', heart:'Ego', spleen:'Spleen', solar:'Solar Plexus', sacral:'Sacral', root:'Root' };
