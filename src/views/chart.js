@@ -30,6 +30,7 @@ import { openKnowledgeDetail } from '../lib/knowledge/detail-controller.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
+import { renderMandalaRings } from '../lib/panel-graphics/mandala.js';
 import { TRANSIT_SOURCE_LABELS } from '../lib/transit-graph.js';
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
@@ -256,7 +257,57 @@ export function rerenderBodygraph(transitGates = null) {
   // Every redraw replaces the wrap element, so the height-derived size has to
   // be re-applied to the new node (the old one is gone with its property).
   armNatalFit();
+  // The wheel view embeds a clone of the bodygraph; keep it in sync.
+  if (graphView === 'mandala') renderMandalaView();
   return bodygraphApi;
+}
+
+/* ---- graph view toggle: bodygraph ⇄ official wheel (Rave Mandala) ---- */
+let graphView = 'bodygraph';
+
+export function setupGraphViewToggle() {
+  const buttons = document.querySelectorAll('.graph-view-btn');
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    if (graphView === btn.dataset.graphView) return;
+    graphView = btn.dataset.graphView;
+    buttons.forEach(b => b.classList.toggle('active', b === btn));
+    applyGraphView();
+  }));
+}
+
+function applyGraphView() {
+  const body = document.getElementById('bodygraph-container');
+  const mandala = document.getElementById('mandala-container');
+  if (!body || !mandala) return;
+  const isMandala = graphView === 'mandala';
+  body.classList.toggle('hidden', isMandala);
+  mandala.classList.toggle('hidden', !isMandala);
+  if (isMandala) renderMandalaView();
+}
+
+/**
+ * Render the wheel rings and drop a clone of the app's own (already fully
+ * coloured) bodygraph into the centre slot — the official composition.
+ */
+function renderMandalaView() {
+  const host = document.getElementById('mandala-container');
+  if (!host || !current) return;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = renderMandalaRings(current.chart);
+  const svg = wrap.firstElementChild;
+  if (!svg) return;
+  const source = document.querySelector('#bodygraph-container svg');
+  if (source) {
+    const clone = source.cloneNode(true);
+    clone.removeAttribute('style');
+    clone.setAttribute('x', '525');
+    clone.setAttribute('y', '420');
+    clone.setAttribute('width', '950');
+    clone.setAttribute('height', '1100');
+    clone.classList.add('md-bodygraph');
+    svg.appendChild(clone);
+  }
+  host.replaceChildren(svg);
 }
 
 // Reverse direction of the bodygraph's relational highlight: when a gate/center

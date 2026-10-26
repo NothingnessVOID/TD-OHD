@@ -25,7 +25,7 @@ import { syncAvailable, getSessionUser, requestMagicLink, signOut, startSync } f
 import { paramsToBirth, birthToParams } from './lib/share.js';
 import { configureShareMenu } from './lib/view-share.js';
 import { setupEntryView } from './views/entry.js';
-import { renderChartView, setupPanelTabs, rerenderBodygraph, refreshChartLanguage, refreshNatalFit, clearCurrentChart } from './views/chart.js';
+import { renderChartView, setupPanelTabs, setupGraphViewToggle, rerenderBodygraph, refreshChartLanguage, refreshNatalFit, clearCurrentChart } from './views/chart.js';
 import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
@@ -440,6 +440,7 @@ async function init() {
   setupAppearanceControls();
   setupNavigation();
   setupPanelTabs();
+  setupGraphViewToggle();
   setupTransitView();
   setupConnectionView();
   setupTeamView();

@@ -455,3 +455,41 @@
   #chart-view #panel-content.panel-content { padding: 0 10px 14px; }
   .pc-var-arrows { grid-template-columns: 1fr; }
 }
+
+/* ---- graph view toggle: bodygraph ⇄ wheel ---- */
+#chart-view .graph-view-toggle {
+  display: flex;
+  gap: 4px;
+  width: max-content;
+  margin: 0 auto 12px;
+  padding: 3px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+}
+#chart-view .graph-view-btn {
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 5px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#chart-view .graph-view-btn.active {
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+#chart-view .mandala-container {
+  padding: 2px;
+}
+#chart-view .mandala-container svg.md-root {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#chart-view .md-bodygraph { overflow: visible; }
