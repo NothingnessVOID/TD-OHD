@@ -4,17 +4,24 @@
 > 用户的硬性要求与设计偏好、外部扒取资产的位置、环境与工具注意事项。
 > 交接时间：2026-10-26 凌晨。上一任执行者：butter（毛毛）。
 
+> **2026-10-26 目录迁移说明**：本工作区已从
+> `~/Desktop/OH-WorkSpace/td-ohd-local-update/branches/chart-dashboard-issue34/`
+> 迁移到 `~/Documents/Projects/TD-OHD/worktrees/sheet-column-v1/`，共享仓库在
+> `~/Documents/Projects/TD-OHD/repository/`。下文路径已更新为新位置；迁移前的旧写法
+> 只在历史记录里保留。旧路径仍可访问是因为留了指回新位置的兼容软链，不要当工作目录用。
+
 ---
 
 ## 一、项目与仓库状态
 
 ### 仓库位置（git worktree 布局）
 
-主仓库源在 `~/Desktop/OH-WorkSpace/td-ohd-local-update/source`，通过 git worktree
+主仓库源在 `~/Documents/Projects/TD-OHD/repository`，各分支工作区在
+`~/Documents/Projects/TD-OHD/worktrees/`，通过 git worktree
 挂了多个分支目录。**本项设计工作全部在这个 worktree 里：**
 
 ```
-~/Desktop/OH-WorkSpace/td-ohd-local-update/branches/chart-dashboard-issue34/
+~/Documents/Projects/TD-OHD/worktrees/sheet-column-v1/
 ```
 
 - 分支名：`design/sheet-column-v1`
@@ -24,6 +31,7 @@
 ### 本分支提交历史（新→旧）
 
 ```
+3b88c83 docs: 交接文档（迁移前的状态记录）
 de3648c feat(skins): 三个重设计方向做成可切换皮肤（A朱砂/B铜瓷/C墨印）
 7b1b082 feat(chart): 轮盘开关移到顶栏 + 2/3 轮盘布局 + 轮盘交互（点击闸门/行星/卦象）
 faa729c feat(chart): 官方轮盘视图 — 人体图/轮盘切换，曼陀罗环 + 中心人体图克隆
@@ -47,7 +55,7 @@ faa729c feat(chart): 官方轮盘视图 — 人体图/轮盘切换，曼陀罗�
 - 开发预览一律用 vite dev server：`npx vite --port 5216 --strictPort`，
   日志 `/tmp/vite-5216.log`。构建命令（需要时）：
   `PATH="$HOME/.dotnet:$PATH" DOTNET_ROOT="$HOME/.dotnet" npm run build:desktop`
-- 回滚备份都在 `td-ohd-local-update/rollback-before-*` 目录。
+- 回滚备份都在 `~/Documents/Projects/TD-OHD/archive/backups/rollback-before-*` 目录。
 
 ---
 
@@ -125,7 +133,7 @@ faa729c feat(chart): 官方轮盘视图 — 人体图/轮盘切换，曼陀罗�
 
 ### 5. 官方文案资产扒取（已存档，未接入网站）
 
-位置：`~/Desktop/OH-WorkSpace/资料/hd-design-research/`
+位置：`~/Documents/Projects/TD-OHD/research/hd-design-research/`
 
 - `gate-texts.json` — 64 闸门：name / titleKeynote / keynote / desc（英文长文）
 - `cross-descs.json` — 192 轮回交叉：name / gates / desc（验证过：Demo 盘
@@ -228,7 +236,7 @@ Chrome）；或 CDP screencast。**在截图恢复之前，验证 UI 改动要�
 
 ## 五、外部扒取资产总目录
 
-### `~/Desktop/OH-WorkSpace/资料/hd-design-research/`（永久存档）
+### `~/Documents/Projects/TD-OHD/research/hd-design-research/`（永久存档）
 
 ```
 调研报告.md            — 完整逆向分析记录（含补充资产章节）
@@ -301,7 +309,7 @@ chart.cross（0-191，对应 cross-descs.json）、profile/type/authority/variab
 1. **无头截图当前是坏的**（见 P0），修好前用 DOM 断言验证
 2. vite dev server 5216 常驻（`nohup npx vite --port 5216 --strictPort`），
    HMR 正常；改 CSS/JS 后等一两秒再测
-3. playwright-core 只在项目目录里能 require（`cd branches/chart-dashboard-issue34`）
+3. playwright-core 只在项目目录里能 require（`cd ~/Documents/Projects/TD-OHD/worktrees/sheet-column-v1`）
 4. 测试种子档案：localStorage `natalengine_profiles`，脚本里有现成的
    （1991-11-12 08:42 上海，「设计预览」）
 5. 项目皮肤系统：`data-skin` + `data-theme` 挂在 html 根元素，
@@ -325,4 +333,4 @@ chart.cross（0-191，对应 cross-descs.json）、profile/type/authority/variab
    鎏铜青瓷、鎏铜青瓷·夜、墨韵朱印、墨韵朱印·夜），选定后写回 default.css
 4. 用户验收后再考虑：轮盘交互深化、文案接入、是否合并回 main
 
-有问题查 `~/Desktop/OH-WorkSpace/资料/hd-design-research/调研报告.md`（完整逆向记录）。
+有问题查 `~/Documents/Projects/TD-OHD/research/hd-design-research/调研报告.md`（完整逆向记录）。
