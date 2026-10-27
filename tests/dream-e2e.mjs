@@ -1,0 +1,1003 @@
+/**
+ * Sleep chart (DreamRave) end-to-end check — drives headless Chromium against a
+ * running dev server at a real viewport, which is the only way to see whether
+ * the shared graph shell actually sizes the reduced graph.
+ *
+ *   npx vite --host 127.0.0.1 --port 9962      # in one terminal
+ *   E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs
+ *
+ * Screenshots land in test-results/dream/ for visual review.
+ */
+
+import { chromium } from 'playwright-core';
+import { mkdirSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+// Pure data module: no DOM, so it imports cleanly here and keeps the stub paths
+// in the assertion single-sourced with the renderer.
+import { DREAM_PORTAL_STUBS, DREAM_VIEW_BOX } from '../src/lib/human-design/dream-topology.js';
+
+const BASE = process.env.E2E_URL || 'http://127.0.0.1:9962';
+const CHROME = process.env.CHROME_PATH;
+// Screenshots default next to the other sleep-chart captures, but a run that must
+// not touch tracked evidence can point them at a scratch directory instead.
+const SHOTS = process.env.E2E_SHOTS
+  ? path.resolve(process.env.E2E_SHOTS)
+  : path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'test-results', 'dream');
+mkdirSync(SHOTS, { recursive: true });
+
+const BIRTH = '?d=1990-05-20&t=06:30&tz=0&name=E2E%20Dream';
+const EXPECTED_CENTERS = ['throat', 'g', 'spleen', 'sacral', 'root'];
+const EXPECTED_GATES = [1, 5, 8, 12, 15, 19, 20, 27, 28, 38, 42, 50, 53, 57, 62].map(String);
+/** src/bodygraph.js BODYGRAPH_PAD: the renderer pads the viewBox on every side. */
+const BODYGRAPH_PAD = 16;
+/** The `viewBox` attribute the shell must emit: DREAM_VIEW_BOX grown by the pad. */
+const EXPECTED_VIEW_BOX = [
+  DREAM_VIEW_BOX.x - BODYGRAPH_PAD,
+  DREAM_VIEW_BOX.y - BODYGRAPH_PAD,
+  DREAM_VIEW_BOX.w + BODYGRAPH_PAD * 2,
+  DREAM_VIEW_BOX.h + BODYGRAPH_PAD * 2
+].join(' ');
+/** The graph is drawn rotated a quarter turn clockwise, so its box is landscape. */
+const ROTATED_ASPECT = (DREAM_VIEW_BOX.w + BODYGRAPH_PAD * 2) / (DREAM_VIEW_BOX.h + BODYGRAPH_PAD * 2);
+
+let failures = 0;
+const ok = name => console.log(`✔ ${name}`);
+const fail = (name, err) => { failures++; console.error(`✖ ${name}\n  ${err}`); };
+async function check(name, fn) {
+  try { await fn(); ok(name); } catch (err) { fail(name, err.message || err); }
+}
+const assert = (cond, msg) => { if (!cond) throw new Error(msg); };
+
+/**
+ * Pick a language through the real controls. `#language-switcher` is the hidden
+ * state mirror (aria-hidden, tabindex -1) that keeps screen readers and the
+ * stored preference in sync; the interactive control is the `<details
+ * id="language-menu">` inside `#more-menu`, which must be opened first.
+ */
+async function chooseLanguage(page, code) {
+  if (!(await page.$eval('#more-menu', n => n.open))) await page.click('#more-toggle');
+  if (!(await page.$eval('#language-menu', n => n.open))) await page.click('#language-menu > summary');
+  await page.click(`.language-actions button[data-language="${code}"]`);
+}
+
+const browser = await chromium.launch({ ...(CHROME ? { executablePath: CHROME } : { channel: process.env.CHROME_CHANNEL || 'chromium' }), headless: true });
+const page = await browser.newPage({ viewport: { width: 1380, height: 1000 }, locale: 'zh-CN' });
+page.setDefaultTimeout(15000);
+await page.addInitScript(() => localStorage.setItem('ohd-language', 'zh-CN'));
+const pageErrors = [];
+page.on('pageerror', err => pageErrors.push(err.message));
+page.on('console', msg => { if (msg.type() === 'error') pageErrors.push(`console: ${msg.text()}`); });
+
+await page.goto(`${BASE}/${BIRTH}&view=dream`, { waitUntil: 'load' });
+await page.waitForSelector('.dream-realm', { timeout: 30000 });
+await page.waitForTimeout(600);
+
+await check('navigation registers the sleep chart page', async () => {
+  const nav = await page.$$eval('.nav-link', nodes => nodes.map(n => n.dataset.view));
+  assert(nav.includes('dream'), `nav is ${nav.join(',')}`);
+  const active = await page.$eval('.nav-link.active', n => n.dataset.view);
+  assert(active === 'dream', `active view is ${active}`);
+});
+
+await check('graph draws exactly the five sleep centres', async () => {
+  const centers = await page.$$eval('#dream-bodygraph .bg-center', n => n.map(x => x.dataset.center));
+  assert(JSON.stringify(centers) === JSON.stringify(EXPECTED_CENTERS), `centers ${centers}`);
+});
+
+await check('graph draws exactly the fifteen sleep gates', async () => {
+  const gates = await page.$$eval('#dream-bodygraph .bg-gate', n => n.map(x => x.dataset.gate).sort((a, b) => a - b));
+  assert(JSON.stringify(gates) === JSON.stringify(EXPECTED_GATES), `gates ${gates}`);
+});
+
+await check('the three portals draw a stub instead of a dangling half-channel', async () => {
+  const all = await page.$$eval('#dream-bodygraph .bg-gate-path', n => n.length);
+  const gated = await page.$$eval('#dream-bodygraph .bg-gate-path[data-gate]', n => n.map(x => x.dataset.gate));
+  // Every sleep gate draws now: the twelve channelled gates keep their waking
+  // path, the three portals draw a short stub so nothing hangs over the empty
+  // space where a removed centre used to be.
+  assert(gated.length === 15, `${gated.length} gated half-paths, expected 15`);
+  for (const portal of ['12', '19', '62']) assert(gated.includes(portal), `portal ${portal} draws no path`);
+  // 20-57 is a dream channel, so the shared integration trunk contributes two spans.
+  assert(all === gated.length + 2, `${all} paths total, expected ${gated.length + 2}`);
+});
+
+await check('the portals 12 and 19 really draw the stub, not the full waking path', async () => {
+  for (const gate of [12, 19]) {
+    const d = await page.$eval(`#dream-bodygraph .bg-gate-path[data-gate="${gate}"]`, n => n.getAttribute('d'));
+    assert(d === DREAM_PORTAL_STUBS[gate], `gate ${gate} path is "${d}", expected the stub "${DREAM_PORTAL_STUBS[gate]}"`);
+  }
+  // Gate 62 has no override: its waking path is already stub length.
+  const d62 = await page.$eval('#dream-bodygraph .bg-gate-path[data-gate="62"]', n => n.getAttribute('d'));
+  assert(!Object.values(DREAM_PORTAL_STUBS).includes(d62), 'gate 62 should keep its own waking path');
+});
+
+await check('the graph is rotated a quarter turn with upright gate numbers', async () => {
+  const rotations = await page.$$eval('#dream-bodygraph .bodygraph-svg > g[transform]', n => n.map(x => x.getAttribute('transform')));
+  assert(rotations.length === 1, `${rotations.length} rotated groups directly under the svg, expected 1`);
+  assert(/^rotate\(90[ ,]/.test(rotations[0]), `geometry group transform is "${rotations[0]}"`);
+  // Every gate number counter-rotates, so a rotated graph still reads upright.
+  const numbers = await page.$$eval('#dream-bodygraph .bg-gate text', n => n.map(x => x.getAttribute('transform')));
+  assert(numbers.length === 15, `${numbers.length} gate numbers, expected 15`);
+  for (const transform of numbers) {
+    assert(/^rotate\(-90[ ,]/.test(transform || ''), `gate number transform is "${transform}", expected a -90 counter-rotation`);
+  }
+  // A rotated graph that forgot to swap its viewBox would still pass the group
+  // check above; the next check owns the box itself.
+});
+
+await check('the shared shell gives the reduced graph a real canvas', async () => {
+  const box = await page.$eval('#dream-bodygraph .bodygraph-svg', n => { const r = n.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; });
+  assert(box.w > 600, `canvas is only ${box.w}px wide — the shell fell back to its floor`);
+  assert(box.w > box.h, `sleep graph is rotated sideways, so it should be wider than tall, got ${box.w}x${box.h}`);
+  const ratio = box.w / box.h;
+  assert(ratio > 1.6 && ratio < 1.9, `aspect ${ratio.toFixed(3)} outside the measured ${ROTATED_ASPECT.toFixed(3)} range`);
+});
+
+await check('viewBox matches the measured dream geometry', async () => {
+  const vb = await page.$eval('#dream-bodygraph .bodygraph-svg', n => n.getAttribute('viewBox'));
+  assert(vb === EXPECTED_VIEW_BOX, `viewBox is ${vb}, expected ${EXPECTED_VIEW_BOX}`);
+});
+
+await check('type strip reports waking and sleeping types', async () => {
+  const chips = await page.$$eval('.dream-type-strip .dream-type-chip', n => n.map(x => x.textContent.trim()));
+  assert(chips.length === 2 && chips.every(Boolean), `chips ${JSON.stringify(chips)}`);
+  const facts = await page.$eval('.dream-type-facts', n => n.textContent);
+  assert(/睡眠类型/.test(facts), `facts: ${facts.slice(0, 80)}`);
+});
+
+await check('three night fields render with their portals', async () => {
+  const realms = await page.$$eval('.dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `realms ${realms}`);
+  const portals = await page.$$eval('.dream-portal-gate', n => n.map(x => x.textContent.trim()));
+  assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `portals ${portals}`);
+  const names = await page.$$eval('.dream-portal-name', n => n.map(x => x.textContent.trim()));
+  assert(names.every(Boolean), `portal names ${names}`);
+});
+
+await check('activation columns list only dream-gate planets', async () => {
+  const rows = await page.$$eval('.dream-column-row', n => n.map(x => Number(x.dataset.gate)));
+  assert(rows.length > 0, 'no activation rows');
+  assert(rows.every(g => EXPECTED_GATES.includes(String(g))), `non-dream gate in a column: ${rows}`);
+  // The single design keeps its one column per side, in the same shell slots the
+  // composite fills with two each.
+  const columns = await page.$$eval('.dream-graph-shell [data-slot="left"] .dream-column, .dream-graph-shell [data-slot="right"] .dream-column',
+    n => n.map(x => [...x.classList].find(c => /^dream-column-(design|personality)$/.test(c))));
+  assert(JSON.stringify(columns) === JSON.stringify(['dream-column-design', 'dream-column-personality']),
+    `single design columns ${columns}`);
+  const owners = await page.$$eval('.dream-graph-shell [data-slot] .dream-column', n => n.map(x => x.dataset.owner || null));
+  assert(owners.every(owner => owner === null), `the single design columns carry a composite owner: ${owners}`);
+});
+
+await check('the overlay is named with the shared transit term and timestamped', async () => {
+  // The overlay is named with the shared term (`Transit` → 行运), not with a
+  // sleep-chart word of its own.
+  const facts = await page.$eval('.dream-type-strip', n => n.textContent);
+  assert(/已叠加/.test(facts), `no overlay notice: ${facts.slice(0, 120)}`);
+  assert(/行运/.test(facts), `the overlay is not called 行运: ${facts.slice(0, 160)}`);
+  assert(!/天时/.test(facts), `the retired 天时 wording is still on the page: ${facts.slice(0, 160)}`);
+  const transitSources = await page.$$eval('.dream-row-source-transit', n => n.length);
+  assert(transitSources > 0, 'no transit-only rows anywhere in the three fields');
+});
+
+await check('the sleep page mounts the shared transit time control', async () => {
+  // Same component as the Transits page (`lib/transit-time-control.js`), mounted
+  // under its own id prefix so the two never collide.
+  for (const id of ['dream-transit-date', 'dream-transit-time', 'dream-transit-timezone', 'dream-transit-now']) {
+    assert(await page.$(`#${id}`), `missing #${id}`);
+  }
+  assert(!(await page.$('#dream-transit-only-toggle')), 'the sleep page shows the transit-only mode it does not have');
+  const step = await page.$eval('#dream-transit-time', n => n.getAttribute('step'));
+  assert(step === '1', `time input step is ${step}`);
+  const zone = (await page.$eval('#dream-transit-timezone', n => n.textContent)).trim();
+  assert(zone.length > 0, 'the timezone output is empty');
+  const date = await page.$eval('#dream-transit-date', n => n.value);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(date), `date input is "${date}"`);
+});
+
+await check('moving the time control re-reads the overlay at the new moment', async () => {
+  const overlayText = () => page.$eval('.dream-type-strip', n => n.textContent);
+  const transitChips = () => page.$$eval('.dream-row-source-transit .dream-planet-chip', n => n.map(x => x.textContent.trim()));
+  const before = await overlayText();
+  const chipsBefore = await transitChips();
+  // A date two days out: the overlay must move, and it must move because of the
+  // control, not because the page reloaded (the lunar arc keeps its date).
+  const provenanceBefore = await page.$eval('.dream-provenance', n => n.textContent);
+  await page.evaluate(() => {
+    const date = document.getElementById('dream-transit-date');
+    date.value = '2026-02-03';
+    date.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  await page.waitForFunction(previous => (document.querySelector('.dream-type-strip')?.textContent || '') !== previous,
+    before, { timeout: 30000 });
+  await page.waitForTimeout(400);
+  const after = await overlayText();
+  const chipsAfter = await transitChips();
+  assert(after !== before, 'the overlay notice did not change with the selected moment');
+  assert(JSON.stringify(chipsAfter) !== JSON.stringify(chipsBefore),
+    `the transit activations are identical at two different moments: ${chipsAfter.join(', ')}`);
+  const provenanceAfter = await page.$eval('.dream-provenance', n => n.textContent);
+  assert(provenanceAfter === provenanceBefore,
+    'the lunar design moment changed with the overlay — the solve was recomputed instead of reused');
+  // Back to now so the rest of the run starts from the page's default state.
+  await page.click('#dream-transit-now');
+  await page.waitForTimeout(600);
+});
+
+await check('provenance line reports the lunar design moment', async () => {
+  const text = await page.$eval('.dream-provenance', n => n.textContent);
+  assert(/88/.test(text) && /天/.test(text), `provenance: ${text}`);
+});
+
+await page.screenshot({ path: path.join(SHOTS, 'desktop-zh-CN.png'), fullPage: true });
+
+await check('no page or console errors on first render', async () => {
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+// --- interaction: hovering a column row lights the matching gate ---
+await check('hovering an activation row lights its gate in the graph', async () => {
+  const gate = await page.$eval('.dream-column-row', n => n.dataset.gate);
+  await page.hover('.dream-column-row');
+  await page.waitForTimeout(200);
+  const lit = await page.$eval(`#dream-bodygraph .bg-gate[data-gate="${gate}"]`, n => n.classList.contains('bg-lit'));
+  assert(lit, `gate ${gate} was not lit`);
+});
+
+// --- detail sheet: sleep-chart data, never the waking design ---
+await check('clicking a gate opens the sleep-chart detail sheet', async () => {
+  const gate = await page.$eval('.dream-column-row', n => n.dataset.gate);
+  await page.click(`#dream-bodygraph .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const title = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/Gate|\u95f8\u95e8/.test(title), `sheet did not open for gate ${gate}`);
+});
+
+await check('the gate sheet shows sleep activations only, never the waking design', async () => {
+  // The regression this guards: the waking detail path reads chart.js's own
+  // current chart for the design side, which would list the Sun-minus-88
+  // activations instead of the Moon-minus-88 ones.
+  const sleepSet = new Set(await page.$$eval('.dream-column-row', rows =>
+    rows.map(row => row.querySelector('.dream-column-act')?.textContent.trim()).filter(Boolean)));
+  const transitChips = await page.$$eval('.dream-row-planets .dream-planet-chip', chips =>
+    chips.map(chip => chip.textContent.match(/(\d+\.\d)/)?.[1]).filter(Boolean));
+  transitChips.forEach(v => sleepSet.add(v));
+  const sheetTokens = await page.$$eval('#dream-detail .dream-detail-source-planets',
+    nodes => nodes.flatMap(n => [...n.textContent.matchAll(/\b(\d+\.\d)\b/g)].map(m => m[1])));
+  assert(sheetTokens.length > 0, 'the sheet listed no activations at all');
+  const foreign = [...new Set(sheetTokens)].filter(token => !sleepSet.has(token));
+  assert(foreign.length === 0,
+    `activations in the sheet that are not in the sleep design (waking design leaked in?): ${foreign.join(', ')}`);
+});
+
+await check('the gate sheet carries the dream-specific facts', async () => {
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7231|\u770b\u89c1|\u8c03\u9891|\u9ed1\u6697|\u559c\u60a6|\u53d8\u5f02|\u6e34\u671b|\u6027|\u65f6\u95f4|\u6df7\u6d8c|\u73af\u5883|\u98de\u79bb|\u6b7b\u4ea1|\u653b\u51fb|\u6050\u60e7|Love|Sight|Time|Fear/.test(sheet),
+    'no dream gate name in the sheet');
+  assert(/\u79d8\u5bc6|\u5360\u6709|\u52a8\u8361|\u75f4\u8ff7|\u5e7b\u60f3|\u613f\u666f|Secrets|Possession|Obsession|Vision/.test(sheet),
+    'no dream line theme in the sheet');
+  assert(/\u5149\u573a|\u5730\u7403\u5c42\u9762|\u5669\u68a6\u9886\u57df|Light Field|Earth Plane|Demon Realm/.test(sheet),
+    'no night field tag in the sheet');
+});
+
+await check('a realm channel row opens the channel sheet', async () => {
+  // The gate sheet from the checks above is still open and is modal, so it would
+  // swallow the click. Dismiss it first.
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+  const row = await page.$('.dream-channel-open');
+  if (!row) return; // a field holding no channel has nothing to open
+  const id = await row.getAttribute('data-channel');
+  await row.click();
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-channel]', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(sheet.includes(id) || sheet.includes(id.replace('-', '\u2013')), `channel sheet did not mention ${id}`);
+});
+
+await check('closing the sheet dismisses it', async () => {
+  await page.click('#dream-detail .gate-detail-close');
+  await page.waitForTimeout(200);
+  const hidden = await page.$eval('#dream-detail', n => n.classList.contains('hidden'));
+  assert(hidden, 'sheet did not close');
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+// --- language switch redraws from cache without recomputing ---
+await check('switching to English redraws the sleep chart', async () => {
+  await chooseLanguage(page, 'en');
+  await page.waitForSelector('.dream-realm', { timeout: 10000 });
+  await page.waitForTimeout(400);
+  const locale = await page.evaluate(() => document.documentElement.lang);
+  assert(locale === 'en', `document language is ${locale}`);
+  const title = await page.$eval('.dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(title === 'Light Field', `realm title is "${title}"`);
+  const chip = await page.$eval('.dream-type-strip .dream-type-chip', n => n.textContent.trim());
+  assert(/^[A-Z]/.test(chip), `type chip not translated: ${chip}`);
+  // The redraw must keep the whole page, not just the graph.
+  assert(await page.$$eval('.dream-realm', n => n.length) === 3, 'the three night fields did not survive the redraw');
+  // A finished render leaves no status line, and a language change must not
+  // resurrect the "Computing…" message that was cleared when it ended.
+  const status = await page.$eval('#dream-status', n => ({ text: n.textContent.trim(), key: n.dataset.i18n || null }));
+  assert(status.text === '', `status line still reads "${status.text}" after a language switch`);
+  assert(status.key === null, `the cleared status line kept its source key "${status.key}"`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+await page.screenshot({ path: path.join(SHOTS, 'desktop-en.png'), fullPage: true });
+
+await check('switching back to Simplified Chinese restores the terms', async () => {
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForTimeout(400);
+  const title = await page.$eval('.dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(title === '光场', `realm title is "${title}"`);
+});
+
+// --- every registered skin must render the reduced graph without error ---
+await check('every skin re-renders the sleep graph', async () => {
+  // Skins live in the appearance dialog: `#skin-picker` holds one
+  // `button[data-skin-id]` per skin, and the dialog only renders them once
+  // opened. `#theme-toggle` and `#skin-settings-button` are inside `#more-menu`.
+  if (!(await page.$eval('#more-menu', n => n.open))) await page.click('#more-toggle');
+  await page.click('#skin-settings-button');
+  await page.waitForSelector('#skin-settings[open]', { timeout: 5000 });
+  try {
+    const skins = await page.$$eval('#skin-picker [data-skin-id]', n => n.map(b => b.dataset.skinId));
+    assert(skins.length > 1, `no skin picker buttons found (got ${skins.length})`);
+    for (const skin of skins) {
+      await page.click(`#skin-picker [data-skin-id="${skin}"]`);
+      await page.waitForTimeout(220);
+      const applied = await page.evaluate(() => document.documentElement.dataset.skin);
+      assert(applied === skin, `clicking skin ${skin} left data-skin=${applied}`);
+      const centers = await page.$$eval('#dream-bodygraph .bg-center', n => n.length);
+      assert(centers === 5, `skin ${skin}: ${centers} centres`);
+      assert(pageErrors.length === 0, `skin ${skin}: ${pageErrors.join(' | ')}`);
+    }
+  } finally {
+    // The dialog is modal: leaving it open would block every later check. Its
+    // closed state is hidden, so poll the property instead of waiting for a
+    // visible selector.
+    await page.click('#skin-picker [data-skin-id="default-light"]').catch(() => {});
+    if (await page.$eval('#skin-settings', n => n.open)) await page.click('#skin-settings-close');
+    await page.waitForFunction(() => document.getElementById('skin-settings')?.open === false, null, { timeout: 5000 });
+  }
+});
+
+// --- dark theme ---
+await check('dark theme re-renders the sleep graph', async () => {
+  // The theme toggle sits in the `#more-menu` panel, which is closed by CSS
+  // until the summary is clicked.
+  if (!(await page.$eval('#more-menu', n => n.open))) await page.click('#more-toggle');
+  await page.click('#theme-toggle');
+  await page.waitForTimeout(300);
+  const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
+  assert(theme === 'dark', `theme is ${theme}`);
+  const centers = await page.$$eval('#dream-bodygraph .bg-center', n => n.length);
+  assert(centers === 5, `${centers} centres in ${theme}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'desktop-dark.png'), fullPage: true });
+  if (!(await page.$eval('#more-menu', n => n.open))) await page.click('#more-toggle');
+  await page.click('#theme-toggle');
+  await page.waitForTimeout(200);
+});
+
+// --- phone layout must not overflow horizontally ---
+await check('phone viewport keeps the page inside the screen', async () => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(500);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert(overflow <= 1, `horizontal overflow of ${overflow}px`);
+  const box = await page.$eval('#dream-bodygraph .bodygraph-svg', n => { const r = n.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; });
+  assert(box.w > 120 && box.w <= 390, `phone canvas ${box.w}px`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'phone-zh-CN.png'), fullPage: true });
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(400);
+});
+
+// --- the sleep page itself picks the second person ---
+// Two saved people, written straight into the people store so the page has a
+// stable current person (person A) and one candidate to compare against (B).
+// Seeding storage keeps the fixture out of the UI flow being tested.
+const SEEDED_PEOPLE = [
+  {
+    id: 'e2e-dream-a', name: 'E2E Dream', birthDate: '1990-05-20', birthTime: '06:30',
+    timeUnknown: false,
+    location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+    createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'e2e-dream-b', name: 'E2E Partner', birthDate: '1992-08-08', birthTime: '10:15',
+    timeUnknown: false,
+    location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+    createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+  }
+];
+
+await page.evaluate(people => {
+  localStorage.setItem(['natal', 'engine', '_profiles'].join(''), JSON.stringify(people));
+  localStorage.setItem('ohd-last-person-id', people[0].id);
+}, SEEDED_PEOPLE);
+await page.goto(`${BASE}/`, { waitUntil: 'load' });
+await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 30000 });
+await page.click('.nav-link[data-view="dream"]');
+await page.waitForSelector('.dream-realm', { timeout: 30000 });
+await page.waitForTimeout(500);
+
+await check('the sleep page carries its own compare entry next to the shared time control', async () => {
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
+  // The standalone refresh button is gone: the shared time control's Now button
+  // covers it, so the toolbar carries the comparison entry only. The composite's
+  // exit button lives here too but is hidden until a pair is on screen.
+  const toolbar = await page.$$eval('.dream-toolbar button', n => n.filter(b => !b.hidden).map(b => b.id));
+  assert(JSON.stringify(toolbar) === JSON.stringify(['dream-compare']), `toolbar buttons ${toolbar}`);
+  const exitHidden = await page.$eval('#dream-compare-exit', n => n.hidden);
+  assert(exitHidden === true, 'the composite exit button is shown on the single sleep chart');
+  assert(!(await page.$('#dream-refresh')), 'the retired refresh button is still in the page');
+  assert(await page.$('#dream-transit-now'), 'the time control lost its Now button');
+  // The relationship page no longer offers the handover.
+  await page.click('.nav-link[data-view="connection"]');
+  await page.waitForTimeout(400);
+  const connEntry = await page.$('#conn-view-dreams');
+  assert(!connEntry, 'the connection view still offers a sleep-chart jump button');
+  await page.click('.nav-link[data-view="dream"]');
+  await page.waitForSelector('.dream-realm', { timeout: 30000 });
+  await page.waitForTimeout(300);
+});
+
+/**
+ * The shared person picker (`src/lib/person-picker.js`) is the Team picker
+ * extracted: rows are `[data-add-person]` buttons inside a modal overlay, with
+ * the historical `#team-person-search` input. Single selection commits on the
+ * row click, so no confirm button is involved.
+ */
+async function pickSecondPerson(page, name) {
+  await page.waitForSelector('.modal-overlay [data-add-person]', { timeout: 15000 });
+  const search = await page.$('.modal-overlay #team-person-search');
+  if (search) { await search.fill(name); await page.waitForTimeout(250); }
+  const rows = await page.$$('.modal-overlay [data-add-person]');
+  for (const row of rows) {
+    if (!(await row.isVisible())) continue;
+    const text = (await row.textContent()) || '';
+    if (!text.includes(name)) continue;
+    await row.click();
+    return true;
+  }
+  return false;
+}
+
+await page.click('#dream-compare');
+await page.waitForSelector('.modal-overlay [data-add-person]', { timeout: 15000 });
+
+await check('the compare button opens the shared person picker without the loaded person', async () => {
+  const names = await page.$$eval('.modal-overlay [data-add-person] strong', n => n.map(x => x.textContent.trim()));
+  assert(!names.includes('E2E Dream'), `the picker lists the loaded person: ${names}`);
+  assert(names.includes('E2E Partner'), `the picker does not list the second person: ${names}`);
+  // Single selection: no confirm button, the row is the commit.
+  const confirm = await page.$('.modal-overlay #team-selection-confirm');
+  assert(!confirm, 'single-selection mode still shows a confirm button');
+  await page.click('.modal-overlay [data-close]');
+  await page.waitForTimeout(300);
+  assert(!(await page.$('.modal-overlay')), 'cancelling left the picker open');
+  assert(!(await page.$('#dream-composite')), 'cancelling still built a comparison');
+  // Reopen for the flow below.
+  await page.click('#dream-compare');
+  const committed = await pickSecondPerson(page, 'E2E Partner');
+  assert(committed, 'the picker did not offer the second person to commit');
+});
+
+await check('choosing a second person on the sleep page builds the comparison', async () => {
+  await page.waitForSelector('#dream-composite', { timeout: 60000 });
+  await page.waitForSelector('.dream-compare-facts', { timeout: 30000 });
+  await page.waitForTimeout(600);
+  // One shared body: both sleeping designs on a single five-centre graph.
+  const centers = await page.$$eval('#dream-composite .bg-center', n => n.length);
+  assert(centers === 5, `${centers} centres in the composite (expected one five-centre body)`);
+  const gates = await page.$$eval('#dream-composite .bg-gate', n => n.length);
+  assert(gates === 15, `${gates} gates in the composite`);
+  const legend = await page.$$eval('.dream-view .composite-legend .lg', n => n.length);
+  assert(legend === 4, `${legend} legend entries (expected A / B / both / defined-together)`);
+  const facts = await page.$eval('.dream-compare-facts', n => n.textContent);
+  assert(/\u7761\u7720\u7c7b\u578b|Sleep type/.test(facts), `no per-person sleep type in the facts: ${facts.slice(0, 80)}`);
+  const heading = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/E2E Dream/.test(heading) && /E2E Partner/.test(heading), `comparison heading is "${heading}"`);
+  // The picker excluded the loaded person, so the pair is A + the chosen B.
+  const active = await page.$eval('.nav-link.active', n => n.dataset.view);
+  assert(active === 'dream', `landed on ${active}`);
+  // The entry point turns into a swap once a pair exists.
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u66f4\u6362\u4eba\u9009', `compare button reads "${label}" in comparison mode`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'comparison.png'), fullPage: true });
+});
+
+await check('the composite keeps the same graph shell with both people\'s columns', async () => {
+  // The defect this guards: the composite built the shared shell but filled
+  // neither slot, so the natal chart's two side columns had no counterpart.
+  const columns = await page.$$eval('#dream-composite-shell [data-slot="left"] .dream-column, #dream-composite-shell [data-slot="right"] .dream-column',
+    nodes => nodes.map(n => ({ side: [...n.classList].find(c => /^dream-column-(design|personality)$/.test(c)), owner: n.dataset.owner, head: n.querySelector('.dream-column-head')?.textContent.trim() })));
+  assert(columns.length === 4, `${columns.length} activation columns in the composite, expected 4`);
+  for (const side of ['dream-column-design', 'dream-column-personality']) {
+    for (const owner of ['E2E Dream', 'E2E Partner']) {
+      assert(columns.some(c => c.side === side && c.owner === owner),
+        `missing ${owner} ${side}; got ${JSON.stringify(columns)}`);
+    }
+  }
+  // Each heading names its person, so two stacked columns stay tellable apart.
+  for (const column of columns) {
+    assert(column.head.includes(column.owner), `column heading "${column.head}" does not name ${column.owner}`);
+  }
+  // Left slot is person A, right slot is person B, as the connection composite does.
+  const leftOwners = await page.$$eval('#dream-composite-shell [data-slot="left"] .dream-column', n => [...new Set(n.map(x => x.dataset.owner))]);
+  const rightOwners = await page.$$eval('#dream-composite-shell [data-slot="right"] .dream-column', n => [...new Set(n.map(x => x.dataset.owner))]);
+  assert(JSON.stringify(leftOwners) === JSON.stringify(['E2E Dream']), `left slot owners ${leftOwners}`);
+  assert(JSON.stringify(rightOwners) === JSON.stringify(['E2E Partner']), `right slot owners ${rightOwners}`);
+  // The columns are the same component as the single design's: same row markup.
+  const rows = await page.$$eval('#dream-composite-shell .dream-column-row', n => n.map(x => Number(x.dataset.gate)));
+  assert(rows.length > 0 && rows.every(g => EXPECTED_GATES.includes(String(g))),
+    `composite column rows are not dream-gate activations: ${rows}`);
+});
+
+await check('a composite column row opens the composite ownership sheet', async () => {
+  const gate = await page.$eval('#dream-composite-shell .dream-column-row', n => n.dataset.gate);
+  await page.click(`#dream-composite-shell .dream-column-row[data-gate="${gate}"]`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7531|Carried by/.test(sheet), 'the column row opened a sheet without the ownership line');
+  // Composite context, not the single design's three sources.
+  assert(!/\u6e05\u9192\u4eba\u683c|Awake personality/.test(sheet),
+    'the composite column row opened the single-design sheet');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+});
+
+// Four columns (two per slot) is the widest layout the sleep chart produces;
+// the phone overflow guard above runs in single mode only, so assert it here.
+await check('the composite stays inside a phone viewport', async () => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(500);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert(overflow <= 1, `composite horizontal overflow of ${overflow}px`);
+  const widths = await page.$$eval('#dream-composite-shell .dream-column', n => n.map(x => Math.round(x.getBoundingClientRect().width)));
+  assert(widths.length === 4 && widths.every(w => w > 40 && w <= 180), `composite column widths ${widths}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'composite-phone.png'), fullPage: true });
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(400);
+});
+
+await check('the time control is hidden while the composite is shown', async () => {
+  // The composite carries no overlay, so offering a moment would promise a change
+  // that cannot happen.
+  const hidden = await page.$eval('#dream-time-host', n => n.hidden);
+  assert(hidden === true, 'the time control is still visible in comparison mode');
+});
+
+await check('composite gates open an ownership sheet', async () => {
+  const gate = await page.$eval('#dream-composite .bg-gate[data-gate]', n => n.dataset.gate);
+  await page.click(`#dream-composite .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7531|Carried by/.test(sheet), 'composite sheet does not report who carries the gate');
+  // The three-source activation block belongs to the single sleep design only.
+  assert(!/\u6e05\u9192\u4eba\u683c|Awake personality/.test(sheet), 'composite sheet shows single-person activation sources');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+});
+
+await check('comparison mode overlays no transit', async () => {
+  // Structural, not textual: the intro sentence itself says the overlay is
+  // absent, so the word appearing is expected. What must not exist is any
+  // transit activation, transit ring or overlay timestamp.
+  const text = await page.$eval('#dream-content', n => n.textContent);
+  assert(!/\u5df2\u53e0\u52a0/.test(text), 'comparison carries the overlay timestamp notice');
+  const rings = await page.$$eval('#dream-composite .bg-transit-ring', n => n.length);
+  assert(rings === 0, `${rings} transit rings in the composite`);
+  const transitSources = await page.$$eval('#dream-content .dream-row-source-transit', n => n.length);
+  assert(transitSources === 0, `${transitSources} transit-source blocks in the composite`);
+  const transitTags = await page.$$eval('#dream-content .dream-row-transit-tag', n => n.length);
+  assert(transitTags === 0, `${transitTags} transit tags in the composite`);
+  // The three night fields ARE part of the composite now, so assert they are
+  // there and that their channel states are ownership states, never the single
+  // design's overlay states ("由{行运}接通" / "仅{行运}接通").
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']),
+    `composite night fields are ${JSON.stringify(realms)}`);
+  const statuses = await page.$$eval('#dream-content .dream-realm .dream-channel-status', n => n.map(x => x.textContent.trim()));
+  assert(statuses.length > 0, 'the composite night fields carry no channel states');
+  assert(statuses.every(s => !/\u884c\u8fd0|\u6d41\u65e5|Transit/i.test(s)),
+    `a composite channel state still reads as an overlay state: ${statuses.join(' | ')}`);
+});
+
+await check('a language switch redraws the composite without dropping it', async () => {
+  await chooseLanguage(page, 'en');
+  await page.waitForSelector('#dream-composite', { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const head = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/Sleep charts of/.test(head), `composite heading after the switch: ${head}`);
+  const centers = await page.$$eval('#dream-composite .bg-center', n => n.length);
+  assert(centers === 5, `${centers} centres after switching language in comparison mode`);
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForSelector('#dream-composite', { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const back = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/\u7761\u7720\u56fe/.test(back), `composite heading back in Chinese: ${back}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('leaving the comparison returns to the single sleep chart', async () => {
+  await page.click('#dream-compare-exit');
+  await page.waitForSelector('.dream-realms', { timeout: 30000 });
+  await page.waitForTimeout(500);
+  const realms = await page.$$eval('.dream-realm', n => n.length);
+  assert(realms === 3, `${realms} realms after exiting comparison`);
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}" after exiting`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+// --- a partner with no known birth time compares like any other person ---
+await check('a partner whose birth time is unknown still compares, at noon', async () => {
+  await page.evaluate(() => {
+    const key = ['natal', 'engine', '_profiles'].join('');
+    const people = JSON.parse(localStorage.getItem(key));
+    people.push({
+      id: 'e2e-dream-c', name: 'E2E Noon', birthDate: '1992-08-08', birthTime: '12:00',
+      timeUnknown: true,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+    localStorage.setItem(key, JSON.stringify(people));
+    window.dispatchEvent(new Event('ohd-people-changed'));
+  });
+  await page.waitForTimeout(300);
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Noon');
+  assert(used, 'the picker did not list the person with no known birth time');
+  await page.waitForSelector('#dream-composite', { timeout: 60000 });
+  await page.waitForTimeout(500);
+  const heading = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/E2E Noon/.test(heading), `comparison heading is "${heading}"`);
+  // The noon estimate is the existing rule (birthFromPerson keeps timeUnknown,
+  // the engine reads 12:00); nothing about it is invented on this page.
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem(['natal', 'engine', '_profiles'].join('')))
+    .find(p => p.id === 'e2e-dream-c'));
+  assert(stored.timeUnknown === true && stored.birthTime === '12:00', `stored partner ${JSON.stringify(stored)}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.click('#dream-compare-exit');
+  await page.waitForSelector('.dream-realms', { timeout: 30000 });
+  await page.waitForTimeout(300);
+});
+
+// --- a partner whose birth record cannot be computed reports it in the toolbar ---
+await check('an incomplete partner birth reports the error in the toolbar, not a new dialog', async () => {
+  await page.evaluate(() => {
+    const key = ['natal', 'engine', '_profiles'].join('');
+    const people = JSON.parse(localStorage.getItem(key));
+    people.push({
+      id: 'e2e-dream-bad', name: 'E2E Broken', birthDate: '', birthTime: '12:00',
+      timeUnknown: false,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+    localStorage.setItem(key, JSON.stringify(people));
+    window.dispatchEvent(new Event('ohd-people-changed'));
+  });
+  await page.waitForTimeout(300);
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Broken');
+  assert(used, 'the picker did not list the broken record');
+  await page.waitForFunction(() => /\u7761\u7720\u56fe\u8ba1\u7b97\u5931\u8d25/.test(document.getElementById('dream-status')?.textContent || ''),
+    null, { timeout: 30000 });
+  const status = await page.$eval('#dream-status', n => n.textContent.trim());
+  assert(/\u7761\u7720\u56fe\u8ba1\u7b97\u5931\u8d25\uff1a/.test(status), `status reads "${status}"`);
+  // No second dialog: the only overlay left is nothing at all.
+  assert(!(await page.$('.modal-overlay')), 'the failure opened a dialog');
+  // The single sleep chart is still what the page shows.
+  assert(!(await page.$('#dream-composite')), 'a comparison was drawn from a broken record');
+  const realms = await page.$$eval('.dream-realm', n => n.length);
+  assert(realms === 3, `${realms} realms after the failure`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  // The entry point stays available so the user can pick someone else.
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
+});
+
+// --- switching the loaded person must not keep the stale pair ---
+await check('switching people drops the comparison that belonged to the old pair', async () => {
+  // Build a pair again, then change the loaded person through the header switcher.
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Partner');
+  assert(used, 'the picker did not offer a second person the second time');
+  await page.waitForSelector('#dream-composite', { timeout: 60000 });
+  await page.selectOption('#people-switcher', 'e2e-dream-b');
+  await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 30000 });
+  await page.click('.nav-link[data-view="dream"]');
+  await page.waitForSelector('.dream-realm', { timeout: 30000 });
+  await page.waitForTimeout(400);
+  const composite = await page.$('#dream-composite');
+  assert(!composite, 'the sleep page still shows the previous pair\'s composite');
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}" for the new person`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+// ==========================================
+// The composite's three night fields
+// ==========================================
+// A dedicated pair whose fifteen dream gates complete the six dream channels in
+// all five ownership states at once, so the composite vocabulary is checked
+// against real engine output instead of a fabricated model. Dates are built from
+// numeric parts so the fixture stays readable without a bare date literal.
+const isoDate = (year, month, day) => new Date(Date.UTC(year, month - 1, day)).toISOString().slice(0, 10);
+const REALMS_A = { id: 'e2e-realms-a', name: 'E2E Realms A', date: isoDate(1986, 11, 17), time: '06:30' };
+const REALMS_B = { id: 'e2e-realms-b', name: 'E2E Realms B', date: isoDate(1989, 2, 17), time: '06:30' };
+/** The six dream channels of this pair, with the state each must report. */
+const REALM_CHANNEL_STATES = {
+  // `variant` is the badge/edge style the status table picks, `owner` the person
+  // colour layered on top, `named` the person the wording must mention.
+  '1-8': { status: 'both', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-both', named: null },
+  '20-57': { status: 'a', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-a', named: 'a' },
+  '42-53': { status: 'b', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-b', named: 'b' },
+  '28-38': { status: 'halved', variant: 'dream-channel-open-completed', owner: 'dream-channel-owner-both', named: null },
+  '5-15': { status: 'inactive', variant: 'dream-channel-open-inactive', owner: null, named: null },
+  '27-50': { status: 'inactive', variant: 'dream-channel-open-inactive', owner: null, named: null }
+};
+
+await page.evaluate(pair => {
+  const key = ['natal', 'engine', '_profiles'].join('');
+  const people = JSON.parse(localStorage.getItem(key));
+  for (const person of pair) {
+    people.push({
+      id: person.id, name: person.name, birthDate: person.date, birthTime: person.time,
+      timeUnknown: false,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+  }
+  localStorage.setItem(key, JSON.stringify(people));
+  window.dispatchEvent(new Event('ohd-people-changed'));
+}, [REALMS_A, REALMS_B]);
+await page.waitForTimeout(400);
+await page.selectOption('#people-switcher', REALMS_A.id);
+await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 60000 });
+await page.click('.nav-link[data-view="dream"]');
+await page.waitForSelector('.dream-realm', { timeout: 60000 });
+await page.waitForTimeout(400);
+await page.click('#dream-compare');
+const realmsPartner = await pickSecondPerson(page, REALMS_B.name);
+assert(realmsPartner, 'the picker did not offer the second realm pair person');
+await page.waitForSelector('#dream-composite', { timeout: 90000 });
+await page.waitForSelector('.dream-compare-facts', { timeout: 60000 });
+await page.waitForTimeout(700);
+
+await check('the composite carries all three night fields, in reveal order', async () => {
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']),
+    `composite night fields are ${JSON.stringify(realms)}`);
+  // The field titles and the portal plaques are the single design's own markup.
+  const titles = await page.$$eval('#dream-content .dream-realm-title', n => n.map(x => x.textContent.trim()));
+  assert(titles.length === 3 && titles.every(Boolean), `composite field titles ${titles}`);
+  const portals = await page.$$eval('#dream-content .dream-realm-portal .dream-portal-gate', n => n.map(x => x.textContent.trim()));
+  assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `composite portals ${portals}`);
+  const wrappers = await page.$$eval('#dream-content .dream-realms', n => n.length);
+  assert(wrappers === 1, `${wrappers} .dream-realms wrappers in the composite`);
+});
+
+await check('the night fields sit below the graph and above the fact block', async () => {
+  // The user asked for the fields to move down under the composite bodygraph, so
+  // the order is asserted on the real DOM, not on the source order.
+  const order = await page.evaluate(() => {
+    const kids = [...document.querySelectorAll('#dream-content > *')];
+    const index = selector => kids.findIndex(node => node.matches(selector));
+    return { shell: index('.dream-shell'), realms: index('.dream-realms'), facts: index('.dream-compare-facts') };
+  });
+  assert(order.shell >= 0, 'the composite lost its graph shell');
+  assert(order.realms > order.shell, `.dream-realms (#${order.realms}) is not after the graph shell (#${order.shell})`);
+  assert(order.realms < order.facts, `.dream-realms (#${order.realms}) is not before the facts (#${order.facts})`);
+});
+
+await check('an opened portal is marked, a closed one is not', async () => {
+  const states = await page.$$eval('#dream-content .dream-realm', n => n.map(panel => ({
+    realm: panel.dataset.realm,
+    active: panel.querySelector('.dream-realm-portal')?.classList.contains('dream-portal-active') ?? null
+  })));
+  for (const state of states) assert(state.active !== null, `${state.realm} has no portal block`);
+  // Only the demon portal (19) is carried by this pair; 62 and 12 are not.
+  assert(JSON.stringify(states) === JSON.stringify([
+    { realm: 'light', active: false }, { realm: 'earth', active: false }, { realm: 'demon', active: true }
+  ]), `portal states ${JSON.stringify(states)}`);
+});
+
+await check('gate chips group by owner and keep the half as a second cue', async () => {
+  // Gate 1 is carried by both people in both halves of their sleeping design.
+  const chipGroups = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source', nodes =>
+    nodes.map(node => [...node.classList]));
+  assert(chipGroups.length >= 2, `gate 1 has ${chipGroups.length} source groups, expected one per person and half`);
+  const has = prefix => chipGroups.some(classes => classes.includes(prefix));
+  assert(has('dream-row-source-owner-a'), 'gate 1 has no person-A group');
+  assert(has('dream-row-source-owner-b'), 'gate 1 has no person-B group');
+  // Colour is the owner cue; the solid/dashed rule must still say which half.
+  assert(has('dream-row-source-personality'), 'gate 1 lost the personality rule style');
+  assert(has('dream-row-source-design'), 'gate 1 lost the design rule style');
+  // Every group is a person variant: no group without an owner colour.
+  for (const classes of chipGroups) {
+    assert(classes.some(c => c === 'dream-row-source-owner-a' || c === 'dream-row-source-owner-b'),
+      `a gate group has no owner: ${classes.join(' ')}`);
+  }
+  // A gate only one person carries shows only that person's colour.
+  const oneSided = await page.$$eval('#dream-content .dream-realm-demon .dream-realm-row[data-gate="28"] .dream-row-source',
+    nodes => nodes.map(node => [...node.classList]));
+  assert(oneSided.length > 0, 'gate 28 has no source group');
+  assert(oneSided.every(classes => classes.includes('dream-row-source-owner-a') && !classes.includes('dream-row-source-owner-b')),
+    `gate 28 mixes owners: ${JSON.stringify(oneSided)}`);
+});
+
+await check('a night-field row opens the ownership sheet, not the single-design one', async () => {
+  const gate = await page.$eval('#dream-content .dream-realm-light .dream-row-open', n => n.dataset.gate);
+  await page.click(`#dream-content .dream-realm-light .dream-row-open[data-gate="${gate}"]`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7531|Carried by/.test(sheet), `the field row opened a sheet without the ownership line (gate ${gate})`);
+  // The three activation sources belong to the single sleep design only.
+  assert(!/\u6e05\u9192\u4eba\u683c|Awake personality/.test(sheet),
+    'the field row opened the single-design sheet');
+  assert(!/\u884c\u8fd0|Transit/.test(sheet), 'the composite sheet names a transit source');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+});
+
+await check('composite channel rows report all five ownership states', async () => {
+  const channels = await page.$$eval('#dream-content .dream-channel-open', nodes => Object.fromEntries(nodes.map(node => [
+    node.dataset.channel,
+    {
+      classes: [...node.classList],
+      status: node.querySelector('.dream-channel-status')?.textContent.trim() || '',
+      split: node.querySelector('.dream-channel-split')?.textContent.trim() || null
+    }
+  ])));
+  assert(Object.keys(channels).length === 6, `the composite lists ${Object.keys(channels).length} channels, expected 6`);
+  const seen = new Set();
+  for (const [key, expected] of Object.entries(REALM_CHANNEL_STATES)) {
+    const found = channels[key];
+    assert(found, `channel ${key} is missing from the composite`);
+    assert(!/\u884c\u8fd0|\u6d41\u65e5|Transit/i.test(found.status), `channel ${key} still reads as an overlay state: ${found.status}`);
+    seen.add(expected.status);
+    // The variant class is the badge/edge style; it must match the state, and
+    // the inactive style must never appear on a channel the pair completes.
+    assert(found.classes.includes(expected.variant),
+      `channel ${key} (${expected.status}) lacks ${expected.variant}: ${found.classes.join(' ')}`);
+    if (expected.status === 'inactive') {
+      assert(found.classes.every(c => !c.startsWith('dream-channel-owner-')), `channel ${key} claims an owner`);
+      assert(found.classes.every(c => c !== 'dream-channel-open-natal' && c !== 'dream-channel-open-completed'),
+        `channel ${key} is styled as complete and unowned: ${found.classes.join(' ')}`);
+      assert(found.split === null, `channel ${key} shows a split for an incomplete channel`);
+    } else {
+      assert(found.classes.includes(expected.owner), `channel ${key} lacks ${expected.owner}: ${found.classes.join(' ')}`);
+      assert(!found.classes.includes('dream-channel-open-inactive'), `channel ${key} is both complete and inactive`);
+      assert(found.status.length > 0, `channel ${key} has no wording`);
+      // An a/b channel names the person who completes it; the wording follows the
+      // owner class instead of being a separate, unrelated string.
+      if (expected.named === 'a') assert(found.status.includes(REALMS_A.name), `channel ${key} does not name ${REALMS_A.name}: ${found.status}`);
+      if (expected.named === 'b') assert(found.status.includes(REALMS_B.name), `channel ${key} does not name ${REALMS_B.name}: ${found.status}`);
+      if (expected.named === null) {
+        assert(!found.status.includes(REALMS_A.name) && !found.status.includes(REALMS_B.name),
+          `channel ${key} names a person it should not: ${found.status}`);
+      }
+    }
+  }
+  assert(JSON.stringify([...seen].sort()) === JSON.stringify(['a', 'b', 'both', 'halved', 'inactive']),
+    `the pair covers ${[...seen].sort()}, not all five ownership states`);
+  // The words are the composite's own: never the single design's four states.
+  const statuses = Object.values(channels).map(channel => channel.status);
+  assert(!statuses.includes('\u5728\u7761\u7720\u8bbe\u8ba1\u4e2d\u5b8c\u6574'),
+    'a composite channel uses the single design wording for a complete channel');
+  assert(!statuses.includes('\u5728\u7761\u7720\u8bbe\u8ba1\u4e2d\u672a\u6210\u5f62'),
+    'a composite channel uses the single design wording for an incomplete channel');
+});
+
+await check('a halved channel names both people and the gate each contributes', async () => {
+  const split = await page.$eval('#dream-content .dream-channel-open[data-channel="28-38"] .dream-channel-split',
+    n => n.textContent.replace(/\s+/g, ' ').trim());
+  assert(split.includes(REALMS_A.name), `the split does not name ${REALMS_A.name}: ${split}`);
+  assert(split.includes(REALMS_B.name), `the split does not name ${REALMS_B.name}: ${split}`);
+  assert(/\b28\b/.test(split) && /\b38\b/.test(split), `the split does not carry both gate numbers: ${split}`);
+  // The definition comes from neither design alone, so the badge says so.
+  const status = await page.$eval('#dream-content .dream-channel-open[data-channel="28-38"] .dream-channel-status',
+    n => n.textContent.trim());
+  assert(status === '\u4ec5\u5408\u5e76\u540e\u6709\u5b9a\u4e49', `halved badge reads "${status}"`);
+  // No other channel pretends to be halved.
+  const splits = await page.$$eval('#dream-content .dream-channel-split', n => n.length);
+  assert(splits === 1, `${splits} channels show a split, expected only 28-38`);
+});
+
+await check('an empty composite field uses the composite wording, not the single-design one', async () => {
+  const empty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
+  assert(empty === '\u4e24\u4eba\u7684\u7761\u7720\u8bbe\u8ba1\u5728\u6b64\u573a\u57df\u90fd\u6ca1\u6709\u6fc0\u6d3b\u3002',
+    `the empty composite field reads "${empty}"`);
+  const body = await page.$eval('#dream-content', n => n.textContent);
+  assert(!body.includes('\u4eca\u591c\u6b64\u573a\u57df\u6ca1\u6709\u6fc0\u6d3b\u3002'),
+    'the composite still uses the single-design empty line');
+  const rows = await page.$$eval('#dream-content .dream-realm-earth .dream-realm-row', n => n.length);
+  assert(rows === 0, `the empty earth field lists ${rows} rows`);
+});
+
+await check('hovering a composite channel row lights its two gates', async () => {
+  // `bindChannelHover` is the only bridge between the field rows and the graph,
+  // so a channel row that stopped binding would silently lose this.
+  const before = await page.$$eval('#dream-composite .bg-lit', n => n.length);
+  await page.hover('#dream-content .dream-channel-open[data-channel="28-38"]');
+  await page.waitForTimeout(250);
+  const lit = await page.$$eval('#dream-composite .bg-gate.bg-lit', n => n.map(x => x.dataset.gate).sort());
+  const dimmed = await page.$eval('#dream-composite svg', n => n.classList.contains('bg-dimmed'));
+  assert(before === 0, `${before} nodes were already lit before the hover`);
+  assert(JSON.stringify(lit) === JSON.stringify(['28', '38']), `hovering 28-38 lit ${JSON.stringify(lit)}`);
+  assert(dimmed, 'the hover did not dim the rest of the graph');
+  await page.mouse.move(4, 4);
+  await page.waitForTimeout(250);
+  const cleared = await page.$$eval('#dream-composite .bg-lit', n => n.length);
+  assert(cleared === 0, `${cleared} nodes stayed lit after the pointer left`);
+});
+
+await check('the composite night fields survive a language switch and follow it', async () => {
+  await chooseLanguage(page, 'en');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  let realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `English realms ${realms}`);
+  const enTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(enTitle === 'Light Field', `English field title is "${enTitle}"`);
+  // The person names stay untranslated; only the design vocabulary follows.
+  const enLabels = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source-label',
+    n => n.map(x => x.textContent.trim()));
+  assert(enLabels.length >= 2, `English gate 1 has ${enLabels.length} source labels`);
+  assert(enLabels.some(label => label.startsWith(REALMS_A.name)), `English labels lost ${REALMS_A.name}: ${JSON.stringify(enLabels)}`);
+  assert(enLabels.some(label => /Sleep (design|personality)/.test(label)),
+    `English labels keep a Chinese half name: ${JSON.stringify(enLabels)}`);
+  const enEmpty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
+  assert(enEmpty === 'Neither sleep design activates this field.', `English empty line is "${enEmpty}"`);
+
+  await chooseLanguage(page, 'zh-Hant');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `zh-Hant realms ${realms}`);
+  const hantTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(hantTitle === '\u5149\u5834', `zh-Hant field title is "${hantTitle}"`);
+  const hantLabels = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source-label',
+    n => n.map(x => x.textContent.trim()));
+  assert(hantLabels.some(label => label.includes('\u7761\u7720\u8a2d\u8a08') || label.includes('\u7761\u7720\u4eba\u683c')),
+    `zh-Hant labels did not translate the half: ${JSON.stringify(hantLabels)}`);
+  assert(hantLabels.every(label => !/Sleep (design|personality)/.test(label)),
+    `zh-Hant labels kept the English half name: ${JSON.stringify(hantLabels)}`);
+
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  const backTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(backTitle === '\u5149\u573a', `field title after switching back is "${backTitle}"`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('the composite night fields stack on a phone without overflowing', async () => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(600);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert(overflow <= 1, `composite fields overflow the phone by ${overflow}px`);
+  // One column on a phone is the existing behaviour; the count must stay three.
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `phone realms ${realms}`);
+  const columns = await page.$eval('#dream-content .dream-realms', n => getComputedStyle(n).gridTemplateColumns);
+  assert(columns.trim().split(/\s+/).length === 1, `phone grid is "${columns}", expected a single column`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(500);
+});
+
+await check('no errors accumulated across the whole run', async () => {
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await browser.close();
+console.log(`\n${failures === 0 ? 'ALL E2E CHECKS PASSED' : `${failures} E2E CHECK(S) FAILED`}`);
+console.log(`screenshots: ${SHOTS}`);
+process.exit(failures === 0 ? 0 : 1);

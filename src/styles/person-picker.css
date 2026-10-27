@@ -1,0 +1,92 @@
+/* Shared person picker: pinned footer, list scrolls above it. */
+.modal.person-picker {
+  width:min(640px,calc(100vw - 40px));
+  max-width:640px;
+  max-height:calc(100dvh - 40px);
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  color:var(--text);
+  background:var(--bg-elevated);
+}
+.person-picker .ui-dialog-header,
+.person-picker > .modal-actions,
+.person-picker > .person-picker-error { flex:none; }
+.person-picker .person-picker-body {
+  flex:1 1 auto;
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  /* Last row must clear the pinned Confirm/Cancel footer (safe-area on notched devices). */
+  padding-bottom:max(40px, env(safe-area-inset-bottom, 0px));
+  scroll-padding-bottom:max(40px, env(safe-area-inset-bottom, 0px));
+}
+.person-picker > .modal-actions {
+  position:relative;
+  margin-top:0;
+  padding-top:12px;
+  padding-bottom:max(0px, env(safe-area-inset-bottom, 0px));
+  border-top:1px solid var(--border-subtle,var(--border));
+  background:var(--bg-elevated);
+}
+.person-picker .modal-field {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin:12px 0;
+  font-size:14px;
+}
+.person-picker .modal-field input {
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  color:var(--text);
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm,6px);
+  padding:9px 10px;
+  font:inherit;
+}
+.person-picker-toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:4px 0 10px;
+}
+.person-picker-count {
+  margin:0;
+  color:var(--text-secondary);
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+}
+.person-picker-toolbar #team-person-create { flex:none; }
+.person-picker-results { display:grid; gap:8px; margin:8px 0 0; }
+.person-picker-choice {
+  display:flex;
+  flex:1;
+  align-items:center;
+  gap:10px;
+  text-align:start;
+  min-width:0;
+  padding:10px;
+}
+.person-picker-check { flex:none; font-size:18px; line-height:1; }
+.person-picker-choice > span:last-child { min-width:0; }
+.person-picker-choice strong,
+.person-picker-choice small { display:block; overflow-wrap:anywhere; }
+.person-picker-choice small { color:var(--text-secondary); margin-top:4px; font-size:12px; }
+.person-picker [aria-pressed=true] { background:var(--accent-soft); border-color:var(--accent); }
+.person-picker-row { display:flex; align-items:stretch; gap:8px; min-width:0; }
+.person-picker-row > :first-child { flex:1; min-width:0; }
+.person-picker-row > [data-edit-person] { flex:0 0 auto; }
+.person-picker-error { color:var(--status-error); font-size:.85rem; margin-top:12px; }
+.person-picker-error:empty { display:none; }
+@media(max-width:600px) {
+  .modal.person-picker { width:100%; max-height:calc(100dvh - 24px); }
+  .person-picker > .modal-actions { justify-content:flex-start; }
+  .person-picker-row { flex-wrap:wrap; }
+  .person-picker-row > [data-edit-person] { padding:8px; }
+}

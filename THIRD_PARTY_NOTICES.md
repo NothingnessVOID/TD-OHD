@@ -113,6 +113,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## DreamRave (sleep chart) topology and terminology
+
+The sleep chart reproduces the structure taught by Ra Uru Hu as DreamRave / Night Forces: five of the nine centres (Throat, G, Spleen, Sacral, Root), fifteen of the sixty-four gates, the six channels those gates form, and three night fields each entered through one portal gate (62, 12, 19). The fifteen dream gate names (Love, Sight, Attunement, Darkness, Joy, Mutation, Yearning, Sex, Time, Chaos, Environments, Flight, Dying, Aggression, Fear) and the six dream line themes (Secrets, Possession, Turmoil, Obsession, Fantasy, Vision) are short structural terms from the same teaching, recorded in `src/locales/en.js`, `src/locales/zh-CN/dream.js` and `src/locales/zh-Hant/dream.js` and read through `src/lib/dream-vocabulary.js`. The topology itself lives in `src/lib/human-design/dream-topology.js`; its six channels are the matching objects filtered out of the waking `CHANNELS` catalogue, so no gate, channel or centre definition is duplicated here.
+
+This release uses only those short structural terms and names. No DreamRave gate, line, channel or field interpretation text has been copied, translated or paraphrased from any published reading, and nothing in this document grants, claims or implies a licence to the teaching's fuller written or recorded material. Gate, channel and centre numbers keep their existing catalog identities and the provenance recorded under "Local reference data and display catalogs" above.
+
+Topology and terminology were cross-checked against jovianarchive.com, "Understanding Dreams with Human Design" (https://www.jovianarchive.com/), and against two independent DreamRave gate lists. The lunar design moment is not part of that material: it is computed in this project as the instant whose Moon stands 88 degrees before the natal Moon — the same arc the waking chart applies to the Sun — solved in `src/lib/dream-chart.js` against this project's own Swiss Ephemeris snapshots.
+
 ## TD-OHD SwissEph parity patch
 
 SwissEph 0.5.1 is built from the pinned repository-local snapshot in

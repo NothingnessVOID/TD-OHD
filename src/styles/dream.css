@@ -1,0 +1,1097 @@
+/* =============================================
+   Dream view — the Sleep chart (DreamRave)
+   =============================================
+   Layout and dream-specific chrome only. Every colour is a Skin token or a
+   `color-mix` derivation of one, so the view follows all registered Skins,
+   including the light/dark pairs and the high-contrast ones, without a single
+   hard-coded value and without a light/dark branch of its own.
+
+   Geometry it does NOT own: `.ohd-graph-shell` (src/styles/graph-shell.css)
+   already places the canvas and the two side bands, and `lib/graph-shell.js`
+   writes the `--ohd-shell-*` measurements when a host hands it an aspect ratio.
+   This file only supplies the dream graph's own ratio (rotated viewBox
+   978.13×558.3) as the CSS fallback for those variables, so the shell still
+   lays out correctly before — or without — that measurement pass.
+
+   Breakpoints: `@media (--phone)` expands to `lib/breakpoints.js`
+   PHONE_MAX_WIDTH (640px) through the shared PostCSS plugin in vite.config.js,
+   the same token every other stylesheet uses. Narrow-band steps use container
+   queries against `.dream-shell`, as the relationship composite does, because
+   the slot band is sized by the graph column and not by the viewport.
+   ============================================= */
+
+.dream-view {
+  /* Surface and edge follow the graph panel tokens, so the sleep chart sits on
+     the same card chrome as the natal and composite graphs. */
+  --dream-surface: var(--hd-graph-panel-bg);
+  --dream-edge: var(--hd-graph-panel-border);
+  /* One reference width for the sleeping graph, read by the shell fallbacks.
+     Must match the `idealWidth` handed to observeGraphShell() in views/dream.js. */
+  --dream-graph-ideal: 720px;
+  /* Rotated dream viewBox 978.13×558.3: the sleep graph is read sideways, so it
+     is wider than tall and is fitted by its own ratio, not the waking chart's.
+     Must match DREAM_VIEW_BOX in lib/human-design/dream-topology.js. */
+  --dream-graph-aspect: 978.13 / 558.3;
+
+  /* The page frame — width cap, centring, gutter — already comes from
+     `.view-section` / `.view-container`, which this element also carries, so
+     this file declares tokens and ink only and never a second layout. */
+  min-width: 0;
+  color: var(--text);
+}
+
+.dream-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+}
+
+.dream-status {
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.dream-status:empty { display: none; }
+
+.dream-content { min-width: 0; }
+.dream-content > * + * { margin-top: var(--space-3); }
+
+/* ---------- The shared transit time control ---------- */
+
+/* The Transits page and this page mount the same component
+   (`lib/transit-time-control.js`), which is styled by `.tl` in
+   `features/transit-timeline/timeline.css`. That `.tl` block is a page frame —
+   centred, capped and padded — while here the control is one row inside the
+   reading column, so the frame is reset and only the control styling is kept.
+   The `hidden` state belongs to the composite, which has no overlay to place. */
+.dream-view .dream-time-control {
+  max-width: 720px;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+.dream-view .dream-time-control[hidden] { display: none; }
+
+/* The wide frame is for the graph, its two activation columns and the three
+   night-field panels. The heading block keeps its reading width, the same split
+   the connection view makes between its frame and its title. */
+.dream-view .view-title,
+.dream-view .view-subtitle,
+.dream-view .dream-toolbar,
+.dream-view .dream-status,
+.dream-view .dream-provenance { max-width: 720px; }
+
+/* ---------- Type strip: waking type → sleeping type ---------- */
+
+.dream-type-strip {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--dream-surface);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.dream-type-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.dream-type-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.dream-type-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* The chip's hue arrives inline from the type token (`--generator`,
+   `--projector`, `--reflector`, …), and those are mid-tone in light Skins and
+   light in dark ones, so no single ink clears 4.5:1 on all of them. The inset
+   veil lifts the surface toward the card background at every Skin, which keeps
+   the type hue visible as a tint while `--text` stays the ink — the same
+   soft-tint-plus-readable-ink reading the site's `.type-badge` uses. */
+.dream-type-chip {
+  display: inline-block;
+  min-width: 0;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--bg-elevated) 76%, transparent);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dream-type-arrow {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+.dream-type-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  min-width: 0;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.55;
+}
+
+.dream-fact { min-width: 0; overflow-wrap: anywhere; }
+
+/* ---------- Shell: sleeping graph plus the two activation bands ---------- */
+
+/* Container for the narrow-band slot steps below. Inline-size containment only,
+   so the shell's own height still comes from its absolutely placed stage. */
+.dream-shell { container-type: inline-size; }
+
+/* CSS fallbacks for the shell's measurements. `lib/graph-shell.js` writes the
+   same custom properties inline once it is given an aspect ratio, and inline
+   declarations win — so these only hold until then. `cqw` is used instead of a
+   percentage because the stage's own height is `auto`, and a percentage height
+   against it would resolve to nothing and collapse the canvas. */
+.dream-graph-shell {
+  --ohd-shell-canvas-width: min(100cqw, var(--dream-graph-ideal));
+  --ohd-shell-canvas-height: calc(min(100cqw, var(--dream-graph-ideal)) * 558.3 / 978.13);
+  --ohd-shell-stage-height: var(--ohd-shell-canvas-height);
+  min-width: 0;
+  padding-block: var(--space-2);
+}
+
+/* The graph host keeps its own ratio and is never cropped: the SVG scales to
+   the canvas box the shell computed. */
+.dream-graph {
+  min-width: 0;
+  background: var(--hd-graph-bg);
+}
+.dream-graph > .bodygraph-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.dream-graph-shell .dream-graph { position: absolute; inset: 0; }
+
+/* ---------- Activation columns (graph side bands) ---------- */
+
+/* The shell reads this off the slot's first child to size the band; the
+   relationship composite declares it the same way. */
+.dream-column {
+  --ohd-slot-content-width: 108px;
+  --dream-column-accent: var(--hd-inactive);
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px;
+  background: color-mix(in srgb, var(--bg-elevated) 82%, transparent);
+  border-radius: var(--radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+.dream-column-design { --dream-column-accent: var(--hd-design); }
+.dream-column-personality { --dream-column-accent: var(--hd-personality); }
+
+/* Two columns share one slot in the two-person composite: that person's design
+   column above their personality column. Stacking keeps four columns inside the
+   same two bands at every width — the shell sizes a band from the slot's first
+   child, so the wrapper repeats the column's content width and the container
+   steps below, instead of inventing a second width rule. */
+.dream-columns {
+  --ohd-slot-content-width: 108px;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+@container (min-width: 560px) {
+  .dream-columns { --ohd-slot-content-width: 128px; }
+}
+@container (max-width: 380px) {
+  .dream-columns { --ohd-slot-content-width: 88px; }
+}
+
+.dream-column-head {
+  padding: 0 2px 1px;
+  border-bottom: 1px solid color-mix(in srgb, var(--dream-column-accent) 45%, var(--dream-edge));
+  color: var(--dream-column-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: .01em;
+  overflow-wrap: anywhere;
+}
+
+.dream-column-date {
+  padding: 0 2px;
+  color: var(--text-tertiary);
+  font-size: 9.5px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.dream-column-empty {
+  padding: 2px;
+  color: var(--text-tertiary);
+  font-size: 9.5px;
+  font-style: italic;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* Each row is a button: hovering or focusing it lights the matching gate in the
+   graph, so the interactive affordances have to be visible in all three states. */
+.dream-column-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto);
+  column-gap: 3px;
+  align-items: baseline;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 1px 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font: inherit;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.dream-column-row:hover {
+  background: color-mix(in srgb, var(--dream-column-accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--dream-column-accent) 40%, var(--dream-edge));
+}
+.dream-column-row:active {
+  background: color-mix(in srgb, var(--dream-column-accent) 22%, transparent);
+  border-color: var(--dream-column-accent);
+}
+.dream-column-row:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 1px;
+}
+
+.dream-column-glyph {
+  color: var(--dream-column-accent);
+  font-size: 11px;
+  line-height: 1;
+  font-style: normal;
+}
+.dream-column-act {
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+/* The planet name only survives in the wider bands; it is redundant with the
+   glyph and the row's accessible name, so dropping it costs nothing. */
+.dream-column-planet {
+  grid-column: 1 / -1;
+  display: none;
+  color: var(--text-tertiary);
+  font-size: 9px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+@container (min-width: 560px) {
+  .dream-column { --ohd-slot-content-width: 128px; }
+  .dream-column-planet { display: block; }
+}
+@container (max-width: 380px) {
+  .dream-column { --ohd-slot-content-width: 88px; }
+  .dream-column-head { font-size: 10px; }
+  .dream-column-row { font-size: 9.5px; }
+  .dream-column-glyph { font-size: 10px; }
+}
+
+/* ---------- The three night fields ---------- */
+
+/* Three fields across on a wide frame, dropping to two and then one as the
+   reading column narrows — `auto-fit` follows the room the panels actually get
+   instead of forcing all three into the site's 720px container. */
+.dream-realms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+
+/* The three fields are told apart mainly by their edge treatment — weight,
+   style and a leading rule — so they stay distinct in a high-contrast Skin and
+   for a colour-blind reader. The hue is a light tint behind the same panel
+   surface, never the primary cue. */
+.dream-realm {
+  --dream-realm-hue: var(--hd-inactive);
+  /* The ink that clears the hue when the portal plaque is filled. */
+  --dream-realm-ink: var(--hd-inactive-on);
+  --dream-realm-veil: 4%;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: color-mix(in srgb, var(--dream-realm-hue) var(--dream-realm-veil), var(--dream-surface));
+  border: 1px solid var(--dream-edge);
+  border-top: 3px solid color-mix(in srgb, var(--dream-realm-hue) 60%, var(--dream-edge));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.dream-realm-light {
+  --dream-realm-hue: var(--hd-transit);
+  --dream-realm-ink: var(--hd-transit-on);
+  --dream-realm-veil: 5%;
+}
+.dream-realm-earth {
+  --dream-realm-hue: var(--hd-both);
+  --dream-realm-ink: var(--hd-both-on);
+  --dream-realm-veil: 5%;
+  border-top-width: 2px;
+}
+.dream-realm-demon {
+  --dream-realm-hue: var(--hd-design);
+  --dream-realm-ink: var(--hd-design-on);
+  --dream-realm-veil: 5%;
+  border-top: 4px double color-mix(in srgb, var(--dream-realm-hue) 65%, var(--dream-edge));
+  border-inline-start: 2px solid color-mix(in srgb, var(--dream-realm-hue) 40%, var(--dream-edge));
+}
+
+.dream-realm-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: .01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+/* The field's portal gate, and whether the night sky opened it. */
+.dream-realm-portal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--bg-sunken) 45%, transparent);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius);
+}
+
+.dream-portal-gate {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 5px;
+  background: var(--bg-elevated);
+  border: 1px solid color-mix(in srgb, var(--dream-realm-hue) 50%, var(--dream-edge));
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.dream-portal-name {
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.dream-portal-tag {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+/* Activation is carried by shape and weight as well as hue: a thicker edge, an
+   inset ring, a filled portal plaque, bold text and a ◆ marker. */
+.dream-portal-active {
+  background: color-mix(in srgb, var(--dream-realm-hue) 12%, transparent);
+  border-color: color-mix(in srgb, var(--dream-realm-hue) 65%, var(--dream-edge));
+  border-width: 2px;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--dream-realm-hue) 30%, transparent);
+}
+.dream-portal-active .dream-portal-gate {
+  background: var(--dream-realm-hue);
+  border-color: var(--dream-realm-hue);
+  border-style: solid;
+  color: var(--dream-realm-ink);
+  font-weight: 700;
+}
+.dream-portal-active .dream-portal-tag { color: var(--text-secondary); font-weight: 650; }
+.dream-portal-active .dream-portal-tag::before { content: '◆ '; font-weight: 400; }
+
+.dream-realm-rows {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dream-realm-empty {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ---------- One activated dream gate ---------- */
+
+.dream-realm-row {
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius);
+}
+
+.dream-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-2);
+  min-width: 0;
+}
+
+.dream-row-name {
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dream-row-theme {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+}
+
+.dream-row-transit-tag {
+  flex: none;
+  padding: 1px 7px;
+  background: var(--hd-transit);
+  border-radius: var(--radius-full);
+  color: var(--hd-transit-on);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+
+/* Source block: personality (solid rule), design (dashed), night sky (dotted).
+   The rule style is the colour-blind-safe half of the cue. */
+.dream-row-source {
+  --dream-source: var(--hd-inactive);
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  margin-top: var(--space-2);
+  padding-left: var(--space-2);
+  border-left: 3px solid color-mix(in srgb, var(--dream-source) 65%, var(--dream-edge));
+}
+.dream-row-source-personality { --dream-source: var(--hd-personality); }
+.dream-row-source-design {
+  --dream-source: var(--hd-design);
+  border-left-style: dashed;
+  border-left-width: 2px;
+}
+.dream-row-source-transit {
+  --dream-source: var(--hd-transit);
+  border-left-style: dotted;
+}
+
+/* The composite recolours a source by who carries it while the half keeps its
+   solid/dashed rule. These come after the side rules so the owner colour wins
+   the `--dream-source` cascade and the side's border-left-style survives. */
+.dream-row-source-owner-a { --dream-source: var(--hd-connection-a); }
+.dream-row-source-owner-b { --dream-source: var(--hd-connection-b); }
+
+/* The label reads the token that is graded for text, not the fill hue: the
+   night sky uses `--hd-transit-text` for the same reason the timeline does. */
+.dream-row-source-label {
+  color: var(--dream-source);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.dream-row-source-transit .dream-row-source-label { color: var(--hd-transit-text); }
+
+/* An owner colour is a fill token graded against the page, not against a 10px
+   label; measured across the eleven skins it reads 1.9-3.5:1, under the 4.5:1 a
+   10px/650 label needs. Grading 40% toward the body text colour measures
+   5.2:1 or better everywhere, which is the same idea the transit label's
+   `--hd-transit-text` expresses with a dedicated token. */
+.dream-row-source-owner-a .dream-row-source-label,
+.dream-row-source-owner-b .dream-row-source-label {
+  color: color-mix(in srgb, var(--dream-source) 40%, var(--text));
+}
+
+.dream-row-planets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px var(--space-1);
+  min-width: 0;
+}
+
+.dream-planet-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 0;
+  padding: 1px 7px;
+  background: color-mix(in srgb, var(--dream-source) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--dream-source) 28%, var(--dream-edge));
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.dream-planet-chip > i {
+  color: var(--dream-source);
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  line-height: 1;
+}
+
+/* ---------- Sleep channels (the channel way into the detail sheet) ---------- */
+
+.dream-realm-channels {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid color-mix(in srgb, var(--dream-edge) 70%, transparent);
+}
+
+.dream-channels-title {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.dream-channel-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A channel row is a button; the four states are told apart by the edge style
+   and weight of the badge as well as by hue, so a high-contrast Skin keeps them
+   distinguishable without relying on colour. */
+.dream-channel-open {
+  --dream-channel-accent: var(--hd-inactive);
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  border: 1px solid var(--dream-edge);
+  border-inline-start: 3px solid color-mix(in srgb, var(--dream-channel-accent) 65%, var(--dream-edge));
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.dream-channel-open:hover {
+  background: color-mix(in srgb, var(--dream-channel-accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--dream-channel-accent) 45%, var(--dream-edge));
+}
+.dream-channel-open:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 1px;
+}
+.dream-channel-open-natal { --dream-channel-accent: var(--hd-personality); }
+.dream-channel-open-completed { --dream-channel-accent: var(--hd-transit); border-inline-start-style: dashed; }
+.dream-channel-open-transit { --dream-channel-accent: var(--hd-transit); border-inline-start-style: dotted; }
+.dream-channel-open-inactive { --dream-channel-accent: var(--hd-inactive); }
+
+/* The composite tints a channel by who completes it: the variant still gives
+   the edge style, these supply the person colour, and they must follow the
+   variant rules above to win `--dream-channel-accent`. `both` is not the
+   gradient token `--hd-connection-both`, which is a fill for shapes: a border
+   needs a colour, and `color-mix()` on a gradient drops the whole declaration,
+   so the pair's shared channels would lose their edge entirely. The midpoint
+   of the two owner colours carries the same meaning as a line. */
+.dream-channel-owner-a { --dream-channel-accent: var(--hd-connection-a); }
+.dream-channel-owner-b { --dream-channel-accent: var(--hd-connection-b); }
+.dream-channel-owner-both { --dream-channel-accent: color-mix(in srgb, var(--hd-connection-a) 50%, var(--hd-connection-b)); }
+
+/* Who contributes which gate of a halved channel, under the channel's names. */
+.dream-channel-split {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.dream-channel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--space-2);
+  min-width: 0;
+}
+
+.dream-channel-gates {
+  flex: none;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.dream-channel-name {
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dream-channel-status {
+  flex: none;
+  padding: 1px 7px;
+  border: 1px solid color-mix(in srgb, var(--dream-channel-accent) 45%, var(--dream-edge));
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+.dream-channel-status-natal {
+  background: color-mix(in srgb, var(--hd-personality) 14%, transparent);
+  color: var(--text);
+}
+.dream-channel-status-completed,
+.dream-channel-status-transit {
+  background: color-mix(in srgb, var(--hd-transit) 14%, transparent);
+  color: var(--hd-transit-text);
+}
+.dream-channel-status-inactive {
+  background: color-mix(in srgb, var(--bg-sunken) 60%, transparent);
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.dream-channel-named {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Static rows list structural facts in comparison mode; they are not buttons. */
+.dream-channel-row-static {
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+
+/* Complete and halved channels are told apart by their leading rule as well as
+   by the owner line, so the two groups read apart in a high-contrast Skin. */
+.dream-channel-row-complete {
+  border-inline-start: 3px solid color-mix(in srgb, var(--accent) 60%, var(--dream-edge));
+}
+.dream-channel-row-halved {
+  border-inline-start: 3px dashed color-mix(in srgb, var(--hd-connection-bridged) 65%, var(--dream-edge));
+}
+
+.dream-channel-owner {
+  flex: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dream-channel-group + .dream-channel-group { margin-top: var(--space-3); }
+
+.dream-channel-group-title {
+  margin: var(--space-3) 0 var(--space-2);
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* The gate number in a night-field row opens the shared detail sheet. */
+.dream-row-open {
+  flex: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--text-tertiary) 70%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.dream-row-open:hover { text-decoration-color: var(--accent); color: var(--accent); }
+.dream-row-open:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 2px; }
+
+/* The activation columns are buttons as well; their click opens the same sheet. */
+
+/* ---------- Comparison mode: one composite sleep design ---------- */
+
+.dream-compare-head {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.dream-compare-intro {
+  margin: 0 0 var(--space-2);
+  max-width: 720px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.dream-compare-facts {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--dream-surface);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Sleep-chart detail sheet ----------
+   The sheet reuses `.gate-detail` chrome from styles.css; only the blocks that
+   are specific to a sleeping design live here. Every colour is a Skin token or
+   a `color-mix` derivation of one. */
+
+.dream-detail-subhead {
+  margin: var(--space-3) 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* Night field, dream gate name and portal: the three dream-only facts that the
+   waking sheet has no slot for. */
+.dream-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-2);
+}
+
+.dream-detail-tag {
+  --dream-detail-tag-hue: var(--hd-inactive);
+  padding: 1px 8px;
+  background: color-mix(in srgb, var(--dream-detail-tag-hue) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--dream-detail-tag-hue) 40%, var(--hd-detail-border));
+  border-radius: var(--radius-full);
+  color: var(--text);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.dream-detail-tag-light { --dream-detail-tag-hue: var(--hd-transit); }
+.dream-detail-tag-earth { --dream-detail-tag-hue: var(--hd-both); }
+.dream-detail-tag-demon { --dream-detail-tag-hue: var(--hd-design); }
+.dream-detail-tag-name {
+  --dream-detail-tag-hue: var(--hd-personality);
+  font-weight: 650;
+}
+.dream-detail-tag-portal {
+  --dream-detail-tag-hue: var(--accent);
+  font-style: italic;
+}
+
+/* Three activation sources, told apart by rule style as well as hue. */
+.dream-detail-sources {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+}
+
+.dream-detail-source {
+  --dream-detail-source: var(--hd-inactive);
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding-left: var(--space-2);
+  border-left: 3px solid color-mix(in srgb, var(--dream-detail-source) 65%, var(--hd-detail-border));
+}
+.dream-detail-source-personality { --dream-detail-source: var(--hd-personality); }
+.dream-detail-source-design {
+  --dream-detail-source: var(--hd-design);
+  border-left-style: dashed;
+  border-left-width: 2px;
+}
+.dream-detail-source-transit {
+  --dream-detail-source: var(--hd-transit);
+  border-left-style: dotted;
+}
+
+.dream-detail-source-label {
+  color: var(--dream-detail-source);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .05em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.dream-detail-source-transit .dream-detail-source-label { color: var(--hd-transit-text); }
+
+.dream-detail-source-planets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px var(--space-1);
+  min-width: 0;
+}
+
+/* The live dream line themes — the sheet's other dream-only fact. */
+.dream-detail-lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-sunken);
+  border-radius: var(--radius);
+}
+
+.dream-detail-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}
+
+.dream-detail-line-no { color: var(--text-tertiary); }
+.dream-detail-line-theme { color: var(--text); font-weight: 600; }
+
+/* Composite mode: who carries the gate instead of three sources. */
+.dream-detail-owner {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+.dream-detail-owner strong { color: var(--text); }
+
+.dream-detail-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}
+
+.dream-detail-fact { min-width: 0; overflow-wrap: anywhere; }
+
+.dream-detail-channels { display: grid; gap: var(--space-2); }
+
+/* A dream channel: the id, its name and the structural state. The state rule is
+   the colour-blind cue; the badge hue is decoration. */
+.dream-detail-channel {
+  --dream-detail-channel-hue: var(--hd-inactive);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px var(--space-2);
+  align-items: baseline;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid color-mix(in srgb, var(--dream-detail-channel-hue) 65%, var(--border));
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.dream-detail-channel:hover { border-color: var(--accent); }
+.dream-detail-channel:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 1px; }
+.dream-detail-channel.natal { --dream-detail-channel-hue: var(--hd-personality); }
+.dream-detail-channel.completed { --dream-detail-channel-hue: var(--hd-transit); border-inline-start-style: dashed; }
+.dream-detail-channel.transit { --dream-detail-channel-hue: var(--hd-transit); border-inline-start-style: dotted; }
+.dream-detail-channel.electromagnetic { --dream-detail-channel-hue: var(--hd-connection-bridged); }
+.dream-detail-channel.companionship { --dream-detail-channel-hue: color-mix(in srgb, var(--hd-connection-a) 50%, var(--hd-connection-b)); }
+.dream-detail-channel.compromise,
+.dream-detail-channel.dominance { --dream-detail-channel-hue: var(--hd-connection-a); }
+
+.dream-detail-channel-id {
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+.dream-detail-channel-name {
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.dream-detail-channel > .circuit-badge,
+.dream-detail-channel-dyn {
+  grid-column: 1 / -1;
+  justify-self: start;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.dream-detail-centers {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.dream-detail-gate-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  min-width: 0;
+  margin-bottom: var(--space-1);
+}
+
+.dream-detail-gate-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.dream-detail-gate-link:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 2px; }
+
+.dream-detail-gate-id {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dream-detail-gate-src {
+  --dream-detail-source: var(--hd-inactive);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.dream-detail-gate-src.dream-detail-source-personality { color: var(--hd-personality); }
+.dream-detail-gate-src.dream-detail-source-design { color: var(--hd-design); }
+.dream-detail-gate-src.dream-detail-source-transit { color: var(--hd-transit-text); }
+
+.dream-detail-gate-owner {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.dream-detail-center-gates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+}
+
+.dream-detail-empty {
+  margin: 0 0 var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+/* ---------- Provenance footnote ---------- */
+
+.dream-provenance {
+  margin: var(--space-3) 0 0;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Narrow widths ---------- */
+
+@media (--phone) {
+  .dream-type-strip { padding: var(--space-3); }
+  /* The three fields stack; each keeps its own edge identity. */
+  .dream-realms { grid-template-columns: minmax(0, 1fr); }
+  .dream-compare-facts { padding: var(--space-3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dream-column-row { transition: none; }
+  .dream-channel-open { transition: none; }
+}

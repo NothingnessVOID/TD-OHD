@@ -7,8 +7,9 @@ import { transitExportSnapshot } from '../lib/chart-data-export.js';
 import { sharpProvider } from '../lib/chart-engine/sharp-provider.js';
 import { analyzeTransitActivations } from '../lib/transit-analysis.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
-import { setMessage, getLocaleResources } from '../lib/i18n.js';
-import { transitInstants, formatTransitOffset } from '../lib/transit-time.js';
+import { getLocaleResources } from '../lib/i18n.js';
+import { formatTransitOffset } from '../lib/transit-time.js';
+import { mountTransitTimeControl } from '../lib/transit-time-control.js';
 import { buildTransitGraph } from '../lib/transit-graph.js';
 import { renderTransitSummary, highlightTransitRows } from './transit-presentation.js';
 import { planetName } from '../lib/vocabulary.js';
@@ -21,6 +22,20 @@ import { getCurrentChart, showTransitDetail, refreshTransitDetail } from './char
 let transitDetailContext = null;
 let lastTransitResult = null;
 let requestSequence = 0;
+// The shared time control (lib/transit-time-control.js) owns the date, time,
+// timezone, Now and DST widgets. It keeps the historical `transit-*` element ids.
+let timeControl = null;
+
+/**
+ * The moment the page should read, or null when the wall time is not resolvable.
+ * `renderTransits()` reads the resolved moment — date, time and the UTC offset the
+ * DST rule picked — instead of the DOM, so the resolution rule stays in the
+ * control and the view never re-derives it.
+ */
+function currentSelection() {
+  return timeControl?.getResolved() || null;
+}
+
 export function invalidateTransits() {
   ++requestSequence;
   transitDetailContext = null;
@@ -44,6 +59,17 @@ const mountGraphPanel = () => {
 
 export function setupTransitView() {
   mountGraphPanel();
+  timeControl?.destroy();
+  timeControl = mountTransitTimeControl({
+    host: document.getElementById('transit-time-host'),
+    // Historical prefix: existing e2e checks select `#transit-date` and friends.
+    idPrefix: 'transit',
+    // The transit-only mode belongs to this page; the Sleep chart mounts the
+    // same control with the toggle off.
+    showModeToggle: true,
+    onModeToggle: () => renderTransits(),
+    onChange: () => renderTransits()
+  });
   document.getElementById('transits-view').addEventListener('click', event => {
     const planet = event.target.closest('.tl-planet[data-gate], .tl-birth-value[data-gate]');
     if (planet?.dataset.gate && transitDetailContext) showTransitDetail('planet', {
@@ -77,37 +103,6 @@ export function setupTransitView() {
   view.addEventListener('focusin', previewDetail);
   view.addEventListener('pointerout', clearPreview);
   view.addEventListener('focusout', clearPreview);
-  const modeButton = document.getElementById('transit-only-toggle');
-  modeButton.addEventListener('click', () => {
-    modeButton.setAttribute('aria-pressed', String(modeButton.getAttribute('aria-pressed') !== 'true'));
-    renderTransits();
-  });
-  const dateInput = document.getElementById('transit-date');
-  const timeInput = document.getElementById('transit-time');
-  const zoneInput = document.getElementById('transit-timezone');
-  const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-
-  const setNow = () => {
-    const now = new Date();
-    const zone = zoneInput.value || localZone || 'UTC';
-    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
-      timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
-    }).formatToParts(now).map(part => [part.type, part.value]));
-    dateInput.value = `${parts.year}-${parts.month}-${parts.day}`;
-    timeInput.value = `${parts.hour}:${parts.minute}:${parts.second}`;
-    zoneInput.value = zone;
-    zoneInput.textContent = zone;
-    renderTransits();
-  };
-  zoneInput.value = localZone || 'UTC';
-  zoneInput.textContent = zoneInput.value;
-  setNow();
-
-  dateInput.addEventListener('change', renderTransits);
-  timeInput.addEventListener('change', renderTransits);
-  document.getElementById('transit-choice').addEventListener('change', renderTransits);
-  document.getElementById('transit-now').addEventListener('click', setNow);
 }
 
 export async function renderTransits() {
@@ -116,50 +111,31 @@ export async function renderTransits() {
   transitDetailContext = null;
   lastTransitResult = null;
   if (!current) return;
-  const date = document.getElementById('transit-date').value;
-  let time = document.getElementById('transit-time').value;
-  if (time.length === 5) time += ':00';
-  const zone = document.getElementById('transit-timezone').value.trim();
-  const status = document.getElementById('transit-status');
-  const choiceLabel = document.getElementById('transit-choice-label');
-  const choice = document.getElementById('transit-choice');
-  let matches;
-  try {
-    matches = transitInstants(date, time, zone);
-    if (!matches.length) throw new Error('This local time does not exist in that timezone. Choose another time.');
-  } catch (error) {
-    status.classList.remove('tl-sr-only');
-    setMessage(status, error instanceof RangeError ? 'Enter a valid IANA timezone.' : error.message);
-    choiceLabel.hidden = true;
-    document.getElementById('transit-bodygraph').replaceChildren();
-    document.getElementById('transit-content').replaceChildren();
+  const selection = currentSelection();
+  // The control has already reported a gap or an invalid zone in its own status
+  // line; the page shows nothing rather than a stale overlay.
+  if (!selection) {
+    document.getElementById('transit-bodygraph')?.replaceChildren();
+    document.getElementById('transit-content')?.replaceChildren();
     return;
   }
-
-
-  const selected = matches.find(m => String(m.instant) === choice.value) || matches[0];
-  choiceLabel.hidden = matches.length < 2;
-  choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatTransitOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
-  choice.value = String(selected.instant);
-  status.classList.add('tl-sr-only');
-  delete status.dataset.i18n;
-  status.textContent = `${date} · ${time} · ${zone} (${formatTransitOffset(selected.offset)}) · ${new Date(selected.instant).toISOString().replace('.000Z', 'Z')}`;
+  const { date, time, offset } = selection;
+  const instant = timeControl.getInstant();
+  const mode = timeControl.isTransitOnly() ? 'transit-only' : 'overlay';
   let activations;
   try {
-    activations = await sharpProvider.calculateTransitSnapshot(selected.instant);
+    activations = await sharpProvider.calculateTransitSnapshot(instant);
   } catch (error) {
     if (request !== requestSequence) return;
-    status.classList.remove('tl-sr-only');
-    status.textContent = error.message;
+    timeControl.reportError(error.message);
     return;
   }
   if (request !== requestSequence || current.chart !== getCurrentChart()?.chart) return;
   const activeGates = [...new Set(Object.values(activations).map(value => value.gate))];
-  const overlay = analyzeTransitActivations(current.chart, { date: new Date(selected.instant).toISOString(),
+  const overlay = analyzeTransitActivations(current.chart, { date: new Date(instant).toISOString(),
     gates: activations, activeGates, activeGateCount: activeGates.length });
-  const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
   const model = buildTransitGraph(current.chart, overlay.transitGates, mode);
-  const rendered = { chart: current.chart, overlay, model, mode, date, time, offset: selected.offset };
+  const rendered = { chart: current.chart, overlay, model, mode, date, time, offset };
   drawTransitResult(rendered);
   lastTransitResult = rendered;
 }
@@ -203,7 +179,7 @@ function drawTransitResult({ chart, overlay, model, mode, date, time, offset }, 
 
 export function renderTransitContent(overlay, date = null) {
   const current = getCurrentChart();
-  const mode = document.getElementById('transit-only-toggle').getAttribute('aria-pressed') === 'true' ? 'transit-only' : 'overlay';
+  const mode = timeControl?.isTransitOnly() ? 'transit-only' : 'overlay';
   renderTransitSummary(overlay, buildTransitGraph(current.chart, overlay.transitGates, mode),
     document.getElementById('transit-status')?.textContent || `${date} · 12:00 UTC`);
 

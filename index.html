@@ -52,6 +52,7 @@
           <button class="nav-link active" data-view="chart" data-i18n="My Chart">My Chart</button>
           <button class="nav-link" data-view="transits" data-i18n="Transits">Transits</button>
           <button class="nav-link" data-view="timeline" data-i18n="Timeline">Timeline</button>
+          <button class="nav-link" data-view="dream" data-i18n="Sleep chart">Sleep chart</button>
           <button class="nav-link" data-view="connection" data-i18n="Connection">Connection</button>
           <button class="nav-link" data-view="team" data-i18n="nav.team">Team</button>
           <button class="nav-link" data-view="wa" data-i18n="nav.organization">Organization</button>
@@ -204,17 +205,10 @@
 
     <!-- Transits View -->
     <section id="transits-view" class="view-section hidden tl transit-reuse">
-      <div class="tl-toolbar">
-        <label><span data-i18n="Date">Date</span><input type="date" id="transit-date"></label>
-        <label><span data-i18n="Time">Time</span><input type="time" id="transit-time" step="1"></label>
-        <div class="tl-toolbar-actions">
-          <span class="tl-zone"><span data-i18n="Timezone">Timezone</span> <output id="transit-timezone"></output></span>
-          <button id="transit-now" type="button" data-action="transit-now" data-i18n="Now">Now</button>
-          <button id="transit-only-toggle" type="button" class="tl-mode-toggle" data-action="toggle-transit-mode" aria-pressed="false" data-i18n="Transit only">Transit only</button>
-        </div>
-      </div>
-      <label id="transit-choice-label" hidden><span data-i18n="Choose UTC offset">Choose UTC offset</span> <select id="transit-choice"></select></label>
-      <p id="transit-status" class="tl-sr-only" aria-live="polite"></p>
+      <!-- The shared time control (lib/transit-time-control.js) renders the date,
+           time, timezone, Now, DST choice and status into this host. Its ids keep
+           the historical `transit-*` names. -->
+      <div id="transit-time-host"></div>
       <div class="tl-workspace">
         <div id="transit-stage" class="tl-stage"></div>
         <div id="transit-content" class="transit-content"></div>
@@ -223,6 +217,26 @@
 
     <!-- Independent transit timeline -->
     <section id="timeline-view" class="view-section hidden"></section>
+
+    <!-- Sleep chart (DreamRave) -->
+    <section id="dream-view" class="view-section hidden">
+      <div class="view-container view-container-wide dream-view">
+        <h2 class="view-title" data-i18n="Sleep chart">Sleep chart</h2>
+        <p class="view-subtitle" id="dream-subtitle" data-i18n="The five-centre design you sleep in, with {transit} always overlaid.">The five-centre design you sleep in, with {transit} always overlaid.</p>
+        <!-- The same time control the Transits page uses; it is hidden while a
+             two-person composite is shown, because that view carries no overlay. -->
+        <div id="dream-time-host" class="tl dream-time-control"></div>
+        <div class="dream-toolbar">
+          <button id="dream-compare" type="button" class="btn-secondary btn-small" data-i18n="Compare with another person">Compare with another person</button>
+          <!-- Leaving the composite sits beside the entry that opened it, not at
+               the end of a page that can be several screens long. Shown only
+               while a two-person composite is on screen. -->
+          <button id="dream-compare-exit" type="button" class="btn-secondary btn-small" hidden data-i18n="Back to my sleep chart">Back to my sleep chart</button>
+        </div>
+        <p id="dream-status" class="dream-status" role="status" aria-live="polite"></p>
+        <div id="dream-content" class="dream-content"></div>
+      </div>
+    </section>
 
     <section id="library-view" class="view-section hidden"></section>
     <section id="wa-view" class="view-section hidden"></section>
