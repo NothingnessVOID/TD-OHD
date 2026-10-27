@@ -900,9 +900,12 @@ body {
   background: transparent;
   outline: none;
 }
-#transit-choice-label { font-size: 12px; color: var(--text-secondary); }
-#transit-choice { margin-left: 8px; }
-#transit-status { margin: 0 0 20px; }
+/* The shared transit time control (lib/transit-time-control.js) renders these on
+   the Transits page and the Sleep chart alike; its ids carry the host's prefix,
+   so the layout is keyed on the class instead. */
+.tl-choice-label { font-size: 12px; color: var(--text-secondary); }
+.tl-choice { margin-left: 8px; }
+.tl-time-status { margin: 0 0 20px; }
 
 .transit-completion {
   padding: 14px;

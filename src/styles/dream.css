@@ -60,6 +60,21 @@
 .dream-content { min-width: 0; }
 .dream-content > * + * { margin-top: var(--space-3); }
 
+/* ---------- The shared transit time control ---------- */
+
+/* The Transits page and this page mount the same component
+   (`lib/transit-time-control.js`), which is styled by `.tl` in
+   `features/transit-timeline/timeline.css`. That `.tl` block is a page frame —
+   centred, capped and padded — while here the control is one row inside the
+   reading column, so the frame is reset and only the control styling is kept.
+   The `hidden` state belongs to the composite, which has no overlay to place. */
+.dream-view .dream-time-control {
+  max-width: 720px;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+.dream-view .dream-time-control[hidden] { display: none; }
+
 /* The wide frame is for the graph, its two activation columns and the three
    night-field panels. The heading block keeps its reading width, the same split
    the connection view makes between its frame and its title. */
@@ -192,6 +207,24 @@
 }
 .dream-column-design { --dream-column-accent: var(--hd-design); }
 .dream-column-personality { --dream-column-accent: var(--hd-personality); }
+
+/* Two columns share one slot in the two-person composite: that person's design
+   column above their personality column. Stacking keeps four columns inside the
+   same two bands at every width — the shell sizes a band from the slot's first
+   child, so the wrapper repeats the column's content width and the container
+   steps below, instead of inventing a second width rule. */
+.dream-columns {
+  --ohd-slot-content-width: 108px;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+@container (min-width: 560px) {
+  .dream-columns { --ohd-slot-content-width: 128px; }
+}
+@container (max-width: 380px) {
+  .dream-columns { --ohd-slot-content-width: 88px; }
+}
 
 .dream-column-head {
   padding: 0 2px 1px;

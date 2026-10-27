@@ -28,8 +28,16 @@ import { esc } from './format.js';
 const SOURCES = [
   { key: 'personality', label: 'Awake personality' },
   { key: 'design', label: 'Sleep design' },
-  { key: 'transit', label: 'Night sky' }
+  // Shared UI key, so the sheet and the page name the overlay the same way.
+  { key: 'transit', label: 'Transit' }
 ];
+
+/**
+ * The transit term as the rest of the app names it. One key owns it
+ * (the locale files' ui-transits.json, key `"Transit"`), so renaming it there renames it
+ * here too instead of leaving the sleep chart on an older word.
+ */
+const transitTerm = () => t('Transit');
 
 const gateCenter = gate => GATES[gate]?.center;
 
@@ -40,8 +48,8 @@ const gateCenter = gate => GATES[gate]?.center;
  */
 const SLEEP_CHANNEL_STATUS = {
   natal: 'Complete in the sleep design',
-  completed: 'Completed by the night sky',
-  transit: 'Night sky only',
+  completed: 'Completed by {transit}',
+  transit: '{transit} only',
   inactive: 'Not complete in the sleep design'
 };
 const bothStatus = complete => complete ? 'Complete across both sleep designs' : 'Not complete across both sleep designs';
@@ -184,7 +192,7 @@ export function createDreamDetail(initial = {}) {
         return `<button type="button" class="dream-detail-channel ${source}" data-shared-channel-select="${id}">
           <span class="dream-detail-channel-id">${esc(id)}</span>
           <span class="dream-detail-channel-name">${esc(channelName(channel.gates))}</span>
-          <span class="circuit-badge transit-source-badge ${source}">${esc(t(SLEEP_CHANNEL_STATUS[source]))}</span>
+          <span class="circuit-badge transit-source-badge ${source}">${esc(t(SLEEP_CHANNEL_STATUS[source], { transit: transitTerm() }))}</span>
         </button>`;
       }).join('')}</div>` : '';
 
@@ -264,7 +272,7 @@ export function createDreamDetail(initial = {}) {
 
     paint(card(`data-channel="${key}"`, `
       ${renderChannelDetailHeading(key)}
-      <span class="circuit-badge transit-source-badge ${source}">${esc(t(statusLabel))}</span>
+      <span class="circuit-badge transit-source-badge ${source}">${esc(t(statusLabel, { transit: transitTerm() }))}</span>
       <div class="dream-detail-centers">${esc(formatDisplay('channelCenters', channel.centers, channel.centers.map(centerName)))}</div>
       ${gateRows}
       ${renderSharedChannelReading(key)}

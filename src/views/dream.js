@@ -2,10 +2,21 @@
  * Dream view — the DreamRave (sleep chart) page.
  *
  * Sits beside Timeline, Team and Organization as a top-level page. The sleeping
- * design always renders with the current night sky overlaid (no separate transit
+ * design always renders with the current transit overlaid (no separate transit
  * view is needed for it), and its three night fields — Light Field, Earth Plane,
  * Demon Realm — are listed under the graph with every activation, its dream gate
  * name, its dream line theme and the planets that carry it.
+ *
+ * The overlay's moment comes from the shared time control
+ * (`lib/transit-time-control.js`), the same component the Transits page mounts:
+ * date, time, timezone, Now and the DST fold choice behave identically on both
+ * pages. A changed moment re-solves nothing but the overlay — the lunar arc is
+ * handed back to `computeDreamChart()` as `design`.
+ *
+ * The transit term is the shared UI key `"Transit"` (`t('Transit')`), not a
+ * sleep-chart wording of its own: the page and the Transits page name the same
+ * activations the same way, and renaming the term happens in the locale file
+ * once. See `transitTerm()`.
  *
  * Gates, centres and channels open a sleep-chart detail sheet built by
  * `lib/dream-detail.js`. That module reuses the shared dialog shell, headings and
@@ -19,7 +30,9 @@
  * Comparison mode is chosen on this page: the toolbar button opens the shared
  * person picker, the chosen person's waking chart is computed here, and both
  * sleeping designs then share one graph, coloured by who carries each gate, with
- * no night sky. It states structural facts only.
+ * no transit overlaid. It states structural facts only, and it keeps the same
+ * graph shell and the same activation columns as the single design — each slot
+ * carries one person's design and personality columns instead of one column.
  *
  * Calculation: lib/dream-chart.js. Topology: human-design/dream-topology.js.
  * Graph: the shared renderer, narrowed with the dream topology. Vocabulary:
@@ -42,6 +55,7 @@ import { getPerson, birthFromPerson } from '../lib/people.js';
 import { computeChart } from '../lib/chartdata.js';
 import { openPersonPicker } from '../lib/person-picker.js';
 import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
+import { mountTransitTimeControl } from '../lib/transit-time-control.js';
 import { esc } from '../lib/format.js';
 import '../styles/dream.css';
 
@@ -51,6 +65,10 @@ let pendingComparison = null;  // { chart, label } chosen on this page
 let comparisonBusy = false;    // a picker selection is still being computed
 let requestSequence = 0;
 let shellDispose = null;
+// The shared transit time control (lib/transit-time-control.js). One instance for
+// the page: the overlay is the only thing it drives, and the two-person composite
+// has no overlay at all, so the control is hidden while one is shown.
+let timeControl = null;
 // One detail context for the whole page: it carries the dream model and the
 // transit model the panels read, and a redraw keeps the same reference so an
 // open sheet survives a language or skin change.
@@ -114,9 +132,46 @@ function updateCompareButton() {
 }
 
 export function setupDreamView() {
-  document.getElementById('dream-refresh')?.addEventListener('click', () => renderDreamView({ refresh: true }));
+  timeControl?.destroy();
+  timeControl = mountTransitTimeControl({
+    host: document.getElementById('dream-time-host'),
+    // Own prefix, so the ids never collide with the Transits page's `transit-*`
+    // ones while both controls exist in the document.
+    idPrefix: 'dream-transit',
+    // No transit-only mode here: the sleep design is always the base body.
+    showModeToggle: false,
+    onChange: selection => {
+      // A null selection means the wall time does not resolve (DST gap or bad
+      // zone); the control already says so, and redrawing would show "now".
+      if (selection && !pendingComparison) renderDreamView();
+    }
+  });
   document.getElementById('dream-compare')?.addEventListener('click', chooseComparisonPerson);
+  setTransitSubtitle();
   updateCompareButton();
+}
+
+/**
+ * The page subtitle names the overlay with the shared term. `setMessage` stores
+ * the parameters, so `translatePage()` re-renders this line on a language change
+ * like every other marked node.
+ */
+function setTransitSubtitle() {
+  setMessage(document.getElementById('dream-subtitle'),
+    'The five-centre design you sleep in, with {transit} always overlaid.',
+    { transit: transitTerm() });
+}
+
+/** The moment the overlay is read at; undefined lets computeDreamChart use "now". */
+function selectedTransitInstant() {
+  const instant = timeControl?.getInstant();
+  return Number.isFinite(instant) ? instant : undefined;
+}
+
+/** The composite carries no overlay, so its time control must not invite a change. */
+function setTimeControlVisible(visible) {
+  const host = document.getElementById('dream-time-host');
+  if (host) host.hidden = !visible;
 }
 
 /**
@@ -168,10 +223,27 @@ async function startComparison(personId) {
 }
 
 /**
+ * Empty the toolbar status line.
+ *
+ * `setMessage()` records the source key on the node so `translatePage()` can
+ * re-render it; emptying the children alone leaves that key behind, and the next
+ * language change writes the old message back into an otherwise finished page.
+ * Clearing the key with the text is what makes the line actually go away.
+ */
+function clearStatus(status) {
+  if (!status) return;
+  delete status.dataset.i18n;
+  status.replaceChildren();
+}
+
+/**
  * Render the sleep chart for the current person.
  *
- * The night sky is part of this chart by design, so opening the page always
- * re-reads it; the lunar arc solve depends only on the birth data and is reused.
+ * The overlay is part of this chart by design, so opening the page always
+ * re-reads it at the moment the time control shows. The lunar arc solve depends
+ * only on the birth data, so it is solved once and handed back as `design`:
+ * moving the time control therefore costs one ephemeris snapshot, not the whole
+ * Newton iteration.
  *
  * @param {object} [options]
  * @param {boolean} [options.refresh] - also re-solve the lunar arc from scratch
@@ -187,20 +259,31 @@ export async function renderDreamView({ refresh = false } = {}) {
   if (pendingComparison && !comparisonMatches(current)) clearDreamComparison();
 
   if (pendingComparison) {
+    setTimeControlVisible(false);
     if (!refresh && lastComparison) { drawComparison({ content, current, ...lastComparison }); return; }
     await renderComparison({ content, status, current, comparison: pendingComparison });
     return;
   }
+  setTimeControlVisible(true);
 
   const request = ++requestSequence;
-  const reuseSolve = !refresh && lastDream?.natalChart === current.chart ? lastDream.solve : null;
+  const transitInstant = selectedTransitInstant();
+  const cached = !refresh && lastDream?.natalChart === current.chart ? lastDream : null;
+  // Same person and same moment: the drawn model is still exactly right.
+  if (cached && cached.transitInstant === transitInstant) {
+    clearStatus(status);
+    drawDream(cached, content);
+    return;
+  }
   try {
-    if (!reuseSolve) setMessage(status, 'Computing the sleep chart…');
-    const dream = await computeDreamChart(current.chart, reuseSolve ? { design: reuseSolve } : {});
+    if (!cached) setMessage(status, 'Computing the sleep chart…');
+    const dream = await computeDreamChart(current.chart,
+      cached ? { design: cached.solve, transitInstant } : { transitInstant });
     if (request !== requestSequence || current.chart !== getCurrentChart()?.chart) return;
     dream.natalChart = current.chart;
+    dream.transitInstant = transitInstant;
     lastDream = dream;
-    status?.replaceChildren();
+    clearStatus(status);
     drawDream(dream, content);
   } catch (error) {
     if (request !== requestSequence) return;
@@ -214,14 +297,14 @@ async function renderComparison({ content, status, current, comparison }) {
   try {
     setMessage(status, 'Computing both sleep charts…');
     // Comparison follows the original dream design: both sleeping designs share
-    // one composite body, and the night sky is not overlaid.
+    // one composite body, and no transit is overlaid.
     const [a, b] = await Promise.all([
       computeDreamChart(current.chart, { transit: false }),
       computeDreamChart(comparison.chart, { transit: false })
     ]);
     if (request !== requestSequence) return;
     lastComparison = { a, b, labelB: comparison.label };
-    status?.replaceChildren();
+    clearStatus(status);
     drawComparison({ content, current, ...lastComparison });
   } catch (error) {
     if (request !== requestSequence) return;
@@ -234,13 +317,19 @@ export function refreshDreamLanguage() {
   const content = document.getElementById('dream-content');
   const current = getCurrentChart();
   if (!content || !current) return;
+  // `translatePage()` re-renders this line from the parameters stored with it,
+  // and that parameter is the previous language's word for the overlay, so the
+  // subtitle is rewritten here with the new one.
+  setTransitSubtitle();
   if (pendingComparison && lastComparison && comparisonMatches(current)) {
+    setTimeControlVisible(false);
     drawComparison({ content, current, ...lastComparison });
     // The composite redraw re-uses the same sheet controller, so an open card
     // must be repainted from it as the single-design path does.
     detail?.refresh();
     return;
   }
+  setTimeControlVisible(true);
   if (lastDream?.natalChart !== current.chart) return;
   drawDream(lastDream, content);
   // The redraw replaced the graph API on the same context object; an open sheet
@@ -261,6 +350,15 @@ function el(tag, attrs = {}, text) {
   if (text != null) node.textContent = text;
   return node;
 }
+
+/**
+ * The transit term, read from the one shared UI key ("Transit", owned by the
+ * locale files' ui-transits.json) instead of a sleep-chart copy: renaming it to
+ * another word happens there once and every page follows. The sleep chart used
+ * to call the same overlay "Night sky", which split the vocabulary between two
+ * pages describing the same activations.
+ */
+const transitTerm = () => t('Transit');
 
 /** Browser-locale formatting: a view never branches on the interface language. */
 const dateTimeText = iso => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
@@ -368,7 +466,7 @@ function typeStrip(dream) {
       ${dream.channels.length ? `<span class="dream-fact">${esc(t('Complete dream channels: {channels}', { channels }))}</span>` : ''}
     </div>
     ${dream.hasTransit ? `<div class="dream-type-facts"><span class="dream-fact">${esc(
-      t('Night sky at {moment} is overlaid.', { moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}`;
+      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}`;
   return strip;
 }
 
@@ -381,10 +479,34 @@ const planetRows = activations => PLANET_ORDER
   .filter(([, activation]) => activation)
   .map(([planet, activation]) => ({ planet, activation }));
 
-function activationColumn(side, activations, when) {
+/**
+ * One activation column: the planets of one side of one sleeping design.
+ *
+ * `side` keeps its meaning (`design` / `personality`) and drives the CSS class
+ * and the heading; `owner` only prefixes that heading, so the composite can put
+ * one person's two columns into a slot without a second column component. Both
+ * paths call this function — that is the point: the composite differs from the
+ * single design in which parts it fills, not in what it is made of.
+ *
+ * @param {'design'|'personality'} side - which half of the sleeping design
+ * @param {object} activations - planet → { gate, line } map for that half
+ * @param {string|null} when - the date that half was taken from
+ * @param {string} [owner] - optional person label, e.g. the composite's person A
+ */
+function activationColumn(side, activations, when, owner = '') {
   const heading = side === 'design' ? 'Sleep design' : 'Sleep personality';
-  const column = el('section', { class: `dream-column dream-column-${side}`, 'aria-label': t(heading) });
-  column.appendChild(el('div', { class: 'dream-column-head', text: t(heading) }));
+  const label = owner
+    // The site's own separator convention (`formatDisplay('separator')`), so the
+    // heading punctuates like every other composed label instead of inventing a
+    // private join and a locale key for it.
+    ? `${owner}${formatDisplay('separator', 'label')}${t(heading)}`
+    : t(heading);
+  const column = el('section', {
+    class: `dream-column dream-column-${side}`,
+    'aria-label': label,
+    ...(owner ? { 'data-owner': owner } : {})
+  });
+  column.appendChild(el('div', { class: 'dream-column-head', text: label }));
   if (when) column.appendChild(el('div', { class: 'dream-column-date', text: when }));
   const rows = planetRows(activations);
   if (!rows.length) {
@@ -407,6 +529,29 @@ function activationColumn(side, activations, when) {
   return column;
 }
 
+/** The date the personality side was taken from, as the columns print it. */
+const personalityWhen = dream => dream.source.personalityDate
+  ? dateText(new Date(`${dream.source.personalityDate}T12:00:00Z`).toISOString())
+  : null;
+
+/**
+ * Put one sleeping design's columns into a shell slot.
+ *
+ * A single design has one column per slot and keeps its exact previous markup; a
+ * two-person composite stacks that person's design and personality columns in
+ * the same slot, which is why the wrapper only exists for more than one column.
+ * The slot's content width is read from its first child, so the wrapper declares
+ * the same `--ohd-slot-content-width` a bare column does (styles/dream.css).
+ */
+function fillSlot(shell, slot, columns) {
+  const host = shell.querySelector(`[data-slot="${slot}"]`);
+  if (!host) return;
+  if (columns.length === 1) { host.appendChild(columns[0]); return; }
+  const group = el('div', { class: 'dream-columns' });
+  for (const column of columns) group.appendChild(column);
+  host.appendChild(group);
+}
+
 function dreamGraphShell(dream, { overlay }) {
   const shell = el('div', { class: 'dream-shell' });
   shell.innerHTML = graphShellMarkup({ className: 'dream-graph-shell' });
@@ -426,11 +571,8 @@ function dreamGraphShell(dream, { overlay }) {
     onCenterClick: center => openCenter(center)
   });
 
-  shell.querySelector('[data-slot="left"]').appendChild(
-    activationColumn('design', dream.gates.design, dateText(dream.designMoment.iso)));
-  shell.querySelector('[data-slot="right"]').appendChild(
-    activationColumn('personality', dream.gates.personality,
-      dream.source.personalityDate ? dateText(new Date(`${dream.source.personalityDate}T12:00:00Z`).toISOString()) : null));
+  fillSlot(shell, 'left', [activationColumn('design', dream.gates.design, dateText(dream.designMoment.iso))]);
+  fillSlot(shell, 'right', [activationColumn('personality', dream.gates.personality, personalityWhen(dream))]);
 
   bindRowHover(shell, '.dream-column-row[data-gate]', api);
   bindGateDetails(shell);
@@ -486,8 +628,8 @@ function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-
  */
 const CHANNEL_STATUS = {
   natal: ['Complete in the sleep design', 'natal'],
-  completed: ['Completed by the night sky', 'completed'],
-  transit: ['Night sky only', 'transit'],
+  completed: ['Completed by {transit}', 'completed'],
+  transit: ['{transit} only', 'transit'],
   inactive: ['Not complete in the sleep design', 'inactive']
 };
 
@@ -499,7 +641,7 @@ function channelStatusOf(channel, model) {
 
 const channelStatusBadge = status => {
   const [label, variant] = CHANNEL_STATUS[status];
-  return `<span class="dream-channel-status dream-channel-status-${variant}">${esc(t(label))}</span>`;
+  return `<span class="dream-channel-status dream-channel-status-${variant}">${esc(t(label, { transit: transitTerm() }))}</span>`;
 };
 
 const channelGateNames = channel => channel.gates
@@ -511,7 +653,7 @@ function channelButton(channel, status) {
     type: 'button',
     class: `dream-channel-open dream-channel-open-${CHANNEL_STATUS[status][1]}`,
     'data-channel': key,
-    'aria-label': `${t('Channel {channel}', { channel: key })} · ${channelName(channel.gates)} · ${t(CHANNEL_STATUS[status][0])}`
+    'aria-label': `${t('Channel {channel}', { channel: key })} · ${channelName(channel.gates)} · ${t(CHANNEL_STATUS[status][0], { transit: transitTerm() })}`
   });
   button.innerHTML = `
     <span class="dream-channel-head">
@@ -536,7 +678,8 @@ function realmChannels(realmId) {
 const SOURCE_ORDER = [
   { key: 'personality', label: 'Awake personality' },
   { key: 'design', label: 'Sleep design' },
-  { key: 'transit', label: 'Night sky' }
+  // The overlay source is named by the shared term, not by a page-local label.
+  { key: 'transit', label: 'Transit' }
 ];
 
 function realmPanel(dream, realmId, { overlay, context, api }) {
@@ -611,7 +754,7 @@ function realmRow(row) {
       <button type="button" class="dream-row-open" data-gate="${row.gate}"
         aria-label="${esc(t('Gate {gate}', { gate: row.gate }))}">${row.gate}${line ? `.${line}` : ''}</button>
       <span class="dream-row-name">${esc(dreamGateName(row.gate))}${theme ? ` <span class="dream-row-theme">· ${esc(theme)}</span>` : ''}</span>
-      ${row.transitActivated && !row.activated ? `<span class="dream-row-transit-tag">${esc(t('Night sky'))}</span>` : ''}
+      ${row.transitActivated && !row.activated ? `<span class="dream-row-transit-tag">${esc(transitTerm())}</span>` : ''}
     </div>
     ${chips}`;
   return item;
@@ -660,10 +803,11 @@ function drawComparison({ content, current, a, b, labelB }) {
   content.appendChild(el('div', { class: 'dream-compare-head',
     text: t('Sleep charts of {a} and {b}', { a: labelA, b: labelB }) }));
   content.appendChild(el('p', { class: 'dream-compare-intro',
-    text: t('One body for both sleeping designs, with no night sky: each gate is coloured by whose design carries it.') }));
+    text: t('One body for both sleeping designs, with no {transit}: each gate is coloured by whose design carries it.',
+      { transit: transitTerm() }) }));
   content.appendChild(compositeLegend(labelA, labelB, palette));
 
-  const shell = el('div', { class: 'dream-shell' });
+  const shell = el('div', { class: 'dream-shell', id: 'dream-composite-shell' });
   shell.innerHTML = graphShellMarkup({
     className: 'dream-graph-shell',
     graph: '<div id="dream-composite" class="dream-graph"></div>'
@@ -683,6 +827,23 @@ function drawComparison({ content, current, a, b, labelB }) {
     onCenterClick: center => detail.showCenter(center)
   });
   detail.setApi(compositeApi);
+  // The composite is the single design's shell and columns with a different set
+  // of parts: each slot carries one person's design and personality columns,
+  // built by the same `activationColumn()`. Without this the two slots stayed
+  // empty while the natal chart showed its own on both sides.
+  fillSlot(shell, 'left', [
+    activationColumn('design', a.gates.design, dateText(a.designMoment.iso), labelA),
+    activationColumn('personality', a.gates.personality, personalityWhen(a), labelA)
+  ]);
+  fillSlot(shell, 'right', [
+    activationColumn('design', b.gates.design, dateText(b.designMoment.iso), labelB),
+    activationColumn('personality', b.gates.personality, personalityWhen(b), labelB)
+  ]);
+  // Hovering lights the gate, clicking opens the composite sheet: the same
+  // handlers the single design binds, so the sheet answers "who carries this
+  // gate" from the composite context and never from the single-person one.
+  bindRowHover(shell, '.dream-column-row[data-gate]', compositeApi);
+  bindGateDetails(shell);
   shellDispose?.disconnect();
   shellDispose = observeGraphShell(shell, { aspect: DREAM_GRAPH_ASPECT, idealWidth: 720 });
 

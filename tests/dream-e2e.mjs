@@ -155,13 +155,69 @@ await check('activation columns list only dream-gate planets', async () => {
   const rows = await page.$$eval('.dream-column-row', n => n.map(x => Number(x.dataset.gate)));
   assert(rows.length > 0, 'no activation rows');
   assert(rows.every(g => EXPECTED_GATES.includes(String(g))), `non-dream gate in a column: ${rows}`);
+  // The single design keeps its one column per side, in the same shell slots the
+  // composite fills with two each.
+  const columns = await page.$$eval('.dream-graph-shell [data-slot="left"] .dream-column, .dream-graph-shell [data-slot="right"] .dream-column',
+    n => n.map(x => [...x.classList].find(c => /^dream-column-(design|personality)$/.test(c))));
+  assert(JSON.stringify(columns) === JSON.stringify(['dream-column-design', 'dream-column-personality']),
+    `single design columns ${columns}`);
+  const owners = await page.$$eval('.dream-graph-shell [data-slot] .dream-column', n => n.map(x => x.dataset.owner || null));
+  assert(owners.every(owner => owner === null), `the single design columns carry a composite owner: ${owners}`);
 });
 
-await check('night sky is overlaid and its timestamp is shown', async () => {
+await check('the overlay is named with the shared transit term and timestamped', async () => {
+  // The overlay is named with the shared term (`Transit` → 行运), not with a
+  // sleep-chart word of its own.
   const facts = await page.$eval('.dream-type-strip', n => n.textContent);
   assert(/已叠加/.test(facts), `no overlay notice: ${facts.slice(0, 120)}`);
+  assert(/行运/.test(facts), `the overlay is not called 行运: ${facts.slice(0, 160)}`);
+  assert(!/天时/.test(facts), `the retired 天时 wording is still on the page: ${facts.slice(0, 160)}`);
   const transitSources = await page.$$eval('.dream-row-source-transit', n => n.length);
   assert(transitSources > 0, 'no transit-only rows anywhere in the three fields');
+});
+
+await check('the sleep page mounts the shared transit time control', async () => {
+  // Same component as the Transits page (`lib/transit-time-control.js`), mounted
+  // under its own id prefix so the two never collide.
+  for (const id of ['dream-transit-date', 'dream-transit-time', 'dream-transit-timezone', 'dream-transit-now']) {
+    assert(await page.$(`#${id}`), `missing #${id}`);
+  }
+  assert(!(await page.$('#dream-transit-only-toggle')), 'the sleep page shows the transit-only mode it does not have');
+  const step = await page.$eval('#dream-transit-time', n => n.getAttribute('step'));
+  assert(step === '1', `time input step is ${step}`);
+  const zone = (await page.$eval('#dream-transit-timezone', n => n.textContent)).trim();
+  assert(zone.length > 0, 'the timezone output is empty');
+  const date = await page.$eval('#dream-transit-date', n => n.value);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(date), `date input is "${date}"`);
+});
+
+await check('moving the time control re-reads the overlay at the new moment', async () => {
+  const overlayText = () => page.$eval('.dream-type-strip', n => n.textContent);
+  const transitChips = () => page.$$eval('.dream-row-source-transit .dream-planet-chip', n => n.map(x => x.textContent.trim()));
+  const before = await overlayText();
+  const chipsBefore = await transitChips();
+  // A date two days out: the overlay must move, and it must move because of the
+  // control, not because the page reloaded (the lunar arc keeps its date).
+  const provenanceBefore = await page.$eval('.dream-provenance', n => n.textContent);
+  await page.evaluate(() => {
+    const date = document.getElementById('dream-transit-date');
+    date.value = '2026-02-03';
+    date.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  await page.waitForFunction(previous => (document.querySelector('.dream-type-strip')?.textContent || '') !== previous,
+    before, { timeout: 30000 });
+  await page.waitForTimeout(400);
+  const after = await overlayText();
+  const chipsAfter = await transitChips();
+  assert(after !== before, 'the overlay notice did not change with the selected moment');
+  assert(JSON.stringify(chipsAfter) !== JSON.stringify(chipsBefore),
+    `the transit activations are identical at two different moments: ${chipsAfter.join(', ')}`);
+  const provenanceAfter = await page.$eval('.dream-provenance', n => n.textContent);
+  assert(provenanceAfter === provenanceBefore,
+    'the lunar design moment changed with the overlay — the solve was recomputed instead of reused');
+  // Back to now so the rest of the run starts from the page's default state.
+  await page.click('#dream-transit-now');
+  await page.waitForTimeout(600);
 });
 
 await check('provenance line reports the lunar design moment', async () => {
@@ -255,6 +311,11 @@ await check('switching to English redraws the sleep chart', async () => {
   assert(/^[A-Z]/.test(chip), `type chip not translated: ${chip}`);
   // The redraw must keep the whole page, not just the graph.
   assert(await page.$$eval('.dream-realm', n => n.length) === 3, 'the three night fields did not survive the redraw');
+  // A finished render leaves no status line, and a language change must not
+  // resurrect the "Computing…" message that was cleared when it ended.
+  const status = await page.$eval('#dream-status', n => ({ text: n.textContent.trim(), key: n.dataset.i18n || null }));
+  assert(status.text === '', `status line still reads "${status.text}" after a language switch`);
+  assert(status.key === null, `the cleared status line kept its source key "${status.key}"`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 await page.screenshot({ path: path.join(SHOTS, 'desktop-en.png'), fullPage: true });
@@ -357,11 +418,15 @@ await page.click('.nav-link[data-view="dream"]');
 await page.waitForSelector('.dream-realm', { timeout: 30000 });
 await page.waitForTimeout(500);
 
-await check('the sleep page carries its own compare entry next to the night-sky refresh', async () => {
+await check('the sleep page carries its own compare entry next to the shared time control', async () => {
   const label = await page.$eval('#dream-compare', n => n.textContent.trim());
   assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
+  // The standalone refresh button is gone: the shared time control's Now button
+  // covers it, so the toolbar carries the comparison entry only.
   const toolbar = await page.$$eval('.dream-toolbar button', n => n.map(b => b.id));
-  assert(JSON.stringify(toolbar) === JSON.stringify(['dream-refresh', 'dream-compare']), `toolbar buttons ${toolbar}`);
+  assert(JSON.stringify(toolbar) === JSON.stringify(['dream-compare']), `toolbar buttons ${toolbar}`);
+  assert(!(await page.$('#dream-refresh')), 'the retired refresh button is still in the page');
+  assert(await page.$('#dream-transit-now'), 'the time control lost its Now button');
   // The relationship page no longer offers the handover.
   await page.click('.nav-link[data-view="connection"]');
   await page.waitForTimeout(400);
@@ -438,6 +503,68 @@ await check('choosing a second person on the sleep page builds the comparison', 
   await page.screenshot({ path: path.join(SHOTS, 'comparison.png'), fullPage: true });
 });
 
+await check('the composite keeps the same graph shell with both people\'s columns', async () => {
+  // The defect this guards: the composite built the shared shell but filled
+  // neither slot, so the natal chart's two side columns had no counterpart.
+  const columns = await page.$$eval('#dream-composite-shell [data-slot="left"] .dream-column, #dream-composite-shell [data-slot="right"] .dream-column',
+    nodes => nodes.map(n => ({ side: [...n.classList].find(c => /^dream-column-(design|personality)$/.test(c)), owner: n.dataset.owner, head: n.querySelector('.dream-column-head')?.textContent.trim() })));
+  assert(columns.length === 4, `${columns.length} activation columns in the composite, expected 4`);
+  for (const side of ['dream-column-design', 'dream-column-personality']) {
+    for (const owner of ['E2E Dream', 'E2E Partner']) {
+      assert(columns.some(c => c.side === side && c.owner === owner),
+        `missing ${owner} ${side}; got ${JSON.stringify(columns)}`);
+    }
+  }
+  // Each heading names its person, so two stacked columns stay tellable apart.
+  for (const column of columns) {
+    assert(column.head.includes(column.owner), `column heading "${column.head}" does not name ${column.owner}`);
+  }
+  // Left slot is person A, right slot is person B, as the connection composite does.
+  const leftOwners = await page.$$eval('#dream-composite-shell [data-slot="left"] .dream-column', n => [...new Set(n.map(x => x.dataset.owner))]);
+  const rightOwners = await page.$$eval('#dream-composite-shell [data-slot="right"] .dream-column', n => [...new Set(n.map(x => x.dataset.owner))]);
+  assert(JSON.stringify(leftOwners) === JSON.stringify(['E2E Dream']), `left slot owners ${leftOwners}`);
+  assert(JSON.stringify(rightOwners) === JSON.stringify(['E2E Partner']), `right slot owners ${rightOwners}`);
+  // The columns are the same component as the single design's: same row markup.
+  const rows = await page.$$eval('#dream-composite-shell .dream-column-row', n => n.map(x => Number(x.dataset.gate)));
+  assert(rows.length > 0 && rows.every(g => EXPECTED_GATES.includes(String(g))),
+    `composite column rows are not dream-gate activations: ${rows}`);
+});
+
+await check('a composite column row opens the composite ownership sheet', async () => {
+  const gate = await page.$eval('#dream-composite-shell .dream-column-row', n => n.dataset.gate);
+  await page.click(`#dream-composite-shell .dream-column-row[data-gate="${gate}"]`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7531|Carried by/.test(sheet), 'the column row opened a sheet without the ownership line');
+  // Composite context, not the single design's three sources.
+  assert(!/\u6e05\u9192\u4eba\u683c|Awake personality/.test(sheet),
+    'the composite column row opened the single-design sheet');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+});
+
+// Four columns (two per slot) is the widest layout the sleep chart produces;
+// the phone overflow guard above runs in single mode only, so assert it here.
+await check('the composite stays inside a phone viewport', async () => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(500);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert(overflow <= 1, `composite horizontal overflow of ${overflow}px`);
+  const widths = await page.$$eval('#dream-composite-shell .dream-column', n => n.map(x => Math.round(x.getBoundingClientRect().width)));
+  assert(widths.length === 4 && widths.every(w => w > 40 && w <= 180), `composite column widths ${widths}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'composite-phone.png'), fullPage: true });
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(400);
+});
+
+await check('the time control is hidden while the composite is shown', async () => {
+  // The composite carries no overlay, so offering a moment would promise a change
+  // that cannot happen.
+  const hidden = await page.$eval('#dream-time-host', n => n.hidden);
+  assert(hidden === true, 'the time control is still visible in comparison mode');
+});
+
 await check('composite gates open an ownership sheet', async () => {
   const gate = await page.$eval('#dream-composite .bg-gate[data-gate]', n => n.dataset.gate);
   await page.click(`#dream-composite .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
@@ -450,8 +577,8 @@ await check('composite gates open an ownership sheet', async () => {
   await page.waitForTimeout(200);
 });
 
-await check('comparison mode overlays no night sky', async () => {
-  // Structural, not textual: the intro sentence itself says the night sky is
+await check('comparison mode overlays no transit', async () => {
+  // Structural, not textual: the intro sentence itself says the overlay is
   // absent, so the word appearing is expected. What must not exist is any
   // transit activation, transit ring or overlay timestamp.
   const text = await page.$eval('#dream-content', n => n.textContent);
