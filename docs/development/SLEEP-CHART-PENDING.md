@@ -220,18 +220,20 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 另外，`docs/development/SLEEP-CHART-*.md` 这两份文档写作时沿用了「天时」这个旧称，
 指的是同一个概念（界面上现在叫「行运」）。文档正文没有全量替换，读到「天时」按「行运」理解。
 
-### 3.6 timeline-e2e 在 927px 断点失败（既有问题，已用基线对照证实）
+### 3.6 timeline-e2e 在 927px 断点失败（c585cbb 引入，已修，见 §3.12）
 
 `tests/timeline-e2e.mjs:648`（属于「852px 和 927px 布局保持紧凑吸顶头部在视口内」这条）
 断言 `actual: false, expected: true` 失败，实测是 `html` 宽 936 对视口 927，横向溢出 9px。
 
-**这不是本轮引入的。**对照方法：在同一个工作树里 `git checkout 9702b9d`（本轮改动之前的提交，
-`node_modules` 与被 gitignore 的 `public/engine/` 都原地保留），起服务跑同一份测试，
-结果与新代码 `590eb6a` **完全一致**——同样 17 项通过、同样停在第 648 行、同样 actual/expected/operator。
-`tests/timeline-e2e.mjs` 本轮未被修改，所以两边跑的是同一份断言。
+**结论更正：这是 c585cbb（睡眠图主体提交）引入的，不是既有问题，已在本轮修复（见 §3.12）。**
+本节先前把基线选成了 9702b9d（本分支自己的早期提交，已含回归），得出「既有」的错误结论——
+真正的基线必须直接对 `main`（`12b9705`）验证，而 main 上 timeline-e2e 是 **20 项全过**。
+教训：**判断是否回归，基线必须是要合入的目标分支，不是自己工作树的任何一个历史提交。**
 
-注意用临时 `git worktree` 做这个对照会得出假结论：新建的 worktree 缺被 gitignore 的引擎产物，
-timeline 视图根本渲染不出来，测试会先在第 103 行 `waitForSelector` 超时，看不到第 648 行的真实失败。
+另外用临时 `git worktree` 做 main 基线对照会得出假结论：新建的 worktree 缺被 gitignore 的
+引擎产物，timeline 视图根本渲染不出来，测试会先在第 103 行 `waitForSelector` 超时；
+正确做法是在同一个工作树里 `git checkout --detach 12b9705`（`node_modules` 与 `public/engine/`
+原地保留），或直接去主工作树跑。
 
 ### 3.7 合图侧栏行可点，关系页的同位侧栏只读（有意不一致）
 
@@ -293,6 +295,45 @@ timeline 视图根本渲染不出来，测试会先在第 103 行 `waitForSelect
   不可能互相矛盾。
 
 ---
+
+### 3.11 不要在同一工作树里一边跑 dev server 一边跑 `npm test`
+
+实测踩到的坑：9998 端口跑着 vite dev server 时执行 `npm test`，得到 **621/585/29**（失败 29 项），
+`npm run build:pages` 也直接报错；杀掉服务后重跑，同样的代码得到 **629/618/4**（只有那 4 个既有
+ macOS `/var` 失败），`build:pages` 退出码 0。
+
+原因是 `tests/local-server.test.js` 一类测试会自己起服务并碰共享临时路径，`build:pages` 要写 `dist/`，
+两者都与运行中的 dev server 争资源。**跑 e2e 需要服务，跑 `npm test`／`build:pages` 不需要**，
+两者不要同时进行；先跑完 e2e、关掉服务，再跑全量测试与构建。
+
+### 3.12 头部导航的防溢出约束已扩展到全部桌面宽度
+
+`src/styles.css` 里那段「导航可收缩 + 内部横向滚动」的保护原本只覆盖 641–900px
+（`@media (--above-phone) and (max-width: 900px)`）。900px 以上没有这套约束，`.nav` 作为 flex item
+保持默认的 `min-width: auto`，其最小内容宽度就成了头部宽度的下限。
+
+睡眠图给导航加了第 8 项后，英文头部的最小宽度变成 **936px**，于是任何落在
+**(900, 936)** 区间的视口都会把文档撑宽（927px 下溢出 9px），而 `tests/timeline-e2e.mjs:648`
+正好测 927px。简体中文不溢出（8 项共 484px，最小宽度低于 900），所以这个回归只在英文界面出现。
+852px 那一档之所以通过，是因为它落在旧的保护区间内，不是因为折叠成了手机菜单。
+
+修法是把约束改成 `@media (--above-phone)`，覆盖全部桌面宽度，而不是把 900 抬到某个新值——
+抬上界只是把窗口挪个位置，下次再加导航项或换语言还会撞上。实测 21 个宽度
+（1440→1320，英文与简中各一轮）**全部不再溢出**，导航高度在所有桌面宽度下统一回 28px
+（此前 936–1050px 区间标签会折成两行、头部变 44px）；英文仅在 1100px 以下、简中仅在 800px 以下
+才真的需要内部滚动，与项目既有的 641–900px 行为一致，`src/main.js:140-143` 已有「切换视图后
+把 active 导航项滚到可见」的配套逻辑。
+
+副作用要知道：英文 1000–1100px 区间从「标签折行、全部可见」变成「单行、需横向滚动」。
+滚动条是隐藏的，可发现性靠 active 项自动滚入视野；这是项目已接受的模式。
+
+### 3.13 既有失败：`tests/review-round2-e2e.mjs`（不在门禁清单）
+
+`review-round2-e2e.mjs` 在「327px library header keeps branding and a readable chart selector」
+这条断言上失败（`selectWidth: 92`）。**已用 main 基线对照证实是既有问题**：在同一工作树里
+`git checkout --detach 12b9705` 后跑同一份测试，失败断言与数值完全相同。
+它测的是 327px（手机区间），而 §3.12 的改动只作用于 `min-width: 641px`，不可能影响它；
+且它不在 `.github/workflows/premerge.yml` 的门禁清单里。
 
 ## 4. 怎么把它跑起来
 

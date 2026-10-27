@@ -2774,7 +2774,23 @@ body.modal-open { overflow: hidden; }
   }
 }
 
-@media (--above-phone) and (max-width: 900px) {
+/* The header must never push the document wider than the viewport, at any
+   width above the phone breakpoint.
+
+   `.nav` is a flex item, so without `min-width: 0` its automatic minimum size
+   (the widest unbreakable label plus padding) stops it shrinking, and the whole
+   header overflows once the labels no longer fit. Letting it shrink and scroll
+   inside itself keeps the document width honest and every item reachable; the
+   labels stay on one line instead of wrapping to a taller header.
+
+   This used to stop at 900px, which left a window above it: with eight items in
+   English the header's smallest possible width is 936px, so any viewport in
+   (900, 936) overflowed the page by up to 36px. `tests/timeline-e2e.mjs` checks
+   927px and caught it. Raising the ceiling would only move the window, so the
+   constraint now covers every desktop width; where the labels fit, nothing
+   scrolls and the layout is unchanged. `main.js` already scrolls the active
+   item into view on a view change. */
+@media (--above-phone) {
   .logo, .header-actions { flex-shrink: 0; }
   .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
