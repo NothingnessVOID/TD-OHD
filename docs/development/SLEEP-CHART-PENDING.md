@@ -336,7 +336,6 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 且它不在 `.github/workflows/premerge.yml` 的门禁清单里。
 
 ### 3.14 三个「页面状态串位」竞态（已修，`tests/dream-state-boundaries-e2e.mjs`）
-
 三个都是同一类问题：异步求解完成时，页面已经不在发起它的那个状态里了，而代码在
 `await` 之后才去读「当前是谁」。用户可见的后果都是**看到不属于当前状态的图**。
 
@@ -369,8 +368,29 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 **测试里 import 页面模块必须走 `performance.getEntriesByType('resource')` 解析出的真实 URL**
 （Vite 会带 `?t=` 后缀），否则拿到的是第二份模块实例，`onPeopleChange` 监听不到页面那一份的保存。
 
-### 3.15 页面内双人合盘没有转「现在」的入口（未做）
+#### 3.14.1 补修：两套计数器之间的空洞（第二轮，12 项）
 
+上一轮把合盘改成独立 `comparisonSequence` 后留下一个反向空洞，以及两处死代码：
+
+- **单人慢解覆盖合盘**（已实证，测试第 10 项）。单人落图只看自己的 `requestSequence`
+  与 `current.chart`；进入合盘会离开人物/时刻不变，所以这两项仍成立，而合盘早已画好。
+  修法两道保险：进合盘时 `evictSingleDesign()` 递增 `requestSequence`，且单人落图/报错另看
+  `pendingComparison`。单独撑掉任一道仍能过（冗余），两道全撑才会失败——已逐个验证。
+- **`samePairIsCurrent()` 的主人物校验是死代码**（已核实）。旧签名收调用方的 `current`，
+  与 `comparison.forChart` 永远相等；真实拦截靠 `invalidateDream()`。现改成自己调
+  `getCurrentChart()`，并去掉参数，`renderComparison()` / `refreshDreamLanguage()` /
+  `drawComparison()` 三处同步。测试第 11 项覆盖「切换主人物后旧合盘不复活」，
+  该路径由 `main.js` 的 `invalidateDream()` 先兜住，所以修前也过——它锁的是行为，不是实现。
+- **B 在计算期间被删/改会死在 Computing**（已实证，测试第 12 项）。`pendingComparison` 此时尚未提交，
+  `onComparisonPersonChange()` 因无 pair 而早退，无法回答。修法：`startComparison()` 在 `await` 后
+  重读 `getPerson(person.id)` 并比指纹，不一致就报状态并返回（`fingerprint` 变了报「出生资料已变」，
+  人没了报「已不在保存的图表中」）。单独撑掉这一段，第 12 项就失败。
+
+现状：`tests/dream-state-boundaries-e2e.mjs` 12 项全通；`dream-e2e` 53/53；
+`dream-chart`/`dream-topology`/`i18n` 48 项、`localization`+`traditional-chinese` 9 项、
+静态构建均通过。
+
+### 3.15 页面内双人合盘没有转「现在」的入口（未做）
 合图时时间控件被隐藏（合图不叠加行运），所以进入合图后无法改时刻；返回单人睡眠图才能改。
 这是 §3.10 的设计取舍，未变。
 

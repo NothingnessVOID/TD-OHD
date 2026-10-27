@@ -120,6 +120,20 @@ function evictComparison() {
 }
 
 /**
+ * Stop the single-design solve from landing, because the composite is taking the page.
+ *
+ * The two kinds of solve are numbered by different counters, so bumping the comparison
+ * counter says nothing about a single solve already in flight. The guard in
+ * `renderDreamView()` checks `pendingComparison` as well and that is what actually
+ * decides the outcome; bumping here is the same statement made where the page changes
+ * hands, so a single solve started after this point cannot be mistaken for one that
+ * belongs to the composite. It does not draw anything and it starts no solve.
+ */
+function evictSingleDesign() {
+  ++requestSequence;
+}
+
+/**
  * The loaded chart an action was started from.
  *
  * `getCurrentChart()` hands back the same `chart` object main.js solved, and that
@@ -152,6 +166,7 @@ function sameMainPerson(origin) {
  * so choosing someone else drops it before the new pair is solved.
  */
 function setDreamComparison({ personId, label, fingerprint, chart, origin }) {
+  evictSingleDesign();
   pairFrom({ personId, label, fingerprint, chart, origin });
 }
 
@@ -431,6 +446,19 @@ async function startComparison(personId) {
     // Wasted work rather than wasted screen: the reader changed the main person,
     // left the page, or picked again while B's chart was solving.
     if (request !== comparisonSequence || !sameMainPerson(origin)) return;
+    // B can also leave the library while their own chart is solving. Nothing owns
+    // the pair yet at that point, so `onComparisonPersonChange()` cannot answer —
+    // it only follows a pair that exists. Left alone, the pick would commit a pair
+    // whose person is already gone and freeze the page on "Computing…". The birth
+    // fingerprint is re-read too, because an edit during the solve makes the chart
+    // that just arrived describe data the reader no longer has.
+    const saved = person.id ? getPerson(person.id) : null;
+    if (person.id && (!saved || calculationIdentity(birthFromPerson(saved)) !== fingerprint)) {
+      setMessage(status, saved
+        ? 'The other person’s birth data changed before their sleep chart finished. Pick them again to compare.'
+        : 'That person is no longer in your saved charts.');
+      return;
+    }
     handedOver = true;
     comparisonBusy = false;
     setDreamComparison({ personId: person.id, label: person.name, fingerprint, chart, origin });
@@ -484,7 +512,7 @@ export async function renderDreamView({ refresh = false } = {}) {
   if (pendingComparison) {
     setTimeControlVisible(false);
     setExitVisible(true);
-    if (!refresh && lastComparison && samePairIsCurrent(current, pendingComparison)) {
+    if (!refresh && lastComparison && samePairIsCurrent(pendingComparison)) {
       drawComparison({ content, current, ...lastComparison });
       return;
     }
@@ -516,14 +544,23 @@ export async function renderDreamView({ refresh = false } = {}) {
     if (!cached) setMessage(status, 'Computing the sleep chart…');
     const dream = await computeDreamChart(current.chart,
       cached ? { design: cached.solve, transitInstant } : { transitInstant });
-    if (request !== requestSequence || current.chart !== getCurrentChart()?.chart) return;
+    // The overlay and the composite are numbered by different counters, so this
+    // solve's own counter does NOT move when a pair is opened: opening a composite
+    // leaves the moment unchanged, which is exactly the state this request is for.
+    // Without the `pendingComparison` check a slow single solve therefore landed on
+    // top of a composite that had already drawn — the counter was still current, the
+    // chart it belonged to was not. Both counters are read together for that reason.
+    if (request !== requestSequence || pendingComparison) return;
+    if (current.chart !== getCurrentChart()?.chart) return;
     dream.natalChart = current.chart;
     dream.transitInstant = transitInstant;
     lastDream = dream;
     clearStatus(status);
     drawDream(dream, content);
   } catch (error) {
-    if (request !== requestSequence) return;
+    // A failure that arrives after the reader opened a composite is equally stale:
+    // reporting it would blame the composite for a single-design solve.
+    if (request !== requestSequence || pendingComparison) return;
     setMessage(status, 'Sleep chart calculation failed: {error}', { error: error.message });
     content.replaceChildren();
   }
@@ -549,7 +586,7 @@ async function renderComparison({ content, status, current, comparison }) {
       computeDreamChart(comparison.chart, { transit: false })
     ]);
     if (request !== comparisonSequence) return;
-    if (pendingComparison !== comparison || !samePairIsCurrent(current, comparison)) return;
+    if (pendingComparison !== comparison || !samePairIsCurrent(comparison)) return;
     lastComparison = { a, b, labelB: comparison.label };
     clearStatus(status);
     drawComparison({ content, current, ...lastComparison });
@@ -559,12 +596,26 @@ async function renderComparison({ content, status, current, comparison }) {
   }
 }
 
-/** Whether the pair's two people are still the two the page is showing. */
-function samePairIsCurrent(current, comparison) {
-  if (current.chart !== comparison.forChart) return false;
-  if ((current.birth?.id || null) !== comparison.forPersonId) return false;
+/**
+ * Whether the pair's two people are still the two the page is showing.
+ *
+ * It reads `getCurrentChart()` itself instead of trusting the caller's `current`.
+ * The caller's copy is the chart it *started* from, so comparing that against
+ * `comparison.forChart` was always true and the main-person check was dead code: a
+ * switch of the loaded person was only ever caught by the pair being cleared
+ * somewhere else first. Reading the live chart makes this the last-resort guard it
+ * reads like, and it stays cheap (one getter plus a saved-person lookup).
+ *
+ * B is re-read from the store as well: a deleted B, or one whose birth fields moved
+ * under the solved chart, makes the pair describe nobody even if nothing has
+ * bumped a counter yet.
+ */
+function samePairIsCurrent(comparison) {
+  const live = getCurrentChart();
+  if (!live) return false;
+  if (live.chart !== comparison.forChart) return false;
+  if ((live.birth?.id || null) !== comparison.forPersonId) return false;
   if (!comparison.personId) return true;
-  // B must still be saved, and still be the birth data their chart was solved from.
   const person = getPerson(comparison.personId);
   if (!person) return false;
   return calculationIdentity(birthFromPerson(person)) === comparison.fingerprint;
@@ -580,7 +631,7 @@ export function refreshDreamLanguage() {
   // subtitle is rewritten here with the new one.
   setTransitSubtitle();
   if (pendingComparison && lastComparison && comparisonMatches(current)
-    && samePairIsCurrent(current, pendingComparison)) {
+    && samePairIsCurrent(pendingComparison)) {
     setTimeControlVisible(false);
     drawComparison({ content, current, ...lastComparison });
     // The composite redraw re-uses the same sheet controller, so an open card

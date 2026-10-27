@@ -50,5 +50,6 @@
   "Not complete across both sleep designs": "在两份睡眠设计中未完整",
   "Portal": "门户",
   "That moment does not exist in this timezone, so there is no {transit} overlay. Pick a valid time.": "该时区不存在这个时刻，因此没有{transit}叠加。请选择一个有效时间。",
-  "The other person’s birth data changed, so the comparison was cleared. Pick them again to compare.": "另一个人的出生资料已改变，合盘已清除。请重新选择此人进行合图。"
+  "The other person’s birth data changed, so the comparison was cleared. Pick them again to compare.": "另一个人的出生资料已改变，合盘已清除。请重新选择此人进行合图。",
+  "The other person’s birth data changed before their sleep chart finished. Pick them again to compare.": "另一个人的出生资料在睡眠图算完之前已改变。请重新选择此人进行合图。"
 }

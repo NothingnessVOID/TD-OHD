@@ -382,6 +382,112 @@ try {
       });
     } finally { await context.close(); }
   }
+  /* ------------------------------------------------------------------ *
+   * 4. A single-design solve still in flight when the composite opens.
+   *
+   * Single-design and comparison solves are numbered by different counters, so a
+   * single solve whose moment has not changed is not displaced by merely opening a
+   * composite. If its landing guard only checks its own counter it paints over the
+   * composite that arrived first.
+   * ------------------------------------------------------------------ */
+  {
+    const { context, page, errors } = await openDream();
+    try {
+      await check('a slow single-design solve cannot paint over a composite that opened first', async () => {
+        // A valid moment change starts a single-design solve and holds it open.
+        await arm(page, 'computeDreamChart');
+        await page.evaluate(() => {
+          const time = document.getElementById('dream-transit-time');
+          time.value = '12:00:00';
+          time.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        await waitForGate(page, 'computeDreamChart');
+
+        // While it is held, pick B. The composite solves and draws on its own gate.
+        await page.evaluate(() => { globalThis.__dreamTest.armed = null; });
+        await page.click('#dream-compare');
+        await page.locator(`[data-add-person="${B}"]`).click();
+        await page.waitForFunction(() => !!document.querySelector('.dream-compare-head'));
+
+        // Now let the superseded single solve finish. It must not draw over the pair.
+        await release(page);
+        await frames(page);
+        await frames(page);
+        assert.equal(await page.$$eval('#dream-content .dream-compare-head', nodes => nodes.length), 1,
+          'the composite was replaced by a stale single-design solve');
+        assert.equal(await page.$$eval('#dream-content .dream-type-strip', nodes => nodes.length), 0,
+          'a stale single-design chart is drawn on top of the composite');
+        assert.deepEqual(errors, []);
+      });
+    } finally { await context.close(); }
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 5. Main person switched while the composite is on screen.
+   *
+   * `samePairIsCurrent()` is handed the `current` its caller captured, so it can
+   * only catch a main-person change if something else invalidates the pair first.
+   * The assertion is about the *outcome* (the old pair is gone, the new person's
+   * own sleep chart is what is on screen), not about which guard caught it.
+   * ------------------------------------------------------------------ */
+  {
+    const { context, page, errors } = await openDream();
+    try {
+      await check('switching the main person while a composite is shown drops the old pair', async () => {
+        await page.click('#dream-compare');
+        await page.locator(`[data-add-person="${B}"]`).click();
+        await page.waitForFunction(() => !!document.querySelector('.dream-compare-head'));
+
+        await page.locator('#people-switcher').selectOption(C);
+        await page.waitForFunction(() => document.querySelector('#type-banner')?.textContent.includes('Fictional C'));
+        // Re-entering the page is the read that would surface a surviving pair.
+        await page.locator('.nav-link[data-view="dream"]').click();
+        await page.waitForSelector('#dream-content .dream-type-strip');
+        await frames(page);
+        assert.deepEqual(await compositeHead(page), [],
+          `the old pair survived the main-person switch: ${JSON.stringify(await compositeHead(page))}`);
+        assert.equal(await compareLabel(page), 'Compare with another person');
+        assert.deepEqual(errors, []);
+      });
+    } finally { await context.close(); }
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 6. Person B deleted while their waking chart is still solving.
+   *
+   * Nothing owns the pair yet at that point, so the change listener cannot answer:
+   * the request itself has to notice that the person it was solved for is gone,
+   * instead of freezing the page on "Computing both sleep charts…".
+   * ------------------------------------------------------------------ */
+  {
+    const { context, page, errors } = await openDream();
+    try {
+      await check('deleting B mid-solve says so instead of freezing on Computing', async () => {
+        await arm(page, 'computeChart', 'Fictional B');
+        await page.click('#dream-compare');
+        await page.locator(`[data-add-person="${B}"]`).click();
+        await waitForGate(page, 'computeChart:Fictional B');
+
+        await deletePersonInPage(page, B);
+        await release(page);
+        await frames(page);
+        await frames(page);
+
+        const status = await waitStatus(page, /no longer in your saved charts/i);
+        assert.match(status, /no longer in your saved charts/i,
+          `the status still reports a solve that can never finish: ${JSON.stringify(status)}`);
+        assert.doesNotMatch(status, /computing/i, 'the page is stuck on a solve for a deleted person');
+        assert.deepEqual(await compositeHead(page), []);
+        assert.equal(await compareLabel(page), 'Compare with another person');
+        // A later pick must still be accepted: the busy flag has to be released.
+        await page.click('#dream-compare');
+        await page.locator(`[data-add-person="${C}"]`).click();
+        await page.waitForFunction(() => !!document.querySelector('.dream-compare-head'));
+        assert.match((await compositeHead(page))[0], /Fictional C/);
+        assert.deepEqual(errors, []);
+      });
+    } finally { await context.close(); }
+  }
 } finally {
   await browser.close();
 }
