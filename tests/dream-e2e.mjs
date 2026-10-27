@@ -1269,6 +1269,67 @@ await check('the composite night fields stack on a phone without overflowing', a
   await page.waitForTimeout(500);
 });
 
+await check('no page or sheet text renders a literal undefined, NaN or [object Object]', async () => {
+  // Regression guard. The single-design channel sheet numbered its gate rows from
+  // the activation item, and `gatesByNumber` entries carry `{ planet, line }` with
+  // no gate, so every source label read "undefined.3". That branch only runs
+  // outside the composite, so both modes are swept here: a composite-only check
+  // passes vacuously. The gate.line shape check pins the intended format.
+  const dirty = /undefined|NaN|\[object Object\]/;
+  const shown = () => page.evaluate(() =>
+    `${document.getElementById('dream-content')?.textContent || ''} || ${document.getElementById('dream-detail')?.textContent || ''}`);
+  const evidence = text => text.match(/.{0,40}(?:undefined|NaN|\[object Object\]).{0,20}/)?.[0] || text.slice(0, 90);
+
+  const sweepChannelSheets = async mode => {
+    const channels = await page.$$eval('#dream-content .dream-channel-open', ns => ns.map(n => n.dataset.channel));
+    assert(channels.length > 0, `${mode}: no channel rows to sweep`);
+    let labelled = 0;
+    for (const id of channels) {
+      await page.click(`#dream-content .dream-channel-open[data-channel="${id}"]`);
+      await page.waitForSelector(`#dream-detail .gate-detail-card[data-channel="${id}"]`, { timeout: 10000 });
+      const text = await shown();
+      assert(!dirty.test(text), `${mode}: channel ${id} sheet renders a placeholder value: ${evidence(text)}`);
+      const labels = await page.$$eval('#dream-detail .dream-detail-gate-src', ns => ns.map(n => n.textContent.trim()));
+      for (const label of labels) {
+        assert(/\d+\.\d/.test(label), `${mode}: channel ${id} gate source label is not gate.line: "${label}"`);
+      }
+      labelled += labels.length;
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(200);
+    }
+    // Counted across the sweep, not per channel: a channel the sleeper does not
+    // carry prints no source labels at all, which is correct. Requiring labels on
+    // every channel would fail on an inactive one, while requiring none would let
+    // the check pass without ever reading the branch the bug lived in.
+    if (mode === 'single') {
+      assert(labelled > 0, 'single: no channel sheet printed any gate source label, so the numbering was never exercised');
+    }
+    return labelled;
+  };
+  const sweepGateSheet = async mode => {
+    await page.click('#dream-content .dream-realm-row .dream-row-open');
+    await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+    const text = await shown();
+    assert(!dirty.test(text), `${mode}: the gate sheet renders a placeholder value: ${evidence(text)}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+  };
+
+  await sweepChannelSheets('composite');
+  await sweepGateSheet('composite');
+  const compositeText = await shown();
+  assert(!dirty.test(compositeText), `the composite page renders a placeholder value: ${evidence(compositeText)}`);
+
+  // Leave the composite: the buggy branch is the single design's own.
+  await page.click('#dream-compare-exit');
+  await page.waitForSelector('#dream-bodygraph', { timeout: 30000 });
+  await page.waitForTimeout(700);
+  await sweepChannelSheets('single');
+  await sweepGateSheet('single');
+  const singleText = await shown();
+  assert(!dirty.test(singleText), `the single sleep chart renders a placeholder value: ${evidence(singleText)}`);
+});
+
 await check('no errors accumulated across the whole run', async () => {
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
