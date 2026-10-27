@@ -26,25 +26,56 @@
 
 - 分支名：`design/sheet-column-v1`
 - 远端：`https://github.com/NothingnessVOID/TD-OHD.git`（origin）
-- 已合并到官方 main 最新（`12b9705`，PR #40，2026-10-25 合并，无冲突）
+- 已合并到官方 main 最新（原 `12b9705`，PR #40，2026-10-25 合并，无冲突；
+  历史清理后本分支内的对应提交为 `77adf79`）
 
-### 本分支提交历史（新→旧）
+### 本分支提交历史（新→旧，2026-10-27 清理后编号）
 
 ```
-3b88c83 docs: 交接文档（迁移前的状态记录）
-de3648c feat(skins): 三个重设计方向做成可切换皮肤（A朱砂/B铜瓷/C墨印）
-7b1b082 feat(chart): 轮盘开关移到顶栏 + 2/3 轮盘布局 + 轮盘交互（点击闸门/行星/卦象）
-faa729c feat(chart): 官方轮盘视图 — 人体图/轮盘切换，曼陀罗环 + 中心人体图克隆
-7af0104 merge main (PR #40) into design/sheet-column-v1
-1893ec5 fix(sheet-column): 修回路卡报错、B款变量箭头、十字数字放大、色律B档
-4b366a3 design(chart): 卡片流 v2（横幅仪式感 + 档案主卡 + 权威图标 + 回路 + 十字 + 变量）
-6d8cf60 design(chart): 单页列表 v1（已被用户否掉，保留在历史里）
+a84fe11 docs: 交接文档（迁移前的状态记录）
+69f4b20 feat(skins): 三个重设计方向做成可切换皮肤（A朱砂/B铜瓷/C墨印）
+1ccb0e5 feat(chart): 轮盘开关移到顶栏 + 2/3 轮盘布局 + 轮盘交互（点击闸门/行星/卦象）
+aced6df feat(chart): 官方轮盘视图 — 人体图/轮盘切换，曼陀罗环 + 中心人体图克隆
+1a4e4be merge main (PR #40) into design/sheet-column-v1
+8973597 fix(sheet-column): 修回路卡报错、B款变量箭头、十字数字放大、色律B档
+a1abdc6 design(chart): 卡片流 v2（横幅仪式感 + 档案主卡 + 权威图标 + 回路 + 十字 + 变量）
+4099f8d design(chart): 单页列表 v1（已被用户否掉，保留在历史里）
 ```
+
+更早的入口提交（清理前的编号，**仅作历史记录，这些 hash 已不在分支上**）：
+
+```
+3b88c83 -> a84fe11    de3648c -> 69f4b20    7b1b082 -> 1ccb0e5
+faa729c -> aced6df    7af0104 -> 1a4e4be    1893ec5 -> 8973597
+4b366a3 -> a1abdc6    6d8cf60 -> 4099f8d    8b307f1 -> bea3ecd
+tip 8b307f1（清理前）  tip bea3ecd（清理后）  12b9705 -> 77adf79
+```
+
+### 历史清理记录（2026-10-27）
+
+- **做了什么**：本分支历史里曾把两个构建产物目录 `dist-review/`、`dist-desktop/`
+  提交进版本库（由 `4b366a3` 引入，共 524 个文件，含 wasm / 字体 / 编译产物）。
+  本次用 `git filter-repo --path dist-review/ --path dist-desktop/ --invert-paths`
+  只重写 `design/sheet-column-v1` 这一条分支，把这两个目录从全部历史里剔除；
+  **最终源码树一个 blob 都没变**（新旧 tip 树除这两个目录外完全一致）。
+- **备份**：清理前的完整 bundle 在
+  `~/Documents/Projects/TD-OHD/archive/backups/sheet-column-before-artifact-cleanup-8b307f1.bundle`；
+  隔离 clone 与 filter-repo 的 `commit-map` 在
+  `~/Documents/Projects/TD-OHD/archive/backups/sheet-column-cleanup-20261027-233822/.git/filter-repo/commit-map`。
+- **以后不要再提交构建产物**：`.gitignore` 已加 `/dist-review/` 和 `/dist-desktop/`，
+  这两个目录只留在本地磁盘上，不进仓库。
+- **关于首次 push 被拒的说明**：远端首次 push 被 GitHub 保护规则拦下，
+  拦截对象是 `4b366a3` 里提交进来的构建产物（wasm 二进制文件）。
+  当时把它当成「疑似泄露密钥」是一种未经证实的推测——文件是编译出来的
+  WebAssembly 引擎产物，不是凭据；本次处理按「不该入库的构建产物」对待，
+  既不记录也不复制任何密钥类内容。为尊重保护规则，清理后按正常 push 重新提交，
+  没有使用 force 或任何绕过手段。
 
 ### 工作区未提交内容（可丢弃的开发临时文件）
 
 - `sheet-v1-probe.mjs` / `sheet-v1-shots.mjs`（改动：指向 5216 端口）
-- `wheel-debug.html`、`public/assets/`（轮盘开发时的调试页和素材副本）
+- `wheel-debug.html`、`public/assets/`、`definition-design.html`、`*-diag.mjs` 等调试脚本
+- `dist-review/` / `dist-desktop/`：已从版本库剔除，现为本地构建目录（已 ignore）
 - `mandala-view-test.mjs`、`skin-directions-shots.mjs`（已提交的测试脚本，保留）
 
 ### 部署红线（重要！）
