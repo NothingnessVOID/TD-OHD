@@ -190,4 +190,6 @@ PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip �
 
 本轮顺手修掉的既有缺陷：`#dream-status` 用 `setMessage()` 写入后只 `replaceChildren()`，节点上残留 `data-i18n`，导致计算完成后切换语言会把「正在计算睡眠图……」重新写回已完成的页面（基线 9702b9d 同样可复现）。现由 `clearStatus()` 同时清 `dataset.i18n` 与文本。
 
+**页面状态边界**（`tests/dream-state-boundaries-e2e.mjs`，12 项）：三个「异步求解回来时页面已不是发起时的状态」的竞态已修——合盘发起时捕获主人物身份与 B 的出生指纹（合盘另有独立 `comparisonSequence`）、无效时刻三态区分且阻止求解并显示 `.dream-moment-invalid`、B 的身份与指纹由本页自己的 `onPeopleChange` 订阅守卫（删除／改出生字段丢合盘并提示，仅改名保留已解模型只换标签）。另补了三个跨计数器空洞：单人慢解不能盖合盘、`samePairIsCurrent()` 自己读实况（不再是死代码）、B 在计算期间被删/改时不再空转到永久 Computing。测试用拦截模块 + 测试显式放行门确定性地制造交错；未修基线首轮 6/9、第二轮 2/12 失败。细节与运行方式见 [SLEEP-CHART-PENDING.md](./SLEEP-CHART-PENDING.md) §3.14。
+
 未验证：真实 SwissEph/WASM 星历下的月弧数值与 `daysBeforeBirth` 实测分布（`dev/verify-dream-native.mjs` 需要本机 DOTNET，不在单测内运行；合成星历下同一相位差可落在 5.93–7.59 天，即 6.0–7.5 的窗口是夹具性质而非普适上界）；旋转与存根之后的全量 e2e 重跑、全部已注册 Skin 在横向图下的逐个视觉走查、键盘与触控、语言／外观切换重绘、横向图与三域面板的重排；合盘 composite 与点击详情弹窗仍由并行实例施工中，本文档不宣称其可用。按 AGENTS.md 的 preview-first 节奏，全量回归等用户验收方向后再跑。
