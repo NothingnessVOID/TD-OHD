@@ -440,7 +440,11 @@ export function createDreamDetail(initial = {}) {
           <span class="dream-detail-gate-name">${esc(dreamGateName(gate))}</span>
         </button>
         ${SOURCES.filter(({ key: k }) => acts[k]?.length).map(({ key: k, label }) =>
-          `<span class="dream-detail-gate-src dream-detail-source-${k}">${esc(t(label))} ${acts[k].map(item => `${item.gate}.${item.line}`).join(' ')}</span>`).join('')}
+          // The gate is the row's own: `gatesByNumber` entries carry
+          // `{ planet, line }` and no gate, so numbering them from the item
+          // rendered "undefined.3". `chip()` above takes the gate as a parameter
+          // for the same reason.
+          `<span class="dream-detail-gate-src dream-detail-source-${k}">${esc(t(label))} ${acts[k].map(item => `${gate}.${item.line}`).join(' ')}</span>`).join('')}
       </div>`;
     }).join('');
 
