@@ -33,6 +33,17 @@ import { transitInstants, formatTransitOffset } from './transit-time.js';
 import { setMessage } from './i18n.js';
 
 const browserZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+const HOUR = 3600000;
+/** Two offsets within half a second are the same offset; IANA seconds are kept. */
+const sameOffset = (a, b) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) < 0.5 / 3600;
+
+const wallFormatter = zone => new Intl.DateTimeFormat('en-GB', {
+  timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit',
+  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+});
+const wallParts = (formatter, instant) => Object.fromEntries(
+  formatter.formatToParts(new Date(instant)).map(part => [part.type, part.value])
+);
 
 const markup = (id, { showModeToggle }) => `
   <div class="tl-toolbar">
@@ -94,8 +105,19 @@ export function mountTransitTimeControl({
    * Resolve the widgets to a UTC instant, keeping the DST rules in one place: a
    * gap reports that the local time does not exist, a fold offers both offsets
    * and remembers the reader's pick for as long as it stays valid.
+   *
+   * Which of the two folded instants is meant, in priority order:
+   * 1. `preferOffset` — an authoritative offset supplied by the caller ("Now"
+   *    reads the clock once, so its own offset decides, not a stale pick);
+   * 2. the explicit `<prefix>-choice` value, when it is still a candidate;
+   * 3. the offset the previous resolution settled on, when the new candidates
+   *    in the *same* zone still offer it — so editing minutes inside a fold
+   *    keeps 01:30 EST as EST instead of jumping back to the first 01:30 EDT;
+   *    a zone change is a new question and starts from the earliest instant;
+   * 4. the earliest candidate. An offset that no longer exists (a winter offset
+   *    carried into summer, or the reverse) is not forced onto another season.
    */
-  function resolve() {
+  function resolve({ preferOffset = null } = {}) {
     const date = dateInput.value;
     let time = timeInput.value;
     if (time.length === 5) time += ':00';
@@ -111,7 +133,11 @@ export function mountTransitTimeControl({
       return null;
     }
 
-    const selected = matches.find(m => String(m.instant) === choice.value) || matches[0];
+    const explicit = matches.find(m => String(m.instant) === choice.value);
+    const wanted = Number.isFinite(preferOffset) ? preferOffset
+      : (resolved?.zone === zone ? resolved.offset : null);
+    const kept = wanted == null ? null : matches.find(m => sameOffset(m.offset, wanted));
+    const selected = Number.isFinite(preferOffset) ? (kept || matches[0]) : (explicit || kept || matches[0]);
     choiceLabel.hidden = matches.length < 2;
     choice.innerHTML = matches.map(m => `<option value="${m.instant}">${formatTransitOffset(m.offset)} (${new Date(m.instant).toISOString()})</option>`).join('');
     choice.value = String(selected.instant);
@@ -122,24 +148,30 @@ export function mountTransitTimeControl({
     return resolved;
   }
 
-  function commit({ notify = true } = {}) {
-    const next = resolve();
+  function commit({ notify = true, preferOffset = null } = {}) {
+    const next = resolve({ preferOffset });
     if (notify) onChange(next);
     return next;
   }
 
-  /** "Now" in the zone currently shown, so a reader who switched zone stays there. */
+  /**
+   * "Now" in the zone currently shown, so a reader who switched zone stays there.
+   *
+   * The clock is read once and truncated to the whole second the time input can
+   * hold. Wall time and day are read at that same instant, and the offset that
+   * instant actually had is handed to `resolve`, because during a fall-back the
+   * wall time alone cannot say which 01:30 is now — the second one, EST.
+   */
   function setNow({ notify = true } = {}) {
     const zone = zoneOutput.value || browserZone();
-    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
-      timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
-    }).formatToParts(new Date()).map(part => [part.type, part.value]));
+    const observed = Math.floor(Date.now() / 1000) * 1000;
+    const parts = wallParts(wallFormatter(zone), observed);
+    const wall = Date.parse(`${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}Z`);
     dateInput.value = `${parts.year}-${parts.month}-${parts.day}`;
     timeInput.value = `${parts.hour}:${parts.minute}:${parts.second}`;
     zoneOutput.value = zone;
     zoneOutput.textContent = zone;
-    return commit({ notify });
+    return commit({ notify, preferOffset: Number.isFinite(wall) ? (wall - observed) / HOUR : null });
   }
 
   listen(dateInput, 'change', () => commit());
