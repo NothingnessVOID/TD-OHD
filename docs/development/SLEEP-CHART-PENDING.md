@@ -12,8 +12,10 @@
 ## 0. 当前状态一句话
 
 睡眠图的**结构与计算已全部完成并验证**：五中心／十五闸门／六通道／三门户、月亮 −88° 设计时刻、
-三种睡眠类型、三域划分、天时始终叠加、横向图形、门户存根、点击详情、
-页面内双人合盘（复用共享选人弹窗）。
+三种睡眠类型、三域划分、行运始终叠加（时刻可选，与行运页共用同一个时间控件）、
+横向图形、门户存根、点击详情、页面内双人合盘（复用共享选人弹窗，
+且左右两侧行星列与单人图是同一个组件）。
+术语已统一到共享键 `"Transit"`（简中「行运」），详见 §3.5。
 **缺的只有「内容」**——老师要口述的那批梦境专属解读文字，以及两项待查证的事实。
 
 代码可以直接用，界面上显示的是清醒图的解读正文（这是老师明确要求的过渡状态：
@@ -200,6 +202,45 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 **新渲染器必须从第一天就支持子集拓扑**（`centerOrder` / `gates` / `pathGates` /
 `pathOverrides` / `rotate`），否则睡眠图要再实现一遍裁剪逻辑。
 
+### 3.5 术语「行运」还有两处未收拢（等维护者定）
+
+睡眠图已经统一到共享键 `"Transit"`（`src/views/dream.js` 的 `transitTerm()` 是唯一取值点），
+改词只需改 `src/locales/*/ui-transits.json` 一处。但有两件事需要维护者拍板：
+
+1. **繁体中文的既有译法是「流日」，不是「行運」。**`src/locales/zh-Hant/ui-transits.json:31`
+   写的是 `"Transit": "流日"`，而且 `tests/traditional-chinese.test.js:90` 用
+   `assert.equal(t('Transits'), '流日')` 把它钉死了。睡眠图跟着全站走，所以繁中界面显示「流日」。
+   若要统一成「行運」，那是一个**全站术语决策**，会同时影响行运页、时间轴页和这条测试断言，
+   不应该只在睡眠图局部改。
+2. **导航标签用的是复数键 `"Transits"`**（`src/locales/*/ui-static.json:6`），
+   与单数键 `"Transit"` 是两个独立条目。全站改词时两处都要动。
+
+简体「行运」、英文「Transit」已核实一致。
+
+另外，`docs/development/SLEEP-CHART-*.md` 这两份文档写作时沿用了「天时」这个旧称，
+指的是同一个概念（界面上现在叫「行运」）。文档正文没有全量替换，读到「天时」按「行运」理解。
+
+### 3.6 timeline-e2e 在 927px 断点失败（既有问题，已用基线对照证实）
+
+`tests/timeline-e2e.mjs:648`（属于「852px 和 927px 布局保持紧凑吸顶头部在视口内」这条）
+断言 `actual: false, expected: true` 失败，实测是 `html` 宽 936 对视口 927，横向溢出 9px。
+
+**这不是本轮引入的。**对照方法：在同一个工作树里 `git checkout 9702b9d`（本轮改动之前的提交，
+`node_modules` 与被 gitignore 的 `public/engine/` 都原地保留），起服务跑同一份测试，
+结果与新代码 `590eb6a` **完全一致**——同样 17 项通过、同样停在第 648 行、同样 actual/expected/operator。
+`tests/timeline-e2e.mjs` 本轮未被修改，所以两边跑的是同一份断言。
+
+注意用临时 `git worktree` 做这个对照会得出假结论：新建的 worktree 缺被 gitignore 的引擎产物，
+timeline 视图根本渲染不出来，测试会先在第 103 行 `waitForSelector` 超时，看不到第 648 行的真实失败。
+
+### 3.7 合图侧栏行可点，关系页的同位侧栏只读（有意不一致）
+
+睡眠合图的侧栏行星行可以点开归属弹窗（报「谁携带这个闸门」），因为
+`drawComparison()` 的 `detailContext` 就是合图语境，弹窗答得对。
+`src/views/connection.js:434-441` 的同位侧栏是只读的，该处注释说明了理由：
+关系页的详情系统属于合盘，而单人条目属于当前加载人物的本命图，接上去会答错语境。
+两页的差异是各自语境下的正确选择，不是遗漏；若维护者要求视觉与交互完全拉齐，需要先决定拉向哪一边。
+
 ---
 
 ## 4. 怎么把它跑起来
@@ -268,6 +309,7 @@ npm test                                                                    # 62
 | `src/styles/dream.css` | 样式，全部走 Skin token，0 处硬编码颜色 |
 | `src/locales/{en.js,zh-CN/dream.js,zh-Hant/dream.js}` | 三语睡眠词汇 |
 | `src/locales/{zh-CN,zh-Hant}/ui-dream.json` | 三语界面文案 |
+| `src/lib/transit-time-control.js` | 共享时间控件（日期／时间／时区／现在／夏令时歧义偏移）；行运页与睡眠图共用 |
 | `src/lib/person-picker.js` | 共享选人弹窗（搜索/单多选/新建/编辑）；团队页与睡眠图合盘共用 |
 | `src/bodygraph.js` | 共享渲染器；`topology` 与 `ariaLabel` 选项、`BODYGRAPH_PAD` 导出 |
 | `dev/measure-dream-viewbox.mjs` | 几何推导工具（存根、viewBox、旋转中心） |
