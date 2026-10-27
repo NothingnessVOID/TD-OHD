@@ -241,6 +241,57 @@ timeline 视图根本渲染不出来，测试会先在第 103 行 `waitForSelect
 关系页的详情系统属于合盘，而单人条目属于当前加载人物的本命图，接上去会答错语境。
 两页的差异是各自语境下的正确选择，不是遗漏；若维护者要求视觉与交互完全拉齐，需要先决定拉向哪一边。
 
+### 3.8 归属色是「填充级」 token，当文字色靠就地混色解决
+
+`--hd-connection-a` / `-b` 是为图形填充调的色，直接拿来做 10px/650 的归属标签文字色，
+实测 11 个 Skin 中有 9 个不达 AA（1.90–3.50:1，要求 4.5:1）。现在的做法是在
+`src/styles/dream.css` 里就地混色：`color-mix(in srgb, var(--dream-source) 40%, var(--text))`，
+修后实测 11 个 Skin 全部 **5.31–13.70:1**。
+
+**更彻底的方案未做**：给 `SKIN_TOKEN_GROUPS.relationship` 补一对文本级 token
+（`--hd-connection-a-text` / `-b-text`），就像行运已有的 `--hd-transit-text` 那样。
+没做是因为那是共享契约，会影响关系页等其他消费者，需要单独评估。
+**若将来新增 Skin，就地混色的 40% 配比需要复测**（它是当前 11 个 Skin 上实测出来的）。
+
+`-on` 变体不能拿来代替：dark 下 `--hd-connection-a-on` 是 `#111111`，实测对比度 1.09
+（深色字写在深色底上），high-contrast 下却有 17.77——同一 token 在两类 Skin 上表现相反。
+
+### 3.9 渐变 token 不能嗂给 `color-mix()`（已修，含一处既有 bug）
+
+`--hd-connection-both` 在所有 Skin 里都是 `repeating-linear-gradient(45deg, …)`
+（`src/styles/skins/default.css:121`）。把它赋给 `--dream-channel-accent` 后，
+`border-inline-start: 3px solid color-mix(in srgb, var(--dream-channel-accent) 65%, var(--dream-edge))`
+**无法对渐变求值，整条声明被丢弃**，实测结果是 `border-left-style: none`、`width: 0px`、
+颜色回落到 `currentColor`，hover 底色也一并没了。
+
+两处已修，都改成甲乙两色的中点色：
+
+- `src/styles/dream.css` 的 `.dream-channel-owner-both`（本轮新增，属自己的 bug）
+- `.dream-detail-channel.companionship` 的 `--dream-detail-channel-hue`（**既有 bug**，
+  关系页详情弹窗的「相伴」通道行一直在丢左边条，不是本轮引入）
+
+**教训**：`--hd-connection-both` 只能用于 `background`（图例色块就是这么用的，正确），
+不能用于任何需要单一颜色值的 `color-mix()` / `border-color` / `color`。
+若以后要把「双方共有」画成双色，应该用 `border-image` 或伪元素渐变条，而不是 `border-color`。
+
+### 3.10 合盘的内容分工（本轮定下）
+
+- **三域面板**（光场／地球层面／噩梦领域）现在在合盘里也渲染，位置在图壳之后、
+  事实块之前，与单人图「图在上、三域在下」的结构一致。用的是**同一个 `realmPanel()`**，
+  只换注入的部件：行分组从「清醒人格／睡眠设计／行运」换成按人归属，
+  通道状态从行运语义换成归属语义（`COMPOSITE_CHANNEL_STATUS`：both/a/b/halved/inactive）。
+  颜色表归属、线型仍表设计／人格两侧，**色盲那条线索没丢**。
+- **`comparisonFacts()` 只留归属事实**：两人睡眠类型 + 合计定义中心（共 3 条）。
+  通道清单已全部交给三域面板，同页不再有两份；随之退役了三个键
+  （`Channels complete together` / `Channels completed by one gate each` /
+  `No sleep channel completes between the two designs`）。
+- **返回按钮在顶部工具栏**，与「更换人选」并排（`index.html` 的 `.dream-toolbar`），
+  不再是 `drawComparison()` 尾部生成的按钮。合盘页面可长达 1500px+，
+  放在底部等于没有。显隐由 `setExitVisible()` 控制，与既有的 `setTimeControlVisible()`
+  位置对称：合盘时「时间控件隐藏、返回显示」，单人时反之。
+- **合盘通道分类只有一个来源**：`compositeChannelStates()`，三域面板与事实块都读它，
+  不可能互相矛盾。
+
 ---
 
 ## 4. 怎么把它跑起来

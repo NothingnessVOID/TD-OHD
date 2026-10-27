@@ -9,7 +9,8 @@ import {
 } from '../src/lib/human-design/dream-topology.js';
 import {
   DREAM_LUNAR_ARC, solveLunarArcInstant, dreamTypeOf, dreamTypeName,
-  computeDreamChart, dreamGraphChart, buildDreamTransitGraph, dreamRealmOf
+  computeDreamChart, dreamGraphChart, buildDreamTransitGraph, dreamRealmOf,
+  buildCompositeRealms
 } from '../src/lib/dream-chart.js';
 
 const MS_PER_DAY = 86_400_000;
@@ -598,4 +599,209 @@ test('the dream realm lookup agrees with the topology', () => {
   assert.equal(dreamRealmOf(12), 'earth');
   assert.equal(dreamRealmOf(19), 'demon');
   assert.equal(dreamRealmOf(34), null);
+});
+
+/* -------------------------------------------------- buildCompositeRealms */
+
+/** One activation as the dream model stores it in `gates.byNumber`. */
+const gateEntry = (planet, line = 1) => ({ planet, line, color: 1, tone: 1, base: 1 });
+
+/**
+ * A hand-built sleep model carrying only what `buildCompositeRealms()` reads:
+ * the two per-gate Maps. `personality` and `design` are `{ gate: entries[] }`,
+ * so a test states exactly which half of which design carries which gate.
+ */
+function sleepModel({ personality = {}, design = {} } = {}) {
+  const byNumber = side => {
+    const map = new Map();
+    for (const [gate, entries] of Object.entries(side)) map.set(Number(gate), [...entries]);
+    return map;
+  };
+  return { gates: { byNumber: { personality: byNumber(personality), design: byNumber(design) } } };
+}
+
+const realmRows = (composite, realmId) => composite.realms.find(realm => realm.id === realmId).rows;
+const rowOf = (composite, gate) => {
+  for (const realm of composite.realms) {
+    const row = realm.rows.find(item => item.gate === gate);
+    if (row) return row;
+  }
+  return null;
+};
+
+test('the composite partition the fifteen dream gates across the three fields', () => {
+  const composite = buildCompositeRealms(sleepModel({}), sleepModel({}));
+  assert.deepEqual(Object.keys(composite), ['realms']);
+  assert.equal(composite.realms.length, 3);
+  assert.deepEqual(composite.realms.map(realm => realm.id), [...DREAM_REALM_ORDER]);
+  assert.deepEqual(composite.realms.map(realm => realm.id), ['light', 'earth', 'demon']);
+  // Same order and same portal as `computeDreamChart()` publishes, so
+  // `realmPanel()` reads this model without a branch of its own.
+  assert.deepEqual(composite.realms.map(realm => realm.portal), [62, 12, 19]);
+  for (const realm of composite.realms) {
+    assert.equal(realm.portal, DREAM_REALMS[realm.id].portal);
+    assert.deepEqual([...realm.gates], [...DREAM_REALMS[realm.id].gates]);
+  }
+  // Exactly one owner per gate: no gate in two fields, no gate missing.
+  const listed = composite.realms.flatMap(realm => realm.gates);
+  assert.equal(listed.length, DREAM_GATES.length);
+  assert.deepEqual([...listed].sort((a, b) => a - b), [...DREAM_GATES]);
+  assert.deepEqual([...new Set(listed)].sort((a, b) => a - b), [...DREAM_GATES]);
+  for (const realm of composite.realms) {
+    for (const gate of realm.gates) assert.equal(dreamRealmOf(gate), realm.id, `gate ${gate} in ${realm.id}`);
+  }
+  // 15 / 5 / 5 = 3: each field holds five gates and one portal among them.
+  for (const realm of composite.realms) {
+    assert.equal(realm.gates.length, 5, `${realm.id} gates`);
+    assert.ok(realm.gates.includes(realm.portal), `${realm.id} portal is not one of its gates`);
+  }
+});
+
+test('a portal row survives with nobody activating it, and reports no owner', () => {
+  // Both people carry gate 20 and 57 only: the light portal 62 is untouched,
+  // 12 has nothing at all, and 19 is untouched while 28/38 are carried.
+  const a = sleepModel({ personality: { 20: [gateEntry('sun', 3)] }, design: { 57: [gateEntry('moon', 1)] } });
+  const b = sleepModel({ personality: { 28: [gateEntry('venus', 5)] } });
+  const composite = buildCompositeRealms(a, b);
+
+  for (const [realmId, portal] of [['light', 62], ['earth', 12], ['demon', 19]]) {
+    const row = rowOf(composite, portal);
+    assert.ok(row, `portal ${portal} has no row`);
+    assert.equal(row.portal, true, `row ${portal} is not flagged as a portal`);
+    assert.equal(row.realm, realmId);
+    assert.equal(row.activated, false, `portal ${portal} claims an activation`);
+    assert.equal(row.owner, null, `portal ${portal} claims an owner`);
+    assert.deepEqual(row.sources, [], `portal ${portal} invented a source`);
+  }
+  // The earth field holds nothing but its portal: rows are [12] and nothing else.
+  assert.deepEqual(realmRows(composite, 'earth').map(row => row.gate), [12]);
+  assert.deepEqual(realmRows(composite, 'light').map(row => row.gate), [62, 20, 57]);
+  assert.deepEqual(realmRows(composite, 'demon').map(row => row.gate), [19, 28]);
+});
+
+test('ownership resolves to a, b or both, and an unactivated non-portal row is dropped', () => {
+  const a = sleepModel({ personality: { 1: [gateEntry('sun', 5)], 20: [gateEntry('moon', 3)] } });
+  const b = sleepModel({ design: { 1: [gateEntry('saturn', 2)], 8: [gateEntry('jupiter', 4)] } });
+  const composite = buildCompositeRealms(a, b);
+
+  const onlyA = rowOf(composite, 20);
+  assert.equal(onlyA.owner, 'a');
+  assert.equal(onlyA.activated, true);
+
+  const onlyB = rowOf(composite, 8);
+  assert.equal(onlyB.owner, 'b');
+  assert.equal(onlyB.activated, true);
+
+  const shared = rowOf(composite, 1);
+  assert.equal(shared.owner, 'both');
+  assert.equal(shared.activated, true);
+
+  // Gate 57 is a dream gate nobody carries, and it is not a portal: no row.
+  assert.equal(isDreamGate(57), true);
+  for (const realm of composite.realms) {
+    assert.equal(realm.rows.some(row => row.gate === 57), false, `${realm.id} lists the unactivated gate 57`);
+    for (const row of realm.rows) {
+      assert.equal(row.portal || row.activated, true, `gate ${row.gate} slipped past the filter`);
+      // No owner is only ever an unopened portal; a carried gate always has one.
+      if (row.owner === null) assert.equal(row.activated, false, `gate ${row.gate} is activated but owned by nobody`);
+      if (row.activated) assert.ok(['a', 'b', 'both'].includes(row.owner), `gate ${row.gate} owner ${row.owner}`);
+    }
+  }
+  // Ownership is derived from the two designs, never from a single one.
+  assert.equal(rowOf(composite, 1).sources.length, 2);
+});
+
+test('sources appear only for a half the person actually carries, keyed person-side', () => {
+  const a = sleepModel({
+    personality: { 1: [gateEntry('sun', 5), gateEntry('mercury', 3)] },
+    design: { 1: [gateEntry('moon', 2)] }
+  });
+  const b = sleepModel({ design: { 1: [gateEntry('saturn', 6)] } });
+  const composite = buildCompositeRealms(a, b);
+  const row = rowOf(composite, 1);
+
+  // Person A carries both halves, B one: three groups, in a-personality,
+  // a-design, b-personality, b-design order.
+  assert.deepEqual(row.sources.map(source => source.key), ['a-personality', 'a-design', 'b-design']);
+  assert.deepEqual(row.sources.map(source => source.person), ['a', 'a', 'b']);
+  assert.deepEqual(row.sources.map(source => source.side), ['personality', 'design', 'design']);
+  // The label is the i18n key the view translates, never a rendered string.
+  assert.deepEqual(row.sources.map(source => source.label), ['Sleep personality', 'Sleep design', 'Sleep design']);
+  for (const source of row.sources) {
+    assert.match(source.key, /^[ab]-(?:personality|design)$/);
+    assert.deepEqual(Object.keys(source).sort(), ['entries', 'key', 'label', 'person', 'side']);
+  }
+  // Entries are planet + line only; the model's leftover fields are not copied.
+  assert.deepEqual(row.sources[0].entries, [{ planet: 'sun', line: 5 }, { planet: 'mercury', line: 3 }]);
+  assert.deepEqual(row.sources[1].entries, [{ planet: 'moon', line: 2 }]);
+  assert.deepEqual(row.sources[2].entries, [{ planet: 'saturn', line: 6 }]);
+  // A half on neither side stays out; a half each side stays in.
+  const oneSided = buildCompositeRealms(sleepModel({}), sleepModel({ personality: { 57: [gateEntry('moon', 1)] } }));
+  assert.deepEqual(rowOf(oneSided, 57).sources.map(source => source.key), ['b-personality']);
+  assert.equal(rowOf(oneSided, 57).owner, 'b');
+});
+
+test('activated means either person, and the composite never claims the night sky', () => {
+  const cases = [
+    [sleepModel({ personality: { 38: [gateEntry('sun', 1)] } }), sleepModel({}), 'a'],
+    [sleepModel({}), sleepModel({ design: { 38: [gateEntry('sun', 1)] } }), 'b'],
+    [sleepModel({ personality: { 38: [gateEntry('sun', 1)] } }), sleepModel({ personality: { 38: [gateEntry('moon', 2)] } }), 'both']
+  ];
+  for (const [a, b, owner] of cases) {
+    const row = rowOf(buildCompositeRealms(a, b), 38);
+    assert.equal(row.owner, owner);
+    // The portal highlight and the row filter both read `activated`, so one
+    // person is enough for either.
+    assert.equal(row.activated, true, `owner ${owner} is not activated`);
+    // A composite carries no overlay at all: a night sky can never leak in.
+    assert.equal(row.transitActivated, false, `owner ${owner} claims a transit activation`);
+  }
+  for (const realm of buildCompositeRealms(cases[2][0], cases[2][1]).realms) {
+    for (const row of realm.rows) assert.equal(row.transitActivated, false, `gate ${row.gate}`);
+  }
+  // A real `computeDreamChart({ transit: false })` model carries an empty sky;
+  // feeding two of those in still yields no transit rows.
+  assert.equal(rowOf(buildCompositeRealms(sleepModel({}), sleepModel({})), 62).transitActivated, false);
+});
+
+test('buildCompositeRealms is pure: no clock, no mutation of either model', () => {
+  const a = sleepModel({ personality: { 1: [gateEntry('sun', 5)], 62: [gateEntry('moon', 1)] } });
+  const b = sleepModel({ design: { 8: [gateEntry('saturn', 2)] }, personality: { 1: [gateEntry('mars', 3)] } });
+  const snapshot = () => JSON.stringify([
+    [...a.gates.byNumber.personality], [...a.gates.byNumber.design],
+    [...b.gates.byNumber.personality], [...b.gates.byNumber.design]
+  ]);
+  const before = snapshot();
+  const originalNow = Date.now;
+  // A clock read would either throw here or change the answer between calls.
+  Date.now = () => { throw new Error('buildCompositeRealms read the clock'); };
+  let first, second;
+  try {
+    first = buildCompositeRealms(a, b);
+    second = buildCompositeRealms(a, b);
+  } finally {
+    Date.now = originalNow;
+  }
+  assert.equal(snapshot(), before, 'the inputs were mutated');
+  assert.deepEqual(first, second, 'two calls on the same models disagree');
+  // Editing the result must not reach back into the inputs either.
+  first.realms[0].rows[0].sources.push({ person: 'a', side: 'design', key: 'a-design', label: 'x', entries: [] });
+  assert.equal(snapshot(), before, 'the result aliases the input');
+  assert.notDeepEqual(first, buildCompositeRealms(a, b));
+});
+
+test('an empty pair degrades to one portal row per field instead of throwing', () => {
+  for (const [a, b] of [[{}, {}], [undefined, undefined], [null, null], [undefined, sleepModel({})]]) {
+    const composite = buildCompositeRealms(a, b);
+    assert.equal(composite.realms.length, 3, `realms for ${JSON.stringify(a)} / ${JSON.stringify(b)}`);
+    assert.deepEqual(composite.realms.map(realm => realm.rows.map(row => row.gate)), [[62], [12], [19]]);
+    for (const realm of composite.realms) {
+      const [row] = realm.rows;
+      assert.equal(row.portal, true);
+      assert.equal(row.activated, false);
+      assert.equal(row.owner, null);
+      assert.equal(row.transitActivated, false);
+      assert.deepEqual(row.sources, []);
+    }
+  }
 });

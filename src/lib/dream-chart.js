@@ -236,6 +236,73 @@ export function dreamGraphChart(dream) {
   };
 }
 
+/** The two halves of a sleeping design, in the order the night fields list them. */
+const SLEEP_SIDES = Object.freeze(['personality', 'design']);
+
+const halvesOf = (model, gate) => ({
+  personality: model?.gates?.byNumber?.personality?.get(gate) || [],
+  design: model?.gates?.byNumber?.design?.get(gate) || []
+});
+
+/**
+ * Two sleeping designs read as one set of night fields.
+ *
+ * The composite carries no overlay, so these rows group by owner instead of by
+ * activation source: one entry per person and per half of their sleeping design,
+ * which means a gate both people carry shows both sets of planets and a gate one
+ * person carries in both halves shows both of that person's groups. The shape is
+ * the one `computeDreamChart()` returns (`{ realms: [{ id, portal, gates, rows }] }`),
+ * so `realmPanel()` reads this exactly as it reads a single design and the
+ * two-person page needs no second panel component.
+ *
+ * `activated` stays "either person", which is what the portal highlight and the
+ * row filter read; `owner` (`'a'` / `'b'` / `'both'`) is added on top for the
+ * grouping. Both inputs are `computeDreamChart({ transit: false })` results, so
+ * `transitActivated` is always false and no night sky can leak in.
+ *
+ * Pure: it reads the two models and allocates new rows, never the waking chart
+ * and never `Date.now()`.
+ *
+ * @param {object} a - person A's sleep model
+ * @param {object} b - person B's sleep model
+ * @returns {{realms: object[]}} the `realms` array shape of a sleep model
+ */
+export function buildCompositeRealms(a, b) {
+  return {
+    realms: DREAM_REALM_ORDER.map(realmId => {
+      const realm = DREAM_REALMS[realmId];
+      const rows = realm.gates
+        .map(gate => {
+          const byPerson = { a: halvesOf(a, gate), b: halvesOf(b, gate) };
+          const carries = person => SLEEP_SIDES.some(side => byPerson[person][side].length > 0);
+          const fromA = carries('a');
+          const fromB = carries('b');
+          const sources = ['a', 'b'].flatMap(person => SLEEP_SIDES
+            .filter(side => byPerson[person][side].length > 0)
+            .map(side => ({
+              person,
+              side,
+              key: `${person}-${side}`,
+              // An i18n key, not a rendered label: the view owns `t()`.
+              label: side === 'design' ? 'Sleep design' : 'Sleep personality',
+              entries: byPerson[person][side].map(({ planet, line }) => ({ planet, line }))
+            })));
+          return {
+            gate,
+            portal: gate === realm.portal,
+            realm: realmId,
+            activated: fromA || fromB,
+            transitActivated: false,
+            owner: fromA && fromB ? 'both' : fromA ? 'a' : fromB ? 'b' : null,
+            sources
+          };
+        })
+        .filter(row => row.portal || row.activated);
+      return { id: realmId, portal: realm.portal, gates: realm.gates, rows };
+    })
+  };
+}
+
 /**
  * Transit model over the dream topology. Mirrors buildTransitGraph(), but the
  * channel set is the six dream channels, so a waking channel can never light up

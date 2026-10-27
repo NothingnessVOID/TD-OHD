@@ -40,7 +40,7 @@
  */
 
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS, BODYGRAPH_PAD } from '../bodygraph.js';
-import { computeDreamChart, dreamGraphChart, buildDreamTransitGraph } from '../lib/dream-chart.js';
+import { computeDreamChart, dreamGraphChart, buildDreamTransitGraph, buildCompositeRealms } from '../lib/dream-chart.js';
 import {
   DREAM_TOPOLOGY, DREAM_REALMS, DREAM_REALM_ORDER, DREAM_CHANNELS, DREAM_VIEW_BOX, dreamRealmOf
 } from '../lib/human-design/dream-topology.js';
@@ -147,6 +147,10 @@ export function setupDreamView() {
     }
   });
   document.getElementById('dream-compare')?.addEventListener('click', chooseComparisonPerson);
+  document.getElementById('dream-compare-exit')?.addEventListener('click', () => {
+    clearDreamComparison();
+    renderDreamView({ refresh: true });
+  });
   setTransitSubtitle();
   updateCompareButton();
 }
@@ -172,6 +176,19 @@ function selectedTransitInstant() {
 function setTimeControlVisible(visible) {
   const host = document.getElementById('dream-time-host');
   if (host) host.hidden = !visible;
+}
+
+/**
+ * The way back to the single sleep chart.
+ *
+ * It is a static toolbar button rather than one appended to the composite's
+ * content, so it sits beside the entry that opened the composite instead of at
+ * the end of a page that can run several screens long. Its label is static, so
+ * `data-i18n` alone keeps it translated; only its visibility is dynamic.
+ */
+function setExitVisible(visible) {
+  const exit = document.getElementById('dream-compare-exit');
+  if (exit) exit.hidden = !visible;
 }
 
 /**
@@ -253,18 +270,20 @@ export async function renderDreamView({ refresh = false } = {}) {
   const status = document.getElementById('dream-status');
   if (!content) return;
   const current = getCurrentChart();
-  if (!current) { content.replaceChildren(); return; }
+  if (!current) { content.replaceChildren(); setExitVisible(false); return; }
 
   // A comparison chosen for a different person is stale, not reusable.
   if (pendingComparison && !comparisonMatches(current)) clearDreamComparison();
 
   if (pendingComparison) {
     setTimeControlVisible(false);
+    setExitVisible(true);
     if (!refresh && lastComparison) { drawComparison({ content, current, ...lastComparison }); return; }
     await renderComparison({ content, status, current, comparison: pendingComparison });
     return;
   }
   setTimeControlVisible(true);
+  setExitVisible(false);
 
   const request = ++requestSequence;
   const transitInstant = selectedTransitInstant();
@@ -624,13 +643,16 @@ function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-
  * gate detail links to.
  *
  * The four states come straight from the dream transit model's `channelSource()`,
- * which `buildTransitGraph()` defines identically for a waking overlay.
+ * which `buildTransitGraph()` defines identically for a waking overlay. A status
+ * entry names the label key and the badge/edge variant; `owner` is set only by
+ * tables whose states are told apart by a person (the composite), so the single
+ * design's four entries stay exactly as they were.
  */
 const CHANNEL_STATUS = {
-  natal: ['Complete in the sleep design', 'natal'],
-  completed: ['Completed by {transit}', 'completed'],
-  transit: ['{transit} only', 'transit'],
-  inactive: ['Not complete in the sleep design', 'inactive']
+  natal: { label: 'Complete in the sleep design', variant: 'natal' },
+  completed: { label: 'Completed by {transit}', variant: 'completed' },
+  transit: { label: '{transit} only', variant: 'transit' },
+  inactive: { label: 'Not complete in the sleep design', variant: 'inactive' }
 };
 
 function channelStatusOf(channel, model) {
@@ -639,29 +661,90 @@ function channelStatusOf(channel, model) {
   return model.channelSource(channel);
 }
 
-const channelStatusBadge = status => {
-  const [label, variant] = CHANNEL_STATUS[status];
-  return `<span class="dream-channel-status dream-channel-status-${variant}">${esc(t(label, { transit: transitTerm() }))}</span>`;
+const channelStatusBadge = (entry, params) =>
+  `<span class="dream-channel-status dream-channel-status-${entry.variant}">${esc(t(entry.label, params))}</span>`;
+
+/**
+ * The composite's channel vocabulary: who completes the channel, rather than
+ * whether the night sky does. The variants reuse the single design's four badge
+ * classes, so no new visual state is invented; `owner` adds the person colour on
+ * top of the variant, exactly as `realmRow()` lets an owner recolour a source.
+ */
+const COMPOSITE_CHANNEL_STATUS = {
+  both: { label: 'Complete across both sleep designs', variant: 'natal', owner: 'both' },
+  a: { label: '{name} completes it', variant: 'natal', owner: 'a' },
+  b: { label: '{name} completes it', variant: 'natal', owner: 'b' },
+  halved: { label: 'Defined only together', variant: 'completed', owner: 'both' },
+  inactive: { label: 'Not complete across both sleep designs', variant: 'inactive' }
 };
+
+/**
+ * Classify all six dream channels for a pair once, so the three night fields and
+ * the fact block cannot disagree about a channel.
+ *
+ * A channel the composite completes is complete for both people, for one of
+ * them, or only with one gate from each. A channel the composite does not
+ * complete is inactive: had either person completed it alone, both of its gates
+ * would be in the composite and it would appear in `structure.composite.channels`.
+ *
+ * @returns {Map<string, {status: string, split: string}>} keyed `gate1-gate2`
+ */
+function compositeChannelStates(chartA, chartB, structure, labelA, labelB) {
+  const aGates = new Set(chartA.gates.all);
+  const bGates = new Set(chartB.gates.all);
+  const together = new Set(structure.composite.channels.map(channel => channel.gates.join('-')));
+  const states = new Map();
+  for (const channel of DREAM_CHANNELS) {
+    const key = channel.gates.join('-');
+    if (!together.has(key)) { states.set(key, { status: 'inactive', split: '' }); continue; }
+    const [left, right] = channel.gates;
+    const aFull = aGates.has(left) && aGates.has(right);
+    const bFull = bGates.has(left) && bGates.has(right);
+    const status = aFull && bFull ? 'both' : aFull ? 'a' : bFull ? 'b' : 'halved';
+    // Only a halved channel needs the detail of who contributes which gate. The
+    // separator comes from the shared formatter, as `compositeSourceGroups()`
+    // does, so one page never carries two separator conventions.
+    const split = status === 'halved'
+      ? [
+        `${labelA}: ${channel.gates.filter(gate => aGates.has(gate)).join(' · ')}`,
+        `${labelB}: ${channel.gates.filter(gate => bGates.has(gate)).join(' · ')}`
+      ].join(formatDisplay('separator', 'label'))
+      : '';
+    states.set(key, { status, split });
+  }
+  return states;
+}
 
 const channelGateNames = channel => channel.gates
   .map(gate => `${gate} ${esc(dreamGateName(gate))}`).join(' · ');
 
-function channelButton(channel, status) {
+/**
+ * One channel row.
+ *
+ * `status` is either a status key (the single design) or `{ status, params, note }`
+ * for tables that need a per-row parameter or an extra line (the composite names
+ * the person there). `table` and `params` come from the panel, so a caller picks
+ * its own vocabulary without this function knowing which page it is on.
+ */
+function channelButton(channel, status, { table = CHANNEL_STATUS, params = {} } = {}) {
   const key = channel.gates.join('-');
+  const info = typeof status === 'string' ? { status } : status;
+  const entry = table[info.status] || table.inactive;
+  const vars = { transit: transitTerm(), ...params, ...(info.params || {}) };
   const button = el('button', {
     type: 'button',
-    class: `dream-channel-open dream-channel-open-${CHANNEL_STATUS[status][1]}`,
+    class: `dream-channel-open dream-channel-open-${entry.variant}${entry.owner ? ` dream-channel-owner-${entry.owner}` : ''}`,
     'data-channel': key,
-    'aria-label': `${t('Channel {channel}', { channel: key })} · ${channelName(channel.gates)} · ${t(CHANNEL_STATUS[status][0], { transit: transitTerm() })}`
+    'aria-label': `${t('Channel {channel}', { channel: key })} · ${channelName(channel.gates)} · ${t(entry.label, vars)}`
   });
   button.innerHTML = `
     <span class="dream-channel-head">
       <span class="dream-channel-gates">${key.replace('-', '–')}</span>
       <span class="dream-channel-name">${esc(channelName(channel.gates))}</span>
-      ${channelStatusBadge(status)}
+      ${channelStatusBadge(entry, vars)}
     </span>
-    <span class="dream-channel-named">${channelGateNames(channel)}</span>`;
+    <span class="dream-channel-named">${channelGateNames(channel)}</span>
+    ${info.note ? `<span class="dream-channel-split">${esc(info.note)}</span>` : ''}`;
   button.addEventListener('click', () => openChannel(key));
   return button;
 }
@@ -682,9 +765,68 @@ const SOURCE_ORDER = [
   { key: 'transit', label: 'Transit' }
 ];
 
-function realmPanel(dream, realmId, { overlay, context, api }) {
+/** The single design's three activation sources, as row groups. */
+const wakingSourceGroups = row => SOURCE_ORDER
+  .filter(({ key }) => row[key]?.length)
+  .map(({ key, label }) => ({ key, label: t(label), entries: row[key] }));
+
+/**
+ * The composite's row groups: one per person, per half of their sleeping design.
+ *
+ * `key` stays the half, so the solid/dashed rule keeps carrying that cue, and
+ * `owner` supplies the person colour. A single design separates its three
+ * sources by colour; two people need colour for the person and the rule for the
+ * half, which is what the existing `--dream-source` plus `border-left-style`
+ * split already expresses. The label joins with the site's own separator rather
+ * than a private one, as `activationColumn()` does.
+ */
+function compositeSourceGroups(row, labelA, labelB) {
+  const sep = formatDisplay('separator', 'label');
+  return (row.sources || []).map(source => ({
+    key: source.side,
+    owner: source.person,
+    label: `${source.person === 'a' ? labelA : labelB}${sep}${t(source.label)}`,
+    entries: source.entries
+  }));
+}
+
+/**
+ * One night field.
+ *
+ * The panel component is shared by both modes: what a two-person composite
+ * changes is which parts it is given, never the panel itself. A single design
+ * passed nothing here and keeps its three activation sources and its overlay
+ * channel states; the composite passes its own row groups (grouped by owner)
+ * and its own channel states (grouped by who completes the channel), because
+ * AGENTS.md §6 makes the data context explicit instead of letting the panel
+ * reach for a model that belongs to only one of the two modes.
+ *
+ * @param {object} model - anything with `.realms` in the `computeDreamChart()` shape
+ * @param {string} realmId - `light` / `earth` / `demon`
+ * @param {object} [options]
+ * @param {boolean} [options.overlay] - whether the night sky can add rows
+ * @param {object} [options.context] - the single design's detail context, whose
+ *   `model` is the overlay this panel reads its channel states from
+ * @param {object} [options.api] - graph API, for channel hover
+ * @param {(row:object)=>object[]} [options.groups] - row → activation groups
+ * @param {string} [options.emptyKey] - what an empty field says
+ * @param {(channel:object)=>object|string} [options.channelStatus] - channel → status
+ * @param {object} [options.channelStatusTable] - the vocabulary of those statuses
+ * @param {object} [options.channelParams] - extra `t()` parameters for that vocabulary
+ */
+function realmPanel(model, realmId, options = {}) {
+  const {
+    overlay = true,
+    context = null,
+    api,
+    groups = null,
+    emptyKey = 'No activations in this field tonight.',
+    channelStatus = null,
+    channelStatusTable = CHANNEL_STATUS,
+    channelParams = {}
+  } = options;
   const realm = DREAM_REALMS[realmId];
-  const realmData = dream.realms.find(item => item.id === realmId);
+  const realmData = model.realms.find(item => item.id === realmId);
   const panel = el('section', { class: `dream-realm dream-realm-${realmId}`, 'data-realm': realmId });
   panel.appendChild(el('h3', { class: 'dream-realm-title', text: dreamRealmName(realmId) }));
 
@@ -693,16 +835,17 @@ function realmPanel(dream, realmId, { overlay, context, api }) {
     <span class="dream-portal-name">${esc(dreamGateName(realm.portal))}</span>
     <span class="dream-portal-tag">${esc(t('Portal of this field'))}</span>`;
   const portalRow = realmData?.rows.find(row => row.portal);
+  // Either person opening the portal is an open portal for the pair.
   if (portalRow?.activated || portalRow?.transitActivated) portal.classList.add('dream-portal-active');
   panel.appendChild(portal);
 
   const rows = (realmData?.rows || [])
     .filter(row => !row.portal && (row.activated || (overlay && row.transitActivated)));
   if (!rows.length) {
-    panel.appendChild(el('p', { class: 'dream-realm-empty', text: t('No activations in this field tonight.') }));
+    panel.appendChild(el('p', { class: 'dream-realm-empty', text: t(emptyKey) }));
   } else {
     const list = el('ul', { class: 'dream-realm-rows' });
-    for (const row of rows) list.appendChild(realmRow(row));
+    for (const row of rows) list.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row)));
     panel.appendChild(list);
     bindGateDetails(list);
   }
@@ -710,12 +853,13 @@ function realmPanel(dream, realmId, { overlay, context, api }) {
   // A portal is a gate without a channel, so its field can hold no channel at all.
   const channels = realmChannels(realmId);
   if (channels.length) {
+    const statusOf = channelStatus || (channel => channelStatusOf(channel, context.model));
     const block = el('div', { class: 'dream-realm-channels' });
     block.appendChild(el('h4', { class: 'dream-channels-title', text: t('Sleep channels') }));
     const list = el('ul', { class: 'dream-channel-list' });
     for (const channel of channels) {
       const item = el('li', { class: 'dream-channel-row' });
-      item.appendChild(channelButton(channel, channelStatusOf(channel, context.model)));
+      item.appendChild(channelButton(channel, statusOf(channel), { table: channelStatusTable, params: channelParams }));
       list.appendChild(item);
     }
     block.appendChild(list);
@@ -737,18 +881,34 @@ function bindChannelHover(root, api) {
   }
 }
 
-function realmRow(row) {
-  const item = el('li', { class: 'dream-realm-row', 'data-gate': row.gate });
-  const line = row.personality[0]?.line ?? row.design[0]?.line ?? row.transit[0]?.line;
+/**
+ * One activated dream gate.
+ *
+ * `groups` is the list of activation groups to print under it, each
+ * `{ key, label, entries, accent?, owner? }`. A single design passes its three
+ * sources; the composite passes one group per person and per half of their
+ * sleeping design, so the same markup shows two sets of planets under one gate.
+ * `key` (`personality` / `design` / `transit`) keeps the existing rule-style
+ * class, which is the colour-blind cue; `accent` is only ever a resolved Skin
+ * token handed in by the caller, never a literal here.
+ */
+function realmRow(row, groups) {
+  const allEntries = groups.flatMap(group => group.entries || []);
+  const line = allEntries.find(entry => entry.line)?.line;
   const theme = line ? dreamLineTheme(line) : '';
-  const chips = SOURCE_ORDER
-    .filter(({ key }) => row[key]?.length)
-    .map(({ key, label }) => `<div class="dream-row-source dream-row-source-${key}">
-        <span class="dream-row-source-label">${esc(t(label))}</span>
-        <span class="dream-row-planets">${row[key].map(source =>
+  const chips = groups
+    .filter(group => group.entries?.length)
+    .map(group => `<div class="dream-row-source dream-row-source-${group.key}${group.owner ? ` dream-row-source-owner-${group.owner}` : ''}"${group.accent ? ` style="--dream-source:${group.accent}"` : ''}>
+        <span class="dream-row-source-label">${esc(group.label)}</span>
+        <span class="dream-row-planets">${group.entries.map(source =>
           `<span class="dream-planet-chip"><i aria-hidden="true">${PLANET_GLYPHS[source.planet] || ''}</i>${esc(planetName(source.planet))}${source.line ? ` ${row.gate}.${source.line}` : ''}</span>`).join('')}</span>
       </div>`)
     .join('');
+  return rowElement(row, line, theme, chips);
+}
+
+function rowElement(row, line, theme, chips) {
+  const item = el('li', { class: 'dream-realm-row', 'data-gate': row.gate });
   item.innerHTML = `
     <div class="dream-row-head">
       <button type="button" class="dream-row-open" data-gate="${row.gate}"
@@ -847,11 +1007,33 @@ function drawComparison({ content, current, a, b, labelB }) {
   shellDispose?.disconnect();
   shellDispose = observeGraphShell(shell, { aspect: DREAM_GRAPH_ASPECT, idealWidth: 720 });
 
-  content.appendChild(comparisonFacts({ a, b, labelA, labelB, chartA, chartB, structure }));
-
-  const exit = el('button', { class: 'btn-secondary btn-small', type: 'button', id: 'dream-compare-exit', text: t('Back to my sleep chart') });
-  exit.addEventListener('click', () => { clearDreamComparison(); renderDreamView({ refresh: true }); });
-  content.appendChild(exit);
+  // The three night fields, below the graph exactly where the single design puts
+  // them: the same panel component given the composite's own parts. Rows group by
+  // who carries the gate instead of by activation source, and channel states say
+  // who completes the channel instead of whether the night sky does. There is no
+  // overlay here, so `overlay: false` keeps a transit-only row from appearing.
+  const compositeRealms = buildCompositeRealms(a, b);
+  const channelStates = compositeChannelStates(chartA, chartB, structure, labelA, labelB);
+  const realms = el('div', { class: 'dream-realms' });
+  for (const realmId of DREAM_REALM_ORDER) {
+    realms.appendChild(realmPanel(compositeRealms, realmId, {
+      overlay: false,
+      api: compositeApi,
+      groups: row => compositeSourceGroups(row, labelA, labelB),
+      emptyKey: 'Neither sleep design activates this field.',
+      channelStatusTable: COMPOSITE_CHANNEL_STATUS,
+      channelStatus: channel => {
+        const state = channelStates.get(channel.gates.join('-')) || { status: 'inactive', split: '' };
+        return {
+          status: state.status,
+          params: { name: state.status === 'a' ? labelA : state.status === 'b' ? labelB : '' },
+          note: state.split
+        };
+      }
+    }));
+  }
+  content.appendChild(realms);
+  content.appendChild(comparisonFacts({ a, b, labelA, labelB, structure }));
   content.appendChild(detail.element);
 }
 
@@ -867,14 +1049,14 @@ function compositeLegend(labelA, labelB, palette) {
 }
 
 /**
- * Structural facts only: each sleeping type, the centres the pair defines
- * together, the dream channels that complete, and which of those need one gate
- * from each of them. Nothing is scored, ranked or interpreted.
+ * Structural facts only: each sleeping type, and the centres the pair defines
+ * together. The dream channels belong to the three night fields above this
+ * block, which list every channel of a field with its ownership state and, for
+ * a halved one, who contributes which gate; repeating them here would put two
+ * channel lists on one page. Nothing is scored, ranked or interpreted.
  */
-function comparisonFacts({ a, b, labelA, labelB, chartA, chartB, structure }) {
+function comparisonFacts({ a, b, labelA, labelB, structure }) {
   const section = el('section', { class: 'dream-compare-facts' });
-  const aGates = new Set(chartA.gates.all);
-  const bGates = new Set(chartB.gates.all);
   const centers = structure.composite.centers;
 
   const facts = el('div', { class: 'dream-type-facts' });
@@ -886,48 +1068,5 @@ function comparisonFacts({ a, b, labelA, labelB, chartA, chartB, structure }) {
       : t('Nothing is defined when the two sleep designs combine'))}</span>`
   ].join('');
   section.appendChild(facts);
-
-  const complete = [];
-  const halved = [];
-  for (const channel of structure.composite.channels) {
-    const [left, right] = channel.gates;
-    const aFull = aGates.has(left) && aGates.has(right);
-    const bFull = bGates.has(left) && bGates.has(right);
-    if (aFull && bFull) complete.push({ channel, owner: t('Both have it') });
-    else if (aFull || bFull) complete.push({ channel, owner: aFull ? labelA : labelB });
-    else halved.push({
-      channel,
-      owner: [
-        `${labelA}: ${channel.gates.filter(gate => aGates.has(gate)).join(' · ')}`,
-        `${labelB}: ${channel.gates.filter(gate => bGates.has(gate)).join(' · ')}`
-      ].join(' · ')
-    });
-  }
-
-  const group = (titleKey, rows, variant) => {
-    const block = el('div', { class: 'dream-channel-group' });
-    block.appendChild(el('h3', { class: 'dream-channel-group-title', text: t(titleKey) }));
-    const list = el('ul', { class: 'dream-channel-list' });
-    for (const row of rows) {
-      const item = el('li', { class: `dream-channel-row dream-channel-row-static dream-channel-row-${variant}` });
-      item.innerHTML = `
-        <div class="dream-channel-head">
-          <span class="dream-channel-gates">${row.channel.gates.join('–')}</span>
-          <span class="dream-channel-name">${esc(channelName(row.channel.gates))}</span>
-          <span class="dream-channel-owner">${esc(row.owner)}</span>
-        </div>
-        <span class="dream-channel-named">${channelGateNames(row.channel)}</span>`;
-      list.appendChild(item);
-    }
-    block.appendChild(list);
-    return block;
-  };
-
-  if (complete.length) section.appendChild(group('Channels complete together', complete, 'complete'));
-  if (halved.length) section.appendChild(group('Channels completed by one gate each', halved, 'halved'));
-  if (!complete.length && !halved.length) {
-    section.appendChild(el('p', { class: 'dream-realm-empty',
-      text: t('No sleep channel completes between the two designs') }));
-  }
   return section;
 }

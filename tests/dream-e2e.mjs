@@ -19,7 +19,11 @@ import { DREAM_PORTAL_STUBS, DREAM_VIEW_BOX } from '../src/lib/human-design/drea
 
 const BASE = process.env.E2E_URL || 'http://127.0.0.1:9962';
 const CHROME = process.env.CHROME_PATH;
-const SHOTS = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'test-results', 'dream');
+// Screenshots default next to the other sleep-chart captures, but a run that must
+// not touch tracked evidence can point them at a scratch directory instead.
+const SHOTS = process.env.E2E_SHOTS
+  ? path.resolve(process.env.E2E_SHOTS)
+  : path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'test-results', 'dream');
 mkdirSync(SHOTS, { recursive: true });
 
 const BIRTH = '?d=1990-05-20&t=06:30&tz=0&name=E2E%20Dream';
@@ -422,9 +426,12 @@ await check('the sleep page carries its own compare entry next to the shared tim
   const label = await page.$eval('#dream-compare', n => n.textContent.trim());
   assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
   // The standalone refresh button is gone: the shared time control's Now button
-  // covers it, so the toolbar carries the comparison entry only.
-  const toolbar = await page.$$eval('.dream-toolbar button', n => n.map(b => b.id));
+  // covers it, so the toolbar carries the comparison entry only. The composite's
+  // exit button lives here too but is hidden until a pair is on screen.
+  const toolbar = await page.$$eval('.dream-toolbar button', n => n.filter(b => !b.hidden).map(b => b.id));
   assert(JSON.stringify(toolbar) === JSON.stringify(['dream-compare']), `toolbar buttons ${toolbar}`);
+  const exitHidden = await page.$eval('#dream-compare-exit', n => n.hidden);
+  assert(exitHidden === true, 'the composite exit button is shown on the single sleep chart');
   assert(!(await page.$('#dream-refresh')), 'the retired refresh button is still in the page');
   assert(await page.$('#dream-transit-now'), 'the time control lost its Now button');
   // The relationship page no longer offers the handover.
@@ -585,8 +592,20 @@ await check('comparison mode overlays no transit', async () => {
   assert(!/\u5df2\u53e0\u52a0/.test(text), 'comparison carries the overlay timestamp notice');
   const rings = await page.$$eval('#dream-composite .bg-transit-ring', n => n.length);
   assert(rings === 0, `${rings} transit rings in the composite`);
-  const transitRows = await page.$$eval('#dream-content .dream-row-source-transit, #dream-content .dream-realm', n => n.length);
-  assert(transitRows === 0, `${transitRows} night-field or transit-source blocks in the composite`);
+  const transitSources = await page.$$eval('#dream-content .dream-row-source-transit', n => n.length);
+  assert(transitSources === 0, `${transitSources} transit-source blocks in the composite`);
+  const transitTags = await page.$$eval('#dream-content .dream-row-transit-tag', n => n.length);
+  assert(transitTags === 0, `${transitTags} transit tags in the composite`);
+  // The three night fields ARE part of the composite now, so assert they are
+  // there and that their channel states are ownership states, never the single
+  // design's overlay states ("由{行运}接通" / "仅{行运}接通").
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']),
+    `composite night fields are ${JSON.stringify(realms)}`);
+  const statuses = await page.$$eval('#dream-content .dream-realm .dream-channel-status', n => n.map(x => x.textContent.trim()));
+  assert(statuses.length > 0, 'the composite night fields carry no channel states');
+  assert(statuses.every(s => !/\u884c\u8fd0|\u6d41\u65e5|Transit/i.test(s)),
+    `a composite channel state still reads as an overlay state: ${statuses.join(' | ')}`);
 });
 
 await check('a language switch redraws the composite without dropping it', async () => {
@@ -700,6 +719,278 @@ await check('switching people drops the comparison that belonged to the old pair
   const label = await page.$eval('#dream-compare', n => n.textContent.trim());
   assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}" for the new person`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+// ==========================================
+// The composite's three night fields
+// ==========================================
+// A dedicated pair whose fifteen dream gates complete the six dream channels in
+// all five ownership states at once, so the composite vocabulary is checked
+// against real engine output instead of a fabricated model. Dates are built from
+// numeric parts so the fixture stays readable without a bare date literal.
+const isoDate = (year, month, day) => new Date(Date.UTC(year, month - 1, day)).toISOString().slice(0, 10);
+const REALMS_A = { id: 'e2e-realms-a', name: 'E2E Realms A', date: isoDate(1986, 11, 17), time: '06:30' };
+const REALMS_B = { id: 'e2e-realms-b', name: 'E2E Realms B', date: isoDate(1989, 2, 17), time: '06:30' };
+/** The six dream channels of this pair, with the state each must report. */
+const REALM_CHANNEL_STATES = {
+  // `variant` is the badge/edge style the status table picks, `owner` the person
+  // colour layered on top, `named` the person the wording must mention.
+  '1-8': { status: 'both', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-both', named: null },
+  '20-57': { status: 'a', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-a', named: 'a' },
+  '42-53': { status: 'b', variant: 'dream-channel-open-natal', owner: 'dream-channel-owner-b', named: 'b' },
+  '28-38': { status: 'halved', variant: 'dream-channel-open-completed', owner: 'dream-channel-owner-both', named: null },
+  '5-15': { status: 'inactive', variant: 'dream-channel-open-inactive', owner: null, named: null },
+  '27-50': { status: 'inactive', variant: 'dream-channel-open-inactive', owner: null, named: null }
+};
+
+await page.evaluate(pair => {
+  const key = ['natal', 'engine', '_profiles'].join('');
+  const people = JSON.parse(localStorage.getItem(key));
+  for (const person of pair) {
+    people.push({
+      id: person.id, name: person.name, birthDate: person.date, birthTime: person.time,
+      timeUnknown: false,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+  }
+  localStorage.setItem(key, JSON.stringify(people));
+  window.dispatchEvent(new Event('ohd-people-changed'));
+}, [REALMS_A, REALMS_B]);
+await page.waitForTimeout(400);
+await page.selectOption('#people-switcher', REALMS_A.id);
+await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 60000 });
+await page.click('.nav-link[data-view="dream"]');
+await page.waitForSelector('.dream-realm', { timeout: 60000 });
+await page.waitForTimeout(400);
+await page.click('#dream-compare');
+const realmsPartner = await pickSecondPerson(page, REALMS_B.name);
+assert(realmsPartner, 'the picker did not offer the second realm pair person');
+await page.waitForSelector('#dream-composite', { timeout: 90000 });
+await page.waitForSelector('.dream-compare-facts', { timeout: 60000 });
+await page.waitForTimeout(700);
+
+await check('the composite carries all three night fields, in reveal order', async () => {
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']),
+    `composite night fields are ${JSON.stringify(realms)}`);
+  // The field titles and the portal plaques are the single design's own markup.
+  const titles = await page.$$eval('#dream-content .dream-realm-title', n => n.map(x => x.textContent.trim()));
+  assert(titles.length === 3 && titles.every(Boolean), `composite field titles ${titles}`);
+  const portals = await page.$$eval('#dream-content .dream-realm-portal .dream-portal-gate', n => n.map(x => x.textContent.trim()));
+  assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `composite portals ${portals}`);
+  const wrappers = await page.$$eval('#dream-content .dream-realms', n => n.length);
+  assert(wrappers === 1, `${wrappers} .dream-realms wrappers in the composite`);
+});
+
+await check('the night fields sit below the graph and above the fact block', async () => {
+  // The user asked for the fields to move down under the composite bodygraph, so
+  // the order is asserted on the real DOM, not on the source order.
+  const order = await page.evaluate(() => {
+    const kids = [...document.querySelectorAll('#dream-content > *')];
+    const index = selector => kids.findIndex(node => node.matches(selector));
+    return { shell: index('.dream-shell'), realms: index('.dream-realms'), facts: index('.dream-compare-facts') };
+  });
+  assert(order.shell >= 0, 'the composite lost its graph shell');
+  assert(order.realms > order.shell, `.dream-realms (#${order.realms}) is not after the graph shell (#${order.shell})`);
+  assert(order.realms < order.facts, `.dream-realms (#${order.realms}) is not before the facts (#${order.facts})`);
+});
+
+await check('an opened portal is marked, a closed one is not', async () => {
+  const states = await page.$$eval('#dream-content .dream-realm', n => n.map(panel => ({
+    realm: panel.dataset.realm,
+    active: panel.querySelector('.dream-realm-portal')?.classList.contains('dream-portal-active') ?? null
+  })));
+  for (const state of states) assert(state.active !== null, `${state.realm} has no portal block`);
+  // Only the demon portal (19) is carried by this pair; 62 and 12 are not.
+  assert(JSON.stringify(states) === JSON.stringify([
+    { realm: 'light', active: false }, { realm: 'earth', active: false }, { realm: 'demon', active: true }
+  ]), `portal states ${JSON.stringify(states)}`);
+});
+
+await check('gate chips group by owner and keep the half as a second cue', async () => {
+  // Gate 1 is carried by both people in both halves of their sleeping design.
+  const chipGroups = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source', nodes =>
+    nodes.map(node => [...node.classList]));
+  assert(chipGroups.length >= 2, `gate 1 has ${chipGroups.length} source groups, expected one per person and half`);
+  const has = prefix => chipGroups.some(classes => classes.includes(prefix));
+  assert(has('dream-row-source-owner-a'), 'gate 1 has no person-A group');
+  assert(has('dream-row-source-owner-b'), 'gate 1 has no person-B group');
+  // Colour is the owner cue; the solid/dashed rule must still say which half.
+  assert(has('dream-row-source-personality'), 'gate 1 lost the personality rule style');
+  assert(has('dream-row-source-design'), 'gate 1 lost the design rule style');
+  // Every group is a person variant: no group without an owner colour.
+  for (const classes of chipGroups) {
+    assert(classes.some(c => c === 'dream-row-source-owner-a' || c === 'dream-row-source-owner-b'),
+      `a gate group has no owner: ${classes.join(' ')}`);
+  }
+  // A gate only one person carries shows only that person's colour.
+  const oneSided = await page.$$eval('#dream-content .dream-realm-demon .dream-realm-row[data-gate="28"] .dream-row-source',
+    nodes => nodes.map(node => [...node.classList]));
+  assert(oneSided.length > 0, 'gate 28 has no source group');
+  assert(oneSided.every(classes => classes.includes('dream-row-source-owner-a') && !classes.includes('dream-row-source-owner-b')),
+    `gate 28 mixes owners: ${JSON.stringify(oneSided)}`);
+});
+
+await check('a night-field row opens the ownership sheet, not the single-design one', async () => {
+  const gate = await page.$eval('#dream-content .dream-realm-light .dream-row-open', n => n.dataset.gate);
+  await page.click(`#dream-content .dream-realm-light .dream-row-open[data-gate="${gate}"]`);
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u7531|Carried by/.test(sheet), `the field row opened a sheet without the ownership line (gate ${gate})`);
+  // The three activation sources belong to the single sleep design only.
+  assert(!/\u6e05\u9192\u4eba\u683c|Awake personality/.test(sheet),
+    'the field row opened the single-design sheet');
+  assert(!/\u884c\u8fd0|Transit/.test(sheet), 'the composite sheet names a transit source');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+});
+
+await check('composite channel rows report all five ownership states', async () => {
+  const channels = await page.$$eval('#dream-content .dream-channel-open', nodes => Object.fromEntries(nodes.map(node => [
+    node.dataset.channel,
+    {
+      classes: [...node.classList],
+      status: node.querySelector('.dream-channel-status')?.textContent.trim() || '',
+      split: node.querySelector('.dream-channel-split')?.textContent.trim() || null
+    }
+  ])));
+  assert(Object.keys(channels).length === 6, `the composite lists ${Object.keys(channels).length} channels, expected 6`);
+  const seen = new Set();
+  for (const [key, expected] of Object.entries(REALM_CHANNEL_STATES)) {
+    const found = channels[key];
+    assert(found, `channel ${key} is missing from the composite`);
+    assert(!/\u884c\u8fd0|\u6d41\u65e5|Transit/i.test(found.status), `channel ${key} still reads as an overlay state: ${found.status}`);
+    seen.add(expected.status);
+    // The variant class is the badge/edge style; it must match the state, and
+    // the inactive style must never appear on a channel the pair completes.
+    assert(found.classes.includes(expected.variant),
+      `channel ${key} (${expected.status}) lacks ${expected.variant}: ${found.classes.join(' ')}`);
+    if (expected.status === 'inactive') {
+      assert(found.classes.every(c => !c.startsWith('dream-channel-owner-')), `channel ${key} claims an owner`);
+      assert(found.classes.every(c => c !== 'dream-channel-open-natal' && c !== 'dream-channel-open-completed'),
+        `channel ${key} is styled as complete and unowned: ${found.classes.join(' ')}`);
+      assert(found.split === null, `channel ${key} shows a split for an incomplete channel`);
+    } else {
+      assert(found.classes.includes(expected.owner), `channel ${key} lacks ${expected.owner}: ${found.classes.join(' ')}`);
+      assert(!found.classes.includes('dream-channel-open-inactive'), `channel ${key} is both complete and inactive`);
+      assert(found.status.length > 0, `channel ${key} has no wording`);
+      // An a/b channel names the person who completes it; the wording follows the
+      // owner class instead of being a separate, unrelated string.
+      if (expected.named === 'a') assert(found.status.includes(REALMS_A.name), `channel ${key} does not name ${REALMS_A.name}: ${found.status}`);
+      if (expected.named === 'b') assert(found.status.includes(REALMS_B.name), `channel ${key} does not name ${REALMS_B.name}: ${found.status}`);
+      if (expected.named === null) {
+        assert(!found.status.includes(REALMS_A.name) && !found.status.includes(REALMS_B.name),
+          `channel ${key} names a person it should not: ${found.status}`);
+      }
+    }
+  }
+  assert(JSON.stringify([...seen].sort()) === JSON.stringify(['a', 'b', 'both', 'halved', 'inactive']),
+    `the pair covers ${[...seen].sort()}, not all five ownership states`);
+  // The words are the composite's own: never the single design's four states.
+  const statuses = Object.values(channels).map(channel => channel.status);
+  assert(!statuses.includes('\u5728\u7761\u7720\u8bbe\u8ba1\u4e2d\u5b8c\u6574'),
+    'a composite channel uses the single design wording for a complete channel');
+  assert(!statuses.includes('\u5728\u7761\u7720\u8bbe\u8ba1\u4e2d\u672a\u6210\u5f62'),
+    'a composite channel uses the single design wording for an incomplete channel');
+});
+
+await check('a halved channel names both people and the gate each contributes', async () => {
+  const split = await page.$eval('#dream-content .dream-channel-open[data-channel="28-38"] .dream-channel-split',
+    n => n.textContent.replace(/\s+/g, ' ').trim());
+  assert(split.includes(REALMS_A.name), `the split does not name ${REALMS_A.name}: ${split}`);
+  assert(split.includes(REALMS_B.name), `the split does not name ${REALMS_B.name}: ${split}`);
+  assert(/\b28\b/.test(split) && /\b38\b/.test(split), `the split does not carry both gate numbers: ${split}`);
+  // The definition comes from neither design alone, so the badge says so.
+  const status = await page.$eval('#dream-content .dream-channel-open[data-channel="28-38"] .dream-channel-status',
+    n => n.textContent.trim());
+  assert(status === '\u4ec5\u5408\u5e76\u540e\u6709\u5b9a\u4e49', `halved badge reads "${status}"`);
+  // No other channel pretends to be halved.
+  const splits = await page.$$eval('#dream-content .dream-channel-split', n => n.length);
+  assert(splits === 1, `${splits} channels show a split, expected only 28-38`);
+});
+
+await check('an empty composite field uses the composite wording, not the single-design one', async () => {
+  const empty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
+  assert(empty === '\u4e24\u4eba\u7684\u7761\u7720\u8bbe\u8ba1\u5728\u6b64\u573a\u57df\u90fd\u6ca1\u6709\u6fc0\u6d3b\u3002',
+    `the empty composite field reads "${empty}"`);
+  const body = await page.$eval('#dream-content', n => n.textContent);
+  assert(!body.includes('\u4eca\u591c\u6b64\u573a\u57df\u6ca1\u6709\u6fc0\u6d3b\u3002'),
+    'the composite still uses the single-design empty line');
+  const rows = await page.$$eval('#dream-content .dream-realm-earth .dream-realm-row', n => n.length);
+  assert(rows === 0, `the empty earth field lists ${rows} rows`);
+});
+
+await check('hovering a composite channel row lights its two gates', async () => {
+  // `bindChannelHover` is the only bridge between the field rows and the graph,
+  // so a channel row that stopped binding would silently lose this.
+  const before = await page.$$eval('#dream-composite .bg-lit', n => n.length);
+  await page.hover('#dream-content .dream-channel-open[data-channel="28-38"]');
+  await page.waitForTimeout(250);
+  const lit = await page.$$eval('#dream-composite .bg-gate.bg-lit', n => n.map(x => x.dataset.gate).sort());
+  const dimmed = await page.$eval('#dream-composite svg', n => n.classList.contains('bg-dimmed'));
+  assert(before === 0, `${before} nodes were already lit before the hover`);
+  assert(JSON.stringify(lit) === JSON.stringify(['28', '38']), `hovering 28-38 lit ${JSON.stringify(lit)}`);
+  assert(dimmed, 'the hover did not dim the rest of the graph');
+  await page.mouse.move(4, 4);
+  await page.waitForTimeout(250);
+  const cleared = await page.$$eval('#dream-composite .bg-lit', n => n.length);
+  assert(cleared === 0, `${cleared} nodes stayed lit after the pointer left`);
+});
+
+await check('the composite night fields survive a language switch and follow it', async () => {
+  await chooseLanguage(page, 'en');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  let realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `English realms ${realms}`);
+  const enTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(enTitle === 'Light Field', `English field title is "${enTitle}"`);
+  // The person names stay untranslated; only the design vocabulary follows.
+  const enLabels = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source-label',
+    n => n.map(x => x.textContent.trim()));
+  assert(enLabels.length >= 2, `English gate 1 has ${enLabels.length} source labels`);
+  assert(enLabels.some(label => label.startsWith(REALMS_A.name)), `English labels lost ${REALMS_A.name}: ${JSON.stringify(enLabels)}`);
+  assert(enLabels.some(label => /Sleep (design|personality)/.test(label)),
+    `English labels keep a Chinese half name: ${JSON.stringify(enLabels)}`);
+  const enEmpty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
+  assert(enEmpty === 'Neither sleep design activates this field.', `English empty line is "${enEmpty}"`);
+
+  await chooseLanguage(page, 'zh-Hant');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `zh-Hant realms ${realms}`);
+  const hantTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(hantTitle === '\u5149\u5834', `zh-Hant field title is "${hantTitle}"`);
+  const hantLabels = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source-label',
+    n => n.map(x => x.textContent.trim()));
+  assert(hantLabels.some(label => label.includes('\u7761\u7720\u8a2d\u8a08') || label.includes('\u7761\u7720\u4eba\u683c')),
+    `zh-Hant labels did not translate the half: ${JSON.stringify(hantLabels)}`);
+  assert(hantLabels.every(label => !/Sleep (design|personality)/.test(label)),
+    `zh-Hant labels kept the English half name: ${JSON.stringify(hantLabels)}`);
+
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  const backTitle = await page.$eval('#dream-content .dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(backTitle === '\u5149\u573a', `field title after switching back is "${backTitle}"`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('the composite night fields stack on a phone without overflowing', async () => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(600);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  assert(overflow <= 1, `composite fields overflow the phone by ${overflow}px`);
+  // One column on a phone is the existing behaviour; the count must stay three.
+  const realms = await page.$$eval('#dream-content .dream-realm', n => n.map(x => x.dataset.realm));
+  assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `phone realms ${realms}`);
+  const columns = await page.$eval('#dream-content .dream-realms', n => getComputedStyle(n).gridTemplateColumns);
+  assert(columns.trim().split(/\s+/).length === 1, `phone grid is "${columns}", expected a single column`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(500);
 });
 
 await check('no errors accumulated across the whole run', async () => {

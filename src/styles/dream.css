@@ -525,6 +525,12 @@
   border-left-style: dotted;
 }
 
+/* The composite recolours a source by who carries it while the half keeps its
+   solid/dashed rule. These come after the side rules so the owner colour wins
+   the `--dream-source` cascade and the side's border-left-style survives. */
+.dream-row-source-owner-a { --dream-source: var(--hd-connection-a); }
+.dream-row-source-owner-b { --dream-source: var(--hd-connection-b); }
+
 /* The label reads the token that is graded for text, not the fill hue: the
    night sky uses `--hd-transit-text` for the same reason the timeline does. */
 .dream-row-source-label {
@@ -536,6 +542,16 @@
   line-height: 1.4;
 }
 .dream-row-source-transit .dream-row-source-label { color: var(--hd-transit-text); }
+
+/* An owner colour is a fill token graded against the page, not against a 10px
+   label; measured across the eleven skins it reads 1.9-3.5:1, under the 4.5:1 a
+   10px/650 label needs. Grading 40% toward the body text colour measures
+   5.2:1 or better everywhere, which is the same idea the transit label's
+   `--hd-transit-text` expresses with a dedicated token. */
+.dream-row-source-owner-a .dream-row-source-label,
+.dream-row-source-owner-b .dream-row-source-label {
+  color: color-mix(in srgb, var(--dream-source) 40%, var(--text));
+}
 
 .dream-row-planets {
   display: flex;
@@ -625,6 +641,25 @@
 .dream-channel-open-completed { --dream-channel-accent: var(--hd-transit); border-inline-start-style: dashed; }
 .dream-channel-open-transit { --dream-channel-accent: var(--hd-transit); border-inline-start-style: dotted; }
 .dream-channel-open-inactive { --dream-channel-accent: var(--hd-inactive); }
+
+/* The composite tints a channel by who completes it: the variant still gives
+   the edge style, these supply the person colour, and they must follow the
+   variant rules above to win `--dream-channel-accent`. `both` is not the
+   gradient token `--hd-connection-both`, which is a fill for shapes: a border
+   needs a colour, and `color-mix()` on a gradient drops the whole declaration,
+   so the pair's shared channels would lose their edge entirely. The midpoint
+   of the two owner colours carries the same meaning as a line. */
+.dream-channel-owner-a { --dream-channel-accent: var(--hd-connection-a); }
+.dream-channel-owner-b { --dream-channel-accent: var(--hd-connection-b); }
+.dream-channel-owner-both { --dream-channel-accent: color-mix(in srgb, var(--hd-connection-a) 50%, var(--hd-connection-b)); }
+
+/* Who contributes which gate of a halved channel, under the channel's names. */
+.dream-channel-split {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
 
 .dream-channel-head {
   display: flex;
@@ -939,7 +974,7 @@
 .dream-detail-channel.completed { --dream-detail-channel-hue: var(--hd-transit); border-inline-start-style: dashed; }
 .dream-detail-channel.transit { --dream-detail-channel-hue: var(--hd-transit); border-inline-start-style: dotted; }
 .dream-detail-channel.electromagnetic { --dream-detail-channel-hue: var(--hd-connection-bridged); }
-.dream-detail-channel.companionship { --dream-detail-channel-hue: var(--hd-connection-both); }
+.dream-detail-channel.companionship { --dream-detail-channel-hue: color-mix(in srgb, var(--hd-connection-a) 50%, var(--hd-connection-b)); }
 .dream-detail-channel.compromise,
 .dream-detail-channel.dominance { --dream-detail-channel-hue: var(--hd-connection-a); }
 
