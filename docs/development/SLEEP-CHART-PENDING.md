@@ -335,6 +335,45 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 它测的是 327px（手机区间），而 §3.12 的改动只作用于 `min-width: 641px`，不可能影响它；
 且它不在 `.github/workflows/premerge.yml` 的门禁清单里。
 
+### 3.14 三个「页面状态串位」竞态（已修，`tests/dream-state-boundaries-e2e.mjs`）
+
+三个都是同一类问题：异步求解完成时，页面已经不在发起它的那个状态里了，而代码在
+`await` 之后才去读「当前是谁」。用户可见的后果都是**看到不属于当前状态的图**。
+
+1. **合盘绑到后来的人物**（`startComparison` → `setDreamComparison`）。
+   `await computeChart(B)` 之后才 `setDreamComparison()`，而 `forChart` 在那里才读
+   `getCurrentChart()`。期间从 A 切到 C，B 就绑到了 C 的图上，页面出现「C 与 B 的合图」。
+   实测已复现：`Sleep charts of Fictional C and Fictional B`。
+   修法：**发起前**捕获 `origin = {personId, chart}` 与 B 的出生指纹，`await` 之后先用
+   `sameMainPerson(origin)` 校验，再落盘；合盘另有 `comparisonSequence` 独立代号，
+   `renderComparison()` 落图前再校验一次 `pendingComparison === comparison` 与
+   `samePairIsCurrent()`。
+2. **无效时刻被当成「没选时刻」→ 回落到 `Date.now()`**（`selectedTransitMoment`）。
+   旧代码 `Number.isFinite(instant) ? instant : undefined` 把「用户选了不存在的墙上时间」
+   和「还没选」合并成同一个值，`computeDreamChart()` 对 `undefined` 取当前时刻。
+   所以 DST 跳变时刻既会显示「现在」，重入页面也会显示「现在」，且从无效改回有效
+   时缓存判定也会出错。修法：三态分开（`{instant}` / `{invalid}` / `{instant: undefined}`），
+   无效时**不求解**，页面画 `.dream-moment-invalid` 明确状态；`onChange` 每次都调用
+   `renderDreamView()`，由它在两条路径上都 `++requestSequence`，因此无效输入也会淘汰旧的有效请求。
+3. **合盘 B 没有身份**（`pendingComparison` 旧形状只有 `{chart, label}`）。
+   删除或修改 B 时没有任何监听，合图继续显示 B 的旧图。修法：B 存 `personId` +
+   `fingerprint`（`calculationIdentity(birthFromPerson(person))`），睡眠图页**自己**
+   订阅 `onPeopleChange`（`peopleOff`，随 `setupDreamView()` 重建时释放），
+   删除 → 丢弃合盘并提示；出生字段改变 → 丢弃合盘并提示重新选择；仅改名 → 保留已解的合盘、
+   只换标签（`pairFrom()` 里比较全字段再决定是否保 `lastComparison`）。
+   主人物自身的变更仍归 `main.js` 处理（本页跳过，避免与整页重载互相覆盖）。
+
+测试不靠 sleep：`tests/dream-state-boundaries-e2e.mjs` 拦截 `src/lib/chartdata.js` 与
+`src/lib/dream-chart.js`，插一个由测试显式放行的门，于是「求解正在飞行中」是被观测到的事实。
+基线（未修）实测 9 项中 6 项失败，修后 9 项全通。
+**测试里 import 页面模块必须走 `performance.getEntriesByType('resource')` 解析出的真实 URL**
+（Vite 会带 `?t=` 后缀），否则拿到的是第二份模块实例，`onPeopleChange` 监听不到页面那一份的保存。
+
+### 3.15 页面内双人合盘没有转「现在」的入口（未做）
+
+合图时时间控件被隐藏（合图不叠加行运），所以进入合图后无法改时刻；返回单人睡眠图才能改。
+这是 §3.10 的设计取舍，未变。
+
 ## 4. 怎么把它跑起来
 
 ```bash

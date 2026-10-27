@@ -48,5 +48,7 @@
   "Undefined in sleep": "睡眠中未定義",
   "Complete across both sleep designs": "在兩份睡眠設計中都完整",
   "Not complete across both sleep designs": "在兩份睡眠設計中未完整",
-  "Portal": "門戶"
+  "Portal": "門戶",
+  "That moment does not exist in this timezone, so there is no {transit} overlay. Pick a valid time.": "該時區不存在這個時刻，因此沒有{transit}疊加。請選擇一個有效時間。",
+  "The other person’s birth data changed, so the comparison was cleared. Pick them again to compare.": "另一個人的出生資料已改變，合盤已清除。請重新選擇此人進行合圖。"
 }

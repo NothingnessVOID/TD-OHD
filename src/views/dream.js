@@ -51,7 +51,8 @@ import { dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName } from '..
 import { typeName, planetName, channelName, centerName } from '../lib/vocabulary.js';
 import { t, formatDisplay, setMessage } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
-import { getPerson, birthFromPerson } from '../lib/people.js';
+import { getPerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
+import { calculationIdentity } from '../lib/person-input.js';
 import { computeChart } from '../lib/chartdata.js';
 import { openPersonPicker } from '../lib/person-picker.js';
 import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
@@ -61,10 +62,19 @@ import '../styles/dream.css';
 
 let lastDream = null;          // cached model, keyed by the waking chart it came from
 let lastComparison = null;     // { a, b, labelB } cached comparison models
-let pendingComparison = null;  // { chart, label } chosen on this page
+let pendingComparison = null;  // the pair chosen on this page; see setDreamComparison()
 let comparisonBusy = false;    // a picker selection is still being computed
-let requestSequence = 0;
+let requestSequence = 0;       // overlay solves: one counter per render
+// Comparison requests are numbered separately from the overlay's. A person pick
+// awaits twice (B's waking chart, then both sleeping ones), so it needs its own
+// generation: invalidating the page, leaving the composite, or a change to either
+// person must evict it without disturbing the overlay solve's numbering.
+let comparisonSequence = 0;
 let shellDispose = null;
+// The people-store subscription that guards person B, released on remount like the
+// time control: a second listener would answer every change twice, once for a page
+// state nobody can see any more.
+let peopleOff = null;
 // The shared transit time control (lib/transit-time-control.js). One instance for
 // the page: the overlay is the only thing it drives, and the two-person composite
 // has no overlay at all, so the control is hidden while one is shown.
@@ -85,7 +95,8 @@ export function invalidateDream() {
   lastDream = null;
   lastComparison = null;
   // A different person invalidates the chosen comparison; otherwise the sleep
-  // chart would keep showing the previous pair.
+  // chart would keep showing the previous pair. The pick's own solves go with it.
+  evictComparison();
   pendingComparison = null;
   updateCompareButton();
   detail?.close();
@@ -97,28 +108,93 @@ export function invalidateDream() {
 }
 
 /**
- * Compare with a second person, chosen on this page.
+ * Evict every comparison solve in flight, and release its busy flag with it.
  *
- * Person B's waking chart is computed here from their saved birth data, so the
- * comparison is keyed to a stable person id rather than to a chart handed over
- * by another view. A cached comparison belongs to the pair that produced it, so
- * choosing someone else drops it before the new pair is solved.
+ * Whoever bumps the counter owns the flag afterwards. A bare invalidation starts
+ * no new solve, so it has to clear the flag itself — otherwise the next pick would
+ * be refused by a request that no longer exists.
  */
-function setDreamComparison({ chart, label }) {
-  // The pair is only meaningful against the chart it was chosen from, so the
-  // current chart travels with it: switching to another person on the page
-  // header leaves a comparison that no longer describes what is on screen.
-  pendingComparison = { chart, label, forChart: getCurrentChart()?.chart || null };
-  lastComparison = null;
+function evictComparison() {
+  ++comparisonSequence;
+  comparisonBusy = false;
+}
+
+/**
+ * The loaded chart an action was started from.
+ *
+ * `getCurrentChart()` hands back the same `chart` object main.js solved, and that
+ * object is the page's existing "same chart" test (`comparisonMatches()`,
+ * `lastDream.natalChart`). The saved id travels alongside it so a saved person is
+ * named and re-checked as themselves rather than as "whatever object is loaded".
+ */
+function currentIdentity() {
+  const current = getCurrentChart();
+  return current ? { personId: current.birth?.id || null, chart: current.chart } : null;
+}
+
+/** Whether `origin` is still the chart on screen; a solve started for another one must not land. */
+function sameMainPerson(origin) {
+  if (!origin) return false;
+  const current = getCurrentChart();
+  return !!current && current.chart === origin.chart && (current.birth?.id || null) === origin.personId;
+}
+
+/**
+ * Bind the picked pair to the identities it was started from.
+ *
+ * Person B's waking chart is solved asynchronously from their saved birth data, so
+ * "the main person" at the moment this runs is not necessarily the one the reader
+ * picked B against: `origin` is captured before the first await and travels here
+ * instead of being read again afterwards. B is kept as a saved id plus the birth
+ * fingerprint their chart was solved from, so a later delete or edit is
+ * recognisable as a change to *this* pair instead of leaving a stale composite
+ * under a current name. A cached comparison belongs to the pair that produced it,
+ * so choosing someone else drops it before the new pair is solved.
+ */
+function setDreamComparison({ personId, label, fingerprint, chart, origin }) {
+  pairFrom({ personId, label, fingerprint, chart, origin });
+}
+
+/** Bind an already-built pair (a rename keeps every part except the label). */
+function pairFrom({ personId, label, fingerprint, chart, origin }) {
+  const previous = pendingComparison;
+  const samePair = previous
+    && previous.personId === (personId || null)
+    && previous.fingerprint === fingerprint
+    && previous.chart === chart
+    && previous.forChart === origin.chart
+    && previous.forPersonId === origin.personId;
+  pendingComparison = {
+    personId: personId || null,
+    label,
+    // `calculationIdentity()` of B's birth fields: what their chart was solved
+    // from, not what their record says later.
+    fingerprint,
+    chart,
+    // The main chart *and* person the pair was chosen from: switching to another
+    // person on the page header leaves a comparison that no longer describes what
+    // is on screen.
+    forChart: origin.chart,
+    forPersonId: origin.personId
+  };
+  // A cached composite belongs to the pair that produced it. A rename of the same
+  // pair keeps it — the sleeping charts did not change, only the name beside them.
+  if (samePair && lastComparison) lastComparison = { ...lastComparison, labelB: label };
+  else lastComparison = null;
   updateCompareButton();
 }
 
-/** True when the pending comparison still belongs to the loaded chart. */
+/** True when the pending comparison still belongs to the loaded chart and person. */
 function comparisonMatches(current) {
-  return !!pendingComparison && pendingComparison.forChart === current.chart;
+  if (!pendingComparison || !current) return false;
+  return pendingComparison.forChart === current.chart
+    && pendingComparison.forPersonId === (current.birth?.id || null);
 }
 
 function clearDreamComparison() {
+  // Leaving the composite cancels a pick that is still solving, so the abandoned
+  // request cannot put the pair back on screen after the reader walked away.
+  evictComparison();
   pendingComparison = null;
   lastComparison = null;
   updateCompareButton();
@@ -140,10 +216,14 @@ export function setupDreamView() {
     idPrefix: 'dream-transit',
     // No transit-only mode here: the sleep design is always the base body.
     showModeToggle: false,
-    onChange: selection => {
-      // A null selection means the wall time does not resolve (DST gap or bad
-      // zone); the control already says so, and redrawing would show "now".
-      if (selection && !pendingComparison) renderDreamView();
+    onChange: () => {
+      // The control is hidden while the composite is shown: that page has no
+      // overlay, so a change here is a change to a chart nobody is looking at.
+      if (pendingComparison) return;
+      // Every change reaches the render, valid or not: `renderDreamView()` evicts the
+      // solve in flight on both paths, so an invalid moment also invalidates the
+      // older valid request instead of letting it land afterwards.
+      renderDreamView();
     }
   });
   document.getElementById('dream-compare')?.addEventListener('click', chooseComparisonPerson);
@@ -151,8 +231,75 @@ export function setupDreamView() {
     clearDreamComparison();
     renderDreamView({ refresh: true });
   });
+  // Person B is watched here rather than in main.js: the composite is this page's
+  // own state, so the page that owns the pair is the one that must notice it going
+  // stale. `main.js` only follows the *main* person, and a change to B never moved
+  // a chart there, so nothing else would have invalidated this pair.
+  peopleOff?.();
+  peopleOff = onPeopleChange(onComparisonPersonChange);
   setTransitSubtitle();
   updateCompareButton();
+}
+
+/**
+ * Follow person B for as long as a composite names them.
+ *
+ * Deleting B, or editing the birth fields their chart was solved from, makes the
+ * pair describe nobody: the old code kept both sleeping charts on screen under the
+ * current name, which is the "one person's composite shown as another's" failure.
+ * Two answers are possible — drop the pair, or re-solve it from the new record — and
+ * dropping is the one that cannot show a chart the reader did not ask for. A rename
+ * alone keeps the pair, because the chart it was solved from is unchanged; only the
+ * label is refreshed. Any other person's change is ignored here.
+ *
+ * Nothing is done when no composite names B, so the listener costs a map lookup per
+ * save instead of a redraw.
+ */
+function onComparisonPersonChange(change) {
+  const pair = pendingComparison;
+  if (!pair?.personId || change.personId !== pair.personId) return;
+  // A change to the loaded person belongs to main.js, which invalidates and reloads
+  // this whole page for it. Handling it here as well would redraw the sleep chart of
+  // the person being replaced, and fight the reload for the same content.
+  if (change.personId === currentPersonId()) return;
+  const after = change.after;
+  if (!after) {
+    // B was deleted: the sleeping charts on screen belong to a person who is gone.
+    dropPair({ deleted: true });
+    return;
+  }
+  if (calculationIdentity(birthFromPerson(after)) !== pair.fingerprint) {
+    // Their birth data moved under the solved chart: re-solving is a new pick, and
+    // silently redrawing a different pair is worse than asking for one.
+    dropPair({ deleted: false });
+    return;
+  }
+  if (after.name !== pair.label) {
+    // Presentation only: same birth data, so the same pair under a new name.
+    pairFrom({
+      ...pair,
+      label: after.name,
+      origin: { chart: pair.forChart, personId: pair.forPersonId }
+    });
+    renderDreamView();
+  }
+}
+
+/**
+ * Discard the pair and put the reader's own sleep chart back, then say why.
+ *
+ * The explanation is written *after* the redraw: a successful single-design render
+ * clears the status line as part of its own bookkeeping, so a message written first
+ * would be wiped by the very redraw that replaced the composite.
+ *
+ * @param {{deleted: boolean}} lost - which change took the pair away
+ */
+async function dropPair(lost) {
+  clearDreamComparison();
+  await renderDreamView({ refresh: true });
+  setMessage(document.getElementById('dream-status'), lost.deleted
+    ? 'That person is no longer in your saved charts.'
+    : 'The other person\u2019s birth data changed, so the comparison was cleared. Pick them again to compare.');
 }
 
 /**
@@ -166,10 +313,52 @@ function setTransitSubtitle() {
     { transit: transitTerm() });
 }
 
-/** The moment the overlay is read at; undefined lets computeDreamChart use "now". */
-function selectedTransitInstant() {
-  const instant = timeControl?.getInstant();
-  return Number.isFinite(instant) ? instant : undefined;
+/**
+ * Report an unresolvable wall time on the page itself instead of redrawing "now".
+ *
+ * The control already prints why the widgets do not resolve, but its status is an
+ * `tl-sr-only` line: a sighted reader who typed a DST gap saw the page keep the old
+ * overlay with no visible explanation, and on re-entry the overlay silently became
+ * the current sky. This puts an explicit state where the chart would be, so the page
+ * never shows an overlay the reader did not ask for and never leaves a blank area
+ * where one was. Nothing is solved until a valid moment comes back, and the sheet and
+ * shell observers are released here exactly as `invalidateDream()` releases them.
+ */
+function drawInvalidMoment(content) {
+  clearStatus(document.getElementById('dream-status'));
+  detail?.close();
+  detail = null;
+  detailContext = null;
+  shellDispose?.disconnect();
+  shellDispose = null;
+  const notice = el('p', { class: 'dream-moment-invalid', role: 'status' });
+  notice.textContent = invalidMomentText();
+  content.replaceChildren(notice);
+}
+
+/** The one wording for an unresolvable moment, read through `t()` in the live language. */
+const invalidMomentText = () => t(
+  'That moment does not exist in this timezone, so there is no {transit} overlay. Pick a valid time.',
+  { transit: transitTerm() });
+
+/**
+ * The moment the overlay is read at.
+ *
+ * `{ instant }` when the time control resolves, `{ invalid: true }` when the wall
+ * time does not (a DST gap, or a bad zone), and `{ instant: undefined }` only while
+ * there is no control at all. The three cases are kept apart on purpose: the old
+ * `Number.isFinite(instant) ? instant : undefined` collapsed "the reader chose an
+ * impossible time" into "nobody has chosen", and `computeDreamChart()` answers that
+ * with `Date.now()` — so an invalid pick silently became the current moment. That
+ * also made an invalid-then-valid pair indistinguishable, because both solved at
+ * "now" and the cached model looked reusable.
+ *
+ * @returns {{instant: number}|{invalid: true}|{instant: undefined}}
+ */
+function selectedTransitMoment() {
+  if (!timeControl) return { instant: undefined };
+  const instant = timeControl.getInstant();
+  return Number.isFinite(instant) ? { instant } : { invalid: true };
 }
 
 /** The composite carries no overlay, so its time control must not invite a change. */
@@ -224,18 +413,35 @@ async function startComparison(personId) {
     setMessage(status, 'That person is no longer in your saved charts.');
     return;
   }
+  // Everything this pick is judged against is read *before* the first await: which
+  // main chart it belongs to, and which birth data B's chart is solved from. Reading
+  // either afterwards is what let a pick made against B bind to a later C.
+  const origin = currentIdentity();
+  const fingerprint = calculationIdentity(birthFromPerson(person));
+  const request = ++comparisonSequence;
   comparisonBusy = true;
+  // Once the pair is committed the composite solve owns the page, and a second pick
+  // is allowed to supersede it; until then this request is the only one allowed in.
+  let handedOver = false;
   try {
     setMessage(status, 'Computing both sleep charts…');
     // A missing or incomplete birth record fails here, before the sleep charts
     // are even attempted; the message names the reason and stays in the toolbar.
     const { chart } = await computeChart(birthFromPerson(person));
-    setDreamComparison({ chart, label: person.name });
+    // Wasted work rather than wasted screen: the reader changed the main person,
+    // left the page, or picked again while B's chart was solving.
+    if (request !== comparisonSequence || !sameMainPerson(origin)) return;
+    handedOver = true;
+    comparisonBusy = false;
+    setDreamComparison({ personId: person.id, label: person.name, fingerprint, chart, origin });
     await renderDreamView();
   } catch (error) {
+    if (request !== comparisonSequence) return;
     setMessage(status, 'Sleep chart calculation failed: {error}', { error: error.message });
   } finally {
-    comparisonBusy = false;
+    // Only the newest request may release the flag; a superseded one must not reset
+    // the state of the pick that replaced it.
+    if (!handedOver && request === comparisonSequence) comparisonBusy = false;
   }
 }
 
@@ -272,21 +478,33 @@ export async function renderDreamView({ refresh = false } = {}) {
   const current = getCurrentChart();
   if (!current) { content.replaceChildren(); setExitVisible(false); return; }
 
-  // A comparison chosen for a different person is stale, not reusable.
+  // A comparison chosen for a different chart or person is stale, not reusable.
   if (pendingComparison && !comparisonMatches(current)) clearDreamComparison();
 
   if (pendingComparison) {
     setTimeControlVisible(false);
     setExitVisible(true);
-    if (!refresh && lastComparison) { drawComparison({ content, current, ...lastComparison }); return; }
+    if (!refresh && lastComparison && samePairIsCurrent(current, pendingComparison)) {
+      drawComparison({ content, current, ...lastComparison });
+      return;
+    }
     await renderComparison({ content, status, current, comparison: pendingComparison });
     return;
   }
   setTimeControlVisible(true);
   setExitVisible(false);
 
+  const moment = selectedTransitMoment();
+  if (moment.invalid) {
+    // Re-entering the page (a view switch, a language change, a returning redraw)
+    // must not turn an impossible moment into "now": nothing is solved, and the
+    // page says what is missing instead of showing the current sky.
+    ++requestSequence;
+    drawInvalidMoment(content);
+    return;
+  }
+  const transitInstant = moment.instant;
   const request = ++requestSequence;
-  const transitInstant = selectedTransitInstant();
   const cached = !refresh && lastDream?.natalChart === current.chart ? lastDream : null;
   // Same person and same moment: the drawn model is still exactly right.
   if (cached && cached.transitInstant === transitInstant) {
@@ -311,8 +529,17 @@ export async function renderDreamView({ refresh = false } = {}) {
   }
 }
 
+/**
+ * Solve both sleeping designs for the pending pair.
+ *
+ * Comparison numbering is its own generation, and the pair itself is re-validated
+ * after the await: a request can outlive its own validity when B is deleted or
+ * edited, or when the main person changes, without anything having bumped the
+ * counter. Drawing a composite whose A or B no longer exists is the failure this
+ * guards against, so the check is on the pair identity, not just the counter.
+ */
 async function renderComparison({ content, status, current, comparison }) {
-  const request = ++requestSequence;
+  const request = ++comparisonSequence;
   try {
     setMessage(status, 'Computing both sleep charts…');
     // Comparison follows the original dream design: both sleeping designs share
@@ -321,14 +548,26 @@ async function renderComparison({ content, status, current, comparison }) {
       computeDreamChart(current.chart, { transit: false }),
       computeDreamChart(comparison.chart, { transit: false })
     ]);
-    if (request !== requestSequence) return;
+    if (request !== comparisonSequence) return;
+    if (pendingComparison !== comparison || !samePairIsCurrent(current, comparison)) return;
     lastComparison = { a, b, labelB: comparison.label };
     clearStatus(status);
     drawComparison({ content, current, ...lastComparison });
   } catch (error) {
-    if (request !== requestSequence) return;
+    if (request !== comparisonSequence) return;
     setMessage(status, 'Sleep chart calculation failed: {error}', { error: error.message });
   }
+}
+
+/** Whether the pair's two people are still the two the page is showing. */
+function samePairIsCurrent(current, comparison) {
+  if (current.chart !== comparison.forChart) return false;
+  if ((current.birth?.id || null) !== comparison.forPersonId) return false;
+  if (!comparison.personId) return true;
+  // B must still be saved, and still be the birth data their chart was solved from.
+  const person = getPerson(comparison.personId);
+  if (!person) return false;
+  return calculationIdentity(birthFromPerson(person)) === comparison.fingerprint;
 }
 
 /** Language and skin changes redraw from the cached model without recomputing. */
@@ -340,7 +579,8 @@ export function refreshDreamLanguage() {
   // and that parameter is the previous language's word for the overlay, so the
   // subtitle is rewritten here with the new one.
   setTransitSubtitle();
-  if (pendingComparison && lastComparison && comparisonMatches(current)) {
+  if (pendingComparison && lastComparison && comparisonMatches(current)
+    && samePairIsCurrent(current, pendingComparison)) {
     setTimeControlVisible(false);
     drawComparison({ content, current, ...lastComparison });
     // The composite redraw re-uses the same sheet controller, so an open card
@@ -349,6 +589,7 @@ export function refreshDreamLanguage() {
     return;
   }
   setTimeControlVisible(true);
+  if (selectedTransitMoment().invalid) { drawInvalidMoment(content); return; }
   if (lastDream?.natalChart !== current.chart) return;
   drawDream(lastDream, content);
   // The redraw replaced the graph API on the same context object; an open sheet

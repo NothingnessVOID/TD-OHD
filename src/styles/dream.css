@@ -60,6 +60,22 @@
 .dream-content { min-width: 0; }
 .dream-content > * + * { margin-top: var(--space-3); }
 
+/* The chosen moment does not resolve (a DST gap, a bad zone). The page shows this
+   instead of a sleep chart, so the overlay cannot silently fall back to "now". Same
+   sunken panel and edge as the composite's explanatory block, so it reads as page
+   chrome rather than an error banner, and it keeps the reading width. */
+.dream-moment-invalid {
+  max-width: 720px;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
 /* ---------- The shared transit time control ---------- */
 
 /* The Transits page and this page mount the same component
