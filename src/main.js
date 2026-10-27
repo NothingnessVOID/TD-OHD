@@ -192,7 +192,6 @@ function setupNavigation() {
     document.getElementById(first || 'birth-date').focus();
   });
   window.addEventListener('ohd-reference-navigation', () => showView('library', { fromHistory: true }));
-  window.addEventListener('ohd-dream-navigation', () => showView('dream'));
   window.addEventListener('popstate', event => showView(location.hash.startsWith('#library') ? 'library' : event.state?.ohdView || 'chart', { fromHistory: true }));
   window.addEventListener('hashchange', () => showView(location.hash.startsWith('#library') ? 'library' : history.state?.ohdView || 'chart', { fromHistory: true }));
 }

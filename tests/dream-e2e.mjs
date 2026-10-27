@@ -328,21 +328,92 @@ await check('phone viewport keeps the page inside the screen', async () => {
   await page.waitForTimeout(400);
 });
 
-// --- connection view hands over to the two-person sleep comparison ---
-await check('connection view jumps to the two-person sleep comparison', async () => {
+// --- the sleep page itself picks the second person ---
+// Two saved people, written straight into the people store so the page has a
+// stable current person (person A) and one candidate to compare against (B).
+// Seeding storage keeps the fixture out of the UI flow being tested.
+const SEEDED_PEOPLE = [
+  {
+    id: 'e2e-dream-a', name: 'E2E Dream', birthDate: '1990-05-20', birthTime: '06:30',
+    timeUnknown: false,
+    location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+    createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'e2e-dream-b', name: 'E2E Partner', birthDate: '1992-08-08', birthTime: '10:15',
+    timeUnknown: false,
+    location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+    createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+  }
+];
+
+await page.evaluate(people => {
+  localStorage.setItem(['natal', 'engine', '_profiles'].join(''), JSON.stringify(people));
+  localStorage.setItem('ohd-last-person-id', people[0].id);
+}, SEEDED_PEOPLE);
+await page.goto(`${BASE}/`, { waitUntil: 'load' });
+await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 30000 });
+await page.click('.nav-link[data-view="dream"]');
+await page.waitForSelector('.dream-realm', { timeout: 30000 });
+await page.waitForTimeout(500);
+
+await check('the sleep page carries its own compare entry next to the night-sky refresh', async () => {
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
+  const toolbar = await page.$$eval('.dream-toolbar button', n => n.map(b => b.id));
+  assert(JSON.stringify(toolbar) === JSON.stringify(['dream-refresh', 'dream-compare']), `toolbar buttons ${toolbar}`);
+  // The relationship page no longer offers the handover.
   await page.click('.nav-link[data-view="connection"]');
-  await page.waitForSelector('#conn-person', { timeout: 10000 });
-  await page.fill('#conn-name', 'E2E Partner');
-  await page.fill('#conn-date', '1992-08-08');
-  await page.fill('#conn-time', '10:15');
-  // There is no `#conn-tz`: the birth place component resolves the historical
-  // timezone. Without a place it refuses to guess UTC=0, so switch it to the
-  // manual UTC offset and enter one explicitly.
-  await page.click('#conn-place .ps-toggle');
-  await page.fill('#conn-place .ps-manual', '0');
-  await page.click('#conn-calculate');
-  await page.waitForSelector('#conn-view-dreams', { timeout: 60000 });
-  await page.click('#conn-view-dreams');
+  await page.waitForTimeout(400);
+  const connEntry = await page.$('#conn-view-dreams');
+  assert(!connEntry, 'the connection view still offers a sleep-chart jump button');
+  await page.click('.nav-link[data-view="dream"]');
+  await page.waitForSelector('.dream-realm', { timeout: 30000 });
+  await page.waitForTimeout(300);
+});
+
+/**
+ * The shared person picker (`src/lib/person-picker.js`) is the Team picker
+ * extracted: rows are `[data-add-person]` buttons inside a modal overlay, with
+ * the historical `#team-person-search` input. Single selection commits on the
+ * row click, so no confirm button is involved.
+ */
+async function pickSecondPerson(page, name) {
+  await page.waitForSelector('.modal-overlay [data-add-person]', { timeout: 15000 });
+  const search = await page.$('.modal-overlay #team-person-search');
+  if (search) { await search.fill(name); await page.waitForTimeout(250); }
+  const rows = await page.$$('.modal-overlay [data-add-person]');
+  for (const row of rows) {
+    if (!(await row.isVisible())) continue;
+    const text = (await row.textContent()) || '';
+    if (!text.includes(name)) continue;
+    await row.click();
+    return true;
+  }
+  return false;
+}
+
+await page.click('#dream-compare');
+await page.waitForSelector('.modal-overlay [data-add-person]', { timeout: 15000 });
+
+await check('the compare button opens the shared person picker without the loaded person', async () => {
+  const names = await page.$$eval('.modal-overlay [data-add-person] strong', n => n.map(x => x.textContent.trim()));
+  assert(!names.includes('E2E Dream'), `the picker lists the loaded person: ${names}`);
+  assert(names.includes('E2E Partner'), `the picker does not list the second person: ${names}`);
+  // Single selection: no confirm button, the row is the commit.
+  const confirm = await page.$('.modal-overlay #team-selection-confirm');
+  assert(!confirm, 'single-selection mode still shows a confirm button');
+  await page.click('.modal-overlay [data-close]');
+  await page.waitForTimeout(300);
+  assert(!(await page.$('.modal-overlay')), 'cancelling left the picker open');
+  assert(!(await page.$('#dream-composite')), 'cancelling still built a comparison');
+  // Reopen for the flow below.
+  await page.click('#dream-compare');
+  const committed = await pickSecondPerson(page, 'E2E Partner');
+  assert(committed, 'the picker did not offer the second person to commit');
+});
+
+await check('choosing a second person on the sleep page builds the comparison', async () => {
   await page.waitForSelector('#dream-composite', { timeout: 60000 });
   await page.waitForSelector('.dream-compare-facts', { timeout: 30000 });
   await page.waitForTimeout(600);
@@ -355,8 +426,14 @@ await check('connection view jumps to the two-person sleep comparison', async ()
   assert(legend === 4, `${legend} legend entries (expected A / B / both / defined-together)`);
   const facts = await page.$eval('.dream-compare-facts', n => n.textContent);
   assert(/\u7761\u7720\u7c7b\u578b|Sleep type/.test(facts), `no per-person sleep type in the facts: ${facts.slice(0, 80)}`);
+  const heading = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/E2E Dream/.test(heading) && /E2E Partner/.test(heading), `comparison heading is "${heading}"`);
+  // The picker excluded the loaded person, so the pair is A + the chosen B.
   const active = await page.$eval('.nav-link.active', n => n.dataset.view);
   assert(active === 'dream', `landed on ${active}`);
+  // The entry point turns into a swap once a pair exists.
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u66f4\u6362\u4eba\u9009', `compare button reads "${label}" in comparison mode`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
   await page.screenshot({ path: path.join(SHOTS, 'comparison.png'), fullPage: true });
 });
@@ -385,22 +462,116 @@ await check('comparison mode overlays no night sky', async () => {
   assert(transitRows === 0, `${transitRows} night-field or transit-source blocks in the composite`);
 });
 
+await check('a language switch redraws the composite without dropping it', async () => {
+  await chooseLanguage(page, 'en');
+  await page.waitForSelector('#dream-composite', { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const head = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/Sleep charts of/.test(head), `composite heading after the switch: ${head}`);
+  const centers = await page.$$eval('#dream-composite .bg-center', n => n.length);
+  assert(centers === 5, `${centers} centres after switching language in comparison mode`);
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForSelector('#dream-composite', { timeout: 15000 });
+  await page.waitForTimeout(400);
+  const back = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/\u7761\u7720\u56fe/.test(back), `composite heading back in Chinese: ${back}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
 await check('leaving the comparison returns to the single sleep chart', async () => {
   await page.click('#dream-compare-exit');
   await page.waitForSelector('.dream-realms', { timeout: 30000 });
   await page.waitForTimeout(500);
   const realms = await page.$$eval('.dream-realm', n => n.length);
   assert(realms === 3, `${realms} realms after exiting comparison`);
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}" after exiting`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 
-// --- switching person must not keep the stale comparison ---
-await check('switching people clears a stale comparison', async () => {
+// --- a partner with no known birth time compares like any other person ---
+await check('a partner whose birth time is unknown still compares, at noon', async () => {
   await page.evaluate(() => {
-    // Simulate the connection handover, then change the loaded person.
-    window.dispatchEvent(new CustomEvent('ohd-dream-navigation'));
+    const key = ['natal', 'engine', '_profiles'].join('');
+    const people = JSON.parse(localStorage.getItem(key));
+    people.push({
+      id: 'e2e-dream-c', name: 'E2E Noon', birthDate: '1992-08-08', birthTime: '12:00',
+      timeUnknown: true,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+    localStorage.setItem(key, JSON.stringify(people));
+    window.dispatchEvent(new Event('ohd-people-changed'));
   });
   await page.waitForTimeout(300);
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Noon');
+  assert(used, 'the picker did not list the person with no known birth time');
+  await page.waitForSelector('#dream-composite', { timeout: 60000 });
+  await page.waitForTimeout(500);
+  const heading = await page.$eval('.dream-compare-head', n => n.textContent);
+  assert(/E2E Noon/.test(heading), `comparison heading is "${heading}"`);
+  // The noon estimate is the existing rule (birthFromPerson keeps timeUnknown,
+  // the engine reads 12:00); nothing about it is invented on this page.
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem(['natal', 'engine', '_profiles'].join('')))
+    .find(p => p.id === 'e2e-dream-c'));
+  assert(stored.timeUnknown === true && stored.birthTime === '12:00', `stored partner ${JSON.stringify(stored)}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.click('#dream-compare-exit');
+  await page.waitForSelector('.dream-realms', { timeout: 30000 });
+  await page.waitForTimeout(300);
+});
+
+// --- a partner whose birth record cannot be computed reports it in the toolbar ---
+await check('an incomplete partner birth reports the error in the toolbar, not a new dialog', async () => {
+  await page.evaluate(() => {
+    const key = ['natal', 'engine', '_profiles'].join('');
+    const people = JSON.parse(localStorage.getItem(key));
+    people.push({
+      id: 'e2e-dream-bad', name: 'E2E Broken', birthDate: '', birthTime: '12:00',
+      timeUnknown: false,
+      location: { lat: null, lon: null, timezone: 0, iana: null, name: null },
+      createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z'
+    });
+    localStorage.setItem(key, JSON.stringify(people));
+    window.dispatchEvent(new Event('ohd-people-changed'));
+  });
+  await page.waitForTimeout(300);
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Broken');
+  assert(used, 'the picker did not list the broken record');
+  await page.waitForFunction(() => /\u7761\u7720\u56fe\u8ba1\u7b97\u5931\u8d25/.test(document.getElementById('dream-status')?.textContent || ''),
+    null, { timeout: 30000 });
+  const status = await page.$eval('#dream-status', n => n.textContent.trim());
+  assert(/\u7761\u7720\u56fe\u8ba1\u7b97\u5931\u8d25\uff1a/.test(status), `status reads "${status}"`);
+  // No second dialog: the only overlay left is nothing at all.
+  assert(!(await page.$('.modal-overlay')), 'the failure opened a dialog');
+  // The single sleep chart is still what the page shows.
+  assert(!(await page.$('#dream-composite')), 'a comparison was drawn from a broken record');
+  const realms = await page.$$eval('.dream-realm', n => n.length);
+  assert(realms === 3, `${realms} realms after the failure`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  // The entry point stays available so the user can pick someone else.
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}"`);
+});
+
+// --- switching the loaded person must not keep the stale pair ---
+await check('switching people drops the comparison that belonged to the old pair', async () => {
+  // Build a pair again, then change the loaded person through the header switcher.
+  await page.click('#dream-compare');
+  const used = await pickSecondPerson(page, 'E2E Partner');
+  assert(used, 'the picker did not offer a second person the second time');
+  await page.waitForSelector('#dream-composite', { timeout: 60000 });
+  await page.selectOption('#people-switcher', 'e2e-dream-b');
+  await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 30000 });
+  await page.click('.nav-link[data-view="dream"]');
+  await page.waitForSelector('.dream-realm', { timeout: 30000 });
+  await page.waitForTimeout(400);
+  const composite = await page.$('#dream-composite');
+  assert(!composite, 'the sleep page still shows the previous pair\'s composite');
+  const label = await page.$eval('#dream-compare', n => n.textContent.trim());
+  assert(label === '\u4e0e\u53e6\u4e00\u4e2a\u4eba\u5408\u56fe', `compare button reads "${label}" for the new person`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 

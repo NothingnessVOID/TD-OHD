@@ -24,7 +24,6 @@ import { typeName, authorityName, centerName, graphCenter, gateName, channelName
 import { contentText } from '../lib/content.js';
 import { t, getLocaleResources } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
-import { setDreamComparison } from './dream.js';
 
 
 let placeB = null;
@@ -284,9 +283,6 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
         <div class="composite-wrap">
           <div class="panel-title">${t('Your charts combined')}</div>
           <p class="panel-intro">${t('One body, both of you — each gate colored by who brings it. A <strong>two-tone</strong> channel shows gates contributed by both people. Hover or tap any gate, channel, or center.')}</p>
-          <div class="conn-dream-entry" style="margin:10px 0">
-            <button type="button" id="conn-view-dreams" class="btn-secondary btn-small">${t('View both sleep charts')}</button>
-          </div>
           <div class="composite-legend">
             <span class="lg"><i style="background:${cpal.a}"></i>${esc(nameA)}</span>
             <span class="lg"><i style="background:${cpal.b}"></i>${esc(nameB)}</span>
@@ -443,16 +439,6 @@ export function renderConnectionContent(comparison, a, b, { languageOnly = false
     planets: activationPlanets, translate, interactive: false });
   renderBirthActivations({ root: container.querySelector('#conn-activations-b'), chart: b.chart,
     planets: activationPlanets, translate, interactive: false });
-
-  // Sleep-chart handover. Person B may be a manual entry or a shared guest with
-  // no persisted id, so the already-computed chart travels with the request
-  // instead of being looked up or recomputed on the other side. The button is
-  // part of this render, so it is bound here: a language redraw replaces the
-  // node and a document-level listener would fire for a stale chart.
-  container.querySelector('#conn-view-dreams')?.addEventListener('click', () => {
-    setDreamComparison({ chart: b.chart, label: nameB });
-    window.dispatchEvent(new CustomEvent('ohd-dream-navigation'));
-  });
 
   // One placement rule for both slots, owned by the shared shell.
   const shellRoot = container.querySelector('#conn-shell');

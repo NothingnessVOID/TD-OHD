@@ -16,9 +16,10 @@
  * data context to be explicit. The prose stays the waking reading, per the
  * teaching that the sleeping chart is described with the waking descriptions.
  *
- * Comparison mode (reached from the connection view) is a real composite: both
- * sleeping designs share one graph, coloured by who carries each gate, with no
- * night sky. It states structural facts only.
+ * Comparison mode is chosen on this page: the toolbar button opens the shared
+ * person picker, the chosen person's waking chart is computed here, and both
+ * sleeping designs then share one graph, coloured by who carries each gate, with
+ * no night sky. It states structural facts only.
  *
  * Calculation: lib/dream-chart.js. Topology: human-design/dream-topology.js.
  * Graph: the shared renderer, narrowed with the dream topology. Vocabulary:
@@ -37,13 +38,17 @@ import { dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName } from '..
 import { typeName, planetName, channelName, centerName } from '../lib/vocabulary.js';
 import { t, formatDisplay, setMessage } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
+import { getPerson, birthFromPerson } from '../lib/people.js';
+import { computeChart } from '../lib/chartdata.js';
+import { openPersonPicker } from '../lib/person-picker.js';
 import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
 import { esc } from '../lib/format.js';
 import '../styles/dream.css';
 
 let lastDream = null;          // cached model, keyed by the waking chart it came from
 let lastComparison = null;     // { a, b, labelB } cached comparison models
-let pendingComparison = null;  // { chart, label } handed over from the connection view
+let pendingComparison = null;  // { chart, label } chosen on this page
+let comparisonBusy = false;    // a picker selection is still being computed
 let requestSequence = 0;
 let shellDispose = null;
 // One detail context for the whole page: it carries the dream model and the
@@ -61,9 +66,10 @@ export function invalidateDream() {
   ++requestSequence;
   lastDream = null;
   lastComparison = null;
-  // A different person invalidates the comparison the connection view set up;
-  // otherwise the sleep chart would keep showing the previous pair.
+  // A different person invalidates the chosen comparison; otherwise the sleep
+  // chart would keep showing the previous pair.
   pendingComparison = null;
+  updateCompareButton();
   detail?.close();
   detail = null;
   detailContext = null;
@@ -72,18 +78,93 @@ export function invalidateDream() {
   document.getElementById('dream-content')?.replaceChildren();
 }
 
-/** The connection view jumps here with person B's already-computed chart. */
-export function setDreamComparison({ chart, label }) {
-  pendingComparison = { chart, label };
+/**
+ * Compare with a second person, chosen on this page.
+ *
+ * Person B's waking chart is computed here from their saved birth data, so the
+ * comparison is keyed to a stable person id rather than to a chart handed over
+ * by another view. A cached comparison belongs to the pair that produced it, so
+ * choosing someone else drops it before the new pair is solved.
+ */
+function setDreamComparison({ chart, label }) {
+  // The pair is only meaningful against the chart it was chosen from, so the
+  // current chart travels with it: switching to another person on the page
+  // header leaves a comparison that no longer describes what is on screen.
+  pendingComparison = { chart, label, forChart: getCurrentChart()?.chart || null };
+  lastComparison = null;
+  updateCompareButton();
 }
 
-export function clearDreamComparison() {
+/** True when the pending comparison still belongs to the loaded chart. */
+function comparisonMatches(current) {
+  return !!pendingComparison && pendingComparison.forChart === current.chart;
+}
+
+function clearDreamComparison() {
   pendingComparison = null;
   lastComparison = null;
+  updateCompareButton();
+}
+
+/** The toolbar button names the current state: pick a second person, or swap them. */
+function updateCompareButton() {
+  const button = document.getElementById('dream-compare');
+  if (!button) return;
+  setMessage(button, pendingComparison ? 'Change the other person' : 'Compare with another person');
 }
 
 export function setupDreamView() {
   document.getElementById('dream-refresh')?.addEventListener('click', () => renderDreamView({ refresh: true }));
+  document.getElementById('dream-compare')?.addEventListener('click', chooseComparisonPerson);
+  updateCompareButton();
+}
+
+/**
+ * The loaded person's stable id. `getCurrentChart()` returns the same `birth`
+ * object main.js computed the chart from, and that object carries the person id
+ * for a saved person; a shared guest or a manually entered chart has none, which
+ * leaves the picker showing everyone.
+ */
+function currentPersonId() {
+  return getCurrentChart()?.birth?.id || null;
+}
+
+function chooseComparisonPerson() {
+  const currentId = currentPersonId();
+  openPersonPicker({
+    title: t('Compare with another person'),
+    multiple: false,
+    exclude: currentId ? [currentId] : [],
+    // Single selection commits on the row click, so the dialog closes and the
+    // toolbar status takes over: no second dialog opens for a slow or failing
+    // solve, and a failure is reported where the rest of the page reports one.
+    onCommit: ids => { startComparison(ids?.[0]); },
+    onCancel: () => {}
+  });
+}
+
+/** Person B's waking chart, then the pair's sleep charts, with a status while they solve. */
+async function startComparison(personId) {
+  if (comparisonBusy) return;
+  const status = document.getElementById('dream-status');
+  const person = personId ? getPerson(personId) : null;
+  if (!person) {
+    setMessage(status, 'That person is no longer in your saved charts.');
+    return;
+  }
+  comparisonBusy = true;
+  try {
+    setMessage(status, 'Computing both sleep charts…');
+    // A missing or incomplete birth record fails here, before the sleep charts
+    // are even attempted; the message names the reason and stays in the toolbar.
+    const { chart } = await computeChart(birthFromPerson(person));
+    setDreamComparison({ chart, label: person.name });
+    await renderDreamView();
+  } catch (error) {
+    setMessage(status, 'Sleep chart calculation failed: {error}', { error: error.message });
+  } finally {
+    comparisonBusy = false;
+  }
 }
 
 /**
@@ -101,6 +182,9 @@ export async function renderDreamView({ refresh = false } = {}) {
   if (!content) return;
   const current = getCurrentChart();
   if (!current) { content.replaceChildren(); return; }
+
+  // A comparison chosen for a different person is stale, not reusable.
+  if (pendingComparison && !comparisonMatches(current)) clearDreamComparison();
 
   if (pendingComparison) {
     if (!refresh && lastComparison) { drawComparison({ content, current, ...lastComparison }); return; }
@@ -150,7 +234,7 @@ export function refreshDreamLanguage() {
   const content = document.getElementById('dream-content');
   const current = getCurrentChart();
   if (!content || !current) return;
-  if (pendingComparison && lastComparison) {
+  if (pendingComparison && lastComparison && comparisonMatches(current)) {
     drawComparison({ content, current, ...lastComparison });
     // The composite redraw re-uses the same sheet controller, so an open card
     // must be repainted from it as the single-design path does.
@@ -543,7 +627,7 @@ function provenanceNote(dream) {
 }
 
 // ==========================================
-// Comparison mode: one composite sleep design (from the connection view)
+// Comparison mode: one composite sleep design (chosen on this page)
 // ==========================================
 
 /**

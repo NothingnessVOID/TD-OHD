@@ -3,7 +3,8 @@
 本文记录睡眠图功能的分层架构、已完成部分、已定的取舍与剩余待办。
 面向非编程背景的维护者与后续接手的 AI，因此架构部分用平实语言描述，标识符保留英文原样。
 
-最后更新：2026-10-27（本轮：月亮弧方向结案、求解落点定为保持第 5 层、门户存根、图形旋转 90 度、合盘语义查证）
+最后更新：2026-10-27（本轮：合盘入口从关系页跳转改为睡眠图页内按钮 + 共享选人弹窗；月亮弧方向结案、
+求解落点定为保持第 5 层、门户存根、图形旋转 90 度、合盘语义查证）
 
 ---
 
@@ -221,15 +222,15 @@ CReizner/SharpAstrology 提 PR（MIT 协议，允许）。本轮不做，但把�
 | `src/lib/dream-chart.js` | 月亮 −88° 求解、睡眠模型、睡眠类型、天时叠加模型 |
 | `src/lib/dream-vocabulary.js` | 睡眠专属词汇访问器，沿用 `vocabulary.js` 的 `display(field)` 模式 |
 | `src/locales/{en.js,zh-CN/dream.js,zh-Hant/dream.js}` | 三语睡眠词汇，已验证 key 完全对齐 |
-| `src/locales/{zh-CN,zh-Hant}/ui-dream.json` | 三语界面文案，51 键，两套 key 集合完全一致 |
+| `src/locales/{zh-CN,zh-Hant}/ui-dream.json` | 三语界面文案，54 键，两套 key 集合完全一致 |
 | `src/lib/dream-detail.js` | 睡眠图详情弹窗控制器；复用共享壳层与解读组件，自持激活数据（见 §6.5） |
 | `src/lib/skin-registry.js` | 新增共享 `compositePalette()`，关系页与睡眠合盘共用一套归属色，不再各自推导 |
-| `src/views/dream.js` | 睡眠图页面；详情四入口、场域通道列表、composite 合盘；横向画布宽高比由 `DREAM_VIEW_BOX` 与 `BODYGRAPH_PAD` 自动推导，`idealWidth` 从 440 调为 720 |
+| `src/views/dream.js` | 睡眠图页面；详情四入口、场域通道列表、composite 合盘；**合盘入口在本页内**：按钮 → 共享选人弹窗 → `computeChart` 算第二个人的清醒图 → 双人睡眠合盘（见 §6.3）；横向画布宽高比由 `DREAM_VIEW_BOX` 与 `BODYGRAPH_PAD` 自动推导，`idealWidth` 从 440 调为 720 |
 | `src/styles/dream.css` | 样式，1029 行，0 处硬编码颜色，全部走 Skin token |
 | `src/bodygraph.js` | 新增 `topology` 与 `ariaLabel` 选项、`topology.rotate` / `rotateCenter` / `pathOverrides` 支持、导出 `BODYGRAPH_PAD`；**不传即原行为** |
-| `index.html` / `src/main.js` / `src/views/connection.js` | 导航、页面容器、视图注册、语言与换肤刷新、换人失效、合盘跳转入口 |
+| `index.html` / `src/main.js` | 导航、页面容器、视图注册、语言与换肤刷新、换人失效；`#dream-toolbar` 里的 `#dream-compare`（与另一个人合图）；`ohd-dream-navigation` 监听已删 |
 | `tests/dream-topology.test.js`、`tests/dream-chart.test.js` | 29 个用例（含存根与旋转），全绿 |
-| `tests/dream-e2e.mjs` | 真实浏览器 e2e，**31/31 通过**；断言含存根路径、旋转 viewBox、详情弹窗不泄漏清醒设计 |
+| `tests/dream-e2e.mjs` | 真实浏览器 e2e，**36 项全过**；断言含存根路径、旋转 viewBox、详情弹窗不泄漏清醒设计、睡眠页内的合盘入口与整套合盘断言 |
 | `dev/measure-dream-viewbox.mjs` | 已扩展：同时输出存根路径、正立 viewBox、旋转后 viewBox、旋转中心、存根与被移除中心的相交检查 |
 | `dev/verify-dream-native.mjs` | 真实星历验证工具 |
 | `docs/development/SLEEP-CHART-PLAN.md` | 本文档 |
@@ -240,12 +241,13 @@ CReizner/SharpAstrology 提 PR（MIT 协议，允许）。本轮不做，但把�
 - 真实 Swiss 星历，5 组出生数据，全部检查通过（`dev/verify-dream-native.mjs`）。
 - 单元测试 **29/29 通过**（`node --test tests/dream-topology.test.js tests/dream-chart.test.js`），
   含存根长度/方向/不越界、旋转中心、viewBox 转置面积守恒等断言，并经变异测试验证非空转。
-- 真实浏览器 e2e **31/31 通过**（`E2E_URL=… node tests/dream-e2e.mjs`，1380×1000 与 390×844）：
+- 真实浏览器 e2e **36 项全过**（`E2E_URL=… node tests/dream-e2e.mjs`，1380×1000 与 390×844）：
   5 中心、15 闸门、门户存根（含直接比对 `DREAM_PORTAL_STUBS` 的 `d`）、四分之一旋转且闸门数字正向、
   viewBox `-233.67 528.05 1010.13 590.3`、画布 720×421、类型条、三域与门户、激活列只含梦境闸门、
   天时叠加与时刻、溯源行、悬停联动、**闸门/通道详情弹窗**、
   **弹窗只显示睡眠激活（清醒设计侧泄漏的回归防护）**、语言切换、全部 Skin、暗色主题、
-  手机视口零横向溢出、合盘跳转、合盘归属弹窗、合盘无天时、退出合盘、换人清除旧合盘、全程零报错。
+  手机视口零横向溢出、**睡眠页内的合盘入口（选人弹窗 → 合盘）**、合盘归属弹窗、合盘无天时、
+  合盘内切换语言、退出合盘、时间未知的合盘对象、合盘对象出生资料不全时的行内报错、换人清除旧合盘、全程零报错。
 - 全量功能测试 `npm test`：**622 用例，611 通过，4 失败**。4 个失败全在
   `tests/local-private-path.test.js` 与 `tests/local-server.test.js`，报错为
   `Unsafe private path: /var`，属 macOS 上本地桌面服务的私有路径/junction/umask 检查（junction 为
@@ -280,9 +282,13 @@ source parents and notices` 会失败：`tests/helpers/release-increment-project
 剩余：
 
 1. **用户验收**：图形横向版式、门户存根长度、三域面板、详情弹窗内容、合盘呈现
-2. **提交**当前分支（尚未 commit）；是否推送远端、何时并入 `dev/windows-development` 待维护者指示
-3. **内容层**：老师后续给出的梦境通道定义、天时通道定义、15 闸门完整解读与爻描述（见 §7）
-4. **DreamRave 合盘链接分类**是否存在，待查证（见 §6.3）
+2. **共享选人弹窗已落地**：`src/lib/person-picker.js` + `src/styles/person-picker.css` + `ui-picker.json`
+   已在工作区，`views/dream.js` 用静态 import，team 同步迁移。`tests/dream-e2e.mjs` 的合盘段
+   已在静态构建产物上跑通（36/36）。注意：两个实例同时写这个 worktree 时，dev server 的 HMR
+   会在测试中触发整页 reload；验收合盘段请用静态构建（`npx vite build --mode static` + 静态服务器）跑。
+3. **提交**当前分支（尚未 commit）；是否推送远端、何时并入 `dev/windows-development` 待维护者指示
+4. **内容层**：老师后续给出的梦境通道定义、天时通道定义、15 闸门完整解读与爻描述（见 §7）
+5. **DreamRave 合盘链接分类**是否存在，待查证（见 §6.3）
 
 ---
 
@@ -347,6 +353,53 @@ source parents and notices` 会失败：`tests/helpers/release-increment-project
 ### 6.3 合盘睡眠图 composite——已实现
 
 本节记录已定语义与实现决定；**代码已实现并经 e2e 验证**（见 §5 与 §6.5）。
+
+**入口：在睡眠图页面内，不在关系页。**
+
+用户明确要求：「你不要从那个关系界面里面加个按钮跳转到这个睡眠合图。你应该是直接在睡眠图这个页面里面增加这个功能啊，就是双人合图的功能。」因此：
+
+- 入口是 `#dream-view` 工具栏里 `#dream-refresh`（刷新天时）旁边的一个按钮，文案 key 为
+  `Compare with another person`（简中「与另一个人合图」/ 繁中「與另一個人合圖」）。
+  已进入合盘时同一按钮变成 `Change the other person`（简中「更换人选」/ 繁中「更換人選」）。
+- 点击后调 `openPersonPicker({ multiple: false, exclude: [当前人物id], onCommit, onCancel })`，
+  单选模式点行即提交，没有确认按钮。
+- `onCommit` 里用 `getPerson(id)` → `birthFromPerson(person)` → `computeChart(birth)` 得到第二个人的
+  **清醒图**，再把 `{ chart, label }` 交给页面自己的合盘状态并重绘。
+- 计算期间 `#dream-status` 显示「正在计算睡眠图……」「正在计算两张睡眠图……」；失败（例如出生资料不完整）
+  同样只在 `#dream-status` 报错，**不弹新对话框**。
+- 「当前人物」的稳定来源：`getCurrentChart()?.birth?.id`。`views/chart.js` 的 `current` 就是
+  `main.js` 里 `loadBirth()` 算出的那个 `{ birth, chart, geneKeys }`，`birth.id` 是人物库 id；
+  访客／手输场景没有 id，此时 `exclude` 为空，弹窗列出全部人物（见 §6.3.1）。
+- 合盘只对「产生它的那张图」有效：`pendingComparison` 里记下 `forChart`，页面重新渲染时若
+  当前图已换人，旧合盘被丢弃（`invalidateDream` 同样清空），不会留着上一对的合盘。
+
+**已撤掉的旧链路：** `src/views/connection.js` 的 `#conn-view-dreams` 按钮与点击绑定、
+`import { setDreamComparison }`、以及 `src/main.js` 里 `ohd-dream-navigation` 事件监听全部删除。
+`setDreamComparison` / `clearDreamComparison` 仍在 `views/dream.js` 内部使用（前者是页面内
+`onCommit` 落状态的地方），但已不再导出。
+
+#### 6.3.1 共享选人弹窗的复用决策
+
+用户要求复用团队页的选人弹窗。团队页原来的选择界面写在 `src/views/team.js` 内部，
+不能直接跨页调用，因此抽成共享模块 `src/lib/person-picker.js`（由并行实例实施），
+`team.js` 同步迁移到它。接口契约已冻结：
+
+```js
+import { openPersonPicker } from '../lib/person-picker.js';
+openPersonPicker({ title, multiple: false, exclude: [currentPersonId], onCommit: ids => {}, onCancel: () => {} });
+```
+
+`views/dream.js` 静态 `import { openPersonPicker } from '../lib/person-picker.js'`。
+单选模式点行即提交，所以页面拿到的 `onCommit` 不需要确认按钮；提交后对话框关闭，进度与错误都由
+`#dream-status` 接管。模块缺席时的「暂时还无法选择另一个人。」兜底文案已随静态 import 删除。
+
+**时间未知的人**：不新增规则。`birthFromPerson` 保留 `timeUnknown`，引擎侧
+（`sharp-provider.js` 的 `effectiveTime`）对 `timeUnknown` 一律取 `12:00`，与本命图完全同一条路径；
+合盘页只负责把人物资料交给 `computeChart`，不另做时间估计。
+
+**访客／手输场景**：`getSharedGuest()` 只在 `main.js` 的分享链接流程里写入 `currentData`，
+不进人物库，因此拿不到人物 id；此时 `exclude` 为空、列表展示全部人物，合盘对象来自人物库。
+访客本身作为 A 方时没有稳定 id，这是可接受的：合盘对象始终是一个已保存的人。
 
 **资料查证结论：**
 
@@ -458,8 +511,8 @@ AGENTS.md §6「数据上下文明确」禁止的情形（原文举例：Penta �
 5. **月亮 20.77 角秒残差的影响**：这是第 2 层已知未修的第三个问题，非睡眠图新增风险。
    20.77 角秒 ≈ 0.0058 度，而一个爻宽 0.9375 度，正常情况下不影响爻的判定；
    仅当出生数据恰好落在爻边界 0.006 度以内时理论上有极小概率翻转。清醒图面临同样情况。
-6. **e2e 已全绿**（31/31）：早期三个选择器问题（语言、皮肤、modal）已修，见 §5。
-   旋转与存根之后的全量 e2e 也尚未重跑。
+6. **e2e 已全绿**（36 项）：早期三个选择器问题（语言、皮肤、modal）已修，见 §5。
+   合盘段依赖 `src/lib/person-picker.js`，已在静态构建产物上完整跑通。
 7. **本分支尚未 commit / push**。当前分支 `hana/15-0-09-15`，非 main。
    按 AGENTS.md，共享开发分支为 `dev/windows-development`，合并需另行授权。
 
