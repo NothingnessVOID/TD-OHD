@@ -18,6 +18,11 @@ const wrap360 = value => ((value % 360) + 360) % 360;
 /** Circular distance, so the 0/360 seam cannot turn 0.0000001 into 359.9999999. */
 const angularDelta = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
 const keys = channels => channels.map(dreamChannelKey).sort();
+/** Every subset of the six dream channels: 2^6 = 64 possible sleep definitions. */
+const dreamChannelSubsets = () => DREAM_CHANNELS.map(dreamChannelKey).reduce(
+  (acc, key) => [...acc, ...acc.map(set => new Set([...set, key]))],
+  [new Set()]
+);
 
 /* --------------------------------------------------- synthetic lunar motion */
 
@@ -241,19 +246,69 @@ test('a Moon that never moves cannot satisfy the arc and reports non-convergence
 
 /* ------------------------------------------------------------ sleep typing */
 
-test('dreamTypeOf maps centre definitions onto exactly three sleep types', () => {
+// The teacher's definitions type a sleep design by its completed channels, not by
+// its defined centres, and they include a Dream Manifestor and a Dream
+// Manifesting Generator (docs/development/SLEEP-CHART-PENDING.md §1.1). The
+// mechanical paths are quoted from that material.
+test('dreamTypeOf types by completed channel across all five sleep types', () => {
+  // No channel at all: Dream Reflector, over 67% of people.
   assert.equal(dreamTypeOf([]), 'reflector');
   assert.equal(dreamTypeOf(new Set()), 'reflector');
-  assert.deepEqual(dreamTypeOf(['throat', 'g']), 'projector');
-  assert.deepEqual(dreamTypeOf(['sacral', 'throat']), 'generator');
-  assert.deepEqual(dreamTypeOf(['root', 'spleen']), 'projector');
-  // Set and array inputs agree.
-  for (const defined of [[], ['throat'], ['g', 'spleen'], ['sacral'], ['sacral', 'root', 'throat']]) {
-    assert.equal(dreamTypeOf(defined), dreamTypeOf(new Set(defined)), JSON.stringify(defined));
+  assert.equal(dreamTypeOf(null), 'reflector');
+
+  // Channels but an open Sacral and no motor to the Throat: Dream Projector
+  // (20-57, 1-8 or 28-38 on its own).
+  assert.equal(dreamTypeOf(['20-57']), 'projector');
+  assert.equal(dreamTypeOf(['1-8']), 'projector');
+  assert.equal(dreamTypeOf(['28-38']), 'projector');
+  assert.equal(dreamTypeOf(['1-8', '20-57']), 'projector');
+
+  // Sacral defined, motor never reaches the Throat: Dream Generator.
+  for (const sacral of ['5-15', '27-50', '42-53']) {
+    assert.equal(dreamTypeOf([sacral]), 'generator', `only ${sacral}`);
   }
-  // Sacral wins over every other centre, including a defined Throat.
-  assert.equal(dreamTypeOf(['throat', 'g', 'spleen', 'root', 'sacral']), 'generator');
-  for (const [id, name] of [['generator', 'Generator'], ['projector', 'Projector'], ['reflector', 'Reflector']]) {
+  assert.equal(dreamTypeOf(['5-15', '27-50', '42-53']), 'generator');
+  assert.equal(dreamTypeOf(['27-50', '20-57', '1-8']), 'generator',
+    'a Sacral channel with neither motor-to-Throat path complete');
+
+  // Motor to the Throat with the Sacral open: Dream Manifestor. The only
+  // mechanical path the material gives is 28-38 (Root to Spleen) plus 20-57
+  // (Spleen to Throat).
+  assert.equal(dreamTypeOf(['28-38', '20-57']), 'manifestor');
+
+  // Motor to the Throat with the Sacral defined: Dream Manifesting Generator,
+  // on either mechanical path.
+  assert.equal(dreamTypeOf(['5-15', '1-8']), 'manifestingGenerator');
+  assert.equal(dreamTypeOf(['5-15', '1-8', '42-53']), 'manifestingGenerator');
+
+  // Priority case: the Sacral is defined and the Root path reaches the Throat
+  // (28-38 + 20-57) while the Sacral path does not. The material says "a motor
+  // (Sacral or Root) connected to the Throat, with the Sacral defined" is a
+  // Manifesting Generator, so a defined Sacral wins over the Root-only path.
+  assert.equal(dreamTypeOf(['27-50', '28-38', '20-57']), 'manifestingGenerator',
+    'a defined Sacral with the Root path to the Throat must not be typed as a Manifestor');
+  assert.equal(dreamTypeOf(['42-53', '28-38', '20-57', '1-8']), 'manifestingGenerator',
+    'a defined Sacral plus a Root path and a half Sacral path is still a Manifesting Generator');
+  // ... and a Root path with no Sacral channel at all stays a Manifestor.
+  assert.equal(dreamTypeOf(['28-38', '20-57', '1-8']), 'manifestor',
+    'no Sacral channel, so the Root path is the Manifestor one');
+
+  // Every documented type is reachable, and nothing else is.
+  const all = dreamChannelSubsets().map(set => dreamTypeOf([...set]));
+  assert.deepEqual([...new Set(all)].sort(),
+    ['generator', 'manifestingGenerator', 'manifestor', 'projector', 'reflector']);
+
+  // Set and array inputs agree, as do catalogue channel objects and `a-b` keys
+  // with either gate order.
+  for (const channels of [[], ['1-8'], ['5-15', '1-8'], ['28-38', '20-57']]) {
+    assert.equal(dreamTypeOf(channels), dreamTypeOf(new Set(channels)), JSON.stringify(channels));
+  }
+  assert.equal(dreamTypeOf([{ gates: [8, 1] }, { gates: [15, 5] }]), 'manifestingGenerator');
+  assert.equal(dreamTypeOf(['8-1', '15-5']), 'manifestingGenerator');
+  assert.equal(dreamTypeOf(['38-28', '57-20']), 'manifestor');
+
+  for (const [id, name] of [['generator', 'Generator'], ['projector', 'Projector'], ['reflector', 'Reflector'],
+    ['manifestor', 'Manifestor'], ['manifestingGenerator', 'Manifesting Generator']]) {
     assert.equal(dreamTypeName(id), name);
   }
   assert.equal(dreamTypeName('unknown-type'), 'unknown-type');
@@ -317,11 +372,13 @@ test('computeDreamChart keeps only dream gates and derives the sleep definition'
   assert.deepEqual(dream.centers.definedNames, ['g', 'sacral', 'spleen', 'throat']);
   assert.ok(dream.centers.defined instanceof Set);
 
-  // Type follows the definition, and never becomes a waking Manifestor.
-  assert.equal(dream.type.id, dreamTypeOf(dream.centers.definedNames));
-  assert.equal(dream.type.id, 'generator');
-  assert.equal(dream.type.name, 'Generator');
-  assert.ok(['generator', 'projector', 'reflector'].includes(dream.type.id));
+  // Type follows the completed channels. This fixture completes 5-15 and 1-8, so
+  // the Sacral reaches the Throat (Sacral - G - Throat) and the teacher's
+  // definition makes it a Dream Manifesting Generator, not a Dream Generator.
+  assert.equal(dream.type.id, dreamTypeOf(dream.channels));
+  assert.equal(dream.type.id, 'manifestingGenerator');
+  assert.equal(dream.type.name, 'Manifesting Generator');
+  assert.ok(['generator', 'projector', 'reflector', 'manifestor', 'manifestingGenerator'].includes(dream.type.id));
   // The waking chart stays visible as context and is not overwritten.
   assert.deepEqual(dream.wakingType, { id: 'manifesting-generator', name: 'Manifesting Generator' });
 

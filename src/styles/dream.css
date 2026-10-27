@@ -173,6 +173,48 @@
 
 .dream-fact { min-width: 0; overflow-wrap: anywhere; }
 
+/* ---------- Page frame: the two sentences the chart is read with ---------- */
+
+/* Red half = the direction the dream evolves, black half = the consciousness in
+   the dream; and the chart itself is the fixed dream state while transits and a
+   bed partner are the weather of conditioning. Both lines sit once, above the
+   three night fields. The key column is a rule-and-weight cue, not a second hue
+   vocabulary, so a high-contrast Skin reads it without relying on colour. */
+.dream-frame-note {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  max-width: 720px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--dream-edge);
+  border-radius: var(--radius);
+}
+
+.dream-frame-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.55;
+}
+
+.dream-frame-list > li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dream-frame-key {
+  color: var(--text);
+  font-weight: 650;
+  margin-inline-end: 6px;
+}
+
+.dream-frame-key::after { content: '='; color: var(--text-tertiary); margin-inline-start: 6px; font-weight: 500; }
+
 /* ---------- Shell: sleeping graph plus the two activation bands ---------- */
 
 /* Container for the narrow-band slot steps below. Inline-size containment only,
@@ -458,6 +500,31 @@
 }
 .dream-portal-active .dream-portal-tag { color: var(--text-secondary); font-weight: 650; }
 .dream-portal-active .dream-portal-tag::before { content: '◆ '; font-weight: 400; }
+
+/* The portal's own two stages, collapsed under the plaque: a portal is a gate
+   without a channel, so this is the only content that field would otherwise lack.
+   It stays inside the plaque's flex row, hence the full basis and min-width 0, so
+   a long reading wraps under the gate number instead of pushing the row wide. */
+.dream-portal-reading-block {
+  flex: 1 0 100%;
+  min-width: 0;
+  margin-top: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+}
+
+.dream-portal-reading-block > summary {
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+.dream-portal-reading-block > summary:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
+}
 
 .dream-realm-rows {
   display: grid;
@@ -1086,6 +1153,268 @@
   font-size: var(--font-size-sm);
   font-style: italic;
   line-height: 1.55;
+}
+
+/* ---------- Sleep-chart readings (dream prose) ----------
+   The sheet prints the dream reading and the waking one as two labelled blocks,
+   so these rules only have to make long prose readable and scrollable inside the
+   shared card. Every colour is a Skin token; the reading's own accent is
+   `--text`-adjacent on purpose, because it must not compete with the three
+   activation-source hues the same sheet already uses. */
+
+.dream-readings {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--hd-detail-border);
+}
+
+/* The waking reading is explicitly a second block, marked with its own heading and
+   a lighter top rule, so it can never be read as part of the dream reading. */
+.dream-waking-reading {
+  min-width: 0;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--hd-detail-border);
+}
+
+.dream-reading {
+  min-width: 0;
+}
+
+.dream-reading-title {
+  margin: 0 0 var(--space-2);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.dream-reading-prose {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.dream-reading-note {
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-sunken);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, var(--hd-detail-border));
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--font-size-xs);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* The case reading is the sentence that depends on where the channel came from,
+   so it carries a left rule as the non-colour cue for which case this is. */
+.dream-reading-case {
+  color: var(--text);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--hd-detail-border);
+}
+.dream-reading-case[data-dream-channel-case="fixed"] { border-left-color: color-mix(in srgb, var(--hd-personality) 65%, var(--hd-detail-border)); }
+.dream-reading-case[data-dream-channel-case="conditioning"] { border-left-color: color-mix(in srgb, var(--hd-transit) 65%, var(--hd-detail-border)); }
+
+.dream-reading-row {
+  margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.dream-reading-label {
+  display: inline-block;
+  margin-inline-end: 6px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  letter-spacing: .04em;
+}
+
+.dream-reading-label::after { content: '·'; margin-inline-start: 6px; color: var(--text-tertiary); }
+
+/* Six night forces: one shared list for every dream gate. The active lines keep
+   the sheet's own emphasis (a solid edge and a bold number), never a new hue. */
+.dream-nightforce-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: dream-nightforce;
+}
+
+.dream-nightforce {
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-sunken);
+  border-left: 2px solid var(--hd-detail-border);
+  border-radius: var(--radius-sm);
+}
+
+.dream-nightforce-active {
+  border-left-width: 3px;
+  border-left-color: var(--accent);
+}
+
+.dream-nightforce-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.dream-nightforce-no {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.dream-nightforce-theme {
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+}
+
+.dream-nightforce-badge {
+  padding: 0 6px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--hd-detail-border));
+  border-radius: var(--radius-full);
+  color: var(--text);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+/* Planet readings: the planet chips of this gate are the entry, so the detail is
+   a native disclosure list and needs no extra dialog. */
+.dream-planet-readings {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  margin: 0 0 var(--space-2);
+}
+
+.dream-planet-reading {
+  min-width: 0;
+  border: 1px solid var(--hd-detail-border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+}
+
+.dream-planet-reading > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.dream-planet-reading > summary:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
+}
+
+.dream-planet-reading > :not(summary) {
+  padding: 0 var(--space-3);
+}
+
+.dream-planet-reading > :last-child { padding-bottom: var(--space-2); }
+
+.dream-planet-role {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* Sleep type reading: the five parts keep the material's own headings. */
+.dream-type-reading {
+  min-width: 0;
+  margin: 0;
+}
+
+.dream-type-reading > summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  letter-spacing: .04em;
+  padding: 2px 0;
+}
+
+.dream-type-reading > summary:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
+}
+
+.dream-type-reading-parts {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+}
+
+.dream-type-reading-part {
+  min-width: 0;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--hd-detail-border);
+}
+
+.dream-type-reading-part > dt {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+
+.dream-type-reading-part > dd {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Composite: one type reading per person, so the two are never merged. */
+.dream-compare-type-reading {
+  min-width: 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--dream-edge);
+}
+
+.dream-compare-type-head {
+  margin: 0 0 var(--space-1);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* The dream channel's own name above its waking heading. */
+.dream-detail-channel-title {
+  margin: 0 0 var(--space-1);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  overflow-wrap: anywhere;
 }
 
 /* ---------- Provenance footnote ---------- */

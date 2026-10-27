@@ -336,30 +336,58 @@ test('the portal stubs stop short of the centres the sleep design removes', () =
   }
 });
 
-test('no dream channel joins the Throat to a motor, so a Manifestor is structurally impossible', () => {
+test('no single dream channel joins the Throat to a motor, so a motor reaches the Throat only through a two-channel path', () => {
   assert.ok(MOTOR_CENTERS.length > 0, 'catalog declares no motor centre');
   assert.equal(MOTOR_CENTERS.includes('throat'), false, 'the Throat is not a motor');
+  // The Spleen is a bridge here, not a motor: the Root reaches the Throat through
+  // it (28-38 + 20-57), which is why a Dream Manifestor exists at all.
   assert.deepEqual(MOTOR_CENTERS.filter(key => DREAM_CENTER_KEYS.includes(key)).sort(), ['root', 'sacral']);
+  assert.equal(MOTOR_CENTERS.includes('spleen'), false, 'the Spleen is not a motor in the catalog');
   for (const channel of DREAM_CHANNELS) {
     const touchesThroat = channel.centers.includes('throat');
     const touchesMotor = channel.centers.some(center => MOTOR_CENTERS.includes(center));
     assert.equal(
       touchesThroat && touchesMotor, false,
-      `${dreamChannelKey(channel)} connects the Throat to a motor and would manifest`
+      `${dreamChannelKey(channel)} connects the Throat to a motor on its own`
     );
+    // The Throat only ever leaves through the G centre or the Spleen.
+    if (touchesThroat) {
+      const other = channel.centers.filter(center => center !== 'throat');
+      assert.equal(other.length, 1, `${dreamChannelKey(channel)} leaves the Throat toward more than one centre`);
+      assert.ok(['g', 'spleen'].includes(other[0]),
+        `${dreamChannelKey(channel)} leaves the Throat toward ${other[0]}`);
+    }
   }
-  // Exhaustive over every definition the retained centres can produce.
-  const subsets = centerSubsets([...DREAM_CENTER_KEYS]);
-  assert.equal(subsets.length, 32);
-  for (const subset of subsets) {
-    const type = dreamTypeOf(subset);
+  // Exhaustive over every channel set the six dream channels can form (2^6 = 64),
+  // not over centre subsets: the teaching types by channel, and a centre set can
+  // hide whether a motor actually reached the Throat.
+  const channelSubsets = centerSubsets(DREAM_CHANNELS.map(dreamChannelKey));
+  assert.equal(channelSubsets.length, 64);
+  const seen = new Set();
+  for (const subset of channelSubsets) {
+    const type = dreamTypeOf([...subset]);
     assert.ok(
-      ['generator', 'projector', 'reflector'].includes(type),
+      ['generator', 'projector', 'reflector', 'manifestor', 'manifestingGenerator'].includes(type),
       `dreamTypeOf([${[...subset]}]) returned ${type}`
     );
-    assert.notEqual(type, 'manifestor');
-    assert.notEqual(type, 'manifesting-generator');
+    seen.add(type);
+    const has = key => subset.has(key);
+    const sacral = ['5-15', '27-50', '42-53'].some(has);
+    const rootToThroat = has('28-38') && has('20-57');
+    const sacralToThroat = has('5-15') && has('1-8');
+    // A type that manifests is exactly a type with a complete motor-to-Throat path.
+    assert.equal(type === 'manifestor' || type === 'manifestingGenerator', rootToThroat || sacralToThroat,
+      `[${[...subset]}] typed ${type} without a complete motor-to-Throat path (or the reverse)`);
+    // Sacral wins: the teacher's Manifesting Generator is "a motor (Sacral or Root)
+    // to the Throat with the Sacral defined", which includes the Root-only path.
+    if (sacral && (rootToThroat || sacralToThroat)) assert.equal(type, 'manifestingGenerator', `[${[...subset]}]`);
+    if (sacral && !rootToThroat && !sacralToThroat) assert.equal(type, 'generator', `[${[...subset]}]`);
+    if (!sacral && rootToThroat) assert.equal(type, 'manifestor', `[${[...subset]}]`);
+    if (!sacral && !rootToThroat) assert.equal(type, subset.size ? 'projector' : 'reflector', `[${[...subset]}]`);
   }
+  assert.deepEqual([...seen].sort(),
+    ['generator', 'manifestingGenerator', 'manifestor', 'projector', 'reflector'],
+    'the dream topology cannot reach every documented sleep type');
 });
 
 test('the dream viewBox is the upright content, padded and rotated a quarter turn', () => {

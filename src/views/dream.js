@@ -45,10 +45,13 @@ import {
   DREAM_TOPOLOGY, DREAM_REALMS, DREAM_REALM_ORDER, DREAM_CHANNELS, DREAM_VIEW_BOX, dreamRealmOf
 } from '../lib/human-design/dream-topology.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
-import { createDreamDetail } from '../lib/dream-detail.js';
+import { createDreamDetail, renderDreamTypeReading, renderDreamPortalReading } from '../lib/dream-detail.js';
 import { compositePalette } from '../lib/skin-registry.js';
-import { dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName } from '../lib/dream-vocabulary.js';
-import { typeName, planetName, channelName, centerName } from '../lib/vocabulary.js';
+import {
+  dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName,
+  dreamChannelName, dreamSideMeaning, dreamConditioning
+} from '../lib/dream-vocabulary.js';
+import { typeName, planetName, centerName } from '../lib/vocabulary.js';
 import { t, formatDisplay, setMessage } from '../lib/i18n.js';
 import { getCurrentChart } from './chart.js';
 import { getPerson, birthFromPerson, onPeopleChange } from '../lib/people.js';
@@ -728,6 +731,7 @@ const openCenter = center => detail?.showCenter(center);
 function drawDream(dream, content) {
   content.replaceChildren();
   content.appendChild(typeStrip(dream));
+  content.appendChild(frameNote());
 
   const context = dreamDetailContext(dream);
   const { shell, api } = dreamGraphShell(dream, { overlay: true, context });
@@ -750,12 +754,39 @@ function drawDream(dream, content) {
   content.appendChild(detail.element);
 }
 
+/**
+ * The two sentences the sleep chart is read with: what the red and black halves
+ * mean in a dream, and what "fixed" and "conditioning" mean for its shape.
+ *
+ * They are page frame, not per-gate content, so they sit once, above the three
+ * night fields, and never repeat inside a sheet. Each line is composed from the
+ * locale's own fragment, so no sentence is assembled from translated words here.
+ */
+function frameNote() {
+  const sides = [['design', 'Design'], ['personality', 'Personality']]
+    .map(([side, label]) => {
+      const meaning = dreamSideMeaning(side);
+      return meaning ? `<li><span class="dream-frame-key">${esc(t(label))}</span>${esc(meaning)}</li>` : '';
+    }).filter(Boolean).join('');
+  const conditioning = [['natal', 'The chart itself'], ['external', 'Transits and partners']]
+    .map(([kind, label]) => {
+      const meaning = dreamConditioning(kind);
+      return meaning ? `<li><span class="dream-frame-key">${esc(t(label))}</span>${esc(meaning)}</li>` : '';
+    }).filter(Boolean).join('');
+  if (!sides && !conditioning) return '';
+  const note = el('div', { class: 'dream-frame-note' });
+  note.innerHTML = `
+    ${sides ? `<ul class="dream-frame-list" data-dream-frame="sides">${sides}</ul>` : ''}
+    ${conditioning ? `<ul class="dream-frame-list" data-dream-frame="sources">${conditioning}</ul>` : ''}`;
+  return note;
+}
+
 function typeStrip(dream) {
   const waking = dream.wakingType?.name ? typeName(dream.wakingType.name) : '—';
   const sleeping = dreamTypeName(dream.type.id);
   const centers = formatDisplay('separated', dream.centers.definedNames.map(centerName), 'centers');
   const channels = formatDisplay('separated',
-    dream.channels.map(channel => `${channel.gates.join('-')} ${channelName(channel.gates)}`), 'channels');
+    dream.channels.map(channel => `${channel.gates.join('-')} ${sleepChannelName(channel)}`), 'channels');
   const strip = el('div', { class: 'dream-type-strip' });
   strip.innerHTML = `
     <div class="dream-type-flow">
@@ -777,7 +808,8 @@ function typeStrip(dream) {
       ${dream.channels.length ? `<span class="dream-fact">${esc(t('Complete dream channels: {channels}', { channels }))}</span>` : ''}
     </div>
     ${dream.hasTransit ? `<div class="dream-type-facts"><span class="dream-fact">${esc(
-      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}`;
+      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}
+    ${renderDreamTypeReading(dream.type.id)}`;
   return strip;
 }
 
@@ -890,6 +922,17 @@ function dreamGraphShell(dream, { overlay }) {
   return { shell, api };
 }
 
+/**
+ * The dream name of one of the six dream channels.
+ *
+ * The sleep design keeps its own channel vocabulary (the teaching calls 1-8 the
+ * Inspiration channel, not the waking catalogue's name for it), so every sleep-chart
+ * surface that prints a channel name asks here instead of `channelName()`. That
+ * keeps the waking name for the waking pages, which `channelName()` still owns
+ * untouched.
+ */
+const sleepChannelName = channel => dreamChannelName(channel.gates) || channel.gates.join('-');
+
 function dreamAriaLabel(dream) {
   const centers = formatDisplay('separated', dream.centers.definedNames.map(centerName), 'centers');
   return [
@@ -900,7 +943,7 @@ function dreamAriaLabel(dream) {
       : t('Nothing defined in sleep'),
     dream.channels.length
       ? t('Complete dream channels: {channels}', {
-        channels: formatDisplay('separated', dream.channels.map(c => `${c.gates.join('-')} ${channelName(c.gates)}`), 'channels')
+        channels: formatDisplay('separated', dream.channels.map(c => `${c.gates.join('-')} ${sleepChannelName(c)}`), 'channels')
       })
       : ''
   ].filter(Boolean).join(' ');
@@ -1027,12 +1070,12 @@ function channelButton(channel, status, { table = CHANNEL_STATUS, params = {} } 
     type: 'button',
     class: `dream-channel-open dream-channel-open-${entry.variant}${entry.owner ? ` dream-channel-owner-${entry.owner}` : ''}`,
     'data-channel': key,
-    'aria-label': `${t('Channel {channel}', { channel: key })} · ${channelName(channel.gates)} · ${t(entry.label, vars)}`
+    'aria-label': `${t('Channel {channel}', { channel: key })} · ${sleepChannelName(channel)} · ${t(entry.label, vars)}`
   });
   button.innerHTML = `
     <span class="dream-channel-head">
       <span class="dream-channel-gates">${key.replace('-', '–')}</span>
-      <span class="dream-channel-name">${esc(channelName(channel.gates))}</span>
+      <span class="dream-channel-name">${esc(sleepChannelName(channel))}</span>
       ${channelStatusBadge(entry, vars)}
     </span>
     <span class="dream-channel-named">${channelGateNames(channel)}</span>
@@ -1129,6 +1172,16 @@ function realmPanel(model, realmId, options = {}) {
   const portalRow = realmData?.rows.find(row => row.portal);
   // Either person opening the portal is an open portal for the pair.
   if (portalRow?.activated || portalRow?.transitActivated) portal.classList.add('dream-portal-active');
+  // The portal is a gate without a channel, so its reading is the only content
+  // this field would otherwise lack. Collapsed by default: it describes the night
+  // collection and the morning bleed-through, which a reader opens when the portal
+  // is actually active rather than scrolling past on every visit.
+  const portalReading = renderDreamPortalReading(realm.portal);
+  if (portalReading) {
+    const details = el('details', { class: 'dream-portal-reading-block' });
+    details.innerHTML = `<summary>${esc(t('What this portal does'))}</summary>${portalReading}`;
+    portal.appendChild(details);
+  }
   panel.appendChild(portal);
 
   const rows = (realmData?.rows || [])
@@ -1341,11 +1394,16 @@ function compositeLegend(labelA, labelB, palette) {
 }
 
 /**
- * Structural facts only: each sleeping type, and the centres the pair defines
- * together. The dream channels belong to the three night fields above this
- * block, which list every channel of a field with its ownership state and, for
- * a halved one, who contributes which gate; repeating them here would put two
- * channel lists on one page. Nothing is scored, ranked or interpreted.
+ * Structural facts, then each person's sleep type in full.
+ *
+ * The dream channels belong to the three night fields above this block, which list
+ * every channel of a field with its ownership state and, for a channel completed
+ * from one gate each, who contributes which gate; repeating them here would put
+ * two channel lists on one page. Nothing is scored or ranked.
+ *
+ * Both type readings are always rendered, even when the two people share a type:
+ * each is a separate <details>, so a reader can open A's and B's independently and
+ * a shared type does not collapse into a single block attributed to one person.
  */
 function comparisonFacts({ a, b, labelA, labelB, structure }) {
   const section = el('section', { class: 'dream-compare-facts' });
@@ -1360,5 +1418,13 @@ function comparisonFacts({ a, b, labelA, labelB, structure }) {
       : t('Nothing is defined when the two sleep designs combine'))}</span>`
   ].join('');
   section.appendChild(facts);
+
+  for (const [label, model] of [[labelA, a], [labelB, b]]) {
+    const reading = renderDreamTypeReading(model.type.id);
+    if (!reading) continue;
+    const block = el('div', { class: 'dream-compare-type-reading', 'data-owner-label': label });
+    block.innerHTML = `<h3 class="dream-compare-type-head">${esc(t('{name} · {type}', { name: label, type: dreamTypeName(model.type.id) }))}</h3>${reading}`;
+    section.appendChild(block);
+  }
   return section;
 }
