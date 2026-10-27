@@ -44,9 +44,16 @@ for (const [date, hour, timezone] of CASES) {
   check('only the 15 dream gates survive', inRange, `active: ${dream.gates.all.join(',') || 'none'}`);
   check('channels are dream channels only', dream.channels.every(c => c.gates.every(g => DREAM_GATES.includes(g))),
     dream.channels.map(c => c.gates.join('-')).join(',') || 'none');
-  check('type matches definition', dream.type.id === dreamTypeOf(dream.centers.definedNames),
-    `${dream.type.name} (waking: ${dream.wakingType.name})`);
-  check('no manifestor is possible', !['manifestor', 'manifestingGenerator'].includes(dream.type.id));
+  // The type is judged by the dream channels that complete, not by the centres
+  // they light up (`dreamTypeOf` takes the channel list).
+  check('type matches definition', dream.type.id === dreamTypeOf(dream.channels),
+    `${dream.type.name} (waking: ${dream.wakingType.name}) via ${dream.channels.map(c => c.gates.join('-')).join(',') || 'no channel'}`);
+  // The old "no Manifestor is possible" guard is void: the teacher's material
+  // defines five sleep types, Manifestor and Manifesting Generator included, and
+  // the Root reaches the Throat through the Spleen (28-38 + 20-57).
+  check('type is one of the five the material defines',
+    ['reflector', 'generator', 'projector', 'manifestor', 'manifestingGenerator'].includes(dream.type.id),
+    dream.type.id);
   check('three night fields present', dream.realms.length === 3 && dream.realms.every(r => r.gates.length === 5),
     dream.realms.map(r => `${r.id}:${r.rows.length} rows`).join(' '));
   check('night sky overlaid', dream.hasTransit && dream.transit.gates.size >= 0,

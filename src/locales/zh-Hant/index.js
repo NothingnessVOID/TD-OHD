@@ -28,7 +28,14 @@ export default {
     variable: zh.zhVariable, cognition: zh.zhCognition,
     typeDescription: name => zh.TYPE_PLAIN_ZH[name] || '', hexagramName: n => zh.HEXAGRAM_ZH[n] || `第 ${n} 卦`, graphCenter: zh.zhCenter,
     dreamGateName: dream.zhDreamGate, dreamLineTheme: dream.zhDreamLine,
-    dreamRealmName: dream.zhDreamRealm, dreamTypeName: dream.zhDreamType },
+    dreamRealmName: dream.zhDreamRealm, dreamTypeName: dream.zhDreamType,
+    // Reading accessors; each returns null where the source answers nothing.
+    dreamTypeReading: dream.zhDreamTypeReading, dreamGateReading: dream.zhDreamGateReading,
+    dreamChannelName: dream.zhDreamChannelName, dreamChannelReading: dream.zhDreamChannelReading,
+    dreamChannelDefinition: dream.zhDreamChannelDefinition,
+    dreamPortalReading: dream.zhDreamPortalReading, dreamLineReading: dream.zhDreamLineReading,
+    dreamPlanetReading: dream.zhDreamPlanetReading, dreamSideMeaning: dream.zhDreamSideMeaning,
+    dreamConditioning: dream.zhDreamConditioning },
   content: { data: readings, text: readings.zhText, cross: readings.zhCross, bilingualGeneKeys: true },
   format: {
     sensitivity: value => ({ Type: '類型', Authority: '權威', Profile: '人生角色', Definition: '定義', 'Incarnation Cross': '輪迴交叉', Variable: '四箭頭', Moon: '月亮閘門' })[value] || value,

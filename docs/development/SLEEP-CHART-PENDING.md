@@ -11,86 +11,92 @@
 
 ## 0. 当前状态一句话
 
-睡眠图的**结构与计算已全部完成并验证**：五中心／十五闸门／六通道／三门户、月亮 −88° 设计时刻、
-三种睡眠类型、三域划分、行运始终叠加（时刻可选，与行运页共用同一个时间控件）、
+睡眠图的**结构、计算与内容都已落地**：五中心／十五闸门／六通道／三门户、月亮 −88° 设计时刻、
+五种睡眠类型（含梦境显示者／梦境显示生产者）、三域划分、行运始终叠加（时刻可选，与行运页共用同一个时间控件）、
 横向图形、门户存根、点击详情、页面内双人合盘（复用共享选人弹窗，
 且左右两侧行星列与单人图是同一个组件）。
 术语已统一到共享键 `"Transit"`（简中「行运」），详见 §3.5。
-**缺的只有「内容」**——老师要口述的那批梦境专属解读文字，以及两项待查证的事实。
 
-代码可以直接用，界面上显示的是清醒图的解读正文（这是老师明确要求的过渡状态：
-「描述用的是清醒的时候这些描述」）。
+老师的 DreamRave 文档已到位，闸门／通道／门户／爻／类型／行星的梦境解读正文按原文措辞进
+`src/locales/{zh-CN,zh-Hant}/dream.js` 与 `src/locales/en.js`，经 `src/lib/dream-vocabulary.js` 消费，
+**不再显示清醒图解读**（清醒图解读保留在闸门详情单独的「清醒图解读」块中，两者分开标注）。
+仍未做的只有两件，见 §1.5 与 §2.1：文档里「26 个本命行星全部保留、未激活者强制休眠」那一段
+不进界面，只在此备案；以及 DreamRave 自己的行星点数归属。
 
 ---
 
-## 1. 等老师给资料才能做的（内容层，共四项）
+## 1. 老师资料已落地（内容层，四项全部完成）
 
-这四项都**只有文字内容缺失，接入位已经留好**，不需要改结构。
+老师的 DreamRave 文档到位后，这一节从「缺什么」改成了「落在哪里」，供后续维护对账。
+四项内容全部按原文措辞进入本地化词汇层，**没有改写、没有软化、没有加免责声明**。
+文档里出现的称呼与个人姓名一律删掉，而不是替换成别人。
+
+**架构决定（本轮定下）**：正文放**本地化词汇层**，不放 `src/lib/knowledge/`。
+理由是 knowledge 层在 `reviewStatus !== 'reviewed'` 时返回 null（`src/lib/knowledge/registry.js`
+的资格策略），而老师口述且已交付的正文既不能标成 reviewed（没有审核证据），
+又必须真的显示出来；词汇层本来就是「术语 + 短正文」的同源出口，三语同键，Skin 与多语言机制都不必另建。
+
+- 数据：`src/locales/zh-CN/dream.js`、`src/locales/zh-Hant/dream.js`、`src/locales/en.js`（内联 `english` 对象）
+- 读取：`src/lib/dream-vocabulary.js`
+- 消费：`src/lib/dream-detail.js`（闸门详情、通道详情）、`src/views/dream.js`（类型条、场域门户、合盘对照）
 
 ### 1.1 梦境通道的另一套定义
 
-老师原话：「梦境图的通道是这样子的啊，它也是有另一个定义啊。」
-
-- 现状：六条通道（1-8、5-15、20-57、27-50、28-38、42-53）显示的是清醒图的通道名，
-  取自 `src/lib/vocabulary.js` 的 `channelName()`，最终来自 `src/lib/human-design/catalog.js` 的 `CHANNELS`。
-- 接入点：在 `src/lib/dream-vocabulary.js` 增加 `dreamChannelName(gates)`，
-  与现有的 `dreamGateName` / `dreamLineTheme` 并列；三语各加一份数据
-  （`src/locales/en.js` 内联、`src/locales/zh-CN/dream.js`、`src/locales/zh-Hant/dream.js`）。
-- 消费方：`src/views/dream.js` 的类型条与场域通道列表、`src/lib/dream-detail.js` 的通道详情。
-  这几处目前都调 `channelName()`，改为调新函数即可，**不要改 `channelName()` 本身**，
-  否则会污染出生图／行运／时间轴／关系／团队所有页面。
-- 稳定 ID 仍然是 `"1-8"` 这样的字符串，翻译只影响显示。
+已完成。`dreamChannelName(gates)` 在 `src/lib/dream-vocabulary.js`，接受 `'1-8'`、`[1,8]`、`[8,1]`
+三种写法并归一成稳定 ID；`channelName()` 本身未改，清醒图／行运／时间轴／关系／团队不受影响。
+六条通道的梦境名：1-8 启发、5-15 韵律、20-57 脑波、27-50 保存、28-38 挣扎、42-53 周期。
 
 ### 1.2 天时激活通道的另一套定义
 
-老师原话：「然后另一个是天时激活的通道，这个也是也是另一个定义啊。」
+已完成。文档给的不是另一套**名称**，而是同一通道的**两种情况**，因此按来源分流：
 
-- 现状：`src/lib/dream-chart.js` 的 `buildDreamTransitGraph()` 已经区分出四种通道来源
-  （`natal` / `transit` / `completed` / `inactive`），`completed` 就是「天时补全的通道」。
-  显示时用的是 `src/lib/transit-graph.js` 的 `TRANSIT_SOURCE_LABELS`（清醒图行运的措辞）。
-- 接入点：如果老师给的是**独立的一套名称**，在 `dream-vocabulary.js` 加
-  `dreamChannelSourceName(source)`；如果只是措辞不同，改 `ui-dream.json` 里对应的 key 即可。
-- 消费方：`src/lib/dream-detail.js` 的通道详情徽章、`src/views/dream.js` 的
-  `CHANNEL_STATUS` 表（四态文案在那里）。
+- 情况 A「固定的梦中状态」：原图本身就有的通道（natal）
+- 情况 B「暗夜制约」：被天时或伴侣接通、原图没有的通道（transit / completed / 合盘接通）
+- 两种都带「制约残留」（residue）
+
+文档只对部分通道给了具体例句（固定：5-15、27-50、28-38；制约：28-38、42-53），
+其余通道的该字段是 `null`，界面只显示两条通用法则（法则一／法则二）与残留，不臆造例句。
+`src/lib/dream-detail.js` 的 `channelDreamReading(id, source)` 只在**完整**的通道上判定情况：
+一个本命闸门 + 一个无人激活的闸门会被判成 `inactive`，不会误报成「被接通」。
 
 ### 1.3 十五个闸门的重新定义
 
-老师原话：「这15个闸门呢，它会重新定义了它这个作用，名字不一样。」
+已完成，且**推翻了本文件原先给的接入方案**。
 
-- **名字已经做完**：`DREAM_GATE_ZH` / `DREAM_GATE_EN` 里十五个梦境名（62 爱、20 看见、57 调频、
-  8 黑暗、1 喜悦、12 变异、27 渴望、50 性、5 时间、15 混沌、19 环境、53 飞离、42 死亡、
-  38 攻击、28 恐惧），来源已交叉核对并记录在 `THIRD_PARTY_NOTICES.md`。
-- **还缺的是「作用」的解读正文**。现状：`src/lib/dream-detail.js` 调
-  `renderSharedGateReading(gate, {...})`（`src/lib/shared-object-details.js`），
-  拿到的是清醒图的解读。
-- 接入点（重要，按项目既有模式走）：
-  1. `src/lib/knowledge/schema.js` 的 `OBJECT_TYPES` 目前只有 `penta`，需要新增 `dream` 类型，
-     并定稳定 ID 规则（建议 `dream-gate:<n>`、`dream-channel:<a>-<b>`、`dream-line:<n>.<line>`）
-  2. 新建内容包，参照 `src/lib/knowledge/content/penta-v1.json` + `penta.js` 的
-     `readPentaContent(objectId, field, locale)` 三语单字段读取模式
-  3. 在 `src/lib/knowledge/registry.js` 的 `createKnowledgeReader()` 里接入索引
-  4. **不要复用** `src/lib/knowledge/penta-reading-policy.js`——它的 `mode()` / `accepted()`
-     是 Penta 专属的审核判定。梦境需要自己的资格策略
-  5. `src/lib/dream-detail.js` 里把 `renderSharedGateReading` 换成梦境内容读取，
-     或在它之外并列一段梦境解读
-- **审核状态纪律**：`REVIEW_STATUSES` 是 `unreviewed / reviewed / verified / custom`。
-  老师口述的内容在确有审核证据前**不得**标成 reviewed / verified。
-  项目明确区分「结构已验证」与「解读已审核」，不能拿前者冒充后者。
+- 名称：`DREAM_GATE_*` 十五个梦境名（62 爱、20 看见、57 调频、8 黑暗、1 喜悦、12 变异、27 渴望、
+  50 性、5 时间、15 混沌、19 环境、53 飞离、42 死亡、38 攻击、28 恐惧），来源见 `THIRD_PARTY_NOTICES.md`。
+- 作用正文：`DREAM_GATE_READING_*` 十五段，界面在闸门详情里以「梦境闸门解读」呈现。
+- 清醒图解读**没有删**，而是挪到下面单独的「清醒图解读」块（`[data-waking-reading]`），
+  梦境在前、清醒在后，两者各自带标题，不再混成一段。
+- **原方案（新增 `src/lib/knowledge/` 的 `dream` 类型 + 内容包 + 资格策略）已否决**：
+  该层要求 `reviewStatus === 'reviewed'` 才返回正文，老师口述、无审核证据的内容只能标成
+  `unreviewed`，结果是「数据加进去了、界面还是空」。而且它为一个只有六条通道、十五个闸门、
+  六爻的封闭词汇表，引入整套包管理 + 索引 + 策略，属于过度抽象。
+  如果将来这批正文要走审核流程，再按 `knowledge` 层重建，届时 `REVIEW_STATUSES` 的纪律照旧。
 
 ### 1.4 爻的另一种描述
 
-老师原话：「然后那个爻数也是，它会转成另一种爻数的描述。」
+已完成。粒度是**六条通用**，不是十五闸门各六爻的九十条——文档明确说这套暗夜力量对每个梦境闸门都适用，
+只是同一时刻「适用哪一段」由命中的爻决定。
 
-- **爻主题名字已经做完**：六个梦境爻主题（1 秘密、2 占有、3 动荡、4 痴迷、5 幻想、6 愿景），
-  显示格式为「闸门.爻 梦境名 · 爻主题」，例如 `5.4 时间 · 痴迷`。
-  这与参考实现的 `5.4 Time.Obsession` 格式一致。
-- **还缺每个爻主题的解释正文**（现在只有名称，没有说明）。
-- 接入点：同 1.3，稳定 ID 建议 `dream-line-theme:<line>`（六个，与闸门无关，全域通用）
-  或 `dream-line:<gate>.<line>`（九十种，如果每闸门每爻都有独立说法）。
-  **先问老师是哪一种粒度**，这决定内容量是 6 条还是 90 条。
-- 消费方：`src/lib/dream-detail.js` 的 `lineThemeRow()`、`src/views/dream.js` 的场域行。
+- `DREAM_LINE_READING_*`：六条，每条三段（清醒状态／梦境状态／制约残留）。
+- 界面：闸门详情里「六爻的暗夜力量」列出全部六条，本命与天时命中的爻用 `data-active-line` 标出，
+  其余照常显示——**不按命中过滤**，否则读者看不到另外五条。
+- 稳定 ID 仍是 `"<gate>.<line>"`（例如 `62.3`），翻译只影响显示。
 
----
+### 1.5 本命行星「强制休眠」那一段：不实现（备案）
+
+文档里有一块讲「26 个本命行星全部保留，落在十五闸门之外的被强制休眠」。
+本轮**不把它做进界面**，原因：
+
+1. 现实现是「引擎按清醒图算 13 点（每侧），只把落在十五闸门之外的过滤掉不显示」（见 §2.1 实测）。
+   要做「保留但标为休眠」，等于在图形与行星列里新增一类可见对象，牵连共享图形外壳与合盘列组件，
+   属于结构性改动，不是内容接入。
+2. 文档没有给出「休眠行星」在界面上的呈现方式，也没说它对解读有什么影响；
+   先按过滤实现不会误导用户，硬加一层「休眠」标记反而要新造语义。
+
+**待办入口**：`src/lib/dream-chart.js` 的 `filterDreamActivations()`（现为过滤）。
+如果决定实现，需要同时定：休眠行星在图上画不画、在行星列里排不排、闸门详情里列不列。
 
 ## 2. 待查证的事实（不阻塞使用，但影响正确性）
 
@@ -425,7 +431,7 @@ http://127.0.0.1:9962/?d=1990-05-20&t=06:30&tz=0&name=测试&view=dream
 
 ```bash
 # 结构与计算（纯逻辑，不需要引擎、不需要网络）
-node --test tests/dream-topology.test.js tests/dream-chart.test.js        # 29 用例
+node --test tests/dream-topology.test.js tests/dream-chart.test.js        # 29 用例（含五种类型、64 通道子集穷举）
 
 # 多语言与本地化（部分用例需要 dotnet）
 node --test tests/i18n.test.js tests/localization.test.js tests/traditional-chinese.test.js   # 21 用例
@@ -437,10 +443,11 @@ node dev/verify-dream-native.mjs                                          # 5 �
 node dev/measure-dream-viewbox.mjs
 
 # 浏览器端到端（需要 dev server 在跑）
-E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 31 项
+E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 63 项
+E2E_URL=http://127.0.0.1:9962 node tests/dream-state-boundaries-e2e.mjs    # 12 项
 
 # 全量
-npm test                                                                    # 622 用例
+npm test                                                                    # 635 用例（624 通过 / 4 个既有 macOS 环境失败 / 7 跳过）
 ```
 
 **改了 `dream-chart.js` 或 `dream-topology.js` 之后必须重跑前两条和 `verify-dream-native.mjs`。**

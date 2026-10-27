@@ -61,6 +61,17 @@ async function chooseLanguage(page, code) {
   await page.click(`.language-actions button[data-language="${code}"]`);
 }
 
+/** Apply a registered skin through the appearance dialog, then close it. */
+async function applySkin(page, skin) {
+  if (!(await page.$eval('#more-menu', n => n.open))) await page.click('#more-toggle');
+  await page.click('#skin-settings-button');
+  await page.waitForSelector('#skin-settings[open]', { timeout: 5000 });
+  await page.click(`#skin-picker [data-skin-id="${skin}"]`);
+  await page.waitForTimeout(260);
+  if (await page.$eval('#skin-settings', n => n.open)) await page.click('#skin-settings-close');
+  await page.waitForFunction(() => document.getElementById('skin-settings')?.open === false, null, { timeout: 5000 });
+}
+
 const browser = await chromium.launch({ ...(CHROME ? { executablePath: CHROME } : { channel: process.env.CHROME_CHANNEL || 'chromium' }), headless: true });
 const page = await browser.newPage({ viewport: { width: 1380, height: 1000 }, locale: 'zh-CN' });
 page.setDefaultTimeout(15000);
@@ -280,6 +291,86 @@ await check('the gate sheet carries the dream-specific facts', async () => {
     'no night field tag in the sheet');
 });
 
+await check('the gate sheet prints the dream reading before the waking one, each labelled', async () => {
+  const order = await page.evaluate(() => {
+    const body = document.querySelector('#dream-detail .gate-detail-body');
+    const kids = [...body.children];
+    return {
+      dream: kids.findIndex(node => node.matches('[data-dream-readings]')),
+      waking: kids.findIndex(node => node.matches('[data-waking-reading]'))
+    };
+  });
+  assert(order.dream >= 0, 'the sheet has no dream reading');
+  assert(order.waking >= 0, 'the sheet has no waking reading block');
+  assert(order.dream < order.waking, 'the waking reading is printed above the dream reading');
+  const dream = await page.$eval('#dream-detail [data-dream-readings]', n => n.textContent);
+  assert(/\u68a6\u5883\u95f8\u95e8\u89e3\u8bfb/.test(dream), `the dream block has no heading: ${dream.slice(0, 60)}`);
+  const waking = await page.$eval('#dream-detail [data-waking-reading]', n => n.textContent);
+  assert(/\u6e05\u9192\u56fe\u89e3\u8bfb/.test(waking), `the waking block has no heading: ${waking.slice(0, 60)}`);
+  // The dream prose is the teacher's material, not the waking one: the gate
+  // reading uses the document's own words for the light field / mammalian matrix.
+  assert(/\u5149\u4e4b\u573a|\u54fa\u4e73\u52a8\u7269|\u6697\u591c\u529b\u91cf|\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(dream),
+    `no dream-specific wording in the dream block: ${dream.slice(0, 120)}`);
+  await page.screenshot({ path: path.join(SHOTS, 'single-gate-sheet.png'), fullPage: false });
+});
+
+await check('the six night forces are one shared set, with tonight’s lines marked', async () => {
+  const entries = await page.$$eval('#dream-detail .dream-nightforce', nodes => nodes.map(node => ({
+    line: node.dataset.line,
+    active: node.dataset.activeLine === 'true',
+    rows: node.querySelectorAll('.dream-reading-row').length
+  })));
+  assert(entries.length === 6, `${entries.length} night-force entries, expected six shared ones`);
+  assert(JSON.stringify(entries.map(entry => entry.line)) === JSON.stringify(['1', '2', '3', '4', '5', '6']),
+    `night-force lines are ${entries.map(entry => entry.line)}`);
+  for (const entry of entries) {
+    assert(entry.rows === 3, `line ${entry.line} has ${entry.rows} rows, expected waking/dream/residue`);
+  }
+  assert(entries.some(entry => entry.active), 'no active line is marked in the sheet');
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u6e05\u9192\u72b6\u6001/.test(sheet) && /\u68a6\u5883\u72b6\u6001/.test(sheet) && /\u5236\u7ea6\u6b8b\u7559/.test(sheet),
+    'the night-force entries do not separate waking state, dream state and residue');
+});
+
+await check('the gate sheet reads the planets that activate this gate', async () => {
+  const planets = await page.$$eval('#dream-detail .dream-planet-reading', nodes => nodes.map(node => node.dataset.planet));
+  assert(planets.length > 0, 'the gate sheet lists no planet reading');
+  const text = await page.$eval('#dream-detail .dream-planet-reading', n => n.textContent);
+  assert(text.trim().length > 40, `the planet reading is empty: ${text}`);
+});
+
+await check('the page states the two frame sentences the chart is read with', async () => {
+  const groups = await page.$$eval('[data-dream-frame]', n => n.map(x => [x.dataset.dreamFrame, x.textContent]));
+  const byKind = Object.fromEntries(groups);
+  assert(byKind.sides, 'the page never says what the design and personality halves mean');
+  assert(byKind.sources, 'the page never says what the chart itself and the transits mean');
+  // The teacher's two sentences, in the document's own image (\u8bbe\u8ba1 = \u68a6\u6f14\u53d8\u7684\u65b9\u5411, \u539f\u56fe = \u81ea\u8eab\u56fa\u5b9a\u7684\u68a6\u4e2d\u72b6\u6001).
+  assert(/\u68a6\u6f14\u53d8\u7684\u65b9\u5411/.test(byKind.sides), `design/personality line: ${byKind.sides}`);
+  assert(/\u68a6\u4e2d\u7684\u610f\u8bc6/.test(byKind.sides), `design/personality line: ${byKind.sides}`);
+  assert(/\u81ea\u8eab\u56fa\u5b9a\u7684\u68a6\u4e2d\u72b6\u6001/.test(byKind.sources), `natal/external line: ${byKind.sources}`);
+  assert(/\u884c\u8fd0/.test(byKind.sources), `the external source is not named with the shared transit term: ${byKind.sources}`);
+});
+
+await check('the type strip carries the sleeping type reading', async () => {
+  const reading = await page.$('.dream-type-strip [data-dream-type-reading]');
+  assert(reading, 'the type strip has no type reading');
+  const parts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  assert(parts.length >= 2, `the type reading only names ${parts.length} parts`);
+  assert(parts.includes('\u673a\u68b0\u5b9a\u4e49'), `no mechanical definition among ${parts}`);
+});
+
+await check('each portal plaque carries the night collection and the morning bleed-through', async () => {
+  const blocks = await page.$$eval('.dream-portal-reading-block', n => n.length);
+  assert(blocks === 3, `${blocks} portal readings for three night fields`);
+  const first = await page.$('.dream-realm-light .dream-portal-reading-block');
+  await first.evaluate(node => { node.open = true; });
+  const reading = await first.$eval('[data-dream-portal-reading]', n => n.textContent);
+  assert(/\u591c\u95f4\u84c4\u79ef/.test(reading), `no night collection: ${reading.slice(0, 80)}`);
+  assert(/\u6ea2\u51fa\u76ee\u6807/.test(reading), `no bleed-through target: ${reading.slice(0, 80)}`);
+  assert(/\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(reading), `no morning bleed-through: ${reading.slice(0, 80)}`);
+  assert(/\u7709\u5fc3\u4e2d\u5fc3/.test(reading), `the light-field portal does not name the Ajna as its target: ${reading.slice(0, 120)}`);
+});
+
 await check('a realm channel row opens the channel sheet', async () => {
   // The gate sheet from the checks above is still open and is modal, so it would
   // swallow the click. Dismiss it first.
@@ -302,6 +393,55 @@ await check('closing the sheet dismisses it', async () => {
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 
+await check('a channel carried from birth reads as fixed, a filled-in one as conditioned', async () => {
+  // The teacher's dream channel names, so a sheet printing the waking catalogue
+  // name fails here even where the two agree (20-57 is the Brain Wave in both).
+  const DREAM_CHANNEL_NAMES = {
+    '1-8': '\u542f\u53d1\u901a\u9053', '5-15': '\u97f5\u5f8b\u901a\u9053', '20-57': '\u8111\u6ce2\u901a\u9053',
+    '27-50': '\u4fdd\u5b58\u901a\u9053', '28-38': '\u6323\u624e\u901a\u9053', '42-53': '\u5468\u671f\u901a\u9053'
+  };
+  const rows = await page.$$eval('.dream-channel-open', nodes => nodes.map(node => ({
+    id: node.dataset.channel,
+    variant: [...node.classList]
+      .map(name => name.replace('dream-channel-open-', ''))
+      .find(name => ['natal', 'completed', 'transit', 'inactive'].includes(name))
+  })));
+  assert(rows.length === 6, `${rows.length} channel rows on the page`);
+  const seen = new Set();
+  for (const row of rows) {
+    await page.click(`.dream-channel-open[data-channel="${row.id}"]`);
+    await page.waitForSelector('#dream-detail .gate-detail-card[data-channel]', { timeout: 10000 });
+    const cases = await page.$$eval('#dream-detail [data-dream-channel-case]', n => n.map(x => x.dataset.dreamChannelCase));
+    // The source decides which of the teacher's two cases is printed, and only one
+    // of them is: a channel carried from birth is a fixed dream landscape, a
+    // channel completed by the night sky is conditioning, an inactive one has no
+    // case at all.
+    if (row.variant === 'natal') {
+      assert(JSON.stringify(cases) === JSON.stringify(['fixed']), `${row.id} (carried from birth) printed ${cases}`);
+      seen.add('fixed');
+    } else if (row.variant === 'inactive') {
+      assert(cases.length === 0, `${row.id} (inactive) printed a case: ${cases}`);
+    } else {
+      assert(JSON.stringify(cases) === JSON.stringify(['conditioning']), `${row.id} (${row.variant}) printed ${cases}`);
+      seen.add('conditioning');
+    }
+    const title = await page.$eval('#dream-detail .dream-detail-channel-title', n => n.textContent.trim());
+    assert(title === DREAM_CHANNEL_NAMES[row.id],
+      `channel ${row.id} is titled "${title}", expected the dream name ${DREAM_CHANNEL_NAMES[row.id]}`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(120);
+  }
+  assert(seen.has('fixed'), 'the fixture carries no dream channel from birth, so the fixed case is unproven');
+  // Leave one fixed-case channel sheet on disk for visual review.
+  await page.click('.dream-channel-open.dream-channel-open-natal');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-channel]', { timeout: 10000 });
+  await page.waitForTimeout(250);
+  await page.screenshot({ path: path.join(SHOTS, 'single-channel-sheet-fixed.png'), fullPage: false });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(150);
+});
+
+
 // --- language switch redraws from cache without recomputing ---
 await check('switching to English redraws the sleep chart', async () => {
   await chooseLanguage(page, 'en');
@@ -320,9 +460,44 @@ await check('switching to English redraws the sleep chart', async () => {
   const status = await page.$eval('#dream-status', n => ({ text: n.textContent.trim(), key: n.dataset.i18n || null }));
   assert(status.text === '', `status line still reads "${status.text}" after a language switch`);
   assert(status.key === null, `the cleared status line kept its source key "${status.key}"`);
+  // The reading content follows the language too, not only the chrome: the type
+  // reading, the frame sentences and the portal blocks are all owned by the
+  // locale's dream vocabulary.
+  const typeParts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  assert(typeParts.includes('Mechanical definition'), `English type reading parts: ${typeParts}`);
+  assert(typeParts.includes('Operating state'), `English type reading parts: ${typeParts}`);
+  const frame = await page.$eval('[data-dream-frame="sides"]', n => n.textContent);
+  assert(/direction the dream evolves/.test(frame), `English frame line: ${frame}`);
+  assert(/consciousness inside the dream/.test(frame), `English frame line: ${frame}`);
+  const portalBlock = await page.$$eval('.dream-portal-reading-block > summary', n => n.map(x => x.textContent.trim()));
+  assert(portalBlock.every(text => text === 'What this portal does'), `English portal summaries: ${portalBlock}`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 await page.screenshot({ path: path.join(SHOTS, 'desktop-en.png'), fullPage: true });
+
+await check('Traditional Chinese keeps the dream readings in its own wording', async () => {
+  await chooseLanguage(page, 'zh-Hant');
+  await page.waitForSelector('.dream-realm', { timeout: 10000 });
+  await page.waitForTimeout(500);
+  const title = await page.$eval('.dream-realm-light .dream-realm-title', n => n.textContent.trim());
+  assert(title === '\u5149\u5834', `zh-Hant realm title is "${title}"`);
+  const typeParts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  assert(typeParts.includes('\u6a5f\u68b0\u5b9a\u7fa9'), `zh-Hant type reading parts: ${typeParts}`);
+  const frame = await page.$eval('[data-dream-frame="sources"]', n => n.textContent);
+  // The region says \u6d41\u65e5 for Transit, following the existing key, not \u884c\u904b.
+  assert(/\u6d41\u65e5/.test(frame), `zh-Hant frame line: ${frame}`);
+  assert(!/\u884c\u904b/.test(frame), `zh-Hant frame line kept the Simplified/Japanese spelling: ${frame}`);
+  // A portal's two stages are translated, not left in the Simplified wording.
+  const portal = page.locator('.dream-realm-light .dream-portal-reading-block');
+  await portal.evaluate(node => { node.open = true; });
+  const portalText = await page.$eval('.dream-realm-light [data-dream-portal-reading]', n => n.textContent);
+  assert(/\u591c\u9593\u84c4\u7a4d/.test(portalText), `zh-Hant night collection: ${portalText.slice(0, 60)}`);
+  assert(/\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(portalText), `zh-Hant morning bleed-through: ${portalText.slice(0, 60)}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+  await page.screenshot({ path: path.join(SHOTS, 'desktop-zh-Hant.png'), fullPage: true });
+  await chooseLanguage(page, 'zh-CN');
+  await page.waitForTimeout(400);
+});
 
 await check('switching back to Simplified Chinese restores the terms', async () => {
   await chooseLanguage(page, 'zh-CN');
@@ -349,6 +524,9 @@ await check('every skin re-renders the sleep graph', async () => {
       assert(applied === skin, `clicking skin ${skin} left data-skin=${applied}`);
       const centers = await page.$$eval('#dream-bodygraph .bg-center', n => n.length);
       assert(centers === 5, `skin ${skin}: ${centers} centres`);
+      if (skin.includes('contrast')) {
+        await page.screenshot({ path: path.join(SHOTS, `single-desktop-${skin}.png`), fullPage: true });
+      }
       assert(pageErrors.length === 0, `skin ${skin}: ${pageErrors.join(' | ')}`);
     }
   } finally {
@@ -910,6 +1088,33 @@ await check('a halved channel names both people and the gate each contributes', 
   assert(splits === 1, `${splits} channels show a split, expected only 28-38`);
 });
 
+await check('a channel neither design carries alone is read as conditioning', async () => {
+  // 28-38 is halved for this pair: one gate from each person. Neither sleeping
+  // design carries it, so the sheet must print the conditioned case, not the fixed
+  // one — that split is the core of the channel teaching. This is the second
+  // source of conditioning the single-design page cannot cover deterministically.
+  await page.click('#dream-content .dream-channel-open[data-channel="28-38"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-channel="28-38"]', { timeout: 10000 });
+  const cases = await page.$$eval('#dream-detail [data-dream-channel-case]', n => n.map(x => x.dataset.dreamChannelCase));
+  assert(JSON.stringify(cases) === JSON.stringify(['conditioning']),
+    `a halved channel printed ${JSON.stringify(cases)}, expected the conditioned case`);
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  assert(/\u6697\u591c\u5236\u7ea6/.test(sheet), `no night conditioning heading: ${sheet.slice(0, 80)}`);
+  assert(/\u5316\u5b66\u6b8b\u7559|\u5236\u7ea6\u6b8b\u7559/.test(sheet), 'the conditioned reading names no residue');
+  await page.keyboard.press('Escape');
+  // The clicked row is still under the pointer, and a channel row highlights its two
+  // gates on hover; the modal appears over it before the browser re-hit-tests, so the
+  // highlight would otherwise survive into the next check's graph. Clear it the way
+  // the row's own handler expects, then park the pointer away from the page.
+  await page.evaluate(() => {
+    for (const row of document.querySelectorAll('.dream-channel-open')) {
+      row.dispatchEvent(new PointerEvent('pointerleave'));
+    }
+  });
+  await page.mouse.move(4, 4);
+  await page.waitForTimeout(300);
+});
+
 await check('an empty composite field uses the composite wording, not the single-design one', async () => {
   const empty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
   assert(empty === '\u4e24\u4eba\u7684\u7761\u7720\u8bbe\u8ba1\u5728\u6b64\u573a\u57df\u90fd\u6ca1\u6709\u6fc0\u6d3b\u3002',
@@ -938,6 +1143,75 @@ await check('hovering a composite channel row lights its two gates', async () =>
   assert(cleared === 0, `${cleared} nodes stayed lit after the pointer left`);
 });
 
+await check('the composite readings survive dark and high-contrast skins', async () => {
+  // Open the demon field's portal so the screenshot shows the new reading, not
+  // just the graph.
+  await page.locator('#dream-content .dream-realm-demon .dream-portal-reading-block')
+    .evaluate(node => { node.open = true; });
+  // Contrast has to be measured on composited pixels: the field tint is a
+  // translucent `color-mix()`, so a flat rgb() parse would read it as near-black.
+  const measure = () => page.$eval('#dream-content .dream-realm-demon .dream-portal-reading .dream-reading-row', node => {
+    const parse = css => {
+      const rgb = css.match(/^rgba?\(([^)]+)\)$/);
+      if (rgb) {
+        const parts = rgb[1].split(/[,\s\/]+/).filter(Boolean).map(Number);
+        return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+      }
+      const srgb = css.match(/^color\(srgb ([^)]+)\)$/);
+      if (srgb) {
+        const parts = srgb[1].split(/[\s\/]+/).filter(Boolean).map(Number);
+        return { r: parts[0] * 255, g: parts[1] * 255, b: parts[2] * 255, a: parts.length > 3 ? parts[3] : 1 };
+      }
+      return { r: 0, g: 0, b: 0, a: 0 };
+    };
+    const over = (top, bottom) => ({
+      r: top.r * top.a + bottom.r * (1 - top.a),
+      g: top.g * top.a + bottom.g * (1 - top.a),
+      b: top.b * top.a + bottom.b * (1 - top.a),
+      a: 1
+    });
+    const lum = ({ r, g, b }) => {
+      const channel = value => {
+        const v = value / 255;
+        return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+      };
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    };
+    const layers = [];
+    for (let el = node; el; el = el.parentElement) layers.push(getComputedStyle(el).backgroundColor);
+    let background = { r: 255, g: 255, b: 255, a: 1 };
+    for (const css of layers.reverse()) {
+      const layer = parse(css);
+      if (layer.a > 0) background = over(layer, background);
+    }
+    const text = parse(getComputedStyle(node).color);
+    const foreground = text.a < 1 ? over(text, background) : text;
+    const a = lum(foreground);
+    const b = lum(background);
+    return {
+      color: getComputedStyle(node).color,
+      ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    };
+  });
+  const seen = [];
+  for (const skin of ['default-dark', 'high-contrast']) {
+    await applySkin(page, skin);
+    await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
+    await page.waitForTimeout(320);
+    const applied = await page.evaluate(() => document.documentElement.dataset.skin);
+    assert(applied === skin, `skin ${skin} did not apply: ${applied}`);
+    const colors = await measure();
+    // The prose must stay readable: the tokens, not hard-coded colours, decide it.
+    assert(colors.ratio >= 4.5, `skin ${skin}: dream prose contrast is ${colors.ratio.toFixed(2)}:1`);
+    seen.push(colors.color);
+    await page.screenshot({ path: path.join(SHOTS, `composite-desktop-${skin}.png`), fullPage: true });
+  }
+  assert(seen[0] !== seen[1], `both skins paint the dream prose ${seen[0]}`);
+  await applySkin(page, 'default-light');
+  await page.waitForTimeout(300);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
 await check('the composite night fields survive a language switch and follow it', async () => {
   await chooseLanguage(page, 'en');
   await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
@@ -955,6 +1229,7 @@ await check('the composite night fields survive a language switch and follow it'
     `English labels keep a Chinese half name: ${JSON.stringify(enLabels)}`);
   const enEmpty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
   assert(enEmpty === 'Neither sleep design activates this field.', `English empty line is "${enEmpty}"`);
+  await page.screenshot({ path: path.join(SHOTS, 'composite-desktop-en.png'), fullPage: true });
 
   await chooseLanguage(page, 'zh-Hant');
   await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });
@@ -969,6 +1244,7 @@ await check('the composite night fields survive a language switch and follow it'
     `zh-Hant labels did not translate the half: ${JSON.stringify(hantLabels)}`);
   assert(hantLabels.every(label => !/Sleep (design|personality)/.test(label)),
     `zh-Hant labels kept the English half name: ${JSON.stringify(hantLabels)}`);
+  await page.screenshot({ path: path.join(SHOTS, 'composite-desktop-zh-Hant.png'), fullPage: true });
 
   await chooseLanguage(page, 'zh-CN');
   await page.waitForSelector('#dream-content .dream-realm', { timeout: 15000 });

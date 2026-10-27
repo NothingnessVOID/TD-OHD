@@ -70,18 +70,70 @@ export async function solveLunarArcInstant({ birthUtc, natalMoonLongitude, arc =
   return { instant, snapshot, steps: calls, residualDegrees: residual };
 }
 
-/**
- * Sleep types. The dream topology has no Manifestor and no Manifesting
- * Generator: the Throat only reaches the G centre (1-8) and the Spleen (20-57),
- * and neither is a motor, so no Throat-to-motor channel can ever complete.
- */
-export function dreamTypeOf(definedCenterKeys) {
-  const defined = definedCenterKeys instanceof Set ? definedCenterKeys : new Set(definedCenterKeys);
-  if (!defined.size) return 'reflector';
-  return defined.has('sacral') ? 'generator' : 'projector';
+/** The three channels that define the Sacral in the sleep design. */
+const SACRAL_DREAM_CHANNELS = Object.freeze(['5-15', '27-50', '42-53']);
+/** Sacral to G to Throat. */
+const SACRAL_TO_THROAT = Object.freeze(['5-15', '1-8']);
+/** Root to Spleen to Throat; the Spleen only bridges here. */
+const ROOT_TO_THROAT = Object.freeze(['28-38', '20-57']);
+
+/** `"a-b"`, `[a, b]` and the catalogue's own order all collapse to one key. */
+function channelTypeKey(gates) {
+  const pair = typeof gates === 'string' ? gates.split('-') : gates;
+  return pair.map(Number).sort((a, b) => a - b).join('-');
 }
 
-const DREAM_TYPE_NAMES = { generator: 'Generator', projector: 'Projector', reflector: 'Reflector' };
+/**
+ * Sleep types, judged by the dream channels that complete rather than by the
+ * centres they light up.
+ *
+ * The teacher's material defines the five sleep types mechanically, by channel:
+ * no dream channel at all is a Dream Reflector (over 67% of people); a defined
+ * Sacral is a Dream Generator; a Sacral open with no motor reaching the Throat
+ * is a Dream Projector; the Root reaching the Throat through the Spleen
+ * (28-38 + 20-57) with the Sacral open is a Dream Manifestor; and a motor
+ * reaching the Throat with the Sacral defined is a Dream Manifesting Generator.
+ *
+ * The dream topology keeps five centres, so the Throat is only reachable from
+ * the G centre (1-8) or the Spleen (20-57), and the Spleen is a bridge, not a
+ * motor. Two motor-to-Throat paths therefore exist: Sacral - G - Throat
+ * (5-15 + 1-8) and Root - Spleen - Throat (28-38 + 20-57). The teacher's own
+ * sentence settles the case both paths are complete: "a motor (Sacral or Root)
+ * connected to the Throat, with the Sacral defined" is a Manifesting Generator,
+ * so a defined Sacral always wins over the Root-only path.
+ *
+ * @param {Iterable<object|string>} completedChannels - the dream channels that
+ *   complete in this sleep design: catalogue channel objects (`{ gates }`) or
+ *   `"a-b"` keys, in either gate order
+ * @returns {'reflector'|'generator'|'projector'|'manifestor'|'manifestingGenerator'}
+ */
+export function dreamTypeOf(completedChannels) {
+  const complete = new Set();
+  for (const item of completedChannels || []) {
+    if (typeof item === 'string') complete.add(channelTypeKey(item));
+    else if (item?.gates) complete.add(channelTypeKey(item.gates));
+  }
+  if (!complete.size) return 'reflector';
+  const has = key => complete.has(key);
+  const sacralDefined = SACRAL_DREAM_CHANNELS.some(has);
+  const motorToThroat = SACRAL_TO_THROAT.every(has) || ROOT_TO_THROAT.every(has);
+  // Sacral first: a defined Sacral with a motor reaching the Throat is the
+  // Manifesting Generator even when the Root is what actually reaches it.
+  if (sacralDefined) return motorToThroat ? 'manifestingGenerator' : 'generator';
+  // Sacral open: only the Root path can still manifest.
+  if (ROOT_TO_THROAT.every(has)) return 'manifestor';
+  return 'projector';
+}
+
+const DREAM_TYPE_NAMES = {
+  generator: 'Generator',
+  projector: 'Projector',
+  reflector: 'Reflector',
+  manifestor: 'Manifestor',
+  // The waking chart spells this one out; the sleep chart keeps the same words
+  // so `typeName()` in the display vocabulary still resolves it.
+  manifestingGenerator: 'Manifesting Generator'
+};
 export const dreamTypeName = id => DREAM_TYPE_NAMES[id] || id;
 
 /** Keep only the dream gates, preserving the engine's planet keys and lines. */
@@ -135,7 +187,10 @@ export async function computeDreamChart(chart, options = {}) {
   const activeGates = new Set([...personality.keys(), ...designGates.keys()]);
   const channels = DREAM_CHANNELS.filter(channel => channel.gates.every(gate => activeGates.has(gate)));
   const definedCenters = new Set(channels.flatMap(channel => channel.centers));
-  const typeId = dreamTypeOf(definedCenters);
+  // The teacher's definitions are per channel, not per centre: the same five
+  // defined centres can be a Generator or a Manifesting Generator depending on
+  // which motor actually reaches the Throat.
+  const typeId = dreamTypeOf(channels);
 
   const wantsTransit = options.transit !== false;
   const transitInstant = options.transitInstant ?? Date.now();
