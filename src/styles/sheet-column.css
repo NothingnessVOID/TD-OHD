@@ -187,89 +187,41 @@
 }
 .pc-authority-icon .pc-authority-svg { width: 100%; height: 100%; }
 
-/* Definition */
-.pc-definition-value { margin-top: 14px; }
-
-/* Circuit donut */
-.pc-circuit-main {
+/* Definition — the same anatomy as the authority card beside it: label, a 46px
+   graphic slot, the value line, the note. Because the slot above the text is
+   the same height in both cards, their rows line up across the pair. */
+.pc-definition-graphic {
   display: flex;
   align-items: center;
-  gap: 14px;
+  height: 46px;
+  margin: 2px 0 12px;
+}
+.pc-definition-graphic .pg-islands { gap: 5px; }
+.pc-definition-graphic .pg-dot { width: 7px; height: 7px; }
+.pc-definition-graphic .pg-island-badge { font-size: 12px; }
+
+/* Circuit — a full-width card. The headline row keeps the label and the
+   dominant circuit on one baseline, the segment bar gives the card body, and
+   the three pills sit in equal columns so nothing drifts out of alignment. */
+.pc-circuit-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
   min-width: 0;
 }
-.pc-donut {
-  position: relative;
-  flex: 0 0 74px;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-}
-.pc-donut--empty { background: var(--border); }
-/* Centre hole painted with the card ground — no masks, skin-safe. */
-.pc-donut::before {
-  content: "";
-  position: absolute;
-  inset: 20%;
-  border-radius: 50%;
-  background: var(--bg);
-}
-.pc-donut-center {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.pc-donut-center b {
-  font-size: 19px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.1;
-  position: relative;
-}
-.pc-donut-center i {
-  font-style: normal;
-  font-size: 9.5px;
-  color: var(--text-tertiary);
-  max-width: 56px;
-  text-align: center;
-  line-height: 1.25;
-  position: relative;
-  overflow-wrap: anywhere;
-}
-.pc-circuit-copy { min-width: 0; }
-.pc-circuit-copy .pc-card-value { font-size: 13.5px; }
-.pc-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
-}
-.pc-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-.pc-legend-item i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-}
-.pc-legend-item[data-circuit="individual"] i { background: var(--hd-circuit-individual); }
-.pc-legend-item[data-circuit="collective"] i { background: var(--hd-circuit-collective); }
-.pc-legend-item[data-circuit="tribal"] i { background: var(--hd-circuit-tribal); }
+.pc-circuit-head .pc-card-label { margin-bottom: 0; }
+.pc-circuit-head .pc-card-value { font-size: 13.5px; text-align: right; }
+.pc-circuit-graphic { margin-top: 12px; }
+.pc-circuit-graphic .pg-segbar { height: 26px; width: 100%; }
 
-/* Circuit pills — coloured dot + count + name; dominant gets an ink ring. */
+/* Circuit pills — coloured dot + count + name; dominant gets an ink ring.
+   Three equal columns, so the row aligns with itself at any card width. */
 .pc-circuit-pills {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+  margin-top: 12px;
 }
 .pc-pill {
   display: flex;
@@ -302,8 +254,64 @@
   color: var(--text-tertiary);
 }
 
-/* Cross */
-.pc-cross-grid { margin: 2px 0 10px; }
+/* Cross and variable are one visual group: the same row metrics, so their
+   labels, side labels and cell rows line up across the pair, and the closing
+   text of the shorter card pins to the same bottom line. */
+.pc-card--cross,
+.pc-card--variable {
+  display: flex;
+  flex-direction: column;
+  --pc-cell-h: 54px;
+  --pc-row-gap: 8px;
+  --pc-head-h: 16px;
+}
+.pc-card--cross .pc-card-value,
+.pc-var-foot {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+/* Cross — the rail shrinks with the card instead of holding a fixed 230px, so
+   the card never demands more width than its column has. */
+.pc-cross-grid { margin: 0; }
+.pc-cross-grid .pg-cross-axis-grid {
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: var(--pc-head-h) var(--pc-cell-h) var(--pc-cell-h);
+  gap: var(--pc-row-gap) 8px;
+}
+.pc-cross-grid .pg-cross-mini--rail {
+  width: 100%;
+  height: 100%;
+  gap: var(--pc-row-gap);
+  grid-auto-rows: var(--pc-cell-h);
+}
+.pc-cross-grid .pg-cross-mini--rail .pg-cross-cell {
+  height: 100%;
+  font-size: 24px;
+}
+/* Side labels ( / ) and the cross's row heads ( / ) are one
+   shared component, so the two four-cell cards never drift apart in type or
+   colour. */
+.pc-side-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: var(--pc-head-h, 16px);
+  text-align: center;
+  color: var(--text-secondary);
+}
+.pc-side-label[data-side="personality"] { color: var(--act-personality, var(--hd-personality)); }
+.pc-side-label[data-side="design"] { color: var(--act-design, var(--hd-design)); }
+/* The cross name carries its gates in a parenthesis; that part gets its own
+   line instead of running on after the name. */
+.pc-card--cross .pc-cross-gates {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
 .pc-card--cross .pc-card-value {
   font-size: 13.5px;
   cursor: pointer;
@@ -312,50 +320,64 @@
 .pc-card--cross .pc-card-value:hover { color: var(--accent); }
 .pc-card--cross .pc-card-value:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-/* Variable — one row of four B-style chunky arrows.
-   Data colours are locked across skins (semantic layer B):
-   personality = ink, design = official red. */
+/* Variable — a 2x2 square: Personality on the left, Design on the right, the
+   motivation and diet arms on top. Data colours are locked across skins
+   (semantic layer B): personality = ink, design = official red. */
 .pc-card--variable { cursor: default; }
 .pc-card--variable:hover { border-color: var(--border-subtle); box-shadow: none; }
-.pc-var-head {
+/* The notation sits under the grid so this card and the cross card share the
+   same shape: label on top, four cells in the middle, one text line below. */
+.pc-var-foot {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
 }
-.pc-var-head .pc-card-label { margin-bottom: 0; }
+.pc-var-foot-label { font-size: 11px; color: var(--text-tertiary); }
 .pc-var-notation {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.04em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
   overflow-wrap: anywhere;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
-.pc-var-arrows {
+.pc-var-square {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Fixed rows, and a fixed header row: the labels used to stretch into a tall
+     empty band, and the cells used to absorb the card's leftover height, which
+     made them visibly taller than the cross card's cells beside them. */
+  grid-template-rows: var(--pc-head-h) var(--pc-cell-h) var(--pc-cell-h);
+  gap: var(--pc-row-gap);
+  flex: 0 0 auto;
 }
+/* Bare arrow and name, no cell chrome: the arrow already carries the side
+   colour, so boxes only added noise. Hover keeps a soft ground as the
+   affordance, since each slot still opens its knowledge detail. */
 .pc-var-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 10px 4px 9px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  justify-content: center;
+  gap: 7px;
+  min-height: var(--pc-cell-h);
+  padding: 0 2px;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   min-width: 0;
-  transition: border-color 0.15s ease;
+  transition: background 0.15s ease;
 }
-.pc-var-slot:hover { border-color: var(--control-border); }
+.pc-var-slot:hover { background: var(--bg-sunken); }
 .pc-var-slot:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
 /* B-style short chunky arrow, drawn in CSS so it stays crisp at small size. */
 .pc-var-arrow-b {
-  width: 30px;
-  height: 16px;
+  width: 40px;
+  height: 22px;
   flex: 0 0 auto;
   color: var(--act-personality, var(--hd-personality));
   position: relative;
@@ -364,9 +386,9 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 4px;
-  width: 17px;
-  height: 8px;
+  top: 6px;
+  width: 24px;
+  height: 10px;
   background: currentColor;
   border-radius: 1px;
 }
@@ -375,15 +397,15 @@
   position: absolute;
   right: 0;
   top: 0;
-  border-left: 13px solid currentColor;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
+  border-left: 16px solid currentColor;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
 }
 .pc-var-slot[data-source="design"] .pc-var-arrow-b { color: var(--act-design, var(--hd-design)); }
 .pc-var-slot[data-dir="left"] .pc-var-arrow-b { transform: scaleX(-1); }
 .pc-var-slot[data-dir="none"] .pc-var-arrow-b { opacity: 0.25; }
 .pc-var-name {
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text-secondary);
   text-align: center;
   line-height: 1.3;
@@ -442,7 +464,10 @@
 #chart-view .panel-center-row:hover { background: var(--bg-sunken); }
 
 /* ---- narrow column / phone ---- */
-@media (max-width: 1100px) {
+/* The info column's width now follows the window height (the wheel column is
+   sized by the height budget), so card pairing tracks the column, not the
+   viewport. `.info-column` already declares the `infocol` container. */
+@container infocol (max-width: 460px) {
   .pc-pair { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
@@ -453,7 +478,6 @@
   .pc-card { padding: 14px; }
   #chart-view .panel-tabs { margin: 12px 10px 10px; top: calc(var(--header-height) + 6px); }
   #chart-view #panel-content.panel-content { padding: 0 10px 14px; }
-  .pc-var-arrows { grid-template-columns: 1fr; }
 }
 
 /* ---- graph view toggle: bodygraph ⇄ wheel (lives in the header) ---- */
@@ -483,13 +507,37 @@
   font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
-@media (max-width: 900px) { .graph-view-toggle { display: none; } }
+/* Phone: the header has no room left for the switch, so chart.js moves the same
+   element into the navigation panel and it reads as a full-width row there.
+   The old rule hid it below 900px, which left the wheel unreachable between the
+   phone boundary (640px) and 900px, where the nav is still the inline one. */
+@media (--phone) {
+  .header-actions .graph-view-toggle { display: none; }
+  .nav .graph-view-toggle {
+    display: flex;
+    width: 100%;
+    margin-top: 6px;
+    padding: 3px;
+    background: var(--bg-sunken);
+  }
+  .nav .graph-view-btn {
+    flex: 1;
+    min-height: 38px;
+    font-size: 13px;
+  }
+}
 #chart-view .mandala-container {
   padding: 2px;
+  display: flex;
+  justify-content: center;
 }
+/* The wheel must fit one screen: cap it by the viewport-height budget the
+   sticky chart column already uses, keep it square, and let it shrink with
+   the column width on narrow screens. */
 #chart-view .mandala-container svg.md-root {
   display: block;
-  width: 100%;
+  width: min(100%, calc(100dvh - var(--header-height) - 48px));
   height: auto;
+  aspect-ratio: 1;
 }
 #chart-view .md-bodygraph { overflow: visible; }

@@ -183,6 +183,39 @@
 .pg-profile-graphic .pg-tick { height: 4px; min-width: 6px; }
 .pg-profile-graphic .pg-tick[data-active="true"] { background: var(--accent-strong); }
 
+/* Yao ladder: with `yao` supplied, the six marks are that gate's real hexagram
+   lines — a solid bar for yang, a broken bar for yin — read bottom-up, so line 1
+   sits at the bottom and line 6 at the top. The active line carries the side
+   colour (personality ink, design red) rather than the accent, per the locked
+   data-colour law; unmarked lines stay neutral. DOM order is still 1…6, only the
+   vertical axis is reversed, so reading order and the horizontal variant are
+   untouched. */
+.pg-ladder[data-yao="true"] { width: 30px; gap: 3px; }
+.pg-ladder[data-yao="true"][data-orientation="vertical"] { flex-direction: column-reverse; }
+.pg-ladder[data-yao="true"] .pg-tick {
+  --yao-ink: var(--border);
+  height: 4px;
+  border-radius: 1px;
+  background: var(--yao-ink);
+}
+.pg-ladder[data-yao="true"] .pg-tick[data-yao="yin"] {
+  background:
+    linear-gradient(var(--yao-ink), var(--yao-ink)) left center / 42% 100% no-repeat,
+    linear-gradient(var(--yao-ink), var(--yao-ink)) right center / 42% 100% no-repeat;
+}
+.pg-ladder[data-yao="true"][data-ladder="personality"] .pg-tick[data-active="true"] { --yao-ink: var(--act-personality, var(--hd-personality)); }
+.pg-ladder[data-yao="true"][data-ladder="design"] .pg-tick[data-active="true"] { --yao-ink: var(--act-design, var(--hd-design)); }
+/* Horizontal variant: ticks are vertical bars, so a yin line breaks top/bottom. */
+.pg-ladder[data-yao="true"][data-orientation="horizontal"] { width: auto; }
+.pg-ladder[data-yao="true"][data-orientation="horizontal"] .pg-tick { width: 5px; height: 11px; border-radius: 1px; }
+.pg-ladder[data-yao="true"][data-orientation="horizontal"] .pg-tick[data-yao="yin"] {
+  background:
+    linear-gradient(var(--yao-ink), var(--yao-ink)) center top / 100% 42% no-repeat,
+    linear-gradient(var(--yao-ink), var(--yao-ink)) center bottom / 100% 42% no-repeat;
+}
+.pg-ladder[data-yao="true"][data-orientation="horizontal"][data-ladder="personality"] .pg-tick[data-active="true"] { --yao-ink: var(--act-personality, var(--hd-personality)); }
+.pg-ladder[data-yao="true"][data-orientation="horizontal"][data-ladder="design"] .pg-tick[data-active="true"] { --yao-ink: var(--act-design, var(--hd-design)); }
+
 /* ---------- Corner ---------- */
 .pg-corners {
   display: grid;
@@ -220,6 +253,47 @@
 .pg-islands .pg-island .pg-dot { background: var(--pg-dot, var(--accent)); }
 .pg-island-gap { display: block; width: 6px; height: 1px; background: var(--border); }
 .pg-island--empty { display: block; width: 10px; height: 5px; border: 1px dashed var(--border); border-radius: 1px; }
+
+/* ---------- Island cards (sheet column definition graphic) ----------
+   One bordered cluster per definition island, holding that island's real centre
+   shapes, a rule and its centre count, so the reader can map a cluster back onto
+   the bodygraph instead of counting dots. */
+.pg-island-set { display: inline-flex; align-items: flex-end; gap: 6px; min-width: 0; }
+.pg-island-set--empty { align-items: center; }
+.pg-island-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.pg-island-cells {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px 1px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+}
+/* The glyph wrapper is 24px by default; here it hugs the sized svg so the whole
+   cluster stays inside the card's 46px graphic slot. */
+.pg-island-cells .pg-center-glyph { width: auto; height: auto; }
+.pg-island-cells .pg-center-glyph svg { display: block; }
+.pg-island-rule { width: 100%; height: 2px; border-radius: 1px; background: var(--accent); opacity: 0.55; }
+.pg-island-index {
+  font-size: 11.5px;
+  line-height: 1.2;
+  color: var(--text-secondary);
+  text-align: center;
+}
+/* Narrow columns shrink the centre rows' glyphs; the island clusters keep a
+   size of their own so the definition graphic stays legible and still fits the
+   46px slot (measured 212x45 at a 348px card). */
+@container infocol (max-width: 379px) {
+  .pg-island-cells .pg-center-glyph { width: 20px; height: 20px; }
+  .pg-island-cells .pg-center-glyph svg { width: 100%; height: 100%; }
+}
 
 /* =============================================================
    Foundation: identity band + fact rail

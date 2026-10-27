@@ -102,12 +102,18 @@ export function segbar(segments, { label = '', className = '' } = {}) {
  * Ladder: six ticks, the active line(s) filled. `lines` takes an array because a
  * gate can be activated on two lines by two different planets — the ladder shows
  * both, it never picks one.
+ *
+ * `yao` optionally takes that gate's six lines (`hexagramLines()`), index 0 being
+ * line 1; each tick then renders as a real yao — a solid bar for yang, a broken
+ * bar for yin — instead of a uniform mark, and the ladder is marked so CSS reads
+ * it bottom-up (line 1 at the bottom, line 6 at the top). DOM order stays 1…6 so
+ * the horizontal orientation and the aria reading order are unaffected.
  */
-export function lineLadder({ line, lines, state = 'personality', orientation = 'vertical', label = '' }) {
+export function lineLadder({ line, lines, state = 'personality', orientation = 'vertical', label = '', yao = null }) {
   const active = lines || (line == null ? [] : [line]);
   const marks = [1, 2, 3, 4, 5, 6].map(step =>
-    `<span class="pg-tick"${active.includes(step) ? ' data-active="true"' : ''}></span>`).join('');
-  return `<span class="pg-ladder" data-ladder="${state}" data-orientation="${orientation}" role="img" aria-label="${label}">${marks}</span>`;
+    `<span class="pg-tick"${active.includes(step) ? ' data-active="true"' : ''}${yao ? ` data-yao="${yao[step - 1]}"` : ''}></span>`).join('');
+  return `<span class="pg-ladder" data-ladder="${state}" data-orientation="${orientation}"${yao ? ' data-yao="true"' : ''} role="img" aria-label="${label}">${marks}</span>`;
 }
 
 /**

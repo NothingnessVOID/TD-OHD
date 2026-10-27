@@ -38,7 +38,8 @@ import { esc, formatBirth } from '../lib/format.js';
 import { CENTER_KEYS } from '../lib/center-palette-registry.js';
 import { centerGlyph, componentIndexByCenter } from '../lib/panel-graphics/center-glyph.js';
 import { authorityIcon } from '../lib/panel-graphics/authority-icons.js';
-import { definitionIslands } from '../lib/panel-graphics/definition-islands.js';
+import { definitionIslands, definitionIslandCards } from '../lib/panel-graphics/definition-islands.js';
+import { hexagramLines } from '../lib/panel-graphics/hexagram-lines.js';
 import { circuitCounts, dominantCircuits, centerStateCounts, channelsByGroup, channelGroup, gateSourceCounts, activationSlots } from '../lib/panel-graphics/counts.js';
 import { projections as activationProjections, fixingCounts } from '../lib/panel-graphics/activations.js';
 import { channelTube, hangingTube, emptyTube } from '../lib/panel-graphics/channel-tube.js';
@@ -273,7 +274,37 @@ export function setupGraphViewToggle() {
     graphView = btn.dataset.graphView;
     buttons.forEach(b => b.classList.toggle('active', b === btn));
     applyGraphView();
+    // At the phone width the switch sits inside the navigation panel; close the
+    // panel so the view the user picked is immediately visible.
+    document.body.classList.remove('mobile-nav-open');
+    document.getElementById('mobile-menu-toggle')?.setAttribute('aria-expanded', 'false');
   }));
+  placeGraphViewToggle();
+}
+
+/**
+ * The phone header has no room for the bodygraph/wheel switch, so the same
+ * element moves into the navigation panel at the shared phone boundary and back
+ * into the header above it. One control, two homes, no duplicate markup.
+ */
+function placeGraphViewToggle() {
+  const toggle = document.querySelector('.graph-view-toggle');
+  const nav = document.getElementById('primary-nav');
+  const headerSlot = toggle?.parentElement;
+  if (!toggle || !nav || !headerSlot) return;
+  // Remember the header position so a phone→desktop round trip restores it.
+  const anchor = toggle.nextSibling;
+  const mq = window.matchMedia(PHONE_MEDIA_QUERY);
+  const place = () => {
+    if (mq.matches) {
+      nav.appendChild(toggle);
+      return;
+    }
+    const stillThere = anchor && anchor.parentNode === headerSlot ? anchor : headerSlot.firstChild;
+    headerSlot.insertBefore(toggle, stillThere);
+  };
+  place();
+  mq.addEventListener('change', place);
 }
 
 function applyGraphView() {
@@ -435,9 +466,21 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
       })
       : formatDisplay('circuitSummary', circuitName(dominants[0].key), countLabel(dominants[0].count, '{count} channel', '{count} channels'));
   const cross = chart.incarnationCross;
-  const angleShort = { right: 'RA', left: 'LA', juxtaposition: 'JX' }[cross?.angle] || '';
   const crossGates = cross?.gates || [];
   const arms = variableArrows(chart.variable);
+  // The official cross name already carries its four gates in a trailing
+  // parenthesis; break that part onto its own line so the name and the numbers
+  // each read cleanly instead of running together.
+  const crossLabel = crossName(cross) || t('None');
+  const crossSplit = crossLabel.match(/^(.*?)([（(][^）)]*[）)])\s*$/);
+  const crossValueHtml = crossSplit
+    ? `${esc(crossSplit[1])}<span class="pc-cross-gates">${esc(crossSplit[2])}</span>`
+    : esc(crossLabel);
+  // Channel distribution by circuit — the same segment bar the fact rail uses.
+  const circuitSegbar = segbar(
+    groups.map(group => ({ key: group.key, count: group.count })),
+    { label: t('Complete channel count distribution') }
+  );
 
   // Circuit pills (official colour coding): one dot per circuit, count and
   // name beside it; the dominant circuit(s) get an ink ring. Tied dominants
@@ -451,20 +494,20 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
 
   const crossGrid = `
     <div class="pg-cross-axis-grid">
-      <span></span><span class="pg-cross-rail-label">${esc(t('Personality'))}</span><span class="pg-cross-rail-label">${esc(t('Design'))}</span>
-      <span class="pg-cross-rail-label">${esc(planetName('sun'))}</span>
+      <span></span><span class="pg-cross-rail-label pc-side-label" data-side="personality">${esc(t('Personality'))}</span><span class="pg-cross-rail-label pc-side-label" data-side="design">${esc(t('Design'))}</span>
+      <span class="pc-side-label pg-cross-rail-label">${esc(planetName('sun'))}</span>
       <div class="pg-cross-mini pg-cross-mini--rail" data-angle="${esc(cross?.angle || '')}" aria-hidden="true">
         ${[0, 2, 1, 3].map(index => `<span class="pg-cross-cell" data-gate="${crossGates[index] ?? ''}" data-side="${index < 2 ? 'personality' : 'design'}">${esc(String(crossGates[index] ?? '—'))}</span>`).join('')}
       </div>
-      <span class="pg-cross-rail-label pg-cross-earth">${esc(planetName('earth'))}</span>
+      <span class="pc-side-label pg-cross-rail-label pg-cross-earth">${esc(planetName('earth'))}</span>
     </div>`;
 
-  const variableRow = VARIABLE_ROW.map(({ source, key }) => {
+  const variableSquare = VARIABLE_SQUARE.map(row => row.map(({ source, key }) => {
     const item = arms.find(arm => arm.key === key);
     const label = t(VARIABLE_LABEL[key]);
     const dir = item?.direction === 'left' ? 'left' : item?.direction === 'right' ? 'right' : 'none';
     return `<span class="pc-var-slot" data-knowledge-variable="${key}" data-source="${source}" data-dir="${dir}" title="${esc(label)}"><span class="pc-var-arrow-b" aria-hidden="true"></span><span class="pc-var-name">${esc(label)}</span></span>`;
-  }).join('');
+  }).join('')).join('');
 
   return `
     ${reliabilityHtml}
@@ -473,7 +516,7 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
         <div class="pc-card-label">${esc(t('Profile'))}</div>
         <div class="pc-profile-main">
           <div class="pc-profile-number">${numbers.split('/').map(esc).join('<i>/</i>')}</div>
-          <div class="pc-profile-ladders">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality') })}${lineLadder({ line: designLine, state: 'design', label: t('Design') })}</div>
+          <div class="pc-profile-ladders">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality'), yao: hexagramLines(chart.gates?.personality?.sun?.gate) })}${lineLadder({ line: designLine, state: 'design', label: t('Design'), yao: hexagramLines(chart.gates?.design?.sun?.gate) })}</div>
         </div>
         <div class="pc-profile-name">${esc(profileName(numbers))}</div>
         ${summaries.profile ? `<p class="pc-card-note">${esc(summaries.profile)}</p>` : ''}
@@ -488,35 +531,36 @@ function renderFoundationCards(chart, summaries, birth, reliabilityHtml) {
         </div>
         <div class="pc-card pc-card--definition" data-knowledge-object="definition">
           <div class="pc-card-label">${esc(t('Definition'))}</div>
-          <div class="pc-card-value pc-definition-value">${esc(definitionName(chart.definition))}</div>
+          <div class="pc-definition-graphic">${definitionIslandCards(components)}</div>
+          <div class="pc-card-value">${esc(definitionName(chart.definition))}</div>
           <p class="pc-card-note">${esc(countLabel(components.length, '{count} island', '{count} islands'))} · ${esc(t('{centres} defined centres · {channels} channels', { centres: bandStates.defined, channels: chart.channels?.length || 0 }))}</p>
         </div>
       </div>
 
-      <div class="pc-pair">
-        <div class="pc-card pc-card--circuit">
-          <div class="pc-card-label">${esc(t('Dominant Circuit'))}</div>
-          <div class="pc-circuit-main">
-            <div class="pc-circuit-pills">${circuitPills}</div>
-            <div class="pc-circuit-copy">
-              <div class="pc-card-value" title="${esc(dominantText)}">${esc(dominantText)}</div>
-            </div>
-          </div>
+      <div class="pc-card pc-card--circuit">
+        <div class="pc-circuit-head">
+          <span class="pc-card-label">${esc(t('Dominant Circuit'))}</span>
+          <span class="pc-card-value" title="${esc(dominantText)}">${esc(dominantText)}</span>
         </div>
+        <div class="pc-circuit-graphic">${circuitSegbar}</div>
+        <div class="pc-circuit-pills">${circuitPills}</div>
+      </div>
+
+      <div class="pc-pair">
         <div class="pc-card pc-card--cross">
           <div class="pc-card-label">${esc(t('Incarnation Cross'))}</div>
           <div class="pc-cross-grid">${crossGrid}</div>
-          <div class="pc-card-value" data-knowledge-object="cross" title="${esc(crossName(cross) || t('None'))}">${esc(crossName(cross) || t('None'))}</div>
-          <p class="pc-card-note">${esc(angleShort)} · ${esc(t('Gates'))} ${esc(crossGates.join(' / ') || '—')}</p>
+          <div class="pc-card-value" data-knowledge-object="cross" title="${esc(crossLabel)}">${crossValueHtml}</div>
         </div>
-      </div>
-
-      <div class="pc-card pc-card--variable">
-        <div class="pc-var-head">
-          <span class="pc-card-label">${esc(t('Variable'))}</span>
-          ${chart.variable?.notation ? `<span class="pc-var-notation" title="${esc(t('Standard notation:'))}">${esc(chart.variable.notation)}</span>` : ''}
+        <div class="pc-card pc-card--variable">
+          <div class="pc-card-label">${esc(t('Variable'))}</div>
+          <div class="pc-var-square">
+            <span class="pc-side-label pc-var-col-head" data-side="personality">${esc(t('Personality'))}</span>
+            <span class="pc-side-label pc-var-col-head" data-side="design">${esc(t('Design'))}</span>
+            ${variableSquare}
+          </div>
+          ${chart.variable?.notation ? `<div class="pc-var-foot"><span class="pc-var-foot-label">${esc(t('Standard notation:'))}</span><span class="pc-var-notation">${esc(chart.variable.notation)}</span></div>` : ''}
         </div>
-        <div class="pc-var-arrows">${variableRow}</div>
       </div>
     </div>
   `;
@@ -604,12 +648,13 @@ const VARIABLE_GROUPS = [
   { source: 'personality', label: 'Personality', keys: ['motivation', 'perspective'] },
   { source: 'design', label: 'Design', keys: ['determination', 'environment'] }
 ];
-// Sheet column v2: one row of four chunky B-style arrows, personality pair first.
-const VARIABLE_ROW = [
-  { source: 'personality', key: 'motivation' },
-  { source: 'personality', key: 'perspective' },
-  { source: 'design', key: 'determination' },
-  { source: 'design', key: 'environment' }
+// Sheet column v2: the four arrows sit in a square, following the column-wide
+// convention already used by the profile ladders and the cross card —
+// Personality on the left, Design on the right, the motivation and diet arms
+// on top, perspective and environment below.
+const VARIABLE_SQUARE = [
+  [{ source: 'personality', key: 'motivation' }, { source: 'design', key: 'determination' }],
+  [{ source: 'personality', key: 'perspective' }, { source: 'design', key: 'environment' }]
 ];
 
 function renderFoundationFacts(chart, summaries = {}) {
@@ -638,7 +683,7 @@ function renderFoundationFacts(chart, summaries = {}) {
         <div class="pg-hero-anchor">
           <div class="panel-fact-label">${t('Profile')}</div>
           <div class="pg-hero-number">${numbers.split('/').map(esc).join('<i class="pg-hero-slash">/</i>')}</div>
-          <span class="pg-profile-lines">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality') })}${lineLadder({ line: designLine, state: 'design', label: t('Design') })}</span>
+          <span class="pg-profile-lines">${lineLadder({ line: personalityLine, state: 'personality', label: t('Personality'), yao: hexagramLines(chart.gates?.personality?.sun?.gate) })}${lineLadder({ line: designLine, state: 'design', label: t('Design'), yao: hexagramLines(chart.gates?.design?.sun?.gate) })}</span>
         </div>
         <div class="pg-hero-copy">
           <div class="pg-hero-name">${esc(profileName(numbers))}</div>
@@ -1311,7 +1356,7 @@ function renderGatesPanel(container) {
           aria-label="${esc(`${t('Gate {gate}: {name}', { gate, name })} — ${sourceLabel[source]} — ${ariaPlanets}`)}">
           <span class="panel-gate-number">${gate}</span>
           <span class="panel-gate-name">${esc(name)}</span>
-          ${lineLadder({ lines, orientation: 'horizontal', label: lines.map(line => t('Line {line}', { line })).join(' ') })}
+          ${lineLadder({ lines, orientation: 'horizontal', label: lines.map(line => t('Line {line}', { line })).join(' '), yao: hexagramLines(gate) })}
           <span class="panel-gate-lines">${lines.map(line => `· ${line}`).join(' ')}</span>
         </button>
         <div class="panel-gate-acts">${acts}</div>

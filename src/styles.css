@@ -369,10 +369,14 @@ body {
   column-gap: var(--page-gap);
 }
 
-/* Wheel view: the mandala becomes the protagonist — two thirds of the row
-   for the wheel, one third for the info column. */
+/* Wheel view: the wheel is a square capped by the viewport height, so the left
+   column is exactly as wide as the wheel itself instead of a fixed two thirds.
+   No dead space flanks the wheel, and the info column takes every pixel that
+   is left, never less than 320px. */
 #chart-view .chart-layout.mandala-mode {
-  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  grid-template-columns:
+    minmax(0, min(calc(100% - 320px - var(--page-gap)), calc(100dvh - var(--header-height) - 48px)))
+    minmax(320px, 1fr);
 }
 @media (--phone) {
   #chart-view .chart-layout.mandala-mode { grid-template-columns: minmax(0, 1fr); }
