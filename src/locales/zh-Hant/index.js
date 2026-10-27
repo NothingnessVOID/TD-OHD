@@ -8,13 +8,14 @@ import chartMessages from './ui-chart.json' with { type: 'json' };
 import commonMessages from './ui-common.json' with { type: 'json' };
 import dreamMessages from './ui-dream.json' with { type: 'json' };
 import mainMessages from './ui-main.json' with { type: 'json' };
+import pickerMessages from './ui-picker.json' with { type: 'json' };
 import staticMessages from './ui-static.json' with { type: 'json' };
 import viewMessages from './ui-views.json' with { type: 'json' };
 import transitMessages from './ui-transits.json' with { type: 'json' };
 import timelineMessages from './timeline.json' with { type: 'json' };
 const messages = {
   ...runtimeMessages, ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
-  ...mainMessages, ...staticMessages, ...viewMessages, ...dreamMessages, ...contexts['zh-Hant']
+  ...mainMessages, ...staticMessages, ...viewMessages, ...dreamMessages, ...pickerMessages, ...contexts['zh-Hant']
 };
 export default {
   code: 'zh-Hant', label: '繁體中文', matches: language => /^zh-(?:Hant(?:-[a-z]+)?|TW|HK|MO)$/i.test(language),
