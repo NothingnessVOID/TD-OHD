@@ -1458,9 +1458,18 @@
    The SVG is untouched: the gate hit circles are drawn in user units, and 44px
    targets for them would make neighbouring gates overlap. The lists are the
    finger-sized alternative. */
-@media (pointer: coarse), (--phone) {
-  .dream-view { --dream-tap: 44px; }
 
+/* The bands are sized from their 14px text (152px once the shell can afford it),
+   and the shared shell lays them *over* the canvas. Past the phone breakpoint the
+   canvas is still small while the bands keep their full width, so between 641px
+   and roughly 660px the right band reaches the outermost gate: measured with the
+   band-occlusion probe, a gate disc centre at 641px hit-tests onto
+   `.dream-column-planet` and every width from 660px up is clear. Stacking is
+   therefore keyed on the width at which the bands can no longer share the canvas
+   — one tablet step above the measured boundary (660px), so a chart whose
+   outermost gate sits further out still has room. The tap sizes stay on the
+   phone/coarse-pointer rule below; stacking alone does not enlarge targets. */
+@media (pointer: coarse), (--phone), (max-width: 767px) {
   /* --- Dream shell, stacked (canvas on top, the two slots below it) --- */
   .ohd-graph-shell.dream-graph-shell {
     height: auto;
@@ -1494,6 +1503,10 @@
     min-width: 0;
     pointer-events: auto;
   }
+}
+
+@media (pointer: coarse), (--phone) {
+  .dream-view { --dream-tap: 44px; }
 
   /* --- The page's own entry buttons --- */
   .dream-view .dream-row-open {
