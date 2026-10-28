@@ -51,6 +51,9 @@ faa729c -> aced6df    7af0104 -> 1a4e4be    1893ec5 -> 8973597
 tip 8b307f1（清理前）  tip bea3ecd（清理后）  12b9705 -> 77adf79
 ```
 
+当前分支 tip 为 `0727a3cb`，它是一个只恢复祖先关系的 merge commit（parents：`1a78f7c7` + 原 `12b9705`），
+tree 与 `1a78f7c7` 完全相同，不带来任何内容变动。
+
 ### 历史清理记录（2026-10-27）
 
 - **做了什么**：本分支历史里曾把两个构建产物目录 `dist-review/`、`dist-desktop/`
@@ -64,6 +67,12 @@ tip 8b307f1（清理前）  tip bea3ecd（清理后）  12b9705 -> 77adf79
   `~/Documents/Projects/TD-OHD/archive/backups/sheet-column-cleanup-20261027-233822/.git/filter-repo/commit-map`。
 - **以后不要再提交构建产物**：`.gitignore` 已加 `/dist-review/` 和 `/dist-desktop/`，
   这两个目录只留在本地磁盘上，不进仓库。
+- **共享祖先已恢复（2026-10-28）**：filter-repo 把所有带那两个产物的提交都重写了，
+  连带把共享祖先 `12b9705` 改成 `77adf79`，导致 `git merge-base HEAD main` 退到
+  `ffb449c`，以后与 main 合会退化成重复旧历史。已核实 `12b9705` 可达的全部
+  504 个 commit 从未包含这两个目录；据此在 `1a78f7c7` 之上补了一个只做祖先合并的
+  commit `0727a3cb`（tree 与 `1a78f7c7` 相同）。现在 `git merge-base HEAD main`
+  重新是 `12b9705`，分支历史里两个产物目录仍然零命中。
 - **关于首次 push 被拒的说明**：远端首次 push 被 GitHub 保护规则拦下，
   拦截对象是 `4b366a3` 里提交进来的构建产物（wasm 二进制文件）。
   当时把它当成「疑似泄露密钥」是一种未经证实的推测——文件是编译出来的
