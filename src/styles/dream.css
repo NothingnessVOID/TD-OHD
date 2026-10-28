@@ -95,6 +95,27 @@
 }
 .dream-view .dream-time-control[hidden] { display: none; }
 
+/* The shared control sizes its own field labels for the timeline's dense frame:
+   `.tl label` and `.tl-zone` are 10–11px there. On this page they sit inside the
+   reading column, where everything else holds a 12px floor, so they are the last
+   text below it. Scoped to this page's host — the Transits and Timeline pages keep
+   their compact labels, and the shared component is not edited. */
+.dream-view #dream-time-host .tl-toolbar label,
+.dream-view #dream-time-host .tl-zone,
+.dream-view #dream-time-host .tl-moment,
+.dream-view #dream-time-host .tl-moment-time,
+.dream-view #dream-time-host #dream-transit-choice-label { font-size: var(--font-size-sm); }
+
+/* The zone is an inline-flex of the word "Timezone" and its value, and the value
+   had no shrink floor, so it overflowed the zone's own box into the grid cell the
+   Now button occupies. Measured on this page: the value already overlapped that
+   button by 14px at the control's own 11px, and by 26px once raised to the 12px
+   floor — a pre-existing collision this page made worse. Letting the value wrap
+   inside the zone keeps the whole zone name readable instead of trading it for an
+   ellipsis, and leaves the shared control's own layout alone. */
+.dream-view #dream-time-host .tl-zone { flex-wrap: wrap; }
+.dream-view #dream-time-host .tl-zone output { min-width: 0; overflow-wrap: anywhere; }
+
 /* The wide frame is for the graph, its two activation columns and the three
    night-field panels. The heading block keeps its reading width, the same split
    the connection view makes between its frame and its title. */
