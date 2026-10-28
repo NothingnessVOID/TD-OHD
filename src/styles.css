@@ -1142,25 +1142,27 @@ body {
 .bg-planets-design .bg-planet-act { color: var(--bg-source-design-text, var(--source-design-text)); font-weight: 600; }
 .bg-planets-personality .bg-planet-act { color: var(--bg-source-personality-text, var(--source-personality-text)); font-weight: 600; }
 
-/* Hover highlight: dim everything, then re-light the hovered gate/channel */
+/* Hover highlight: dim everything, then re-light the hovered gate/channel.
+   Opacity only — the transition belongs to the base rules below, so the
+   reduced-motion reset can still switch it off. */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
 .bodygraph-svg.bg-dimmed .bg-gate-circle {
   opacity: 0.18;
-  transition: opacity 0.12s;
 }
 
 .bodygraph-svg.bg-dimmed .bg-gate-path.bg-lit { opacity: 1; }
 .bodygraph-svg.bg-dimmed .bg-gate.bg-lit .bg-gate-circle { opacity: 1; }
 .bodygraph-svg .bg-gate-path,
-.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s; }
+.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; }
 
 /* Gate hover: a ring on the visible circle, drawn with the skin's focus colour so it
    stays legible on every palette. Only the stroke changes, so the fill, the number
    backing and the dimming/lighting driven by highlightGate are all untouched. */
 .bodygraph-svg .bg-gate { outline: none; }
-.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; stroke: transparent; }
+.bodygraph-svg .bg-gate-circle { stroke: transparent; }
 .bodygraph-svg .bg-gate:hover .bg-gate-circle,
-.bodygraph-svg .bg-gate:focus-visible .bg-gate-circle {
+.bodygraph-svg .bg-gate:focus-visible .bg-gate-circle,
+.bodygraph-svg .bg-gate.bg-focus .bg-gate-circle {
   stroke: var(--focus);
   stroke-width: 2;
 }
@@ -1175,10 +1177,41 @@ body {
 }
 .bodygraph-svg.bg-dimmed .bg-gate.bg-selected .bg-gate-circle { opacity: 1; }
 
+/* Hover, keyboard focus and pin also outline the shape itself — the gate's wedge, or
+   the centre — not only the small disc that carries its number. On a two-person
+   composite every gate is a pale ownership wash, so the disc ring alone was easy to
+   miss and the graph read as unchanged. `paint-order` draws the stroke first, so the
+   outline sits outside the geometry and the ownership colour inside stays intact. */
+.bodygraph-svg .bg-gate-path.bg-focus,
+.bodygraph-svg .bg-center.bg-focus {
+  stroke: var(--focus);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+/* The pinned object keeps a heavier outline than a hover preview. */
+.bodygraph-svg .bg-gate-path.bg-selected,
+.bodygraph-svg .bg-center.bg-selected { stroke-width: 3.4; }
+.bodygraph-svg.bg-dimmed .bg-gate-path.bg-focus { opacity: 1; }
+
 /* Relational highlight reaches the centers too: when a gate (and its channel)
    lights up, the center(s) it touches stay lit while the rest settle back. */
-.bodygraph-svg .bg-center { transition: opacity 0.12s; }
+.bodygraph-svg .bg-center { transition: opacity 0.12s, stroke 0.12s; }
 .bodygraph-svg.bg-dimmed .bg-center:not(.bg-lit) { opacity: 0.35; }
+
+/* Viewport layer for graph tooltips.
+   The overlay is `position: fixed`, but every shell-hosted graph sits inside
+   `.ohd-graph-canvas`, which is translated to centre the canvas — and a transformed
+   ancestor is the containing block of a fixed descendant, so a tooltip left in the
+   graph was offset by the canvas's own page position. While visible it lives in this
+   layer instead, where `fixed` means the viewport again. The layer paints nothing and
+   takes no pointers; `bodygraph.js` owns moving the overlay in and out of it. */
+.bg-tooltip-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
 
 .bg-tooltip {
   position: fixed;
@@ -1201,6 +1234,9 @@ body {
 :root .bg-tooltip .bg-tt-personality { color: var(--bg-source-personality-tooltip-text, var(--source-personality-tooltip-text)); }
 :root .bg-tooltip :is(.bg-tt-source.transit, .bg-tt-source-transit) { color: var(--source-transit-tooltip-text); }
 :root .bg-root[data-transit-source-mode="unified-natal"] .bg-tooltip :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
+/* The same emphasis for a tooltip that has left the graph for the viewport layer and
+   therefore carries its graph's source mode itself. */
+:root .bg-tooltip[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
 /* Preserve approved Skin fills while making small text readable. */
 :root[data-skin] #chart-view .act-design { color: var(--source-birthDesign-text); }
 :root[data-skin] .tl :is(.bg-planets-design .bg-planets-head, .bg-planets-design .bg-planet-act, .act-design) { color: var(--source-design-text); }
@@ -1262,7 +1298,11 @@ body {
 .bg-reveal {
   transform-box: fill-box;
   transform-origin: center;
-  animation: bg-center-in 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  /* `backwards`, not `both`: an animation that also fills forwards keeps its final
+     opacity of 1 forever, which silently beat the dim rule below — the relationship
+     composite's centres never dimmed while its gates did. The last keyframe equals
+     the base style, so dropping the forwards fill changes nothing else. */
+  animation: bg-center-in 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
 }
 
 .bg-reveal-paths {

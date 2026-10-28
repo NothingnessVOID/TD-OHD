@@ -47,6 +47,39 @@ function el(tag, attrs = {}, ns = null) {
 }
 const svgEl = (tag, attrs) => el(tag, attrs, SVG_NS);
 
+/**
+ * Live graph tooltips, one per interactive graph.
+ *
+ * A tooltip is a viewport overlay and therefore has to leave the graph while it is
+ * visible (see the note at its creation), which means it no longer disappears when
+ * the graph that owns it is redrawn or replaced. This registry is what makes it
+ * disappear anyway: creating a tooltip first drops the one its container already
+ * had, and drops any whose graph has left the document.
+ */
+const liveTooltips = new Set();
+const TOOLTIP_LAYER_ID = 'bg-tooltip-layer';
+
+function pruneTooltips(owner = null) {
+  for (const record of liveTooltips) {
+    if (record.owner === owner || !record.owner.isConnected) {
+      record.tooltip.remove();
+      liveTooltips.delete(record);
+    }
+  }
+}
+
+/** The one viewport layer every graph tooltip borrows while it is visible. */
+function tooltipLayer() {
+  let layer = document.getElementById(TOOLTIP_LAYER_ID);
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.id = TOOLTIP_LAYER_ID;
+    layer.className = 'bg-tooltip-layer';
+    document.body.appendChild(layer);
+  }
+  return layer;
+}
+
 const CENTER_KEYS = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
 
 /**
@@ -657,15 +690,32 @@ export function renderBodygraph(container, chart, opts = {}) {
   }
 
   function renderHighlight(sel) {
-    for (const node of [...Object.values(gatePathEls), ...spanEls]) node.classList.remove('bg-lit');
-    for (const node of Object.values(gateCircleEls)) node.classList.remove('bg-lit');
-    for (const node of Object.values(centerPathEls)) node.classList.remove('bg-lit');
+    for (const node of [...Object.values(gatePathEls), ...spanEls]) node.classList.remove('bg-lit', 'bg-focus', 'bg-selected');
+    for (const node of Object.values(gateCircleEls)) node.classList.remove('bg-lit', 'bg-focus');
+    for (const node of Object.values(centerPathEls)) node.classList.remove('bg-lit', 'bg-focus');
     // `bg-selected` marks the gate that owns the open detail card, so it can keep a
     // visible ring after the pointer leaves. It is derived from `pinned` only, never
     // from hover, and it survives the dimming that hover previews apply.
     const selectedGate = pinned?.kind === 'gate' ? Number(pinned.id) : null;
     for (const [gate, node] of Object.entries(gateCircleEls)) {
-      node.classList.toggle('bg-selected', selectedGate != null && Number(gate) === selectedGate);
+      const isSelected = selectedGate != null && Number(gate) === selectedGate;
+      node.classList.toggle('bg-selected', isSelected);
+      gatePathEls[gate]?.classList.toggle('bg-selected', isSelected);
+    }
+    // The object under the pointer (or the keyboard) carries its own mark on the
+    // shape it covers, not only a ring on its number disc. Dimming plus that ring was
+    // the whole cue, and on a two-person composite — where every gate is a pale
+    // ownership wash — it read as "nothing happened". Only a single object is marked:
+    // a multi-gate selection (`gates`/`targets` from a host panel) keeps the plain
+    // relational dimming, so the outline never rings half the chart.
+    const focusGate = sel?.kind === 'gate' ? Number(sel.id) : null;
+    if (focusGate != null) {
+      gatePathEls[focusGate]?.classList.add('bg-focus');
+      gateCircleEls[focusGate]?.classList.add('bg-focus');
+    }
+    if (sel?.kind === 'center') {
+      centerPathEls[sel.id]?.classList.add('bg-focus');
+      if (pinned?.kind === 'center' && pinned.id === sel.id) centerPathEls[sel.id]?.classList.add('bg-selected');
     }
     if (!sel) { svg.classList.remove('bg-dimmed'); return { gates: [], centers: [] }; }
     svg.classList.add('bg-dimmed');
@@ -707,6 +757,53 @@ export function renderBodygraph(container, chart, opts = {}) {
   if (interactive) {
     const tooltip = el('div', { class: 'bg-tooltip', role: 'tooltip' });
     tooltip.style.display = 'none';
+
+    /**
+     * The overlay is a viewport object; the graph is not.
+     *
+     * Every shell-hosted graph sits inside `.ohd-graph-canvas`, which is shifted by
+     * `translateX(-50%)` to centre the canvas (styles/graph-shell.css), and a
+     * transformed ancestor becomes the containing block of `position: fixed`
+     * descendants. Measured on the sleep chart's two-person composite, the overlay
+     * landed 306px right and 301px below the pointer, and below the bottom of a
+     * 1000px viewport. So while it is visible the overlay lives in one shared layer
+     * on <body>, where `fixed` means the viewport again; hidden, it parks back inside
+     * the graph container, so a redrawn, replaced or abandoned graph takes it away
+     * with it instead of leaving it on the page.
+     */
+    const tooltipRecord = { tooltip, owner: container };
+    let layer = null;
+    pruneTooltips(container);
+    liveTooltips.add(tooltipRecord);
+
+    function syncTooltipContext() {
+      // Source colours are custom properties on the graph and the transit source
+      // mode is a data attribute on it. The portalled overlay is outside that
+      // subtree, so it carries its own copy and the tooltip rules keep matching.
+      for (const name of container.style) {
+        if (name.startsWith('--')) tooltip.style.setProperty(name, container.style.getPropertyValue(name));
+      }
+      const mode = container.dataset.transitSourceMode;
+      if (mode) tooltip.dataset.transitSourceMode = mode;
+      else delete tooltip.dataset.transitSourceMode;
+    }
+
+    function showTooltip(markup, anchor) {
+      pruneTooltips();
+      layer ||= tooltipLayer();
+      if (tooltip.parentElement !== layer) {
+        syncTooltipContext();
+        layer.appendChild(tooltip);
+      }
+      tooltip.innerHTML = markup;
+      tooltip.style.display = 'block';
+      positionTooltip(anchor);
+    }
+
+    function hideTooltip() {
+      tooltip.style.display = 'none';
+      if (tooltip.parentElement !== container) container.appendChild(tooltip);
+    }
 
     function tooltipText(gateNum) {
       if (composite) return compositeGateTooltip(gateNum);
@@ -774,20 +871,28 @@ export function renderBodygraph(container, chart, opts = {}) {
         (dyn.length ? `<div class="bg-tt-channel">${dyn.join('<br>')}</div>` : '');
     }
 
-    function moveTooltip(evt) {
-      // A fixed tooltip escapes the sticky chart column's scroll clipping.
-      // Flip near viewport edges, then clamp so its full contents stay visible.
+    function positionTooltip({ x: pointerX, y: pointerY, touch = false }) {
+      // Fixed positioning in the shared layer means viewport coordinates, so flip
+      // near viewport edges, then clamp so the full contents stay visible.
       const gap = 12, margin = 8;
       const { width, height } = tooltip.getBoundingClientRect();
       const { clientWidth, clientHeight } = document.documentElement;
-      const x = evt.clientX + gap + width <= clientWidth - margin
-        ? evt.clientX + gap : evt.clientX - width - gap;
-      const y = evt.pointerType === 'touch' ? evt.clientY - height - 20
-        : evt.clientY + gap + height <= clientHeight - margin
-        ? evt.clientY + gap : evt.clientY - height - gap;
+      const x = pointerX + gap + width <= clientWidth - margin
+        ? pointerX + gap : pointerX - width - gap;
+      const y = touch ? pointerY - height - 20
+        : pointerY + gap + height <= clientHeight - margin
+        ? pointerY + gap : pointerY - height - gap;
       tooltip.style.left = `${Math.max(margin, Math.min(x, clientWidth - width - margin))}px`;
       tooltip.style.top = `${Math.max(margin, Math.min(y, clientHeight - height - margin))}px`;
     }
+
+    /** The pointer that produced an event. */
+    const pointerAnchor = evt => ({ x: evt.clientX, y: evt.clientY, touch: evt.pointerType === 'touch' });
+    /** An element that has keyboard focus: anchor beside its own box instead. */
+    const nodeAnchor = node => {
+      const rect = node.getBoundingClientRect();
+      return { x: rect.right, y: rect.top + rect.height / 2, touch: false };
+    };
 
     svg.addEventListener('pointerover', (evt) => {
       // Touch taps fire a synthetic hover that would leave a tooltip stuck and
@@ -797,18 +902,14 @@ export function renderBodygraph(container, chart, opts = {}) {
       if (gateEl) {
         const gateNum = parseInt(gateEl.getAttribute('data-gate'));
         highlightGate(gateNum);
-        tooltip.innerHTML = tooltipText(gateNum);
-        tooltip.style.display = 'block';
-        moveTooltip(evt);
+        showTooltip(tooltipText(gateNum), pointerAnchor(evt));
         return;
       }
       const centerEl = evt.target.closest('[data-center]');
       if (centerEl) {
         const key = centerEl.getAttribute('data-center');
         highlightCenter(key);
-        tooltip.innerHTML = centerTooltipText(key);
-        tooltip.style.display = 'block';
-        moveTooltip(evt);
+        showTooltip(centerTooltipText(key), pointerAnchor(evt));
       }
     });
     let touchStart = null;
@@ -820,18 +921,17 @@ export function renderBodygraph(container, chart, opts = {}) {
       if (gateEl && svg.contains(gateEl)) {
         const gate = Number(gateEl.getAttribute('data-gate'));
         highlightGate(gate);
-        tooltip.innerHTML = tooltipText(gate);
-      } else if (centerEl && svg.contains(centerEl)) {
-        const center = centerEl.getAttribute('data-center');
-        highlightCenter(center);
-        tooltip.innerHTML = centerTooltipText(center);
-      } else {
-        highlightGate(null);
-        tooltip.style.display = 'none';
+        showTooltip(tooltipText(gate), pointerAnchor(evt));
         return;
       }
-      tooltip.style.display = 'block';
-      moveTooltip(evt);
+      if (centerEl && svg.contains(centerEl)) {
+        const center = centerEl.getAttribute('data-center');
+        highlightCenter(center);
+        showTooltip(centerTooltipText(center), pointerAnchor(evt));
+        return;
+      }
+      highlightGate(null);
+      hideTooltip();
     }
     if (opts.touchPreview) {
       let touchPointerId = null;
@@ -845,7 +945,7 @@ export function renderBodygraph(container, chart, opts = {}) {
         touchStart = null;
         touchPointerId = null;
         highlightGate(null);
-        tooltip.style.display = 'none';
+        hideTooltip();
         document.removeEventListener('pointermove', trackTouchPreview);
         document.removeEventListener('pointerup', endTouchPreview);
         document.removeEventListener('pointercancel', endTouchPreview);
@@ -863,7 +963,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       });
     }
     svg.addEventListener('pointermove', (evt) => {
-      if (evt.pointerType !== 'touch' && tooltip.style.display === 'block') moveTooltip(evt);
+      if (evt.pointerType !== 'touch' && tooltip.style.display === 'block') positionTooltip(pointerAnchor(evt));
     });
     svg.addEventListener('pointerout', (evt) => {
       if (evt.pointerType === 'touch' && touchStart) return;
@@ -871,8 +971,32 @@ export function renderBodygraph(container, chart, opts = {}) {
       const stayingOnTarget = rt && svg.contains(rt) && (rt.closest('[data-gate]') || rt.closest('[data-center]'));
       if (!stayingOnTarget) {
         highlightGate(null); // reverts to the pinned selection (or clears)
-        tooltip.style.display = 'none';
+        hideTooltip();
       }
+    });
+    // Keyboard focus previews the same thing the pointer does, from the object's own
+    // box instead of a pointer position. `:focus-visible` keeps a mouse click — which
+    // also focuses the gate — from re-anchoring the overlay the pointer just placed.
+    svg.addEventListener('focusin', (evt) => {
+      if (!evt.target.matches?.(':focus-visible')) return;
+      const gateEl = evt.target.closest('[data-gate]');
+      if (gateEl) {
+        const gateNum = parseInt(gateEl.getAttribute('data-gate'));
+        highlightGate(gateNum);
+        showTooltip(tooltipText(gateNum), nodeAnchor(gateEl));
+        return;
+      }
+      const centerEl = evt.target.closest('[data-center]');
+      if (centerEl) {
+        const key = centerEl.getAttribute('data-center');
+        highlightCenter(key);
+        showTooltip(centerTooltipText(key), nodeAnchor(centerEl));
+      }
+    });
+    svg.addEventListener('focusout', (evt) => {
+      if (evt.relatedTarget && svg.contains(evt.relatedTarget)) return;
+      highlightGate(null);
+      hideTooltip();
     });
     svg.addEventListener('click', (evt) => {
       if (touchDragged && evt.pointerType === 'touch') { touchDragged = false; return; }
