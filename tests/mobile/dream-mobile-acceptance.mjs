@@ -59,6 +59,13 @@ const DEVICES = [
 const MIN_CONTROL = 40;
 /** The graph's hit circle is drawn in user units, so its pixel size shrinks with the canvas. */
 const MIN_GATE_HIT = 12;
+/**
+ * The sleep page's own lists and type chips: the finger's real way in, so they are held
+ * to the 44px touch minimum (`--dream-tap` in styles/dream.css). The graph's hit circles
+ * are explicitly *not* in this group — they are drawn in user units and inflating them
+ * to 44px would make neighbouring gates overlap.
+ */
+const MIN_TAP = 44;
 
 let failures = 0;
 const summary = [];
@@ -275,9 +282,12 @@ for (const device of DEVICES) {
     await check(`${label}: every gate is reachable with a finger`, async () => {
       const gates = await page.$$eval('#dream-bodygraph .bg-gate', nodes => nodes.map(node => node.dataset.gate));
       const hits = await page.$$eval('#dream-bodygraph .bg-gate-hit', nodes => nodes.map(node => Math.round(node.getBoundingClientRect().width)));
-      record(`${label} gate hit diameter`, Math.min(...hits));
+      record(`${label} gate hit diameter`, { min: Math.min(...hits), max: Math.max(...hits) });
       assert.ok(hits.length === gates.length, `${hits.length} hit circles for ${gates.length} gates`);
       assert.ok(Math.min(...hits) >= MIN_GATE_HIT, `the smallest gate hit area is ${Math.min(...hits)}px`);
+      // The 44px touch minimum belongs to the lists, not to the drawn graph: these
+      // circles must keep their drawn size, or neighbouring gates would overlap.
+      assert.ok(Math.max(...hits) < MIN_TAP, `a gate hit circle grew to ${Math.max(...hits)}px`);
       // Every gate must open itself, not a neighbour: the hit circles are small at this
       // width, so "most of them work" is not the claim being made.
       const sample = gates;
@@ -380,6 +390,18 @@ for (const device of DEVICES) {
       // The one list surface that does meet the control size is the channel list.
       assert.ok(rows['.dream-channel-open[data-channel]'] >= MIN_CONTROL,
         `channel rows are only ${rows['.dream-channel-open[data-channel]']}px tall`);
+      // The entry buttons a finger actually aims at: a night-field gate row and a type
+      // chip, both 16.8 / 23.4px before the touch rule. 44px is the minimum this page
+      // guarantees on a coarse pointer.
+      for (const selector of ['.dream-row-open[data-gate]', '.dream-type-chip']) {
+        assert.ok(rows[selector] >= MIN_TAP, `${selector} is only ${rows[selector]}px tall`);
+      }
+      // The activation column row is still 16.8px, on purpose: its band sits *over* the
+      // canvas, so filling the gaps between rows to 44px takes the flank gates away from
+      // the graph. It is asserted to be no worse than before until the shell reserves
+      // space for the bands, and the graph's own reachability check above is the guard.
+      assert.ok(rows['.dream-column-row[data-gate]'] >= 16,
+        `activation column rows shrank to ${rows['.dream-column-row[data-gate]']}px`);
       // Three different night-field rows, each opening its own gate.
       const gates = await page.$$eval('.dream-row-open[data-gate]', nodes => nodes.slice(0, 3).map(node => node.dataset.gate));
       for (const gate of gates) {
@@ -570,6 +592,14 @@ for (const device of DEVICES) {
       })));
       record(`${label} composite type chips`, chips);
       assert.equal(chips.length, 4, `${chips.length} type chips instead of four`);
+      // The composite's four chips are the same 44px touch target as the single
+      // design's two: a person's waking and sleep type are both finger-sized.
+      const chipHeights = await page.$$eval('#dream-content [data-dream-type-open]',
+        nodes => nodes.map(node => Math.round(node.getBoundingClientRect().height * 10) / 10));
+      record(`${label} composite chip heights`, chipHeights);
+      for (const height of chipHeights) {
+        assert.ok(height >= MIN_TAP, `a composite type chip is only ${height}px tall`);
+      }
       for (const owner of ['a', 'b']) {
         for (const side of ['waking', 'dream']) {
           assert.ok(chips.some(chip => chip.owner === owner && chip.side === side),

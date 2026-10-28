@@ -32,6 +32,10 @@
      is wider than tall and is fitted by its own ratio, not the waking chart's.
      Must match DREAM_VIEW_BOX in lib/human-design/dream-topology.js. */
   --dream-graph-aspect: 978.13 / 558.3;
+  /* Touch minimum for the page's own buttons. 0 on a fine pointer at desktop
+     width, so the compact layout is unchanged; the coarse-pointer / phone rule
+     near the end of this file raises it to the 44px a finger needs. */
+  --dream-tap: 0px;
 
   /* The page frame — width cap, centring, gutter — already comes from
      `.view-section` / `.view-container`, which this element also carries, so
@@ -1434,6 +1438,52 @@
   font-size: var(--font-size-xs);
   line-height: 1.6;
   overflow-wrap: anywhere;
+}
+
+/* ---------- Touch targets (coarse pointer / phone) ----------
+   A finger's way into a gate or a type is these buttons, not the graph's discs:
+   at 360–390px the night-field gate buttons measured 16.8×18.8px and the type
+   chips 23.4px, so vertically adjacent rows were impossible to tell apart.
+   `--dream-tap` is 0 by default and 44px here.
+
+   Scope, and why it stops where it does:
+   - `.dream-row-open` (night-field gate buttons) and `.dream-type-chip` (the single
+     design's two, the composite's four) live in the page's own lists and strip, so
+     growing them costs nothing else.
+   - `.dream-column-row` is deliberately NOT in this block. The activation columns
+     live in `.ohd-graph-slot`, which `src/styles/graph-shell.css` places *over* the
+     canvas by design ("a left band and a right band, both over the canvas"), and the
+     gates at the canvas' flanks sit under those bands. Measured at 360px with this
+     stylesheet untouched, `elementFromPoint()` at gate 8's disc centre already
+     returns a `.dream-column-row`; the short 16.8px rows only let a tap through in
+     the gaps between rows. Raising them to 44px closes those gaps and takes the
+     flank gates away from the graph — the phone suite's "every gate is reachable"
+     check goes red. Fixing that needs the shell to reserve space (or to move the
+     bands below the canvas at phone width), which is `graph-shell.css` territory.
+   - The SVG is untouched: the gate hit circles are drawn in user units and inflating
+     them to 44px would make neighbouring gates overlap. */
+@media (pointer: coarse), (--phone) {
+  .dream-view { --dream-tap: 44px; }
+
+  /* The gate button is the smallest target on the page (18.8px wide), so it gets
+     the minimum on both axes; `.dream-row-head` already wraps, so the name moves
+     to the next line at worst instead of squeezing. */
+  .dream-view .dream-row-open {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--dream-tap);
+    min-height: var(--dream-tap);
+  }
+
+  /* Type chips become 44px pills; the strip and the composite rows both centre
+     their items, so the row grows in height only. */
+  .dream-view .dream-type-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--dream-tap);
+  }
 }
 
 /* ---------- Narrow widths ---------- */
