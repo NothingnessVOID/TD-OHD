@@ -188,13 +188,14 @@ export function renderBodygraph(container, chart, opts = {}) {
   const nameOfCenter = center => naming?.center?.(center) || displayCenter(center);
   const nameOfGateTooltip = gate => naming?.gateTooltip?.(gate)
     || formatDisplay('gateTooltip', displayGate(gate), hexagramName(gate));
-  // A channel override names the channel only; the two tooltip spots each add the gate
-  // pair through their own template, so both read `启发通道（1-8）` without the host
-  // knowing which one it is answering. The catalogue path keeps each spot's existing
-  // expression untouched.
+  // A channel name now comes in two shapes, because its two tooltip spots differ:
+  // the single-chart note template `'{name}（{gates}）'` already appends the pair, while the
+  // composite channel line does not. Feeding the formatted expression into the note printed
+  // the pair twice (`接受通道（17-62）（17-62）`); the note therefore takes the bare name and the
+  // line takes the formatted one. A host override is always a bare name, so both spots read
+  // `启发通道（1-8）` without the host knowing which one is asking.
   const customChannelName = channel => naming?.channelTooltip?.(channel) || null;
-  const nameOfChannelNote = channel => customChannelName(channel)
-    || formatDisplay('channelTooltip', displayChannel(channel), channel.gates.join('-'));
+  const nameOfChannelNote = channel => customChannelName(channel) || displayChannel(channel);
   const nameOfChannelLine = channel => formatDisplay('channelTooltip',
     customChannelName(channel) || displayChannel(channel), channel.gates.join('-'));
 
@@ -1016,11 +1017,31 @@ export function renderBodygraph(container, chart, opts = {}) {
       }
     });
     svg.addEventListener('keydown', (evt) => {
+      // The keyboard has two dismissal-free preview paths (focus shows the overlay, Escape
+      // must be able to take it back) and two activation paths that hand over to the detail
+      // sheet. Escape never calls `preventDefault()`: an open detail card owns it, and this
+      // handler only dismisses the graph's own overlay when there is one to dismiss.
+      if (evt.key === 'Escape') {
+        if (tooltipOpen()) hideTooltip();
+        return;
+      }
       if (evt.key !== 'Enter' && evt.key !== ' ') return;
+      // The sheet replaces the overlay, and the overlay is in the top layer — above the
+      // sheet — so it must not survive the key that opened the sheet. Same rule the click
+      // handler follows.
       const gateEl = evt.target.closest('[data-gate]');
-      if (gateEl && opts.onGateClick) { evt.preventDefault(); opts.onGateClick(parseInt(gateEl.getAttribute('data-gate'))); return; }
+      if (gateEl && opts.onGateClick) {
+        evt.preventDefault();
+        hideTooltip();
+        opts.onGateClick(parseInt(gateEl.getAttribute('data-gate')));
+        return;
+      }
       const centerEl = evt.target.closest('[data-center]');
-      if (centerEl && opts.onCenterClick) { evt.preventDefault(); opts.onCenterClick(centerEl.getAttribute('data-center')); }
+      if (centerEl && opts.onCenterClick) {
+        evt.preventDefault();
+        hideTooltip();
+        opts.onCenterClick(centerEl.getAttribute('data-center'));
+      }
     });
 
     nextGraph.appendChild(tooltip);

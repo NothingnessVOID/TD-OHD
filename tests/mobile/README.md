@@ -55,6 +55,18 @@ E2E_URL=http://127.0.0.1:10015 node tests/mobile/dream-mobile-acceptance.mjs
 - 命名接线已验证：图内 aria 与浮层都用梦境名（例：1 号闸门 `喜悦`，不再出现清醒名 `创造（乾为天）`）。
 - 六条梦境通道在单人与合盘下都按梦境名列出，合盘的完成方带 owner 并写明是谁。
 
+## 手机验收之外的共享修复（同在本测试分支提交，出自 Explorer 复审）
+
+1. **键盘 Escape 没有收口。** 键盘 focus 出预览后按 Escape 无人处理（`svg` 的 keydown 只认 Enter/Space），
+   预览会一直挂着。现在 Escape 只收起图自己的浮层，**不** `preventDefault()`，详情卡的 Escape 仍归详情卡；
+   键盘 Enter 开卡时也先收起浮层（与 click 同一规则），避免 top layer 的浮层盖在卡上。
+   测试：桌面试 `birth chart: Escape takes the keyboard preview back` 与 `… Enter hands the gate to the card
+   without the overlay riding on top`（后者在按 Escape 后断言卡确实关闭，证明没有抢键）。
+2. **通道门对被打印两次（本次引入，非既有）。** `nameOfChannelNote` 的默认值用了 `formatDisplay('channelTooltip', …)`，
+   它本身已含门对，而单人 tooltip 模板 `'{name}（{gates}）'` 又加一次，实测「接受通道（17-62）（17-62）」。
+   现在备注取裸通道名（`displayChannel`），门对交给模板；合盘通道行（模板不加门对）继续用完整格式。
+   测试：桌面试在出生图与行运页各找一条门对备注，断言门对只出现一次；命名 hook 默认路径与 Dream 路径同样断言一次。
+
 ## 本轮发现并修掉的问题（在本测试分支提交）
 
 **触摸设备的兼容性 hover 会留下浮层。** Chrome 在触摸点按后会把兼容性 hover 以 `pointerover` + `pointerType:"mouse"`

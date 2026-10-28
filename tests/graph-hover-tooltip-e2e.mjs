@@ -54,6 +54,7 @@ const TOLERANCE = 2;
 
 let failures = 0;
 const ok = name => console.log(`✔ ${name}`);
+const record = (label, value) => console.log(`· ${label}: ${typeof value === 'string' ? value : JSON.stringify(value)}`);
 const fail = (name, error) => { failures++; console.error(`✖ ${name}\n  ${error?.stack || error}`); };
 async function check(name, fn) {
   try { await fn(); ok(name); } catch (error) { fail(name, error); }
@@ -138,6 +139,34 @@ async function hoverGate(point) {
   await page.mouse.move(point.x - 60, point.y - 60);
   await page.mouse.move(point.x, point.y, { steps: 4 });
   await page.waitForTimeout(260);
+}
+
+/**
+ * Hover gates until the overlay carries a channel note, and report it.
+ *
+ * The note template already prints the gate pair, so a note that also inherits the
+ * formatted channel label states the pair twice. Counting the occurrences is the
+ * assertion; it needs no knowledge of which channel a chart completes.
+ */
+async function hoverUntilChannelNote(rootSelector) {
+  const points = await page.evaluate((selector) => [...document.querySelectorAll(selector)].map(node => {
+    const disc = node.querySelector('.bg-gate-circle') || node;
+    const rect = disc.getBoundingClientRect();
+    return { gate: node.dataset.gate, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  }), rootSelector);
+  for (const point of points) {
+    await hoverGate(point);
+    const note = await page.evaluate(() => {
+      const open = [...document.querySelectorAll('.bg-tooltip')].find(node => node.matches(':popover-open'));
+      const note = open?.querySelector('.bg-tt-channel');
+      if (!note) return null;
+      const text = note.textContent.replace(/\s+/g, ' ').trim();
+      const pairs = text.match(/\d{1,2}[-–]\d{1,2}/g) || [];
+      return { text, pairs };
+    });
+    if (note && note.pairs.length) return { gate: point.gate, ...note };
+  }
+  return null;
 }
 
 /**
@@ -315,6 +344,47 @@ try {
   /* ------------------------------------------------------------------ *
    * Transits
    * ------------------------------------------------------------------ */
+  await check('birth chart: Escape takes the keyboard preview back', async () => {
+    // A keyboard user reaches a gate, sees the preview, and must be able to dismiss it
+    // without activating anything. `Tab` puts the browser in keyboard-input mode so the
+    // programmatic focus that follows matches `:focus-visible`.
+    await page.keyboard.press('Tab');
+    const gate = await page.$eval('#bodygraph-container .bg-gate', node => node.dataset.gate);
+    await page.$eval(`#bodygraph-container .bg-gate[data-gate="${gate}"]`, node => node.focus());
+    await page.waitForTimeout(300);
+    assert.equal((await readTooltip()).visible, 1, 'keyboard focus showed no preview');
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    assert.equal((await readTooltip()).visible, 0, 'Escape left the preview open');
+    assert.equal(await openDetailOwner(), null, 'Escape opened a card');
+  });
+
+  await check('birth chart: Enter hands the gate to the card without the overlay riding on top', async () => {
+    const gate = await page.$eval('#bodygraph-container .bg-gate', node => node.dataset.gate);
+    // The previous check left focus on this gate; focusing it again fires no `focusin`.
+    await page.$eval(`#bodygraph-container .bg-gate[data-gate="${gate}"]`, node => node.blur());
+    await page.waitForTimeout(150);
+    await page.$eval(`#bodygraph-container .bg-gate[data-gate="${gate}"]`, node => node.focus());
+    await page.waitForTimeout(300);
+    assert.equal((await readTooltip()).visible, 1, 'refocusing showed no preview');
+    await page.keyboard.press('Enter');
+    await waitForDetail('bodygraph');
+    assert.equal((await readTooltip()).visible, 0,
+      'the overlay stayed open above the card the Enter key opened');
+    // The card owns Escape: its own handler must still close it, so the graph's
+    // dismissal must not have consumed the key.
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('.gate-detail[role="dialog"]:not(.hidden)'),
+      null, { timeout: 10000 });
+  });
+
+  await check('birth chart: a channel note names its gate pair exactly once', async () => {
+    const note = await hoverUntilChannelNote('#bodygraph-container .bg-gate');
+    assert.ok(note, 'no gate on the birth chart showed a channel note');
+    record(`${'birth chart note'}`, note.text);
+    assert.equal(note.pairs.length, 1, `the note states the gate pair ${note.pairs.length} times: "${note.text}"`);
+  });
+
   await check('transits: the overlay sits beside the pointer', async () => {
     await nav('transits');
     await page.waitForSelector('#transit-bodygraph .bg-gate', { timeout: 60000 });
@@ -323,6 +393,13 @@ try {
     await hoverGate(point);
     assertBesidePointer(await readTooltip(), point);
     await page.screenshot({ path: path.join(SHOTS, '02-transits-hover.png') });
+  });
+
+  await check('transits: a channel note names its gate pair exactly once', async () => {
+    const note = await hoverUntilChannelNote('#transit-bodygraph .bg-gate');
+    assert.ok(note, 'no gate on the transits page showed a channel note');
+    record('transits note', note.text);
+    assert.equal(note.pairs.length, 1, `the note states the gate pair ${note.pairs.length} times: "${note.text}"`);
   });
 
   await check('transits: click opens the card and Escape closes it without an overlay left over', async () => {
@@ -717,7 +794,8 @@ try {
       const naming = {
         gate: gate => `HOST-GATE-${gate}`,
         gateTooltip: gate => `HOST-TIP-${gate}`,
-        channelTooltip: channel => `HOST-CHANNEL-${channel.gates.join('-')}`,
+        // No digits in the override: the note's own pair must be counted, not the fixture's.
+        channelTooltip: () => 'HOST-CHANNEL',
         center: center => `HOST-CENTRE-${center}`
       };
       const render = (options) => {
@@ -757,7 +835,9 @@ try {
     assert.doesNotMatch(rendered.namedGate.aria, /创造|乾为天/, `the gate aria kept the catalogue word: "${rendered.namedGate.aria}"`);
     assert.match(rendered.namedGate.tip, /HOST-TIP-1/, `the gate tooltip reads "${rendered.namedGate.tip}"`);
     assert.doesNotMatch(rendered.namedGate.tip, /乾为天/, `the tooltip appended the waking hexagram: "${rendered.namedGate.tip}"`);
-    assert.match(rendered.namedGate.tip, /HOST-CHANNEL-1-8（1-8）/, `the channel note is not the host name plus its pair: "${rendered.namedGate.tip}"`);
+    assert.equal((rendered.namedGate.tip.match(/1-8/g) || []).length, 1,
+      `the channel note states its gate pair more than once: "${rendered.namedGate.tip}"`);
+    assert.match(rendered.namedGate.tip, /HOST-CHANNEL（1-8）/, `the channel note is not the host name plus its pair: "${rendered.namedGate.tip}"`);
     assert.match(rendered.namedCentre.tip, /HOST-CENTRE-g/, `the centre tooltip reads "${rendered.namedCentre.tip}"`);
     assert.match(rendered.namedCentre.aria, /HOST-CENTRE-g/, `the centre aria reads "${rendered.namedCentre.aria}"`);
     assert.match(rendered.namedCentre.summary, /HOST-CENTRE-g/, 'the graph summary kept the catalogue centre name');
@@ -765,6 +845,9 @@ try {
     assert.doesNotMatch(rendered.plain.aria, /HOST-/, 'a graph without naming picked up an override');
     assert.match(rendered.plain.aria, /创造/, `the default gate aria reads "${rendered.plain.aria}"`);
     assert.match(rendered.plain.tip, /创造（乾为天）/, `the default gate tooltip reads "${rendered.plain.tip}"`);
+    // The catalogue channel note names its pair once, not twice.
+    assert.equal((rendered.plain.tip.match(/1-8/g) || []).length, 1,
+      `the default channel note states its gate pair more than once: "${rendered.plain.tip}"`);
   });
 
   await check('a sleep naming hook set reads as the sleep design does', async () => {
@@ -817,6 +900,8 @@ try {
     assert.match(sleep.tip, new RegExp(`第 20 闸门 · ${sleep.dreamGate}`), `the sleep tooltip reads "${sleep.tip}"`);
     assert.ok(!sleep.tip.includes(sleep.wakingGate), `the sleep tooltip still uses the waking gate name: "${sleep.tip}"`);
     assert.match(sleep.tip, new RegExp(`${sleep.dreamChannel}（20-57）`), `the channel note reads "${sleep.tip}"`);
+    assert.equal((sleep.tip.match(/20-57/g) || []).length, 1,
+      `the sleep channel note states its gate pair more than once: "${sleep.tip}"`);
     assert.match(sleep.aria, new RegExp(sleep.dreamGate), `the sleep gate aria reads "${sleep.aria}"`);
   });
 
