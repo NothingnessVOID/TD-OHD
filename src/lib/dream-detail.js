@@ -1,17 +1,26 @@
 /**
  * Sleep-chart detail sheets.
  *
- * Reuses the shared dialog shell, headings and navigable structure, but owns its
- * activation data *and* its reading text. The waking detail path in views/chart.js
- * reads that module's own current chart, so reusing it here would answer a
- * question about the sleeping design with the waking chart's activations;
- * AGENTS.md §6 requires the data context to be explicit instead.
+ * Reuses the shared dialog lifecycle, navigable structure and navigation
+ * headings, but owns its activation data *and* its reading text. The waking
+ * detail path in views/chart.js reads that module's own current chart, so
+ * reusing it here would answer a question about the sleeping design with the
+ * waking chart's activations; AGENTS.md §6 requires the data context to be
+ * explicit instead.
  *
- * Two readings appear side by side on purpose, and neither can be mistaken for
- * the other: the dream reading comes from the teacher's material through
- * `lib/dream-vocabulary.js`, and the waking reading stays the shared one from
- * `lib/shared-object-details.js`, each under its own heading. The dream reading is
- * never silenced just because a waking one exists next to it.
+ * Each sheet carries one layer only. The gate, channel and six-line sheets print
+ * the dream reading from the teacher's material (`lib/dream-vocabulary.js`) and
+ * nothing else: waking prose belongs to the waking chart and is not mixed in
+ * here, where it would read as dream content. The one place the waking side is
+ * shown on purpose is the type sheet (`showType('waking')`), which the type
+ * strip's own `Awake` button opens; it receives the waking type name from this
+ * person's sleep model instead of reading the loaded chart, and it is titled as
+ * the waking reading so the two never blur.
+ *
+ * Object titles are the sleep vocabulary's: a gate is titled with
+ * `dreamGateName()`, a channel with `dreamChannelName()`, and the night field
+ * (plus portal) follows as a secondary tag. The waking name is not printed at
+ * all, so the sheet cannot present the waking catalogue as the dream object.
  *
  * Composite (two-person) mode swaps the three-source activation block for
  * ownership, using the same gateOwner/channelDynamic the shared renderer already
@@ -19,8 +28,9 @@
  */
 
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from './detail-dialog.js';
-import { renderGateDetailHeading, renderChannelDetailHeading, renderDetailNavigation } from './object-detail-heading.js';
-import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from './shared-object-details.js';
+import { renderDetailNavigation } from './object-detail-heading.js';
+import { bindSharedObjectDetails } from './shared-object-details.js';
+import { renderChannelCircuitBadges } from './channel-badges.js';
 import { DREAM_CHANNELS, dreamRealmOf, isDreamPortal } from './human-design/dream-topology.js';
 import { GATES } from './human-design/catalog.js';
 import {
@@ -28,14 +38,23 @@ import {
   dreamGateReading, dreamChannelName, dreamChannelReading, dreamChannelDefinition,
   dreamPortalReading, dreamLineReading, dreamPlanetReading
 } from './dream-vocabulary.js';
-import { centerName, planetName } from './vocabulary.js';
+import {
+  centerName, planetName, typeName as wakingTypeName, typeDescription, strategy, notSelf, signature
+} from './vocabulary.js';
 import { PLANET_GLYPHS } from './planet-reference.js';
 import { t, formatDisplay } from './i18n.js';
 import { esc } from './format.js';
 
-/** The three activation sources of a single sleep design, in display order. */
+/**
+ * The three activation sources of a single sleep design, in display order.
+ *
+ * The personality side is the sleeping person's own instant, not a waking
+ * chart, so it is named with the sleep vocabulary (`Sleep personality` →
+ * 梦境人格) and never as "awake personality". `DreamChart` uses the same two keys
+ * for its composite row groups, which keeps one label per side on every page.
+ */
 const SOURCES = [
-  { key: 'personality', label: 'Awake personality' },
+  { key: 'personality', label: 'Sleep personality' },
   { key: 'design', label: 'Sleep design' },
   // Shared UI key, so the sheet and the page name the overlay the same way.
   { key: 'transit', label: 'Transit' }
@@ -91,13 +110,31 @@ function lineThemeRow(lines) {
       <span class="dream-detail-line-theme">${esc(dreamLineTheme(line))}</span></span>`).join('')}</div>`;
 }
 
+/**
+ * The night field, then the portal mark: both are facts *about* the dream gate,
+ * so they sit under its dream title instead of repeating it. The gate's own name
+ * is the sheet's title and is deliberately not repeated here.
+ */
 function dreamTags(gate) {
   const realm = dreamRealmOf(gate);
   return `<div class="dream-detail-tags">
     ${realm ? `<span class="dream-detail-tag dream-detail-tag-${realm}">${esc(dreamRealmName(realm))}</span>` : ''}
-    <span class="dream-detail-tag dream-detail-tag-name">${esc(dreamGateName(gate))}</span>
     ${isDreamPortal(gate) ? `<span class="dream-detail-tag dream-detail-tag-portal">${esc(t('Portal'))}</span>` : ''}
   </div>`;
+}
+
+/** The sleep title of a gate, in the shared heading classes the other sheets use. */
+function dreamGateHeading(gate) {
+  return `<div class="detail-label">${esc(t('Gate {gate}', { gate }))}</div>
+    <div class="detail-name">${esc(dreamGateName(gate))}</div>`;
+}
+
+/** The sleep title of a channel, with the circuit badges the shared heading also carries. */
+function dreamChannelHeading(channel) {
+  const key = channel.gates.join('-');
+  return `<div class="detail-label">${esc(t('Channel {channel}', { channel: key }))}</div>
+    <div class="channel-detail-heading"><div class="detail-name dream-detail-channel-title">${esc(dreamChannelName(channel.gates) || key)}</div>
+      ${renderChannelCircuitBadges(channel)}</div>`;
 }
 
 /**
@@ -137,8 +174,11 @@ function gateDreamReading(gate) {
  * sleep design actually activates marked.
  *
  * The material pairs each line's waking role with its dream mechanism and its
- * residue in one entry, so the two columns are shown together here: that pairing
- * is exactly what tells a reader which state a sentence belongs to.
+ * residue in one entry. Only the dream half belongs in this sheet: the waking
+ * role describes the waking chart, and mixing it in would read as dream content
+ * (the source text itself is unchanged: the waking field stays in the locale
+ * vocabulary, it is simply not printed here). The line's
+ * dream mechanism and the residue are both about the night, so both stay.
  */
 function nightForceSection(lines) {
   const rows = [1, 2, 3, 4, 5, 6].map(line => {
@@ -151,7 +191,6 @@ function nightForceSection(lines) {
           <span class="dream-nightforce-theme">${esc(dreamLineTheme(line))}</span>
           ${active ? `<span class="dream-nightforce-badge">${esc(t('Active tonight'))}</span>` : ''}
         </div>
-        ${readingRow(t('Waking state'), reading.waking)}
         ${readingRow(t('Dream state'), reading.dream)}
         ${readingRow(t('Conditioning residue'), reading.residue)}
       </li>`;
@@ -244,7 +283,6 @@ export function createDreamDetail(initial = {}) {
   // the dialog owns stays in the document and the open card survives.
   let data = { dream: null, model: null, composite: null, a: null, b: null, ...initial };
   let api = null;
-  let lens = 'hd';
   let current = null;
   // Selections the reader moved through, so the sheet's Back reaches the card
   // they came from instead of being a button that does nothing.
@@ -274,7 +312,6 @@ export function createDreamDetail(initial = {}) {
     element.classList.remove('hidden');
     api?.setPinned?.(selection);
     bindSharedObjectDetails(element, {
-      onLensChange: next => { lens = next; },
       onGateSelect: gate => showGate(gate),
       onChannelSelect: id => showChannel(id),
       onBack: back
@@ -292,6 +329,7 @@ export function createDreamDetail(initial = {}) {
     if (!previous) return;
     if (previous.kind === 'gate') showGate(previous.id, false);
     else if (previous.kind === 'channel') showChannel(previous.id, false);
+    else if (previous.kind === 'type') showType(previous.id, false);
     else showCenter(previous.id, false);
   }
 
@@ -334,13 +372,21 @@ export function createDreamDetail(initial = {}) {
          ${sourceRows(activationsFor(gate), gate)}
          ${lineThemeRow(lines)}`;
 
-    // The dream reading first (this is the sleep chart) and the waking reading
-    // second, each under its own heading: the teaching describes the dream gate
-    // here, so it is not buried under the waking prose, and the waking prose is
-    // not presented as dream content either.
+    // The planets that carry this gate sit next to the activation rows that name
+    // them: one block, before the six-line reading, instead of after it. The six
+    // lines are universal (every gate shares them), so they belong at the end of
+    // the sheet where a reader who wants the line detail goes, not between the
+    // gate's own activations and its prose.
     const planets = data.composite
       ? [data.a, data.b].flatMap(item => item ? ['personality', 'design'].flatMap(side => item.gates.byNumber[side].get(gate) || []) : [])
       : SOURCES.flatMap(({ key }) => activationsFor(gate)[key] || []);
+    const planetBlock = planets.length
+      ? `<h3 class="dream-detail-subhead">${esc(t('Planets in this gate'))}</h3>${planetReadings(planets)}`
+      : '';
+
+    // Every block below is the dream reading: the gate's own, the portal's
+    // two stages, and the six night forces. The waking chart's gate reading is
+    // not printed in this sheet at all — it describes a different object.
     const dreamReading = [
       gateDreamReading(gate),
       // A portal's own two-stage reading belongs with its gate too: the night-field
@@ -349,19 +395,14 @@ export function createDreamDetail(initial = {}) {
       isDreamPortal(gate)
         ? readingSection('dream', t('What this portal does'), renderDreamPortalReading(gate))
         : '',
-      nightForceSection(lines),
-      planets.length ? `<h3 class="dream-detail-subhead">${esc(t('Planets in this gate'))}</h3>${planetReadings(planets)}` : ''
+      nightForceSection(lines)
     ].join('');
-    const wakingReading = renderSharedGateReading(gate, { lens, activeLines: lines });
 
     paint(card(`data-gate="${gate}"`, `
-      ${renderGateDetailHeading(gate)}
+      ${dreamGateHeading(gate)}
       ${body}
+      ${planetBlock}
       ${dreamReading ? `<div class="dream-readings" data-dream-readings>${dreamReading}</div>` : ''}
-      ${wakingReading ? `<div class="dream-waking-reading" data-waking-reading>
-        <h3 class="dream-detail-subhead">${esc(t('Waking chart reading'))}</h3>
-        ${wakingReading}
-      </div>` : ''}
       ${channelBlock}
     `), { kind: 'gate', id: gate });
   }
@@ -449,14 +490,43 @@ export function createDreamDetail(initial = {}) {
     }).join('');
 
     paint(card(`data-channel="${key}"`, `
-      ${renderChannelDetailHeading(key)}
-      <div class="dream-detail-channel-title">${esc(dreamChannelName(channel.gates) || key)}</div>
+      ${dreamChannelHeading(channel)}
       <span class="circuit-badge transit-source-badge ${source}">${esc(t(statusLabel, { transit: transitTerm() }))}</span>
       <div class="dream-detail-centers">${esc(formatDisplay('channelCenters', channel.centers, channel.centers.map(centerName)))}</div>
       ${gateRows}
       ${channelDreamReading(key, caseSource)}
-      ${renderSharedChannelReading(key)}
     `), { kind: 'channel', id: key });
+  }
+
+  /**
+   * One of the two types in the strip's comparison, opened from its own chip.
+   *
+   * The waking side reads this person's waking type name from the sleep model the
+   * page handed this sheet (`dream.wakingType.name`), never from the loaded chart:
+   * that is the same explicit-context rule the activations follow (AGENTS.md §6),
+   * and it keeps the sheet describing this person even while another chart's
+   * composite is on screen. Its prose is the shared plain description the waking
+   * chart already shows, printed under the waking heading so the two readings can
+   * never be mistaken for one another.
+   *
+   * @param {'waking'|'dream'} side
+   * @param {boolean} [push] - record the step in the sheet's own history
+   */
+  function showType(side, push = true) {
+    const model = data.dream;
+    if (!model || (side !== 'waking' && side !== 'dream')) return;
+    if (push) advance({ kind: 'type', id: side }); else current = { kind: 'type', id: side };
+    const wakingName = model.wakingType?.name || null;
+    const sleepId = model.type?.id || null;
+    const name = side === 'waking'
+      ? (wakingName ? wakingTypeName(wakingName) : '—')
+      : (sleepId ? dreamTypeName(sleepId) : '—');
+    const body = side === 'waking' ? wakingTypeSheet(wakingName) : dreamTypeSheet(sleepId);
+    paint(card(`data-type="${side}"`, `
+      <div class="detail-label">${esc(t(side === 'waking' ? 'Awake' : 'Asleep'))}</div>
+      <div class="detail-name">${esc(name)}</div>
+      ${body}
+    `), { kind: 'type', id: side });
   }
 
   function showCenter(key, push = true) {
@@ -496,6 +566,7 @@ export function createDreamDetail(initial = {}) {
     if (!current || element.classList.contains('hidden')) return;
     if (current.kind === 'gate') showGate(current.id, false);
     else if (current.kind === 'channel') showChannel(current.id, false);
+    else if (current.kind === 'type') showType(current.id, false);
     else showCenter(current.id, false);
   }
 
@@ -507,7 +578,7 @@ export function createDreamDetail(initial = {}) {
       data = { ...data, ...next };
       if (next.api !== undefined) api = next.api;
     },
-    showGate, showChannel, showCenter, refresh,
+    showGate, showChannel, showCenter, showType, refresh,
     close: () => closeDetailDialog(),
     /** Whether this controller currently owns an open card. */
     get open() { return !!current && !element.classList.contains('hidden'); }
@@ -535,6 +606,25 @@ const COMPOSITE_DYNAMIC_LABELS = {
  * @returns {string} markup, or '' when the source does not cover this type
  */
 export function renderDreamTypeReading(typeId, { open = false } = {}) {
+  const body = renderDreamTypeReadingBody(typeId);
+  if (!body) return '';
+  return `<details class="dream-type-reading" data-dream-type-reading="${esc(typeId)}"${open ? ' open' : ''}>
+      <summary>${esc(t('How this sleep type works'))}</summary>
+      ${body}
+    </details>`;
+}
+
+/**
+ * The five parts of a sleep type's reading, without the disclosure wrapper.
+ *
+ * The sheet wants them inside a card that is already open, where a nested
+ * `<details>` would be a second thing to unfold for no reason; the collapsed
+ * block above is what the composite's two-person facts use.
+ *
+ * @param {string} typeId
+ * @returns {string} a `<dl>` of parts, or '' when the source does not cover this type
+ */
+export function renderDreamTypeReadingBody(typeId) {
   const reading = dreamTypeReading(typeId);
   if (!reading) return '';
   const parts = [
@@ -547,10 +637,45 @@ export function renderDreamTypeReading(typeId, { open = false } = {}) {
   if (!parts.length) return '';
   const body = parts.map(([label, value]) =>
     `<div class="dream-type-reading-part"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('');
-  return `<details class="dream-type-reading" data-dream-type-reading="${esc(typeId)}"${open ? ' open' : ''}>
-      <summary>${esc(t('How this sleep type works'))}</summary>
-      <dl class="dream-type-reading-parts">${body}</dl>
-    </details>`;
+  return `<dl class="dream-type-reading-parts" data-dream-type-reading-body="${esc(typeId)}">${body}</dl>`;
+}
+
+/**
+ * The sheet's dream half of the type comparison.
+ *
+ * @param {string|null} typeId
+ * @returns {string} markup, or '' when this sleep design has no type reading
+ */
+function dreamTypeSheet(typeId) {
+  const body = typeId ? renderDreamTypeReadingBody(typeId) : '';
+  if (!body) return '';
+  return readingSection('dream', t('How this sleep type works'), body);
+}
+
+/**
+ * The sheet's waking half of the type comparison.
+ *
+ * The type name arrives from the caller (this person's waking type, read from the
+ * sleep model), so the sheet answers for that person and never for whatever chart
+ * happens to be loaded. The facts and the description are the shared waking
+ * vocabulary's: no dream wording is added here, and no waking prose is added to
+ * the gate, channel or line sheets.
+ *
+ * @param {string|null} name - the waking type's display name, e.g. `Generator`
+ * @returns {string} markup, or '' when the name is unknown
+ */
+function wakingTypeSheet(name) {
+  if (!name) return '';
+  const facts = [
+    ['Strategy:', strategy(name)],
+    ['Signature:', signature(name)],
+    ['Not-Self:', notSelf(name)]
+  ].filter(([, value]) => value)
+    .map(([label, value]) => `<span class="dream-fact">${esc(t(label))} ${esc(value)}</span>`).join('');
+  const prose = typeDescription(name);
+  return `${facts ? `<div class="dream-type-facts" data-waking-type-facts>${facts}</div>` : ''}
+    ${readingSection('waking', t('Waking chart reading'),
+    prose ? `<p class="dream-reading-prose">${esc(prose)}</p>` : '', { 'data-waking-type-reading': 'true' })}`;
 }
 
 /**

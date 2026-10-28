@@ -19,13 +19,16 @@
  * once. See `transitTerm()`.
  *
  * Gates, centres and channels open a sleep-chart detail sheet built by
- * `lib/dream-detail.js`. That module reuses the shared dialog shell, headings and
- * interpretive readings, but owns its activation data: the waking sheet in
- * `views/chart.js` reads that module's own current chart for the design side, so
- * handing it the sleeping graph would have shown the waking design activations
+ * `lib/dream-detail.js`. That module reuses the shared dialog lifecycle and
+ * navigation, but owns its activation data and its reading text: the waking sheet
+ * in `views/chart.js` reads that module's own current chart for the design side,
+ * so handing it the sleeping graph would have shown the waking design activations
  * (Sun −88°) instead of the sleep design's (Moon −88°). AGENTS.md §6 requires the
- * data context to be explicit. The prose stays the waking reading, per the
- * teaching that the sleeping chart is described with the waking descriptions.
+ * data context to be explicit. Each sheet carries one layer only: gate, channel
+ * and line sheets print the dream reading, and the waking reading is not mixed
+ * into them. The type strip is the one place both layers meet, and it keeps them
+ * apart as two buttons — `waking` opens the waking type's own reading, `dream`
+ * opens the teacher's sleep-type reading.
  *
  * Comparison mode is chosen on this page: the toolbar button opens the shared
  * person picker, the chosen person's waking chart is computed here, and both
@@ -689,8 +692,17 @@ const TYPE_COLORS = {
   Reflector: 'var(--reflector)'
 };
 
-const typeChip = (name, color) =>
-  `<span class="dream-type-chip" style="background:${color}">${esc(name)}</span>`;
+/**
+ * One chip of the type comparison.
+ *
+ * A button, not a badge: each half of the comparison opens its own reading in the
+ * shared sheet, so the strip stays a one-line comparison instead of carrying two
+ * long readings below it. `side` (`waking` / `dream`) is the sheet's selection id.
+ */
+const typeChip = (side, name, color) =>
+  `<button type="button" class="dream-type-chip" data-dream-type-open="${side}"
+    aria-label="${esc(t(side === 'waking' ? 'Open the waking type reading' : 'Open the dream type reading'))}"
+    style="background:${color}">${esc(name)}</button>`;
 
 // ==========================================
 // Shared detail sheet
@@ -723,6 +735,8 @@ function dreamDetailContext(dream) {
 const openGate = gate => detail?.showGate(gate);
 const openChannel = id => detail?.showChannel(id);
 const openCenter = center => detail?.showCenter(center);
+/** The type strip's two chips: `waking` or `dream`, each its own reading. */
+const openType = side => detail?.showType(side);
 
 // ==========================================
 // Single sleep design
@@ -792,12 +806,12 @@ function typeStrip(dream) {
     <div class="dream-type-flow">
       <span class="dream-type-pair">
         <span class="dream-type-label">${esc(t('Awake'))}</span>
-        ${typeChip(waking, TYPE_COLORS[dream.wakingType?.name] || 'var(--hd-inactive)')}
+        ${typeChip('waking', waking, TYPE_COLORS[dream.wakingType?.name] || 'var(--hd-inactive)')}
       </span>
       <span class="dream-type-arrow" aria-hidden="true">→</span>
       <span class="dream-type-pair">
         <span class="dream-type-label">${esc(t('Asleep'))}</span>
-        ${typeChip(sleeping, TYPE_COLORS[dream.type.id] || 'var(--hd-inactive)')}
+        ${typeChip('dream', sleeping, TYPE_COLORS[dream.type.id] || 'var(--hd-inactive)')}
       </span>
     </div>
     <div class="dream-type-facts">
@@ -808,8 +822,12 @@ function typeStrip(dream) {
       ${dream.channels.length ? `<span class="dream-fact">${esc(t('Complete dream channels: {channels}', { channels }))}</span>` : ''}
     </div>
     ${dream.hasTransit ? `<div class="dream-type-facts"><span class="dream-fact">${esc(
-      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}
-    ${renderDreamTypeReading(dream.type.id)}`;
+      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}`;
+  // Both halves of the comparison open the sheet; the reading itself lives there
+  // so the strip keeps one line per type.
+  for (const chip of strip.querySelectorAll('[data-dream-type-open]')) {
+    chip.addEventListener('click', () => openType(chip.dataset.dreamTypeOpen));
+  }
   return strip;
 }
 
@@ -1094,7 +1112,7 @@ function realmChannels(realmId) {
 // ==========================================
 
 const SOURCE_ORDER = [
-  { key: 'personality', label: 'Awake personality' },
+  { key: 'personality', label: 'Sleep personality' },
   { key: 'design', label: 'Sleep design' },
   // The overlay source is named by the shared term, not by a page-local label.
   { key: 'transit', label: 'Transit' }

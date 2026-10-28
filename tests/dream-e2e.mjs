@@ -157,6 +157,20 @@ await check('type strip reports waking and sleeping types', async () => {
   assert(/睡眠类型/.test(facts), `facts: ${facts.slice(0, 80)}`);
 });
 
+await check('the type comparison is two buttons labelled 清醒 and 梦境', async () => {
+  const pairs = await page.$$eval('.dream-type-strip .dream-type-pair', nodes => nodes.map(node => ({
+    label: node.querySelector('.dream-type-label')?.textContent.trim(),
+    side: node.querySelector('.dream-type-chip')?.dataset.dreamTypeOpen,
+    tag: node.querySelector('.dream-type-chip')?.tagName
+  })));
+  assert(JSON.stringify(pairs.map(pair => pair.label)) === JSON.stringify(['清醒', '梦境']), `labels ${pairs.map(p => p.label)}`);
+  assert(JSON.stringify(pairs.map(pair => pair.side)) === JSON.stringify(['waking', 'dream']), `sides ${pairs.map(p => p.side)}`);
+  assert(pairs.every(pair => pair.tag === 'BUTTON'), `chips are ${pairs.map(p => p.tag)}`);
+  // The reading moved into each side's own sheet, so the strip stays one line per
+  // type instead of carrying two long readings under the comparison.
+  assert(!(await page.$('.dream-type-strip [data-dream-type-reading]')), 'the type strip still embeds a type reading');
+});
+
 await check('three night fields render with their portals', async () => {
   const realms = await page.$$eval('.dream-realm', n => n.map(x => x.dataset.realm));
   assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `realms ${realms}`);
@@ -291,22 +305,39 @@ await check('the gate sheet carries the dream-specific facts', async () => {
     'no night field tag in the sheet');
 });
 
-await check('the gate sheet prints the dream reading before the waking one, each labelled', async () => {
-  const order = await page.evaluate(() => {
-    const body = document.querySelector('#dream-detail .gate-detail-body');
-    const kids = [...body.children];
-    return {
-      dream: kids.findIndex(node => node.matches('[data-dream-readings]')),
-      waking: kids.findIndex(node => node.matches('[data-waking-reading]'))
-    };
-  });
-  assert(order.dream >= 0, 'the sheet has no dream reading');
-  assert(order.waking >= 0, 'the sheet has no waking reading block');
-  assert(order.dream < order.waking, 'the waking reading is printed above the dream reading');
+await check('the gate sheet is titled with the dream gate name, and the night field is a tag', async () => {
+  const DREAM_GATE_NAMES = {
+    1: '\u559c\u60a6', 5: '\u65f6\u95f4', 8: '\u9ed1\u6697', 12: '\u53d8\u5f02', 15: '\u6df7\u6c8c', 19: '\u73af\u5883', 20: '\u770b\u89c1',
+    27: '\u6e34\u671b', 28: '\u6050\u60e7', 38: '\u653b\u51fb', 42: '\u6b7b\u4ea1', 50: '\u6027', 53: '\u98de\u79bb', 57: '\u8c03\u9891', 62: '\u7231'
+  };
+  const gate = await page.$eval('#dream-detail .gate-detail-card[data-gate]', n => n.dataset.gate);
+  const heading = await page.$eval('#dream-detail .gate-detail-card[data-gate] .detail-name', n => n.textContent.trim());
+  assert(heading === DREAM_GATE_NAMES[gate],
+    `gate ${gate} is titled "${heading}", expected the dream name ${DREAM_GATE_NAMES[gate]}`);
+  // The waking heading printed the waking gate name and its hexagram; the sleep
+  // sheet prints neither, so the waking catalogue cannot be read as this object.
+  assert(!(await page.$('#dream-detail .detail-hexagram')), 'the sheet still prints the waking hexagram');
+  // The night field stays as a secondary tag, and the gate's own name is not
+  // repeated as one.
+  const tags = await page.$$eval('#dream-detail .dream-detail-tags .dream-detail-tag', n => n.map(x => x.textContent.trim()));
+  assert(tags.length >= 1 && !tags.includes(heading), `tags ${JSON.stringify(tags)} under the title "${heading}"`);
+});
+
+await check('the sheet names its activation sources \u68a6\u5883\u4eba\u683c / \u68a6\u5883\u8bbe\u8ba1 / \u884c\u8fd0', async () => {
+  const labels = await page.$$eval('#dream-detail .dream-detail-source-label', n => n.map(x => x.textContent.trim()));
+  assert(labels.length > 0, 'the sheet lists no activation source');
+  assert(labels.every(label => label === '\u68a6\u5883\u4eba\u683c' || label === '\u68a6\u5883\u8bbe\u8ba1' || label === '\u884c\u8fd0'),
+    `source labels ${JSON.stringify(labels)}`);
+});
+
+await check('the gate sheet carries the dream reading and no waking chart reading', async () => {
+  assert(await page.$('#dream-detail [data-dream-readings]'), 'the sheet has no dream reading');
+  // Waking prose belongs to the waking chart: it must not appear in a dream gate
+  // sheet, where it would read as dream content.
+  assert(!(await page.$('#dream-detail [data-waking-reading]')), 'the sheet still carries the waking reading block');
+  assert(!(await page.$('#dream-detail [data-shared-gate]')), 'the shared waking gate reading is embedded in the sheet');
   const dream = await page.$eval('#dream-detail [data-dream-readings]', n => n.textContent);
   assert(/\u68a6\u5883\u95f8\u95e8\u89e3\u8bfb/.test(dream), `the dream block has no heading: ${dream.slice(0, 60)}`);
-  const waking = await page.$eval('#dream-detail [data-waking-reading]', n => n.textContent);
-  assert(/\u6e05\u9192\u56fe\u89e3\u8bfb/.test(waking), `the waking block has no heading: ${waking.slice(0, 60)}`);
   // The dream prose is the teacher's material, not the waking one: the gate
   // reading uses the document's own words for the light field / mammalian matrix.
   assert(/\u5149\u4e4b\u573a|\u54fa\u4e73\u52a8\u7269|\u6697\u591c\u529b\u91cf|\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(dream),
@@ -314,7 +345,27 @@ await check('the gate sheet prints the dream reading before the waking one, each
   await page.screenshot({ path: path.join(SHOTS, 'single-gate-sheet.png'), fullPage: false });
 });
 
-await check('the six night forces are one shared set, with tonight’s lines marked', async () => {
+await check('the planets that carry the gate are read before the six night forces', async () => {
+  const order = await page.evaluate(() => {
+    const planets = [...document.querySelectorAll('#dream-detail .dream-detail-subhead')]
+      .find(node => /\u884c\u661f/.test(node.textContent));
+    const forces = [...document.querySelectorAll('#dream-detail .dream-reading-title')]
+      .find(node => /\u6697\u591c\u529b\u91cf/.test(node.textContent));
+    const readings = document.querySelector('#dream-detail [data-dream-readings]');
+    if (!planets || !forces || !readings) return null;
+    return {
+      beforeForces: !!(planets.compareDocumentPosition(forces) & Node.DOCUMENT_POSITION_FOLLOWING),
+      beforeReadings: !!(planets.compareDocumentPosition(readings) & Node.DOCUMENT_POSITION_FOLLOWING)
+    };
+  });
+  assert(order, 'the gate sheet is missing its planet block, its night forces or its readings');
+  assert(order.beforeForces, 'the six night forces are printed above the planet readings');
+  // Near the activation rows, not after the prose: the planet block sits in the
+  // card body, ahead of the readings container.
+  assert(order.beforeReadings, 'the planet readings are printed after the dream readings');
+});
+
+await check('the six night forces are one shared set, with tonight\u2019s lines marked', async () => {
   const entries = await page.$$eval('#dream-detail .dream-nightforce', nodes => nodes.map(node => ({
     line: node.dataset.line,
     active: node.dataset.activeLine === 'true',
@@ -323,13 +374,16 @@ await check('the six night forces are one shared set, with tonight’s lines mar
   assert(entries.length === 6, `${entries.length} night-force entries, expected six shared ones`);
   assert(JSON.stringify(entries.map(entry => entry.line)) === JSON.stringify(['1', '2', '3', '4', '5', '6']),
     `night-force lines are ${entries.map(entry => entry.line)}`);
+  // Dream state and conditioning residue only: the line's waking role describes
+  // the waking chart and is not printed in a dream sheet.
   for (const entry of entries) {
-    assert(entry.rows === 3, `line ${entry.line} has ${entry.rows} rows, expected waking/dream/residue`);
+    assert(entry.rows === 2, `line ${entry.line} has ${entry.rows} rows, expected dream state and residue`);
   }
   assert(entries.some(entry => entry.active), 'no active line is marked in the sheet');
   const sheet = await page.$eval('#dream-detail', n => n.textContent);
-  assert(/\u6e05\u9192\u72b6\u6001/.test(sheet) && /\u68a6\u5883\u72b6\u6001/.test(sheet) && /\u5236\u7ea6\u6b8b\u7559/.test(sheet),
-    'the night-force entries do not separate waking state, dream state and residue');
+  assert(/\u68a6\u5883\u72b6\u6001/.test(sheet) && /\u5236\u7ea6\u6b8b\u7559/.test(sheet),
+    'the night-force entries do not separate dream state and residue');
+  assert(!/\u6e05\u9192\u72b6\u6001/.test(sheet), 'the night-force entries still print the line\u2019s waking role');
 });
 
 await check('the gate sheet reads the planets that activate this gate', async () => {
@@ -351,12 +405,38 @@ await check('the page states the two frame sentences the chart is read with', as
   assert(/\u884c\u8fd0/.test(byKind.sources), `the external source is not named with the shared transit term: ${byKind.sources}`);
 });
 
-await check('the type strip carries the sleeping type reading', async () => {
-  const reading = await page.$('.dream-type-strip [data-dream-type-reading]');
-  assert(reading, 'the type strip has no type reading');
-  const parts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+await check('the dream type chip opens the teacher\u2019s sleep-type reading', async () => {
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  await page.click('.dream-type-chip[data-dream-type-open="dream"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  const parts = await page.$$eval('#dream-detail .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  // The type names are plain names: the comparison's own label says which of the
+  // two readings this is, so the name must not carry a \u68a6\u5883 prefix.
+  const title = await page.$eval('#dream-detail .gate-detail-card[data-type="dream"] .detail-name', n => n.textContent.trim());
+  const hasWaking = !!(await page.$('#dream-detail [data-waking-type-reading]'));
+  // Close before asserting: a failure must not leave the modal over the next check.
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
   assert(parts.length >= 2, `the type reading only names ${parts.length} parts`);
   assert(parts.includes('\u673a\u68b0\u5b9a\u4e49'), `no mechanical definition among ${parts}`);
+  assert(title && !/^\u68a6\u5883/.test(title), `the type name still carries a \u68a6\u5883 prefix: ${title}`);
+  assert(!hasWaking, 'the dream type sheet contains the waking reading');
+});
+
+await check('the waking type chip opens the waking type\u2019s own reading', async () => {
+  await page.click('.dream-type-chip[data-dream-type-open="waking"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="waking"]', { timeout: 10000 });
+  const sheet = await page.$eval('#dream-detail', n => n.textContent);
+  const hasWaking = !!(await page.$('#dream-detail [data-waking-type-reading]'));
+  const hasDream = !!(await page.$('#dream-detail [data-dream-type-reading-body]'));
+  const facts = await page.$$eval('#dream-detail [data-waking-type-facts] .dream-fact', n => n.map(x => x.textContent.trim()));
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  assert(/\u6e05\u9192\u56fe\u89e3\u8bfb/.test(sheet), `the waking sheet is not labelled: ${sheet.slice(0, 80)}`);
+  assert(hasWaking, 'the waking sheet has no waking reading block');
+  assert(!hasDream, 'the waking sheet contains the sleep type reading');
+  assert(facts.length >= 2, `the waking sheet lists ${facts.length} waking type facts`);
 });
 
 await check('each portal plaque carries the night collection and the morning bleed-through', async () => {
@@ -463,9 +543,21 @@ await check('switching to English redraws the sleep chart', async () => {
   // The reading content follows the language too, not only the chrome: the type
   // reading, the frame sentences and the portal blocks are all owned by the
   // locale's dream vocabulary.
-  const typeParts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  // The type reading lives in its own sheet now, so it is opened to read it.
+  // Read first, close, then assert: a failed assertion must not leave the modal
+  // sheet open over the controls the next check has to click.
+  await page.click('.dream-type-chip[data-dream-type-open="dream"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  const typeParts = await page.$$eval('#dream-detail .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  const typeTitle = await page.$eval('#dream-detail .gate-detail-card[data-type="dream"] .detail-name', n => n.textContent.trim());
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
   assert(typeParts.includes('Mechanical definition'), `English type reading parts: ${typeParts}`);
   assert(typeParts.includes('Operating state'), `English type reading parts: ${typeParts}`);
+  // The type names are plain in English too: the comparison's own label says
+  // which half this is.
+  assert(/^(Reflector|Generator|Projector|Manifestor|Manifesting Generator)$/.test(typeTitle),
+    `English sleep type name is "${typeTitle}"`);
   const frame = await page.$eval('[data-dream-frame="sides"]', n => n.textContent);
   assert(/direction the dream evolves/.test(frame), `English frame line: ${frame}`);
   assert(/consciousness inside the dream/.test(frame), `English frame line: ${frame}`);
@@ -481,8 +573,16 @@ await check('Traditional Chinese keeps the dream readings in its own wording', a
   await page.waitForTimeout(500);
   const title = await page.$eval('.dream-realm-light .dream-realm-title', n => n.textContent.trim());
   assert(title === '\u5149\u5834', `zh-Hant realm title is "${title}"`);
-  const typeParts = await page.$$eval('.dream-type-strip .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  await page.click('.dream-type-chip[data-dream-type-open="dream"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  const typeParts = await page.$$eval('#dream-detail .dream-type-reading-part dt', n => n.map(x => x.textContent.trim()));
+  const typeTitle = await page.$eval('#dream-detail .gate-detail-card[data-type="dream"] .detail-name', n => n.textContent.trim());
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
   assert(typeParts.includes('\u6a5f\u68b0\u5b9a\u7fa9'), `zh-Hant type reading parts: ${typeParts}`);
+  // The plain type name in the region's own wording, without a \u5922\u5883 prefix.
+  assert(/^(\u53cd\u6620\u8005|\u751f\u7522\u8005|\u6295\u5c04\u8005|\u986f\u793a\u8005|\u986f\u793a\u751f\u7522\u8005)$/.test(typeTitle),
+    `zh-Hant sleep type name is "${typeTitle}"`);
   const frame = await page.$eval('[data-dream-frame="sources"]', n => n.textContent);
   // The region says \u6d41\u65e5 for Transit, following the existing key, not \u884c\u904b.
   assert(/\u6d41\u65e5/.test(frame), `zh-Hant frame line: ${frame}`);
@@ -1240,7 +1340,8 @@ await check('the composite night fields survive a language switch and follow it'
   assert(hantTitle === '\u5149\u5834', `zh-Hant field title is "${hantTitle}"`);
   const hantLabels = await page.$$eval('#dream-content .dream-realm-row[data-gate="1"] .dream-row-source-label',
     n => n.map(x => x.textContent.trim()));
-  assert(hantLabels.some(label => label.includes('\u7761\u7720\u8a2d\u8a08') || label.includes('\u7761\u7720\u4eba\u683c')),
+  // The two halves are named with the sleep vocabulary in the region's wording.
+  assert(hantLabels.some(label => label.includes('\u5922\u5883\u8a2d\u8a08') || label.includes('\u5922\u5883\u4eba\u683c')),
     `zh-Hant labels did not translate the half: ${JSON.stringify(hantLabels)}`);
   assert(hantLabels.every(label => !/Sleep (design|personality)/.test(label)),
     `zh-Hant labels kept the English half name: ${JSON.stringify(hantLabels)}`);

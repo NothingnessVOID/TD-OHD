@@ -135,23 +135,34 @@
   text-transform: uppercase;
 }
 
-/* The chip's hue arrives inline from the type token (`--generator`,
-   `--projector`, `--reflector`, …), and those are mid-tone in light Skins and
-   light in dark ones, so no single ink clears 4.5:1 on all of them. The inset
-   veil lifts the surface toward the card background at every Skin, which keeps
-   the type hue visible as a tint while `--text` stays the ink — the same
-   soft-tint-plus-readable-ink reading the site's `.type-badge` uses. */
+/* The chip is a button: each half of the type comparison opens its own reading
+   in the shared sheet. The type hue arrives inline from the type token
+   (`--generator`, `--projector`, `--reflector`, …), and those are mid-tone in
+   light Skins and light in dark ones, so no single ink clears 4.5:1 on all of
+   them. The inset veil lifts the surface toward the card background at every
+   Skin, which keeps the type hue visible as a tint while `--text` stays the ink —
+   the same soft-tint-plus-readable-ink reading the site's `.type-badge` uses. */
 .dream-type-chip {
   display: inline-block;
   min-width: 0;
   padding: 3px 10px;
+  border: 0;
   border-radius: var(--radius-full);
   box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--bg-elevated) 76%, transparent);
   color: var(--text);
+  font: inherit;
   font-size: var(--font-size-sm);
   font-weight: 650;
   line-height: 1.45;
   overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.dream-type-chip:hover { text-decoration: underline; }
+
+.dream-type-chip:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
 }
 
 .dream-type-arrow {
@@ -933,10 +944,6 @@
 .dream-detail-tag-light { --dream-detail-tag-hue: var(--hd-transit); }
 .dream-detail-tag-earth { --dream-detail-tag-hue: var(--hd-both); }
 .dream-detail-tag-demon { --dream-detail-tag-hue: var(--hd-design); }
-.dream-detail-tag-name {
-  --dream-detail-tag-hue: var(--hd-personality);
-  font-weight: 650;
-}
 .dream-detail-tag-portal {
   --dream-detail-tag-hue: var(--accent);
   font-style: italic;
@@ -1171,15 +1178,6 @@
   border-top: 1px solid var(--hd-detail-border);
 }
 
-/* The waking reading is explicitly a second block, marked with its own heading and
-   a lighter top rule, so it can never be read as part of the dream reading. */
-.dream-waking-reading {
-  min-width: 0;
-  margin-top: var(--space-3);
-  padding-top: var(--space-2);
-  border-top: 1px dashed var(--hd-detail-border);
-}
-
 .dream-reading {
   min-width: 0;
 }
@@ -1408,14 +1406,9 @@
   overflow-wrap: anywhere;
 }
 
-/* The dream channel's own name above its waking heading. */
-.dream-detail-channel-title {
-  margin: 0 0 var(--space-1);
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 650;
-  overflow-wrap: anywhere;
-}
+/* The dream channel's title is the shared `.detail-name` (22px) inside the shared
+   `.channel-detail-heading`: `.dream-detail-channel-title` is only the JS/e2e hook,
+   so the gate and channel titles stay the same size. */
 
 /* ---------- Provenance footnote ---------- */
 
