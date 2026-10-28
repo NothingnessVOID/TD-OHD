@@ -549,6 +549,133 @@ try {
       `the activated number is ${skin.activated} while unified-natal asks for ${skin.natal}`);
   });
 
+  await check('the naming hooks replace every name the graph speaks, and nothing changes without them', async () => {
+    // Park the page's own overlay first: the scratch graphs below read "the visible
+    // tooltip", and the previous check left one open under the pointer.
+    await page.mouse.move(5, 5);
+    await page.waitForTimeout(300);
+    // `opts.naming` is the host's way to name the objects its topology shares with the
+    // catalogue — the sleep design calls channel 1-8 its Inspiration channel. The graph
+    // renders straight into a scratch host here, because the contract is the renderer's
+    // and its dream caller belongs to another change.
+    const rendered = await page.evaluate(async () => {
+      const i18n = await import('/src/lib/i18n.js');
+      i18n.setLocale('zh-CN');
+      const { renderBodygraph } = await import('/src/bodygraph.js');
+      const chart = {
+        // Engine planet ids are lowercase; the glyph lookups use them as keys.
+        gates: { personality: { sun: { gate: 1, line: 2 } }, design: { earth: { gate: 8, line: 3 } } },
+        channels: [{ gates: [1, 8], centers: ['g', 'throat'] }],
+        centers: { definedNames: ['g'] },
+        type: { name: 'generator' }, profile: { numbers: '1/3' }, authority: { name: 'sacral' },
+        definition: 'single', variable: null, positions: {}
+      };
+      const naming = {
+        gate: gate => `HOST-GATE-${gate}`,
+        gateTooltip: gate => `HOST-TIP-${gate}`,
+        channelTooltip: channel => `HOST-CHANNEL-${channel.gates.join('-')}`,
+        center: center => `HOST-CENTRE-${center}`
+      };
+      const render = (options) => {
+        const host = document.createElement('div');
+        host.style.cssText = 'position:fixed;left:20px;top:20px;width:520px;height:820px;z-index:-1;';
+        document.body.appendChild(host);
+        renderBodygraph(host, chart, { planetColumns: false, animate: false, onGateClick: () => {}, ...options });
+        return host;
+      };
+      const hover = (node) => node.dispatchEvent(new PointerEvent('pointerover', {
+        bubbles: true, clientX: 120, clientY: 220, pointerType: 'mouse'
+      }));
+      const overlay = () => [...document.querySelectorAll('.bg-tooltip')]
+        .find(node => getComputedStyle(node).display !== 'none')?.textContent.trim() || null;
+
+      const named = render({ naming });
+      const gate = named.querySelector('.bg-gate[data-gate="1"]');
+      hover(gate);
+      const namedGate = { aria: gate.getAttribute('aria-label'), tip: overlay() };
+      const centre = named.querySelector('.bg-center[data-center="g"]');
+      hover(centre);
+      const namedCentre = { aria: centre.getAttribute('aria-label'), tip: overlay(), summary: named.querySelector('.bodygraph-svg').getAttribute('aria-label') };
+      named.remove();
+      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+
+      const plain = render({});
+      const plainGate = plain.querySelector('.bg-gate[data-gate="1"]');
+      hover(plainGate);
+      const plainResult = { aria: plainGate.getAttribute('aria-label'), tip: overlay() };
+      plain.remove();
+      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+
+      return { namedGate, namedCentre, plain: plainResult };
+    });
+
+    assert.match(rendered.namedGate.aria, /HOST-GATE-1/, `the gate aria still reads "${rendered.namedGate.aria}"`);
+    assert.doesNotMatch(rendered.namedGate.aria, /创造|乾为天/, `the gate aria kept the catalogue word: "${rendered.namedGate.aria}"`);
+    assert.match(rendered.namedGate.tip, /HOST-TIP-1/, `the gate tooltip reads "${rendered.namedGate.tip}"`);
+    assert.doesNotMatch(rendered.namedGate.tip, /乾为天/, `the tooltip appended the waking hexagram: "${rendered.namedGate.tip}"`);
+    assert.match(rendered.namedGate.tip, /HOST-CHANNEL-1-8（1-8）/, `the channel note is not the host name plus its pair: "${rendered.namedGate.tip}"`);
+    assert.match(rendered.namedCentre.tip, /HOST-CENTRE-g/, `the centre tooltip reads "${rendered.namedCentre.tip}"`);
+    assert.match(rendered.namedCentre.aria, /HOST-CENTRE-g/, `the centre aria reads "${rendered.namedCentre.aria}"`);
+    assert.match(rendered.namedCentre.summary, /HOST-CENTRE-g/, 'the graph summary kept the catalogue centre name');
+
+    assert.doesNotMatch(rendered.plain.aria, /HOST-/, 'a graph without naming picked up an override');
+    assert.match(rendered.plain.aria, /创造/, `the default gate aria reads "${rendered.plain.aria}"`);
+    assert.match(rendered.plain.tip, /创造（乾为天）/, `the default gate tooltip reads "${rendered.plain.tip}"`);
+  });
+
+  await check('a sleep naming hook set reads as the sleep design does', async () => {
+    // The exact call shape the sleep page will pass, with the real dream vocabulary and
+    // the real dream topology, so the host side is proven without that page's change.
+    const sleep = await page.evaluate(async () => {
+      const i18n = await import('/src/lib/i18n.js');
+      i18n.setLocale('zh-CN');
+      const { renderBodygraph } = await import('/src/bodygraph.js');
+      const { DREAM_TOPOLOGY } = await import('/src/lib/human-design/dream-topology.js');
+      const { dreamGateName, dreamChannelName } = await import('/src/lib/dream-vocabulary.js');
+      const { gateName } = await import('/src/lib/vocabulary.js');
+      const host = document.createElement('div');
+      host.style.cssText = 'position:fixed;left:20px;top:20px;width:520px;height:400px;z-index:-1;';
+      document.body.appendChild(host);
+      const chart = {
+        gates: { personality: { sun: { gate: 20, line: 5 } }, design: { earth: { gate: 57, line: 4 } } },
+        channels: [{ gates: [20, 57], centers: ['throat', 'spleen'] }],
+        centers: { definedNames: ['throat', 'spleen'] },
+        type: { name: 'generator' }, profile: { numbers: '1/3' }, authority: { name: 'sacral' },
+        definition: 'single', variable: null, positions: {}
+      };
+      renderBodygraph(host, chart, {
+        topology: DREAM_TOPOLOGY,
+        planetColumns: false,
+        animate: false,
+        onGateClick: () => {},
+        naming: {
+          gate: gate => dreamGateName(gate),
+          gateTooltip: gate => dreamGateName(gate),
+          channelTooltip: channel => dreamChannelName(channel.gates)
+        }
+      });
+      const gate = host.querySelector('.bg-gate[data-gate="20"]');
+      gate.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, clientX: 120, clientY: 220, pointerType: 'mouse' }));
+      const tip = [...document.querySelectorAll('.bg-tooltip')]
+        .find(node => getComputedStyle(node).display !== 'none')?.textContent.trim() || null;
+      const result = {
+        tip,
+        aria: gate.getAttribute('aria-label'),
+        dreamGate: dreamGateName(20),
+        wakingGate: gateName(20),
+        dreamChannel: dreamChannelName([20, 57])
+      };
+      host.remove();
+      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+      return result;
+    });
+    assert.ok(sleep.tip, 'the sleep graph showed no overlay');
+    assert.match(sleep.tip, new RegExp(`第 20 闸门 · ${sleep.dreamGate}`), `the sleep tooltip reads "${sleep.tip}"`);
+    assert.ok(!sleep.tip.includes(sleep.wakingGate), `the sleep tooltip still uses the waking gate name: "${sleep.tip}"`);
+    assert.match(sleep.tip, new RegExp(`${sleep.dreamChannel}（20-57）`), `the channel note reads "${sleep.tip}"`);
+    assert.match(sleep.aria, new RegExp(sleep.dreamGate), `the sleep gate aria reads "${sleep.aria}"`);
+  });
+
   await check('no page or console errors during the run', async () => {
     assert.deepEqual(pageErrors, [], pageErrors.join(' | '));
   });

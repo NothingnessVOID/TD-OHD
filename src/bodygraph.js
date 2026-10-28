@@ -191,6 +191,46 @@ export function renderBodygraph(container, chart, opts = {}) {
   const interactive = !opts.compact;
   const showColumns = !opts.compact && opts.planetColumns !== false && !opts.composite;
   const animate = opts.animate !== false && !opts.compact;
+
+  /**
+   * Naming hooks.
+   *
+   * A reduced topology still shares the catalogue's IDs, but a host may need to call
+   * those objects something else: the sleep design's channel 1-8 is its Inspiration
+   * channel, not the waking catalogue's word for it. Every name the graph *speaks* asks
+   * here first — the gate and centre aria labels, the tooltip titles and the channel
+   * note — and an override replaces the expression that spot would otherwise print, so
+   * a graph never inherits wording its topology does not have. With no `naming` the
+   * defaults are the shared vocabulary, which keeps every existing host unchanged.
+   *
+   *   opts.naming = {
+   *     gate(gate),                  // stable gate number -> plain name
+   *     gateTooltip(gate),           // stable gate number -> tooltip name part only
+   *     channelTooltip(channel),     // catalog channel object -> tooltip name part only
+   *     center(center)               // stable centre key -> plain name
+   *   }
+   *
+   * `gateTooltip` and `channelTooltip` return a bare name, never a formatted string: a
+   * gate's tooltip part replaces `formatDisplay('gateTooltip', …)`, which is what stops
+   * a sleep gate from inheriting the waking hexagram, and a channel's replaces only the
+   * name inside a template that already adds the gate pair (`启发通道（1-8）`). A falsy
+   * return falls back to the shared vocabulary, so a partially filled object is safe.
+   */
+  const naming = opts.naming || null;
+  const nameOfGate = gate => naming?.gate?.(gate) || displayGate(gate);
+  const nameOfCenter = center => naming?.center?.(center) || displayCenter(center);
+  const nameOfGateTooltip = gate => naming?.gateTooltip?.(gate)
+    || formatDisplay('gateTooltip', displayGate(gate), hexagramName(gate));
+  // A channel override names the channel only; the two tooltip spots each add the gate
+  // pair through their own template, so both read `启发通道（1-8）` without the host
+  // knowing which one it is answering. The catalogue path keeps each spot's existing
+  // expression untouched.
+  const customChannelName = channel => naming?.channelTooltip?.(channel) || null;
+  const nameOfChannelNote = channel => customChannelName(channel)
+    || formatDisplay('channelTooltip', displayChannel(channel), channel.gates.join('-'));
+  const nameOfChannelLine = channel => formatDisplay('channelTooltip',
+    customChannelName(channel) || displayChannel(channel), channel.gates.join('-'));
+
   // Keep the previous graph painted until the replacement SVG is complete.
   const nextGraph = document.createDocumentFragment();
   container.classList.add('bg-root');
@@ -306,7 +346,7 @@ export function renderBodygraph(container, chart, opts = {}) {
     chart.profile?.numbers ? t('Profile {profile}.', { profile: chart.profile.numbers }) : '',
     chart.authority?.name ? t('{authority}.', { authority: authorityName(chart.authority.name) }) : '',
     definedCenters.size
-      ? t('Defined centers: {centers}.', { centers: formatDisplay('separated', [...definedCenters].map(displayCenter), 'centers') })
+      ? t('Defined centers: {centers}.', { centers: formatDisplay('separated', [...definedCenters].map(nameOfCenter), 'centers') })
       : t('No defined centers (Reflector).'),
     chart.channels?.length
       ? t('Active channels: {channels}.', { channels: formatDisplay('separated', chart.channels.map(c => `${c.gates.join('-')} ${displayChannel(c)}`), 'channels') })
@@ -539,7 +579,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       path.setAttribute('role', 'button');
       path.setAttribute('cursor', 'pointer');
       path.setAttribute('aria-label', t(`{center} center, ${defined ? 'defined' : 'undefined'}`, {
-        center: displayCenter(centerKey)
+        center: nameOfCenter(centerKey)
       }));
       if (transit) path.setAttribute('aria-label', t('{label}, {source}', {
         label: path.getAttribute('aria-label'),
@@ -577,7 +617,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       g.setAttribute('tabindex', '0');
       g.setAttribute('role', 'button');
       g.setAttribute('aria-label', t(`Gate {gate} — {name}, ${isActive ? 'active' : 'inactive'}`, {
-        gate: gateNum, name: displayGate(gateNum)
+        gate: gateNum, name: nameOfGate(gateNum)
       }));
       if (transit) g.setAttribute('aria-label', t('{label}, {source}', {
         label: g.getAttribute('aria-label'), source: t(TRANSIT_SOURCE_LABELS[transit.gateSource(gateNum)])
@@ -824,17 +864,17 @@ export function renderBodygraph(container, chart, opts = {}) {
       const channelNote = (GATE_CHANNELS[gateNum] || [])
         .filter(ch => definedChannelKeys.has(ch.gates.join('-')))
         .map(ch => escapeHTML(t('Channel of {name} ({gates})', {
-          name: displayChannel(ch), gates: ch.gates.join('-')
+          name: nameOfChannelNote(ch), gates: ch.gates.join('-')
         })))
         .join(' · ');
-      const gateTitle = t('Gate {gate} — {name}', { gate: gateNum, name: formatDisplay('gateTooltip', displayGate(gateNum), hexagramName(gateNum)) });
+      const gateTitle = t('Gate {gate} — {name}', { gate: gateNum, name: nameOfGateTooltip(gateNum) });
       return `<strong>${escapeHTML(gateTitle)}</strong>` +
         (acts.length ? `<div class="bg-tt-acts">${acts.join(' ')}</div>` : '') +
         (channelNote ? `<div class="bg-tt-channel">${channelNote}</div>` : '');
     }
 
     function centerTooltipText(centerKey) {
-      const dn = displayCenter(centerKey);
+      const dn = nameOfCenter(centerKey);
       const centerTitle = escapeHTML(t('{center} Center', { center: dn }));
       if (composite) {
         const o = centerOwner(centerKey);
@@ -861,11 +901,11 @@ export function renderBodygraph(container, chart, opts = {}) {
         .map(ch => {
           const d = channelDynamic(ch);
           if (!d) return null;
-          const name = formatDisplay('channelTooltip', displayChannel(ch), ch.gates.join('-'));
+          const name = nameOfChannelLine(ch);
           return escapeHTML(`${t(d)} · ${name}`);
         })
         .filter(Boolean);
-      const gateTitle = t('Gate {gate} — {name}', { gate: g, name: formatDisplay('gateTooltip', displayGate(g), hexagramName(g)) });
+      const gateTitle = t('Gate {gate} — {name}', { gate: g, name: nameOfGateTooltip(g) });
       return `<strong>${escapeHTML(gateTitle)}</strong>` +
         `<div class="bg-tt-acts">${escapeHTML(who)}</div>` +
         (dyn.length ? `<div class="bg-tt-channel">${dyn.join('<br>')}</div>` : '');
