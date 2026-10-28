@@ -5,6 +5,7 @@ import * as readings from './content.js';
 import contexts from '../ui-contexts.json' with { type: 'json' };
 import bodygraphMessages from './ui-bodygraph.json' with { type: 'json' };
 import chartMessages from './ui-chart.json' with { type: 'json' };
+import clipboardMessages from './ui-clipboard.json' with { type: 'json' };
 import commonMessages from './ui-common.json' with { type: 'json' };
 import dreamMessages from './ui-dream.json' with { type: 'json' };
 import mainMessages from './ui-main.json' with { type: 'json' };
@@ -15,7 +16,7 @@ import transitMessages from './ui-transits.json' with { type: 'json' };
 import timelineMessages from './timeline.json' with { type: 'json' };
 const messages = {
   ...runtimeMessages, ...transitMessages, ...bodygraphMessages, ...chartMessages, ...commonMessages,
-  ...mainMessages, ...staticMessages, ...viewMessages, ...dreamMessages, ...pickerMessages, ...contexts['zh-CN']
+  ...mainMessages, ...staticMessages, ...viewMessages, ...dreamMessages, ...pickerMessages, ...clipboardMessages, ...contexts['zh-CN']
 };
 export default {
   code: 'zh-CN', label: '简体中文', matches: language => /^zh(?:-(?:CN|SG|Hans(?:-[a-z]+)?))?$/i.test(language),

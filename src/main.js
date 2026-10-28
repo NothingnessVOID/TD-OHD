@@ -34,6 +34,8 @@ import { setupAppearanceControls } from './lib/appearance-controls.js';
 import { onFontPreferenceChange } from './lib/font-preference.js';
 // Unified UI system last, so shared header/dialog/navigation rules win over feature CSS.
 import './styles/ui-system.css';
+// Manual-copy fallback surface; the module that renders it stays CSS-free for Node tests.
+import './styles/clipboard.css';
 
 // ==========================================
 // State
