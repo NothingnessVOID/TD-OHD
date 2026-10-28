@@ -771,6 +771,13 @@ export function renderBodygraph(container, chart, opts = {}) {
     const tooltip = el('div', { class: 'bg-tooltip', role: 'tooltip', popover: 'manual' });
 
     const tooltipOpen = () => tooltip.matches(':popover-open');
+    // A touch screen has no hover — but Chrome still replays a compatibility `pointerover`
+    // with `pointerType: "mouse"` at the point of the last tap whenever the layout under
+    // that point changes. Coming back to a redrawn graph then left a preview floating with
+    // no finger on the screen. The stylesheet already answers the same event by switching
+    // the hover ring off under `(hover: none)`; the preview follows the ring, and touch
+    // keeps its press preview.
+    const canHover = () => typeof window.matchMedia === 'function' && window.matchMedia('(hover: hover)').matches;
 
     function showTooltip(markup, anchor) {
       tooltip.innerHTML = markup;
@@ -888,8 +895,10 @@ export function renderBodygraph(container, chart, opts = {}) {
 
     svg.addEventListener('pointerover', (evt) => {
       // Touch taps fire a synthetic hover that would leave a tooltip stuck and
-      // double up with the click → detail. On touch we let the tap do the work.
-      if (evt.pointerType === 'touch') return;
+      // double up with the click → detail. On touch we let the tap do the work. The
+      // hover capability check above also covers the compatibility event a touch device
+      // gets, which arrives with `pointerType: 'mouse'`.
+      if (evt.pointerType === 'touch' || !canHover()) return;
       const gateEl = evt.target.closest('[data-gate]');
       if (gateEl) {
         const gateNum = parseInt(gateEl.getAttribute('data-gate'));
@@ -955,7 +964,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       });
     }
     svg.addEventListener('pointermove', (evt) => {
-      if (evt.pointerType !== 'touch' && tooltipOpen()) positionTooltip(pointerAnchor(evt));
+      if (evt.pointerType !== 'touch' && canHover() && tooltipOpen()) positionTooltip(pointerAnchor(evt));
     });
     svg.addEventListener('pointerout', (evt) => {
       if (evt.pointerType === 'touch' && touchStart) return;

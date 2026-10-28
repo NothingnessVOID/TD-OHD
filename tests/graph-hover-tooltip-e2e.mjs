@@ -65,7 +65,11 @@ const browser = await chromium.launch({
   headless: true
 });
 
-const context = await browser.newContext({ viewport: { width: 1380, height: 1000 }, locale: 'zh-CN', hasTouch: true });
+// A desktop pointer, deliberately without `hasTouch`: the renderer only previews on
+// hover for a device that can hover (`(hover: hover)`), which a touch-capable emulation
+// turns off. The touch path has its own check below and its own suite:
+// tests/mobile/touch-preview-contract.mjs.
+const context = await browser.newContext({ viewport: { width: 1380, height: 1000 }, locale: 'zh-CN' });
 const page = await context.newPage();
 page.setDefaultTimeout(60000);
 const pageErrors = [];

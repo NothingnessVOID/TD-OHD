@@ -47,22 +47,26 @@ E2E_URL=http://127.0.0.1:10015 node tests/mobile/dream-mobile-acceptance.mjs
 16. 深色与高对比皮肤无横向溢出，并记录文字/底色。
 17. 全程无 pageerror / console error。
 
-## 已知状态（基于集成版 `c76d005f`）
+## 受测版本与结果
 
-上一次运行：**31 项通过 / 3 项失败**，三项都已有定位，不是脚本问题：
+- 受测 SHA：`ec1b1448`（`fix/dream-ui-integration`，含两路修改与 Dream 命名接线）。
+- 手机专项：**38 / 38 通过**（360×800 与 390×844）。
+- 桌面接口回归：`tests/dream-e2e.mjs` 78 通过，`tests/graph-hover-tooltip-e2e.mjs` 24 通过。
+- 命名接线已验证：图内 aria 与浮层都用梦境名（例：1 号闸门 `喜悦`，不再出现清醒名 `创造（乾为天）`）。
+- 六条梦境通道在单人与合盘下都按梦境名列出，合盘的完成方带 owner 并写明是谁。
 
-1–2. `the preview speaks the sleep design's own gate name`（两台设备各一次）——
-   浮层仍然用清醒目录名：实测 `第 1 闸门 · 创造（乾为天）`，而睡眠设计里 1 号闸门叫「喜悦」。
-   这是**命名接线尚未落地**的预期失败：`renderBodygraph` 已支持 `opts.naming`，等睡眠页传入后此检查应转绿。
+## 本轮发现并修掉的问题（在本测试分支提交）
 
-3. `leaving and returning leaves no sheet, overlay or lit row behind`（390×844）——
-   离开视图再回来时，页面上残留一个已经打开的浮层（实测内容 `骶骨中心未定义`）。
-   原因已抓到事件证据：Chrome 在触摸点按后会把**兼容性 hover** 以 `pointerover` + `pointerType:"mouse"`
-   重新投放到最后触点所在位置，视图重绘后那个坐标正好落在新的骶骨中心上，于是渲染器把它当成真实鼠标悬停。
-   代码里 CSS 侧早就承认这件事（`@media (hover: none)` 里专门关掉 hover 圆环），JS 侧的 `pointerover`
-   预览还没有同样的判断。最小修法（约 3 行，`src/bodygraph.js`）：用
-   `matchMedia('(hover: none)')` 判定无悬停能力时忽略 hover 预览，触摸一律走按下预览路径。
-   **本次不修**（本分支只放测试），等父代理决定归谁改。
+**触摸设备的兼容性 hover 会留下浮层。** Chrome 在触摸点按后会把兼容性 hover 以 `pointerover` + `pointerType:"mouse"`
+重投到最后触点位置，布局在其下方变化时会再投一次；集成版上“离开视图再回来”就因此出现过一个没有手指按着的浮层
+（实测内容 `骶骨中心未定义`，390×844）。
+
+- 确定性复现：`tests/mobile/touch-preview-contract.mjs`，在 `(hover: none)` 的设备上重放这条兼容事件，
+  修前浮层打开（`第 1 闸门 · 喜悦未激活`），修后不打开，而真实按压预览仍然工作。
+- 最小修法（`src/bodygraph.js`，共享渲染器，3 处判断）：hover 预览与 CSS 的 hover 圆环同一条规则——
+  `(hover: hover)` 为假时不走 `pointerover` 预览；触摸继续走按下预览。
+- 同时把 `tests/graph-hover-tooltip-e2e.mjs` 的桌面上下文改成真正的可悬停指针（去掉 `hasTouch`），
+  它原来在“有触摸但无 hover”的模拟环境里跑，修后自然不该再期待 hover 预览；触摸路径由手机套件与本文件覆盖。
 
 ## 不覆盖
 

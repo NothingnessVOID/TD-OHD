@@ -429,6 +429,36 @@ for (const device of DEVICES) {
         `the preview says "${press.during.text}" but the sleep design calls gate ${names.gate} "${names.dream}"`);
       assert.ok(!press.during.text.includes(names.waking),
         `the preview still uses the waking name "${names.waking}"`);
+      // The graph's own per-gate label is the same vocabulary, through the same hook.
+      const aria = await page.evaluate(() => document.querySelector('#dream-bodygraph .bg-gate').getAttribute('aria-label'));
+      record(`${label} graph aria`, aria);
+      assert.ok(aria.includes(names.dream), `the gate aria reads "${aria}" instead of the sleep name "${names.dream}"`);
+      assert.ok(!aria.includes(names.waking), `the gate aria still uses the waking name "${names.waking}"`);
+    });
+
+    await check(`${label}: the six sleep channels are listed under their sleep names`, async () => {
+      const channels = await page.evaluate(async () => {
+        const { DREAM_CHANNELS } = await import('/src/lib/human-design/dream-topology.js');
+        const { dreamChannelName } = await import('/src/lib/dream-vocabulary.js');
+        const rows = [...document.querySelectorAll('.dream-channel-open[data-channel]')].map(node => ({
+          key: node.dataset.channel,
+          name: node.querySelector('.dream-channel-name')?.textContent.trim() || null,
+          cls: node.className.toString()
+        }));
+        return {
+          ids: DREAM_CHANNELS.map(channel => channel.gates.join('-')),
+          names: Object.fromEntries(DREAM_CHANNELS.map(channel => [channel.gates.join('-'), dreamChannelName(channel.gates)])),
+          rows
+        };
+      });
+      record(`${label} channel rows`, channels.rows.map(row => `${row.key}:${row.name}`));
+      assert.equal(channels.rows.length, 6, `${channels.rows.length} channel rows instead of 6`);
+      assert.deepEqual(channels.rows.map(row => row.key).sort(), [...channels.ids].sort(),
+        `channel rows are ${channels.rows.map(row => row.key)} for the six dream channels`);
+      for (const row of channels.rows) {
+        assert.equal(row.name, channels.names[row.key],
+          `channel ${row.key} is labelled "${row.name}" instead of "${channels.names[row.key]}"`);
+      }
     });
 
     /* ---------------- two-person composite ---------------- */
@@ -458,18 +488,63 @@ for (const device of DEVICES) {
       await phone.closeSheet();
     });
 
-    await check(`${label}: both people's sleep-type entries open with their own owner`, async () => {
+    await check(`${label}: the composite lists all six sleep channels with the pair's own status`, async () => {
+      const channels = await page.evaluate(async () => {
+        const { DREAM_CHANNELS } = await import('/src/lib/human-design/dream-topology.js');
+        const { dreamChannelName } = await import('/src/lib/dream-vocabulary.js');
+        return {
+          ids: DREAM_CHANNELS.map(channel => channel.gates.join('-')).sort(),
+          names: Object.fromEntries(DREAM_CHANNELS.map(channel => [channel.gates.join('-'), dreamChannelName(channel.gates)])),
+          rows: [...document.querySelectorAll('.dream-channel-open[data-channel]')].map(node => ({
+            key: node.dataset.channel,
+            name: node.querySelector('.dream-channel-name')?.textContent.trim() || null,
+            status: node.querySelector('.dream-channel-status')?.textContent.trim() || null,
+            cls: node.className.toString(),
+            text: node.textContent.replace(/\s+/g, ' ').trim().slice(0, 60)
+          }))
+        };
+      });
+      record(`${label} composite channels`, channels.rows.map(row => `${row.key}:${row.name}:${row.status}`));
+      assert.equal(channels.rows.length, 6, `${channels.rows.length} composite channel rows instead of 6`);
+      assert.deepEqual(channels.rows.map(row => row.key).sort(), channels.ids,
+        `composite channel rows are ${channels.rows.map(row => row.key)}`);
+      for (const row of channels.rows) {
+        assert.equal(row.name, channels.names[row.key],
+          `composite channel ${row.key} is labelled "${row.name}" instead of "${channels.names[row.key]}"`);
+        assert.ok(row.status, `composite channel ${row.key} has no status`);
+      }
+      // Whoever completes a channel is named on its row (owner class + the person).
+      const owned = channels.rows.filter(row => /dream-channel-owner-(a|b|both)/.test(row.cls));
+      assert.ok(owned.length > 0, 'no composite channel row says who completes it');
+      for (const row of owned) {
+        assert.match(row.text, /Fictional A|Fictional B/, `channel ${row.key} says "${row.text}" without naming a person`);
+      }
+    });
+
+    await check(`${label}: each person's waking and sleep type open under their own name`, async () => {
+      // The integrated composite gives every person both halves: waking and sleep, one
+      // chip each, all four carrying their owner.
+      const chips = await page.$$eval('#dream-content [data-dream-type-open]', nodes => nodes.map(node => ({
+        side: node.dataset.dreamTypeOpen,
+        owner: node.dataset.owner || null
+      })));
+      record(`${label} composite type chips`, chips);
+      assert.equal(chips.length, 4, `${chips.length} type chips instead of four`);
       for (const owner of ['a', 'b']) {
-        const entry = await page.$(`.dream-compare-type-entry[data-owner="${owner}"]`);
-        assert.ok(entry, `no sleep-type entry for person ${owner}`);
-        await phone.tapSelector(`.dream-compare-type-entry[data-owner="${owner}"]`);
-        const sheet = await phone.sheetState();
-        assert.ok(sheet.open, `the entry for ${owner} opened no sheet`);
-        assert.equal(sheet.card.type, 'dream', `the entry for ${owner} opened data-type=${sheet.card.type}`);
-        assert.equal(sheet.card.owner, owner, `the entry for ${owner} opened owner=${sheet.card.owner}`);
-        assert.match(sheet.labels.join(' '), new RegExp(`Fictional ${owner.toUpperCase()}`),
-          `the ${owner} sheet is not labelled with that person: ${JSON.stringify(sheet.labels)}`);
-        await phone.closeSheet();
+        for (const side of ['waking', 'dream']) {
+          assert.ok(chips.some(chip => chip.owner === owner && chip.side === side),
+            `no ${side} chip for person ${owner}`);
+          await phone.tapSelector(`#dream-content [data-dream-type-open="${side}"][data-owner="${owner}"]`);
+          const sheet = await phone.sheetState();
+          assert.ok(sheet.open, `the ${side} chip of ${owner} opened no sheet`);
+          assert.equal(sheet.card.type, side, `the ${side} chip of ${owner} opened data-type=${sheet.card.type}`);
+          assert.equal(sheet.card.owner, owner, `the ${side} chip of ${owner} opened owner=${sheet.card.owner}`);
+          assert.match(sheet.labels.join(' '), new RegExp(`Fictional ${owner.toUpperCase()}`),
+            `the ${side} sheet of ${owner} is not labelled with that person: ${JSON.stringify(sheet.labels)}`);
+          // The waking half must read as a waking reading, the sleep half as the sleep one.
+          assert.equal(sheet.hasWakingShell, false, `the ${side} sheet rendered the shared waking reading shell`);
+          await phone.closeSheet();
+        }
       }
     });
 
