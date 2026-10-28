@@ -192,6 +192,40 @@ async function openPhone(device) {
     };
   });
 
+  /**
+   * Text that is cut off instead of wrapped.
+   *
+   * The sleep page's type now follows the site's steps, and the two cases that can
+   * break a step that is too large are a long English type name and a traditional
+   * Chinese one. Those are clipped, not scrolled, so a document-overflow check alone
+   * would not see them. Only the page's own text elements are sampled: the shared
+   * chrome truncates on purpose and is not this page's to judge.
+   */
+  const CLIP_SAMPLE = [
+    '.dream-type-label', '.dream-type-chip', '.dream-type-facts', '.dream-realm-title',
+    '.dream-frame-list > li', '.dream-portal-reading-block', '.dream-row-theme',
+    '.dream-row-source-label', '.dream-planet-chip', '.dream-channel-name',
+    '.dream-channel-status', '.dream-channel-named', '.dream-column-head',
+    '.dream-column-row', '.dream-column-date'
+  ].join(', ');
+  const clippedText = () => page.evaluate(selector => {
+    const root = document.getElementById('dream-view');
+    if (!root) return { scope: false, clipped: [], count: 0 };
+    const clipped = [];
+    for (const el of root.querySelectorAll(selector)) {
+      const style = getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden') continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < 2 || rect.height < 2) continue;
+      const clips = /hidden|clip/.test(style.overflowX + style.overflowY) || style.textOverflow === 'ellipsis';
+      if (!clips) continue;
+      if (el.scrollWidth - el.clientWidth > 1 || el.scrollHeight - el.clientHeight > 1) {
+        clipped.push(`${String(el.className || el.tagName)}: "${el.textContent.trim().slice(0, 20)}"`);
+      }
+    }
+    return { scope: true, clipped: clipped.slice(0, 8), count: clipped.length };
+  }, CLIP_SAMPLE);
+
   const sheetState = () => page.evaluate(() => {
     const sheet = document.querySelector('#dream-detail:not(.hidden)');
     if (!sheet) return { open: false };
@@ -236,7 +270,7 @@ async function openPhone(device) {
     await page.waitForTimeout(600);
   }
 
-  return { context, page, errors, swipe, pressAndHold, tapAt, tapSelector, overflow, sheetState, closeSheet, openView };
+  return { context, page, errors, swipe, pressAndHold, tapAt, tapSelector, overflow, clippedText, sheetState, closeSheet, openView };
 }
 
 /**
@@ -709,9 +743,12 @@ for (const device of DEVICES) {
         await phone.tapSelector(`.language-actions button[data-language="${code}"]`);
         await page.waitForTimeout(1200);
         const state = await phone.overflow();
+        const clipped = await phone.clippedText();
         const title = await page.$eval('#dream-subtitle', node => node.textContent.trim()).catch(() => '');
-        record(`${label} ${code}`, { overflow: state.document, title: title.slice(0, 30) });
+        record(`${label} ${code}`, { overflow: state.document, view: state.view, clipped: clipped.count, title: title.slice(0, 30) });
         assert.ok(state.document <= 1, `${code} scrolls ${state.document}px sideways`);
+        assert.ok(state.view <= 1, `${code} overflows the sleep view by ${state.view}px`);
+        assert.equal(clipped.count, 0, `${code} clips ${clipped.clipped.join(' | ')}`);
         assert.ok(title.length > 0, `${code} left the sleep subtitle empty`);
         await page.screenshot({ path: path.join(SHOTS, `${label}-${code}.png`) });
       }
@@ -722,8 +759,11 @@ for (const device of DEVICES) {
       await page.waitForTimeout(1000);
     });
 
-    await check(`${label}: dark and high-contrast skins keep the page inside the viewport`, async () => {
-      for (const skin of ['default-dark', 'high-contrast']) {
+    await check(`${label}: every skin keeps the page inside the viewport without clipping`, async () => {
+      // The three skins the sleep page's type was measured against, plus the default
+      // dark one that pairs with the default light. Each one is a different ink and
+      // surface; none of them may change the layout or cut a line of text.
+      for (const skin of ['default-light', 'default-dark', 'midnight-contrast', 'high-contrast']) {
         try {
           if (!(await page.$eval('#more-menu', node => node.open))) await phone.tapSelector('#more-toggle');
           await phone.tapSelector('#skin-settings-button');
@@ -733,14 +773,17 @@ for (const device of DEVICES) {
           if (await page.$eval('#skin-settings', node => node.open)) await phone.tapSelector('#skin-settings-close');
           await page.waitForTimeout(600);
           const state = await phone.overflow();
+          const clipped = await phone.clippedText();
           const readable = await page.evaluate(() => {
             const sheetTitle = document.querySelector('.dream-type-strip, .dream-compare-head');
             if (!sheetTitle) return null;
             const style = getComputedStyle(sheetTitle);
             return { color: style.color, background: getComputedStyle(document.body).backgroundColor };
           });
-          record(`${label} ${skin}`, { overflow: state.document, readable });
+          record(`${label} ${skin}`, { overflow: state.document, view: state.view, clipped: clipped.count, readable });
           assert.ok(state.document <= 1, `${skin} scrolls ${state.document}px sideways`);
+          assert.ok(state.view <= 1, `${skin} overflows the sleep view by ${state.view}px`);
+          assert.equal(clipped.count, 0, `${skin} clips ${clipped.clipped.join(' | ')}`);
           await page.screenshot({ path: path.join(SHOTS, `${label}-${skin}.png`) });
         } catch (error) {
           throw new Error(`skin ${skin}: ${error.message}`);

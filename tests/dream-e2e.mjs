@@ -41,6 +41,86 @@ const EXPECTED_VIEW_BOX = [
 /** The graph is drawn rotated a quarter turn clockwise, so its box is landscape. */
 const ROTATED_ASPECT = (DREAM_VIEW_BOX.w + BODYGRAPH_PAD * 2) / (DREAM_VIEW_BOX.h + BODYGRAPH_PAD * 2);
 
+/**
+ * The type ladder `styles/dream.css` declares, per role, in CSS px.
+ *
+ * The sleep page carries no scale of its own: it reads at the site's three steps —
+ * 14px for reading prose, 13px for labels and secondary notes, 12px for the dense
+ * activation columns. 12px is also the absolute floor for anything a reader is
+ * meant to read; below that the page would be shrinking its own text instead of
+ * following the site, and a narrow viewport is not a reason to do that.
+ */
+const MIN_READABLE = 12;
+const READING_ROLE = 14;
+const LABEL_ROLE = 13;
+const COMPACT_ROLE = 12;
+
+/** Roles on the page itself. */
+const VIEW_TYPE_ROLES = {
+  '.dream-frame-list': READING_ROLE,
+  '.dream-portal-reading-block': READING_ROLE,
+  '.dream-type-label': LABEL_ROLE,
+  '.dream-type-facts': LABEL_ROLE,
+  '.dream-portal-tag': LABEL_ROLE,
+  '.dream-row-theme': LABEL_ROLE,
+  '.dream-row-transit-tag': LABEL_ROLE,
+  '.dream-row-source-label': LABEL_ROLE,
+  '.dream-planet-chip': LABEL_ROLE,
+  '.dream-channels-title': LABEL_ROLE,
+  '.dream-channel-status': LABEL_ROLE,
+  '.dream-channel-named': LABEL_ROLE,
+  '.dream-channel-owner': LABEL_ROLE,
+  '.dream-provenance': LABEL_ROLE,
+  '.dream-column-head': COMPACT_ROLE,
+  '.dream-column-date': COMPACT_ROLE,
+  '.dream-column-row': COMPACT_ROLE,
+  '.dream-column-glyph': COMPACT_ROLE,
+  '.dream-column-planet': COMPACT_ROLE
+};
+
+/**
+ * Roles the single design always renders. `.dream-channel-owner` and
+ * `.dream-row-transit-tag` are not in the list: the first only exists in the
+ * comparison, the second only while a transit activates a night field, so both are
+ * measured when present and skipped when not.
+ */
+const VIEW_TYPE_REQUIRED = [
+  '.dream-frame-list', '.dream-portal-reading-block', '.dream-type-label', '.dream-type-facts',
+  '.dream-portal-tag', '.dream-row-theme', '.dream-row-source-label', '.dream-planet-chip',
+  '.dream-channels-title', '.dream-channel-status', '.dream-channel-named', '.dream-provenance',
+  '.dream-column-head', '.dream-column-date', '.dream-column-row', '.dream-column-glyph',
+  '.dream-column-planet'
+];
+
+/** Roles inside the shared detail sheet, which the sleep page fills itself. */
+const SHEET_TYPE_ROLES = {
+  '.dream-reading-prose': READING_ROLE,
+  '.dream-reading-row': READING_ROLE,
+  '.dream-nightforce-theme': READING_ROLE,
+  '.dream-planet-reading > summary': READING_ROLE,
+  '.dream-type-reading-part > dd': READING_ROLE,
+  '.dream-reading-label': LABEL_ROLE,
+  '.dream-reading-note': LABEL_ROLE,
+  '.dream-detail-tag': LABEL_ROLE,
+  '.dream-detail-source-label': LABEL_ROLE,
+  '.dream-detail-subhead': LABEL_ROLE,
+  '.dream-detail-facts': LABEL_ROLE,
+  '.dream-detail-channel-dyn': LABEL_ROLE,
+  '.dream-detail-gate-src': LABEL_ROLE,
+  '.dream-nightforce-no': LABEL_ROLE,
+  '.dream-nightforce-badge': LABEL_ROLE,
+  '.dream-planet-role': LABEL_ROLE,
+  '.dream-type-reading-part > dt': LABEL_ROLE
+};
+
+/**
+ * Widths where the side bands and the canvas share one box. 641px is the first
+ * width above the phone breakpoint, where the bands are laid over the canvas, and
+ * the width at which a 152px band once covered gate 20; the rest walk up through
+ * the container steps to a full desktop frame.
+ */
+const OCCLUSION_WIDTHS = [641, 660, 700, 768, 900, 1024, 1280, 1440];
+
 let failures = 0;
 const ok = name => console.log(`✔ ${name}`);
 const fail = (name, err) => { failures++; console.error(`✖ ${name}\n  ${err}`); };
@@ -1716,6 +1796,195 @@ await check('no page or sheet text renders a literal undefined, NaN or [object O
   await sweepGateSheet('single');
   const singleText = await shown();
   assert(!dirty.test(singleText), `the single sleep chart renders a placeholder value: ${evidence(singleText)}`);
+});
+
+await check('the sleep view reads at the site\u2019s own type scale, and never below 12px', async () => {
+  // Sizes are read through the real cascade on the real elements, always scoped to
+  // `#dream-view`: the waking chart keeps same-named nodes in the DOM
+  // (`.bg-planets-date`, for one), so an unscoped query silently measures a hidden
+  // element instead of the dream column it was aimed at.
+  const state = await page.evaluate(({ roles, floor }) => {
+    const root = document.getElementById('dream-view');
+    const measured = {};
+    const absent = [];
+    for (const [selector, expected] of Object.entries(roles)) {
+      const node = root.querySelector(selector);
+      if (!node) { absent.push(selector); continue; }
+      measured[selector] = Math.round(parseFloat(getComputedStyle(node).fontSize) * 100) / 100;
+    }
+    // The floor sweep skips the SVG: its text is drawn in user units and scales with
+    // the canvas, the same reason its hit circles are not held to a pixel size.
+    const small = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.nodeValue.trim();
+      if (!text) continue;
+      const el = node.parentElement;
+      if (!el || el.closest('svg')) continue;
+      // The shared transit time control (`lib/transit-time-control.js`, styled by
+      // `features/transit-timeline/timeline.css`) is mounted inside this view but is
+      // not this page's type: its 10-11px field labels belong to the site-wide type
+      // pass, not to the sleep chart. Skipped, not silently accepted.
+      if (el.closest('.dream-time-control')) continue;
+      const style = getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden') continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < 2 || rect.height < 2) continue;
+      const size = parseFloat(style.fontSize);
+      if (size < floor) small.push(`${String(el.className || el.tagName)}: ${size}px "${text.slice(0, 16)}"`);
+    }
+    return { measured, absent, small: small.slice(0, 8), smallCount: small.length };
+  }, { roles: VIEW_TYPE_ROLES, floor: MIN_READABLE });
+  console.log(`  \u00b7 dream view type: ${JSON.stringify(state.measured)}`);
+  for (const [selector, expected] of Object.entries(VIEW_TYPE_ROLES)) {
+    if (state.absent.includes(selector)) continue;
+    assert(state.measured[selector] === expected,
+      `${selector} reads ${state.measured[selector]}px, the ${expected}px role is expected`);
+  }
+  const missing = VIEW_TYPE_REQUIRED.filter(selector => state.absent.includes(selector));
+  assert(missing.length === 0, `the page no longer renders ${missing.join(', ')}`);
+  assert(state.smallCount === 0, `${state.smallCount} readable run(s) below ${MIN_READABLE}px: ${state.small.join(' | ')}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('the open gate sheet keeps the reading role at 14px and every label above 12px', async () => {
+  await page.click('#dream-content .dream-realm-row .dream-row-open');
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  await page.waitForTimeout(250);
+  let state;
+  try {
+    state = await page.evaluate(({ roles, floor }) => {
+      const root = document.querySelector('#dream-detail:not(.hidden)');
+      const measured = {};
+      const absent = [];
+      for (const [selector, expected] of Object.entries(roles)) {
+        const node = root.querySelector(selector);
+        if (!node) { absent.push(selector); continue; }
+        measured[selector] = Math.round(parseFloat(getComputedStyle(node).fontSize) * 100) / 100;
+      }
+      const small = [];
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const text = node.nodeValue.trim();
+        if (!text) continue;
+        const el = node.parentElement;
+        if (!el || el.closest('svg')) continue;
+        const style = getComputedStyle(el);
+        if (style.display === 'none' || style.visibility === 'hidden') continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width < 2 || rect.height < 2) continue;
+        const size = parseFloat(style.fontSize);
+        if (size < floor) small.push(`${String(el.className || el.tagName)}: ${size}px "${text.slice(0, 16)}"`);
+      }
+      return { measured, absent, small: small.slice(0, 8), smallCount: small.length };
+    }, { roles: SHEET_TYPE_ROLES, floor: MIN_READABLE });
+  } finally {
+    // The sheet is a full-height overlay: leaving it open would make the width sweep
+    // below measure the sheet instead of the graph.
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#dream-detail:not(.hidden)'), null, { timeout: 10000 });
+    await page.waitForTimeout(300);
+  }
+  console.log(`  \u00b7 dream sheet type: ${JSON.stringify(state.measured)}`);
+  for (const [selector, expected] of Object.entries(SHEET_TYPE_ROLES)) {
+    if (state.absent.includes(selector)) continue;
+    assert(state.measured[selector] === expected,
+      `${selector} in the sheet reads ${state.measured[selector]}px, the ${expected}px role is expected`);
+  }
+  // The dream prose and the planet list are the sheet's reading body: they must be
+  // present, or the check would pass without ever measuring a reading.
+  for (const selector of ['.dream-reading-prose', '.dream-nightforce-theme']) {
+    assert(!state.absent.includes(selector), `the gate sheet no longer renders ${selector}`);
+  }
+  assert(state.smallCount === 0, `${state.smallCount} sheet run(s) below ${MIN_READABLE}px: ${state.small.join(' | ')}`);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('the activation bands cover no gate and nothing scrolls sideways, 641 to 1440px', async () => {
+  // An open sheet is a full-height overlay and would cover every gate it was measured
+  // through, so the sweep starts by making sure none is open.
+  if (await page.$('#dream-detail:not(.hidden)')) {
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#dream-detail:not(.hidden)'), null, { timeout: 10000 });
+  }
+  await page.waitForTimeout(300);
+  const report = [];
+  for (const width of OCCLUSION_WIDTHS) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.waitForTimeout(320);
+    // Bring the canvas into the viewport first: `elementFromPoint()` answers null for
+    // a point outside it, which would read as an occlusion that is not there.
+    await page.evaluate(() => {
+      document.querySelector('#dream-bodygraph .bodygraph-svg')?.scrollIntoView({ block: 'center', behavior: 'instant' });
+    });
+    await page.waitForTimeout(200);
+    const state = await page.evaluate(() => {
+      const view = document.getElementById('dream-view');
+      const discs = [...view.querySelectorAll('.bg-gate[data-gate] .bg-gate-circle')];
+      const blocked = [];
+      const offscreen = [];
+      for (const disc of discs) {
+        const rect = disc.getBoundingClientRect();
+        const x = rect.x + rect.width / 2;
+        const y = rect.y + rect.height / 2;
+        const gate = disc.closest('.bg-gate')?.dataset.gate ?? '?';
+        if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) {
+          offscreen.push({ gate, x: Math.round(x), y: Math.round(y) });
+          continue;
+        }
+        const svg = disc.ownerSVGElement;
+        const hit = document.elementFromPoint(x, y);
+        if (!hit) { blocked.push({ gate, hit: 'null' }); continue; }
+        if (hit !== svg && !svg.contains(hit)) {
+          const box = hit.getBoundingClientRect();
+          const hitBox = { x: Math.round(box.x), y: Math.round(box.y), w: Math.round(box.width), h: Math.round(box.height) };
+          blocked.push({
+            gate,
+            hit: `${hit.tagName}.${String(hit.className || '').slice(0, 40)}`,
+            covers: Math.round(box.width) >= 4 && Math.round(box.height) >= 4,
+            at: { x: Math.round(x), y: Math.round(y) },
+            hitBox
+          });
+        }
+      }
+      const columns = [...view.querySelectorAll('.dream-column')].map(node => {
+        const box = node.getBoundingClientRect();
+        return {
+          cls: String(node.className).replace('dream-column ', ''),
+          top: Math.round(box.top),
+          bottom: Math.round(box.bottom),
+          left: Math.round(box.left),
+          width: Math.round(box.width),
+          rows: node.querySelectorAll('.dream-column-row').length
+        };
+      });
+      return {
+        gates: discs.length,
+        blocked,
+        offscreen,
+        columns,
+        documentOverflow: document.documentElement.scrollWidth - innerWidth,
+        viewOverflow: view.scrollWidth - view.clientWidth
+      };
+    });
+    report.push({ width, ...state });
+  }
+  for (const entry of report) {
+    console.log(`  \u00b7 ${entry.width}px: ${entry.gates} gates, ${entry.blocked.length} covered, document overflow ${entry.documentOverflow}px, view overflow ${entry.viewOverflow}px`);
+    console.log(`    columns ${JSON.stringify(entry.columns)}`);
+  }
+  for (const entry of report) {
+    assert(entry.gates === 15, `${entry.width}px: ${entry.gates} gate discs instead of 15`);
+    assert(entry.offscreen.length === 0,
+      `${entry.width}px: ${entry.offscreen.length} gate centre(s) outside the viewport: ${JSON.stringify(entry.offscreen)}`);
+    assert(entry.blocked.length === 0,
+      `${entry.width}px: ${entry.blocked.length} gate centre(s) covered: ${JSON.stringify(entry.blocked)}`);
+    assert(entry.documentOverflow <= 1, `${entry.width}px: the page scrolls ${entry.documentOverflow}px sideways`);
+    assert(entry.viewOverflow <= 1, `${entry.width}px: the sleep view scrolls ${entry.viewOverflow}px sideways`);
+  }
+  await page.setViewportSize({ width: 1380, height: 1000 });
+  await page.waitForTimeout(400);
+  assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 
 await check('no errors accumulated across the whole run', async () => {
