@@ -55,7 +55,7 @@
 .dream-status {
   min-width: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -76,7 +76,7 @@
   border-radius: var(--radius-sm);
   background: var(--bg-sunken);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.6;
 }
 
@@ -133,7 +133,7 @@
 
 .dream-type-label {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -155,7 +155,7 @@
   box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--bg-elevated) 76%, transparent);
   color: var(--text);
   font: inherit;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 650;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -180,7 +180,7 @@
 
 .dream-type-arrow {
   color: var(--text-tertiary);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   line-height: 1;
 }
 
@@ -191,7 +191,7 @@
   min-width: 0;
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.55;
 }
 
@@ -222,7 +222,7 @@
   padding: 0;
   list-style: none;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-lg);
   line-height: 1.55;
 }
 
@@ -275,9 +275,16 @@
 /* ---------- Activation columns (graph side bands) ---------- */
 
 /* The shell reads this off the slot's first child to size the band; the
-   relationship composite declares it the same way. */
+   relationship composite declares it the same way.
+
+   The band is sized from its text, not the other way round. Each row prints a
+   14px activation (`38.1`) beside its glyph, and the planet name sits on its own
+   line at the same size, so the column asks for the width that keeps those lines
+   readable: 128px, or 152px once the shell has room for the wider bands. A
+   narrower shell caps or wraps the band in `lib/graph-shell.js`; no step here
+   shrinks the type to fit, because the type is the content. */
 .dream-column {
-  --ohd-slot-content-width: 108px;
+  --ohd-slot-content-width: 128px;
   --dream-column-accent: var(--hd-inactive);
   display: grid;
   gap: 2px;
@@ -296,25 +303,22 @@
    child, so the wrapper repeats the column's content width and the container
    steps below, instead of inventing a second width rule. */
 .dream-columns {
-  --ohd-slot-content-width: 108px;
+  --ohd-slot-content-width: 128px;
   display: grid;
   gap: var(--space-2);
   min-width: 0;
 }
 @container (min-width: 560px) {
-  .dream-columns { --ohd-slot-content-width: 128px; }
-}
-@container (max-width: 380px) {
-  .dream-columns { --ohd-slot-content-width: 88px; }
+  .dream-columns { --ohd-slot-content-width: 152px; }
 }
 
 .dream-column-head {
   padding: 0 2px 1px;
   border-bottom: 1px solid color-mix(in srgb, var(--dream-column-accent) 45%, var(--dream-edge));
   color: var(--dream-column-accent);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
-  line-height: 1.35;
+  line-height: 1.4;
   letter-spacing: .01em;
   overflow-wrap: anywhere;
 }
@@ -322,17 +326,17 @@
 .dream-column-date {
   padding: 0 2px;
   color: var(--text-tertiary);
-  font-size: 9.5px;
-  line-height: 1.4;
+  font-size: var(--font-size-base);
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .dream-column-empty {
   padding: 2px;
   color: var(--text-tertiary);
-  font-size: 9.5px;
+  font-size: var(--font-size-base);
   font-style: italic;
-  line-height: 1.4;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -341,19 +345,19 @@
 .dream-column-row {
   display: grid;
   grid-template-columns: auto minmax(0, auto);
-  column-gap: 3px;
+  column-gap: 4px;
   align-items: baseline;
   width: 100%;
   min-width: 0;
   margin: 0;
-  padding: 1px 2px;
+  padding: 2px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-xs);
   color: var(--text);
   font: inherit;
-  font-size: 10px;
-  line-height: 1.35;
+  font-size: var(--font-size-base);
+  line-height: 1.4;
   text-align: left;
   cursor: pointer;
   transition: background-color .12s ease, border-color .12s ease;
@@ -373,7 +377,7 @@
 
 .dream-column-glyph {
   color: var(--dream-column-accent);
-  font-size: 11px;
+  font-size: var(--font-size-base);
   line-height: 1;
   font-style: normal;
 }
@@ -387,20 +391,14 @@
   grid-column: 1 / -1;
   display: none;
   color: var(--text-tertiary);
-  font-size: 9px;
-  line-height: 1.3;
+  font-size: var(--font-size-base);
+  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
 @container (min-width: 560px) {
-  .dream-column { --ohd-slot-content-width: 128px; }
+  .dream-column { --ohd-slot-content-width: 152px; }
   .dream-column-planet { display: block; }
-}
-@container (max-width: 380px) {
-  .dream-column { --ohd-slot-content-width: 88px; }
-  .dream-column-head { font-size: 10px; }
-  .dream-column-row { font-size: 9.5px; }
-  .dream-column-glyph { font-size: 10px; }
 }
 
 /* ---------- The three night fields ---------- */
@@ -454,7 +452,7 @@
 .dream-realm-title {
   margin: 0 0 var(--space-2);
   font-family: var(--font-serif);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   font-weight: 500;
   line-height: 1.3;
   letter-spacing: .01em;
@@ -479,14 +477,14 @@
   display: inline-grid;
   place-items: center;
   flex: none;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 5px;
+  min-width: 30px;
+  height: 26px;
+  padding: 0 6px;
   background: var(--bg-elevated);
   border: 1px solid color-mix(in srgb, var(--dream-realm-hue) 50%, var(--dream-edge));
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 650;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -495,7 +493,7 @@
 .dream-portal-name {
   min-width: 0;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -503,7 +501,7 @@
 
 .dream-portal-tag {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.4;
 }
 
@@ -534,7 +532,7 @@
   min-width: 0;
   margin-top: var(--space-1);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-lg);
   line-height: 1.6;
 }
 
@@ -561,7 +559,7 @@
 .dream-realm-empty {
   margin: 0;
   color: var(--text-tertiary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-style: italic;
   line-height: 1.5;
 }
@@ -587,14 +585,14 @@
 .dream-row-name {
   min-width: 0;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .dream-row-theme {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.45;
 }
 
@@ -604,7 +602,7 @@
   background: var(--hd-transit);
   border-radius: var(--radius-full);
   color: var(--hd-transit-on);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.5;
   letter-spacing: .02em;
@@ -642,7 +640,7 @@
    night sky uses `--hd-transit-text` for the same reason the timeline does. */
 .dream-row-source-label {
   color: var(--dream-source);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   letter-spacing: .05em;
   text-transform: uppercase;
@@ -677,14 +675,14 @@
   border: 1px solid color-mix(in srgb, var(--dream-source) 28%, var(--dream-edge));
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-variant-numeric: tabular-nums;
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
 .dream-planet-chip > i {
   color: var(--dream-source);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-style: normal;
   line-height: 1;
 }
@@ -700,7 +698,7 @@
 .dream-channels-title {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.4;
   letter-spacing: .06em;
@@ -763,7 +761,7 @@
 /* Who contributes which gate of a halved channel, under the channel's names. */
 .dream-channel-split {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -779,7 +777,7 @@
 .dream-channel-gates {
   flex: none;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
@@ -788,7 +786,7 @@
 .dream-channel-name {
   min-width: 0;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -799,7 +797,7 @@
   border: 1px solid color-mix(in srgb, var(--dream-channel-accent) 45%, var(--dream-edge));
   border-radius: var(--radius-full);
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.5;
   letter-spacing: .02em;
@@ -821,7 +819,7 @@
 
 .dream-channel-named {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -847,7 +845,7 @@
 .dream-channel-owner {
   flex: none;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -858,7 +856,7 @@
   margin: var(--space-3) 0 var(--space-2);
   color: var(--text);
   font-family: var(--font-serif);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   font-weight: 500;
   line-height: 1.3;
 }
@@ -873,7 +871,7 @@
   border-radius: var(--radius-xs);
   color: var(--text);
   font: inherit;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
@@ -892,7 +890,7 @@
 .dream-compare-head {
   margin: 0 0 var(--space-2);
   font-family: var(--font-serif);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-weight: 500;
   line-height: 1.3;
   color: var(--text);
@@ -903,7 +901,7 @@
   margin: 0 0 var(--space-2);
   max-width: 720px;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
@@ -927,7 +925,7 @@
 .dream-detail-subhead {
   margin: var(--space-3) 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.4;
   letter-spacing: .06em;
@@ -950,7 +948,7 @@
   border: 1px solid color-mix(in srgb, var(--dream-detail-tag-hue) 40%, var(--hd-detail-border));
   border-radius: var(--radius-full);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 600;
   line-height: 1.5;
 }
@@ -990,7 +988,7 @@
 
 .dream-detail-source-label {
   color: var(--dream-detail-source);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   letter-spacing: .05em;
   line-height: 1.4;
@@ -1020,7 +1018,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: var(--space-1);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
 }
 
@@ -1031,7 +1029,7 @@
 .dream-detail-owner {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.5;
 }
 .dream-detail-owner strong { color: var(--text); }
@@ -1042,7 +1040,7 @@
   gap: var(--space-1) var(--space-3);
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
 }
 
@@ -1083,7 +1081,7 @@
 
 .dream-detail-channel-id {
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
@@ -1091,7 +1089,7 @@
 .dream-detail-channel-name {
   min-width: 0;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -1100,7 +1098,7 @@
   grid-column: 1 / -1;
   justify-self: start;
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.5;
 }
@@ -1108,7 +1106,7 @@
 .dream-detail-centers {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.5;
 }
 
@@ -1145,7 +1143,7 @@
 .dream-detail-gate-src {
   --dream-detail-source: var(--hd-inactive);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -1155,7 +1153,7 @@
 
 .dream-detail-gate-owner {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -1170,7 +1168,7 @@
 .dream-detail-empty {
   margin: 0 0 var(--space-2);
   color: var(--text-tertiary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-style: italic;
   line-height: 1.55;
 }
@@ -1198,7 +1196,7 @@
 .dream-reading-title {
   margin: 0 0 var(--space-2);
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 650;
   line-height: 1.4;
 }
@@ -1206,7 +1204,7 @@
 .dream-reading-prose {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.75;
   overflow-wrap: anywhere;
 }
@@ -1218,7 +1216,7 @@
   border-left: 2px solid color-mix(in srgb, var(--accent) 55%, var(--hd-detail-border));
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -1236,7 +1234,7 @@
 .dream-reading-row {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -1245,7 +1243,7 @@
   display: inline-block;
   margin-inline-end: 6px;
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
   letter-spacing: .04em;
 }
@@ -1286,14 +1284,14 @@
 
 .dream-nightforce-no {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .dream-nightforce-theme {
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 650;
 }
 
@@ -1303,7 +1301,7 @@
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--hd-detail-border));
   border-radius: var(--radius-full);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.5;
 }
@@ -1332,7 +1330,7 @@
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 600;
   line-height: 1.5;
 }
@@ -1350,7 +1348,7 @@
 
 .dream-planet-role {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 500;
   overflow-wrap: anywhere;
 }
@@ -1371,7 +1369,7 @@
 
 .dream-type-reading-part > dt {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   font-weight: 650;
   letter-spacing: .04em;
   margin-bottom: 2px;
@@ -1380,7 +1378,7 @@
 .dream-type-reading-part > dd {
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -1400,7 +1398,7 @@
 
 .dream-compare-type-person {
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 650;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -1435,7 +1433,7 @@
 .dream-provenance {
   margin: var(--space-3) 0 0;
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.6;
   overflow-wrap: anywhere;
 }

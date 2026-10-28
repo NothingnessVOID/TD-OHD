@@ -197,3 +197,18 @@ PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip �
 **页面状态边界**（`tests/dream-state-boundaries-e2e.mjs`，12 项）：三个「异步求解回来时页面已不是发起时的状态」的竞态已修——合盘发起时捕获主人物身份与 B 的出生指纹（合盘另有独立 `comparisonSequence`）、无效时刻三态区分且阻止求解并显示 `.dream-moment-invalid`、B 的身份与指纹由本页自己的 `onPeopleChange` 订阅守卫（删除／改出生字段丢合盘并提示，仅改名保留已解模型只换标签）。另补了三个跨计数器空洞：单人慢解不能盖合盘、`samePairIsCurrent()` 自己读实况（不再是死代码）、B 在计算期间被删/改时不再空转到永久 Computing。测试用拦截模块 + 测试显式放行门确定性地制造交错；未修基线首轮 6/9、第二轮 2/12 失败。细节与运行方式见 [SLEEP-CHART-PENDING.md](./SLEEP-CHART-PENDING.md) §3.14。
 
 未验证：真实 SwissEph/WASM 星历下的月弧数值与 `daysBeforeBirth` 实测分布（`dev/verify-dream-native.mjs` 需要本机 DOTNET，不在单测内运行；合成星历下同一相位差可落在 5.93–7.59 天，即 6.0–7.5 的窗口是夹具性质而非普适上界）；旋转与存根之后的全量 e2e 重跑、全部已注册 Skin 在横向图下的逐个视觉走查、键盘与触控、语言／外观切换重绘、横向图与三域面板的重排；合盘 composite 与点击详情弹窗仍由并行实例施工中，本文档不宣称其可用。按 AGENTS.md 的 preview-first 节奏，全量回归等用户验收方向后再跑。
+
+## 阅读字号尺度：正文 16px、辅助 14px（本轮增量）
+
+用户反馈「睡眠图／网页文字太小」，并明确不接受「统一但小」。本轮把「可读正文」与「辅助信息」分成两档，逐条落到真正承载阅读的选择器上，而不是改全局 `--font-size-xs/sm` Token（那会把按钮、图标、密集表格一起放大）。
+
+| 类别 | 取值 | 位置 | 说明 |
+| --- | --- | --- | --- |
+| 阅读正文 | `var(--font-size-lg)` = 16px | `src/styles.css` 的 `.gate-detail-desc`、`.gate-detail-acts`、`.gate-detail-line strong/p`、`.type-banner .type-detail`、`.center-card p/.center-detail`、`.center-card .center-name`、`.gate-item .gate-description`、`.gate-item .gate-name`、`.panel-intro`、`.conn-desc`、`.conn-dynamic p`、`.conn-note`、`.completion-title/.completion-detail`、`.connection-form h3`；`src/styles/dream.css` 的梦境解读正文（`.dream-reading-prose`、`.dream-reading-row`、`.dream-type-reading-part dd`、`.dream-portal-reading-block`、`.dream-frame-list`、`.dream-compare-intro`、`.dream-moment-invalid` 等） | 句子级内容按 16px / 行高 1.6–1.75；不再用 12–13.5px 承载整段说明 |
+| 辅助信息下限 | `var(--font-size-base)` = 14px | 共享 `.detail-label`（11→14）、`.gate-item/.channel-item` 的 meta、`.center-card .center-status`、`.conn-label`、`.conn-center-theme`、`.conn-count`、`.tl-activation-label`、`.tl-detail-channel-status`、`.gate-detail-inactive`；梦境全部标签／日期／激活值（列标题、列日期、`38.1` 行、行星名、来源标签、状态 badge、溯源行等） | 11px/9.5px/10px 不再出现在这些位置；`.dream-detail-channel > .circuit-badge` 也在 dream 作用域内取 14 |
+| 层级（只升不降） | 18/20/22 | `.dream-realm-title` 与 `.dream-channel-group-title` 16→18、`.dream-compare-head` 18→20、`.detail-name` 保持 22 | 正文字号上调后，标题同比上一个档位，层级关系与之前一致 |
+| 不加宽的代价 | — | `.dream-column` / `.dream-columns` 的 `--ohd-slot-content-width` 108→128，容器 ≥560px 时 128→152；删除 `@container (max-width: 380px)` 的 88px 与 10/9.5/10px 降档 | 列宽随文字走，窄壳由 `lib/graph-shell.js` 的 `maxSlotRatio` 封顶后换行。手机堆叠状态下列宽为 `auto`（390px 时实测 167px），不再有「窄屏就把字缩小」的分支 |
+| 未纳入 | — | 共享 `.circuit-badge`（10px）、`.transit-source-badge`（10px）、`.tl-detail-timing` 的 10px 时序区、`.bg-tooltip`（11–12.5px）、SVG 内闸门数字与图标；`src/styles/wa.css` 的 `.wa-reading-sheet .detail-label{12px}` | 前者是密集徽标/时序控件与图内标注，放大需重排该控件（时序列 176px）；后者属 Wa 页面自有样式文件，本轮未取得该文件所有权 |
+
+验证方式：1440 桌面与 390/360 手机，简中／繁中／英文，default-light、midnight-contrast、high-contrast 抽样，用计算样式逐选择器测量字号（无 <14px 命中）、页面横向溢出 0px、桌面侧带与画布不重叠（1440 实测带 152px、画布 720px、重叠 0）、手机 44px 触控入口不变。
+
