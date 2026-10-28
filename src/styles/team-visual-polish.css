@@ -25,13 +25,13 @@
 #team-view .team-saved select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
 #team-view .team-member-card, #team-view .team-group-member { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 10px 12px; margin: 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-sunken); }
 #team-view .team-member-identity { display: flex; align-items: center; min-width: 0; gap: 9px; }
-#team-view .team-member-index { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--text); font-size: 13px; font-variant-numeric: tabular-nums; }
+#team-view .team-member-index { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--text); font-size: var(--font-size-base); font-variant-numeric: tabular-nums; }
 #team-view .team-member-meta { display: grid; min-width: 0; line-height: 1.35; }
 #team-view .team-member-meta strong { overflow-wrap: anywhere; }
 #team-view .team-member-meta small { color: var(--text-secondary); }
 #team-view .team-member-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-#team-view .team-member-actions button, #team-view .team-group-member button { min-height: 44px; padding: 7px 10px; margin: 0; font-size: 12px; }
-#team-view .team-assigned { color: var(--text-secondary); font-size: 13px; padding: 8px 0; }
+#team-view .team-member-actions button, #team-view .team-group-member button { min-height: 44px; padding: 7px 10px; margin: 0; font-size: var(--font-size-base); }
+#team-view .team-assigned { color: var(--text-secondary); font-size: var(--font-size-base); padding: 8px 0; }
 #team-view .team-group-member { margin: 8px 0; }
 #team-view .team-group-member > span { display: flex; align-items: center; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
 #team-view .team-toolbar :is(input, select), #team-view .team-group-controls :is(input, select) { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }

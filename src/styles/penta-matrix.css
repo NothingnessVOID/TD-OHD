@@ -1,5 +1,5 @@
 #team-view .penta-render { min-width:0; color:var(--text); }
-:is(#team-view, .penta-detail) .penta-member-tag { display:inline-flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:50%; background:var(--penta-person); color:var(--team-member-on); font-size:11px; font-weight:700; border:1px solid var(--team-member-border); margin-right:3px; vertical-align:middle; }
+:is(#team-view, .penta-detail) .penta-member-tag { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--penta-person); color:var(--team-member-on); font-size:var(--font-size-base); font-weight:700; border:1px solid var(--team-member-border); margin-right:3px; vertical-align:middle; }
 :is(#team-view, .penta-detail) .penta-member-1 { --penta-person:var(--team-member-1); }
 :is(#team-view, .penta-detail) .penta-member-2 { --penta-person:var(--team-member-2); }
 :is(#team-view, .penta-detail) .penta-member-3 { --penta-person:var(--team-member-3); }
@@ -35,18 +35,18 @@
 #team-view .penta-canvas .penta-gate-hit { width:26.25%; height:15.61%; }
 #team-view .penta-canvas .penta-channel-hit { width:44px; height:44px; }
 #team-view .penta-canvas button:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
-#team-view .penta-caption { color:var(--text-secondary); font-size:12px; }
-#team-view .penta-state-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; margin:12px 0; font-size:12px; color:var(--text-secondary); }
+#team-view .penta-caption { color:var(--text-secondary); font-size:var(--font-size-base); }
+#team-view .penta-state-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; margin:12px 0; font-size:var(--font-size-base); color:var(--text-secondary); }
 #team-view .penta-state-legend span { display:flex; align-items:center; gap:8px; min-width:0; }
 #team-view .penta-state-symbol { display:inline-grid; flex:none; place-items:center; width:24px; height:24px; color:var(--text); border:1px solid var(--border); border-radius:50%; background:var(--bg-sunken); font-size:15px; }
 #team-view .penta-state-symbol { border:0; background:transparent; }
 /* Detail is mounted under body and uses the ordinary sheet's visual structure. */
 .penta-detail .gate-detail-body { overflow-wrap:anywhere; }
 .penta-detail .gate-detail-body li { margin-block:5px; }
-.penta-detail :is([data-penta-activations], [data-penta-channel-state], [data-penta-specific]) { margin-block:16px; font-size:13px; line-height:1.65; }
-.penta-detail :is([data-penta-activations], [data-penta-channel-state], [data-penta-specific]) h3 { font-size:13px; font-weight:600; margin-bottom:8px; }
+.penta-detail :is([data-penta-activations], [data-penta-channel-state], [data-penta-specific]) { margin-block:16px; font-size:var(--font-size-base); line-height:1.65; }
+.penta-detail :is([data-penta-activations], [data-penta-channel-state], [data-penta-specific]) h3 { font-size:var(--font-size-lg); font-weight:600; margin-bottom:8px; }
 .penta-detail [data-penta-member] { padding-block:8px; border-top:1px solid var(--border-subtle); }
-.penta-detail [data-penta-member] h4 { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; }
+.penta-detail [data-penta-member] h4 { display:flex; align-items:center; gap:6px; font-size:var(--font-size-base); font-weight:600; }
 .penta-detail .penta-member-identity { display:inline-flex; align-items:center; gap:5px; margin:2px 4px 2px 0; }
 .penta-detail [data-penta-member] { border-left:3px solid var(--penta-person); padding-left:12px; background:color-mix(in srgb, var(--penta-person) 5%, var(--hd-detail-bg)); }
 .penta-detail [data-penta-member] ul { list-style:none; padding-left:0; }

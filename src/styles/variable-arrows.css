@@ -10,13 +10,16 @@
   pointer-events: none;
   z-index: 1;
 }
+/* One line at 14px: the label may be wider than its 54-68px slot, and the
+   graph's upper corners have the room. Measured: no overlap with the gate
+   numbers and no label-to-label contact at 1440/1024/390. */
 .bg-variable-bottom { top: 80px; }
 .bg-variable-arrow { display: flex; flex-direction: column; align-items: center; width: 68px; min-width: 0; }
 .bg-variable-arrow[data-source="design"] { color: var(--bg-source-design, var(--hd-design)); }
 .bg-variable-arrow[data-source="personality"] { color: var(--bg-source-personality, var(--hd-personality)); }
 .bg-variable-arrow[data-source="design"] .bg-variable-label { color: var(--bg-source-design-text, var(--source-design-text)); }
 .bg-variable-arrow[data-source="personality"] .bg-variable-label { color: var(--bg-source-personality-text, var(--source-personality-text)); }
-.bg-variable-label { font-size: clamp(9px, 1.1vw, 11px); line-height: 1.3; text-align: center; overflow-wrap: anywhere; }
+.bg-variable-label { font-size: var(--font-size-base); line-height: 1.3; text-align: center; white-space: nowrap; }
 .bg-variable-symbol { font-size: clamp(24px, 3vw, 32px); line-height: 1; font-weight: 500; }
 .variable-grid .arrow-card .arrow-label { color: var(--text); font-size: 14px; text-transform: none; letter-spacing: 0; }
 /* Transit and timeline own a fixed graph canvas. The wrapper must inherit
@@ -26,16 +29,16 @@
   .bg-variable-arrow { width: 54px; }
   .bg-variable-bottom { top: 80px; }
 }
-.foundation-variable-card .foundation-variable-notation { font-size: 10px; color: var(--text-secondary); margin-bottom: 8px; overflow-wrap: anywhere; }
+.foundation-variable-card .foundation-variable-notation { font-size: var(--font-size-base); color: var(--text-secondary); margin-bottom: 8px; overflow-wrap: anywhere; }
 .foundation-variable-arrows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; line-height: 1.3; }
 .foundation-variable-group { min-width: 0; display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
-.foundation-variable-heading { text-align: center; font-size: 11px; margin-bottom: 5px; color: var(--source-birthPersonality-text); }
+.foundation-variable-heading { text-align: center; font-size: var(--font-size-base); margin-bottom: 5px; color: var(--source-birthPersonality-text); }
 .foundation-variable-group[data-source="design"] .foundation-variable-heading { color: var(--source-birthDesign-text); }
-.foundation-variable-heading small, .foundation-variable-caption small { display: block; font-size: 9px; overflow-wrap: anywhere; }
+.foundation-variable-heading small, .foundation-variable-caption small { display: block; font-size: var(--font-size-base); overflow-wrap: anywhere; }
 .foundation-variable-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
 .foundation-variable-slot { text-align: center; min-width: 0; }
 .foundation-variable-slot > span { font-size: 24px; }
-.foundation-variable-caption { font-size: 10px; line-height: 1.4; color: var(--text-secondary); overflow-wrap: anywhere; hyphens: auto; }
+.foundation-variable-caption { font-size: var(--font-size-base); line-height: 1.4; color: var(--text-secondary); overflow-wrap: anywhere; hyphens: auto; }
 @media (--phone) {
   .foundation-variable-arrows { grid-template-columns: 1fr; }
 }

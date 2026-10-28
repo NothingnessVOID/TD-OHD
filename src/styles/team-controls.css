@@ -3,33 +3,33 @@
 .team-current-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; }
 .team-dirty-indicator { flex:none; color:var(--accent); font-size:8px; }
 .team-current-toolbar #team-save.is-dirty { color:var(--accent-on); background:var(--accent-strong); border-color:var(--accent-strong); }
-.team-member-caption { margin:0; font-size:12px; color:var(--text-secondary); }
+.team-member-caption { margin:0; font-size:var(--font-size-base); color:var(--text-secondary); }
 .team-chip-name { display:block; min-width:0; max-width:7em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .team-current-toolbar button, #team-add-saved-person { background:var(--bg-elevated); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:.4rem .65rem; font:inherit; cursor:pointer; }
 #team-selected-chips { display:flex; flex-wrap:wrap; gap:.3rem; }
 .team-person-chip { display:inline-flex; align-items:center; max-width:100%; border:1px solid var(--border); border-radius:20px; background:var(--bg-elevated); }
-.team-person-chip button { display:flex; align-items:center; gap:.25rem; min-width:0; min-height:36px; padding:.25rem .35rem; background:transparent; border:0; color:var(--text); cursor:pointer; font:inherit; font-size:.8rem; }
+.team-person-chip button { display:flex; align-items:center; gap:.25rem; min-width:0; min-height:36px; padding:.25rem .35rem; background:transparent; border:0; color:var(--text); cursor:pointer; font:inherit; font-size:var(--font-size-base); }
 .team-person-chip [data-remove-member] { min-width:28px; justify-content:center; }
-#team-add-saved-person { min-height:36px; font-size:12px; }
+#team-add-saved-person { min-height:36px; font-size:var(--font-size-base); }
 #team-add-saved-person[data-full=true] { color:var(--text-secondary); border-style:dashed; }
 .team-person-chip [aria-pressed=true] { background:var(--accent-soft); border-radius:20px; }
-#team-flow-status { font-size:.75rem; color:var(--text-secondary); margin:.2rem 0; min-height:1em; }
+#team-flow-status { font-size:var(--font-size-base); color:var(--text-secondary); margin:.2rem 0; min-height:1em; }
 .team-control-dialog { max-width:480px; }
 .team-control-dialog [aria-pressed=true] { background:var(--accent-soft); border-color:var(--accent); }
 /* The member picker now lives in the shared styles/person-picker.css; Team keeps
    only the shell its own dialogs use. */
 .team-control-dialog:not(.person-picker) > .modal-actions { position:sticky; bottom:0; padding-block:12px; background:var(--bg-elevated); }
-.team-layer-error { color:var(--status-error); font-size:.85rem; margin-top:12px; }
+.team-layer-error { color:var(--status-error); font-size:var(--font-size-lg); margin-top:12px; }
 .team-layer-error:empty { display:none; }
-.team-operation-subtitle { margin:20px 0 8px; font-size:13px; color:var(--text-secondary); }
+.team-operation-subtitle { margin:20px 0 8px; font-size:var(--font-size-base); color:var(--text-secondary); }
 .team-destructive-actions, .team-switch-actions { display:flex; flex-wrap:wrap; gap:8px; margin-block:16px; }
 .team-destructive-actions { padding-top:16px; border-top:1px solid var(--border-subtle); }
 .team-destructive-actions button { color:var(--status-error); }
 .team-manage-member { padding:12px 0; border-top:1px solid var(--border-subtle); }
-.team-manage-member strong { font-size:14px; overflow-wrap:anywhere; }
-.team-manage-member small { display:block; font-size:12px; color:var(--text-secondary); }
+.team-manage-member strong { font-size:var(--font-size-lg); overflow-wrap:anywhere; }
+.team-manage-member small { display:block; font-size:var(--font-size-base); color:var(--text-secondary); }
 .team-manage-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-.team-manage-actions button { font-size:12px; }
+.team-manage-actions button { font-size:var(--font-size-base); }
 .team-switch-list { display:grid; gap:8px; margin-block:16px; }
 .team-control-dialog hr { border:0; border-top:1px solid var(--border-subtle); margin-block:16px; }
 .team-control-dialog > section { display:grid; gap:8px; margin-top:16px; }

@@ -8,7 +8,7 @@
   background: var(--bg-elevated);
   color: var(--text);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 .local-auth .language-switcher { display: block; margin-left: auto; margin-bottom: 12px; }
@@ -30,7 +30,7 @@
   color: var(--accent);
 }
 @media (--phone) {
-  .language-switcher { max-width: 82px; font-size: 11px; padding-inline: 3px; }
+  .language-switcher { max-width: 82px; font-size: var(--font-size-base); padding-inline: 3px; }
   :root { --header-height: 56px; }
   .header-inner { flex-wrap: nowrap; padding-block: 0; }
   .header-actions { margin-left: 0; gap: 4px; }

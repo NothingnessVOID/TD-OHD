@@ -94,7 +94,7 @@
 
 #team-view :is(.team-toolbar, .team-selection, .team-member-card, .team-member-row, .team-quick-fields) label {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -155,7 +155,7 @@
   min-width: 0;
   margin-block: 12px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-lg);
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
@@ -211,7 +211,7 @@
 
 #team-view .team-count {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;

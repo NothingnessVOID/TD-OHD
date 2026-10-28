@@ -27,7 +27,7 @@
 }
 .view-subtitle, .reference-heading p, .wa-header p, .ui-page-subtitle {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: var(--font-size-lg);
   line-height: 1.6;
 }
 #team-view .view-title { font-size: 26px; }
@@ -68,7 +68,7 @@
   min-height: var(--ui-control-sm); padding: 4px 12px 4px 10px;
   border-radius: var(--ui-radius-pill);
   background: var(--bg-sunken); border: 1px solid var(--border-subtle, var(--border));
-  color: var(--text-secondary); font-family: var(--font); font-size: 13px; line-height: 1.2;
+  color: var(--text-secondary); font-family: var(--font); font-size: var(--font-size-base); line-height: 1.2;
   cursor: pointer; transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 }
 .ui-back-button:hover, .gate-detail-back:hover { color: var(--text); background: var(--bg-elevated); border-color: var(--border); }
@@ -96,6 +96,15 @@
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > :is(.detail-label, .detail-name),
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > :is(.tl-detail-header, header, p):first-child {
   padding-right: calc(var(--ui-icon-size) + 120px);
+}
+/* At 360px and below the sheet cannot hold two 14px circuit badges beside that
+   reserve (they need 356px on one row). The reserve shrinks to the close button
+   it protects so the badges' own words can wrap inside the full width; the
+   heading still starts below the navigation row. */
+@media (max-width: 360px) {
+  .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .tl-channel-detail-header:first-child {
+    padding-right: 24px;
+  }
 }
 .operation-dialog :is(.ui-icon-button, .ui-close-button) {
   width: var(--ui-icon-size); height: var(--ui-icon-size); min-width: var(--ui-icon-size); min-height: var(--ui-icon-size);

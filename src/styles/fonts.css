@@ -13,11 +13,11 @@
 .font-preview { display:block; overflow-wrap:anywhere; }
 .font-preview-lxgw { font-family:'Inter','TD LXGW Neo ZhiSong',system-ui,sans-serif; }
 .font-preview-original { font-family:'Inter',system-ui,-apple-system,sans-serif; }
-.font-choice-description, .font-preference-note, .font-license-options { font-size:12px; line-height:1.6; color:var(--text-secondary); }
+.font-choice-description, .font-preference-note, .font-license-options { font-size: var(--font-size-lg); line-height:1.6; color:var(--text-secondary); }
 .font-preference-note { margin-top:12px; }
 .font-license-options { margin-top:12px; }
 .font-license-options summary { cursor:pointer; }
 .font-license-options p { margin-block:10px; }
 .font-license-options a { color:var(--accent); }
-#font-status { font-size:12px; color:var(--text-secondary); margin-top:8px; }
+#font-status { font-size: var(--font-size-base); color:var(--text-secondary); margin-top:8px; }
 @media (max-width:480px) { .font-picker { grid-template-columns:minmax(0,1fr); } }
