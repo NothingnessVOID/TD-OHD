@@ -126,6 +126,21 @@
 5. **行星阅读前移**：闸门弹窗里「此闸门的行星」现在紧接激活来源之后、六爻之前，
    不再排在六爻后面。
 6. **六爻仍是六份共享**：不按命中过滤，只去掉「清醒状态」那一段的显示（见 §1.4）。
+7. **类型入口唯一**：单人类型条与合盘事实块都只留「入口」，解读一律进弹窗——合盘那两条
+   `<details>` 已换成 `{人物} · 这个睡眠类型如何运作` 的按钮，`showType('dream', 'a'|'b')`
+   带 owner 打开对应人物的梦境类型，标题里的姓名单独成 `<span>`（`.detail-label` 会转大写，
+   而姓名是数据）。弹窗 `data-type` + `data-owner` 可定位是哪一个人的哪一侧。
+8. **弹窗生命周期**：关闭时清 `history` **与 `current`**。旧实现只清 history，关闭 A 再开 B 时，
+   B 的第一步会把 A 的选择推进栈，凭空出现「返回」按钮。类型、闸门、通道、中心都走同一条关闭路径。
+9. **类型不 pin 几何**：类型没有对应的图上对象，`paint()` 对 `kind:'type'` 传的是
+   `setPinned(null)`，不会向渲染器要一个不存在的闸门/中心；语言或外观切换时若当前模式已换人
+   （单人 ↔ 合盘），类型弹窗直接关闭而不是拿另一个人的模型重画。
+10. **高亮双向**：`views/dream.js` 的 `dreamHighlightRows()` 是单人睡眠图与合盘图**共用的一个**
+    `onHighlight` 回调（与 `views/chart.js` 的 `highlightPanelRows()` 同一模式）：图上悬停、
+    触摸预览、弹窗 pin 都会点亮对应的激活列行与夜域行（按 gate ID），通道行只在两条闸门
+    同时点亮时点亮。行样式 `.row-lit` 由 `dream.css` 为自己的行声明，不改共享 `styles.css`。
+11. **触摸契约一致**：合盘补上 `touchPreview: true`，与单人睡眠图相同——拖动不开详情、轻点预览、
+    再点才打开；`bodygraph.js` 的 `touchDragged` 已经负责拦截拖动后的 click。
 
 知识资料仍然同源：梦境的十五闸门、六通道、六爻、五行星正文只在词汇层有一份，本轮的改动全部在
 展示层，没有复制或改写任何资料正文，也没有改计算、稳定 ID 或存储契约。
@@ -439,12 +454,20 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 `src/bodygraph.js` 生成的门/中心/通道提示文字用的是共享词汇（`gateName()`、
 `channelTooltip()` 等），所以在睡眠图上悬停一个闸门，读到的仍是清醒名。
 
+**已核实现状（本轮）**：`src/bodygraph.js` 里 `displayGate` / `displayChannel` 是**模块级常量**
+（`bodygraph.js:91-92`，分别取 `gateName` / `channelName(channel.gates)`），并不是 `opts` 选项；
+调用处也没有任何命名参数。所以睡眠图**无法**在现有接口下传入梦境名——这不是漏传，而是接口不存在。
+图上的闸门数字本身只画编号，视觉上不会误导；受影响的是 tooltip 与逐闸门的 aria 文案���
+
 按文件所有权，本轮不碰 `src/bodygraph.js`（另一实施在改它），因此这里只登记需要的接口形状：
 渲染器的 `opts` 需要一组可选的命名覆盖，例如
 `opts.naming = { gate: fn, gateTooltip: fn, channelTooltip: fn, center: fn }`，
 睡眠图传 `dreamGateName` / `dreamChannelName` / `dreamRealmName`，不传时行为与现在完全一致
 （其它页面的调用点全部不变）。拿到这个接口后，睡眠图这边只需要在 `dreamGraphShell()` 与
 `drawComparison()` 两处 `renderBodygraph()` 调用上加一个参数，无需再改结构。
+
+**反向高亮已经接上（不属于该实施范围）**：`onHighlight` 是现有接口，本轮已由睡眠图两处
+`renderBodygraph()` 调用传入同一个 `dreamHighlightRows()`，见 §1.6 第 10 条。
 
 ## 4. 怎么把它跑起来
 
@@ -489,7 +512,7 @@ node dev/verify-dream-native.mjs                                          # 5 �
 node dev/measure-dream-viewbox.mjs
 
 # 浏览器端到端（需要 dev server 在跑）
-E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 69 项
+E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 72 项
 E2E_URL=http://127.0.0.1:9962 node tests/dream-state-boundaries-e2e.mjs    # 12 项
 
 # 全量

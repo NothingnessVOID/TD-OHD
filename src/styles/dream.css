@@ -1342,26 +1342,8 @@
   overflow-wrap: anywhere;
 }
 
-/* Sleep type reading: the five parts keep the material's own headings. */
-.dream-type-reading {
-  min-width: 0;
-  margin: 0;
-}
-
-.dream-type-reading > summary {
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: var(--font-size-xs);
-  font-weight: 650;
-  letter-spacing: .04em;
-  padding: 2px 0;
-}
-
-.dream-type-reading > summary:focus-visible {
-  outline: 2px solid var(--focus, var(--accent));
-  outline-offset: 2px;
-}
-
+/* Sleep type reading: the five parts keep the material's own headings. The parts
+   are what the sheet renders; there is no collapsed variant on the page any more. */
 .dream-type-reading-parts {
   display: grid;
   gap: var(--space-2);
@@ -1390,25 +1372,67 @@
   overflow-wrap: anywhere;
 }
 
-/* Composite: one type reading per person, so the two are never merged. */
-.dream-compare-type-reading {
+/* Composite: one entry per person to their own sleep-type reading. The reading
+   lives in the shared sheet, so this is a row, not a second copy of the prose. */
+.dream-compare-type-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
   min-width: 0;
-  padding-top: var(--space-2);
+  padding: var(--space-2) 0 0;
+  background: none;
+  border: 0;
   border-top: 1px solid var(--dream-edge);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 
-.dream-compare-type-head {
-  margin: 0 0 var(--space-1);
-  color: var(--text);
+.dream-compare-type-entry-name {
   font-size: var(--font-size-sm);
   font-weight: 650;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
+.dream-compare-type-entry-action {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+.dream-compare-type-entry:hover .dream-compare-type-entry-action { text-decoration: underline; }
+
+.dream-compare-type-entry:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
+}
+
 /* The dream channel's title is the shared `.detail-name` (22px) inside the shared
    `.channel-detail-heading`: `.dream-detail-channel-title` is only the JS/e2e hook,
    so the gate and channel titles stay the same size. */
+
+/* Composite only: whose type this sheet describes. `.detail-label` uppercases its
+   text, and a person's name is data, so this span keeps the name as written. */
+.dream-detail-label-owner {
+  color: var(--text-secondary);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Reverse highlight: the graph lights a gate (hover, touch preview, or the gate
+   pinned behind an open sheet) and these rows follow, using the same soft accent
+   and inset rule as the birth chart's `.row-lit` rows in styles.css. The shared
+   `.row-lit` selector list names other components' rows, so this page declares its
+   own rows here instead of editing the shared sheet. */
+.dream-column-row.row-lit,
+.dream-realm-row.row-lit,
+.dream-channel-open.row-lit {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
 
 /* ---------- Provenance footnote ---------- */
 

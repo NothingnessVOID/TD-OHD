@@ -310,14 +310,24 @@ export function createDreamDetail(initial = {}) {
     prepareDetailDialog(element, 'dream');
     element.innerHTML = html;
     element.classList.remove('hidden');
-    api?.setPinned?.(selection);
+    // Only a gate, channel or centre exists in the graph. The type sheets are page
+    // entries with no geometry, so pinning them would ask the renderer for an
+    // object it does not have; they clear the pin instead of inventing one.
+    if (selection?.kind === 'type') api?.setPinned?.(null);
+    else api?.setPinned?.(selection);
     bindSharedObjectDetails(element, {
       onGateSelect: gate => showGate(gate),
       onChannelSelect: id => showChannel(id),
       onBack: back
     });
-    openDetailDialog(element, () => { history.length = 0; api?.setPinned?.(null); },
-      { owner: 'dream', label: t('Sleep chart details') });
+    openDetailDialog(element, () => {
+      // Closing ends the current step as well as its trail: a later sheet must not
+      // inherit the closed one's selection, or its first step would render a Back
+      // button into a sheet the reader never came from.
+      history.length = 0;
+      current = null;
+      api?.setPinned?.(null);
+    }, { owner: 'dream', label: t('Sleep chart details') });
     // The shared sheet sizes itself to the phone viewport; a card that skipped
     // this would overflow under the nav bar on a narrow screen.
     fitDetailSheetHeight(element.querySelector('.dream-detail-card'));
@@ -329,7 +339,7 @@ export function createDreamDetail(initial = {}) {
     if (!previous) return;
     if (previous.kind === 'gate') showGate(previous.id, false);
     else if (previous.kind === 'channel') showChannel(previous.id, false);
-    else if (previous.kind === 'type') showType(previous.id, false);
+    else if (previous.kind === 'type') showType(previous.id, previous.owner ?? null, false);
     else showCenter(previous.id, false);
   }
 
@@ -342,7 +352,9 @@ export function createDreamDetail(initial = {}) {
 
   /** Record where a step came from, unless it is the same selection again. */
   function advance(selection) {
-    if (current && (current.kind !== selection.kind || current.id !== selection.id)) history.push(current);
+    const same = current && current.kind === selection.kind && current.id === selection.id
+      && (current.owner ?? null) === (selection.owner ?? null);
+    if (current && !same) history.push(current);
     current = selection;
   }
 
@@ -499,34 +511,50 @@ export function createDreamDetail(initial = {}) {
   }
 
   /**
-   * One of the two types in the strip's comparison, opened from its own chip.
+   * One of the two types in a comparison, opened from its own entry.
    *
-   * The waking side reads this person's waking type name from the sleep model the
-   * page handed this sheet (`dream.wakingType.name`), never from the loaded chart:
-   * that is the same explicit-context rule the activations follow (AGENTS.md §6),
-   * and it keeps the sheet describing this person even while another chart's
-   * composite is on screen. Its prose is the shared plain description the waking
-   * chart already shows, printed under the waking heading so the two readings can
-   * never be mistaken for one another.
+   * Single design: `showType('waking')` / `showType('dream')` reads this person's
+   * model. Composite: the same sheet is reachable per person, so `owner` (`'a'` /
+   * `'b'`) picks whose sleep design it describes and the label names them — a
+   * two-person page must never answer "which type" with one person's name and the
+   * other person's reading.
+   *
+   * The waking side reads the type name from the model the page handed this sheet
+   * (`wakingType.name`), never from the loaded chart: that is the same
+   * explicit-context rule the activations follow (AGENTS.md §6). Its prose is the
+   * shared plain description the waking chart already shows, printed under the
+   * waking heading so the two readings can never be mistaken for one another.
    *
    * @param {'waking'|'dream'} side
+   * @param {'a'|'b'|null} [owner] - whose model, in composite mode
    * @param {boolean} [push] - record the step in the sheet's own history
    */
-  function showType(side, push = true) {
-    const model = data.dream;
-    if (!model || (side !== 'waking' && side !== 'dream')) return;
-    if (push) advance({ kind: 'type', id: side }); else current = { kind: 'type', id: side };
+  function showType(side, owner = null, push = true) {
+    if (side !== 'waking' && side !== 'dream') return;
+    const owned = owner === 'a' || owner === 'b';
+    const model = owned ? (owner === 'a' ? data.a : data.b) : data.dream;
+    if (!model || (owned && !data.composite)) return;
+    const selection = { kind: 'type', id: side, owner: owned ? owner : null };
+    if (push) advance(selection); else current = selection;
     const wakingName = model.wakingType?.name || null;
     const sleepId = model.type?.id || null;
     const name = side === 'waking'
       ? (wakingName ? wakingTypeName(wakingName) : '—')
       : (sleepId ? dreamTypeName(sleepId) : '—');
+    // The site's own label separator, as `activationColumn()` composes its heading:
+    // one joining rule for a composed label, no private one here. The person's name
+    // sits in its own span because `.detail-label` is uppercased and a person's name
+    // is data, not chrome.
+    const ownerLabel = owned ? (owner === 'a' ? data.composite.labelA : data.composite.labelB) : null;
+    const ownerSpan = ownerLabel
+      ? `<span class="dream-detail-label-owner">${esc(formatDisplay('separator', 'label') + ownerLabel)}</span>`
+      : '';
     const body = side === 'waking' ? wakingTypeSheet(wakingName) : dreamTypeSheet(sleepId);
-    paint(card(`data-type="${side}"`, `
-      <div class="detail-label">${esc(t(side === 'waking' ? 'Awake' : 'Asleep'))}</div>
+    paint(card(`data-type="${side}"${owned ? ` data-owner="${owner}"` : ''}`, `
+      <div class="detail-label">${esc(t(side === 'waking' ? 'Awake' : 'Asleep'))}${ownerSpan}</div>
       <div class="detail-name">${esc(name)}</div>
       ${body}
-    `), { kind: 'type', id: side });
+    `), selection);
   }
 
   function showCenter(key, push = true) {
@@ -561,13 +589,23 @@ export function createDreamDetail(initial = {}) {
     `), { kind: 'center', id: key });
   }
 
-  /** Language and skin changes redraw the open sheet from the same context. */
+  /**
+   * Language and skin changes redraw the open sheet from the same context.
+   *
+   * A type sheet belongs to a model, not to a mode: when the page hands this sheet
+   * a composite (or leaves one), the type that was open no longer describes what is
+   * on screen, so it is closed instead of redrawn against the other person's data.
+   */
   function refresh() {
     if (!current || element.classList.contains('hidden')) return;
     if (current.kind === 'gate') showGate(current.id, false);
     else if (current.kind === 'channel') showChannel(current.id, false);
-    else if (current.kind === 'type') showType(current.id, false);
-    else showCenter(current.id, false);
+    else if (current.kind === 'type') {
+      const owned = current.owner === 'a' || current.owner === 'b';
+      const available = owned ? (data.composite && (current.owner === 'a' ? data.a : data.b)) : data.dream;
+      if (!available) closeDetailDialog();
+      else showType(current.id, current.owner ?? null, false);
+    } else showCenter(current.id, false);
   }
 
   return {
@@ -595,33 +633,13 @@ const COMPOSITE_DYNAMIC_LABELS = {
 /**
  * One sleep type's reading, in the teacher's own five parts.
  *
- * Exported because the page's type strip and two-person fact block need the same
- * block; the sheet uses it too. The parts keep the material's own headings
+ * The only renderer of a sleep-type reading: the sheet calls it directly, so a
+ * collapsed variant no longer exists on the page — an entry opens the card instead
+ * of unfolding prose in place. The parts keep the material's own headings
  * (机械定义 / 形成条件 / 清醒 vs 睡眠反差 / 运作状态 / 核心现象), so a mechanical definition is
  * never mistaken for a description of how the night feels.
  *
  * @param {string} typeId - reflector / generator / projector / manifestor / manifestingGenerator
- * @param {object} [options]
- * @param {boolean} [options.open] - render expanded instead of collapsed
- * @returns {string} markup, or '' when the source does not cover this type
- */
-export function renderDreamTypeReading(typeId, { open = false } = {}) {
-  const body = renderDreamTypeReadingBody(typeId);
-  if (!body) return '';
-  return `<details class="dream-type-reading" data-dream-type-reading="${esc(typeId)}"${open ? ' open' : ''}>
-      <summary>${esc(t('How this sleep type works'))}</summary>
-      ${body}
-    </details>`;
-}
-
-/**
- * The five parts of a sleep type's reading, without the disclosure wrapper.
- *
- * The sheet wants them inside a card that is already open, where a nested
- * `<details>` would be a second thing to unfold for no reason; the collapsed
- * block above is what the composite's two-person facts use.
- *
- * @param {string} typeId
  * @returns {string} a `<dl>` of parts, or '' when the source does not cover this type
  */
 export function renderDreamTypeReadingBody(typeId) {

@@ -269,6 +269,27 @@ await check('hovering an activation row lights its gate in the graph', async () 
   assert(lit, `gate ${gate} was not lit`);
 });
 
+await check('lighting a gate on the graph lights the matching list rows', async () => {
+  // The reverse direction of the same gesture: `onHighlight` is wired for both the
+  // single design and the composite, so a gate means the same row in either view.
+  const gate = await page.$eval('.dream-realm-row[data-gate]', n => n.dataset.gate);
+  const circle = await page.$(`#dream-bodygraph .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
+  await circle.hover();
+  await page.waitForTimeout(250);
+  const state = await page.evaluate(g => ({
+    column: [...document.querySelectorAll(`#dream-content .dream-column-row[data-gate="${g}"]`)]
+      .every(node => node.classList.contains('row-lit')),
+    realm: document.querySelector(`#dream-content .dream-realm-row[data-gate="${g}"]`)?.classList.contains('row-lit')
+  }), gate);
+  assert(state.realm === true, `hovering gate ${gate} on the graph did not light its night-field row`);
+  // Every column row for that gate must follow, not only the first one.
+  assert(state.column === true, `hovering gate ${gate} left a column row unlit`);
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+  const cleared = await page.$$eval('#dream-content .row-lit', n => n.length);
+  assert(cleared === 0, `${cleared} rows stayed lit after the pointer left the graph`);
+});
+
 // --- detail sheet: sleep-chart data, never the waking design ---
 await check('clicking a gate opens the sleep-chart detail sheet', async () => {
   const gate = await page.$eval('.dream-column-row', n => n.dataset.gate);
@@ -465,12 +486,60 @@ await check('a realm channel row opens the channel sheet', async () => {
   assert(sheet.includes(id) || sheet.includes(id.replace('-', '\u2013')), `channel sheet did not mention ${id}`);
 });
 
-await check('closing the sheet dismisses it', async () => {
+
+await check('closing a sheet ends its selection, so the next sheet has no stray Back', async () => {
+  // The regression: `current` survived the close, so the first step of the next
+  // sheet pushed it into `history` and offered a Back into a sheet nobody came from.
+  // Start from a closed sheet: the check above leaves its own channel card open.
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+  await page.click('.dream-column-row[data-gate]');
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  await page.waitForTimeout(150);
   await page.click('#dream-detail .gate-detail-close');
+  await page.waitForTimeout(250);
+  await page.click('.dream-channel-open');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-channel]', { timeout: 10000 });
+  const back = await page.$('#dream-detail .gate-detail-back');
+  assert(!back, 'the reopened sheet offered a Back button into the closed sheet');
+  // Navigating inside one sheet still offers Back, and it returns where it came from.
+  const gate = await page.$eval('#dream-detail .dream-detail-gate-link', n => n.dataset.sharedGateSelect);
+  await page.click('#dream-detail .dream-detail-gate-link');
+  await page.waitForTimeout(250);
+  assert(await page.$('#dream-detail .gate-detail-card[data-gate]'), 'the gate link did not open the gate sheet');
+  const backButton = await page.$('#dream-detail .gate-detail-back');
+  assert(backButton, 'a step inside an open sheet has no Back button');
+  await backButton.click();
+  await page.waitForTimeout(250);
+  assert(await page.$(`#dream-detail .gate-detail-card[data-channel]`), `Back left gate ${gate} without returning to the channel`);
+  await page.keyboard.press('Escape');
   await page.waitForTimeout(200);
-  const hidden = await page.$eval('#dream-detail', n => n.classList.contains('hidden'));
-  assert(hidden, 'sheet did not close');
-  assert(pageErrors.length === 0, pageErrors.join(' | '));
+});
+
+await check('the open sheet keeps its gate lit in the lists, and closing releases it', async () => {
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+  await page.click('.dream-column-row[data-gate]');
+  await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
+  await page.waitForTimeout(300);
+  const gate = await page.$eval('#dream-detail .gate-detail-card[data-gate]', n => n.dataset.gate);
+  // Move the pointer off the row and the graph first: the sheet pins its gate, and
+  // the pin is what must keep the rows lit with nobody hovering them.
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(300);
+  const lit = await page.evaluate(g => [...document.querySelectorAll(`#dream-content .dream-column-row[data-gate="${g}"]`)]
+    .every(node => node.classList.contains('row-lit')), gate);
+  assert(lit, `the pinned gate ${gate} is not lit in the activation columns`);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  // The shared dialog returns focus to the row that opened it, and a focused row
+  // legitimately lights its gate (keyboard focus highlight), so the row is blurred
+  // before asking whether the *pin* was released.
+  await page.evaluate(() => document.activeElement?.blur());
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(300);
+  const after = await page.$$eval('#dream-content .row-lit', n => n.length);
+  assert(after === 0, `${after} rows stayed lit after the sheet closed, focus left and the pin was released`);
 });
 
 await check('a channel carried from birth reads as fixed, a filled-in one as conditioned', async () => {
@@ -1059,6 +1128,34 @@ await check('the composite carries all three night fields, in reveal order', asy
   assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `composite portals ${portals}`);
   const wrappers = await page.$$eval('#dream-content .dream-realms', n => n.length);
   assert(wrappers === 1, `${wrappers} .dream-realms wrappers in the composite`);
+});
+
+await check('each person\u2019s sleep type opens its own sheet instead of a page-long block', async () => {
+  const entries = await page.$$eval('.dream-compare-facts .dream-compare-type-entry', nodes => nodes.map(node => ({
+    owner: node.dataset.owner,
+    label: node.textContent.trim()
+  })));
+  assert(entries.length === 2, `${entries.length} type entries, expected one per person`);
+  assert(JSON.stringify(entries.map(entry => entry.owner)) === JSON.stringify(['a', 'b']),
+    `type entries belong to ${JSON.stringify(entries.map(entry => entry.owner))}`);
+  // The reading is no longer unfolded in the facts block.
+  assert(!(await page.$('.dream-compare-facts [data-dream-type-reading]')),
+    'the facts block still embeds a type reading');
+  await page.click('.dream-compare-type-entry[data-owner="b"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  const sheet = await page.evaluate(() => ({
+    owner: document.querySelector('#dream-detail .gate-detail-card[data-type="dream"]').dataset.owner,
+    label: document.querySelector('#dream-detail .detail-label').textContent.trim(),
+    parts: document.querySelectorAll('#dream-detail .dream-type-reading-part').length,
+    // A type has no geometry, so opening it must not pin a gate in the graph.
+    pinned: document.querySelectorAll('#dream-composite .bg-selected').length
+  }));
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+  assert(sheet.owner === 'b', `the type sheet records owner ${sheet.owner}, expected b`);
+  assert(sheet.parts > 0, 'the type sheet has no reading parts');
+  assert(sheet.label.includes(REALMS_B.name), `the type sheet label does not name the person: ${sheet.label}`);
+  assert(sheet.pinned === 0, 'opening a type sheet pinned a gate that does not exist');
 });
 
 await check('the night fields sit below the graph and above the fact block', async () => {
