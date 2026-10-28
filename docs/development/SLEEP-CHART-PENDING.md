@@ -60,6 +60,13 @@
 `src/lib/dream-detail.js` 的 `channelDreamReading(id, source)` 只在**完整**的通道上判定情况：
 一个本命闸门 + 一个无人激活的闸门会被判成 `inactive`，不会误报成「被接通」。
 
+**合盘的完成度另有一条口径（本轮修）**：单人的完成度读 `model.channels`，而合盘里
+`data.model` 与 `data.dream` 都是 `null`，早期实现因此把每条通道都写成「在两份睡眠设计中未完整」，
+但正文又按 `channelDynamic()` 印出「已接通」的段落，标签与正文互相打架。现由
+`compositeChannelStatus()` 用同一套输入判：`channelDynamic()` 非空 = 双方合起来完整，
+再用两人各自的闸门集分成 both / `{name}一方接通` / `仅合并后有定义`，与页面通道行同源；
+单人分支保持原规则不变。
+
 ### 1.3 十五个闸门的重新定义
 
 已完成，且**推翻了本文件原先给的接入方案**。
@@ -134,15 +141,18 @@
 5. **行星阅读前移**：闸门弹窗里「此闸门的行星」现在紧接激活来源之后、六爻之前，
    不再排在六爻后面。
 6. **六爻仍是六份共享**：不按命中过滤，只去掉「清醒状态」那一段的显示（见 §1.4）。
-7. **类型入口唯一**：单人类型条与合盘事实块都只留「入口」，解读一律进弹窗——合盘那两条
-   `<details>` 已换成 `{人物} · 这个睡眠类型如何运作` 的按钮，`showType('dream', 'a'|'b')`
-   带 owner 打开对应人物的梦境类型，标题里的姓名单独成 `<span>`（`.detail-label` 会转大写，
-   而姓名是数据）。弹窗 `data-type` + `data-owner` 可定位是哪一个人的哪一侧。
+7. **类型入口唯一**：单人类型条与合盘事实块都只留「入口」，解读一律进弹窗。合盘是
+   **A/B × 清醒/梦境** 四个 chip（与单人的对比同构），`showType(side, 'a'|'b')` 带 owner
+   打开对应人物的类型，标题里的姓名单独成 `<span>`（`.detail-label` 会转大写，而姓名是数据），
+   弹窗 `data-type` + `data-owner` 可定位是哪一个人的哪一侧。合盘一侧不再有折叠正文，
+   也不再只给「梦境」一个入口。
 8. **弹窗生命周期**：关闭时清 `history` **与 `current`**。旧实现只清 history，关闭 A 再开 B 时，
    B 的第一步会把 A 的选择推进栈，凭空出现「返回」按钮。类型、闸门、通道、中心都走同一条关闭路径。
-9. **类型不 pin 几何**：类型没有对应的图上对象，`paint()` 对 `kind:'type'` 传的是
-   `setPinned(null)`，不会向渲染器要一个不存在的闸门/中心；语言或外观切换时若当前模式已换人
-   （单人 ↔ 合盘），类型弹窗直接关闭而不是拿另一个人的模型重画。
+9. **类型只进 current/history，图的 selection 传 null**：类型没有对应的图上对象，
+   `paint()` 对 `kind:'type'` 传的是 `setPinned(null)`，所以图既不会被 pin，也不会
+   `bg-dimmed` 变暗（早期版本把 `{kind:'type'}` 交给 `setPinned`，`litFor()` 不认识它，
+   结果是整图变暗——已修）。语言或外观切换时若当前模式已换人（单人 ↔ 合盘），类型弹窗关闭
+   而不是拿另一个人的模型重画；同一个人换语言则原地重绘并保留选择。
 10. **高亮双向**：`views/dream.js` 的 `dreamHighlightRows()` 是单人睡眠图与合盘图**共用的一个**
     `onHighlight` 回调（与 `views/chart.js` 的 `highlightPanelRows()` 同一模式）：图上悬停、
     触摸预览、弹窗 pin 都会点亮对应的激活列行与夜域行（按 gate ID），通道行只在两条闸门
@@ -523,7 +533,7 @@ node dev/verify-dream-native.mjs                                          # 5 �
 node dev/measure-dream-viewbox.mjs
 
 # 浏览器端到端（需要 dev server 在跑）
-E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 72 项
+E2E_URL=http://127.0.0.1:9962 node tests/dream-e2e.mjs                     # 78 项
 E2E_URL=http://127.0.0.1:9962 node tests/dream-state-boundaries-e2e.mjs    # 12 项
 
 # 全量

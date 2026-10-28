@@ -83,6 +83,38 @@ const bothStatus = complete => complete ? 'Complete across both sleep designs' :
 
 const chip = (source, gate) => `<span class="dream-planet-chip"><i aria-hidden="true">${PLANET_GLYPHS[source.planet] || ''}</i>${esc(planetName(source.planet))} ${gate}.${source.line}</span>`;
 
+/**
+ * The pair's channel status, in the same five states the composite's channel rows
+ * show (`compositeChannelStates()` in views/dream.js).
+ *
+ * The sheet used to ask `data.model` / `data.dream` whether the channel is complete,
+ * and in composite mode both are null — so every channel read "not complete" while
+ * its reading printed the completed case. Completeness therefore comes from the
+ * graph's own `channelDynamic()` (non-null means the pair defines the channel), and
+ * each person's gate set says who carries it. Nothing is re-computed here: the same
+ * two inputs decide it on the page.
+ *
+ * @param {object} channel - one of `DREAM_CHANNELS`
+ * @param {object|null} a - person A's sleep model
+ * @param {object|null} b - person B's sleep model
+ * @param {string|null} dynamic - `channelDynamic(channel)`: null when undefined
+ * @param {string} labelA - person A's display name
+ * @param {string} labelB - person B's display name
+ * @returns {{label: string, params: object, variant: 'natal'|'completed'|'inactive'}}
+ */
+function compositeChannelStatus(channel, a, b, dynamic, labelA, labelB) {
+  const gatesA = new Set(a?.gates.all || []);
+  const gatesB = new Set(b?.gates.all || []);
+  const [left, right] = channel.gates;
+  const aFull = gatesA.has(left) && gatesA.has(right);
+  const bFull = gatesB.has(left) && gatesB.has(right);
+  if (!dynamic) return { label: bothStatus(false), params: {}, variant: 'inactive' };
+  if (aFull && bFull) return { label: bothStatus(true), params: {}, variant: 'natal' };
+  if (aFull || bFull) return { label: '{name} completes it', params: { name: aFull ? labelA : labelB }, variant: 'natal' };
+  // One gate from each person: neither design carries it, the pair does.
+  return { label: 'Defined only together', params: {}, variant: 'completed' };
+}
+
 function sourceRows(activations, gate) {
   const rows = SOURCES
     .map(({ key, label }) => ({ key, label, list: activations[key] || [] }))
@@ -470,19 +502,29 @@ export function createDreamDetail(initial = {}) {
     if (push) advance({ kind: 'channel', id: key }); else current = { kind: 'channel', id: key };
     // `channelSource()` describes the gates it is given, so a channel with one natal
     // gate and one gate nobody carries would read as "completed" there. Completeness
-    // is decided first, exactly as the page's channel rows decide it.
-    const complete = data.model
-      ? data.model.channels.some(item => item.gates.join('-') === key)
-      : !!data.dream?.channels.some(item => item.gates.join('-') === key);
+    // is decided first, exactly as the page's channel rows decide it. In composite
+    // mode that decision is the graph's `channelDynamic()` (see
+    // `compositeChannelStatus()`), because neither single-design model is present.
+    const dynamic = data.composite ? api?.channelDynamic?.(channel) : null;
+    const complete = data.composite
+      ? !!dynamic
+      : data.model
+        ? data.model.channels.some(item => item.gates.join('-') === key)
+        : !!data.dream?.channels.some(item => item.gates.join('-') === key);
     const source = !complete ? 'inactive' : data.model ? data.model.channelSource(channel) : 'natal';
-    const statusLabel = data.composite ? bothStatus(source !== 'inactive') : SLEEP_CHANNEL_STATUS[source];
+    const pairStatus = data.composite
+      ? compositeChannelStatus(channel, data.a, data.b, dynamic,
+        data.composite.labelA, data.composite.labelB)
+      : null;
+    const statusLabel = pairStatus ? pairStatus.label : SLEEP_CHANNEL_STATUS[source];
+    const statusParams = { transit: transitTerm(), ...(pairStatus?.params || {}) };
+    const statusVariant = pairStatus ? pairStatus.variant : source;
     // Which reading the channel gets. `natal` means the sleeper already carries the
     // channel, so it is a fixed dream landscape. Anything completed from outside —
     // the night sky, the bed partner, or (in the two-person composite) one gate
     // from each person — is conditioning, and the teaching calls that the damaging
     // case. A composite channel one person completes alone is still that person's
     // own fixed landscape.
-    const dynamic = data.composite ? api?.channelDynamic?.(channel) : null;
     const caseSource = data.composite
       // One gate from each person is the only composite case where neither design
       // carries the channel on its own, so it reads as sky-completed (`completed`):
@@ -519,7 +561,7 @@ export function createDreamDetail(initial = {}) {
 
     paint(card(`data-channel="${key}"`, `
       ${dreamChannelHeading(channel)}
-      <span class="circuit-badge transit-source-badge ${source}">${esc(t(statusLabel, { transit: transitTerm() }))}</span>
+      <span class="circuit-badge transit-source-badge ${statusVariant}">${esc(t(statusLabel, statusParams))}</span>
       <div class="dream-detail-centers">${esc(formatDisplay('channelCenters', channel.centers, channel.centers.map(centerName)))}</div>
       ${gateRows}
       ${channelDreamReading(key, caseSource)}

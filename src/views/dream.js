@@ -1454,18 +1454,18 @@ function compositeLegend(labelA, labelB, palette) {
 }
 
 /**
- * Structural facts, then an entry per person to their sleep type's reading.
+ * Structural facts, then each person's waking/sleep type pair as buttons.
  *
  * The dream channels belong to the three night fields above this block, which list
  * every channel of a field with its ownership state and, for a channel completed
  * from one gate each, who contributes which gate; repeating them here would put
  * two channel lists on one page. Nothing is scored or ranked.
  *
- * The type readings themselves open in the shared sheet, one per person: the same
- * sheet the single design's type strip uses, so there is one type-reading surface
- * instead of a collapsed block here and a card elsewhere. `owner` (`a` / `b`) is
- * what keeps the two apart — neither person's reading can be shown under the
- * other's name.
+ * The type readings themselves open in the shared sheet, one per person and half:
+ * the same sheet the single design's type strip uses, so there is one type-reading
+ * surface instead of a collapsed block here and a card elsewhere. `owner` (`a` /
+ * `b`) travels with the selection, so neither person's reading can be shown under
+ * the other's name.
  */
 function comparisonFacts({ a, b, labelA, labelB, structure }) {
   const section = el('section', { class: 'dream-compare-facts' });
@@ -1481,22 +1481,56 @@ function comparisonFacts({ a, b, labelA, labelB, structure }) {
   ].join('');
   section.appendChild(facts);
 
+  // Type entries: every person's waking and sleep types are buttons here too, in the
+  // same 清醒 / 梦境 comparison the single design's strip uses. The reading opens in
+  // the shared sheet *with the owner*, so it always describes that person and never
+  // whatever chart happens to be loaded (AGENTS.md §6).
   for (const [owner, label, model] of [['a', labelA, a], ['b', labelB, b]]) {
-    const opens = `${label}${formatDisplay('separator', 'label')}${t('How this sleep type works')}`;
-    const button = el('button', {
-      type: 'button',
-      class: 'dream-compare-type-entry',
-      'data-dream-type-open': 'dream',
-      'data-owner': owner,
-      'aria-label': opens
-    });
-    button.innerHTML = `<span class="dream-compare-type-entry-name">${esc(label)}</span>
-      <span class="dream-compare-type-entry-action">${esc(t('How this sleep type works'))}</span>`;
-    button.addEventListener('click', () => openType('dream', owner));
-    // The entry only exists when the source answers for this person's type: an
-    // empty card is worse than no entry.
-    if (!dreamTypeReading(model.type.id)) button.remove();
-    section.appendChild(button);
+    const row = el('div', { class: 'dream-compare-type-row', 'data-owner': owner });
+    row.appendChild(el('span', { class: 'dream-compare-type-person', text: label }));
+    row.appendChild(typeEntry(owner, 'waking', model));
+    row.appendChild(typeEntry(owner, 'dream', model));
+    section.appendChild(row);
   }
   return section;
+}
+
+/**
+ * One half of one person's type comparison, as a chip button.
+ *
+ * The type names are plain names and the label says which half this is, exactly as
+ * on the single design's strip — the difference is only that this chip also carries
+ * `data-owner`, which is what keeps two people's readings apart. A half the source
+ * does not cover renders as a plain chip instead of a button into an empty card.
+ *
+ * @param {'a'|'b'} owner
+ * @param {'waking'|'dream'} side
+ * @param {object} model - that person's sleep model
+ */
+function typeEntry(owner, side, model) {
+  const pair = el('span', { class: 'dream-type-pair' });
+  pair.appendChild(el('span', { class: 'dream-type-label', text: t(side === 'waking' ? 'Awake' : 'Asleep') }));
+  const wakingName = model.wakingType?.name || null;
+  const name = side === 'waking'
+    ? (wakingName ? typeName(wakingName) : null)
+    : dreamTypeName(model.type.id);
+  const available = side === 'waking' ? !!wakingName : !!dreamTypeReading(model.type.id);
+  if (!name || !available) {
+    pair.appendChild(el('span', { class: 'dream-type-chip dream-type-chip-empty', text: '—' }));
+    return pair;
+  }
+  const color = side === 'waking'
+    ? TYPE_COLORS[wakingName] || 'var(--hd-inactive)'
+    : TYPE_COLORS[model.type.id] || 'var(--hd-inactive)';
+  const chip = el('button', {
+    type: 'button',
+    class: 'dream-type-chip',
+    'data-dream-type-open': side,
+    'data-owner': owner,
+    'aria-label': t(side === 'waking' ? 'Open the waking type reading' : 'Open the dream type reading'),
+    style: `background:${color}`
+  }, name);
+  chip.addEventListener('click', () => openType(side, owner));
+  pair.appendChild(chip);
+  return pair;
 }

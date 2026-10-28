@@ -474,6 +474,65 @@ await check('the waking type chip opens the waking type\u2019s own reading', asy
   assert(facts.length >= 2, `the waking sheet lists ${facts.length} waking type facts`);
 });
 
+await check('a type sheet has no geometry, so the graph neither dims nor lights for it', async () => {
+  await page.click('.dream-type-chip[data-dream-type-open="dream"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  await page.waitForTimeout(200);
+  const graph = await page.evaluate(() => {
+    const svg = document.querySelector('#dream-bodygraph .bodygraph-svg');
+    return { dimmed: !!svg?.classList.contains('bg-dimmed'), lit: document.querySelectorAll('#dream-bodygraph .bg-lit').length };
+  });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  assert(graph.dimmed === false, 'the graph dimmed for a type sheet that has no geometry');
+  assert(graph.lit === 0, `${graph.lit} graph object(s) lit for a type sheet`);
+});
+
+await check('the open type sheet follows a language change and keeps its selection', async () => {
+  await page.click('.dream-type-chip[data-dream-type-open="dream"]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
+  // The dialog is modal, so the header's language menu cannot be clicked; the app's
+  // own `setLocale()` is called through the module the page already loaded (the same
+  // module instance, via the URL the browser fetched), which is what a language
+  // switch does internally.
+  const setLocale = async code => page.evaluate(async next => {
+    const url = performance.getEntriesByType('resource')
+      .map(entry => entry.name)
+      .find(name => /\/src\/lib\/i18n\.js(?:\?|$)/.test(name));
+    const mod = await import(url);
+    mod.setLocale(next);
+  }, code);
+
+  const readSheet = () => page.evaluate(() => ({
+    open: !document.getElementById('dream-detail').classList.contains('hidden'),
+    type: document.querySelector('#dream-detail .gate-detail-card[data-type]')?.dataset.type || null,
+    label: document.querySelector('#dream-detail .detail-label')?.textContent.trim() || '',
+    parts: [...document.querySelectorAll('#dream-detail .dream-type-reading-part dt')].map(n => n.textContent.trim())
+  }));
+
+  await setLocale('en');
+  await page.waitForTimeout(700);
+  const english = await readSheet();
+  await setLocale('zh-CN');
+  await page.waitForTimeout(700);
+  const back = await readSheet();
+  // Close before asserting so the modal cannot cascade into later checks, and make
+  // sure the page is left in the language the rest of the run expects.
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+
+  assert(english.open, 'the type sheet closed on a language change');
+  assert(english.type === 'dream', `the type sheet lost its selection: ${english.type}`);
+  // `Asleep` is the dream half's label key; English shows the key text itself.
+  assert(english.label === 'Asleep', `the type sheet did not translate: ${english.label}`);
+  assert(english.parts.includes('Mechanical definition'), `English parts: ${english.parts}`);
+  assert(back.open, 'the type sheet closed when the language switched back');
+  assert(back.label === '\u68a6\u5883', `label after switching back: ${back.label}`);
+  assert(back.parts.includes('\u673a\u68b0\u5b9a\u4e49'), `parts after switching back: ${back.parts}`);
+  const locale = await page.evaluate(() => document.documentElement.lang);
+  assert(locale === 'zh-CN', `the run was left in ${locale}`);
+});
+
 await check('each portal plaque carries the night collection and the morning bleed-through', async () => {
   const blocks = await page.$$eval('.dream-portal-reading-block', n => n.length);
   assert(blocks === 3, `${blocks} portal readings for three night fields`);
@@ -1195,32 +1254,57 @@ await check('the composite carries all three night fields, in reveal order', asy
   assert(wrappers === 1, `${wrappers} .dream-realms wrappers in the composite`);
 });
 
-await check('each person\u2019s sleep type opens its own sheet instead of a page-long block', async () => {
-  const entries = await page.$$eval('.dream-compare-facts .dream-compare-type-entry', nodes => nodes.map(node => ({
+await check('each person\u2019s waking and sleep types are buttons that open their own sheet', async () => {
+  // Four chips: A and B, each with \u6e05\u9192 and \u68a6\u5883, the same comparison the single
+  // design's strip offers \u2014 the page must not hide one person's half behind a
+  // collapsed block, and no chip may read the loaded chart instead of its owner.
+  const chips = await page.$$eval('.dream-compare-facts [data-dream-type-open]', nodes => nodes.map(node => ({
     owner: node.dataset.owner,
-    label: node.textContent.trim()
+    side: node.dataset.dreamTypeOpen,
+    name: node.textContent.trim()
   })));
-  assert(entries.length === 2, `${entries.length} type entries, expected one per person`);
-  assert(JSON.stringify(entries.map(entry => entry.owner)) === JSON.stringify(['a', 'b']),
-    `type entries belong to ${JSON.stringify(entries.map(entry => entry.owner))}`);
-  // The reading is no longer unfolded in the facts block.
+  assert(chips.length === 4, `${chips.length} type chips, expected A/B \u00d7 waking/dream`);
+  assert(JSON.stringify(chips.map(chip => `${chip.owner}:${chip.side}`))
+    === JSON.stringify(['a:waking', 'a:dream', 'b:waking', 'b:dream']),
+  `type chips are ${JSON.stringify(chips.map(chip => `${chip.owner}:${chip.side}`))}`);
+  // The facts block no longer unfolds any type reading.
   assert(!(await page.$('.dream-compare-facts [data-dream-type-reading]')),
     'the facts block still embeds a type reading');
-  await page.click('.dream-compare-type-entry[data-owner="b"]');
+  assert(!(await page.$('.dream-compare-facts .dream-type-reading-parts')),
+    'the facts block still embeds type reading parts');
+  // The expected sleep type of B, read from the facts line rather than assumed, so a
+  // sheet that opens somebody else's model fails here.
+  const facts = await page.$$eval('.dream-compare-facts .dream-type-facts .dream-fact', n => n.map(x => x.textContent));
+  const bFact = facts.find(text => text.includes(REALMS_B.name));
+  assert(bFact, `no sleep-type fact for ${REALMS_B.name}: ${JSON.stringify(facts)}`);
+  const expectedType = bFact.split('\uff1a').pop().trim();
+  await page.mouse.move(5, 5);
+  await page.click('.dream-compare-facts [data-dream-type-open="dream"][data-owner="b"]');
   await page.waitForSelector('#dream-detail .gate-detail-card[data-type="dream"]', { timeout: 10000 });
   const sheet = await page.evaluate(() => ({
     owner: document.querySelector('#dream-detail .gate-detail-card[data-type="dream"]').dataset.owner,
     label: document.querySelector('#dream-detail .detail-label').textContent.trim(),
+    name: document.querySelector('#dream-detail .detail-name').textContent.trim(),
     parts: document.querySelectorAll('#dream-detail .dream-type-reading-part').length,
-    // A type has no geometry, so opening it must not pin a gate in the graph.
     pinned: document.querySelectorAll('#dream-composite .bg-selected').length
   }));
+  // A type has no geometry: the graph must stay undimmed, not dim around nothing.
+  const graph = await page.evaluate(() => {
+    const svg = document.querySelector('#dream-composite .bodygraph-svg');
+    return {
+      dimmed: !!svg?.classList.contains('bg-dimmed'),
+      lit: document.querySelectorAll('#dream-composite .bg-lit').length
+    };
+  });
   await page.keyboard.press('Escape');
   await page.waitForTimeout(250);
   assert(sheet.owner === 'b', `the type sheet records owner ${sheet.owner}, expected b`);
-  assert(sheet.parts > 0, 'the type sheet has no reading parts');
+  assert(sheet.name === expectedType, `B's sheet shows "${sheet.name}", the facts say "${expectedType}"`);
   assert(sheet.label.includes(REALMS_B.name), `the type sheet label does not name the person: ${sheet.label}`);
+  assert(sheet.parts > 0, 'the type sheet has no reading parts');
   assert(sheet.pinned === 0, 'opening a type sheet pinned a gate that does not exist');
+  assert(graph.dimmed === false, 'the composite graph dimmed for a type sheet that has no geometry');
+  assert(graph.lit === 0, `${graph.lit} graph object(s) lit for a type sheet`);
 });
 
 await check('the night fields sit below the graph and above the fact block', async () => {
@@ -1333,6 +1417,45 @@ await check('composite channel rows report all five ownership states', async () 
     'a composite channel uses the single design wording for a complete channel');
   assert(!statuses.includes('\u5728\u7761\u7720\u8bbe\u8ba1\u4e2d\u672a\u6210\u5f62'),
     'a composite channel uses the single design wording for an incomplete channel');
+});
+
+await check('a composite channel sheet agrees with its own row about completeness', async () => {
+  // The regression this guards: the sheet asked the single-design models for
+  // completeness, and in composite mode both are null \u2014 so every channel read "not
+  // complete across both" while its reading printed the completed case.
+  const rows = await page.$$eval('#dream-content .dream-channel-open[data-channel]', nodes => nodes.map(node => ({
+    id: node.dataset.channel,
+    complete: ![...node.classList].includes('dream-channel-open-inactive')
+  })));
+  assert(rows.length === 6, `${rows.length} composite channel rows`);
+  const sheetStatus = {};
+  for (const row of rows) {
+    await page.click(`#dream-content .dream-channel-open[data-channel="${row.id}"]`);
+    await page.waitForSelector('#dream-detail .gate-detail-card[data-channel]', { timeout: 10000 });
+    sheetStatus[row.id] = await page.$eval('#dream-detail .gate-detail-card[data-channel] .transit-source-badge',
+      n => n.textContent.trim());
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+  }
+  for (const row of rows) {
+    const text = sheetStatus[row.id];
+    assert(text, `channel ${row.id} sheet has no status badge`);
+    if (row.complete) {
+      assert(!/\u672a\u5b8c\u6574|Not complete/.test(text),
+        `channel ${row.id} is complete on the page but its sheet says "${text}"`);
+    } else {
+      assert(/\u672a\u5b8c\u6574|Not complete/.test(text),
+        `channel ${row.id} is incomplete on the page but its sheet says "${text}"`);
+    }
+  }
+  // The specific wordings the pair's five states should reach, not just "not the
+  // other one": both / one person / one gate each.
+  assert(/\u5728\u4e24\u4efd\u7761\u7720\u8bbe\u8ba1\u4e2d\u90fd\u5b8c\u6574/.test(sheetStatus['1-8']),
+    `1-8 (both) reads "${sheetStatus['1-8']}"`);
+  assert(sheetStatus['20-57'].includes(REALMS_A.name), `20-57 (A only) does not name A: ${sheetStatus['20-57']}`);
+  assert(sheetStatus['42-53'].includes(REALMS_B.name), `42-53 (B only) does not name B: ${sheetStatus['42-53']}`);
+  assert(/\u4ec5\u5408\u5e76\u540e\u6709\u5b9a\u4e49/.test(sheetStatus['28-38']),
+    `28-38 (one gate each) reads "${sheetStatus['28-38']}"`);
 });
 
 await check('a halved channel names both people and the gate each contributes', async () => {
@@ -1487,8 +1610,8 @@ await check('the composite night fields survive a language switch and follow it'
     n => n.map(x => x.textContent.trim()));
   assert(enLabels.length >= 2, `English gate 1 has ${enLabels.length} source labels`);
   assert(enLabels.some(label => label.startsWith(REALMS_A.name)), `English labels lost ${REALMS_A.name}: ${JSON.stringify(enLabels)}`);
-  assert(enLabels.some(label => /Dream (design|personality)/.test(label)),
-    `English labels do not name the half in English: ${JSON.stringify(enLabels)}`);
+  assert(enLabels.every(label => /Dream (design|personality)/.test(label)),
+    `English labels do not all name the half in English: ${JSON.stringify(enLabels)}`);
   assert(enLabels.every(label => !/Sleep (design|personality)/.test(label)),
     `English labels still use the internal key wording: ${JSON.stringify(enLabels)}`);
   const enEmpty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());

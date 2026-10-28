@@ -160,6 +160,15 @@
 
 .dream-type-chip:hover { text-decoration: underline; }
 
+/* A half the source does not cover: a chip-shaped placeholder, not a button that
+   would open an empty card. */
+.dream-type-chip-empty {
+  color: var(--text-tertiary);
+  cursor: default;
+}
+
+.dream-type-chip-empty:hover { text-decoration: none; }
+
 .dream-type-chip:focus-visible {
   outline: 2px solid var(--focus, var(--accent));
   outline-offset: 2px;
@@ -1372,42 +1381,25 @@
   overflow-wrap: anywhere;
 }
 
-/* Composite: one entry per person to their own sleep-type reading. The reading
-   lives in the shared sheet, so this is a row, not a second copy of the prose. */
-.dream-compare-type-entry {
+/* Composite: one row per person, with that person's waking and sleep type as the
+   same 清醒 / 梦境 chip pair the single design's strip uses. The reading lives in the
+   shared sheet, so nothing is unfolded here. */
+.dream-compare-type-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-2);
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
   min-width: 0;
-  padding: var(--space-2) 0 0;
-  background: none;
-  border: 0;
+  padding-top: var(--space-2);
   border-top: 1px solid var(--dream-edge);
-  color: var(--text);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
 }
 
-.dream-compare-type-entry-name {
+.dream-compare-type-person {
+  color: var(--text);
   font-size: var(--font-size-sm);
   font-weight: 650;
   line-height: 1.4;
   overflow-wrap: anywhere;
-}
-
-.dream-compare-type-entry-action {
-  color: var(--text-secondary);
-  font-size: var(--font-size-xs);
-  line-height: 1.4;
-}
-
-.dream-compare-type-entry:hover .dream-compare-type-entry-action { text-decoration: underline; }
-
-.dream-compare-type-entry:focus-visible {
-  outline: 2px solid var(--focus, var(--accent));
-  outline-offset: 2px;
 }
 
 /* The dream channel's title is the shared `.detail-name` (22px) inside the shared
