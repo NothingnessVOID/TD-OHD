@@ -466,26 +466,31 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 合图时时间控件被隐藏（合图不叠加行运），所以进入合图后无法改时刻；返回单人睡眠图才能改。
 这是 §3.10 的设计取舍，未变。
 
-### 3.16 图形 tooltip 仍用清醒名：需要共享渲染器的命名接口（跨文件，本轮未改）
+### 3.16 图形 tooltip 的命名接口：调用已接，待两路集成的真实验证
 
-§1.6 统一的是页面与弹窗的标题、来源标签与解读层级；**图上的 tooltip 不在其中**：
-`src/bodygraph.js` 生成的门/中心/通道提示文字用的是共享词汇（`gateName()`、
-`channelTooltip()` 等），所以在睡眠图上悬停一个闸门，读到的仍是清醒名。
+§1.6 统一的是页面与弹窗的标题、来源标签与解读层级；**图上的 tooltip** 走的是共享渲染器，
+需要 `src/bodygraph.js` 提供一个命名覆盖。该接口已由图形实施在 `cd717f3a` 完成（依赖 `af519220`）：
 
-**接口归属**：父代理已转达，`opts.naming` 由交互实施（另一个 Artisan）落地，本分支**不自行发明**该接口，
-只登记所需形状与现状。
+```
+opts.naming = {
+  gate(gate),            // 逐闸门的可访问名
+  gateTooltip(gate),     // 直接替代 tooltip 里的“名称部分”，不再附清醒卦名
+  channelTooltip(channel),// 返回裸通道名，闸门对由渲染器自己补
+  center(key)            // 省略 = 沿用共享默认
+}
+```
 
-**已核实现状（本轮）**：`src/bodygraph.js` 里 `displayGate` / `displayChannel` 是**模块级常量**
-（`bodygraph.js:91-92`，分别取 `gateName` / `channelName(channel.gates)`），并不是 `opts` 选项；
-调用处也没有任何命名参数。所以睡眠图**无法**在现有接口下传入梦境名——这不是漏传，而是接口不存在。
-图上的闸门数字本身只画编号，视觉上不会误导；受影响的是 tooltip 与逐闸门的 aria 文案���
+**本分支只接调用参数**（不 cherry-pick、不复制渲染器改动）：`src/views/dream.js` 里有一个
+共用的 `dreamNaming` 对象，`dreamGraphShell()` 与 `drawComparison()` 两处 `renderBodygraph()`
+都传 `naming: dreamNaming`：
 
-按文件所有权，本轮不碰 `src/bodygraph.js`（另一实施在改它），因此这里只登记需要的接口形状：
-渲染器的 `opts` 需要一组可选的命名覆盖，例如
-`opts.naming = { gate: fn, gateTooltip: fn, channelTooltip: fn, center: fn }`，
-睡眠图传 `dreamGateName` / `dreamChannelName` / `dreamRealmName`，不传时行为与现在完全一致
-（其它页面的调用点全部不变）。拿到这个接口后，睡眠图这边只需要在 `dreamGraphShell()` 与
-`drawComparison()` 两处 `renderBodygraph()` 调用上加一个参数，无需再改结构。
+- `gate` / `gateTooltip` = `dreamGateName`（梦境闸门名，tooltip 不再拼清醒卦名）
+- `channelTooltip` = `dreamChannelName(channel.gates)`（裸名，缺省回落到通道 key）
+- `center` 不给，沿用共享默认
+
+**现状与验证边界**：本分支的 `bodygraph.js` 尚未包含 `cd717f3a`，渲染器会忽略未知选项，
+所以这里的 `dream-e2e`（78 项）通过只说明“传入该选项不改变任何现有行为”，**不构成 tooltip 已验证**。
+真实 tooltip/aria 的梦境名要等父代理把两路集成后测；届时睡眠图侧无需再改代码。
 
 **反向高亮已经接上（不属于该实施范围）**：`onHighlight` 是现有接口，本轮已由睡眠图两处
 `renderBodygraph()` 调用传入同一个 `dreamHighlightRows()`，见 §1.6 第 10 条。

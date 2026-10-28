@@ -925,6 +925,10 @@ function dreamGraphShell(dream, { overlay }) {
     animate: false,
     touchPreview: true,
     ariaLabel: dreamAriaLabel(dream),
+    // The graph's own tooltip and per-gate labels use the sleep names, not the
+    // waking catalogue's. The option is ignored by a renderer that does not know
+    // it, so this page stays correct while the two changes land separately.
+    naming: dreamNaming,
     ...(overlay && dream.hasTransit ? { transitModel: buildDreamTransitGraph(dream) } : {}),
     // The graph's highlight flows back into this page's own rows (see
     // `dreamHighlightRows()`), so hovering or pinning a gate reads as one object
@@ -954,6 +958,25 @@ function dreamGraphShell(dream, { overlay }) {
  * untouched.
  */
 const sleepChannelName = channel => dreamChannelName(channel.gates) || channel.gates.join('-');
+
+/**
+ * The sleep vocabulary handed to the shared renderer (`opts.naming`).
+ *
+ * The renderer owns the formatting and the gate pair; this object only answers
+ * "what is this object called at night". `gateTooltip` replaces the name part of
+ * the tooltip title outright, so the waking hexagram never appears next to a dream
+ * gate name, and `channelTooltip` returns the bare dream name because the renderer
+ * appends the gates itself. Centres are omitted on purpose: the shared default is
+ * already the right wording and there is no dream name for a centre.
+ *
+ * One object for both modes, so a gate or a channel reads the same in the single
+ * design and in the composite.
+ */
+const dreamNaming = {
+  gate: dreamGateName,
+  gateTooltip: dreamGateName,
+  channelTooltip: channel => dreamChannelName(channel.gates) || channel.gates.join('-')
+};
 
 function dreamAriaLabel(dream) {
   const centers = formatDisplay('separated', dream.centers.definedNames.map(centerName), 'centers');
@@ -1382,6 +1405,8 @@ function drawComparison({ content, current, a, b, labelB }) {
     touchPreview: true,
     ariaLabel: t('Combined sleep chart bodygraph for {a} and {b}, coloured by whose sleeping design carries each gate.',
       { a: labelA, b: labelB }),
+    // Same naming object as the single design: one vocabulary for both modes.
+    naming: dreamNaming,
     composite: {
       chartA, chartB, structure, labelA, labelB,
       colorA: palette.a, colorB: palette.b, colorBridged: palette.bridged
