@@ -1189,9 +1189,14 @@ body {
   stroke-linejoin: round;
   paint-order: stroke fill;
 }
-/* The pinned object keeps a heavier outline than a hover preview. */
+/* The pinned object keeps a heavier outline than a hover preview. It carries the focus
+   colour itself: a pinned centre can stay pinned while another object is hovered, and
+   then it has no `bg-focus` to borrow the stroke from. */
 .bodygraph-svg .bg-gate-path.bg-selected,
-.bodygraph-svg .bg-center.bg-selected { stroke-width: 3.4; }
+.bodygraph-svg .bg-center.bg-selected {
+  stroke: var(--focus);
+  stroke-width: 3.4;
+}
 .bodygraph-svg.bg-dimmed .bg-gate-path.bg-focus { opacity: 1; }
 
 /* Relational highlight reaches the centers too: when a gate (and its channel)
@@ -1199,23 +1204,21 @@ body {
 .bodygraph-svg .bg-center { transition: opacity 0.12s, stroke 0.12s; }
 .bodygraph-svg.bg-dimmed .bg-center:not(.bg-lit) { opacity: 0.35; }
 
-/* Viewport layer for graph tooltips.
-   The overlay is `position: fixed`, but every shell-hosted graph sits inside
-   `.ohd-graph-canvas`, which is translated to centre the canvas — and a transformed
-   ancestor is the containing block of a fixed descendant, so a tooltip left in the
-   graph was offset by the canvas's own page position. While visible it lives in this
-   layer instead, where `fixed` means the viewport again. The layer paints nothing and
-   takes no pointers; `bodygraph.js` owns moving the overlay in and out of it. */
-.bg-tooltip-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-}
-
+/* Viewport overlay for graph tooltips.
+   The element is a `popover="manual"`, so the browser lays it out in the top layer:
+   against the viewport, and outside every ancestor's transform, `contain` and
+   `container-type` — all three would otherwise capture a plain `position: fixed`
+   descendant, which is exactly what put the overlay 306px off the pointer on the sleep
+   chart. It stays inside the graph in the DOM (that is its life cycle) and simply paints
+   elsewhere, so it also inherits the graph's source colours and transit source mode.
+   The declarations below undo the user-agent popover box; `bodygraph.js` owns showing it
+   and placing it. Top-layer popovers: Chrome 114+, Safari 17+, Firefox 125+. */
 .bg-tooltip {
   position: fixed;
-  z-index: 50;
+  inset: auto;
+  margin: 0;
+  overflow: visible;
+  color: inherit;
   width: max-content;
   max-width: min(260px, calc(100vw - 16px));
   padding: 8px 11px;
@@ -1234,9 +1237,6 @@ body {
 :root .bg-tooltip .bg-tt-personality { color: var(--bg-source-personality-tooltip-text, var(--source-personality-tooltip-text)); }
 :root .bg-tooltip :is(.bg-tt-source.transit, .bg-tt-source-transit) { color: var(--source-transit-tooltip-text); }
 :root .bg-root[data-transit-source-mode="unified-natal"] .bg-tooltip :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
-/* The same emphasis for a tooltip that has left the graph for the viewport layer and
-   therefore carries its graph's source mode itself. */
-:root .bg-tooltip[data-transit-source-mode="unified-natal"] :is(.bg-tt-design, .bg-tt-personality, .bg-tt-source-birth) { color: var(--source-natal-tooltip-text); }
 /* Preserve approved Skin fills while making small text readable. */
 :root[data-skin] #chart-view .act-design { color: var(--source-birthDesign-text); }
 :root[data-skin] .tl :is(.bg-planets-design .bg-planets-head, .bg-planets-design .bg-planet-act, .act-design) { color: var(--source-design-text); }

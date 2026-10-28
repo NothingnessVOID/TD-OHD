@@ -47,39 +47,6 @@ function el(tag, attrs = {}, ns = null) {
 }
 const svgEl = (tag, attrs) => el(tag, attrs, SVG_NS);
 
-/**
- * Live graph tooltips, one per interactive graph.
- *
- * A tooltip is a viewport overlay and therefore has to leave the graph while it is
- * visible (see the note at its creation), which means it no longer disappears when
- * the graph that owns it is redrawn or replaced. This registry is what makes it
- * disappear anyway: creating a tooltip first drops the one its container already
- * had, and drops any whose graph has left the document.
- */
-const liveTooltips = new Set();
-const TOOLTIP_LAYER_ID = 'bg-tooltip-layer';
-
-function pruneTooltips(owner = null) {
-  for (const record of liveTooltips) {
-    if (record.owner === owner || !record.owner.isConnected) {
-      record.tooltip.remove();
-      liveTooltips.delete(record);
-    }
-  }
-}
-
-/** The one viewport layer every graph tooltip borrows while it is visible. */
-function tooltipLayer() {
-  let layer = document.getElementById(TOOLTIP_LAYER_ID);
-  if (!layer) {
-    layer = document.createElement('div');
-    layer.id = TOOLTIP_LAYER_ID;
-    layer.className = 'bg-tooltip-layer';
-    document.body.appendChild(layer);
-  }
-  return layer;
-}
-
 const CENTER_KEYS = ['head', 'ajna', 'throat', 'g', 'heart', 'spleen', 'solar', 'sacral', 'root'];
 
 /**
@@ -732,15 +699,21 @@ export function renderBodygraph(container, chart, opts = {}) {
   function renderHighlight(sel) {
     for (const node of [...Object.values(gatePathEls), ...spanEls]) node.classList.remove('bg-lit', 'bg-focus', 'bg-selected');
     for (const node of Object.values(gateCircleEls)) node.classList.remove('bg-lit', 'bg-focus');
-    for (const node of Object.values(centerPathEls)) node.classList.remove('bg-lit', 'bg-focus');
-    // `bg-selected` marks the gate that owns the open detail card, so it can keep a
-    // visible ring after the pointer leaves. It is derived from `pinned` only, never
-    // from hover, and it survives the dimming that hover previews apply.
+    for (const node of Object.values(centerPathEls)) node.classList.remove('bg-lit', 'bg-focus', 'bg-selected');
+    // `bg-selected` marks the gate or centre that owns the open detail card, so it can keep
+    // a visible ring after the pointer leaves. It is derived from `pinned` only, never from
+    // hover, and it survives the dimming that hover previews apply — so it is recomputed
+    // here for every gate and every centre, which is what clears it when the card closes.
+    // (A centre used to keep the class forever: the reset above did not include it.)
     const selectedGate = pinned?.kind === 'gate' ? Number(pinned.id) : null;
     for (const [gate, node] of Object.entries(gateCircleEls)) {
       const isSelected = selectedGate != null && Number(gate) === selectedGate;
       node.classList.toggle('bg-selected', isSelected);
       gatePathEls[gate]?.classList.toggle('bg-selected', isSelected);
+    }
+    const selectedCenter = pinned?.kind === 'center' ? pinned.id : null;
+    for (const [key, node] of Object.entries(centerPathEls)) {
+      node.classList.toggle('bg-selected', key === selectedCenter);
     }
     // The object under the pointer (or the keyboard) carries its own mark on the
     // shape it covers, not only a ring on its number disc. Dimming plus that ring was
@@ -753,10 +726,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       gatePathEls[focusGate]?.classList.add('bg-focus');
       gateCircleEls[focusGate]?.classList.add('bg-focus');
     }
-    if (sel?.kind === 'center') {
-      centerPathEls[sel.id]?.classList.add('bg-focus');
-      if (pinned?.kind === 'center' && pinned.id === sel.id) centerPathEls[sel.id]?.classList.add('bg-selected');
-    }
+    if (sel?.kind === 'center') centerPathEls[sel.id]?.classList.add('bg-focus');
     if (!sel) { svg.classList.remove('bg-dimmed'); return { gates: [], centers: [] }; }
     svg.classList.add('bg-dimmed');
     const { gates, centers } = litFor(sel);
@@ -795,54 +765,36 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   // ---------- Tooltip + events ----------
   if (interactive) {
-    const tooltip = el('div', { class: 'bg-tooltip', role: 'tooltip' });
-    tooltip.style.display = 'none';
+    // `popover="manual"` puts the overlay in the browser's top layer, and that is what
+    // makes it both correctly placed and life-cycle safe. See `showTooltip` for the
+    // measurements; nothing else in the renderer moves it out of its graph.
+    const tooltip = el('div', { class: 'bg-tooltip', role: 'tooltip', popover: 'manual' });
 
-    /**
-     * The overlay is a viewport object; the graph is not.
-     *
-     * Every shell-hosted graph sits inside `.ohd-graph-canvas`, which is shifted by
-     * `translateX(-50%)` to centre the canvas (styles/graph-shell.css), and a
-     * transformed ancestor becomes the containing block of `position: fixed`
-     * descendants. Measured on the sleep chart's two-person composite, the overlay
-     * landed 306px right and 301px below the pointer, and below the bottom of a
-     * 1000px viewport. So while it is visible the overlay lives in one shared layer
-     * on <body>, where `fixed` means the viewport again; hidden, it parks back inside
-     * the graph container, so a redrawn, replaced or abandoned graph takes it away
-     * with it instead of leaving it on the page.
-     */
-    const tooltipRecord = { tooltip, owner: container };
-    let layer = null;
-    pruneTooltips(container);
-    liveTooltips.add(tooltipRecord);
-
-    function syncTooltipContext() {
-      // Source colours are custom properties on the graph and the transit source
-      // mode is a data attribute on it. The portalled overlay is outside that
-      // subtree, so it carries its own copy and the tooltip rules keep matching.
-      for (const name of container.style) {
-        if (name.startsWith('--')) tooltip.style.setProperty(name, container.style.getPropertyValue(name));
-      }
-      const mode = container.dataset.transitSourceMode;
-      if (mode) tooltip.dataset.transitSourceMode = mode;
-      else delete tooltip.dataset.transitSourceMode;
-    }
+    const tooltipOpen = () => tooltip.matches(':popover-open');
 
     function showTooltip(markup, anchor) {
-      pruneTooltips();
-      layer ||= tooltipLayer();
-      if (tooltip.parentElement !== layer) {
-        syncTooltipContext();
-        layer.appendChild(tooltip);
-      }
       tooltip.innerHTML = markup;
-      tooltip.style.display = 'block';
+      // A top-layer overlay is laid out against the viewport, so the pointer's client
+      // coordinates are the right ones to place it — unlike a plain fixed descendant of
+      // `.ohd-graph-canvas`, which is translated by `translateX(-50%)` to centre the
+      // canvas and (with `container-type`/`contain: layout` on the shell) becomes its
+      // containing block. Measured before this: the sleep chart's two-person composite
+      // put the pointer at (802,606) and the overlay at (1108,907), 306px right, 301px
+      // low and off the bottom of a 1000px viewport.
+      //
+      // The overlay never leaves the graph it belongs to, which is the whole life cycle:
+      // a redraw replaces it with the rest of the graph's children, a removed graph takes
+      // it away, a hidden view renders neither — and the browser closes a popover whose
+      // element leaves the document. No shared registry, no observer, no listener: there
+      // is nothing to prune, so nothing can accumulate. Source colours and the transit
+      // source mode keep working because the element is still inside `.bg-root` in the
+      // DOM, however it is painted.
+      if (!tooltipOpen()) tooltip.showPopover();
       positionTooltip(anchor);
     }
 
     function hideTooltip() {
-      tooltip.style.display = 'none';
-      if (tooltip.parentElement !== container) container.appendChild(tooltip);
+      if (tooltipOpen()) tooltip.hidePopover();
     }
 
     function tooltipText(gateNum) {
@@ -1003,7 +955,7 @@ export function renderBodygraph(container, chart, opts = {}) {
       });
     }
     svg.addEventListener('pointermove', (evt) => {
-      if (evt.pointerType !== 'touch' && tooltip.style.display === 'block') positionTooltip(pointerAnchor(evt));
+      if (evt.pointerType !== 'touch' && tooltipOpen()) positionTooltip(pointerAnchor(evt));
     });
     svg.addEventListener('pointerout', (evt) => {
       if (evt.pointerType === 'touch' && touchStart) return;
@@ -1041,9 +993,18 @@ export function renderBodygraph(container, chart, opts = {}) {
     svg.addEventListener('click', (evt) => {
       if (touchDragged && evt.pointerType === 'touch') { touchDragged = false; return; }
       const gateEl = evt.target.closest('[data-gate]');
-      if (gateEl && opts.onGateClick) { opts.onGateClick(parseInt(gateEl.getAttribute('data-gate'))); return; }
+      if (gateEl && opts.onGateClick) {
+        // The card replaces the overlay, and the overlay is now in the top layer — above
+        // the card — so it must not outlive the click that opened it.
+        hideTooltip();
+        opts.onGateClick(parseInt(gateEl.getAttribute('data-gate')));
+        return;
+      }
       const centerEl = evt.target.closest('[data-center]');
-      if (centerEl && opts.onCenterClick) opts.onCenterClick(centerEl.getAttribute('data-center'));
+      if (centerEl && opts.onCenterClick) {
+        hideTooltip();
+        opts.onCenterClick(centerEl.getAttribute('data-center'));
+      }
     });
     svg.addEventListener('keydown', (evt) => {
       if (evt.key !== 'Enter' && evt.key !== ' ') return;

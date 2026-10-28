@@ -77,20 +77,32 @@ await page.addInitScript(({ key, people }) => {
   localStorage.setItem('ohd-last-person-id', people[0].id);
 }, { key: PROFILE_STORAGE_KEY, people });
 
-/** The one visible overlay, plus how many overlays the shared layer is holding. */
+/**
+ * The open overlay, plus the document-wide count of overlays and of graphs that hold one.
+ *
+ * The overlay is a top-layer `popover`, so "visible" is `:popover-open` rather than a
+ * display rule, and there is no shared layer to inspect: every overlay lives inside the
+ * graph it belongs to.
+ */
 const readTooltip = () => page.evaluate(() => {
   const all = [...document.querySelectorAll('.bg-tooltip')];
-  const visible = all.filter(node => getComputedStyle(node).display !== 'none');
-  const layer = document.getElementById('bg-tooltip-layer');
-  if (!visible.length) {
-    return { visible: 0, layerOverlays: layer ? layer.querySelectorAll('.bg-tooltip').length : 0 };
-  }
-  const node = visible[0];
+  const open = all.filter(node => node.matches(':popover-open'));
+  const perGraph = [...document.querySelectorAll('.bg-root')]
+    .map(root => root.querySelectorAll('.bg-tooltip').length);
+  const document_ = {
+    overlays: all.length,
+    open: open.length,
+    graphsWithOverlay: all.filter(node => node.closest('.bg-root')).length,
+    maxPerGraph: Math.max(0, ...perGraph)
+  };
+  if (!open.length) return { visible: 0, ...document_ };
+  const node = open[0];
   const rect = node.getBoundingClientRect();
   return {
-    visible: visible.length,
-    inLayer: node.parentElement?.id === 'bg-tooltip-layer',
-    layerOverlays: layer ? layer.querySelectorAll('.bg-tooltip').length : 0,
+    visible: open.length,
+    topLayer: node.matches(':popover-open'),
+    inGraph: !!node.closest('.bg-root'),
+    ...document_,
     text: node.textContent.trim().slice(0, 60),
     x: rect.left, y: rect.top, right: rect.right, bottom: rect.bottom,
     width: rect.width, height: rect.height,
@@ -137,7 +149,7 @@ async function hoverGateWithSource(rootSelector) {
   for (const point of points) {
     await hoverGate(point);
     const found = await page.evaluate(() => {
-      const tip = [...document.querySelectorAll('.bg-tooltip')].find(node => getComputedStyle(node).display !== 'none');
+      const tip = [...document.querySelectorAll('.bg-tooltip')].find(node => node.matches(':popover-open'));
       return !!tip && !!tip.querySelector('.bg-tt-design, .bg-tt-personality');
     });
     if (found) return point;
@@ -151,7 +163,8 @@ async function hoverGateWithSource(rootSelector) {
  */
 function assertBesidePointer(tooltip, point) {
   assert.equal(tooltip.visible, 1, 'no overlay is shown');
-  assert.ok(tooltip.inLayer, 'the overlay is not in the shared viewport layer');
+  assert.ok(tooltip.topLayer, 'the overlay is not in the top layer');
+  assert.ok(tooltip.inGraph, 'the overlay left the graph it belongs to');
   assert.ok(tooltip.text.length > 0, 'the overlay has no text');
   const rightSide = near(tooltip.x, point.x + GAP);
   const leftSide = near(tooltip.right, point.x - GAP);
@@ -242,27 +255,41 @@ try {
   await check('birth chart: the overlay keeps the graph\u2019s source colours and transit mode', async () => {
     await hoverGateWithSource('#bodygraph-container .bg-gate');
     const carried = await page.evaluate(() => {
-      const tip = [...document.querySelectorAll('.bg-tooltip')].find(node => getComputedStyle(node).display !== 'none');
+      const open = [...document.querySelectorAll('.bg-tooltip')].filter(node => node.matches(':popover-open'));
+      const tip = open[0];
       const host = document.querySelector('#bodygraph-container');
       const design = tip.querySelector('.bg-tt-design');
       const personality = tip.querySelector('.bg-tt-personality');
-      const colorOf = node => node ? getComputedStyle(node).color : null;
+      // What the graph's own custom property resolves to, measured on the graph itself.
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--bg-source-design-tooltip-text)';
+      host.appendChild(probe);
+      const graphDesign = getComputedStyle(probe).color;
+      probe.style.color = 'var(--bg-source-personality-tooltip-text)';
+      const graphPersonality = getComputedStyle(probe).color;
+      probe.remove();
       return {
-        hostDesign: host.style.getPropertyValue('--bg-source-design-tooltip-text'),
-        tipDesign: tip.style.getPropertyValue('--bg-source-design-tooltip-text'),
-        hostPersonality: host.style.getPropertyValue('--bg-source-personality-tooltip-text'),
-        tipPersonality: tip.style.getPropertyValue('--bg-source-personality-tooltip-text'),
-        designColor: colorOf(design),
-        personalityColor: colorOf(personality),
+        designColor: design ? getComputedStyle(design).color : null,
+        personalityColor: personality ? getComputedStyle(personality).color : null,
+        graphDesign,
+        graphPersonality,
         hostMode: host.dataset.transitSourceMode || null,
-        tipMode: tip.dataset.transitSourceMode || null
+        modeAncestor: tip.closest('[data-transit-source-mode]')?.dataset.transitSourceMode || null,
+        inlineCopy: tip.style.getPropertyValue('--bg-source-design-tooltip-text')
       };
     });
-    assert.ok(carried.hostDesign, 'the graph declares no design tooltip colour to carry');
-    assert.equal(carried.tipDesign, carried.hostDesign, 'the overlay did not carry the design tooltip colour');
-    assert.equal(carried.tipPersonality, carried.hostPersonality, 'the overlay did not carry the personality tooltip colour');
-    assert.equal(carried.tipMode, carried.hostMode, 'the overlay did not carry the transit source mode');
-    assert.ok(carried.designColor, 'the activation in the overlay has no colour');
+    assert.ok(carried.designColor || carried.personalityColor, 'the activation in the overlay has no colour');
+    if (carried.designColor && carried.hostMode !== 'unified-natal') {
+      assert.equal(carried.designColor, carried.graphDesign,
+        `the design activation is ${carried.designColor} while the graph\u2019s token resolves to ${carried.graphDesign}`);
+    }
+    if (carried.personalityColor && carried.hostMode !== 'unified-natal') {
+      assert.equal(carried.personalityColor, carried.graphPersonality,
+        `the personality activation is ${carried.personalityColor} while the graph\u2019s token resolves to ${carried.graphPersonality}`);
+    }
+    assert.equal(carried.modeAncestor, carried.hostMode,
+      `the overlay reads its source mode from ${carried.modeAncestor} instead of the graph\u2019s ${carried.hostMode}`);
+    assert.equal(carried.inlineCopy, '', 'the overlay still copies custom properties instead of inheriting them');
   });
 
   await check('birth chart: click opens the card, Escape closes it and takes the overlay', async () => {
@@ -353,7 +380,7 @@ try {
     await page.waitForTimeout(200);
     const tooltip = await readTooltip();
     assert.equal(tooltip.visible, 1, 'a touch press shows no preview');
-    assert.ok(tooltip.inLayer, 'the touch preview is not in the viewport layer');
+    assert.ok(tooltip.topLayer, 'the touch preview is not in the top layer');
     assert.ok(tooltip.bottom <= point.y - 20 + TOLERANCE,
       `the touch preview bottom is ${Math.round(tooltip.bottom)} for a finger at ${Math.round(point.y)}; it should sit above the finger`);
     await page.screenshot({ path: path.join(SHOTS, '04-sleep-touch.png') });
@@ -463,7 +490,7 @@ try {
     const tooltip = await readTooltip();
     const state = await readHighlight('#dream-composite-shell');
     assert.equal(tooltip.visible, 1, 'keyboard focus shows no overlay');
-    assert.ok(tooltip.inLayer, 'the keyboard overlay is not in the viewport layer');
+    assert.ok(tooltip.topLayer, 'the keyboard overlay is not in the top layer');
     assert.equal(state.gate, gate, `keyboard focus outlined ${state.gate} instead of gate ${gate}`);
     // The overlay is anchored to the focused element's own box, which is the gate's
     // hit area — not the smaller disc inside it.
@@ -496,23 +523,134 @@ try {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
   });
 
-  await check('leaving a view with an overlay open leaves nothing behind', async () => {
+  await check('closing a pinned centre takes its heavy outline and its dimming with it', async () => {
+    // A centre's `bg-selected` used to survive the close: the reset loop cleared only
+    // `bg-lit` and `bg-focus`, so the 3.4-wide focus stroke stayed on that centre for the
+    // rest of the view's life.
+    const centre = await page.evaluate(() => {
+      const node = document.querySelector('#dream-composite-shell .bg-center');
+      const rect = node.getBoundingClientRect();
+      return { id: node.dataset.center, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    });
+    await page.mouse.move(centre.x - 60, centre.y - 60);
+    await page.mouse.move(centre.x, centre.y, { steps: 4 });
+    await page.waitForTimeout(260);
+    const hovered = await readHighlight('#dream-composite-shell');
+    assert.equal(hovered.centre, centre.id, `hovering centre ${centre.id} outlined ${hovered.centre}`);
+    await page.mouse.click(centre.x, centre.y);
+    await waitForDetail();
+    const pinned = await page.evaluate(() => {
+      const node = document.querySelector('#dream-composite-shell .bg-center.bg-selected');
+      return { id: node?.dataset.center || null, width: node && getComputedStyle(node).strokeWidth, stroke: node && getComputedStyle(node).stroke };
+    });
+    assert.equal(pinned.id, centre.id, 'the pinned centre is not marked while its card is open');
+    assert.ok(Number.parseFloat(pinned.width) > 2.4, `pinned centre stroke is ${pinned.width}, expected the heavier selected weight`);
+    await closeDetail();
+    await page.mouse.move(5, 5);
+    await page.waitForTimeout(300);
+    const cleared = await page.evaluate(() => {
+      const marked = [...document.querySelectorAll('#dream-composite-shell .bg-center.bg-selected')];
+      const node = document.querySelector(`#dream-composite-shell .bg-center[data-center="${document.querySelector('#dream-composite-shell .bg-center').dataset.center}"]`);
+      return {
+        selected: marked.length,
+        focused: document.querySelectorAll('#dream-composite-shell .bg-center.bg-focus').length,
+        strokeWidth: node && getComputedStyle(node).strokeWidth,
+        stroke: node && getComputedStyle(node).stroke
+      };
+    });
+    assert.equal(cleared.selected, 0, `${cleared.selected} centre(s) kept the selected class after the card closed`);
+    assert.equal(cleared.focused, 0, `${cleared.focused} centre(s) kept the focus class after the card closed`);
+    assert.ok(Number.parseFloat(cleared.strokeWidth) < 3, `the centre still carries a ${cleared.strokeWidth} focus stroke after the card closed`);
+  });
+
+  await check('leaving a view with an overlay open closes it and leaves no overlay behind', async () => {
     const point = await gatePoint('#dream-composite-shell .bg-gate');
     await hoverGate(point);
     assert.equal((await readTooltip()).visible, 1, 'no overlay to leave behind');
-    await nav('library');
-    await page.waitForTimeout(600);
-    const after = await page.evaluate(() => {
-      const layer = document.getElementById('bg-tooltip-layer');
-      const overlays = [...(layer?.querySelectorAll('.bg-tooltip') || [])];
-      return {
-        inLayer: overlays.length,
-        stillVisible: overlays.filter(node => getComputedStyle(node).display !== 'none').length,
-        detached: overlays.filter(node => !node.parentElement.isConnected).length
+    // Programmatic navigation: the pointer never moves, so nothing here can depend on
+    // `pointerout` — the overlay must lose its open state because the view it belongs to
+    // is no longer shown.
+    await page.evaluate(() => document.querySelector('.nav-link[data-view="library"]').click());
+    await page.waitForTimeout(700);
+    const after = await readTooltip();
+    assert.equal(after.visible, 0, 'an overlay is still open after its view was left');
+    assert.ok(after.maxPerGraph <= 1, `a graph is holding ${after.maxPerGraph} overlays after leaving the view`);
+    // Coming back must not resurrect a stuck overlay either. The comparison mode is
+    // restored on open, so the single design's strip is not the thing to wait for.
+    await nav('dream');
+    await page.waitForSelector('#dream-content .dream-compare-head, #dream-content .dream-type-strip', { timeout: 120000 });
+    await page.mouse.move(5, 5);
+    await page.waitForTimeout(400);
+    const returned = await readTooltip();
+    assert.equal(returned.visible, 0, 'an overlay is open again with the pointer away from the graph');
+  });
+
+  await check('a removed or redrawn graph takes its overlay with it and leaves nothing to accumulate', async () => {
+    // The leak this replaces: the overlay used to live in a shared layer on <body> while it
+    // was open, so removing the graph left it floating and nothing pruned it, because the
+    // container it was registered against was still connected.
+    const outcome = await page.evaluate(async () => {
+      const { renderBodygraph } = await import('/src/bodygraph.js');
+      const chart = {
+        gates: { personality: { sun: { gate: 1, line: 2 } }, design: { earth: { gate: 8, line: 3 } } },
+        channels: [{ gates: [1, 8], centers: ['g', 'throat'] }],
+        centers: { definedNames: ['g'] },
+        type: { name: 'generator' }, profile: { numbers: '1/3' }, authority: { name: 'sacral' },
+        definition: 'single', variable: null, positions: {}
       };
+      const host = document.createElement('div');
+      host.id = 'lifecycle-host';
+      host.style.cssText = 'position:fixed;left:20px;top:20px;width:520px;height:820px;z-index:-1;';
+      document.body.appendChild(host);
+      const graphHost = document.createElement('div');
+      host.appendChild(graphHost);
+      const open = () => [...document.querySelectorAll('.bg-tooltip')].filter(node => node.matches(':popover-open')).length;
+      const openIt = () => {
+        const gate = graphHost.querySelector('.bg-gate[data-gate="1"]');
+        gate.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, clientX: 120, clientY: 220, pointerType: 'mouse' }));
+      };
+      const result = { globalBefore: document.querySelectorAll('.bg-tooltip').length };
+
+      renderBodygraph(graphHost, chart, { planetColumns: false, animate: false, onGateClick: () => {} });
+      openIt();
+      result.openAfterHover = open();
+
+      // Redraw the graph in the same container: one overlay, none open.
+      renderBodygraph(graphHost, chart, { planetColumns: false, animate: false, onGateClick: () => {} });
+      result.openAfterRedraw = open();
+      result.overlaysAfterRedraw = graphHost.querySelectorAll('.bg-tooltip').length;
+
+      // Open it again and remove the graph subtree, keeping the container.
+      openIt();
+      result.openBeforeRemoval = open();
+      graphHost.replaceChildren();
+      result.openAfterRemoval = open();
+      result.overlaysAfterRemoval = graphHost.querySelectorAll('.bg-tooltip').length;
+
+      // And a removed container, with the overlay open.
+      renderBodygraph(graphHost, chart, { planetColumns: false, animate: false, onGateClick: () => {} });
+      openIt();
+      result.openBeforeHostRemoval = open();
+      host.remove();
+      result.openAfterHostRemoval = open();
+      // A detached tree still holds its own nodes; what must be gone from the document is
+      // anything belonging to the removed host.
+      result.overlaysAfterHostRemoval = [...document.querySelectorAll('.bg-tooltip')]
+        .filter(node => node.closest('#lifecycle-host')).length;
+      result.globalAfter = document.querySelectorAll('.bg-tooltip').length;
+      return result;
     });
-    assert.equal(after.stillVisible, 0, 'a visible overlay outlived its view');
-    assert.equal(after.inLayer, 0, `${after.inLayer} overlay(s) stayed in the shared layer after their graph was gone`);
+    assert.equal(outcome.openAfterHover, 1, 'the scratch graph showed no overlay');
+    assert.equal(outcome.openAfterRedraw, 0, 'a redrawn graph left the previous overlay open');
+    assert.equal(outcome.overlaysAfterRedraw, 1, `a redrawn graph accumulated ${outcome.overlaysAfterRedraw} overlays`);
+    assert.equal(outcome.openBeforeRemoval, 1, 'the overlay did not reopen for the removal case');
+    assert.equal(outcome.openAfterRemoval, 0, 'removing the graph subtree left the overlay open');
+    assert.equal(outcome.overlaysAfterRemoval, 0, `${outcome.overlaysAfterRemoval} overlay(s) stayed in the container that outlived its graph`);
+    assert.equal(outcome.openBeforeHostRemoval, 1, 'the overlay did not reopen for the removed-container case');
+    assert.equal(outcome.openAfterHostRemoval, 0, 'removing the container left the overlay open');
+    assert.equal(outcome.overlaysAfterHostRemoval, 0, `${outcome.overlaysAfterHostRemoval} overlay(s) survived the removed container`);
+    assert.equal(outcome.globalAfter, outcome.globalBefore,
+      `the document went from ${outcome.globalBefore} to ${outcome.globalAfter} overlay nodes across one scratch graph's life`);
   });
 
   await check('a unified-natal skin keeps its tooltip emphasis after the overlay leaves the graph', async () => {
@@ -531,7 +669,7 @@ try {
     await page.waitForTimeout(400);
     await hoverGateWithSource('#transit-bodygraph .bg-gate');
     const skin = await page.evaluate(() => {
-      const tip = [...document.querySelectorAll('.bg-tooltip')].find(node => getComputedStyle(node).display !== 'none');
+      const tip = [...document.querySelectorAll('.bg-tooltip')].find(node => node.matches(':popover-open'));
       const activated = tip.querySelector('.bg-tt-design, .bg-tt-personality');
       const probe = document.createElement('span');
       probe.style.color = 'var(--source-natal-tooltip-text)';
@@ -539,12 +677,14 @@ try {
       const natal = getComputedStyle(probe).color;
       probe.remove();
       return {
-        mode: tip.dataset.transitSourceMode || null,
+        // The overlay is a descendant of the graph again, so the mode it is styled by is
+        // the graph's own attribute — nothing is copied onto the element.
+        mode: tip.closest('[data-transit-source-mode]')?.dataset.transitSourceMode || null,
         activated: activated && getComputedStyle(activated).color,
         natal
       };
     });
-    assert.equal(skin.mode, 'unified-natal', `the overlay carries the mode "${skin.mode}" instead of unified-natal`);
+    assert.equal(skin.mode, 'unified-natal', `the overlay reads its mode from a graph that is "${skin.mode}" instead of unified-natal`);
     assert.equal(skin.activated, skin.natal,
       `the activated number is ${skin.activated} while unified-natal asks for ${skin.natal}`);
   });
@@ -587,7 +727,7 @@ try {
         bubbles: true, clientX: 120, clientY: 220, pointerType: 'mouse'
       }));
       const overlay = () => [...document.querySelectorAll('.bg-tooltip')]
-        .find(node => getComputedStyle(node).display !== 'none')?.textContent.trim() || null;
+        .find(node => node.matches(':popover-open'))?.textContent.trim() || null;
 
       const named = render({ naming });
       const gate = named.querySelector('.bg-gate[data-gate="1"]');
@@ -597,14 +737,14 @@ try {
       hover(centre);
       const namedCentre = { aria: centre.getAttribute('aria-label'), tip: overlay(), summary: named.querySelector('.bodygraph-svg').getAttribute('aria-label') };
       named.remove();
-      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+      document.querySelectorAll('.bg-tooltip').forEach(node => node.matches(':popover-open') && node.hidePopover());
 
       const plain = render({});
       const plainGate = plain.querySelector('.bg-gate[data-gate="1"]');
       hover(plainGate);
       const plainResult = { aria: plainGate.getAttribute('aria-label'), tip: overlay() };
       plain.remove();
-      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+      document.querySelectorAll('.bg-tooltip').forEach(node => node.matches(':popover-open') && node.hidePopover());
 
       return { namedGate, namedCentre, plain: plainResult };
     });
@@ -657,7 +797,7 @@ try {
       const gate = host.querySelector('.bg-gate[data-gate="20"]');
       gate.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, clientX: 120, clientY: 220, pointerType: 'mouse' }));
       const tip = [...document.querySelectorAll('.bg-tooltip')]
-        .find(node => getComputedStyle(node).display !== 'none')?.textContent.trim() || null;
+        .find(node => node.matches(':popover-open'))?.textContent.trim() || null;
       const result = {
         tip,
         aria: gate.getAttribute('aria-label'),
@@ -666,7 +806,7 @@ try {
         dreamChannel: dreamChannelName([20, 57])
       };
       host.remove();
-      document.getElementById('bg-tooltip-layer')?.replaceChildren();
+      document.querySelectorAll('.bg-tooltip').forEach(node => node.matches(':popover-open') && node.hidePopover());
       return result;
     });
     assert.ok(sleep.tip, 'the sleep graph showed no overlay');
