@@ -290,6 +290,20 @@ await check('lighting a gate on the graph lights the matching list rows', async 
   assert(cleared === 0, `${cleared} rows stayed lit after the pointer left the graph`);
 });
 
+await check('hovering a night-field row lights its gate in the graph', async () => {
+  // The other direction of the same link: night-field rows were click-only, so a
+  // reader could open a gate from the list but not find it on the graph.
+  const gate = await page.$eval('.dream-realm-row[data-gate]', n => n.dataset.gate);
+  await page.hover(`.dream-realm-row[data-gate="${gate}"] .dream-row-open`);
+  await page.waitForTimeout(250);
+  const lit = await page.$eval(`#dream-bodygraph .bg-gate[data-gate="${gate}"]`, n => n.classList.contains('bg-lit'));
+  assert(lit, `hovering the night-field row for gate ${gate} did not light the graph`);
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+  const cleared = await page.$eval(`#dream-bodygraph .bg-gate[data-gate="${gate}"]`, n => n.classList.contains('bg-lit'));
+  assert(!cleared, `gate ${gate} stayed lit after the pointer left the night-field row`);
+});
+
 // --- detail sheet: sleep-chart data, never the waking design ---
 await check('clicking a gate opens the sleep-chart detail sheet', async () => {
   const gate = await page.$eval('.dream-column-row', n => n.dataset.gate);
@@ -486,6 +500,46 @@ await check('a realm channel row opens the channel sheet', async () => {
   assert(sheet.includes(id) || sheet.includes(id.replace('-', '\u2013')), `channel sheet did not mention ${id}`);
 });
 
+await check('a channel sheet prints no waking circuit badges', async () => {
+  // The waking catalogue's circuit badges explain the channel inside the waking
+  // system; this sheet answers the night question with the teacher's material only.
+  const badges = await page.$$eval('#dream-detail .channel-circuit-badges', n => n.length);
+  assert(badges === 0, `the channel sheet still prints ${badges} waking circuit badge group(s)`);
+  const heading = await page.evaluate(() => {
+    const card = document.querySelector('#dream-detail .gate-detail-card[data-channel]');
+    return card && {
+      label: card.querySelector('.detail-label')?.textContent.trim() || '',
+      name: card.querySelector('.detail-name')?.textContent.trim() || '',
+      panelTitle: !!card.querySelector('.panel-title')
+    };
+  });
+  assert(heading && heading.label && heading.name, `channel heading ${JSON.stringify(heading)}`);
+  assert(!heading.panelTitle, 'the channel sheet still uses the old panel-title heading');
+});
+
+await check('a centre sheet is titled with the shared label and name pair', async () => {
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
+  const center = await page.$eval('#dream-bodygraph .bg-center[data-center]', n => n.dataset.center);
+  await page.click(`#dream-bodygraph .bg-center[data-center="${center}"]`);
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-center]', { timeout: 10000 });
+  const heading = await page.evaluate(() => {
+    const card = document.querySelector('#dream-detail .gate-detail-card[data-center]');
+    return {
+      label: card.querySelector('.detail-label')?.textContent.trim() || '',
+      name: card.querySelector('.detail-name')?.textContent.trim() || '',
+      panelTitle: !!card.querySelector('.panel-title'),
+      subtype: card.querySelector('.dream-detail-subhead')?.textContent.trim() || ''
+    };
+  });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  // A centre's identifier is its name, so the heading is the shared `.detail-name`
+  // alone \u2014 no eyebrow repeating "Center" above "Throat Center".
+  assert(heading.name.length > 0, 'centre name is empty');
+  assert(!heading.panelTitle, 'the centre sheet still uses the old panel-title heading');
+});
+
 
 await check('closing a sheet ends its selection, so the next sheet has no stray Back', async () => {
   // The regression: `current` survived the close, so the first step of the next
@@ -627,6 +681,17 @@ await check('switching to English redraws the sleep chart', async () => {
   // which half this is.
   assert(/^(Reflector|Generator|Projector|Manifestor|Manifesting Generator)$/.test(typeTitle),
     `English sleep type name is "${typeTitle}"`);
+  // The sheet's own half names read "Dream personality / Dream design" in English
+  // through the English message catalogue: the stable keys are unchanged, so the
+  // model and the sleep chart's calculation contract stay as they were.
+  await page.click('.dream-column-row[data-gate]');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-gate]', { timeout: 10000 });
+  const enSources = await page.$$eval('#dream-detail .dream-detail-source-label', n => n.map(x => x.textContent.trim()));
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  assert(enSources.length > 0, 'the English gate sheet lists no activation source');
+  assert(enSources.every(label => ['Dream personality', 'Dream design', 'Transit'].includes(label)),
+    `English source labels are ${JSON.stringify(enSources)}`);
   const frame = await page.$eval('[data-dream-frame="sides"]', n => n.textContent);
   assert(/direction the dream evolves/.test(frame), `English frame line: ${frame}`);
   assert(/consciousness inside the dream/.test(frame), `English frame line: ${frame}`);
@@ -1422,8 +1487,10 @@ await check('the composite night fields survive a language switch and follow it'
     n => n.map(x => x.textContent.trim()));
   assert(enLabels.length >= 2, `English gate 1 has ${enLabels.length} source labels`);
   assert(enLabels.some(label => label.startsWith(REALMS_A.name)), `English labels lost ${REALMS_A.name}: ${JSON.stringify(enLabels)}`);
-  assert(enLabels.some(label => /Sleep (design|personality)/.test(label)),
-    `English labels keep a Chinese half name: ${JSON.stringify(enLabels)}`);
+  assert(enLabels.some(label => /Dream (design|personality)/.test(label)),
+    `English labels do not name the half in English: ${JSON.stringify(enLabels)}`);
+  assert(enLabels.every(label => !/Sleep (design|personality)/.test(label)),
+    `English labels still use the internal key wording: ${JSON.stringify(enLabels)}`);
   const enEmpty = await page.$eval('#dream-content .dream-realm-earth .dream-realm-empty', n => n.textContent.trim());
   assert(enEmpty === 'Neither sleep design activates this field.', `English empty line is "${enEmpty}"`);
   await page.screenshot({ path: path.join(SHOTS, 'composite-desktop-en.png'), fullPage: true });
@@ -1440,7 +1507,7 @@ await check('the composite night fields survive a language switch and follow it'
   // The two halves are named with the sleep vocabulary in the region's wording.
   assert(hantLabels.some(label => label.includes('\u5922\u5883\u8a2d\u8a08') || label.includes('\u5922\u5883\u4eba\u683c')),
     `zh-Hant labels did not translate the half: ${JSON.stringify(hantLabels)}`);
-  assert(hantLabels.every(label => !/Sleep (design|personality)/.test(label)),
+  assert(hantLabels.every(label => !/Sleep (design|personality)|Dream (design|personality)/.test(label)),
     `zh-Hant labels kept the English half name: ${JSON.stringify(hantLabels)}`);
   await page.screenshot({ path: path.join(SHOTS, 'composite-desktop-zh-Hant.png'), fullPage: true });
 

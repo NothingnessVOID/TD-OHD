@@ -1243,6 +1243,10 @@ function realmPanel(model, realmId, options = {}) {
     for (const row of rows) list.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row)));
     panel.appendChild(list);
     bindGateDetails(list);
+    // The other half of the two-way link: the same gesture the graph sends the rows
+    // now also travels from these rows to the graph, so a gate can be found from
+    // either side. One helper for both modes, as `bindRowHover()` already is.
+    if (api) bindRowHover(list, '.dream-row-open[data-gate]', api);
   }
 
   // A portal is a gate without a channel, so its field can hold no channel at all.

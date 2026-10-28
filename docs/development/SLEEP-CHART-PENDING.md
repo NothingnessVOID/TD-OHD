@@ -115,9 +115,17 @@
 2. **对象标题用梦境名**：闸门主标题取 `dreamGateName()`，通道主标题取 `dreamChannelName()`，
    不再打印清醒名（闸门连清醒卦名也不打印）。夜域与门户降为次级 tag，
    并去掉了原先重复对象名的那个 tag（`.dream-detail-tag-name` 已删除）。
+   通道标题也**不再带回路 badge**（`renderChannelCircuitBadges` 的消费已移除）：回路是清醒体系对
+   这条通道的解释，混进梦境弹窗等于把清醒层又请回来；通道的梦境定位由夜域分组与阅读正文给出。
+   中心详情同样改用共享标题类，不再用旧的 `.panel-title`：中心唯一的标识就是名字（闸门有编号、
+   通道有闸门对），所以只给 `.detail-name`（`centerName()`），不再叠一个「中心 / 喉咙中心」的眉标；
+   状态 badge 与「此中心的梦境闸门」列表不变。
 3. **来源标签全链路统一**：`Sleep personality` → 梦境人格、`Sleep design` → 梦境设计、
    叠加那一侧仍是共享键 `Transit`（繁中按既有键显示为「流日」）。旧键 `Awake personality`
    （清醒人格）已删除，单人弹窗、三域面板、合盘分组现在共用一个 per-side 标签。
+   英文显示是「Dream personality / Dream design」，做法是**在英文消息表里覆盖这两个键**的值
+   （`src/locales/ui-contexts.json` 的 `en`），键名与 `dream-chart.js` 的 `label` 契约都没动，
+   因此 `tests/dream-chart.test.js` 那条按标签键断言的地方不需要改。
 4. **类型对比＝两颗按钮**：类型条是「清醒 [类型] → 梦境 [类型]」的两颗按钮，
    类型名一律是纯名称（不再带「梦境」前缀）。清醒那颗打开清醒类型的解读（策略／正向反馈／
    非自我 + 既有类型简述，`typeDescription()`，显式传入本人物睡眠模型里的清醒类型名），
@@ -453,6 +461,9 @@ SLEEP-CHART-PLAN.md §6.4 的对照表**——结构、计算、词汇、三域�
 §1.6 统一的是页面与弹窗的标题、来源标签与解读层级；**图上的 tooltip 不在其中**：
 `src/bodygraph.js` 生成的门/中心/通道提示文字用的是共享词汇（`gateName()`、
 `channelTooltip()` 等），所以在睡眠图上悬停一个闸门，读到的仍是清醒名。
+
+**接口归属**：父代理已转达，`opts.naming` 由交互实施（另一个 Artisan）落地，本分支**不自行发明**该接口，
+只登记所需形状与现状。
 
 **已核实现状（本轮）**：`src/bodygraph.js` 里 `displayGate` / `displayChannel` 是**模块级常量**
 （`bodygraph.js:91-92`，分别取 `gateName` / `channelName(channel.gates)`），并不是 `opts` 选项；

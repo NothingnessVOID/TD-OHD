@@ -30,7 +30,6 @@
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from './detail-dialog.js';
 import { renderDetailNavigation } from './object-detail-heading.js';
 import { bindSharedObjectDetails } from './shared-object-details.js';
-import { renderChannelCircuitBadges } from './channel-badges.js';
 import { DREAM_CHANNELS, dreamRealmOf, isDreamPortal } from './human-design/dream-topology.js';
 import { GATES } from './human-design/catalog.js';
 import {
@@ -129,12 +128,29 @@ function dreamGateHeading(gate) {
     <div class="detail-name">${esc(dreamGateName(gate))}</div>`;
 }
 
-/** The sleep title of a channel, with the circuit badges the shared heading also carries. */
+/**
+ * The sleep title of a channel: label + dream name, and nothing else.
+ *
+ * The waking catalogue's circuit badges are deliberately not printed here: a
+ * circuit belongs to the waking system's explanation of the channel, and this
+ * sheet answers what the channel does at night by the teacher's own material.
+ * Mixing the two would re-import the layer §1.6 keeps out of these sheets.
+ */
 function dreamChannelHeading(channel) {
   const key = channel.gates.join('-');
   return `<div class="detail-label">${esc(t('Channel {channel}', { channel: key }))}</div>
-    <div class="channel-detail-heading"><div class="detail-name dream-detail-channel-title">${esc(dreamChannelName(channel.gates) || key)}</div>
-      ${renderChannelCircuitBadges(channel)}</div>`;
+    <div class="detail-name dream-detail-channel-title">${esc(dreamChannelName(channel.gates) || key)}</div>`;
+}
+
+/**
+ * The sleep title of a centre.
+ *
+ * A centre's only identifier is its name — there is no number or gate pair to put
+ * in an eyebrow, as "Gate 19" or "Channel 1-8" does on the other sheets — so this
+ * heading is the shared `.detail-name` alone rather than "Center / Throat Center".
+ */
+function centerHeading(key) {
+  return `<div class="detail-name">${esc(centerName(key))}</div>`;
 }
 
 /**
@@ -565,7 +581,7 @@ export function createDreamDetail(initial = {}) {
         : owner === 'b' ? t('{name} defines', { name: data.composite.labelB })
           : owner === 'bridged' ? t('Newly defined in the relationship') : t('Undefined');
       paint(card(`data-center="${key}"`, `
-        <div class="panel-title">${esc(t('{center} Center', { center: centerName(key) }))}</div>
+        ${centerHeading(key)}
         <div class="dream-detail-owner">${esc(tag)}</div>
         ${compositeTypeRow()}
       `), { kind: 'center', id: key });
@@ -582,7 +598,7 @@ export function createDreamDetail(initial = {}) {
           </button>`).join('')}</div>`
       : `<p class="dream-detail-empty">${esc(t('No dream gate is active in this center.'))}</p>`;
     paint(card(`data-center="${key}"`, `
-      <div class="panel-title">${esc(t('{center} Center', { center: centerName(key) }))}</div>
+      ${centerHeading(key)}
       <span class="circuit-badge transit-source-badge ${defined ? 'natal' : 'inactive'}">${esc(t(defined ? 'Defined in sleep' : 'Undefined in sleep'))}</span>
       <h3 class="dream-detail-subhead">${esc(t('Dream gates in this center'))}</h3>
       ${gateList}
