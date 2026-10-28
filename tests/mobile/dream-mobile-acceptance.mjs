@@ -272,6 +272,36 @@ for (const device of DEVICES) {
 
     /* ---------------- single design ---------------- */
 
+    await check(`${label}: the activation columns sit below the canvas, not over it`, async () => {
+      // The columns used to be laid over the canvas (`graph-shell.css` places the side
+      // bands there by design), which put the flank gates under the column rows: at
+      // 360px a tap on gate 38 opened gate 8. The dream shell stacks them below the
+      // canvas on a phone, and this check is what keeps that layout honest.
+      const state = await page.evaluate(() => {
+        const canvas = document.querySelector('#dream-bodygraph .bodygraph-svg').getBoundingClientRect();
+        const columns = [...document.querySelectorAll('.dream-graph-shell .dream-column')]
+          .map(node => node.getBoundingClientRect());
+        const slots = [...document.querySelectorAll('.dream-graph-shell .ohd-graph-slot')]
+          .map(node => node.getBoundingClientRect());
+        return {
+          canvasBottom: Math.round(canvas.bottom),
+          columnTops: columns.map(rect => Math.round(rect.top)),
+          slotTops: slots.map(rect => Math.round(rect.top)),
+          overlap: columns.filter(rect => rect.top < canvas.bottom - 2).length,
+          columns: columns.length
+        };
+      });
+      record(`${label} stacked columns`, state);
+      assert.equal(state.overlap, 0, `${state.overlap} column(s) still start above the canvas bottom (${state.canvasBottom})`);
+      assert.ok(state.columnTops.every(top => top >= state.canvasBottom - 2),
+        `column tops ${state.columnTops} are not below the canvas bottom ${state.canvasBottom}`);
+      // Two columns side by side, not stacked one under the other.
+      assert.equal(state.columns, 2, `${state.columns} activation columns in the single design`);
+      const [left, right] = await page.evaluate(() => [...document.querySelectorAll('.dream-graph-shell .ohd-graph-slot')]
+        .map(node => Math.round(node.getBoundingClientRect().left)));
+      assert.ok(right > left, `the two slots are not side by side (left ${left}, right ${right})`);
+    });
+
     await check(`${label}: the sleep page fits the viewport with no sideways scroll`, async () => {
       const state = await phone.overflow();
       record(`${label} overflow`, state);
@@ -285,8 +315,9 @@ for (const device of DEVICES) {
       record(`${label} gate hit diameter`, { min: Math.min(...hits), max: Math.max(...hits) });
       assert.ok(hits.length === gates.length, `${hits.length} hit circles for ${gates.length} gates`);
       assert.ok(Math.min(...hits) >= MIN_GATE_HIT, `the smallest gate hit area is ${Math.min(...hits)}px`);
-      // The 44px touch minimum belongs to the lists, not to the drawn graph: these
-      // circles must keep their drawn size, or neighbouring gates would overlap.
+      // Recorded, not decreed: this run must not have inflated the drawn circles to the
+      // list minimum, because neighbouring gates overlap at this width. It is a guard on
+      // this change, not a permanent ban on ever drawing bigger gate targets.
       assert.ok(Math.max(...hits) < MIN_TAP, `a gate hit circle grew to ${Math.max(...hits)}px`);
       // Every gate must open itself, not a neighbour: the hit circles are small at this
       // width, so "most of them work" is not the claim being made.
@@ -390,18 +421,14 @@ for (const device of DEVICES) {
       // The one list surface that does meet the control size is the channel list.
       assert.ok(rows['.dream-channel-open[data-channel]'] >= MIN_CONTROL,
         `channel rows are only ${rows['.dream-channel-open[data-channel]']}px tall`);
-      // The entry buttons a finger actually aims at: a night-field gate row and a type
-      // chip, both 16.8 / 23.4px before the touch rule. 44px is the minimum this page
-      // guarantees on a coarse pointer.
-      for (const selector of ['.dream-row-open[data-gate]', '.dream-type-chip']) {
+      // The entry buttons a finger actually aims at: a night-field gate row, an
+      // activation column row and a type chip. They were 16.8 / 16.8 / 23.4px before
+      // the touch rule; the columns only reach 44px because the dream shell stacks them
+      // below the canvas on a phone (see the stacked-shell check above), which is what
+      // freed them from covering the graph's flank gates.
+      for (const selector of ['.dream-row-open[data-gate]', '.dream-column-row[data-gate]', '.dream-type-chip']) {
         assert.ok(rows[selector] >= MIN_TAP, `${selector} is only ${rows[selector]}px tall`);
       }
-      // The activation column row is still 16.8px, on purpose: its band sits *over* the
-      // canvas, so filling the gaps between rows to 44px takes the flank gates away from
-      // the graph. It is asserted to be no worse than before until the shell reserves
-      // space for the bands, and the graph's own reachability check above is the guard.
-      assert.ok(rows['.dream-column-row[data-gate]'] >= 16,
-        `activation column rows shrank to ${rows['.dream-column-row[data-gate]']}px`);
       // Three different night-field rows, each opening its own gate.
       const gates = await page.$$eval('.dream-row-open[data-gate]', nodes => nodes.slice(0, 3).map(node => node.dataset.gate));
       for (const gate of gates) {
@@ -536,6 +563,39 @@ for (const device of DEVICES) {
       record(`${label} composite overflow`, state);
       assert.ok(state.document <= 1, `the composite document scrolls ${state.document}px sideways`);
       await page.screenshot({ path: path.join(SHOTS, `${label}-composite.png`) });
+    });
+
+    await check(`${label}: the composite's four columns stack below its canvas as a 2\u00d72 block`, async () => {
+      const state = await page.evaluate(() => {
+        const canvas = document.querySelector('#dream-composite-shell .bodygraph-svg').getBoundingClientRect();
+        const columns = [...document.querySelectorAll('#dream-composite-shell .dream-column')]
+          .map(node => node.getBoundingClientRect());
+        const rows = [...document.querySelectorAll('#dream-composite-shell .dream-column-row[data-gate]')]
+          .map(node => Math.round(node.getBoundingClientRect().height * 10) / 10);
+        return {
+          canvasBottom: Math.round(canvas.bottom),
+          columns: columns.length,
+          overlap: columns.filter(rect => rect.top < canvas.bottom - 2).length,
+          lefts: [...new Set(columns.map(rect => Math.round(rect.left)))].length,
+          slotColumns: [...document.querySelectorAll('#dream-composite-shell .ohd-graph-slot')]
+            .map(slot => slot.querySelectorAll('.dream-column').length),
+          rows: [...new Set(rows)],
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+        };
+      });
+      record(`${label} composite column layout`, state);
+      assert.equal(state.columns, 4, `${state.columns} composite columns instead of four`);
+      assert.equal(state.overlap, 0, `${state.overlap} composite column(s) still cover the canvas`);
+      // Two columns side by side, each slot holding that person's design and personality
+      // column stacked: a 2\u00d72 block rather than four narrow strips across the page (which
+      // is what a 2-up `.dream-columns` produced) or two tall stacks. The two slots' rows
+      // need not share a baseline \u2014 their columns have different heights.
+      assert.equal(state.lefts, 2, `composite columns use ${state.lefts} horizontal positions`);
+      assert.equal(state.slotColumns.join(','), '2,2', `slots hold ${state.slotColumns} columns`);
+      for (const height of state.rows) {
+        assert.ok(height >= MIN_TAP, `a composite column row is only ${height}px tall`);
+      }
+      assert.ok(state.overflow <= 1, `the composite scrolls ${state.overflow}px sideways`);
     });
 
     await check(`${label}: a composite gate reports who carries it`, async () => {

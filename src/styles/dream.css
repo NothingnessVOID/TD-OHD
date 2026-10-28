@@ -1442,32 +1442,62 @@
 
 /* ---------- Touch targets (coarse pointer / phone) ----------
    A finger's way into a gate or a type is these buttons, not the graph's discs:
-   at 360–390px the night-field gate buttons measured 16.8×18.8px and the type
-   chips 23.4px, so vertically adjacent rows were impossible to tell apart.
-   `--dream-tap` is 0 by default and 44px here.
+   at 360–390px the night-field gate buttons measured 16.8×18.8px, the activation
+   column rows 16.8px and the type chips 23.4px, so vertically adjacent entries
+   were impossible to tell apart. `--dream-tap` is 0 by default and 44px here.
 
-   Scope, and why it stops where it does:
-   - `.dream-row-open` (night-field gate buttons) and `.dream-type-chip` (the single
-     design's two, the composite's four) live in the page's own lists and strip, so
-     growing them costs nothing else.
-   - `.dream-column-row` is deliberately NOT in this block. The activation columns
-     live in `.ohd-graph-slot`, which `src/styles/graph-shell.css` places *over* the
-     canvas by design ("a left band and a right band, both over the canvas"), and the
-     gates at the canvas' flanks sit under those bands. Measured at 360px with this
-     stylesheet untouched, `elementFromPoint()` at gate 8's disc centre already
-     returns a `.dream-column-row`; the short 16.8px rows only let a tap through in
-     the gaps between rows. Raising them to 44px closes those gaps and takes the
-     flank gates away from the graph — the phone suite's "every gate is reachable"
-     check goes red. Fixing that needs the shell to reserve space (or to move the
-     bands below the canvas at phone width), which is `graph-shell.css` territory.
-   - The SVG is untouched: the gate hit circles are drawn in user units and inflating
-     them to 44px would make neighbouring gates overlap. */
+   The columns needed a layout change first. `graph-shell.css` places the two side
+   bands *over* the canvas ("both over the canvas"), and at 360px `elementFromPoint()`
+   at a flank gate's disc centre already lands on a `.dream-column-row`; the short
+   rows only let taps through in the gaps between them. Filling those gaps to 44px
+   took the flank gates away from the graph (measured: tapping 38 opened 8). So on a
+   phone the dream shell stops overlaying and stacks instead — canvas first, then the
+   two slots as a two-column grid below it. This is a Dream-only override of the
+   shared shell: the selector chain starts at `.dream-graph-shell`, so the home
+   chart, the relationship composite and every other host keep the shared rule.
+   With the columns out of the canvas, `.dream-column-row` can take the same 44px.
+
+   The SVG is untouched: the gate hit circles are drawn in user units, and 44px
+   targets for them would make neighbouring gates overlap. The lists are the
+   finger-sized alternative. */
 @media (pointer: coarse), (--phone) {
   .dream-view { --dream-tap: 44px; }
 
-  /* The gate button is the smallest target on the page (18.8px wide), so it gets
-     the minimum on both axes; `.dream-row-head` already wraps, so the name moves
-     to the next line at worst instead of squeezing. */
+  /* --- Dream shell, stacked (canvas on top, the two slots below it) --- */
+  .ohd-graph-shell.dream-graph-shell {
+    height: auto;
+  }
+
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-shell-stage {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+
+  /* The grid keeps the canvas absolutely positioned at the top (its own box is
+     what the shell measured) and reserves that height, so the two slots flow
+     below it instead of covering it. */
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-shell-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-2);
+    height: auto;
+    padding-top: calc(var(--ohd-shell-canvas-height, 0px) + var(--space-2));
+  }
+
+  /* Two slots side by side; the composite's own `.dream-columns` wrapper keeps
+     stacking its two columns, so four columns read as a 2×2 block under the
+     canvas instead of four narrow strips across it. */
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-slot {
+    position: static;
+    width: auto;
+    min-width: 0;
+    pointer-events: auto;
+  }
+
+  /* --- The page's own entry buttons --- */
   .dream-view .dream-row-open {
     display: inline-flex;
     align-items: center;
@@ -1476,13 +1506,18 @@
     min-height: var(--dream-tap);
   }
 
-  /* Type chips become 44px pills; the strip and the composite rows both centre
-     their items, so the row grows in height only. */
   .dream-view .dream-type-chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: var(--dream-tap);
+  }
+
+  /* The activation row keeps its two-column grid; the extra height centres the
+     pair instead of stretching a single line against the top edge. */
+  .dream-view .dream-column-row {
+    min-height: var(--dream-tap);
+    align-content: center;
   }
 }
 
