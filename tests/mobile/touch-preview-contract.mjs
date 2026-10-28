@@ -107,6 +107,24 @@ await check('a real press still previews, and releasing clears it', async () => 
   await page.waitForTimeout(300);
 });
 
+await check('390: leaving the view and coming back leaves no preview open', async () => {
+  // The real path this contract protects: one touch on the graph, the sheet closed with a
+  // key, then a redraw under the untouched point. It depends on where the browser happens
+  // to leave its hover point, so the deterministic guard above is the primary one; this
+  // check is the end-to-end version of the same claim.
+  const point = await gatePoint();
+  await page.touchscreen.tap(point.x, point.y);
+  await page.waitForTimeout(700);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+  await page.evaluate(() => document.querySelector('.nav-link[data-view="chart"]').click());
+  await page.waitForTimeout(600);
+  await page.evaluate(() => document.querySelector('.nav-link[data-view="dream"]').click());
+  await page.waitForTimeout(1400);
+  const overlays = await openOverlays();
+  assert.deepEqual(overlays, [], `coming back left ${JSON.stringify(overlays)} on screen`);
+});
+
 await browser.close();
 if (failures) {
   console.error(`\n${failures} check(s) failed`);

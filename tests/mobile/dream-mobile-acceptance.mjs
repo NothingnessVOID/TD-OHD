@@ -278,8 +278,9 @@ for (const device of DEVICES) {
       record(`${label} gate hit diameter`, Math.min(...hits));
       assert.ok(hits.length === gates.length, `${hits.length} hit circles for ${gates.length} gates`);
       assert.ok(Math.min(...hits) >= MIN_GATE_HIT, `the smallest gate hit area is ${Math.min(...hits)}px`);
-      // A tap on three spread-out gates must open that gate, not a neighbour.
-      const sample = [gates[0], gates[Math.floor(gates.length / 2)], gates[gates.length - 1]];
+      // Every gate must open itself, not a neighbour: the hit circles are small at this
+      // width, so "most of them work" is not the claim being made.
+      const sample = gates;
       for (const gate of sample) {
         const point = await gateCentre(page, '#dream-bodygraph', gate);
         await phone.tapAt(point);
@@ -355,6 +356,45 @@ for (const device of DEVICES) {
       // The channel sheet names the channel and its two gates.
       assert.match(sheet.body, new RegExp(channel.id.replace('-', '[–-]')), `the channel sheet does not name ${channel.id}`);
       await phone.closeSheet();
+    });
+
+    await check(`${label}: the lists below the graph are usable with a finger`, async () => {
+      // The gate discs are 15-16px at this width. The lists are the other way in, so their
+      // row heights are measured and reported: the 40px control size is a guideline this
+      // layout does not meet everywhere, and pretending otherwise would hide a real
+      // limitation. What is asserted is that every row really opens its own object.
+      const rows = await page.evaluate(() => {
+        const sizes = {};
+        for (const selector of ['.dream-row-open[data-gate]', '.dream-column-row[data-gate]', '.dream-channel-open[data-channel]', '.dream-type-chip']) {
+          const heights = [...document.querySelectorAll(selector)]
+            .map(node => node.getBoundingClientRect().height)
+            .filter(value => value > 0);
+          sizes[selector] = heights.length ? Math.round(Math.min(...heights) * 10) / 10 : null;
+        }
+        return sizes;
+      });
+      record(`${label} list row heights`, rows);
+      for (const [selector, height] of Object.entries(rows)) {
+        assert.ok(height != null, `${selector} rendered no rows`);
+      }
+      // The one list surface that does meet the control size is the channel list.
+      assert.ok(rows['.dream-channel-open[data-channel]'] >= MIN_CONTROL,
+        `channel rows are only ${rows['.dream-channel-open[data-channel]']}px tall`);
+      // Three different night-field rows, each opening its own gate.
+      const gates = await page.$$eval('.dream-row-open[data-gate]', nodes => nodes.slice(0, 3).map(node => node.dataset.gate));
+      for (const gate of gates) {
+        await phone.tapSelector(`.dream-row-open[data-gate="${gate}"]`);
+        const sheet = await phone.sheetState();
+        assert.ok(sheet.open, `the row for gate ${gate} opened no sheet`);
+        assert.equal(sheet.card.gate, gate, `the row for gate ${gate} opened ${sheet.card.gate}`);
+        await phone.closeSheet();
+      }
+      // And a type chip repeats.
+      const chip = await phone.tapSelector('.dream-type-chip[data-dream-type-open="dream"]');
+      assert.ok(chip.h >= 1, 'the type chip has no box');
+      assert.ok((await phone.sheetState()).open, 'the type chip opened no sheet');
+      await phone.closeSheet();
+      await page.screenshot({ path: path.join(SHOTS, `${label}-list-rows.png`) });
     });
 
     await check(`${label}: both type chips open their own reading`, async () => {

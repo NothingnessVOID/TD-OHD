@@ -55,6 +55,18 @@ E2E_URL=http://127.0.0.1:10015 node tests/mobile/dream-mobile-acceptance.mjs
 - 命名接线已验证：图内 aria 与浮层都用梦境名（例：1 号闸门 `喜悦`，不再出现清醒名 `创造（乾为天）`）。
 - 六条梦境通道在单人与合盘下都按梦境名列出，合盘的完成方带 owner 并写明是谁。
 
+## 旧浏览器回退（无 top-layer popover）
+
+浮层在有 top-layer popover 的引擎里是 `popover="manual"`；没有时（Chrome <114 / Safari <17 / Firefox <125）同一个元素留在同一张图里，
+位置换算成包含块自己的坐标。换算不是“减原点”：壳的画布带 `translate`，出生图还会 `scale(--bg-stage-scale)`，
+所以 `tests/graph-tooltip-fallback.mjs` 在页内放两次探针（`left/top` = 0 与 100）反解出这套线性映射，
+边缘翻转与 clamp 仍在视口坐标里做，再换算回本地。该文件在 6 种配置下各跑一遍：
+popover / 回退 × 普通 / `translate(-30%)` / `translate(-30%) scale(0.85)`，每种都验“贴指针、不越界、无 UA popover 盒残留、
+无 `showPopover` 异常、重绘只剩一个浮层且未打开、移除图后文档内不再有该浮层”。
+禁用 API 的方式是 `delete HTMLElement.prototype.showPopover/hidePopover`（`addInitScript`，在应用脚本之前）。
+把映射改回“只减原点”再跑该文件会失败（实测），所以它对缩放是正确的守卫。
+Caveat：回退路径里浮层仍在被缩放的祖先内，因此其**字号/尺寸**也会被缩放；位置是对的，外观跟随所在画布。
+
 ## 手机验收之外的共享修复（同在本测试分支提交，出自 Explorer 复审）
 
 1. **键盘 Escape 没有收口。** 键盘 focus 出预览后按 Escape 无人处理（`svg` 的 keydown 只认 Enter/Space），

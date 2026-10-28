@@ -766,12 +766,22 @@ export function renderBodygraph(container, chart, opts = {}) {
 
   // ---------- Tooltip + events ----------
   if (interactive) {
-    // `popover="manual"` puts the overlay in the browser's top layer, and that is what
-    // makes it both correctly placed and life-cycle safe. See `showTooltip` for the
-    // measurements; nothing else in the renderer moves it out of its graph.
-    const tooltip = el('div', { class: 'bg-tooltip', role: 'tooltip', popover: 'manual' });
+    // `popover="manual"` puts the overlay in the browser's top layer, and that is what makes
+    // it both correctly placed and life-cycle safe. See `showTooltip` for the measurements;
+    // nothing else in the renderer moves it out of its graph.
+    //
+    // Browsers without top-layer popovers (before Chrome 114 / Safari 17 / Firefox 125) keep
+    // the same element inside the same graph, and the placement is converted into the
+    // containing block's own coordinates instead — see `localPlacement`. The `popover`
+    // attribute is only set where it means something, so a browser that does not know it
+    // never meets a user-agent rule it cannot apply.
+    const supportsPopover = typeof HTMLElement.prototype.showPopover === 'function';
+    const tooltip = el('div', supportsPopover
+      ? { class: 'bg-tooltip', role: 'tooltip', popover: 'manual' }
+      : { class: 'bg-tooltip', role: 'tooltip' });
+    let tooltipVisible = false;
 
-    const tooltipOpen = () => tooltip.matches(':popover-open');
+    const tooltipOpen = () => supportsPopover ? tooltip.matches(':popover-open') : tooltipVisible;
     // A touch screen has no hover — but Chrome still replays a compatibility `pointerover`
     // with `pointerType: "mouse"` at the point of the last tap whenever the layout under
     // that point changes. Coming back to a redrawn graph then left a preview floating with
@@ -782,6 +792,9 @@ export function renderBodygraph(container, chart, opts = {}) {
 
     function showTooltip(markup, anchor) {
       tooltip.innerHTML = markup;
+      // Shown by a class in both modes, so `display` never depends on a user-agent rule.
+      tooltip.classList.add('bg-tooltip-open');
+      tooltipVisible = true;
       // A top-layer overlay is laid out against the viewport, so the pointer's client
       // coordinates are the right ones to place it — unlike a plain fixed descendant of
       // `.ohd-graph-canvas`, which is translated by `translateX(-50%)` to centre the
@@ -797,12 +810,14 @@ export function renderBodygraph(container, chart, opts = {}) {
       // is nothing to prune, so nothing can accumulate. Source colours and the transit
       // source mode keep working because the element is still inside `.bg-root` in the
       // DOM, however it is painted.
-      if (!tooltipOpen()) tooltip.showPopover();
+      if (supportsPopover && !tooltipOpen()) tooltip.showPopover();
       positionTooltip(anchor);
     }
 
     function hideTooltip() {
-      if (tooltipOpen()) tooltip.hidePopover();
+      if (supportsPopover && tooltipOpen()) tooltip.hidePopover();
+      tooltipVisible = false;
+      tooltip.classList.remove('bg-tooltip-open');
     }
 
     function tooltipText(gateNum) {
@@ -871,9 +886,33 @@ export function renderBodygraph(container, chart, opts = {}) {
         (dyn.length ? `<div class="bg-tt-channel">${dyn.join('<br>')}</div>` : '');
     }
 
+    /**
+     * Where `left/top` actually point, measured instead of assumed.
+     *
+     * Without the top layer the overlay is a fixed descendant of the graph, and the graph's
+     * containing block is whatever ancestor established one — the shell's translated canvas,
+     * a `container-type`/`contain` box, or the natal chart's `--bg-stage-scale`. `left/top`
+     * are then expressed in that block's own coordinate space, and an ancestor *scale* maps
+     * them to the viewport with the same scale. Subtracting an origin alone would therefore
+     * be wrong under a scale, so two probe placements are read back and the map between the
+     * two spaces is derived from them.
+     */
+    function localPlacement(x, y) {
+      tooltip.style.left = '0px';
+      tooltip.style.top = '0px';
+      const origin = tooltip.getBoundingClientRect();
+      tooltip.style.left = '100px';
+      tooltip.style.top = '100px';
+      const probe = tooltip.getBoundingClientRect();
+      const scaleX = (probe.left - origin.left) / 100 || 1;
+      const scaleY = (probe.top - origin.top) / 100 || 1;
+      return { left: (x - origin.left) / scaleX, top: (y - origin.top) / scaleY };
+    }
+
     function positionTooltip({ x: pointerX, y: pointerY, touch = false }) {
-      // Fixed positioning in the shared layer means viewport coordinates, so flip
-      // near viewport edges, then clamp so the full contents stay visible.
+      // Flip near viewport edges, then clamp so the full contents stay visible. Sizes and
+      // edges are read in viewport space either way — `getBoundingClientRect()` already
+      // carries any ancestor scale — so the clamp is the same in both modes.
       const gap = 12, margin = 8;
       const { width, height } = tooltip.getBoundingClientRect();
       const { clientWidth, clientHeight } = document.documentElement;
@@ -882,8 +921,11 @@ export function renderBodygraph(container, chart, opts = {}) {
       const y = touch ? pointerY - height - 20
         : pointerY + gap + height <= clientHeight - margin
         ? pointerY + gap : pointerY - height - gap;
-      tooltip.style.left = `${Math.max(margin, Math.min(x, clientWidth - width - margin))}px`;
-      tooltip.style.top = `${Math.max(margin, Math.min(y, clientHeight - height - margin))}px`;
+      const placedX = Math.max(margin, Math.min(x, clientWidth - width - margin));
+      const placedY = Math.max(margin, Math.min(y, clientHeight - height - margin));
+      const local = supportsPopover ? { left: placedX, top: placedY } : localPlacement(placedX, placedY);
+      tooltip.style.left = `${local.left}px`;
+      tooltip.style.top = `${local.top}px`;
     }
 
     /** The pointer that produced an event. */

@@ -1205,14 +1205,16 @@ body {
 .bodygraph-svg.bg-dimmed .bg-center:not(.bg-lit) { opacity: 0.35; }
 
 /* Viewport overlay for graph tooltips.
-   The element is a `popover="manual"`, so the browser lays it out in the top layer:
-   against the viewport, and outside every ancestor's transform, `contain` and
+   The element is a `popover="manual"` where the browser has top-layer popovers, so it is
+   laid out against the viewport and outside every ancestor's transform, `contain` and
    `container-type` — all three would otherwise capture a plain `position: fixed`
    descendant, which is exactly what put the overlay 306px off the pointer on the sleep
-   chart. It stays inside the graph in the DOM (that is its life cycle) and simply paints
-   elsewhere, so it also inherits the graph's source colours and transit source mode.
-   The declarations below undo the user-agent popover box; `bodygraph.js` owns showing it
-   and placing it. Top-layer popovers: Chrome 114+, Safari 17+, Firefox 125+. */
+   chart. Where popover is not available the element stays a plain fixed child and the
+   renderer converts its position into the containing block's coordinates instead.
+   Either way it stays inside the graph in the DOM (that is its life cycle) and inherits the
+   graph's source colours and transit source mode. The declarations below undo the
+   user-agent popover box; `bodygraph.js` owns showing it and placing it.
+   Top-layer popovers: Chrome 114+, Safari 17+, Firefox 125+. */
 .bg-tooltip {
   position: fixed;
   inset: auto;
@@ -1229,7 +1231,13 @@ body {
   font-size: 12px;
   line-height: 1.45;
   pointer-events: none;
+  /* Shown by class in both modes. A top-layer popover would otherwise be hidden by the
+     user-agent rule and a browser without popover support has no such rule at all; this
+     keeps one display contract for the supported and the fallback path. */
+  display: none;
 }
+
+.bg-tooltip.bg-tooltip-open { display: block; }
 
 .bg-tooltip strong { font-size: 12.5px; }
 /* Tooltip foregrounds use its own surface, independently of source fills. */
