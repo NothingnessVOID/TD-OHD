@@ -615,8 +615,8 @@
   letter-spacing: .02em;
 }
 
-/* Source block: personality (solid rule), design (dashed), night sky (dotted).
-   The rule style is the colour-blind-safe half of the cue. */
+/* Natal personality and design share a solid rule; external transits use a
+   dashed rule. Colour and labels distinguish the two natal sides and owners. */
 .dream-row-source {
   --dream-source: var(--hd-inactive);
   display: grid;
@@ -627,19 +627,14 @@
   border-left: 3px solid color-mix(in srgb, var(--dream-source) 65%, var(--dream-edge));
 }
 .dream-row-source-personality { --dream-source: var(--hd-personality); }
-.dream-row-source-design {
-  --dream-source: var(--hd-design);
-  border-left-style: dashed;
-  border-left-width: 2px;
-}
+.dream-row-source-design { --dream-source: var(--hd-design); }
 .dream-row-source-transit {
   --dream-source: var(--hd-transit);
-  border-left-style: dotted;
+  border-left-style: dashed;
 }
 
-/* The composite recolours a source by who carries it while the half keeps its
-   solid/dashed rule. These come after the side rules so the owner colour wins
-   the `--dream-source` cascade and the side's border-left-style survives. */
+/* Composite owners recolour the same natal source blocks; both sides keep
+   the solid natal rule. Owner overrides follow the source colours. */
 .dream-row-source-owner-a { --dream-source: var(--hd-connection-a); }
 .dream-row-source-owner-b { --dream-source: var(--hd-connection-b); }
 
@@ -995,14 +990,10 @@
   border-left: 3px solid color-mix(in srgb, var(--dream-detail-source) 65%, var(--hd-detail-border));
 }
 .dream-detail-source-personality { --dream-detail-source: var(--hd-personality); }
-.dream-detail-source-design {
-  --dream-detail-source: var(--hd-design);
-  border-left-style: dashed;
-  border-left-width: 2px;
-}
+.dream-detail-source-design { --dream-detail-source: var(--hd-design); }
 .dream-detail-source-transit {
   --dream-detail-source: var(--hd-transit);
-  border-left-style: dotted;
+  border-left-style: dashed;
 }
 
 .dream-detail-source-label {
