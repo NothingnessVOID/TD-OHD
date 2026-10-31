@@ -424,20 +424,20 @@ export function renderBodygraph(container, chart, opts = {}) {
   };
 
   // Visual ownership only. Existing mechanic classification and calculation stay unchanged.
+  //
+  // A half-channel belongs to whoever carries *that gate*, not to whoever completes the
+  // channel. The two differ only in a compromise: there one person owns the whole channel
+  // and the other still carries one of its gates, so the half the other person also carries
+  // takes both colours (exactly as its gate disc does) while the remaining half stays with
+  // the completer. Deriving the half from the completed channel instead painted that shared
+  // half entirely in the completer's colour, so a 20-57 completed by A with a lone 20 from B
+  // showed a striped 20 disc above a solid-A 20 half-channel. `channelDynamic()` and the
+  // compromise/dominance classification are untouched: this decides paint, not meaning.
   const channelHalfFill = gate => {
     if (!composite) return gateFill(gate);
-    const channels = compChannels.filter(ch => ch.gates.includes(gate));
-    if (!channels.length) return gateFill(gate);
-    const owners = new Set();
-    for (const ch of channels) {
-      const dynamic = channelDynamic(ch);
-      if (dynamic === 'companionship') { owners.add('a'); owners.add('b'); }
-      else if (dynamic === 'compromise' || dynamic === 'dominance') {
-        owners.add(ch.gates.every(g => aGates.has(g)) ? 'a' : 'b');
-      } else if (dynamic === 'electromagnetic') owners.add(gateOwner(gate));
-    }
-    return owners.has('a') && owners.has('b') ? `url(#${paint('stripe-ab')})`
-      : owners.has('a') ? composite.colorA : owners.has('b') ? composite.colorB : gateFill(gate);
+    const owner = gateOwner(gate);
+    return owner === 'both' ? `url(#${paint('stripe-ab')})`
+      : owner === 'a' ? composite.colorA : owner === 'b' ? composite.colorB : gateFill(gate);
   };
   const inactiveGateOn = gate => {
     if (composite) return colors.inactiveOn;
@@ -470,6 +470,8 @@ export function renderBodygraph(container, chart, opts = {}) {
       : first ? (composite ? composite.colorA : personalityColor)
       : second ? (composite ? composite.colorB : designColor) : colors.inactive;
     if (composite) {
+      // Only the gates that actually cross this shared trunk decide its colour, so a
+      // neighbour's channel (10-20 beside 20-57, say) cannot bleed its ownership in.
       const fills = gates.map(channelHalfFill);
       fill = fills.includes(`url(#${paint('stripe-ab')})`) || (fills.includes(composite.colorA) && fills.includes(composite.colorB))
         ? `url(#${paint('stripe-ab')})` : fills.find(value => value !== colors.inactive) ?? colors.inactive;
