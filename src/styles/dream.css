@@ -32,6 +32,10 @@
      is wider than tall and is fitted by its own ratio, not the waking chart's.
      Must match DREAM_VIEW_BOX in lib/human-design/dream-topology.js. */
   --dream-graph-aspect: 978.13 / 558.3;
+  /* Touch minimum for the page's own buttons. 0 on a fine pointer at desktop
+     width, so the compact layout is unchanged; the coarse-pointer / phone rule
+     near the end of this file raises it to the 44px a finger needs. */
+  --dream-tap: 0px;
 
   /* The page frame — width cap, centring, gutter — already comes from
      `.view-section` / `.view-container`, which this element also carries, so
@@ -91,6 +95,27 @@
 }
 .dream-view .dream-time-control[hidden] { display: none; }
 
+/* The shared control sizes its own field labels for the timeline's dense frame:
+   `.tl label` and `.tl-zone` are 10–11px there. On this page they sit inside the
+   reading column, where everything else holds a 12px floor, so they are the last
+   text below it. Scoped to this page's host — the Transits and Timeline pages keep
+   their compact labels, and the shared component is not edited. */
+.dream-view #dream-time-host .tl-toolbar label,
+.dream-view #dream-time-host .tl-zone,
+.dream-view #dream-time-host .tl-moment,
+.dream-view #dream-time-host .tl-moment-time,
+.dream-view #dream-time-host #dream-transit-choice-label { font-size: var(--font-size-sm); }
+
+/* The zone is an inline-flex of the word "Timezone" and its value, and the value
+   had no shrink floor, so it overflowed the zone's own box into the grid cell the
+   Now button occupies. Measured on this page: the value already overlapped that
+   button by 14px at the control's own 11px, and by 26px once raised to the 12px
+   floor — a pre-existing collision this page made worse. Letting the value wrap
+   inside the zone keeps the whole zone name readable instead of trading it for an
+   ellipsis, and leaves the shared control's own layout alone. */
+.dream-view #dream-time-host .tl-zone { flex-wrap: wrap; }
+.dream-view #dream-time-host .tl-zone output { min-width: 0; overflow-wrap: anywhere; }
+
 /* The wide frame is for the graph, its two activation columns and the three
    night-field panels. The heading block keeps its reading width, the same split
    the connection view makes between its frame and its title. */
@@ -129,29 +154,50 @@
 
 .dream-type-label {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  /* A label over a value: the secondary step, 13px. */
+  font-size: var(--font-size-md);
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
-/* The chip's hue arrives inline from the type token (`--generator`,
-   `--projector`, `--reflector`, …), and those are mid-tone in light Skins and
-   light in dark ones, so no single ink clears 4.5:1 on all of them. The inset
-   veil lifts the surface toward the card background at every Skin, which keeps
-   the type hue visible as a tint while `--text` stays the ink — the same
-   soft-tint-plus-readable-ink reading the site's `.type-badge` uses. */
+/* The chip is a button: each half of the type comparison opens its own reading
+   in the shared sheet. The type hue arrives inline from the type token
+   (`--generator`, `--projector`, `--reflector`, …), and those are mid-tone in
+   light Skins and light in dark ones, so no single ink clears 4.5:1 on all of
+   them. The inset veil lifts the surface toward the card background at every
+   Skin, which keeps the type hue visible as a tint while `--text` stays the ink —
+   the same soft-tint-plus-readable-ink reading the site's `.type-badge` uses. */
 .dream-type-chip {
   display: inline-block;
   min-width: 0;
   padding: 3px 10px;
+  border: 0;
   border-radius: var(--radius-full);
   box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--bg-elevated) 76%, transparent);
   color: var(--text);
+  font: inherit;
   font-size: var(--font-size-sm);
   font-weight: 650;
   line-height: 1.45;
   overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.dream-type-chip:hover { text-decoration: underline; }
+
+/* A half the source does not cover: a chip-shaped placeholder, not a button that
+   would open an empty card. */
+.dream-type-chip-empty {
+  color: var(--text-tertiary);
+  cursor: default;
+}
+
+.dream-type-chip-empty:hover { text-decoration: none; }
+
+.dream-type-chip:focus-visible {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
 }
 
 .dream-type-arrow {
@@ -167,7 +213,7 @@
   min-width: 0;
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.55;
 }
 
@@ -198,7 +244,8 @@
   padding: 0;
   list-style: none;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  /* The two sentences the chart is read with: reading prose, 14px. */
+  font-size: var(--font-size-base);
   line-height: 1.55;
 }
 
@@ -288,7 +335,8 @@
   padding: 0 2px 1px;
   border-bottom: 1px solid color-mix(in srgb, var(--dream-column-accent) 45%, var(--dream-edge));
   color: var(--dream-column-accent);
-  font-size: var(--font-size-xs);
+  /* Dense column data, not reading prose: the site's compact step, 12px. */
+  font-size: var(--font-size-sm);
   font-weight: 650;
   line-height: 1.35;
   letter-spacing: .01em;
@@ -298,7 +346,7 @@
 .dream-column-date {
   padding: 0 2px;
   color: var(--text-tertiary);
-  font-size: 9.5px;
+  font-size: var(--font-size-sm);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -306,7 +354,7 @@
 .dream-column-empty {
   padding: 2px;
   color: var(--text-tertiary);
-  font-size: 9.5px;
+  font-size: var(--font-size-sm);
   font-style: italic;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -328,8 +376,9 @@
   border-radius: var(--radius-xs);
   color: var(--text);
   font: inherit;
-  font-size: 10px;
-  line-height: 1.35;
+  font-size: var(--font-size-sm);
+  /* Dense data: 1.2 keeps two numbers apart, and this band sits over the canvas. */
+  line-height: 1.2;
   text-align: left;
   cursor: pointer;
   transition: background-color .12s ease, border-color .12s ease;
@@ -349,34 +398,40 @@
 
 .dream-column-glyph {
   color: var(--dream-column-accent);
-  font-size: 11px;
+  font-size: var(--font-size-sm);
   line-height: 1;
   font-style: normal;
 }
+
 .dream-column-act {
   font-weight: 650;
   overflow-wrap: anywhere;
 }
 /* The planet name only survives in the wider bands; it is redundant with the
-   glyph and the row's accessible name, so dropping it costs nothing. */
+   glyph and the row's accessible name, so dropping it costs nothing. It is also a
+   second line in every row, and the band is drawn *over* the canvas: at 641px that
+   second line is what brought the personality column's last row down onto gate
+   20's disc, so the name appears only where the band is wide enough to afford it. */
 .dream-column-planet {
   grid-column: 1 / -1;
   display: none;
   color: var(--text-tertiary);
-  font-size: 9px;
-  line-height: 1.3;
+  font-size: var(--font-size-sm);
+  line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
 @container (min-width: 560px) {
   .dream-column { --ohd-slot-content-width: 128px; }
+}
+@container (min-width: 700px) {
   .dream-column-planet { display: block; }
 }
 @container (max-width: 380px) {
+  /* Width only. The band may narrow, but the type inside it does not: a narrow
+     viewport is not a reason to shrink reading text below the site's floor.
+     Every size here stays the one declared above (12px compact data). */
   .dream-column { --ohd-slot-content-width: 88px; }
-  .dream-column-head { font-size: 10px; }
-  .dream-column-row { font-size: 9.5px; }
-  .dream-column-glyph { font-size: 10px; }
 }
 
 /* ---------- The three night fields ---------- */
@@ -438,92 +493,51 @@
   overflow-wrap: anywhere;
 }
 
-/* The field's portal gate, and whether the night sky opened it. */
-.dream-realm-portal {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px var(--space-2);
-  margin: 0 0 var(--space-3);
-  padding: var(--space-2) var(--space-3);
+/* A field's portal: the same card as an activation — it is a gate, it lists its
+   planets the same way — drawn on the field's sunken surface with its own edge
+   and tag, so the field's way in reads apart from a gate that merely happens to
+   be active tonight. It is printed on every visit, activated or not, because it
+   is the field's own entrance. */
+.dream-realm-row.dream-realm-portal {
   background: color-mix(in srgb, var(--bg-sunken) 45%, transparent);
-  border: 1px solid var(--dream-edge);
-  border-radius: var(--radius);
+  border-color: color-mix(in srgb, var(--dream-realm-hue) 45%, var(--dream-edge));
 }
 
-.dream-portal-gate {
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 5px;
-  background: var(--bg-elevated);
-  border: 1px solid color-mix(in srgb, var(--dream-realm-hue) 50%, var(--dream-edge));
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 650;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.dream-portal-name {
-  min-width: 0;
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+.dream-realm-row.dream-realm-portal:hover {
+  background: color-mix(in srgb, var(--bg-sunken) 65%, transparent);
+  border-color: color-mix(in srgb, var(--dream-realm-hue) 70%, var(--dream-edge));
 }
 
 .dream-portal-tag {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.4;
 }
 
 /* Activation is carried by shape and weight as well as hue: a thicker edge, an
-   inset ring, a filled portal plaque, bold text and a ◆ marker. */
-.dream-portal-active {
+   inset ring, a field-hue wash, bold text and a ◆ marker. This sits after the
+   card's own hover rule so an open portal keeps its wash while it is pointed at. */
+.dream-realm-row.dream-realm-portal.dream-portal-active {
   background: color-mix(in srgb, var(--dream-realm-hue) 12%, transparent);
   border-color: color-mix(in srgb, var(--dream-realm-hue) 65%, var(--dream-edge));
   border-width: 2px;
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--dream-realm-hue) 30%, transparent);
 }
-.dream-portal-active .dream-portal-gate {
-  background: var(--dream-realm-hue);
-  border-color: var(--dream-realm-hue);
-  border-style: solid;
-  color: var(--dream-realm-ink);
-  font-weight: 700;
-}
 .dream-portal-active .dream-portal-tag { color: var(--text-secondary); font-weight: 650; }
 .dream-portal-active .dream-portal-tag::before { content: '◆ '; font-weight: 400; }
 
-/* The portal's own two stages, collapsed under the plaque: a portal is a gate
-   without a channel, so this is the only content that field would otherwise lack.
-   It stays inside the plaque's flex row, hence the full basis and min-width 0, so
-   a long reading wraps under the gate number instead of pushing the row wide. */
-.dream-portal-reading-block {
-  flex: 1 0 100%;
-  min-width: 0;
-  margin-top: var(--space-1);
-  color: var(--text-secondary);
-  font-size: var(--font-size-xs);
-  line-height: 1.6;
-}
-
-.dream-portal-reading-block > summary {
-  cursor: pointer;
-  color: var(--text);
-  font-weight: 600;
-  padding: 2px 0;
-}
-
-.dream-portal-reading-block > summary:focus-visible {
-  outline: 2px solid var(--focus, var(--accent));
-  outline-offset: 2px;
+/* An open portal's gate number is the one filled plaque on the page: the same
+   "this field is carrying something tonight" cue the card's edge carries, marked
+   on the number itself. The hover rule below keeps the ink while the pointer is
+   on the plaque, where `--dream-realm-ink` is graded against its own hue. */
+.dream-portal-active .dream-row-open,
+.dream-portal-active .dream-row-open:hover {
+  padding: 0 6px;
+  background: var(--dream-realm-hue);
+  border-radius: var(--radius-sm);
+  color: var(--dream-realm-ink);
+  text-decoration-color: transparent;
+  font-weight: 700;
 }
 
 .dream-realm-rows {
@@ -545,11 +559,26 @@
 /* ---------- One activated dream gate ---------- */
 
 .dream-realm-row {
+  /* The card is the anchor for its button's stretched hit area (see
+     `.dream-realm-row .dream-row-open::after`), not a second control. */
+  position: relative;
   min-width: 0;
   padding: var(--space-2) var(--space-3);
   background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
   border: 1px solid var(--dream-edge);
   border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.dream-realm-row:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
+  border-color: color-mix(in srgb, var(--dream-edge) 80%, var(--text-tertiary));
+}
+
+.dream-realm-row:focus-within {
+  outline: 2px solid var(--focus, var(--accent));
+  outline-offset: 2px;
 }
 
 .dream-row-head {
@@ -563,14 +592,14 @@
 .dream-row-name {
   min-width: 0;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .dream-row-theme {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   line-height: 1.45;
 }
 
@@ -580,14 +609,14 @@
   background: var(--hd-transit);
   border-radius: var(--radius-full);
   color: var(--hd-transit-on);
-  font-size: 10px;
+  font-size: var(--font-size-base);
   font-weight: 650;
   line-height: 1.5;
   letter-spacing: .02em;
 }
 
-/* Source block: personality (solid rule), design (dashed), night sky (dotted).
-   The rule style is the colour-blind-safe half of the cue. */
+/* Natal personality and design share a solid rule; external transits use a
+   dashed rule. Colour and labels distinguish the two natal sides and owners. */
 .dream-row-source {
   --dream-source: var(--hd-inactive);
   display: grid;
@@ -598,19 +627,14 @@
   border-left: 3px solid color-mix(in srgb, var(--dream-source) 65%, var(--dream-edge));
 }
 .dream-row-source-personality { --dream-source: var(--hd-personality); }
-.dream-row-source-design {
-  --dream-source: var(--hd-design);
-  border-left-style: dashed;
-  border-left-width: 2px;
-}
+.dream-row-source-design { --dream-source: var(--hd-design); }
 .dream-row-source-transit {
   --dream-source: var(--hd-transit);
-  border-left-style: dotted;
+  border-left-style: dashed;
 }
 
-/* The composite recolours a source by who carries it while the half keeps its
-   solid/dashed rule. These come after the side rules so the owner colour wins
-   the `--dream-source` cascade and the side's border-left-style survives. */
+/* Composite owners recolour the same natal source blocks; both sides keep
+   the solid natal rule. Owner overrides follow the source colours. */
 .dream-row-source-owner-a { --dream-source: var(--hd-connection-a); }
 .dream-row-source-owner-b { --dream-source: var(--hd-connection-b); }
 
@@ -618,7 +642,7 @@
    night sky uses `--hd-transit-text` for the same reason the timeline does. */
 .dream-row-source-label {
   color: var(--dream-source);
-  font-size: 10px;
+  font-size: var(--font-size-md);
   font-weight: 650;
   letter-spacing: .05em;
   text-transform: uppercase;
@@ -626,9 +650,9 @@
 }
 .dream-row-source-transit .dream-row-source-label { color: var(--hd-transit-text); }
 
-/* An owner colour is a fill token graded against the page, not against a 10px
+/* An owner colour is a fill token graded against the page, not against a 13px
    label; measured across the eleven skins it reads 1.9-3.5:1, under the 4.5:1 a
-   10px/650 label needs. Grading 40% toward the body text colour measures
+   13px/650 label needs. Grading 40% toward the body text colour measures
    5.2:1 or better everywhere, which is the same idea the transit label's
    `--hd-transit-text` expresses with a dedicated token. */
 .dream-row-source-owner-a .dream-row-source-label,
@@ -653,7 +677,7 @@
   border: 1px solid color-mix(in srgb, var(--dream-source) 28%, var(--dream-edge));
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-variant-numeric: tabular-nums;
   line-height: 1.55;
   overflow-wrap: anywhere;
@@ -676,7 +700,7 @@
 .dream-channels-title {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 650;
   line-height: 1.4;
   letter-spacing: .06em;
@@ -739,7 +763,7 @@
 /* Who contributes which gate of a halved channel, under the channel's names. */
 .dream-channel-split {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -775,7 +799,7 @@
   border: 1px solid color-mix(in srgb, var(--dream-channel-accent) 45%, var(--dream-edge));
   border-radius: var(--radius-full);
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-md);
   font-weight: 650;
   line-height: 1.5;
   letter-spacing: .02em;
@@ -797,7 +821,7 @@
 
 .dream-channel-named {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -823,7 +847,7 @@
 .dream-channel-owner {
   flex: none;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -849,7 +873,7 @@
   border-radius: var(--radius-xs);
   color: var(--text);
   font: inherit;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
@@ -860,6 +884,18 @@
 }
 .dream-row-open:hover { text-decoration-color: var(--accent); color: var(--accent); }
 .dream-row-open:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 2px; }
+
+/* The whole card is the number's hit area. The button stays the card's one
+   control — click, Enter, Space and the focus ring all come from it — and this
+   overlay only carries the pointer to it anywhere on the card, so the row needs
+   no click handler of its own and no `role="button"` wrapper around a real
+   button. The card's own `:focus-within` ring states where focus is. */
+.dream-realm-row .dream-row-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
 
 /* The activation columns are buttons as well; their click opens the same sheet. */
 
@@ -903,7 +939,7 @@
 .dream-detail-subhead {
   margin: var(--space-3) 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 650;
   line-height: 1.4;
   letter-spacing: .06em;
@@ -926,17 +962,13 @@
   border: 1px solid color-mix(in srgb, var(--dream-detail-tag-hue) 40%, var(--hd-detail-border));
   border-radius: var(--radius-full);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 600;
   line-height: 1.5;
 }
 .dream-detail-tag-light { --dream-detail-tag-hue: var(--hd-transit); }
 .dream-detail-tag-earth { --dream-detail-tag-hue: var(--hd-both); }
 .dream-detail-tag-demon { --dream-detail-tag-hue: var(--hd-design); }
-.dream-detail-tag-name {
-  --dream-detail-tag-hue: var(--hd-personality);
-  font-weight: 650;
-}
 .dream-detail-tag-portal {
   --dream-detail-tag-hue: var(--accent);
   font-style: italic;
@@ -958,19 +990,15 @@
   border-left: 3px solid color-mix(in srgb, var(--dream-detail-source) 65%, var(--hd-detail-border));
 }
 .dream-detail-source-personality { --dream-detail-source: var(--hd-personality); }
-.dream-detail-source-design {
-  --dream-detail-source: var(--hd-design);
-  border-left-style: dashed;
-  border-left-width: 2px;
-}
+.dream-detail-source-design { --dream-detail-source: var(--hd-design); }
 .dream-detail-source-transit {
   --dream-detail-source: var(--hd-transit);
-  border-left-style: dotted;
+  border-left-style: dashed;
 }
 
 .dream-detail-source-label {
   color: var(--dream-detail-source);
-  font-size: 10px;
+  font-size: var(--font-size-md);
   font-weight: 650;
   letter-spacing: .05em;
   line-height: 1.4;
@@ -1000,7 +1028,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: var(--space-1);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
 }
 
@@ -1022,7 +1050,7 @@
   gap: var(--space-1) var(--space-3);
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
 }
 
@@ -1080,7 +1108,7 @@
   grid-column: 1 / -1;
   justify-self: start;
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--font-size-md);
   font-weight: 650;
   line-height: 1.5;
 }
@@ -1124,8 +1152,13 @@
 
 .dream-detail-gate-src {
   --dream-detail-source: var(--hd-inactive);
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--space-1);
+  min-width: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -1135,16 +1168,77 @@
 
 .dream-detail-gate-owner {
   color: var(--text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
 .dream-detail-center-gates {
+  display: grid;
+  gap: 0;
+  margin: 0 0 var(--space-3);
+}
+
+/* A centre's gate rows are one list, not a row of chips: each entry carries the
+   centre's whole dream topology, so the row grows with its sources instead of
+   sitting on one line. The rule between rows is the only separator, which keeps a
+   long list readable at 360px. */
+.dream-detail-center-gate {
+  margin: 0;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--hd-detail-border);
+}
+.dream-detail-center-gate:first-child { padding-top: 0; }
+.dream-detail-center-gate:last-child { border-bottom: 0; padding-bottom: 0; }
+
+/* The sources of one gate wrap under its title row, one labelled group each, so a
+   gate with a sleep personality, a sleep design and a transit activation stays a
+   single object instead of three unrelated lines. */
+.dream-detail-gate-sources {
+  flex: 1 0 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-3);
+  gap: var(--space-1) var(--space-3);
+  min-width: 0;
+  padding-left: var(--space-2);
+}
+
+.dream-detail-gate-src-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.5;
+}
+/* The label names the source, so it takes the source's hue: the three colours are
+   already the sheet's source vocabulary and the group's own rule carries the same
+   one (both natal halves solid, the transit source dashed). */
+.dream-detail-source-personality > .dream-detail-gate-src-label { color: var(--hd-personality); }
+.dream-detail-source-design > .dream-detail-gate-src-label { color: var(--hd-design); }
+.dream-detail-source-transit > .dream-detail-gate-src-label { color: var(--hd-transit-text); }
+.dream-detail-gate-src-planets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px var(--space-1);
+  min-width: 0;
+}
+
+/* Composite mode tints a source group with the person who carries it; both natal
+   halves keep their solid rule, so the hue and the label carry the person and the
+   half instead of a border style. */
+.dream-detail-owner-a { --dream-detail-source: var(--hd-connection-a); }
+.dream-detail-owner-b { --dream-detail-source: var(--hd-connection-b); }
+.dream-detail-owner-a > .dream-detail-gate-src-label,
+.dream-detail-owner-b > .dream-detail-gate-src-label { color: var(--dream-detail-source); }
+
+/* A gate that holds no planet tonight says so instead of disappearing. */
+.dream-detail-gate-state {
+  padding: 1px 8px;
+  border: 1px dashed var(--hd-detail-border);
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .dream-detail-empty {
@@ -1171,15 +1265,6 @@
   border-top: 1px solid var(--hd-detail-border);
 }
 
-/* The waking reading is explicitly a second block, marked with its own heading and
-   a lighter top rule, so it can never be read as part of the dream reading. */
-.dream-waking-reading {
-  min-width: 0;
-  margin-top: var(--space-3);
-  padding-top: var(--space-2);
-  border-top: 1px dashed var(--hd-detail-border);
-}
-
 .dream-reading {
   min-width: 0;
 }
@@ -1187,7 +1272,9 @@
 .dream-reading-title {
   margin: 0 0 var(--space-2);
   color: var(--text);
-  font-size: var(--font-size-sm);
+  /* A block title, so it takes the file's own title step (lg) rather than a
+     label size: at 12px it would sit below the 14px prose it heads. */
+  font-size: var(--font-size-lg);
   font-weight: 650;
   line-height: 1.4;
 }
@@ -1195,7 +1282,8 @@
 .dream-reading-prose {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  /* Reading prose: the site's body step, 14px. */
+  font-size: var(--font-size-base);
   line-height: 1.75;
   overflow-wrap: anywhere;
 }
@@ -1207,7 +1295,7 @@
   border-left: 2px solid color-mix(in srgb, var(--accent) 55%, var(--hd-detail-border));
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -1225,7 +1313,7 @@
 .dream-reading-row {
   margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -1234,7 +1322,7 @@
   display: inline-block;
   margin-inline-end: 6px;
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 650;
   letter-spacing: .04em;
 }
@@ -1275,14 +1363,14 @@
 
 .dream-nightforce-no {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .dream-nightforce-theme {
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 650;
 }
 
@@ -1292,7 +1380,7 @@
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--hd-detail-border));
   border-radius: var(--radius-full);
   color: var(--text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 650;
   line-height: 1.5;
 }
@@ -1321,7 +1409,7 @@
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
   color: var(--text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   font-weight: 600;
   line-height: 1.5;
 }
@@ -1339,31 +1427,13 @@
 
 .dream-planet-role {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 500;
   overflow-wrap: anywhere;
 }
 
-/* Sleep type reading: the five parts keep the material's own headings. */
-.dream-type-reading {
-  min-width: 0;
-  margin: 0;
-}
-
-.dream-type-reading > summary {
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: var(--font-size-xs);
-  font-weight: 650;
-  letter-spacing: .04em;
-  padding: 2px 0;
-}
-
-.dream-type-reading > summary:focus-visible {
-  outline: 2px solid var(--focus, var(--accent));
-  outline-offset: 2px;
-}
-
+/* Sleep type reading: the five parts keep the material's own headings. The parts
+   are what the sheet renders; there is no collapsed variant on the page any more. */
 .dream-type-reading-parts {
   display: grid;
   gap: var(--space-2);
@@ -1378,7 +1448,7 @@
 
 .dream-type-reading-part > dt {
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   font-weight: 650;
   letter-spacing: .04em;
   margin-bottom: 2px;
@@ -1387,20 +1457,25 @@
 .dream-type-reading-part > dd {
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
-/* Composite: one type reading per person, so the two are never merged. */
-.dream-compare-type-reading {
+/* Composite: one row per person, with that person's waking and sleep type as the
+   same 清醒 / 梦境 chip pair the single design's strip uses. The reading lives in the
+   shared sheet, so nothing is unfolded here. */
+.dream-compare-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
   min-width: 0;
   padding-top: var(--space-2);
   border-top: 1px solid var(--dream-edge);
 }
 
-.dream-compare-type-head {
-  margin: 0 0 var(--space-1);
+.dream-compare-type-person {
   color: var(--text);
   font-size: var(--font-size-sm);
   font-weight: 650;
@@ -1408,13 +1483,34 @@
   overflow-wrap: anywhere;
 }
 
-/* The dream channel's own name above its waking heading. */
-.dream-detail-channel-title {
-  margin: 0 0 var(--space-1);
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 650;
-  overflow-wrap: anywhere;
+/* The dream channel's title is the shared `.detail-name` (22px) inside the shared
+   `.channel-detail-heading`: `.dream-detail-channel-title` is only the JS/e2e hook,
+   so the gate and channel titles stay the same size. */
+
+/* The shared sheet's `.detail-label` sits at 11px in styles.css. Inside the sleep
+   sheet it takes this page's label step instead, so no readable text in the sleep
+   reading drops under the site's floor. Scoped to `#dream-detail`: the waking
+   sheets belong to other pages and are not this page's to resize. */
+#dream-detail .detail-label { font-size: var(--font-size-md); }
+
+/* Composite only: whose type this sheet describes. `.detail-label` uppercases its
+   text, and a person's name is data, so this span keeps the name as written. */
+.dream-detail-label-owner {
+  color: var(--text-secondary);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Reverse highlight: the graph lights a gate (hover, touch preview, or the gate
+   pinned behind an open sheet) and these rows follow, using the same soft accent
+   and inset rule as the birth chart's `.row-lit` rows in styles.css. The shared
+   `.row-lit` selector list names other components' rows, so this page declares its
+   own rows here instead of editing the shared sheet. */
+.dream-column-row.row-lit,
+.dream-realm-row.row-lit,
+.dream-channel-open.row-lit {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 /* ---------- Provenance footnote ---------- */
@@ -1422,9 +1518,98 @@
 .dream-provenance {
   margin: var(--space-3) 0 0;
   color: var(--text-tertiary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-md);
   line-height: 1.6;
   overflow-wrap: anywhere;
+}
+
+/* ---------- Touch targets (coarse pointer / phone) ----------
+   A finger's way into a gate or a type is these buttons, not the graph's discs:
+   at 360–390px the night-field gate buttons measured 16.8×18.8px, the activation
+   column rows 16.8px and the type chips 23.4px, so vertically adjacent entries
+   were impossible to tell apart. `--dream-tap` is 0 by default and 44px here.
+
+   The columns needed a layout change first. `graph-shell.css` places the two side
+   bands *over* the canvas ("both over the canvas"), and at 360px `elementFromPoint()`
+   at a flank gate's disc centre already lands on a `.dream-column-row`; the short
+   rows only let taps through in the gaps between them. Filling those gaps to 44px
+   took the flank gates away from the graph (measured: tapping 38 opened 8). So on a
+   phone the dream shell stops overlaying and stacks instead — canvas first, then the
+   two slots as a two-column grid below it. This is a Dream-only override of the
+   shared shell: the selector chain starts at `.dream-graph-shell`, so the home
+   chart, the relationship composite and every other host keep the shared rule.
+   With the columns out of the canvas, `.dream-column-row` can take the same 44px.
+
+   The SVG is untouched: the gate hit circles are drawn in user units, and 44px
+   targets for them would make neighbouring gates overlap. The lists are the
+   finger-sized alternative. */
+@media (pointer: coarse), (--phone) {
+  .dream-view { --dream-tap: 44px; }
+
+  /* --- Dream shell, stacked (canvas on top, the two slots below it) --- */
+  .ohd-graph-shell.dream-graph-shell {
+    height: auto;
+  }
+
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-shell-stage {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+
+  /* The grid keeps the canvas absolutely positioned at the top (its own box is
+     what the shell measured) and reserves that height, so the two slots flow
+     below it instead of covering it. */
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-shell-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-2);
+    height: auto;
+    padding-top: calc(var(--ohd-shell-canvas-height, 0px) + var(--space-2));
+  }
+
+  /* Two slots side by side; the composite's own `.dream-columns` wrapper keeps
+     stacking its two columns, so four columns read as a 2×2 block under the
+     canvas instead of four narrow strips across it. */
+  .ohd-graph-shell.dream-graph-shell .ohd-graph-slot {
+    position: static;
+    width: auto;
+    min-width: 0;
+    pointer-events: auto;
+  }
+
+  /* --- The page's own entry buttons --- */
+  /* A night-field card is the finger's target: its button's hit area covers the
+     whole card, so the row takes the 44px and the number keeps its text size. */
+  .dream-view .dream-realm-row {
+    display: grid;
+    align-content: center;
+    min-height: var(--dream-tap);
+  }
+
+  .dream-view .dream-type-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--dream-tap);
+  }
+
+  /* The centre sheet's gate rows and channel buttons are the finger's targets:
+     the row takes the 44px and the text keeps its size. */
+  .dream-view .dream-detail-center-gate,
+  .dream-view .dream-detail-channel {
+    min-height: var(--dream-tap);
+    align-content: center;
+  }
+
+  /* The activation row keeps its two-column grid; the extra height centres the
+     pair instead of stretching a single line against the top edge. */
+  .dream-view .dream-column-row {
+    min-height: var(--dream-tap);
+    align-content: center;
+  }
 }
 
 /* ---------- Narrow widths ---------- */

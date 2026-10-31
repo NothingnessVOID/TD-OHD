@@ -7,6 +7,12 @@ const errors=[];page.on('pageerror',error=>errors.push(error.message));
 const root=()=>page.locator('#wa-view');
 const picker=()=>page.locator('.wa-target-picker');
 const ready=()=>page.waitForFunction(()=>document.querySelector('.wa-workspace')?.getAttribute('aria-busy')==='false');
+// The 700 ms autosave can commit at any point of a slower run, so revisions are read from storage instead of assumed.
+const storedSnapshot=()=>page.evaluate(async()=>{const repo=(await import('/src/lib/wa/repository.js')).createWaRepository();const [saved]=await repo.list();return saved??null;});
+const revisionMatches=expected=>page.waitForFunction(value=>{const status=document.querySelector('.wa-draft-status');return status?.dataset.dirty==='false'&&Number(status.textContent.match(/r(\d+)$/)?.[1]??-1)===value;},expected);
+// An autosave finishing between the read and the click only makes the stored revision jump further, which still passes; the
+// guard below rejects a click that saved nothing, and the returned record is read once after the wait so later math cannot drift.
+const saveAdvances=async()=>{const before=(await storedSnapshot())?.revision??0;await root().locator('[data-action="save"]').click();await page.waitForFunction(value=>{const status=document.querySelector('.wa-draft-status');return status?.dataset.dirty==='false'&&Number(status.textContent.match(/r(\d+)$/)?.[1]??-1)>value;},before);const saved=await storedSnapshot();if(!saved||saved.revision<=before)throw new Error(`Wa save did not advance past r${before}`);return saved;};
 try {
  await page.goto(`${base}/?view=wa`);await root().locator('[data-title]').waitFor();
  await page.evaluate(async()=>{
@@ -41,23 +47,22 @@ try {
  await root().locator(`[data-remove-wa="${oldIds[0]}"]`).click();await ready();
  await root().locator(`[data-import="${groups[1]}"]`).click();await picker().locator('[data-import-index="0"]').click();await page.waitForFunction(()=>!document.querySelector('.wa-target-picker'));await ready();
  assert.ok(await root().locator(`[data-wa-target="${groups[1]}"] [data-wa-member-chip="${oldIds[0]}"]`).count(),'pool reference retains Wa identity on import');
- await root().locator('[data-action="save"]').click();await page.waitForFunction(()=>document.querySelector('.wa-draft-status').textContent.includes('r1'));
- const snapshot=await page.evaluate(async()=>{const [saved]=await window.repo.list();return saved;});
+ const snapshot=await saveAdvances();
  assert.equal(snapshot.schema,'wa-refs-v1');assert.ok(snapshot.members.every(m=>!('birth'in m)&&!('chart'in m)&&!m.memberId.startsWith('team-only')));
  assert.equal(await page.evaluate(()=>JSON.stringify(window.people.listPeople())===window.births),true,'organizing never rewrites people');
  await root().locator(`[data-compose="${groups[0]}"]`).click();await picker().locator('[data-search]').fill('direct 3');
  await picker().locator('[data-edit="fictional-direct-3"]').click();
  assert.equal(await page.locator('.wa-target-picker').count(),0);assert.equal(await page.locator('.operation-dialog').count(),1);
  await page.locator('#edit-cancel').click();assert.equal(await picker().locator('[data-search]').inputValue(),'direct 3');await page.keyboard.press('Escape');
- await page.evaluate(async()=>{const [saved]=await window.repo.list();const {updateWaAnnotations}=await import(window.live('/src/lib/wa/model.js'));const m3=saved.members.find(m=>m.personId==='fictional-direct-3').memberId;const next=updateWaAnnotations(saved,{consultation:{assignment:'manual',origin:'manual',specificProblem:'Fictional preserved note',keyAllyIds:[m3]}});await window.repo.save(next,{expectedRevision:1});});
- await page.reload();await page.waitForFunction(()=>document.querySelector('.wa-draft-status')?.textContent.includes('r2'));await ready();
+ const externalRevision=await page.evaluate(async()=>{const [saved]=await window.repo.list();const {updateWaAnnotations}=await import(window.live('/src/lib/wa/model.js'));const m3=saved.members.find(m=>m.personId==='fictional-direct-3').memberId;const next=updateWaAnnotations(saved,{consultation:{assignment:'manual',origin:'manual',specificProblem:'Fictional preserved note',keyAllyIds:[m3]}});const written=await window.repo.save(next,{expectedRevision:saved.revision});return written.revision;});
+ await page.reload();await revisionMatches(externalRevision);await ready();
  await root().locator(`[data-remove-wa="${oldIds[1]}"]`).click();await page.locator('[data-confirm]').waitFor();await page.keyboard.press('Escape');
  assert.equal(await root().locator(`[data-remove-wa="${oldIds[1]}"]`).count(),1);
  await root().locator(`[data-remove-wa="${oldIds[1]}"]`).click();await page.locator('[data-confirm]').click();await ready();
  assert.equal(await root().locator(`[data-remove-wa="${oldIds[1]}"]`).count(),0);
- await root().locator('[data-action="save"]').click();await page.waitForFunction(()=>document.querySelector('.wa-draft-status').textContent.includes('r3'));
+ await saveAdvances();
  const history=await page.evaluate(async id=>(await import('/src/lib/wa/repository.js')).createWaRepository().history(id),snapshot.organizationId);
- assert.equal(history.find(row=>row.revision===2).consultation.keyAllyIds.length,1);assert.equal(history[0].consultation.keyAllyIds.length,0);assert.equal(history[0].consultation.specificProblem,'Fictional preserved note');
+ assert.equal(history.find(row=>row.revision===externalRevision).consultation.keyAllyIds.length,1);assert.equal(history[0].consultation.keyAllyIds.length,0);assert.equal(history[0].consultation.specificProblem,'Fictional preserved note');
  // Preserve the former composer's failure/cleanup assertions with the new single-dialog contract.
  await page.evaluate(async()=>{
   const live=path=>performance.getEntriesByType('resource').map(row=>row.name).find(url=>new URL(url).pathname===path)||path;
@@ -85,6 +90,11 @@ try {
  await page.evaluate(()=>{window.guardTeams=[];window.launch('guard-g1','import');});await page.waitForFunction(()=>document.querySelector('[data-import-list]')?.getAttribute('aria-busy')==='false');await picker().locator('[data-switch-mode]').click();assert.equal(await page.locator('.operation-dialog').count(),1);await page.keyboard.press('Escape');
  await page.evaluate(()=>window.launch('alpha'));await picker().locator('[data-person="fictional-direct-4"]').click();await picker().locator('[data-edit="fictional-direct-4"]').click();await page.locator('#edit-name').fill('Fictional direct 4 edited');await page.locator('#edit-save').click();
  assert.equal(await picker().locator('[data-person="fictional-direct-4"]').getAttribute('aria-pressed'),'true');assert.equal(await page.evaluate(()=>window.commits.length),1);await picker().locator('[data-selection]').click();assert.equal(await page.evaluate(()=>window.commits.length),2);
+ // A dirty title arms the 700 ms autosave; that save must wait for an open picker instead of replacing the draft under it.
+ await root().locator('[data-title]').fill('Fictional inline Wa autosave');await root().locator('[data-compose="alpha"]').click();
+ await picker().locator('[data-person="fictional-direct-6"]').click();await page.waitForTimeout(1200);
+ await picker().locator('[data-selection]').click();await page.waitForFunction(()=>!document.querySelector('.wa-target-picker'));await ready();
+ assert.ok((await root().locator('[data-wa-target="alpha"]').innerText()).includes('Fictional direct 6'),'a background autosave never strands an open picker');
  assert.deepEqual(errors,[]);
- console.log('PASS direct Wa editing: single-layer picker, Alpha replace/clear, on-page removal, import/cancel/conflicts/duplicates, stable refs, annotation history and stale/rejected confirmations, person editor return.');
+ console.log('PASS direct Wa editing: single-layer picker, Alpha replace/clear, on-page removal, import/cancel/conflicts/duplicates, stable refs, annotation history and stale/rejected confirmations, person editor return, autosave deferred while a picker is open.');
 }finally{await browser.close();}

@@ -19,13 +19,16 @@
  * once. See `transitTerm()`.
  *
  * Gates, centres and channels open a sleep-chart detail sheet built by
- * `lib/dream-detail.js`. That module reuses the shared dialog shell, headings and
- * interpretive readings, but owns its activation data: the waking sheet in
- * `views/chart.js` reads that module's own current chart for the design side, so
- * handing it the sleeping graph would have shown the waking design activations
+ * `lib/dream-detail.js`. That module reuses the shared dialog lifecycle and
+ * navigation, but owns its activation data and its reading text: the waking sheet
+ * in `views/chart.js` reads that module's own current chart for the design side,
+ * so handing it the sleeping graph would have shown the waking design activations
  * (Sun −88°) instead of the sleep design's (Moon −88°). AGENTS.md §6 requires the
- * data context to be explicit. The prose stays the waking reading, per the
- * teaching that the sleeping chart is described with the waking descriptions.
+ * data context to be explicit. Each sheet carries one layer only: gate, channel
+ * and line sheets print the dream reading, and the waking reading is not mixed
+ * into them. The type strip is the one place both layers meet, and it keeps them
+ * apart as two buttons — `waking` opens the waking type's own reading, `dream`
+ * opens the teacher's sleep-type reading.
  *
  * Comparison mode is chosen on this page: the toolbar button opens the shared
  * person picker, the chosen person's waking chart is computed here, and both
@@ -45,10 +48,10 @@ import {
   DREAM_TOPOLOGY, DREAM_REALMS, DREAM_REALM_ORDER, DREAM_CHANNELS, DREAM_VIEW_BOX, dreamRealmOf
 } from '../lib/human-design/dream-topology.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
-import { createDreamDetail, renderDreamTypeReading, renderDreamPortalReading } from '../lib/dream-detail.js';
+import { createDreamDetail } from '../lib/dream-detail.js';
 import { compositePalette } from '../lib/skin-registry.js';
 import {
-  dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName,
+  dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName, dreamTypeReading,
   dreamChannelName, dreamSideMeaning, dreamConditioning
 } from '../lib/dream-vocabulary.js';
 import { typeName, planetName, centerName } from '../lib/vocabulary.js';
@@ -689,8 +692,17 @@ const TYPE_COLORS = {
   Reflector: 'var(--reflector)'
 };
 
-const typeChip = (name, color) =>
-  `<span class="dream-type-chip" style="background:${color}">${esc(name)}</span>`;
+/**
+ * One chip of the type comparison.
+ *
+ * A button, not a badge: each half of the comparison opens its own reading in the
+ * shared sheet, so the strip stays a one-line comparison instead of carrying two
+ * long readings below it. `side` (`waking` / `dream`) is the sheet's selection id.
+ */
+const typeChip = (side, name, color) =>
+  `<button type="button" class="dream-type-chip" data-dream-type-open="${side}"
+    aria-label="${esc(t(side === 'waking' ? 'Open the waking type reading' : 'Open the dream type reading'))}"
+    style="background:${color}">${esc(name)}</button>`;
 
 // ==========================================
 // Shared detail sheet
@@ -723,6 +735,8 @@ function dreamDetailContext(dream) {
 const openGate = gate => detail?.showGate(gate);
 const openChannel = id => detail?.showChannel(id);
 const openCenter = center => detail?.showCenter(center);
+/** The type strip's two chips: `waking` or `dream`, each its own reading. */
+const openType = (side, owner = null) => detail?.showType(side, owner);
 
 // ==========================================
 // Single sleep design
@@ -792,12 +806,12 @@ function typeStrip(dream) {
     <div class="dream-type-flow">
       <span class="dream-type-pair">
         <span class="dream-type-label">${esc(t('Awake'))}</span>
-        ${typeChip(waking, TYPE_COLORS[dream.wakingType?.name] || 'var(--hd-inactive)')}
+        ${typeChip('waking', waking, TYPE_COLORS[dream.wakingType?.name] || 'var(--hd-inactive)')}
       </span>
       <span class="dream-type-arrow" aria-hidden="true">→</span>
       <span class="dream-type-pair">
         <span class="dream-type-label">${esc(t('Asleep'))}</span>
-        ${typeChip(sleeping, TYPE_COLORS[dream.type.id] || 'var(--hd-inactive)')}
+        ${typeChip('dream', sleeping, TYPE_COLORS[dream.type.id] || 'var(--hd-inactive)')}
       </span>
     </div>
     <div class="dream-type-facts">
@@ -808,8 +822,12 @@ function typeStrip(dream) {
       ${dream.channels.length ? `<span class="dream-fact">${esc(t('Complete dream channels: {channels}', { channels }))}</span>` : ''}
     </div>
     ${dream.hasTransit ? `<div class="dream-type-facts"><span class="dream-fact">${esc(
-      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}
-    ${renderDreamTypeReading(dream.type.id)}`;
+      t('{transit} at {moment} is overlaid.', { transit: transitTerm(), moment: dateTimeText(dream.transit.iso) }))}</span></div>` : ''}`;
+  // Both halves of the comparison open the sheet; the reading itself lives there
+  // so the strip keeps one line per type.
+  for (const chip of strip.querySelectorAll('[data-dream-type-open]')) {
+    chip.addEventListener('click', () => openType(chip.dataset.dreamTypeOpen));
+  }
   return strip;
 }
 
@@ -907,7 +925,15 @@ function dreamGraphShell(dream, { overlay }) {
     animate: false,
     touchPreview: true,
     ariaLabel: dreamAriaLabel(dream),
+    // The graph's own tooltip and per-gate labels use the sleep names, not the
+    // waking catalogue's. The option is ignored by a renderer that does not know
+    // it, so this page stays correct while the two changes land separately.
+    naming: dreamNaming,
     ...(overlay && dream.hasTransit ? { transitModel: buildDreamTransitGraph(dream) } : {}),
+    // The graph's highlight flows back into this page's own rows (see
+    // `dreamHighlightRows()`), so hovering or pinning a gate reads as one object
+    // in the graph and in the lists, exactly as the birth chart does.
+    onHighlight: dreamHighlightRows,
     // A gate or a centre opens the shared detail sheet, which pins its own
     // selection, so the graph keeps no pinned state here.
     onGateClick: gate => openGate(gate),
@@ -932,6 +958,25 @@ function dreamGraphShell(dream, { overlay }) {
  * untouched.
  */
 const sleepChannelName = channel => dreamChannelName(channel.gates) || channel.gates.join('-');
+
+/**
+ * The sleep vocabulary handed to the shared renderer (`opts.naming`).
+ *
+ * The renderer owns the formatting and the gate pair; this object only answers
+ * "what is this object called at night". `gateTooltip` replaces the name part of
+ * the tooltip title outright, so the waking hexagram never appears next to a dream
+ * gate name, and `channelTooltip` returns the bare dream name because the renderer
+ * appends the gates itself. Centres are omitted on purpose: the shared default is
+ * already the right wording and there is no dream name for a centre.
+ *
+ * One object for both modes, so a gate or a channel reads the same in the single
+ * design and in the composite.
+ */
+const dreamNaming = {
+  gate: dreamGateName,
+  gateTooltip: dreamGateName,
+  channelTooltip: channel => dreamChannelName(channel.gates) || channel.gates.join('-')
+};
 
 function dreamAriaLabel(dream) {
   const centers = formatDisplay('separated', dream.centers.definedNames.map(centerName), 'centers');
@@ -960,7 +1005,78 @@ function bindRowHover(root, selector, api) {
   }
 }
 
-/** The activation columns and the night-field rows are the page's other ways into a gate. */
+/**
+ * The object a highlight is *about*, as opposed to the set of objects the graph
+ * lights with it. The renderer sends both: `gates`/`centers` are the lit relation
+ * (a gate also lights the other gate of its defined channel) and `selection` is
+ * the object the reader chose.
+ */
+function targetOf(selection) {
+  if (!selection) return null;
+  if (selection.kind === 'gate') return { kind: 'gate', gate: Number(selection.id) };
+  if (selection.kind === 'channel') return { kind: 'channel', id: selection.id };
+  if (selection.kind === 'center') return { kind: 'center', center: selection.id };
+  return null;
+}
+
+/**
+ * The gates a direct target actually covers in the lists.
+ *
+ * A gate covers itself; a channel covers its two gates, because they are the
+ * channel; a centre covers the gates inside it, and the renderer's set for a
+ * centre is already exactly those gates (no channel partner is added to a centre).
+ */
+function targetGates(target, sel) {
+  if (target?.kind === 'gate') return new Set([target.gate]);
+  if (target?.kind === 'channel') {
+    const channel = DREAM_CHANNELS.find(item => item.gates.join('-') === target.id);
+    return new Set(channel?.gates || []);
+  }
+  return new Set(sel?.gates || []);
+}
+
+/**
+ * The reverse direction of the graph's highlight: when the graph reports a gate (a
+ * hover, a touch preview, or the gate pinned behind an open sheet), light the row
+ * that object is, so the graph and the data read as one control.
+ *
+ * The rows follow `sel.selection` — the object the reader chose — and never the lit
+ * relation beside it. The night fields are one card per activation, so lighting the
+ * relation lit the channel partner's card as a second selection and made an
+ * unrelated gate look chosen. The graph itself keeps its full relational highlight:
+ * this callback only reads `gates`/`centers`, it never changes them.
+ *
+ * One callback for both modes: a gate means the same row whether one sleeping design
+ * or two are on screen.
+ */
+function dreamHighlightRows(sel) {
+  for (const node of document.querySelectorAll('#dream-content .row-lit')) node.classList.remove('row-lit');
+  if (!sel) return;
+  const target = targetOf(sel.selection);
+  if (!target) return;
+  const gates = targetGates(target, sel);
+  if (!gates.size) return;
+  for (const node of document.querySelectorAll('#dream-content .dream-column-row[data-gate], #dream-content .dream-realm-row[data-gate]')) {
+    node.classList.toggle('row-lit', gates.has(Number(node.dataset.gate)));
+  }
+  // A channel row is lit when the channel itself is the target. A gate hover does
+  // not light the channel rows it happens to belong to: the pair is the channel's
+  // object, not the gate's.
+  if (target.kind === 'channel') {
+    document.querySelector(`#dream-content .dream-channel-open[data-channel="${target.id}"]`)?.classList.add('row-lit');
+  }
+}
+
+/**
+ * The activation columns and the night-field cards are the page's other ways into
+ * a gate.
+ *
+ * Every card's own button is the single control here: it carries the click, the
+ * Enter/Space activation and the focus ring, and its stretched hit area covers the
+ * card (styles/dream.css). A second click handler on the row would fire the same
+ * sheet twice, and a `role="button"` wrapper around a real button would give one
+ * control two identities.
+ */
 function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate]') {
   for (const row of root.querySelectorAll(selector)) {
     row.addEventListener('click', () => openGate(Number(row.dataset.gate)));
@@ -987,7 +1103,7 @@ const CHANNEL_STATUS = {
   natal: { label: 'Complete in the sleep design', variant: 'natal' },
   completed: { label: 'Completed by {transit}', variant: 'completed' },
   transit: { label: '{transit} only', variant: 'transit' },
-  inactive: { label: 'Not complete in the sleep design', variant: 'inactive' }
+  inactive: { label: 'Not connected', variant: 'inactive' }
 };
 
 function channelStatusOf(channel, model) {
@@ -1010,7 +1126,7 @@ const COMPOSITE_CHANNEL_STATUS = {
   a: { label: '{name} completes it', variant: 'natal', owner: 'a' },
   b: { label: '{name} completes it', variant: 'natal', owner: 'b' },
   halved: { label: 'Defined only together', variant: 'completed', owner: 'both' },
-  inactive: { label: 'Not complete across both sleep designs', variant: 'inactive' }
+  inactive: { label: 'Not connected', variant: 'inactive' }
 };
 
 /**
@@ -1094,7 +1210,7 @@ function realmChannels(realmId) {
 // ==========================================
 
 const SOURCE_ORDER = [
-  { key: 'personality', label: 'Awake personality' },
+  { key: 'personality', label: 'Sleep personality' },
   { key: 'design', label: 'Sleep design' },
   // The overlay source is named by the shared term, not by a page-local label.
   { key: 'transit', label: 'Transit' }
@@ -1160,40 +1276,35 @@ function realmPanel(model, realmId, options = {}) {
     channelStatusTable = CHANNEL_STATUS,
     channelParams = {}
   } = options;
-  const realm = DREAM_REALMS[realmId];
   const realmData = model.realms.find(item => item.id === realmId);
   const panel = el('section', { class: `dream-realm dream-realm-${realmId}`, 'data-realm': realmId });
   panel.appendChild(el('h3', { class: 'dream-realm-title', text: dreamRealmName(realmId) }));
 
-  const portal = el('div', { class: 'dream-realm-portal' });
-  portal.innerHTML = `<span class="dream-portal-gate">${realm.portal}</span>
-    <span class="dream-portal-name">${esc(dreamGateName(realm.portal))}</span>
-    <span class="dream-portal-tag">${esc(t('Portal of this field'))}</span>`;
-  const portalRow = realmData?.rows.find(row => row.portal);
-  // Either person opening the portal is an open portal for the pair.
-  if (portalRow?.activated || portalRow?.transitActivated) portal.classList.add('dream-portal-active');
-  // The portal is a gate without a channel, so its reading is the only content
-  // this field would otherwise lack. Collapsed by default: it describes the night
-  // collection and the morning bleed-through, which a reader opens when the portal
-  // is actually active rather than scrolling past on every visit.
-  const portalReading = renderDreamPortalReading(realm.portal);
-  if (portalReading) {
-    const details = el('details', { class: 'dream-portal-reading-block' });
-    details.innerHTML = `<summary>${esc(t('What this portal does'))}</summary>${portalReading}`;
-    portal.appendChild(details);
+  // A field's portal is a card like every other activation — same head, same
+  // source blocks, same sheet — and it is always printed: the portal is the
+  // field's own way in even on a night it carries no planet. Its reading lives in
+  // the sheet (`lib/dream-detail.js`), so the panel no longer repeats it in a
+  // second, collapsible copy that a reader had to open and then read twice.
+  const rows = realmData?.rows || [];
+  const portalRow = rows.find(row => row.portal) || null;
+  const activeRows = rows.filter(row => !row.portal && (row.activated || (overlay && row.transitActivated)));
+  const cards = el('ul', { class: 'dream-realm-rows' });
+  for (const row of [portalRow, ...activeRows].filter(Boolean)) {
+    cards.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row), {
+      portal: !!row.portal,
+      // Only a portal is redrawn between its two states; an activated row exists
+      // only when it is active. Either person opening the portal opens it.
+      active: row.activated || row.transitActivated
+    }));
   }
-  panel.appendChild(portal);
-
-  const rows = (realmData?.rows || [])
-    .filter(row => !row.portal && (row.activated || (overlay && row.transitActivated)));
-  if (!rows.length) {
-    panel.appendChild(el('p', { class: 'dream-realm-empty', text: t(emptyKey) }));
-  } else {
-    const list = el('ul', { class: 'dream-realm-rows' });
-    for (const row of rows) list.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row)));
-    panel.appendChild(list);
-    bindGateDetails(list);
-  }
+  panel.appendChild(cards);
+  if (!activeRows.length) panel.appendChild(el('p', { class: 'dream-realm-empty', text: t(emptyKey) }));
+  bindGateDetails(cards);
+  // The other half of the two-way link: the same gesture the graph sends the rows
+  // now also travels from these rows to the graph, so a gate can be found from
+  // either side. One helper for both modes, as `bindRowHover()` already is. The
+  // card's own button is the hover target: its stretched hit area covers the card.
+  if (api) bindRowHover(cards, '.dream-row-open[data-gate]', api);
 
   // A portal is a gate without a channel, so its field can hold no channel at all.
   const channels = realmChannels(realmId);
@@ -1227,7 +1338,7 @@ function bindChannelHover(root, api) {
 }
 
 /**
- * One activated dream gate.
+ * One activated dream gate, or a field's portal.
  *
  * `groups` is the list of activation groups to print under it, each
  * `{ key, label, entries, accent?, owner? }`. A single design passes its three
@@ -1236,12 +1347,16 @@ function bindChannelHover(root, api) {
  * `key` (`personality` / `design` / `transit`) keeps the existing rule-style
  * class, which is the colour-blind cue; `accent` is only ever a resolved Skin
  * token handed in by the caller, never a literal here.
+ *
+ * A portal is the same card with its field's own edge and tag: it is a gate, so it
+ * lists its planets the same way on a night it carries one, and an empty source
+ * list on a night it does not.
  */
-function realmRow(row, groups) {
-  const allEntries = groups.flatMap(group => group.entries || []);
+function realmRow(row, groups, { portal = false, active = false } = {}) {
+  const allEntries = (groups || []).flatMap(group => group.entries || []);
   const line = allEntries.find(entry => entry.line)?.line;
   const theme = line ? dreamLineTheme(line) : '';
-  const chips = groups
+  const chips = (groups || [])
     .filter(group => group.entries?.length)
     .map(group => `<div class="dream-row-source dream-row-source-${group.key}${group.owner ? ` dream-row-source-owner-${group.owner}` : ''}"${group.accent ? ` style="--dream-source:${group.accent}"` : ''}>
         <span class="dream-row-source-label">${esc(group.label)}</span>
@@ -1249,16 +1364,28 @@ function realmRow(row, groups) {
           `<span class="dream-planet-chip"><i aria-hidden="true">${PLANET_GLYPHS[source.planet] || ''}</i>${esc(planetName(source.planet))}${source.line ? ` ${row.gate}.${source.line}` : ''}</span>`).join('')}</span>
       </div>`)
     .join('');
-  return rowElement(row, line, theme, chips);
+  return rowElement(row, line, theme, chips, { portal, active });
 }
 
-function rowElement(row, line, theme, chips) {
-  const item = el('li', { class: 'dream-realm-row', 'data-gate': row.gate });
+/**
+ * The card itself: one head (number, dream name, theme) and the source blocks.
+ *
+ * The head's number is the card's only control — a real button, so click, Enter,
+ * Space and the focus ring come from the browser, and `styles/dream.css` stretches
+ * its hit area over the whole card. Nothing wraps it in a `role="button"` and no
+ * second handler sits on the row, so one gesture opens one sheet.
+ */
+function rowElement(row, line, theme, chips, { portal = false, active = false } = {}) {
+  const item = el('li', {
+    class: `dream-realm-row${portal ? ' dream-realm-portal' : ''}${portal && active ? ' dream-portal-active' : ''}`,
+    'data-gate': row.gate
+  });
   item.innerHTML = `
     <div class="dream-row-head">
       <button type="button" class="dream-row-open" data-gate="${row.gate}"
         aria-label="${esc(t('Gate {gate}', { gate: row.gate }))}">${row.gate}${line ? `.${line}` : ''}</button>
       <span class="dream-row-name">${esc(dreamGateName(row.gate))}${theme ? ` <span class="dream-row-theme">· ${esc(theme)}</span>` : ''}</span>
+      ${portal ? `<span class="dream-portal-tag">${esc(t('Portal of this field'))}</span>` : ''}
       ${row.transitActivated && !row.activated ? `<span class="dream-row-transit-tag">${esc(transitTerm())}</span>` : ''}
     </div>
     ${chips}`;
@@ -1322,12 +1449,20 @@ function drawComparison({ content, current, a, b, labelB }) {
     topology: DREAM_TOPOLOGY,
     planetColumns: false,
     animate: false,
+    // Same touch contract as the single design: a drag never opens a sheet, a tap
+    // previews, and a second tap opens. Without this the composite answered a
+    // touch on a gate as a click, so a pan across the graph opened a card.
+    touchPreview: true,
     ariaLabel: t('Combined sleep chart bodygraph for {a} and {b}, coloured by whose sleeping design carries each gate.',
       { a: labelA, b: labelB }),
+    // Same naming object as the single design: one vocabulary for both modes.
+    naming: dreamNaming,
     composite: {
       chartA, chartB, structure, labelA, labelB,
       colorA: palette.a, colorB: palette.b, colorBridged: palette.bridged
     },
+    // One callback for both modes, so a gate means the same row in either view.
+    onHighlight: dreamHighlightRows,
     onGateClick: gate => detail.showGate(gate),
     onCenterClick: center => detail.showCenter(center)
   });
@@ -1394,16 +1529,18 @@ function compositeLegend(labelA, labelB, palette) {
 }
 
 /**
- * Structural facts, then each person's sleep type in full.
+ * Structural facts, then each person's waking/sleep type pair as buttons.
  *
  * The dream channels belong to the three night fields above this block, which list
  * every channel of a field with its ownership state and, for a channel completed
  * from one gate each, who contributes which gate; repeating them here would put
  * two channel lists on one page. Nothing is scored or ranked.
  *
- * Both type readings are always rendered, even when the two people share a type:
- * each is a separate <details>, so a reader can open A's and B's independently and
- * a shared type does not collapse into a single block attributed to one person.
+ * The type readings themselves open in the shared sheet, one per person and half:
+ * the same sheet the single design's type strip uses, so there is one type-reading
+ * surface instead of a collapsed block here and a card elsewhere. `owner` (`a` /
+ * `b`) travels with the selection, so neither person's reading can be shown under
+ * the other's name.
  */
 function comparisonFacts({ a, b, labelA, labelB, structure }) {
   const section = el('section', { class: 'dream-compare-facts' });
@@ -1419,12 +1556,56 @@ function comparisonFacts({ a, b, labelA, labelB, structure }) {
   ].join('');
   section.appendChild(facts);
 
-  for (const [label, model] of [[labelA, a], [labelB, b]]) {
-    const reading = renderDreamTypeReading(model.type.id);
-    if (!reading) continue;
-    const block = el('div', { class: 'dream-compare-type-reading', 'data-owner-label': label });
-    block.innerHTML = `<h3 class="dream-compare-type-head">${esc(t('{name} · {type}', { name: label, type: dreamTypeName(model.type.id) }))}</h3>${reading}`;
-    section.appendChild(block);
+  // Type entries: every person's waking and sleep types are buttons here too, in the
+  // same 清醒 / 梦境 comparison the single design's strip uses. The reading opens in
+  // the shared sheet *with the owner*, so it always describes that person and never
+  // whatever chart happens to be loaded (AGENTS.md §6).
+  for (const [owner, label, model] of [['a', labelA, a], ['b', labelB, b]]) {
+    const row = el('div', { class: 'dream-compare-type-row', 'data-owner': owner });
+    row.appendChild(el('span', { class: 'dream-compare-type-person', text: label }));
+    row.appendChild(typeEntry(owner, 'waking', model));
+    row.appendChild(typeEntry(owner, 'dream', model));
+    section.appendChild(row);
   }
   return section;
+}
+
+/**
+ * One half of one person's type comparison, as a chip button.
+ *
+ * The type names are plain names and the label says which half this is, exactly as
+ * on the single design's strip — the difference is only that this chip also carries
+ * `data-owner`, which is what keeps two people's readings apart. A half the source
+ * does not cover renders as a plain chip instead of a button into an empty card.
+ *
+ * @param {'a'|'b'} owner
+ * @param {'waking'|'dream'} side
+ * @param {object} model - that person's sleep model
+ */
+function typeEntry(owner, side, model) {
+  const pair = el('span', { class: 'dream-type-pair' });
+  pair.appendChild(el('span', { class: 'dream-type-label', text: t(side === 'waking' ? 'Awake' : 'Asleep') }));
+  const wakingName = model.wakingType?.name || null;
+  const name = side === 'waking'
+    ? (wakingName ? typeName(wakingName) : null)
+    : dreamTypeName(model.type.id);
+  const available = side === 'waking' ? !!wakingName : !!dreamTypeReading(model.type.id);
+  if (!name || !available) {
+    pair.appendChild(el('span', { class: 'dream-type-chip dream-type-chip-empty', text: '—' }));
+    return pair;
+  }
+  const color = side === 'waking'
+    ? TYPE_COLORS[wakingName] || 'var(--hd-inactive)'
+    : TYPE_COLORS[model.type.id] || 'var(--hd-inactive)';
+  const chip = el('button', {
+    type: 'button',
+    class: 'dream-type-chip',
+    'data-dream-type-open': side,
+    'data-owner': owner,
+    'aria-label': t(side === 'waking' ? 'Open the waking type reading' : 'Open the dream type reading'),
+    style: `background:${color}`
+  }, name);
+  chip.addEventListener('click', () => openType(side, owner));
+  pair.appendChild(chip);
+  return pair;
 }

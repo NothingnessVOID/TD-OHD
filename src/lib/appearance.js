@@ -86,6 +86,8 @@ export function initAppearance() {
   const legacyMode = savedTheme === 'dark' || (!savedTheme && systemScheme?.matches) ? 'dark' : 'light';
   let skinId = defaultSkinForMode(legacyMode), centerPalette = DEFAULT_HD_SKIN;
   const saved = parse(APPEARANCE_STORAGE_KEY);
+  // A fresh profile follows the system; a stored v3 or legacy theme choice stays explicit.
+  if (!savedTheme && saved?.version !== 3) skinMode = 'auto';
   if (saved?.version === 3) {
     // Existing v3 preferences stay manual unless Auto was explicitly chosen.
     skinMode = saved.skinMode === 'auto' ? 'auto' : 'manual';
