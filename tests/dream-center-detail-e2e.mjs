@@ -23,6 +23,12 @@
  * activation list in the page, never from the engine or the clock, so the same
  * three sources exist on every run. The second block drives the real page.
  *
+ * Both blocks run on the modules the application itself loaded, resolved from the
+ * browser's resource timings. A dev server under HMR serves them as
+ * `/src/lib/x.js?t=<stamp>`; importing the bare path would build a second module
+ * instance, and a language change would then repaint a copy nobody renders while
+ * the page stayed in the old language.
+ *
  * Screenshots land in /tmp by default; point E2E_SHOTS at a scratch directory to
  * move them. Nothing here writes into the repository.
  */
@@ -99,10 +105,32 @@ page.on('console', message => { if (message.type() === 'error') pageErrors.push(
  * 15 complete 5-15 only together, which is the `bridged` centre branch.
  */
 async function mountFixture() {
-  const topo = await import('/src/lib/human-design/dream-topology.js');
-  const chart = await import('/src/lib/dream-chart.js');
-  const detail = await import('/src/lib/dream-detail.js');
-  const i18n = await import('/src/lib/i18n.js');
+  /**
+   * The URL the app itself loaded for a source module, query included.
+   *
+   * HMR serves app modules as `/src/lib/x.js?t=<stamp>`; a bare import resolves to
+   * a different module instance, so `setLocale()` would change that copy while the
+   * rendered page (and the controller built from the app's own instance) kept the
+   * old language. The resource timings are the browser's record of what was
+   * actually loaded; the earliest entry is the app's own, because a later one can
+   * only come from a bare import made by an earlier step of a run.
+   */
+  const loadedModule = path => {
+    const entries = performance.getEntriesByType('resource')
+      .filter(entry => { try { return new URL(entry.name).pathname === path; } catch { return false; } })
+      .sort((a, b) => a.startTime - b.startTime);
+    return entries[0]?.name || path;
+  };
+  const urls = {
+    topology: loadedModule('/src/lib/human-design/dream-topology.js'),
+    chart: loadedModule('/src/lib/dream-chart.js'),
+    detail: loadedModule('/src/lib/dream-detail.js'),
+    i18n: loadedModule('/src/lib/i18n.js')
+  };
+  const topo = await import(urls.topology);
+  const chart = await import(urls.chart);
+  const detail = await import(urls.detail);
+  const i18n = await import(urls.i18n);
 
   const model = list => {
     const raw = { personality: {}, design: {}, transit: {} };
@@ -239,7 +267,10 @@ async function mountFixture() {
       close: () => compositeMount.controller.close(),
       get open() { return compositeMount.controller.open; }
     },
-    setLocale: (code, persist = false) => i18n.setLocale(code, { persist })
+    urls,
+    setLocale: (code, persist = false) => i18n.setLocale(code, { persist }),
+    getLocale: () => i18n.getLocale(),
+    t: (key, params) => i18n.t(key, params)
   };
   return { centers: Object.keys(window.__fx) };
 }
@@ -282,9 +313,37 @@ async function readCenter(selector) {
   });
 }
 
-await page.goto(`${BASE}/${BIRTH_A}`, { waitUntil: 'load' });
-await page.waitForSelector('#chart-view:not(.hidden)', { timeout: 30000 });
+await page.goto(`${BASE}/${BIRTH_A}&view=dream`, { waitUntil: 'load' });
+// The sleep view is what loads `lib/dream-detail.js` and `lib/i18n.js` into the
+// page's module graph, so this must happen before the fixture resolves them.
+await page.waitForSelector('.dream-realm', { timeout: 30000 });
+await page.waitForTimeout(400);
 await page.evaluate(mountFixture);
+
+await check('the fixture imports the modules the app loaded, HMR query included', async () => {
+  const urls = await page.evaluate(() => window.__fx.urls);
+  console.log('modules imported by the fixture:', JSON.stringify(urls));
+  for (const [name, url] of Object.entries(urls)) {
+    assert(new URL(url).pathname.startsWith('/src/lib/'), `${name} resolved to ${url}`);
+  }
+  assert(await page.evaluate(() => window.__fx.getLocale()) === 'zh-CN', 'the fixture did not start in zh-CN');
+  // The real header switcher must move the fixture's own catalog. That is only
+  // possible when both are the same module instance: a bare import would leave the
+  // fixture in Simplified Chinese while the app moved on.
+  if (!(await page.$eval('#more-menu', node => node.open))) await page.click('#more-toggle');
+  if (!(await page.$eval('#language-menu', node => node.open))) await page.click('#language-menu > summary');
+  await page.click('.language-actions button[data-language="zh-Hant"]');
+  await page.waitForTimeout(500);
+  const after = await page.evaluate(() => window.__fx.getLocale());
+  const label = await page.evaluate(() => window.__fx.t('Sleep channels'));
+  assert(after === 'zh-Hant', `fixture locale after the real switcher is ${after}`);
+  assert(label === '睡眠通道', `fixture catalog after the real switcher reads "${label}"`);
+  if (!(await page.$eval('#more-menu', node => node.open))) await page.click('#more-toggle');
+  if (!(await page.$eval('#language-menu', node => node.open))) await page.click('#language-menu > summary');
+  await page.click('.language-actions button[data-language="zh-CN"]');
+  await page.waitForTimeout(500);
+  assert(await page.evaluate(() => window.__fx.getLocale()) === 'zh-CN', 'the fixture did not return to zh-CN');
+});
 
 await check('fixture: the Throat lists every dream gate with its own source state', async () => {
   await page.evaluate(() => window.__fx.single.show('throat'));
@@ -428,6 +487,7 @@ await check('fixture: closing releases the selection, so the next sheet has no s
 await check('fixture: a language change redraws the same centre, not another one', async () => {
   const before = await readCenter('#fixture-single .gate-detail-card[data-center]');
   await page.evaluate(() => { window.__fx.setLocale('zh-Hant'); window.__fx.single.refresh(); });
+  assert(await page.evaluate(() => window.__fx.getLocale()) === 'zh-Hant', 'the fixture did not switch its own catalog');
   let after = await readCenter('#fixture-single .gate-detail-card[data-center]');
   assert(after.center === before.center, `centre changed to ${after.center}`);
   assert(after.name === '喉嚨中心', `traditional centre name is "${after.name}"`);
@@ -540,8 +600,13 @@ async function closeSheet() {
 
 /** Change the interface language the way the app does, without the header menu. */
 async function setLocale(code) {
+  // The app's own module, query and all: on an HMR dev server the bare path is a
+  // second instance whose catalog nothing renders.
   await page.evaluate(async next => {
-    const i18n = await import('/src/lib/i18n.js');
+    const entries = performance.getEntriesByType('resource')
+      .filter(entry => { try { return new URL(entry.name).pathname === '/src/lib/i18n.js'; } catch { return false; } })
+      .sort((a, b) => a.startTime - b.startTime);
+    const i18n = await import(entries[0]?.name || '/src/lib/i18n.js');
     i18n.setLocale(next, { persist: false });
   }, code);
   await page.waitForTimeout(500);
