@@ -1034,9 +1034,15 @@ function dreamHighlightRows(sel) {
 }
 
 /** The activation columns and the night-field rows are the page's other ways into a gate. */
-function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate]') {
+function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate], .dream-realm-row[data-gate]') {
   for (const row of root.querySelectorAll(selector)) {
-    row.addEventListener('click', () => openGate(Number(row.dataset.gate)));
+    row.addEventListener('click', (e) => {
+      // Prevent double-trigger if clicking the button inside a clickable row
+      if (row.classList.contains('dream-realm-row') && e.target.closest('.dream-row-open')) {
+        return; // Let the button handle it
+      }
+      openGate(Number(row.dataset.gate));
+    });
   }
 }
 
@@ -1269,7 +1275,7 @@ function realmPanel(model, realmId, options = {}) {
     // The other half of the two-way link: the same gesture the graph sends the rows
     // now also travels from these rows to the graph, so a gate can be found from
     // either side. One helper for both modes, as `bindRowHover()` already is.
-    if (api) bindRowHover(list, '.dream-row-open[data-gate]', api);
+    if (api) bindRowHover(list, '.dream-realm-row[data-gate]', api);
   }
 
   // A portal is a gate without a channel, so its field can hold no channel at all.
@@ -1330,7 +1336,13 @@ function realmRow(row, groups) {
 }
 
 function rowElement(row, line, theme, chips) {
-  const item = el('li', { class: 'dream-realm-row', 'data-gate': row.gate });
+  const item = el('li', { 
+    class: 'dream-realm-row', 
+    'data-gate': row.gate,
+    tabindex: '0',
+    role: 'button',
+    'aria-label': t('Gate {gate}', { gate: row.gate })
+  });
   item.innerHTML = `
     <div class="dream-row-head">
       <button type="button" class="dream-row-open" data-gate="${row.gate}"
