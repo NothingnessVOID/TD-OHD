@@ -1155,10 +1155,16 @@ body {
 .bodygraph-svg .bg-gate-path,
 .bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; }
 
+/* The object's own emphasis is the restroke below, never the browser's default focus
+   rectangle. Chrome paints that rectangle around the object's whole bounding box even
+   for a mouse-only focus: the detail sheet returns focus to the centre that opened it,
+   and the graph then showed a square frame the reader had not asked for. Keyboard
+   focus stays visible regardless, because focus also adds `bg-focus` to the shape. */
+.bodygraph-svg .bg-gate,
+.bodygraph-svg .bg-center { outline: none; }
 /* Gate hover: a ring on the visible circle, drawn with the skin's focus colour so it
    stays legible on every palette. Only the stroke changes, so the fill, the number
    backing and the dimming/lighting driven by highlightGate are all untouched. */
-.bodygraph-svg .bg-gate { outline: none; }
 .bodygraph-svg .bg-gate-circle { stroke: transparent; }
 .bodygraph-svg .bg-gate:hover .bg-gate-circle,
 .bodygraph-svg .bg-gate:focus-visible .bg-gate-circle,
