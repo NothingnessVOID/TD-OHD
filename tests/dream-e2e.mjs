@@ -49,6 +49,10 @@ const ROTATED_ASPECT = (DREAM_VIEW_BOX.w + BODYGRAPH_PAD * 2) / (DREAM_VIEW_BOX.
  * activation columns. 12px is also the absolute floor for anything a reader is
  * meant to read; below that the page would be shrinking its own text instead of
  * following the site, and a narrow viewport is not a reason to do that.
+ *
+ * A night-field card's own title row — its number, its dream name, the line theme
+ * and the overlay tag — reads at the prose step: the user asked for those four to
+ * match, so a card's title is not a caption next to its own planets.
  */
 const MIN_READABLE = 12;
 const READING_ROLE = 14;
@@ -58,12 +62,13 @@ const COMPACT_ROLE = 12;
 /** Roles on the page itself. */
 const VIEW_TYPE_ROLES = {
   '.dream-frame-list': READING_ROLE,
-  '.dream-portal-reading-block': READING_ROLE,
   '.dream-type-label': LABEL_ROLE,
   '.dream-type-facts': LABEL_ROLE,
   '.dream-portal-tag': LABEL_ROLE,
-  '.dream-row-theme': LABEL_ROLE,
-  '.dream-row-transit-tag': LABEL_ROLE,
+  '.dream-row-name': READING_ROLE,
+  '.dream-row-open': READING_ROLE,
+  '.dream-row-theme': READING_ROLE,
+  '.dream-row-transit-tag': READING_ROLE,
   '.dream-row-source-label': LABEL_ROLE,
   '.dream-planet-chip': LABEL_ROLE,
   '.dream-channels-title': LABEL_ROLE,
@@ -85,7 +90,7 @@ const VIEW_TYPE_ROLES = {
  * measured when present and skipped when not.
  */
 const VIEW_TYPE_REQUIRED = [
-  '.dream-frame-list', '.dream-portal-reading-block', '.dream-type-label', '.dream-type-facts',
+  '.dream-frame-list', '.dream-type-label', '.dream-type-facts',
   '.dream-portal-tag', '.dream-row-theme', '.dream-row-source-label', '.dream-planet-chip',
   '.dream-channels-title', '.dream-channel-status', '.dream-channel-named', '.dream-provenance',
   '.dream-column-head', '.dream-column-date', '.dream-column-row', '.dream-column-glyph',
@@ -251,13 +256,30 @@ await check('the type comparison is two buttons labelled 清醒 and 梦境', asy
   assert(!(await page.$('.dream-type-strip [data-dream-type-reading]')), 'the type strip still embeds a type reading');
 });
 
-await check('three night fields render with their portals', async () => {
+await check('three night fields render with their portals as cards', async () => {
   const realms = await page.$$eval('.dream-realm', n => n.map(x => x.dataset.realm));
   assert(JSON.stringify(realms) === JSON.stringify(['light', 'earth', 'demon']), `realms ${realms}`);
-  const portals = await page.$$eval('.dream-portal-gate', n => n.map(x => x.textContent.trim()));
-  assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `portals ${portals}`);
-  const names = await page.$$eval('.dream-portal-name', n => n.map(x => x.textContent.trim()));
-  assert(names.every(Boolean), `portal names ${names}`);
+  // A portal is a card of the same family as an activation, not a plaque of its
+  // own: it prints a number, a dream name and the field's tag, and it is always
+  // there — activated or not — because it is the field's own way in.
+  const portals = await page.$$eval('#dream-content .dream-realm-portal', nodes => nodes.map(node => ({
+    gate: node.dataset.gate,
+    number: node.querySelector('.dream-row-open')?.textContent.trim(),
+    name: node.querySelector('.dream-row-name')?.textContent.trim(),
+    tag: node.querySelector('.dream-portal-tag')?.textContent.trim(),
+    realm: node.closest('.dream-realm')?.dataset.realm
+  })));
+  assert(portals.map(p => p.gate).join(',') === '62,12,19', `portals ${JSON.stringify(portals)}`);
+  assert(portals.map(p => p.realm).join(',') === 'light,earth,demon', `portals sit in ${JSON.stringify(portals.map(p => p.realm))}`);
+  // An activated portal's number carries its line (19.3); an inactive one is the
+  // bare gate. Either way the number is the card's own control.
+  assert(portals.every(p => p.number === p.gate || p.number.startsWith(`${p.gate}.`)),
+    `portal numbers ${JSON.stringify(portals.map(p => p.number))}`);
+  assert(portals.every(p => p.name), `portal names ${JSON.stringify(portals.map(p => p.name))}`);
+  assert(portals.every(p => p.tag === '此场域的门户'), `portal tags ${JSON.stringify(portals.map(p => p.tag))}`);
+  // The reading moved into the card's own sheet, so the panel no longer carries a
+  // second, collapsed copy of it.
+  assert(!(await page.$('#dream-content .dream-portal-reading-block')), 'the panel still prints the portal reading inline');
 });
 
 await check('activation columns list only dream-gate planets', async () => {
@@ -352,7 +374,7 @@ await check('hovering an activation row lights its gate in the graph', async () 
 await check('lighting a gate on the graph lights the matching list rows', async () => {
   // The reverse direction of the same gesture: `onHighlight` is wired for both the
   // single design and the composite, so a gate means the same row in either view.
-  const gate = await page.$eval('.dream-realm-row[data-gate]', n => n.dataset.gate);
+  const gate = await page.$eval('.dream-realm-row:not(.dream-realm-portal)[data-gate]', n => n.dataset.gate);
   const circle = await page.$(`#dream-bodygraph .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
   await circle.hover();
   await page.waitForTimeout(250);
@@ -370,10 +392,29 @@ await check('lighting a gate on the graph lights the matching list rows', async 
   assert(cleared === 0, `${cleared} rows stayed lit after the pointer left the graph`);
 });
 
+await check('a graph hover lights only the card it is on, not the channel partner', async () => {
+  // The renderer lights a gate together with the other gate of its defined channel,
+  // and that is the graph's own reading. The night fields are one card per
+  // activation, so copying that set lit the partner's card as a second selection.
+  // Gate 1 completes 1-8 in this chart, so the two sets differ and the check means
+  // something.
+  await page.hover('#dream-bodygraph .bg-gate[data-gate="1"] .bg-gate-hit');
+  await page.waitForTimeout(300);
+  const state = await page.evaluate(() => ({
+    graph: [...document.querySelectorAll('#dream-bodygraph .bg-gate.bg-lit')].map(n => n.dataset.gate).sort(),
+    cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate).sort()
+  }));
+  assert(state.graph.join(',') === '1,8', `the graph lit ${JSON.stringify(state.graph)} for a hover on gate 1`);
+  assert(state.cards.join(',') === '1', `the night fields lit ${JSON.stringify(state.cards)}`);
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+  assert((await page.$$eval('#dream-content .row-lit', n => n.length)) === 0, 'the cards stayed lit');
+});
+
 await check('hovering a night-field row lights its gate in the graph', async () => {
   // The other direction of the same link: night-field rows were click-only, so a
   // reader could open a gate from the list but not find it on the graph.
-  const gate = await page.$eval('.dream-realm-row[data-gate]', n => n.dataset.gate);
+  const gate = await page.$eval('.dream-realm-row:not(.dream-realm-portal)[data-gate]', n => n.dataset.gate);
   await page.hover(`.dream-realm-row[data-gate="${gate}"] .dream-row-open`);
   await page.waitForTimeout(250);
   const lit = await page.$eval(`#dream-bodygraph .bg-gate[data-gate="${gate}"]`, n => n.classList.contains('bg-lit'));
@@ -613,16 +654,30 @@ await check('the open type sheet follows a language change and keeps its selecti
   assert(locale === 'zh-CN', `the run was left in ${locale}`);
 });
 
-await check('each portal plaque carries the night collection and the morning bleed-through', async () => {
-  const blocks = await page.$$eval('.dream-portal-reading-block', n => n.length);
-  assert(blocks === 3, `${blocks} portal readings for three night fields`);
-  const first = await page.$('.dream-realm-light .dream-portal-reading-block');
-  await first.evaluate(node => { node.open = true; });
-  const reading = await first.$eval('[data-dream-portal-reading]', n => n.textContent);
-  assert(/\u591c\u95f4\u84c4\u79ef/.test(reading), `no night collection: ${reading.slice(0, 80)}`);
-  assert(/\u6ea2\u51fa\u76ee\u6807/.test(reading), `no bleed-through target: ${reading.slice(0, 80)}`);
-  assert(/\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(reading), `no morning bleed-through: ${reading.slice(0, 80)}`);
-  assert(/\u7709\u5fc3\u4e2d\u5fc3/.test(reading), `the light-field portal does not name the Ajna as its target: ${reading.slice(0, 120)}`);
+await check('a portal card opens its field reading in the shared sheet', async () => {
+  // The portal is a gate, so its card opens the same sheet every other gate opens,
+  // and the sheet is where its two stages are read now: the panel no longer keeps
+  // a second, collapsed copy of the same reading.
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  await page.click('#dream-content .dream-realm-light .dream-realm-portal .dream-row-open');
+  await page.waitForSelector('#dream-detail .gate-detail-card[data-gate]', { timeout: 10000 });
+  const sheet = await page.evaluate(() => ({
+    gate: document.querySelector('#dream-detail .gate-detail-card[data-gate]')?.dataset.gate,
+    reading: document.querySelector('#dream-detail [data-dream-portal-reading]')?.textContent || '',
+    section: [...document.querySelectorAll('#dream-detail .dream-reading-title')]
+      .map(node => node.textContent.trim()).includes('这个门户做什么'),
+    back: !!document.querySelector('#dream-detail .gate-detail-back')
+  }));
+  assert(sheet.gate === '62', `the light-field portal card opened gate ${sheet.gate}`);
+  assert(sheet.section, 'the sheet has no portal reading section');
+  assert(/夜间蓄积/.test(sheet.reading), `no night collection: ${sheet.reading.slice(0, 80)}`);
+  assert(/溢出目标/.test(sheet.reading), `no bleed-through target: ${sheet.reading.slice(0, 80)}`);
+  assert(/清晨逆向溢出/.test(sheet.reading), `no morning bleed-through: ${sheet.reading.slice(0, 80)}`);
+  assert(/眉心中心/.test(sheet.reading), `the light-field portal does not name the Ajna as its target: ${sheet.reading.slice(0, 120)}`);
+  assert(!sheet.back, 'one click on a portal card left a Back step behind');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
 });
 
 await check('a realm channel row opens the channel sheet', async () => {
@@ -834,8 +889,23 @@ await check('switching to English redraws the sleep chart', async () => {
   const frame = await page.$eval('[data-dream-frame="sides"]', n => n.textContent);
   assert(/direction the dream evolves/.test(frame), `English frame line: ${frame}`);
   assert(/consciousness inside the dream/.test(frame), `English frame line: ${frame}`);
-  const portalBlock = await page.$$eval('.dream-portal-reading-block > summary', n => n.map(x => x.textContent.trim()));
-  assert(portalBlock.every(text => text === 'What this portal does'), `English portal summaries: ${portalBlock}`);
+  // The portal's card is the single design's card in English too, and its reading
+  // is in the sheet: the same section, in the same catalogue.
+  await page.click('#dream-content .dream-realm-light .dream-realm-portal .dream-row-open');
+  await page.waitForSelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate="62"] [data-dream-portal-reading]', { timeout: 10000 });
+  const portalSection = await page.evaluate(() => {
+    const card = document.querySelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate="62"]');
+    return {
+      headings: [...(card?.querySelectorAll('.dream-reading-title') || [])].map(node => node.textContent.trim()),
+      reading: card?.querySelector('[data-dream-portal-reading]')?.textContent || '',
+      tag: document.querySelector('#dream-content .dream-realm-light .dream-portal-tag')?.textContent.trim()
+    };
+  });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  assert(portalSection.headings.includes('What this portal does'), `English portal headings: ${JSON.stringify(portalSection.headings)}`);
+  assert(/night/.test(portalSection.reading), `English portal reading: ${portalSection.reading.slice(0, 80)}`);
+  assert(portalSection.tag === 'Portal of this field', `English portal tag: ${portalSection.tag}`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
 });
 await page.screenshot({ path: path.join(SHOTS, 'desktop-en.png'), fullPage: true });
@@ -860,12 +930,17 @@ await check('Traditional Chinese keeps the dream readings in its own wording', a
   // The region says \u6d41\u65e5 for Transit, following the existing key, not \u884c\u904b.
   assert(/\u6d41\u65e5/.test(frame), `zh-Hant frame line: ${frame}`);
   assert(!/\u884c\u904b/.test(frame), `zh-Hant frame line kept the Simplified/Japanese spelling: ${frame}`);
-  // A portal's two stages are translated, not left in the Simplified wording.
-  const portal = page.locator('.dream-realm-light .dream-portal-reading-block');
-  await portal.evaluate(node => { node.open = true; });
-  const portalText = await page.$eval('.dream-realm-light [data-dream-portal-reading]', n => n.textContent);
+  // A portal's two stages are translated, not left in the Simplified wording, and
+  // they are read in the card's own sheet now.
+  await page.click('#dream-content .dream-realm-light .dream-realm-portal .dream-row-open');
+  await page.waitForSelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate="62"] [data-dream-portal-reading]', { timeout: 10000 });
+  const portalText = await page.$eval('#dream-detail:not(.hidden) .gate-detail-card[data-gate="62"] [data-dream-portal-reading]', n => n.textContent);
+  const portalTag = await page.$eval('#dream-content .dream-realm-light .dream-portal-tag', n => n.textContent.trim());
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
   assert(/\u591c\u9593\u84c4\u7a4d/.test(portalText), `zh-Hant night collection: ${portalText.slice(0, 60)}`);
   assert(/\u6e05\u6668\u9006\u5411\u6ea2\u51fa/.test(portalText), `zh-Hant morning bleed-through: ${portalText.slice(0, 60)}`);
+  assert(portalTag === '\u6b64\u5834\u57df\u7684\u9580\u6236', `zh-Hant portal tag: ${portalTag}`);
   assert(pageErrors.length === 0, pageErrors.join(' | '));
   await page.screenshot({ path: path.join(SHOTS, 'desktop-zh-Hant.png'), fullPage: true });
   await chooseLanguage(page, 'zh-CN');
@@ -1328,7 +1403,7 @@ await check('the composite carries all three night fields, in reveal order', asy
   // The field titles and the portal plaques are the single design's own markup.
   const titles = await page.$$eval('#dream-content .dream-realm-title', n => n.map(x => x.textContent.trim()));
   assert(titles.length === 3 && titles.every(Boolean), `composite field titles ${titles}`);
-  const portals = await page.$$eval('#dream-content .dream-realm-portal .dream-portal-gate', n => n.map(x => x.textContent.trim()));
+  const portals = await page.$$eval('#dream-content .dream-realm-portal', n => n.map(x => x.dataset.gate));
   assert(JSON.stringify(portals) === JSON.stringify(['62', '12', '19']), `composite portals ${portals}`);
   const wrappers = await page.$$eval('#dream-content .dream-realms', n => n.length);
   assert(wrappers === 1, `${wrappers} .dream-realms wrappers in the composite`);
@@ -1405,11 +1480,23 @@ await check('an opened portal is marked, a closed one is not', async () => {
     realm: panel.dataset.realm,
     active: panel.querySelector('.dream-realm-portal')?.classList.contains('dream-portal-active') ?? null
   })));
-  for (const state of states) assert(state.active !== null, `${state.realm} has no portal block`);
-  // Only the demon portal (19) is carried by this pair; 62 and 12 are not.
+  for (const state of states) assert(state.active !== null, `${state.realm} has no portal card`);
+  // Only the demon portal (19) is carried by this pair; 62 and 12 are not — and all
+  // three cards are printed anyway, because a portal is the field's own way in.
   assert(JSON.stringify(states) === JSON.stringify([
     { realm: 'light', active: false }, { realm: 'earth', active: false }, { realm: 'demon', active: true }
   ]), `portal states ${JSON.stringify(states)}`);
+  // The open portal is a card of the same family: it lists the planets and lines
+  // each person's sleeping design puts in it, with the owner colour on each group.
+  const demon = await page.$eval('#dream-content .dream-realm-demon .dream-realm-portal', node => ({
+    chips: [...node.querySelectorAll('.dream-planet-chip')].map(chip => chip.textContent.trim()),
+    sources: [...node.querySelectorAll('.dream-row-source')].map(source => [...source.classList]
+      .filter(name => name.startsWith('dream-row-source-owner-')))
+  }));
+  assert(demon.chips.length > 0, 'the open portal lists no planet');
+  assert(demon.chips.every(chip => /\b19\.\d/.test(chip)), `the open portal lists ${JSON.stringify(demon.chips)}`);
+  assert(demon.sources.length > 0 && demon.sources.every(group => group.length === 1),
+    `the open portal groups are ${JSON.stringify(demon.sources)}`);
 });
 
 await check('gate chips group by owner and keep the half as a second cue', async () => {
@@ -1437,7 +1524,7 @@ await check('gate chips group by owner and keep the half as a second cue', async
 });
 
 await check('a night-field row opens the ownership sheet, not the single-design one', async () => {
-  const gate = await page.$eval('#dream-content .dream-realm-light .dream-row-open', n => n.dataset.gate);
+  const gate = await page.$eval('#dream-content .dream-realm-light .dream-realm-row:not(.dream-realm-portal) .dream-row-open', n => n.dataset.gate);
   await page.click(`#dream-content .dream-realm-light .dream-row-open[data-gate="${gate}"]`);
   await page.waitForSelector('#dream-detail:not(.hidden)', { timeout: 10000 });
   const sheet = await page.$eval('#dream-detail', n => n.textContent);
@@ -1521,10 +1608,10 @@ await check('a composite channel sheet agrees with its own row about completenes
     const text = sheetStatus[row.id];
     assert(text, `channel ${row.id} sheet has no status badge`);
     if (row.complete) {
-      assert(!/\u672a\u5b8c\u6574|Not complete/.test(text),
+      assert(!/\u672a\u63a5\u901a|Not connected/.test(text),
         `channel ${row.id} is complete on the page but its sheet says "${text}"`);
     } else {
-      assert(/\u672a\u5b8c\u6574|Not complete/.test(text),
+      assert(/\u672a\u63a5\u901a|Not connected/.test(text),
         `channel ${row.id} is incomplete on the page but its sheet says "${text}"`);
     }
   }
@@ -1587,8 +1674,16 @@ await check('an empty composite field uses the composite wording, not the single
   const body = await page.$eval('#dream-content', n => n.textContent);
   assert(!body.includes('\u4eca\u591c\u6b64\u573a\u57df\u6ca1\u6709\u6fc0\u6d3b\u3002'),
     'the composite still uses the single-design empty line');
-  const rows = await page.$$eval('#dream-content .dream-realm-earth .dream-realm-row', n => n.length);
-  assert(rows === 0, `the empty earth field lists ${rows} rows`);
+  // The earth field has no activation for this pair, so its only card is the
+  // portal — which stays, because it is the field's own way in.
+  const rows = await page.$$eval('#dream-content .dream-realm-earth .dream-realm-row', nodes => nodes.map(node => ({
+    gate: node.dataset.gate,
+    portal: node.classList.contains('dream-realm-portal'),
+    chips: node.querySelectorAll('.dream-planet-chip').length
+  })));
+  assert(rows.length === 1, `the empty earth field lists ${JSON.stringify(rows)}`);
+  assert(rows[0].gate === '12' && rows[0].portal, `the empty earth field lists ${JSON.stringify(rows)}`);
+  assert(rows[0].chips === 0, 'the unactivated portal invented a planet');
 });
 
 await check('hovering a composite channel row lights its two gates', async () => {
@@ -1609,13 +1704,24 @@ await check('hovering a composite channel row lights its two gates', async () =>
 });
 
 await check('the composite readings survive dark and high-contrast skins', async () => {
-  // Open the demon field's portal so the screenshot shows the new reading, not
-  // just the graph.
-  await page.locator('#dream-content .dream-realm-demon .dream-portal-reading-block')
-    .evaluate(node => { node.open = true; });
-  // Contrast has to be measured on composited pixels: the field tint is a
-  // translucent `color-mix()`, so a flat rgb() parse would read it as near-black.
-  const measure = () => page.$eval('#dream-content .dream-realm-demon .dream-portal-reading .dream-reading-row', node => {
+  // The portal's two stages are read in the card's own sheet now, and the sheet is
+  // modal, so the reading is opened for each measurement and dismissed again before
+  // the skin control has to be clicked.
+  const openReading = async () => {
+    await page.click('#dream-content .dream-realm-demon .dream-realm-portal .dream-row-open');
+    await page.waitForSelector('#dream-detail [data-dream-portal-reading]', { timeout: 10000 });
+    await page.waitForTimeout(200);
+  };
+  const closeReading = async () => {
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(250);
+  };
+  await openReading();
+  await page.screenshot({ path: path.join(SHOTS, 'composite-portal-sheet.png'), fullPage: false });
+  await closeReading();
+  // Contrast has to be measured on composited pixels: the sheet sits on a
+  // translucent surface, so a flat rgb() parse would read it as the parent colour.
+  const measure = () => page.$eval('#dream-detail [data-dream-portal-reading] .dream-reading-row', node => {
     const parse = css => {
       const rgb = css.match(/^rgba?\(([^)]+)\)$/);
       if (rgb) {
@@ -1665,11 +1771,14 @@ await check('the composite readings survive dark and high-contrast skins', async
     await page.waitForTimeout(320);
     const applied = await page.evaluate(() => document.documentElement.dataset.skin);
     assert(applied === skin, `skin ${skin} did not apply: ${applied}`);
+    await page.screenshot({ path: path.join(SHOTS, `composite-desktop-${skin}.png`), fullPage: true });
+    await openReading();
     const colors = await measure();
     // The prose must stay readable: the tokens, not hard-coded colours, decide it.
     assert(colors.ratio >= 4.5, `skin ${skin}: dream prose contrast is ${colors.ratio.toFixed(2)}:1`);
     seen.push(colors.color);
-    await page.screenshot({ path: path.join(SHOTS, `composite-desktop-${skin}.png`), fullPage: true });
+    await page.screenshot({ path: path.join(SHOTS, `composite-portal-sheet-${skin}.png`), fullPage: false });
+    await closeReading();
   }
   assert(seen[0] !== seen[1], `both skins paint the dream prose ${seen[0]}`);
   await applySkin(page, 'default-light');

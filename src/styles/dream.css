@@ -493,43 +493,19 @@
   overflow-wrap: anywhere;
 }
 
-/* The field's portal gate, and whether the night sky opened it. */
-.dream-realm-portal {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px var(--space-2);
-  margin: 0 0 var(--space-3);
-  padding: var(--space-2) var(--space-3);
+/* A field's portal: the same card as an activation — it is a gate, it lists its
+   planets the same way — drawn on the field's sunken surface with its own edge
+   and tag, so the field's way in reads apart from a gate that merely happens to
+   be active tonight. It is printed on every visit, activated or not, because it
+   is the field's own entrance. */
+.dream-realm-row.dream-realm-portal {
   background: color-mix(in srgb, var(--bg-sunken) 45%, transparent);
-  border: 1px solid var(--dream-edge);
-  border-radius: var(--radius);
+  border-color: color-mix(in srgb, var(--dream-realm-hue) 45%, var(--dream-edge));
 }
 
-.dream-portal-gate {
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 5px;
-  background: var(--bg-elevated);
-  border: 1px solid color-mix(in srgb, var(--dream-realm-hue) 50%, var(--dream-edge));
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 650;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.dream-portal-name {
-  min-width: 0;
-  color: var(--text);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+.dream-realm-row.dream-realm-portal:hover {
+  background: color-mix(in srgb, var(--bg-sunken) 65%, transparent);
+  border-color: color-mix(in srgb, var(--dream-realm-hue) 70%, var(--dream-edge));
 }
 
 .dream-portal-tag {
@@ -539,47 +515,29 @@
 }
 
 /* Activation is carried by shape and weight as well as hue: a thicker edge, an
-   inset ring, a filled portal plaque, bold text and a ◆ marker. */
-.dream-portal-active {
+   inset ring, a field-hue wash, bold text and a ◆ marker. This sits after the
+   card's own hover rule so an open portal keeps its wash while it is pointed at. */
+.dream-realm-row.dream-realm-portal.dream-portal-active {
   background: color-mix(in srgb, var(--dream-realm-hue) 12%, transparent);
   border-color: color-mix(in srgb, var(--dream-realm-hue) 65%, var(--dream-edge));
   border-width: 2px;
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--dream-realm-hue) 30%, transparent);
 }
-.dream-portal-active .dream-portal-gate {
-  background: var(--dream-realm-hue);
-  border-color: var(--dream-realm-hue);
-  border-style: solid;
-  color: var(--dream-realm-ink);
-  font-weight: 700;
-}
 .dream-portal-active .dream-portal-tag { color: var(--text-secondary); font-weight: 650; }
 .dream-portal-active .dream-portal-tag::before { content: '◆ '; font-weight: 400; }
 
-/* The portal's own two stages, collapsed under the plaque: a portal is a gate
-   without a channel, so this is the only content that field would otherwise lack.
-   It stays inside the plaque's flex row, hence the full basis and min-width 0, so
-   a long reading wraps under the gate number instead of pushing the row wide. */
-.dream-portal-reading-block {
-  flex: 1 0 100%;
-  min-width: 0;
-  margin-top: var(--space-1);
-  color: var(--text-secondary);
-  /* The portal's own reading: prose, 14px. */
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-}
-
-.dream-portal-reading-block > summary {
-  cursor: pointer;
-  color: var(--text);
-  font-weight: 600;
-  padding: 2px 0;
-}
-
-.dream-portal-reading-block > summary:focus-visible {
-  outline: 2px solid var(--focus, var(--accent));
-  outline-offset: 2px;
+/* An open portal's gate number is the one filled plaque on the page: the same
+   "this field is carrying something tonight" cue the card's edge carries, marked
+   on the number itself. The hover rule below keeps the ink while the pointer is
+   on the plaque, where `--dream-realm-ink` is graded against its own hue. */
+.dream-portal-active .dream-row-open,
+.dream-portal-active .dream-row-open:hover {
+  padding: 0 6px;
+  background: var(--dream-realm-hue);
+  border-radius: var(--radius-sm);
+  color: var(--dream-realm-ink);
+  text-decoration-color: transparent;
+  font-weight: 700;
 }
 
 .dream-realm-rows {
@@ -601,6 +559,9 @@
 /* ---------- One activated dream gate ---------- */
 
 .dream-realm-row {
+  /* The card is the anchor for its button's stretched hit area (see
+     `.dream-realm-row .dream-row-open::after`), not a second control. */
+  position: relative;
   min-width: 0;
   padding: var(--space-2) var(--space-3);
   background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
@@ -928,6 +889,18 @@
 }
 .dream-row-open:hover { text-decoration-color: var(--accent); color: var(--accent); }
 .dream-row-open:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 2px; }
+
+/* The whole card is the number's hit area. The button stays the card's one
+   control — click, Enter, Space and the focus ring all come from it — and this
+   overlay only carries the pointer to it anywhere on the card, so the row needs
+   no click handler of its own and no `role="button"` wrapper around a real
+   button. The card's own `:focus-within` ring states where focus is. */
+.dream-realm-row .dream-row-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
 
 /* The activation columns are buttons as well; their click opens the same sheet. */
 
@@ -1551,11 +1524,11 @@
   }
 
   /* --- The page's own entry buttons --- */
-  .dream-view .dream-row-open {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--dream-tap);
+  /* A night-field card is the finger's target: its button's hit area covers the
+     whole card, so the row takes the 44px and the number keeps its text size. */
+  .dream-view .dream-realm-row {
+    display: grid;
+    align-content: center;
     min-height: var(--dream-tap);
   }
 

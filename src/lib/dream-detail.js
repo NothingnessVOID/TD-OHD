@@ -77,9 +77,13 @@ const SLEEP_CHANNEL_STATUS = {
   natal: 'Complete in the sleep design',
   completed: 'Completed by {transit}',
   transit: '{transit} only',
-  inactive: 'Not complete in the sleep design'
+  // One wording for the single design and the pair: a dream channel either
+  // connects or it does not. The stable status keys (`natal` / `completed` /
+  // `transit` / `inactive`) are what the reading is chosen by, so the label can
+  // stay this short without touching any classification.
+  inactive: 'Not connected'
 };
-const bothStatus = complete => complete ? 'Complete across both sleep designs' : 'Not complete across both sleep designs';
+const bothStatus = complete => complete ? 'Complete across both sleep designs' : 'Not connected';
 
 const chip = (source, gate) => `<span class="dream-planet-chip"><i aria-hidden="true">${PLANET_GLYPHS[source.planet] || ''}</i>${esc(planetName(source.planet))} ${gate}.${source.line}</span>`;
 

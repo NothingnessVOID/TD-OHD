@@ -48,7 +48,7 @@ import {
   DREAM_TOPOLOGY, DREAM_REALMS, DREAM_REALM_ORDER, DREAM_CHANNELS, DREAM_VIEW_BOX, dreamRealmOf
 } from '../lib/human-design/dream-topology.js';
 import { analyzeConnectionStructure } from '../lib/human-design/connection-structure.js';
-import { createDreamDetail, renderDreamPortalReading } from '../lib/dream-detail.js';
+import { createDreamDetail } from '../lib/dream-detail.js';
 import { compositePalette } from '../lib/skin-registry.js';
 import {
   dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName, dreamTypeReading,
@@ -743,6 +743,10 @@ const openType = (side, owner = null) => detail?.showType(side, owner);
 // ==========================================
 
 function drawDream(dream, content) {
+  // A redraw replaces every row and every graph, so the previous gesture no longer
+  // points at anything: the recorded targets are dropped with the markup they were
+  // lighting.
+  resetHighlightTargets();
   content.replaceChildren();
   content.appendChild(typeStrip(dream));
   content.appendChild(frameNote());
@@ -919,7 +923,7 @@ function dreamGraphShell(dream, { overlay }) {
   const graphHost = el('div', { class: 'dream-graph', id: 'dream-bodygraph' });
   shell.querySelector('.ohd-graph-canvas').appendChild(graphHost);
 
-  const api = renderBodygraph(graphHost, dreamGraphChart(dream), {
+  const graphApi = renderBodygraph(graphHost, dreamGraphChart(dream), {
     topology: DREAM_TOPOLOGY,
     planetColumns: false,
     animate: false,
@@ -939,6 +943,12 @@ function dreamGraphShell(dream, { overlay }) {
     onGateClick: gate => openGate(gate),
     onCenterClick: center => openCenter(center)
   });
+
+  // The page's rows follow the direct target, so every selection this page sends
+  // and every object the pointer finds inside the graph is recorded as one; the
+  // graph keeps lighting the relational set it always has (see `trackedApi()`).
+  const api = trackedApi(graphApi);
+  trackGraphTarget(graphHost);
 
   fillSlot(shell, 'left', [activationColumn('design', dream.gates.design, dateText(dream.designMoment.iso))]);
   fillSlot(shell, 'right', [activationColumn('personality', dream.gates.personality, personalityWhen(dream))]);
@@ -1006,35 +1016,160 @@ function bindRowHover(root, selector, api) {
 }
 
 /**
- * The reverse direction of the graph's relational highlight: when the graph lights
- * a gate (hover, touch preview, or the gate pinned behind an open sheet), light the
- * matching rows in this page's own lists, so the graph and the data read as one
- * object.
+ * The page's own record of *which* object the reader is on, as opposed to the set
+ * of objects the graph lights with it.
  *
- * One callback for both modes, the way `views/chart.js` shares
- * `highlightPanelRows()` between the birth and transit graphs: a gate means the
- * same row whether one sleeping design or two are on screen. A channel row lights
- * only when *both* of its gates are lit — a channel is the pair, not either gate.
- * Deliberately scoped to the page content: the sheet has its own selection ring and
- * a second highlight vocabulary inside it would fight that.
+ * The renderer's highlight is relational on purpose: a gate also lights the other
+ * gate of its defined channel, and that is what the graph must keep showing. The
+ * night fields are one card per activation, so following that set lit the channel
+ * partner's card as well and made an unrelated gate look selected. The rows
+ * therefore follow the direct target only, while the graph keeps its relational
+ * wash.
+ *
+ * `hoverTarget` is the object under the pointer or the keyboard; `pinnedTarget` is
+ * the sheet's open selection, which is what a hover reverts to. `hoverTarget`
+ * wins while the reader is on something.
+ */
+let hoverTarget = null;
+let pinnedTarget = null;
+
+/** Drop both records when a redraw throws the markup they were lighting away. */
+function resetHighlightTargets() {
+  hoverTarget = null;
+  pinnedTarget = null;
+}
+
+/** The direct target of a selection the page itself sends to the graph. */
+function targetOf(selection) {
+  if (!selection) return null;
+  if (selection.kind === 'gate') return { kind: 'gate', gate: Number(selection.id) };
+  if (selection.kind === 'channel') return { kind: 'channel', id: selection.id };
+  if (selection.kind === 'center') return { kind: 'center', center: selection.id };
+  return null;
+}
+
+/**
+ * Wrap a graph API so every selection the page sends is recorded as the direct
+ * target before the renderer answers with the wider lit set.
+ *
+ * The panels, the activation columns and the detail sheet all go through this
+ * object, so no call site has to remember to record its own target.
+ */
+function trackedApi(api) {
+  return {
+    ...api,
+    highlightGate: gate => {
+      if (gate == null) hoverTarget = null;
+      else hoverTarget = { kind: 'gate', gate: Number(gate) };
+      api.highlightGate(gate);
+    },
+    highlightCenter: center => {
+      hoverTarget = center == null ? null : { kind: 'center', center };
+      api.highlightCenter(center);
+    },
+    highlightSelection: selection => {
+      hoverTarget = targetOf(selection);
+      api.highlightSelection(selection);
+    },
+    setPinned: selection => {
+      pinnedTarget = targetOf(selection);
+      api.setPinned(selection);
+    }
+  };
+}
+
+/**
+ * Follow the object under the pointer or the keyboard *inside the graph*.
+ *
+ * The renderer reports a highlight as the set it lights, not as the object that
+ * caused it, so a graph hover carries no target of its own. The page reads it from
+ * the same gesture instead: the gate or centre the pointer is on, taken from the
+ * `data-gate` / `data-center` attributes the whole app already queries. Capture
+ * phase, so the target is recorded before the renderer's own listener reports the
+ * highlight; touch has no hover, so touch gestures are left to the renderer.
+ */
+function trackGraphTarget(host) {
+  if (!host) return;
+  const objectOf = node => {
+    const gate = node?.closest?.('[data-gate]');
+    if (gate?.dataset.gate) return { kind: 'gate', gate: Number(gate.dataset.gate) };
+    const center = node?.closest?.('[data-center]');
+    return center ? { kind: 'center', center: center.dataset.center } : null;
+  };
+  host.addEventListener('pointerover', event => {
+    if (event.pointerType === 'touch') return;
+    hoverTarget = objectOf(event.target);
+  }, true);
+  host.addEventListener('pointerout', event => {
+    if (event.pointerType === 'touch') return;
+    const next = event.relatedTarget;
+    // Moving from one object to another inside the graph is not a leave: the
+    // following `pointerover` names the new object.
+    if (next && host.contains(next) && (next.closest?.('[data-gate]') || next.closest?.('[data-center]'))) return;
+    hoverTarget = null;
+  }, true);
+  host.addEventListener('focusin', event => { hoverTarget = objectOf(event.target); }, true);
+  host.addEventListener('focusout', event => {
+    if (event.relatedTarget && host.contains(event.relatedTarget)) return;
+    hoverTarget = null;
+  }, true);
+}
+
+/**
+ * The gates a direct target actually covers in the lists.
+ *
+ * A gate covers itself; a channel covers its two gates, because they are the
+ * channel; a centre covers the gates inside it, and the renderer's set for a
+ * centre is already exactly those gates (no channel partner is added to a centre).
+ */
+function targetGates(target, sel) {
+  if (target?.kind === 'gate') return new Set([target.gate]);
+  if (target?.kind === 'channel') {
+    const channel = DREAM_CHANNELS.find(item => item.gates.join('-') === target.id);
+    return new Set(channel?.gates || []);
+  }
+  return new Set(sel?.gates || []);
+}
+
+/**
+ * The reverse direction of the graph's highlight: when the graph lights a gate
+ * (hover, touch preview, or the gate pinned behind an open sheet), light the row
+ * that object is, so the graph and the data read as one control.
+ *
+ * Only the direct target's row is lit. The graph's relational wash — the channel
+ * partner, the other gates of a centre — is the graph's own reading and is not
+ * repeated as a second selection in the lists. One callback for both modes: a gate
+ * means the same row whether one sleeping design or two are on screen.
  */
 function dreamHighlightRows(sel) {
   for (const node of document.querySelectorAll('#dream-content .row-lit')) node.classList.remove('row-lit');
   if (!sel) return;
-  const gates = new Set(sel.gates || []);
+  const target = hoverTarget || pinnedTarget;
+  if (!target) return;
+  const gates = targetGates(target, sel);
   if (!gates.size) return;
   for (const node of document.querySelectorAll('#dream-content .dream-column-row[data-gate], #dream-content .dream-realm-row[data-gate]')) {
     node.classList.toggle('row-lit', gates.has(Number(node.dataset.gate)));
   }
-  for (const channel of DREAM_CHANNELS) {
-    if (!channel.gates.every(gate => gates.has(gate))) continue;
-    document.querySelector(`#dream-content .dream-channel-open[data-channel="${channel.gates.join('-')}"]`)
-      ?.classList.add('row-lit');
+  // A channel row is lit when the channel itself is the target. A gate hover does
+  // not light the channel rows it happens to belong to: the pair is the channel's
+  // object, not the gate's.
+  if (target.kind === 'channel') {
+    document.querySelector(`#dream-content .dream-channel-open[data-channel="${target.id}"]`)?.classList.add('row-lit');
   }
 }
 
-/** The activation columns and the night-field rows are the page's other ways into a gate. */
-function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate], .dream-realm-row[data-gate]') {
+/**
+ * The activation columns and the night-field cards are the page's other ways into
+ * a gate.
+ *
+ * Every card's own button is the single control here: it carries the click, the
+ * Enter/Space activation and the focus ring, and its stretched hit area covers the
+ * card (styles/dream.css). A second click handler on the row would fire the same
+ * sheet twice, and a `role="button"` wrapper around a real button would give one
+ * control two identities.
+ */
+function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate]') {
   for (const row of root.querySelectorAll(selector)) {
     row.addEventListener('click', (e) => {
       // Prevent double-trigger if clicking the button inside a clickable row
@@ -1066,7 +1201,7 @@ const CHANNEL_STATUS = {
   natal: { label: 'Complete in the sleep design', variant: 'natal' },
   completed: { label: 'Completed by {transit}', variant: 'completed' },
   transit: { label: '{transit} only', variant: 'transit' },
-  inactive: { label: 'Not complete in the sleep design', variant: 'inactive' }
+  inactive: { label: 'Not connected', variant: 'inactive' }
 };
 
 function channelStatusOf(channel, model) {
@@ -1089,7 +1224,7 @@ const COMPOSITE_CHANNEL_STATUS = {
   a: { label: '{name} completes it', variant: 'natal', owner: 'a' },
   b: { label: '{name} completes it', variant: 'natal', owner: 'b' },
   halved: { label: 'Defined only together', variant: 'completed', owner: 'both' },
-  inactive: { label: 'Not complete across both sleep designs', variant: 'inactive' }
+  inactive: { label: 'Not connected', variant: 'inactive' }
 };
 
 /**
@@ -1239,44 +1374,35 @@ function realmPanel(model, realmId, options = {}) {
     channelStatusTable = CHANNEL_STATUS,
     channelParams = {}
   } = options;
-  const realm = DREAM_REALMS[realmId];
   const realmData = model.realms.find(item => item.id === realmId);
   const panel = el('section', { class: `dream-realm dream-realm-${realmId}`, 'data-realm': realmId });
   panel.appendChild(el('h3', { class: 'dream-realm-title', text: dreamRealmName(realmId) }));
 
-  const portal = el('div', { class: 'dream-realm-portal' });
-  portal.innerHTML = `<span class="dream-portal-gate">${realm.portal}</span>
-    <span class="dream-portal-name">${esc(dreamGateName(realm.portal))}</span>
-    <span class="dream-portal-tag">${esc(t('Portal of this field'))}</span>`;
-  const portalRow = realmData?.rows.find(row => row.portal);
-  // Either person opening the portal is an open portal for the pair.
-  if (portalRow?.activated || portalRow?.transitActivated) portal.classList.add('dream-portal-active');
-  // The portal is a gate without a channel, so its reading is the only content
-  // this field would otherwise lack. Collapsed by default: it describes the night
-  // collection and the morning bleed-through, which a reader opens when the portal
-  // is actually active rather than scrolling past on every visit.
-  const portalReading = renderDreamPortalReading(realm.portal);
-  if (portalReading) {
-    const details = el('details', { class: 'dream-portal-reading-block' });
-    details.innerHTML = `<summary>${esc(t('What this portal does'))}</summary>${portalReading}`;
-    portal.appendChild(details);
+  // A field's portal is a card like every other activation — same head, same
+  // source blocks, same sheet — and it is always printed: the portal is the
+  // field's own way in even on a night it carries no planet. Its reading lives in
+  // the sheet (`lib/dream-detail.js`), so the panel no longer repeats it in a
+  // second, collapsible copy that a reader had to open and then read twice.
+  const rows = realmData?.rows || [];
+  const portalRow = rows.find(row => row.portal) || null;
+  const activeRows = rows.filter(row => !row.portal && (row.activated || (overlay && row.transitActivated)));
+  const cards = el('ul', { class: 'dream-realm-rows' });
+  for (const row of [portalRow, ...activeRows].filter(Boolean)) {
+    cards.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row), {
+      portal: !!row.portal,
+      // Only a portal is redrawn between its two states; an activated row exists
+      // only when it is active. Either person opening the portal opens it.
+      active: row.activated || row.transitActivated
+    }));
   }
-  panel.appendChild(portal);
-
-  const rows = (realmData?.rows || [])
-    .filter(row => !row.portal && (row.activated || (overlay && row.transitActivated)));
-  if (!rows.length) {
-    panel.appendChild(el('p', { class: 'dream-realm-empty', text: t(emptyKey) }));
-  } else {
-    const list = el('ul', { class: 'dream-realm-rows' });
-    for (const row of rows) list.appendChild(realmRow(row, groups ? groups(row) : wakingSourceGroups(row)));
-    panel.appendChild(list);
-    bindGateDetails(list);
-    // The other half of the two-way link: the same gesture the graph sends the rows
-    // now also travels from these rows to the graph, so a gate can be found from
-    // either side. One helper for both modes, as `bindRowHover()` already is.
-    if (api) bindRowHover(list, '.dream-realm-row[data-gate]', api);
-  }
+  panel.appendChild(cards);
+  if (!activeRows.length) panel.appendChild(el('p', { class: 'dream-realm-empty', text: t(emptyKey) }));
+  bindGateDetails(cards);
+  // The other half of the two-way link: the same gesture the graph sends the rows
+  // now also travels from these rows to the graph, so a gate can be found from
+  // either side. One helper for both modes, as `bindRowHover()` already is. The
+  // card's own button is the hover target: its stretched hit area covers the card.
+  if (api) bindRowHover(cards, '.dream-row-open[data-gate]', api);
 
   // A portal is a gate without a channel, so its field can hold no channel at all.
   const channels = realmChannels(realmId);
@@ -1310,7 +1436,7 @@ function bindChannelHover(root, api) {
 }
 
 /**
- * One activated dream gate.
+ * One activated dream gate, or a field's portal.
  *
  * `groups` is the list of activation groups to print under it, each
  * `{ key, label, entries, accent?, owner? }`. A single design passes its three
@@ -1319,12 +1445,16 @@ function bindChannelHover(root, api) {
  * `key` (`personality` / `design` / `transit`) keeps the existing rule-style
  * class, which is the colour-blind cue; `accent` is only ever a resolved Skin
  * token handed in by the caller, never a literal here.
+ *
+ * A portal is the same card with its field's own edge and tag: it is a gate, so it
+ * lists its planets the same way on a night it carries one, and an empty source
+ * list on a night it does not.
  */
-function realmRow(row, groups) {
-  const allEntries = groups.flatMap(group => group.entries || []);
+function realmRow(row, groups, { portal = false, active = false } = {}) {
+  const allEntries = (groups || []).flatMap(group => group.entries || []);
   const line = allEntries.find(entry => entry.line)?.line;
   const theme = line ? dreamLineTheme(line) : '';
-  const chips = groups
+  const chips = (groups || [])
     .filter(group => group.entries?.length)
     .map(group => `<div class="dream-row-source dream-row-source-${group.key}${group.owner ? ` dream-row-source-owner-${group.owner}` : ''}"${group.accent ? ` style="--dream-source:${group.accent}"` : ''}>
         <span class="dream-row-source-label">${esc(group.label)}</span>
@@ -1332,22 +1462,28 @@ function realmRow(row, groups) {
           `<span class="dream-planet-chip"><i aria-hidden="true">${PLANET_GLYPHS[source.planet] || ''}</i>${esc(planetName(source.planet))}${source.line ? ` ${row.gate}.${source.line}` : ''}</span>`).join('')}</span>
       </div>`)
     .join('');
-  return rowElement(row, line, theme, chips);
+  return rowElement(row, line, theme, chips, { portal, active });
 }
 
-function rowElement(row, line, theme, chips) {
-  const item = el('li', { 
-    class: 'dream-realm-row', 
-    'data-gate': row.gate,
-    tabindex: '0',
-    role: 'button',
-    'aria-label': t('Gate {gate}', { gate: row.gate })
+/**
+ * The card itself: one head (number, dream name, theme) and the source blocks.
+ *
+ * The head's number is the card's only control — a real button, so click, Enter,
+ * Space and the focus ring come from the browser, and `styles/dream.css` stretches
+ * its hit area over the whole card. Nothing wraps it in a `role="button"` and no
+ * second handler sits on the row, so one gesture opens one sheet.
+ */
+function rowElement(row, line, theme, chips, { portal = false, active = false } = {}) {
+  const item = el('li', {
+    class: `dream-realm-row${portal ? ' dream-realm-portal' : ''}${portal && active ? ' dream-portal-active' : ''}`,
+    'data-gate': row.gate
   });
   item.innerHTML = `
     <div class="dream-row-head">
       <button type="button" class="dream-row-open" data-gate="${row.gate}"
         aria-label="${esc(t('Gate {gate}', { gate: row.gate }))}">${row.gate}${line ? `.${line}` : ''}</button>
       <span class="dream-row-name">${esc(dreamGateName(row.gate))}${theme ? ` <span class="dream-row-theme">· ${esc(theme)}</span>` : ''}</span>
+      ${portal ? `<span class="dream-portal-tag">${esc(t('Portal of this field'))}</span>` : ''}
       ${row.transitActivated && !row.activated ? `<span class="dream-row-transit-tag">${esc(transitTerm())}</span>` : ''}
     </div>
     ${chips}`;
@@ -1375,6 +1511,7 @@ function provenanceNote(dream) {
  */
 
 function drawComparison({ content, current, a, b, labelB }) {
+  resetHighlightTargets();
   const labelA = current?.birth?.name || t('Person A');
   const palette = compositePalette();
   const chartA = dreamGraphChart(a);
@@ -1407,7 +1544,7 @@ function drawComparison({ content, current, a, b, labelB }) {
     graph: '<div id="dream-composite" class="dream-graph"></div>'
   });
   content.appendChild(shell);
-  const compositeApi = renderBodygraph(shell.querySelector('#dream-composite'), chartA, {
+  const compositeApi = trackedApi(renderBodygraph(shell.querySelector('#dream-composite'), chartA, {
     topology: DREAM_TOPOLOGY,
     planetColumns: false,
     animate: false,
@@ -1427,7 +1564,11 @@ function drawComparison({ content, current, a, b, labelB }) {
     onHighlight: dreamHighlightRows,
     onGateClick: gate => detail.showGate(gate),
     onCenterClick: center => detail.showCenter(center)
-  });
+  }));
+  // Same direct-target tracking as the single design: one sleeping design or two,
+  // the rows follow the object under the pointer and the graph keeps its
+  // relational wash.
+  trackGraphTarget(shell.querySelector('#dream-composite'));
   detail.setApi(compositeApi);
   // The composite is the single design's shell and columns with a different set
   // of parts: each slot carries one person's design and personality columns,

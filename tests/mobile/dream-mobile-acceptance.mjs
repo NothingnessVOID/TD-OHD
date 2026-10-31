@@ -203,7 +203,7 @@ async function openPhone(device) {
    */
   const CLIP_SAMPLE = [
     '.dream-type-label', '.dream-type-chip', '.dream-type-facts', '.dream-realm-title',
-    '.dream-frame-list > li', '.dream-portal-reading-block', '.dream-row-theme',
+    '.dream-frame-list > li', '.dream-realm-portal .dream-portal-tag', '.dream-row-theme',
     '.dream-row-source-label', '.dream-planet-chip', '.dream-channel-name',
     '.dream-channel-status', '.dream-channel-named', '.dream-column-head',
     '.dream-column-row', '.dream-column-date'
@@ -440,7 +440,7 @@ for (const device of DEVICES) {
       // limitation. What is asserted is that every row really opens its own object.
       const rows = await page.evaluate(() => {
         const sizes = {};
-        for (const selector of ['.dream-row-open[data-gate]', '.dream-column-row[data-gate]', '.dream-channel-open[data-channel]', '.dream-type-chip']) {
+        for (const selector of ['.dream-realm-row[data-gate]', '.dream-column-row[data-gate]', '.dream-channel-open[data-channel]', '.dream-type-chip']) {
           const heights = [...document.querySelectorAll(selector)]
             .map(node => node.getBoundingClientRect().height)
             .filter(value => value > 0);
@@ -455,21 +455,23 @@ for (const device of DEVICES) {
       // The one list surface that does meet the control size is the channel list.
       assert.ok(rows['.dream-channel-open[data-channel]'] >= MIN_CONTROL,
         `channel rows are only ${rows['.dream-channel-open[data-channel]']}px tall`);
-      // The entry buttons a finger actually aims at: a night-field gate row, an
-      // activation column row and a type chip. They were 16.8 / 16.8 / 23.4px before
-      // the touch rule; the columns only reach 44px because the dream shell stacks them
+      // The entry cards a finger actually aims at: a night-field gate card, an
+      // activation column row and a type chip. The card is the target now — its
+      // number's hit area covers the whole card — so the card carries the 44px, not
+      // the number. The columns only reach 44px because the dream shell stacks them
       // below the canvas on a phone (see the stacked-shell check above), which is what
       // freed them from covering the graph's flank gates.
-      for (const selector of ['.dream-row-open[data-gate]', '.dream-column-row[data-gate]', '.dream-type-chip']) {
+      for (const selector of ['.dream-realm-row[data-gate]', '.dream-column-row[data-gate]', '.dream-type-chip']) {
         assert.ok(rows[selector] >= MIN_TAP, `${selector} is only ${rows[selector]}px tall`);
       }
-      // Three different night-field rows, each opening its own gate.
-      const gates = await page.$$eval('.dream-row-open[data-gate]', nodes => nodes.slice(0, 3).map(node => node.dataset.gate));
+      // Three different night-field cards, each opening its own gate — tapped on the
+      // title text, which is outside the number, so the whole card really answers.
+      const gates = await page.$$eval('.dream-realm-row[data-gate]', nodes => nodes.slice(0, 3).map(node => node.dataset.gate));
       for (const gate of gates) {
-        await phone.tapSelector(`.dream-row-open[data-gate="${gate}"]`);
+        await phone.tapSelector(`.dream-realm-row[data-gate="${gate}"] .dream-row-name`);
         const sheet = await phone.sheetState();
-        assert.ok(sheet.open, `the row for gate ${gate} opened no sheet`);
-        assert.equal(sheet.card.gate, gate, `the row for gate ${gate} opened ${sheet.card.gate}`);
+        assert.ok(sheet.open, `the card for gate ${gate} opened no sheet`);
+        assert.equal(sheet.card.gate, gate, `the card for gate ${gate} opened ${sheet.card.gate}`);
         await phone.closeSheet();
       }
       // And a type chip repeats.
