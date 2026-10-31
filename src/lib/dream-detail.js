@@ -25,12 +25,19 @@
  * Composite (two-person) mode swaps the three-source activation block for
  * ownership, using the same gateOwner/channelDynamic the shared renderer already
  * exposes, so no second colour vocabulary is invented here.
+ *
+ * A centre sheet is structural in both modes: it enumerates the centre's whole
+ * dream topology — every gate of the fifteen, every dream channel that touches it
+ * — and says what stands in each gate tonight or who carries it, instead of
+ * listing only the gates that happen to be active. Its state comes from the model
+ * the graph is drawing, not from the natal centre set, so the sheet and the graph
+ * can never disagree about which centres are defined.
  */
 
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from './detail-dialog.js';
 import { renderDetailNavigation } from './object-detail-heading.js';
 import { bindSharedObjectDetails } from './shared-object-details.js';
-import { DREAM_CHANNELS, dreamRealmOf, isDreamPortal } from './human-design/dream-topology.js';
+import { DREAM_CHANNELS, DREAM_GATES, dreamRealmOf, isDreamPortal } from './human-design/dream-topology.js';
 import { GATES } from './human-design/catalog.js';
 import {
   dreamGateName, dreamLineTheme, dreamRealmName, dreamTypeName, dreamTypeReading,
@@ -67,6 +74,20 @@ const SOURCES = [
 const transitTerm = () => t('Transit');
 
 const gateCenter = gate => GATES[gate]?.center;
+
+/**
+ * The dream gates one centre holds, taken from the sleep topology itself.
+ *
+ * A centre sheet answers "what sits in this centre at night", not "what did a
+ * planet light tonight": the sleeping Throat holds 8, 12, 20 and 62 whether or not
+ * the night sky stands in them, and two of those are portals with no channel at
+ * all. Only the fifteen sleep gates are enumerated, so a waking gate that shares
+ * the centre key can never appear in a sleep sheet.
+ */
+const centerDreamGates = key => DREAM_GATES.filter(gate => gateCenter(gate) === key).sort((a, b) => a - b);
+
+/** The dream channels that touch one centre: the six-channel sleep topology, never the waking 36. */
+const centerDreamChannels = key => DREAM_CHANNELS.filter(channel => (channel.centers || []).includes(key));
 
 /**
  * The sleep wording for the four channel states `channelSource()` returns.
@@ -358,6 +379,46 @@ export function createDreamDetail(initial = {}) {
     return [...lines].sort((x, y) => x - y);
   };
 
+  /** One person's two sleeping halves for one gate, in the sheet's own gate/line shape. */
+  const personActivations = (model, gate) => ({
+    personality: model?.gates?.byNumber?.personality?.get(gate) || [],
+    design: model?.gates?.byNumber?.design?.get(gate) || []
+  });
+
+  /**
+   * One labelled source of one gate: the source's name, then its planets as
+   * `planet gate.line` chips. `owner` tints the whole line with that person's
+   * composite colour while the half (solid / dashed rule) keeps saying which side
+   * of the sleep design the planet came from.
+   */
+  const sourceGroup = (source, label, entries, gate, owner = '') => entries.length
+    ? `<span class="dream-detail-gate-src dream-detail-source-${source}${owner ? ` ${owner}` : ''}">
+        <span class="dream-detail-gate-src-label">${esc(label)}</span>
+        <span class="dream-detail-gate-src-planets">${entries.map(item => chip(item, gate)).join('')}</span>
+      </span>`
+    : '';
+
+  /** The night field a dream gate belongs to, as the small tag used on the other sheets. */
+  const realmTag = gate => {
+    const realm = dreamRealmOf(gate);
+    return realm ? `<span class="dream-detail-tag dream-detail-tag-${realm}">${esc(dreamRealmName(realm))}</span>` : '';
+  };
+
+  /** One dream channel as a button into its own sheet: id, dream name and structural state. */
+  const channelButton = (channel, variant, label, params = {}) => {
+    const id = channel.gates.join('-');
+    return `<button type="button" class="dream-detail-channel ${variant}" data-shared-channel-select="${id}">
+      <span class="dream-detail-channel-id">${esc(id)}</span>
+      <span class="dream-detail-channel-name">${esc(dreamChannelName(channel.gates) || id)}</span>
+      <span class="circuit-badge transit-source-badge ${variant}">${esc(t(label, params))}</span>
+    </button>`;
+  };
+
+  /** Who carries a gate in composite mode, as the sheet names people. */
+  const ownerName = owner => owner === 'both' ? `${data.composite.labelA} + ${data.composite.labelB}`
+    : owner === 'a' ? data.composite.labelA
+      : owner === 'b' ? data.composite.labelB : t('Neither of you');
+
   function paint(html, selection) {
     prepareDetailDialog(element, 'dream');
     element.innerHTML = html;
@@ -372,6 +433,7 @@ export function createDreamDetail(initial = {}) {
       onChannelSelect: id => showChannel(id),
       onBack: back
     });
+    bindSheetHighlight(element);
     openDetailDialog(element, () => {
       // Closing ends the current step as well as its trail: a later sheet must not
       // inherit the closed one's selection, or its first step would render a Back
@@ -383,6 +445,34 @@ export function createDreamDetail(initial = {}) {
     // The shared sheet sizes itself to the phone viewport; a card that skipped
     // this would overflow under the nav bar on a narrow screen.
     fitDetailSheetHeight(element.querySelector('.dream-detail-card'));
+  }
+
+  /**
+   * Hovering or focusing a gate or channel row lights it in the graph, the same
+   * two-way link the page's own rows and the waking sheet already have. Leaving
+   * the row falls back to the sheet's pinned object, which `paint()` set, so a
+   * reader never loses the selection they opened.
+   *
+   * Listeners sit on the rows, not on the sheet: `paint()` replaces the inner
+   * markup on every step, so the old rows and their listeners go with it.
+   */
+  function bindSheetHighlight(root) {
+    if (!api) return;
+    for (const button of root.querySelectorAll('[data-shared-gate-select]')) {
+      const gate = Number(button.dataset.sharedGateSelect);
+      button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') api.highlightGate?.(gate); });
+      button.addEventListener('focus', () => api.highlightGate?.(gate));
+      button.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') api.highlightGate?.(null); });
+      button.addEventListener('blur', () => api.highlightGate?.(null));
+    }
+    for (const button of root.querySelectorAll('[data-shared-channel-select]')) {
+      const id = button.dataset.sharedChannelSelect;
+      const light = on => api.highlightSelection?.(on ? { kind: 'channel', id } : null);
+      button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') light(true); });
+      button.addEventListener('focus', () => light(true));
+      button.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') light(false); });
+      button.addEventListener('blur', () => light(false));
+    }
   }
 
   /** Reopen the previous selection without pushing it back onto the stack. */
@@ -423,11 +513,7 @@ export function createDreamDetail(initial = {}) {
         const id = channel.gates.join('-');
         const source = data.model ? data.model.channelSource(channel)
           : data.dream?.channels.some(c => c.gates.join('-') === id) ? 'natal' : 'inactive';
-        return `<button type="button" class="dream-detail-channel ${source}" data-shared-channel-select="${id}">
-          <span class="dream-detail-channel-id">${esc(id)}</span>
-          <span class="dream-detail-channel-name">${esc(dreamChannelName(channel.gates) || id)}</span>
-          <span class="circuit-badge transit-source-badge ${source}">${esc(t(SLEEP_CHANNEL_STATUS[source], { transit: transitTerm() }))}</span>
-        </button>`;
+        return channelButton(channel, source, SLEEP_CHANNEL_STATUS[source], { transit: transitTerm() });
       }).join('')}</div>` : '';
 
     const body = data.composite
@@ -472,10 +558,7 @@ export function createDreamDetail(initial = {}) {
   }
 
   function compositeGateBody(gate) {
-    const owner = api?.gateOwner?.(gate);
-    const who = owner === 'both' ? `${data.composite.labelA} + ${data.composite.labelB}`
-      : owner === 'a' ? data.composite.labelA
-        : owner === 'b' ? data.composite.labelB : t('Neither of you');
+    const who = ownerName(api?.gateOwner?.(gate));
     const channels = DREAM_CHANNELS.filter(channel => channel.gates.includes(gate));
     const rows = channels.map(channel => {
       const dynamic = api?.channelDynamic?.(channel);
@@ -537,9 +620,7 @@ export function createDreamDetail(initial = {}) {
       : source;
     const gateRows = channel.gates.map(gate => {
       if (data.composite) {
-        const owner = api?.gateOwner?.(gate);
-        const who = owner === 'both' ? `${data.composite.labelA} + ${data.composite.labelB}`
-          : owner === 'a' ? data.composite.labelA : owner === 'b' ? data.composite.labelB : t('Neither of you');
+        const who = ownerName(api?.gateOwner?.(gate));
         return `<div class="dream-detail-gate-row">
           <button type="button" class="dream-detail-gate-link" data-shared-gate-select="${gate}">
             <span class="dream-detail-gate-id">${gate}</span>
@@ -619,8 +700,97 @@ export function createDreamDetail(initial = {}) {
     `), selection);
   }
 
+  /**
+   * One dream gate of a centre, with every source that carries it tonight.
+   *
+   * The row exists whatever the night sky did: an unactivated gate is still part of
+   * the centre, and a reader who came from the graph wants to see it and open it.
+   * `data-gate-state` says which of the four states the row is in (`natal`,
+   * `transit`, `both`, `inactive`) so the same fact is available to the page, the
+   * tests and a style without re-deriving it.
+   */
+  function centerGateRow(gate) {
+    const acts = activationsFor(gate);
+    const natal = acts.personality.length + acts.design.length;
+    const state = natal && acts.transit.length ? 'both' : natal ? 'natal' : acts.transit.length ? 'transit' : 'inactive';
+    const groups = SOURCES
+      .filter(({ key: source }) => acts[source]?.length)
+      .map(({ key: source, label }) => sourceGroup(source, t(label), acts[source], gate))
+      .join('');
+    return `<div class="dream-detail-gate-row dream-detail-center-gate" data-center-gate="${gate}" data-gate-state="${state}">
+      <button type="button" class="dream-detail-gate-link" data-shared-gate-select="${gate}">
+        <span class="dream-detail-gate-id">${gate}</span>
+        <span class="dream-detail-gate-name">${esc(dreamGateName(gate))}</span>
+      </button>
+      ${realmTag(gate)}
+      ${groups
+        ? `<div class="dream-detail-gate-sources">${groups}</div>`
+        : `<span class="dream-detail-gate-state">${esc(t('Inactive'))}</span>`}
+    </div>`;
+  }
+
+  /**
+   * The same row in composite mode: who carries the gate, then each person's two
+   * sleeping halves as their own labelled groups.
+   *
+   * There is no night sky in a composite, so ownership is the only source fact:
+   * one gate can belong to A, to B, to both, or to neither, and a gate neither
+   * person carries is still listed as part of the centre.
+   */
+  function compositeCenterGateRow(gate) {
+    const { labelA, labelB } = data.composite;
+    const a = personActivations(data.a, gate);
+    const b = personActivations(data.b, gate);
+    const carries = acts => acts.personality.length + acts.design.length > 0;
+    const hasA = carries(a);
+    const hasB = carries(b);
+    const state = hasA && hasB ? 'both' : hasA ? 'a' : hasB ? 'b' : 'none';
+    const who = ownerName(state === 'none' ? null : state);
+    const separator = formatDisplay('separator', 'label');
+    const groups = [['a', labelA, a], ['b', labelB, b]]
+      .flatMap(([owner, name, acts]) => ['personality', 'design']
+        .filter(half => acts[half].length)
+        .map(half => sourceGroup(half,
+          `${name}${separator}${t(half === 'design' ? 'Sleep design' : 'Sleep personality')}`,
+          acts[half], gate, `dream-detail-owner-${owner}`)))
+      .join('');
+    return `<div class="dream-detail-gate-row dream-detail-center-gate" data-center-gate="${gate}" data-gate-state="${state}">
+      <button type="button" class="dream-detail-gate-link" data-shared-gate-select="${gate}">
+        <span class="dream-detail-gate-id">${gate}</span>
+        <span class="dream-detail-gate-name">${esc(dreamGateName(gate))}</span>
+      </button>
+      ${realmTag(gate)}
+      <span class="dream-detail-gate-owner">${esc(who)}</span>
+      ${groups ? `<div class="dream-detail-gate-sources">${groups}</div>` : ''}
+    </div>`;
+  }
+
+  /**
+   * A centre sheet: the centre's whole dream topology, not tonight's activations.
+   *
+   * Single design: every one of the fifteen dream gates that sits in this centre,
+   * each with the sources standing in it (sleep personality / sleep design /
+   * transit, planet and line) or an explicit `Inactive`; then the dream channels
+   * that touch the centre with their real state — a channel with one natal gate
+   * and one empty gate is `Not connected`, never `completed`.
+   *
+   * The centre's own state comes from the model the graph is drawing
+   * (`definedCenters`), and the badge says where the definition comes from: the
+   * sleeper's own design or the transit overlay. The sheet never reads
+   * `data.dream.centers` for that, because the natal set alone cannot describe the
+   * graph on screen once the night sky is overlaid.
+   *
+   * Composite: the same gate and channel lists, with ownership instead of an
+   * overlay, and each person's sleeping halves printed under the gate they carry.
+   * No reading prose is added in either mode: a centre is structure here, and the
+   * waking centre reading belongs to the waking chart.
+   */
   function showCenter(key, push = true) {
     if (push) advance({ kind: 'center', id: key }); else current = { kind: 'center', id: key };
+    const gates = centerDreamGates(key);
+    const channels = centerDreamChannels(key);
+    const gateSection = `<h3 class="dream-detail-subhead">${esc(t('Dream gates in this center'))}</h3>
+      <div class="dream-detail-center-gates">${gates.map(data.composite ? compositeCenterGateRow : centerGateRow).join('')}</div>`;
     if (data.composite) {
       const owner = api?.centerOwner?.(key);
       const tag = owner === 'both' ? t('Both define') : owner === 'a' ? t('{name} defines', { name: data.composite.labelA })
@@ -628,26 +798,43 @@ export function createDreamDetail(initial = {}) {
           : owner === 'bridged' ? t('Newly defined in the relationship') : t('Undefined');
       paint(card(`data-center="${key}"`, `
         ${centerHeading(key)}
-        <div class="dream-detail-owner">${esc(tag)}</div>
+        <div class="dream-detail-owner" data-center-owner="${owner || 'none'}">${esc(tag)}</div>
         ${compositeTypeRow()}
+        ${gateSection}
+        <h3 class="dream-detail-subhead">${esc(t('Sleep channels'))}</h3>
+        <div class="dream-detail-channels">${channels.map(channel => {
+          const dynamic = api?.channelDynamic?.(channel) || null;
+          const status = compositeChannelStatus(channel, data.a, data.b, dynamic,
+            data.composite.labelA, data.composite.labelB);
+          return channelButton(channel, status.variant, status.label, status.params);
+        }).join('')}</div>
       `), { kind: 'center', id: key });
       return;
     }
-    const defined = data.dream.centers.defined.has(key);
-    const gates = (data.dream?.gates.all || []).filter(gate => gateCenter(gate) === key);
-    const gateList = gates.length
-      ? `<div class="dream-detail-center-gates">${gates.map(gate => `
-          <button type="button" class="dream-detail-gate-link" data-shared-gate-select="${gate}">
-            <span class="dream-detail-gate-id">${gate}</span>
-            <span class="dream-detail-gate-name">${esc(dreamGateName(gate))}</span>
-            <span class="dream-detail-tag dream-detail-tag-${dreamRealmOf(gate)}">${esc(dreamRealmName(dreamRealmOf(gate)))}</span>
-          </button>`).join('')}</div>`
-      : `<p class="dream-detail-empty">${esc(t('No dream gate is active in this center.'))}</p>`;
+    const model = data.model;
+    const defined = model ? model.definedCenters.has(key) : !!data.dream?.centers.defined.has(key);
+    const natalDefined = model ? model.natalCenters.has(key) : !!data.dream?.centers.defined.has(key);
+    // A transit-only graph defines the centre from the sky alone, whatever the
+    // sleeper's own design holds, so that mode never reads as a natal definition.
+    const fromSleep = natalDefined && model?.mode !== 'transit-only';
+    const status = !defined ? 'inactive' : fromSleep ? 'natal' : 'transit';
+    const statusLabel = !defined ? 'Undefined in sleep' : fromSleep ? 'Defined in sleep' : 'Defined by transits';
     paint(card(`data-center="${key}"`, `
       ${centerHeading(key)}
-      <span class="circuit-badge transit-source-badge ${defined ? 'natal' : 'inactive'}">${esc(t(defined ? 'Defined in sleep' : 'Undefined in sleep'))}</span>
-      <h3 class="dream-detail-subhead">${esc(t('Dream gates in this center'))}</h3>
-      ${gateList}
+      <span class="circuit-badge transit-source-badge ${status}" data-center-status="${status}">${esc(t(statusLabel))}</span>
+      ${gateSection}
+      <h3 class="dream-detail-subhead">${esc(t('Sleep channels'))}</h3>
+      <div class="dream-detail-channels">${channels.map(channel => {
+        // Completeness first, state second: `channelSource()` describes the gates it
+        // is given, so one natal gate beside an empty one would otherwise read as
+        // `completed` while the channel is not connected at all.
+        const id = channel.gates.join('-');
+        const complete = model
+          ? model.channels.some(item => item.gates.join('-') === id)
+          : !!data.dream?.channels.some(item => item.gates.join('-') === id);
+        const source = !complete ? 'inactive' : model ? model.channelSource(channel) : 'natal';
+        return channelButton(channel, source, SLEEP_CHANNEL_STATUS[source], { transit: transitTerm() });
+      }).join('')}</div>
     `), { kind: 'center', id: key });
   }
 

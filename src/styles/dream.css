@@ -1152,6 +1152,11 @@
 
 .dream-detail-gate-src {
   --dream-detail-source: var(--hd-inactive);
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--space-1);
+  min-width: 0;
   color: var(--text-secondary);
   font-size: var(--font-size-md);
   line-height: 1.5;
@@ -1169,10 +1174,71 @@
 }
 
 .dream-detail-center-gates {
+  display: grid;
+  gap: 0;
+  margin: 0 0 var(--space-3);
+}
+
+/* A centre's gate rows are one list, not a row of chips: each entry carries the
+   centre's whole dream topology, so the row grows with its sources instead of
+   sitting on one line. The rule between rows is the only separator, which keeps a
+   long list readable at 360px. */
+.dream-detail-center-gate {
+  margin: 0;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--hd-detail-border);
+}
+.dream-detail-center-gate:first-child { padding-top: 0; }
+.dream-detail-center-gate:last-child { border-bottom: 0; padding-bottom: 0; }
+
+/* The sources of one gate wrap under its title row, one labelled group each, so a
+   gate with a sleep personality, a sleep design and a transit activation stays a
+   single object instead of three unrelated lines. */
+.dream-detail-gate-sources {
+  flex: 1 0 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-3);
+  gap: var(--space-1) var(--space-3);
+  min-width: 0;
+  padding-left: var(--space-2);
+}
+
+.dream-detail-gate-src-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.5;
+}
+/* The label names the source, so it takes the source's hue: the three colours are
+   already the sheet's source vocabulary and the group's own rule carries the same
+   one (solid / dashed / dotted). */
+.dream-detail-source-personality > .dream-detail-gate-src-label { color: var(--hd-personality); }
+.dream-detail-source-design > .dream-detail-gate-src-label { color: var(--hd-design); }
+.dream-detail-source-transit > .dream-detail-gate-src-label { color: var(--hd-transit-text); }
+.dream-detail-gate-src-planets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px var(--space-1);
+  min-width: 0;
+}
+
+/* Composite mode tints a source group with the person who carries it; the half
+   stays encoded in the rule style above (solid personality, dashed design), so the
+   hue never carries a fact on its own. */
+.dream-detail-owner-a { --dream-detail-source: var(--hd-connection-a); }
+.dream-detail-owner-b { --dream-detail-source: var(--hd-connection-b); }
+.dream-detail-owner-a > .dream-detail-gate-src-label,
+.dream-detail-owner-b > .dream-detail-gate-src-label { color: var(--dream-detail-source); }
+
+/* A gate that holds no planet tonight says so instead of disappearing. */
+.dream-detail-gate-state {
+  padding: 1px 8px;
+  border: 1px dashed var(--hd-detail-border);
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .dream-detail-empty {
@@ -1528,6 +1594,14 @@
     align-items: center;
     justify-content: center;
     min-height: var(--dream-tap);
+  }
+
+  /* The centre sheet's gate rows and channel buttons are the finger's targets:
+     the row takes the 44px and the text keeps its size. */
+  .dream-view .dream-detail-center-gate,
+  .dream-view .dream-detail-channel {
+    min-height: var(--dream-tap);
+    align-content: center;
   }
 
   /* The activation row keeps its two-column grid; the extra height centres the
