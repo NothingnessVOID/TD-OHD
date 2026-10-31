@@ -900,9 +900,12 @@ body {
   background: transparent;
   outline: none;
 }
-#transit-choice-label { font-size: 12px; color: var(--text-secondary); }
-#transit-choice { margin-left: 8px; }
-#transit-status { margin: 0 0 20px; }
+/* The shared transit time control (lib/transit-time-control.js) renders these on
+   the Transits page and the Sleep chart alike; its ids carry the host's prefix,
+   so the layout is keyed on the class instead. */
+.tl-choice-label { font-size: 12px; color: var(--text-secondary); }
+.tl-choice { margin-left: 8px; }
+.tl-time-status { margin: 0 0 20px; }
 
 .transit-completion {
   padding: 14px;
@@ -1139,25 +1142,33 @@ body {
 .bg-planets-design .bg-planet-act { color: var(--bg-source-design-text, var(--source-design-text)); font-weight: 600; }
 .bg-planets-personality .bg-planet-act { color: var(--bg-source-personality-text, var(--source-personality-text)); font-weight: 600; }
 
-/* Hover highlight: dim everything, then re-light the hovered gate/channel */
+/* Hover highlight: dim everything, then re-light the hovered gate/channel.
+   Opacity only — the transition belongs to the base rules below, so the
+   reduced-motion reset can still switch it off. */
 .bodygraph-svg.bg-dimmed .bg-gate-path,
 .bodygraph-svg.bg-dimmed .bg-gate-circle {
   opacity: 0.18;
-  transition: opacity 0.12s;
 }
 
 .bodygraph-svg.bg-dimmed .bg-gate-path.bg-lit { opacity: 1; }
 .bodygraph-svg.bg-dimmed .bg-gate.bg-lit .bg-gate-circle { opacity: 1; }
 .bodygraph-svg .bg-gate-path,
-.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s; }
+.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; }
 
+/* The object's own emphasis is the restroke below, never the browser's default focus
+   rectangle. Chrome paints that rectangle around the object's whole bounding box even
+   for a mouse-only focus: the detail sheet returns focus to the centre that opened it,
+   and the graph then showed a square frame the reader had not asked for. Keyboard
+   focus stays visible regardless, because focus also adds `bg-focus` to the shape. */
+.bodygraph-svg .bg-gate,
+.bodygraph-svg .bg-center { outline: none; }
 /* Gate hover: a ring on the visible circle, drawn with the skin's focus colour so it
    stays legible on every palette. Only the stroke changes, so the fill, the number
    backing and the dimming/lighting driven by highlightGate are all untouched. */
-.bodygraph-svg .bg-gate { outline: none; }
-.bodygraph-svg .bg-gate-circle { transition: opacity 0.12s, stroke 0.12s; stroke: transparent; }
+.bodygraph-svg .bg-gate-circle { stroke: transparent; }
 .bodygraph-svg .bg-gate:hover .bg-gate-circle,
-.bodygraph-svg .bg-gate:focus-visible .bg-gate-circle {
+.bodygraph-svg .bg-gate:focus-visible .bg-gate-circle,
+.bodygraph-svg .bg-gate.bg-focus .bg-gate-circle {
   stroke: var(--focus);
   stroke-width: 2;
 }
@@ -1172,14 +1183,50 @@ body {
 }
 .bodygraph-svg.bg-dimmed .bg-gate.bg-selected .bg-gate-circle { opacity: 1; }
 
+/* Hover, keyboard focus and pin also outline the shape itself — the gate's wedge, or
+   the centre — not only the small disc that carries its number. On a two-person
+   composite every gate is a pale ownership wash, so the disc ring alone was easy to
+   miss and the graph read as unchanged. `paint-order` draws the stroke first, so the
+   outline sits outside the geometry and the ownership colour inside stays intact. */
+.bodygraph-svg .bg-gate-path.bg-focus,
+.bodygraph-svg .bg-center.bg-focus {
+  stroke: var(--focus);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+/* The pinned object keeps a heavier outline than a hover preview. It carries the focus
+   colour itself: a pinned centre can stay pinned while another object is hovered, and
+   then it has no `bg-focus` to borrow the stroke from. */
+.bodygraph-svg .bg-gate-path.bg-selected,
+.bodygraph-svg .bg-center.bg-selected {
+  stroke: var(--focus);
+  stroke-width: 3.4;
+}
+.bodygraph-svg.bg-dimmed .bg-gate-path.bg-focus { opacity: 1; }
+
 /* Relational highlight reaches the centers too: when a gate (and its channel)
    lights up, the center(s) it touches stay lit while the rest settle back. */
-.bodygraph-svg .bg-center { transition: opacity 0.12s; }
+.bodygraph-svg .bg-center { transition: opacity 0.12s, stroke 0.12s; }
 .bodygraph-svg.bg-dimmed .bg-center:not(.bg-lit) { opacity: 0.35; }
 
+/* Viewport overlay for graph tooltips.
+   The element is a `popover="manual"` where the browser has top-layer popovers, so it is
+   laid out against the viewport and outside every ancestor's transform, `contain` and
+   `container-type` — all three would otherwise capture a plain `position: fixed`
+   descendant, which is exactly what put the overlay 306px off the pointer on the sleep
+   chart. Where popover is not available the element stays a plain fixed child and the
+   renderer converts its position into the containing block's coordinates instead.
+   Either way it stays inside the graph in the DOM (that is its life cycle) and inherits the
+   graph's source colours and transit source mode. The declarations below undo the
+   user-agent popover box; `bodygraph.js` owns showing it and placing it.
+   Top-layer popovers: Chrome 114+, Safari 17+, Firefox 125+. */
 .bg-tooltip {
   position: fixed;
-  z-index: 50;
+  inset: auto;
+  margin: 0;
+  overflow: visible;
+  color: inherit;
   width: max-content;
   max-width: min(260px, calc(100vw - 16px));
   padding: 8px 11px;
@@ -1190,7 +1237,13 @@ body {
   font-size: 12px;
   line-height: 1.45;
   pointer-events: none;
+  /* Shown by class in both modes. A top-layer popover would otherwise be hidden by the
+     user-agent rule and a browser without popover support has no such rule at all; this
+     keeps one display contract for the supported and the fallback path. */
+  display: none;
 }
+
+.bg-tooltip.bg-tooltip-open { display: block; }
 
 .bg-tooltip strong { font-size: 12.5px; }
 /* Tooltip foregrounds use its own surface, independently of source fills. */
@@ -1259,7 +1312,11 @@ body {
 .bg-reveal {
   transform-box: fill-box;
   transform-origin: center;
-  animation: bg-center-in 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  /* `backwards`, not `both`: an animation that also fills forwards keeps its final
+     opacity of 1 forever, which silently beat the dim rule below — the relationship
+     composite's centres never dimmed while its gates did. The last keyframe equals
+     the base style, so dropping the forwards fill changes nothing else. */
+  animation: bg-center-in 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
 }
 
 .bg-reveal-paths {
@@ -2771,7 +2828,23 @@ body.modal-open { overflow: hidden; }
   }
 }
 
-@media (--above-phone) and (max-width: 900px) {
+/* The header must never push the document wider than the viewport, at any
+   width above the phone breakpoint.
+
+   `.nav` is a flex item, so without `min-width: 0` its automatic minimum size
+   (the widest unbreakable label plus padding) stops it shrinking, and the whole
+   header overflows once the labels no longer fit. Letting it shrink and scroll
+   inside itself keeps the document width honest and every item reachable; the
+   labels stay on one line instead of wrapping to a taller header.
+
+   This used to stop at 900px, which left a window above it: with eight items in
+   English the header's smallest possible width is 936px, so any viewport in
+   (900, 936) overflowed the page by up to 36px. `tests/timeline-e2e.mjs` checks
+   927px and caught it. Raising the ceiling would only move the window, so the
+   constraint now covers every desktop width; where the labels fit, nothing
+   scrolls and the layout is unchanged. `main.js` already scrolls the active
+   item into view on a view change. */
+@media (--above-phone) {
   .logo, .header-actions { flex-shrink: 0; }
   .nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }

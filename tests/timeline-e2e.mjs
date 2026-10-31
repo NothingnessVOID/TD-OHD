@@ -148,7 +148,14 @@ try {
           return getComputedStyle(swatch).color;
         };
         const label = tooltip.querySelector(`.bg-tt-source.${source}`);
-        const result = { visible: tooltip.style.display === 'block',
+        // The overlay is a top-layer popover now, so its visibility lives in the
+        // popover state and the computed style rather than an inline display flag.
+        // Asserting the rendered box is stronger than the old
+        // `style.display === 'block'`, which only proved an attribute had been set.
+        const tipStyle = getComputedStyle(tooltip);
+        const tipBox = tooltip.getBoundingClientRect();
+        const result = { visible: tipStyle.display !== 'none' && tipStyle.visibility !== 'hidden'
+            && Number(tipStyle.opacity) > 0 && tipBox.width > 0 && tipBox.height > 0,
           actual: label && getComputedStyle(label).color,
           expected: resolved(source === 'transit' ? '--transit-source-text' : '--text-secondary'),
           transitPart: label?.querySelector('.bg-tt-source-transit') &&

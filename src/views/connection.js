@@ -13,6 +13,7 @@ import { GATES, CHANNELS } from '../lib/human-design/catalog.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
 import { birthActivationsMarkup, renderBirthActivations } from '../features/transit-timeline/birth-activations.js';
 import { graphShellMarkup, observeGraphShell } from '../lib/graph-shell.js';
+import { compositePalette } from '../lib/skin-registry.js';
 import { translator } from '../features/transit-timeline/messages.js';
 import { computeChart } from '../lib/chartdata.js';
 import { getPerson, listPeople, birthFromPerson, getSharedGuest } from '../lib/people.js';
@@ -169,14 +170,8 @@ export function refreshConnectionLanguage() {
 }
 
 // Relationship colors are separate from personality/design/transit sources.
-function compositePalette() {
-  const style = getComputedStyle(document.documentElement);
-  return {
-    a: style.getPropertyValue('--hd-connection-a').trim(),
-    b: style.getPropertyValue('--hd-connection-b').trim(),
-    bridged: style.getPropertyValue('--hd-connection-bridged').trim()
-  };
-}
+// Ownership colours come from the shared skin registry; the sleep composite and
+// this view must agree, so neither derives them privately.
 
 // Mechanic labels use ownership markers, never a separate four-color palette.
 function mechanicMarker(kind, owner) {

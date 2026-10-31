@@ -98,3 +98,20 @@ export const SKIN_TOKEN_GROUPS = Object.freeze({
   ])
 });
 export const SKIN_TOKENS = Object.freeze(Object.values(SKIN_TOKEN_GROUPS).flat());
+
+/**
+ * Resolved two-person ownership colours for a composite graph.
+ *
+ * Every composite surface reads the same three relationship tokens, so the
+ * lookup lives beside the token registry instead of being re-derived per view.
+ * Returns resolved CSS colour strings; the skin still owns the actual values.
+ */
+export function compositePalette(root = document.documentElement) {
+  const style = getComputedStyle(root);
+  const read = name => style.getPropertyValue(name).trim();
+  return {
+    a: read('--hd-connection-a'),
+    b: read('--hd-connection-b'),
+    bridged: read('--hd-connection-bridged')
+  };
+}

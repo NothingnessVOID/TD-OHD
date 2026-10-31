@@ -112,9 +112,27 @@ test('no translation-only disclosure; tooltip keeps the HD name with a parenthet
   for (const field of ['shadow', 'gift', 'siddhi']) assert.match(gateReading(34, 'gk'), new RegExp(`gk-${field}`));
   setLocale(previousLocale, { persist: false });
   const graph = readFileSync(new URL('../src/bodygraph.js',import.meta.url),'utf8');
-  for (const variable of ['gateNum', 'g']) {
-    assert.ok(graph.includes(`formatDisplay('gateTooltip', displayGate(${variable}), hexagramName(${variable}))`));
+  // A host may name the gates its own topology shares with the catalogue, so the graph
+  // resolves a gate's tooltip name in one helper: the host's `naming.gateTooltip` when it
+  // answers, else the shared `formatDisplay('gateTooltip', …)` pair that keeps the waking
+  // hexagram. Both gate titles — the single chart's `gateNum` and the composite's `g` — print
+  // through that helper. Pinning the helper's shape and its two call sites keeps a host
+  // override from silently dropping the default hexagram, without binding the fallback to
+  // the variable name of one particular title.
+  const tooltipHelper = graph.match(
+    /const (nameOfGateTooltip) = (\w+) =>\s*naming\?\.gateTooltip\?\.\(\2\)\s*\|\|\s*formatDisplay\('gateTooltip', displayGate\(\2\), hexagramName\(\2\)\);/,
+  );
+  assert.ok(tooltipHelper, "a gate tooltip name must prefer naming.gateTooltip and fall back to formatDisplay('gateTooltip', …)");
+  const titleSites = [...graph.matchAll(/const gateTitle = t\('Gate \{gate\}[^']*\{name\}', \{ gate: (\w+), name: (\w+)\((\w+)\) \}\);/g)];
+  assert.equal(titleSites.length, 2, 'the single chart and the composite chart each need one gate title');
+  for (const [, gateVariable, helper, argument] of titleSites) {
+    assert.equal(helper, tooltipHelper[1], `the ${gateVariable} title must print through ${tooltipHelper[1]}`);
+    assert.equal(argument, gateVariable, `the ${gateVariable} title must name its own gate`);
   }
+  assert.deepEqual(titleSites.map(([, gateVariable]) => gateVariable), ['gateNum', 'g'],
+    'the single chart (gateNum) and the composite chart (g) titles both go through the helper');
+  assert.doesNotMatch(graph, /gateTitle = [^\n]*formatDisplay\('gateTooltip'/,
+    "a gate title must not format its own tooltip name inline, or a host override would lose the fallback");
   assert.doesNotMatch(graph,/bg-tt-name/);
   assert.doesNotMatch(graph,/clampTooltip|tooltip-position/);
   const html = readFileSync(new URL('../index.html',import.meta.url),'utf8');
