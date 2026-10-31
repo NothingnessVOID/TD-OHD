@@ -1211,7 +1211,7 @@
 }
 /* The label names the source, so it takes the source's hue: the three colours are
    already the sheet's source vocabulary and the group's own rule carries the same
-   one (solid / dashed / dotted). */
+   one (both natal halves solid, the transit source dashed). */
 .dream-detail-source-personality > .dream-detail-gate-src-label { color: var(--hd-personality); }
 .dream-detail-source-design > .dream-detail-gate-src-label { color: var(--hd-design); }
 .dream-detail-source-transit > .dream-detail-gate-src-label { color: var(--hd-transit-text); }
@@ -1222,9 +1222,9 @@
   min-width: 0;
 }
 
-/* Composite mode tints a source group with the person who carries it; the half
-   stays encoded in the rule style above (solid personality, dashed design), so the
-   hue never carries a fact on its own. */
+/* Composite mode tints a source group with the person who carries it; both natal
+   halves keep their solid rule, so the hue and the label carry the person and the
+   half instead of a border style. */
 .dream-detail-owner-a { --dream-detail-source: var(--hd-connection-a); }
 .dream-detail-owner-b { --dream-detail-source: var(--hd-connection-b); }
 .dream-detail-owner-a > .dream-detail-gate-src-label,

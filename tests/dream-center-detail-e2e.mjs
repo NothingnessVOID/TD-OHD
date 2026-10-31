@@ -265,13 +265,18 @@ async function readCenter(selector) {
         groups: [...row.querySelectorAll('.dream-detail-gate-src')].map(group => ({
           label: group.querySelector('.dream-detail-gate-src-label')?.textContent.trim() || '',
           chips: [...group.querySelectorAll('.dream-planet-chip')].map(chip => chip.textContent.trim()),
-          classes: [...group.classList]
+          classes: [...group.classList],
+          // The source block's rule is read from the browser, not from the class list:
+          // the ruling "natal solid / transit dashed" is a computed fact.
+          rule: getComputedStyle(group).borderLeftStyle,
+          ruleWidth: getComputedStyle(group).borderLeftWidth
         }))
       })),
       channels: [...card.querySelectorAll('.dream-detail-channel')].map(button => ({
         id: button.dataset.sharedChannelSelect,
         classes: [...button.classList],
-        status: button.querySelector('.circuit-badge')?.textContent.trim() || ''
+        status: button.querySelector('.circuit-badge')?.textContent.trim() || '',
+        rule: getComputedStyle(button).borderLeftStyle
       }))
     };
   });
@@ -352,6 +357,43 @@ await check('fixture: the channel list is the dream channels touching the centre
   const rootChannels = Object.fromEntries(root.channels.map(row => [row.id, row]));
   assert(rootChannels['28-38'].status === '由行运接通', `28-38 is ${JSON.stringify(rootChannels['28-38'])}`);
   assert(rootChannels['42-53'].status === '未接通', `42-53 is ${JSON.stringify(rootChannels['42-53'])}`);
+});
+
+await check('fixture: both natal sources are solid, only the transit source is dashed', async () => {
+  await page.evaluate(() => window.__fx.single.show('throat'));
+  const center = await readCenter('#fixture-single .gate-detail-card[data-center]');
+  const rules = center.gates.flatMap(row => row.groups.map(group => ({ gate: row.gate, label: group.label, rule: group.rule, width: group.ruleWidth })));
+  const personality = rules.filter(group => group.label === '梦境人格');
+  const design = rules.filter(group => group.label === '梦境设计');
+  const transit = rules.filter(group => group.label === '行运');
+  assert(personality.length && design.length && transit.length, `rules ${JSON.stringify(rules)}`);
+  // Personality and design share the natal solid rule at the block's own 3px, so a
+  // gate carried by the sleeper and by the sky cannot be told apart by border style.
+  assert(personality.every(group => group.rule === 'solid'), `personality rules ${JSON.stringify(personality)}`);
+  assert(design.every(group => group.rule === 'solid'), `design rules ${JSON.stringify(design)}`);
+  assert(personality.concat(design).every(group => group.width === '3px'),
+    `natal rule widths ${JSON.stringify(personality.concat(design))}`);
+  // Only the external overlay keeps a second style.
+  assert(transit.every(group => group.rule === 'dashed'), `transit rules ${JSON.stringify(transit)}`);
+  // The channel rows keep their own status borders; the source ruling never reaches them.
+  const natalChannel = center.channels.find(channel => channel.id === '1-8');
+  assert(natalChannel.rule === 'solid', `the natal channel border became ${natalChannel.rule}`);
+  await page.evaluate(() => window.__fx.single.show('root'));
+  const root = await readCenter('#fixture-single .gate-detail-card[data-center]');
+  assert(root.channels.find(channel => channel.id === '28-38').rule === 'dashed', 'a completed channel lost its dashed status rule');
+  assert(root.channels.find(channel => channel.id === '42-53').rule === 'solid', 'an inactive channel lost its solid status rule');
+  assert(root.gates.find(row => row.gate === 38).groups.every(group => group.rule === 'solid'),
+    'the design source of gate 38 is no longer solid');
+});
+
+await check('fixture: composite natal groups keep the solid rule for both people', async () => {
+  await page.evaluate(() => window.__fx.composite.show('throat'));
+  const center = await readCenter('#fixture-composite .gate-detail-card[data-center]');
+  const groups = center.gates.flatMap(row => row.groups);
+  assert(groups.length >= 3, `composite groups ${JSON.stringify(groups)}`);
+  assert(groups.every(group => group.rule === 'solid'), `composite rules ${JSON.stringify(groups.map(group => [group.label, group.rule]))}`);
+  await page.evaluate(() => window.__fx.composite.close());
+  await page.waitForFunction(() => window.__fx.composite.open === false, null, { timeout: 5000 });
 });
 
 await check('fixture: a gate opens from the centre and Back returns to the centre', async () => {

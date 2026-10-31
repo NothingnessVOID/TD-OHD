@@ -387,12 +387,15 @@ export function createDreamDetail(initial = {}) {
 
   /**
    * One labelled source of one gate: the source's name, then its planets as
-   * `planet gate.line` chips. `owner` tints the whole line with that person's
-   * composite colour while the half (solid / dashed rule) keeps saying which side
-   * of the sleep design the planet came from.
+   * `planet gate.line` chips.
+   *
+   * The shared `.dream-detail-source` block supplies the rule and the source hue:
+   * both natal halves are solid and only the transit source is dashed, so a
+   * composite group keeps its solid natal rule too and the person is told apart by
+   * the owner colour and the label, not by a second border style.
    */
   const sourceGroup = (source, label, entries, gate, owner = '') => entries.length
-    ? `<span class="dream-detail-gate-src dream-detail-source-${source}${owner ? ` ${owner}` : ''}">
+    ? `<span class="dream-detail-source dream-detail-gate-src dream-detail-source-${source}${owner ? ` ${owner}` : ''}">
         <span class="dream-detail-gate-src-label">${esc(label)}</span>
         <span class="dream-detail-gate-src-planets">${entries.map(item => chip(item, gate)).join('')}</span>
       </span>`
