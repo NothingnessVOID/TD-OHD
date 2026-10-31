@@ -143,6 +143,8 @@ function palette(style) {
  * @param {boolean} [opts.planetColumns] - set false to hide columns but keep interactivity
  * @param {boolean} [opts.animate] - reveal animation (default true unless compact)
  * @param {function} [opts.onGateClick] - (gateNum) => void
+ * @param {function} [opts.onHighlight] - ({gates, centers, selection}|null) => void; `gates`/`centers` are the lit
+ *   relation, `selection` is the chosen object (`{kind:'gate'|'center', id}` or `{kind:'gates'|'targets', gates, centers}`)
  * @param {Iterable<number>} [opts.transitGates] - gates to ring with transit overlay
  * @param {object} [opts.topology] - reduced graph topology; defaults to the full nine-centre chart
  * @param {string} [opts.ariaLabel] - override the generated graph summary
@@ -668,8 +670,9 @@ export function renderBodygraph(container, chart, opts = {}) {
   // lights the center and the active gates inside it. Everything else dims, so
   // the chart reads as one focused object. `pinned` keeps a selection lit while
   // its detail card is open; hovering previews, and pointer-out reverts to the
-  // pinned selection. `opts.onHighlight({gates,centers}|null)` lets the host
-  // light the matching rows in the data panels (the reverse direction).
+  // pinned selection. `opts.onHighlight({gates,centers,selection}|null)` lets the host
+  // light the matching rows in the data panels (the reverse direction): `gates`/`centers`
+  // are the relation the graph lit, `selection` is the object the reader chose.
   let highlighted = null; // change-detection token
   let pinned = null;       // { kind:'gate'|'center', id } | null
   const tokenOf = (sel) => sel ? `${sel.kind}:${sel.kind === 'gates' ? sel.gates.join(',')
@@ -744,12 +747,26 @@ export function renderBodygraph(container, chart, opts = {}) {
     return { gates: [...gates], centers: [...centers] };
   }
 
+  /** A copy of the current selection, so a host cannot mutate the renderer's state. */
+  const selectionSnapshot = sel => {
+    const copy = { ...sel };
+    if (Array.isArray(sel.gates)) copy.gates = [...sel.gates];
+    if (Array.isArray(sel.centers)) copy.centers = [...sel.centers];
+    return copy;
+  };
+
   function applySelection(sel) {
     const tok = tokenOf(sel);
     if (highlighted === tok) return;
     highlighted = tok;
     const lit = renderHighlight(sel);
-    opts.onHighlight?.(sel ? lit : null);
+    // `gates`/`centers` are the relation the graph lit, and a gate always brings its
+    // defined channel partner into that relation, so a host cannot tell which object the
+    // reader actually chose from them alone. `selection` carries that untouched choice
+    // (kind, id, plus the arrays for a multi-object selection) beside them, copied so a
+    // consumer cannot mutate the renderer's state through it. The two original fields keep
+    // their exact meaning, and a cleared selection still arrives as `null`.
+    opts.onHighlight?.(sel ? { ...lit, selection: selectionSnapshot(sel) } : null);
   }
 
   function highlightGate(gateNum) {
