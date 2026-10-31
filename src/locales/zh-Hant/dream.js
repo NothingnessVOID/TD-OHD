@@ -50,12 +50,14 @@ export const DREAM_REALM_ZH = {
   demon: '噩夢領域'
 };
 
+/** The five sleep types carry the plain type names: the comparison already says
+ * which of the two readings a chip opens, so a prefix would repeat it. */
 export const DREAM_TYPE_ZH = {
-  reflector: '夢境反映者',
-  generator: '夢境生產者',
-  projector: '夢境投射者',
-  manifestor: '夢境顯示者',
-  manifestingGenerator: '夢境顯示生產者'
+  reflector: '反映者',
+  generator: '生產者',
+  projector: '投射者',
+  manifestor: '顯示者',
+  manifestingGenerator: '顯示生產者'
 };
 
 /**
