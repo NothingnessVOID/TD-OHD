@@ -743,10 +743,6 @@ const openType = (side, owner = null) => detail?.showType(side, owner);
 // ==========================================
 
 function drawDream(dream, content) {
-  // A redraw replaces every row and every graph, so the previous gesture no longer
-  // points at anything: the recorded targets are dropped with the markup they were
-  // lighting.
-  resetHighlightTargets();
   content.replaceChildren();
   content.appendChild(typeStrip(dream));
   content.appendChild(frameNote());
@@ -923,7 +919,7 @@ function dreamGraphShell(dream, { overlay }) {
   const graphHost = el('div', { class: 'dream-graph', id: 'dream-bodygraph' });
   shell.querySelector('.ohd-graph-canvas').appendChild(graphHost);
 
-  const graphApi = renderBodygraph(graphHost, dreamGraphChart(dream), {
+  const api = renderBodygraph(graphHost, dreamGraphChart(dream), {
     topology: DREAM_TOPOLOGY,
     planetColumns: false,
     animate: false,
@@ -943,12 +939,6 @@ function dreamGraphShell(dream, { overlay }) {
     onGateClick: gate => openGate(gate),
     onCenterClick: center => openCenter(center)
   });
-
-  // The page's rows follow the direct target, so every selection this page sends
-  // and every object the pointer finds inside the graph is recorded as one; the
-  // graph keeps lighting the relational set it always has (see `trackedApi()`).
-  const api = trackedApi(graphApi);
-  trackGraphTarget(graphHost);
 
   fillSlot(shell, 'left', [activationColumn('design', dream.gates.design, dateText(dream.designMoment.iso))]);
   fillSlot(shell, 'right', [activationColumn('personality', dream.gates.personality, personalityWhen(dream))]);
@@ -1016,103 +1006,17 @@ function bindRowHover(root, selector, api) {
 }
 
 /**
- * The page's own record of *which* object the reader is on, as opposed to the set
- * of objects the graph lights with it.
- *
- * The renderer's highlight is relational on purpose: a gate also lights the other
- * gate of its defined channel, and that is what the graph must keep showing. The
- * night fields are one card per activation, so following that set lit the channel
- * partner's card as well and made an unrelated gate look selected. The rows
- * therefore follow the direct target only, while the graph keeps its relational
- * wash.
- *
- * `hoverTarget` is the object under the pointer or the keyboard; `pinnedTarget` is
- * the sheet's open selection, which is what a hover reverts to. `hoverTarget`
- * wins while the reader is on something.
+ * The object a highlight is *about*, as opposed to the set of objects the graph
+ * lights with it. The renderer sends both: `gates`/`centers` are the lit relation
+ * (a gate also lights the other gate of its defined channel) and `selection` is
+ * the object the reader chose.
  */
-let hoverTarget = null;
-let pinnedTarget = null;
-
-/** Drop both records when a redraw throws the markup they were lighting away. */
-function resetHighlightTargets() {
-  hoverTarget = null;
-  pinnedTarget = null;
-}
-
-/** The direct target of a selection the page itself sends to the graph. */
 function targetOf(selection) {
   if (!selection) return null;
   if (selection.kind === 'gate') return { kind: 'gate', gate: Number(selection.id) };
   if (selection.kind === 'channel') return { kind: 'channel', id: selection.id };
   if (selection.kind === 'center') return { kind: 'center', center: selection.id };
   return null;
-}
-
-/**
- * Wrap a graph API so every selection the page sends is recorded as the direct
- * target before the renderer answers with the wider lit set.
- *
- * The panels, the activation columns and the detail sheet all go through this
- * object, so no call site has to remember to record its own target.
- */
-function trackedApi(api) {
-  return {
-    ...api,
-    highlightGate: gate => {
-      if (gate == null) hoverTarget = null;
-      else hoverTarget = { kind: 'gate', gate: Number(gate) };
-      api.highlightGate(gate);
-    },
-    highlightCenter: center => {
-      hoverTarget = center == null ? null : { kind: 'center', center };
-      api.highlightCenter(center);
-    },
-    highlightSelection: selection => {
-      hoverTarget = targetOf(selection);
-      api.highlightSelection(selection);
-    },
-    setPinned: selection => {
-      pinnedTarget = targetOf(selection);
-      api.setPinned(selection);
-    }
-  };
-}
-
-/**
- * Follow the object under the pointer or the keyboard *inside the graph*.
- *
- * The renderer reports a highlight as the set it lights, not as the object that
- * caused it, so a graph hover carries no target of its own. The page reads it from
- * the same gesture instead: the gate or centre the pointer is on, taken from the
- * `data-gate` / `data-center` attributes the whole app already queries. Capture
- * phase, so the target is recorded before the renderer's own listener reports the
- * highlight; touch has no hover, so touch gestures are left to the renderer.
- */
-function trackGraphTarget(host) {
-  if (!host) return;
-  const objectOf = node => {
-    const gate = node?.closest?.('[data-gate]');
-    if (gate?.dataset.gate) return { kind: 'gate', gate: Number(gate.dataset.gate) };
-    const center = node?.closest?.('[data-center]');
-    return center ? { kind: 'center', center: center.dataset.center } : null;
-  };
-  host.addEventListener('pointerover', event => {
-    if (event.pointerType === 'touch') return;
-    hoverTarget = objectOf(event.target);
-  }, true);
-  host.addEventListener('pointerout', event => {
-    if (event.pointerType === 'touch') return;
-    const next = event.relatedTarget;
-    // Moving from one object to another inside the graph is not a leave: the
-    // following `pointerover` names the new object.
-    if (next && host.contains(next) && (next.closest?.('[data-gate]') || next.closest?.('[data-center]'))) return;
-    hoverTarget = null;
-  }, true);
-  host.addEventListener('focusin', event => { hoverTarget = objectOf(event.target); }, true);
-  host.addEventListener('focusout', event => {
-    if (event.relatedTarget && host.contains(event.relatedTarget)) return;
-    hoverTarget = null;
-  }, true);
 }
 
 /**
@@ -1132,19 +1036,23 @@ function targetGates(target, sel) {
 }
 
 /**
- * The reverse direction of the graph's highlight: when the graph lights a gate
- * (hover, touch preview, or the gate pinned behind an open sheet), light the row
+ * The reverse direction of the graph's highlight: when the graph reports a gate (a
+ * hover, a touch preview, or the gate pinned behind an open sheet), light the row
  * that object is, so the graph and the data read as one control.
  *
- * Only the direct target's row is lit. The graph's relational wash — the channel
- * partner, the other gates of a centre — is the graph's own reading and is not
- * repeated as a second selection in the lists. One callback for both modes: a gate
- * means the same row whether one sleeping design or two are on screen.
+ * The rows follow `sel.selection` — the object the reader chose — and never the lit
+ * relation beside it. The night fields are one card per activation, so lighting the
+ * relation lit the channel partner's card as a second selection and made an
+ * unrelated gate look chosen. The graph itself keeps its full relational highlight:
+ * this callback only reads `gates`/`centers`, it never changes them.
+ *
+ * One callback for both modes: a gate means the same row whether one sleeping design
+ * or two are on screen.
  */
 function dreamHighlightRows(sel) {
   for (const node of document.querySelectorAll('#dream-content .row-lit')) node.classList.remove('row-lit');
   if (!sel) return;
-  const target = hoverTarget || pinnedTarget;
+  const target = targetOf(sel.selection);
   if (!target) return;
   const gates = targetGates(target, sel);
   if (!gates.size) return;
@@ -1171,13 +1079,7 @@ function dreamHighlightRows(sel) {
  */
 function bindGateDetails(root, selector = '.dream-column-row[data-gate], .dream-row-open[data-gate]') {
   for (const row of root.querySelectorAll(selector)) {
-    row.addEventListener('click', (e) => {
-      // Prevent double-trigger if clicking the button inside a clickable row
-      if (row.classList.contains('dream-realm-row') && e.target.closest('.dream-row-open')) {
-        return; // Let the button handle it
-      }
-      openGate(Number(row.dataset.gate));
-    });
+    row.addEventListener('click', () => openGate(Number(row.dataset.gate)));
   }
 }
 
@@ -1511,7 +1413,6 @@ function provenanceNote(dream) {
  */
 
 function drawComparison({ content, current, a, b, labelB }) {
-  resetHighlightTargets();
   const labelA = current?.birth?.name || t('Person A');
   const palette = compositePalette();
   const chartA = dreamGraphChart(a);
@@ -1544,7 +1445,7 @@ function drawComparison({ content, current, a, b, labelB }) {
     graph: '<div id="dream-composite" class="dream-graph"></div>'
   });
   content.appendChild(shell);
-  const compositeApi = trackedApi(renderBodygraph(shell.querySelector('#dream-composite'), chartA, {
+  const compositeApi = renderBodygraph(shell.querySelector('#dream-composite'), chartA, {
     topology: DREAM_TOPOLOGY,
     planetColumns: false,
     animate: false,
@@ -1564,11 +1465,7 @@ function drawComparison({ content, current, a, b, labelB }) {
     onHighlight: dreamHighlightRows,
     onGateClick: gate => detail.showGate(gate),
     onCenterClick: center => detail.showCenter(center)
-  }));
-  // Same direct-target tracking as the single design: one sleeping design or two,
-  // the rows follow the object under the pointer and the graph keeps its
-  // relational wash.
-  trackGraphTarget(shell.querySelector('#dream-composite'));
+  });
   detail.setApi(compositeApi);
   // The composite is the single design's shell and columns with a different set
   // of parts: each slot carries one person's design and personality columns,

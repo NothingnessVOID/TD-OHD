@@ -392,20 +392,78 @@ await check('lighting a gate on the graph lights the matching list rows', async 
   assert(cleared === 0, `${cleared} rows stayed lit after the pointer left the graph`);
 });
 
-await check('a graph hover lights only the card it is on, not the channel partner', async () => {
+await check('a gate hover lights its own card only, never its channel partner\'s', async () => {
   // The renderer lights a gate together with the other gate of its defined channel,
   // and that is the graph's own reading. The night fields are one card per
   // activation, so copying that set lit the partner's card as a second selection.
-  // Gate 1 completes 1-8 in this chart, so the two sets differ and the check means
-  // something.
-  await page.hover('#dream-bodygraph .bg-gate[data-gate="1"] .bg-gate-hit');
+  // 1-8 is the one complete dream channel of this fixture and both of its gates have
+  // a card, so a chain would be visible: hovering 1 must leave 8's card dark and the
+  // channel row unlit, and the same the other way round.
+  for (const gate of ['1', '8']) {
+    const other = gate === '1' ? '8' : '1';
+    await page.hover(`#dream-bodygraph .bg-gate[data-gate="${gate}"] .bg-gate-hit`);
+    await page.waitForTimeout(300);
+    const state = await page.evaluate(() => ({
+      graph: [...document.querySelectorAll('#dream-bodygraph .bg-gate.bg-lit')].map(n => n.dataset.gate).sort(),
+      cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate),
+      columns: [...document.querySelectorAll('#dream-content .dream-column-row[data-gate].row-lit')].map(n => n.dataset.gate),
+      channels: [...document.querySelectorAll('#dream-content .dream-channel-open.row-lit')].map(n => n.dataset.channel)
+    }));
+    assert(state.graph.join(',') === [gate, other].sort().join(','),
+      `the graph lit ${JSON.stringify(state.graph)} for a hover on gate ${gate}`);
+    assert(state.cards.join(',') === gate, `gate ${gate} lit the cards ${JSON.stringify(state.cards)}`);
+    assert(!state.cards.includes(other), `hovering ${gate} lit ${other}'s card as well`);
+    assert(state.columns.every(g => g === gate), `gate ${gate} lit the columns ${JSON.stringify(state.columns)}`);
+    assert(state.channels.length === 0, `a gate hover lit the channel rows ${JSON.stringify(state.channels)}`);
+    await page.mouse.move(5, 5);
+    await page.waitForTimeout(250);
+  }
+  // The pair the user reported as chaining in the other direction: gate 20 belongs
+  // to 20-57, and its hover must not light that channel's row either (57 carries no
+  // card in this chart, so the card half of the proof is the 1-8 pair above).
+  await page.hover('#dream-bodygraph .bg-gate[data-gate="20"] .bg-gate-hit');
+  await page.waitForTimeout(300);
+  const twenty = await page.evaluate(() => ({
+    cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate),
+    channels: [...document.querySelectorAll('#dream-content .dream-channel-open.row-lit')].map(n => n.dataset.channel)
+  }));
+  assert(twenty.cards.join(',') === '20', `gate 20 lit the cards ${JSON.stringify(twenty.cards)}`);
+  assert(twenty.channels.length === 0, `gate 20 lit the channel rows ${JSON.stringify(twenty.channels)}`);
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+  assert((await page.$$eval('#dream-content .row-lit', n => n.length)) === 0, 'the cards stayed lit');
+});
+
+await check('a channel row hover lights that row and its two gates, and nothing else', async () => {
+  await page.hover('#dream-content .dream-channel-open[data-channel="1-8"]');
+  await page.waitForTimeout(300);
+  const state = await page.evaluate(() => ({
+    cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate).sort(),
+    channels: [...document.querySelectorAll('#dream-content .dream-channel-open.row-lit')].map(n => n.dataset.channel),
+    graph: [...document.querySelectorAll('#dream-bodygraph .bg-gate.bg-lit')].map(n => n.dataset.gate).sort()
+  }));
+  assert(state.cards.join(',') === '1,8', `the channel row lit the cards ${JSON.stringify(state.cards)}`);
+  assert(state.channels.join(',') === '1-8', `the channel row lit ${JSON.stringify(state.channels)}`);
+  assert(state.graph.join(',') === '1,8', `the channel row lit ${JSON.stringify(state.graph)} on the graph`);
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+});
+
+await check('a centre hover lights the gates inside it, not the rest of the graph', async () => {
+  // A centre is a direct target of its own: the renderer reports it with the gates
+  // it holds and adds no channel partner, so the rows must show exactly those.
+  const center = await page.$eval('#dream-bodygraph .bg-center[data-center]', n => n.dataset.center);
+  await page.hover(`#dream-bodygraph .bg-center[data-center="${center}"]`);
   await page.waitForTimeout(300);
   const state = await page.evaluate(() => ({
     graph: [...document.querySelectorAll('#dream-bodygraph .bg-gate.bg-lit')].map(n => n.dataset.gate).sort(),
-    cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate).sort()
+    cards: [...document.querySelectorAll('#dream-content .dream-realm-row[data-gate].row-lit')].map(n => n.dataset.gate).sort(),
+    channels: [...document.querySelectorAll('#dream-content .dream-channel-open.row-lit')].length
   }));
-  assert(state.graph.join(',') === '1,8', `the graph lit ${JSON.stringify(state.graph)} for a hover on gate 1`);
-  assert(state.cards.join(',') === '1', `the night fields lit ${JSON.stringify(state.cards)}`);
+  assert(state.graph.length > 0, `centre ${center} lit no gate on the graph`);
+  assert(state.cards.join(',') === state.graph.join(','),
+    `centre ${center} lit the cards ${JSON.stringify(state.cards)} against the graph's ${JSON.stringify(state.graph)}`);
+  assert(state.channels === 0, 'a centre hover lit a channel row');
   await page.mouse.move(5, 5);
   await page.waitForTimeout(250);
   assert((await page.$$eval('#dream-content .row-lit', n => n.length)) === 0, 'the cards stayed lit');
@@ -423,6 +481,63 @@ await check('hovering a night-field row lights its gate in the graph', async () 
   await page.waitForTimeout(250);
   const cleared = await page.$eval(`#dream-bodygraph .bg-gate[data-gate="${gate}"]`, n => n.classList.contains('bg-lit'));
   assert(!cleared, `gate ${gate} stayed lit after the pointer left the night-field row`);
+});
+
+await check('a night-field card is one control, and the keyboard opens it', async () => {
+  // The report this answers: the card carried `role="button"` around a real button
+  // and a second click handler, so one card had two identities and two openings,
+  // and Enter/Space worked only on the number inside it. Measured here instead: no
+  // role wrapper, exactly one focusable control per card, its hit area covering the
+  // card, and Enter/Space opening the card's own gate once.
+  const structure = await page.$$eval('#dream-content .dream-realm-row[data-gate]', nodes => nodes.map(node => ({
+    gate: node.dataset.gate,
+    role: node.getAttribute('role'),
+    tabindex: node.getAttribute('tabindex'),
+    focusables: node.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])').length
+  })));
+  assert(structure.length > 0, 'no night-field card rendered');
+  assert(structure.every(card => card.role === null && card.tabindex === null),
+    `a card is still a role wrapper: ${JSON.stringify(structure.filter(card => card.role || card.tabindex))}`);
+  assert(structure.every(card => card.focusables === 1),
+    `cards hold ${JSON.stringify(structure.map(card => card.focusables))} focusable controls, expected one each`);
+  const hitArea = await page.evaluate(() => {
+    const card = document.querySelector('#dream-content .dream-realm-row[data-gate]');
+    const button = card.querySelector('.dream-row-open');
+    const after = getComputedStyle(button, '::after');
+    return { row: getComputedStyle(card).position, after: after.position, inset: after.inset };
+  });
+  assert(hitArea.row === 'relative' && hitArea.after === 'absolute',
+    `the card's hit area is ${JSON.stringify(hitArea)}`);
+
+  for (const [key, selector] of [
+    ['Enter', '.dream-realm-light .dream-realm-portal'],
+    ['Space', '.dream-realm-light .dream-realm-row:not(.dream-realm-portal)']
+  ]) {
+    const gate = await page.$eval(`${selector} .dream-row-open`, n => n.dataset.gate);
+    await page.focus(`${selector} .dream-row-open`);
+    await page.keyboard.press(key);
+    await page.waitForSelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate]', { timeout: 10000 });
+    const state = await page.evaluate(() => ({
+      gate: document.querySelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate]')?.dataset.gate,
+      cards: document.querySelectorAll('#dream-detail .gate-detail-card').length,
+      back: !!document.querySelector('#dream-detail .gate-detail-back')
+    }));
+    assert(state.gate === gate, `${key} on the card for ${gate} opened ${state.gate}`);
+    assert(state.cards === 1, `${key} left ${state.cards} cards in the sheet`);
+    assert(!state.back, `${key} on a card pushed a second step (the row fired twice)`);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(250);
+  }
+
+  // A pointer anywhere on the card answers, not only on the number: clicking the
+  // row itself lands on the button's stretched hit area.
+  const gate = await page.$eval('#dream-content .dream-realm-demon .dream-realm-row[data-gate]:not(.dream-realm-portal)', n => n.dataset.gate);
+  await page.click(`#dream-content .dream-realm-demon .dream-realm-row[data-gate="${gate}"]`);
+  await page.waitForSelector('#dream-detail:not(.hidden) .gate-detail-card[data-gate]', { timeout: 10000 });
+  const opened = await page.$eval('#dream-detail:not(.hidden) .gate-detail-card[data-gate]', n => n.dataset.gate);
+  assert(opened === gate, `a click on the card surface for ${gate} opened ${opened}`);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(250);
 });
 
 // --- detail sheet: sleep-chart data, never the waking design ---
