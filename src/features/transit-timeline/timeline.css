@@ -492,3 +492,84 @@
     --tl-mobile-range-font: 10px;
   }
 }
+
+/* Final definition state (Single / Split / Triple / Quadruple Split).
+   New colour semantics, scoped to the timeline: Single is a warm orange
+   iridescence with local pink, violet and cyan spectral bands; Split is yellow
+   light, Triple violet light, Quadruple blue light. Light and dark versions
+   follow each Skin's declared mode (mirrored to data-theme), and every edge and
+   glow is mixed with the Skin's own surface and text tokens, so no per-skin
+   rules are needed. All effects are static: layered gradients, no animation,
+   no large blur. Bars are drawn only when the final count differs from natal. */
+.tl {
+  --tl-def1-deep: #D9631A; --tl-def1-warm: #F59A3A; --tl-def1-light: #FFC36B;
+  --tl-def1-pink: #FF4F9A; --tl-def1-violet: #8F63FF; --tl-def1-cyan: #2FD3E6;
+  --tl-def1-ink: #2A1203;
+  --tl-def2-deep: #D9A40E; --tl-def2-light: #FFE07A; --tl-def2-ink: #2B2100;
+  --tl-def3-deep: #6A3FC8; --tl-def3-light: #A57BF2; --tl-def3-ink: #FFFFFF;
+  --tl-def4-deep: #1F5FC4; --tl-def4-light: #5EA2F2; --tl-def4-ink: #FFFFFF;
+  --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
+  --tl-def-sheen: rgb(255 255 255 / .42);
+  --tl-def-glow: 0 0 0 transparent;
+}
+:root[data-theme="dark"] .tl {
+  --tl-def1-deep: #E8701C; --tl-def1-warm: #FFA445; --tl-def1-light: #FFD07E;
+  --tl-def1-pink: #FF5FAE; --tl-def1-violet: #A27BFF; --tl-def1-cyan: #45E6F5;
+  --tl-def2-deep: #E6B21A; --tl-def2-light: #FFE892;
+  --tl-def3-deep: #7A4BDB; --tl-def3-light: #B992FF;
+  --tl-def4-deep: #2A6FDB; --tl-def4-light: #74B4FF;
+  --tl-def-edge: color-mix(in srgb, var(--tl-surface) 55%, transparent);
+  --tl-def-sheen: rgb(255 255 255 / .5);
+}
+.tl .tl-definition-bar {
+  --tl-def-a: var(--tl-def2-deep); --tl-def-b: var(--tl-def2-light); --tl-def-ink: var(--tl-def2-ink);
+  --tl-def-halo: color-mix(in srgb, var(--tl-def-b) 70%, transparent);
+  color: var(--tl-def-ink); font-weight: 600; letter-spacing: .01em;
+  background:
+    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 42%, rgb(0 0 0 / .08) 100%),
+    linear-gradient(90deg, var(--tl-def-a), var(--tl-def-b) 38%, color-mix(in srgb, var(--tl-def-b) 60%, var(--tl-def-a)) 70%, var(--tl-def-a));
+  box-shadow: inset 0 0 0 1px var(--tl-def-edge);
+}
+.tl .tl-definition-bar > span { text-shadow: 0 0 2px var(--tl-def-halo), 0 0 1px var(--tl-def-halo); }
+.tl .tl-definition-bar[data-definition="3"] { --tl-def-a: var(--tl-def3-deep); --tl-def-b: var(--tl-def3-light); --tl-def-ink: var(--tl-def3-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def3-deep) 85%, black); }
+.tl .tl-definition-bar[data-definition="4"] { --tl-def-a: var(--tl-def4-deep); --tl-def-b: var(--tl-def4-light); --tl-def-ink: var(--tl-def4-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def4-deep) 85%, black); }
+/* Single: orange body with irregular spectral bands. Two band layers repeat at
+   unrelated periods (173px / 97px) and a faint ripple at 211px, so long bars
+   show uneven interference instead of a uniform gradient. */
+.tl .tl-definition-bar[data-definition="1"] {
+  --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
+  background:
+    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 45%, rgb(80 20 0 / .14) 100%),
+    repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x,
+    linear-gradient(104deg, transparent 0 11%, color-mix(in srgb, var(--tl-def1-pink) 75%, transparent) 17%, transparent 24% 40%,
+      color-mix(in srgb, var(--tl-def1-cyan) 70%, transparent) 46%, color-mix(in srgb, var(--tl-def1-violet) 70%, transparent) 51%, transparent 58% 71%,
+      color-mix(in srgb, var(--tl-def1-pink) 60%, transparent) 76%, color-mix(in srgb, var(--tl-def1-light) 70%, transparent) 80%, transparent 86%) 0 0 / 173px 100% repeat-x,
+    linear-gradient(72deg, transparent 0 28%, color-mix(in srgb, var(--tl-def1-cyan) 38%, transparent) 35%, transparent 43% 74%,
+      color-mix(in srgb, var(--tl-def1-violet) 42%, transparent) 83%, transparent 90%) 37px 0 / 97px 100% repeat-x,
+    linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 30%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
+}
+/* Dark version: a narrow coloured rim stands the bar off the night surface. */
+:root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
+:root[data-theme="dark"] .tl .tl-definition-bar[data-definition="1"] { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 6px -1px color-mix(in srgb, var(--tl-def1-pink) 55%, var(--tl-def1-warm)); }
+.tl-definition-row { position: relative; z-index: 1; }
+/* Narrow intervals: the button is a 14px hit target; only the true width is
+   painted (at least a 1.5px hairline) plus a small cap that marks "short event". */
+.tl .tl-definition-bar.tl-definition-tick, :root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick { min-width: 1.5px; overflow: visible; box-shadow: none; background: linear-gradient(180deg, var(--tl-def-b), var(--tl-def-a)); }
+.tl .tl-definition-tick::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 14px; transform: translateX(-50%); }
+.tl .tl-definition-tick::after { content: ''; position: absolute; top: 0; left: 50%; width: 6px; height: 6px; transform: translate(-50%, 0) rotate(45deg); background: var(--tl-def-b); box-shadow: 0 0 0 1px var(--tl-def-edge); pointer-events: none; }
+.tl .tl-definition-bar.tl-definition-tick[data-definition="1"] { background: linear-gradient(180deg, var(--tl-def1-pink), var(--tl-def1-warm) 45%, var(--tl-def1-cyan)); }
+.tl .tl-definition-tick[data-definition="1"]::after { background: conic-gradient(var(--tl-def1-pink), var(--tl-def1-light), var(--tl-def1-cyan), var(--tl-def1-violet), var(--tl-def1-pink)); }
+.tl .tl-definition-tick:focus-visible, .tl .tl-definition-tick[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: 0; }
+.tl .tl-row-name .tl-definition-symbol { width: 22px; height: 22px; color: var(--source-transit-text); stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.tl-definition-symbol circle { fill: var(--tl-surface); }
+.tl-definition-symbol circle:last-child { fill: currentColor; stroke: none; }
+.tl .tl-row-active[data-active-source="definition"] .tl-row-label,
+.tl .tl-row-active[data-active-source="definition"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 72%, var(--tl-def2-light)); box-shadow: inset 2px 0 var(--tl-def2-deep); }
+.tl .tl-row-active[data-active-definition="1"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 70%, var(--tl-def1-warm)); box-shadow: inset 2px 0 var(--tl-def1-pink), inset 4px 0 var(--tl-def1-warm); }
+.tl .tl-row-active[data-active-definition="3"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 76%, var(--tl-def3-light)); box-shadow: inset 2px 0 var(--tl-def3-deep); }
+.tl .tl-row-active[data-active-definition="4"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 76%, var(--tl-def4-light)); box-shadow: inset 2px 0 var(--tl-def4-deep); }
+.tl .tl-row-active[data-active-source="definition"] .tl-row-label { background: transparent; box-shadow: none; }
+@media (forced-colors: active) {
+  .tl .tl-definition-bar { background: Highlight; color: HighlightText; }
+  .tl .tl-definition-tick::after { background: Highlight; }
+}

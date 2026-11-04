@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD-OHD · 分人状态光带合成演示</title>
+  <link rel="stylesheet" href="/src/styles.css">
+  <style>
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+    .demo { max-width: 1180px; margin: 0 auto; padding: 22px 20px 60px; }
+    .demo h1 { font-size: 22px; margin: 0 0 6px; font-weight: 600; }
+    .demo .notice { margin: 0 0 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-sunken); color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+    .demo .bar-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: 13px; }
+    .demo .bar-tools select, .demo .bar-tools button { font: inherit; min-height: 32px; padding: 3px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
+    .demo .swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+    .demo .swatch { position: relative; height: 28px; }
+    .demo .swatch .tl-bar { position: absolute; inset: 0; width: 100%; }
+    .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
+    .demo .scene header small { color: var(--text-secondary); }
+    .demo .tl { padding: 0; max-width: none; }
+    .demo .tl-row-label { font-size: 10px; color: var(--text-secondary); }
+    .demo .row-caption { width: 40px; text-align: center; }
+    .demo .detail { min-height: 22px; padding: 6px 12px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); font-variant-numeric: tabular-nums; }
+    .demo .query { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); font-size: 13px; }
+    .demo .query .line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .demo .query select, .demo .query button { font: inherit; min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
+    .demo .query ol { margin: 6px 0 0; padding-left: 22px; font-variant-numeric: tabular-nums; }
+    .demo .tl-track::after { display: none; }
+  </style>
+</head>
+<body>
+<main class="demo">
+  <h1>分人状态光带 · 合成演示</h1>
+  <p class="notice"><strong>合成数据，非真实人物：</strong>下面每个场景使用一张不同的虚构本命盘和一段编排好的行运序列，四种样式出自不同场景，不是同一个人的真实计算。状态条由正式代码 <code>stateAt</code> → <code>calculateTimeline</code> 计算，与本命最终分人数相同的时段不绘制，但仍可在下方条件查询中查到。</p>
+  <div class="bar-tools">
+    <label>Skin <select id="skin"></select></label>
+    <button type="button" id="mode">切换明 / 暗</button>
+    <label>语言 <select id="lang"><option value="zh-CN">简体中文</option><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></label>
+    <span id="skin-note"></span>
+  </div>
+  <div class="tl swatches" id="swatches"></div>
+  <div id="scenes"></div>
+  <section class="query">
+    <div class="line"><strong>条件查询（与时间轴同一份计算）</strong></div>
+    <div class="line">
+      <label>场景 <select id="q-scene"></select></label>
+      <label>组合 <select id="q-combine"><option value="all">同时满足（AND）</option><option value="any">满足任一（OR）</option></select></label>
+    </div>
+    <div class="line">条件 1：分人状态 <select id="q-def-state"><option value="active">是</option><option value="inactive">不是</option></select>
+      <select id="q-def"><option value="1">一分人</option><option value="2">二分人</option><option value="3">三分人</option><option value="4">四分人</option></select></div>
+    <div class="line">条件 2：<select id="q-extra"></select> <select id="q-extra-state"><option value="active">激活</option><option value="inactive">未激活</option></select>
+      <button type="button" id="q-run">查询区间</button></div>
+    <div id="q-status" role="status"></div>
+    <ol id="q-results"></ol>
+  </section>
+</main>
+<script type="module">
+  import { SKINS } from '/src/lib/skin-registry.js';
+  import { stateAt, catalog } from '/src/features/transit-timeline/graph-provider.js';
+  import { calculateTimeline, MINUTE } from '/src/features/transit-timeline/core.js';
+  import { queryTimeline } from '/src/features/transit-timeline/conditions.js';
+  import { natalIslands } from '/src/features/transit-timeline/bridge.js';
+  import { definitionChanged, definitionBarMarkup, definitionMessageKey } from '/src/features/transit-timeline/definition-bars.js';
+  import { en, translator } from '/src/features/transit-timeline/messages.js';
+  import { formatDuration, displayTime } from '/src/features/transit-timeline/time.js';
+  import zhCN from '/src/locales/zh-CN/timeline.json';
+  import zhHant from '/src/locales/zh-Hant/timeline.json';
+  import '/src/features/transit-timeline/timeline.css';
+
+  const catalogs = { 'zh-CN': zhCN, 'zh-Hant': zhHant, en };
+  const localeOf = { 'zh-CN': 'zh-CN', 'zh-Hant': 'zh-TW', en: 'en-GB' };
+  let lang = 'zh-CN';
+  let t = translator(catalogs[lang]);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const DAY = 86_400_000;
+  const START = Date.UTC(2026, 10, 2, 0, 0);
+  const END = START + 7 * DAY;
+  const at = (day, hour = 0, minute = 0) => START + day * DAY + hour * 3_600_000 + minute * MINUTE;
+  const birth = gates => ({ gates: { all: gates }, centers: { definedNames: [] } });
+  const pair = (a, b) => ({ sun: { gate: a, line: 1 }, earth: { gate: b, line: 1 } });
+  const idle = { sun: { gate: 41, line: 1 }, earth: { gate: 31, line: 1 } };
+
+  // Fictional charts. Channels: 1-8 G/Throat, 59-6 Sacral/Solar, 58-18 Root/Spleen,
+  // 64-47 Head/Ajna, 10-34 G/Sacral, 34-20 Sacral/Throat, 17-62 Ajna/Throat.
+  const scenes = [
+    { id: 'a', title: '场景 A · 虚构二分人', note: '34-20 桥接 → 一分人；58-18 游离岛 → 三分人', natal: birth([1, 8, 59, 6]),
+      steps: [[0, idle], [at(0, 9), pair(34, 20)], [at(1, 18), idle], [at(3, 4), pair(58, 18)], [at(4, 20), idle], [at(5, 8), pair(34, 20)], [at(5, 8, 40), idle]],
+      extra: 'channel:20-34' },
+    { id: 'b', title: '场景 B · 虚构一分人', note: '17-62 游离岛 → 二分人（合并与分裂都显示）', natal: birth([10, 34]),
+      steps: [[0, idle], [at(1, 2), pair(17, 62)], [at(2, 14), idle], [at(4, 6), pair(17, 62)], [at(6, 1), idle]], extra: 'channel:17-62' },
+    { id: 'c', title: '场景 C · 虚构三分人', note: '64-47 游离岛 → 四分人；34-20 桥接 → 二分人', natal: birth([1, 8, 59, 6, 58, 18]),
+      steps: [[0, idle], [at(0, 20), pair(64, 47)], [at(2, 6), idle], [at(3, 12), pair(34, 20)], [at(5, 2), idle], [at(6, 0), pair(64, 47)]], extra: 'center:head' },
+    { id: 'd', title: '场景 D · 虚构二分人 · 密集短条', note: '数分钟级的反复桥接与分裂，测试细短条的点击与准确时间', natal: birth([1, 8, 59, 6]),
+      steps: (() => {
+        const list = [[0, idle]];
+        for (let i = 0; i < 26; i++) {
+          const time = START + Math.round((0.25 + i * 0.26) * DAY);
+          const length = (3 + (i * 7) % 23) * MINUTE;
+          list.push([time, i % 3 === 2 ? pair(58, 18) : pair(34, 20)], [time + length, idle]);
+        }
+        list.push([at(6, 6), pair(34, 20)], [at(6, 18), idle]);
+        return list;
+      })(), extra: 'channel:20-34' }
+  ];
+  const rows = catalog();
+  for (const scene of scenes) {
+    const steps = scene.steps.map(([time, value]) => [time === 0 ? START : time, value]);
+    scene.natalCount = natalIslands(scene.natal).length;
+    scene.result = calculateTimeline({ start: START, end: END, catalog: rows, scanStep: MINUTE, tolerance: 1000,
+      snapshot: time => steps.filter(([stepTime]) => stepTime <= time).at(-1)[1],
+      states: activations => stateAt(scene.natal, activations, 'overlay') });
+  }
+
+  const format = instant => displayTime(instant, 'UTC', localeOf[lang]);
+  const ratio = instant => (instant - START) / (END - START) * 100;
+  function renderSwatches() {
+    document.getElementById('swatches').innerHTML = ['1', '2', '3', '4'].map(count => `<div class="swatch">${definitionBarMarkup({
+      key: `swatch:${count}`, index: 0, count, left: 0, width: 100, widthPx: 300, label: t(definitionMessageKey(count)), title: t(definitionMessageKey(count)), esc })}</div>`).join('');
+  }
+  function renderScenes() {
+    const host = document.getElementById('scenes');
+    host.innerHTML = scenes.map(scene => `<section class="scene" data-scene="${scene.id}"><header><span>${esc(scene.title)}</span><small>${esc(scene.note)} · 本命 ${scene.natalCount} 岛</small></header>
+      <div class="tl"><div class="tl-row tl-definition-row" data-key="definition:state"><div class="tl-row-label"><span class="row-caption">${esc(t('definitionRow'))}</span></div><div class="tl-track" data-track></div></div>
+      <div class="tl-row" data-key="${scene.extra}"><div class="tl-row-label"><span class="row-caption">${esc(scene.extra.split(':')[1])}</span></div><div class="tl-track" data-extra></div></div></div>
+      <div class="detail" aria-live="polite"></div></section>`).join('');
+    for (const scene of scenes) {
+      const node = host.querySelector(`[data-scene="${scene.id}"]`);
+      const track = node.querySelector('[data-track]');
+      const width = track.clientWidth || 1;
+      const row = scene.result.rows.find(item => item.key === 'definition:state');
+      track.innerHTML = row.intervals.map((interval, index) => {
+        if (!definitionChanged(interval, scene.natalCount)) return '';
+        const label = t(definitionMessageKey(interval.source));
+        const title = `${label} · ${format(interval.start)} → ${format(interval.end)} · ${formatDuration(interval.end - interval.start, t)}`;
+        return definitionBarMarkup({ index, count: interval.source, label, title, esc,
+          left: ratio(interval.start), width: (interval.end - interval.start) / (END - START) * 100,
+          widthPx: (interval.end - interval.start) / (END - START) * width });
+      }).join('');
+      const extra = scene.result.rows.find(item => item.key === scene.extra);
+      node.querySelector('[data-extra]').innerHTML = (extra?.intervals || []).map(interval => `<button type="button" class="tl-bar" data-source="${interval.source}" style="left:${ratio(interval.start)}%;width:${(interval.end - interval.start) / (END - START) * 100}%" title="${esc(`${format(interval.start)} → ${format(interval.end)}`)}"><span>${esc(scene.extra.split(':')[1])}</span></button>`).join('');
+      track.addEventListener('click', event => {
+        const bar = event.target.closest('.tl-definition-bar');
+        if (!bar) return;
+        track.querySelectorAll('[aria-pressed]').forEach(item => item.removeAttribute('aria-pressed'));
+        bar.setAttribute('aria-pressed', 'true');
+        node.querySelector('.detail').textContent = bar.getAttribute('aria-label');
+      });
+    }
+  }
+  function renderQueryOptions() {
+    document.getElementById('q-scene').innerHTML = scenes.map(scene => `<option value="${scene.id}">${esc(scene.title)}</option>`).join('');
+    syncExtra();
+  }
+  function syncExtra() {
+    const scene = scenes.find(item => item.id === document.getElementById('q-scene').value);
+    document.getElementById('q-extra').innerHTML = `<option value="">（不加）</option><option value="${scene.extra}" selected>${esc(scene.extra)}</option>`;
+  }
+  function runQuery() {
+    const scene = scenes.find(item => item.id === document.getElementById('q-scene').value);
+    const conditions = [{ kind: 'definition', ids: [document.getElementById('q-def').value], state: document.getElementById('q-def-state').value }];
+    const extra = document.getElementById('q-extra').value;
+    if (extra) {
+      const [kind, id] = extra.split(':');
+      conditions.push({ kind, ids: [kind === 'gate' ? Number(id) : id], state: document.getElementById('q-extra-state').value });
+    }
+    try {
+      const result = queryTimeline(scene.result, conditions, { combine: document.getElementById('q-combine').value, catalog: rows });
+      document.getElementById('q-status').textContent = result.empty ? t('noMatches') : t('matchCount', { count: result.intervals.length });
+      document.getElementById('q-results').innerHTML = result.intervals.map(interval => `<li>${esc(format(interval.start))} → ${esc(format(interval.end))} · ${esc(formatDuration(interval.end - interval.start, t))}</li>`).join('');
+    } catch (error) { document.getElementById('q-status').textContent = error.message; }
+  }
+
+  const skinSelect = document.getElementById('skin');
+  skinSelect.innerHTML = SKINS.map(skin => `<option value="${skin.id}">${esc(skin.name)} (${skin.mode})</option>`).join('');
+  function applySkin(id) {
+    const skin = SKINS.find(item => item.id === id);
+    document.documentElement.setAttribute('data-skin', skin.id);
+    document.documentElement.setAttribute('data-theme', skin.mode);
+    skinSelect.value = skin.id;
+    document.getElementById('skin-note').textContent = `data-theme=${skin.mode}`;
+  }
+  skinSelect.addEventListener('change', () => applySkin(skinSelect.value));
+  document.getElementById('mode').addEventListener('click', () =>
+    applySkin(document.documentElement.getAttribute('data-theme') === 'dark' ? 'default-light' : 'default-dark'));
+  document.getElementById('lang').addEventListener('change', event => {
+    lang = event.target.value; t = translator(catalogs[lang]); renderSwatches(); renderScenes();
+  });
+  document.getElementById('q-scene').addEventListener('change', syncExtra);
+  document.getElementById('q-run').addEventListener('click', runQuery);
+  addEventListener('resize', () => renderScenes());
+  applySkin('default-light');
+  renderSwatches(); renderScenes(); renderQueryOptions();
+</script>
+</body>
+</html>

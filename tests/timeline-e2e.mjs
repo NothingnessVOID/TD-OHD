@@ -92,7 +92,7 @@ const moonMatches = async targetPage => {
 /** A transit bar that owns interval timing. Bridge/split bars light the centers
  * they involve instead of opening a sheet, so they are not interchangeable
  * here — picking "the first non-natal bar" depended on row order. */
-const timedBar = () => page.locator(`${tl} .tl-bar[data-key]:not([data-source="natal"]):not([data-key^="bridge:"])`).first();
+const timedBar = () => page.locator(`${tl} .tl-bar[data-key]:not([data-source="natal"]):not([data-key^="bridge:"]):not([data-key^="definition:"])`).first();
 const run = async (name, fn) => {
   await fn();
   console.log(`✓ ${name}`);
@@ -320,7 +320,7 @@ try {
   });
 
   await run('a split bridge interval lights centers instead of opening a sheet', async () => {
-    const bridge = page.locator(`${tl} .tl-bar[data-key^="bridge:"]`).first();
+    const bridge = page.locator(`${tl} .tl-bar[data-key^="definition:"]`).first();
     if (!(await bridge.count())) return; // this fixture may have no split episode
     await bridge.scrollIntoViewIfNeeded();
     await bridge.click();

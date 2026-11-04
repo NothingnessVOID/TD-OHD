@@ -1,5 +1,6 @@
 import { createAnnualLoader } from './annual-loader.js';
 import { snapshotBatch } from './snapshot.js';
+import { DEFINITION_STATE_VERSION } from './graph-provider.js';
 
 /** Public annual cache outlives per-request workers; derived results are bounded. */
 export function createTimelineClient({ annualLoader = createAnnualLoader(),
@@ -20,7 +21,9 @@ export function createTimelineClient({ annualLoader = createAnnualLoader(),
     cachedYears: () => annual.cachedYears(),
     calculate(request, onProgress) {
       cancel();
-      const key = JSON.stringify(request);
+      // Derived rows are versioned: a result computed before a row contract
+      // change (e.g. without definition state) is never reused.
+      const key = JSON.stringify({ ...request, rowsVersion: DEFINITION_STATE_VERSION });
       if (cache.has(key)) return Promise.resolve(cache.get(key));
       return new Promise((resolve, reject) => {
         const task = { reject, worker: null };
