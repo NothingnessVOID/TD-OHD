@@ -511,6 +511,12 @@
   --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
   --tl-def-sheen: rgb(255 255 255 / .42);
   --tl-def-glow: 0 0 0 transparent;
+  /* Count chip: only the Single bar needs one, because its foil texture has
+     irregular light and dark patches, so no bare ink colour is legible at every
+     position. Split/Triple/Quadruple sit on uniform gradients whose ink was
+     chosen for contrast and stay chip-free. */
+  --tl-def-chip-bg: rgb(28 12 2 / .85);
+  --tl-def-chip-ink: #FFE9C9;
 }
 :root[data-theme="dark"] .tl {
   --tl-def1-deep: #E8701C; --tl-def1-warm: #FFA445; --tl-def1-light: #FFD07E;
@@ -533,31 +539,44 @@
 .tl .tl-definition-bar > span { text-shadow: 0 0 2px var(--tl-def-halo), 0 0 1px var(--tl-def-halo); }
 .tl .tl-definition-bar[data-definition="3"] { --tl-def-a: var(--tl-def3-deep); --tl-def-b: var(--tl-def3-light); --tl-def-ink: var(--tl-def3-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def3-deep) 85%, black); }
 .tl .tl-definition-bar[data-definition="4"] { --tl-def-a: var(--tl-def4-deep); --tl-def-b: var(--tl-def4-light); --tl-def-ink: var(--tl-def4-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def4-deep) 85%, black); }
-/* Single: orange body with irregular spectral bands. Two band layers repeat at
-   unrelated periods (173px / 97px) and a faint ripple at 211px, so long bars
-   show uneven interference instead of a uniform gradient. */
+/* Single: iridescent oil-film foil on warm orange.
+   The foil is a generated texture (scripts/foil-to-alpha.py converts a
+   black-backed render into a transparent-backed film: alpha = max channel,
+   gamma-expanded, saturation-boosted, white point capped). It is composited
+   with plain alpha, NOT an additive blend: `screen`/`lighten` over an already
+   bright orange base pushes every hue toward white, which is what made earlier
+   attempts read as milky. With alpha compositing the cyan, violet and magenta
+   keep their generated saturation and the black gaps stay pure orange.
+   The source band is cropped at 15:1 to match the 400x27 tile, so the film is
+   never vertically squashed into streaks. Static, no animation. */
 .tl .tl-definition-bar[data-definition="1"] {
   --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
   background:
-    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 45%, rgb(80 20 0 / .14) 100%),
-    repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x,
-    linear-gradient(104deg, transparent 0 11%, color-mix(in srgb, var(--tl-def1-pink) 75%, transparent) 17%, transparent 24% 40%,
-      color-mix(in srgb, var(--tl-def1-cyan) 70%, transparent) 46%, color-mix(in srgb, var(--tl-def1-violet) 70%, transparent) 51%, transparent 58% 71%,
-      color-mix(in srgb, var(--tl-def1-pink) 60%, transparent) 76%, color-mix(in srgb, var(--tl-def1-light) 70%, transparent) 80%, transparent 86%) 0 0 / 173px 100% repeat-x,
-    linear-gradient(72deg, transparent 0 28%, color-mix(in srgb, var(--tl-def1-cyan) 38%, transparent) 35%, transparent 43% 74%,
-      color-mix(in srgb, var(--tl-def1-violet) 42%, transparent) 83%, transparent 90%) 37px 0 / 97px 100% repeat-x,
-    linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 30%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
+    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
+    url('./assets/definition-foil.png') 0 0 / 400px 100% repeat-x,
+    linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 28%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
 }
 /* Dark version: a narrow coloured rim stands the bar off the night surface. */
 :root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
 :root[data-theme="dark"] .tl .tl-definition-bar[data-definition="1"] { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 6px -1px color-mix(in srgb, var(--tl-def1-pink) 55%, var(--tl-def1-warm)); }
+/* Count chip on the Single bar. 11px/600 warm ink on a dark warm plate,
+   vertically centred, no extra shadow or outline. */
+.tl .tl-definition-bar[data-definition="1"] > span {
+  padding: 1px 4px; margin-left: 5px; border-radius: 3px; line-height: 14px;
+  background: var(--tl-def-chip-bg); color: var(--tl-def-chip-ink); text-shadow: none;
+}
 .tl-definition-row { position: relative; z-index: 1; }
 /* Narrow intervals: the button is a 14px hit target; only the true width is
    painted (at least a 1.5px hairline) plus a small cap that marks "short event". */
-.tl .tl-definition-bar.tl-definition-tick, :root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick { min-width: 1.5px; overflow: visible; box-shadow: none; background: linear-gradient(180deg, var(--tl-def-b), var(--tl-def-a)); }
+.tl .tl-definition-bar.tl-definition-tick { min-width: 1.5px; overflow: visible; background: linear-gradient(180deg, var(--tl-def-b), var(--tl-def-a)); }
+/* The dark-theme rim rule outranks a bare attribute selector, so the tick
+   resets and the Single override are both listed with the dark variant.
+   Without the duplicate, dark-theme Single ticks painted the Split yellow. */
+.tl .tl-definition-bar.tl-definition-tick, :root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick { box-shadow: none; }
+.tl .tl-definition-bar.tl-definition-tick[data-definition="1"],
+:root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick[data-definition="1"] { background: linear-gradient(180deg, var(--tl-def1-pink), var(--tl-def1-warm) 45%, var(--tl-def1-cyan)); }
 .tl .tl-definition-tick::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 14px; transform: translateX(-50%); }
 .tl .tl-definition-tick::after { content: ''; position: absolute; top: 0; left: 50%; width: 6px; height: 6px; transform: translate(-50%, 0) rotate(45deg); background: var(--tl-def-b); box-shadow: 0 0 0 1px var(--tl-def-edge); pointer-events: none; }
-.tl .tl-definition-bar.tl-definition-tick[data-definition="1"] { background: linear-gradient(180deg, var(--tl-def1-pink), var(--tl-def1-warm) 45%, var(--tl-def1-cyan)); }
 .tl .tl-definition-tick[data-definition="1"]::after { background: conic-gradient(var(--tl-def1-pink), var(--tl-def1-light), var(--tl-def1-cyan), var(--tl-def1-violet), var(--tl-def1-pink)); }
 .tl .tl-definition-tick:focus-visible, .tl .tl-definition-tick[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: 0; }
 .tl .tl-row-name .tl-definition-symbol { width: 22px; height: 22px; color: var(--source-transit-text); stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }

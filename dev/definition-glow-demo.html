@@ -12,9 +12,22 @@
     .demo .notice { margin: 0 0 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-sunken); color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
     .demo .bar-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: 13px; }
     .demo .bar-tools select, .demo .bar-tools button { font: inherit; min-height: 32px; padding: 3px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
-    .demo .swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+    .demo .swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 6px; }
     .demo .swatch { position: relative; height: 28px; }
     .demo .swatch .tl-bar { position: absolute; inset: 0; width: 100%; }
+    .demo .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .demo .compare-item label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .demo .compare-bar { position: relative; height: 28px; }
+    .demo .compare-bar .tl-bar { position: absolute; inset: 0; width: 100%; }
+    /* Version A: original narrow bands — arc ripple retained */
+    .demo .tl-def1-version-a {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / .42) 0 1px, transparent 1px 45%, rgb(80 20 0 / .14) 100%),
+        repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x,
+        linear-gradient(104deg, transparent 0 11%, rgb(255 72 158 / .75) 17%, transparent 24% 40%, rgb(54 210 236 / .70) 46%, rgb(150 92 255 / .70) 51%, transparent 58% 71%, rgb(255 96 190 / .60) 76%, rgb(255 198 80 / .70) 80%, transparent 86%) 0 0 / 173px 100% repeat-x,
+        linear-gradient(72deg, transparent 0 28%, rgb(54 210 236 / .38) 35%, transparent 43% 74%, rgb(150 92 255 / .42) 83%, transparent 90%) 37px 0 / 97px 100% repeat-x,
+        linear-gradient(90deg, #D9631A, #F59A3A 30%, #FFC36B 52%, #F59A3A 74%, #D9631A) !important;
+    }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
@@ -40,6 +53,16 @@
     <span id="skin-note"></span>
   </div>
   <div class="tl swatches" id="swatches"></div>
+  <div class="compare">
+    <div class="compare-item">
+      <label>旧的窄条带版（已被否决，仅作对照）</label>
+      <div class="compare-bar tl" id="compare-a"></div>
+    </div>
+    <div class="compare-item">
+      <label>最终版 &middot; 油膜箔贴图 + 数字底托</label>
+      <div class="compare-bar tl" id="compare-b"></div>
+    </div>
+  </div>
   <div id="scenes"></div>
   <section class="query">
     <div class="line"><strong>条件查询（与时间轴同一份计算）</strong></div>
@@ -115,8 +138,18 @@
   const format = instant => displayTime(instant, 'UTC', localeOf[lang]);
   const ratio = instant => (instant - START) / (END - START) * 100;
   function renderSwatches() {
+    // Labels are the bare count, exactly like production; the full name stays
+    // in the tooltip.
     document.getElementById('swatches').innerHTML = ['1', '2', '3', '4'].map(count => `<div class="swatch">${definitionBarMarkup({
-      key: `swatch:${count}`, index: 0, count, left: 0, width: 100, widthPx: 300, label: t(definitionMessageKey(count)), title: t(definitionMessageKey(count)), esc })}</div>`).join('');
+      key: `swatch:${count}`, index: 0, count, left: 0, width: 100, widthPx: 300,
+      label: count, title: t(definitionMessageKey(count)), esc })}</div>`).join('');
+    document.getElementById('compare-a').innerHTML = definitionBarMarkup({
+      key: 'compare:a', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    document.getElementById('compare-a').querySelector('.tl-definition-bar').classList.add('tl-def1-version-a');
+    document.getElementById('compare-b').innerHTML = definitionBarMarkup({
+      key: 'compare:b', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
   }
   function renderScenes() {
     const host = document.getElementById('scenes');
@@ -131,8 +164,9 @@
       const row = scene.result.rows.find(item => item.key === 'definition:state');
       track.innerHTML = row.intervals.map((interval, index) => {
         if (!definitionChanged(interval, scene.natalCount)) return '';
-        const label = t(definitionMessageKey(interval.source));
-        const title = `${label} · ${format(interval.start)} → ${format(interval.end)} · ${formatDuration(interval.end - interval.start, t)}`;
+        const label = interval.source;
+        const fullName = t(definitionMessageKey(interval.source));
+        const title = `${fullName} · ${format(interval.start)} → ${format(interval.end)} · ${formatDuration(interval.end - interval.start, t)}`;
         return definitionBarMarkup({ index, count: interval.source, label, title, esc,
           left: ratio(interval.start), width: (interval.end - interval.start) / (END - START) * 100,
           widthPx: (interval.end - interval.start) / (END - START) * width });

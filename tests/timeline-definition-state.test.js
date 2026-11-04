@@ -166,12 +166,18 @@ test('derived-result cache key is versioned so pre-feature results are not reuse
 
 test('narrow intervals keep true geometry and only widen the hit target', () => {
   const esc = value => String(value);
-  const wide = definitionBarMarkup({ index: 0, count: '1', left: 10, width: 20, widthPx: 200, label: 'Single', title: 't', esc });
+  const title = 'Single Definition · 10:00 → 11:00';
+  const wide = definitionBarMarkup({ index: 0, count: '1', left: 10, width: 20, widthPx: 200, label: '1', title, esc });
   assert.match(wide, /left:10%;width:20%/);
-  assert.match(wide, /<span>Single<\/span>/);
-  const tick = definitionBarMarkup({ index: 1, count: '3', left: 50, width: 0.01, widthPx: 0.4, label: 'Triple', title: 'Triple · 10:00 → 10:01', esc });
+  assert.match(wide, /<span>1<\/span>/, 'the visible label is the bare count');
+  // The tooltip already carries the full name, so the accessible label must use
+  // it verbatim instead of prepending the name a second time.
+  assert.ok(wide.includes(`aria-label="${title}"`), 'accessible label reuses the tooltip verbatim');
+  assert.equal(wide.match(/Single Definition/g).length, 2, 'full name appears once per attribute');
+  const tick = definitionBarMarkup({ index: 1, count: '3', left: 50, width: 0.01, widthPx: 0.4, label: '3', title: 'Triple Split · 10:00 → 10:01', esc });
   assert.match(tick, /tl-definition-tick/);
   assert.match(tick, /left:50%;width:0\.01%/, 'true geometry, no minimum-width inflation');
-  assert.match(tick, /aria-label="Triple · 10:00 → 10:01"/);
+  assert.match(tick, /<span><\/span>/, 'a tick paints no label');
+  assert.match(tick, /aria-label="Triple Split · 10:00 → 10:01"/);
   assert.ok(DEFINITION_TICK_PX > 0);
 });

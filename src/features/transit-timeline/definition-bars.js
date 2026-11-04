@@ -34,5 +34,7 @@ export function definitionBarMarkup({ key = DEFINITION_ROW_KEY, index, count, le
   // Geometry is always the true interval. A tick paints a hairline at that
   // position and gains a 14px invisible hit area from CSS (::before).
   const style = `left:${left}%;width:${width}%`;
+  // The visible label is the bare count; `title` already carries the full
+  // definition name plus exact timing, so it is used verbatim for both.
   return `<button type="button" class="${classes}" data-source="definition" data-definition="${count}" data-key="${key}" data-interval="${index}" style="${style}" title="${esc(title)}" aria-label="${esc(title)}"><span>${tick ? '' : esc(label)}</span></button>`;
 }

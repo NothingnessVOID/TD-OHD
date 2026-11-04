@@ -528,12 +528,14 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
         if (!visible) return '';
         const timing = `${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
         if (row.kind === 'definition') {
-          // Exact times and duration live in the label so a narrow marker never
-          // implies a longer interval than the calculation found.
-          const label = definitionLabel(interval.source);
+          // The bar carries the plain count ("1"-"4"); the full name and the
+          // exact timing live in the tooltip and accessible label, so a narrow
+          // marker never implies a longer interval than the calculation found.
+          const label = interval.source;
+          const fullName = definitionLabel(interval.source);
           const duration = interval.clippedStart || interval.clippedEnd ? '' : ` · ${formatDuration(interval.end - interval.start, t)}`;
           return definitionBarMarkup({ index, count: interval.source, label, esc,
-            title: `${label} · ${timing}${duration}`,
+            title: `${fullName} · ${timing}${duration}`,
             left: ratioAt(windowRange, visible.start) * 100, width: (visible.end - visible.start) / span * 100,
             widthPx: (visible.end - visible.start) / span * trackWidth,
             clippedStart: visible.clippedStart, clippedEnd: visible.clippedEnd });
