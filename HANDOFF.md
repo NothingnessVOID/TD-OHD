@@ -23,6 +23,18 @@
 - The count digit keeps its dark chip; the texture has irregular light and dark patches, so no bare ink colour is legible at every position.
 - Superseded: the oil-film foil (`definition-foil.png` + `scripts/foil-to-alpha.py`) is deleted. The reason it was replaced is the form (directional film creases), not its compositing rules — plain alpha and the crop-don't-squash rule carried over.
 
+## Single (1) glow veil (this round)
+- Request: the Warp texture read as a flat print, not a glowing bar. The crisp texture is kept; a soft haze is layered on top of it.
+- `timeline.css`: `.tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after` is an inset pseudo-element that repeats the **same** tile (`--tl-def1-tile`, default `800px`), `filter: blur(var(--tl-def1-veil-blur)) brightness(1.3) saturate(1.1)` with `--tl-def1-veil-blur: 3px`, `mix-blend-mode: screen`, `pointer-events: none`, `z-index: 1`.
+- `screen` at low opacity is the point: bright areas of the texture scatter into their surroundings and the bar reads lit instead of printed. It is safe here because the blend only applies where the PNG has colour — the shader's void slots are fully transparent, so the orange base shows through the gaps untouched and nothing is screened over the whole bar. The layer is also blurred (peaks averaged down), boosted with `brightness(1.3)` so the scatter survives the low opacity, and run at `--tl-def1-veil: .24` light / `.32` dark.
+- Measured on the rendered bar: mean luma 138.0→143.0 (light) / 144.5→151.1 (dark), peak luma unchanged (235.4), pixels with all three channels > 240 stay 0.00%. Earlier candidates were weaker or worse: plain alpha at 3px barely reads (the original complaint), and `lighten` at high opacity only lifted luma ~3 points.
+- The earlier absolute note "any additive blend bleaches" was wrong as a blanket statement. It applies to the full-opacity texture composite (which does stay plain alpha); the low-opacity blurred veil is a different situation. Both the CSS comments and `docs/development/UI_COMPONENT_INVENTORY.md` were corrected to say so.
+- Opacity is per theme only: `--tl-def1-veil: .24` light, `.32` dark (dark surfaces swallow the scatter). Nothing else changes between themes, so other skins need no rule.
+- Ticks are excluded structurally by `:not(.tl-definition-tick)` — they already own `::before` (14px hit area) and `::after` (short-event cap). The Single tick look is untouched.
+- The count chip keeps `z-index: 2` (`filter: none`), so the digit is painted above the veil and stays sharp. The veil lives inside the button (`overflow: hidden`), so bar geometry and hit area are unchanged.
+- `@media (forced-colors: active)` sets the veil to `display: none`.
+- `dev/definition-glow-demo.html`: version A (`.tl-def1-version-a`) switches the veil off with `content: none !important`, so A still renders exactly as before even though it shares `data-definition="1"`. The 63px magnified preview scales `--tl-def1-tile: 1800px` and `--tl-def1-veil-blur: 6.75px` together, so tile and blur stay proportional. Caption sentence + `.tex-caption` describe the layer.
+
 ## Demo page states (do not over-read)
 - `dev/definition-glow-demo.html` keeps both forms side by side: **最初 A · 窄条带 + 弧形白纹（对照保留）** and **彩色 Warp · 本轮候选**. Neither label claims A was rejected or B was finally approved; a notice line below says so explicitly.
 - The page also shows a 63px-tall preview of the same tile (`background-size: auto, 1800px 63px, auto`) so the warped structure is visible; height and background-size grow together, so it is magnified, not stretched. The 28px row above it is the real bar size.
@@ -35,6 +47,12 @@
 - In dark skins the ordinary transit-coloured channel bars (`--tl-transit`, `#3F7C82`) sit close to the surface. That is pre-existing transit colour semantics, which this branch must not change; flagged for a separate decision.
 
 ## Verified
+- Glow veil (headless Chrome, 3x device scale, `dev/definition-glow-demo.html`, default-light + default-dark): computed `::after` = `blur(3px) brightness(1.3) saturate(1.1)`, `mix-blend-mode: screen`, `pointer-events: none`, opacity .24/.32. Digit `span` = `filter: none`, `z-index: 2`. Ticks: `::before` 14px, `::after` 6px cap, bar background still the Single pink→warm→cyan gradient, `content` of the new veil is `none` on ticks; clicking a 1.5px tick still sets `aria-pressed` and fills the detail line. Version A `::after` = `content: none`; Triple `::after` = `content: none`. No failed requests on the demo page or `/`.
+- No bleaching, measured on the rendered bar: veil off → on raises mean luma 138.0→143.0 (light) / 144.5→151.1 (dark) while peak luma stays 235.4 and `near-white (all channels > 240)` pixels stay 0.00% in both themes. The brighter pixels are the texture's own peaks scattered by the blur, not a flat white lift.
+- `forced-colors: active` emulated: veil `display: none`.
+- `npx vite build --mode static` succeeds; `dist/assets/timeline-*.css` and `definition-warp-*.png` (331.75 kB) are emitted.
+- Screenshots: `/tmp/warp-glow-review/` — `final-{light,dark}-{A,B}-3x.png` (comparison crop), `final-{light,dark}-swatches.png`, `final-{light,dark}-scene-a.png` (wide bar + tick in context), `final-{light,dark}-tex.png` (2.25x magnified tile), `onoff-{light,dark}-veil-{off,on}.png` (same bar with the layer toggled).
+- Earlier rounds of this branch still apply: timeline/bridge/localization suites, e2e on 5237, and the texture review described below.
 - `tests/timeline-definition-state.test.js` 10/10 (2→1/3, 3→2/4, same count different topology, hanging gate, 0 islands, planet filter, AND/OR with all four kinds, query vs track consistency, annual replay, versioned cache, short-bar geometry).
 - `npm run test:timeline` 63/63; bridge/split/annual/chart-contract suites 44/44; `npm run test:localization` 34/34.
 - `npm test`: 644 pass / 4 fail. The 4 failures are in `local-private-path`/`local-server` (`Unsafe private path: /var`, a macOS temp-directory environment issue) and reproduce on the untouched baseline.
@@ -45,6 +63,9 @@
 - Visual acceptance over four review rounds on rendered 27px samples plus real-page context shots, light and dark. Final verdict: deliverable; no further texture, gamma or chip changes requested.
 
 ## Not verified
+- Glow veil: only default-light and default-dark were rendered. The other skins (including high-contrast) inherit the same two opacity tokens through `data-theme` but had no visual review. Forced colours were only checked in the emulator, not with a real OS high-contrast theme.
+- Blur cost on a row full of wide Single bars, and on phone hardware, was not measured. The layer is static and clipped by the bar, but `filter: blur()` on many large elements has not been profiled.
+- No real timeline viewport with a painted Single interval was captured with the veil; the evidence is the demo page, which imports the same shared `timeline.css`.
 - Phone touch on short bars and keyboard focus order on the real page.
 - A per-skin review across all ten skins; only default-light/default-dark were reviewed. High-contrast in particular has had no human review.
 - Real performance and bar density over a full year-scale range.

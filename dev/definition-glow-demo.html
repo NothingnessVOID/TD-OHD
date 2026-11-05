@@ -26,7 +26,7 @@
     .demo .tex-preview header small { color: var(--text-secondary); }
     .demo .tex-tall { position: relative; height: 63px; }
     .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
-    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, 1800px 63px, auto; }
+    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, 1800px 63px, auto; --tl-def1-tile: 1800px; --tl-def1-veil-blur: 6.75px; }
     .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
     .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
     /* Version A: original narrow bands — arc ripple retained */
@@ -38,6 +38,9 @@
         linear-gradient(72deg, transparent 0 28%, rgb(54 210 236 / .38) 35%, transparent 43% 74%, rgb(150 92 255 / .42) 83%, transparent 90%) 37px 0 / 97px 100% repeat-x,
         linear-gradient(90deg, #D9631A, #F59A3A 30%, #FFC36B 52%, #F59A3A 74%, #D9631A) !important;
     }
+    /* A is the untouched original form: switch off the new Single glow veil so
+       the comparison still shows exactly what A was. */
+    .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
@@ -77,7 +80,7 @@
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
     <div class="tex-tall tl" id="tex-tall"></div>
-    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。</div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（3px 轻模糊、静态、不加动画），结构仍由下面的清晰纹理承载，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
   </section>
   <div id="scenes"></div>
   <section class="query">

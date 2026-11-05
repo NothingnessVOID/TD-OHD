@@ -517,6 +517,12 @@
      chosen for contrast and stay chip-free. */
   --tl-def-chip-bg: rgb(28 12 2 / .85);
   --tl-def-chip-ink: #FFE9C9;
+  /* Single glow veil: a blurred copy of the same Warp tile laid over the crisp
+     one. Kept as variables so a magnified preview can scale tile and blur
+     together instead of showing two different rhythms. */
+  --tl-def1-veil: .24;
+  --tl-def1-veil-blur: 3px;
+  --tl-def1-tile: 800px;
 }
 :root[data-theme="dark"] .tl {
   --tl-def1-deep: #E8701C; --tl-def1-warm: #FFA445; --tl-def1-light: #FFD07E;
@@ -526,6 +532,9 @@
   --tl-def4-deep: #2A6FDB; --tl-def4-light: #74B4FF;
   --tl-def-edge: color-mix(in srgb, var(--tl-surface) 55%, transparent);
   --tl-def-sheen: rgb(255 255 255 / .5);
+  /* The glow reads weaker against a night surface, so it is a little stronger
+     here. */
+  --tl-def1-veil: .32;
 }
 .tl .tl-definition-bar {
   --tl-def-a: var(--tl-def2-deep); --tl-def-b: var(--tl-def2-light); --tl-def-ink: var(--tl-def2-ink);
@@ -545,9 +554,10 @@
    offline, at 2400x84 = 3x this 800x28 tile, and only the PNG is shipped — the
    shader package is a devDependency of that script, not a runtime import.
    In the shader the void colour slots are fully transparent, so the orange base
-   below stays untouched in the gaps and each patch glows out of it. The PNG is
-   composited with plain alpha, NOT an additive blend: `screen`/`lighten` over an
-   already bright orange base pushes every hue toward white, which read as milky.
+   below stays untouched in the gaps and each patch glows out of it. This base
+   texture keeps plain alpha: at full opacity with full-strength patches an
+   additive blend reads milky, so the colour is not lifted here — the deliberate
+   additive lift lives in the low-opacity blurred veil below.
    Render and tile share one aspect ratio (28.57:1) and the pattern scale is
    multiplied by the same 3x, so the Warp lobes are cropped, never squashed.
    Static, no animation. */
@@ -557,6 +567,30 @@
     linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
     url('./assets/definition-warp.png') 0 0 / 800px 100% repeat-x,
     linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 28%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
+}
+/* Soft glow veil on the Single bar: a blurred copy of the same Warp tile,
+   screen-blended at low opacity. This is what makes the bar look lit rather than
+   printed — bright areas of the texture scatter into their surroundings, without
+   the layer ever becoming a flat white wash.
+   Why `screen` is safe here and was wrong to rule out as a blanket rule: the
+   blend only applies where the PNG has colour. The void slots are fully
+   transparent, so the gaps let the orange base through untouched and nothing is
+   screened over the whole bar. On top of that the layer is blurred (so its local
+   peaks are averaged down), boosted with `brightness` so the scatter survives the
+   low opacity, and run at .24/.32. Measured on the rendered bar: mean luma
+   138.0→143.0 (light) / 144.5→151.1 (dark), peak luma unchanged at 235.4, and
+   pixels with all three channels above 240 stay 0.00% — no bleaching.
+   The earlier "any additive blend bleaches" note was too absolute: it holds for
+   the full-opacity texture composite, not for this low-opacity blurred veil.
+   The layer is inside the bar and `pointer-events: none`, so it never touches the
+   hit area; the blur stays at 3px (no large-radius blur, no animation).
+   Ticks are excluded structurally (`:not`): they already use ::before for the
+   14px hit area and ::after for the short-event cap. */
+.tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: url('./assets/definition-warp.png') 0 0 / var(--tl-def1-tile) 100% repeat-x;
+  filter: blur(var(--tl-def1-veil-blur)) brightness(1.3) saturate(1.1);
+  mix-blend-mode: screen; opacity: var(--tl-def1-veil);
 }
 /* Dark version: a narrow coloured rim stands the bar off the night surface. */
 :root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
@@ -592,5 +626,8 @@
 .tl .tl-row-active[data-active-source="definition"] .tl-row-label { background: transparent; box-shadow: none; }
 @media (forced-colors: active) {
   .tl .tl-definition-bar { background: Highlight; color: HighlightText; }
+  /* The glow veil is a decorative colour layer; forced colours drop it so the
+     system palette is not tinted. */
+  .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after { display: none; }
   .tl .tl-definition-tick::after { background: Highlight; }
 }
