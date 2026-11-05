@@ -62,6 +62,26 @@
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
     .demo .tl { padding: 0; max-width: none; }
+    /* Ordinary source bars, new light vs the old flat form (demo only). */
+    .demo .source-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 10px 12px; }
+    .demo .source-grid-old { border-top: 1px solid var(--border-subtle, var(--border)); }
+    .demo .source-cell { position: relative; min-width: 0; }
+    .demo .source-cell > b { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .demo .source-cell > .bar-shell { position: relative; height: 28px; }
+    .demo .source-cell .tl-bar { position: absolute; inset: 0; width: 100%; }
+    /* Four narrow cells cannot hold the full translated source name inside the bar,
+       and the bar clips its own label: drop to two and then one column instead. */
+    @media (max-width: 700px) { .demo .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 420px) { .demo .source-grid { grid-template-columns: minmax(0, 1fr); } }
+    /* The pre-change flat form, restated here so the comparison never depends on
+       the production stylesheet keeping a second copy of it. `.tl` in the selector
+       keeps it ahead of the shared source-bar rule, which owns the same specificity
+       and is injected after this page's own <style> in dev. */
+    .demo .tl .tl-bar.tl-old-bar { box-shadow: none; }
+    .demo .tl-bar.tl-old-bar[data-source="transit"] { background: var(--tl-transit); }
+    .demo .tl-bar.tl-old-bar[data-source="natal"] { background: var(--tl-birth); }
+    .demo .tl-bar.tl-old-bar[data-source="completed"] { background: var(--tl-transit); }
+    .demo .tl-bar.tl-old-bar[data-source="both"] { background: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); }
     .demo .tl-row-label { font-size: 10px; color: var(--text-secondary); }
     .demo .row-caption { width: 40px; text-align: center; }
     .demo .detail { min-height: 22px; padding: 6px 12px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); font-variant-numeric: tabular-nums; }
@@ -205,6 +225,14 @@
   </div>
   <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px），左侧把它关掉。这层白纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用背景层画了这条白纹，所以 A 的标记层被关掉，不会叠出第二层。</p>
   <div id="warp-tune-host"></div>
+  <section class="scene source-glow">
+    <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>同一份 <code>timeline.css</code>：上排是新光照，下排是旧平涂（仅作对照，不写进正式样式）</small></header>
+    <div class="tl">
+      <div class="source-grid" id="source-new"></div>
+      <div class="source-grid source-grid-old" id="source-old"></div>
+    </div>
+    <div class="detail">新光照只叠在 Skin 原有的来源色上：左端最亮、向右衰减，顶部 1px 高光，外圈一道同来源色的克制辉光；没有模糊、混合模式、动画或额外 DOM。共同条保留 135&deg; 斜纹，补全条保留左侧本命色标识，宽度仍是真实几何，细条不加最小宽。色值本身仍是 <code>--hd-timeline-*</code>，明暗只换光照 token。</div>
+  </section>
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
     <div class="tex-tall tl" id="tex-tall"></div>
@@ -315,6 +343,15 @@
       key: 'tex:tall', index: 0, count: '1', left: 0, width: 100, widthPx: 1100,
       label: '1', title: t('definition1'), esc });
   }
+  const SOURCE_ORDER = ['natal', 'transit', 'both', 'completed'];
+  function renderSourceBars() {
+    // Dev-only: the four ordinary bar sources side by side, once with the shared
+    // lighting and once with the flat form it replaced. Labels are the existing
+    // translated source names, not new copy.
+    const cell = (source, old) => `<div class="source-cell"><b>${esc(t(source))}${old ? ' &middot; 旧样式' : ''}</b><div class="bar-shell"><button type="button" class="tl-bar${old ? ' tl-old-bar' : ''}" data-source="${source}" title="${esc(t(source))}"><span class="tl-bar-label">${esc(t(source))}</span></button></div></div>`;
+    document.getElementById('source-new').innerHTML = SOURCE_ORDER.map(source => cell(source, false)).join('');
+    document.getElementById('source-old').innerHTML = SOURCE_ORDER.map(source => cell(source, true)).join('');
+  }
   function renderScenes() {
     const host = document.getElementById('scenes');
     host.innerHTML = scenes.map(scene => `<section class="scene" data-scene="${scene.id}"><header><span>${esc(scene.title)}</span><small>${esc(scene.note)} · 本命 ${scene.natalCount} 岛</small></header>
@@ -382,13 +419,13 @@
   document.getElementById('mode').addEventListener('click', () =>
     applySkin(document.documentElement.getAttribute('data-theme') === 'dark' ? 'default-light' : 'default-dark'));
   document.getElementById('lang').addEventListener('change', event => {
-    lang = event.target.value; t = translator(catalogs[lang]); renderSwatches(); renderScenes();
+    lang = event.target.value; t = translator(catalogs[lang]); renderSwatches(); renderSourceBars(); renderScenes();
   });
   document.getElementById('q-scene').addEventListener('change', syncExtra);
   document.getElementById('q-run').addEventListener('click', runQuery);
   addEventListener('resize', () => renderScenes());
   applySkin('default-light');
-  renderSwatches(); renderScenes(); renderQueryOptions();
+  renderSwatches(); renderSourceBars(); renderScenes(); renderQueryOptions();
   // Demo-only: mounts the real Warp shader and feeds its output to the page as
   // `--warp-preview-image`. Nothing in `src/` imports this.
   //

@@ -235,9 +235,52 @@
   border-radius: 3px; line-height: 14px; pointer-events: none;
   background: var(--tl-chip-bg); color: var(--tl-chip-ink); text-shadow: none;
 }
-.tl .tl-bar[data-source="natal"] { background: var(--tl-birth); color: var(--tl-surface); }
-.tl .tl-bar[data-source="completed"] { border-left: 5px solid var(--tl-birth); }
-.tl .tl-bar[data-source="both"] { background: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); color: var(--tl-both-ink); }
+/* ---- Light on the ordinary source bars (natal / transit / completed / both) ----
+   Same idea as the definition bars at the end of this file, without their texture:
+   the Skin's own source colour stays exactly as declared (`--hd-timeline-*`), and a
+   static lighting layer is painted on top of it, in this order —
+   1. a thin top highlight with a short falloff and a touch of shade at the foot,
+   2. a soft light that starts bright at the bar's left origin and decays to the
+      right, so the bar reads as a lit volume rather than a flat sticker,
+   3. a slight deepening at the far right end,
+   plus one restrained outer halo in the bar's own source colour. No blur, no blend
+   mode, no animation and no extra DOM: four background layers and one box-shadow.
+   The middle stops are percentages on purpose. A pixel ramp would turn every bar
+   into the same 30px edge highlight and a percentage ramp would wash a 3px interval
+   white, so the ramp is proportional but ends on transparent at 58%: long bars fall
+   off to the right, short bars keep their own colour on their rightmost part, and no
+   bar gains a minimum width. `both` keeps its diagonal weave and `completed` keeps
+   its natal cap underneath the light, so both stay distinguishable. The definition
+   bars are excluded by source (`data-source="definition"`), so their own paints,
+   shadows and tick geometry are untouched. Light and dark only re-tune these five
+   tokens from each Skin's declared mode; no Skin is special-cased. */
+.tl {
+  --tl-bar-sheen: rgb(255 255 255 / .40);
+  --tl-bar-lit: rgb(255 255 255 / .32);
+  --tl-bar-lit-soft: rgb(255 255 255 / .13);
+  --tl-bar-shade: rgb(0 0 0 / .10);
+  --tl-bar-halo-mix: 42%;
+  --tl-bar-light:
+    linear-gradient(180deg, var(--tl-bar-sheen) 0 1px, rgb(255 255 255 / .08) 1px 44%, var(--tl-bar-shade) 100%),
+    linear-gradient(90deg, var(--tl-bar-lit) 0, var(--tl-bar-lit-soft) 22%, transparent 58%),
+    linear-gradient(90deg, transparent 60%, var(--tl-bar-shade) 100%);
+}
+:root[data-theme="dark"] .tl {
+  --tl-bar-sheen: rgb(255 255 255 / .46);
+  --tl-bar-lit: rgb(255 255 255 / .24);
+  --tl-bar-lit-soft: rgb(255 255 255 / .10);
+  --tl-bar-shade: rgb(0 0 0 / .18);
+  --tl-bar-halo-mix: 60%;
+}
+.tl .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
+  --tl-bar-fill: var(--tl-transit);
+  --tl-bar-paint: var(--tl-bar-fill);
+  background: var(--tl-bar-light), var(--tl-bar-paint);
+  box-shadow: 0 0 6px -1px color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-halo-mix), transparent);
+}
+.tl .tl-bar[data-source="natal"] { --tl-bar-fill: var(--tl-birth); color: var(--tl-surface); }
+.tl .tl-bar[data-source="completed"] { --tl-bar-fill: var(--tl-transit); border-left: 5px solid var(--tl-birth); }
+.tl .tl-bar[data-source="both"] { --tl-bar-fill: var(--tl-both-transit); --tl-bar-paint: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); color: var(--tl-both-ink); }
 .tl .tl-bar[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: -2px; z-index: 1; }
 @media (hover: hover) { .tl .tl-bar:hover { outline: 2px solid var(--text); outline-offset: -2px; z-index: 1; } }
 .tl .tl-clipped-start { border-left-style: dashed; border-left-color: var(--text-secondary); border-top-left-radius: 0; border-bottom-left-radius: 0; }
@@ -664,6 +707,15 @@
 .tl .tl-row-active[data-active-definition="4"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 76%, var(--tl-def4-light)); box-shadow: inset 2px 0 var(--tl-def4-deep); }
 .tl .tl-row-active[data-active-source="definition"] .tl-row-label { background: transparent; box-shadow: none; }
 @media (forced-colors: active) {
+  /* Decorative lighting, so forced colours keep the system palette: the sheen,
+     the left ramp and the halo are dropped. Chromium already forces
+     `background-image` and `box-shadow` away here (measured: the definition bars
+     lose their gradients the same way), so this block is the explicit fallback for
+     an engine that keeps author images. `completed` keeps its natal cap (a border)
+     and `both` keeps its weave, restated below without the light layers, because
+     both are information, not decoration. */
+  .tl .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"]) { background-image: none; box-shadow: none; }
+  .tl .tl-bar[data-source="both"] { background-image: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); box-shadow: none; }
   .tl .tl-definition-bar { background: Highlight; color: HighlightText; }
   /* The glow veil is a decorative colour layer; forced colours drop it so the
      system palette is not tinted. */
