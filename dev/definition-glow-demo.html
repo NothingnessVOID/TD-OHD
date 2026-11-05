@@ -44,6 +44,28 @@
        the comparison still shows exactly what A was. */
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::before,
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
+    /* ---- Current-parameter arc comparison (demo only) ----
+       Two bars, one live texture: both read the same `--warp-preview-image` and the
+       same look variables, so they can only differ by the white arc layer below.
+       The right one carries the original A's arc ripple as its own span; no filter
+       is ever applied to it, so it stays crisp while the colour field underneath
+       keeps its blur.
+       `.tl-bar > span` (padding, z-index 2) and the Single chip rule
+       (`[data-definition="1"] > span`: padding/margin/background/text-shadow)
+       would style that span, so every one of those properties is restated here and
+       the id keeps the selector above them. `inset: 0` plus the bar's own
+       `overflow: hidden` keep the arc inside the bar; the count span stays at
+       z-index 2, above the arc. */
+    .demo #arc-striped .tl-definition-bar > span.tl-def1-arcline {
+      position: absolute; inset: 0; z-index: 1;
+      margin: 0; padding: 0; border: 0; border-radius: 0;
+      line-height: 0; font-size: 0; color: transparent;
+      background: repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x;
+      text-shadow: none; filter: none;
+      pointer-events: none; box-sizing: border-box;
+    }
+    .demo .warp-preset-note { margin: 6px 0 0; max-width: 72ch; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+    .demo .warp-tune-actions button:disabled { opacity: .55; cursor: not-allowed; }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
@@ -181,6 +203,17 @@
     </div>
   </div>
   <p class="notice">A 是最初的形态，B 是本轮采用的候选，两者并列保留只为了对照，不代表任何一方已经被否决或定稿。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
+  <div class="compare" id="arc-compare">
+    <div class="compare-item">
+      <label>当前参数 · 无白纹</label>
+      <div class="compare-bar tl" id="arc-plain"></div>
+    </div>
+    <div class="compare-item">
+      <label>当前参数 · 加曲线白纹</label>
+      <div class="compare-bar tl" id="arc-striped"></div>
+    </div>
+  </div>
+  <p class="notice">这两条不是 A，也不写死：两条都使用下面面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右边多叠了一层<strong>原始 A 同款弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px）。这层白纹是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记和 A 都不参与。</p>
   <div id="warp-tune-host"></div>
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
@@ -275,6 +308,17 @@
     document.getElementById('compare-b').innerHTML = definitionBarMarkup({
       key: 'compare:b', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
       label: '1', title: t('definition1'), esc });
+    // Two rows on the *current* parameters. Same markup, same shared CSS and the
+    // same live texture; only the right one gets the A-style arc as a separate
+    // crisp span, so the pair isolates "with / without the white arc".
+    document.getElementById('arc-plain').innerHTML = definitionBarMarkup({
+      key: 'arc:plain', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    document.getElementById('arc-striped').innerHTML = definitionBarMarkup({
+      key: 'arc:striped', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    document.getElementById('arc-striped').querySelector('.tl-definition-bar')
+      .insertAdjacentHTML('afterbegin', '<span class="tl-def1-arcline" aria-hidden="true"></span>');
     // Same markup and same shared CSS as the timeline, only taller: the tile is
     // magnified by growing height and background-size together.
     document.getElementById('tex-tall').innerHTML = definitionBarMarkup({
@@ -357,7 +401,15 @@
   renderSwatches(); renderScenes(); renderQueryOptions();
   // Demo-only: mounts the real Warp shader and feeds its output to the page as
   // `--warp-preview-image`. Nothing in `src/` imports this.
-  mountWarpPanel({ host: document.getElementById('warp-tune-host') });
+  //
+  // The selected parameter set is a file, not a browser value: `dev/warp-preset.json`
+  // is the default for a browser that has never saved anything, and the panel's
+  // 「载入你选定的参数」 puts it back on demand. If the file cannot be read the panel
+  // falls back to the built-in parameters instead of failing.
+  const preset = await fetch('./warp-preset.json')
+    .then(response => (response.ok ? response.json() : null))
+    .catch(() => null);
+  mountWarpPanel({ host: document.getElementById('warp-tune-host'), preset });
 </script>
 </body>
 </html>

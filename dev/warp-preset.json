@@ -1,0 +1,36 @@
+{
+  "name": "用户选定 · 2026-11-05",
+  "note": "演示页的基线参数：新打开（这台浏览器没有保存过参数）时默认就是这一组；「载入你选定的参数」把它放回当前参数，「恢复默认」也回到它并清掉本机保存。它不影响正式资产 definition-warp.png —— 那份 PNG 仍按 dev/warp-texture.js 的 WARP_DEFAULTS 生成。",
+  "warp": {
+    "shape": "checks",
+    "proportion": 0.29,
+    "softness": 0.68,
+    "shapeScale": 0.135,
+    "distortion": 0,
+    "swirl": 0.88,
+    "swirlIterations": 10,
+    "scale": 0.2,
+    "rotation": 0,
+    "frame": 0,
+    "colors": [
+      "00000000",
+      "e01a6eff",
+      "b44be8ff",
+      "00000000",
+      "00000000",
+      "5a5bf0ff",
+      "00000000",
+      "12c58bff",
+      "00000000",
+      "19bed8ff"
+    ]
+  },
+  "look": {
+    "blur": 4,
+    "brightness": 1,
+    "saturation": 1.55,
+    "glow": 0.33,
+    "tile": 1125,
+    "lightPosition": 0
+  }
+}

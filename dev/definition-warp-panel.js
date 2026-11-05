@@ -11,8 +11,16 @@
  *    mirroring the one place where the app's styling does something to the
  *    image, so the two groups never pretend to be the same kind of knob.
  *
- * The shader group changes the warped structure; the look group cannot. Copy and
- * reset act on both together.
+ * The shader group changes the warped structure; the look group cannot. Copy,
+ * load and reset act on both together.
+ *
+ * **Baseline.** `mountWarpPanel({ preset })` takes the parameter set the user
+ * selected, read from `dev/warp-preset.json` by the page. That set — not the
+ * committed PNG's tuning — is what a fresh browser starts on, what
+ * 「载入你选定的参数」 reapplies and what 「恢复默认」 returns to. A browser that
+ * already has saved values keeps them: the preset never overwrites storage on
+ * load, it only does so when the user asks for it. Without a readable preset
+ * file every path falls back to `WARP_DEFAULTS` + the stylesheet's look values.
  *
  * Nothing in `src/` imports this module, and the panel only writes custom
  * properties on the demo scope.
@@ -22,7 +30,7 @@ import { copyPlainText } from '../src/lib/clipboard.js';
 import {
   MAX_COLORS, DESIGN_HEIGHT, DISPLAY_WIDTH, RENDER_WIDTH, FEATHER_PX,
   WARP_NUMERIC, WARP_SHAPES,
-  cloneWarpDefaults, normalizeWarpParams, randomWarpParams, warpUniforms, compositeWarpPixels,
+  normalizeWarpParams, randomWarpParams, warpUniforms, compositeWarpPixels,
 } from './warp-texture.js';
 
 /** Dedicated demo key: no production key is read or written. */
@@ -66,6 +74,10 @@ const SHAPE_LABELS = { checks: '棋盘', stripes: '条纹', edge: '分边' };
 /** The stored/copied name of a look value (`bright` → `brightness`). */
 const jsonKey = row => row.json ?? row.key;
 const cloneLookDefaults = () => Object.fromEntries(LOOK_ROWS.map(row => [row.key, row.initial]));
+
+/** Decimals a slider step can actually express (`0.005` → 3, `0.01` → 2, `1` → 0).
+ *  The shader readout uses it, so a 0.135 value never prints as a rounded 0.14. */
+const decimalsOf = step => (step >= 1 ? 0 : (String(step).split('.')[1] ?? '').length);
 const numberText = (row, value) => (row.digits === 0 ? String(Math.round(value)) : Number(value).toFixed(row.digits));
 const displayOf = (row, value) => {
   const text = numberText(row, value);
@@ -95,6 +107,29 @@ const lookRowMarkup = row => `<div class="warp-field">
       ${row.hint ? `<p class="warp-field-hint">${row.hint}${row.state ? ' <span class="warp-field-state" data-look-state></span>' : ''}</p>` : ''}
     </div>`;
 
+/** A writable copy of a normalized parameter set (colour slots included). */
+const cloneWarpParams = params => ({ ...params, colors: params.colors.map(slot => ({ ...slot })) });
+
+/**
+ * Reads a `look` object from storage or from the preset into a fresh default set.
+ * Out-of-range or non-numeric entries keep the default. `pinned` reports whether
+ * the glow came in as a number (fixed) instead of null ("follow the theme").
+ */
+function readLookValues(rawLook) {
+  const look = cloneLookDefaults();
+  let pinned = false;
+  if (!rawLook || typeof rawLook !== 'object') return { look, pinned };
+  for (const row of LOOK_ROWS) {
+    const raw = rawLook[jsonKey(row)];
+    if (raw === null || raw === undefined) continue;
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value < row.min || value > row.max) continue;
+    look[row.key] = row.step < 1 ? value : Math.round(value);
+    if (row.key === 'glow') pinned = true;
+  }
+  return { look, pinned };
+}
+
 function safeStorage() {
   try {
     return globalThis.localStorage ?? null;
@@ -109,16 +144,31 @@ function safeStorage() {
  * page's preview image is cleared — the old texture is never shown as if the
  * shader had run.
  */
-export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = copyPlainText } = {}) {
+export function mountWarpPanel({ host, scope, preset = null, storage = safeStorage(), copy = copyPlainText } = {}) {
   if (!host) throw new Error('mountWarpPanel needs a host element');
   const surface = scope ?? document.querySelector('.demo');
   if (!surface) throw new Error('mountWarpPanel needs the .demo scope');
+
+  // The selected set (`dev/warp-preset.json`). Anything unreadable falls back to
+  // the shipped parameters, so a broken file can never leave the panel inert.
+  const presetRaw = preset && typeof preset === 'object' ? preset : null;
+  const presetName = typeof presetRaw?.name === 'string' ? presetRaw.name.trim() : '';
+  const hasPreset = Boolean(presetRaw && (presetRaw.warp || presetRaw.look));
+  const presetLook = readLookValues(presetRaw?.look);
+  const baseline = {
+    params: normalizeWarpParams(presetRaw?.warp ?? presetRaw),
+    look: presetLook.look,
+    pinned: presetLook.pinned,
+    name: presetName,
+    has: hasPreset,
+  };
+  const presetLabel = baseline.name ? `「${baseline.name}」` : '';
 
   host.innerHTML = `<details class="warp-tune" open>
     <summary><span class="warp-tune-title">纹理参数</span><span class="warp-tune-tag" data-warp-tag>仅演示页 · 真实 shader 即时渲染</span></summary>
     <div class="warp-tune-body">
       <div class="warp-tune-error" data-warp-error hidden></div>
-      <p class="warp-tune-intro">两组参数：<strong>Warp 形态 / 颜色 / 初始帧</strong>是 shader 自己的参数，改完立刻重画整张纹理；<strong>外观</strong>只决定这张纹理在本页怎么显示（模糊、亮度、饱和度、柔光、铺贴大小），不改变形态。两组都作用于上面的 B、第一颗色块、场景里正常长度的 1 号条和放大预览；A 和短事件的小标记不参与。</p>
+      <p class="warp-tune-intro">两组参数：<strong>Warp 形态 / 颜色 / 初始帧</strong>是 shader 自己的参数，改完立刻重画整张纹理；<strong>外观</strong>只决定这张纹理在本页怎么显示（模糊、亮度、饱和度、柔光、铺贴大小、发光位置），不改变形态。两组都作用于上面的 B、当前参数对比的两条、第一颗色块、场景里正常长度的 1 号条和放大预览；A 和短事件的小标记不参与。</p>
       <div class="warp-live"><div class="warp-shader-host" data-warp-host></div></div>
       <div class="warp-live-meta" data-warp-meta></div>
       <fieldset class="warp-group">
@@ -140,18 +190,20 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
       </fieldset>
       <fieldset class="warp-group">
         <legend>外观</legend>
-        <p class="warp-field-hint">这一组是本页的显示参数，取的是正式样式里的同一套值；它影响的是纹理看起来的软硬与铺贴密度，不会改变形状。</p>
+        <p class="warp-field-hint">这一组是本页的显示参数，不影响纹理本身的形状。不拖时用的是选定预设里的外观值；模糊为 6px、饱和度 1.15、纹理 800px、柔光跟随明暗时，就和正式样式（<code>timeline.css</code>）一致。</p>
         <div class="warp-tune-fields" data-look-fields>${LOOK_ROWS.map(lookRowMarkup).join('')}</div>
       </fieldset>
       <div class="warp-tune-actions">
         <button type="button" data-warp-random>随机一组</button>
-        <button type="button" data-warp-reset>恢复默认</button>
+        <button type="button" data-warp-preset>载入你选定的参数</button>
+        <button type="button" data-warp-reset>恢复默认（选定预设）</button>
         <button type="button" data-warp-copy>复制参数</button>
       </div>
+      <p class="warp-preset-note" data-warp-preset-note></p>
       <p class="warp-tune-status" role="status" aria-live="polite"></p>
       <label class="warp-tune-json-label" for="warp-tune-json">当前参数（复制被拦住时可以手动选中）</label>
       <textarea class="warp-tune-json" id="warp-tune-json" rows="7" readonly spellcheck="false"></textarea>
-      <p class="warp-tune-foot">默认值就是正式时间轴那张 PNG 的参数加同一套外观：离线脚本和这块面板共用一份参数与同一套像素处理，所以不动任何滑块时，这里的画面和应用里那张图一致。「随机一组」「恢复默认」「复制参数」都同时覆盖两组；随机只在保持橙金主底的前提下换形态、颜色和外观。</p>
+      <p class="warp-tune-foot">默认值来自 <code>dev/warp-preset.json</code> 里选定的参数，不是正式时间轴那张 PNG 的参数：「随机一组」「载入你选定的参数」「恢复默认」「复制参数」都同时覆盖两组；随机只在保持橙金主底的前提下换形态、颜色和外观。想把选定参数烘成正式资产，仍需把 JSON 里的数值抄回 <code>dev/warp-texture.js</code> 的 <code>WARP_DEFAULTS</code> 并重跑生成脚本——这块面板不会改生产默认，也不改生产 PNG。</p>
     </div>
   </details>`;
 
@@ -168,7 +220,20 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
   const resetButton = $('[data-warp-reset]');
   const randomButton = $('[data-warp-random]');
   const copyButton = $('[data-warp-copy]');
+  const presetButton = $('[data-warp-preset]');
+  const presetNoteNode = $('[data-warp-preset-note]');
   const lookStateNode = $('[data-look-state]');
+
+  // The baseline is the selected preset; "restore defaults" and "load selected"
+  // both return to it. Without a preset file the button stays inert rather than
+  // pretending to load something.
+  presetButton.disabled = !baseline.has;
+  presetButton.title = baseline.has
+    ? `把保存在 dev/warp-preset.json 的选定参数${presetLabel}重新放回当前参数`
+    : '没有读到 dev/warp-preset.json';
+  presetNoteNode.textContent = baseline.has
+    ? `本页的基线${presetLabel}保存在 dev/warp-preset.json：新打开、这台浏览器还没有保存过参数时，默认就是它。已经保存过的参数不会被替换，「载入你选定的参数」随时可以把它放回当前参数；「恢复默认」回到的也是这一组，并会清掉本机保存。`
+    : '没有读到 dev/warp-preset.json，当前以正式 PNG 的参数和样式表的外观值作为默认。';
 
   const colorInputs = Array.from({ length: MAX_COLORS }, (_, index) => ({
     color: $(`#warp-color-${index}`),
@@ -183,7 +248,7 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
     output: $(`#look-${row.key}-value`),
   }]));
 
-  let params = cloneWarpDefaults();
+  let params = cloneWarpParams(baseline.params);
   let look = cloneLookDefaults();
   /** The glow slider follows the theme until the user touches it. */
   let glowDirty = false;
@@ -235,7 +300,9 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
     for (const row of WARP_ROWS) {
       const { input, output } = warpNodes.get(row.key);
       input.value = String(params[row.key]);
-      output.textContent = WARP_NUMERIC[row.key].step < 1 ? Number(params[row.key]).toFixed(2) : String(Math.round(params[row.key]));
+      // Decimals follow the slider's step: 0.005 keeps three places, so 0.135 is
+      // never shown (or screenshotted) as 0.14.
+      output.textContent = Number(params[row.key]).toFixed(decimalsOf(WARP_NUMERIC[row.key].step));
     }
     for (const row of LOOK_ROWS) {
       const { input, output } = lookNodes.get(row.key);
@@ -278,6 +345,28 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
     }
   }
 
+  const cloneBaselineParams = () => cloneWarpParams(baseline.params);
+  const cloneBaselineLook = () => ({ ...baseline.look });
+
+  /** Puts the selected preset back into the live state. `persist` decides whether
+   *  the same values are also written to (or cleared from) this browser. */
+  function applyBaseline({ persist }) {
+    stopPlayback();
+    params = cloneBaselineParams();
+    look = cloneBaselineLook();
+    glowDirty = baseline.pinned;
+    if (persist) {
+      commit();
+      return;
+    }
+    try {
+      storage?.removeItem(STORAGE_KEY);
+    } catch {
+      /* nothing to clear */
+    }
+    commit({ persist: false });
+  }
+
   function readStorage() {
     if (!storage) return null;
     try {
@@ -285,22 +374,6 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
       return raw && typeof raw === 'object' ? raw : null;
     } catch {
       return null; // unreadable or hand-edited junk: keep the defaults
-    }
-  }
-
-  function readLook(rawLook) {
-    if (!rawLook || typeof rawLook !== 'object') return;
-    for (const row of LOOK_ROWS) {
-      const raw = rawLook[jsonKey(row)];
-      if (raw === null || raw === undefined) continue;
-      const value = Number(raw);
-      if (!Number.isFinite(value) || value < row.min || value > row.max) continue;
-      if (row.key === 'glow') {
-        look.glow = value;
-        glowDirty = true;
-      } else {
-        look[row.key] = row.step < 1 ? value : Math.round(value);
-      }
     }
   }
 
@@ -443,6 +516,11 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
     return next;
   }
 
+  function loadSelected() {
+    applyBaseline({ persist: true });
+    setStatus(`${baseline.has ? `已把选定参数${presetLabel}载入当前参数` : '没有读到选定的预设文件，载入的是内置默认参数'}，并保存到这台浏览器。`);
+  }
+
   function randomize() {
     stopPlayback();
     params = randomWarpParams();
@@ -454,17 +532,10 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
   }
 
   function reset() {
-    stopPlayback();
-    params = cloneWarpDefaults();
-    look = cloneLookDefaults();
-    glowDirty = false;
-    try {
-      storage?.removeItem(STORAGE_KEY);
-    } catch {
-      /* nothing to clear */
-    }
-    commit({ persist: false });
-    setStatus('两组都已恢复默认，这台浏览器里保存的参数也清掉了。');
+    applyBaseline({ persist: false });
+    setStatus(baseline.has
+      ? `两组都已回到选定参数${presetLabel}，这台浏览器里保存的参数也清掉了。`
+      : '两组都已恢复默认，这台浏览器里保存的参数也清掉了。');
   }
 
   let copying = false;
@@ -526,7 +597,9 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
       const value = Number(event.currentTarget.value);
       const { min, max, step } = WARP_NUMERIC[row.key];
       if (!Number.isFinite(value) || value < min || value > max) return;
-      params[row.key] = step < 1 ? value : Math.round(value);
+      // Snapped to the step's own decimals (0.005 → 3), so the copied JSON never
+      // carries float dust such as 0.14500000000000002.
+      params[row.key] = step < 1 ? Number(value.toFixed(decimalsOf(step))) : Math.round(value);
       setStatus('');
       commit();
     });
@@ -561,13 +634,21 @@ export function mountWarpPanel({ host, scope, storage = safeStorage(), copy = co
   });
   playButton.addEventListener('click', () => (playing ? stopPlayback() : startPlayback()));
   randomButton.addEventListener('click', randomize);
+  presetButton.addEventListener('click', loadSelected);
   resetButton.addEventListener('click', reset);
   copyButton.addEventListener('click', copyParams);
 
+  // Saved values win over the preset on open: the preset is offered, never forced.
   const restore = readStorage();
   if (restore) {
     params = normalizeWarpParams(restore.warp ?? restore);
-    readLook(restore.look ?? restore);
+    const restoredLook = readLookValues(restore.look ?? restore);
+    look = restoredLook.look;
+    glowDirty = restoredLook.pinned;
+  } else {
+    params = cloneBaselineParams();
+    look = cloneBaselineLook();
+    glowDirty = baseline.pinned;
   }
   renderValues();
   applyLook();
