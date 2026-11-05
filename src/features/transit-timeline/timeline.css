@@ -224,6 +224,17 @@
 .tl-gridline { position: absolute; top: 0; bottom: 0; width: 1px; z-index: 2; background: var(--tl-day-divider); pointer-events: none; }
 .tl .tl-bar { position: absolute; top: 0; bottom: var(--tl-row-gap); height: auto; box-sizing: border-box; z-index: 1; display: flex; align-items: center; min-width: 2px; overflow: hidden; border: 0 solid transparent; border-radius: 0; background: var(--tl-transit); color: var(--tl-transit-ink); font-size: 11px; line-height: 1.2; padding: 0; cursor: pointer; white-space: nowrap; text-align: left; }
 .tl-bar > span { position: relative; z-index: 2; padding: 0 7px; pointer-events: none; }
+/* Shared bar label chip. The definition count span predates the shared class and
+   keeps `.tl-definition-count` (tests and the arc comment rely on it), so both
+   label classes are listed. The arc layer has its own class and is never hit;
+   `:not(.tl-definition-tick)` keeps a short marker's empty count span plateless.
+   No font-size here: bars keep their own inherited size (11px desktop, the
+   existing 10px breakpoint) instead of being normalised by this rule. */
+.tl .tl-bar:not(.tl-definition-tick) > :is(.tl-bar-label, .tl-definition-count) {
+  position: relative; z-index: 2; margin-left: 5px; padding: 1px 4px;
+  border-radius: 3px; line-height: 14px; pointer-events: none;
+  background: var(--tl-chip-bg); color: var(--tl-chip-ink); text-shadow: none;
+}
 .tl .tl-bar[data-source="natal"] { background: var(--tl-birth); color: var(--tl-surface); }
 .tl .tl-bar[data-source="completed"] { border-left: 5px solid var(--tl-birth); }
 .tl .tl-bar[data-source="both"] { background: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); color: var(--tl-both-ink); }
@@ -491,4 +502,180 @@
     --tl-mobile-range-width: 64px;
     --tl-mobile-range-font: 10px;
   }
+}
+
+/* Final definition state (Single / Split / Triple / Quadruple Split).
+   New colour semantics, scoped to the timeline: Single is a warm orange
+   iridescence with local pink, violet and cyan spectral bands; Split is yellow
+   light, Triple violet light, Quadruple blue light. Light and dark versions
+   follow each Skin's declared mode (mirrored to data-theme), and every edge and
+   glow is mixed with the Skin's own surface and text tokens, so no per-skin
+   rules are needed. All effects are static: layered gradients, no animation,
+   no large blur. Bars are drawn only when the final count differs from natal. */
+.tl {
+  --tl-def1-deep: #D9631A; --tl-def1-warm: #F59A3A; --tl-def1-light: #FFC36B;
+  --tl-def1-pink: #FF4F9A; --tl-def1-violet: #8F63FF; --tl-def1-cyan: #2FD3E6;
+  --tl-def1-ink: #2A1203;
+  --tl-def2-deep: #D9A40E; --tl-def2-light: #FFE07A; --tl-def2-ink: #2B2100;
+  --tl-def3-deep: #6A3FC8; --tl-def3-light: #A57BF2; --tl-def3-ink: #FFFFFF;
+  --tl-def4-deep: #1F5FC4; --tl-def4-light: #5EA2F2; --tl-def4-ink: #FFFFFF;
+  --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
+  --tl-def-sheen: rgb(255 255 255 / .42);
+  --tl-def-glow: 0 0 0 transparent;
+  /* Bar label chip: one plate (dark warm, warm ink) under every label written
+     inside a timeline bar — center names, channel numbers, gate numbers,
+     gate-line numbers and the 1–4 definition counts. Each bar background is a
+     separate legibility problem (Single texture patches, Split/Triple/Quadruple
+     light bands, transit/natal/both fills), so one shared plate keeps every
+     label readable and identical instead of one solution per bar type. The
+     label font-size is never set here; it keeps inheriting from `.tl-bar` and
+     its existing breakpoint overrides. */
+  --tl-chip-bg: rgb(28 12 2 / .85);
+  --tl-chip-ink: #FFE9C9;
+  /* Single texture: the warp tile, the blur and glow strength and the crisp white
+     arc that sits on top of it. Kept as variables so a magnified preview can
+     scale tile, blur and arc together instead of showing three rhythms. */
+  --tl-def1-veil: .33;
+  --tl-def1-veil-blur: 4px;
+  --tl-def1-tile: 1125px;
+  --tl-def1-arc: 211px;
+}
+:root[data-theme="dark"] .tl {
+  --tl-def1-deep: #E8701C; --tl-def1-warm: #FFA445; --tl-def1-light: #FFD07E;
+  --tl-def1-pink: #FF5FAE; --tl-def1-violet: #A27BFF; --tl-def1-cyan: #45E6F5;
+  --tl-def2-deep: #E6B21A; --tl-def2-light: #FFE892;
+  --tl-def3-deep: #7A4BDB; --tl-def3-light: #B992FF;
+  --tl-def4-deep: #2A6FDB; --tl-def4-light: #74B4FF;
+  --tl-def-edge: color-mix(in srgb, var(--tl-surface) 55%, transparent);
+  --tl-def-sheen: rgb(255 255 255 / .5);
+  /* The glow strength, the tile, the blur and the arc period do not change with
+     the theme: only the orange ramp does. */
+}
+.tl .tl-definition-bar {
+  --tl-def-a: var(--tl-def2-deep); --tl-def-b: var(--tl-def2-light); --tl-def-ink: var(--tl-def2-ink);
+  --tl-def-halo: color-mix(in srgb, var(--tl-def-b) 70%, transparent);
+  color: var(--tl-def-ink); font-weight: 600; letter-spacing: .01em;
+  background:
+    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 42%, rgb(0 0 0 / .08) 100%),
+    linear-gradient(90deg, var(--tl-def-a), var(--tl-def-b) 38%, color-mix(in srgb, var(--tl-def-b) 60%, var(--tl-def-a)) 70%, var(--tl-def-a));
+  box-shadow: inset 0 0 0 1px var(--tl-def-edge);
+}
+.tl .tl-definition-bar > .tl-definition-count { text-shadow: 0 0 2px var(--tl-def-halo), 0 0 1px var(--tl-def-halo); }
+.tl .tl-definition-bar[data-definition="3"] { --tl-def-a: var(--tl-def3-deep); --tl-def-b: var(--tl-def3-light); --tl-def-ink: var(--tl-def3-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def3-deep) 85%, black); }
+.tl .tl-definition-bar[data-definition="4"] { --tl-def-a: var(--tl-def4-deep); --tl-def-b: var(--tl-def4-light); --tl-def-ink: var(--tl-def4-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def4-deep) 85%, black); }
+/* Single: coloured Warp field on warm orange.
+   The overlay is a generated texture: scripts/build-definition-warp-texture.mjs
+   renders the real Warp shader from @paper-design/shaders (Apache-2.0) once,
+   offline, at 2400x84 = 3x this 1125x28 tile, and only the PNG is shipped — the
+   shader package is a devDependency of that script, not a runtime import.
+   In the shader the void colour slots are fully transparent, so the orange base
+   below stays untouched in the gaps and each patch glows out of it. This base
+   texture keeps plain alpha: at full opacity with full-strength patches an
+   additive blend reads milky, so the colour is not lifted here — the deliberate
+   additive lift lives in the low-opacity blurred veil below.
+   The PNG is a 3x render of the demo's 800x28 shader box, but the bar repeats it
+   on a 1125px tile, so the lobes are stretched 1.406x horizontally. That is
+   exactly what the demo showed when 1125 was picked as the tile size, so the
+   shipped asset keeps that look instead of being re-rendered at the wider aspect
+   and drifting away from the approved preview.
+   The base is lit from the left edge and falls off to the right, in the bar's
+   own coordinates, so long and short Single bars share one light direction.
+   Static, no animation. */
+.tl .tl-definition-bar[data-definition="1"] {
+  --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
+  background:
+    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
+    radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+}
+/* The colour texture itself is blurred. There is no sharp colour texture
+   underneath; the orange base, the count chip and the arc layer above stay
+   crisp. Extend vertically so filtering does not fade the colour away at the top
+   and bottom of a 28px bar. */
+.tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before {
+  content: ''; position: absolute; inset: -6px 0; z-index: 0; pointer-events: none;
+  background: url('./assets/definition-warp.png') 0 50% / var(--tl-def1-tile) 28px repeat;
+  filter: blur(var(--tl-def1-veil-blur)) saturate(1.55);
+}
+/* Soft glow veil on the Single bar: a blurred copy of the same Warp tile,
+   screen-blended at low opacity. This is what makes the bar look lit rather than
+   printed — bright areas of the texture scatter into their surroundings, without
+   the layer ever becoming a flat white wash.
+   Why `screen` is safe here and was wrong to rule out as a blanket rule: the
+   blend only applies where the PNG has colour. The void slots are fully
+   transparent, so the gaps let the orange base through untouched and nothing is
+   screened over the whole bar. On top of that the layer is blurred (so its local
+   peaks are averaged down), boosted with `brightness` so the scatter survives the
+   low opacity, and run at .33 in both themes. Measured on the rendered bar: mean
+   luma 138.0→143.0 (light) / 144.5→151.1 (dark), peak luma unchanged at 235.4, and
+   pixels with all three channels above 240 stay 0.00% — no bleaching.
+   The earlier "any additive blend bleaches" note was too absolute: it holds for
+   the full-opacity texture composite, not for this low-opacity blurred veil.
+   The layer is inside the bar and `pointer-events: none`, so it never touches the
+   hit area; the blur stays at 4px (no large-radius blur, no animation).
+   Ticks are excluded structurally (`:not`): they already use ::before for the
+   14px hit area and ::after for the short-event cap. */
+.tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: url('./assets/definition-warp.png') 0 0 / var(--tl-def1-tile) 100% repeat-x;
+  filter: blur(var(--tl-def1-veil-blur)) brightness(1.3) saturate(1.1);
+  mix-blend-mode: screen; opacity: var(--tl-def1-veil);
+}
+/* Dark version: a narrow coloured rim stands the bar off the night surface. */
+:root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
+:root[data-theme="dark"] .tl .tl-definition-bar[data-definition="1"] { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 6px -1px color-mix(in srgb, var(--tl-def1-pink) 55%, var(--tl-def1-warm)); }
+/* The crisp white arc that the shared markup adds to every non-tick Single bar:
+   the original A's ripple (`ellipse 150% 260% at 0% 130%`, white at 20%) at one
+   211px period. It is its own element because the colour field around it is
+   blurred and this layer must not be: the ripple stays sharp and does not
+   inherit the texture's filter. `.tl-bar > span` (padding) and the chip rule
+   would hit it, so every property they set is restated here; the count span keeps
+   z-index 2 and paints above it, while the arc shares z-index 1 with the glow veil
+   (the veil screens over it at .33, exactly as the demo preview showed).
+   `inset: 0` plus the bar's own `overflow: hidden` keep the arc inside the bar. */
+.tl .tl-definition-bar[data-definition="1"] > .tl-definition-arcline {
+  position: absolute; inset: 0; z-index: 1;
+  margin: 0; padding: 0; border: 0; border-radius: 0;
+  line-height: 0; font-size: 0; color: transparent;
+  background: repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / var(--tl-def1-arc) 100% repeat-x;
+  text-shadow: none; filter: none;
+  pointer-events: none; box-sizing: border-box;
+}
+.tl-definition-row { position: relative; z-index: 1; }
+/* Narrow intervals: the button is a 14px hit target; only the true width is
+   painted (at least a 1.5px hairline) plus a small cap that marks "short event". */
+.tl .tl-definition-bar.tl-definition-tick { min-width: 1.5px; overflow: visible; background: linear-gradient(180deg, var(--tl-def-b), var(--tl-def-a)); }
+/* The dark-theme rim rule outranks a bare attribute selector, so the tick
+   resets and the Single override are both listed with the dark variant.
+   Without the duplicate, dark-theme Single ticks painted the Split yellow. */
+.tl .tl-definition-bar.tl-definition-tick, :root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick { box-shadow: none; }
+.tl .tl-definition-bar.tl-definition-tick[data-definition="1"],
+:root[data-theme="dark"] .tl .tl-definition-bar.tl-definition-tick[data-definition="1"] { background: linear-gradient(180deg, var(--tl-def1-pink), var(--tl-def1-warm) 45%, var(--tl-def1-cyan)); }
+.tl .tl-definition-tick::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 14px; transform: translateX(-50%); }
+.tl .tl-definition-tick::after { content: ''; position: absolute; top: 0; left: 50%; width: 6px; height: 6px; transform: translate(-50%, 0) rotate(45deg); background: var(--tl-def-b); box-shadow: 0 0 0 1px var(--tl-def-edge); pointer-events: none; }
+.tl .tl-definition-tick[data-definition="1"]::after { background: conic-gradient(var(--tl-def1-pink), var(--tl-def1-light), var(--tl-def1-cyan), var(--tl-def1-violet), var(--tl-def1-pink)); }
+.tl .tl-definition-tick:focus-visible, .tl .tl-definition-tick[aria-pressed="true"] { outline: 2px solid var(--text); outline-offset: 0; }
+.tl .tl-row-name .tl-definition-symbol { width: 22px; height: 22px; color: var(--source-transit-text); stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.tl-definition-symbol circle { fill: var(--tl-surface); }
+.tl-definition-symbol circle:last-child { fill: currentColor; stroke: none; }
+.tl .tl-row-active[data-active-source="definition"] .tl-row-label,
+.tl .tl-row-active[data-active-source="definition"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 72%, var(--tl-def2-light)); box-shadow: inset 2px 0 var(--tl-def2-deep); }
+.tl .tl-row-active[data-active-definition="1"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 70%, var(--tl-def1-warm)); box-shadow: inset 2px 0 var(--tl-def1-pink), inset 4px 0 var(--tl-def1-warm); }
+.tl .tl-row-active[data-active-definition="3"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 76%, var(--tl-def3-light)); box-shadow: inset 2px 0 var(--tl-def3-deep); }
+.tl .tl-row-active[data-active-definition="4"] .tl-row-name { background: color-mix(in srgb, var(--tl-surface) 76%, var(--tl-def4-light)); box-shadow: inset 2px 0 var(--tl-def4-deep); }
+.tl .tl-row-active[data-active-source="definition"] .tl-row-label { background: transparent; box-shadow: none; }
+@media (forced-colors: active) {
+  .tl .tl-definition-bar { background: Highlight; color: HighlightText; }
+  /* The glow veil is a decorative colour layer; forced colours drop it so the
+     system palette is not tinted. */
+  .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before,
+  .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after { display: none; }
+  /* The arc is white at 20%: in the system palette it is decoration, not
+     information, so it goes the same way as the texture. */
+  .tl .tl-definition-arcline { display: none; }
+  /* The chip plate is dropped under forced colours so the label inherits the
+     Highlight / HighlightText pair from the bar. The selector repeats the chip's
+     own `:not(.tl-definition-tick)` — a bare `> :is(…)` would only tie with it
+     and lose on source order. */
+  .tl .tl-bar:not(.tl-definition-tick) > :is(.tl-bar-label, .tl-definition-count) { background: transparent; color: inherit; }
+  .tl .tl-definition-tick::after { background: Highlight; }
 }

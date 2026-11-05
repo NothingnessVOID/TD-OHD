@@ -6,7 +6,8 @@ import { calendarRuler } from './ruler.js';
 import { RANGE_OPTIONS, presetWindow } from './presets.js';
 import { createTimelineClient } from './client.js';
 import { queryTimeline } from './conditions.js';
-import { natalIslands, bridgedIslandCount } from './bridge.js';
+import { natalIslands, definitionState } from './bridge.js';
+import { DEFINITION_COUNTS, DEFINITION_ROW_KEY, definitionChanged, definitionMessageKey, definitionSymbol, definitionBarMarkup } from './definition-bars.js';
 import { catalog } from './provider.js';
 import { panWindow, panTimeline, instantAt, ratioAt, clipInterval, clampWindow, zoomWindow } from './viewport.js';
 import { graphPanelMarkup, renderGraphColumns } from './graph-window.js';
@@ -29,7 +30,7 @@ function reconcile(parent, markup) {
       if (!node) node = next;
       else {
         for (const attr of [...node.attributes]) {
-          if (!next.hasAttribute(attr.name) && !['aria-pressed', 'data-active-source'].includes(attr.name)) node.removeAttribute(attr.name);
+          if (!next.hasAttribute(attr.name) && !['aria-pressed', 'data-active-source', 'data-active-definition'].includes(attr.name)) node.removeAttribute(attr.name);
         }
         for (const attr of next.attributes) {
           let value = attr.value;
@@ -106,8 +107,13 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   const format = (instant, compact = false) => displayTime(instant, zone, locale, compact);
   const button = (action, text, title = text) => `<button type="button" data-action="${action}" title="${esc(title)}" aria-label="${esc(title)}">${esc(text)}</button>`;
   const targetCatalog = catalog();
-  const targetChoices = kind => targetCatalog.filter(item => item.kind === kind);
-  const targetLabel = item => item.kind === 'line' ? `${item.id} · ${item.name}` : name(item);
+  // Definition targets are final states, not catalog rows: 1-4 split definitions.
+  const targetChoices = kind => kind === 'definition'
+    ? DEFINITION_COUNTS.map(id => ({ kind, id, name: id }))
+    : targetCatalog.filter(item => item.kind === kind);
+  const definitionLabel = count => t(definitionMessageKey(count));
+  const targetLabel = item => item.kind === 'line' ? `${item.id} · ${item.name}`
+    : item.kind === 'definition' ? definitionLabel(item.id) : name(item);
   const targetSearchText = item => `${item.id} ${item.name} ${targetLabel(item)} ${item.kind === 'channel' ? item.id.split('-').reverse().join('-') : ''}`
     .toLocaleLowerCase().replace(/[‐‑‒–—―−]/g, '-');
   function renderTargetOptions(row) {
@@ -127,6 +133,10 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const selected = targetChoices(kind).find(item => String(item.id) === row.selectedTarget);
     setText(toggle, `${selected ? targetLabel(selected) : t('conditionTargets')} ▾`);
     toggle.setAttribute('aria-label', t('conditionTargets'));
+    // A definition row compares a final state, so its states read "is / is not".
+    const definition = kind === 'definition';
+    setText(row.querySelector('[data-condition="state"] option[value="active"]'), t(definition ? 'definitionIs' : 'activeState'));
+    setText(row.querySelector('[data-condition="state"] option[value="inactive"]'), t(definition ? 'definitionIsNot' : 'inactiveState'));
     renderTargetOptions(row);
   }
   let conditionSequence = 0;
@@ -135,7 +145,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     row.className = 'tl-condition-row';
     row.dataset.conditionId = String(++conditionSequence);
     row.innerHTML = `<select data-condition="kind" aria-label="${esc(t('conditionKind'))}">${[
-      ['center','center'], ['channel','channel'], ['gate','gate'], ['line','gateLine']
+      ['center','center'], ['channel','channel'], ['gate','gate'], ['line','gateLine'], ['definition','definitionRow']
     ].map(([value,key]) => `<option value="${value}">${esc(t(key))}</option>`).join('')}</select>
       <div class="tl-target-picker" data-condition="ids">
         <button type="button" data-action="toggle-targets" aria-expanded="false" aria-label="${esc(t('conditionTargets'))}"></button>
@@ -152,6 +162,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     $('.tl-condition-rows').append(row);
     renderTargetPicker(row);
   }
+  const currentNatalCount = () => chart ? natalIslands(host.identity(chart.chart)).length : 0;
   function bounds() {
     if (boundsZone !== zone) {
       limits = {
@@ -280,10 +291,15 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     $('[data-field="span"]').value = preset;
     root.querySelectorAll('.tl-row').forEach(node => {
       const row = result?.rows.find(item => item.key === node.dataset.key);
-      const interval = row && intervalAt(row, selected);
+      let interval = row && intervalAt(row, selected);
+      // A definition state equal to the natal count draws no bar, so it is not an active row.
+      if (interval && row.kind === 'definition' && !definitionChanged(interval, currentNatalCount())) interval = null;
       node.classList.toggle('tl-row-active', Boolean(interval));
-      if (interval) node.dataset.activeSource = row.kind === 'bridge' ? 'transit' : interval.source;
+      if (interval) node.dataset.activeSource = row.kind === 'bridge' ? 'transit'
+        : row.kind === 'definition' ? 'definition' : interval.source;
       else delete node.dataset.activeSource;
+      if (interval && row.kind === 'definition') node.dataset.activeDefinition = interval.source;
+      else delete node.dataset.activeDefinition;
     });
   }
 
@@ -337,11 +353,17 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (!interval) return;
     queryIndex = index;
     renderQueryResults();
-    const targets = (queryConditions || []).filter(condition => condition.kind !== 'bridge' && condition.ids?.length);
+    const definitionLead = (queryConditions || [])[0]?.kind === 'definition';
+    const targets = (queryConditions || []).filter(condition => !['bridge', 'definition'].includes(condition.kind) && condition.ids?.length);
     const targetKeys = targets.map(condition => `${condition.kind}:${condition.ids[0]}`);
     const lead = targets[0];
     if (lead?.kind === 'line') expandedGates.add(Number(lead.ids[0].split('.')[0]));
-    if (lead) {
+    if (definitionLead) {
+      // The definition row lives in the full roster; show it before scrolling to it.
+      $('[data-field="kind"]').value = 'all';
+      $('[data-field="search"]').value = '';
+      renderRows();
+    } else if (lead) {
       $('[data-field="kind"]').value = lead.kind === 'line' ? 'gate' : lead.kind;
       $('[data-field="search"]').value = '';
       renderRows();
@@ -374,7 +396,8 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     highlight(visual);
     requestAnimationFrame(() => {
       if (currentNavigation !== navigationGeneration) return;
-      const row = targetKeys.map(key => root.querySelector(`.tl-row[data-key="${key}"]`)).find(Boolean)
+      const row = (definitionLead ? root.querySelector(`.tl-row[data-key="${DEFINITION_ROW_KEY}"]`) : null)
+        || targetKeys.map(key => root.querySelector(`.tl-row[data-key="${key}"]`)).find(Boolean)
         || [...centers].map(id => root.querySelector(`.tl-row[data-key="center:${id}"]`)).find(Boolean);
       scrollRowInsideTable(row);
       if (gates.size || centers.size) context?.api?.highlightSelection({ kind: 'targets', gates: visual.gates, centers: visual.centers });
@@ -447,6 +470,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
   }
 
   function rowSymbol(row, split = false) {
+    if (row.kind === 'definition') return definitionSymbol();
     // Split reads one island becoming several, so the single filled node sits
     // on the left and the detached pair on the right. DOM order keeps the
     // filled node last: `.tl-split-symbol circle:last-child` fills it.
@@ -484,26 +508,46 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     // The first row changes meaning with the natal definition: several fixed
     // islands can be bridged into one, while a single island can only be split
     // by transits that complete a detached island (Issue #38).
-    const natalIslandCount = chart ? natalIslands(host.identity(chart.chart)).length : 0;
-    const splitRow = natalIslandCount === 1;
-    const rowName = row => row.kind === 'bridge' ? t(splitRow ? 'split' : 'bridge') : name(row);
-    const rows = result.rows.filter(row => (row.kind === 'bridge' || row.intervals.length > 0) &&
-      (row.kind === 'bridge' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
+    // The definition row replaces the bridge/split row on screen: it shows the
+    // final 1-4 split state for both merges and splits. The bridge row is still
+    // calculated, so its stored contract and detail data remain available.
+    const natalIslandCount = currentNatalCount();
+    const trackWidth = $('.tl-ticks').clientWidth || 1;
+    const rowName = row => row.kind === 'definition' ? t('definitionRow') : name(row);
+    // Inside the bar the row is named by its own identity only: a center by its
+    // name, a channel by its canonical number ("34-20", never reordered), a gate
+    // by its number ("34") and a gate line by its full line number ("34.1"). The
+    // full name, the source and the exact timing stay in title/aria-label, and
+    // the row header keeps its own symbol, so nothing is lost or duplicated.
+    const barLabel = row => row.kind === 'center' ? name(row) : String(row.id);
+    const rows = result.rows.filter(row => row.kind !== 'bridge' && (row.kind === 'definition' || row.intervals.length > 0) &&
+      (row.kind === 'definition' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
       && (!query || `${rowName(row)} ${t(row.kind)}`.toLocaleLowerCase(locale).includes(query) ||
         (row.kind === 'gate' && result.rows.some(line => line.kind === 'line' && line.gate === row.id && line.id.includes(query))))
-      && (row.kind === 'bridge' || !changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
-    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}" data-key="${row.key}"${row.kind === 'bridge' ? ` data-relation="${splitRow ? 'split' : 'bridge'}"` : ''}>
-      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M1 1 19 10 1 19Z"/></svg></button>` : ''}${row.kind === 'bridge' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row, splitRow)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
+      && (row.kind === 'definition' || !changesOnly || row.intervals.some(interval => (interval.start > result.start && interval.start < result.end) || (interval.end > result.start && interval.end < result.end))));
+    reconcile($('.tl-rows'), rows.length ? rows.map(row => `<div class="tl-row${row.kind === 'line' ? ' tl-line-row' : ''}${row.kind === 'definition' ? ' tl-definition-row' : ''}" data-key="${row.key}"${row.kind === 'definition' ? ` data-natal-definition="${natalIslandCount}"` : ''}>
+      <div class="tl-row-label">${row.kind === 'gate' ? `<button type="button" class="tl-gate-expand" data-action="expand-gate" data-gate="${row.id}" aria-expanded="${expandedGates.has(row.id)}" aria-label="${esc(name(row))}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M1 1 19 10 1 19Z"/></svg></button>` : ''}${row.kind === 'definition' ? `<span class="tl-row-name" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</span>` : `<button type="button" class="tl-row-name" data-row="${row.key}" title="${esc(rowName(row))}" aria-label="${esc(rowName(row))}">${rowSymbol(row)}</button>`}</div>
       <div class="tl-track">${bands}${grid}${row.intervals.map((interval, index) => {
+        if (row.kind === 'definition' && !definitionChanged(interval, natalIslandCount)) return '';
         const visible = clipInterval(interval, windowRange);
         if (!visible) return '';
-        const islandData = row.kind === 'bridge' ? JSON.parse(interval.source) : null;
-        const bridgeCount = row.kind !== 'bridge' ? '' : splitRow
-          ? t('splitCount', { from: natalIslandCount, to: natalIslandCount + islandData.length })
-          : t('bridgeCount', { from: natalIslandCount, to: bridgedIslandCount(natalIslandCount, islandData) });
-        const title = `${rowName(row)}${bridgeCount ? ` · ${bridgeCount}` : ''} · ${row.kind === 'bridge' ? t('transit') : t(interval.source)} · ${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
-        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${row.kind === 'bridge' ? 'transit' : interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(row.kind === 'bridge' ? bridgeCount : rowName(row))}</span></button>`;
+        const timing = `${interval.clippedStart ? t('before') : format(interval.start)} → ${interval.clippedEnd ? t('after') : format(interval.end)}`;
+        if (row.kind === 'definition') {
+          // The bar carries the plain count ("1"-"4"); the full name and the
+          // exact timing live in the tooltip and accessible label, so a narrow
+          // marker never implies a longer interval than the calculation found.
+          const label = interval.source;
+          const fullName = definitionLabel(interval.source);
+          const duration = interval.clippedStart || interval.clippedEnd ? '' : ` · ${formatDuration(interval.end - interval.start, t)}`;
+          return definitionBarMarkup({ index, count: interval.source, label, esc,
+            title: `${fullName} · ${timing}${duration}`,
+            left: ratioAt(windowRange, visible.start) * 100, width: (visible.end - visible.start) / span * 100,
+            widthPx: (visible.end - visible.start) / span * trackWidth,
+            clippedStart: visible.clippedStart, clippedEnd: visible.clippedEnd });
+        }
+        const title = `${rowName(row)} · ${t(interval.source)} · ${timing}`;
+        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span class="tl-bar-label">${esc(barLabel(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
     $('.tl-table').scrollTop = scroll;
     if (sync) syncClock();
@@ -725,6 +769,25 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (frame) { cancelAnimationFrame(frame); frame = 0; }
     renderMoment();
     root.querySelector(`.tl-bar[data-key="${row.key}"][data-interval="${index}"]`)?.setAttribute('aria-pressed', 'true');
+    if (row.kind === 'definition') {
+      // A definition interval has no sheet of its own. It lights the centers of
+      // components that differ from the natal islands (merged or new), derived
+      // with the same planet filter as the row itself.
+      const requestedChart = chart.chart;
+      const requestedPlanet = planet;
+      const instant = Math.max(interval.start, Math.min(interval.end - 1000, selected));
+      Promise.resolve(host.snapshot(instant)).then(full => {
+        if (chart?.chart !== requestedChart || planet !== requestedPlanet) return;
+        const effective = planet === 'all' ? full : { [planet]: full[planet] };
+        const gates = Object.values(effective).filter(Boolean).map(value => value.gate);
+        const centers = [...new Set(definitionState(host.identity(chart.chart), gates).changed.flat())];
+        highlight({ centers });
+        context?.api?.highlightSelection({ kind: 'targets', gates: [], centers });
+        clearTimeout(navigationTimer);
+        navigationTimer = setTimeout(() => { context?.api?.highlightSelection(null); highlight(null); }, 1800);
+      }).catch(() => {});
+      return;
+    }
     if (row.kind === 'bridge') {
       const islands = natalIslands(host.identity(chart.chart));
       // Bridging groups refer to natal island numbers; a split stores the new
@@ -958,7 +1021,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     if (event.pointerType === 'touch' || (event.type === 'focusin' && lastInput === 'touch')) return;
     const rowNode = event.target.closest('[data-row], [data-interval]');
     const row = rowNode && result?.rows.find(item => item.key === (rowNode.dataset.row || rowNode.dataset.key));
-    if (row && row.kind !== 'bridge') {
+    if (row && !['bridge', 'definition'].includes(row.kind)) {
       hoverSelection = { kind: row.kind, id: row.id };
       context?.api?.highlightSelection(hoverSelection);
     }
@@ -1164,7 +1227,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     for (const item of host.planets) setText($(`[data-field="planet"] option[value="${item.id}"]`), item.name);
     for (const [value, key] of [['all','allConditions'],['any','anyCondition']]) setText($(`[data-field="combine"] option[value="${value}"]`), t(key));
     root.querySelectorAll('.tl-condition-row').forEach(row => {
-      for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center']])
+      for (const [value, key] of [['gate','gate'],['line','gateLine'],['channel','channel'],['center','center'],['definition','definitionRow']])
         setText(row.querySelector(`[data-condition="kind"] option[value="${value}"]`), t(key));
       setText(row.querySelector('[data-condition="state"] option[value="active"]'), t('activeState'));
       setText(row.querySelector('[data-condition="state"] option[value="inactive"]'), t('inactiveState'));

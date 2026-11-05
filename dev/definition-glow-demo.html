@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD-OHD · 分人状态光带合成演示</title>
+  <link rel="stylesheet" href="/src/styles.css">
+  <style>
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+    .demo { max-width: 1180px; margin: 0 auto; padding: 22px 20px 60px; }
+    .demo h1 { font-size: 22px; margin: 0 0 6px; font-weight: 600; }
+    .demo .notice { margin: 0 0 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-sunken); color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+    .demo .bar-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: 13px; }
+    .demo .bar-tools select, .demo .bar-tools button { font: inherit; min-height: 32px; padding: 3px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
+    .demo .swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 6px; }
+    .demo .swatch { position: relative; height: 28px; }
+    .demo .swatch .tl-bar { position: absolute; inset: 0; width: 100%; }
+    .demo .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .demo .compare-item label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .demo .compare-bar { position: relative; height: 28px; }
+    .demo .compare-bar .tl-bar { position: absolute; inset: 0; width: 100%; }
+    /* Tall preview of the same tile: height and background-size grow together so
+       the Warp lobes are magnified, never stretched. */
+    .demo .tex-preview { margin-bottom: 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .tex-preview header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
+    .demo .tex-preview header small { color: var(--text-secondary); }
+    .demo .tex-tall { position: relative; height: 63px; }
+    .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
+    /* Magnified 2.25x: tile, blur, the glow's copy of the tile and the arc period
+       all scale with the look group, so the preview stays a magnification, never a
+       second sample. */
+    .demo .tex-tall { --wt-scale: 2.25; --tl-def1-arc: calc(211px * var(--wt-scale)); }
+    .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
+    .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
+    /* Version A: original narrow bands — arc ripple retained */
+    .demo .tl-def1-version-a {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / .42) 0 1px, transparent 1px 45%, rgb(80 20 0 / .14) 100%),
+        repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x,
+        linear-gradient(104deg, transparent 0 11%, rgb(255 72 158 / .75) 17%, transparent 24% 40%, rgb(54 210 236 / .70) 46%, rgb(150 92 255 / .70) 51%, transparent 58% 71%, rgb(255 96 190 / .60) 76%, rgb(255 198 80 / .70) 80%, transparent 86%) 0 0 / 173px 100% repeat-x,
+        linear-gradient(72deg, transparent 0 28%, rgb(54 210 236 / .38) 35%, transparent 43% 74%, rgb(150 92 255 / .42) 83%, transparent 90%) 37px 0 / 97px 100% repeat-x,
+        linear-gradient(90deg, #D9631A, #F59A3A 30%, #FFC36B 52%, #F59A3A 74%, #D9631A) !important;
+    }
+    /* A is the untouched original form: switch off the new Single glow veil so
+       the comparison still shows exactly what A was. */
+    .demo .compare-bar .tl-definition-bar.tl-def1-version-a::before,
+    .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
+    /* ---- Current-parameter arc comparison (demo only) ----
+       Two bars, one live texture: both use the shared markup and read the same
+       `--warp-preview-image` and the same look variables, so they can only differ
+       by the white arc layer. The shared markup itself carries that arc on every
+       non-tick Single bar (production keeps it), so the demo never injects a second
+       layer: the left bar switches the arc off, the right one keeps the production
+       layer unchanged. */
+    .demo #arc-plain .tl-definition-arcline { display: none; }
+    /* Version A paints its ripple into its own background layers, so the shared arc
+       element is switched off there instead of stacking a second copy on top. */
+    .demo .tl-def1-version-a .tl-definition-arcline { display: none; }
+    .demo .warp-preset-note { margin: 6px 0 0; max-width: 72ch; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
+    .demo .warp-tune-actions button:disabled { opacity: .55; cursor: not-allowed; }
+    .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
+    .demo .scene header small { color: var(--text-secondary); }
+    .demo .tl { padding: 0; max-width: none; }
+    .demo .tl-row-label { font-size: 10px; color: var(--text-secondary); }
+    .demo .row-caption { width: 40px; text-align: center; }
+    .demo .detail { min-height: 22px; padding: 6px 12px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); font-variant-numeric: tabular-nums; }
+    .demo .query { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); font-size: 13px; }
+    .demo .query .line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .demo .query select, .demo .query button { font: inherit; min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
+    .demo .query ol { margin: 6px 0 0; padding-left: 22px; font-variant-numeric: tabular-nums; }
+    .demo .tl-track::after { display: none; }
+    /* ---- Live Warp preview (demo only) ----
+       `dev/definition-warp-panel.js` runs the real Warp shader through the
+       package's ShaderMount and writes the baked 2400x84 PNG into this custom
+       property. Only the image is swapped: the shared `timeline.css` still owns
+       the 1125px tile, the 4px blur on the colour field, the glow veil and the
+       crisp arc layer, so the preview is shown with exactly the app's treatment.
+       Version A keeps `content: none` on both pseudo-elements and ticks are
+       excluded with :not(), so neither changes.
+       While the property is unset the bars deliberately show no texture: a
+       shader that failed is reported, never papered over with the old PNG. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before,
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::after {
+      background-image: var(--warp-preview-image);
+    }
+    /* ---- Look group: blur / brightness / saturation / glow / tile (demo only) ----
+       `dev/definition-warp-panel.js` writes these on `.demo`. The defaults below
+       are the values `timeline.css` already uses, and "restore defaults" removes
+       the inline properties so the stylesheet is authoritative again.
+       The shader output is what gets blurred and tiled; nothing here can change
+       the warped form. */
+    .demo { --wt-scale: 1; --wt-blur: 4px; --wt-bright: 1; --wt-sat: 1.55; --wt-tile: 1125px; --wt-light-position: 0%; }
+    /* ---- Light direction of the Single base (demo only) ----
+       The shipped bar is lit from its left edge and falls off to the right (a
+       140%x180% radial gradient at 0% 50%), in the bar's own coordinates. Here the
+       peak follows `--wt-light-position` so the same direction can be tried at any
+       point of the bar. The top sheen layer is kept unchanged.
+       0% = light starts at the left edge, 100% = at the right edge. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a) {
+      background:
+        linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
+        radial-gradient(140% 180% at var(--wt-light-position) 50%,
+          var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+    }
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) saturate(var(--wt-sat));
+      background-size: calc(var(--wt-tile) * var(--wt-scale)) calc(28px * var(--wt-scale));
+    }
+    /* The brightness term joins the chain only after the slider leaves 1, so the
+       untouched default stays exactly the committed `blur() saturate()` stack.
+       Keep this declaration in step with the one above. */
+    .demo[data-wt-bright] .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) brightness(var(--wt-bright)) saturate(var(--wt-sat));
+    }
+    /* The glow keeps the brightness/saturation it was tuned with; only its
+       strength and its copy of the tile belong to the panel. Until the strength
+       slider is touched, the theme token still decides the opacity. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::after {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) brightness(1.3) saturate(1.1);
+      background-size: calc(var(--wt-tile) * var(--wt-scale)) 100%;
+      opacity: var(--wt-veil, var(--tl-def1-veil));
+    }
+    .demo .warp-tune { margin: 0 0 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .warp-tune > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 9px 12px; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--bg-sunken); }
+    .demo .warp-tune[open] > summary { border-bottom: 1px solid var(--border-subtle, var(--border)); }
+    .demo .warp-tune > summary::marker { color: var(--text-secondary); }
+    .demo .warp-tune-tag { padding: 1px 7px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 999px; font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .demo .warp-tune-tag.is-error { color: var(--text); border-color: var(--text); }
+    .demo .warp-tune-body { padding: 11px 12px 12px; font-size: 13px; }
+    .demo .warp-tune-error { margin: 0 0 12px; padding: 9px 11px; border: 1px solid var(--text); border-inline-start-width: 4px; border-radius: 6px; background: var(--bg-sunken); color: var(--text); font-size: 12px; line-height: 1.6; }
+    .demo .warp-tune-intro, .demo .warp-tune-foot { margin: 0; max-width: 72ch; color: var(--text-secondary); font-size: 12px; line-height: 1.65; }
+    .demo .warp-tune-intro { margin-bottom: 12px; }
+    .demo .warp-tune-foot { margin-top: 10px; }
+    .demo .warp-live { max-width: 100%; margin-bottom: 6px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 5px; overflow: hidden; }
+    .demo .warp-shader-host { width: 800px; height: 28px; }
+    .demo .warp-live-meta { margin-bottom: 12px; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-shape-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; font-size: 13px; }
+    .demo .warp-shape-row select, .demo .warp-shape-row button { min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); font: inherit; cursor: pointer; }
+    .demo .warp-shape-row button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+    .demo .warp-tune-fields { display: grid; gap: 10px; max-width: 640px; }
+    .demo .warp-field { display: grid; grid-template-columns: 7em minmax(0, 1fr) 5.5em; align-items: center; gap: 3px 10px; }
+    .demo .warp-field input[type="range"] { width: 100%; min-width: 0; margin: 0; accent-color: var(--accent); }
+    .demo .warp-field output { text-align: right; white-space: nowrap; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-field-hint { grid-column: 1 / -1; margin: 0; font-size: 11px; line-height: 1.5; color: var(--text-secondary); }
+    .demo .warp-field-state { color: var(--text); }
+    .demo .warp-group { margin: 0 0 14px; padding: 8px 10px 10px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 6px; }
+    .demo .warp-group legend { padding: 0 4px; font-size: 12px; font-weight: 600; color: var(--text); }
+    .demo .warp-colors-block { margin-top: 10px; }
+    .demo .warp-colors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; margin-top: 6px; max-width: 640px; }
+    .demo .warp-color { display: grid; grid-template-columns: 1.4em 34px minmax(0, 1fr); align-items: center; gap: 6px; }
+    .demo .warp-color-index { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-color input[type="color"] { width: 34px; height: 22px; padding: 0; border: 1px solid var(--control-border, var(--border)); border-radius: 4px; background: var(--bg-elevated); cursor: pointer; }
+    .demo .warp-color input[type="color"]:disabled { opacity: .4; cursor: not-allowed; }
+    .demo .warp-color-alpha { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-secondary); }
+    .demo .warp-color-alpha input { accent-color: var(--accent); }
+    .demo .warp-tune-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .demo .warp-tune-actions button { min-height: 32px; padding: 3px 10px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); font: inherit; cursor: pointer; }
+    .demo .warp-tune-actions button:disabled { cursor: progress; color: var(--text-secondary); }
+    .demo .warp-tune.is-failed .warp-tune-actions button { opacity: .55; cursor: not-allowed; }
+    .demo .warp-tune-status { margin: 8px 0 0; min-height: 1.5em; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
+    .demo .warp-tune-json-label { display: block; margin: 2px 0 4px; font-size: 11px; color: var(--text-secondary); }
+    .demo .warp-tune-json { box-sizing: border-box; width: 100%; padding: 6px 8px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 5px; background: var(--bg-sunken); color: var(--text); font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
+    .demo .warp-tune :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+    @media (max-width: 560px) {
+      .demo .warp-field { grid-template-columns: minmax(0, 1fr) auto; }
+      .demo .warp-field label { grid-column: 1; }
+      .demo .warp-field output { grid-column: 2; }
+      .demo .warp-field input[type="range"] { grid-column: 1 / -1; }
+      .demo .warp-colors { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<main class="demo">
+  <h1>分人状态光带 · 合成演示</h1>
+  <p class="notice"><strong>合成数据，非真实人物：</strong>下面每个场景使用一张不同的虚构本命盘和一段编排好的行运序列，四种样式出自不同场景，不是同一个人的真实计算。状态条由正式代码 <code>stateAt</code> → <code>calculateTimeline</code> 计算，与本命最终分人数相同的时段不绘制，但仍可在下方条件查询中查到。</p>
+  <div class="bar-tools">
+    <label>Skin <select id="skin"></select></label>
+    <button type="button" id="mode">切换明 / 暗</button>
+    <label>语言 <select id="lang"><option value="zh-CN">简体中文</option><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></label>
+    <span id="skin-note"></span>
+  </div>
+  <div class="tl swatches" id="swatches"></div>
+  <div class="compare">
+    <div class="compare-item">
+      <label>最初 A &middot; 窄条带 + 弧形白纹（对照保留）</label>
+      <div class="compare-bar tl" id="compare-a"></div>
+    </div>
+    <div class="compare-item">
+      <label>彩色 Warp &middot; 已采用（正式样式）</label>
+      <div class="compare-bar tl" id="compare-b"></div>
+    </div>
+  </div>
+  <p class="notice">A 是最初的形态，保留在这里只作对照；B 是最终采用并已写进正式 <code>timeline.css</code> 的一版（选定的 Warp 参数 + 弧形白纹）。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
+  <div class="compare" id="arc-compare">
+    <div class="compare-item">
+      <label>当前参数 · 无白纹</label>
+      <div class="compare-bar tl" id="arc-plain"></div>
+    </div>
+    <div class="compare-item">
+      <label>当前参数 · 加曲线白纹</label>
+      <div class="compare-bar tl" id="arc-striped"></div>
+    </div>
+  </div>
+  <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px），左侧把它关掉。这层白纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用背景层画了这条白纹，所以 A 的标记层被关掉，不会叠出第二层。</p>
+  <div id="warp-tune-host"></div>
+  <section class="tex-preview">
+    <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
+    <div class="tex-tall tl" id="tex-tall"></div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 1125px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 4px 轻模糊、静态、不加动画）和一层 A 同款清晰弧形白纹，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
+  </section>
+  <div id="scenes"></div>
+  <section class="query">
+    <div class="line"><strong>条件查询（与时间轴同一份计算）</strong></div>
+    <div class="line">
+      <label>场景 <select id="q-scene"></select></label>
+      <label>组合 <select id="q-combine"><option value="all">同时满足（AND）</option><option value="any">满足任一（OR）</option></select></label>
+    </div>
+    <div class="line">条件 1：分人状态 <select id="q-def-state"><option value="active">是</option><option value="inactive">不是</option></select>
+      <select id="q-def"><option value="1">一分人</option><option value="2">二分人</option><option value="3">三分人</option><option value="4">四分人</option></select></div>
+    <div class="line">条件 2：<select id="q-extra"></select> <select id="q-extra-state"><option value="active">激活</option><option value="inactive">未激活</option></select>
+      <button type="button" id="q-run">查询区间</button></div>
+    <div id="q-status" role="status"></div>
+    <ol id="q-results"></ol>
+  </section>
+</main>
+<script type="module">
+  import { SKINS } from '/src/lib/skin-registry.js';
+  import { stateAt, catalog } from '/src/features/transit-timeline/graph-provider.js';
+  import { calculateTimeline, MINUTE } from '/src/features/transit-timeline/core.js';
+  import { queryTimeline } from '/src/features/transit-timeline/conditions.js';
+  import { natalIslands } from '/src/features/transit-timeline/bridge.js';
+  import { definitionChanged, definitionBarMarkup, definitionMessageKey } from '/src/features/transit-timeline/definition-bars.js';
+  import { en, translator } from '/src/features/transit-timeline/messages.js';
+  import { formatDuration, displayTime } from '/src/features/transit-timeline/time.js';
+  import zhCN from '/src/locales/zh-CN/timeline.json';
+  import zhHant from '/src/locales/zh-Hant/timeline.json';
+  import '/src/features/transit-timeline/timeline.css';
+  import { mountWarpPanel } from './definition-warp-panel.js';
+
+  const catalogs = { 'zh-CN': zhCN, 'zh-Hant': zhHant, en };
+  const localeOf = { 'zh-CN': 'zh-CN', 'zh-Hant': 'zh-TW', en: 'en-GB' };
+  let lang = 'zh-CN';
+  let t = translator(catalogs[lang]);
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const DAY = 86_400_000;
+  const START = Date.UTC(2026, 10, 2, 0, 0);
+  const END = START + 7 * DAY;
+  const at = (day, hour = 0, minute = 0) => START + day * DAY + hour * 3_600_000 + minute * MINUTE;
+  const birth = gates => ({ gates: { all: gates }, centers: { definedNames: [] } });
+  const pair = (a, b) => ({ sun: { gate: a, line: 1 }, earth: { gate: b, line: 1 } });
+  const idle = { sun: { gate: 41, line: 1 }, earth: { gate: 31, line: 1 } };
+
+  // Fictional charts. Channels: 1-8 G/Throat, 59-6 Sacral/Solar, 58-18 Root/Spleen,
+  // 64-47 Head/Ajna, 10-34 G/Sacral, 34-20 Sacral/Throat, 17-62 Ajna/Throat.
+  const scenes = [
+    { id: 'a', title: '场景 A · 虚构二分人', note: '34-20 桥接 → 一分人；58-18 游离岛 → 三分人', natal: birth([1, 8, 59, 6]),
+      steps: [[0, idle], [at(0, 9), pair(34, 20)], [at(1, 18), idle], [at(3, 4), pair(58, 18)], [at(4, 20), idle], [at(5, 8), pair(34, 20)], [at(5, 8, 40), idle]],
+      extra: 'channel:20-34' },
+    { id: 'b', title: '场景 B · 虚构一分人', note: '17-62 游离岛 → 二分人（合并与分裂都显示）', natal: birth([10, 34]),
+      steps: [[0, idle], [at(1, 2), pair(17, 62)], [at(2, 14), idle], [at(4, 6), pair(17, 62)], [at(6, 1), idle]], extra: 'channel:17-62' },
+    { id: 'c', title: '场景 C · 虚构三分人', note: '64-47 游离岛 → 四分人；34-20 桥接 → 二分人', natal: birth([1, 8, 59, 6, 58, 18]),
+      steps: [[0, idle], [at(0, 20), pair(64, 47)], [at(2, 6), idle], [at(3, 12), pair(34, 20)], [at(5, 2), idle], [at(6, 0), pair(64, 47)]], extra: 'center:head' },
+    { id: 'd', title: '场景 D · 虚构二分人 · 密集短条', note: '数分钟级的反复桥接与分裂，测试细短条的点击与准确时间', natal: birth([1, 8, 59, 6]),
+      steps: (() => {
+        const list = [[0, idle]];
+        for (let i = 0; i < 26; i++) {
+          const time = START + Math.round((0.25 + i * 0.26) * DAY);
+          const length = (3 + (i * 7) % 23) * MINUTE;
+          list.push([time, i % 3 === 2 ? pair(58, 18) : pair(34, 20)], [time + length, idle]);
+        }
+        list.push([at(6, 6), pair(34, 20)], [at(6, 18), idle]);
+        return list;
+      })(), extra: 'channel:20-34' }
+  ];
+  const rows = catalog();
+  for (const scene of scenes) {
+    const steps = scene.steps.map(([time, value]) => [time === 0 ? START : time, value]);
+    scene.natalCount = natalIslands(scene.natal).length;
+    scene.result = calculateTimeline({ start: START, end: END, catalog: rows, scanStep: MINUTE, tolerance: 1000,
+      snapshot: time => steps.filter(([stepTime]) => stepTime <= time).at(-1)[1],
+      states: activations => stateAt(scene.natal, activations, 'overlay') });
+  }
+
+  const format = instant => displayTime(instant, 'UTC', localeOf[lang]);
+  const ratio = instant => (instant - START) / (END - START) * 100;
+  function renderSwatches() {
+    // Labels are the bare count, exactly like production; the full name stays
+    // in the tooltip.
+    document.getElementById('swatches').innerHTML = ['1', '2', '3', '4'].map(count => `<div class="swatch">${definitionBarMarkup({
+      key: `swatch:${count}`, index: 0, count, left: 0, width: 100, widthPx: 300,
+      label: count, title: t(definitionMessageKey(count)), esc })}</div>`).join('');
+    document.getElementById('compare-a').innerHTML = definitionBarMarkup({
+      key: 'compare:a', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    document.getElementById('compare-a').querySelector('.tl-definition-bar').classList.add('tl-def1-version-a');
+    document.getElementById('compare-b').innerHTML = definitionBarMarkup({
+      key: 'compare:b', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    // Two rows on the *current* parameters. Same markup, same shared CSS and the
+    // same live texture; only the right one gets the A-style arc as a separate
+    // crisp span, so the pair isolates "with / without the white arc".
+    document.getElementById('arc-plain').innerHTML = definitionBarMarkup({
+      key: 'arc:plain', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    document.getElementById('arc-striped').innerHTML = definitionBarMarkup({
+      key: 'arc:striped', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    // The arc span comes from the shared markup on every non-tick Single bar, so
+    // nothing is injected here; the left bar switches it off in CSS instead.
+    // Same markup and same shared CSS as the timeline, only taller: the tile is
+    // magnified by growing height and background-size together.
+    document.getElementById('tex-tall').innerHTML = definitionBarMarkup({
+      key: 'tex:tall', index: 0, count: '1', left: 0, width: 100, widthPx: 1100,
+      label: '1', title: t('definition1'), esc });
+  }
+  function renderScenes() {
+    const host = document.getElementById('scenes');
+    host.innerHTML = scenes.map(scene => `<section class="scene" data-scene="${scene.id}"><header><span>${esc(scene.title)}</span><small>${esc(scene.note)} · 本命 ${scene.natalCount} 岛</small></header>
+      <div class="tl"><div class="tl-row tl-definition-row" data-key="definition:state"><div class="tl-row-label"><span class="row-caption">${esc(t('definitionRow'))}</span></div><div class="tl-track" data-track></div></div>
+      <div class="tl-row" data-key="${scene.extra}"><div class="tl-row-label"><span class="row-caption">${esc(scene.extra.split(':')[1])}</span></div><div class="tl-track" data-extra></div></div></div>
+      <div class="detail" aria-live="polite"></div></section>`).join('');
+    for (const scene of scenes) {
+      const node = host.querySelector(`[data-scene="${scene.id}"]`);
+      const track = node.querySelector('[data-track]');
+      const width = track.clientWidth || 1;
+      const row = scene.result.rows.find(item => item.key === 'definition:state');
+      track.innerHTML = row.intervals.map((interval, index) => {
+        if (!definitionChanged(interval, scene.natalCount)) return '';
+        const label = interval.source;
+        const fullName = t(definitionMessageKey(interval.source));
+        const title = `${fullName} · ${format(interval.start)} → ${format(interval.end)} · ${formatDuration(interval.end - interval.start, t)}`;
+        return definitionBarMarkup({ index, count: interval.source, label, title, esc,
+          left: ratio(interval.start), width: (interval.end - interval.start) / (END - START) * 100,
+          widthPx: (interval.end - interval.start) / (END - START) * width });
+      }).join('');
+      const extra = scene.result.rows.find(item => item.key === scene.extra);
+      node.querySelector('[data-extra]').innerHTML = (extra?.intervals || []).map(interval => `<button type="button" class="tl-bar" data-source="${interval.source}" style="left:${ratio(interval.start)}%;width:${(interval.end - interval.start) / (END - START) * 100}%" title="${esc(`${scene.extra.split(':')[1]} · ${format(interval.start)} → ${format(interval.end)}`)}"><span class="tl-bar-label">${esc(scene.extra.split(':')[1])}</span></button>`).join('');
+      track.addEventListener('click', event => {
+        const bar = event.target.closest('.tl-definition-bar');
+        if (!bar) return;
+        track.querySelectorAll('[aria-pressed]').forEach(item => item.removeAttribute('aria-pressed'));
+        bar.setAttribute('aria-pressed', 'true');
+        node.querySelector('.detail').textContent = bar.getAttribute('aria-label');
+      });
+    }
+  }
+  function renderQueryOptions() {
+    document.getElementById('q-scene').innerHTML = scenes.map(scene => `<option value="${scene.id}">${esc(scene.title)}</option>`).join('');
+    syncExtra();
+  }
+  function syncExtra() {
+    const scene = scenes.find(item => item.id === document.getElementById('q-scene').value);
+    document.getElementById('q-extra').innerHTML = `<option value="">（不加）</option><option value="${scene.extra}" selected>${esc(scene.extra)}</option>`;
+  }
+  function runQuery() {
+    const scene = scenes.find(item => item.id === document.getElementById('q-scene').value);
+    const conditions = [{ kind: 'definition', ids: [document.getElementById('q-def').value], state: document.getElementById('q-def-state').value }];
+    const extra = document.getElementById('q-extra').value;
+    if (extra) {
+      const [kind, id] = extra.split(':');
+      conditions.push({ kind, ids: [kind === 'gate' ? Number(id) : id], state: document.getElementById('q-extra-state').value });
+    }
+    try {
+      const result = queryTimeline(scene.result, conditions, { combine: document.getElementById('q-combine').value, catalog: rows });
+      document.getElementById('q-status').textContent = result.empty ? t('noMatches') : t('matchCount', { count: result.intervals.length });
+      document.getElementById('q-results').innerHTML = result.intervals.map(interval => `<li>${esc(format(interval.start))} → ${esc(format(interval.end))} · ${esc(formatDuration(interval.end - interval.start, t))}</li>`).join('');
+    } catch (error) { document.getElementById('q-status').textContent = error.message; }
+  }
+
+  const skinSelect = document.getElementById('skin');
+  skinSelect.innerHTML = SKINS.map(skin => `<option value="${skin.id}">${esc(skin.name)} (${skin.mode})</option>`).join('');
+  function applySkin(id) {
+    const skin = SKINS.find(item => item.id === id);
+    document.documentElement.setAttribute('data-skin', skin.id);
+    document.documentElement.setAttribute('data-theme', skin.mode);
+    skinSelect.value = skin.id;
+    document.getElementById('skin-note').textContent = `data-theme=${skin.mode}`;
+  }
+  skinSelect.addEventListener('change', () => applySkin(skinSelect.value));
+  document.getElementById('mode').addEventListener('click', () =>
+    applySkin(document.documentElement.getAttribute('data-theme') === 'dark' ? 'default-light' : 'default-dark'));
+  document.getElementById('lang').addEventListener('change', event => {
+    lang = event.target.value; t = translator(catalogs[lang]); renderSwatches(); renderScenes();
+  });
+  document.getElementById('q-scene').addEventListener('change', syncExtra);
+  document.getElementById('q-run').addEventListener('click', runQuery);
+  addEventListener('resize', () => renderScenes());
+  applySkin('default-light');
+  renderSwatches(); renderScenes(); renderQueryOptions();
+  // Demo-only: mounts the real Warp shader and feeds its output to the page as
+  // `--warp-preview-image`. Nothing in `src/` imports this.
+  //
+  // The selected parameter set is a file, not a browser value: `dev/warp-preset.json`
+  // is the default for a browser that has never saved anything, and the panel's
+  // 「载入你选定的参数」 puts it back on demand. If the file cannot be read the panel
+  // falls back to the built-in parameters instead of failing.
+  const preset = await fetch('./warp-preset.json')
+    .then(response => (response.ok ? response.json() : null))
+    .catch(() => null);
+  mountWarpPanel({ host: document.getElementById('warp-tune-host'), preset });
+</script>
+</body>
+</html>
