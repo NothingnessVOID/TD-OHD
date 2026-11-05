@@ -11,7 +11,12 @@
  * We use the *real* fragment/vertex shader and the package's noise texture, but
  * render once, offline, and ship only the resulting PNG. Nothing from the
  * shader package is loaded by the app at runtime; the dependency is a
- * devDependency used by this script.
+ * devDependency used by this script and by the demo page's live panel.
+ *
+ * The parameters, the uniforms they produce and the pixel post-processing live
+ * in `dev/warp-texture.js` and are shared with `dev/definition-warp-panel.js`,
+ * which runs the same shader live on the demo page. Changing the look should
+ * happen there; this script only bakes it.
  *
  * What "no squashing" means here
  * ------------------------------
@@ -50,54 +55,12 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { WARP_DEFAULTS, DISPLAY_WIDTH, FEATHER_PX } from '../dev/warp-texture.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_OUT = 'src/features/transit-timeline/assets/definition-warp.png';
 
-/** Bar height the parameters below were tuned at; the render is a clean multiple. */
-const DESIGN_HEIGHT = 28;
-/**
- * Display tile: 800x28 CSS px (a 28px bar), i.e. the PNG below is a 3x render of it.
- * The wider tile is what keeps the horizontal repeat from reading as a rhythm: at
- * 400px the warped lobes repeated inside every second or third bar.
- */
-const DISPLAY_WIDTH = 800;
-
-/**
- * Tuned on 800x28 samples. Slots alternate transparent/colour so the orange base
- * keeps the larger share, with two colours adjacent (magenta + pink violet) and a
- * doubled gap after them, so the density is uneven instead of an even rainbow.
- */
-const WARP = {
-  colors: [
-    '00000000', // orange base shows through
-    'E01A6E', // magenta
-    'B44BE8', // pink violet
-    '00000000',
-    '00000000',
-    '5A5BF0', // blue violet
-    '00000000',
-    '12C58B', // green
-    '00000000',
-    '19BED8', // cyan
-  ],
-  shape: 'checks',
-  proportion: 0.45,
-  softness: 0.65,
-  shapeScale: 0.1,
-  distortion: 0.25,
-  swirl: 0.8,
-  swirlIterations: 10,
-  /** u_scale at DESIGN_HEIGHT px; multiplied by the render/display pixel factor. */
-  scale: 0.35,
-  /** Frame offset passed as u_time: Warp is static here, the frame only sets the phase. */
-  frame: 0,
-};
-
-const SHAPES = { checks: 0, stripes: 1, edge: 2 };
-
 const args = process.argv.slice(2);
-const flag = name => args.includes(`--${name}`);
 const opt = (name, fallback) => {
   const hit = args.find(a => a.startsWith(`--${name}=`));
   return hit ? hit.slice(name.length + 3) : fallback;
@@ -106,7 +69,7 @@ const opt = (name, fallback) => {
 const width = Number(opt('width', 2400));
 const height = Number(opt('height', 84));
 /** Alpha feather at each end, in device pixels. 0 disables it. */
-const feather = Number(opt('feather', 45));
+const feather = Number(opt('feather', FEATHER_PX));
 const out = path.resolve(ROOT, opt('out', DEFAULT_OUT));
 /** Render/display pixel factor, derived from the display width so the structure
  *  seen at bar height is the structure the PNG holds. */
@@ -116,9 +79,10 @@ const page = `<!doctype html><meta charset="utf-8"><body>
 <script type="module">
 import { warpFragmentShader, getShaderNoiseTexture } from '/node_modules/@paper-design/shaders/dist/index.js';
 import { vertexShaderSource } from '/node_modules/@paper-design/shaders/dist/vertex-shader.js';
+import { warpUniforms, compositeWarpPixels } from '/dev/warp-texture.js';
 
 const W = ${width}, H = ${height}, FEATHER = ${feather};
-const WARP = ${JSON.stringify(WARP)};
+const PARAMS = ${JSON.stringify(WARP_DEFAULTS)};
 
 const noise = getShaderNoiseTexture();
 await noise.decode();
@@ -156,70 +120,31 @@ function render() {
   for (const [pname, value] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.REPEAT], [gl.TEXTURE_WRAP_T, gl.REPEAT]]) gl.texParameteri(gl.TEXTURE_2D, pname, value);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, noise);
 
-  const rgba = hex => {
-    const raw = hex.replace('#', '');
-    const full = raw.length <= 4 ? raw.split('').map(c => c + c).join('') : raw.padEnd(8, 'f');
-    return [0, 2, 4, 6].map(i => parseInt(full.slice(i, i + 2), 16) / 255);
-  };
-  const colors = new Float32Array(40);
-  WARP.colors.forEach((color, index) => colors.set(rgba(color), index * 4));
-
   const u = name => gl.getUniformLocation(program, name);
   gl.uniform2f(u('u_resolution'), W, H);
   gl.uniform1f(u('u_pixelRatio'), 1);
   gl.uniform1i(u('u_noiseTexture'), 0);
-  gl.uniform4fv(u('u_colors'), colors);
-  gl.uniform1f(u('u_colorsCount'), WARP.colors.length);
-  gl.uniform1f(u('u_time'), WARP.frame);
-  gl.uniform1f(u('u_proportion'), WARP.proportion);
-  gl.uniform1f(u('u_softness'), WARP.softness);
-  gl.uniform1f(u('u_shape'), ${JSON.stringify(SHAPES)}[WARP.shape]);
-  gl.uniform1f(u('u_shapeScale'), WARP.shapeScale);
-  gl.uniform1f(u('u_distortion'), WARP.distortion);
-  gl.uniform1f(u('u_swirl'), WARP.swirl);
-  gl.uniform1f(u('u_swirlIterations'), WARP.swirlIterations);
-  gl.uniform1f(u('u_scale'), WARP.scale * ${scaleMultiplier});
-  gl.uniform1f(u('u_fit'), 0);
-  gl.uniform1f(u('u_rotation'), 0);
-  gl.uniform1f(u('u_originX'), 0.5);
-  gl.uniform1f(u('u_originY'), 0.5);
-  gl.uniform1f(u('u_offsetX'), 0);
-  gl.uniform1f(u('u_offsetY'), 0);
-  gl.uniform1f(u('u_worldWidth'), 0);
-  gl.uniform1f(u('u_worldHeight'), 0);
+  gl.uniform1f(u('u_time'), PARAMS.frame * 1e-3);
+  for (const [name, value] of Object.entries(warpUniforms(PARAMS, { scaleMultiplier: ${scaleMultiplier} }))) {
+    if (Array.isArray(value) && Array.isArray(value[0])) {
+      gl.uniform4fv(u(name), value.flat());
+    } else {
+      gl.uniform1f(u(name), value);
+    }
+  }
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
   const px = new Uint8Array(W * H * 4);
   gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  const { data, coverage } = compositeWarpPixels(px, W, H, FEATHER);
 
   const target = document.createElement('canvas');
   target.width = W; target.height = H;
   const ctx = target.getContext('2d');
   const image = ctx.createImageData(W, H);
-  const smoothstep = t => t * t * (3 - 2 * t);
-  const wrap = x => (FEATHER > 0
-    ? Math.min(smoothstep(Math.min(1, x / FEATHER)), smoothstep(Math.min(1, (W - 1 - x) / FEATHER)))
-    : 1);
-  let covered = 0;
-  for (let y = 0; y < H; y++) {
-    for (let x = 0; x < W; x++) {
-      const src = ((H - 1 - y) * W + x) * 4; // readPixels is bottom-up
-      const dst = (y * W + x) * 4;
-      const stored = px[src + 3] / 255;
-      if (stored <= 0) continue;
-      // The shader premultiplies RGB by alpha; divide it back out, then apply the
-      // seam feather to alpha only, so colours keep their saturation.
-      const alpha = stored * wrap(x);
-      if (alpha < 0.012) continue;
-      image.data[dst] = Math.min(255, px[src] / stored);
-      image.data[dst + 1] = Math.min(255, px[src + 1] / stored);
-      image.data[dst + 2] = Math.min(255, px[src + 2] / stored);
-      image.data[dst + 3] = Math.round(alpha * 255);
-      covered += alpha;
-    }
-  }
+  image.data.set(data);
   ctx.putImageData(image, 0, 0);
-  return { url: target.toDataURL('image/png'), coverage: covered / (W * H) };
+  return { url: target.toDataURL('image/png'), coverage };
 }
 
 window.__result = render();
@@ -232,14 +157,16 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
     return res.end(page);
   }
-  const file = path.join(ROOT, url);
-  const relative = path.relative(ROOT, file);
-  if (relative.startsWith('..') || path.isAbsolute(relative) || !relative.startsWith('node_modules/@paper-design/shaders/')) {
+  // Only the shader package and the shared parameter module are exposed.
+  const allowed = 'node_modules/@paper-design/shaders/';
+  const relative = path.relative(ROOT, path.join(ROOT, url));
+  const permitted = relative.startsWith(allowed) || relative === 'dev/warp-texture.js';
+  if (!permitted || relative.startsWith('..') || path.isAbsolute(relative)) {
     res.writeHead(403); return res.end();
   }
   try {
-    const body = await fs.readFile(file);
-    res.writeHead(200, { 'content-type': path.extname(file) === '.js' ? 'text/javascript' : 'application/octet-stream' });
+    const body = await fs.readFile(path.join(ROOT, relative));
+    res.writeHead(200, { 'content-type': path.extname(relative) === '.js' ? 'text/javascript' : 'application/octet-stream' });
     res.end(body);
   } catch { res.writeHead(404); res.end('not found'); }
 });

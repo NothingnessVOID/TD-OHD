@@ -26,7 +26,9 @@
     .demo .tex-preview header small { color: var(--text-secondary); }
     .demo .tex-tall { position: relative; height: 63px; }
     .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
-    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, auto; --tl-def1-tile: 1800px; --tl-def1-veil-blur: 13.5px; }
+    /* Magnified 2.25x: tile, blur and the glow's copy of the tile all scale with
+       the look group, so the preview stays a magnification, never a second sample. */
+    .demo .tex-tall { --wt-scale: 2.25; }
     .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
     .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
     /* Version A: original narrow bands — arc ripple retained */
@@ -42,7 +44,6 @@
        the comparison still shows exactly what A was. */
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::before,
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
-    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"]::before { background-size: 1800px 63px; }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
@@ -55,6 +56,107 @@
     .demo .query select, .demo .query button { font: inherit; min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
     .demo .query ol { margin: 6px 0 0; padding-left: 22px; font-variant-numeric: tabular-nums; }
     .demo .tl-track::after { display: none; }
+    /* ---- Live Warp preview (demo only) ----
+       `dev/definition-warp-panel.js` runs the real Warp shader through the
+       package's ShaderMount and writes the baked 2400x84 PNG into this custom
+       property. Only the image is swapped: the shared `timeline.css` still owns
+       the 800px tile, the 6px blur on the colour field and the glow veil, so the
+       preview is shown with exactly the app's treatment.
+       Version A keeps `content: none` on both pseudo-elements and ticks are
+       excluded with :not(), so neither changes.
+       While the property is unset the bars deliberately show no texture: a
+       shader that failed is reported, never papered over with the old PNG. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before,
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::after {
+      background-image: var(--warp-preview-image);
+    }
+    /* ---- Look group: blur / brightness / saturation / glow / tile (demo only) ----
+       `dev/definition-warp-panel.js` writes these on `.demo`. The defaults below
+       are the values `timeline.css` already uses, and "restore defaults" removes
+       the inline properties so the stylesheet is authoritative again.
+       The shader output is what gets blurred and tiled; nothing here can change
+       the warped form. */
+    .demo { --wt-scale: 1; --wt-blur: 6px; --wt-bright: 1; --wt-sat: 1.15; --wt-tile: 800px; --wt-light-position: 0%; }
+    /* ---- Light direction of the Single base (demo only) ----
+       The shipped bar lights its base in the middle (a 90deg gradient peaking at
+       52%), so every bar reads "bright centre, dark ends". Here the base is
+       re-lit from a point the panel controls: the peak sits at
+       `--wt-light-position` and falls off towards the far end, in the bar's own
+       coordinates (not the texture tile's), so long and short bars share one
+       direction. The top sheen layer is kept unchanged.
+       0% = light starts at the left edge, 100% = at the right edge. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a) {
+      background:
+        linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
+        radial-gradient(140% 180% at var(--wt-light-position) 50%,
+          var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+    }
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) saturate(var(--wt-sat));
+      background-size: calc(var(--wt-tile) * var(--wt-scale)) calc(28px * var(--wt-scale));
+    }
+    /* The brightness term joins the chain only after the slider leaves 1, so the
+       untouched default stays exactly the committed `blur() saturate()` stack.
+       Keep this declaration in step with the one above. */
+    .demo[data-wt-bright] .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) brightness(var(--wt-bright)) saturate(var(--wt-sat));
+    }
+    /* The glow keeps the brightness/saturation it was tuned with; only its
+       strength and its copy of the tile belong to the panel. Until the strength
+       slider is touched, the theme token still decides the opacity. */
+    .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::after {
+      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) brightness(1.3) saturate(1.1);
+      background-size: calc(var(--wt-tile) * var(--wt-scale)) 100%;
+      opacity: var(--wt-veil, var(--tl-def1-veil));
+    }
+    .demo .warp-tune { margin: 0 0 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .warp-tune > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 9px 12px; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--bg-sunken); }
+    .demo .warp-tune[open] > summary { border-bottom: 1px solid var(--border-subtle, var(--border)); }
+    .demo .warp-tune > summary::marker { color: var(--text-secondary); }
+    .demo .warp-tune-tag { padding: 1px 7px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 999px; font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .demo .warp-tune-tag.is-error { color: var(--text); border-color: var(--text); }
+    .demo .warp-tune-body { padding: 11px 12px 12px; font-size: 13px; }
+    .demo .warp-tune-error { margin: 0 0 12px; padding: 9px 11px; border: 1px solid var(--text); border-inline-start-width: 4px; border-radius: 6px; background: var(--bg-sunken); color: var(--text); font-size: 12px; line-height: 1.6; }
+    .demo .warp-tune-intro, .demo .warp-tune-foot { margin: 0; max-width: 72ch; color: var(--text-secondary); font-size: 12px; line-height: 1.65; }
+    .demo .warp-tune-intro { margin-bottom: 12px; }
+    .demo .warp-tune-foot { margin-top: 10px; }
+    .demo .warp-live { max-width: 100%; margin-bottom: 6px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 5px; overflow: hidden; }
+    .demo .warp-shader-host { width: 800px; height: 28px; }
+    .demo .warp-live-meta { margin-bottom: 12px; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-shape-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; font-size: 13px; }
+    .demo .warp-shape-row select, .demo .warp-shape-row button { min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); font: inherit; cursor: pointer; }
+    .demo .warp-shape-row button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+    .demo .warp-tune-fields { display: grid; gap: 10px; max-width: 640px; }
+    .demo .warp-field { display: grid; grid-template-columns: 7em minmax(0, 1fr) 5.5em; align-items: center; gap: 3px 10px; }
+    .demo .warp-field input[type="range"] { width: 100%; min-width: 0; margin: 0; accent-color: var(--accent); }
+    .demo .warp-field output { text-align: right; white-space: nowrap; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-field-hint { grid-column: 1 / -1; margin: 0; font-size: 11px; line-height: 1.5; color: var(--text-secondary); }
+    .demo .warp-field-state { color: var(--text); }
+    .demo .warp-group { margin: 0 0 14px; padding: 8px 10px 10px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 6px; }
+    .demo .warp-group legend { padding: 0 4px; font-size: 12px; font-weight: 600; color: var(--text); }
+    .demo .warp-colors-block { margin-top: 10px; }
+    .demo .warp-colors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; margin-top: 6px; max-width: 640px; }
+    .demo .warp-color { display: grid; grid-template-columns: 1.4em 34px minmax(0, 1fr); align-items: center; gap: 6px; }
+    .demo .warp-color-index { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .demo .warp-color input[type="color"] { width: 34px; height: 22px; padding: 0; border: 1px solid var(--control-border, var(--border)); border-radius: 4px; background: var(--bg-elevated); cursor: pointer; }
+    .demo .warp-color input[type="color"]:disabled { opacity: .4; cursor: not-allowed; }
+    .demo .warp-color-alpha { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-secondary); }
+    .demo .warp-color-alpha input { accent-color: var(--accent); }
+    .demo .warp-tune-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .demo .warp-tune-actions button { min-height: 32px; padding: 3px 10px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); font: inherit; cursor: pointer; }
+    .demo .warp-tune-actions button:disabled { cursor: progress; color: var(--text-secondary); }
+    .demo .warp-tune.is-failed .warp-tune-actions button { opacity: .55; cursor: not-allowed; }
+    .demo .warp-tune-status { margin: 8px 0 0; min-height: 1.5em; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
+    .demo .warp-tune-json-label { display: block; margin: 2px 0 4px; font-size: 11px; color: var(--text-secondary); }
+    .demo .warp-tune-json { box-sizing: border-box; width: 100%; padding: 6px 8px; border: 1px solid var(--border-subtle, var(--border)); border-radius: 5px; background: var(--bg-sunken); color: var(--text); font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
+    .demo .warp-tune :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+    @media (max-width: 560px) {
+      .demo .warp-field { grid-template-columns: minmax(0, 1fr) auto; }
+      .demo .warp-field label { grid-column: 1; }
+      .demo .warp-field output { grid-column: 2; }
+      .demo .warp-field input[type="range"] { grid-column: 1 / -1; }
+      .demo .warp-colors { grid-template-columns: minmax(0, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -78,11 +180,12 @@
       <div class="compare-bar tl" id="compare-b"></div>
     </div>
   </div>
-  <p class="notice">A 是最初的形态，B 是本轮采用的候选，两者并列保留只为了对照，不代表任何一方已经被否决或定稿。B 的纹理由真实 Warp shader 离线渲染成静态 PNG（<code>scripts/build-definition-warp-texture.mjs</code>），正式时间轴的 1 号条用的是同一张图。</p>
+  <p class="notice">A 是最初的形态，B 是本轮采用的候选，两者并列保留只为了对照，不代表任何一方已经被否决或定稿。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
+  <div id="warp-tune-host"></div>
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
     <div class="tex-tall tl" id="tex-tall"></div>
-    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（3px 轻模糊、静态、不加动画），结构仍由下面的清晰纹理承载，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 6px 轻模糊、静态、不加动画），结构仍由下面的清晰纹理承载，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
   </section>
   <div id="scenes"></div>
   <section class="query">
@@ -111,6 +214,7 @@
   import zhCN from '/src/locales/zh-CN/timeline.json';
   import zhHant from '/src/locales/zh-Hant/timeline.json';
   import '/src/features/transit-timeline/timeline.css';
+  import { mountWarpPanel } from './definition-warp-panel.js';
 
   const catalogs = { 'zh-CN': zhCN, 'zh-Hant': zhHant, en };
   const localeOf = { 'zh-CN': 'zh-CN', 'zh-Hant': 'zh-TW', en: 'en-GB' };
@@ -251,6 +355,9 @@
   addEventListener('resize', () => renderScenes());
   applySkin('default-light');
   renderSwatches(); renderScenes(); renderQueryOptions();
+  // Demo-only: mounts the real Warp shader and feeds its output to the page as
+  // `--warp-preview-image`. Nothing in `src/` imports this.
+  mountWarpPanel({ host: document.getElementById('warp-tune-host') });
 </script>
 </body>
 </html>
