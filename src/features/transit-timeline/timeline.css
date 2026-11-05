@@ -521,7 +521,7 @@
      one. Kept as variables so a magnified preview can scale tile and blur
      together instead of showing two different rhythms. */
   --tl-def1-veil: .24;
-  --tl-def1-veil-blur: 3px;
+  --tl-def1-veil-blur: 6px;
   --tl-def1-tile: 800px;
 }
 :root[data-theme="dark"] .tl {
@@ -565,8 +565,15 @@
   --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
   background:
     linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
-    url('./assets/definition-warp.png') 0 0 / 800px 100% repeat-x,
     linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 28%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
+}
+/* The colour texture itself is blurred. There is no sharp texture underneath;
+   only the orange base and the count label remain crisp. Extend vertically so
+   filtering does not fade the colour away at the top and bottom of a 28px bar. */
+.tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before {
+  content: ''; position: absolute; inset: -6px 0; z-index: 0; pointer-events: none;
+  background: url('./assets/definition-warp.png') 0 50% / var(--tl-def1-tile) 28px repeat;
+  filter: blur(var(--tl-def1-veil-blur)) saturate(1.15);
 }
 /* Soft glow veil on the Single bar: a blurred copy of the same Warp tile,
    screen-blended at low opacity. This is what makes the bar look lit rather than
@@ -628,6 +635,7 @@
   .tl .tl-definition-bar { background: Highlight; color: HighlightText; }
   /* The glow veil is a decorative colour layer; forced colours drop it so the
      system palette is not tinted. */
+  .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before,
   .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after { display: none; }
   .tl .tl-definition-tick::after { background: Highlight; }
 }

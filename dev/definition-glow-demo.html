@@ -26,7 +26,7 @@
     .demo .tex-preview header small { color: var(--text-secondary); }
     .demo .tex-tall { position: relative; height: 63px; }
     .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
-    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, 1800px 63px, auto; --tl-def1-tile: 1800px; --tl-def1-veil-blur: 6.75px; }
+    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, auto; --tl-def1-tile: 1800px; --tl-def1-veil-blur: 13.5px; }
     .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
     .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
     /* Version A: original narrow bands — arc ripple retained */
@@ -40,7 +40,9 @@
     }
     /* A is the untouched original form: switch off the new Single glow veil so
        the comparison still shows exactly what A was. */
+    .demo .compare-bar .tl-definition-bar.tl-def1-version-a::before,
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
+    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"]::before { background-size: 1800px 63px; }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
     .demo .scene header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
     .demo .scene header small { color: var(--text-secondary); }
