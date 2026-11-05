@@ -224,6 +224,17 @@
 .tl-gridline { position: absolute; top: 0; bottom: 0; width: 1px; z-index: 2; background: var(--tl-day-divider); pointer-events: none; }
 .tl .tl-bar { position: absolute; top: 0; bottom: var(--tl-row-gap); height: auto; box-sizing: border-box; z-index: 1; display: flex; align-items: center; min-width: 2px; overflow: hidden; border: 0 solid transparent; border-radius: 0; background: var(--tl-transit); color: var(--tl-transit-ink); font-size: 11px; line-height: 1.2; padding: 0; cursor: pointer; white-space: nowrap; text-align: left; }
 .tl-bar > span { position: relative; z-index: 2; padding: 0 7px; pointer-events: none; }
+/* Shared bar label chip. The definition count span predates the shared class and
+   keeps `.tl-definition-count` (tests and the arc comment rely on it), so both
+   label classes are listed. The arc layer has its own class and is never hit;
+   `:not(.tl-definition-tick)` keeps a short marker's empty count span plateless.
+   No font-size here: bars keep their own inherited size (11px desktop, the
+   existing 10px breakpoint) instead of being normalised by this rule. */
+.tl .tl-bar:not(.tl-definition-tick) > :is(.tl-bar-label, .tl-definition-count) {
+  position: relative; z-index: 2; margin-left: 5px; padding: 1px 4px;
+  border-radius: 3px; line-height: 14px; pointer-events: none;
+  background: var(--tl-chip-bg); color: var(--tl-chip-ink); text-shadow: none;
+}
 .tl .tl-bar[data-source="natal"] { background: var(--tl-birth); color: var(--tl-surface); }
 .tl .tl-bar[data-source="completed"] { border-left: 5px solid var(--tl-birth); }
 .tl .tl-bar[data-source="both"] { background: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); color: var(--tl-both-ink); }
@@ -511,13 +522,16 @@
   --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
   --tl-def-sheen: rgb(255 255 255 / .42);
   --tl-def-glow: 0 0 0 transparent;
-  /* Count chip: every drawn definition bar carries one. The Single texture has
-     irregular light and dark patches and the Split/Triple/Quadruple gradients
-     carry their own light band, so a bare digit is not legible at every position;
-     one plate (dark warm, warm ink) under all four counts keeps the numbers
-     identical instead of four different legibility solutions. */
-  --tl-def-chip-bg: rgb(28 12 2 / .85);
-  --tl-def-chip-ink: #FFE9C9;
+  /* Bar label chip: one plate (dark warm, warm ink) under every label written
+     inside a timeline bar — center names, channel numbers, gate numbers,
+     gate-line numbers and the 1–4 definition counts. Each bar background is a
+     separate legibility problem (Single texture patches, Split/Triple/Quadruple
+     light bands, transit/natal/both fills), so one shared plate keeps every
+     label readable and identical instead of one solution per bar type. The
+     label font-size is never set here; it keeps inheriting from `.tl-bar` and
+     its existing breakpoint overrides. */
+  --tl-chip-bg: rgb(28 12 2 / .85);
+  --tl-chip-ink: #FFE9C9;
   /* Single texture: the warp tile, the blur and glow strength and the crisp white
      arc that sits on top of it. Kept as variables so a magnified preview can
      scale tile, blur and arc together instead of showing three rhythms. */
@@ -609,14 +623,6 @@
 /* Dark version: a narrow coloured rim stands the bar off the night surface. */
 :root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
 :root[data-theme="dark"] .tl .tl-definition-bar[data-definition="1"] { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 6px -1px color-mix(in srgb, var(--tl-def1-pink) 55%, var(--tl-def1-warm)); }
-/* Count chip on every drawn definition bar (1-4): warm ink on one dark warm
-   plate, vertically centred, no extra shadow or outline. The tick's empty count
-   span is excluded by the `:not`, so a short event keeps its hairline geometry
-   and gains no plate; its 14px hit area is ::before, which is untouched. */
-.tl .tl-definition-bar:not(.tl-definition-tick) > .tl-definition-count {
-  padding: 1px 4px; margin-left: 5px; border-radius: 3px; line-height: 14px;
-  background: var(--tl-def-chip-bg); color: var(--tl-def-chip-ink); text-shadow: none;
-}
 /* The crisp white arc that the shared markup adds to every non-tick Single bar:
    the original A's ripple (`ellipse 150% 260% at 0% 130%`, white at 20%) at one
    211px period. It is its own element because the colour field around it is
@@ -666,10 +672,10 @@
   /* The arc is white at 20%: in the system palette it is decoration, not
      information, so it goes the same way as the texture. */
   .tl .tl-definition-arcline { display: none; }
-  /* The chip plate is dropped under forced colours so the digit inherits the
+  /* The chip plate is dropped under forced colours so the label inherits the
      Highlight / HighlightText pair from the bar. The selector repeats the chip's
-     own `:not(.tl-definition-tick)` — a bare `> .tl-definition-count` would only
-     tie with it and lose on source order. */
-  .tl .tl-definition-bar:not(.tl-definition-tick) > .tl-definition-count { background: transparent; color: inherit; }
+     own `:not(.tl-definition-tick)` — a bare `> :is(…)` would only tie with it
+     and lose on source order. */
+  .tl .tl-bar:not(.tl-definition-tick) > :is(.tl-bar-label, .tl-definition-count) { background: transparent; color: inherit; }
   .tl .tl-definition-tick::after { background: Highlight; }
 }

@@ -336,7 +336,7 @@
           widthPx: (interval.end - interval.start) / (END - START) * width });
       }).join('');
       const extra = scene.result.rows.find(item => item.key === scene.extra);
-      node.querySelector('[data-extra]').innerHTML = (extra?.intervals || []).map(interval => `<button type="button" class="tl-bar" data-source="${interval.source}" style="left:${ratio(interval.start)}%;width:${(interval.end - interval.start) / (END - START) * 100}%" title="${esc(`${format(interval.start)} → ${format(interval.end)}`)}"><span>${esc(scene.extra.split(':')[1])}</span></button>`).join('');
+      node.querySelector('[data-extra]').innerHTML = (extra?.intervals || []).map(interval => `<button type="button" class="tl-bar" data-source="${interval.source}" style="left:${ratio(interval.start)}%;width:${(interval.end - interval.start) / (END - START) * 100}%" title="${esc(`${scene.extra.split(':')[1]} · ${format(interval.start)} → ${format(interval.end)}`)}"><span class="tl-bar-label">${esc(scene.extra.split(':')[1])}</span></button>`).join('');
       track.addEventListener('click', event => {
         const bar = event.target.closest('.tl-definition-bar');
         if (!bar) return;

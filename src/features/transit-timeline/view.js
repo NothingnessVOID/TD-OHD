@@ -514,6 +514,12 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
     const natalIslandCount = currentNatalCount();
     const trackWidth = $('.tl-ticks').clientWidth || 1;
     const rowName = row => row.kind === 'definition' ? t('definitionRow') : name(row);
+    // Inside the bar the row is named by its own identity only: a center by its
+    // name, a channel by its canonical number ("34-20", never reordered), a gate
+    // by its number ("34") and a gate line by its full line number ("34.1"). The
+    // full name, the source and the exact timing stay in title/aria-label, and
+    // the row header keeps its own symbol, so nothing is lost or duplicated.
+    const barLabel = row => row.kind === 'center' ? name(row) : String(row.id);
     const rows = result.rows.filter(row => row.kind !== 'bridge' && (row.kind === 'definition' || row.intervals.length > 0) &&
       (row.kind === 'definition' ? (kind === 'all' || kind === 'center') : (kind === 'all' || row.kind === kind || (kind === 'gate' && row.kind === 'line')))
       && (row.kind !== 'line' || expandedGates.has(row.gate) || (query && row.id.includes(query)))
@@ -541,7 +547,7 @@ export function createTransitTimeline({ root, host, messages, locale = 'en-GB', 
             clippedStart: visible.clippedStart, clippedEnd: visible.clippedEnd });
         }
         const title = `${rowName(row)} · ${t(interval.source)} · ${timing}`;
-        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span>${esc(rowName(row))}</span></button>`;
+        return `<button type="button" class="tl-bar ${visible.clippedStart ? 'tl-clipped-start' : ''} ${visible.clippedEnd ? 'tl-clipped-end' : ''}" data-source="${interval.source}" data-key="${row.key}" data-interval="${index}" style="left:${ratioAt(windowRange, visible.start) * 100}%;width:${(visible.end - visible.start) / span * 100}%" title="${esc(title)}" aria-label="${esc(title)}"><span class="tl-bar-label">${esc(barLabel(row))}</span></button>`;
       }).join('')}</div></div>`).join('') : `<p class="tl-empty">${esc(t('noRows'))}</p>`);
     $('.tl-table').scrollTop = scroll;
     if (sync) syncClock();
