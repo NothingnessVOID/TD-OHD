@@ -511,7 +511,7 @@
   --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
   --tl-def-sheen: rgb(255 255 255 / .42);
   --tl-def-glow: 0 0 0 transparent;
-  /* Count chip: only the Single bar needs one, because its foil texture has
+  /* Count chip: only the Single bar needs one, because its warp texture has
      irregular light and dark patches, so no bare ink colour is legible at every
      position. Split/Triple/Quadruple sit on uniform gradients whose ink was
      chosen for contrast and stay chip-free. */
@@ -539,21 +539,23 @@
 .tl .tl-definition-bar > span { text-shadow: 0 0 2px var(--tl-def-halo), 0 0 1px var(--tl-def-halo); }
 .tl .tl-definition-bar[data-definition="3"] { --tl-def-a: var(--tl-def3-deep); --tl-def-b: var(--tl-def3-light); --tl-def-ink: var(--tl-def3-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def3-deep) 85%, black); }
 .tl .tl-definition-bar[data-definition="4"] { --tl-def-a: var(--tl-def4-deep); --tl-def-b: var(--tl-def4-light); --tl-def-ink: var(--tl-def4-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def4-deep) 85%, black); }
-/* Single: iridescent oil-film foil on warm orange.
-   The foil is a generated texture (scripts/foil-to-alpha.py converts a
-   black-backed render into a transparent-backed film: alpha = max channel,
-   gamma-expanded, saturation-boosted, white point capped). It is composited
-   with plain alpha, NOT an additive blend: `screen`/`lighten` over an already
-   bright orange base pushes every hue toward white, which is what made earlier
-   attempts read as milky. With alpha compositing the cyan, violet and magenta
-   keep their generated saturation and the black gaps stay pure orange.
-   The source band is cropped at 15:1 to match the 400x27 tile, so the film is
-   never vertically squashed into streaks. Static, no animation. */
+/* Single: coloured Warp field on warm orange.
+   The overlay is a generated texture: scripts/build-definition-warp-texture.mjs
+   renders the real Warp shader from @paper-design/shaders (Apache-2.0) once,
+   offline, at 2400x84 = 3x this 800x28 tile, and only the PNG is shipped — the
+   shader package is a devDependency of that script, not a runtime import.
+   In the shader the void colour slots are fully transparent, so the orange base
+   below stays untouched in the gaps and each patch glows out of it. The PNG is
+   composited with plain alpha, NOT an additive blend: `screen`/`lighten` over an
+   already bright orange base pushes every hue toward white, which read as milky.
+   Render and tile share one aspect ratio (28.57:1) and the pattern scale is
+   multiplied by the same 3x, so the Warp lobes are cropped, never squashed.
+   Static, no animation. */
 .tl .tl-definition-bar[data-definition="1"] {
   --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
   background:
     linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
-    url('./assets/definition-foil.png') 0 0 / 400px 100% repeat-x,
+    url('./assets/definition-warp.png') 0 0 / 800px 100% repeat-x,
     linear-gradient(90deg, var(--tl-def1-deep), var(--tl-def1-warm) 28%, var(--tl-def1-light) 52%, var(--tl-def1-warm) 74%, var(--tl-def1-deep));
 }
 /* Dark version: a narrow coloured rim stands the bar off the night surface. */

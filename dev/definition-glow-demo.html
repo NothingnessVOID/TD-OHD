@@ -19,6 +19,16 @@
     .demo .compare-item label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
     .demo .compare-bar { position: relative; height: 28px; }
     .demo .compare-bar .tl-bar { position: absolute; inset: 0; width: 100%; }
+    /* Tall preview of the same tile: height and background-size grow together so
+       the Warp lobes are magnified, never stretched. */
+    .demo .tex-preview { margin-bottom: 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
+    .demo .tex-preview header { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 13px; border-bottom: 1px solid var(--border-subtle, var(--border)); background: var(--bg-sunken); }
+    .demo .tex-preview header small { color: var(--text-secondary); }
+    .demo .tex-tall { position: relative; height: 63px; }
+    .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
+    .demo .tex-tall.tl .tl-definition-bar[data-definition="1"] { background-size: auto, 1800px 63px, auto; }
+    .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
+    .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
     /* Version A: original narrow bands — arc ripple retained */
     .demo .tl-def1-version-a {
       background:
@@ -55,14 +65,20 @@
   <div class="tl swatches" id="swatches"></div>
   <div class="compare">
     <div class="compare-item">
-      <label>旧的窄条带版（已被否决，仅作对照）</label>
+      <label>最初 A &middot; 窄条带 + 弧形白纹（对照保留）</label>
       <div class="compare-bar tl" id="compare-a"></div>
     </div>
     <div class="compare-item">
-      <label>最终版 &middot; 油膜箔贴图 + 数字底托</label>
+      <label>彩色 Warp &middot; 本轮候选</label>
       <div class="compare-bar tl" id="compare-b"></div>
     </div>
   </div>
+  <p class="notice">A 是最初的形态，B 是本轮采用的候选，两者并列保留只为了对照，不代表任何一方已经被否决或定稿。B 的纹理由真实 Warp shader 离线渲染成静态 PNG（<code>scripts/build-definition-warp-texture.mjs</code>），正式时间轴的 1 号条用的是同一张图。</p>
+  <section class="tex-preview">
+    <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
+    <div class="tex-tall tl" id="tex-tall"></div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。</div>
+  </section>
   <div id="scenes"></div>
   <section class="query">
     <div class="line"><strong>条件查询（与时间轴同一份计算）</strong></div>
@@ -149,6 +165,11 @@
     document.getElementById('compare-a').querySelector('.tl-definition-bar').classList.add('tl-def1-version-a');
     document.getElementById('compare-b').innerHTML = definitionBarMarkup({
       key: 'compare:b', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
+      label: '1', title: t('definition1'), esc });
+    // Same markup and same shared CSS as the timeline, only taller: the tile is
+    // magnified by growing height and background-size together.
+    document.getElementById('tex-tall').innerHTML = definitionBarMarkup({
+      key: 'tex:tall', index: 0, count: '1', left: 0, width: 100, widthPx: 1100,
       label: '1', title: t('definition1'), esc });
   }
   function renderScenes() {
