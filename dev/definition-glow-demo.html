@@ -82,6 +82,63 @@
     .demo .tl-bar.tl-old-bar[data-source="natal"] { background: var(--tl-birth); }
     .demo .tl-bar.tl-old-bar[data-source="completed"] { background: var(--tl-transit); }
     .demo .tl-bar.tl-old-bar[data-source="both"] { background: repeating-linear-gradient(135deg, var(--tl-both-transit) 0 6px, var(--tl-both-birth) 6px 12px); }
+    /* ---- Ordinary source bars: candidate schemes (demo only) ----
+       `.src-soft` / `.src-glass` are this page's scope classes: they sit on a
+       comparison block and, through the scheme selector, on `#source-new` and the
+       scene `[data-extra]` tracks. Production `timeline.css` is not touched, and
+       nothing here reaches the A / Warp comparisons.
+       Every natural colour is the Skin's own source colour, read through the
+       `--tl-bar-fill` the shared rules already set (`--hd-timeline-birth` /
+       `-transit` / `-both-*`): the left core is that colour mixed toward white and
+       the right decay is the same colour shaded, so no value is written per Skin
+       ID. The core is local (transparent by 58%) and the only near-white is a 1px
+       left edge, so the ordinary fill is never lifted as a whole.
+       Paint: one thin top sheen + foot shade, the left core, the right decay, then
+       the Skin paint itself (`--tl-bar-paint`, which keeps `both`'s 135° weave).
+       `completed`'s 5px natal cap is a border and stays above every layer. */
+    .demo :is(.src-soft, .src-glass) .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
+      --tl-src-core: color-mix(in srgb, var(--tl-bar-fill) 44%, #fff);
+      --tl-src-core-soft: color-mix(in srgb, var(--tl-bar-fill) 76%, #fff);
+      --tl-src-light:
+        linear-gradient(180deg, rgb(255 255 255 / .34) 0 1px, transparent 1px 88%, rgb(0 0 0 / .14) 100%),
+        linear-gradient(90deg, rgb(255 255 255 / .42) 0 1px, transparent 7%),
+        linear-gradient(90deg, var(--tl-src-core) 0, var(--tl-src-core-soft) 22%, transparent 58%),
+        linear-gradient(90deg, transparent 62%, rgb(0 0 0 / .08) 80%, rgb(0 0 0 / .16) 100%);
+      background: var(--tl-src-light), var(--tl-bar-paint);
+      box-shadow: 0 0 7px -2px color-mix(in srgb, var(--tl-bar-fill) 52%, transparent);
+    }
+    /* Candidate B adds glass: one crisp 1px top edge and one thin same-colour
+       bottom edge, plus a top gloss that stops at 62%. Inset lines only — no thick
+       border, no filled gloss band, so the bar still reads as a band. */
+    .demo .src-glass .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / .46) 0 1px, rgb(255 255 255 / .10) 1px 40%, transparent 62%),
+        var(--tl-src-light), var(--tl-bar-paint);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / .44),
+        inset 0 -1px 0 color-mix(in srgb, var(--tl-bar-fill) 50%, #fff),
+        0 0 7px -2px color-mix(in srgb, var(--tl-bar-fill) 46%, transparent);
+    }
+    /* Decoration fallback, not a claim that forced system colours still glow: the
+       candidates drop to the bare Skin paint and lose every light layer. The
+       registered `high-contrast` Skin is a Skin, not `forced-colors`, and keeps the
+       candidate paints from its own tokens. */
+    @media (forced-colors: active) {
+      .demo :is(.src-soft, .src-glass) .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
+        background: var(--tl-bar-paint);
+        box-shadow: none;
+      }
+    }
+    /* Candidate comparison layout: one block per scheme, four sources per row,
+       stacked on the phone through the existing `.source-grid` breakpoints. */
+    .demo .source-toolbar { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; padding: 2px 12px 0; font-size: 12px; color: var(--text-secondary); }
+    .demo .source-toolbar select { font: inherit; min-height: 30px; padding: 2px 8px; border: 1px solid var(--control-border, var(--border)); border-radius: 5px; background: var(--bg-elevated); color: var(--text); }
+    .demo .source-block { border-top: 1px solid var(--border-subtle, var(--border)); }
+    .demo .source-block-head { margin: 0; padding: 9px 12px 0; font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .demo .source-legacy { border-top: 1px solid var(--border-subtle, var(--border)); }
+    .demo .source-legacy > summary { padding: 8px 12px; font-size: 12px; color: var(--text-secondary); cursor: pointer; }
+    .demo .source-legacy[open] > summary { border-bottom: 1px solid var(--border-subtle, var(--border)); }
+    .demo .source-legacy .source-grid-old { border-top: 0; }
     .demo .tl-row-label { font-size: 10px; color: var(--text-secondary); }
     .demo .row-caption { width: 40px; text-align: center; }
     .demo .detail { min-height: 22px; padding: 6px 12px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); font-variant-numeric: tabular-nums; }
@@ -226,12 +283,20 @@
   <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px），左侧把它关掉。这层白纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用背景层画了这条白纹，所以 A 的标记层被关掉，不会叠出第二层。</p>
   <div id="warp-tune-host"></div>
   <section class="scene source-glow">
-    <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>同一份 <code>timeline.css</code>：上排是新光照，下排是旧平涂（仅作对照，不写进正式样式）</small></header>
+    <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>三款对照只在本页：正式 <code>timeline.css</code> 仍是当前版</small></header>
     <div class="tl">
+      <div class="source-toolbar">
+        <label>方案试用到预览与合成条 <select id="src-scheme"></select></label>
+        <span id="src-scheme-note"></span>
+      </div>
       <div class="source-grid" id="source-new"></div>
-      <div class="source-grid source-grid-old" id="source-old"></div>
+      <div id="source-compare"></div>
+      <details class="source-legacy">
+        <summary>旧平涂（对照，折叠）</summary>
+        <div class="source-grid source-grid-old" id="source-old"></div>
+      </details>
     </div>
-    <div class="detail">新光照只叠在 Skin 原有的来源色上：左端最亮、向右衰减，顶部 1px 高光，外圈一道同来源色的克制辉光；没有模糊、混合模式、动画或额外 DOM。共同条保留 135&deg; 斜纹，补全条保留左侧本命色标识，宽度仍是真实几何，细条不加最小宽。色值本身仍是 <code>--hd-timeline-*</code>，明暗只换光照 token。</div>
+    <div class="detail">三款都只换光照层、不动来源色：当前版是已提交的正式写法；柔光灯带把亮点收在左起点（同色掺白的亮芯，只有 1px 近白），中段保持饱和来源色，右段轻微压暗；玻璃版再加一道 1px 顶部细高光与一道同色底缘细线。共同条的 135&deg; 斜纹与补全条 5px 本命边在所有版本里都保留，宽度仍是真实几何。</div>
   </section>
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
@@ -344,13 +409,46 @@
       label: '1', title: t('definition1'), esc });
   }
   const SOURCE_ORDER = ['natal', 'transit', 'both', 'completed'];
+  // Dev-only candidate schemes. `cls` is the scope class this page's own CSS keys
+  // on; 'current' is the committed production paint and adds nothing.
+  const SOURCE_SCHEMES = [
+    { id: 'current', label: '当前版（已提交）', cls: '' },
+    { id: 'soft', label: '柔光灯带（候选 A）', cls: 'src-soft' },
+    { id: 'glass', label: '柔光 + 玻璃细高光（候选 B）', cls: 'src-glass' }
+  ];
+  function sourceCell(source, old) {
+    return `<div class="source-cell"><b>${esc(t(source))}${old ? ' &middot; 旧样式' : ''}</b><div class="bar-shell"><button type="button" class="tl-bar${old ? ' tl-old-bar' : ''}" data-source="${source}" title="${esc(t(source))}"><span class="tl-bar-label">${esc(t(source))}</span></button></div></div>`;
+  }
+  let sourceScheme = 'current';
+  // The selector only reaches the ordinary-source preview and the synthetic
+  // `[data-extra]` rows; the definition bars, A and the Warp previews never carry
+  // either scope class.
+  function applySourceScheme(id) {
+    sourceScheme = SOURCE_SCHEMES.some(item => item.id === id) ? id : 'current';
+    const cls = SOURCE_SCHEMES.find(item => item.id === sourceScheme).cls;
+    const targets = [document.getElementById('source-new'), ...document.querySelectorAll('#scenes [data-extra]')];
+    for (const node of targets) {
+      if (!node) continue;
+      node.classList.toggle('src-soft', cls === 'src-soft');
+      node.classList.toggle('src-glass', cls === 'src-glass');
+    }
+    const select = document.getElementById('src-scheme');
+    if (select) select.value = sourceScheme;
+    const note = document.getElementById('src-scheme-note');
+    if (note) note.textContent = sourceScheme === 'current'
+      ? '正在用正式写法'
+      : '已套用到上面的预览与下方场景里的合成条';
+  }
   function renderSourceBars() {
-    // Dev-only: the four ordinary bar sources side by side, once with the shared
-    // lighting and once with the flat form it replaced. Labels are the existing
+    // Dev-only: the four ordinary bar sources, once under the selector and once per
+    // candidate so all three can be read side by side. Labels are the existing
     // translated source names, not new copy.
-    const cell = (source, old) => `<div class="source-cell"><b>${esc(t(source))}${old ? ' &middot; 旧样式' : ''}</b><div class="bar-shell"><button type="button" class="tl-bar${old ? ' tl-old-bar' : ''}" data-source="${source}" title="${esc(t(source))}"><span class="tl-bar-label">${esc(t(source))}</span></button></div></div>`;
-    document.getElementById('source-new').innerHTML = SOURCE_ORDER.map(source => cell(source, false)).join('');
-    document.getElementById('source-old').innerHTML = SOURCE_ORDER.map(source => cell(source, true)).join('');
+    const row = old => SOURCE_ORDER.map(source => sourceCell(source, old)).join('');
+    document.getElementById('source-new').innerHTML = row(false);
+    document.getElementById('source-compare').innerHTML = SOURCE_SCHEMES.map(scheme => `<div class="source-block${scheme.cls ? ` ${scheme.cls}` : ''}"><p class="source-block-head">${esc(scheme.label)}</p><div class="source-grid">${row(false)}</div></div>`).join('');
+    document.getElementById('source-old').innerHTML = row(true);
+    document.getElementById('src-scheme').innerHTML = SOURCE_SCHEMES.map(scheme => `<option value="${scheme.id}">${esc(scheme.label)}</option>`).join('');
+    applySourceScheme(sourceScheme);
   }
   function renderScenes() {
     const host = document.getElementById('scenes');
@@ -382,6 +480,9 @@
         node.querySelector('.detail').textContent = bar.getAttribute('aria-label');
       });
     }
+    // Re-rendering the scenes replaces the `[data-extra]` tracks, so the selected
+    // scheme is put back on the fresh nodes (initial render and every resize).
+    applySourceScheme(sourceScheme);
   }
   function renderQueryOptions() {
     document.getElementById('q-scene').innerHTML = scenes.map(scene => `<option value="${scene.id}">${esc(scene.title)}</option>`).join('');
@@ -423,6 +524,11 @@
   });
   document.getElementById('q-scene').addEventListener('change', syncExtra);
   document.getElementById('q-run').addEventListener('click', runQuery);
+  // The scheme select is rebuilt with the source rows, so the listener sits on the
+  // document instead of the element.
+  document.addEventListener('change', event => {
+    if (event.target.id === 'src-scheme') applySourceScheme(event.target.value);
+  });
   addEventListener('resize', () => renderScenes());
   applySkin('default-light');
   renderSwatches(); renderSourceBars(); renderScenes(); renderQueryOptions();
