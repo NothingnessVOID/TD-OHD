@@ -169,15 +169,26 @@ test('narrow intervals keep true geometry and only widen the hit target', () => 
   const title = 'Single Definition · 10:00 → 11:00';
   const wide = definitionBarMarkup({ index: 0, count: '1', left: 10, width: 20, widthPx: 200, label: '1', title, esc });
   assert.match(wide, /left:10%;width:20%/);
-  assert.match(wide, /<span>1<\/span>/, 'the visible label is the bare count');
+  assert.match(wide, /<span class="tl-definition-count">1<\/span>/, 'the visible label is the bare count, in its own class');
+  // The Single bar carries one decorative arc layer, aria-hidden and with its own
+  // class, so the shared chip rule (which targets .tl-definition-count) can never
+  // paint a plate on it.
+  assert.match(wide, /<span class="tl-definition-arcline" aria-hidden="true"><\/span>/, 'Single gets exactly one arc layer');
+  assert.equal(wide.match(/tl-definition-arcline/g).length, 1);
   // The tooltip already carries the full name, so the accessible label must use
   // it verbatim instead of prepending the name a second time.
   assert.ok(wide.includes(`aria-label="${title}"`), 'accessible label reuses the tooltip verbatim');
   assert.equal(wide.match(/Single Definition/g).length, 2, 'full name appears once per attribute');
+  const other = definitionBarMarkup({ index: 2, count: '3', left: 20, width: 20, widthPx: 200, label: '3', title: 'Triple Split · 10:00 → 11:00', esc });
+  assert.equal(other.includes('tl-definition-arcline'), false, 'only the Single bar draws the arc');
+  assert.match(other, /<span class="tl-definition-count">3<\/span>/);
   const tick = definitionBarMarkup({ index: 1, count: '3', left: 50, width: 0.01, widthPx: 0.4, label: '3', title: 'Triple Split · 10:00 → 10:01', esc });
   assert.match(tick, /tl-definition-tick/);
   assert.match(tick, /left:50%;width:0\.01%/, 'true geometry, no minimum-width inflation');
-  assert.match(tick, /<span><\/span>/, 'a tick paints no label');
+  assert.match(tick, /<span class="tl-definition-count"><\/span>/, 'a tick paints no label');
+  assert.equal(tick.includes('tl-definition-arcline'), false, 'a tick carries no arc layer');
   assert.match(tick, /aria-label="Triple Split · 10:00 → 10:01"/);
+  const singleTick = definitionBarMarkup({ index: 3, count: '1', left: 60, width: 0.01, widthPx: 0.4, label: '1', title: 'Single Definition · 10:00 → 10:01', esc });
+  assert.equal(singleTick.includes('tl-definition-arcline'), false, 'a Single tick carries no arc layer either');
   assert.ok(DEFINITION_TICK_PX > 0);
 });

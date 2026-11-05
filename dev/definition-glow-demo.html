@@ -26,9 +26,10 @@
     .demo .tex-preview header small { color: var(--text-secondary); }
     .demo .tex-tall { position: relative; height: 63px; }
     .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
-    /* Magnified 2.25x: tile, blur and the glow's copy of the tile all scale with
-       the look group, so the preview stays a magnification, never a second sample. */
-    .demo .tex-tall { --wt-scale: 2.25; }
+    /* Magnified 2.25x: tile, blur, the glow's copy of the tile and the arc period
+       all scale with the look group, so the preview stays a magnification, never a
+       second sample. */
+    .demo .tex-tall { --wt-scale: 2.25; --tl-def1-arc: calc(211px * var(--wt-scale)); }
     .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
     .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
     /* Version A: original narrow bands — arc ripple retained */
@@ -45,25 +46,16 @@
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::before,
     .demo .compare-bar .tl-definition-bar.tl-def1-version-a::after { content: none !important; }
     /* ---- Current-parameter arc comparison (demo only) ----
-       Two bars, one live texture: both read the same `--warp-preview-image` and the
-       same look variables, so they can only differ by the white arc layer below.
-       The right one carries the original A's arc ripple as its own span; no filter
-       is ever applied to it, so it stays crisp while the colour field underneath
-       keeps its blur.
-       `.tl-bar > span` (padding, z-index 2) and the Single chip rule
-       (`[data-definition="1"] > span`: padding/margin/background/text-shadow)
-       would style that span, so every one of those properties is restated here and
-       the id keeps the selector above them. `inset: 0` plus the bar's own
-       `overflow: hidden` keep the arc inside the bar; the count span stays at
-       z-index 2, above the arc. */
-    .demo #arc-striped .tl-definition-bar > span.tl-def1-arcline {
-      position: absolute; inset: 0; z-index: 1;
-      margin: 0; padding: 0; border: 0; border-radius: 0;
-      line-height: 0; font-size: 0; color: transparent;
-      background: repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / 211px 100% repeat-x;
-      text-shadow: none; filter: none;
-      pointer-events: none; box-sizing: border-box;
-    }
+       Two bars, one live texture: both use the shared markup and read the same
+       `--warp-preview-image` and the same look variables, so they can only differ
+       by the white arc layer. The shared markup itself carries that arc on every
+       non-tick Single bar (production keeps it), so the demo never injects a second
+       layer: the left bar switches the arc off, the right one keeps the production
+       layer unchanged. */
+    .demo #arc-plain .tl-definition-arcline { display: none; }
+    /* Version A paints its ripple into its own background layers, so the shared arc
+       element is switched off there instead of stacking a second copy on top. */
+    .demo .tl-def1-version-a .tl-definition-arcline { display: none; }
     .demo .warp-preset-note { margin: 6px 0 0; max-width: 72ch; font-size: 12px; line-height: 1.6; color: var(--text-secondary); }
     .demo .warp-tune-actions button:disabled { opacity: .55; cursor: not-allowed; }
     .demo .scene { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elevated); overflow: hidden; }
@@ -82,8 +74,8 @@
        `dev/definition-warp-panel.js` runs the real Warp shader through the
        package's ShaderMount and writes the baked 2400x84 PNG into this custom
        property. Only the image is swapped: the shared `timeline.css` still owns
-       the 800px tile, the 6px blur on the colour field and the glow veil, so the
-       preview is shown with exactly the app's treatment.
+       the 1125px tile, the 4px blur on the colour field, the glow veil and the
+       crisp arc layer, so the preview is shown with exactly the app's treatment.
        Version A keeps `content: none` on both pseudo-elements and ticks are
        excluded with :not(), so neither changes.
        While the property is unset the bars deliberately show no texture: a
@@ -98,14 +90,12 @@
        the inline properties so the stylesheet is authoritative again.
        The shader output is what gets blurred and tiled; nothing here can change
        the warped form. */
-    .demo { --wt-scale: 1; --wt-blur: 6px; --wt-bright: 1; --wt-sat: 1.15; --wt-tile: 800px; --wt-light-position: 0%; }
+    .demo { --wt-scale: 1; --wt-blur: 4px; --wt-bright: 1; --wt-sat: 1.55; --wt-tile: 1125px; --wt-light-position: 0%; }
     /* ---- Light direction of the Single base (demo only) ----
-       The shipped bar lights its base in the middle (a 90deg gradient peaking at
-       52%), so every bar reads "bright centre, dark ends". Here the base is
-       re-lit from a point the panel controls: the peak sits at
-       `--wt-light-position` and falls off towards the far end, in the bar's own
-       coordinates (not the texture tile's), so long and short bars share one
-       direction. The top sheen layer is kept unchanged.
+       The shipped bar is lit from its left edge and falls off to the right (a
+       140%x180% radial gradient at 0% 50%), in the bar's own coordinates. Here the
+       peak follows `--wt-light-position` so the same direction can be tried at any
+       point of the bar. The top sheen layer is kept unchanged.
        0% = light starts at the left edge, 100% = at the right edge. */
     .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a) {
       background:
@@ -198,11 +188,11 @@
       <div class="compare-bar tl" id="compare-a"></div>
     </div>
     <div class="compare-item">
-      <label>彩色 Warp &middot; 本轮候选</label>
+      <label>彩色 Warp &middot; 已采用（正式样式）</label>
       <div class="compare-bar tl" id="compare-b"></div>
     </div>
   </div>
-  <p class="notice">A 是最初的形态，B 是本轮采用的候选，两者并列保留只为了对照，不代表任何一方已经被否决或定稿。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
+  <p class="notice">A 是最初的形态，保留在这里只作对照；B 是最终采用并已写进正式 <code>timeline.css</code> 的一版（选定的 Warp 参数 + 弧形白纹）。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
   <div class="compare" id="arc-compare">
     <div class="compare-item">
       <label>当前参数 · 无白纹</label>
@@ -213,12 +203,12 @@
       <div class="compare-bar tl" id="arc-striped"></div>
     </div>
   </div>
-  <p class="notice">这两条不是 A，也不写死：两条都使用下面面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右边多叠了一层<strong>原始 A 同款弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px）。这层白纹是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记和 A 都不参与。</p>
+  <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px），左侧把它关掉。这层白纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用背景层画了这条白纹，所以 A 的标记层被关掉，不会叠出第二层。</p>
   <div id="warp-tune-host"></div>
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
     <div class="tex-tall tl" id="tex-tall"></div>
-    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 800px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 6px 轻模糊、静态、不加动画），结构仍由下面的清晰纹理承载，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 1125px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 4px 轻模糊、静态、不加动画）和一层 A 同款清晰弧形白纹，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
   </section>
   <div id="scenes"></div>
   <section class="query">
@@ -317,8 +307,8 @@
     document.getElementById('arc-striped').innerHTML = definitionBarMarkup({
       key: 'arc:striped', index: 0, count: '1', left: 0, width: 100, widthPx: 500,
       label: '1', title: t('definition1'), esc });
-    document.getElementById('arc-striped').querySelector('.tl-definition-bar')
-      .insertAdjacentHTML('afterbegin', '<span class="tl-def1-arcline" aria-hidden="true"></span>');
+    // The arc span comes from the shared markup on every non-tick Single bar, so
+    // nothing is injected here; the left bar switches it off in CSS instead.
     // Same markup and same shared CSS as the timeline, only taller: the tile is
     // magnified by growing height and background-size together.
     document.getElementById('tex-tall').innerHTML = definitionBarMarkup({

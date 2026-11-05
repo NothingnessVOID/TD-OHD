@@ -34,13 +34,13 @@ export const WARP_SHAPES = Object.freeze({ checks: 0, stripes: 1, edge: 2 });
  * a stored parameter set, so a hand-edited value can never reach the shader.
  */
 export const WARP_NUMERIC = Object.freeze({
-  proportion: { min: 0, max: 1, step: 0.01, initial: 0.45 },
-  softness: { min: 0, max: 1, step: 0.01, initial: 0.65 },
-  distortion: { min: 0, max: 1, step: 0.01, initial: 0.25 },
-  swirl: { min: 0, max: 1, step: 0.01, initial: 0.8 },
+  proportion: { min: 0, max: 1, step: 0.01, initial: 0.29 },
+  softness: { min: 0, max: 1, step: 0.01, initial: 0.68 },
+  distortion: { min: 0, max: 1, step: 0.01, initial: 0 },
+  swirl: { min: 0, max: 1, step: 0.01, initial: 0.88 },
   swirlIterations: { min: 2, max: 20, step: 1, initial: 10 },
-  shapeScale: { min: 0, max: 1, step: 0.005, initial: 0.1 },
-  scale: { min: 0.05, max: 1.5, step: 0.01, initial: 0.35 },
+  shapeScale: { min: 0, max: 1, step: 0.005, initial: 0.135 },
+  scale: { min: 0.05, max: 1.5, step: 0.01, initial: 0.2 },
   rotation: { min: 0, max: 360, step: 1, initial: 0 },
   /** Milliseconds, matching `ShaderMount.setFrame`. The bar is static; this is the phase. */
   frame: { min: 0, max: 20000, step: 1, initial: 0 },
@@ -49,11 +49,16 @@ export const WARP_NUMERIC = Object.freeze({
 export const WARP_NUMERIC_KEYS = Object.freeze(Object.keys(WARP_NUMERIC));
 
 /**
- * Tuned on 800x28 samples. Slots alternate transparent/colour so the orange base
- * keeps the larger share, with two colours adjacent (magenta + pink violet) and a
- * doubled gap after them, so the density is uneven instead of an even rainbow.
- * `alpha: 0` slots are fully transparent: that is what lets the CSS orange base
- * show through the texture instead of being covered by it.
+ * The shipped look: these are the values the committed `definition-warp.png` was
+ * baked from, and they are the same set the user selected in the demo panel
+ * (`dev/warp-preset.json`). Changed together on purpose — the preset is no
+ * longer a candidate sitting next to the asset, it *is* the asset's tuning.
+ *
+ * Slots alternate transparent/colour so the orange base keeps the larger share,
+ * with two colours adjacent (magenta + pink violet) and a doubled gap after them,
+ * so the density is uneven instead of an even rainbow. `alpha: 0` slots are fully
+ * transparent: that is what lets the CSS orange base show through the texture
+ * instead of being covered by it.
  */
 export const WARP_DEFAULTS = Object.freeze({
   colors: Object.freeze([
@@ -69,13 +74,13 @@ export const WARP_DEFAULTS = Object.freeze({
     { hex: '#19BED8', alpha: 1 },
   ]),
   shape: 'checks',
-  proportion: 0.45,
-  softness: 0.65,
-  shapeScale: 0.1,
-  distortion: 0.25,
-  swirl: 0.8,
+  proportion: 0.29,
+  softness: 0.68,
+  shapeScale: 0.135,
+  distortion: 0,
+  swirl: 0.88,
   swirlIterations: 10,
-  scale: 0.35,
+  scale: 0.2,
   rotation: 0,
   frame: 0,
 });

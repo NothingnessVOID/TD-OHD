@@ -36,5 +36,12 @@ export function definitionBarMarkup({ key = DEFINITION_ROW_KEY, index, count, le
   const style = `left:${left}%;width:${width}%`;
   // The visible label is the bare count; `title` already carries the full
   // definition name plus exact timing, so it is used verbatim for both.
-  return `<button type="button" class="${classes}" data-source="definition" data-definition="${count}" data-key="${key}" data-interval="${index}" style="${style}" title="${esc(title)}" aria-label="${esc(title)}"><span>${tick ? '' : esc(label)}</span></button>`;
+  // The Single bar carries a crisp white arc layer next to the colour texture.
+  // It is decoration, so it is `aria-hidden` and only the Single (non-tick) bar
+  // gets one. Both spans have their own class: the count owns the chip rule, the
+  // arc must never inherit it.
+  const arc = count === '1' && !tick
+    ? '<span class="tl-definition-arcline" aria-hidden="true"></span>'
+    : '';
+  return `<button type="button" class="${classes}" data-source="definition" data-definition="${count}" data-key="${key}" data-interval="${index}" style="${style}" title="${esc(title)}" aria-label="${esc(title)}">${arc}<span class="tl-definition-count">${tick ? '' : esc(label)}</span></button>`;
 }

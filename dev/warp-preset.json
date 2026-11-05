@@ -1,6 +1,6 @@
 {
   "name": "用户选定 · 2026-11-05",
-  "note": "演示页的基线参数：新打开（这台浏览器没有保存过参数）时默认就是这一组；「载入你选定的参数」把它放回当前参数，「恢复默认」也回到它并清掉本机保存。它不影响正式资产 definition-warp.png —— 那份 PNG 仍按 dev/warp-texture.js 的 WARP_DEFAULTS 生成。",
+  "note": "演示页的基线参数：新打开（这台浏览器没有保存过参数）时默认就是这一组；「载入你选定的参数」把它放回当前参数，「恢复默认」也回到它并清掉本机保存。这一组已经是正式样式采用的参数：warp 与 dev/warp-texture.js 的 WARP_DEFAULTS 同步，正式资产 definition-warp.png 就是用同一组参数烘的；look 的模糊 4 / 饱和度 1.55 / 柔光 0.33 / 纹理 1125 / 发光位置 0 也已写进 timeline.css。",
   "warp": {
     "shape": "checks",
     "proportion": 0.29,

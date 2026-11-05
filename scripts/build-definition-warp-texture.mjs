@@ -22,10 +22,16 @@
  * ------------------------------
  * Warp works in pixel space (`v_patternUV` is derived from `u_resolution`), so a
  * shape keeps its proportions as long as the render has the same aspect ratio as
- * the tile it is displayed in, and `u_scale` is scaled with the pixel count. We
- * render 2400x84 (28.57:1) for the 800x28 CSS tile, i.e. exactly 3x, and multiply
- * the display-tuned `u_scale` by 3, so the structure seen at 28px is the same
- * structure the PNG contains, sampled at 3x for retina.
+ * the box it is displayed in, and `u_scale` is scaled with the pixel count. We
+ * render 2400x84 (28.57:1) for the demo's 800x28 shader box, i.e. exactly 3x, and
+ * multiply the display-tuned `u_scale` by 3.
+ *
+ * The bar does not repeat it on an 800px tile any more: `timeline.css` now uses
+ * `--tl-def1-tile: 1125px`, so the shipped texture is stretched 1.406x
+ * horizontally. That is the look the user selected in the demo (which shows the
+ * 2400px live canvas on the same 1125px background-size), so the asset is kept at
+ * the demo's render width rather than re-baked at the wider aspect — re-baking
+ * would shrink every lobe relative to the bar and drift from the approved sample.
  *
  * Transparency
  * ------------
