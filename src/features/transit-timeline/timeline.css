@@ -236,15 +236,24 @@
   background: var(--tl-chip-bg); color: var(--tl-chip-ink); text-shadow: none;
 }
 /* ---- Light on the ordinary source bars (natal / transit / completed / both) ----
-   Same idea as the definition bars at the end of this file, without their texture:
-   the Skin's own source colour stays exactly as declared (`--hd-timeline-*`), and a
+   Candidate B of `dev/definition-glow-demo.html` (soft band + glass hairline) is
+   the adopted paint, and this is that sample promoted verbatim: every number below
+   is the number the demo has been showing, so the demo's `current` block and the
+   shipped timeline read the same. Do not re-tune one of them alone.
+   The Skin's own source colour stays exactly as declared (`--hd-timeline-*`), and a
    static lighting layer is painted on top of it, in this order —
-   1. a thin top highlight with a short falloff and a touch of shade at the foot,
-   2. a soft light that starts bright at the bar's left origin and decays to the
-      right, so the bar reads as a lit volume rather than a flat sticker,
-   3. a slight deepening at the far right end,
-   plus one restrained outer halo in the bar's own source colour. No blur, no blend
-   mode, no animation and no extra DOM: four background layers and one box-shadow.
+   1. a 1px glass top edge and a thin top gloss that stops at 62%,
+   2. a 1px sheen with a short falloff and a touch of shade at the foot,
+   3. a 1px near-white left edge,
+   4. the same-colour core: the source colour mixed toward white at the origin and
+      again at 22%, transparent from 58%, so the bar reads as a lit volume rather
+      than a flat sticker or a white sticker,
+   5. a slight deepening at the far right end (8% black from 80%, 16% at the end),
+   6. the source paint itself (`--tl-bar-paint`, which keeps `both`'s 135° weave),
+   plus a 1px inset top hairline, a 1px inset bottom hairline in the bar's own
+   colour and one restrained outer halo in the bar's own source colour. All the
+   hairline work is `inset`/1px: no thick rim, no filled gloss band, no blur, no
+   blend mode, no animation, no pseudo-element and no extra DOM.
    The middle stops are percentages on purpose. A pixel ramp would turn every bar
    into the same 30px edge highlight and a percentage ramp would wash a 3px interval
    white, so the ramp is proportional but ends on transparent at 58%: long bars fall
@@ -252,31 +261,45 @@
    bar gains a minimum width. `both` keeps its diagonal weave and `completed` keeps
    its natal cap underneath the light, so both stay distinguishable. The definition
    bars are excluded by source (`data-source="definition"`), so their own paints,
-   shadows and tick geometry are untouched. Light and dark only re-tune these five
-   tokens from each Skin's declared mode; no Skin is special-cased. */
+   shadows and tick geometry are untouched.
+   Every natural colour is read through these tokens and through the `--tl-bar-fill`
+   the shared rules already set, so all eleven registered Skins (and any future one)
+   inherit the same paint from their own palette; no Skin is listed by id. There is
+   deliberately no dark-mode override: B's approved values are mode-independent (the
+   demo compared them on every Skin, dark ones included), and a separate dark set
+   would make the shipped bar drift from the sample the user accepted. */
 .tl {
-  --tl-bar-sheen: rgb(255 255 255 / .40);
-  --tl-bar-lit: rgb(255 255 255 / .32);
-  --tl-bar-lit-soft: rgb(255 255 255 / .13);
-  --tl-bar-shade: rgb(0 0 0 / .10);
-  --tl-bar-halo-mix: 42%;
-  --tl-bar-light:
-    linear-gradient(180deg, var(--tl-bar-sheen) 0 1px, rgb(255 255 255 / .08) 1px 44%, var(--tl-bar-shade) 100%),
-    linear-gradient(90deg, var(--tl-bar-lit) 0, var(--tl-bar-lit-soft) 22%, transparent 58%),
-    linear-gradient(90deg, transparent 60%, var(--tl-bar-shade) 100%);
-}
-:root[data-theme="dark"] .tl {
-  --tl-bar-sheen: rgb(255 255 255 / .46);
-  --tl-bar-lit: rgb(255 255 255 / .24);
-  --tl-bar-lit-soft: rgb(255 255 255 / .10);
-  --tl-bar-shade: rgb(0 0 0 / .18);
-  --tl-bar-halo-mix: 60%;
+  --tl-bar-gloss: rgb(255 255 255 / .46);
+  --tl-bar-gloss-soft: rgb(255 255 255 / .10);
+  --tl-bar-sheen: rgb(255 255 255 / .34);
+  --tl-bar-edge: rgb(255 255 255 / .42);
+  --tl-bar-core-mix: 44%;
+  --tl-bar-core-soft-mix: 76%;
+  --tl-bar-foot: rgb(0 0 0 / .14);
+  --tl-bar-shade: rgb(0 0 0 / .08);
+  --tl-bar-shade-deep: rgb(0 0 0 / .16);
+  --tl-bar-rim: rgb(255 255 255 / .44);
+  --tl-bar-rim-foot-mix: 50%;
+  --tl-bar-halo-mix: 46%;
 }
 .tl .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
   --tl-bar-fill: var(--tl-transit);
   --tl-bar-paint: var(--tl-bar-fill);
+  /* The core has to be built on the bar, not on `.tl`: it reads `--tl-bar-fill`,
+     which only exists on the bar itself. */
+  --tl-bar-core: color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-mix), #fff);
+  --tl-bar-core-soft: color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-soft-mix), #fff);
+  --tl-bar-light:
+    linear-gradient(180deg, var(--tl-bar-gloss) 0 1px, var(--tl-bar-gloss-soft) 1px 40%, transparent 62%),
+    linear-gradient(180deg, var(--tl-bar-sheen) 0 1px, transparent 1px 88%, var(--tl-bar-foot) 100%),
+    linear-gradient(90deg, var(--tl-bar-edge) 0 1px, transparent 7%),
+    linear-gradient(90deg, var(--tl-bar-core) 0, var(--tl-bar-core-soft) 22%, transparent 58%),
+    linear-gradient(90deg, transparent 62%, var(--tl-bar-shade) 80%, var(--tl-bar-shade-deep) 100%);
   background: var(--tl-bar-light), var(--tl-bar-paint);
-  box-shadow: 0 0 6px -1px color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-halo-mix), transparent);
+  box-shadow:
+    inset 0 1px 0 var(--tl-bar-rim),
+    inset 0 -1px 0 color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-rim-foot-mix), #fff),
+    0 0 7px -2px color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-halo-mix), transparent);
 }
 .tl .tl-bar[data-source="natal"] { --tl-bar-fill: var(--tl-birth); color: var(--tl-surface); }
 .tl .tl-bar[data-source="completed"] { --tl-bar-fill: var(--tl-transit); border-left: 5px solid var(--tl-birth); }
@@ -563,7 +586,6 @@
   --tl-def3-deep: #6A3FC8; --tl-def3-light: #A57BF2; --tl-def3-ink: #FFFFFF;
   --tl-def4-deep: #1F5FC4; --tl-def4-light: #5EA2F2; --tl-def4-ink: #FFFFFF;
   --tl-def-edge: color-mix(in srgb, var(--text) 26%, transparent);
-  --tl-def-sheen: rgb(255 255 255 / .42);
   --tl-def-glow: 0 0 0 transparent;
   /* Bar label chip: one plate (dark warm, warm ink) under every label written
      inside a timeline bar — center names, channel numbers, gate numbers,
@@ -590,18 +612,55 @@
   --tl-def3-deep: #7A4BDB; --tl-def3-light: #B992FF;
   --tl-def4-deep: #2A6FDB; --tl-def4-light: #74B4FF;
   --tl-def-edge: color-mix(in srgb, var(--tl-surface) 55%, transparent);
-  --tl-def-sheen: rgb(255 255 255 / .5);
   /* The glow strength, the tile, the blur and the arc period do not change with
-     the theme: only the orange ramp does. */
+     the theme: only the orange ramp does. The B light below is mode-independent,
+     so there is no second set of sheen/shade/halo values here. */
 }
 .tl .tl-definition-bar {
   --tl-def-a: var(--tl-def2-deep); --tl-def-b: var(--tl-def2-light); --tl-def-ink: var(--tl-def2-ink);
   --tl-def-halo: color-mix(in srgb, var(--tl-def-b) 70%, transparent);
+  /* Candidate B light, the same language as the ordinary source bars and the same
+     `--tl-bar-*` values (mode-independent, no per-Skin rule). Two deliberate
+     differences, both about where the colour comes from: the core, the rim foot
+     and the halo are mixed from the definition's OWN light colour
+     (`--tl-def-light-base` = `--tl-def-b`, or `--tl-def1-light` for Single) instead
+     of `--tl-bar-fill`, so `--tl-birth` / `--tl-transit` never enter a definition
+     bar; and the band itself is a named `--tl-def-paint` so the Single radial can
+     replace it without restating the light stack. */
+  --tl-def-light-base: var(--tl-def-b);
+  /* Two named pieces so a single definition can vary them without restating the
+     light stack: the core layer and the halo colour. Split/Triple/Quadruple keep
+     the plain B core; Single replaces the core with its pale-rainbow band below. */
+  --tl-bar-core: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-mix), #fff);
+  --tl-bar-core-soft: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-soft-mix), #fff);
+  --tl-def-core-layer: linear-gradient(90deg, var(--tl-bar-core) 0, var(--tl-bar-core-soft) 22%, transparent 58%);
+  --tl-def-halo-base: var(--tl-def-light-base);
+  --tl-def-paint: linear-gradient(90deg, var(--tl-def-a), var(--tl-def-b) 38%, color-mix(in srgb, var(--tl-def-b) 60%, var(--tl-def-a)) 70%, var(--tl-def-a));
   color: var(--tl-def-ink); font-weight: 600; letter-spacing: .01em;
+  /* 1. the 1px glass top edge and the thin top gloss that stops at 62%,
+     2. the 1px sheen with its short falloff and foot shade,
+     3. the 1px near-white left edge,
+     4. the same-colour core (44% toward white at the origin, 76% at 22%, transparent
+        at 58%), so the band reads as lit rather than printed,
+     5. the right-end deepening (8% → 16% black from 80%),
+     6. the definition's own band (`--tl-def-paint`).
+     Percentage stops for the same reason as the ordinary sources: a 3px interval
+     keeps its own colour on its right part and no bar gains a minimum width. */
   background:
-    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 42%, rgb(0 0 0 / .08) 100%),
-    linear-gradient(90deg, var(--tl-def-a), var(--tl-def-b) 38%, color-mix(in srgb, var(--tl-def-b) 60%, var(--tl-def-a)) 70%, var(--tl-def-a));
-  box-shadow: inset 0 0 0 1px var(--tl-def-edge);
+    linear-gradient(180deg, var(--tl-bar-gloss) 0 1px, var(--tl-bar-gloss-soft) 1px 40%, transparent 62%),
+    linear-gradient(180deg, var(--tl-bar-sheen) 0 1px, transparent 1px 88%, var(--tl-bar-foot) 100%),
+    linear-gradient(90deg, var(--tl-bar-edge) 0 1px, transparent 7%),
+    var(--tl-def-core-layer),
+    linear-gradient(90deg, transparent 62%, var(--tl-bar-shade) 80%, var(--tl-bar-shade-deep) 100%),
+    var(--tl-def-paint);
+  /* The identity rim stays first; on top of it the two 1px glass hairlines (white
+     above, the definition's own colour below) and the one restrained halo. No
+     second, dark-only glow: the bar and the ordinary sources share one light. */
+  box-shadow:
+    inset 0 0 0 1px var(--tl-def-edge),
+    inset 0 1px 0 var(--tl-bar-rim),
+    inset 0 -1px 0 color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-rim-foot-mix), #fff),
+    0 0 7px -2px color-mix(in srgb, var(--tl-def-halo-base) var(--tl-bar-halo-mix), transparent);
 }
 .tl .tl-definition-bar > .tl-definition-count { text-shadow: 0 0 2px var(--tl-def-halo), 0 0 1px var(--tl-def-halo); }
 .tl .tl-definition-bar[data-definition="3"] { --tl-def-a: var(--tl-def3-deep); --tl-def-b: var(--tl-def3-light); --tl-def-ink: var(--tl-def3-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def3-deep) 85%, black); }
@@ -626,9 +685,30 @@
    Static, no animation. */
 .tl .tl-definition-bar[data-definition="1"] {
   --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
-  background:
-    linear-gradient(180deg, var(--tl-def-sheen) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
-    radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+  /* Single keeps its Warp texture, its 4px colour-field blur, its screen veil, its
+     white arc and the radial base the user picked; it only swaps the band for the
+     radial and reads the B light from its own orange instead of the Split token. */
+  --tl-def-light-base: var(--tl-def1-light);
+  --tl-def-paint: radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+  /* Pale rainbow, Single only. Warm gold stays the body of the core; three short,
+     unevenly placed bands borrow the Skin's own pink / violet / cyan tokens at low
+     strength for an iridescent hint. It is still ONE horizontal gradient in the
+     same B layer — no extra layer, no new fill, no blur, no animation — so the
+     Warp texture, the veil, the white arc and the count chip keep their own layers
+     and the arc/chip are never tinted by it. The halo leans the same way: warm gold
+     with a touch of pink. */
+  --tl-def-halo-base: color-mix(in srgb, var(--tl-def1-warm) 72%, var(--tl-def1-pink));
+  --tl-def-core-layer:
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--tl-def1-light) 46%, #fff) 0,
+      color-mix(in srgb, var(--tl-def1-warm) 40%, #fff) 8%,
+      color-mix(in srgb, var(--tl-def1-pink) 48%, #fff) 15%,
+      color-mix(in srgb, var(--tl-def1-light) 38%, #fff) 22%,
+      color-mix(in srgb, var(--tl-def1-violet) 40%, #fff) 30%,
+      color-mix(in srgb, var(--tl-def1-light) 34%, #fff) 37%,
+      color-mix(in srgb, var(--tl-def1-cyan) 26%, #fff) 44%,
+      color-mix(in srgb, var(--tl-def1-light) 30%, #fff) 52%,
+      transparent 58%);
 }
 /* The colour texture itself is blurred. There is no sharp colour texture
    underneath; the orange base, the count chip and the arc layer above stay
@@ -663,9 +743,10 @@
   filter: blur(var(--tl-def1-veil-blur)) brightness(1.3) saturate(1.1);
   mix-blend-mode: screen; opacity: var(--tl-def1-veil);
 }
-/* Dark version: a narrow coloured rim stands the bar off the night surface. */
-:root[data-theme="dark"] .tl .tl-definition-bar { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 5px -1px color-mix(in srgb, var(--tl-def-b) 70%, transparent); }
-:root[data-theme="dark"] .tl .tl-definition-bar[data-definition="1"] { box-shadow: inset 0 0 0 1px var(--tl-def-edge), 0 0 6px -1px color-mix(in srgb, var(--tl-def1-pink) 55%, var(--tl-def1-warm)); }
+/* No dark-only definition glow any more: the definition bars take candidate B's
+   light verbatim, and that light is mode-independent (the same tokens the ordinary
+   sources use), so a second night rim would make them drift apart again. Composition
+   with `--tl-def-edge` (which does change per mode) is the only mode difference. */
 /* The crisp white arc that the shared markup adds to every non-tick Single bar:
    the original A's ripple (`ellipse 150% 260% at 0% 130%`, white at 20%) at one
    211px period. It is its own element because the colour field around it is
