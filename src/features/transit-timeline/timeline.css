@@ -267,7 +267,11 @@
    inherit the same paint from their own palette; no Skin is listed by id. There is
    deliberately no dark-mode override: B's approved values are mode-independent (the
    demo compared them on every Skin, dark ones included), and a separate dark set
-   would make the shipped bar drift from the sample the user accepted. */
+   would make the shipped bar drift from the sample the user accepted.
+   The token block below is the full-strength light and it is the definition bars'
+   light too. The ordinary sources carry half of it on their own rule further down
+   (user ruling 2026-11-06: the source bars were too bright, the definition bars 1-4
+   were not to move), so the halves live on the bar and never on `.tl`. */
 .tl {
   --tl-bar-gloss: rgb(255 255 255 / .46);
   --tl-bar-gloss-soft: rgb(255 255 255 / .10);
@@ -282,13 +286,36 @@
   --tl-bar-rim-foot-mix: 50%;
   --tl-bar-halo-mix: 46%;
 }
+/* ---- Half light on the ordinary sources (user ruling 2026-11-06) ----
+   The ordinary bars still read too bright, so they now carry exactly 50% of the
+   light the token block above defines. The definition bars 1-4 are the reference
+   and must not move, so the halves are declared here — on the bar — and never on
+   `.tl`, which the definition rules read the shared `--tl-bar-*` tokens from.
+   Alpha tokens are simply halved: -gloss .46→.23, -gloss-soft .10→.05, -sheen
+   .34→.17, -edge .42→.21, -rim .44→.22, -foot .14→.07, -shade .08→.04, -shade-deep
+   .16→.08, and the halo 46%→23%. The two layers whose colour is mixed from the
+   fill — the core and the bottom hairline — keep their inner mix untouched and are
+   halved on the outside with `color-mix(…, 50%, transparent)`, so no natural colour
+   is re-derived, only its alpha moves. Everything else is the shipped paint: same
+   fills, same `both` weave, same `completed` 5px cap, same percentage stops, same
+   chip, same geometry and font sizes; no filter, blend mode, extra layer or DOM. */
 .tl .tl-bar:is([data-source="natal"], [data-source="transit"], [data-source="completed"], [data-source="both"]) {
+  --tl-bar-gloss: rgb(255 255 255 / .23);
+  --tl-bar-gloss-soft: rgb(255 255 255 / .05);
+  --tl-bar-sheen: rgb(255 255 255 / .17);
+  --tl-bar-edge: rgb(255 255 255 / .21);
+  --tl-bar-foot: rgb(0 0 0 / .07);
+  --tl-bar-shade: rgb(0 0 0 / .04);
+  --tl-bar-shade-deep: rgb(0 0 0 / .08);
+  --tl-bar-rim: rgb(255 255 255 / .22);
+  --tl-bar-halo-mix: 23%;
   --tl-bar-fill: var(--tl-transit);
   --tl-bar-paint: var(--tl-bar-fill);
   /* The core has to be built on the bar, not on `.tl`: it reads `--tl-bar-fill`,
-     which only exists on the bar itself. */
-  --tl-bar-core: color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-mix), #fff);
-  --tl-bar-core-soft: color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-soft-mix), #fff);
+     which only exists on the bar itself. The inner mix is the full-strength one;
+     the outer 50% transparent is this source group's half. */
+  --tl-bar-core: color-mix(in srgb, color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-mix), #fff) 50%, transparent);
+  --tl-bar-core-soft: color-mix(in srgb, color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-core-soft-mix), #fff) 50%, transparent);
   --tl-bar-light:
     linear-gradient(180deg, var(--tl-bar-gloss) 0 1px, var(--tl-bar-gloss-soft) 1px 40%, transparent 62%),
     linear-gradient(180deg, var(--tl-bar-sheen) 0 1px, transparent 1px 88%, var(--tl-bar-foot) 100%),
@@ -298,7 +325,7 @@
   background: var(--tl-bar-light), var(--tl-bar-paint);
   box-shadow:
     inset 0 1px 0 var(--tl-bar-rim),
-    inset 0 -1px 0 color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-rim-foot-mix), #fff),
+    inset 0 -1px 0 color-mix(in srgb, color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-rim-foot-mix), #fff) 50%, transparent),
     0 0 7px -2px color-mix(in srgb, var(--tl-bar-fill) var(--tl-bar-halo-mix), transparent);
 }
 .tl .tl-bar[data-source="natal"] { --tl-bar-fill: var(--tl-birth); color: var(--tl-surface); }

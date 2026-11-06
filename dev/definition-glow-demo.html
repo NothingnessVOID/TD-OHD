@@ -302,7 +302,7 @@
   <section class="scene def-glow">
     <header><span>分人条 1–4 &middot; 柔光 + 玻璃细高光（B）</span><small>上排是正式样式（B）；下排是本轮改动前的样子，只在本页</small></header>
     <div class="tl">
-      <p class="source-block-head">B &middot; 左亮芯 + 玻璃细线 + 同色辉光（已写进 <code>timeline.css</code>，与普通条带同一套；1 号柔光层带淡彩）</p>
+      <p class="source-block-head">B &middot; 左亮芯 + 玻璃细线 + 同色辉光（已写进 <code>timeline.css</code>，分人条保持原强度，普通条光照减半；1 号柔光层带淡彩）</p>
       <div class="swatches" id="def-new"></div>
       <p class="source-block-head">改动前（两层平涂 + 仅内缘框；对照，仅本页）</p>
       <div class="swatches def-plain" id="def-prev"></div>
@@ -333,7 +333,7 @@
   <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的亮橙同心弧纹</strong>（沿用最初 A 的 <code>repeating-radial-gradient(ellipse 150% 260% at 0% 130%)</code> 同心椭圆，恢复最初的分段横向重复，保留每段同心圈的形态，段落之间允许接缝；颜色由 <code>--tl-def1-arc-ink</code> 提供：主题自己的暖橙 + 亮橙再掺约一半白，比纯橙更亮更清楚、又不是白线，明暗各自跟 token；每段圆心恢复到 0%，按原来的 211px 周期重复；1px 细线、约 58% 不透明），左侧把它关掉。这层亮橙弧纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用旧背景层画了它最初的白色 radial 弧纹（仅作历史对照，不会换成新拼贴），所以 A 的标记层被关掉，不会叠出第二层。</p>
   <div id="warp-tune-host"></div>
   <section class="scene source-glow">
-    <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>已选定 B：正式 <code>timeline.css</code> 即此光效</small></header>
+    <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>B 光照已减为 50%，来源底色保持原样</small></header>
     <div class="tl">
       <div class="source-toolbar">
         <label>方案试用到预览与合成条 <select id="src-scheme"></select></label>
@@ -469,7 +469,7 @@
   // carries no scope class and is rendered by production `timeline.css`; 'soft' keeps
   // the earlier candidate A only as a reference. Do not re-add a local copy of B.
   const SOURCE_SCHEMES = [
-    { id: 'current', label: '当前版 = 已选定 B（正式）', cls: '' },
+    { id: 'current', label: '当前版 · B 光照 50%', cls: '' },
     { id: 'soft', label: '柔光灯带（候选 A · 仅对照）', cls: 'src-soft' }
   ];
   function sourceCell(source, old) {
@@ -491,7 +491,7 @@
     if (select) select.value = sourceScheme;
     const note = document.getElementById('src-scheme-note');
     if (note) note.textContent = sourceScheme === 'current'
-      ? '正在用正式写法（已选定 B）'
+      ? '正在预览 B 半强度光照，分人条保持原强度'
       : 'A 仅作对照，已套用到上面的预览与下方场景里的合成条';
   }
   function renderSourceBars() {
