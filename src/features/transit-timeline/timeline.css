@@ -630,7 +630,8 @@
   --tl-def-light-base: var(--tl-def-b);
   /* Two named pieces so a single definition can vary them without restating the
      light stack: the core layer and the halo colour. Split/Triple/Quadruple keep
-     the plain B core; Single replaces the core with its pale-rainbow band below. */
+     the plain B core; Single replaces the core with its pale-rainbow band (45deg,
+     whole layer at alpha .5) further down in its own rule. */
   --tl-bar-core: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-mix), #fff);
   --tl-bar-core-soft: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-soft-mix), #fff);
   --tl-def-core-layer: linear-gradient(90deg, var(--tl-bar-core) 0, var(--tl-bar-core-soft) 22%, transparent 58%);
@@ -640,8 +641,10 @@
   /* 1. the 1px glass top edge and the thin top gloss that stops at 62%,
      2. the 1px sheen with its short falloff and foot shade,
      3. the 1px near-white left edge,
-     4. the same-colour core (44% toward white at the origin, 76% at 22%, transparent
-        at 58%), so the band reads as lit rather than printed,
+     4. the core layer `--tl-def-core-layer` (by default the same-colour one: 44%
+        toward white at the origin, 76% at 22%, transparent at 58%; Single swaps in
+        its own softly-lit coloured version), so the band reads as lit rather than
+        printed,
      5. the right-end deepening (8% → 16% black from 80%),
      6. the definition's own band (`--tl-def-paint`).
      Percentage stops for the same reason as the ordinary sources: a 3px interval
@@ -692,22 +695,33 @@
   --tl-def-paint: radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
   /* Pale rainbow, Single only. Warm gold stays the body of the core; three short,
      unevenly placed bands borrow the Skin's own pink / violet / cyan tokens at low
-     strength for an iridescent hint. It is still ONE horizontal gradient in the
-     same B layer — no extra layer, no new fill, no blur, no animation — so the
-     Warp texture, the veil, the white arc and the count chip keep their own layers
-     and the arc/chip are never tinted by it. The halo leans the same way: warm gold
-     with a touch of pink. */
+     strength for an iridescent hint. It is still ONE gradient in the same B layer
+     (`--tl-def-core-layer`) — no extra layer, no new fill, no blur, no animation —
+     so the Warp texture, the veil, the white arc and the count chip keep their own
+     layers and the arc/chip are never tinted by it. The halo leans the same way:
+     warm gold with a touch of pink.
+     Two user corrections on the light itself:
+     1. The coloured core was too bright to read as orange: it ran at full alpha and
+        purely horizontal, so it beat the orange base. Every non-transparent stop is
+        therefore wrapped as `color-mix(in srgb, <pale colour> 50%, transparent)`, so
+        the WHOLE new coloured light sits at alpha .5 and the orange band below shows
+        through; only the alpha changed, each pale colour is the same mix. The user
+        first asked for .2, then corrected it to .5 — .5 is the current value.
+     2. The angle is 45deg instead of 90deg, so the light travels corner to corner and
+        the hint does not sit as a flat horizontal stripe across the 28px bar.
+     Still one same-layer gradient: the stop positions, the hues, the Warp texture,
+     the veil at .33, the white arc, the halo and the 2–4 plain core are untouched. */
   --tl-def-halo-base: color-mix(in srgb, var(--tl-def1-warm) 72%, var(--tl-def1-pink));
   --tl-def-core-layer:
-    linear-gradient(90deg,
-      color-mix(in srgb, var(--tl-def1-light) 46%, #fff) 0,
-      color-mix(in srgb, var(--tl-def1-warm) 40%, #fff) 8%,
-      color-mix(in srgb, var(--tl-def1-pink) 48%, #fff) 15%,
-      color-mix(in srgb, var(--tl-def1-light) 38%, #fff) 22%,
-      color-mix(in srgb, var(--tl-def1-violet) 40%, #fff) 30%,
-      color-mix(in srgb, var(--tl-def1-light) 34%, #fff) 37%,
-      color-mix(in srgb, var(--tl-def1-cyan) 26%, #fff) 44%,
-      color-mix(in srgb, var(--tl-def1-light) 30%, #fff) 52%,
+    linear-gradient(45deg,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 46%, #fff) 50%, transparent) 0,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-warm) 40%, #fff) 50%, transparent) 8%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-pink) 48%, #fff) 50%, transparent) 15%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 38%, #fff) 50%, transparent) 22%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-violet) 40%, #fff) 50%, transparent) 30%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 34%, #fff) 50%, transparent) 37%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-cyan) 26%, #fff) 50%, transparent) 44%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 30%, #fff) 50%, transparent) 52%,
       transparent 58%);
 }
 /* The colour texture itself is blurred. There is no sharp colour texture
