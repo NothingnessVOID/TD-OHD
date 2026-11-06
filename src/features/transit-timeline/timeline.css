@@ -580,6 +580,14 @@
    no large blur. Bars are drawn only when the final count differs from natal. */
 .tl {
   --tl-def1-deep: #D9631A; --tl-def1-warm: #F59A3A; --tl-def1-light: #FFC36B;
+  /* Single's base radial only: the same three oranges lifted with a touch of white
+     (deep/warm 10%, light 6%). Kept as separate tokens so the texture, the pale
+     core, the rim and the halo keep the untouched oranges — only the band the
+     Warp patches sit on is a little brighter. They derive from the theme's own
+     tokens, so the dark theme lifts its own oranges and stays warm, never milky. */
+  --tl-def1-base-deep: color-mix(in srgb, var(--tl-def1-deep) 90%, #fff);
+  --tl-def1-base-warm: color-mix(in srgb, var(--tl-def1-warm) 90%, #fff);
+  --tl-def1-base-light: color-mix(in srgb, var(--tl-def1-light) 94%, #fff);
   --tl-def1-pink: #FF4F9A; --tl-def1-violet: #8F63FF; --tl-def1-cyan: #2FD3E6;
   --tl-def1-ink: #2A1203;
   --tl-def2-deep: #D9A40E; --tl-def2-light: #FFE07A; --tl-def2-ink: #2B2100;
@@ -597,13 +605,24 @@
      its existing breakpoint overrides. */
   --tl-chip-bg: rgb(28 12 2 / .85);
   --tl-chip-ink: #FFE9C9;
-  /* Single texture: the warp tile, the blur and glow strength and the crisp white
+  /* Single texture: the warp tile, the blur and glow strength and the crisp orange
      arc that sits on top of it. Kept as variables so a magnified preview can
      scale tile, blur and arc together instead of showing three rhythms. */
-  --tl-def1-veil: .33;
-  --tl-def1-veil-blur: 4px;
+  --tl-def1-veil: .72;
+  --tl-def1-veil-blur: 10px;
   --tl-def1-tile: 1125px;
-  --tl-def1-arc: 211px;
+  /* Arc ripple, two numbers with one source: one ring every 11px of the ellipse
+     ray (`--tl-def1-arc-step`), and one 211px-wide tile of them per horizontal
+     repeat (`--tl-def1-arc-period`, i.e. 19.18 steps). Period is derived from the
+     step so the 2.25x preview magnifies ring spacing and repeat together instead
+     of showing a second rhythm. */
+  --tl-def1-arc-step: 11px;
+  --tl-def1-arc-period: calc(var(--tl-def1-arc-step) * 211 / 11);
+  /* Ink of that arc: a light, bright orange, never pure white. First the theme's
+     own warm + light oranges, then about half white on top — the user asked for it
+     lighter and brighter than the pure orange because the line was hard to read,
+     while still reading as a warm ring rather than a white one. */
+  --tl-def1-arc-ink: color-mix(in srgb, color-mix(in srgb, var(--tl-def1-warm) 62%, var(--tl-def1-light)) 50%, #fff);
 }
 :root[data-theme="dark"] .tl {
   --tl-def1-deep: #E8701C; --tl-def1-warm: #FFA445; --tl-def1-light: #FFD07E;
@@ -612,7 +631,7 @@
   --tl-def3-deep: #7A4BDB; --tl-def3-light: #B992FF;
   --tl-def4-deep: #2A6FDB; --tl-def4-light: #74B4FF;
   --tl-def-edge: color-mix(in srgb, var(--tl-surface) 55%, transparent);
-  /* The glow strength, the tile, the blur and the arc period do not change with
+  /* The glow strength, the tile, the blur and the arc ring step do not change with
      the theme: only the orange ramp does. The B light below is mode-independent,
      so there is no second set of sheen/shade/halo values here. */
 }
@@ -630,7 +649,8 @@
   --tl-def-light-base: var(--tl-def-b);
   /* Two named pieces so a single definition can vary them without restating the
      light stack: the core layer and the halo colour. Split/Triple/Quadruple keep
-     the plain B core; Single replaces the core with its pale-rainbow band below. */
+     the plain B core; Single replaces the core with its pale-rainbow band (45deg,
+     whole layer at alpha .6) further down in its own rule. */
   --tl-bar-core: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-mix), #fff);
   --tl-bar-core-soft: color-mix(in srgb, var(--tl-def-light-base) var(--tl-bar-core-soft-mix), #fff);
   --tl-def-core-layer: linear-gradient(90deg, var(--tl-bar-core) 0, var(--tl-bar-core-soft) 22%, transparent 58%);
@@ -640,8 +660,10 @@
   /* 1. the 1px glass top edge and the thin top gloss that stops at 62%,
      2. the 1px sheen with its short falloff and foot shade,
      3. the 1px near-white left edge,
-     4. the same-colour core (44% toward white at the origin, 76% at 22%, transparent
-        at 58%), so the band reads as lit rather than printed,
+     4. the core layer `--tl-def-core-layer` (by default the same-colour one: 44%
+        toward white at the origin, 76% at 22%, transparent at 58%; Single swaps in
+        its own softly-lit coloured version), so the band reads as lit rather than
+        printed,
      5. the right-end deepening (8% → 16% black from 80%),
      6. the definition's own band (`--tl-def-paint`).
      Percentage stops for the same reason as the ordinary sources: a 3px interval
@@ -685,39 +707,52 @@
    Static, no animation. */
 .tl .tl-definition-bar[data-definition="1"] {
   --tl-def-ink: var(--tl-def1-ink); --tl-def-halo: color-mix(in srgb, var(--tl-def1-light) 80%, transparent);
-  /* Single keeps its Warp texture, its 4px colour-field blur, its screen veil, its
-     white arc and the radial base the user picked; it only swaps the band for the
+  /* Single keeps its Warp texture, its 10px colour-field blur, its screen veil, its
+     bright-orange arc and the radial base the user picked; it only swaps the band for the
      radial and reads the B light from its own orange instead of the Split token. */
   --tl-def-light-base: var(--tl-def1-light);
-  --tl-def-paint: radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+  --tl-def-paint: radial-gradient(140% 180% at 0% 50%, var(--tl-def1-base-light) 0%, var(--tl-def1-base-warm) 45%, var(--tl-def1-base-deep) 85%);
   /* Pale rainbow, Single only. Warm gold stays the body of the core; three short,
      unevenly placed bands borrow the Skin's own pink / violet / cyan tokens at low
-     strength for an iridescent hint. It is still ONE horizontal gradient in the
-     same B layer — no extra layer, no new fill, no blur, no animation — so the
-     Warp texture, the veil, the white arc and the count chip keep their own layers
-     and the arc/chip are never tinted by it. The halo leans the same way: warm gold
-     with a touch of pink. */
+     strength for an iridescent hint. It is still ONE gradient in the same B layer
+     (`--tl-def-core-layer`) — no extra layer, no new fill, no blur, no animation —
+     so the Warp texture, the veil, the orange arc and the count chip keep their own
+     layers and the arc/chip are never tinted by it. The halo leans the same way:
+     warm gold with a touch of pink.
+     Two user corrections on the light itself:
+     1. The coloured core was too bright to read as orange: it ran at full alpha and
+        purely horizontal, so it beat the orange base. Every non-transparent stop is
+        therefore wrapped as `color-mix(in srgb, <pale colour> 60%, transparent)`, so
+        the WHOLE new coloured light sits at alpha .6 and the orange band below still
+        shows through; only the alpha changed, each pale colour is the same mix. The
+        user asked for .2 first, then .5, .8, and settled on .6 — .6 is the current value.
+     2. The angle is 45deg instead of 90deg, so the light travels corner to corner and
+        the hint does not sit as a flat horizontal stripe across the 28px bar.
+     Still one same-layer gradient: the stop positions, the hues, the Warp texture,
+     the veil at .72, the orange arc, the halo and the 2–4 plain core are untouched. */
   --tl-def-halo-base: color-mix(in srgb, var(--tl-def1-warm) 72%, var(--tl-def1-pink));
   --tl-def-core-layer:
-    linear-gradient(90deg,
-      color-mix(in srgb, var(--tl-def1-light) 46%, #fff) 0,
-      color-mix(in srgb, var(--tl-def1-warm) 40%, #fff) 8%,
-      color-mix(in srgb, var(--tl-def1-pink) 48%, #fff) 15%,
-      color-mix(in srgb, var(--tl-def1-light) 38%, #fff) 22%,
-      color-mix(in srgb, var(--tl-def1-violet) 40%, #fff) 30%,
-      color-mix(in srgb, var(--tl-def1-light) 34%, #fff) 37%,
-      color-mix(in srgb, var(--tl-def1-cyan) 26%, #fff) 44%,
-      color-mix(in srgb, var(--tl-def1-light) 30%, #fff) 52%,
+    linear-gradient(45deg,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 46%, #fff) 60%, transparent) 0,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-warm) 40%, #fff) 60%, transparent) 8%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-pink) 48%, #fff) 60%, transparent) 15%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 38%, #fff) 60%, transparent) 22%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-violet) 40%, #fff) 60%, transparent) 30%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 34%, #fff) 60%, transparent) 37%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-cyan) 26%, #fff) 60%, transparent) 44%,
+      color-mix(in srgb, color-mix(in srgb, var(--tl-def1-light) 30%, #fff) 60%, transparent) 52%,
       transparent 58%);
 }
-/* The colour texture itself is blurred. There is no sharp colour texture
-   underneath; the orange base, the count chip and the arc layer above stay
-   crisp. Extend vertically so filtering does not fade the colour away at the top
-   and bottom of a 28px bar. */
+/* The colour texture itself is blurred and lifted: one filter pass
+   (`blur → brightness → saturate`, the user's look values) on the colour layer
+   only, never on the whole bar. There is no sharp colour texture underneath; the
+   orange base, the count chip and the arc layer above stay crisp and unbrightened.
+   Extend vertically so filtering does not fade the colour away at the top and
+   bottom of a 28px bar. */
 .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before {
   content: ''; position: absolute; inset: -6px 0; z-index: 0; pointer-events: none;
   background: url('./assets/definition-warp.png') 0 50% / var(--tl-def1-tile) 28px repeat;
-  filter: blur(var(--tl-def1-veil-blur)) saturate(1.55);
+  filter: blur(var(--tl-def1-veil-blur)) brightness(1.1) saturate(1.55);
 }
 /* Soft glow veil on the Single bar: a blurred copy of the same Warp tile,
    screen-blended at low opacity. This is what makes the bar look lit rather than
@@ -727,14 +762,15 @@
    blend only applies where the PNG has colour. The void slots are fully
    transparent, so the gaps let the orange base through untouched and nothing is
    screened over the whole bar. On top of that the layer is blurred (so its local
-   peaks are averaged down), boosted with `brightness` so the scatter survives the
-   low opacity, and run at .33 in both themes. Measured on the rendered bar: mean
-   luma 138.0→143.0 (light) / 144.5→151.1 (dark), peak luma unchanged at 235.4, and
-   pixels with all three channels above 240 stay 0.00% — no bleaching.
+   peaks are averaged down), boosted with its own `brightness(1.3)` so the scatter
+   survives the low opacity, and run at .72 in both themes (the look slider's glow
+   value). The brightness/saturation on this layer are its own contract and do not
+   follow the colour layer's look brightness.
    The earlier "any additive blend bleaches" note was too absolute: it holds for
    the full-opacity texture composite, not for this low-opacity blurred veil.
    The layer is inside the bar and `pointer-events: none`, so it never touches the
-   hit area; the blur stays at 4px (no large-radius blur, no animation).
+   hit area; the blur follows `--tl-def1-veil-blur` (10px, shared with the colour
+   layer; still no large-radius blur and no animation).
    Ticks are excluded structurally (`:not`): they already use ::before for the
    14px hit area and ::after for the short-event cap. */
 .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after {
@@ -747,20 +783,43 @@
    light verbatim, and that light is mode-independent (the same tokens the ordinary
    sources use), so a second night rim would make them drift apart again. Composition
    with `--tl-def-edge` (which does change per mode) is the only mode difference. */
-/* The crisp white arc that the shared markup adds to every non-tick Single bar:
-   the original A's ripple (`ellipse 150% 260% at 0% 130%`, white at 20%) at one
-   211px period. It is its own element because the colour field around it is
-   blurred and this layer must not be: the ripple stays sharp and does not
-   inherit the texture's filter. `.tl-bar > span` (padding) and the chip rule
-   would hit it, so every property they set is restated here; the count span keeps
-   z-index 2 and paints above it, while the arc shares z-index 1 with the glow veil
-   (the veil screens over it at .33, exactly as the demo preview showed).
-   `inset: 0` plus the bar's own `overflow: hidden` keep the arc inside the bar. */
+/* The crisp bright-orange arc that the shared markup adds to every non-tick Single
+   bar is the original A ripple, restored as A's segmented horizontal repeat:
+   `repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px,
+   <ink> 9px, transparent 11px)` painted into a `--tl-def1-arc-period` (211px) wide
+   tile, `repeat-x`. That is a deliberate return to A's concentric-ellipse look:
+   nested rings opening from the lower-left corner of each tile, not a wave. The
+   centre is back at 0% (A's own value) because the segmented look only reads as
+   A's pattern when every tile restarts from its own corner.
+   The tiles do NOT line up ring for ring: where one ends the next restarts at its
+   own corner, so a seam is visible on long bars. The user saw that and confirmed
+   it — the concentric, segmented form is what they want, so the seam is accepted
+   on purpose. An earlier form of this layer removed the seam by painting one
+   100%-wide, `no-repeat` gradient from a -15% centre; that is gone, and so is the
+   "seamless" claim: this is a horizontal repeat that happens to break.
+   The ink is `--tl-def1-arc-ink` (the theme's warm + light oranges, half white on
+   top: light and bright enough to read on the texture, still a warm ring and not a
+   white line), held at 58% so the line is clearly visible without covering the
+   texture. `--tl-def1-arc-step` and `--tl-def1-arc-period` stay in step with each
+   other, so the 2.25x preview scales the whole ripple with the bar.
+   It is its own element because the colour field around it is blurred and this
+   layer must not be: the rings stay sharp and do not inherit the texture's
+   filter. `.tl-bar > span` (padding) and the chip rule would hit it, so every
+   property they set is restated here; the count span keeps z-index 2 and paints
+   above it, while the arc shares z-index 1 with the glow veil (the veil screens
+   over it at .72, exactly as the demo preview showed).
+   `inset: 0` plus the bar's own `overflow: hidden` keep the arc inside the bar.
+   `height: 100%` is explicit on purpose: a bar whose own height comes from inset
+   stretching (the 2.25x preview does this) would otherwise resolve this
+   absolutely-positioned child's auto height to 0 and the ripple would never paint. */
 .tl .tl-definition-bar[data-definition="1"] > .tl-definition-arcline {
-  position: absolute; inset: 0; z-index: 1;
+  position: absolute; inset: 0; height: 100%; z-index: 1;
   margin: 0; padding: 0; border: 0; border-radius: 0;
   line-height: 0; font-size: 0; color: transparent;
-  background: repeating-radial-gradient(ellipse 150% 260% at 0% 130%, transparent 0 8px, rgb(255 255 255 / .2) 9px, transparent 11px) 0 0 / var(--tl-def1-arc) 100% repeat-x;
+  background: repeating-radial-gradient(ellipse 150% 260% at 0% 130%,
+    transparent 0 calc(var(--tl-def1-arc-step) * .727),
+    color-mix(in srgb, var(--tl-def1-arc-ink) 58%, transparent) calc(var(--tl-def1-arc-step) * .818),
+    transparent var(--tl-def1-arc-step)) 0 0 / var(--tl-def1-arc-period) 100% repeat-x;
   text-shadow: none; filter: none;
   pointer-events: none; box-sizing: border-box;
 }
@@ -802,8 +861,8 @@
      system palette is not tinted. */
   .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::before,
   .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick)::after { display: none; }
-  /* The arc is white at 20%: in the system palette it is decoration, not
-     information, so it goes the same way as the texture. */
+  /* The arc is a decorative masked orange line: in the system palette it is
+     decoration, not information, so it goes the same way as the texture. */
   .tl .tl-definition-arcline { display: none; }
   /* The chip plate is dropped under forced colours so the label inherits the
      Highlight / HighlightText pair from the bar. The selector repeats the chip's

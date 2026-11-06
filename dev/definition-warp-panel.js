@@ -54,13 +54,13 @@ const WARP_ROWS = [
  * the texture, so an untouched panel renders the app's treatment.
  */
 const LOOK_ROWS = [
-  { key: 'blur', label: '模糊', css: '--wt-blur', unit: 'px', min: 0, max: 16, step: 0.5, initial: 4, digits: 1, random: [3, 12],
+  { key: 'blur', label: '模糊', css: '--wt-blur', unit: 'px', min: 0, max: 16, step: 0.5, initial: 10, digits: 1, random: [3, 12],
     hint: '颜色层和它的柔光一起变；0 就是完全不模糊。' },
-  { key: 'bright', json: 'brightness', label: '亮度', css: '--wt-bright', unit: '', min: 0.6, max: 1.8, step: 0.05, initial: 1, digits: 2, random: [0.85, 1.35],
-    hint: '只调颜色层，1.00 就是正式样式里的样子。' },
+  { key: 'bright', json: 'brightness', label: '亮度', css: '--wt-bright', unit: '', min: 0.6, max: 1.8, step: 0.05, initial: 1.1, digits: 2, random: [0.85, 1.35],
+    hint: '只调颜色层，1.10 就是正式样式里的样子。' },
   { key: 'sat', json: 'saturation', label: '饱和度', css: '--wt-sat', unit: '', min: 0, max: 2, step: 0.05, initial: 1.55, digits: 2, random: [0.9, 1.5] },
   { key: 'glow', label: '柔光', css: '--wt-veil', unit: '', min: 0, max: 1, step: 0.01, initial: null, digits: 2, random: [0.15, 0.6],
-    hint: '不拖时用正式样式的 0.33（明暗相同）；拖过之后就是固定值。', state: true },
+    hint: '不拖时用正式样式的 0.72（明暗相同）；拖过之后就是固定值。', state: true },
   { key: 'tile', label: '纹理大小', css: '--wt-tile', unit: 'px', min: 400, max: 1600, step: 25, initial: 1125, digits: 0, random: [600, 1100],
     hint: '一个重复周期的宽度：越小纹理越密。' },
   // Not drawn by 「随机一组」: the light direction is a user choice, not a look to shuffle.
@@ -190,7 +190,7 @@ export function mountWarpPanel({ host, scope, preset = null, storage = safeStora
       </fieldset>
       <fieldset class="warp-group">
         <legend>外观</legend>
-        <p class="warp-field-hint">这一组是本页的显示参数，不影响纹理本身的形状。不拖时用的是选定预设里的外观值；模糊 4px、饱和度 1.55、纹理 1125px、柔光 0.33，就是正式样式（<code>timeline.css</code>）的值。</p>
+        <p class="warp-field-hint">这一组是本页的显示参数，不影响纹理本身的形状。不拖时用的是选定预设里的外观值；模糊 10px、亮度 1.10、饱和度 1.55、柔光 0.72、纹理 1125px，就是正式样式（<code>timeline.css</code>）的值。</p>
         <div class="warp-tune-fields" data-look-fields>${LOOK_ROWS.map(lookRowMarkup).join('')}</div>
       </fieldset>
       <div class="warp-tune-actions">
@@ -270,9 +270,9 @@ export function mountWarpPanel({ host, scope, preset = null, storage = safeStora
   /** Current theme's glow opacity, straight from the shared stylesheet. */
   function themeGlow() {
     const node = surface.querySelector('.tl');
-    if (!node) return 0.33;
+    if (!node) return 0.72;
     const parsed = Number.parseFloat(getComputedStyle(node).getPropertyValue('--tl-def1-veil').trim());
-    return Number.isFinite(parsed) && parsed >= 0 && parsed <= 1 ? parsed : 0.33;
+    return Number.isFinite(parsed) && parsed >= 0 && parsed <= 1 ? parsed : 0.72;
   }
 
   const effectiveGlow = () => (glowDirty ? look.glow : themeGlow());
@@ -287,7 +287,7 @@ export function mountWarpPanel({ host, scope, preset = null, storage = safeStora
         colors: colors.map(slot => `${slot.hex.replace('#', '').toLowerCase()}${slot.alpha ? 'ff' : '00'}`),
       },
       // Keys come from the rows, so the stored/copied names and the reader can
-      // never drift apart. A null glow means "follow the stylesheet's .33".
+      // never drift apart. A null glow means "follow the stylesheet's .72".
       look: Object.fromEntries(LOOK_ROWS.map(row => [
         jsonKey(row),
         row.key === 'glow' ? (glowDirty ? look.glow : null) : look[row.key],
@@ -331,9 +331,8 @@ export function mountWarpPanel({ host, scope, preset = null, storage = safeStora
       if (look[row.key] === row.initial) surface.style.removeProperty(row.css);
       else surface.style.setProperty(row.css, cssOf(row, look[row.key]));
     }
-    // `brightness(1)` would still add a filter pass, so the term only joins the
-    // chain once the slider leaves 1 and the default stays byte-identical.
-    surface.toggleAttribute('data-wt-bright', look.bright !== 1);
+    // The brightness term is part of the demo's base filter now (the shipped
+    // look is 1.10, not 1), so there is no second brightness pass to switch on.
   }
 
   function writeStorage() {

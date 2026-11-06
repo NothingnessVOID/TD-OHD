@@ -26,13 +26,17 @@
     .demo .tex-preview header small { color: var(--text-secondary); }
     .demo .tex-tall { position: relative; height: 63px; }
     .demo .tex-tall .tl-definition-bar { position: absolute; inset: 0; width: 100%; }
-    /* Magnified 2.25x: tile, blur, the glow's copy of the tile and the arc period
-       all scale with the look group, so the preview stays a magnification, never a
-       second sample. */
-    .demo .tex-tall { --wt-scale: 2.25; --tl-def1-arc: calc(211px * var(--wt-scale)); }
+    /* Magnified 2.25x: tile, blur, the glow's copy of the tile and the arc ring
+       step all scale with the look group, so the preview stays a magnification,
+       never a second sample. */
+    .demo .tex-tall { --wt-scale: 2.25; --tl-def1-arc-step: calc(11px * var(--wt-scale)); }
     .demo .tex-tall .tl-definition-bar > span { align-self: flex-start; margin-top: 8px; }
     .demo .tex-caption { padding: 6px 12px 9px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle, var(--border)); }
-    /* Version A: original narrow bands — arc ripple retained */
+    /* Version A: original narrow bands — arc ripple retained as the historical
+       reference only. This is A's own white `repeating-radial-gradient` ripple;
+       the shared `.tl-definition-arcline` now paints the same ripple shape in
+       bright orange, repeating the same 211px tile along the bar.
+       A switches that element off so it keeps exactly its original look. */
     .demo .tl-def1-version-a {
       background:
         linear-gradient(180deg, rgb(255 255 255 / .42) 0 1px, transparent 1px 45%, rgb(80 20 0 / .14) 100%),
@@ -68,9 +72,9 @@
        glass hairlines — the same language as the ordinary source bars. This block
        restates the *previous* form of the same bars (the historical two-layer paint,
        rim only, plus the dark rim glow those bars used to have) so both rows can be
-       read side by side. The texture, the 4px colour-field blur, the white arc, the
-       count chip and every tick still come from the shared stylesheet; only the
-       background/shadow of the plain row is restated here. */
+       read side by side. The texture, the 10px colour-field blur, the bright-orange
+       arc, the count chip and every tick still come from the shared stylesheet; only
+       the background/shadow of the plain row is restated here. */
     .demo .def-plain .tl-definition-bar {
       background:
         linear-gradient(180deg, rgb(255 255 255 / .42) 0 1px, transparent 1px 42%, rgb(0 0 0 / .08) 100%),
@@ -170,7 +174,7 @@
        `dev/definition-warp-panel.js` runs the real Warp shader through the
        package's ShaderMount and writes the baked 2400x84 PNG into this custom
        property. Only the image is swapped: the shared `timeline.css` still owns
-       the 1125px tile, the 4px blur on the colour field, the glow veil and the
+       the 1125px tile, the 10px blur on the colour field, the glow veil and the
        crisp arc layer, so the preview is shown with exactly the app's treatment.
        Version A keeps `content: none` on both pseudo-elements and ticks are
        excluded with :not(), so neither changes.
@@ -186,14 +190,18 @@
        the inline properties so the stylesheet is authoritative again.
        The shader output is what gets blurred and tiled; nothing here can change
        the warped form. */
-    .demo { --wt-scale: 1; --wt-blur: 4px; --wt-bright: 1; --wt-sat: 1.55; --wt-tile: 1125px; --wt-light-position: 0%; }
+    .demo { --wt-scale: 1; --wt-blur: 10px; --wt-bright: 1.1; --wt-sat: 1.55; --wt-tile: 1125px; --wt-light-position: 0%; }
     /* ---- Light direction of the Single base (demo only) ----
        The shipped bar is lit from its left edge and falls off to the right (a
        140%x180% radial gradient at 0% 50%), in the bar's own coordinates. Here the
        peak follows `--wt-light-position` so the same direction can be tried at any
-       point of the bar. Every other layer is the shipped B light, read from the
-       shared tokens (`--tl-def-core-layer` carries Single's pale-rainbow core), so
-       this preview never loses a production layer by restating the background.
+       point of the bar. The radial reads the same lifted base tokens
+       (`--tl-def1-base-light/-warm/-deep`) the shipped rule does, so the preview
+       shows the brighter orange underneath while the core, rim, halo and texture
+       keep their untouched oranges. Every other layer is the shipped B light, read
+       from the shared tokens (`--tl-def-core-layer` carries Single's pale-rainbow
+       core), so this preview never loses a production layer by restating the
+       background.
        0% = light starts at the left edge, 100% = at the right edge. */
     .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a) {
       background:
@@ -203,7 +211,7 @@
         var(--tl-def-core-layer),
         linear-gradient(90deg, transparent 62%, var(--tl-bar-shade) 80%, var(--tl-bar-shade-deep) 100%),
         radial-gradient(140% 180% at var(--wt-light-position) 50%,
-          var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
+          var(--tl-def1-base-light) 0%, var(--tl-def1-base-warm) 45%, var(--tl-def1-base-deep) 85%);
     }
     /* The "before this round" row must not pick up the live light direction: it
        restates the previous Single base (sheen + radial, no light stack). The
@@ -214,15 +222,13 @@
         linear-gradient(180deg, rgb(255 255 255 / .42) 0 1px, transparent 1px 46%, rgb(60 10 0 / .16) 100%),
         radial-gradient(140% 180% at 0% 50%, var(--tl-def1-light) 0%, var(--tl-def1-warm) 45%, var(--tl-def1-deep) 85%);
     }
+    /* One filter pass for the colour field: blur, brightness, saturation. The
+       brightness term is part of the shipped treatment (1.10), so it is always in
+       the chain and never added a second time; the look panel only changes the
+       values. */
     .demo .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
-      filter: blur(calc(var(--wt-blur) * var(--wt-scale))) saturate(var(--wt-sat));
-      background-size: calc(var(--wt-tile) * var(--wt-scale)) calc(28px * var(--wt-scale));
-    }
-    /* The brightness term joins the chain only after the slider leaves 1, so the
-       untouched default stays exactly the committed `blur() saturate()` stack.
-       Keep this declaration in step with the one above. */
-    .demo[data-wt-bright] .tl .tl-definition-bar[data-definition="1"]:not(.tl-definition-tick):not(.tl-def1-version-a)::before {
       filter: blur(calc(var(--wt-blur) * var(--wt-scale))) brightness(var(--wt-bright)) saturate(var(--wt-sat));
+      background-size: calc(var(--wt-tile) * var(--wt-scale)) calc(28px * var(--wt-scale));
     }
     /* The glow keeps the brightness/saturation it was tuned with; only its
        strength and its copy of the tile belong to the panel. Until the strength
@@ -301,11 +307,11 @@
       <p class="source-block-head">改动前（两层平涂 + 仅内缘框；对照，仅本页）</p>
       <div class="swatches def-plain" id="def-prev"></div>
     </div>
-    <div class="detail">两排只差光照层：1 号保留 Warp 虹彩纹理、4px 模糊与弧形白纹，柔光层本身带一点不均匀的淡彩（暖金为主，局部淡粉、淡紫与少量青，取自它自己的 token）；2 / 3 / 4 仍是纯 B，用各自深浅色混白，不掺入生日或行运的来源色。短条（tick）不在这层里，几何与标记不变；数字底托不动。</div>
+    <div class="detail">两排只差光照层：1 号保留 Warp 虹彩纹理、10px 模糊与亮橙弧纹，柔光层本身带一点不均匀的淡彩（暖金为主，局部淡粉、淡紫与少量青，取自它自己的 token）；2 / 3 / 4 仍是纯 B，用各自深浅色混白，不掺入生日或行运的来源色。短条（tick）不在这层里，几何与标记不变；数字底托不动。</div>
   </section>
   <div class="compare">
     <div class="compare-item">
-      <label>最初 A &middot; 窄条带 + 弧形白纹（对照保留）</label>
+      <label>最初 A &middot; 窄条带 + 最初的白色弧纹（对照保留）</label>
       <div class="compare-bar tl" id="compare-a"></div>
     </div>
     <div class="compare-item">
@@ -313,18 +319,18 @@
       <div class="compare-bar tl" id="compare-b"></div>
     </div>
   </div>
-  <p class="notice">A 是最初的形态，保留在这里只作对照；B 是最终采用并已写进正式 <code>timeline.css</code> 的一版（选定的 Warp 参数 + 弧形白纹）。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
+  <p class="notice">A 是最初的形态，保留在这里只作对照；B 是最终采用并已写进正式 <code>timeline.css</code> 的一版（选定的 Warp 参数 + 亮橙弧纹）。B 的纹理由真实 Warp shader 渲染：正式时间轴用 <code>scripts/build-definition-warp-texture.mjs</code> 离线生成一张静态 PNG，下面的面板则在本页里用同一个 shader、同一份参数现场重画。</p>
   <div class="compare" id="arc-compare">
     <div class="compare-item">
-      <label>当前参数 · 无白纹</label>
+      <label>当前参数 · 无弧纹</label>
       <div class="compare-bar tl" id="arc-plain"></div>
     </div>
     <div class="compare-item">
-      <label>当前参数 · 加曲线白纹</label>
+      <label>当前参数 · 加亮橙弧纹</label>
       <div class="compare-bar tl" id="arc-striped"></div>
     </div>
   </div>
-  <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的弧形白纹</strong>（<code>ellipse 150% 260% at 0% 130%</code>，白 20%，周期 211px），左侧把它关掉。这层白纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用背景层画了这条白纹，所以 A 的标记层被关掉，不会叠出第二层。</p>
+  <p class="notice">这两条都不是 A，也不写死：两条都使用下方面板里的<strong>当前</strong> Warp 纹理和当前全部外观值（模糊 / 亮度 / 饱和度 / 柔光 / 纹理大小 / 发光位置），所以两边的颜色、亮度、周期完全一致；唯一的差别是右侧保留了<strong>正式样式里的亮橙同心弧纹</strong>（沿用最初 A 的 <code>repeating-radial-gradient(ellipse 150% 260% at 0% 130%)</code> 同心椭圆，恢复最初的分段横向重复，保留每段同心圈的形态，段落之间允许接缝；颜色由 <code>--tl-def1-arc-ink</code> 提供：主题自己的暖橙 + 亮橙再掺约一半白，比纯橙更亮更清楚、又不是白线，明暗各自跟 token；每段圆心恢复到 0%，按原来的 211px 周期重复；1px 细线、约 58% 不透明），左侧把它关掉。这层亮橙弧纹由共享标记 <code>definition-bars.js</code> 统一加在一分人实体条上，是独立的清晰层：它自己不模糊，也不改变数字所在的层；短事件标记不带它。A 自己已经用旧背景层画了它最初的白色 radial 弧纹（仅作历史对照，不会换成新拼贴），所以 A 的标记层被关掉，不会叠出第二层。</p>
   <div id="warp-tune-host"></div>
   <section class="scene source-glow">
     <header><span>普通来源条带 &middot; 本命 / 行运 / 共同 / 补全</span><small>已选定 B：正式 <code>timeline.css</code> 即此光效</small></header>
@@ -345,7 +351,7 @@
   <section class="tex-preview">
     <header><span>1 号纹理 &middot; Warp 扭曲材质</span><small>原图 2400&times;84（3 倍），这里按 2.25 倍放大铺开，用来看清扭曲结构</small></header>
     <div class="tex-tall tl" id="tex-tall"></div>
-    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 1125px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 4px 轻模糊、静态、不加动画）和一层 A 同款清晰弧形白纹，数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
+    <div class="tex-caption">同一张纹理在 28px 实际高度下（每 1125px 一个重复周期），上面一排就是这个尺寸。1 号条另叠一层同图的低透明柔光（默认 10px 模糊、静态、不加动画）和一层清晰的亮橙同心弧纹（纯 CSS 渐变、每 211px 横向重复，段落之间的接缝保留；2.25 倍预览把环距和周期一起放大），数字始终在最上层不受模糊影响。上方对比中的 A 没有这层柔光。</div>
   </section>
   <div id="scenes"></div>
   <section class="query">
