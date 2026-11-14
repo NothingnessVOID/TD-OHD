@@ -111,15 +111,18 @@ export function mountWa(container, options = {}) {
     // Collapsed by default; the heading and total stay visible and the fold state lives on the instance.
     return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows" id="${listId}" data-wa-gap-list ${gapsExpanded?'':'hidden'}>${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div><div class="wa-gaps-toggle-row"><button type="button" class="wa-link-button wa-gaps-toggle" data-wa-gaps-toggle data-focus="gaps-toggle" aria-expanded="${gapsExpanded}" aria-controls="${listId}">${text(gapsExpanded?'OC16 gaps collapse':'OC16 gaps expand')}</button></div>`;
   }
-  /** Nine organizing-axis channels: all nine always render; activation comes from the current scope result. */
+  /** Nine organizing-axis channels: all nine always render, inside the former four-pillar card chrome.
+   *  Markup and state attributes are the original pillar contract (data-covered / data-row-state / data-lit),
+   *  so the existing pillar CSS paints them; activation still comes from the current scope result. */
   function axisPillarsHtml() {
     const items = OC16_AXIS.map(({ pair }) => {
       const state = pairState(pair), row = rowState(state);
-      const label = `${pair.displayGates.join('–')} · ${orgChannelName(pair.channelId)} · ${t(`Wa row ${row}`)}`;
-      // No `.is-axis` here: inside the axis block every row is structural, so only data-state paints activation.
-      return `<li><button type="button" class="wa-axis-card" data-wa-pair="${pair.channelId}" data-state="${row}" data-wa-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pairToken(pair,{tag:'span',axis:false})}<span class="wa-axis-text" aria-hidden="true"><strong>${esc(orgChannelName(pair.channelId))}</strong><small>${text(`Wa row ${row}`)}</small></span></button></li>`;
+      const complete = row === 'complete';
+      const stateLabel = row === 'complete' ? 'Wa legend active' : row === 'partial' ? 'Wa row partial' : row === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
+      // Structural channel card: the token never takes the fixed axis highlight, pillar CSS paints activation.
+      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="axis-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${row}" data-lit="${pairLit(pair)}">${pairToken(pair,{tag:'span',axis:false})}<span class="wa-pillar-text"><strong>${esc(orgChannelName(pair.channelId))}</strong><small>${esc(pair.displayGates.map(gate => orgGateName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
     }).join('');
-    return `<h3 class="wa-subheading">${text('OC16 axis pillars')}</h3><ul class="wa-axis-grid" data-wa-pillars>${items}</ul>`;
+    return `<h3 class="wa-subheading">${text('OC16 axis pillars')}</h3><div class="wa-pillars" data-wa-pillars>${items}</div>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
@@ -128,13 +131,17 @@ export function mountWa(container, options = {}) {
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
   const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
+  /** Endpoint lighting contract shared by the pair token and the pillar cards: unknown / left / right / both / none. */
+  function pairLit(pair) {
+    const [leftGate, rightGate] = pair.displayGates;
+    return !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+  }
   /** Fixed org highlight marks the nine organizing-axis channels only; department role stays structural. */
   const axisClass = pair => pair.axisTier ? 'is-axis' : '';
   function pairToken(pair, { tag = 'button', axis = true } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
-    const [leftGate, rightGate] = pair.displayGates;
-    const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
+    const lit = pairLit(pair);
     const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
     // Fixed highlight marks the nine organizing-axis channels only; department role never paints a token.
     const roleClass = axis ? axisClass(pair) : '';
