@@ -136,7 +136,11 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 端点是唯一顺序：每个通道的两端都按网站原目录 `src/lib/human-design/catalog.js` 的 `CHANNELS.gates` 顺序显示（该目录全部为升序端点，如 42–53 左 42 右 53、2–14 左 2 右 14）。`oc16-catalog.js` 不再保存第二套展示顺序，pair 的 `displayGates` 直接取该目录，左栏九行、右栏 32 行、详情端点与支持行、相关跳转标题、aria 标签和残留的 `managementMechanism` 数据同源，因此不会出现同一通道在一处 53–42、另一处 42–53。稳定 ID 仍是升序 `gates.join('-')`，部门内行顺序仍按教材相对顺序。
 
-固定高亮只属于左轴九条：通道标识（`.wa-pair-token`）用 `axisTier` 加 `is-axis`，六条部门 primary 与人事 44–26 不再自带固定高亮（`.wa-pair-token.is-core` 已移除）。部门 primary 仍决定部门详情跳转，`role` 仍驱动详情里的 core / personnel / support 文案，视觉不再参与角色推导。组织概览的「四大支柱」整块已移除（`mechanismHtml()`、四个 pillar 卡片样式与其响应式规则一并删除）；`oc16-analysis.js` 的 `managementMechanism` 输出继续保留给既有消费者。
+固定高亮只属于左轴九条：通道标识（`.wa-pair-token`）用 `axisTier` 加 `is-axis`，六条部门 primary 与人事 44–26 不再自带固定高亮（`.wa-pair-token.is-core` 已移除）。部门 primary 仍决定部门详情跳转，`role` 仍驱动详情里的 core / personnel / support 文案，视觉不再参与角色推导。组织概览的旧「四大支柱」（`mechanismHtml()`、原四个 pillar 卡片样式与其响应式规则）保持删除；`oc16-analysis.js` 的 `managementMechanism` 输出继续保留给既有消费者。
+
+组织概览（`views/wa.js` `overviewHtml()`）在统计之后新增「九大支柱」区块（`axisPillarsHtml()`，消息键 `OC16 axis pillars`）：容器 `[data-wa-pillars]`（`.wa-axis-grid`）固定渲染 `OC16_AXIS` 的九条，顺序即上层 7–31 / 1–8 / 13–33、中层 5–15 / 2–14 / 29–46、底层 9–52 / 3–60 / 42–53；每条是一个 `[data-wa-pair]` 按钮（`.wa-axis-card`），内部直接复用 `pairToken()` 的 `span` 形态显示 canonical `displayGates`，名字与状态文字同一行，名字一律走 `orgChannelName()`。九张卡片不加重组高亮（`pairToken(...,{axis:false})` 不输出 `is-axis`），激活状态只来自当前 scope 的 `result.pairs`：卡片 `data-state` 用统一的 `complete/partial/none/unknown`（CSS 命中），原始 `selfComplete/crossMemberOnly/both/hanging/absent` 仍留在 `data-wa-state` 与内部 token 的 `data-state`/`data-lit`，所以切 Penta / Alpha 后会自动变。点击走既有 `data-wa-pair` 分支进入现有通道详情，返回后焦点与原滚动位置由 `detailOrigin` 恢复。
+
+「尚未激活的闸门」自 Issue 57 第二轮反馈起改为默认收起：标题与缺失总数常显，列表 `.wa-gap-rows`（`id="wa-gap-gate-list"`）默认带 `hidden`，可见性沿用既有 `.wa-page [hidden]{display:none!important}`，展开后仍是原来的部门缺失清单与 `.wa-gap-chip`。控件是原生 `button.wa-link-button.wa-gaps-toggle`（`[data-wa-gaps-toggle]`，文案 `OC16 gaps expand` / `OC16 gaps collapse`，带 `aria-expanded` 与 `aria-controls`），外层 `.wa-gaps-toggle-row` 用 `justify-content:center` 居中，宽度跟随概览卡内容宽。折叠状态是 `mountWa` 实例内变量 `gapsExpanded`（默认 `false`），重新渲染、切换 scope 都不清除；切换组织（`load()` 与新建分支）重置为收起；0 缺失时整块仍不渲染。没有任何新的折叠库或弹窗。
 
 详情层（`wa-detail-content.js`）为全部 32 条通道提供独立介绍；部门详情仍以显式 primary 通道与部门同页，其余通道作为支持行列出。`waChannelTitle()` 一律走组织专用名称接口，部门定位文案只留在部门信息里，不再冒充通道名称。部门相关跳转、闸门详情跳转都用 `department.primaryChannelId`，不用 `pairs[0]`。
 
@@ -148,7 +152,7 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
 
-PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」（Issue 57 起四大支柱块整块移除，概览只留统计与未激活闸门）。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
+PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」（Issue 57 起旧四大支柱整块保持移除；概览现为统计 + 九大支柱 + 默认收起的缺失闸门，九大支柱见上节）。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
 
 ## 全站 UI 统一（2026-10-14，design/unified-ui）
 

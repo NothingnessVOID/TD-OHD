@@ -275,6 +275,7 @@
 @media (prefers-reduced-motion:reduce) { .wa-meter i { transition:none; } }
 
 .wa-gap-rows { display:grid; gap:8px; }
+.wa-gaps-toggle-row { display:flex; justify-content:center; margin-top:10px; }
 .wa-gap-row { display:grid; grid-template-columns:4.5em minmax(0,1fr); gap:10px; align-items:start; }
 .wa-gap-department { padding-top:5px; color:var(--text-secondary); font-size:12px; }
 .wa-gap-list { display:flex; flex-wrap:wrap; gap:6px; }
@@ -282,6 +283,21 @@
 .wa-gap-chip b { display:grid; place-items:center; box-sizing:border-box; flex:none; aspect-ratio:1; width:24px; height:24px; min-width:24px; max-width:24px; padding:0; border-radius:50%; background:var(--bg-sunken); color:var(--text); font-size:11px; font-variant-numeric:tabular-nums; line-height:1; }
 .wa-gap-chip:hover { border-color:var(--accent); color:var(--text); }
 .wa-gap-none { margin:0; color:var(--status-success,var(--text-secondary)); font-size:13px; }
+
+/* Nine organizing-axis pillars: compact grid of the shared pair token. Structural, not an activation
+   highlight — the card's data-state (from the current scope result) is what paints active/inactive. */
+.wa-axis-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(196px,1fr)); gap:8px; margin:0; padding:0; list-style:none; }
+.wa-axis-card { display:flex; align-items:center; gap:8px; min-width:0; width:100%; padding:5px 10px 5px 5px; border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px); background:var(--bg-elevated); color:var(--text); text-align:left; cursor:pointer; }
+.wa-axis-card > .wa-pair-token { flex:none; pointer-events:none; cursor:inherit; }
+.wa-axis-text { display:grid; gap:1px; min-width:0; }
+.wa-axis-text strong { font-size:13px; font-weight:600; line-height:1.35; overflow-wrap:anywhere; }
+.wa-axis-text small { color:var(--text-secondary); font-size:11px; line-height:1.4; }
+.wa-axis-card[data-state="complete"] { border-color:color-mix(in srgb, var(--accent) 42%, var(--border)); }
+.wa-axis-card[data-state="complete"] .wa-axis-text small { color:var(--status-success,var(--accent-strong,var(--accent))); }
+.wa-axis-card[data-state="partial"] .wa-axis-text small { color:var(--status-caution,var(--accent)); }
+.wa-axis-card:is(:hover, .is-hover, :focus-visible) { border-color:var(--accent); background:color-mix(in srgb, var(--accent-soft, var(--bg)) 70%, var(--bg-elevated)); }
+.wa-axis-card:is(:hover, .is-hover, :focus-visible) .wa-axis-text strong { color:var(--accent-strong,var(--accent)); }
+@media (prefers-reduced-motion:reduce) { .wa-axis-card { transition:none; } }
 
 /* Departments */
 .wa-departments .wa-panel-heading { margin-bottom:12px; }
@@ -512,6 +528,9 @@
  .wa-gap-row { grid-template-columns:1fr; gap:4px; }
  .wa-gap-department { padding-top:0; }
  .wa-gap-chip { min-height:36px; }
+ .wa-gaps-toggle { min-height:44px; }
+ .wa-axis-grid { grid-template-columns:1fr; }
+ .wa-axis-card { padding:6px 10px 6px 6px; }
  .wa-department-head { grid-template-columns:minmax(0,1fr) auto; min-height:44px; }
  .wa-department-score { grid-column:1 / -1; grid-row:2; }
  .wa-department-toggle-text { grid-column:2; grid-row:1; }

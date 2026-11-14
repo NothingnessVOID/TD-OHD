@@ -16,7 +16,7 @@ import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { orgGateName } from '../lib/wa/org-role-readings.js';
+import { orgChannelName, orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
@@ -44,6 +44,8 @@ export function mountWa(container, options = {}) {
   let version = 0, generation = 0, operation = 0, saveGeneration = 0, timer = null, autoSaveTimer = null;
   let prepared = [], result = analyzeOC16(draft, []), selectedGroup = null, includeAlpha = false;
   let notice = '', errorText = '', composer = null, layerClose = null, composing = false, deferredRender = false, configExpanded = true;
+  // Instance-owned gap fold: survives re-render and scope changes; a different organization resets it.
+  let gapsExpanded = false;
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
@@ -105,25 +107,37 @@ export function mountWa(container, options = {}) {
     const missing = rows.reduce((sum, row) => sum + row.gates.length, 0);
     // Hide the whole block when every gate is active — no empty "尚未激活的闸门" section.
     if (!missing) return '';
-    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows">${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div>`;
+    const listId = 'wa-gap-gate-list';
+    // Collapsed by default; the heading and total stay visible and the fold state lives on the instance.
+    return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows" id="${listId}" data-wa-gap-list ${gapsExpanded?'':'hidden'}>${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div><div class="wa-gaps-toggle-row"><button type="button" class="wa-link-button wa-gaps-toggle" data-wa-gaps-toggle data-focus="gaps-toggle" aria-expanded="${gapsExpanded}" aria-controls="${listId}">${text(gapsExpanded?'OC16 gaps collapse':'OC16 gaps expand')}</button></div>`;
+  }
+  /** Nine organizing-axis channels: all nine always render; activation comes from the current scope result. */
+  function axisPillarsHtml() {
+    const items = OC16_AXIS.map(({ pair }) => {
+      const state = pairState(pair), row = rowState(state);
+      const label = `${pair.displayGates.join('–')} · ${orgChannelName(pair.channelId)} · ${t(`Wa row ${row}`)}`;
+      // No `.is-axis` here: inside the axis block every row is structural, so only data-state paints activation.
+      return `<li><button type="button" class="wa-axis-card" data-wa-pair="${pair.channelId}" data-state="${row}" data-wa-state="${state}" aria-label="${esc(label)}" title="${esc(label)}">${pairToken(pair,{tag:'span',axis:false})}<span class="wa-axis-text" aria-hidden="true"><strong>${esc(orgChannelName(pair.channelId))}</strong><small>${text(`Wa row ${row}`)}</small></span></button></li>`;
+    }).join('');
+    return `<h3 class="wa-subheading">${text('OC16 axis pillars')}</h3><ul class="wa-axis-grid" data-wa-pillars>${items}</ul>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${axisPillarsHtml()}${gapsHtml()}</section>`;
   }
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
   const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
   /** Fixed org highlight marks the nine organizing-axis channels only; department role stays structural. */
   const axisClass = pair => pair.axisTier ? 'is-axis' : '';
-  function pairToken(pair, { tag = 'button' } = {}) {
+  function pairToken(pair, { tag = 'button', axis = true } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
     const [leftGate, rightGate] = pair.displayGates;
     const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
     const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
     // Fixed highlight marks the nine organizing-axis channels only; department role never paints a token.
-    const roleClass = axisClass(pair);
+    const roleClass = axis ? axisClass(pair) : '';
     const ends = pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge);
     if (tag === 'span') {
       return `<span class="wa-pair-token ${roleClass}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
@@ -246,7 +260,7 @@ export function mountWa(container, options = {}) {
   }
   function load(snapshot) {
     assertWaSnapshot(snapshot);operation++;version++;composer?.close();layerClose?.();draft=clone(snapshot);
-    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;remember(draft.organizationId);schedule();
+    dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;gapsExpanded=false;remember(draft.organizationId);schedule();
   }
   function escapeTitlePattern(value) {
     return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -423,6 +437,7 @@ export function mountWa(container, options = {}) {
     }
     const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
+      if(node.hasAttribute('data-wa-gaps-toggle')){node.focus({preventScroll:true});gapsExpanded=!gapsExpanded;render();return;}
       if(node.dataset.waGate){node.focus({preventScroll:true});showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
       if(node.dataset.waPairOpen){showDetail({type:'pair',id:node.dataset.waPairOpen});return;}
       if(node.dataset.waPair){node.focus({preventScroll:true});showDetail({type:'pair',id:node.dataset.waPair});return;}
@@ -438,7 +453,7 @@ export function mountWa(container, options = {}) {
         case 'save':await save();break;
         case 'open':await archives();break;
         case 'retry':schedule();break;
-        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
+        case 'new':{const current=version;if(!dirty||await confirmOperation(t('Wa discard changes?'))){if(!disposed&&current===version){const token=++operation;version++;const next=await createNumberedDraft();if(disposed||token!==operation)break;draft=next;dirty=false;notice='';errorText='';selectedGroup=null;includeAlpha=false;focusMember=null;gapsExpanded=false;try{storage?.removeItem(LAST_ORGANIZATION);}catch{}schedule();}}break;}
       }
     }catch(error){if(!disposed){fail(error);render();}}
   }
