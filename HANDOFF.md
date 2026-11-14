@@ -55,4 +55,14 @@
 - 功能代码提交：`3f9f0486` · `feat(wa): expand organization channels and integrate business readings`。
 - 本文件单独作为交接提交保存，使上述代码提交可精确追溯。
 - 同步目标：`origin/feature/organization-channels-issue57`；收尾需核对远端分支与本地HEAD一致，具体交接提交SHA与推送结果见本轮最终交付。
-- 9961、main和正式部署均不属于本轮同步目标。
+- main和正式部署不属于本轮同步目标。
+
+## 后续用户授权：更新本机9961（2026-11-14）
+
+用户明确要求将本功能版安装到9961，以使用原来已配置的团队组织。已构建desktop模式并安装代码提交`b9db7466`对应程序，服务实际返回`index-7qPggcD3.js`及`index-DUsek57P.css`，字节校验与本次desktop构建完全一致，健康接口正常。
+
+- 人物数量更新前后均17，passwordRequired均false；SQLite完整性ok。数据库已通过online backup备份，未替换数据库、配置或后端，未操作浏览器localStorage/IndexedDB。
+- 团队和组织存储代码、模型与旧安装逐字节一致；用户应继续使用原浏览器、原地址，不迁移origin。
+- 回滚资产：本机`archive/backups/rollback-before-b9db7466-9961-20261114-204615/`，含SQLite快照、旧程序和更新报告，不入Git。
+- 首次LaunchAgent bootstrap返回5，已自动回退并恢复健康服务；随后保留运行中的相同后端，仅切换静态dist与src目录，成功验证实际served index/JS/CSS。原字体及旧hash资源保留以支持已打开页面刷新。
+- 未读取人物档案内容，未读取或修改用户浏览器团队、组织记录；不宣称已经逐条验收用户原有组织。请用户刷新9961后使用现有组织验收。
