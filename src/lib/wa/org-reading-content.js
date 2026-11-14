@@ -5,9 +5,11 @@
  * - content-data.json — the frozen BG5 Wa catalog (shared channel knowledge, reviewed elsewhere);
  * - the department-positioning copy registered in org-role-readings.js.
  *
- * Delivery shape from the content author is locale-first:
- *   { 'zh-CN': { channels:[{id,departmentId,centralAxis,intro,application,organizationRole?,source,role?}],
+ * The delivery shape from the content author is locale-first:
+ *   { 'zh-CN': { channels:[{id,name,departmentId,centralAxis,intro,application,organizationRole?,source,role?}],
  *                gates:[{gate,role,context,intro,application,source}] }, 'zh-Hant': …, en: … }
+ * `name` is the textbook channel title ("个人36种商业优势/技能") and is the organization page's only
+ * channel name; it never feeds the shared vocabulary used by the other pages.
  * Each locale module below exports the same prose keyed by channel id / gate number.
  * `source`, `notes`, `departmentId` and `centralAxis` are provenance/routing metadata for the
  * maintainer and are intentionally not stored or rendered: the catalog owns department and axis identity.
@@ -38,24 +40,28 @@ function normalizeEntry(entry, { withRole = false } = {}) {
 }
 
 function indexSource(source) {
-  const channels = {}, gates = {};
+  const channels = {}, gates = {}, names = {};
   const channelEntries = Array.isArray(source?.channels) ? source.channels
     : Object.entries(source?.channels ?? {}).map(([id, entry]) => ({ ...entry, id }));
   const gateEntries = Array.isArray(source?.gates) ? source.gates
     : Object.entries(source?.gates ?? {}).map(([gate, entry]) => ({ ...entry, gate }));
   for (const entry of channelEntries) {
     const key = text(entry?.id);
-    if (key && !channels[key]) channels[key] = normalizeEntry(entry, { withRole: true });
+    if (key && !channels[key]) {
+      channels[key] = normalizeEntry(entry, { withRole: true });
+      const name = text(entry?.name);
+      if (name) names[key] = name;
+    }
   }
   for (const entry of gateEntries) {
     const gate = Number(entry?.gate);
     if (Number.isInteger(gate) && !gates[gate]) gates[gate] = normalizeEntry(entry, { withRole: true });
   }
-  return { channels, gates };
+  return { channels, gates, names };
 }
 
 const TABLES = Object.fromEntries(SUPPORTED_LOCALES.map(locale => [locale,
-  SOURCES[locale] ? indexSource(SOURCES[locale]) : { channels: {}, gates: {} }]));
+  SOURCES[locale] ? indexSource(SOURCES[locale]) : { channels: {}, gates: {}, names: {} }]));
 
 const deepFreeze = value => {
   if (value && typeof value === 'object') {
@@ -68,7 +74,8 @@ const deepFreeze = value => {
 /** Read-only, locale-indexed tables; frozen so presentation code cannot mutate the copy. */
 export const ORG_READING_CONTENT = deepFreeze({
   channels: Object.fromEntries(Object.entries(TABLES).map(([locale, table]) => [locale, table.channels])),
-  gates: Object.fromEntries(Object.entries(TABLES).map(([locale, table]) => [locale, table.gates]))
+  gates: Object.fromEntries(Object.entries(TABLES).map(([locale, table]) => [locale, table.gates])),
+  names: Object.fromEntries(Object.entries(TABLES).map(([locale, table]) => [locale, table.names]))
 });
 
 export const ORG_READING_LOCALES = SUPPORTED_LOCALES;
@@ -82,4 +89,10 @@ export function readOrgChannelBody(channelId, locale) {
 export function readOrgGateBody(gate, locale) {
   if (!SUPPORTED_LOCALES.includes(locale)) return null;
   return ORG_READING_CONTENT.gates[locale]?.[String(Number(gate))] ?? null;
+}
+
+/** Textbook channel title for the organization page only; null when the locale has no title. */
+export function readOrgChannelName(channelId, locale) {
+  if (!SUPPORTED_LOCALES.includes(locale)) return null;
+  return ORG_READING_CONTENT.names[locale]?.[channelId] ?? null;
 }

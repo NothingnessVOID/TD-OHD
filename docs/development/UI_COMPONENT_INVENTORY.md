@@ -132,9 +132,15 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 `oc16-analysis.js` 的 `coverage()` 覆盖全部 32 条通道；新增 `axis` 子集统计（9 条通道 / 18 个闸门），与部门、四支柱共用同一次激活提取。既有 `collectPair`、`coreWa`、Penta 范围逻辑不改。
 
-`wa-diagram.js` 仍是同一套 tube / chip / dot / focus SVG，只是把六行换成九行（`ROW_HEIGHT` 84，总高与原来接近）。标题列宽 104px、左闸门 chip 从 x≥104 起、右 chip 至 SVG 右缘，标题名按 19→17→16→15px 自适应，tier/state 最多两行；chip 现按可用宽度换行（必要时加连字符断词），不再越出画板或压到标题。点击行标题或管道都进入该通道详情，九行标题统一使用 `channelName()`。
+`wa-diagram.js` 仍是同一套 tube / chip / dot / focus SVG，只是把六行换成九行（`ROW_HEIGHT` 84，总高与原来接近）。标题列宽 104px、左闸门 chip 从 x≥104 起、右 chip 至 SVG 右缘，标题名按 19→17→16→15px 自适应，tier/state 最多两行；chip 现按可用宽度换行（必要时加连字符断词），不再越出画板或压到标题。点击行标题或管道都进入该通道详情，九行标题统一走 `orgChannelName()`。
 
-详情层（`wa-detail-content.js`）为全部 32 条通道提供独立介绍；部门详情仍以显式 primary 通道与部门同页，其余通道作为支持行列出。`waChannelTitle()` 一律走统一通道词汇，部门定位文案只留在部门信息里，不再冒充通道名称。部门相关跳转、闸门详情跳转都用 `department.primaryChannelId`，不用 `pairs[0]`。
+端点是唯一顺序：每个通道的两端都按网站原目录 `src/lib/human-design/catalog.js` 的 `CHANNELS.gates` 顺序显示（该目录全部为升序端点，如 42–53 左 42 右 53、2–14 左 2 右 14）。`oc16-catalog.js` 不再保存第二套展示顺序，pair 的 `displayGates` 直接取该目录，左栏九行、右栏 32 行、详情端点与支持行、相关跳转标题、aria 标签和残留的 `managementMechanism` 数据同源，因此不会出现同一通道在一处 53–42、另一处 42–53。稳定 ID 仍是升序 `gates.join('-')`，部门内行顺序仍按教材相对顺序。
+
+固定高亮只属于左轴九条：通道标识（`.wa-pair-token`）用 `axisTier` 加 `is-axis`，六条部门 primary 与人事 44–26 不再自带固定高亮（`.wa-pair-token.is-core` 已移除）。部门 primary 仍决定部门详情跳转，`role` 仍驱动详情里的 core / personnel / support 文案，视觉不再参与角色推导。组织概览的「四大支柱」整块已移除（`mechanismHtml()`、四个 pillar 卡片样式与其响应式规则一并删除）；`oc16-analysis.js` 的 `managementMechanism` 输出继续保留给既有消费者。
+
+详情层（`wa-detail-content.js`）为全部 32 条通道提供独立介绍；部门详情仍以显式 primary 通道与部门同页，其余通道作为支持行列出。`waChannelTitle()` 一律走组织专用名称接口，部门定位文案只留在部门信息里，不再冒充通道名称。部门相关跳转、闸门详情跳转都用 `department.primaryChannelId`，不用 `pairs[0]`。
+
+通道名称只有一个来源：用户教材《个人 36 种商业优势／技能》的 36 条标题。三语模块 `org-reading-content.{zh-CN,zh-Hant,en}.js` 的每个 channel 条目带 `name`（简中取括号前原名短名，如 13–33 记录、42–53 成熟、21–45 金钱线、37–40 社区/契约；繁中与英文为同一标题的翻译，英文沿用教材自带英文名），`org-reading-content.js` 索引进 `names` 表并由 `readOrgChannelName()` 暴露，`orgChannelName()` 优先读取并在缺省时才回退统一词汇（回退时去掉「通道」后缀）。左栏只显示短名、右栏与详情用同一短名，全站 `src/lib/vocabulary.js` 的普通通道词汇不变。
 
 正文分三层，数据与渲染分离：`org-reading-content.{zh-CN,zh-Hant,en}.js` 保存组织专属整合正文（交付稿：`组织页面整合正文-20261114.json` 及三语 `…-locales.json`；`source`/`notes`/`departmentId`/`centralAxis` 元数据不入源码，部门与轴身份由 catalog 拥有），`org-role-readings.js` 负责读取与优先级：整合正文 → 既有部门定位正文 → 共享 Wa 摘录。闸门同理：12 个新组织角色（1 创造、2 协调、5 可靠度、7 规划、8 公共关系、13 愿景、14 容量、15 文化、29 承诺、31 行政管理、33 会计与归档、46 发现）用整合正文；原 12 个组织闸门沿用既有角色与正文；其余 40 个闸门在组织详情里引用 `src/lib/content.js` 的 `GATE_DESCRIPTIONS` 做一套普通介绍，不复制资料、不加商业解释，也不用带 lens 的共享闸门阅读器。所有组织正文只在组织页使用，普通出生图/知识库资料不变。
 
@@ -142,7 +148,7 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
 
-PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
+PR #29 布局合并：配置区默认展开，可收起为一行摘要；chip 内直接 ×移除、虚线「＋」添加，组名在卡片标题内联编辑。查看范围使用页面级分段按钮（`[data-scope-option]`）。概览合并四支柱与「尚未激活的闸门」（Issue 57 起四大支柱块整块移除，概览只留统计与未激活闸门）。部门卡片默认展开为紧凑通道行（`.wa-channel-row`：通道、两端闸门 + 成员编号、完整/一端/未激活状态），收起后回到 `.wa-pair-token` 标记条。图下成员图例可点选（`[data-member-focus]`），仅在 DOM 上高亮该成员激活的闸门与通道行，不改计算或范围。旧 `renderChannelCards()` 仍保留供详情复用。详见 [WA-OC16-ROUND3-UI.md](WA-OC16-ROUND3-UI.md)。
 
 ## 全站 UI 统一（2026-10-14，design/unified-ui）
 

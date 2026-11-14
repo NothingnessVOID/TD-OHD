@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { OC16_AXIS, OC16_AXIS_GATE_TOTAL, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_PRIMARY_CHANNEL_IDS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../src/lib/wa/oc16-catalog.js';
 import { analyzeOC16, prepareWaPreview, scopeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { analyzeWa, collectPair } from '../src/lib/wa/analysis.js';
+import { CHANNELS } from '../src/lib/human-design/catalog.js';
 import { extractTeamActivations } from '../src/lib/human-design/team-activation.js';
 import { chart, fixture } from './helpers/wa-fixtures.js';
 
@@ -30,14 +31,19 @@ const providersFor = snapshot => {
 };
 
 test('catalog partitions 32 channels / 64 gates across six departments with explicit primaries and a nine-channel axis', () => {
+  // Textbook row order per department. Endpoint order is never stored here: it comes from the site catalog.
   const expected = {
-    management: [['21-45', [45, 21]], ['32-54', [54, 32]], ['26-44', [44, 26]], ['19-49', [19, 49]], ['37-40', [37, 40]]],
-    competition: [['25-51', [51, 25]], ['10-34', [10, 34]]],
-    direction: [['2-14', [14, 2]], ['1-8', [8, 1]], ['24-61', [61, 24]], ['23-43', [43, 23]]],
-    interaction: [['42-53', [53, 42]], ['29-46', [29, 46]], ['13-33', [13, 33]], ['6-59', [59, 6]], ['47-64', [64, 47]], ['11-56', [11, 56]], ['35-36', [35, 36]], ['30-41', [30, 41]]],
-    logic: [['9-52', [9, 52]], ['5-15', [5, 15]], ['7-31', [7, 31]], ['27-50', [27, 50]], ['4-63', [63, 4]], ['17-62', [17, 62]], ['16-48', [48, 16]], ['18-58', [18, 58]]],
-    innovation: [['3-60', [3, 60]], ['28-38', [38, 28]], ['20-57', [57, 20]], ['39-55', [39, 55]], ['12-22', [22, 12]]]
+    management: ['21-45', '32-54', '26-44', '19-49', '37-40'],
+    competition: ['25-51', '10-34'],
+    direction: ['2-14', '24-61', '23-43', '1-8'],
+    interaction: ['6-59', '47-64', '11-56', '35-36', '30-41', '42-53', '29-46', '13-33'],
+    logic: ['27-50', '4-63', '17-62', '16-48', '18-58', '9-52', '5-15', '7-31'],
+    innovation: ['3-60', '28-38', '20-57', '39-55', '12-22']
   };
+  /** The organization page shows the two ends exactly as src/lib/human-design/catalog.js lists them. */
+  const catalogRow = id => CHANNELS.find(channel => channel.gates.join('-') === id);
+  const catalogGates = id => [...catalogRow(id).gates];
+  for (const row of CHANNELS) assert.deepEqual(row.gates, [...row.gates].sort((a, b) => a - b));
   const axisIds = new Set(['7-31', '1-8', '13-33', '5-15', '2-14', '29-46', '9-52', '3-60', '42-53']);
   assert.equal(OC16_DEPARTMENTS.length, 6);
   const all = OC16_DEPARTMENTS.flatMap(dept => dept.pairs);
@@ -53,16 +59,17 @@ test('catalog partitions 32 channels / 64 gates across six departments with expl
   assert.deepEqual([...OC16_PRIMARY_CHANNEL_IDS], ['21-45', '25-51', '2-14', '6-59', '27-50', '3-60']);
   for (const dept of OC16_DEPARTMENTS) {
     assert.equal(dept.nameKey, `OC16 ${dept.id}`);
-    const textbook = expected[dept.id].map(([id]) => id);
+    const textbook = expected[dept.id];
     const ordered = [...textbook.filter(id => axisIds.has(id)), ...textbook.filter(id => !axisIds.has(id))];
     // Display order only: axis channels pinned first, textbook relative order kept on both sides.
     assert.deepEqual(dept.pairs.map(pair => pair.channelId), ordered);
-    assert.deepEqual(dept.displayPairs, ordered.map(id => expected[dept.id].find(([pairId]) => pairId === id)[1]));
+    assert.deepEqual(dept.displayPairs, ordered.map(catalogGates));
     const primary = dept.pairs.filter(pair => pair.role === 'core');
     assert.equal(primary.length, 1);
     assert.equal(primary[0].channelId, dept.primaryChannelId);
     for (const pair of dept.pairs) {
-      assert.deepEqual(pair.displayGates, expected[dept.id].find(([id]) => id === pair.channelId)[1]);
+      // Endpoint display order is the website catalog order, in every column and every detail sheet.
+      assert.deepEqual(pair.displayGates, catalogGates(pair.channelId));
       assert.deepEqual(pair.gates, [...pair.displayGates].sort((a, b) => a - b));
       assert.equal(pair.channelId, pair.gates.join('-'));
       assert.equal(pair.departmentId, dept.id);
@@ -75,10 +82,10 @@ test('catalog partitions 32 channels / 64 gates across six departments with expl
     ['lower', '9-52'], ['lower', '3-60'], ['lower', '42-53']]);
   assert.equal(OC16_AXIS_PAIR_TOTAL, 9);
   assert.equal(OC16_AXIS_GATE_TOTAL, 18);
-  // The axis keeps its own endpoint reading order; department rows keep the textbook order.
-  assert.deepEqual(OC16_AXIS.map(row => row.displayGates), [[7, 31], [1, 8], [13, 33], [5, 15], [2, 14],
-    [29, 46], [9, 52], [3, 60], [42, 53]]);
-  assert.deepEqual(OC16_AXIS.find(row => row.channelId === '1-8').pair.displayGates, [8, 1]);
+  // The axis rows share the same catalog records, so the left column reads the same endpoint order.
+  assert.deepEqual(OC16_AXIS.map(row => row.displayGates), OC16_AXIS.map(row => catalogGates(row.channelId)));
+  assert.deepEqual(OC16_AXIS.find(row => row.channelId === '1-8').pair.displayGates, [1, 8]);
+  assert.deepEqual(OC16_AXIS.find(row => row.channelId === '42-53').pair.displayGates, [42, 53]);
   assert.equal(new Set(OC16_AXIS.flatMap(row => row.pair.gates)).size, 18);
   for (const row of OC16_AXIS) {
     assert.equal(row.pair.channelId, row.channelId);
@@ -86,8 +93,8 @@ test('catalog partitions 32 channels / 64 gates across six departments with expl
     assert.ok(all.includes(row.pair));
   }
   assert.deepEqual(WA_MANAGEMENT_MECHANISM.map(({ id, channelId, displayGates, nameKey }) => [id, channelId, [...displayGates], nameKey]), [
-    ['management', '21-45', [45, 21], 'OC16 management'],
-    ['personnel', '26-44', [44, 26], 'OC16 personnel']
+    ['management', '21-45', [21, 45], 'OC16 management'],
+    ['personnel', '26-44', [26, 44], 'OC16 personnel']
   ]);
   assert.ok(Object.isFrozen(OC16_DEPARTMENTS) && Object.isFrozen(OC16_AXIS) && Object.isFrozen(WA_MANAGEMENT_MECHANISM));
 });

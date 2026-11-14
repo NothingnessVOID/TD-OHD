@@ -20,7 +20,7 @@ import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
-import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
+import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
@@ -99,23 +99,6 @@ export function mountWa(container, options = {}) {
     const ready = known();
     return `<div><dt>${text(label)}</dt><dd ${attribute}>${ready?value:'—'}${total?` <small>/ ${total}</small>`:''}</dd>${total?`<span class="wa-meter" aria-hidden="true"><i style="width:${ready?percent:0}%"></i></span>`:''}</div>`;
   }
-  function mechanismHtml() {
-    // Same card chrome as before; glyph is department pairToken (circles + half-lit bridge), not split-capsule / channel-row.
-    return `<h3 class="wa-subheading">${text('OC16 management mechanism')}</h3><div class="wa-pillars wa-mechanism">${WA_MANAGEMENT_MECHANISM.map(item => {
-      const pair = pairs.find(row => row.channelId === item.channelId) || {
-        channelId: item.channelId, displayGates: item.displayGates, departmentId: 'management',
-        role: item.id === 'personnel' ? 'personnel' : 'core',
-        gates: Object.freeze([...item.displayGates].sort((a, b) => a - b))
-      };
-      const measured = known() ? result.pairs.find(row => row.channelId === item.channelId) : null;
-      const complete = Boolean(measured && measured.missingGates.length === 0);
-      const state = !known() ? 'unknown' : complete ? 'complete' : measured?.status === 'hanging' ? 'partial' : 'none';
-      const [leftGate, rightGate] = pair.displayGates;
-      const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
-      const stateLabel = state === 'complete' ? 'Wa legend active' : state === 'partial' ? 'Wa row partial' : state === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
-      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="mechanism-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${state}" data-lit="${lit}">${pairToken(pair, { tag: 'span' })}<span class="wa-pillar-text"><strong>${text(item.nameKey)}</strong><small>${esc(item.displayGates.map(gate => orgGateName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
-    }).join('')}</div>`;
-  }
   function gapsHtml() {
     if (!known() || !result.memberIds.length) return '';
     const rows = OC16_DEPARTMENTS.map(department => ({ department, gates:department.pairs.flatMap(pair => pair.displayGates).filter(gate => !covered(gate)) })).filter(row => row.gates.length);
@@ -126,18 +109,21 @@ export function mountWa(container, options = {}) {
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${mechanismHtml()}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${gapsHtml()}</section>`;
   }
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
   const rowState = state => state === 'unknown' ? 'unknown' : ['selfComplete','crossMemberOnly','both'].includes(state) ? 'complete' : state === 'hanging' ? 'partial' : 'none';
+  /** Fixed org highlight marks the nine organizing-axis channels only; department role stays structural. */
+  const axisClass = pair => pair.axisTier ? 'is-axis' : '';
   function pairToken(pair, { tag = 'button' } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
     const [leftGate, rightGate] = pair.displayGates;
     const lit = !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
     const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
-    const roleClass = pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':'';
+    // Fixed highlight marks the nine organizing-axis channels only; department role never paints a token.
+    const roleClass = axisClass(pair);
     const ends = pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge);
     if (tag === 'span') {
       return `<span class="wa-pair-token ${roleClass}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
@@ -150,7 +136,7 @@ export function mountWa(container, options = {}) {
       const ids = holders(pair, gate);
       return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${orgGateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
     };
-    return `<li class="wa-channel-row ${pair.role==='core'?'is-core':pair.role==='personnel'?'is-personnel':''}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
+    return `<li class="wa-channel-row ${axisClass(pair)}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
   function departmentHtml(department) {
     const summary = known() ? result.departments.find(row=>row.id===department.id) : null;

@@ -7,7 +7,8 @@ import {WA_READING_PARAGRAPHS,presentWaReading,readWaReadingExcerpt} from '../sr
 import {createWaDetailRenderer,renderWaReading} from '../src/views/wa-detail-content.js';
 import {OC16_DEPARTMENTS} from '../src/lib/wa/oc16-catalog.js';
 import {setLocale,t} from '../src/lib/i18n.js';
-import {orgDepartmentIdForChannel,orgGateName} from '../src/lib/wa/org-role-readings.js';
+import {orgDepartmentIdForChannel,orgChannelName,orgGateName} from '../src/lib/wa/org-role-readings.js';
+import {channelName} from '../src/lib/vocabulary.js';
 import {renderProse} from '../src/lib/knowledge/detail-renderer.js';
 const forbidden=/覆盖|覆蓋|门对|門對|不代表正式|仅供参考|僅供參考|尚未证实|尚未證實|仅实验性|僅實驗性|\bcoverage\b|\bpairs?\b|for reference only|not officially/i;
 
@@ -72,6 +73,27 @@ test('organization channels and gates keep one reading surface with explicit cat
     }
    }
   }
+ }
+});
+test('organization page reads the textbook channel titles and highlights only the nine axis channels',()=>{
+ const pairs=OC16_DEPARTMENTS.flatMap(department=>department.pairs);
+ const axis=pairs.filter(pair=>pair.axisTier);
+ // Fixed highlight is the nine organizing-axis channels; the other 23 rows carry no fixed highlight.
+ assert.deepEqual(axis.map(pair=>pair.channelId).sort(),['1-8','13-33','2-14','29-46','3-60','42-53','5-15','7-31','9-52']);
+ for(const locale of ['en','zh-CN','zh-Hant']){
+  setLocale(locale,{persist:false});
+  for(const pair of pairs){
+   const name=orgChannelName(pair.channelId);
+   assert.ok(name&&name!==pair.channelId,`${pair.channelId}/${locale}`);
+   // Organization titles are short textbook names, never the shared vocabulary's "通道" suffix.
+   assert.doesNotMatch(name,/通道$/);
+  }
+ }
+ // The shared Human Design vocabulary used by the other pages is untouched.
+ setLocale('zh-CN',{persist:false});
+ assert.equal(channelName([1,8]),'灵感通道');
+ for(const [id,name] of [['1-8','灵感'],['13-33','记录'],['42-53','成熟'],['2-14','钥匙保管者'],['7-31','领导力'],['21-45','金钱线'],['37-40','社区/契约']]){
+  assert.equal(orgChannelName(id),name,id);
  }
 });
 test('historical channel endpoint aliases keep their department after the catalog expands',()=>{

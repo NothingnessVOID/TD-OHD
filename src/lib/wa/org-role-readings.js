@@ -6,7 +6,7 @@
 import { getLocale, registerMessages, t } from '../i18n.js';
 import { channelName, gateName } from '../vocabulary.js';
 import { OC16_DEPARTMENTS, oc16Pair, oc16PairForGate } from './oc16-catalog.js';
-import { readOrgChannelBody, readOrgGateBody } from './org-reading-content.js';
+import { readOrgChannelBody, readOrgChannelName, readOrgGateBody } from './org-reading-content.js';
 
 const locales = ['zh-CN', 'zh-Hant', 'en'];
 
@@ -149,16 +149,6 @@ const channelIntros = {
   ]
 };
 
-const channelGateOrder = {
-  '45-21': [45, 21],
-  '51-25': [51, 25],
-  '2-14': [14, 2],
-  '59-6': [59, 6],
-  '27-50': [50, 27],
-  '3-60': [60, 3],
-  '26-44': [44, 26]
-};
-
 const uiMessages = {
   'Wa org role label': ['部门定位', '部門定位', 'Department role'],
   'Wa org channel reading': ['组织通道解读', '組織通道解讀', 'Organization channel reading'],
@@ -208,14 +198,18 @@ export function orgDepartmentIdForChannel(channelId) {
   return department?.id ?? null;
 }
 
-/** Organization channel name from unified vocabulary. Locales key some channels in the other gate order. */
+/** Organization channel name: the textbook title from the organization content modules.
+ * The unified vocabulary is only a defensive fallback, and its "通道" suffix is dropped here so the
+ * organization page never reads "灵感通道". Other pages keep their own vocabulary untouched. */
 export function orgChannelName(channelId, locale = getLocale()) {
   const pair = oc16Pair(channelId);
   if (!pair || !locales.includes(locale)) return '';
+  const textbook = readOrgChannelName(pair.channelId, locale);
+  if (textbook) return textbook;
   const ascending = pair.gates.join('-'), descending = [...pair.gates].reverse().join('-');
   for (const candidate of [ascending, descending]) {
     const name = channelName(candidate);
-    if (name && name !== candidate) return name;
+    if (name && name !== candidate) return name.replace(/通道$/, '');
   }
   return pair.displayGates.join('–');
 }
@@ -235,18 +229,24 @@ export function orgGateBody(gate, locale = getLocale()) {
   return body ? { gate: id, ...body } : null;
 }
 
+/** Shared pair record for a legacy reading-package id; package ids may use either gate order. */
+function pairForPackage(pack) {
+  if (typeof pack !== 'string') return null;
+  return oc16Pair(pack) ?? oc16Pair(pack.split('-').reverse().join('-'));
+}
+
 export function readOrgChannelReading(channelId, locale = getLocale()) {
   const pack = canonicalOrgChannelId(channelId);
   if (!pack || !locales.includes(locale)) return null;
   const departmentId = orgDepartmentIdForChannel(pack === '26-44' ? '26-44' : channelId);
-  const gates = channelGateOrder[pack];
-  if (!gates) return null;
+  const pair = pairForPackage(pack);
+  if (!pair) return null;
   return {
     channelId: pack,
     departmentId,
     roleKey: departmentId ? `OC16 org role ${departmentId}` : null,
     introKey: `OC16 org channel intro ${pack}`,
-    gates
+    gates: [...pair.displayGates]
   };
 }
 

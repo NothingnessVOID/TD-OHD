@@ -57,7 +57,8 @@ for (const [status, left, right, self, combinations] of [
   const html = renderer(result).renderPair('21-45');
   assert.match(html, new RegExp(`data-wa-state="${status}"`));
   assert.ok(html.includes(t(`Wa UI state ${status}`)));
-  assert.ok(html.indexOf('data-wa-endpoint="45"') < html.indexOf('data-wa-endpoint="21"'));
+  // Endpoint order follows the site catalog (ascending): 21 before 45.
+  assert.ok(html.indexOf('data-wa-endpoint="21"') < html.indexOf('data-wa-endpoint="45"'));
   for (const [gate, ids] of [[21, left], [45, right]]) {
     const section = endpoint(html, gate);
     for (const id of ['a', 'b', 'c']) assert.equal(section.includes(`data-wa-member="${id}"`), ids.includes(id));
