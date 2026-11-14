@@ -144,5 +144,12 @@
   "saveImage": "儲存圖片",
   "imageSaved": "已儲存 ✓",
   "imageUnavailable": "此處無法取得圖片",
-  "timelineHelp": "左右鍵：閘門變化 · 上下鍵：1 分鐘 · ＋／－：縮放"
+  "timelineHelp": "左右鍵：閘門變化 · 上下鍵：1 分鐘 · ＋／－：縮放",
+  "definitionRow": "分人狀態",
+  "definition1": "一分人",
+  "definition2": "二分人",
+  "definition3": "三分人",
+  "definition4": "四分人",
+  "definitionIs": "是",
+  "definitionIsNot": "不是"
 }

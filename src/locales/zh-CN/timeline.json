@@ -144,5 +144,12 @@
   "saveImage": "保存图片",
   "imageSaved": "已保存 ✓",
   "imageUnavailable": "此处无法获取图片",
-  "timelineHelp": "左右键：闸门变化 · 上下键：1 分钟 · ＋／－：缩放"
+  "timelineHelp": "左右键：闸门变化 · 上下键：1 分钟 · ＋／－：缩放",
+  "definitionRow": "分人状态",
+  "definition1": "一分人",
+  "definition2": "二分人",
+  "definition3": "三分人",
+  "definition4": "四分人",
+  "definitionIs": "是",
+  "definitionIsNot": "不是"
 }

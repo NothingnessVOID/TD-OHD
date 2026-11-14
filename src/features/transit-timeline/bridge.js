@@ -30,6 +30,26 @@ export function natalIslands(natal, channels = CHANNELS) {
   return components(channels.filter(channel => channel.gates.every(gate => gates.has(gate))));
 }
 
+/**
+ * Complete definition state of birth chart + effective transits.
+ *
+ * `count` is the number of connected components formed by complete channels in
+ * the combined gate set (0 = no definition, 1-4 = single to quadruple split).
+ * Hanging gates complete no channel, so they never form a component. Bridging
+ * and new detached islands are both covered: the components are recomputed
+ * from scratch, never derived from the natal island count. The natal chart
+ * itself is not rewritten.
+ */
+export function definitionState(natal, activeGates, channels = CHANNELS) {
+  const natalGroups = natalIslands(natal, channels);
+  const combined = new Set([...natal.gates.all, ...activeGates]);
+  const groups = components(channels.filter(channel => channel.gates.every(gate => combined.has(gate))));
+  const natalKeys = new Set(natalGroups.map(group => group.join(',')));
+  return { natalCount: natalGroups.length, count: groups.length, components: groups,
+    // Components that are not an unchanged natal island: merged or new islands.
+    changed: groups.filter(group => !natalKeys.has(group.join(','))) };
+}
+
 /** Each connected group merges its fixed natal islands into one island. */
 export function bridgedIslandCount(natalCount, connected) {
   return natalCount - connected.reduce((merged, group) => merged + Math.max(0, new Set(group).size - 1), 0);

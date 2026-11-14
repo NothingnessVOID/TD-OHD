@@ -1,10 +1,15 @@
 /** Graph derivation from discrete activations; no ephemeris import. */
 import { CHANNELS, CENTERS, GATES } from '../../lib/human-design/catalog.js';
 import { buildTransitGraph } from '../../lib/transit-graph.js';
-import { bridgeState, splitState } from './bridge.js';
+import { bridgeState, splitState, definitionState } from './bridge.js';
+
+/** Version of the derived definition-state row; part of every calculation request key. */
+export const DEFINITION_STATE_VERSION = 1;
 
 export function catalog() {
   return [
+    // Source is the final component count ("1"-"4") of birth chart + effective transits.
+    { key: 'definition:state', kind: 'definition', id: 'state', name: 'Definition state' },
     { key: 'bridge:natal', kind: 'bridge', id: 'natal', name: 'Natal definition bridge' },
     ...Object.entries(CENTERS).map(([id, center]) => ({ key: `center:${id}`, kind: 'center', id, name: center.name })),
     ...CHANNELS.map(channel => ({ key: `channel:${channel.gates.join('-')}`, kind: 'channel', id: channel.gates.join('-'), name: channel.name })),
@@ -34,6 +39,9 @@ export function stateAt(natal, activations, mode, planet = 'all') {
   // This row describes how current transits connect the fixed natal islands,
   // even when the bodygraph is displaying transit activations alone.
   const combinedGates = new Set([...natal.gates.all, ...Object.values(effective).filter(Boolean).map(value => value.gate)]);
+  // Complete final definition, independent of the bodygraph display mode, like the bridge row.
+  const definition = definitionState(natal, combinedGates);
+  if (definition.count > 0) states.set('definition:state', String(definition.count));
   const bridge = bridgeState(natal, combinedGates);
   if (bridge.connected.length) states.set('bridge:natal', JSON.stringify(bridge.connected));
   // A single natal island cannot be bridged, so the same first row reports

@@ -155,9 +155,10 @@ try {
   assert.equal(await page.locator(`${root} [data-field="zone"]`).evaluate(node => node.tagName), 'OUTPUT');
   await page.locator(`${root} .tl-advanced summary`).click();
   assert.deepEqual(await page.locator(`${root} [data-condition="kind"]`).first().locator('option').evaluateAll(nodes => nodes.map(node => node.value)),
-    ['center', 'channel', 'gate', 'line']);
-  assert.equal(await page.locator(`${root} .tl-row`).first().getAttribute('data-key'), 'bridge:natal');
-  assert.match(await page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first().innerText(), /2 → 1/);
+    ['center', 'channel', 'gate', 'line', 'definition']);
+  // The definition-state row replaces the bridge row on screen and labels the final count only.
+  assert.equal(await page.locator(`${root} .tl-row`).first().getAttribute('data-key'), 'definition:state');
+  assert.match(await page.locator(`${root} .tl-row[data-key="definition:state"] .tl-bar`).first().innerText(), /^[一二三四]分人$/);
   assert.equal(await page.locator(`${root} .tl-target-chips`).count(), 0);
   assert.match(await page.locator(`${root} [data-field="combine"]`).innerText(), /同时满足所有条件/);
 
@@ -191,7 +192,7 @@ try {
     !document.querySelector('#timeline-view .tl-navigation-gate'), null, { timeout: 5000 });
 
   await page.locator(`${root} .tl-advanced summary`).click();
-  const bridgeBar = page.locator(`${root} .tl-row[data-key="bridge:natal"] .tl-bar`).first();
+  const bridgeBar = page.locator(`${root} .tl-row[data-key="definition:state"] .tl-bar`).first();
   await bridgeBar.scrollIntoViewIfNeeded();
   const documentY = await page.evaluate(() => scrollY);
   await bridgeBar.click();

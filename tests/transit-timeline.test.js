@@ -65,7 +65,9 @@ test('birth state remains continuous and overlay and sky modes match the graph m
       ...[...model.activeGates].map(gate => [`gate:${gate}`, model.gateSource(gate)]),
       ...Object.values(sky).map(value => [`line:${value.gate}.${value.line}`, 'transit']),
       ...model.channels.map(channel => [`channel:${channel.gates.join('-')}`, model.channelSource(channel)]),
-      ...[...model.definedCenters].map(center => [`center:${center}`, mode === 'overlay' && model.natalCenters.has(center) ? 'natal' : 'transit'])
+      ...[...model.definedCenters].map(center => [`center:${center}`, mode === 'overlay' && model.natalCenters.has(center) ? 'natal' : 'transit']),
+      // Final definition of birth chart + transits: 57-20 and 10-20 form one component.
+      ['definition:state', '1']
     ]);
     assert.deepEqual(state, expected);
   }

@@ -1,0 +1,32 @@
+/* Manual copy fallback: the export text lives in a read-only textarea so it can
+   be long-pressed, selected and copied by hand. Colors and sizes only come from
+   Skin tokens and the shared --ui-* / --space-* / --radius-* scales. */
+.modal.manual-copy { max-width: 520px; }
+.manual-copy .operation-message { margin: 0 0 12px; }
+.manual-copy-text {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 176px;
+  max-height: 46dvh;
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  resize: vertical;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.manual-copy-text:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.manual-copy .modal-actions { margin: 0; }
+@media (--phone) {
+  .manual-copy-text { min-height: 148px; max-height: 40dvh; }
+}

@@ -1,5 +1,6 @@
 /** The header's share menu follows the visible view, not the last rendered chart. */
 import { formatChartDataExport } from './chart-data-export.js';
+import { copyFromButton, setButtonFeedback } from './clipboard.js';
 import { t } from './i18n.js';
 import { birthToParams, connectionUrl, shareUrl } from './share.js';
 import { fontCssForExport } from './font-export.js';
@@ -115,9 +116,24 @@ export async function saveViewImage(view) {
   downloadPng(await renderViewPng(view), `td-ohd-${view}.png`);
 }
 
-function feedback(button, message, reset) {
-  button.textContent = t(message);
-  setTimeout(() => { if (button.isConnected) button.textContent = t(reset); }, 2500);
+/** One copy path for the menu: shared helper, then keep focus in the header. */
+async function copyFromEntry(button, text, { success, reset }) {
+  const copied = await copyFromButton(button, text, { success, reset });
+  // Clicks inside the manual dialog dismiss the share menu (and the "more" menu
+  // that holds it), so restore focus to whatever of them is still on screen
+  // instead of letting the dialog drop it onto the body.
+  if (!copied) focusShareTrigger(button);
+  return copied;
+}
+
+function focusShareTrigger(button) {
+  const shareMenu = menu();
+  const candidates = [button, shareMenu?.querySelector('summary'), document.getElementById('more-toggle')];
+  for (const node of candidates) {
+    if (!node?.isConnected) continue;
+    node.focus({ preventScroll: true });
+    if (document.activeElement === node) return;
+  }
 }
 
 export function configureShareMenu(view, currentData, providers = {}) {
@@ -142,18 +158,19 @@ export function configureShareMenu(view, currentData, providers = {}) {
   if (copyDataAvailable) {
     document.getElementById('copy-data').addEventListener('click', async event => {
       const button = event.currentTarget;
-      const snapshot = view === 'chart' ? null : providers[view]?.();
-      if (view !== 'chart' && !snapshot) {
-        feedback(button, 'Transit data is not ready yet', 'Copy data');
-        return;
-      }
       try {
+        // The snapshot, the export text and the clipboard call all stay inside
+        // this click: nothing here awaits before the copy is attempted.
+        const snapshot = view === 'chart' ? null : providers[view]?.();
+        if (view !== 'chart' && !snapshot) {
+          setButtonFeedback(button, 'Transit data is not ready yet', 'Copy data');
+          return;
+        }
         // Deliberately pass only computed results, never the birth object.
         const text = formatChartDataExport({ chart, transit: snapshot?.activations, transitMoment: snapshot });
-        await navigator.clipboard.writeText(text);
-        feedback(button, 'Data copied ✓', 'Copy data');
+        await copyFromEntry(button, text, { success: 'Data copied ✓', reset: 'Copy data' });
       } catch {
-        feedback(button, 'Copy blocked — please try again', 'Copy data');
+        setButtonFeedback(button, 'Copy blocked — please try again', 'Copy data');
       }
     });
   }
@@ -162,19 +179,17 @@ export function configureShareMenu(view, currentData, providers = {}) {
     document.getElementById('share-chart').addEventListener('click', async event => {
       const button = event.currentTarget;
       try {
-        await navigator.clipboard.writeText(shareUrl(birth));
-        feedback(button, 'Link copied ✓', 'Copy chart link');
+        await copyFromEntry(button, shareUrl(birth), { success: 'Link copied ✓', reset: 'Copy chart link' });
       } catch {
-        feedback(button, 'Copy blocked — please try again', 'Copy chart link');
+        setButtonFeedback(button, 'Copy blocked — please try again', 'Copy chart link');
       }
     });
     document.getElementById('invite-compare').addEventListener('click', async event => {
       const button = event.currentTarget;
       try {
-        await navigator.clipboard.writeText(connectionUrl(birth));
-        feedback(button, 'Invite copied ✓', 'Invite to compare');
+        await copyFromEntry(button, connectionUrl(birth), { success: 'Invite copied ✓', reset: 'Invite to compare' });
       } catch {
-        feedback(button, 'Copy blocked — please try again', 'Invite to compare');
+        setButtonFeedback(button, 'Copy blocked — please try again', 'Invite to compare');
       }
     });
   }
@@ -200,9 +215,9 @@ export function configureShareMenu(view, currentData, providers = {}) {
           downloadPng(await renderLocalChartPng(), 'human-design-chart.png');
         }
       }
-      feedback(button, 'Saved ✓', 'Save image');
+      setButtonFeedback(button, 'Saved ✓', 'Save image');
     } catch {
-      feedback(button, 'Image unavailable here', 'Save image');
+      setButtonFeedback(button, 'Image unavailable here', 'Save image');
     } finally {
       button.disabled = false;
     }

@@ -245,7 +245,7 @@ export function mountWa(container, options = {}) {
     composer=openWaMemberPicker({snapshot:draft,peopleStore:people,listTeams:teams,target,mode,
       validate:()=>!disposed&&!saving&&draft===original&&version===inputVersion&&JSON.stringify(draft)===identity,
       onCommit:(next,context)=>{if(!context.isCurrent())return false;acceptConfiguration(next,context.annotationChanges);return true;},
-      onClose:()=>{composer=null;focusTarget(target);}
+      onClose:()=>{composer=null;focusTarget(target);queueAutoSave();}
     });
   }
   async function removeAssignment(id) {
@@ -291,8 +291,10 @@ export function mountWa(container, options = {}) {
   function queueAutoSave() {
     if (disposed || !dirty) return;
     clearTimeout(autoSaveTimer);
+    // A background save must never finish while a picker is open: replacing the draft makes the open selection stale.
+    if (composer) return;
     autoSaveTimer = setTimeout(() => {
-      if (!disposed && dirty && !saving) save({ silent: true });
+      if (!disposed && dirty && !saving && !composer) save({ silent: true });
     }, 700);
   }
   async function save({ silent = false } = {}) {

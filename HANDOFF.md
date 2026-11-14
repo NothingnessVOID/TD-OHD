@@ -1,5 +1,49 @@
 # TD-OHD 前端重设计 · 工作交接文档
 
+> ## 当前状态 · 2026-11-14 同步 origin/main
+>
+> **分支 `design/sheet-column-v1` 已把 `origin/main` 合入本设计分支（本次整合）。**
+>
+> - **同步对象**：`origin/main` = `66c21315`（PR #56，timeline definition glow），
+>   上次合并点 merge-base = `12b9705`；本分支同步前 tip = `bf4c4ca4`
+>   （`bf4c4ca4` 与 `origin/design/sheet-column-v1` 一致）。主线这 75 个提交带来的
+>   dream 视图、共享时间控件（`lib/transit-time-control.js`）、clipboard、
+>   `compositePalette`、人体图 popover/highlight、timeline definition glow 全部保留。
+> - **冲突只有 4 处**，处理方式：
+>   1. `src/locales/zh-CN/index.js` / `src/locales/zh-Hant/index.js`：`messages` 取两侧并集
+>      —— 本分支的 `panelGraphicsMessages` + 主线的 `dreamMessages` / `pickerMessages` /
+>      `clipboardMessages`，`contexts[...]` 仍在最后覆盖；`vocabulary` 取主线的 dream 访问器。
+>   2. `src/locales/ui-contexts.json`：`en` 尾部两侧都是新增键，取并集（本分支 Gene Keys /
+>      Variable / authority / Blank 9 键 + 主线 29 条 dream 文案，`en` 共 158 键）；
+>      主线的连接说明改写保留。zh-CN / zh-Hant 块两侧一致，无改动。
+>   3. `HANDOFF.md`：add/add，保留本设计分支交接为主体（不用主线的睡眠图交接覆盖），
+>      并在顶部补本节同步记录。
+> - **自动合并后人工复核过**：`index.html`（睡眠图入口 + `#transit-time-host`）、
+>   `src/main.js`（dream 视图接线 + clipboard.css）、`src/styles.css`（人体图 popover /
+>   highlight / 导航 min-width）、`src/lib/skin-registry.js`（`compositePalette` 与三套
+>   direction 皮肤共存）、`.gitignore`（`/test-results/`）—— 两侧改动都在。
+> - **环境**：本机默认 Node 26 与 Hana 自带 Node 24 都无法加载已签名的 rollup 原生模块，
+>   改用官方 Node **v24.22.3**（`npm exec --package=node@24`，不改 `package-lock.json`）；
+>   .NET SDK 10.0.401（`~/.dotnet`）。隔离工作树 `worktrees/sheet-column-v1-merge-main`
+>   内 `npm ci` + `npm run build:engine` + `npm run build:pages` 均成功。
+> - **验证**：本地化 5 个测试文件 34/34 通过；相关单测（appearance / panel-graphics /
+>   dream / timeline-definition / clipboard / transit-time-control）84 项中 83 通过，
+>   唯一失败 `tests/knowledge-polish.test.js` 的历史 CSS 投影断言为**合入前就存在**
+>   （用未合并的 `bf4c4ca4` 版 `src/styles.css` 复现同一失败）；`build:pages` 成功；
+>   5226 隔离预览上的浏览器 probe 39/39 通过、无 console/pageerror（卡片右栏六卡与桌面
+>   pair 行 / 手机单列、轮盘环闸门点击详情与贴顶高度、六套 direction 皮肤、睡眠图入口与
+>   共享时间控件、timeline）。完整回归、全 Skin × 全宽度矩阵未跑。
+> - **原工作区未提交内容**：`sheet-v1-probe.mjs`、`sheet-v1-shots.mjs` 两个已跟踪改动，
+>   以及 `definition-design.html`、`design-shot.mjs`、`final-shots.mjs`、
+>   `find-circuit-profile.mjs`、`find-rich-profile.mjs`、`layout-diag.mjs`、
+>   `public/assets/`、`wheel-debug.html`、`wheel-fit-probe.mjs` 等未跟踪文件，
+>   整合前已整体备份到
+>   `TD-OHD/archive/backups/sheet-column-merge-main-20261114-190925/`
+>   （含 `git-status.txt`、`tracked-worktree.diff`、`sha256.txt`、`heads-baseline.txt`、
+>   `node_modules-symlink.txt`），本次合并不提交、不丢弃它们。
+> - **预览**：隔离预览只绑 loopback `http://127.0.0.1:5226/`；用户 5216 与 9961 均未触碰，
+>   部署 / PR / main push 未做。
+
 > 写给接手的 agent。本文档覆盖：项目状态、分支结构、已完成工作、待办事项、
 > 用户的硬性要求与设计偏好、外部扒取资产的位置、环境与工具注意事项。
 > 交接时间：2026-10-26 凌晨。上一任执行者：butter（毛毛）。

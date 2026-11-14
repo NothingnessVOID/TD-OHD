@@ -13,7 +13,7 @@ function withBrowser(body) {
 }
 test('Skin owns mode; Center Palette and fonts remain independent; compatibility APIs are mirrors', () => withBrowser(({attributes,storage}) => {
   initAppearance();
-  assert.deepEqual(getAppearance(), {skin:'default-light',skinMode:'manual',centerPalette:'classic',centerPaletteMode:'skin-default',theme:'light',siteSkin:'default-light',humanDesignSkin:'classic'});
+  assert.deepEqual(getAppearance(), {skin:'default-light',skinMode:'auto',centerPalette:'classic',centerPaletteMode:'skin-default',theme:'light',siteSkin:'default-light',humanDesignSkin:'classic'});
   attributes.set('data-font','reader-choice');
   setCenterPalette('chakra'); setSkin('default-dark');
   assert.equal(getAppearance().centerPalette,'chakra');
@@ -39,3 +39,31 @@ test('appearance changes notify graph subscribers once; no-op selection does not
 test('legacy dark mode chooses default-dark at startup', () => withBrowser(({storage}) => {
   storage.set('bodygraph-theme','dark'); initAppearance(); assert.equal(getAppearance().skin,'default-dark');
 }));
+test('a fresh profile starts on Auto while stored theme choices stay explicit', () => {
+  const old = Object.fromEntries(['document','window','localStorage'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis,key)]));
+  const run = (storage, matches) => {
+    const attributes = new Map(), store = new Map(Object.entries(storage)), listeners = new Set();
+    const media = { matches, addEventListener:(type,listener) => type === 'change' && listeners.add(listener), removeEventListener:(type,listener) => listeners.delete(listener) };
+    globalThis.document = { documentElement: { getAttribute:key => attributes.get(key), setAttribute:(key,value) => attributes.set(key,value), style:{ setProperty:() => {}, removeProperty:() => {} } } };
+    globalThis.window = { matchMedia: () => media };
+    globalThis.localStorage = { getItem:key => store.get(key), setItem:(key,value) => store.set(key,value) };
+    initAppearance();
+    return { attributes, store, flip: next => { media.matches = next; for (const listener of listeners) listener({ matches:next }); } };
+  };
+  try {
+    const fresh = run({}, true);
+    assert.deepEqual(getAppearance(), {skin:'default-dark',skinMode:'auto',centerPalette:'mineral',centerPaletteMode:'skin-default',theme:'dark',siteSkin:'default-dark',humanDesignSkin:'mineral'});
+    assert.equal(JSON.parse(fresh.store.get('td-ohd-appearance-v3')).skinMode,'auto');
+    fresh.flip(false);
+    assert.equal(getAppearance().skin,'default-light'); assert.equal(getAppearance().skinMode,'auto');
+    assert.equal(fresh.attributes.get('data-skin'),'default-light');
+    fresh.flip(true);
+    assert.equal(getAppearance().skin,'default-dark'); assert.equal(getAppearance().skinMode,'auto');
+    const stored = run({ 'td-ohd-appearance-v3':JSON.stringify({version:3,skinMode:'manual',skinId:'high-contrast',centerPalette:'mineral',centerPaletteMode:'skin-default'}) }, true);
+    assert.equal(getAppearance().skin,'high-contrast'); assert.equal(getAppearance().skinMode,'manual');
+    const legacy = run({ 'bodygraph-theme':'dark' }, false);
+    assert.equal(getAppearance().skin,'default-dark'); assert.equal(getAppearance().skinMode,'manual');
+  } finally {
+    for (const [key,descriptor] of Object.entries(old)) { if(descriptor) Object.defineProperty(globalThis,key,descriptor); else delete globalThis[key]; }
+  }
+});

@@ -29,6 +29,7 @@ import { renderChartView, setupPanelTabs, setupGraphViewToggle, rerenderBodygrap
 import { invalidateTransits, setupTransitView, renderTransits, refreshTransitLanguage, getCurrentTransitExportData } from './views/transits.js';
 import { invalidateConnection, refreshConnectionPeople, setupConnectionView, renderConnectionView, compareWithGuest, rerenderConnectionGraphs, refreshConnectionLanguage } from './views/connection.js';
 import { setupTeamView, renderTeamView, refreshTeamLanguage } from './views/team.js';
+import { setupDreamView, renderDreamView, refreshDreamLanguage, invalidateDream } from './views/dream.js';
 import { mountWa } from './views/wa.js';
 import { localMode, reportSaveFailure } from './lib/local-store.js';
 import { LOCALES, t, getLocale, setLocale, onLocaleChange, translatePage, setMessage, setHtmlMessage } from './lib/i18n.js';
@@ -39,6 +40,8 @@ import { setupAppearanceControls } from './lib/appearance-controls.js';
 import { onFontPreferenceChange } from './lib/font-preference.js';
 // Unified UI system last, so shared header/dialog/navigation rules win over feature CSS.
 import './styles/ui-system.css';
+// Manual-copy fallback surface; the module that renders it stays CSS-free for Node tests.
+import './styles/clipboard.css';
 
 // ==========================================
 // State
@@ -88,6 +91,7 @@ function setupLanguageSwitcher() {
     entryApi?.refreshLanguage();
     refreshConnectionLanguage();
     refreshTeamLanguage();
+    refreshDreamLanguage();
     waView?.refreshLanguage();
     refreshTransitLanguage();
     timelineView?.setLanguage(timelineLanguageOptions());
@@ -111,6 +115,7 @@ function refreshAppearanceGraphs() {
   if (currentData) {
     rerenderBodygraph();
     rerenderConnectionGraphs();
+    refreshDreamLanguage();
     if (!document.getElementById('transits-view').classList.contains('hidden')) renderTransits();
     timelineView?.refresh();
   }
@@ -123,7 +128,7 @@ function toggleTheme() {
 // ==========================================
 // Navigation
 // ==========================================
-const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'wa', 'library'];
+const VIEWS = ['chart', 'transits', 'connection', 'team', 'timeline', 'dream', 'wa', 'library'];
 
 function showView(view, { fromHistory = false } = {}) {
   if (!VIEWS.includes(view)) return;
@@ -171,6 +176,7 @@ function showView(view, { fromHistory = false } = {}) {
   if (view === 'team') renderTeamView();
   if (view === 'wa') waView?.render();
   if (view === 'timeline') timelineView?.activate();
+  if (view === 'dream') renderDreamView();
   if (view === 'library') {
     renderReferenceView();
   }
@@ -445,6 +451,7 @@ async function init() {
   setupTransitView();
   setupConnectionView();
   setupTeamView();
+  setupDreamView();
   waView = mountWa(document.getElementById('wa-view'));
   setupReferenceView();
   timelineView = setupTimelineView();
@@ -478,6 +485,7 @@ async function init() {
     closeDetailDialog();
     clearCurrentChart();
     invalidateTransits();
+    invalidateDream();
     timelineView?.invalidateBirth();
     const visibleView = document.querySelector('.nav-link.active')?.dataset.view || 'chart';
     if (!change.after) {

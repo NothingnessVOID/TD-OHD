@@ -8,6 +8,7 @@ dist-proto
 /engine-wasm/obj/
 /.dotnet-sdk/
 /artifacts/
+/test-results/
 .DS_Store
 *.local
 .env

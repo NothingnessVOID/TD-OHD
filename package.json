@@ -31,7 +31,8 @@
     "e2e:bodygraph-regression": "node tests/bodygraph-knowledge-regression-e2e.mjs",
     "research:birth-engine": "node scripts/birth-engine-prototype.mjs",
     "test:jovian-compatible": "node scripts/jovian-compatible-validation.mjs",
-    "e2e:skin-presets": "node tests/skin-presets-e2e.mjs"
+    "e2e:skin-presets": "node tests/skin-presets-e2e.mjs",
+    "e2e:clipboard-fallback": "node tests/clipboard-fallback-e2e.mjs"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "^0.7.2",
@@ -46,6 +47,7 @@
     "kysely-d1": "^0.4.0"
   },
   "devDependencies": {
+    "@paper-design/shaders": "^0.0.82",
     "playwright-core": "^1.60.0",
     "vite": "^5.0.0",
     "wrangler": "^4.98.0"

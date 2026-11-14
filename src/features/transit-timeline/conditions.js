@@ -20,6 +20,15 @@ export function queryTimeline(result, conditions, { combine = 'all', mode = 'ove
   const available = new Set(catalog.map(row => row.key));
   const rows = new Map(result.rows.map(row => [row.key, row]));
   const normalized = conditions.map(condition => {
+    if (condition.kind === 'definition') {
+      // Complete final state of birth chart + effective transits, including
+      // moments whose count equals the natal count (those bars are not drawn).
+      const value = String(condition.ids?.[0] ?? '');
+      if (!['active', 'inactive'].includes(condition.state) || !Array.isArray(condition.ids) ||
+          condition.ids.length !== 1 || !['1', '2', '3', '4'].includes(value)) throw new Error('Invalid condition');
+      if (!rows.has('definition:state')) throw new Error('Timeline data has no definition state; recalculate');
+      return { keys: ['definition:state'], state: condition.state, value };
+    }
     if (condition.kind === 'bridge') {
       if (condition.state !== 'active') throw new Error('Bridge only matches connected natal islands');
       if (mode !== 'overlay') throw new Error('Bridge requires birth chart + transits mode');
@@ -54,7 +63,8 @@ export function queryTimeline(result, conditions, { combine = 'all', mode = 'ove
     if (start === end) continue;
     const matches = normalized.map(condition => {
       return condition.keys.some(key => {
-        const active = Boolean(intervalAt(rows.get(key), start));
+        const interval = intervalAt(rows.get(key), start);
+        const active = condition.value === undefined ? Boolean(interval) : interval?.source === condition.value;
         return condition.state === 'active' ? active : !active;
       });
     });

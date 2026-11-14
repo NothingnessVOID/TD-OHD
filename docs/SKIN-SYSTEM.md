@@ -103,6 +103,7 @@ Electromagnetic 的两半分别保留 A/B；Compromise / Dominance 通道主体�
 ```json
 {
   "version": 3,
+  "skinMode": "auto",
   "skinId": "default-light",
   "centerPalette": "chakra",
   "overridesBySkin": {
@@ -128,11 +129,11 @@ Electromagnetic 的两半分别保留 A/B；Compromise / Dominance 通道主体�
 
 没有有效 v3 时读取旧 version 1/2：
 
-- Theme 由旧 bodygraph-theme 决定；无保存值则读取系统偏好。Palette 由旧 preset 恢复。
+- Theme 由旧 bodygraph-theme 决定；无保存值则读取系统偏好。Palette 由旧 preset 恢复。无任何已保存偏好时 `skinMode` 为 `auto`，此后持续跟随系统明暗变化；存在 legacy `bodygraph-theme` 或有效 v3 时保持原有的 manual 语义。
 - version 2 globalOverrides 原本在所有模式共用，复制到 light/dark 两个独立槽，维持迁移时两个模式已有的显示。
 - version 1 继续按旧实现的合并优先级得到有效全局值（classic → chakra，非当前模式 → 当前模式，再 globalOverrides），同样复制到两槽。
 - gateNumberSize 单独迁入 preferences；旧 key 的所有历史分槽仍保留原文，未丢失。
-- 初始化保存 v3；之后只读 v3，不重复导入旧色。兼容 bodygraph-theme 继续写入，但不覆盖有效 v3 的 Skin 选择。
+- 初始化保存 v3；fresh 默认解析结果（含 `skinMode:"auto"`）在初始化时即写入 v3。之后只读 v3，不重复导入旧色。兼容 bodygraph-theme 继续写入，但不覆盖有效 v3 的 Skin 选择。
 - localStorage 不可用时当前页设置仍有效；不能保证跨刷新保存。
 
 迁移不会设置当前账户/资料数据，也不触碰 profiles、计算缓存或 8787 安装。
@@ -391,7 +392,7 @@ Timeline 层级为轨道背景 0、Bar 1、弱日期带与 gridline 2、cursor 3
 
 人工查看还发现 Gate expand 控件的原局部规则被通用 Timeline 按钮的 32px 最小高度覆盖，使 28px 行内的 track 实际扩为 33px。局部规则提高优先级后，row / track 保持 28px；随后按视觉反馈保留 1px 行间细缝，Bar 为 27px，未改时间区间或行高设定。
 
-Registry 的 `tagline` 为 Picker 第二行文案 key，`preview.signature` 为第二行代表色，均属于展示 metadata，不计入 canonical Token。Auto 第二行为 Follow system，保持双主题预览，没有独立 signature Token 或颜色 override 槽。
+Registry 的 `tagline` 为 Picker 第二行文案 key，`preview.signature` 为第二行代表色，均属于展示 metadata，不计入 canonical Token。Auto 第二行为 Follow system，保持双主题预览，没有独立 signature Token 或颜色 override 槽。完全没有已保存外观偏好的全新访客，默认选项即为 Auto；系统明暗变化后继续跟随。
 
 ## Center Palette V2 当前状态
 

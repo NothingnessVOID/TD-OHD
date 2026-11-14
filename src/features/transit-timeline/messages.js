@@ -60,6 +60,8 @@ export const en = {
   zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoom: 'Timeline range', hours1: '1 hour', hours6: '6 hours', customRange: 'Custom',
   gestures: 'Swipe sideways to move time · Pinch to zoom · Drag the tracks to select a moment',
   timelineHelp: 'Left/right: gate changes · Up/down: 1 minute · + / −: zoom',
+  definitionRow: 'Definition state', definition1: 'Single Definition', definition2: 'Split Definition',
+  definition3: 'Triple Split', definition4: 'Quadruple Split', definitionIs: 'Is', definitionIsNot: 'Is not',
 };
 
 export function translator(messages = {}) {
