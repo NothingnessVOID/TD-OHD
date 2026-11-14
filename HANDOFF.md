@@ -78,3 +78,15 @@
 - 代码提交`b0cd1a95`，已安装到9961；实际返回`index-Q4U9NC9H.js`与`index-VYnpwnB0.css`，资源hash与desktop构建一致。更新前后count17/passwordRequired=false，SQLite integrity_check=ok，后端、配置、数据库及浏览器存储未替换。
 - 回滚备份：`archive/backups/rollback-before-b0cd1a95-9961-20261114-210824/`，仅本机保存，不入Git。
 - 本轮交接另行提交，功能分支按无force方式同步；main/PR/正式部署不在授权范围。
+
+## 第三轮：九大支柱与缺失闸门折叠
+
+用户后续要求将原支柱区块改为“九大支柱”，内容为九条组织轴，并为缺少闸门清单添加居中展开／收起。此新指令取代前轮完全去掉支柱区块的决定。
+
+- `axisPillarsHtml()`复用现有pairToken与详情入口，九个条目来自OC16_AXIS，显示教材短名和canonical编号；卡片激活状态取当前scope，右部门九条固定高亮保持不变。
+- 缺失标题与数量始终可见（有缺项且有参与成员时），列表默认hidden。原生按钮位于概览卡内居中，带aria-expanded/aria-controls；实例变量gapsExpanded跨重绘、范围切换和详情往返保留，切换／新建组织时重置。
+- 语义CSS与三语文案，无新弹窗、无资料／计算／存储契约变化。
+- 主代理用隔离虚构成员（仅闸门7）验证9支柱、63缺失、默认收起、展开／收起、按钮居中、详情返回保留状态、Space键操作、390px手机无溢出，pageerror0。实施代理Wa分析定向检查14/14及语法检查通过。
+- Node24/.NET10 desktop构建通过。代码提交`cbd1003f`已安装9961，实际JS/CSS为`index-CVBLM1jL.js`／`index-C68HLP7E.css`，served hash与构建一致；更新前后count17、passwordRequired=false，SQLite完整性ok，浏览器与数据库未替换。
+- 回滚备份：`archive/backups/rollback-before-cbd1003f-9961-20261114-211328/`。所有备份仅本机，不上传。
+- 全量回归与全Skin矩阵仍未执行；历史审计失败保持原样，待方向验收后处理。
