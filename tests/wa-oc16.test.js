@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../src/lib/wa/oc16-catalog.js';
+import { OC16_AXIS, OC16_AXIS_GATE_TOTAL, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_PRIMARY_CHANNEL_IDS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../src/lib/wa/oc16-catalog.js';
 import { analyzeOC16, prepareWaPreview, scopeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { analyzeWa, collectPair } from '../src/lib/wa/analysis.js';
 import { extractTeamActivations } from '../src/lib/human-design/team-activation.js';
@@ -17,7 +17,7 @@ const pair = (result, id = '21-45') => result.pairs.find(pair => pair.channelId 
 const absentCoverage = result => {
   assert.equal(result.status, 'not_ready');
   assert.ok(result.issues.length);
-  for (const key of ['gateRecords', 'pairs', 'departments', 'managementMechanism', 'groups', 'gateCount', 'pairCount', 'coreWa', 'pentas']) {
+  for (const key of ['gateRecords', 'pairs', 'departments', 'axis', 'managementMechanism', 'groups', 'gateCount', 'pairCount', 'coreWa', 'pentas']) {
     assert.equal(Object.hasOwn(result, key), false, `error must omit ${key}`);
   }
 };
@@ -29,43 +29,67 @@ const providersFor = snapshot => {
   } };
 };
 
-test('catalog keeps six core Wa channels plus personnel 44–26 under management (14 gates / 7 channels)', () => {
+test('catalog partitions 32 channels / 64 gates across six departments with explicit primaries and a nine-channel axis', () => {
   const expected = {
-    management: [[45, 21], [44, 26]],
-    competition: [[51, 25]],
-    direction: [[14, 2]],
-    interaction: [[59, 6]],
-    logic: [[27, 50]],
-    innovation: [[3, 60]]
+    management: [['21-45', [45, 21]], ['32-54', [54, 32]], ['26-44', [44, 26]], ['19-49', [19, 49]], ['37-40', [37, 40]]],
+    competition: [['25-51', [51, 25]], ['10-34', [10, 34]]],
+    direction: [['2-14', [14, 2]], ['1-8', [8, 1]], ['24-61', [61, 24]], ['23-43', [43, 23]]],
+    interaction: [['42-53', [53, 42]], ['29-46', [29, 46]], ['13-33', [13, 33]], ['6-59', [59, 6]], ['47-64', [64, 47]], ['11-56', [11, 56]], ['35-36', [35, 36]], ['30-41', [30, 41]]],
+    logic: [['9-52', [9, 52]], ['5-15', [5, 15]], ['7-31', [7, 31]], ['27-50', [27, 50]], ['4-63', [63, 4]], ['17-62', [17, 62]], ['16-48', [48, 16]], ['18-58', [18, 58]]],
+    innovation: [['3-60', [3, 60]], ['28-38', [38, 28]], ['20-57', [57, 20]], ['39-55', [39, 55]], ['12-22', [22, 12]]]
   };
-  assert.deepEqual(Object.fromEntries(OC16_DEPARTMENTS.map(dept => [dept.id, dept.displayPairs])), expected);
+  const axisIds = new Set(['7-31', '1-8', '13-33', '5-15', '2-14', '29-46', '9-52', '3-60', '42-53']);
   assert.equal(OC16_DEPARTMENTS.length, 6);
   const all = OC16_DEPARTMENTS.flatMap(dept => dept.pairs);
-  assert.equal(all.length, 7);
-  assert.equal(OC16_PAIR_TOTAL, 7);
-  assert.equal(OC16_GATE_TOTAL, 14);
+  assert.equal(all.length, 32);
+  assert.equal(OC16_PAIR_TOTAL, 32);
+  assert.equal(OC16_GATE_TOTAL, 64);
   assert.equal(all.filter(pair => pair.role === 'core').length, 6);
   assert.equal(all.filter(pair => pair.role === 'personnel').length, 1);
-  assert.equal(all.filter(pair => pair.role === 'support').length, 0);
-  assert.equal(new Set(all.map(pair => pair.channelId)).size, 7);
-  assert.deepEqual(all.flatMap(pair => pair.gates).sort((a, b) => a - b),
-    [2, 3, 6, 14, 21, 25, 26, 27, 44, 45, 50, 51, 59, 60]);
+  assert.equal(all.filter(pair => pair.role === 'support').length, 25);
+  assert.equal(new Set(all.map(pair => pair.channelId)).size, 32);
+  // Every gate 1–64 appears exactly once: the catalog is a partition, not overlapping coverage.
+  assert.deepEqual(all.flatMap(pair => pair.gates).sort((a, b) => a - b), Array.from({ length: 64 }, (_, index) => index + 1));
+  assert.deepEqual([...OC16_PRIMARY_CHANNEL_IDS], ['21-45', '25-51', '2-14', '6-59', '27-50', '3-60']);
   for (const dept of OC16_DEPARTMENTS) {
     assert.equal(dept.nameKey, `OC16 ${dept.id}`);
-    for (const [i, pair] of dept.pairs.entries()) {
-      assert.deepEqual(pair.displayGates, expected[dept.id][i]);
+    const textbook = expected[dept.id].map(([id]) => id);
+    const ordered = [...textbook.filter(id => axisIds.has(id)), ...textbook.filter(id => !axisIds.has(id))];
+    // Display order only: axis channels pinned first, textbook relative order kept on both sides.
+    assert.deepEqual(dept.pairs.map(pair => pair.channelId), ordered);
+    assert.deepEqual(dept.displayPairs, ordered.map(id => expected[dept.id].find(([pairId]) => pairId === id)[1]));
+    const primary = dept.pairs.filter(pair => pair.role === 'core');
+    assert.equal(primary.length, 1);
+    assert.equal(primary[0].channelId, dept.primaryChannelId);
+    for (const pair of dept.pairs) {
+      assert.deepEqual(pair.displayGates, expected[dept.id].find(([id]) => id === pair.channelId)[1]);
       assert.deepEqual(pair.gates, [...pair.displayGates].sort((a, b) => a - b));
       assert.equal(pair.channelId, pair.gates.join('-'));
       assert.equal(pair.departmentId, dept.id);
-      assert.equal(pair.role, i === 0 ? 'core' : dept.id === 'management' ? 'personnel' : 'support');
+      assert.equal(pair.axisTier, axisIds.has(pair.channelId) ? OC16_AXIS.find(row => row.channelId === pair.channelId).tier : null);
       assert.ok(Object.isFrozen(pair) && Object.isFrozen(pair.gates) && Object.isFrozen(pair.displayGates));
     }
+  }
+  assert.deepEqual(OC16_AXIS.map(({ tier, channelId }) => [tier, channelId]), [['upper', '7-31'], ['upper', '1-8'],
+    ['upper', '13-33'], ['middle', '5-15'], ['middle', '2-14'], ['middle', '29-46'],
+    ['lower', '9-52'], ['lower', '3-60'], ['lower', '42-53']]);
+  assert.equal(OC16_AXIS_PAIR_TOTAL, 9);
+  assert.equal(OC16_AXIS_GATE_TOTAL, 18);
+  // The axis keeps its own endpoint reading order; department rows keep the textbook order.
+  assert.deepEqual(OC16_AXIS.map(row => row.displayGates), [[7, 31], [1, 8], [13, 33], [5, 15], [2, 14],
+    [29, 46], [9, 52], [3, 60], [42, 53]]);
+  assert.deepEqual(OC16_AXIS.find(row => row.channelId === '1-8').pair.displayGates, [8, 1]);
+  assert.equal(new Set(OC16_AXIS.flatMap(row => row.pair.gates)).size, 18);
+  for (const row of OC16_AXIS) {
+    assert.equal(row.pair.channelId, row.channelId);
+    assert.equal(row.pair.axisTier, row.tier);
+    assert.ok(all.includes(row.pair));
   }
   assert.deepEqual(WA_MANAGEMENT_MECHANISM.map(({ id, channelId, displayGates, nameKey }) => [id, channelId, [...displayGates], nameKey]), [
     ['management', '21-45', [45, 21], 'OC16 management'],
     ['personnel', '26-44', [44, 26], 'OC16 personnel']
   ]);
-  assert.ok(Object.isFrozen(OC16_DEPARTMENTS) && Object.isFrozen(WA_MANAGEMENT_MECHANISM));
+  assert.ok(Object.isFrozen(OC16_DEPARTMENTS) && Object.isFrozen(OC16_AXIS) && Object.isFrozen(WA_MANAGEMENT_MECHANISM));
 });
 
 test('preview preparation accepts incomplete standard drafts, excludes pool and never changes persisted mode', async () => {
@@ -127,10 +151,11 @@ test('empty assignment has genuine zero structure, skips providers and preserves
   assert.equal(result.status, 'empty');
   assert.equal(result.gateCount, 0); assert.equal(result.gatePercentage, 0);
   assert.equal(result.pairCount, 0); assert.equal(result.pairPercentage, 0);
-  assert.equal(result.gateRecords.length, 14); assert.equal(result.pairs.length, 7);
+  assert.equal(result.gateRecords.length, 64); assert.equal(result.pairs.length, 32);
   assert.ok(result.pairs.every(pair => pair.status === 'absent'));
   assert.ok(result.gateRecords.every(record => record.activationCount === 0));
   assert.ok(result.departments.every(dept => dept.gateCount === 0 && dept.pairCount === 0));
+  assert.equal(result.axis.gateCount, 0); assert.equal(result.axis.gateTotal, 18); assert.equal(result.axis.pairCount, 0); assert.equal(result.axis.pairTotal, 9);
   assert.ok(result.managementMechanism.every(item => !item.present));
   assert.ok(result.pentas.every(penta => penta.result === null));
   assert.equal(result.coreWa, null);
@@ -155,7 +180,8 @@ test('Penta results only exist at group sizes 3..5 while coverage remains ready 
   const result = analyzeOC16(snapshot, prepared);
   assert.equal(result.standardTemplateSatisfied, true);
   assert.equal(result.layoutValidation.ready, true);
-  assert.equal(result.gateCount, 0); // default fixture gate 4 is outside organizing channels
+  assert.equal(result.gateCount, 1); // default fixture gate 4 belongs to 4–63 (logic)
+  assert.equal(result.pairCount, 0);
 });
 
 test('all five pair statuses have exact shared collector semantics and canonical endpoint attribution', () => {
@@ -175,7 +201,7 @@ test('all five pair statuses have exact shared collector semantics and canonical
       byGate.get(activation.gate).push(activation);
     }
     for (const actual of result.pairs) {
-      const { displayGates, departmentId, role, contributorIds, ...shared } = actual;
+      const { displayGates, departmentId, role, axisTier, contributorIds, ...shared } = actual;
       assert.deepEqual(shared, collectPair(actual, byGate));
       assert.deepEqual(contributorIds, [...new Set(actual.gateRecords.flatMap(record => record.memberIds))].sort());
     }
@@ -193,7 +219,7 @@ test('organizing-channel gate records preserve personality/design/planet/line pr
   prepared[2].chart = chart([45]);
   const result = analyzeOC16(freeze(snapshot), freeze(prepared));
   assert.deepEqual(result.gateRecords.map(record => record.gate),
-    [2, 3, 6, 14, 21, 25, 26, 27, 44, 45, 50, 51, 59, 60]);
+    Array.from({ length: 64 }, (_, index) => index + 1));
   const gate21 = result.gateRecords.find(record => record.gate === 21);
   assert.equal(gate21.activationCount, 26); assert.equal(gate21.contributorCount, 1);
   assert.deepEqual(gate21.contributorIds, ['m00']);
@@ -202,11 +228,11 @@ test('organizing-channel gate records preserve personality/design/planet/line pr
     { memberId: 'm00', side: 'design', planet: 'moon', gate: 21, line: 6 });
   // Only catalog gates contribute to activation totals (21 once + 45/60/50/6 once + 45 once).
   assert.equal(result.gateRecords.reduce((sum, record) => sum + record.activationCount, 0), 78);
-  assert.equal(result.gateCount, 5); assert.equal(result.gateTotal, 14); assert.equal(result.gatePercentage, 5 / 14 * 100);
-  assert.equal(result.pairCount, 1); assert.equal(result.pairTotal, 7); assert.equal(result.pairPercentage, 1 / 7 * 100);
+  assert.equal(result.gateCount, 5); assert.equal(result.gateTotal, 64); assert.equal(result.gatePercentage, 5 / 64 * 100);
+  assert.equal(result.pairCount, 1); assert.equal(result.pairTotal, 32); assert.equal(result.pairPercentage, 1 / 32 * 100);
   const management = result.departments[0];
-  assert.equal(management.gateCount, 2); assert.equal(management.gateTotal, 4); assert.equal(management.gatePercentage, 50);
-  assert.equal(management.pairCount, 1); assert.equal(management.pairTotal, 2); assert.equal(management.pairPercentage, 50);
+  assert.equal(management.gateCount, 2); assert.equal(management.gateTotal, 10); assert.equal(management.gatePercentage, 20);
+  assert.equal(management.pairCount, 1); assert.equal(management.pairTotal, 5); assert.equal(management.pairPercentage, 20);
   assert.deepEqual(management.contributorIds, ['m00', 'm01', 'm02']);
   assert.deepEqual(result.managementMechanism.map(item => [item.channelId, item.present]),
     [['21-45', true], ['26-44', false]]);
@@ -216,8 +242,10 @@ test('full synthetic coverage of organizing channels gives 100 percent across al
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
   prepared.forEach((member, i) => { member.chart = chart(Array.from({ length: 26 }, (_, j) => (i * 26 + j) % 64 + 1)); });
   const result = analyzeOC16(snapshot, prepared);
-  assert.equal(result.gateCount, 14); assert.equal(result.pairCount, 7);
+  assert.equal(result.gateCount, 64); assert.equal(result.pairCount, 32);
   assert.equal(result.gatePercentage, 100); assert.equal(result.pairPercentage, 100);
+  assert.equal(result.axis.pairCount, 9); assert.equal(result.axis.gateCount, 18);
+  assert.equal(result.axis.pairPercentage, 100); assert.equal(result.axis.gatePercentage, 100);
   assert.ok(result.departments.every(dept => dept.gatePercentage === 100 && dept.pairPercentage === 100));
   assert.ok(result.managementMechanism.every(item => item.present));
 });

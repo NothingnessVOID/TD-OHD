@@ -145,8 +145,8 @@ test('unknown and partial records never become false zero coverage; true empty r
   for (const result of [null, { ...fixture(), status: 'not_ready' }, { status: 'ready' }]) {
     const view = renderer(result);
     const html = view.renderDepartment('management');
-    assert.match(html, /data-wa-gate-count="—">— \/ 4/);
-    assert.match(html, /data-wa-pair-count="—">— \/ 2/);
+    assert.match(html, /data-wa-gate-count="—">— \/ 10/);
+    assert.match(html, /data-wa-pair-count="—">— \/ 5/);
     assert.doesNotMatch(html, /data-wa-state="absent"|data-wa-covered="false"|Fictional/);
     assert.match(view.renderPair('21-45'), /data-wa-state="unknown"/);
     assert.match(view.renderGate(45), /data-wa-gate-state="unknown"/);
@@ -154,7 +154,7 @@ test('unknown and partial records never become false zero coverage; true empty r
   const empty = fixture({ status: 'absent', left: [], right: [], self: [], combinations: [] });
   empty.status = 'empty';
   empty.departments[0] = { id: 'management', gateCount: 0, pairCount: 0 };
-  assert.match(renderer(empty).renderDepartment('management'), /data-wa-gate-count="0">0 \/ 4/);
+  assert.match(renderer(empty).renderDepartment('management'), /data-wa-gate-count="0">0 \/ 10/);
   const wrong = fixture({ status: 'unrecognized' });
   assert.match(renderer(wrong).renderPair('21-45'), /data-wa-state="unknown"/);
   for (const call of [v => v.renderGate('wrong'), v => v.renderPair('45-21'), v => v.renderDepartment('<wrong>'), v => v.renderPairRows({ id: 'wrong' })]) assert.equal(call(renderer(wrong)), '');
@@ -165,10 +165,10 @@ test('department counts are consumed, core precedes personnel, no trailing blank
   // Preserve summary fields even when fixture rows are partial; the renderer must not derive new counts.
   result.departments[0] = { id: 'management', gateCount: 7, pairCount: 3, contributorIds: ['outsider'] };
   const html = renderer(result).renderDepartment('management');
-  assert.match(html, /data-wa-gate-count="7">7 \/ 4/);
-  assert.match(html, /data-wa-pair-count="3">3 \/ 2/);
-  // Core is the primary sheet; personnel 44–26 listed below management.
-  assert.equal(occurrences(html, 'data-pair-row='), 1);
+  assert.match(html, /data-wa-gate-count="7">7 \/ 10/);
+  assert.match(html, /data-wa-pair-count="3">3 \/ 5/);
+  // Primary is the sheet; the four remaining management channels are listed below it.
+  assert.equal(occurrences(html, 'data-pair-row='), 4);
   assert.match(html, /data-wa-core-pair="21-45"/);
   assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="26-44"'));
   assert.doesNotMatch(html, /outsider|wa-contributor-list/);
@@ -189,8 +189,10 @@ test('three languages show organization role readings on core sheets and jump ca
     assert.ok(core.indexOf('data-wa-knowledge="wa-org"') < core.indexOf('data-wa-related-jumps'));
     assert.ok(core.includes('data-wa-org-reading="channel"'));
     assert.ok(core.includes(t('OC16 org role management')));
+    // The merged sheet now shows the integrated organization body (no per-gate legacy lines).
+    assert.match(core, /data-wa-org-reading="channel" data-wa-org-body="integrated" data-wa-channel="21-45"/);
+    // Gate role names still come from the existing organization roles in the related jumps.
     assert.ok(core.includes(t('OC16 org gate role 45')));
-    assert.ok(core.includes(t('OC16 org gate body 45')));
     assert.doesNotMatch(core, /四大基石|1、7、13、33|董事会与品牌灵魂/);
     assert.equal(occurrences(core, 'data-wa-org-reading="channel"'), 1);
     // Support: own personnel org reading + jump card to the merged department sheet.

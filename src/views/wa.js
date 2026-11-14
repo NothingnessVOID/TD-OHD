@@ -20,7 +20,7 @@ import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
-import { OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
+import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
@@ -126,7 +126,7 @@ export function mountWa(container, options = {}) {
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${mechanismHtml()}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${mechanismHtml()}${gapsHtml()}</section>`;
   }
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
@@ -162,7 +162,7 @@ export function mountWa(container, options = {}) {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
   }
   function graphHtml() {
-    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_DEPARTMENTS,busy?null:result,selected,{markers:markers(),nameOf})}</div></figure></section>`;
+    return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_AXIS,busy?null:result,selected,{markers:markers(),nameOf})}</div></figure></section>`;
   }
   function applyMemberFocus() {
     const page = container.querySelector('.wa-page');if(!page)return;
@@ -382,11 +382,12 @@ export function mountWa(container, options = {}) {
   }
   function syncSelection() {
     container.querySelectorAll('.wa-diagram-row').forEach(row=>{
-      const channel=row.querySelector('[data-wa-pair]');
-      const active=selected?.type==='pair'&&selected.id===channel.dataset.waPair||selected?.type==='department'&&selected.id===row.dataset.department;
-      row.classList.toggle('is-selected',Boolean(active));channel.setAttribute('aria-pressed',String(Boolean(active)));
+      const active=selected?.type==='pair'&&selected.id===row.dataset.waAxisRow;
+      row.classList.toggle('is-selected',Boolean(active));
+      row.querySelector('.wa-diagram-channel')?.setAttribute('aria-pressed',String(Boolean(active)));
+      row.querySelector('.wa-axis-title')?.classList.toggle('is-selected',Boolean(active));
     });
-    container.querySelectorAll('.wa-diagram-gate').forEach(node=>{const active=selected?.type==='gate'&&String(selected.id)===node.dataset.waGate;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});container.querySelectorAll('.wa-dept-title[data-wa-department]').forEach(node=>{const active=selected?.type==='department'&&selected.id===node.dataset.waDepartment;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});
+    container.querySelectorAll('.wa-diagram-gate').forEach(node=>{const active=selected?.type==='gate'&&String(selected.id)===node.dataset.waGate;node.classList.toggle('is-selected',active);node.setAttribute('aria-pressed',String(active));});
   }
   function detailClosed() {
     detailOpen=false;detailStack=[];selected=null;

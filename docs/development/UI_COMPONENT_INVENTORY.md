@@ -126,6 +126,18 @@ Wa DB2、refs-only schema 与 repository 不改。隐藏的人工记录继续保
 
 `reading-presentation.js` 是受审查的展示摘录，不改作者 JSON。六核心读取自己的 Wa 记录；其他通道及闸门读取所属部门的 Wa 主题，保留原标题和源 ID，不回退到个人通道或闸门正文。固定段落选择保留主题与组织例子，精确短语映射改为自然表达，工程说明保留在原数据中。未来原文段落/词句漂移会拒绝未经审核的展示映射。
 
+## Wa / OC16 组织九轴与全通道目录（Issue 57，分支 `feature/organization-channels-issue57`）
+
+`oc16-catalog.js` 现在固定用户提供的完整目录：六部门共 32 条通道、64 个唯一闸门（每个闸门恰属一条通道，是分区而不是重叠覆盖）。展示顺序只是顺序：每部门把属于左轴九条的通道置顶、其余按教材相对顺序排列。`role` 显式给出（部门 primary、人事 44–26、其余 support），`primaryChannelId` 也在部门上显式声明，不再由数组位置推断。`OC16_AXIS` 单独定义上层 7–31 / 1–8 / 13–33、中层 5–15 / 2–14 / 29–46、底层 9–52 / 3–60 / 42–53，并引用同一批冻结的 pair 对象。
+
+`oc16-analysis.js` 的 `coverage()` 覆盖全部 32 条通道；新增 `axis` 子集统计（9 条通道 / 18 个闸门），与部门、四支柱共用同一次激活提取。既有 `collectPair`、`coreWa`、Penta 范围逻辑不改。
+
+`wa-diagram.js` 仍是同一套 tube / chip / dot / focus SVG，只是把六行换成九行（`ROW_HEIGHT` 84，总高与原来接近）。标题列宽 104px、左闸门 chip 从 x≥104 起、右 chip 至 SVG 右缘，标题名按 19→17→16→15px 自适应，tier/state 最多两行；chip 现按可用宽度换行（必要时加连字符断词），不再越出画板或压到标题。点击行标题或管道都进入该通道详情，九行标题统一使用 `channelName()`。
+
+详情层（`wa-detail-content.js`）为全部 32 条通道提供独立介绍；部门详情仍以显式 primary 通道与部门同页，其余通道作为支持行列出。`waChannelTitle()` 一律走统一通道词汇，部门定位文案只留在部门信息里，不再冒充通道名称。部门相关跳转、闸门详情跳转都用 `department.primaryChannelId`，不用 `pairs[0]`。
+
+正文分三层，数据与渲染分离：`org-reading-content.{zh-CN,zh-Hant,en}.js` 保存组织专属整合正文（交付稿：`组织页面整合正文-20261114.json` 及三语 `…-locales.json`；`source`/`notes`/`departmentId`/`centralAxis` 元数据不入源码，部门与轴身份由 catalog 拥有），`org-role-readings.js` 负责读取与优先级：整合正文 → 既有部门定位正文 → 共享 Wa 摘录。闸门同理：12 个新组织角色（1 创造、2 协调、5 可靠度、7 规划、8 公共关系、13 愿景、14 容量、15 文化、29 承诺、31 行政管理、33 会计与归档、46 发现）用整合正文；原 12 个组织闸门沿用既有角色与正文；其余 40 个闸门在组织详情里引用 `src/lib/content.js` 的 `GATE_DESCRIPTIONS` 做一套普通介绍，不复制资料、不加商业解释，也不用带 lens 的共享闸门阅读器。所有组织正文只在组织页使用，普通出生图/知识库资料不变。
+
 ## 数据边界
 
 共用展示不共享业务状态：Penta使用当前`result/people/groupLabel`，出生图与行运通过自己的图表与上下文传入。稳定人物、成员、组合ID及TeamRepository v2由既有业务层维护。本轮UI统一不改天文计算、Penta拓扑或知识审核状态。
