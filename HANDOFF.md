@@ -9,6 +9,8 @@
 >   （`bf4c4ca4` 与 `origin/design/sheet-column-v1` 一致）。主线这 75 个提交带来的
 >   dream 视图、共享时间控件（`lib/transit-time-control.js`）、clipboard、
 >   `compositePalette`、人体图 popover/highlight、timeline definition glow 全部保留。
+> - **合并提交**：`0319f2d3`（parents `bf4c4ca4` + `66c21315`）；原工作区已 fast-forward
+>   到它，两个已跟踪改动与十个未跟踪文件保持原样。
 > - **冲突只有 4 处**，处理方式：
 >   1. `src/locales/zh-CN/index.js` / `src/locales/zh-Hant/index.js`：`messages` 取两侧并集
 >      —— 本分支的 `panelGraphicsMessages` + 主线的 `dreamMessages` / `pickerMessages` /
