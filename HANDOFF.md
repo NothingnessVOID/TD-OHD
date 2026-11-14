@@ -90,3 +90,14 @@
 - Node24/.NET10 desktop构建通过。代码提交`cbd1003f`已安装9961，实际JS/CSS为`index-CVBLM1jL.js`／`index-C68HLP7E.css`，served hash与构建一致；更新前后count17、passwordRequired=false，SQLite完整性ok，浏览器与数据库未替换。
 - 回滚备份：`archive/backups/rollback-before-cbd1003f-9961-20261114-211328/`。所有备份仅本机，不上传。
 - 全量回归与全Skin矩阵仍未执行；历史审计失败保持原样，待方向验收后处理。
+
+## 第四轮：恢复原支柱卡片样式
+
+用户反馈新九大支柱外观与原四大支柱不同，明确要求原样式。现已恢复`3f9f0486`中的`.wa-pillars/.wa-pillar/.wa-pillar-text`主CSS整块及原响应式规则（原值），移除新紧凑`.wa-axis-card/.wa-axis-grid`设计。支柱仍为OC16_AXIS九条，原markup显示名称、两端闸门角色和状态，原data-covered/data-row-state/data-lit契约控制激活渐变、边框与hover。pairLit共用于token与支柱卡片，scope和激活计算不变。
+
+- 九大支柱标题、全部九条、教材短名、统一编号、详情入口及缺失闸门默认收起／居中按钮均保持。
+- 主代理比对原主CSS整块逐字一致，新紧凑类已移除；虚构fixture浏览器检查9卡、63缺失、默认折叠、展开居中、详情返回保留、Space及390宽无横向溢出通过，pageerror0。
+- 实施代理17项模板夹具、28项相关Wa定向检查和语法检查通过；主代理desktop构建通过。全套回归和全Skin矩阵未重跑。
+- 代码提交`be416f57`已安装9961，served资源为`index-B4UG9E0_.js`／`index-CeJEtIkR.css`，hash与构建一致，健康正常。更新前后count17/passwordRequired=false，数据库、后端及浏览器团队组织存储未替换。
+- 回滚备份：`archive/backups/rollback-before-be416f57-9961-20261114-232307/`，仅本机保存。
+- 本轮不合main、不创建PR、不部署正式站点。
