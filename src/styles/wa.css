@@ -69,7 +69,7 @@
 
 /* Workspace */
 .wa-workspace { display:grid; grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr); gap:16px; align-items:start; }
-.wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,calc(var(--header-height,56px) + 16px)); min-width:0; overflow:visible; }
+.wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,16px); min-width:0; overflow:visible; }
 .wa-graph-panel { padding:16px 16px 18px; }
 .wa-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px; margin:0 0 12px; }
 .wa-panel-heading h2, .wa-results h2 { margin:0; font-size:17px; line-height:1.4; }
@@ -80,7 +80,7 @@
 
 /* Nine organizing-axis channels — tube board with channel-only hover; dots clear of halos */
 .wa-figure { margin:0; }
-.wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,72px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,16px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
 .wa-diagram-name, .wa-diagram-sub, .wa-diagram-status-dot { pointer-events:none; }
 /* Axis title opens the same channel detail sheet as the tube. */
 .wa-axis-title { pointer-events:auto; cursor:pointer; outline:none; }

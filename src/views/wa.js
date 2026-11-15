@@ -248,9 +248,10 @@ export function mountWa(container, options = {}) {
   function updateSticky() {
     if(disposed)return;
     const column=container.querySelector('.wa-graph-column');if(!column)return;
-    const header=(document.querySelector('.header')?.getBoundingClientRect().height||56)+16;
-    // Sticky under the site header; diagram is fixed size so the column needs no inner scrollbar.
-    column.style.setProperty('--wa-sticky-top',`${Math.floor(header)}px`);
+    const siteHeader=document.querySelector('.header');
+    const headerHeight=siteHeader&&getComputedStyle(siteHeader).display!=='none'?siteHeader.getBoundingClientRect().height:0;
+    // Sticky under the site header when one is rendered, otherwise from the viewport top; diagram is fixed size so the column needs no inner scrollbar.
+    column.style.setProperty('--wa-sticky-top',`${Math.floor(headerHeight||0)+16}px`);
   }
   function queueSticky() {cancelAnimationFrame(stickyFrame);stickyFrame=requestAnimationFrame(updateSticky);}
   function render() {
