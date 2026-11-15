@@ -109,3 +109,14 @@
 - 主代理浏览器检查1440px九卡三列三行、1100px二列、390px二列且无横向溢出和pageerror，已查看实际截图，文字无裁切；Node24/.NET10 desktop构建通过。未为这一低影响CSS改动新增单元测试或运行全量回归。
 - 代码提交`6e317ec9`已更新9961；实际资源`index-BTBaKRfO.js`／`index-D420Q6Ts.css`与构建hash一致。count前后17、passwordRequired=false，数据库与浏览器存储未替换。
 - 本机回滚备份：`archive/backups/rollback-before-6e317ec9-9961-20261115-082518/`。功能分支继续正常推送，不更新main或正式站点。
+
+## 第六轮：六大部门支柱与原部门高亮（2026-11-15）
+
+用户最新指令取代九大支柱决定：概览改为六大支柱，按管理、竞争、方向与规划、规则与标准、互动、创新与结构排序。分别引用部门显式primary：21-45、25-51、2-14、27-50、6-59、3-60。卡片标题直接是部门名，第二行用同源hexagramName显示卦名，点击进入部门详情；保持原支柱样式及桌面三列。
+
+- 六部门列表固定高亮恢复历史role规则：六个core使用原is-core CSS；26-44保留历史is-personnel结构类但原本无单独高亮CSS，不自行增添。九条axis不再决定固定高亮。左九条图、右32完整清单和按axis置顶的既有行序保持；用户没有要求改行序。
+- 用户六组编号理解为对应关系，实际编号在全组织仍引用CHANNELS.gates统一顺序，不重新引入45-21/53-42等左右反序。部门简繁标题与用户新命名统一，英文使用Management/Competitiveness/Direction/Logic/Interaction/Innovation；部门ID不变。
+- 缺失闸门居中折叠、教材通道短名、当前scope及所有数据存储规则保持。组件清单已更新。
+- 实施代理Wa定向92项通过；主代理英文标题修订后新六支柱定向检查5/5通过。隔离浏览器验证6卡映射、标题与卦名、6条旧core高亮、无is-axis高亮、左9右32、桌面3列、部门详情点击、390无溢出，pageerror0。未跑完整回归／Skin矩阵，历史字节审计失败未改。
+- Node24/.NET10 desktop构建通过；代码提交`022e7113`已更新9961。served资源`index-B1JpHWK_.js`／`index-CIH2VNgr.css`与构建hash一致；count前后17、passwordRequired=false、SQLite完整性ok，数据库及浏览器团队组织存储未替换。
+- 备份：本机`archive/backups/rollback-before-022e7113-9961-20261115-084747/`。不更新main，不创建PR，不部署正式站点。
