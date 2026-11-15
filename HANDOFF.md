@@ -99,3 +99,22 @@
 - 实施代理renderer21项及相关67项定向检查通过；主代理补公共按钮复用后renderer＋Wa detail36/36通过，build:pages通过。旧Wa审计4项失败保持原样，不改审计快照或断言；全量回归／全Skin矩阵未执行。
 - 一次构建与UI并行引起Vite热重载，截图报告节点已脱离；在构建结束后顺序重跑完整本轮UI检查通过，未修改断言隐藏失败。
 - 证据仍在本机evidence/member-business-analysis/，不进Git。9961与旧organization-channels分支均未更新。
+
+## 左栏偏移与正常页面入口修复
+
+用户指出左图顶部空档，浏览器已复现无header的dev入口仍使用56+16=72px吸顶偏移，造成right overview在top28时left停在72。代码提交`ec4dd4f4`按真实header测量高度，缺失/displaynone/height0用0，加16间距；CSS首帧及SVG max-height fallback同步16。不删sticky、不改布局或成员卡片。有header保留实际height+16，1050以下仍static。浏览器验证初始两栏对齐、无header滚动对齐/吸顶16、注入真实header后正确避让、隐藏header后恢复16、390静态及右栏三卡顺序通过。
+
+用户随后明确只看5282正常网站组织页面，不再以dev演示页作为交付入口。后续统一入口`http://127.0.0.1:5282/?view=wa`。
+
+## 用户授权5282引用9961本机人物库
+
+用户要求把9961已有的本机人物直接引用到测试页面。已在2026-11-15完成：
+
+- 构建当前代码desktop模式（Node24/.NET10，build:desktop通过），停止本会话原Vite5282进程，改在同一5282运行当前worktree的`local/server.mjs`，绑定127.0.0.1；9961服务、安装和配置均未改。
+- 本机独立预览配置：`TD-OHD/tools/member-business-preview-local.json`，权限600，`dataDir`引用9961实际本地数据目录，`distDir`指向本worktree/dist、port5282；密码策略及其他后端选项沿用原配置。未改CORS/Host校验、未代理重写Origin或关闭权限边界。该配置不入Git、不stage。
+- 操作前使用SQLite online backup保存到本机`archive/backups/before-shared-preview-5282-<timestamp>/`并检查完整性ok。备份含实际人物资料，绝不进Git或交付上传。
+- API状态计数验证：9961与5282均count17、passwordRequired=false/authenticated=true，服务返回dataPath相同（仅比较布尔、不输出人物内容）。
+- 隔离浏览器实际打开5282正常组织页面及Alpha成员选择器，选项数17，未选择/编辑人物，pageerror0。未复制或硬编码个人档案到源码，未注入演示人物。
+- 人物现为两端共享的权威本机库，用户在任一页面新增/编辑/删除人物会反映到同一库；团队localStorage与Wa组织IndexedDB仍按浏览器origin分别保存，此次只授权接入人物，未读取/搬运原团队组织记录。
+- 当前5282是桌面构建的正常站点，**不再是Vite热更新服务**。后续代码改动先build:desktop更新本worktree/dist即可供当前local服务读取，必要重启只限5282，不重启9961。不要误把旧Vite终端任务当仍在服务。
+- 当前预览进程由主代理启动，`OHD_CONFIG=.../tools/member-business-preview-local.json npx --yes --package=node@24 -- node local/server.mjs`。准备脚本在本机tools/prepare-member-business-local-preview.py，不进Git。
