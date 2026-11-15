@@ -9,7 +9,8 @@ import { gateName, channelName, centerName, circuitName, hexagramName } from '..
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { renderPlanetReading, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderPlanetReadingPerspectives, bindPlanetReadingSwitch } from '../lib/planet-reading-perspectives.js';
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
 import { circuitReference } from '../lib/reference-supplements.js';
@@ -22,6 +23,9 @@ let filtersExpanded = false;
 let query = '';
 let limit = 60;
 let lens = 'hd';
+// Planet reading category is its own state: default Human Design per selected planet.
+let planetLens = 'hd';
+let planetLensId = null;
 let built = false;
 let lastResult = null;
 let lineHighlightTimer = 0;
@@ -44,6 +48,8 @@ function restoreList() {
   }
 }
 function closeToList() {
+  planetLens = 'hd';
+  planetLensId = null;
   const depth = history.state?.ohdReferenceDepth || 0;
   if (depth > 0 && history.state?.ohdReferenceList) history.go(-depth);
   else {
@@ -150,8 +156,9 @@ function circuitDetail(entry) {
 }
 
 function planetDetail(entry) {
-  const locale = getLocale();
-  return `<div class="reference-reading">${renderPlanetReading(entry.id, locale)}</div>`;
+  // A newly selected planet starts from Human Design; a language refresh keeps the category.
+  if (entry.id !== planetLensId) { planetLensId = entry.id; planetLens = 'hd'; }
+  return `<div class="reference-reading">${renderPlanetReadingPerspectives(entry.id, getLocale(), planetLens)}</div>`;
 }
 
 function conceptDetail(entry) {
@@ -160,6 +167,7 @@ function conceptDetail(entry) {
 
 function renderDetail() {
   const selected = route();
+  if (selected?.kind !== 'planet') { planetLens = 'hd'; planetLensId = null; }
   const article = document.getElementById('reference-detail');
   document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind || selected?.invalid));
   article.setAttribute('aria-label', selected?.kind ? t('Reference Library') : t('Select an entry to read.'));
@@ -235,6 +243,7 @@ function build() {
       <article id="reference-detail" class="reference-detail" role="region"></article></div></div>
     <div id="reference-mobile-detail" class="gate-detail reference-mobile-detail hidden"><div class="gate-detail-card"><div class="gate-detail-nav"></div></div></div>`;
   bindSharedObjectDetails(mount, { onLensChange: nextLens => { lens = nextLens; } });
+  bindPlanetReadingSwitch(mount, { onLensChange: next => { planetLens = next; } });
   built = true;
 }
 

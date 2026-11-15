@@ -1,4 +1,5 @@
 import { t } from './i18n.js';
+import { renderReadingLensSwitch } from './reading-lenses.js';
 import './shared-detail-messages.js';
 
 const gateLenses = () => [
@@ -8,9 +9,15 @@ const gateLenses = () => [
   ['meridian', t('经络穴位')]
 ];
 
+// The four gate traditions, their `gate-lens-switch` wrapper and the legacy alias
+// attributes are a host DOM contract (chart and library e2e selectors depend on them).
 export function renderGateLensSwitch(selectedLens, dataAttribute, aliasAttribute = null) {
   const alias = ['data-lens', 'data-reference-lens'].includes(aliasAttribute) ? aliasAttribute : null;
-  return `<div class="lens-switch gate-lens-switch">${gateLenses()
-    .map(([key, label]) => `<button type="button" ${dataAttribute}="${key}"${alias ? ` ${alias}="${key}"` : ''} aria-pressed="${selectedLens === key}" class="${selectedLens === key ? 'active' : ''}">${label}</button>`)
-    .join('')}</div>`;
+  return renderReadingLensSwitch({
+    className: 'gate-lens-switch',
+    lenses: gateLenses(),
+    selectedLens,
+    dataAttribute,
+    aliasAttribute: alias
+  });
 }

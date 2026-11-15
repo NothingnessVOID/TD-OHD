@@ -2027,7 +2027,8 @@ body.modal-open { overflow: hidden; }
   box-shadow: var(--lens-active-shadow);
 }
 .gate-lens-switch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.gate-lens-switch button { min-width: 0; min-height: 40px; line-height: 1.3; white-space: normal; overflow-wrap: break-word; }
+/* Shared 40px touch height and wrapping for the gate and two-category planet lens tracks. */
+.gate-lens-switch button, .planet-lens-switch button { min-width: 0; min-height: 40px; line-height: 1.3; white-space: normal; overflow-wrap: break-word; }
 @media (max-width: 400px) {
   .gate-lens-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

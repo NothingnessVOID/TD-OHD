@@ -35,7 +35,7 @@ import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailShee
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { renderPlanetReading } from '../lib/planet-reference.js';
+import { renderPlanetReadingPerspectives, bindPlanetReadingSwitch, resolvePlanetLens } from '../lib/planet-reading-perspectives.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH, PHONE_MEDIA_QUERY } from '../lib/breakpoints.js';
 import { graphFitBudget, observeGraphFit } from '../lib/graph-fit.js';
@@ -46,6 +46,7 @@ let detailHistory = []; // stack of { kind, id } for modal back-navigation
 let currentDetail = null;
 let detailContext = null;
 let disposeSharedDetails = null;
+let disposePlanetReading = null;
 const detailGraph = () => detailContext?.api || bodygraphApi;
 
 const TYPE_COLORS = {
@@ -433,6 +434,8 @@ function renderLens(gateNum) {
 function resetDetail() {
   disposeSharedDetails?.();
   disposeSharedDetails = null;
+  disposePlanetReading?.();
+  disposePlanetReading = null;
   detailGraph()?.setPinned?.(null);
   detailHistory = [];
   currentDetail = null;
@@ -520,7 +523,7 @@ function detailNav() {
 
 
 /** A planetary point is a separate detail from the gate it currently activates. */
-export function showPlanetDetail({ source, planet, activation } = {}, pushHistory = true) {
+export function showPlanetDetail({ source, planet, activation, planetLens } = {}, pushHistory = true) {
   prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current || !['design', 'personality', 'transit'].includes(source) || !planet) return;
   const resolved = source === 'transit'
@@ -529,7 +532,9 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   activation = resolved || activation;
   if (!activation?.gate || !activation?.line) return;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
-  currentDetail = { kind: 'planet', id: planet, source, planet, activation };
+  // The reading category belongs to this detail frame; a fresh open defaults to Human Design.
+  const lens = resolvePlanetLens(planetLens);
+  currentDetail = { kind: 'planet', id: planet, source, planet, activation, planetLens: lens };
   const detail = document.getElementById('gate-detail');
   const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
@@ -547,7 +552,7 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
       <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
-      ${renderPlanetReading(planet, getLocale())}
+      ${renderPlanetReadingPerspectives(planet, getLocale(), lens)}
       <section class="planet-activation"><div class="planet-activation-label">${esc(t('Current activation'))}</div>
       <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
         aria-label="${esc(gateLine)}">
@@ -559,6 +564,10 @@ export function showPlanetDetail({ source, planet, activation } = {}, pushHistor
   openDetailDialog(detail, resetDetail);
   fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
   detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  disposePlanetReading?.();
+  disposePlanetReading = bindPlanetReadingSwitch(detail, { onLensChange: next => {
+    if (currentDetail?.kind === 'planet') currentDetail.planetLens = next;
+  } });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
   detail.querySelector('[data-planet-gate]')?.addEventListener('click', () => showGateDetail(activation.gate, true,
     source === 'transit' ? null : { side: source, planet, line: activation.line }));
@@ -1019,6 +1028,8 @@ export function clearCurrentChart() {
   detailContext = null;
   disposeSharedDetails?.();
   disposeSharedDetails = null;
+  disposePlanetReading?.();
+  disposePlanetReading = null;
 }
 
 export function getCurrentChart() {
