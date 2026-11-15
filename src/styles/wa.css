@@ -285,8 +285,8 @@
 .wa-gap-none { margin:0; color:var(--status-success,var(--text-secondary)); font-size:13px; }
 
 /* Pillars (overview): card chrome + department pairToken (no split-capsule / channel-row).
-   Restored from the original four-pillar design; the nine organizing-axis channels reuse it unchanged.
-   Desktop default is three per row for the nine axis pillars (~190px cards at the results column width);
+   Restored from the original four-pillar design; the six department pillars reuse it unchanged.
+   Desktop default is three per row (~190px cards at the results column width), so six cards fill two rows;
    1051–1200px, ≤600px and ≤360px keep their own column counts below. */
 .wa-pillars { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .wa-pillar {
@@ -364,7 +364,9 @@
   border:1px solid var(--border-subtle,var(--border)); border-radius:999px; background:var(--bg); cursor:pointer; color:var(--text);
   transition:border-color .18s ease, background .18s ease, box-shadow .2s ease, transform .18s ease, filter .18s ease;
 }
-.wa-pair-token.is-axis { border-color:var(--accent); background:var(--accent-soft,var(--bg)); }
+/* Original role rule: only the six department primaries (core) paint a fixed token highlight.
+   26–44 carries `is-personnel` with no rule, exactly as in the pre-axis version. */
+.wa-pair-token.is-core { border-color:var(--accent); background:var(--accent-soft,var(--bg)); }
 .wa-pair-token:is(:hover, .is-hover, :focus-visible) {
   z-index:2; position:relative; border-color:var(--accent);
   background:color-mix(in srgb, var(--accent-soft, var(--bg)) 70%, var(--bg));

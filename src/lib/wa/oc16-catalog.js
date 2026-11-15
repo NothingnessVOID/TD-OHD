@@ -44,6 +44,11 @@ const DEPARTMENT_SPECS = Object.freeze([
     channels: Object.freeze(['3-60', '28-38', '20-57', '39-55', '12-22']) })
 ]);
 
+/** Overview pillars: one card per department, in the confirmed sequence management → competition →
+ *  direction → logic → interaction → innovation. Each card is derived from that department's explicit
+ *  primaryChannelId, so re-ordering the 32-channel list never changes a pillar's channel. */
+export const OC16_PILLAR_ORDER = Object.freeze(['management', 'competition', 'direction', 'logic', 'interaction', 'innovation']);
+
 const ascending = values => [...values].sort((a, b) => a - b);
 
 const axisTier = new Map(AXIS_SPECS.flatMap(({ tier, channelIds }) => channelIds.map(id => [id, tier])));

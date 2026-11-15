@@ -16,11 +16,12 @@ import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
-import { orgChannelName, orgGateName } from '../lib/wa/org-role-readings.js';
+import { orgGateName } from '../lib/wa/org-role-readings.js';
 import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
-import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_GATE_TOTAL, OC16_PAIR_TOTAL } from '../lib/wa/oc16-catalog.js';
+import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_GATE_TOTAL, OC16_PAIR_TOTAL, OC16_PILLAR_ORDER } from '../lib/wa/oc16-catalog.js';
+import { hexagramName } from '../lib/vocabulary.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
@@ -111,22 +112,25 @@ export function mountWa(container, options = {}) {
     // Collapsed by default; the heading and total stay visible and the fold state lives on the instance.
     return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows" id="${listId}" data-wa-gap-list ${gapsExpanded?'':'hidden'}>${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div><div class="wa-gaps-toggle-row"><button type="button" class="wa-link-button wa-gaps-toggle" data-wa-gaps-toggle data-focus="gaps-toggle" aria-expanded="${gapsExpanded}" aria-controls="${listId}">${text(gapsExpanded?'OC16 gaps collapse':'OC16 gaps expand')}</button></div>`;
   }
-  /** Nine organizing-axis channels: all nine always render, inside the former four-pillar card chrome.
-   *  Markup and state attributes are the original pillar contract (data-covered / data-row-state / data-lit),
-   *  so the existing pillar CSS paints them; activation still comes from the current scope result. */
-  function axisPillarsHtml() {
-    const items = OC16_AXIS.map(({ pair }) => {
+  /** Six department pillars: one card per department, opening the existing department detail.
+   *  Source is each department's explicit primaryChannelId (never the legacy two-item mechanism list).
+   *  Markup keeps the original pillar contract (data-covered / data-row-state / data-lit) and the second
+   *  line shows the classical hexagram names of the two endpoints through hexagramName(). */
+  function pillarsHtml() {
+    const items = OC16_PILLAR_ORDER.map(id => OC16_DEPARTMENTS.find(department => department.id === id)).filter(Boolean).map(department => {
+      const pair = pairs.find(row => row.channelId === department.primaryChannelId);
       const state = pairState(pair), row = rowState(state);
       const complete = row === 'complete';
       const stateLabel = row === 'complete' ? 'Wa legend active' : row === 'partial' ? 'Wa row partial' : row === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
-      // Structural channel card: the token never takes the fixed axis highlight, pillar CSS paints activation.
-      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-focus="axis-${pair.channelId}" data-covered="${known()?complete:'unknown'}" data-row-state="${row}" data-lit="${pairLit(pair)}">${pairToken(pair,{tag:'span',axis:false})}<span class="wa-pillar-text"><strong>${esc(orgChannelName(pair.channelId))}</strong><small>${esc(pair.displayGates.map(gate => orgGateName(gate)).join(' · '))}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
+      const hexagrams = pair.displayGates.map(gate => hexagramName(gate)).join(' · ');
+      // The token stays a decorative span: the card is the single department-detail action.
+      return `<button type="button" class="wa-pillar" data-wa-department="${department.id}" data-wa-pillar-department="${department.id}" data-focus="pillar-${department.id}" data-covered="${known()?complete:'unknown'}" data-row-state="${row}" data-lit="${pairLit(pair)}">${pairToken(pair,{tag:'span'})}<span class="wa-pillar-text"><strong>${text(department.nameKey)}</strong><small>${esc(hexagrams)}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
     }).join('');
-    return `<h3 class="wa-subheading">${text('OC16 axis pillars')}</h3><div class="wa-pillars" data-wa-pillars>${items}</div>`;
+    return `<h3 class="wa-subheading">${text('OC16 department pillars')}</h3><div class="wa-pillars" data-wa-pillars>${items}</div>`;
   }
   function overviewHtml() {
     const layout = validateWaLayout(draft), ready = known();
-    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${axisPillarsHtml()}${gapsHtml()}</section>`;
+    return `<section class="panel wa-overview"><div class="wa-panel-heading"><h2>${text('Wa overview title')}</h2>${selectedGroup?'':`<span class="wa-state-badge" data-standard="${layout.standardTemplateSatisfied}">${text(layout.standardTemplateSatisfied?'OC16 standard':'OC16 preview')}</span>`}</div><dl class="wa-overview-stats">${stat('OC16 participants',ready?result.memberIds.length:0)}${stat('OC16 gate coverage',ready?result.gateCount:0,ready?result.gateTotal:OC16_GATE_TOTAL,ready?result.gatePercentage:0,'data-oc16-gates')}${stat('OC16 pair coverage',ready?result.pairCount:0,ready?result.pairTotal:OC16_PAIR_TOTAL,ready?result.pairPercentage:0,'data-oc16-pairs')}${stat('OC16 axis coverage',ready?result.axis.pairCount:0,ready?result.axis.pairTotal:OC16_AXIS_PAIR_TOTAL,ready?result.axis.pairPercentage:0,'data-oc16-axis')}</dl>${hasScopedWaEstimate(known()?result:null)?`<p class="wa-small-note" data-wa-uncertainty>≈ ${text('OC16 uncertain')}</p>`:''}${pillarsHtml()}${gapsHtml()}</section>`;
   }
   const pairState = pair => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.status || 'absent' : 'unknown';
   const holders = (pair, gate) => known() ? result.pairs.find(row => row.channelId === pair.channelId)?.holdersByGate?.[gate] || [] : null;
@@ -136,20 +140,19 @@ export function mountWa(container, options = {}) {
     const [leftGate, rightGate] = pair.displayGates;
     return !known() ? 'unknown' : covered(leftGate) && covered(rightGate) ? 'both' : covered(leftGate) ? 'left' : covered(rightGate) ? 'right' : 'none';
   }
-  /** Fixed org highlight marks the nine organizing-axis channels only; department role stays structural. */
-  const axisClass = pair => pair.axisTier ? 'is-axis' : '';
-  function pairToken(pair, { tag = 'button', axis = true } = {}) {
+  /** Fixed org highlight follows the original role rule: department primary = core, 26–44 = personnel.
+   *  Only `.wa-pair-token.is-core` has a rule (historical); personnel never painted a highlight. */
+  const roleClass = pair => pair.role === 'core' ? 'is-core' : pair.role === 'personnel' ? 'is-personnel' : '';
+  function pairToken(pair, { tag = 'button' } = {}) {
     const state = pairState(pair);
     const label = `${pair.displayGates.join('–')} · ${waChannelTitle(pair.channelId)} · ${t(`Wa row ${rowState(state)}`)}`;
     const lit = pairLit(pair);
     const bridge = `<span class="wa-pair-bridge" data-lit="${lit}" aria-hidden="true">–</span>`;
-    // Fixed highlight marks the nine organizing-axis channels only; department role never paints a token.
-    const roleClass = axis ? axisClass(pair) : '';
     const ends = pair.displayGates.map(gate=>`<span class="wa-pair-end" data-covered="${known()?covered(gate):'unknown'}" data-wa-members="${esc((holders(pair,gate)||[]).join(' '))}">${gate}</span>`).join(bridge);
     if (tag === 'span') {
-      return `<span class="wa-pair-token ${roleClass}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
+      return `<span class="wa-pair-token ${roleClass(pair)}" data-state="${state}" data-lit="${lit}" aria-hidden="true">${ends}</span>`;
     }
-    return `<button type="button" class="wa-pair-token ${roleClass}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${ends}</button>`;
+    return `<button type="button" class="wa-pair-token ${roleClass(pair)}" data-wa-pair="${pair.channelId}" data-state="${state}" data-lit="${lit}" aria-label="${esc(label)}" title="${esc(label)}">${ends}</button>`;
   }
   function channelRow(pair) {
     const state = pairState(pair), row = rowState(state);
@@ -157,7 +160,7 @@ export function mountWa(container, options = {}) {
       const ids = holders(pair, gate);
       return `<span class="wa-row-gate" data-wa-endpoint="${gate}" data-wa-covered="${ids?ids.length>0:'unknown'}"><button type="button" class="wa-row-gate-number" data-wa-gate="${gate}" title="${esc(`${gate} · ${orgGateName(gate)}`)}">${gate}</button><span class="wa-row-markers">${ids===null?'—':ids.length?ids.map(id=>showNames?`<span class="wa-row-member" title="${esc(nameOf(id))}">${markerHtml(id)}<span class="wa-row-member-name">${esc(nameOf(id))}</span></span>`:markerHtml(id)).join(''):`<span class="wa-row-empty">—</span>`}</span></span>`;
     };
-    return `<li class="wa-channel-row ${axisClass(pair)}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
+    return `<li class="wa-channel-row ${roleClass(pair)}" data-pair-row="${pair.channelId}" data-row-state="${row}" data-wa-state="${state}">${pairToken(pair)}<button type="button" class="wa-row-name" data-wa-pair-open="${pair.channelId}">${esc(waChannelTitle(pair.channelId))}</button>${pair.displayGates.map(gateCell).join('')}<span class="wa-row-state" data-state="${row}">${text(`Wa row ${row}`)}</span></li>`;
   }
   function departmentHtml(department) {
     const summary = known() ? result.departments.find(row=>row.id===department.id) : null;
