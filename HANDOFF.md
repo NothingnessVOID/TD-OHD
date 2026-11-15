@@ -101,3 +101,11 @@
 - 代码提交`be416f57`已安装9961，served资源为`index-B4UG9E0_.js`／`index-CeJEtIkR.css`，hash与构建一致，健康正常。更新前后count17/passwordRequired=false，数据库、后端及浏览器团队组织存储未替换。
 - 回滚备份：`archive/backups/rollback-before-be416f57-9961-20261114-232307/`，仅本机保存。
 - 本轮不合main、不创建PR、不部署正式站点。
+
+## 第五轮：桌面九大支柱每行三个（2026-11-15）
+
+用户要求原支柱外观不变，桌面改成一行三个。仅修改wa.css默认`.wa-pillars`为三列，原1051–1200二列、≤600二列、≤360单列响应式规则保留，卡片视觉与功能不变。
+
+- 主代理浏览器检查1440px九卡三列三行、1100px二列、390px二列且无横向溢出和pageerror，已查看实际截图，文字无裁切；Node24/.NET10 desktop构建通过。未为这一低影响CSS改动新增单元测试或运行全量回归。
+- 代码提交`6e317ec9`已更新9961；实际资源`index-BTBaKRfO.js`／`index-D420Q6Ts.css`与构建hash一致。count前后17、passwordRequired=false，数据库与浏览器存储未替换。
+- 本机回滚备份：`archive/backups/rollback-before-6e317ec9-9961-20261115-082518/`。功能分支继续正常推送，不更新main或正式站点。
