@@ -37,25 +37,27 @@ test('organization channels and gates keep one reading surface with explicit cat
  for(const locale of ['en','zh-CN','zh-Hant']){
   setLocale(locale,{persist:false});
   for(const department of OC16_DEPARTMENTS){
-   // The department sheet is the explicit primary channel, never a positional first row.
+   // The department entry is the explicit primary channel, never a positional first row.
    const core=department.pairs.find(pair=>pair.channelId===department.primaryChannelId);
    assert.ok(core,`${department.id} primary`);
+   // Department entry delegates to the same pair sheet and lists no other channel of the department.
+   assert.equal(view.renderDepartment(department.id),view.renderPair(core.channelId));
    for(const pair of department.pairs){
     const html=view.renderPair(pair.channelId);
-    assert.ok(html.includes(`data-wa-content-id="${pair.role==='core'?core.channelId:pair.channelId}"`));
+    assert.ok(html.includes(`data-wa-content-id="${pair.channelId}"`));
     assert.ok(html.includes(`data-wa-org-reading="channel" data-wa-org-body="integrated" data-wa-channel="${pair.channelId}"`));
     assert.doesNotMatch(html,/纯净官方版|通俗应用版|原典|教材标注|资料对照/);
-    // Primary pair ≡ department sheet: reading-for is the department id. Support keeps reading-for=channelId.
-    if(pair.role==='core') assert.ok(html.includes(`data-wa-reading-for="${department.id}"`));
-    else assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
-    const escRole = t(`OC16 org role ${department.id}`).replaceAll('&','&amp;');
-    if(pair.role==='core'){
-      assert.ok(html.includes('data-wa-org-reading="channel"'));
-      assert.ok(html.includes('data-wa-org-body="integrated"'));
-      assert.ok(html.includes(escRole) || html.includes(t(`OC16 org role ${department.id}`)));
-    } else {
-      assert.ok(html.includes(t('Wa UI department reading')));
-      assert.ok(html.includes('data-wa-org-body="integrated"'));
+    // Every channel, core included, is its own sheet: reading-for is the channel id, never the department id.
+    assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
+    assert.doesNotMatch(html,new RegExp(`data-wa-reading-for="${department.id}"`));
+    assert.ok(html.includes('data-wa-org-body="integrated"'));
+    // One reading only, and no other channel of this department becomes a row or reading on this sheet;
+    // the only allowed pair reference is the explicit jump to the department primary channel.
+    assert.equal((html.match(/data-wa-org-reading="channel"/g)||[]).length,1);
+    for(const other of department.pairs.filter(row=>row.channelId!==pair.channelId)){
+      assert.equal(html.includes(`data-wa-reading-for="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
+      assert.equal(html.includes(`data-pair-row="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
+      if(other.channelId!==core.channelId) assert.equal(html.includes(`data-wa-pair="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
     }
     assert.doesNotMatch(html,/data-shared-channel-reading|data-shared-gate=|data-shared-lens/);
     assert.doesNotMatch(html.replace(/<[^>]*>/g,''),forbidden);
@@ -64,7 +66,7 @@ test('organization channels and gates keep one reading surface with explicit cat
     for(const gate of pair.gates){
       const gateHtml=view.renderGate(gate);
       assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));
-      assert.ok(gateHtml.includes(`data-wa-content-id="${pair.channelId}"`) || gateHtml.includes(`data-wa-content-id="${core.channelId}"`));
+      assert.ok(gateHtml.includes(`data-wa-content-id="${pair.channelId}"`));
       assert.ok(gateHtml.includes('data-wa-org-reading="gate"'));
       const gateRole = orgGateName(gate).replaceAll('&','&amp;');
       assert.ok(gateHtml.includes(gateRole));

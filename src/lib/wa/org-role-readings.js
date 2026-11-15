@@ -282,13 +282,15 @@ export function orgChannelCopy(channelId, locale = getLocale()) {
 
 
 /** Display name on the organization page only — never used by natal/chart vocabulary.
- * Priority: integrated organization role → existing organization role → unified gate vocabulary. */
+ * Priority: existing organization role (the twelve department gates) → integrated (Penta) organization
+ * role → unified gate vocabulary. The organization's own roles stay authoritative, so Penta wording
+ * (2 协调 / 14 容量) never renames the department role shown in pillars, rows and sheet headings. */
 export function orgGateName(gate, locale = getLocale()) {
   const id = Number(gate);
   if (!Number.isInteger(id) || !locales.includes(locale)) return gateName(id);
+  if (gateRoles[id]) return t(`OC16 org gate role ${id}`);
   const integrated = readOrgGateBody(id, locale);
   if (integrated?.role) return integrated.role;
-  if (gateRoles[id]) return t(`OC16 org gate role ${id}`);
   return gateName(id);
 }
 

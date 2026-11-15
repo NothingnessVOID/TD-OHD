@@ -26,7 +26,6 @@ import { listWaContent } from '../lib/wa/content.js';
 import { createWaDraft, assertWaSnapshot, validateWaLayout, WA_ROLES } from '../lib/wa/model.js';
 import { createWaRepository } from '../lib/wa/repository.js';
 import { OC16_AXIS, OC16_AXIS_PAIR_TOTAL, OC16_DEPARTMENTS, OC16_GATE_TOTAL, OC16_PAIR_TOTAL, OC16_PILLAR_ORDER } from '../lib/wa/oc16-catalog.js';
-import { hexagramName } from '../lib/vocabulary.js';
 import { prepareWaPreview, analyzeOC16 } from '../lib/wa/oc16-analysis.js';
 import { resolveWaViewScope, hasScopedWaEstimate } from '../lib/wa/view-scope.js';
 import { openWaMemberPicker, prepareWaSelectionChange } from './wa-composer.js';
@@ -154,19 +153,20 @@ export function mountWa(container, options = {}) {
     // Collapsed by default; the heading and total stay visible and the fold state lives on the instance.
     return `<h3 class="wa-subheading">${text('OC16 gaps')}<small>${text('OC16 gaps count',{count:missing})}</small></h3><div class="wa-gap-rows" id="${listId}" data-wa-gap-list ${gapsExpanded?'':'hidden'}>${rows.map(({department,gates})=>`<div class="wa-gap-row"><span class="wa-gap-department">${text(`OC16 ${department.id}`)}</span><span class="wa-gap-list">${gates.map(gate=>`<button type="button" class="wa-gap-chip" data-wa-gate="${gate}" data-focus="gap-${gate}"><b>${gate}</b><span>${esc(orgGateName(gate))}</span></button>`).join('')}</span></div>`).join('')}</div><div class="wa-gaps-toggle-row"><button type="button" class="wa-link-button wa-gaps-toggle" data-wa-gaps-toggle data-focus="gaps-toggle" aria-expanded="${gapsExpanded}" aria-controls="${listId}">${text(gapsExpanded?'OC16 gaps collapse':'OC16 gaps expand')}</button></div>`;
   }
-  /** Six department pillars: one card per department, opening the existing department detail.
+  /** Six department pillars: one card per department, opening that department's primary channel sheet.
    *  Source is each department's explicit primaryChannelId (never the legacy two-item mechanism list).
    *  Markup keeps the original pillar contract (data-covered / data-row-state / data-lit) and the second
-   *  line shows the classical hexagram names of the two endpoints through hexagramName(). */
+   *  line shows the organization role of the two endpoints through orgGateName() — the same roles the
+   *  department rows and sheets use, never the classical hexagram names. */
   function pillarsHtml() {
     const items = OC16_PILLAR_ORDER.map(id => OC16_DEPARTMENTS.find(department => department.id === id)).filter(Boolean).map(department => {
       const pair = pairs.find(row => row.channelId === department.primaryChannelId);
       const state = pairState(pair), row = rowState(state);
       const complete = row === 'complete';
       const stateLabel = row === 'complete' ? 'Wa legend active' : row === 'partial' ? 'Wa row partial' : row === 'none' ? 'Wa legend inactive' : 'OC16 unknown';
-      const hexagrams = pair.displayGates.map(gate => hexagramName(gate)).join(' · ');
-      // The token stays a decorative span: the card is the single department-detail action.
-      return `<button type="button" class="wa-pillar" data-wa-department="${department.id}" data-wa-pillar-department="${department.id}" data-focus="pillar-${department.id}" data-covered="${known()?complete:'unknown'}" data-row-state="${row}" data-lit="${pairLit(pair)}">${pairToken(pair,{tag:'span'})}<span class="wa-pillar-text"><strong>${text(department.nameKey)}</strong><small>${esc(hexagrams)}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
+      const roles = pair.displayGates.map(gate => orgGateName(gate)).join(' · ');
+      // The token stays a decorative span: the card is the single primary-channel action.
+      return `<button type="button" class="wa-pillar" data-wa-pair="${pair.channelId}" data-wa-pillar-department="${department.id}" data-focus="pillar-${department.id}" data-covered="${known()?complete:'unknown'}" data-row-state="${row}" data-lit="${pairLit(pair)}">${pairToken(pair,{tag:'span'})}<span class="wa-pillar-text"><strong>${text(department.nameKey)}</strong><small>${esc(roles)}</small><small class="wa-pillar-state">${text(stateLabel)}</small></span></button>`;
     }).join('');
     return `<h3 class="wa-subheading">${text('OC16 department pillars')}</h3><div class="wa-pillars" data-wa-pillars>${items}</div>`;
   }

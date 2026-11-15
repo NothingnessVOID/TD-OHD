@@ -118,3 +118,17 @@
 - 人物现为两端共享的权威本机库，用户在任一页面新增/编辑/删除人物会反映到同一库；团队localStorage与Wa组织IndexedDB仍按浏览器origin分别保存，此次只授权接入人物，未读取/搬运原团队组织记录。
 - 当前5282是桌面构建的正常站点，**不再是Vite热更新服务**。后续代码改动先build:desktop更新本worktree/dist即可供当前local服务读取，必要重启只限5282，不重启9961。不要误把旧Vite终端任务当仍在服务。
 - 当前预览进程由主代理启动，`OHD_CONFIG=.../tools/member-business-preview-local.json npx --yes --package=node@24 -- node local/server.mjs`。准备脚本在本机tools/prepare-member-business-local-preview.py，不进Git。
+
+## 六大支柱OC16角色名与单通道详情修复
+
+用户明确指出六大支柱不应显示64卦名，要求恢复原OC16闸门角色；点击六大支柱／核心通道应与其他通道一样只显示该通道，不要展开同部门其他通道。
+
+- 组织显示名接口`orgGateName()`改为原OC16 role优先，其次整合Penta role，再统一gateName；原12个部门闸门及既有人事角色使用既有三语消息，不新造词汇、不改全站普通人类图词汇或计算ID。2方向／14大蓄不再被Penta协调／容量覆盖；组织详情角色徽标也使用同一显示名。
+- 六支柱仍显示部门标题、原样式／三列／激活状态，subtitle改用orgGateName，点击直接`data-wa-pair=primaryChannelId`，保留分组标识与焦点key。管理是21-45，用户口误24-45未作为新通道。
+- 删除mergedDeptCore，所有32通道共用pairSheet；renderDepartment兼容入口也委托其显式primary的同一pairSheet。保留当前scope两端激活、自身完整成员、单通道正文与相关闸门，不再输出部门support通道列表或部门汇总指标。相关部门跳转明确为primary pair，避免重新绕回整部门展开。
+- 主代理亲读名称优先级、pairSheet及相关跳转；实施代理定向31/31、member-business相关52/52通过。既有Wa审计4失败及旧部门合并e2e假设未弱化或批量改写，全量回归未运行。
+- 主代理desktop构建到artifacts/local-preview-next，通过后保留原fonts/hashed assets，备份SQLite并切换5282当前静态目录；没有重启或替换9961程序、配置和数据库。
+- 5282正常组织页面浏览器逐张检查六支柱：21-45控制者／统治者；25-51天真／冲击；2-14方向／大蓄；27-50滋养／价值观；6-59调和／亲密；3-60秩序／限制。每个详情2端点、1通道正文、0其他通道行；普通26-44关联主通道跳转也为单通道。390宽无横向溢出，pageerror0，未打印个人记录。
+- 实际served资源index-CBIToAN7.js／index-DVhCtBT4.css与构建hash一致，人物计数前后17。预览提升脚本本机tools/promote-member-business-preview.py，备份位于archive/backups/5282-before-ui-update-<timestamp>/，含真实DB备份，不上传或stage。
+- 仍仅交付5282正常组织页，不用dev演示入口；本轮不更新main、不创建PR、不部署正式站点。
+- 提交前发现额外未跟踪的`dist 2/`，核对包含更新前index-CrBf8dRj.js等静态构建（创建时间早于本轮）。保留原位、不删除、不入Git；后续不要把它当源码改动或上传。
