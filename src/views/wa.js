@@ -2,7 +2,9 @@ import '../styles/wa.css';
 import '../lib/wa/messages.js';
 import '../lib/wa/oc16-messages.js';
 import '../lib/wa/ui-messages.js';
+import '../lib/member-business/messages.js';
 import '../styles/wa-members.css';
+import '../styles/wa-member-business.css';
 import { createWaMemberMarkers, renderWaMemberMarker } from '../lib/wa/member-markers.js';
 import { listPeople, getPerson, onPeopleChange } from '../lib/people.js';
 import { listTeams } from '../lib/team-repository.js';
@@ -14,6 +16,9 @@ import { openOperationDialog, confirmOperation, renderDialogHeader } from '../li
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
+import { renderMemberBusinessList, renderMemberBusinessFrame, renderMemberBusinessChannel } from './wa-member-business.js';
+import { analyzeMemberBusiness } from '../lib/member-business/analysis.js';
+import { analyzeMemberEnvironments } from '../lib/member-business/environments.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
 import '../styles/wa-details.css';
 import { orgGateName } from '../lib/wa/org-role-readings.js';
@@ -48,6 +53,8 @@ export function mountWa(container, options = {}) {
   // Instance-owned gap fold: survives re-render and scope changes; a different organization resets it.
   let gapsExpanded = false;
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
+  // Member business facts live in this instance only: derived from prepared charts, never persisted.
+  let memberFacts = new Map();
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
   let showNames = (() => { try { const v = storage?.getItem(SHOW_NAMES_PREF); if (v == null) return true; return v === '1'; } catch { return true; } })();
@@ -70,7 +77,34 @@ export function mountWa(container, options = {}) {
   const remember = id => { try { storage?.setItem(LAST_ORGANIZATION,id); } catch { notice='OC16 remember failed'; errorText=''; } };
   const closeReading = () => { if (detailOpen) closeDetailDialog(); };
   const fail = error => { notice=/conflict|revision/i.test(error?.code || '')?'Wa save conflict':'Wa data error'; errorText=error?.message || ''; };
-  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf,markerOf:id=>markers().get(id)});
+  // Member business: prepared charts already live in memory for the assigned members only.
+  const memberRecords=()=>prepared?.status==='ready'?[...prepared.members]:[];
+  const memberOrder=()=>memberRecords().sort((a,b)=>(markers().get(a.memberId)?.number??0)-(markers().get(b.memberId)?.number??0));
+  const memberReady=()=>!busy&&prepared?.status==='ready'&&memberRecords().length>0;
+  const placementOf=id=>draft.alphaId===id?{kind:'alpha'}:(()=>{const group=draft.pentas.find(item=>item.memberIds.includes(id));return group?{kind:'penta',title:groupName(group)}:null;})();
+  function memberFactsOf(id){
+    if(memberFacts.has(id))return memberFacts.get(id);
+    const member=memberRecords().find(item=>item.memberId===id);
+    if(!member)return null;
+    const analysis=analyzeMemberBusiness({memberId:member.memberId,personId:member.personId,chart:member.chart,timeUnknown:member.timeUnknown,birthTimeConfidence:member.birthTimeConfidence});
+    const record={analysis,screening:analyzeMemberEnvironments(analysis)};
+    memberFacts.set(id,record);
+    return record;
+  }
+  /** Prev/next replaces the current member frame instead of stacking another one. */
+  function stepMemberFrame(direction){
+    const frame=detailStack.at(-1);
+    if(!frame||frame.item?.type!=='member')return;
+    const order=memberOrder().map(member=>member.memberId);
+    const index=order.indexOf(frame.item.id);
+    const next=order[index+(direction==='next'?1:-1)];
+    if(next==null)return;
+    frame.item={type:'member',id:next};frame.scrollTop=0;frame.focus=null;frame.openDetails=[];
+    showDetail(frame.item,false);
+    // The pressed button was replaced with the new frame; keep keyboard focus on the same control.
+    detail.querySelector(`[data-wa-member-step="${direction}"]:not([disabled])`)?.focus({preventScroll:true});
+  }
+  const details=createWaDetailRenderer({getResult:()=>known()?result:null,nameOf,markerOf:id=>markers().get(id),businessOf:id=>memberRecords().some(member=>member.memberId===id)});
 
   const markerHtml = id => renderWaMemberMarker(markers().get(id),{name:nameOf(id)});
   const groupSizeState = count => count === 0 ? 'empty' : count >= 3 && count <= 5 ? 'ok' : 'warn';
@@ -96,7 +130,7 @@ export function mountWa(container, options = {}) {
   function scopeBarHtml() {
     if (!validateWaLayout(draft).memberIds.length) return `<p class="wa-scope-label" data-scope-label role="status" hidden>${esc(scopeLabel())}</p>`;
     const option = (id, label) => `<button type="button" class="wa-segment" data-scope-option="${esc(id)}" data-focus="scope-${esc(id)}" aria-pressed="${(selectedGroup || '') === id}">${esc(label)}</button>`;
-    return `<section class="wa-scope-bar" aria-label="${text('OC16 scope')}"><span class="wa-scope-title">${text('OC16 scope')}</span><div class="wa-segmented" role="group" aria-label="${text('OC16 scope')}">${option('',t('OC16 all'))}${draft.pentas.map(group=>option(group.pentaId,groupName(group))).join('')}</div>${selectedGroup?`<label class="wa-alpha-toggle"><input type="checkbox" data-include-alpha data-focus="include-alpha" ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}<p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p></section>`;
+    return `<section class="wa-scope-bar" aria-label="${text('OC16 scope')}"><span class="wa-scope-title">${text('OC16 scope')}</span><div class="wa-segmented" role="group" aria-label="${text('OC16 scope')}">${option('',t('OC16 all'))}${draft.pentas.map(group=>option(group.pentaId,groupName(group))).join('')}</div>${selectedGroup?`<label class="wa-alpha-toggle"><input type="checkbox" data-include-alpha data-focus="include-alpha" ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}<p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p><button type="button" class="btn-secondary wa-members-button" data-wa-members-open data-focus="mb-list" ${memberReady()?'':'disabled'}>${text('MB open list')}</button></section>`;
   }
   function stat(label, value, total, percent, attribute = '') {
     const ready = known();
@@ -221,7 +255,7 @@ export function mountWa(container, options = {}) {
     render();
   }
   function schedule() {
-    generation++;clearTimeout(timer);closeReading();prepared=null;result=null;selected=null;
+    generation++;clearTimeout(timer);closeReading();prepared=null;result=null;selected=null;memberFacts=new Map();
     const ids=validateWaLayout(draft).memberIds;
     if(!ids.length){busy=false;prepared=[];refreshScope();return;}
     busy=true;render();const token=generation;
@@ -368,12 +402,22 @@ export function mountWa(container, options = {}) {
     if(item.type==='reading')return readingHtml(item.id);
     if(item.type==='department')return details.renderDepartment(item.id);
     if(item.type==='pair')return details.renderPair(item.id);
+    if(item.type==='members')return renderMemberBusinessList({members:memberOrder(),analysisOf:id=>memberFactsOf(id)?.analysis??null,markerOf:id=>markers().get(id),nameOf,placementOf});
+    if(item.type==='member'){
+      const record=memberFactsOf(item.id),member=record?memberRecords().find(row=>row.memberId===item.id):null;
+      if(!record||!member)return `<p class="wa-detail-note">${text('MB insufficient')}</p>`;
+      const order=memberOrder().map(row=>row.memberId);
+      return renderMemberBusinessFrame({member,analysis:record.analysis,screening:record.screening,markerOf:id=>markers().get(id),nameOf,placementOf,index:Math.max(order.indexOf(item.id),0),count:order.length});
+    }
+    if(item.type==='business-channel')return renderMemberBusinessChannel({channelId:item.id});
     return details.renderGate(item.id);
   }
+  /** Personal frames are not organization results: the sheet label says so explicitly. */
+  const personalFrame=item=>['members','member','business-channel'].includes(item.type);
   function focusKey(node,root) {
     if(!node||!root.contains(node))return null;
     if(node.matches('summary'))return {summary:[...root.querySelectorAll('summary')].indexOf(node)};
-    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-shared-lens','data-focus','data-action']){
+    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-wa-member-business','data-wa-business-channel','data-shared-lens','data-focus','data-action']){
       if(node.hasAttribute(attribute)){const value=node.getAttribute(attribute);return {attribute,value,index:[...root.querySelectorAll(`[${attribute}]`)].filter(item=>item.getAttribute(attribute)===value).indexOf(node)};}
     }
     return null;
@@ -415,12 +459,12 @@ export function mountWa(container, options = {}) {
     const frame=detailStack.at(-1);if(!frame)return;
     if(['gate','pair','department'].includes(item.type))selected=item;
     prepareDetailDialog(detail,'wa');
-    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
+    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${personalFrame(item)?text('MB personal label'):esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
     detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
     // Back navigation restores captured fold state when any details remain; channel/dept readings are always expanded.
     if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
-    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:t('Organization · Wa')});
+    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:personalFrame(item)?t('MB members title'):t('Organization · Wa')});
     syncSelection();
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
@@ -432,6 +476,11 @@ export function mountWa(container, options = {}) {
   function detailClick(event) {
     const node=event.target.closest('button');if(!node)return;
     if(node.hasAttribute('data-shared-back'))return;
+    if(node.hasAttribute('data-wa-members-open')){showDetail({type:'members'});return;}
+    if(node.dataset.waMemberBusiness){showDetail({type:'member',id:node.dataset.waMemberBusiness});return;}
+    if(node.dataset.waMemberOpen){showDetail({type:'member',id:node.dataset.waMemberOpen});return;}
+    if(node.dataset.waMemberStep){stepMemberFrame(node.dataset.waMemberStep);return;}
+    if(node.dataset.waBusinessChannel){showDetail({type:'business-channel',id:node.dataset.waBusinessChannel});return;}
     if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
     else if(node.dataset.waPair)showDetail({type:'pair',id:node.dataset.waPair});
     else if(node.dataset.waReading)showDetail({type:'reading',id:node.dataset.waReading});
@@ -447,6 +496,7 @@ export function mountWa(container, options = {}) {
     }
     const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
+      if(node.hasAttribute('data-wa-members-open')){node.focus({preventScroll:true});showDetail({type:'members'});return;}
       if(node.hasAttribute('data-wa-gaps-toggle')){node.focus({preventScroll:true});gapsExpanded=!gapsExpanded;render();return;}
       if(node.dataset.waGate){node.focus({preventScroll:true});showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
       if(node.dataset.waPairOpen){showDetail({type:'pair',id:node.dataset.waPairOpen});return;}

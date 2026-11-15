@@ -16,9 +16,9 @@ const text = (key,params) => esc(t(key,params));
 const roleLabel = role => role === 'core' ? 'OC16 core' : role === 'personnel' ? 'OC16 personnel' : 'OC16 support';
 const unknown = () => text('OC16 unknown');
 const displayName = (id, nameOf) => esc(nameOf(id) || id);
-const person = (id, nameOf, markerOf=()=>null) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span></span>`;
-const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null) => Array.isArray(ids)
-  ? ids.map(id => person(id, nameOf, markerOf)).join(' ') || text(emptyKey) : unknown();
+const person = (id, nameOf, markerOf=()=>null, businessOf=()=>false) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span>${businessOf(id)?`<button type="button" class="wa-person-business" data-wa-member-business="${esc(id)}">${text('MB member button')}</button>`:''}</span>`;
+const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null, businessOf=()=>false) => Array.isArray(ids)
+  ? ids.map(id => person(id, nameOf, markerOf, businessOf)).join(' ') || text(emptyKey) : unknown();
 export function waChannelTitle(channelId) {
   // One channel, one name: the organization page reads the unified channel vocabulary in every
   // column. Department positioning stays in department copy rather than becoming a channel title.
@@ -174,7 +174,7 @@ function gateRelated(pair, gate) {
 }
 
 /** Pure HTML only. Each method takes one fresh snapshot from the host's current scope. */
-export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=()=>null }) {
+export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=()=>null, businessOf=()=>false }) {
   function context() {
     const candidate = getResult();
     const result = ['ready', 'empty'].includes(candidate?.status) ? candidate : null;
@@ -186,7 +186,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
   }
   function endpoint(gate, ids, { link = true, side = null } = {}) {
     const label = link ? `<button type="button" class="wa-detail-link" data-wa-gate="${gate}">${gateLabel(gate)}</button>` : gateLabel(gate);
-    return `<div class="wa-detail-endpoint" data-wa-endpoint="${gate}" data-wa-covered="${Array.isArray(ids) ? ids.length > 0 : 'unknown'}">${side?`<div class="wa-endpoint-side">${text(`Wa UI ${side} gate`)}</div>`:''}<div class="wa-detail-gate-label">${label}</div><div class="wa-detail-members">${names(ids, nameOf,'OC16 inactive',markerOf)}</div></div>`;
+    return `<div class="wa-detail-endpoint" data-wa-endpoint="${gate}" data-wa-covered="${Array.isArray(ids) ? ids.length > 0 : 'unknown'}">${side?`<div class="wa-endpoint-side">${text(`Wa UI ${side} gate`)}</div>`:''}<div class="wa-detail-gate-label">${label}</div><div class="wa-detail-members">${names(ids, nameOf,'OC16 inactive',markerOf,businessOf)}</div></div>`;
   }
   function endpoints(pair, ctx, options) {
     const record = ctx.pairs.get(pair.channelId);
@@ -216,7 +216,7 @@ export function createWaDetailRenderer({ getResult, nameOf = id => id, markerOf=
   }
   /** Self-complete members only — cross-member who-pairs-with-whom lists were removed as redundant. */
   function selfCompleteBlock(record) {
-    return `<section class="wa-detail-self-complete"><h3>${text('OC16 covered by one')}</h3><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none', markerOf)}</div></section>`;
+    return `<section class="wa-detail-self-complete"><h3>${text('OC16 covered by one')}</h3><div data-wa-self-complete>${names(record?.selfCompleteMemberIds, nameOf, 'Wa detail none', markerOf, businessOf)}</div></section>`;
   }
   function channelCard(pair,ctx) {
     const record=ctx.pairs.get(pair.channelId);

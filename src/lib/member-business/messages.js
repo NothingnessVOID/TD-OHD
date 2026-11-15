@@ -1,0 +1,45 @@
+// Member business UI labels. Product prose lives in content.json; these are interface strings only.
+import { registerMessages } from '../i18n.js';
+const messages = {
+  'MB open list': ['成员商业分析', '成員商業分析', 'Member business analysis'],
+  'MB members title': ['成员商业分析', '成員商業分析', 'Member business analysis'],
+  'MB members note': ['以下列出本组织全部已分配成员，不受当前查看范围影响。', '以下列出本組織全部已分配成員，不受目前查看範圍影響。', 'Every assigned member is listed; the current scope does not filter this list.'],
+  'MB list empty': ['暂无已分配成员', '暫無已分配成員', 'No assigned members yet'],
+  'MB personal label': ['个人分析', '個人分析', 'Personal analysis'],
+  'MB member button': ['商业分析', '商業分析', 'Business analysis'],
+  'MB career': ['职业类型', '職業類型', 'Career type'],
+  'MB definition': ['信息处理', '資訊處理', 'Information processing'],
+  'MB environments': ['工作环境', '工作環境', 'Work environments'],
+  'MB strengths': ['商业优势', '商業優勢', 'Business strengths'],
+  'MB screening': ['五步排查依据', '五步排查依據', 'Five-step screening'],
+  'MB supported tag': ['有依据', '有依據', 'Basis'],
+  'MB caution tag': ['协作关注', '協作關注', 'Collaboration note'],
+  'MB basis steps': ['第 {steps} 步', '第 {steps} 步', 'steps {steps}'],
+  'MB other environments': ['其余环境：本图未提供依据', '其餘環境：本圖未提供依據', 'Other settings: this chart gives no basis'],
+  'MB type line': ['对应人类图类型：{type}', '對應人類圖類型：{type}', 'Human Design type: {type}'],
+  'MB definition line': ['对应定义：{definition}', '對應定義：{definition}', 'Definition: {definition}'],
+  'MB scope note': ['这份分析只使用该成员自己的出生图，不包含组织合成结果。', '這份分析只使用該成員自己的出生圖，不包含組織合成結果。', "This analysis uses only this member's own chart, not an organization composite."],
+  'MB estimated note': ['≈ 出生时间未知或按中午估算；职业类型、定义与通道都可能随时间变化。', '≈ 出生時間未知或按中午估算；職業類型、定義與通道都可能隨時間變化。', '≈ Birth time unknown or estimated at noon; career type, definition and channels may change with the time.'],
+  'MB insufficient': ['资料不足，本页不做判断。', '資料不足，本頁不做判斷。', 'Not enough source data; this page makes no judgment.'],
+  'MB insufficient field': ['{field}资料不足', '{field}資料不足', 'No usable {field}'],
+  'MB no channels': ['这张图没有完整个人通道。闸门仍然可以在与他人连接时形成表达。', '這張圖沒有完整個人通道。閘門仍然可以在與他人連結時形成表達。', 'This chart has no complete personal channel; gates can still find expression when they connect with others.'],
+  'MB view org channel': ['查看组织中的通道', '查看組織中的通道', 'Open the organization channel'],
+  'MB prev': ['上一位', '上一位', 'Previous'],
+  'MB next': ['下一位', '下一位', 'Next'],
+  'MB penta gates': ['激活闸门 {active} / {total}', '啟動閘門 {active} / {total}', 'Active gates {active} / {total}'],
+  'MB penta basis': ['有小组连接依据', '有小組連結依據', 'Basis for group connection'],
+  'MB penta no complete': ['暂无完整 Penta 通道', '暫無完整 Penta 通道', 'No complete Penta channel yet'],
+  'MB solo execution': ['具体执行与直觉判断时，需要不被打扰的独立空间', '具體執行與直覺判斷時，需要不被打擾的獨立空間', 'Hands-on execution and intuitive judgment need an undisturbed space'],
+  'MB tribal scope': ['协作关注：公共规则与资源边界', '協作關注：公共規則與資源邊界', 'Collaboration note: public rules and resource boundaries'],
+  'MB env note': ['下列环境都可以在这张图里找到依据，它们可以同时成立，分别对应不同的工作内容。', '下列環境都可以在這張圖裡找到依據，它們可以同時成立，分別對應不同的工作內容。', 'The settings below all have a basis in this chart; they can hold at once and describe different kinds of work.'],
+  'MB step facts': ['本图事实', '本圖事實', 'What the chart shows'],
+  'MB step mode': ['工作方式', '工作方式', 'Work setting'],
+  'MB step understanding': ['怎样理解', '怎樣理解', 'How to read it'],
+  'MB step no basis': ['本步未指向具体环境', '本步未指向具體環境', 'This step points to no specific setting'],
+  'MB strengths note': ['完整个人通道按回路分组；点开通道查看同一份通道资料。', '完整個人通道按迴路分組；點開通道查看同一份通道資料。', 'Complete personal channels grouped by circuit; open one for the same channel reading.'],
+  'MB placement alpha': ['Alpha（负责人）', 'Alpha（負責人）', 'Alpha'],
+  'MB channel sheet': ['个人通道', '個人通道', 'Personal channel']
+};
+for (const [index, locale] of ['zh-CN', 'zh-Hant', 'en'].entries()) {
+  registerMessages(locale, Object.fromEntries(Object.entries(messages).map(([key, value]) => [key, value[index]])));
+}
