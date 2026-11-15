@@ -6,7 +6,6 @@ import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { hexagramName, planetName } from '../lib/vocabulary.js';
 import { renderProse } from '../lib/knowledge/detail-renderer.js';
-import { GATE_DESCRIPTIONS } from '../lib/content.js';
 import { readWaReadingExcerpt } from '../lib/wa/reading-presentation.js';
 import { orgChannelBody, orgChannelCopy, orgChannelName, orgGateBody, orgGateCopy, orgGateName } from '../lib/wa/org-role-readings.js';
 import { OC16_DEPARTMENTS, oc16Department, oc16Pair, oc16PairForGate } from '../lib/wa/oc16-catalog.js';
@@ -88,27 +87,26 @@ export function renderOrgChannelReading(channelId) {
   return `<article class="wa-org-reading" data-wa-org-reading="channel" data-wa-shared-knowledge="wa" data-wa-channel="${esc(pair.channelId)}">${excerpt.summary===null?'':`<div class="knowledge-summary-callout" data-wa-prose="summary">${renderProse({content:excerpt.summary})}</div>`}<div class="knowledge-body" data-wa-prose="detail">${renderProse({content:excerpt.detail})}</div></article>`;
 }
 
-/** Gate body: integrated organization copy first, existing organization copy second, then the shared
- * gate description (keynote + description). Only catalog gates qualify. No lens switcher, no six lines. */
-export function renderOrgGateReading(gate) {
+/** Gate body: the organization business copy is the only source. Integrated copy (Penta or the
+ * remaining forty gates) first, existing department-gate copy second. A catalog gate with neither says
+ * its business reading is being prepared — the shared natal gate description is never shown here as if
+ * it were business content. Non-catalog gates keep returning '' and gain no invented material.
+ * The two readers are injectable so the pending branch can be checked without editing authored copy. */
+export function renderOrgGateReading(gate, { gateBody = orgGateBody, gateCopy = orgGateCopy } = {}) {
   const id = Number(gate);
   if (!oc16PairForGate(id)) return '';
-  const body = orgGateBody(id);
+  const body = gateBody(id);
   if (body) {
     // The role callout uses the same organization name as the sheet heading below, so a Penta-context
     // role word (2 协调 / 14 容量) can never contradict the department role shown above it.
     const roleBlock = `<div class="knowledge-summary-callout" data-wa-org-role><div class="knowledge-summary-label">${text('Wa org gate role')}</div><p class="knowledge-summary knowledge-summary-text">${esc(orgGateName(id))}</p></div>`;
     return `<article class="wa-org-reading" data-wa-org-reading="gate" data-wa-org-body="integrated" data-wa-gate="${id}">${roleBlock}<div class="knowledge-body" data-wa-prose="org-detail">${prose([body.intro, body.application].filter(Boolean).join('\n\n'))}</div></article>`;
   }
-  const copy = orgGateCopy(id);
+  const copy = gateCopy(id);
   if (copy) {
     return `<article class="wa-org-reading" data-wa-org-reading="gate" data-wa-org-body="organization" data-wa-gate="${copy.gate}"><div class="knowledge-summary-callout" data-wa-org-role><div class="knowledge-summary-label">${text('Wa org gate role')}</div><p class="knowledge-summary knowledge-summary-text">${esc(copy.role)}</p></div><div class="knowledge-body" data-wa-prose="org-detail"><p>${esc(copy.body)}</p></div></article>`;
   }
-  const shared = GATE_DESCRIPTIONS[id];
-  const keynote = typeof shared?.keynote === 'string' ? shared.keynote : '';
-  const description = typeof shared?.description === 'string' ? shared.description : '';
-  if (!keynote && !description) return '';
-  return `<article class="wa-org-reading" data-wa-org-reading="gate" data-wa-shared-knowledge="gate" data-wa-gate="${id}"><div class="knowledge-body" data-wa-prose="org-detail">${keynote?`<p>${esc(keynote)}</p>`:''}${description?`<p>${esc(description)}</p>`:''}</div></article>`;
+  return `<article class="wa-org-reading" data-wa-org-reading="gate" data-wa-org-body="pending" data-wa-gate="${id}"><p class="wa-detail-note" data-wa-org-pending>${text('Wa org gate reading pending')}</p></article>`;
 }
 /** Birth-chart / knowledge jump-card pattern: navigate instead of nesting department reading. */
 const jumpCard = (attrs, title, action) =>

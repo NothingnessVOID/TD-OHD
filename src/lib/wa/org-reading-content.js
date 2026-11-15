@@ -16,14 +16,27 @@
  *
  * Rendering combines intro → application → organizationRole as continuous paragraphs, and
  * intro + application as one gate body. No "official / plain / source" labels exist in the UI.
+ *
+ * Gate tables come from two authored sets merged here, and only here:
+ * - the twelve Penta gates in this package (org-reading-content.*.js), unchanged;
+ * - the remaining forty gates in org-reading-content.gates40.*.js, delivered separately.
+ * Merging happens before indexing, so every gate passes the same normalizer and the published
+ * readOrgGateBody signature stays the same. Earlier copy wins if the two ever overlap; provenance,
+ * sourceRefs, channelId and departmentId stay in docs/development/ORG_GATE_BUSINESS_CONTENT.md and
+ * are never presented.
  */
 import zhCN from './org-reading-content.zh-CN.js';
 import zhHant from './org-reading-content.zh-Hant.js';
 import en from './org-reading-content.en.js';
+import gates40ZhCN from './org-reading-content.gates40.zh-CN.js';
+import gates40ZhHant from './org-reading-content.gates40.zh-Hant.js';
+import gates40En from './org-reading-content.gates40.en.js';
 
 const SUPPORTED_LOCALES = Object.freeze(['zh-CN', 'zh-Hant', 'en']);
 /** Locale → delivered content. Locales without a module read as absent and fall back upstream. */
-const SOURCES = Object.freeze({ 'zh-CN': zhCN, 'zh-Hant': zhHant, en });
+const PRIMARY_SOURCES = Object.freeze({ 'zh-CN': zhCN, 'zh-Hant': zhHant, en });
+/** Locale → the remaining forty gates, kept in its own file per locale. */
+const REMAINING_GATE_SOURCES = Object.freeze({ 'zh-CN': gates40ZhCN, 'zh-Hant': gates40ZhHant, en: gates40En });
 
 const isPlainObject = value => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const text = value => typeof value === 'string' && value.trim() ? value.trim() : null;
@@ -38,6 +51,30 @@ function normalizeEntry(entry, { withRole = false } = {}) {
   if (!intro && !application && !organizationRole && !role) return null;
   return { intro, application, organizationRole, role };
 }
+
+/** Merge the forty delivered gates into the primary gate table. Existing gates always keep their
+ *  copy, so adding a gate row can never rewrite Penta or department wording. Channels and titles are
+ *  untouched: the forty are gates only. */
+function withRemainingGates(primary, remaining) {
+  const extra = remaining?.gates;
+  if (!extra) return primary;
+  const base = primary?.gates;
+  const baseEntries = Array.isArray(base) ? [...base]
+    : base ? Object.entries(base).map(([gate, entry]) => ({ ...entry, gate })) : [];
+  const known = new Set(baseEntries.map(entry => String(Number(entry?.gate))));
+  const merged = [...baseEntries];
+  const extraEntries = Array.isArray(extra) ? extra : Object.entries(extra).map(([gate, entry]) => ({ ...entry, gate }));
+  for (const entry of extraEntries) {
+    const key = String(Number(entry?.gate));
+    if (!Number.isInteger(Number(entry?.gate)) || known.has(key)) continue;
+    merged.push(entry);
+    known.add(key);
+  }
+  return { ...primary, gates: merged };
+}
+
+const SOURCES = Object.freeze(Object.fromEntries(SUPPORTED_LOCALES.map(locale =>
+  [locale, withRemainingGates(PRIMARY_SOURCES[locale], REMAINING_GATE_SOURCES[locale])])));
 
 function indexSource(source) {
   const channels = {}, gates = {}, names = {};

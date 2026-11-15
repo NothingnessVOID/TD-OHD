@@ -151,10 +151,11 @@ const channelIntros = {
 
 const uiMessages = {
   'Wa org role label': ['部门定位', '部門定位', 'Department role'],
-  'Wa org channel reading': ['组织通道解读', '組織通道解讀', 'Organization channel reading'],
-  'Wa org gate reading': ['组织闸门解读', '組織閘門解讀', 'Organization gate reading'],
+  'Wa org channel reading': ['商业解读', '商業解讀', 'Business reading'],
+  'Wa org gate reading': ['商业解读', '商業解讀', 'Business reading'],
   'Wa org gate role': ['组织角色', '組織角色', 'Organization role'],
-  'Wa org reading pending': ['该通道的组织正文正在整理。', '該通道的組織正文正在整理。', 'The organization reading for this channel is being prepared.']
+  'Wa org reading pending': ['该通道的组织正文正在整理。', '該通道的組織正文正在整理。', 'The organization reading for this channel is being prepared.'],
+  'Wa org gate reading pending': ['该闸门的商业解读正在整理。', '該閘門的商業解讀正在整理。', 'The business reading for this gate is being prepared.']
 };
 
 for (const [i, locale] of locales.entries()) {
