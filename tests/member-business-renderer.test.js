@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { setLocale } from '../src/lib/i18n.js';
 import { analyzeMemberBusiness } from '../src/lib/member-business/analysis.js';
 import { analyzeMemberEnvironments } from '../src/lib/member-business/environments.js';
-import { renderMemberBusinessList, renderMemberBusinessFrame, renderMemberBusinessChannel } from '../src/views/wa-member-business.js';
+import { renderMemberBusinessPanel, memberPlacementGroups, renderMemberBusinessFrame, renderMemberBusinessChannel } from '../src/views/wa-member-business.js';
 import { analysisInput } from './helpers/member-business-fixtures.js';
 
 setLocale('zh-CN', { persist: false });
@@ -139,22 +140,169 @@ test('estimated birth time is stated explicitly', () => {
   assert.match(html, /Alpha/);
 });
 
-test('the member list renders every supplied member with marker, placement and career name', () => {
-  const first = analyzeMemberBusiness(analysisInput({ gates: [7, 31] }));
-  const second = analyzeMemberBusiness({ ...analysisInput({ gates: [21, 45] }), memberId: 'second-member' });
-  const html = renderMemberBusinessList({
-    members: [memberOf('first-member', '虚构 甲'), memberOf('second-member', '虚构 乙')],
-    analysisOf: id => id === 'first-member' ? first : second,
-    markerOf: id => ({ memberId: id, number: id === 'first-member' ? 1 : 2, colorSlot: 3 }),
-    nameOf: id => id === 'first-member' ? '虚构 甲' : '虚构 乙',
-    placementOf: id => id === 'first-member' ? { kind: 'alpha' } : { kind: 'penta', title: 'Penta B' }
+const panelMarkers = numbers => id => ({ memberId: id, number: numbers[id] ?? 1, colorSlot: 2 });
+const row = (key, title, ids) => ({ key, title, memberIds: ids });
+
+/** One ready analysis per career type, keyed by member id; the five types map to five career ids. */
+function panelAnalyses() {
+  const ready = (memberId, typeId, definition, gates) => [memberId,
+    analyzeMemberBusiness({ ...analysisInput({ typeId, definition, gates }), memberId })];
+  return new Map([
+    ready('m-initiator', 'manifestor', 'SingleDefinition', [7, 31]),
+    ready('m-classic-1', 'generator', 'SingleDefinition', [7, 31]),
+    ready('m-classic-2', 'generator', 'SingleDefinition', [21, 45]),
+    ready('m-express', 'manifestingGenerator', 'SingleDefinition', [7, 31]),
+    ready('m-advisor', 'projector', 'SingleDefinition', [7, 31]),
+    ready('m-evaluator', 'reflector', 'Empty', [])
+  ]);
+}
+
+function renderPanel(overrides = {}) {
+  const analyses = panelAnalyses();
+  return renderMemberBusinessPanel({
+    state: 'ready', memberCount: analyses.size,
+    groups: [row('alpha', 'Alpha（负责人）', ['m-initiator']), row('penta-b', 'Penta B', ['m-classic-1', 'm-classic-2', 'm-advisor']), row('penta-c', 'Penta C', ['m-express', 'm-evaluator'])],
+    analysisOf: id => analyses.get(id) ?? null,
+    markerOf: panelMarkers({ 'm-initiator': 1, 'm-classic-1': 2, 'm-classic-2': 3, 'm-express': 4, 'm-advisor': 5, 'm-evaluator': 6 }),
+    nameOf: id => id === 'm-classic-1' ? '虚构 一位名字很长很长很长的成员' : `虚构 ${id.slice(2)}`,
+    ...overrides
   });
-  assert.match(html, /以下列出本组织全部已分配成员/);
-  assert.match(html, /data-wa-member-open="first-member"/);
-  assert.match(html, /data-wa-member-open="second-member"/);
-  assert.match(html, /Penta B/);
-  assert.match(html, /经典建造者/);
-  assert.ok(html.indexOf('first-member') < html.indexOf('second-member'));
+}
+
+test('the panel is one results card: title, neutral member count, scope note, then the tiles', () => {
+  const html = renderPanel();
+  assert.match(html, /<section class="panel wa-member-business" data-wa-member-business-panel data-state="ready"/);
+  assert.match(html, /<h2>成员商业分析<\/h2>/);
+  assert.match(html, /个人分析 · 全部成员 6 人/);
+  assert.match(html, /以下列出本组织全部已分配成员，不受当前查看范围影响。/);
+  // The count is plain small text, not the standard/preview badge.
+  assert.doesNotMatch(html, /wa-state-badge/);
+  assert.ok(html.indexOf('data-wa-mb-group="alpha"') < html.indexOf('data-wa-mb-group="penta-b"'));
+  assert.ok(html.indexOf('data-wa-mb-group="penta-b"') < html.indexOf('data-wa-mb-group="penta-c"'));
+  assert.match(html, /<h3 class="wa-subheading">Penta B<\/h3>/);
+  assert.match(html, /class="wa-pillar wa-mb-tile" data-wa-member-business="m-classic-1" data-focus="mb-tile-m-classic-1"/);
+  assert.equal(html.match(/class="wa-pillar wa-mb-tile"/g).length, 6);
+  // The tile body reuses the page's pillar text block; only the name/career/definition lines are new.
+  assert.match(html, /<span class="wa-pillar-text">\s*<span class="wa-mb-tile-head">/);
+  // Placement lives in the group heading only; a tile never repeats Alpha or the Penta name.
+  assert.doesNotMatch(html, /wa-mb-tile[^>]*>[^<]*Penta/);
+});
+
+test('career head count keeps the fixed order, hides zero rows and lists missing data separately', () => {
+  const html = renderPanel();
+  const line = html.slice(html.indexOf('data-wa-mb-careers'), html.indexOf('data-wa-mb-group'));
+  const order = ['initiator', 'classicBuilder', 'expressBuilder', 'advisor', 'evaluator']
+    .map(id => line.indexOf(`data-wa-mb-career="${id}"`)).filter(index => index > -1);
+  assert.deepEqual([...order].sort((a, b) => a - b), order);
+  assert.match(line, /data-wa-mb-career="initiator">发起者 <b>1<\/b>/);
+  assert.match(line, /data-wa-mb-career="classicBuilder">经典建造者 <b>2<\/b>/);
+  assert.match(line, /data-wa-mb-career="evaluator">评估者 <b>1<\/b>/);
+  assert.doesNotMatch(line, /资料不足/);
+  // A member whose analysis is unavailable counts as missing data, never as a career type.
+  const missing = renderPanel({ analysisOf: id => id === 'm-advisor' ? { status: 'unavailable', careerId: null } : panelAnalyses().get(id) });
+  assert.match(missing, /data-wa-mb-career="unknown">资料不足 <b>1<\/b>/);
+  const zero = renderPanel({ analysisOf: () => null });
+  assert.doesNotMatch(zero, /data-wa-mb-career="(?:initiator|classicBuilder|expressBuilder|advisor|evaluator)"/);
+});
+
+test('a tile shows marker, name, career and information processing, and marks an estimated birth time', () => {
+  const html = renderPanel();
+  const tile = html.slice(html.indexOf('data-wa-member-business="m-classic-1"'), html.indexOf('</button>', html.indexOf('data-wa-member-business="m-classic-1"')));
+  assert.match(tile, /class="wa-member-marker/);
+  assert.match(tile, /<strong class="wa-mb-tile-name" title="虚构 一位名字很长很长很长的成员">/);
+  assert.match(tile, /class="wa-mb-tile-career">经典建造者</);
+  assert.match(tile, /class="wa-mb-tile-definition">独立处理</);
+  assert.match(tile, /class="wa-mb-tile-arrow" aria-hidden="true">›</);
+  assert.doesNotMatch(tile, /wa-mb-tile-est/);
+  const analyses = panelAnalyses();
+  const estimated = renderPanel({ analysisOf: id => id === 'm-advisor'
+    ? { ...analyses.get('m-advisor'), timeUnknown: true, birthTimeConfidence: 'estimated' } : analyses.get(id) });
+  assert.match(estimated, /class="wa-mb-tile-est" title="≈ 出生时间未知或按中午估算[^"]*">≈</);
+});
+
+test('undefined information processing gets its own short label and the detail keeps the full name', () => {
+  const analyses = panelAnalyses();
+  const html = renderPanel({ analysisOf: id => id === 'm-evaluator'
+    ? { ...analyses.get('m-evaluator'), definitionId: 'none' } : analyses.get(id) });
+  const tile = html.slice(html.indexOf('data-wa-member-business="m-evaluator"'), html.indexOf('</button>', html.indexOf('data-wa-member-business="m-evaluator"')));
+  assert.match(tile, /class="wa-mb-tile-definition">无定义</);
+  assert.doesNotMatch(tile, /随环境处理/);
+  const detail = renderMemberBusinessFrame({ member: memberOf('m-evaluator', '虚构 evaluator'),
+    analysis: { ...analyses.get('m-evaluator'), definitionId: 'none' }, screening: analyzeMemberEnvironments(analyses.get('m-evaluator')),
+    markerOf: markers, nameOf: () => '虚构 evaluator', placementOf: () => ({ kind: 'penta', title: 'Penta C' }), index: 0, count: 1 });
+  assert.match(detail, /无定义（随环境处理）/);
+});
+
+test('a tile with an unavailable analysis keeps the name and shows missing data on both lines', () => {
+  const html = renderPanel({ analysisOf: id => id === 'm-classic-2' ? { status: 'unavailable', careerId: null, definitionId: null } : panelAnalyses().get(id) });
+  const tile = html.slice(html.indexOf('data-wa-member-business="m-classic-2"'), html.indexOf('</button>', html.indexOf('data-wa-member-business="m-classic-2"')));
+  assert.match(tile, /class="wa-mb-tile-name" title="虚构 classic-2">虚构 classic-2</);
+  assert.match(tile, /class="wa-mb-tile-career">资料不足</);
+  assert.match(tile, /class="wa-mb-tile-definition">资料不足</);
+  assert.doesNotMatch(tile, /经典建造者|独立处理/);
+});
+
+test('busy and not-ready cards keep the shell and never repeat the error list', () => {
+  const loading = renderMemberBusinessPanel({ state: 'loading', memberCount: 3 });
+  assert.match(loading, /data-state="loading"/);
+  assert.match(loading, /正在读取成员出生图…/);
+  assert.match(loading, /全部成员 3 人/);
+  assert.doesNotMatch(loading, /wa-mb-tile|wa-mb-grid|data-wa-mb-careers/);
+  const unavailable = renderMemberBusinessPanel({ state: 'unavailable', memberCount: 3 });
+  assert.match(unavailable, /data-state="unavailable"/);
+  assert.match(unavailable, /个人分析暂不可用，请先处理上方提示/);
+  assert.doesNotMatch(unavailable, /wa-mb-tile|wa-chart-errors|资料不足/);
+  const noGroups = renderMemberBusinessPanel({ state: 'ready', memberCount: 0, groups: [] });
+  assert.doesNotMatch(noGroups, /wa-mb-grid|data-wa-mb-group/);
+});
+
+test('placement groups are Alpha first, then the draft Penta order, empty groups dropped', () => {
+  const groups = memberPlacementGroups({
+    alphaId: 'm-3', alphaTitle: 'Alpha（负责人）',
+    pentas: [
+      { pentaId: 'p-beta', memberIds: ['m-2', 'm-1', 'm-unavailable'] },
+      { pentaId: 'p-alpha', memberIds: ['m-4'] },
+      { pentaId: 'p-empty', memberIds: [] }
+    ],
+    available: ['m-1', 'm-2', 'm-3', 'm-4'],
+    titleOf: group => `Penta ${group.pentaId}`,
+    numberOf: id => ({ 'm-1': 4, 'm-2': 2, 'm-3': 3, 'm-4': 1 })[id] ?? 0
+  });
+  assert.deepEqual(groups.map(group => group.key), ['alpha', 'p-beta', 'p-alpha']);
+  assert.deepEqual(groups[0].memberIds, ['m-3']);
+  assert.deepEqual(groups[1].memberIds, ['m-2', 'm-1']);
+  assert.deepEqual(groups[2].memberIds, ['m-4']);
+  assert.equal(groups[1].title, 'Penta p-beta');
+});
+
+test('the host wires the card between overview and departments and removed the old list entry', () => {
+  const source = readFileSync(new URL('../src/views/wa.js', import.meta.url), 'utf8');
+  assert.match(source, /\$\{overviewHtml\(\)\}\$\{memberBusinessHtml\(\)\}\$\{departmentsHtml\(\)\}/);
+  assert.match(source, /if \(!layout\.memberIds\.length\) return '';/);
+  assert.doesNotMatch(source, /data-wa-members-open|renderMemberBusinessList|type:'members'|wa-member-open/);
+  // The tile must be decided before the marker badge, otherwise the badge swallows the click.
+  assert.ok(source.indexOf("closest('[data-wa-member-business]')") < source.indexOf("closest('[data-wa-marker-member]')"));
+});
+
+test('the dev demo loads the public ui-system stylesheet after the Wa feature styles', () => {
+  const demo = readFileSync(new URL('../dev/member-business-demo.js', import.meta.url), 'utf8');
+  const feature = demo.indexOf("from '../src/views/wa.js'");
+  const uiSystem = demo.indexOf("import '../src/styles/ui-system.css'");
+  // main.js loads ui-system last so one definition wins; the demo has to keep the same order.
+  assert.ok(feature > -1 && uiSystem > feature, 'ui-system must load after the feature stylesheets');
+  assert.doesNotMatch(demo, /from '\.\.\/src\/main\.js'/);
+});
+
+test('the tile grid, typography and reuse of the pillar card follow the agreed rules', () => {
+  const css = readFileSync(new URL('../src/styles/wa-member-business.css', import.meta.url), 'utf8');
+  assert.match(css, /grid-template-columns: repeat\(auto-fill, minmax\(190px, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 600px\)[\s\S]*?\.wa-mb-grid \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\); \}/);
+  assert.match(css, /@media \(max-width: 360px\) \{\s*\.wa-mb-grid \{ grid-template-columns: minmax\(0, 1fr\); \}/);
+  assert.match(css, /\.wa-mb-tile-career \{ font-size: 15px; font-weight: 600;/);
+  assert.match(css, /\.wa-mb-tile-definition \{ color: var\(--text-secondary\); font-size: 13px;/);
+  // Card chrome, hover glow/translate, focus-visible and reduced-motion stay in the shared pillar rule.
+  assert.doesNotMatch(css, /\.wa-mb-tile:hover|\.wa-mb-tile:focus-visible/);
+  assert.doesNotMatch(css, /\.wa-mb-tile \{[^}]*(?:border|background|box-shadow|transition|padding|border-radius):/);
 });
 
 test('the integration channel sheet reuses the same shared channel reading', () => {

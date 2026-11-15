@@ -16,7 +16,7 @@ import { openOperationDialog, confirmOperation, renderDialogHeader } from '../li
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
-import { renderMemberBusinessList, renderMemberBusinessFrame, renderMemberBusinessChannel } from './wa-member-business.js';
+import { renderMemberBusinessPanel, memberPlacementGroups, renderMemberBusinessFrame, renderMemberBusinessChannel } from './wa-member-business.js';
 import { analyzeMemberBusiness } from '../lib/member-business/analysis.js';
 import { analyzeMemberEnvironments } from '../lib/member-business/environments.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
@@ -79,8 +79,16 @@ export function mountWa(container, options = {}) {
   const fail = error => { notice=/conflict|revision/i.test(error?.code || '')?'Wa save conflict':'Wa data error'; errorText=error?.message || ''; };
   // Member business: prepared charts already live in memory for the assigned members only.
   const memberRecords=()=>prepared?.status==='ready'?[...prepared.members]:[];
-  const memberOrder=()=>memberRecords().sort((a,b)=>(markers().get(a.memberId)?.number??0)-(markers().get(b.memberId)?.number??0));
-  const memberReady=()=>!busy&&prepared?.status==='ready'&&memberRecords().length>0;
+  /** Alpha first, then the draft's Penta order; inside a group the original marker number decides.
+   *  The same order drives the panel and the detail frame's prev/next, so neither can stack or drift. */
+  const memberGroups=()=>memberPlacementGroups({alphaId:draft.alphaId,alphaTitle:t('MB placement alpha'),pentas:draft.pentas,
+    available:memberRecords().map(record=>record.memberId),titleOf:groupName,numberOf:id=>markers().get(id)?.number??0});
+  function memberOrder(){
+    const records=new Map(memberRecords().map(record=>[record.memberId,record]));
+    return memberGroups().flatMap(group=>group.memberIds).map(id=>records.get(id)).filter(Boolean);
+  }
+  /** The callout above already explains a failed preparation; the card only says so once. */
+  const memberPanelState=()=>busy?'loading':prepared?.status==='ready'?'ready':'unavailable';
   const placementOf=id=>draft.alphaId===id?{kind:'alpha'}:(()=>{const group=draft.pentas.find(item=>item.memberIds.includes(id));return group?{kind:'penta',title:groupName(group)}:null;})();
   function memberFactsOf(id){
     if(memberFacts.has(id))return memberFacts.get(id);
@@ -130,7 +138,7 @@ export function mountWa(container, options = {}) {
   function scopeBarHtml() {
     if (!validateWaLayout(draft).memberIds.length) return `<p class="wa-scope-label" data-scope-label role="status" hidden>${esc(scopeLabel())}</p>`;
     const option = (id, label) => `<button type="button" class="wa-segment" data-scope-option="${esc(id)}" data-focus="scope-${esc(id)}" aria-pressed="${(selectedGroup || '') === id}">${esc(label)}</button>`;
-    return `<section class="wa-scope-bar" aria-label="${text('OC16 scope')}"><span class="wa-scope-title">${text('OC16 scope')}</span><div class="wa-segmented" role="group" aria-label="${text('OC16 scope')}">${option('',t('OC16 all'))}${draft.pentas.map(group=>option(group.pentaId,groupName(group))).join('')}</div>${selectedGroup?`<label class="wa-alpha-toggle"><input type="checkbox" data-include-alpha data-focus="include-alpha" ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}<p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p><button type="button" class="btn-secondary wa-members-button" data-wa-members-open data-focus="mb-list" ${memberReady()?'':'disabled'}>${text('MB open list')}</button></section>`;
+    return `<section class="wa-scope-bar" aria-label="${text('OC16 scope')}"><span class="wa-scope-title">${text('OC16 scope')}</span><div class="wa-segmented" role="group" aria-label="${text('OC16 scope')}">${option('',t('OC16 all'))}${draft.pentas.map(group=>option(group.pentaId,groupName(group))).join('')}</div>${selectedGroup?`<label class="wa-alpha-toggle"><input type="checkbox" data-include-alpha data-focus="include-alpha" ${includeAlpha&&draft.alphaId?'checked':''} ${draft.alphaId?'':'disabled'}>${text('OC16 with alpha')}</label>`:''}<p class="wa-scope-label" data-scope-label role="status">${esc(scopeLabel())}</p></section>`;
   }
   function stat(label, value, total, percent, attribute = '') {
     const ready = known();
@@ -205,6 +213,15 @@ export function mountWa(container, options = {}) {
   function departmentsHtml() {
     return `<section class="panel wa-departments"><div class="wa-panel-heading"><h2>${text('OC16 departments')}</h2><label class="wa-alpha-toggle wa-show-names-toggle"><input type="checkbox" data-wa-show-names data-focus="show-names" ${showNames?'checked':''}>${text('Wa UI show names')}</label><span class="wa-strip-legend" aria-hidden="true"><span><i class="wa-pair-end" data-covered="true"></i>${text('Wa legend active')}</span><span><i class="wa-pair-end" data-covered="false"></i>${text('Wa legend inactive')}</span></span></div><div class="wa-department-list">${OC16_DEPARTMENTS.map(departmentHtml).join('')}</div></section>`;
   }
+  /** Member business entry card in the results column. The empty callout above already covers "no
+   *  assigned members", so the card is absent then; it never follows the current scope. */
+  function memberBusinessHtml() {
+    const layout = validateWaLayout(draft);
+    if (!layout.memberIds.length) return '';
+    const state = memberPanelState(), groups = state === 'ready' ? memberGroups() : [];
+    return renderMemberBusinessPanel({ state, memberCount: layout.memberIds.length, groups,
+      analysisOf: id => memberFactsOf(id)?.analysis ?? null, markerOf: id => markers().get(id), nameOf });
+  }
   function graphHtml() {
     return `<section class="panel wa-graph-panel"><div class="wa-panel-heading"><h2>${text('OC16 graph title')}</h2></div><figure class="wa-figure"><div data-wa-diagram>${renderWaDiagram(OC16_AXIS,busy?null:result,selected,{markers:markers(),nameOf})}</div></figure></section>`;
   }
@@ -241,7 +258,7 @@ export function mountWa(container, options = {}) {
     if(composing){deferredRender=true;return;}
     const active=container.contains(document.activeElement)?document.activeElement:null;
     const focus=active?.dataset.focus, start=active?.selectionStart, end=active?.selectionEnd;
-    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${departmentsHtml()}${retainedPool()?`<footer class="wa-results-footer"><p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p></footer>`:''}</main></div></div>`;
+    container.innerHTML=`<div class="wa-page" data-wa-page>${headerHtml()}${configurationHtml()}<p class="wa-notice" aria-live="polite" role="status">${notice?text(notice):''}${errorText?` ${esc(errorText)}`:''}</p>${scopeBarHtml()}${calloutHtml()}<div class="wa-workspace" aria-busy="${busy}"><aside class="wa-graph-column">${graphHtml()}</aside><main class="wa-results">${overviewHtml()}${memberBusinessHtml()}${departmentsHtml()}${retainedPool()?`<footer class="wa-results-footer"><p class="wa-small-note">${text('OC16 retained pool',{count:retainedPool()})}</p></footer>`:''}</main></div></div>`;
     graphResizeObserver?.disconnect();graphResizeObserver?.observe(container.querySelector('.wa-graph-panel'));queueSticky();
     const configDetails=container.querySelector('.wa-config-details');
     configDetails.querySelector('summary').addEventListener('click',()=>{configExpanded=!configDetails.open;});
@@ -402,7 +419,6 @@ export function mountWa(container, options = {}) {
     if(item.type==='reading')return readingHtml(item.id);
     if(item.type==='department')return details.renderDepartment(item.id);
     if(item.type==='pair')return details.renderPair(item.id);
-    if(item.type==='members')return renderMemberBusinessList({members:memberOrder(),analysisOf:id=>memberFactsOf(id)?.analysis??null,markerOf:id=>markers().get(id),nameOf,placementOf});
     if(item.type==='member'){
       const record=memberFactsOf(item.id),member=record?memberRecords().find(row=>row.memberId===item.id):null;
       if(!record||!member)return `<p class="wa-detail-note">${text('MB insufficient')}</p>`;
@@ -413,7 +429,7 @@ export function mountWa(container, options = {}) {
     return details.renderGate(item.id);
   }
   /** Personal frames are not organization results: the sheet label says so explicitly. */
-  const personalFrame=item=>['members','member','business-channel'].includes(item.type);
+  const personalFrame=item=>['member','business-channel'].includes(item.type);
   function focusKey(node,root) {
     if(!node||!root.contains(node))return null;
     if(node.matches('summary'))return {summary:[...root.querySelectorAll('summary')].indexOf(node)};
@@ -476,9 +492,7 @@ export function mountWa(container, options = {}) {
   function detailClick(event) {
     const node=event.target.closest('button');if(!node)return;
     if(node.hasAttribute('data-shared-back'))return;
-    if(node.hasAttribute('data-wa-members-open')){showDetail({type:'members'});return;}
     if(node.dataset.waMemberBusiness){showDetail({type:'member',id:node.dataset.waMemberBusiness});return;}
-    if(node.dataset.waMemberOpen){showDetail({type:'member',id:node.dataset.waMemberOpen});return;}
     if(node.dataset.waMemberStep){stepMemberFrame(node.dataset.waMemberStep);return;}
     if(node.dataset.waBusinessChannel){showDetail({type:'business-channel',id:node.dataset.waBusinessChannel});return;}
     if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
@@ -487,6 +501,11 @@ export function mountWa(container, options = {}) {
     else if(node.dataset.waDepartment)showDetail({type:'department',id:node.dataset.waDepartment});
   }
   async function click(event) {
+    // The panel tile owns its whole area, including its marker badge: decide on the tile first so an
+    // inner marker can never swallow the click. Diagram dots and row markers keep their own focus
+    // meaning because this branch only matches elements inside the page container.
+    const tile=event.target.closest('[data-wa-member-business]');
+    if(tile&&container.contains(tile)){tile.focus({preventScroll:true});showDetail({type:'member',id:tile.dataset.waMemberBusiness});return;}
     const marker=event.target.closest('[data-wa-marker-member]');
     if(marker&&container.contains(marker)){
       event.preventDefault();
@@ -496,7 +515,6 @@ export function mountWa(container, options = {}) {
     }
     const node=event.target.closest('button,[role="button"]');if(!node||!container.contains(node))return;
     try {
-      if(node.hasAttribute('data-wa-members-open')){node.focus({preventScroll:true});showDetail({type:'members'});return;}
       if(node.hasAttribute('data-wa-gaps-toggle')){node.focus({preventScroll:true});gapsExpanded=!gapsExpanded;render();return;}
       if(node.dataset.waGate){node.focus({preventScroll:true});showDetail({type:'gate',id:Number(node.dataset.waGate)});return;}
       if(node.dataset.waPairOpen){showDetail({type:'pair',id:node.dataset.waPairOpen});return;}

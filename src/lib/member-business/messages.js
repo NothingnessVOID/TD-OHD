@@ -1,10 +1,12 @@
 // Member business UI labels. Product prose lives in content.json; these are interface strings only.
 import { registerMessages } from '../i18n.js';
 const messages = {
-  'MB open list': ['成员商业分析', '成員商業分析', 'Member business analysis'],
   'MB members title': ['成员商业分析', '成員商業分析', 'Member business analysis'],
   'MB members note': ['以下列出本组织全部已分配成员，不受当前查看范围影响。', '以下列出本組織全部已分配成員，不受目前查看範圍影響。', 'Every assigned member is listed; the current scope does not filter this list.'],
-  'MB list empty': ['暂无已分配成员', '暫無已分配成員', 'No assigned members yet'],
+  'MB panel members meta': ['个人分析 · 全部成员 {count} 人', '個人分析 · 全部成員 {count} 人', 'Personal analysis · all members ({count})'],
+  'MB panel unavailable': ['个人分析暂不可用，请先处理上方提示', '個人分析暫不可用，請先處理上方提示', 'Personal analysis is unavailable; handle the notice above first'],
+  'MB definition none short': ['无定义', '無定義', 'Undefined'],
+  'MB insufficient short': ['资料不足', '資料不足', 'Not enough data'],
   'MB personal label': ['个人分析', '個人分析', 'Personal analysis'],
   'MB member button': ['商业分析', '商業分析', 'Business analysis'],
   'MB career': ['职业类型', '職業類型', 'Career type'],

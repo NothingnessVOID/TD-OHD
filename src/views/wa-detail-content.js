@@ -16,7 +16,7 @@ const text = (key,params) => esc(t(key,params));
 const roleLabel = role => role === 'core' ? 'OC16 core' : role === 'personnel' ? 'OC16 personnel' : 'OC16 support';
 const unknown = () => text('OC16 unknown');
 const displayName = (id, nameOf) => esc(nameOf(id) || id);
-const person = (id, nameOf, markerOf=()=>null, businessOf=()=>false) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span>${businessOf(id)?`<button type="button" class="wa-person-business" data-wa-member-business="${esc(id)}">${text('MB member button')}</button>`:''}</span>`;
+const person = (id, nameOf, markerOf=()=>null, businessOf=()=>false) => `<span class="wa-person-ref">${renderWaMemberMarker(markerOf(id),{name:nameOf(id)})}<span class="wa-detail-member" data-wa-member="${esc(id)}">${displayName(id, nameOf)}</span>${businessOf(id)?`<button type="button" class="btn-secondary wa-person-business" data-wa-member-business="${esc(id)}">${text('MB member button')}</button>`:''}</span>`;
 const names = (ids, nameOf, emptyKey = 'OC16 inactive', markerOf=()=>null, businessOf=()=>false) => Array.isArray(ids)
   ? ids.map(id => person(id, nameOf, markerOf, businessOf)).join(' ') || text(emptyKey) : unknown();
 export function waChannelTitle(channelId) {

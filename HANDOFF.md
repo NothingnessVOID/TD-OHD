@@ -78,3 +78,24 @@
 - 尚未验证：完整浏览器回归、全部Skin矩阵、真实人物与用户现有组织验收、性能长期测量。待用户看本模块方向后继续。
 
 提交及远端同步结果见本轮最终交付，分支为`feature/member-business-analysis`，不创建PR、不合main、不更新9961。
+
+## 第二轮：右栏中间成员卡片与公共UI复用
+
+用户认可一期个人内容，要求入口从范围栏移到右栏中间，直接展示成员卡片，点个人才进入详情；同时再次强调必须阅读工程手册、套用全站公共UI与当前页面已有卡片交互。
+
+- 毛毛给出轻量设计，主代理采用：右栏顺序为组织概览→成员商业分析→六部门全通道。外层沿用panel、wa-panel-heading、wa-subheading；中性标题说明全部已分配人数，职业类型人数按固定五类列非零项及资料不足，无评分或组织类型结论。
+- 主体按Alpha、draft.pentas原顺序分组，组内marker编号排序；每人显示原成员标记、长名省略与title全名、估时≈、职业类型和信息处理短名。无定义tile用单独三语短名，个人详情保留完整说明。所有已分配成员默认展开，scope切换不裁列表，prev/next与视觉顺序一致。
+- 没有已分配成员时不渲染卡片；busy或准备失败保留卡片壳与人数，只显示公共loading／清楚的不可用状态；ready时个别分析缺资料仍列姓名与资料不足。
+- 移除范围栏按钮、members列表帧、旧列表renderer/CSS/未使用key；保留详情内明确business按钮及个人分析frame。tile优先响应点击，图表圆点原聚焦含义不变；关闭个人详情回原tile焦点。
+- tile直接使用`wa-pillar wa-mb-tile`和`wa-pillar-text`，原边框、圆角、padding、背景、hover、阴影、位移、键盘聚焦与reduced-motion由wa.css提供；专属CSS仅保留信息网格、截断和箭头布局。上下文小按钮改用btn-secondary，不再自建边框背景hover样式。
+- 主代理重新阅读ENGINEERING_STANDARDS与组件清单，发现dev示范原来未像main.js那样在feature样式之后载入ui-system.css，导致返回／关闭虽用公共renderDetailNavigation但显示为浏览器默认按钮。本轮显式按同序引入现有ui-system.css，没有复制规则，也没有import完整main触发资料初始化。dev辅助按钮／语言选择器也套btn-secondary／form-group。
+- dev示范不再自动弹成员列表；顶部辅助按钮仅滚动到右栏卡片。base href=/、三位虚构人物、真实WASM与内存store/no-opstorage不变，未写人物／组织库。
+
+### 本轮核验
+
+- 主代理浏览器：右栏三张panel顺序正确；没有旧顶栏入口或初始模态；点tile及其marker打开正确人；关闭焦点返回；next按可见顺序；scope变更成员不减少；1440/1100/390无横向溢出；简繁英、深色基本显示正常、pageerror0。
+- 公共UI实测：tile与同页pillar在is-hover下box-shadow和border-color计算值一致；close按钮宽高等于公共--ui-icon-size、border-radius50%；嵌套页back按钮使用公共999px圆角。
+- 16名隔离合成成员浏览器夹具：Alpha排首、三Penta顺序正确；估时与资料不足各一位、长名title完整、loading/error不输出半成品tiles、390宽无溢出。测试上下文localStorage和IndexedDB最终均为空。
+- 实施代理renderer21项及相关67项定向检查通过；主代理补公共按钮复用后renderer＋Wa detail36/36通过，build:pages通过。旧Wa审计4项失败保持原样，不改审计快照或断言；全量回归／全Skin矩阵未执行。
+- 一次构建与UI并行引起Vite热重载，截图报告节点已脱离；在构建结束后顺序重跑完整本轮UI检查通过，未修改断言隐藏失败。
+- 证据仍在本机evidence/member-business-analysis/，不进Git。9961与旧organization-channels分支均未更新。

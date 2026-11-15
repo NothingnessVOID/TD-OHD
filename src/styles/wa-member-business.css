@@ -42,29 +42,6 @@
 .wa-mb-meta { color: var(--text-secondary); font-size: 13px; }
 .wa-mb-body { font-size: 14px; }
 
-.wa-mb-list { display: grid; gap: 8px; list-style: none; padding: 0; }
-.wa-mb-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: 'marker name career' '. place career';
-  align-items: center;
-  gap: 2px 10px;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  background: var(--bg-elevated);
-  color: var(--text);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-.wa-mb-row:hover { border-color: var(--text-tertiary); }
-.wa-mb-row .wa-member-marker { grid-area: marker; }
-.wa-mb-row-name { grid-area: name; font-weight: 600; }
-.wa-mb-row-place { grid-area: place; color: var(--text-secondary); font-size: 12px; }
-.wa-mb-row-career { grid-area: career; color: var(--accent-strong, var(--accent)); font-size: 13px; text-align: end; }
-.wa-mb-row:focus-visible,
 .wa-mb-nav-button:focus-visible,
 .wa-mb-channel-open:focus-visible,
 .wa-mb-screening > summary:focus-visible {
@@ -143,24 +120,56 @@
 .wa-mb-caution { color: var(--text-secondary); font-size: 13px; }
 /* Small text action next to a member name inside Wa sheets; the marker itself keeps its focus meaning. */
 .wa-person-ref { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.wa-person-business {
-  border: 1px solid var(--border-subtle);
-  border-radius: 999px;
-  padding: 1px 8px;
-  background: var(--bg-elevated);
-  color: var(--accent-strong, var(--accent));
-  font: inherit;
-  font-size: 12px;
+/* Compact text density only; button chrome and interaction come from .btn-secondary. */
+.wa-person-business { font-size: 12px; padding: var(--space-1) var(--space-2); }
+
+/* Right-column entry card: one tile per assigned member, grouped by placement.
+   Only shared Skin tokens: no new colour semantics. */
+.wa-member-business .wa-panel-heading { margin-bottom: 8px; }
+.wa-member-business .wa-mb-note { margin: 0; }
+.wa-member-business-meta { color: var(--text-secondary); font-size: 12px; line-height: 1.6; }
+.wa-member-business-state { margin: 4px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.wa-member-business-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
   line-height: 1.6;
-  cursor: pointer;
 }
-.wa-person-business:hover { border-color: var(--accent); }
-.wa-person-business:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.wa-scope-bar .wa-members-button { font-size: 13px; padding: 4px 10px; }
+.wa-member-business-stat { display: inline-flex; align-items: baseline; gap: 4px; }
+.wa-member-business-stat:not(:first-child)::before { content: '·'; color: var(--text-secondary); }
+.wa-member-business-stat b { color: var(--text); font-weight: 650; font-variant-numeric: tabular-nums; }
+.wa-mb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+}
+/* Tile = the existing `.wa-pillar` card (chrome, hover glow/translate, focus-visible and
+   reduced-motion all come from wa.css) plus only the inner information layout it lacks. */
+.wa-mb-tile > .wa-pillar-text { flex: 1 1 auto; padding-inline-end: 10px; }
+.wa-mb-tile-head { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.wa-mb-tile-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wa-mb-tile-est { flex: 0 0 auto; color: var(--text-secondary); font-size: 12px; }
+.wa-mb-tile-career { font-size: 15px; font-weight: 600; line-height: 1.35; }
+.wa-mb-tile-definition { color: var(--text-secondary); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.wa-mb-tile-arrow {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-end: 7px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: none;
+}
 
 @media (max-width: 600px) {
   .wa-mb-block { padding: 12px; }
-  .wa-mb-row { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'marker name' '. place' '. career'; }
-  .wa-mb-row-career { text-align: start; }
   .wa-mb-value { font-size: 18px; }
+  /* Two fixed columns stay readable on a phone; the tile keeps its marker, name and arrow. */
+  .wa-mb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 360px) {
+  .wa-mb-grid { grid-template-columns: minmax(0, 1fr); }
 }

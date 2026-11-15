@@ -5,6 +5,11 @@ import { mountWa } from '../src/views/wa.js';
 import { computeChart } from '../src/lib/chartdata.js';
 import { createWaDraft, createWaMember, assertWaSnapshot } from '../src/lib/wa/model.js';
 import { setLocale } from '../src/lib/i18n.js';
+// Public UI primitives load last, exactly as src/main.js does: `mountWa` above pulls in the feature
+// stylesheets (wa.css / wa-details.css / wa-member-business.css), so ui-system.css must follow them
+// to win the cascade. These are the dialog header and close/back controls the reader actually uses;
+// nothing is copied here and main.js is never imported (no PeopleStore or nav bootstrap).
+import '../src/styles/ui-system.css';
 
 const status = document.querySelector('#status');
 const openButton = document.querySelector('#open-business');
@@ -98,31 +103,29 @@ if (!import.meta.env.DEV) {
     view?.refreshLanguage();
   });
 
-  // The host has no public "open members" API, so the demo presses the real scope-bar button once
-  // it becomes enabled. Ready is the host's own condition (prepared charts, no calculation running).
-  let opened = false;
-  const openMembers = () => {
-    const button = document.querySelector('[data-wa-members-open]:not([disabled])');
-    if (!button || opened) return false;
-    opened = true;
-    button.click();
-    status.textContent = `已用真实引擎计算 ${people.length} 位虚构成员，已自动打开成员列表。`;
-    return true;
+  // The entry card is part of the ordinary Wa render, so the demo never opens a dialog for it.
+  // This page only reflects the card's own state and can scroll the card into view when asked.
+  const viewRoot = document.getElementById('wa-view');
+  const card = () => viewRoot.querySelector('[data-wa-member-business-panel]');
+  const syncStatus = () => {
+    const node = card();
+    openButton.disabled = !node;
+    if (!node) { status.textContent = '正在准备虚构成员…'; return; }
+    if (node.dataset.state === 'ready') {
+      status.textContent = `已用真实引擎计算 ${people.length} 位虚构成员；右栏「成员商业分析」卡片可直接点开每位成员。`;
+    } else if (node.dataset.state === 'loading') {
+      status.textContent = '正在用真实引擎计算虚构成员的出生图…';
+    } else {
+      status.textContent = '个人分析暂不可用，请先处理页面上方提示。';
+    }
   };
-  const poll = setInterval(() => {
-    if (openMembers()) clearInterval(poll);
-  }, 250);
-  setTimeout(() => clearInterval(poll), 20000);
+  const observer = new MutationObserver(syncStatus);
+  observer.observe(viewRoot, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-state'] });
+  syncStatus();
   openButton.addEventListener('click', () => {
-    const button = document.querySelector('[data-wa-members-open]:not([disabled])');
-    if (!button) { status.textContent = '成员图尚未计算完成，请稍候。'; return; }
-    opened = false;
-    openMembers();
+    const node = card();
+    if (!node) { status.textContent = '成员商业分析卡片尚未渲染完成，请稍候。'; return; }
+    node.scrollIntoView({ block: 'start' });
   });
-  // Keep the demo button in step with the host's own readiness.
-  setInterval(() => {
-    const button = document.querySelector('[data-wa-members-open]');
-    openButton.disabled = !button || button.disabled;
-  }, 400);
-  window.addEventListener('beforeunload', () => view?.dispose());
+  window.addEventListener('beforeunload', () => { observer.disconnect(); view?.dispose(); });
 }

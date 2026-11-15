@@ -75,24 +75,91 @@ function headerButtons(index, count) {
   </div>`;
 }
 
-/** Member list frame. Every assigned member is listed; the organization scope never filters it. */
-export function renderMemberBusinessList({ members = [], analysisOf, markerOf, nameOf, placementOf }) {
+/** Career types always appear in this fixed order in the count line; the ids are the stable keys of
+ *  CAREER_ID_BY_TYPE in the analysis layer, never a display name. */
+const CAREER_ORDER = Object.freeze(['initiator', 'classicBuilder', 'expressBuilder', 'advisor', 'evaluator']);
+
+const memberName = (memberId, nameOf) => nameOf(memberId) || memberId;
+const isEstimated = analysis => analysis?.timeUnknown === true || analysis?.birthTimeConfidence === 'estimated';
+
+/** One person's tile. Career and information processing are the only facts on it; the group heading
+ *  already carries Alpha/Penta, so nothing here repeats the placement. */
+function tileHtml(memberId, { analysisOf, markerOf, nameOf }) {
   const locale = getLocale();
-  const rows = members.map(member => {
-    const analysis = analysisOf(member.memberId);
-    const career = analysis?.status === 'ready' && analysis.careerId ? careerCopy(analysis.careerId, locale) : null;
-    const name = nameOf(member.memberId) || member.displayName || member.memberId;
-    return `<li><button type="button" class="wa-mb-row" data-wa-member-open="${esc(member.memberId)}" data-focus="mb-member-${esc(member.memberId)}">
-      ${renderWaMemberMarker(markerOf(member.memberId), { name })}
-      <span class="wa-mb-row-name">${esc(name)}</span>
-      <span class="wa-mb-row-place">${placementLabel(placementOf(member.memberId))}</span>
-      <span class="wa-mb-row-career">${career?.name ? esc(career.name) : text('MB insufficient')}</span>
-    </button></li>`;
-  }).join('');
-  return `<section class="wa-mb" data-wa-mb="members">
-    <header class="wa-mb-head"><h2>${text('MB members title')}</h2></header>
+  const analysis = analysisOf(memberId);
+  const ready = analysis?.status === 'ready';
+  const career = ready && analysis.careerId ? careerCopy(analysis.careerId, locale)?.name : null;
+  // "Undefined" carries an explanatory parenthetical in the detail sheet; a tile gets the short label
+  // instead of a truncated sentence, and the detail keeps the full name.
+  const definition = !ready || !analysis.definitionId ? null
+    : analysis.definitionId === 'none' ? t('MB definition none short')
+      : definitionCopy(analysis.definitionId, locale)?.name;
+  const name = memberName(memberId, nameOf);
+  // Same card chrome and interaction as the department pillars: `.wa-pillar` already owns border,
+  // radius, background, hover glow/translate, focus-visible and reduced-motion. Only the inner
+  // information layout and the corner arrow are tile-specific.
+  return `<button type="button" class="wa-pillar wa-mb-tile" data-wa-member-business="${esc(memberId)}" data-focus="mb-tile-${esc(memberId)}">
+      <span class="wa-pillar-text">
+        <span class="wa-mb-tile-head">${renderWaMemberMarker(markerOf(memberId), { name })}<strong class="wa-mb-tile-name" title="${esc(name)}">${esc(name)}</strong>${isEstimated(analysis) ? `<span class="wa-mb-tile-est" title="${text('MB estimated note')}">≈</span>` : ''}</span>
+        <span class="wa-mb-tile-career">${career ? esc(career) : text('MB insufficient short')}</span>
+        <span class="wa-mb-tile-definition">${definition ? esc(definition) : text('MB insufficient short')}</span>
+      </span>
+      <span class="wa-mb-tile-arrow" aria-hidden="true">›</span>
+    </button>`;
+}
+
+/** People per career type in the delivered fixed order, non-zero only, with an explicit
+ *  "not enough data" item. A head count is a fact: no ranking, no fit score, no organization type. */
+function distributionHtml(memberIds, analysisOf, locale) {
+  const counts = new Map(CAREER_ORDER.map(careerId => [careerId, 0]));
+  const items = [];
+  let missing = 0;
+  for (const memberId of memberIds) {
+    const analysis = analysisOf(memberId);
+    const careerId = analysis?.status === 'ready' ? analysis.careerId : null;
+    if (careerId && counts.has(careerId)) counts.set(careerId, counts.get(careerId) + 1);
+    else missing += 1;
+  }
+  for (const careerId of CAREER_ORDER) {
+    const count = counts.get(careerId);
+    if (!count) continue;
+    items.push(`<span class="wa-member-business-stat" data-wa-mb-career="${esc(careerId)}">${esc(careerCopy(careerId, locale)?.name ?? careerId)} <b>${count}</b></span>`);
+  }
+  if (missing) items.push(`<span class="wa-member-business-stat" data-wa-mb-career="unknown">${text('MB insufficient short')} <b>${missing}</b></span>`);
+  return items.length ? `<p class="wa-member-business-stats" data-wa-mb-careers>${items.join('')}</p>` : '';
+}
+
+/** Placement groups for the panel and for the detail frame's prev/next order: Alpha first, then the
+ *  draft's own Penta order, each group capped to members that actually reached a prepared chart.
+ *  Pure: the host injects the draft order, the visible member ids and the marker numbers. */
+export function memberPlacementGroups({ alphaId = null, alphaTitle = '', pentas = [], available = [],
+  titleOf = () => '', numberOf = () => 0 } = {}) {
+  const present = new Set(available);
+  const ordered = ids => [...new Set(ids)].filter(id => present.has(id)).sort((a, b) => numberOf(a) - numberOf(b));
+  const groups = [];
+  if (alphaId && present.has(alphaId)) groups.push({ key: 'alpha', title: alphaTitle, memberIds: [alphaId] });
+  for (const group of pentas) {
+    const memberIds = ordered(group.memberIds ?? []);
+    if (memberIds.length) groups.push({ key: group.pentaId, title: titleOf(group), memberIds });
+  }
+  return groups;
+}
+
+/** Right-column entry card. Every assigned member is listed once; the organization scope never filters it.
+ *  Only the host decides the state and supplies the groups, facts and names — nothing here reads a store. */
+export function renderMemberBusinessPanel({ state = 'ready', memberCount = 0, groups = [],
+  analysisOf = () => null, markerOf = () => null, nameOf = () => '' } = {}) {
+  const locale = getLocale();
+  const stateKey = state === 'loading' ? 'OC16 loading' : state === 'ready' ? null : 'MB panel unavailable';
+  const body = stateKey ? `<p class="wa-member-business-state" data-wa-mb-state="${esc(state)}" role="status">${text(stateKey)}</p>`
+    : `${distributionHtml(groups.flatMap(group => group.memberIds), analysisOf, locale)}${groups.map(group => `<div class="wa-member-business-group" data-wa-mb-group="${esc(group.key)}">
+      <h3 class="wa-subheading">${esc(group.title)}</h3>
+      <div class="wa-mb-grid">${group.memberIds.map(memberId => tileHtml(memberId, { analysisOf, markerOf, nameOf })).join('')}</div>
+    </div>`).join('')}`;
+  return `<section class="panel wa-member-business" data-wa-member-business-panel data-state="${esc(state)}" aria-label="${text('MB members title')}">
+    <div class="wa-panel-heading"><h2>${text('MB members title')}</h2><span class="wa-member-business-meta" data-wa-mb-count>${text('MB panel members meta', { count: memberCount })}</span></div>
     <p class="wa-mb-note">${text('MB members note')}</p>
-    ${rows ? `<ul class="wa-mb-list">${rows}</ul>` : `<p class="wa-mb-note">${text('MB list empty')}</p>`}
+    ${body}
   </section>`;
 }
 
