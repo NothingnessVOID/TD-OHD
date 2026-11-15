@@ -285,8 +285,10 @@
 .wa-gap-none { margin:0; color:var(--status-success,var(--text-secondary)); font-size:13px; }
 
 /* Pillars (overview): card chrome + department pairToken (no split-capsule / channel-row).
-   Restored from the original four-pillar design; the nine organizing-axis channels reuse it unchanged. */
-.wa-pillars { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+   Restored from the original four-pillar design; the nine organizing-axis channels reuse it unchanged.
+   Desktop default is three per row for the nine axis pillars (~190px cards at the results column width);
+   1051–1200px, ≤600px and ≤360px keep their own column counts below. */
+.wa-pillars { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .wa-pillar {
   display:flex; gap:12px; align-items:center; text-align:left; min-width:0; padding:12px 14px;
   border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px);
