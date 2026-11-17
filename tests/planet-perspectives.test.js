@@ -98,9 +98,13 @@ test('reading category labels are three-locale and stable', () => {
     const buttons = [...html.matchAll(/data-planet-lens="([a-z]+)"[^>]*>([^<]+)</g)].map(match => [match[1], match[2]]);
     labels[locale] = buttons;
   }
-  assert.deepEqual(labels['zh-CN'], [['hd', '\u4eba\u7c7b\u56fe'], ['business', '\u5546\u4e1a']]);
-  assert.deepEqual(labels['zh-Hant'], [['hd', '\u4eba\u985e\u5716'], ['business', '\u5546\u696d']]);
-  assert.deepEqual(labels.en, [['hd', 'Human Design'], ['business', 'Business']]);
+  // The second category is displayed as OC16 in every locale; the internal key stays `business`.
+  assert.deepEqual(labels['zh-CN'], [['hd', '\u4eba\u7c7b\u56fe'], ['business', 'OC16']]);
+  assert.deepEqual(labels['zh-Hant'], [['hd', '\u4eba\u985e\u5716'], ['business', 'OC16']]);
+  assert.deepEqual(labels.en, [['hd', 'Human Design'], ['business', 'OC16']]);
+  // The pending note follows the same display name instead of the old internal wording.
+  setLocale('ja', { persist: false });
+  assert.match(renderPlanetReadingPerspectives('sun', 'ja', 'business'), /OC16 reading pending/);
   setLocale('en', { persist: false });
 });
 

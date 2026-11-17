@@ -98,7 +98,7 @@ try {
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     await page.locator('.bg-planet-row[data-gate="34"]').first().click();
     await page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"]').waitFor();
-    await page.locator('#gate-detail [data-planet-gate]').click();
+    await page.locator('#gate-detail [data-planet-gate="34"]').first().click();
     const popupCore = await page.locator('#lens-content').innerText();
     assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
     await page.locator('#gate-detail [data-lens="iching"]').click();
@@ -136,8 +136,10 @@ try {
     await page.goto(`${base}/?d=1981-03-22&t=12%3A00&tz=0`);
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     assert.ok(await page.locator('.bg-planet-row[data-gate]').count() > 0);
-    await page.locator('.bg-planet-row[data-gate]').first().click();
-    await page.locator('#gate-detail [data-planet-gate]').click();
+    const hangingPlanet = page.locator('.bg-planet-row[data-gate]').first();
+    const hangingGate = await hangingPlanet.getAttribute('data-gate');
+    await hangingPlanet.click();
+    await page.locator(`#gate-detail [data-planet-gate="${hangingGate}"]`).first().click();
     await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
     await page.locator('#gate-detail [data-channel]').first().click();
     assert.match(await page.locator('#gate-detail').innerText(), /Not defined|未定义|未定義/);

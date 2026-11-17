@@ -15,7 +15,7 @@ import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
   definitionName, centerName, gateName, channelName, circuitName,
-  planetName, lineName, variable, cognition, hexagramName
+  planetName, lineName, variable, cognition
 } from '../lib/vocabulary.js';
 
 
@@ -36,6 +36,7 @@ import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { renderPlanetReadingPerspectives, bindPlanetReadingSwitch, resolvePlanetLens } from '../lib/planet-reading-perspectives.js';
+import { planetActivationEntries, renderPlanetActivationSections } from '../lib/planet-activation-sections.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH, PHONE_MEDIA_QUERY } from '../lib/breakpoints.js';
 import { graphFitBudget, observeGraphFit } from '../lib/graph-fit.js';
@@ -522,55 +523,64 @@ function detailNav() {
 }
 
 
-/** A planetary point is a separate detail from the gate it currently activates. */
+/**
+ * A planetary point is a separate detail from the gate it activates. A natal point shows the
+ * same planet's Design and Personality activations side by side in one frame; only a real
+ * transit point keeps the single temporary activation of that moment.
+ */
 export function showPlanetDetail({ source, planet, activation, planetLens } = {}, pushHistory = true) {
   prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current || !['design', 'personality', 'transit'].includes(source) || !planet) return;
-  const resolved = source === 'transit'
-    ? detailContext?.transitGates?.[planet]
-    : current.chart.gates[source]?.[planet];
-  activation = resolved || activation;
-  if (!activation?.gate || !activation?.line) return;
+  // Each side is read from its own table; a missing side is never copied from the other one.
+  const entries = planetActivationEntries({ source, planet, activation, chart: current.chart,
+    transitGates: detailContext?.transitGates });
+  if (!entries.length) return;
+  // Only a real transit frame is scoped to that moment; every other source lists the birth pair.
+  const activationScope = source === 'transit' ? 'transit' : 'birth';
+  // The clicked source stays the frame's compat identity (history, refresh, pin rules), not a filter.
+  const clicked = entries.find(entry => entry.source === source) || entries[0];
+  activation = clicked.activation;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
   // The reading category belongs to this detail frame; a fresh open defaults to Human Design.
   const lens = resolvePlanetLens(planetLens);
-  currentDetail = { kind: 'planet', id: planet, source, planet, activation, planetLens: lens };
+  currentDetail = { kind: 'planet', id: planet, source, planet, activation, planetLens: lens, activationScope };
   const detail = document.getElementById('gate-detail');
   const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
-  const sourceLabel = t(source === 'transit' ? 'Transit' : source === 'design' ? 'Design' : 'Personality');
+  // The heading names the reading type, never one side of a merged natal pair.
+  const heading = source === 'transit'
+    ? `${t('Transit')} · ${t('Planetary Activations')}`
+    : t('Planetary Activations');
   const pointName = planetName(planet);
-  const gateLine = formatDisplay('planetGateLine', activation.gate,
-    hexagramName(activation.gate), activation.line);
-  const substructure = ['color', 'tone', 'base'].every(key => Number.isFinite(activation[key]))
-    ? `<dl class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}',
-        { color: '', tone: '', base: '' }).split('·').map((label, index) => {
-        const value = activation[['color', 'tone', 'base'][index]];
-        return `<div class="planet-detail-substructure-item"><dt>${esc(label.trim())}</dt><dd>${esc(value)}</dd></div>`;
-      }).join('')}</dl>` : '';
   detail.innerHTML = `<div class="gate-detail-card planet-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
-      <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
+      <div class="detail-label">${esc(heading)}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
       ${renderPlanetReadingPerspectives(planet, getLocale(), lens)}
-      <section class="planet-activation"><div class="planet-activation-label">${esc(t('Current activation'))}</div>
-      <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
-        aria-label="${esc(gateLine)}">
-        <strong>${esc(gateLine)}</strong>
-        <span class="transit-detail-action">${esc(t('View gate details'))}<span aria-hidden="true"> ↗</span></span>
-      </button>${substructure}</section>
+      ${renderPlanetActivationSections(entries)}
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
-  detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  // A merged natal pair pins both real gates (deduped); a transit frame pins its single gate.
+  if (source === 'transit') detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  else detailGraph()?.setPinned?.({ kind: 'gates', gates: [...new Set(entries.map(entry => entry.activation.gate))] });
   disposePlanetReading?.();
   disposePlanetReading = bindPlanetReadingSwitch(detail, { onLensChange: next => {
     if (currentDetail?.kind === 'planet') currentDetail.planetLens = next;
   } });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
-  detail.querySelector('[data-planet-gate]')?.addEventListener('click', () => showGateDetail(activation.gate, true,
-    source === 'transit' ? null : { side: source, planet, line: activation.line }));
+  // Every row jumps to its own source-tagged gate record, even when both gates are the same number.
+  detail.querySelectorAll('[data-planet-gate]').forEach(button => {
+    button.addEventListener('click', () => {
+      const gate = Number(button.dataset.planetGate);
+      const rowSource = button.dataset.planetSource;
+      const row = entries.find(entry => entry.source === rowSource && entry.activation.gate === gate);
+      if (!row) return;
+      showGateDetail(gate, true,
+        rowSource === 'transit' ? null : { side: rowSource, planet, line: row.activation.line });
+    });
+  });
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 

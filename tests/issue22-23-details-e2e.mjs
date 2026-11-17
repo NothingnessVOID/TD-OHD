@@ -225,7 +225,7 @@ try {
     const sourceGate = Number(await planet.getAttribute('data-gate'));
     const sourcePlanet = await planet.getAttribute('data-birth-planet');
     await planet.click();
-    await detail(page).locator('[data-planet-gate]').click();
+    await detail(page).locator('[data-planet-gate][data-planet-source="personality"]').click();
     const selectedSource = async () => {
       await heading(page, sourceGate, 'transit');
       const selected = detail(page).locator('.selected-activation');

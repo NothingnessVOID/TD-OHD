@@ -53,7 +53,7 @@
 2. 不显示“70%”等未经系统计算的权重：如太阳条目把“占据个人 70% 的商业能量”改写为“最集中的表达位置”，页面不把它变成评分、百分比或排序。
 3. 不做星体 × 64 闸门组合解读，不算盈利、离职或风险评估，不设阈值与一票排除规则，不修改任何计算、激活、颜色/基调/基底与人物存储。
 4. 商业分类只描述教材给出的星体主题在商业情境中的位置；人类图分类继续回答星体在个人图里的传统含义。两者共用同一个弹窗骨架，不并列展示“官方版/通俗版”。
-5. 未知星体 ID 不生成区块；某语言缺条目时只显示“商业解读待整理”，不借用其他语言或人类图正文。
+5. 未知星体 ID 不生成区块；某语言缺条目时只显示“OC16 解读待整理”（`Planet reading business pending` 键），不借用其他语言或人类图正文。
 
 ## 5. 教材原文 → 展示调整（13 条）
 
@@ -77,15 +77,21 @@
 
 ## 6. 交互与宿主契约
 
-- 分类按钮：`div.lens-switch.planet-lens-switch` 内两个原生 `button`，属性 `data-planet-lens="hd"|"business"`，激活态 `class="active"` 与 `aria-pressed` 同步；标签三语为「人类图／人類圖／Human Design」与「商业／商業／Business」。`hd` 为默认，未知值回落 `hd`。
+- 分类按钮：`div.lens-switch.planet-lens-switch` 内两个原生 `button`，属性 `data-planet-lens="hd"|"business"`，激活态 `class="active"` 与 `aria-pressed` 同步；标签三语为「人类图／人類圖／Human Design」与「OC16」（三语同名）。`hd` 为默认，未知值回落 `hd`。
+- 栏目命名：`OC16` 是本次用户指定的界面栏目名称；内部 key 仍是 `business`，正文来源仍是 BG5 教材星体商业节，不因标签改称官方 OC16 原典。待整理提示同步为「OC16 解读待整理／OC16 解讀待整理／OC16 reading pending」。产品不加来源或免责声明。
 - 阅读区块：`section[data-planet-reading][data-planet][data-planet-lens-current]`，正文子区 `[data-planet-reading-body]`。切换只替换这个子区与两个按钮的 active/aria-pressed，不重绘激活块、详情导航、来源标签或整个 sheet，不重算图，不改 gate／line／color／tone／base，不移动 graph pin。
+- 激活区块（`src/lib/planet-activation-sections.js`）：出生点的星体详情同时列出该星体的设计与人格激活，先设计后人格；每侧只读自己的表（`chart.gates.design[planet]` / `.personality[planet]`），单侧缺失不补齐、不伪造。每条 section 用 `t('Design')`／`t('Personality')` 标源，按钮带 `data-planet-gate` 与 `data-planet-source`，各自 `showGateDetail(gate,true,{side,planet,line})`；同一闸门在两侧都出现时保留两条记录。真正 transit 星体仍只有该时刻一条临时激活，不合并本命双列；行运／时间线的出生叠加点走同一双激活详情。出生帧顶标签只用 `Planetary Activations`，不写单侧来源；图 pin 用 `kind:'gates'` 双闸门（去重），transit 仍单闸门。
 - 共用控制器：`bindPlanetReadingSwitch(root, { onLensChange })` 返回 `dispose()`；同一 root 重复绑定会先解绑旧监听，宿主在关闭、语言重绘与重新打开时解绑，不残留监听。按钮不重绘，点击后焦点仍在被点的按钮上；手机高度沿用既有 `fitDetailSheetHeight`。
-- 出生图／行运／时间线（`src/views/chart.js`）：详情帧新增 `planetLens` 字段。`showPlanetDetail({source, planet, activation, planetLens})` 读取并写回当前帧；切换时只更新 `currentDetail.planetLens`，不 push history，不改闸门详情的 `currentLens`。从星体进闸门再返回时恢复原分类；语言刷新与行运 context 刷新保留当前分类；真正关闭后重开默认人类图；`resetDetail` 与 `clearCurrentChart` 会解绑控制器。
+- 出生图／行运／时间线（`src/views/chart.js`）：详情帧新增 `planetLens` 与 `activationScope:'birth'|'transit'`。`showPlanetDetail({source, planet, activation, planetLens})` 读取并写回当前帧；`source` 只作点击入口的兼容身份与历史恢复，不决定可见激活条数（除 `transit`）；切换分类时只更新 `currentDetail.planetLens`，不 push history，不改闸门详情的 `currentLens`。从星体进闸门再返回时恢复双入口与原分类；语言刷新与行运 context 刷新保留当前分类。
 - 资料库（`src/views/reference.js`）：同一套正文与切换，`planetLens` 独立于闸门 `lens`；新选星体、离开星体详情或手机 `closeToList` 时重置为人类图，同一星体的语言刷新保留当前分类；`build()` 每次都重新绑定控制器，不会出现有按钮却没事件。
 - 样式：只复用既有 `.lens-switch` 轨道与文字层级（`.planet-reading-lead` / `.planet-reading-body`），40px 触控高度沿用与闸门 switch 同一条规则 `.gate-lens-switch button, .planet-lens-switch button`，未新增弹窗、tabs 或自造视觉；Skin token 与明暗主题由既有变量承担。
 
 ## 7. 验证
 
-- `tests/planet-perspectives.test.js`：13 星体 × 三语非空与稳定 ID、运行时 JSON 只含三语表、未知星体/未知语种不造资料、人类图分类输出与 `renderPlanetReading` 完全一致、闸门四分类 DOM 逐字契约、商业区块转义且不泄漏维护元数据、三语标签、未知分类回落，以及两个宿主的接线与重置规则（源码级）。
-- 另跑相关既有定向检查（`i18n`、`localization`、`traditional-chinese`、`shared-object-details`、`reference-catalog`）通过。
+- `tests/planet-perspectives.test.js`：13 星体 × 三语非空与稳定 ID、运行时 JSON 只含三语表、未知星体/未知语种不造资料、人类图分类输出与 `renderPlanetReading` 完全一致、闸门四分类 DOM 逐字契约、OC16 区块转义且不泄漏维护元数据、三语标签（第二按钮三语均为 `OC16`）、未知分类回落，以及两个宿主的接线与重置规则（源码级）。
+- `tests/planet-activation-sections.test.js`：双来源顺序与各自取值、同闸门两行保留、单侧缺失不从另一侧或传入 `activation` 补齐、transit 单条且忽略本命双列、未知入参与未知星体不输出、三语 section 标签与 design 在前。
+- 另跑相关既有定向检查（`i18n`、`shared-object-details`、`reference-catalog`、`object-detail-heading`）通过；`chart-contract-boundary` 与 `traditional-chinese` 的唯一失败均为本机缺 `dotnet`（ENOENT）。
+- 历史字节保护 `knowledge-round2b`（对 `fafec304` 基线的 `showPlanetDetail` 字节比较）在本轮之前就已在 HEAD 失败，`knowledge-round2e` 的五个 chart 函数同样在 HEAD 已全数失配；本轮不改这些审计基线，只记录证据。
+- 七个历史 scope 批（channel status／connection boundary／issue details／paired card final／paired card header／paired card layout／paired gate visual）47 项在本轮改动后为 29 通过／18 失败；用临时 detached HEAD 工作树跑同一批同为 29／18，18 个失败用例名逐条相同，均为既有历史字节 pin，本增量未新增失败。
+- 浏览器脚本只做契约必要的最小适配：`planet-detail-e2e` 改双来源（每段 3 项 substructure、逐来源进闸门再 Back、transit 单段、`data-activation-value` 核对来源与线）；`knowledge-polish-e2e` 的星体顶层标签断言改为「该语种行星激活标题＋两段设计／人格标签」；其余只按 `data-planet-source` 或 `data-planet-gate` 精确选择。
 - 未执行：完整回归、全部 Skin 矩阵、真实引擎行运数据下的浏览器交互由父代理在 5282 正常站点复核。

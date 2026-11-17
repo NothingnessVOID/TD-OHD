@@ -18,17 +18,46 @@ try {
       assert.equal(await detail.getAttribute('data-planet'), planet);
       assert.equal(await detail.locator('.planet-detail-source').count(), 0,
         'planet modal omits the redundant activation-source explanation');
-      assert.equal(await detail.locator('.planet-detail-substructure-item').count(), 3,
-        'available color, tone and base remain separate readable fields');
       assert.equal(await page.locator('#gate-detail #lens-content').count(), 0,
         'planet detail does not embed the gate reading');
-      const gate = await page.locator('#gate-detail [data-planet-gate]').getAttribute('data-planet-gate');
-      await page.locator('#gate-detail [data-planet-gate]').click();
-      await page.locator('#gate-detail #lens-content').waitFor();
-      assert.ok((await page.locator('#gate-detail .detail-label').first().innerText()).includes(gate));
-      await page.locator('#gate-detail .gate-detail-back').click();
-      await detail.waitFor();
-      assert.equal(await detail.getAttribute('data-source'), source);
+      // A birth point carries both real activations in one frame; a transit point only its own.
+      const expected = source === 'transit' ? ['transit'] : ['design', 'personality'];
+      const sections = detail.locator('[data-planet-activation]');
+      assert.deepEqual(
+        await sections.evaluateAll(nodes => nodes.map(node => node.dataset.planetSource)),
+        expected, 'planet detail lists each real activation source');
+      for (const section of await sections.all()) {
+        assert.equal(await section.locator('.planet-detail-substructure-item').count(), 3,
+          'available color, tone and base remain separate readable fields');
+        assert.equal(await section.locator('[data-planet-gate]').count(), 1);
+        // Locale formats differ ("Gate 23 · Line 2" vs "Gate 23（山地剥）· 第2爻"); only require text.
+        const lineText = (await section.locator('[data-planet-gate] strong').innerText()).trim();
+        assert.ok(lineText.length > 0, 'each row names its activation');
+        assert.ok(lineText.includes(await section.locator('[data-planet-gate]').getAttribute('data-planet-gate')),
+          'the row text contains the gate it jumps to');
+      }
+      // Each row jumps to its own source-tagged gate record and comes back to this frame.
+      for (const sectionSource of expected) {
+        const button = detail.locator(`[data-planet-gate][data-planet-source="${sectionSource}"]`);
+        const gate = await button.getAttribute('data-planet-gate');
+        await button.click();
+        await page.locator('#gate-detail #lens-content').waitFor();
+        assert.ok((await page.locator('#gate-detail .detail-label').first().innerText()).includes(gate));
+        if (sectionSource !== 'transit') {
+          const selected = page.locator('#gate-detail .selected-activation');
+          assert.equal(await selected.count(), 1, 'the gate detail marks the row that opened it');
+          assert.equal(await selected.getAttribute('data-activation-side'), sectionSource);
+          assert.equal(await selected.getAttribute('data-activation-planet'), planet);
+          assert.ok((await selected.getAttribute('data-activation-value')).startsWith(`${gate}.`),
+            'the selected row is the same gate and line the button carried');
+        }
+        await page.locator('#gate-detail .gate-detail-back').click();
+        await detail.waitFor();
+        assert.equal(await detail.getAttribute('data-source'), source);
+        assert.deepEqual(
+          await detail.locator('[data-planet-activation]').evaluateAll(nodes => nodes.map(node => node.dataset.planetSource)),
+          expected, 'Back restores both entries, not one side');
+      }
       await page.keyboard.press('Escape');
     };
 
@@ -67,7 +96,7 @@ try {
     assert.deepEqual(errors, []);
     await page.close();
   }
-  console.log('Planet → Gate → Back works from chart, transit and timeline on desktop and mobile.');
+  console.log('Planet → Gate → Back works from chart, transit and timeline on desktop and mobile, with both birth sources in one frame.');
 } finally {
   await browser.close();
 }
