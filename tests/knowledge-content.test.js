@@ -26,7 +26,10 @@ test('formal locale content has identical 64 keys, bounded summaries and separat
  }
  withLanguages(locale=>{for(const e of listKnowledgeEntries().filter(entry=>entry.objectType!=='penta')) {
   if(e.objectType==='cognition'){assert.equal(e.summary,null);assert.equal(e.detail,null);continue;}
-  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');assert.equal(e.summary.version,(e.objectType==='variable'||e.objectType==='type'||e.objectId==='introduction'&&e.objectType!=='cross')?3:2);
+  assert.equal(e.summary.reviewStatus,'reviewed');assert.equal(e.detail.reviewStatus,'reviewed');
+  // New quarter articles are one reviewed revision; every restored foundation slot keeps its own version.
+  assert.equal(e.summary.version,e.objectType==='quarter'?1:(e.objectType==='variable'||e.objectType==='type'||e.objectId==='introduction'&&e.objectType!=='cross')?3:2);
+  if(e.objectType==='quarter')assert.equal(e.detail.version,1);
   const text=[e.name,e.summary.content,e.detail.content].join(' ');
   if(locale==='en')assert.doesNotMatch(text,/[\u3400-\u9fff]/);
   else if(locale==='zh-Hant') assert.doesNotMatch(text,/骶骨|实践家|正向反馈/);

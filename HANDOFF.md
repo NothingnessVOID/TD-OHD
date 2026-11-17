@@ -194,3 +194,48 @@
 - 主代理使用 Node24 复跑双激活、星体阅读、共享资料、资料目录及共享标题5个定向测试文件，23/23通过；使用现有.NET10 SDK完成desktop构建，提升到正常5282，served JS为`index-D6jk8N8X.js`、CSS为`index-YznQmN-V.css`。更新前后人物均17，DB未替换，9961未改。旧`dist 2/`、`dist 3/`及新发现`dist 4/`均为此前构建副本，`dist 4/index.html`指向上一轮`index-BKURDz4J.js`，保留不删、不入Git。
 - 正常5282隔离浏览器定向验证已通过：从设计或人格太阳打开得到相同双激活内容；各gate/line/color/tone/base与原图各自来源列一致；两条入口分别进入正确来源闸门，Back保留双入口和OC16；OC16切换前后两个activation DOM不变；真实transit仍单条、本命叠加仍双条；资料库显示OC16。390手机实际滚动185px后人格入口完整可点，返回/关闭正常，无横向溢出；pageerrors=0。测试用明确虚构未保存分享图，status/sync提前拦截为空库，nonemptyoperations=0，未读写真实人物。证据位于项目外`evidence/planet-dual-activation/`，主代理查看桌面及手机截图。
 - 2026-11-17继续收尾：工作区与已验源码状态一致，5282仍在线且人物数量17。修正reference两个浏览器脚本中的默认首按钮选择，改为定位原目标gate；语法检查与diff检查通过。该调整只涉及测试适配，未改变已构建的产品源码。完整浏览器回归和全部Skin矩阵仍未执行；本轮继续提交到现有功能分支，不合并main、不更新正式站点。
+
+## 四象限与终生主题（分支 `feature/four-quadrants`，2026-11-17）
+
+用户明确让主代理 ming 落地四象限功能，不再由毛毛实施。本轮只做实现与定向验证，构建、预览、提交与最终验收由主代理统一执行。
+
+### 基线与边界
+
+- 独立 worktree：`TD-OHD/worktrees/four-quadrants`；分支 `feature/four-quadrants`；基线 `da67fd8d`（`feature/member-business-analysis` 最新已交付、完成本阶段定向验证的提交，不代表完整回归已通过）。
+- 开工前工作区干净；实施实例未改动 `9961`、`5282`、其他 worktree、真实人物或平台设置，未 commit/push 或启动服务。主代理随后统一构建并启动独立5283预览，见下节。
+- 内容来源为用户 2026-11-17 指定的三版资料（原版／BG5 商业／爱情），只读，记录见 `docs/development/QUARTER_CONTENT.md`。
+
+### 已实现
+
+- `src/lib/quarter.js` 保留原 `quarterForGate` / `quarterGroups`，新增 `QUARTER_IDS`、`quarterIdForGate`、`quarterName`、`quarterGatesFor`；64 门分区仍是唯一来源。
+- `src/lib/quarter-personal.js` 新增 `personalQuarterFacts({chart,timeUnknown,birthTimeConfidence})`：只读个性太阳门/爻，显式估算标记，缺失即资料不足，不默认象限、不调用计算。
+- `src/lib/quarter-content.js` + `quarter-messages.js`：四象限 × 三视角（人类图/OC16/爱情）× 三语正文与界面文字；已去来源标签，不新增评分或组织结论。
+- `src/lib/knowledge/quarter-foundation.js` 注册 4 条 `hd.quarter.{id}`（`objectType:'quarter'`），`schema.js`/`sources.js`/`registry.js` 必要接线；资料库自动出现“象限”分类与条目。
+- `src/lib/knowledge/quarter-detail.js` 共享象限文章与 `bindQuarterReadingSwitch`；`detail-renderer.js` 接受 `quarterContext`/`quarterLens`，`detail-controller.js` 把所选 lens 存在 `currentContext.quarterLens`，Back、语言刷新保留，关闭重开默认人类图。
+- `src/views/chart.js` 仅改交叉面板象限一行与点击：改用 canonical `quarterName` + `personalQuarterFacts`，按钮打开象限 Knowledge 并显式传个人 `{gate,line,estimated}`；其余四激活/交叉布局、上一轮星体双激活与 OC16 未动。
+- `src/views/reference.js` 接线象限 lens 事件与门 chip（走 `openReference('gate', …)`），不持久化全局 lens。
+- Wa：成员帧新增第五块“终生主题象限”（独立于 MB analysis）；右栏成员商业分析卡片新增“全组织成员象限”入口；新增 `quarter-members`、`member-quarter`、`member-gate`（含无个人公共门）帧；名录按全部已分配成员分组，不随 Penta scope 裁剪，无占比/评分/缺口建议；成员门只读该成员两侧激活与个性太阳爻，公共门 `activeLines: []`。
+- `wa.js` 详情栈为象限帧单独保存 `quarterLens`，与 gate `lens` 分离；`refreshLanguage` 对含象限帧的栈保留 stack、lens 与 `detailOrigin`，最后一个关闭仍回到原组织入口/滚动位置；dispose 解绑象限切换监听。
+- 样式只新增 scoped 规则：`detail-access.css` 的 `.knowledge-quarter*`、`wa-member-business.css` 的 `.wa-quarter-*`/`.wa-mb-quarter*`，全部使用现有 Skin 语义 token。
+
+### 定向验证（实施实例）
+
+- Node 24（`npx --yes --package=node@24`；`npm ci` 未改锁文件）：
+  - `node --test tests/quarter-data.test.js tests/quarter-knowledge.test.js tests/quarter-wa.test.js`：14/14 通过。
+  - 相关既有批次：`member-business-renderer`、`member-business-analysis`、`member-business-environments`、`wa-detail-content`、`wa-content`、`wa-model`、`wa-oc16`、`wa-pillars`、`wa-show-names` 98/98 通过；knowledge/content/access/reference/penta 相关批次 56 通过，仅 2 项既有 `src/bodygraph.js` 历史 pin 失败。
+  - 知识新 4 条导致公开 foundation 计数 70→74、带 detail 计数 64→68、reference knowledge 条目 94→98；相关断言与枚举按精确新值更新，未用 `>=` 放宽，也未修改历史字节快照。
+  - `variable-public-copy-cleanup`、`knowledge-polish`、`knowledge-round2b/2c/2d/2e/2f/2g` 中的历史 scope 字节 pin 在基线 `da67fd8d` 已失败（用临时 detached worktree 对照确认）；本轮未为变绿修改快照，新增的 quadrant 相关字节差异属同一历史 pin 范围。
+- .NET 10（`/Users/abyssldx/.dotnet`，PATH+DOTNET_ROOT）：
+  - `npm run build:pages` 成功；`npm run check:pages-bundle` 通过（Pages bundle 排除 local account client）。
+  - 未启动 dev/preview 服务，未替换 live `dist`，未接触 9961/5282。
+
+### 主代理复核、构建与正常网站验证
+
+- 主代理亲自核对canonical分区、个人太阳取值、三版正文、知识controller、资料库和Wa自有详情栈；修订了切换按钮选择器、镜头返回context、资料库回调、全assigned范围、公共gate读取和语言刷新origin保存。名录额外通过显式quarterFactsOf展示估算≈；知识关闭在语言重绘后按data-quarter-detail恢复入口焦点。
+- 最终Node24定向命令：`node --test tests/quarter-data.test.js tests/quarter-knowledge.test.js tests/quarter-wa.test.js`，15/15通过。原星体说明/OC16星体正文/组织角色与32通道文案、package-lock均无改动。
+- Node24／.NET10完成desktop构建至`artifacts/quarter-preview-next`并提升至本worktree `dist`。5283当前JS `index-C_lCz82Z.js`、CSS `index-CYhe4DPr.css`；旧hash资源保留，上一构建备份放在ignored artifacts中。5282仍为原星体增量，不做替换；9961未改。
+- 5283是正常desktop静态网站：主代理用`createLocalServer`读取既有本机5282配置，仅在进程内覆盖distDir并监听127.0.0.1:5283，不修改原配置文件；人物库沿用既有本机库，提升前后计数均17，未替换或导入数据库。组织档案仍按网页origin存于浏览器IndexedDB，5283与5282不会自动共享组织草稿。
+- 外部验证脚本`/tmp/four-quadrants-normal-site-check.mjs`在当前构建跑完9步：个人三lens与16门/个人依据固定；quarter→gate→Back保留love及context；关闭重开HD；语言刷新后关闭回到新入口焦点；资料库无个人依据、gate→Back和语言重绘保留lens；组织四组含Alpha、不被Penta范围裁剪，两位不同象限成员读取各自太阳并在独立个人gate frame返回；公共gate无activeLines和个人依据；显式未知时间的名录成员仅1个≈；390手机个人第16门可触达、组织链路返回及滚动恢复、无横向溢出；另看明暗主题。主代理亲自查看个人OC16、组织名录和手机成员详情截图。
+- 测试全新browser context，4名明确虚构人物与observation组织；人物status/sync在导航前被mock，sync全部operations=[]，非空ops=0、其他个人API请求=0、pageerrors=0，没有向真实人物库写fixture。组织只在隔离context的IndexedDB。截图与summary在项目外`evidence/four-quadrants/`，脚本选择器假设错误的failure证据均保留，不作为产品缺陷。
+- 未验：全量回归、全部Skin矩阵、10–16人标准版式的新增完整浏览器回归、资料库手机布局；繁中与资料不足组由单测覆盖，未在浏览器单独重测。历史字节pin仍按原记录失败，未弱化或重写快照。
+- 本轮只提交推送`feature/four-quadrants`供预览，未合并main、创建PR或发布正式站点。

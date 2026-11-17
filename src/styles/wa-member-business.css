@@ -173,3 +173,30 @@
 @media (max-width: 360px) {
   .wa-mb-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Life-theme quarter block and the all-member quarter list. Same Skin tokens only. */
+.wa-quarter-members-entry { font-size: 12px; }
+.wa-mb-quarter-open { min-height: 32px; font-size: 15px; font-weight: 600; text-align: start; }
+.wa-mb-quarter-est { color: var(--text-secondary); font-weight: 400; }
+.wa-quarter-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.wa-quarter-group {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--bg-elevated);
+}
+.wa-quarter-group-title { margin: 0; text-align: start; font-size: 14px; font-weight: 600; }
+.wa-quarter-member-tile > .wa-pillar-text { padding-inline-end: 18px; }
+.wa-quarter-group .wa-mb-grid { grid-template-columns: minmax(0, 1fr); }
+.wa-quarter-members-entry:focus-visible,
+.wa-quarter-group-title:focus-visible,
+.wa-mb-quarter-open:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .wa-quarter-groups { grid-template-columns: minmax(0, 1fr); }
+}

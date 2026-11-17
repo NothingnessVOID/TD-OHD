@@ -1,5 +1,6 @@
 import { foundationRecords, crossRecord } from './human-design-foundation.js';
 import { pentaRecords } from './penta-foundation.js';
+import { quarterRecords } from './quarter-foundation.js';
 import { validateKnowledgeEntry } from './schema.js';
 import { getLocale } from '../i18n.js';
 const key = query => `${query.domain ?? 'human-design'}:${query.objectType}:${query.objectId}`;
@@ -47,8 +48,9 @@ export function createKnowledgeReader(records, dynamic = () => null) {
   };
   return { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail };
 }
-const records = [...foundationRecords, ...pentaRecords];
+const records = [...foundationRecords, ...quarterRecords, ...pentaRecords];
 export const { getKnowledgeEntry, getKnowledgeEntryById, getKnowledgeSummary, getKnowledgeDetail } = createKnowledgeReader(records, crossRecord);
 // Preserve the original list contract; callers opt into the separate Penta inventory.
+// Quarter articles are part of the public foundation list (library + detail lookup).
 export const listKnowledgeEntries = ({ includePenta = false } = {}) =>
-  (includePenta ? records : foundationRecords).map(record => getKnowledgeEntry(record));
+  (includePenta ? records : [...foundationRecords, ...quarterRecords]).map(record => getKnowledgeEntry(record));

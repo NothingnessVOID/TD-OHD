@@ -16,7 +16,11 @@ import { openOperationDialog, confirmOperation, renderDialogHeader } from '../li
 import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailSheetHeight } from '../lib/detail-dialog.js';
 import { bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { createWaDetailRenderer, renderWaReading, waChannelTitle } from './wa-detail-content.js';
-import { renderMemberBusinessPanel, memberPlacementGroups, renderMemberBusinessFrame, renderMemberBusinessChannel } from './wa-member-business.js';
+import { renderMemberBusinessPanel, memberPlacementGroups, renderMemberBusinessFrame, renderMemberBusinessChannel, renderQuarterMembersFrame, renderMemberGateFrame } from './wa-member-business.js';
+import { personalQuarterFacts } from '../lib/quarter-personal.js';
+import { QUARTER_IDS, quarterName } from '../lib/quarter.js';
+import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
+import { bindQuarterReadingSwitch } from '../lib/knowledge/quarter-detail.js';
 import { analyzeMemberBusiness } from '../lib/member-business/analysis.js';
 import { analyzeMemberEnvironments } from '../lib/member-business/environments.js';
 import { renderDetailNavigation } from '../lib/object-detail-heading.js';
@@ -54,6 +58,9 @@ export function mountWa(container, options = {}) {
   let selected = null, detailOpen = false, detailStack = [], detailOrigin = null;
   // Member business facts live in this instance only: derived from prepared charts, never persisted.
   let memberFacts = new Map();
+  // Per-member quarter facts are a separate model: Sun gate only, independent of the business analysis.
+  let memberQuarterFacts = new Map();
+  let disposeQuarterSwitch = null;
   let graphResizeObserver=null,stickyFrame=0;
   let focusMember = null;
   let showNames = (() => { try { const v = storage?.getItem(SHOW_NAMES_PREF); if (v == null) return true; return v === '1'; } catch { return true; } })();
@@ -97,6 +104,30 @@ export function mountWa(container, options = {}) {
     const record={analysis,screening:analyzeMemberEnvironments(analysis)};
     memberFacts.set(id,record);
     return record;
+  }
+  /** One member's own quarter facts. A missing Sun gate stays insufficient; no default quarter. */
+  function quarterFactsOf(id){
+    if(memberQuarterFacts.has(id))return memberQuarterFacts.get(id);
+    const member=memberRecords().find(item=>item.memberId===id);
+    if(!member)return null;
+    const facts=personalQuarterFacts({chart:member.chart,timeUnknown:member.timeUnknown,birthTimeConfidence:member.birthTimeConfidence});
+    memberQuarterFacts.set(id,facts);
+    return facts;
+  }
+  /** All assigned members in one equal list per quarter, plus an explicit insufficient group.
+   *  Never filtered by the current scope, and never a count share or organization conclusion. */
+  function quarterMemberGroups(){
+    // Source of truth is the full assigned layout, not only members whose charts finished:
+    // an unprepared member remains visible in the not-enough-data group.
+    const ids=[...validateWaLayout(draft).memberIds]
+      .sort((a,b)=>(markers().get(a)?.number??0)-(markers().get(b)?.number??0));
+    const byQuarter=new Map(QUARTER_IDS.map(id=>[id,[]])),unknown=[];
+    for(const id of ids){
+      const facts=quarterFactsOf(id);
+      if(facts?.status==='ready')byQuarter.get(facts.id).push(id);
+      else unknown.push(id);
+    }
+    return [...QUARTER_IDS.map(id=>({id,memberIds:byQuarter.get(id)})),...(unknown.length?[{id:'unknown',memberIds:unknown}]:[])];
   }
   /** Prev/next replaces the current member frame instead of stacking another one. */
   function stepMemberFrame(direction){
@@ -273,7 +304,7 @@ export function mountWa(container, options = {}) {
     render();
   }
   function schedule() {
-    generation++;clearTimeout(timer);closeReading();prepared=null;result=null;selected=null;memberFacts=new Map();
+    generation++;clearTimeout(timer);closeReading();prepared=null;result=null;selected=null;memberFacts=new Map();memberQuarterFacts=new Map();
     const ids=validateWaLayout(draft).memberIds;
     if(!ids.length){busy=false;prepared=[];refreshScope();return;}
     busy=true;render();const token=generation;
@@ -415,7 +446,7 @@ export function mountWa(container, options = {}) {
   }
 
   const readingHtml=id=>renderWaReading(id);
-  function detailBody(item) {
+  function detailBody(item, frame) {
     if(item.type==='library')return `<h2>${text('OC16 explore readings')}</h2><div class="wa-reading-list">${listWaContent(getLocale()).map(entry=>`<button class="btn-secondary" data-wa-reading="${esc(entry.objectId)}">${esc(entry.name)}</button>`).join('')}</div>`;
     if(item.type==='reading')return readingHtml(item.id);
     if(item.type==='department')return details.renderDepartment(item.id);
@@ -424,17 +455,37 @@ export function mountWa(container, options = {}) {
       const record=memberFactsOf(item.id),member=record?memberRecords().find(row=>row.memberId===item.id):null;
       if(!record||!member)return `<p class="wa-detail-note">${text('MB insufficient')}</p>`;
       const order=memberOrder().map(row=>row.memberId);
-      return renderMemberBusinessFrame({member,analysis:record.analysis,screening:record.screening,markerOf:id=>markers().get(id),nameOf,placementOf,index:Math.max(order.indexOf(item.id),0),count:order.length});
+      return renderMemberBusinessFrame({member,analysis:record.analysis,screening:record.screening,quarterFacts:quarterFactsOf(item.id),markerOf:id=>markers().get(id),nameOf,placementOf,index:Math.max(order.indexOf(item.id),0),count:order.length});
     }
     if(item.type==='business-channel')return renderMemberBusinessChannel({channelId:item.id});
+    if(item.type==='quarter-members')return renderQuarterMembersFrame({state:memberPanelState(),groups:memberPanelState()==='ready'?quarterMemberGroups():[],markerOf:id=>markers().get(id),nameOf,quarterFactsOf});
+    if(item.type==='member-quarter'){
+      // A member frame carries that member's own basis; a null memberId is the public article.
+      const facts=item.memberId?quarterFactsOf(item.memberId):null;
+      const quarterContext=facts?.status==='ready'?{gate:facts.gate,line:facts.line,estimated:facts.estimated}:null;
+      return renderKnowledgeDetail({objectType:'quarter',objectId:item.id},{quarterContext,quarterLens:frame?.quarterLens??'hd'});
+    }
+    if(item.type==='member-gate'){
+      const member=item.memberId?memberRecords().find(row=>row.memberId===item.memberId):null;
+      if(item.memberId&&!member)return `<p class="wa-detail-note">${text('MB insufficient')}</p>`;
+      return renderMemberGateFrame({memberId:item.memberId??null,gate:item.id,chart:member?.chart??null,markerOf:id=>markers().get(id),nameOf});
+    }
     return details.renderGate(item.id);
   }
   /** Personal frames are not organization results: the sheet label says so explicitly. */
-  const personalFrame=item=>['member','business-channel'].includes(item.type);
+  const personalFrame=item=>['member','business-channel'].includes(item.type)
+    || (['member-quarter','member-gate'].includes(item.type)&&Boolean(item.memberId));
+  /** The member-quarter list is an all-assigned list, never the current Penta scope. */
+  function detailScope(item){
+    if(item.type==='quarter-members')return text('Quarter members title');
+    if(item.type==='member-quarter')return item.memberId?text('MB personal label'):text('Quarter public label');
+    if(item.type==='member-gate'&&!item.memberId)return text('Quarter public label');
+    return personalFrame(item)?text('MB personal label'):esc(scopeLabel());
+  }
   function focusKey(node,root) {
     if(!node||!root.contains(node))return null;
     if(node.matches('summary'))return {summary:[...root.querySelectorAll('summary')].indexOf(node)};
-    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-wa-member-business','data-wa-business-channel','data-shared-lens','data-focus','data-action']){
+    for(const attribute of ['data-wa-gate','data-wa-pair','data-wa-department','data-wa-reading','data-wa-member-business','data-wa-business-channel','data-wa-member-quarter','data-wa-quarter-knowledge','data-wa-quarter-members','data-quarter-gate','data-quarter-lens','data-shared-lens','data-focus','data-action']){
       if(node.hasAttribute(attribute)){const value=node.getAttribute(attribute);return {attribute,value,index:[...root.querySelectorAll(`[${attribute}]`)].filter(item=>item.getAttribute(attribute)===value).indexOf(node)};}
     }
     return null;
@@ -450,6 +501,8 @@ export function mountWa(container, options = {}) {
     frame.focus=focusKey(document.activeElement,detail);
     frame.openDetails=[...detail.querySelectorAll('details')].map((node,index)=>node.open?index:null).filter(index=>index!==null);
     frame.lens=detail.querySelector('[data-shared-lens][aria-pressed="true"]')?.dataset.sharedLens;
+    // Quarter reading category is its own frame field; gate lens never overwrites it.
+    frame.quarterLens=detail.querySelector('[data-quarter-lens][aria-pressed="true"]')?.dataset.quarterLens;
   }
   function syncSelection() {
     container.querySelectorAll('.wa-diagram-row').forEach(row=>{
@@ -476,12 +529,14 @@ export function mountWa(container, options = {}) {
     const frame=detailStack.at(-1);if(!frame)return;
     if(['gate','pair','department'].includes(item.type))selected=item;
     prepareDetailDialog(detail,'wa');
-    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${personalFrame(item)?text('MB personal label'):esc(scopeLabel())}</p>${detailBody(item)}</div></section>`;
+    detail.innerHTML=`<section class="gate-detail-card wa-reading-sheet"><nav class="gate-detail-nav">${renderDetailNavigation({canGoBack:detailStack.length>1})}</nav><div class="gate-detail-body"><p class="wa-detail-scope">Wa / OC16 · ${detailScope(item)}</p>${detailBody(item,frame)}</div></section>`;
     detail.querySelector('[data-shared-back]')?.setAttribute('data-wa-back','');
     // Back navigation restores captured fold state when any details remain; channel/dept readings are always expanded.
     if(!push)detail.querySelectorAll('details').forEach((node,index)=>{node.open=frame.openDetails.includes(index);});
     detailOpen=true;
-    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:personalFrame(item)?t('MB members title'):t('Organization · Wa')});
+    disposeQuarterSwitch?.();
+    disposeQuarterSwitch=bindQuarterReadingSwitch(detail,{onChange:lens=>{const current=detailStack.at(-1);if(current)current.quarterLens=lens;}});
+    openDetailDialog(detail,detailClosed,{owner:'wa',label:item.type==='gate'?`${item.id} ${orgGateName(item.id)}`:item.type==='quarter-members'?t('Quarter members title'):item.type==='member-quarter'?(item.memberId?t('MB members title'):t('Quarter public label')):personalFrame(item)?t('MB members title'):t('Organization · Wa')});
     syncSelection();
     if(frame.lens)[...detail.querySelectorAll('[data-shared-lens]')].find(node=>node.dataset.sharedLens===frame.lens)?.click();
     fitDetailSheetHeight(detail.querySelector('.wa-reading-sheet'));
@@ -494,6 +549,19 @@ export function mountWa(container, options = {}) {
     const node=event.target.closest('button');if(!node)return;
     if(node.hasAttribute('data-shared-back'))return;
     if(node.dataset.waMemberBusiness){showDetail({type:'member',id:node.dataset.waMemberBusiness});return;}
+    if(node.dataset.waQuarterKnowledge){showDetail({type:'member-quarter',id:node.dataset.waQuarterKnowledge,memberId:null});return;}
+    if(node.dataset.waMemberQuarter){
+      const top=detailStack.at(-1)?.item;
+      if(top?.type==='member')showDetail({type:'member-quarter',id:node.dataset.waMemberQuarter,memberId:top.id});
+      return;
+    }
+    if(node.dataset.quarterGate){
+      // A quarter article opened for a member routes gates into that member's own frame;
+      // the public article keeps public knowledge and never reads a personal chart.
+      const top=detailStack.at(-1)?.item;
+      if(top?.type==='member-quarter')showDetail({type:'member-gate',id:Number(node.dataset.quarterGate),memberId:top.memberId??null});
+      return;
+    }
     if(node.dataset.waMemberStep){stepMemberFrame(node.dataset.waMemberStep);return;}
     if(node.dataset.waBusinessChannel){showDetail({type:'business-channel',id:node.dataset.waBusinessChannel});return;}
     if(node.dataset.waGate)showDetail({type:'gate',id:Number(node.dataset.waGate)});
@@ -505,6 +573,8 @@ export function mountWa(container, options = {}) {
     // The panel tile owns its whole area, including its marker badge: decide on the tile first so an
     // inner marker can never swallow the click. Diagram dots and row markers keep their own focus
     // meaning because this branch only matches elements inside the page container.
+    const quarterEntry=event.target.closest('[data-wa-quarter-members]');
+    if(quarterEntry&&container.contains(quarterEntry)){quarterEntry.focus({preventScroll:true});showDetail({type:'quarter-members'});return;}
     const tile=event.target.closest('[data-wa-member-business]');
     if(tile&&container.contains(tile)){tile.focus({preventScroll:true});showDetail({type:'member',id:tile.dataset.waMemberBusiness});return;}
     const marker=event.target.closest('[data-wa-marker-member]');
@@ -589,5 +659,13 @@ export function mountWa(container, options = {}) {
       }catch{ /* Leave the empty title if naming fails. */ }
     });
   }
-  return {render,refreshLanguage(){composer?.close();layerClose?.();closeReading();render();},dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);clearTimeout(autoSaveTimer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
+  return {render,refreshLanguage(){
+    composer?.close();layerClose?.();
+    // Quarter-bearing frames keep their own stack, reading category and original page focus/scroll.
+    const keepStack=detailOpen&&detailStack.some(frame=>['member-quarter','member-gate','quarter-members'].includes(frame.item?.type))?detailStack.slice():null;
+    const keepOrigin=keepStack?detailOrigin:null;
+    if(keepStack)captureDetailFrame();
+    closeReading();render();
+    if(keepStack?.length){detailOrigin=keepOrigin;detailStack=keepStack;detailOpen=true;showDetail(detailStack.at(-1).item,false);}
+  },dispose(){if(disposed)return;disposed=true;generation++;operation++;saveGeneration++;clearTimeout(timer);clearTimeout(autoSaveTimer);cancelAnimationFrame(stickyFrame);graphResizeObserver?.disconnect();window.removeEventListener('resize',queueSticky);unsubscribe?.();compactViewport.removeEventListener('change',resize);composer?.close();layerClose?.();closeReading();disposeQuarterSwitch?.();unbindDetails();detail.removeEventListener('toggle',detailToggle,true);detail.remove();container.removeEventListener('click',click);container.removeEventListener('change',change);container.removeEventListener('input',input);container.removeEventListener('keydown',keyboard);container.removeEventListener('compositionstart',compositionStart);container.removeEventListener('compositionend',compositionEnd);container.replaceChildren();}};
 }

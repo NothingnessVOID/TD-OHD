@@ -6,11 +6,14 @@ import { definitionIds, definitionNames } from '../lib/human-design/identities.j
 import { channelCircuit } from '../lib/circuit-topology.js';
 import { circuitGroupName, circuitName, definitionName, typeName } from '../lib/vocabulary.js';
 import { renderWaMemberMarker } from '../lib/wa/member-markers.js';
+import { quarterName } from '../lib/quarter.js';
 import { orgChannelName } from '../lib/wa/org-role-readings.js';
 import { readOrgChannelBody } from '../lib/wa/org-reading-content.js';
-import { renderSharedChannelReading } from '../lib/shared-object-details.js';
+import { renderSharedChannelReading, renderSharedGateReading } from '../lib/shared-object-details.js';
+import { renderGateDetailHeading } from '../lib/object-detail-heading.js';
 import { getLocale, t } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
+import '../lib/quarter-messages.js';
 import { careerCopy, definitionCopy, environmentCopyName, stepCopy, circuitCopy,
   integrationChannelCopy } from '../lib/member-business/content.js';
 import { MB_ENVIRONMENT_IDS } from '../lib/member-business/environments.js';
@@ -156,10 +159,84 @@ export function renderMemberBusinessPanel({ state = 'ready', memberCount = 0, gr
       <h3 class="wa-subheading">${esc(group.title)}</h3>
       <div class="wa-mb-grid">${group.memberIds.map(memberId => tileHtml(memberId, { analysisOf, markerOf, nameOf })).join('')}</div>
     </div>`).join('')}`;
+  // Discoverability for the four-quarter member list: the same all-assigned scope as the card.
   return `<section class="panel wa-member-business" data-wa-member-business-panel data-state="${esc(state)}" aria-label="${text('MB members title')}">
-    <div class="wa-panel-heading"><h2>${text('MB members title')}</h2><span class="wa-member-business-meta" data-wa-mb-count>${text('MB panel members meta', { count: memberCount })}</span></div>
+    <div class="wa-panel-heading"><h2>${text('MB members title')}</h2><span class="wa-member-business-meta" data-wa-mb-count>${text('MB panel members meta', { count: memberCount })}</span><button type="button" class="wa-link-button wa-quarter-members-entry" data-wa-quarter-members data-focus="quarter-members">${text('Quarter members entry')}</button></div>
     <p class="wa-mb-note">${text('MB members note')}</p>
     ${body}
+  </section>`;
+}
+
+/** Fifth block of one member's frame. Facts are computed by the host from that member's own
+ *  chart; this block never reads the business analysis, so a usable Sun gate still shows a
+ *  quarter when other fields are unavailable. */
+function quarterBlock(quarterFacts) {
+  const head = `<h3>${text('Quarter member theme title')}</h3>`;
+  if (quarterFacts?.status !== 'ready' || !quarterFacts.id) {
+    return `<section class="wa-mb-block" data-wa-mb-block="quarter"><h3>${text('Quarter member theme title')}</h3><p class="wa-mb-missing" data-wa-mb-quarter-missing>${text('Quarter member insufficient')}</p></section>`;
+  }
+  const gateLine = quarterFacts.line == null ? String(quarterFacts.gate) : `${quarterFacts.gate}.${quarterFacts.line}`;
+  return `<section class="wa-mb-block" data-wa-mb-block="quarter" data-wa-mb-quarter="${esc(quarterFacts.id)}">${head}
+    <button type="button" class="wa-detail-link wa-mb-quarter-open" data-wa-member-quarter="${esc(quarterFacts.id)}" data-focus="mb-quarter">${esc(quarterName(quarterFacts.id, getLocale()) ?? quarterFacts.id)} · ${text('Gate {gate}', { gate: gateLine })}${quarterFacts.estimated ? ` <span class="wa-mb-quarter-est">≈</span>` : ''}</button>
+  </section>`;
+}
+
+/** All assigned members grouped by their own quarter. Four equal groups plus an explicit
+ *  not-enough-data group; no counts, shares, scores, gaps or organization-level quarter. */
+export function renderQuarterMembersFrame({ state = 'ready', groups = [], markerOf = () => null, nameOf = () => '', quarterFactsOf = () => null } = {}) {
+  if (state !== 'ready') {
+    const key = state === 'loading' ? 'OC16 loading' : 'MB panel unavailable';
+    return `<section class="wa-mb" data-wa-quarter-members-frame data-state="${esc(state)}"><header class="wa-mb-head"><h2>${text('Quarter members title')}</h2><p class="wa-mb-note">${text('Quarter members note')}</p></header><p class="wa-member-business-state" role="status">${text(key)}</p></section>`;
+  }
+  return `<section class="wa-mb" data-wa-quarter-members-frame data-state="ready"><header class="wa-mb-head"><h2>${text('Quarter members title')}</h2><p class="wa-mb-note">${text('Quarter members note')}</p></header>
+    <div class="wa-quarter-groups">${groups.map(group => {
+      const title = group.id === 'unknown' ? text('Quarter members insufficient group') : esc(quarterName(group.id, getLocale()) ?? group.id);
+      // A quarter heading opens the public quarter article; the not-enough-data group is not a quarter.
+      const heading = group.id === 'unknown'
+        ? `<h3 class="wa-subheading wa-quarter-group-title">${title}</h3>`
+        : `<button type="button" class="wa-link-button wa-quarter-group-title" data-wa-quarter-knowledge="${esc(group.id)}" data-focus="quarter-group-${esc(group.id)}">${title}</button>`;
+      const members = group.memberIds.length
+        ? `<div class="wa-mb-grid">${group.memberIds.map(memberId => {
+          // Only an explicitly estimated member carries ≈; no chart is read here.
+          const estimated = quarterFactsOf(memberId)?.estimated === true;
+          return `<button type="button" class="wa-pillar wa-mb-tile wa-quarter-member-tile" data-wa-member-business="${esc(memberId)}" data-focus="quarter-member-${esc(memberId)}"><span class="wa-pillar-text"><span class="wa-mb-tile-head">${renderWaMemberMarker(markerOf(memberId), { name: nameOf(memberId) }) || ''}<strong class="wa-mb-tile-name" title="${esc(nameOf(memberId))}">${esc(nameOf(memberId))}</strong>${estimated ? `<span class="wa-mb-tile-est" data-wa-quarter-estimated title="${text('Quarter estimated')}">≈</span>` : ''}</span></span><span class="wa-mb-tile-arrow" aria-hidden="true">›</span></button>`;
+        }).join('')}</div>`
+        : `<p class="wa-mb-note" data-wa-quarter-empty>${text('Quarter members empty')}</p>`;
+      return `<section class="wa-quarter-group" data-wa-quarter-group="${esc(group.id)}">${heading}${members}</section>`;
+    }).join('')}</div>
+  </section>`;
+}
+
+/** Everything a member can activate for one gate, from that member's own two sides. */
+export function memberGateLines(chart, gate) {
+  const lines = new Set();
+  for (const side of ['design', 'personality']) {
+    for (const activation of Object.values(chart?.gates?.[side] ?? {})) {
+      if (activation?.gate === gate && Number.isInteger(activation.line)) lines.add(activation.line);
+    }
+  }
+  return [...lines].sort((a, b) => a - b);
+}
+
+/** One member's gate reading inside Wa. It reuses the shared gate reader and never routes
+ *  into the organization business gate renderer. selectedLine follows only that member's
+ *  Personality Sun when it is the same gate. A null memberId renders public quarter knowledge
+ *  with no personal activation and no chart read. */
+export function renderMemberGateFrame({ memberId = null, gate, chart = null, markerOf = () => null, nameOf = () => '' }) {
+  const n = Number(gate);
+  if (!Number.isInteger(n) || n < 1 || n > 64) return '';
+  if (!memberId) return `<section class="wa-mb" data-wa-member-gate="${n}" data-wa-gate-scope="public">
+    <header class="wa-mb-head">${renderGateDetailHeading(n)}</header>
+    <p class="wa-mb-note">${text('Quarter public label')}</p>
+    ${renderSharedGateReading(n, { activeLines: [] })}
+  </section>`;
+  const sun = chart?.gates?.personality?.sun;
+  const selectedLine = sun?.gate === n && Number.isInteger(sun.line) ? sun.line : null;
+  const name = nameOf(memberId) || memberId;
+  return `<section class="wa-mb" data-wa-member-gate="${n}" data-wa-member="${esc(memberId)}">
+    <header class="wa-mb-head"><div class="wa-mb-identity">${renderWaMemberMarker(markerOf(memberId), { name })}<h2>${esc(name)}</h2></div>${renderGateDetailHeading(n)}</header>
+    <p class="wa-mb-note">${text('Quarter member gate scope')}</p>
+    ${renderSharedGateReading(n, { activeLines: memberGateLines(chart, n), selectedLine })}
   </section>`;
 }
 
@@ -318,8 +395,9 @@ function strengthsHtml(analysis, locale) {
     <p class="wa-mb-note">${text('MB strengths note')}</p>${groups}</section>`;
 }
 
-/** One member's frame: career type, information processing, work environments, business strengths. */
-export function renderMemberBusinessFrame({ member, analysis, screening, markerOf, nameOf, placementOf, index = 0, count = 1 }) {
+/** One member's frame: career type, information processing, work environments, business strengths,
+ *  then the life-theme quarter derived independently from that member's own Sun gate. */
+export function renderMemberBusinessFrame({ member, analysis, screening, quarterFacts = null, markerOf, nameOf, placementOf, index = 0, count = 1 }) {
   const locale = getLocale();
   const ready = analysis?.status === 'ready';
   const name = nameOf(member.memberId) || member.displayName || member.memberId;
@@ -334,6 +412,7 @@ export function renderMemberBusinessFrame({ member, analysis, screening, markerO
     ${estimated ? `<p class="wa-mb-estimate" data-wa-mb-estimated>${text('MB estimated note')}</p>` : ''}
     ${ready ? '' : `<p class="wa-mb-missing" data-wa-mb-insufficient>${text('MB insufficient')}</p>`}
     ${ready ? `${careerBlock(analysis, locale)}${definitionBlock(analysis, locale)}${screeningHtml(analysis, screening, locale)}${strengthsHtml(analysis, locale)}` : ''}
+    ${quarterBlock(quarterFacts)}
   </section>`;
 }
 

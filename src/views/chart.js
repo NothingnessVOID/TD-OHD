@@ -27,6 +27,8 @@ import { foundationSummary } from '../lib/knowledge/foundation-summary.js';
 import { getKnowledgeSummary } from '../lib/knowledge/registry.js';
 import { chartKnowledgeQuery } from '../lib/knowledge/access.js';
 import { openKnowledgeDetail } from '../lib/knowledge/detail-controller.js';
+import { quarterName } from '../lib/quarter.js';
+import { personalQuarterFacts } from '../lib/quarter-personal.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
@@ -993,11 +995,13 @@ function renderCrossPanel(container) {
     </div>
   ` : '';
 
-  const quarter = GATE_DESCRIPTIONS[chart.gates.personality.sun?.gate]?.quarter;
+  // Canonical quarter identity, then an explicit personal context for the quarter sheet.
+  const quarter = personalQuarterFacts({ chart, timeUnknown: current?.birth?.timeUnknown, birthTimeConfidence: current?.birth?.birthTimeConfidence });
+  const quarterLabel = quarter.status === 'ready' ? quarterName(quarter.id, getLocale()) : null;
   container.innerHTML = `
     <div class="panel-title">${t('Incarnation Cross')}</div>
     <div class="panel-heading">${esc(crossName(cross))}</div>
-    <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
+    <p>${esc(contentText(cross.angleName || ''))}${quarterLabel ? ` · <button type="button" class="knowledge-trigger knowledge-quarter-link" data-quarter-detail="${esc(quarter.id)}">${esc(t('Quarter of {quarter}', { quarter: quarterLabel }))}</button>` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `
@@ -1013,6 +1017,11 @@ function renderCrossPanel(container) {
     ${geneKeysHtml}
   `;
   container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
+  container.querySelector('[data-quarter-detail]')?.addEventListener('click', () => {
+    if (quarter.status !== 'ready') return;
+    openKnowledgeDetail({ objectType: 'quarter', objectId: quarter.id },
+      { quarter: { gate: quarter.gate, line: quarter.line, estimated: quarter.estimated } });
+  });
   container.querySelectorAll('.foundation-clickable').forEach(item => {
     item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
     wireRowHover(item, parseInt(item.dataset.gate));

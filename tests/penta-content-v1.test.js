@@ -39,8 +39,8 @@ test('exact 30 identities retain the original 21 order and computed topology', (
     for (const key of ['channelId','gates','centers','displayOrder']) assert.deepEqual(entry.properties[key],channel[key]);
     assert.equal(entry.properties.kind,'channel');
   }
-  assert.equal(listKnowledgeEntries().length,70);
-  assert.equal(listKnowledgeEntries({includePenta:true}).length,100);
+  assert.equal(listKnowledgeEntries().length,74);
+  assert.equal(listKnowledgeEntries({includePenta:true}).length,104);
 });
 
 test('all 90 locale records preserve exact independent package fields and Penta gate names', () => {

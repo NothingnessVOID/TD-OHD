@@ -19,9 +19,9 @@ const langs=fn=>{for(const l of ['en','zh-CN','zh-Hant']){setLocale(l,{persist:f
 test('Round 2D historical content guard permits only the approved Round 2F deviation ranges',()=>{
  assertContentBoundary();
 });
-test('all 64 reviewed entries render; Cognition remains six name-only entries',()=>langs(()=>{
- const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
- for(const entry of entries){const html=renderKnowledgeDetail(entry);assert.match(html,/knowledge-detail/);if(entry.hasSummary)assert.match(html,/knowledge-summary-callout/);assert.doesNotMatch(html,/center-reading|gate-chip|circuit-badge|role="alert"/);}
+test('all 68 reviewed entries render; Cognition remains six name-only entries',()=>langs(()=>{
+ const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,68);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);
+ for(const entry of entries){const html=renderKnowledgeDetail(entry);assert.match(html,/knowledge-detail/);if(entry.objectType==='quarter'){assert.match(html,/data-quarter-article/);assert.match(html,/data-quarter-gates/);}else if(entry.hasSummary)assert.match(html,/knowledge-summary-callout/);assert.doesNotMatch(html,/center-reading|gate-chip|circuit-badge|role="alert"/);}
 }));
 test('Generator has real Strategy/Aura surfaces, source chips and compact metadata; Emotional stays prose',()=>langs(()=>{
  const html=renderKnowledgeDetail(q('type','generator'));assert.match(html,/data-section="strategy"/);assert.match(html,/data-section="aura"/);assert.match(html,/knowledge-chip/);assert.match(html,/knowledge-meta/);
