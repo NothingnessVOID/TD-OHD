@@ -8,7 +8,8 @@ permissions:
   contents: read
 jobs:
   regression:
-    runs-on: ubuntu-latest
+    # Playwright's Chromium bundle does not support the ubuntu-26.04 image yet; stay on this LTS.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:

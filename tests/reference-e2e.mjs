@@ -13,7 +13,7 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /229/);
+    assert.match(await page.locator('#reference-count').innerText(), /233/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
     await page.locator('.reference-filter-toggle').click();
   await page.locator('[data-reference-filter="planet"]').click();
@@ -26,7 +26,8 @@ try {
     }
     await page.goto(`${base}/#library/planet/sun`);
     await page.locator('#reference-detail h2').waitFor();
-    assert.equal(await page.locator('#reference-detail .reference-reading section').count(), 0);
+    assert.equal(await page.locator('#reference-detail .reference-reading section').count(), 1, 'planet reading renders one reading frame');
+    assert.ok(await page.locator('#reference-detail .reference-reading [data-planet-reading-body] p').count() > 0, 'planet reading body has prose');
     await page.goto(`${base}/#library/concept/transit`);
     await page.locator('#reference-detail h2').waitFor();
     assert.match(await page.locator('#reference-detail .reference-reading').innerText(), /行运|Transit/);
