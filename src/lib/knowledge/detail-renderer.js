@@ -5,8 +5,9 @@ import { variableDirection } from '../variable-arrows.js';
 import { esc } from '../format.js';
 import { CENTER_SHAPES } from '../human-design/bodygraph-geometry.js';
 import { centerName, hexagramName } from '../vocabulary.js';
+import { renderQuarterArticle } from './quarter-detail.js';
 
-const categoryLabels = { penta:'Penta specific reading', type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition' };
+const categoryLabels = { penta:'Penta specific reading', type:'Type', authority:'Authority', profile:'Profile', definition:'Definition', cross:'Incarnation Cross', cognition:'Cognition', quarter:'Quarter' };
 const variableLabels = { overview:'Variable', determination:'Determination', environment:'Environment', perspective:'Perspective', motivation:'Motivation' };
 const profileLabels = { rightAngle:'Right Angle · Personal destiny', juxtaposition:'Juxtaposition · Fixed destiny', leftAngle:'Left Angle · Transpersonal destiny' };
 const angleLabels = { right:profileLabels.rightAngle, left:profileLabels.leftAngle, juxtaposition:profileLabels.juxtaposition };
@@ -159,14 +160,14 @@ function renderGeometry(entry) {
   return '';
 }
 /** One shared article renderer; object identity and explicit metadata select the visual structure. */
-export function renderKnowledgeDetail(query,{variableContext=null,definitionComponents=null,contextText=''}={}) {
+export function renderKnowledgeDetail(query,{variableContext=null,definitionComponents=null,contextText='',quarterContext=null,quarterLens='hd'}={}) {
   const entry=typeof query==='string'?getKnowledgeEntryById(query):getKnowledgeEntry(query);
-  return renderKnowledgeArticle(entry, {variableContext,definitionComponents,contextText});
+  return renderKnowledgeArticle(entry, {variableContext,definitionComponents,contextText,quarterContext,quarterLens});
 }
 /** Render an already resolved entry; callers may supply independently qualified slots. */
-export function renderKnowledgeArticle(entry,{variableContext=null,definitionComponents=null,contextText=''}={}) {
+export function renderKnowledgeArticle(entry,{variableContext=null,definitionComponents=null,contextText='',quarterContext=null,quarterLens='hd'}={}) {
   if(!entry)return `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>`;
-  const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext)};
+  const renderers={type:()=>renderType(entry),authority:()=>`<div class="knowledge-reading">${renderProse(entry.detail)}</div>`,profile:()=>renderProfile(entry),definition:()=>renderDefinition(entry,definitionComponents),cross:()=>renderCross(entry),variable:()=>renderVariable(entry,variableContext),quarter:()=>renderQuarterArticle(entry,{quarterContext,quarterLens})};
   const source=entry.objectType==='variable'&&!entry.properties.publicOverview?(['determination','environment'].includes(entry.properties.kind)?'design':'personality'):null;
-  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${renderSummary(entry)}${entry.objectType==='profile'&&!entry.properties.publicOverview?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${entry.properties.publicOverview&&entry.objectType!=='variable'?renderOverview(entry):renderers[entry.objectType]?.()??renderProse(entry.detail)}${renderFoundationLink(entry)}</section></article>`;
+  return `<article class="knowledge-detail" data-knowledge-id="${esc(entry.id)}" data-object-type="${esc(entry.objectType)}"${source?` data-source="${source}"`:''}>${renderHeader(entry)}${renderGeometry(entry)}${renderContext(entry,variableContext)}${contextText?`<aside class="knowledge-context">${esc(contextText)}</aside>`:''}${entry.objectType==='quarter'?'':renderSummary(entry)}${entry.objectType==='profile'&&!entry.properties.publicOverview?renderProfileIdentity(entry):''}${entry.objectType==='cross'?renderCrossActivations(entry):''}<section class="knowledge-body">${entry.properties.publicOverview&&entry.objectType!=='variable'?renderOverview(entry):renderers[entry.objectType]?.()??renderProse(entry.detail)}${renderFoundationLink(entry)}</section></article>`;
 }

@@ -5,6 +5,7 @@ import { analyzeOC16 } from '../src/lib/wa/oc16-analysis.js';
 import { createWaDetailRenderer, waChannelTitle } from '../src/views/wa-detail-content.js';
 import { createWaMemberMarkers } from '../src/lib/wa/member-markers.js';
 import { setLocale, t } from '../src/lib/i18n.js';
+import { orgChannelName } from '../src/lib/wa/org-role-readings.js';
 const {snapshot,prepared}=fixture({size:3,groupSizes:[2,0,0]});
 prepared[0].chart=chart([45]);prepared[1].chart=chart([21]);prepared[2].chart=chart([54]);
 const markers=createWaMemberMarkers(snapshot.members);
@@ -32,11 +33,13 @@ test('core and additional channel cards remain distinct and all three locales av
    assert.doesNotMatch(html,/data-wa-knowledge|data-activation-side/);
   }
   const other=render.renderChannelCards('management',{kind:'other'});
-  assert.equal((other.match(/data-pair-row=/g)||[]).length,1);assert.doesNotMatch(other,/data-pair-row="21-45"/);
-  assert.match(other,/data-pair-row="26-44"/);
-  assert.equal(waChannelTitle('21-45'), t('OC16 org role management'));
-  assert.equal(waChannelTitle('25-51'), t('OC16 org role competition'));
-  assert.equal(waChannelTitle('26-44'), t('OC16 personnel'));
+  // Management now lists its full catalog: primary excluded, four support channels per textbook order.
+  assert.equal((other.match(/data-pair-row=/g)||[]).length,4);assert.doesNotMatch(other,/data-pair-row="21-45"/);
+  for(const id of ['32-54','26-44','19-49','37-40'])assert.match(other,new RegExp(`data-pair-row="${id}"`));
+  // One channel, one name: department positioning never becomes a channel title.
+  for(const id of ['21-45','25-51','26-44'])assert.equal(waChannelTitle(id),orgChannelName(id));
+  assert.notEqual(waChannelTitle('21-45'),t('OC16 org role management'));
+  assert.notEqual(waChannelTitle('26-44'),t('OC16 personnel'));
  }
 });
 test('changing scope removes out-of-scope names from quick cards; failures remain unknown not zero',()=>{

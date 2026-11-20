@@ -1,0 +1,377 @@
+{
+  "zh-CN": {
+    "careers": {
+      "initiator": {
+        "name": "发起者",
+        "body": "擅长破局与开局，价值在于启动新项目、打开新市场。把事情推起来之后，交给适合持续投入的人接力，通常更省力。"
+      },
+      "classicBuilder": {
+        "name": "经典建造者",
+        "body": "组织的持续动能。适合深耕一条线，把一件让自己有满足感的事做深做稳。"
+      },
+      "expressBuilder": {
+        "name": "快速建造者",
+        "body": "同样是持续动能，只是节奏更快，适合多线推进。必要的检查与关键节点照常走完，细节可以在事后回头补齐。"
+      },
+      "advisor": {
+        "name": "顾问",
+        "body": "系统的向导，善于看清人与流程，把资源和人放到合适的位置。被邀请、被认可时，建议更容易被采纳。"
+      },
+      "evaluator": {
+        "name": "评估者",
+        "body": "组织的晴雨表，能感受团队和市场整体的健康程度，给出宏观的反馈。需要一段观察时间再下判断。"
+      }
+    },
+    "definitions": {
+      "none": {
+        "name": "无定义（随环境处理）",
+        "body": "没有固定的内部处理方式，随所处环境吸收与反映。环境本身是关键，换几种场景观察之后再做判断更稳妥。"
+      },
+      "single": {
+        "name": "独立处理",
+        "body": "有定义的中心连成一体，信息在自己身上就能闭环，结论来得快。留意别人的视角，避免太快拍板。"
+      },
+      "split": {
+        "name": "协作处理",
+        "body": "内部有一处断开。和他人讨论、一起工作时更容易看到全貌，适合深度的一对一协作。"
+      },
+      "tripleSplit": {
+        "name": "流动处理",
+        "body": "内部有三块，需要接触多元的人和信息。在不同部门、不同人群之间流动时运作更顺，长期固定在单一搭档身边容易受限。"
+      },
+      "quadrupleSplit": {
+        "name": "客观处理",
+        "body": "内部有四块，消化慢而稳，适合需要深度和长期观察的岗位。节奏剧烈变化的早期环境挑战更大，需要额外的缓冲时间。"
+      }
+    },
+    "environments": {
+      "solo": {
+        "name": "单打独斗"
+      },
+      "partnership": {
+        "name": "一对一合伙"
+      },
+      "publicFlow": {
+        "name": "公共流动空间"
+      },
+      "penta": {
+        "name": "核心小组 Penta（3–5 人）"
+      },
+      "organization": {
+        "name": "大型组织 OC16"
+      }
+    },
+    "steps": {
+      "definition": {
+        "name": "信息处理",
+        "body": "信息处理决定一个人是否需要他人来接通内部断层，是看工作环境的第一层依据。"
+      },
+      "aura": {
+        "name": "光环",
+        "body": "光环是能量场与他人接触时的自然方式。发起者的光环倾向推开阻力，评估者的光环容易吸收环境，这两类人在可以独立观察的空间里更容易保持状态；顾问的光环一次聚焦一个人，一对一协作更容易见效；建造者的光环对各种环境都比较开放，具体留给后面的步骤看。"
+      },
+      "integration": {
+        "name": "整合网络",
+        "body": "整合通道带来强烈的当下自我生存本能。有这条通道的人，在具体执行和直觉判断时需要不被打扰的空间；这不代表他不能在团队里工作，其他环境同样可以成立。"
+      },
+      "penta": {
+        "name": "Penta 闸门",
+        "body": "Penta 只读取荐骨、G、喉咙中心的 12 个闸门。这张图在这些闸门上形成完整通道时，可以作为小组连接的依据，具体是哪几条会一并列出。没有形成完整通道时，这一步只呈现激活的闸门数量，不据此判断小组适配。"
+      },
+      "organization": {
+        "name": "OC16 中心轴",
+        "body": "大型组织依靠九条中心轴通道运转：格式化能量是部门底座，Alpha 通道是组织的声音，劳动力干线承担资源与节律。拥有其中任一条，就有进入大型组织运作的依据。协作关注：带 21-45 或 37-40 这类部落通道的人进入大型组织时，公共规则与资源边界值得提前讲清楚，让权责和分配在明面上运行。"
+      }
+    },
+    "circuits": {
+      "integration": {
+        "name": "整合回路",
+        "body": "为自己当下的生存与安全而运作。"
+      },
+      "individual": {
+        "name": "个体回路",
+        "body": "靠与众不同带来突变与创新。"
+      },
+      "collective": {
+        "name": "集体回路",
+        "body": "面向大众，用逻辑预见未来，或用经验复盘过去。"
+      },
+      "tribal": {
+        "name": "部落回路",
+        "body": "围绕契约、资源分配与彼此支持。"
+      }
+    },
+    "integrationChannels": {
+      "10-20": {
+        "name": "觉醒",
+        "intro": "独立存在，在当下真实地表达自己，不受制约。",
+        "application": "在需要个人辨识度的场景里更有优势：把真实的态度和判断直接呈现出来，认同这份真实的人会自己靠过来。"
+      },
+      "10-57": {
+        "name": "完美形态",
+        "intro": "为了生存而对行为模式做直觉性的设计与改良。",
+        "application": "商业上偏向防守：能凭直觉察觉市场风险，并持续调整自身策略，在竞争中保持安全的位置。"
+      },
+      "20-34": {
+        "name": "魅力",
+        "intro": "在当下把纯粹的生命力转化为直接的行动，为自己的生存忙碌。",
+        "application": "投入真正热爱的事情时，即使没有外部监督也能维持较高的执行力；适合把自己的节奏和热爱直接变成产出。"
+      },
+      "34-57": {
+        "name": "力量",
+        "intro": "纯粹的直觉与生命力结合，在当下立即响应，以确保个体存活。",
+        "application": "面对突发的商业风险或机会，能凭本能及时做出防卫或出手；适合需要快速反应的场景。"
+      }
+    }
+  },
+  "zh-Hant": {
+    "careers": {
+      "initiator": {
+        "name": "發起者",
+        "body": "擅長破局與開局，價值在於啟動新專案、打開新市場。把事情推起來之後，交給適合持續投入的人接力，通常更省力。"
+      },
+      "classicBuilder": {
+        "name": "經典建造者",
+        "body": "組織的持續動能。適合深耕一條線，把一件讓自己有滿足感的事做深做穩。"
+      },
+      "expressBuilder": {
+        "name": "快速建造者",
+        "body": "同樣是持續動能，只是節奏更快，適合多線推進。必要的檢查與關鍵節點照常走完，細節可以在事後回頭補齊。"
+      },
+      "advisor": {
+        "name": "顧問",
+        "body": "系統的嚮導，善於看清人與流程，把資源和人放到合適的位置。被邀請、被認可時，建議更容易被採納。"
+      },
+      "evaluator": {
+        "name": "評估者",
+        "body": "組織的晴雨表，能感受團隊和市場整體的健康程度，給出宏觀的回饋。需要一段觀察時間再下判斷。"
+      }
+    },
+    "definitions": {
+      "none": {
+        "name": "無定義（隨環境處理）",
+        "body": "沒有固定的內部處理方式，隨所處環境吸收與反映。環境本身是關鍵，換幾種場景觀察之後再做判斷更穩妥。"
+      },
+      "single": {
+        "name": "獨立處理",
+        "body": "有定義的中心連成一體，資訊在自己身上就能閉環，結論來得快。留意別人的視角，避免太快拍板。"
+      },
+      "split": {
+        "name": "協作處理",
+        "body": "內部有一處斷開。和他人討論、一起工作時更容易看到全貌，適合深度的一對一協作。"
+      },
+      "tripleSplit": {
+        "name": "流動處理",
+        "body": "內部有三塊，需要接觸多元的人與資訊。在不同部門、不同人群之間流動時運作更順，長期固定在單一搭檔身邊容易受限。"
+      },
+      "quadrupleSplit": {
+        "name": "客觀處理",
+        "body": "內部有四塊，消化慢而穩，適合需要深度和長期觀察的職位。節奏劇烈變化的早期環境挑戰更大，需要額外的緩衝時間。"
+      }
+    },
+    "environments": {
+      "solo": {
+        "name": "單打獨鬥"
+      },
+      "partnership": {
+        "name": "一對一合夥"
+      },
+      "publicFlow": {
+        "name": "公共流動空間"
+      },
+      "penta": {
+        "name": "核心小組 Penta（3–5 人）"
+      },
+      "organization": {
+        "name": "大型組織 OC16"
+      }
+    },
+    "steps": {
+      "definition": {
+        "name": "資訊處理",
+        "body": "資訊處理決定一個人是否需要他人來接通內部斷層，是看工作環境的第一層依據。"
+      },
+      "aura": {
+        "name": "光環",
+        "body": "光環是能量場與他人接觸時的自然方式。發起者的光環傾向推開阻力，評估者的光環容易吸收環境，這兩類人在可以獨立觀察的空間裡更容易保持狀態；顧問的光環一次聚焦一個人，一對一協作更容易見效；建造者的光環對各種環境都比較開放，具體留給後面的步驟看。"
+      },
+      "integration": {
+        "name": "整合網絡",
+        "body": "整合通道帶來強烈的當下自我生存本能。有這條通道的人，在具體執行與直覺判斷時需要不被打擾的空間；這不代表他不能在團隊裡工作，其他環境同樣可以成立。"
+      },
+      "penta": {
+        "name": "Penta 閘門",
+        "body": "Penta 只讀取薦骨、G、喉嚨中心的 12 個閘門。這張圖在這些閘門上形成完整通道時，可以作為小組連接的依據，具體是哪幾條會一併列出。沒有形成完整通道時，這一步只呈現啟動的閘門數量，不據此判斷小組適配。"
+      },
+      "organization": {
+        "name": "OC16 中心軸",
+        "body": "大型組織依靠九條中心軸通道運轉：格式化能量是部門底座，Alpha 通道是組織的聲音，勞動力幹線承擔資源與節律。擁有其中任一條，就有進入大型組織運作的依據。協作關注：帶 21-45 或 37-40 這類部落通道的人進入大型組織時，公共規則與資源邊界值得提前講清楚，讓權責和分配在明面上運行。"
+      }
+    },
+    "circuits": {
+      "integration": {
+        "name": "整合迴路",
+        "body": "為自己當下的生存與安全而運作。"
+      },
+      "individual": {
+        "name": "個體迴路",
+        "body": "靠與眾不同帶來突變與創新。"
+      },
+      "collective": {
+        "name": "集體迴路",
+        "body": "面向大眾，用邏輯預見未來，或用經驗復盤過去。"
+      },
+      "tribal": {
+        "name": "部落迴路",
+        "body": "圍繞契約、資源分配與彼此支持。"
+      }
+    },
+    "integrationChannels": {
+      "10-20": {
+        "name": "覺醒",
+        "intro": "獨立存在，在當下真實地表達自己，不受制約。",
+        "application": "在需要個人辨識度的場景裡更有優勢：把真實的態度、判斷和做法直接呈現出來，認同這份真實的人會自己靠過來。"
+      },
+      "10-57": {
+        "name": "完美形態",
+        "intro": "為了生存而對行為模式做直覺性的設計與改良。",
+        "application": "商業上偏向防守：能憑直覺察覺市場風險，並持續調整自身策略，在競爭中保持安全的位置。"
+      },
+      "20-34": {
+        "name": "魅力",
+        "intro": "在當下把純粹的生命力轉化為直接的行動，為自己的生存忙碌。",
+        "application": "投入真正熱愛的事情時，即使沒有外部監督也能維持較高的執行力；適合把自己的節奏和熱愛直接變成產出。"
+      },
+      "34-57": {
+        "name": "力量",
+        "intro": "純粹的直覺與生命力結合，在當下立即回應，以確保個體存活。",
+        "application": "面對突發的商業風險或機會，能憑本能及時做出防衛或出手；適合需要快速反應的場景。"
+      }
+    }
+  },
+  "en": {
+    "careers": {
+      "initiator": {
+        "name": "Initiator",
+        "body": "Good at opening a stuck situation and getting things started; the value is launching new projects and entering new markets. Once something is moving, handing it to someone who can carry it steadily usually costs less energy."
+      },
+      "classicBuilder": {
+        "name": "Classic Builder",
+        "body": "The steady engine of an organization. Suited to going deep on one line of work and making one satisfying thing solid and lasting."
+      },
+      "expressBuilder": {
+        "name": "Express Builder",
+        "body": "The same steady engine at a faster tempo, well suited to moving several lines at once. The checks and decision points that matter still get done; details can be filled in afterwards."
+      },
+      "advisor": {
+        "name": "Advisor",
+        "body": "A guide to the system, quick to see how people and processes actually fit, and good at putting resources and people where they belong. Advice lands more easily when it is invited and recognized."
+      },
+      "evaluator": {
+        "name": "Evaluator",
+        "body": "The organization's gauge, sensing the overall health of a team and a market and giving feedback at the level of the whole. Judgment comes after a period of observation."
+      }
+    },
+    "definitions": {
+      "none": {
+        "name": "Undefined (processes with the environment)",
+        "body": "No fixed internal processing mode; it takes in and reflects whatever environment it is in. The environment itself is the key, so it is worth watching several settings before drawing conclusions."
+      },
+      "single": {
+        "name": "Independent Processing",
+        "body": "The defined centers connect into one piece, so information closes its loop inside the person and conclusions arrive quickly. Watching for other perspectives keeps that speed from turning into early decisions."
+      },
+      "split": {
+        "name": "Collaborative Processing",
+        "body": "There is one break inside. Discussing things and working alongside others makes the whole picture easier to see, which suits deep one-to-one collaboration."
+      },
+      "tripleSplit": {
+        "name": "Fluid Processing",
+        "body": "Three separate pieces; it needs contact with varied people and information. Moving between departments and groups runs more smoothly than staying fixed beside a single partner for a long stretch."
+      },
+      "quadrupleSplit": {
+        "name": "Objective Processing",
+        "body": "Four separate pieces, slow and steady to digest; suited to roles that need depth and long observation. An early-stage setting with violent shifts of tempo is harder and asks for extra buffer."
+      }
+    },
+    "environments": {
+      "solo": {
+        "name": "Solo Work"
+      },
+      "partnership": {
+        "name": "One-to-One Partnership"
+      },
+      "publicFlow": {
+        "name": "Public Flow Space"
+      },
+      "penta": {
+        "name": "Core Group Penta (3–5 people)"
+      },
+      "organization": {
+        "name": "Large Organization OC16"
+      }
+    },
+    "steps": {
+      "definition": {
+        "name": "Information Processing",
+        "body": "Defined processing decides whether a person needs others to bridge the breaks inside, and it is the first layer for reading a work environment."
+      },
+      "aura": {
+        "name": "Aura",
+        "body": "The aura is how an energy field naturally meets other people. An Initiator's aura tends to push resistance aside, an Evaluator's aura takes in the surroundings, and both hold their state more easily in a space where they can observe independently. An Advisor's aura focuses on one person at a time, so one-to-one collaboration lands more easily. A Builder's aura stays fairly open to every setting, and the later steps do that reading."
+      },
+      "integration": {
+        "name": "Integration Wiring",
+        "body": "Integration channels carry a strong instinct for surviving in the present moment. Someone with them needs an undisturbed space for hands-on execution and intuitive judgment; that does not mean they cannot work inside a team, and other settings hold as well."
+      },
+      "penta": {
+        "name": "Penta Gates",
+        "body": "Penta reads only the twelve gates of the Sacral, G and Throat centers. When this chart forms a complete channel across those gates, that is a basis for group connection, and the specific channels are listed alongside. When no complete channel forms, this step shows only the number of active gates and does not judge group fit from it."
+      },
+      "organization": {
+        "name": "OC16 Axis",
+        "body": "A large organization runs on nine axis channels: formatting energy is the departmental base, Alpha channels are the organization's voice, and the labour trunks carry resources and rhythm. Any one of them is a basis for entering how a large organization operates. Collaboration note: for someone carrying a tribal channel such as 21-45 or 37-40 into a large organization, public rules and resource boundaries are worth spelling out in advance so authority and allocation stay on the table."
+      }
+    },
+    "circuits": {
+      "integration": {
+        "name": "Integration Circuit",
+        "body": "Works for its own survival and safety in the present."
+      },
+      "individual": {
+        "name": "Individual Circuit",
+        "body": "Brings mutation and innovation by being unlike everyone else."
+      },
+      "collective": {
+        "name": "Collective Circuit",
+        "body": "Faces the wider public, using logic to foresee the future or experience to review the past."
+      },
+      "tribal": {
+        "name": "Tribal Circuit",
+        "body": "Revolves around contracts, the allocation of resources, and mutual support."
+      }
+    },
+    "integrationChannels": {
+      "10-20": {
+        "name": "Awakening",
+        "intro": "Existing independently and expressing the self honestly in the present, free of conditioning.",
+        "application": "It comes into its own where personal recognizability matters: real stances and judgments are shown directly, and the people who recognize that authenticity come closer on their own."
+      },
+      "10-57": {
+        "name": "Perfected Form",
+        "intro": "An intuitive designing and refining of behaviour patterns for the sake of survival.",
+        "application": "Business-wise it leans defensive: intuition picks up market risk early, and strategy keeps adjusting so the position stays safe in competition."
+      },
+      "20-34": {
+        "name": "Charisma",
+        "intro": "Turning pure life force into direct action in the present, busy with its own survival.",
+        "application": "When the work is genuinely loved, output stays high without outside supervision; well suited to turning personal rhythm and enthusiasm straight into results."
+      },
+      "34-57": {
+        "name": "Power",
+        "intro": "Pure intuition joined with life force, responding instantly in the present to keep the individual alive.",
+        "application": "Sudden commercial risk or opportunity is met by instinct, with defence or a strike made in time; suited to settings that need a fast response."
+      }
+    }
+  }
+}

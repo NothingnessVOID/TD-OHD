@@ -37,7 +37,7 @@ try {
       const natalPlanet = page.locator('#transit-stage .tl-birth-value[data-gate]').first();
       const gate = await natalPlanet.getAttribute('data-gate');
       await natalPlanet.click();
-      await page.locator('#gate-detail [data-planet-gate]').click();
+      await page.locator(`#gate-detail [data-planet-gate="${gate}"]`).first().click();
       const readSharedGate = () => page.locator('#gate-detail:not(.hidden) .gate-detail-body').evaluate(body => {
         const heading = body.querySelector('.tl-detail-heading');
         const natal = heading?.querySelector('.tl-activation-natal');
@@ -70,14 +70,16 @@ try {
       await page.keyboard.press('Escape');
       await page.locator('.nav-link[data-view="transits"]').click();
       await page.locator('#transit-stage .tl-birth-value[data-gate="24"]').first().click();
-      await page.locator('#gate-detail [data-planet-gate]').click();
+      await page.locator('#gate-detail [data-planet-gate="24"]').first().click();
       await page.locator('#gate-detail [data-channel="24-61"]').click();
       assert.equal(await page.locator('#gate-detail .tl-detail-channel-status').innerText(), '出生图激活');
       assert.equal(await page.locator('#gate-detail .tl-detail-timing').count(), 0);
       await page.keyboard.press('Escape');
       await page.locator('.nav-link[data-view="chart"]').click();
-      await page.locator('#bodygraph-container .bg-planet-row[data-gate]').first().click();
-      await page.locator('#gate-detail [data-planet-gate]').click();
+      const chartPlanet = page.locator('#bodygraph-container .bg-planet-row[data-gate]').first();
+      const chartGate = await chartPlanet.getAttribute('data-gate');
+      await chartPlanet.click();
+      await page.locator(`#gate-detail [data-planet-gate="${chartGate}"]`).first().click();
       assert.equal(await page.locator('#gate-detail .tl-detail-statuses .tl-activation-natal').innerText(), '出生图激活');
       assert.equal(await page.locator('#gate-detail .tl-activation-transit').count(), 0);
       await page.keyboard.press('Escape');

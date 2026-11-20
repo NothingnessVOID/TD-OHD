@@ -275,15 +275,16 @@ try {
   await act.waitForFunction(() => document.querySelector('#wa-view .wa-workspace')?.getAttribute('aria-busy') === 'false');
   assert.ok((await act.locator('[data-wa-target="alpha"]').innerText()).includes('Fictional 季朗'), 'Alpha chip shows the newly selected member');
 
-  // Detail jump: gate sheet -> related department jump -> back restores the gate sheet.
+  // Detail jump: gate sheet -> related channel jump (the department jump targets that department's primary
+  // pair, UI_COMPONENT_INVENTORY.md) -> back restores the gate sheet.
   await act.locator('.wa-channel-row .wa-row-gate-number').first().click();
   await act.waitForSelector('.wa-reading-sheet [data-wa-detail="gate"]', { timeout: 10000 });
   assert.ok(await act.locator('.wa-reading-sheet [data-wa-detail="gate"]').count(), 'gate detail opens');
-  const jump = act.locator('.wa-reading-sheet [data-wa-department]').first();
-  assert.ok(await jump.count(), 'gate detail offers a related department jump');
+  const jump = act.locator('.wa-reading-sheet [data-wa-pair]').first();
+  assert.ok(await jump.count(), 'gate detail offers a related channel jump');
   await jump.click();
-  await act.waitForSelector('.wa-reading-sheet [data-wa-detail="department"]', { timeout: 10000 });
-  assert.ok(await act.locator('.wa-reading-sheet [data-wa-detail="department"]').count(), 'department detail opens from the jump');
+  await act.waitForSelector('.wa-reading-sheet [data-wa-detail="pair"]', { timeout: 10000 });
+  assert.ok(await act.locator('.wa-reading-sheet [data-wa-detail="pair"]').count(), 'channel detail opens from the jump');
   const back = act.locator('.wa-reading-sheet [data-wa-back]');
   assert.ok(await back.count(), 'nested sheet exposes a back control');
   await back.click();

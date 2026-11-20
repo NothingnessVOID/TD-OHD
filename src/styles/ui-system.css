@@ -97,6 +97,22 @@
 .gate-detail-card:has(.gate-detail-back) .gate-detail-body > :is(.tl-detail-header, header, p):first-child {
   padding-right: calc(var(--ui-icon-size) + 120px);
 }
+/* A header that carries the timeline timing column clears the floating controls
+   vertically instead — on desktop the whole heading row starts below them, and on
+   phones the timing block becomes its own full-width row. Reserving the horizontal
+   clearance on the grid itself pushed the timing column 72-80px inward, leaving a
+   dead strip down the right edge of the sheet and squeezing the labels. Only the
+   heading keeps the clearance, and only where it still starts at the top edge. */
+.gate-detail-body > .tl-detail-header:first-child.tl-detail-has-timing { padding-right: 0; }
+.gate-detail-card:has(.gate-detail-back) .gate-detail-body > .tl-detail-header:first-child.tl-detail-has-timing { padding-right: 0; }
+@media (--phone) {
+  .gate-detail-body > .tl-detail-header:first-child.tl-detail-has-timing > .tl-detail-heading {
+    padding-right: calc(var(--ui-icon-size) + 36px);
+  }
+  .gate-detail-card:has(.gate-detail-back) .gate-detail-body > .tl-detail-header:first-child.tl-detail-has-timing > .tl-detail-heading {
+    padding-right: calc(var(--ui-icon-size) + 120px);
+  }
+}
 .operation-dialog :is(.ui-icon-button, .ui-close-button) {
   width: var(--ui-icon-size); height: var(--ui-icon-size); min-width: var(--ui-icon-size); min-height: var(--ui-icon-size);
 }

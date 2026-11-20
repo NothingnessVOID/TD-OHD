@@ -9,19 +9,27 @@ import { gateName, channelName, centerName, circuitName, hexagramName } from '..
 import { t, getLocale } from '../lib/i18n.js';
 import { esc } from '../lib/format.js';
 import { CIRCUIT_GROUPS, channelCircuit } from '../lib/circuit-topology.js';
-import { renderPlanetReading, renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderActivationReference, activationConceptReference, PLANET_GLYPHS } from '../lib/planet-reference.js';
+import { renderPlanetReadingPerspectives, bindPlanetReadingSwitch } from '../lib/planet-reading-perspectives.js';
 import '../lib/reference-messages.js';
 import { renderKnowledgeDetail } from '../lib/knowledge/detail-renderer.js';
+import { bindQuarterReadingSwitch } from '../lib/knowledge/quarter-detail.js';
 import { circuitReference } from '../lib/reference-supplements.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails, renderPentaReading } from '../lib/shared-object-details.js';
 
-const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'center', 'gate', 'channel', 'group', 'planet', 'variable', 'penta', 'penta-mechanism'];
-const labels = { penta: 'Penta knowledge', 'penta-mechanism': 'Penta mechanisms', all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
+const categories = ['all', 'basic', 'type', 'authority', 'profile', 'definition', 'cross', 'quarter', 'center', 'gate', 'channel', 'group', 'planet', 'variable', 'penta', 'penta-mechanism'];
+const labels = { penta: 'Penta knowledge', 'penta-mechanism': 'Penta mechanisms', all: 'All entries', concept: 'Core concepts', basic: 'Basic knowledge', type: 'Reference types', authority: 'Reference authorities', profile: 'Reference profiles', definition: 'Reference definitions', cross: 'Reference crosses', quarter: 'Reference quarters', variable: 'Variable', center: 'Reference centers', channel: 'Reference channels', gate: 'Reference gates', planet: 'Reference planets', group: 'Circuit groups' };
 let category = 'all';
 let filtersExpanded = false;
 let query = '';
 let limit = 60;
 let lens = 'hd';
+// Planet reading category is its own state: default Human Design per selected planet.
+// Quarter reading category is local to the selected quarter article; the library never stores a global preference.
+let quarterLens = 'hd';
+let quarterLensId = null;
+let planetLens = 'hd';
+let planetLensId = null;
 let built = false;
 let lastResult = null;
 let lineHighlightTimer = 0;
@@ -44,6 +52,12 @@ function restoreList() {
   }
 }
 function closeToList() {
+  planetLens = 'hd';
+  planetLensId = null;
+  // A real dismissal to the list resets the quarter article category; route changes and
+  // language redraws keep it so Back from a quarter's gate still returns to the same lens.
+  quarterLens = 'hd';
+  quarterLensId = null;
   const depth = history.state?.ohdReferenceDepth || 0;
   if (depth > 0 && history.state?.ohdReferenceList) history.go(-depth);
   else {
@@ -150,8 +164,9 @@ function circuitDetail(entry) {
 }
 
 function planetDetail(entry) {
-  const locale = getLocale();
-  return `<div class="reference-reading">${renderPlanetReading(entry.id, locale)}</div>`;
+  // A newly selected planet starts from Human Design; a language refresh keeps the category.
+  if (entry.id !== planetLensId) { planetLensId = entry.id; planetLens = 'hd'; }
+  return `<div class="reference-reading">${renderPlanetReadingPerspectives(entry.id, getLocale(), planetLens)}</div>`;
 }
 
 function conceptDetail(entry) {
@@ -160,6 +175,7 @@ function conceptDetail(entry) {
 
 function renderDetail() {
   const selected = route();
+  if (selected?.kind !== 'planet') { planetLens = 'hd'; planetLensId = null; }
   const article = document.getElementById('reference-detail');
   document.querySelector('.reference-layout')?.classList.toggle('has-detail', Boolean(selected?.kind || selected?.invalid));
   article.setAttribute('aria-label', selected?.kind ? t('Reference Library') : t('Select an entry to read.'));
@@ -173,8 +189,10 @@ function renderDetail() {
     return;
   }
   if (entry.kind === 'knowledge') {
+    const quarter = entry.objectType === 'quarter';
+    if (quarter && entry.id !== quarterLensId) { quarterLensId = entry.id; quarterLens = 'hd'; }
     article.innerHTML = `<button type="button" class="reference-back ui-back-button" data-reference-back>← ${t('Back')}</button>
-      <div class="reference-detail-body">${entry.objectType === 'penta' ? renderPentaReading(entry.objectId) || `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>` : renderKnowledgeDetail(entry.id)}</div>`;
+      <div class="reference-detail-body">${entry.objectType === 'penta' ? renderPentaReading(entry.objectId) || `<p class="knowledge-missing">${esc(t('Content unavailable.'))}</p>` : renderKnowledgeDetail(entry.id, quarter ? { quarterLens } : undefined)}</div>`;
     article.scrollTop = 0;
     clearTimeout(lineHighlightTimer);
     return;
@@ -235,6 +253,8 @@ function build() {
       <article id="reference-detail" class="reference-detail" role="region"></article></div></div>
     <div id="reference-mobile-detail" class="gate-detail reference-mobile-detail hidden"><div class="gate-detail-card"><div class="gate-detail-nav"></div></div></div>`;
   bindSharedObjectDetails(mount, { onLensChange: nextLens => { lens = nextLens; } });
+  bindQuarterReadingSwitch(mount, { onChange: next => { quarterLens = next; } });
+  bindPlanetReadingSwitch(mount, { onLensChange: next => { planetLens = next; } });
   built = true;
 }
 
@@ -267,6 +287,12 @@ export function setupReferenceView() {
     renderResults();
   });
   mount.addEventListener('click', event => {
+    const quarterGate = event.target.closest('[data-quarter-gate]');
+    if (quarterGate) {
+      // Quarter → Gate stays inside the library's own address model; no chart host is involved.
+      openReference('gate', quarterGate.dataset.quarterGate);
+      return;
+    }
     const target = event.target.closest('[data-reference-kind]');
     if (target) {
       if (target.classList.contains('reference-result')) lastResult = { kind: target.dataset.referenceKind, id: target.dataset.referenceId };

@@ -2,7 +2,7 @@ import { validateWaLayout } from './model.js';
 import { prepareWaMembers } from './prepare.js';
 import { analyzeWa, collectPair } from './analysis.js';
 import { extractTeamActivations } from '../human-design/team-activation.js';
-import { OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM } from './oc16-catalog.js';
+import { OC16_AXIS, OC16_DEPARTMENTS, WA_MANAGEMENT_MECHANISM } from './oc16-catalog.js';
 
 const sorted = values => [...new Set(values)].sort();
 const provenance = new WeakMap();
@@ -53,13 +53,18 @@ function coverage(memberIds, activations, scope) {
     const records = gateRecords.filter(record => gates.has(record.gate));
     return { ...department, pairs: departmentPairs, gateRecords: records, ...counts(records, departmentPairs) };
   });
+  // The nine organizing-axis channels are a subset of the same 32-channel coverage, not a second catalog.
+  const axisPairs = OC16_AXIS.map(row => pairs.find(pair => pair.channelId === row.channelId));
+  const axisGates = new Set(axisPairs.flatMap(pair => pair.gates));
+  const axisRecords = gateRecords.filter(record => axisGates.has(record.gate));
+  const axis = { ...counts(axisRecords, axisPairs), pairs: axisPairs, gateRecords: axisRecords };
   const managementMechanism = WA_MANAGEMENT_MECHANISM.map(item => {
     const pair = pairs.find(row => row.channelId === item.channelId);
     return { ...item, status: pair?.status ?? 'absent', present: Boolean(pair && pair.missingGates.length === 0),
       missingGates: pair?.missingGates ?? [...item.displayGates], contributorIds: pair?.contributorIds ?? [],
       gateRecords: pair?.gateRecords ?? [] };
   });
-  return { ...classification, scope, memberIds: ids, gateRecords, pairs, departments, managementMechanism,
+  return { ...classification, scope, memberIds: ids, gateRecords, pairs, departments, axis, managementMechanism,
     ...counts(gateRecords, pairs) };
 }
 

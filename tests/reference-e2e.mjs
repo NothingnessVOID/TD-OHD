@@ -13,7 +13,7 @@ try {
     await page.goto(`${base}/#library`);
     await page.locator('#library-view:not(.hidden) #reference-count').waitFor();
     assert.deepEqual(await page.locator('.nav-link.active').evaluateAll(nodes => nodes.map(node => node.dataset.view)), ['library']);
-    assert.match(await page.locator('#reference-count').innerText(), /229/);
+    assert.match(await page.locator('#reference-count').innerText(), /233/);
     assert.equal(await page.locator('#birth-entry').isVisible(), false);
     await page.locator('.reference-filter-toggle').click();
   await page.locator('[data-reference-filter="planet"]').click();
@@ -26,7 +26,8 @@ try {
     }
     await page.goto(`${base}/#library/planet/sun`);
     await page.locator('#reference-detail h2').waitFor();
-    assert.equal(await page.locator('#reference-detail .reference-reading section').count(), 0);
+    assert.equal(await page.locator('#reference-detail .reference-reading section').count(), 1, 'planet reading renders one reading frame');
+    assert.ok(await page.locator('#reference-detail .reference-reading [data-planet-reading-body] p').count() > 0, 'planet reading body has prose');
     await page.goto(`${base}/#library/concept/transit`);
     await page.locator('#reference-detail h2').waitFor();
     assert.match(await page.locator('#reference-detail .reference-reading').innerText(), /行运|Transit/);
@@ -98,7 +99,7 @@ try {
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     await page.locator('.bg-planet-row[data-gate="34"]').first().click();
     await page.locator('#gate-detail:not(.hidden) [data-detail-kind="planet"]').waitFor();
-    await page.locator('#gate-detail [data-planet-gate]').click();
+    await page.locator('#gate-detail [data-planet-gate="34"]').first().click();
     const popupCore = await page.locator('#lens-content').innerText();
     assert.equal(await page.locator('#gate-detail .gate-detail-line').count(), 6);
     await page.locator('#gate-detail [data-lens="iching"]').click();
@@ -136,8 +137,10 @@ try {
     await page.goto(`${base}/?d=1981-03-22&t=12%3A00&tz=0`);
     await page.locator('#chart-view:not(.hidden) .bodygraph-svg').waitFor();
     assert.ok(await page.locator('.bg-planet-row[data-gate]').count() > 0);
-    await page.locator('.bg-planet-row[data-gate]').first().click();
-    await page.locator('#gate-detail [data-planet-gate]').click();
+    const hangingPlanet = page.locator('.bg-planet-row[data-gate]').first();
+    const hangingGate = await hangingPlanet.getAttribute('data-gate');
+    await hangingPlanet.click();
+    await page.locator(`#gate-detail [data-planet-gate="${hangingGate}"]`).first().click();
     await page.locator('#gate-detail:not(.hidden) [data-channel]').first().waitFor();
     await page.locator('#gate-detail [data-channel]').first().click();
     assert.match(await page.locator('#gate-detail').innerText(), /Not defined|未定义|未定義/);

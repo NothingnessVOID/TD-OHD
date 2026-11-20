@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createWaMemberMarkers, renderWaMemberMarker, renderWaMemberLegend } from '../src/lib/wa/member-markers.js';
 import { renderWaDiagram, waStateText, WA_DIAGRAM_GEOMETRY } from '../src/views/wa-diagram.js';
 import { analyzeOC16, scopeOC16 } from '../src/lib/wa/oc16-analysis.js';
-import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
+import { OC16_AXIS } from '../src/lib/wa/oc16-catalog.js';
 import { replaceWaSelection } from '../src/lib/wa/configuration.js';
 import { registerMessages, setLocale } from '../src/lib/i18n.js';
 import { chart, fixture } from './helpers/wa-fixtures.js';
@@ -19,10 +19,10 @@ registerMessages('en', {
     .map(state => [`Wa UI state ${state}`, `UI state: ${state}`]))
 });
 setLocale('en', { persist: false });
-const render = (result, markers, nameOf) => renderWaDiagram(OC16_DEPARTMENTS, result, null, { markers, nameOf });
+const render = (result, markers, nameOf) => renderWaDiagram(OC16_AXIS, result, null, { markers, nameOf });
 const countBadges = svg => [...svg.matchAll(/<g class="wa-gate-count"[^>]*data-wa-gate-count="(\d+)" data-count="(\d+)"[^>]*>([\s\S]*?)<\/g>/g)]
   .map(([, gate, count, body]) => ({ gate: Number(gate), count: Number(count), body }));
-const coreGates = OC16_DEPARTMENTS.flatMap(department => department.pairs.find(pair => pair.role === 'core').displayGates);
+const axisGates = OC16_AXIS.flatMap(row => row.pair.displayGates);
 
 function sixteen(gates = [45]) {
   const data = fixture({ size: 16, groupSizes: [5, 5, 5] });
@@ -46,7 +46,7 @@ test('reference order defines stable, unique numbers with five cycling color slo
 
 test('pool retention preserves numbers through group moves, Alpha replacement and scope switches', () => {
   const { snapshot, prepared } = fixture({ size: 4, pool: 2, groupSizes: [2, 1, 0] });
-  prepared.forEach(member => { member.chart = chart([45]); });
+  prepared.forEach(member => { member.chart = chart([7]); });
   const before = createWaMemberMarkers(snapshot.members);
   const changed = replaceWaSelection(snapshot, {
     alphaPersonId: snapshot.members[1].personId,
@@ -62,52 +62,52 @@ test('pool retention preserves numbers through group moves, Alpha replacement an
     const result = analyzeOC16(changed, prepared, options);
     assert.equal(result.status, 'ready');
     const badges = countBadges(render(result, before));
-    const expectedCount = result.gateRecords.find(row => row.gate === 45)?.memberIds.length ?? 0;
-    const gate45 = badges.find(badge => badge.gate === 45);
+    const expectedCount = result.gateRecords.find(row => row.gate === 7)?.memberIds.length ?? 0;
+    const gate7 = badges.find(badge => badge.gate === 7);
     if (expectedCount) {
-      assert.equal(gate45?.count, expectedCount);
-      assert.match(render(result, before), new RegExp(`data-wa-gate="45"[^>]*data-wa-members="[^"]*"`));
+      assert.equal(gate7?.count, expectedCount);
+      assert.match(render(result, before), new RegExp(`data-wa-gate="7"[^>]*data-wa-members="[^"]*"`));
       assert.ok(!result.memberIds.includes(snapshot.alphaId) || options.includeAlpha !== false);
     } else {
-      assert.equal(gate45, undefined);
+      assert.equal(gate7, undefined);
     }
-    assert.ok(!badges.some(badge => badge.gate !== 45 && badge.gate !== 21) || true);
+    assert.ok(badges.every(badge => badge.gate === 7));
   }
   const reselected = replaceWaSelection(changed, { alphaPersonId: snapshot.members[0].personId }, new Map());
   assert.deepEqual(createWaMemberMarkers(reselected.members), before);
 });
 
 test('each covered gate shows one count badge for distinct members; no per-person dots on the line', () => {
-  const { snapshot, prepared, markers } = sixteen();
+  const { snapshot, prepared, markers } = sixteen([7]);
   const result = analyzeOC16(snapshot, prepared);
-  const record = result.gateRecords.find(row => row.gate === 45);
+  const record = result.gateRecords.find(row => row.gate === 7);
   assert.equal(record.activationCount, 16 * 26);
   const svg = render(result, markers);
   const badges = countBadges(svg);
   assert.equal(badges.length, 1);
-  assert.equal(badges[0].gate, 45);
+  assert.equal(badges[0].gate, 7);
   assert.equal(badges[0].count, 16);
   assert.match(svg, /Participants: 16"/);
   assert.doesNotMatch(svg, /wa-gate-member-marker|wa-link-secondary/);
-  assert.equal((svg.match(/role="button"/g) ?? []).length, 24); // 6 dept titles + 6 channels + 12 gates
-  assert.match(svg, /data-wa-gate="45"[^>]*data-wa-members="/);
+  assert.equal((svg.match(/role="button"/g) ?? []).length, 36); // 9 axis titles + 9 channels + 18 gates
+  assert.match(svg, /data-wa-gate="7"[^>]*data-wa-members="/);
   assert.match(svg, /data-wa-members="m00 m01 m02 m03 m04 m05 m06 m07 m08 m09 m10 m11 m12 m13 m14 m15"/);
 
   // Even a redundant memberIds entry is counted only once.
   record.memberIds.push(record.memberIds[0]);
   assert.equal(countBadges(render(result, markers))[0].count, 16);
   const scoped = scopeOC16(result, ['m03', 'm12']);
-  assert.deepEqual(countBadges(render(scoped, markers)).map(({ gate, count }) => [gate, count]), [[45, 2]]);
+  assert.deepEqual(countBadges(render(scoped, markers)).map(({ gate, count }) => [gate, count]), [[7, 2]]);
 });
 
 test('per-gate attribution does not borrow pair or department contributors and count uses the measured pair', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
-  prepared[0].chart = chart([45]);
-  prepared[1].chart = chart([21]);
-  prepared[2].chart = chart([54]); // Same department, support gate only.
+  prepared[0].chart = chart([7]);
+  prepared[1].chart = chart([31]);
+  prepared[2].chart = chart([26]); // Management personnel gate, outside the axis board.
   const result = analyzeOC16(snapshot, prepared);
   const svg = render(result, createWaMemberMarkers(snapshot.members));
-  assert.deepEqual(countBadges(svg).map(({ gate, count }) => [gate, count]), [[45, 1], [21, 1]]);
+  assert.deepEqual(countBadges(svg).map(({ gate, count }) => [gate, count]), [[7, 1], [31, 1]]);
   assert.match(svg, /Participants: 2"/);
   assert.doesNotMatch(svg, /Participants: 3"/);
 });
@@ -119,8 +119,8 @@ test('unknown results suppress stale badges, positive activation and false zero 
     const svg = render(result, markers);
     assert.equal(countBadges(svg).length, 0);
     assert.doesNotMatch(svg, /is-covered|data-covered="true"|data-covered="false"|Participants: 0/);
-    assert.equal((svg.match(/data-covered="unknown"/g) ?? []).length, 12);
-    assert.equal((svg.match(/data-state="unknown"/g) ?? []).length, 6);
+    assert.equal((svg.match(/data-covered="unknown"/g) ?? []).length, 18);
+    assert.equal((svg.match(/data-state="unknown"/g) ?? []).length, 9);
     assert.match(svg, /Participants: —/);
   }
   const empty = scopeOC16(stale, []);
@@ -132,7 +132,7 @@ test('unknown results suppress stale badges, positive activation and false zero 
 });
 
 test('fixed board keeps constant height; contributor strips stay inside the board without growing rows', () => {
-  const { snapshot, prepared, markers } = sixteen(coreGates);
+  const { snapshot, prepared, markers } = sixteen(axisGates);
   const result = analyzeOC16(snapshot, prepared);
   const { ROW_HEIGHT, VIEW_WIDTH, LEFT_GATE, PAD_TOP, PAD_BOTTOM, MAX_DOTS, NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA } = WA_DIAGRAM_GEOMETRY;
   for (const count of [0, 1, 6, 7, 8, 12, 13, 14, 15, 16]) {
@@ -140,17 +140,17 @@ test('fixed board keeps constant height; contributor strips stay inside the boar
     const svg = render(current, markers);
     const [, width, height] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).map(Number);
     assert.equal(width, VIEW_WIDTH);
-    assert.equal(height, 6 * ROW_HEIGHT + PAD_TOP + PAD_BOTTOM);
-    assert.equal(countBadges(svg).length, count ? 12 : 0);
+    assert.equal(height, 9 * ROW_HEIGHT + PAD_TOP + PAD_BOTTOM);
+    assert.equal(countBadges(svg).length, count ? 18 : 0);
     assert.doesNotMatch(svg, /wa-link-diamond|wa-link-joint|wa-link-secondary|wa-row-bg/);
-    assert.equal((svg.match(/wa-tube-mid/g) ?? []).length, 6);
+    assert.equal((svg.match(/wa-tube-mid/g) ?? []).length, 9);
     for (const [, xText, yText, rText] of svg.matchAll(/<circle[^>]* cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)) {
       const [x, y, r] = [xText, yText, rText].map(Number);
       assert.ok(x - r >= -2 && x + r <= width + 2, `circle x=${x}, r=${r}`);
       assert.ok(y - r >= 0 && y + r <= height, `circle y=${y}, r=${r}`);
     }
     const leftCenters = [...svg.matchAll(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`, 'g'))].map(match => Number(match[1]));
-    assert.equal(leftCenters.length, 6);
+    assert.equal(leftCenters.length, 9);
     for (let i = 0; i < leftCenters.length - 1; i++) assert.equal(leftCenters[i + 1] - leftCenters[i], ROW_HEIGHT);
     for (const badge of countBadges(svg)) {
       assert.equal(badge.count, count);
@@ -163,33 +163,34 @@ test('fixed board keeps constant height; contributor strips stay inside the boar
 test('channel tube encodes state by fill: full when defined, gradient from the active side when half, empty when open', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
   const markers = createWaMemberMarkers(snapshot.members);
-  const rowFill = (svg, department) => svg.match(new RegExp(`data-department="${department}" data-fill="(\\w+)"`))[1];
-  prepared[0].chart = chart([45, 21]);
+  const rowFill = (svg, channelId) => svg.match(new RegExp(`data-wa-axis-row="${channelId}" data-axis-tier="\\w+" data-fill="(\\w+)"`))[1];
+  const rowBlock = (svg, channelId) => svg.match(new RegExp(`data-wa-axis-row="${channelId}"[\\s\\S]*?(?=data-wa-axis-row="|$)`))[0];
+  prepared[0].chart = chart([2, 14]);
   prepared[1].chart = chart([50]);
   prepared[2].chart = chart([6]);
   const selfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(selfSvg, /data-state="selfComplete"/);
-  assert.equal(rowFill(selfSvg, 'management'), 'full');
-  assert.equal(rowFill(selfSvg, 'competition'), 'none');
-  assert.match(selfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-filled/);
-  assert.match(selfSvg.match(/data-department="competition"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-hollow/);
+  assert.equal(rowFill(selfSvg, '2-14'), 'full');
+  assert.equal(rowFill(selfSvg, '7-31'), 'none');
+  assert.match(rowBlock(selfSvg, '2-14'), /wa-tube-mid is-filled/);
+  assert.match(rowBlock(selfSvg, '7-31'), /wa-tube-mid is-hollow/);
   assert.doesNotMatch(selfSvg, /wa-link-diamond|wa-link-joint|wa-row-bg/);
-  assert.equal((selfSvg.match(/wa-tube-mid/g) ?? []).length, 6);
+  assert.equal((selfSvg.match(/wa-tube-mid/g) ?? []).length, 9);
 
-  prepared[0].chart = chart([45]);
-  prepared[1].chart = chart([21]);
+  prepared[0].chart = chart([2]);
+  prepared[1].chart = chart([14]);
   const crossSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(crossSvg, /data-state="crossMemberOnly"/);
-  assert.equal(rowFill(crossSvg, 'management'), 'full');
-  assert.match(crossSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-filled/);
+  assert.equal(rowFill(crossSvg, '2-14'), 'full');
+  assert.match(rowBlock(crossSvg, '2-14'), /wa-tube-mid is-filled/);
 
-  prepared[1].chart = chart([50]);
+  prepared[1].chart = chart([7]);
   const halfSvg = render(analyzeOC16(snapshot, prepared), markers);
   assert.match(halfSvg, /data-state="hanging"/);
-  assert.equal(rowFill(halfSvg, 'management'), 'left');
-  assert.match(halfSvg, /<linearGradient id="wa-tube-21-45"/);
-  assert.match(halfSvg, /class="wa-tube-fill is-partial"[^>]*fill="url\(#wa-tube-21-45\)"/);
-  assert.match(halfSvg.match(/data-department="management"[\s\S]*?(?=data-department="|$)/)[0], /wa-tube-mid is-hollow/);
+  assert.equal(rowFill(halfSvg, '7-31'), 'left');
+  assert.match(halfSvg, /<linearGradient id="wa-tube-7-31"/);
+  assert.match(halfSvg, /class="wa-tube-fill is-partial"[^>]*fill="url\(#wa-tube-7-31\)"/);
+  assert.match(rowBlock(halfSvg, '7-31'), /wa-tube-mid is-hollow/);
 
   const unknownSvg = render(null, markers);
   assert.doesNotMatch(unknownSvg, /wa-tube-fill|<defs/);
@@ -197,15 +198,15 @@ test('channel tube encodes state by fill: full when defined, gradient from the a
 
 test('contributor dots start on the outer face rim and pack inward toward the channel', () => {
   const { snapshot, prepared } = fixture({ size: 5, groupSizes: [3, 0, 0] });
-  prepared[0].chart = chart([45]);
-  prepared[1].chart = chart([45]);
-  prepared[2].chart = chart([21]);
-  prepared[3].chart = chart([21]);
+  prepared[0].chart = chart([7]);
+  prepared[1].chart = chart([7]);
+  prepared[2].chart = chart([31]);
+  prepared[3].chart = chart([31]);
   const markers = createWaMemberMarkers(snapshot.members);
   const svg = render(analyzeOC16(snapshot, prepared), markers);
   const { LEFT_GATE, RIGHT_GATE, DOT_STEP, DOT_OUTER_OFFSET } = WA_DIAGRAM_GEOMETRY;
-  const left = countBadges(svg).find(badge => badge.gate === 45);
-  const right = countBadges(svg).find(badge => badge.gate === 21);
+  const left = countBadges(svg).find(badge => badge.gate === 7);
+  const right = countBadges(svg).find(badge => badge.gate === 31);
   assert.equal(left?.count, 2);
   assert.equal(right?.count, 2);
   const leftXs = [...left.body.matchAll(/cx="([\d.]+)"/g)].map(m => Number(m[1]));
@@ -222,13 +223,13 @@ test('contributor dots start on the outer face rim and pack inward toward the ch
 
 test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge stays luminous, no glow', () => {
   const { snapshot, prepared } = fixture({ size: 3, groupSizes: [2, 0, 0] });
-  prepared[0].chart = chart([45, 21]);
-  prepared[1].chart = chart([45]);
+  prepared[0].chart = chart([7, 31]);
+  prepared[1].chart = chart([7]);
   const markers = createWaMemberMarkers(snapshot.members);
   const svg = render(analyzeOC16(snapshot, prepared), markers);
   const { NODE_R, DOT_GAP, NODE_HALO_EXTRA, NODE_HIT_EXTRA, LEFT_GATE } = WA_DIAGRAM_GEOMETRY;
   const faceY = Number(svg.match(new RegExp(`class="wa-node-face" cx="${LEFT_GATE}" cy="([\\d.]+)"`))[1]);
-  const badge = countBadges(svg).find(row => row.gate === 45);
+  const badge = countBadges(svg).find(row => row.gate === 7);
   const dotY = Number(badge.body.match(/cy="([\d.]+)"/)[1]);
   assert.equal(dotY, faceY + NODE_R + DOT_GAP);
   assert.ok(DOT_GAP >= 24, `DOT_GAP=${DOT_GAP} should keep dots clear of hover/focus frames`);
@@ -239,7 +240,7 @@ test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge
   assert.match(svg, /wa-tube-mid is-filled wa-mid-lozenge wa-mid-warm/);
   assert.match(svg, /wa-mid-spine is-filled/);
   assert.match(svg, /class="wa-node-focus-ring"/);
-  assert.equal((svg.match(/class="wa-node-focus-ring"/g) ?? []).length, 12);
+  assert.equal((svg.match(/class="wa-node-focus-ring"/g) ?? []).length, 18);
   const waCss = readFileSync(new URL('../src/styles/wa.css', import.meta.url), 'utf8');
   assert.match(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*fill:\s*color-mix/);
   assert.doesNotMatch(waCss, /\.wa-tube-mid\.is-filled\s*\{[^}]*accent-on/);
@@ -253,8 +254,8 @@ test('contributor dots sit clear below gate face, halo and hit; warm mid lozenge
 });
 
 test('left diagram contributors stay as dots even when showNames is requested', () => {
-  const { snapshot, prepared, markers } = sixteen([45]);
-  const svg = renderWaDiagram(OC16_DEPARTMENTS, analyzeOC16(snapshot, prepared), null, { markers, nameOf: id => `N${id}`, showNames: true });
+  const { snapshot, prepared, markers } = sixteen([7]);
+  const svg = renderWaDiagram(OC16_AXIS, analyzeOC16(snapshot, prepared), null, { markers, nameOf: id => `N${id}`, showNames: true });
   const [badge] = countBadges(svg);
   assert.match(badge.body, /wa-gate-dot/);
   assert.doesNotMatch(badge.body, /wa-gate-names|<text class="wa-gate-name"/);
@@ -269,7 +270,7 @@ test('HTML badges, compact legend and SVG count titles escape names and IDs with
   const markers = createWaMemberMarkers([{ memberId }]);
   const chip = renderWaMemberMarker(markers.get(memberId), { name });
   const legend = renderWaMemberLegend([memberId, 'missing', memberId], markers, () => name);
-  const result = { status: 'ready', gateRecords: [{ gate: 45, memberIds: [memberId] }] };
+  const result = { status: 'ready', gateRecords: [{ gate: 7, memberIds: [memberId] }] };
   const svg = render(result, markers, () => name);
   for (const html of [chip, legend, svg]) {
     assert.doesNotMatch(html, /<img|synthetic-"</);
@@ -286,19 +287,19 @@ test('HTML badges, compact legend and SVG count titles escape names and IDs with
 });
 
 test('legend follows organization numbers, while the diagram signature and parent translation hooks work', () => {
-  const { snapshot, prepared, markers } = sixteen();
+  const { snapshot, prepared, markers } = sixteen([7]);
   const legend = renderWaMemberLegend(['m15', 'm00', 'm07'], markers);
   assert.deepEqual([...legend.matchAll(/data-marker-number="(\d+)"/g)].map(match => Number(match[1])), [1, 8, 16]);
   const result = analyzeOC16(snapshot, prepared);
-  const svg = renderWaDiagram(OC16_DEPARTMENTS, result, { type: 'gate', id: 45 });
+  const svg = renderWaDiagram(OC16_AXIS, result, { type: 'gate', id: 7 });
   assert.equal(countBadges(svg).length, 0); // no markers map → no badges
-  assert.match(svg, /data-wa-gate="45"[^>]*aria-pressed="true"[^>]*Member active/);
-  assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 6);
+  assert.match(svg, /data-wa-gate="7"[^>]*aria-pressed="true"[^>]*Member active/);
+  assert.equal((svg.match(/class="wa-diagram-row /g) ?? []).length, 9);
   assert.equal((svg.match(/class="wa-node-pillar"/g) ?? []).length, 0);
   assert.doesNotMatch(svg, /wa-pillar-ring|is-pillar/);
-  assert.equal((svg.match(/class="wa-gate-chip"/g) ?? []).length, 12);
-  assert.match(svg, /data-wa-gate-chip="45"/);
-  assert.match(svg, /class="wa-dept-title"/);
+  assert.equal((svg.match(/class="wa-gate-chip"/g) ?? []).length, 18);
+  assert.match(svg, /data-wa-gate-chip="7"/);
+  assert.match(svg, /class="wa-axis-title"/);
   for (const state of ['absent', 'hanging', 'selfComplete', 'crossMemberOnly', 'both', 'unknown']) {
     assert.equal(waStateText(state), `UI state: ${state}`);
   }
@@ -323,9 +324,9 @@ test('legend follows organization numbers, while the diagram signature and paren
   assert.match(waCss, /\.wa-gate-chip-bg\s*\{/);
   assert.match(waCss, /\.wa-diagram-status-dot\s*\{/);
   assert.match(svg, /class="wa-diagram-status-dot"/);
-  assert.equal((svg.match(/class="wa-diagram-status-dot"/g) ?? []).length, 6);
-  assert.doesNotMatch(svg, /wa-dept-title-rule/);
-  assert.doesNotMatch(waCss, /\.wa-dept-title-bg\s*\{/);
+  assert.equal((svg.match(/class="wa-diagram-status-dot"/g) ?? []).length, 9);
+  assert.doesNotMatch(svg, /wa-dept-title-rule|wa-dept-title"/);
+  assert.doesNotMatch(waCss, /\.wa-dept-title-bg\s*\{|\.wa-axis-title-bg\s*\{/);
   const { LEFT_GATE: titleGate } = WA_DIAGRAM_GEOMETRY;
   const nameY = Number(svg.match(/class="wa-diagram-name" x="[\d.]+" y="([\d.]+)"/)[1]);
   const subY = Number(svg.match(/class="wa-diagram-sub"[^>]* y="([\d.]+)"/)[1]);

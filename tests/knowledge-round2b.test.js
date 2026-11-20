@@ -22,6 +22,11 @@ const bytes=p=>incrementHistoricalSource(p);
 const currentSource=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 // Fixed independently reviewed snapshot this guard was written against; its chart.js is the baseline.
 const protectedDetailBaseline='fafec304a2c0553df8bd1b91561e6db3d345bc97';
+// showPlanetDetail was intentionally rewritten for the approved dual-activation frame and the OC16 reading
+// lens (docs/development/PLANET_BUSINESS_CONTENT.md §6), with behaviour coverage in
+// tests/planet-activation-sections.test.js, tests/planet-perspectives.test.js and tests/planet-detail-e2e.mjs.
+// It still compares against one fixed commit, the one that introduced that reviewed behaviour.
+const approvedPlanetDetailBaseline='da67fd8d83d1d9982f440acfa59b795f31b2d91b';
 const original=p=>preservedSource(p,base);
 const approvedSkin=p=>skinProjection(p,base);
 const q=(objectType,objectId)=>({objectType,objectId});
@@ -32,14 +37,18 @@ test('Round 2B runtime and independent vocabulary remain unchanged',()=>{
 test('protected BodyGraph detail functions are byte-identical to the latest baseline',()=>{
  const extract=s=>new Map(parseAst(s).body.map(n=>n.type==='ExportNamedDeclaration'?n.declaration:n).filter(n=>n?.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
  assert.deepEqual(bytes('src/lib/bodygraph-detail-layout.js'),approvedSkin('src/lib/bodygraph-detail-layout.js'));
- const before=extract(execFileSync('git',['show',`${protectedDetailBaseline}:src/views/chart.js`]).toString()),after=extract(currentSource('src/views/chart.js'));
- for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail','showPlanetDetail',]){assert.ok(before.has(name),name);assert.equal(after.get(name),before.get(name),name);}
+ const baselineSource=ref=>execFileSync('git',['show',`${ref}:src/views/chart.js`]).toString();
+ const before=extract(baselineSource(protectedDetailBaseline)),after=extract(currentSource('src/views/chart.js'));
+ for(const name of ['showGateDetail','showTransitChannelDetail','showCenterDetail',]){assert.ok(before.has(name),name);assert.equal(after.get(name),before.get(name),name);}
+ const approvedPlanetDetail=extract(baselineSource(approvedPlanetDetailBaseline)).get('showPlanetDetail');
+ assert.ok(approvedPlanetDetail,'showPlanetDetail');
+ assert.equal(after.get('showPlanetDetail'),approvedPlanetDetail,'showPlanetDetail');
 });
 test('legacy zh-CN hashes stay exact outside explicitly approved Round 2C/2F editorial ranges',()=>{
  const hashes=JSON.parse(bytes('tests/fixtures/knowledge-round2b-content.json'));
  assert.equal(Object.keys(hashes).length,55);assertContentBoundary();
  for(const [key,record]of Object.entries(round2GContent['zh-CN']).filter(([key])=>key!=='variable.determination:taste'&&!key.startsWith('variable.environment:')&&!targetIds.has(key)))assert.equal(createHash('sha256').update(record.summary+'\n'+record.detail).digest('hex'),hashes[key],key);
- setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,64);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
+ setLocale('zh-CN',{persist:false});const entries=listKnowledgeEntries().filter(e=>e.objectType!=='penta');assert.equal(entries.filter(e=>e.hasDetail).length,68);assert.equal(entries.filter(e=>e.objectType==='cognition'&&!e.hasDetail).length,6);assert.equal(entries.filter(e=>e.objectType==='variable'&&!e.properties.publicOverview).length,24);
  assert.match(knowledgeContent['zh-CN']['authority.sacral'].detail,/嗯哼／呃呃/);assert.match(knowledgeContent['zh-CN']['definition.quadrupleSplit'].detail,/8 个或 9 个/);
 });
 test('Type has semantic Strategy and Aura sections; Strategy shares its Type identity',()=>{

@@ -63,7 +63,7 @@ try {
   await page.locator('#bodygraph-container .bg-planets-design .bg-planet-row').first().click();
   await page.locator('#gate-detail [data-detail-kind="planet"][data-source="design"]').waitFor();
   assert.equal((await inspect('#gate-detail .planet-detail-card .detail-label')).color, await page.locator('html').evaluate(n=>{const s=document.createElement('span');s.style.color='var(--accent)';n.append(s);const c=getComputedStyle(s).color;s.remove();return c;}));
-  await page.locator('#gate-detail [data-planet-gate]').click();
+  await page.locator('#gate-detail [data-planet-gate][data-planet-source="design"]').click();
   await assertReadable('#gate-detail .bg-tt-design');
   await page.keyboard.press('Escape');
 

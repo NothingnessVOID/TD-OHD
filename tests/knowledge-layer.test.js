@@ -17,8 +17,8 @@ const query = (objectType, objectId, extra={})=>({domain:'human-design',objectTy
 const fixtures=JSON.parse(readFileSync(new URL('./fixtures/sharp-definition-components.json',import.meta.url)));
 const all = listKnowledgeEntries().filter(e => e.objectType !== 'penta'); // Historical foundation count stays independently protected.
 
-test('70 unique foundation entries have valid domain, object type, sources, review and slot versions',()=>{
- assert.equal(all.length,70);assert.equal(new Set(all.map(x=>x.id)).size,70);
+test('74 unique foundation entries have valid domain, object type, sources, review and slot versions',()=>{
+ assert.equal(all.length,74);assert.equal(new Set(all.map(x=>x.id)).size,74);
  for(const e of all) {assert.equal(validateKnowledgeEntry(e),e);assert.ok(['unreviewed','reviewed'].includes(e.reviewStatus));}
  for(const [field,bad] of [['id','中文'],['domain','wrong'],['objectType','wrong'],['reviewStatus','official'],['version',0]])assert.throws(()=>validateKnowledgeEntry({...all[0],[field]:bad}));
  assert.throws(()=>validateKnowledgeEntry({...all[0],summary:{...all[0].summary,sourceId:'absent'}}));

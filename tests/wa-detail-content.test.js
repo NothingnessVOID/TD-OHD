@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createWaDetailRenderer, renderActivationRows } from '../src/views/wa-detail-content.js';
+import { createWaDetailRenderer, renderActivationRows, waChannelTitle } from '../src/views/wa-detail-content.js';
 import { OC16_DEPARTMENTS } from '../src/lib/wa/oc16-catalog.js';
 import { readWaContent } from '../src/lib/wa/content.js';
 import { renderProse } from '../src/lib/knowledge/detail-renderer.js';
@@ -35,14 +35,14 @@ test('channel and department readings stay expanded without disclosure folds; ga
   for (const html of [details.renderPair('21-45'), details.renderDepartment('management'), details.renderGate(45), details.renderPair('26-44')]) {
     assert.doesNotMatch(html, /<details\b|<summary\b/);
   }
-  // Department ≡ core channel: one organization role reading, not a second department copy.
+  // Department entry delegates to its explicit primary channel: one sheet, one channel.
   const core = details.renderPair('21-45');
   const dept = details.renderDepartment('management');
   assert.match(core, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-org"/);
-  assert.match(dept, /class="wa-detail-reading"[^>]*data-wa-knowledge="wa-org"/);
-  assert.match(dept, /data-wa-merged-dept="management"/);
-  assert.match(core, /data-wa-core-pair="21-45"/);
+  assert.match(core, /data-wa-detail="pair" data-wa-detail-id="21-45"/);
   assert.equal(core, dept);
+  // The merged department sheet and its support-channel list are gone.
+  assert.doesNotMatch(core, /data-wa-core-pair|data-wa-merged-dept|data-wa-support-pairs|data-pair-row=|data-wa-gate-count|data-wa-pair-count/);
 });
 
 for (const [status, left, right, self, combinations] of [
@@ -57,7 +57,8 @@ for (const [status, left, right, self, combinations] of [
   const html = renderer(result).renderPair('21-45');
   assert.match(html, new RegExp(`data-wa-state="${status}"`));
   assert.ok(html.includes(t(`Wa UI state ${status}`)));
-  assert.ok(html.indexOf('data-wa-endpoint="45"') < html.indexOf('data-wa-endpoint="21"'));
+  // Endpoint order follows the site catalog (ascending): 21 before 45.
+  assert.ok(html.indexOf('data-wa-endpoint="21"') < html.indexOf('data-wa-endpoint="45"'));
   for (const [gate, ids] of [[21, left], [45, right]]) {
     const section = endpoint(html, gate);
     for (const id of ['a', 'b', 'c']) assert.equal(section.includes(`data-wa-member="${id}"`), ids.includes(id));
@@ -141,64 +142,78 @@ test('scope changes use one fresh result per render and never retain prior peopl
   assert.equal(JSON.stringify(current), snapshot);
 });
 
-test('unknown and partial records never become false zero coverage; true empty remains zero', () => {
+test('unknown and partial records never become false zero; true empty stays visibly uncovered', () => {
   for (const result of [null, { ...fixture(), status: 'not_ready' }, { status: 'ready' }]) {
     const view = renderer(result);
     const html = view.renderDepartment('management');
-    assert.match(html, /data-wa-gate-count="—">— \/ 4/);
-    assert.match(html, /data-wa-pair-count="—">— \/ 2/);
+    // The department entry is the primary channel sheet; department numerators belong to the list, not here.
+    assert.equal(html, view.renderPair('21-45'));
+    assert.doesNotMatch(html, /data-wa-gate-count|data-wa-pair-count/);
     assert.doesNotMatch(html, /data-wa-state="absent"|data-wa-covered="false"|Fictional/);
     assert.match(view.renderPair('21-45'), /data-wa-state="unknown"/);
     assert.match(view.renderGate(45), /data-wa-gate-state="unknown"/);
   }
   const empty = fixture({ status: 'absent', left: [], right: [], self: [], combinations: [] });
   empty.status = 'empty';
-  empty.departments[0] = { id: 'management', gateCount: 0, pairCount: 0 };
-  assert.match(renderer(empty).renderDepartment('management'), /data-wa-gate-count="0">0 \/ 4/);
+  const emptyHtml = renderer(empty).renderDepartment('management');
+  assert.equal(emptyHtml, renderer(empty).renderPair('21-45'));
+  assert.equal(occurrences(emptyHtml, 'data-wa-covered="false"'), 2);
+  assert.match(emptyHtml, /data-wa-state="absent"/);
+  assert.ok(emptyHtml.includes(t('OC16 inactive')));
   const wrong = fixture({ status: 'unrecognized' });
   assert.match(renderer(wrong).renderPair('21-45'), /data-wa-state="unknown"/);
   for (const call of [v => v.renderGate('wrong'), v => v.renderPair('45-21'), v => v.renderDepartment('<wrong>'), v => v.renderPairRows({ id: 'wrong' })]) assert.equal(call(renderer(wrong)), '');
 });
 
-test('department counts are consumed, core precedes personnel, no trailing blanket contributors', () => {
+test('department entry is the primary channel sheet and never lists the department support channels', () => {
   const result = fixture();
-  // Preserve summary fields even when fixture rows are partial; the renderer must not derive new counts.
+  // Preserve summary fields even when fixture rows are partial; the sheet must not render them.
   result.departments[0] = { id: 'management', gateCount: 7, pairCount: 3, contributorIds: ['outsider'] };
-  const html = renderer(result).renderDepartment('management');
-  assert.match(html, /data-wa-gate-count="7">7 \/ 4/);
-  assert.match(html, /data-wa-pair-count="3">3 \/ 2/);
-  // Core is the primary sheet; personnel 44–26 listed below management.
-  assert.equal(occurrences(html, 'data-pair-row='), 1);
-  assert.match(html, /data-wa-core-pair="21-45"/);
-  assert.ok(html.indexOf('data-wa-core-pair="21-45"') < html.indexOf('data-pair-row="26-44"'));
+  const view = renderer(result);
+  const html = view.renderDepartment('management');
+  assert.equal(html, view.renderPair('21-45'));
+  assert.doesNotMatch(html, /data-wa-gate-count|data-wa-pair-count|data-wa-support-pairs/);
   assert.doesNotMatch(html, /outsider|wa-contributor-list/);
+  // The other four management channels are not part of this sheet, in either form.
+  for (const id of ['32-54', '26-44', '19-49', '37-40']) {
+    assert.equal(html.includes(`data-wa-pair="${id}"`), false, id);
+    assert.equal(html.includes(`data-wa-content-id="${id}"`), false, id);
+    assert.equal(html.includes(`data-pair-row="${id}"`), false, id);
+  }
+  assert.equal(occurrences(html, 'data-pair-row='), 0);
+  assert.equal(occurrences(html, 'data-wa-endpoint='), 2);
+  assert.match(html, /data-wa-endpoint="21"/);
+  assert.match(html, /data-wa-endpoint="45"/);
   assert.match(html, /data-wa-knowledge="wa-org" data-wa-content-id="21-45"/);
   assert.equal(occurrences(html, 'data-wa-org-reading="channel"'), 1);
 });
 
-test('three languages show organization role readings on core sheets and jump cards for department reading', () => {
+test('three languages show each organization reading on its own channel sheet with explicit pair jumps', () => {
   for (const locale of ['en', 'zh-CN', 'zh-Hant']) {
     setLocale(locale, { persist: false });
     const view = renderer(fixture());
     const core = view.renderPair('21-45'), support = view.renderPair('26-44'), gate = view.renderGate(45);
-    // Core pair and department are the same merged sheet; reading-for is the department id.
-    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="management"/);
+    // Core pair is its own channel sheet: reading-for is the channel id, never the department id.
+    assert.match(core, /class="wa-detail-reading" data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="21-45"/);
     assert.equal(core, view.renderDepartment('management'));
+    assert.doesNotMatch(core, /data-wa-reading-for="management"/);
     assert.doesNotMatch(core, /<details\b/);
     assert.ok(core.indexOf('data-wa-endpoint=') < core.indexOf('data-wa-knowledge="wa-org"'));
     assert.ok(core.indexOf('data-wa-knowledge="wa-org"') < core.indexOf('data-wa-related-jumps'));
     assert.ok(core.includes('data-wa-org-reading="channel"'));
-    assert.ok(core.includes(t('OC16 org role management')));
+    // The merged sheet now shows the integrated organization body (no per-gate legacy lines).
+    assert.match(core, /data-wa-org-reading="channel" data-wa-org-body="integrated" data-wa-channel="21-45"/);
+    // Gate role names still come from the existing organization roles in the related jumps.
     assert.ok(core.includes(t('OC16 org gate role 45')));
-    assert.ok(core.includes(t('OC16 org gate body 45')));
     assert.doesNotMatch(core, /四大基石|1、7、13、33|董事会与品牌灵魂/);
     assert.equal(occurrences(core, 'data-wa-org-reading="channel"'), 1);
-    // Support: own personnel org reading + jump card to the merged department sheet.
-    assert.match(support, /data-wa-department="management"[^>]*data-wa-knowledge="wa-department" data-wa-content-id="21-45" data-wa-reading-for="26-44"/);
+    // Support: own personnel org reading + an explicit pair jump to the department's primary channel.
+    assert.match(support, /data-wa-pair="21-45" data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="26-44"/);
+    assert.doesNotMatch(support, /data-wa-knowledge="wa-department"/);
     assert.doesNotMatch(support, /<details\b/);
     assert.ok(support.includes('data-wa-org-reading="channel"'));
-    assert.ok(support.includes(t('Wa UI department reading')));
-    assert.ok(support.includes(t('Wa jump open department')));
+    assert.ok(support.includes(t('Wa jump open channel')));
+    assert.ok(support.includes(t('OC16 management')));
     assert.ok(gate.includes(orgGateName(45)));
     assert.ok(gate.includes(hexagramName(45)));
     assert.match(gate, /class="detail-name"/);
@@ -206,8 +221,9 @@ test('three languages show organization role readings on core sheets and jump ca
     assert.ok(gate.includes('data-wa-org-reading="gate"'));
     assert.ok(gate.includes(t('OC16 org gate role 45')));
     assert.ok(gate.includes(t('OC16 org gate body 45')));
-    // Gate jumps to merged dept≡core (one card).
-    assert.match(gate, /data-wa-department="management"[^>]*data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
+    // The core gate jump is an explicit pair jump to the primary channel, not a department table.
+    assert.match(gate, /data-wa-pair="21-45" data-wa-knowledge="wa-org" data-wa-content-id="21-45" data-wa-reading-for="gate:45"/);
+    assert.doesNotMatch(gate, /data-wa-knowledge="wa-department"/);
     assert.ok(gate.indexOf('data-wa-gate-state') < gate.indexOf('data-wa-org-reading="gate"'));
     assert.ok(gate.indexOf('data-wa-org-reading="gate"') < gate.indexOf('data-wa-activations'));
     assert.ok(gate.indexOf('data-wa-activations') < gate.indexOf('wa-detail-related'));
@@ -222,16 +238,83 @@ test('three languages show organization role readings on core sheets and jump ca
   setLocale('en', { persist: false });
 });
 
+test('organization gate sheets keep the twelve OC16 roles instead of Penta wording', () => {
+  setLocale('zh-CN', { persist: false });
+  const view = renderer(fixture());
+  for (const [gate, role] of [[21, '控制者'], [45, '统治者'], [25, '天真'], [51, '冲击'], [2, '方向'], [14, '大蓄'], [59, '亲密'], [6, '调和'], [27, '滋养'], [50, '价值观'], [3, '秩序'], [60, '限制']]) {
+    assert.equal(orgGateName(gate), role, String(gate));
+    const html = view.renderGate(gate);
+    assert.ok(html.includes(`data-wa-org-gate="${gate}"`) || html.includes(`data-wa-gate="${gate}"`), String(gate));
+    assert.ok(html.includes(role), String(gate));
+  }
+  // Heading and role callout agree: the direction gate reads 方向, not the Penta word 协调; 14 is 大蓄, not 容量.
+  const direction = view.renderGate(2);
+  assert.match(direction, /<div class="detail-name">方向 /);
+  assert.match(direction, /data-wa-org-role>[\s\S]*?方向/);
+  assert.doesNotMatch(direction, /协调/);
+  const provision = view.renderGate(14);
+  assert.match(provision, /data-wa-org-role>[\s\S]*?大蓄/);
+  assert.doesNotMatch(provision, /容量/);
+  // Gates outside the twelve keep their integrated organization role.
+  assert.equal(orgGateName(1), '创造');
+  assert.equal(orgGateName(46), '发现');
+  setLocale('en', { persist: false });
+});
+
+test('six core channel sheets carry their own endpoints and never the department roster', () => {
+  setLocale('zh-CN', { persist: false });
+  const pairs = [], gateRecords = [];
+  for (const department of OC16_DEPARTMENTS) {
+    const pair = department.pairs.find(row => row.channelId === department.primaryChannelId);
+    const [leftGate, rightGate] = pair.displayGates;
+    gateRecords.push({ gate: leftGate, memberIds: ['a'], activations: [activation('a', leftGate)] });
+    gateRecords.push({ gate: rightGate, memberIds: ['a', 'b'], activations: [activation('a', rightGate), activation('b', rightGate)] });
+    pairs.push({ channelId: pair.channelId, gates: pair.gates, status: 'both', holdersByGate: { [leftGate]: ['a'], [rightGate]: ['a', 'b'] }, selfCompleteMemberIds: ['a'], complementaryMemberPairs: [] });
+  }
+  const result = { status: 'ready', gateRecords, memberIds: ['a', 'b'], pairs,
+    departments: OC16_DEPARTMENTS.map(department => ({ id: department.id, gateCount: 2, pairCount: 1 })) };
+  const view = renderer(result);
+  for (const department of OC16_DEPARTMENTS) {
+    const pair = department.pairs.find(row => row.channelId === department.primaryChannelId);
+    const html = view.renderPair(pair.channelId);
+    // One sheet per channel, shared by the pair and department entries.
+    assert.equal(html, view.renderDepartment(department.id));
+    assert.match(html, new RegExp(`data-wa-detail="pair" data-wa-detail-id="${pair.channelId}"`));
+    assert.match(html, /class="wa-channel-reading-title">/);
+    assert.ok(html.includes(waChannelTitle(pair.channelId)), pair.channelId);
+    // Both endpoints with their exact people; nothing from the other channels of the department.
+    assert.equal(occurrences(html, 'data-wa-endpoint='), 2);
+    for (const [gate, ids] of Object.entries(pair.displayGates.reduce((acc, gate, index) => ({ ...acc, [gate]: index ? ['a', 'b'] : ['a'] }), {}))) {
+      const section = endpoint(html, gate);
+      assert.ok(section, `${pair.channelId}/${gate}`);
+      for (const id of ['a', 'b']) assert.equal(section.includes(`data-wa-member="${id}"`), ids.includes(id));
+      assert.ok(section.includes(orgGateName(Number(gate))), `${pair.channelId}/${gate}`);
+    }
+    for (const other of department.pairs.filter(row => row.channelId !== pair.channelId)) {
+      for (const attribute of ['data-wa-pair', 'data-wa-content-id', 'data-pair-row']) {
+        assert.equal(html.includes(`${attribute}="${other.channelId}"`), false, `${pair.channelId}->${other.channelId}`);
+      }
+    }
+    assert.equal(occurrences(html, 'data-pair-row='), 0);
+    assert.equal(occurrences(html, 'data-wa-org-reading="channel"'), 1);
+    assert.match(html, new RegExp(`data-wa-content-id="${pair.channelId}"`));
+    assert.match(html, new RegExp(`data-wa-org-body="integrated" data-wa-channel="${pair.channelId}"`));
+    // The sheet names the channel and its two organization roles, not a hexagram-only label.
+    for (const gate of pair.displayGates) assert.notEqual(orgGateName(gate), hexagramName(gate), String(gate));
+  }
+  setLocale('en', { persist: false });
+});
+
 test('pair sheet endpoints are flat like department rows with always-visible activations', () => {
   const view = renderer(fixture());
   const pair = view.renderPair('21-45');
-  // Core endpoints live in the primary flat block before support-pair rows.
-  const coreFlat = pair.split('data-wa-support-pairs')[0];
-  assert.equal(occurrences(coreFlat, 'data-wa-endpoint='), 2);
-  assert.equal(occurrences(coreFlat, 'wa-detail-endpoint--flat'), 2);
-  assert.match(coreFlat, /data-wa-gate-activations="45"/);
-  assert.match(coreFlat, /data-wa-gate-activations="21"/);
-  const gate45 = coreFlat.split('data-wa-gate-activations="45"')[1].split('data-wa-gate-activations="21"')[0];
+  // Both endpoints are the pair's own flat blocks; no department roster follows them.
+  assert.equal(occurrences(pair, 'data-wa-endpoint='), 2);
+  assert.equal(occurrences(pair, 'wa-detail-endpoint--flat'), 2);
+  assert.doesNotMatch(pair, /data-wa-support-pairs|data-pair-row=/);
+  assert.match(pair, /data-wa-gate-activations="45"/);
+  assert.match(pair, /data-wa-gate-activations="21"/);
+  const gate45 = pair.split('data-wa-gate-activations="45"')[1].split('data-wa-gate-activations="21"')[0];
   assert.match(gate45, /data-wa-activation-member="b"/);
   assert.match(gate45, /data-wa-activation-member="c"/);
   assert.doesNotMatch(gate45, /data-wa-activation-member="a"/);

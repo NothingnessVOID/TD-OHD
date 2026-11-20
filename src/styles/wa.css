@@ -69,7 +69,7 @@
 
 /* Workspace */
 .wa-workspace { display:grid; grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr); gap:16px; align-items:start; }
-.wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,calc(var(--header-height,56px) + 16px)); min-width:0; overflow:visible; }
+.wa-graph-column { position:sticky; align-self:start; top:var(--wa-sticky-top,16px); min-width:0; overflow:visible; }
 .wa-graph-panel { padding:16px 16px 18px; }
 .wa-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px; margin:0 0 12px; }
 .wa-panel-heading h2, .wa-results h2 { margin:0; font-size:17px; line-height:1.4; }
@@ -78,23 +78,23 @@
 .wa-graph-panel .wa-panel-heading h2 { font-size:18px; font-weight:650; letter-spacing:-0.01em; }
 .wa-kicker { font-size:12px; letter-spacing:.05em; color:var(--text-tertiary,var(--text-secondary)); font-weight:600; }
 
-/* Six core channel SVG — tube board with channel-only hover; dots clear of halos */
+/* Nine organizing-axis channels — tube board with channel-only hover; dots clear of halos */
 .wa-figure { margin:0; }
-.wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,72px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
+.wa-core-svg { display:block; width:100%; max-width:none; max-height:min(780px,calc(100dvh - var(--wa-sticky-top,16px) - 88px)); height:auto; margin:0 auto; overflow:visible; font-family:inherit; }
 .wa-diagram-name, .wa-diagram-sub, .wa-diagram-status-dot { pointer-events:none; }
-/* Dept title opens the same department detail sheet as right-column dept entry. */
-.wa-dept-title { pointer-events:auto; cursor:pointer; outline:none; }
-.wa-dept-title-hit { fill:transparent; stroke:transparent; pointer-events:auto; }
-.wa-dept-title:hover .wa-dept-title-hit, .wa-dept-title:focus-visible .wa-dept-title-hit {
+/* Axis title opens the same channel detail sheet as the tube. */
+.wa-axis-title { pointer-events:auto; cursor:pointer; outline:none; }
+.wa-axis-title-hit { fill:transparent; stroke:transparent; pointer-events:auto; }
+.wa-axis-title:hover .wa-axis-title-hit, .wa-axis-title:focus-visible .wa-axis-title-hit {
   fill:color-mix(in srgb, var(--accent) 8%, transparent);
 }
-.wa-dept-title.is-selected .wa-dept-title-hit {
+.wa-axis-title.is-selected .wa-axis-title-hit {
   fill:color-mix(in srgb, var(--accent) 12%, transparent);
   stroke:color-mix(in srgb, var(--accent) 28%, transparent);
   stroke-width:1;
 }
-.wa-dept-title:hover .wa-diagram-name, .wa-dept-title:focus-visible .wa-diagram-name,
-.wa-dept-title.is-selected .wa-diagram-name { fill:var(--accent); }
+.wa-axis-title:hover .wa-diagram-name, .wa-axis-title:focus-visible .wa-diagram-name,
+.wa-axis-title.is-selected .wa-diagram-name { fill:var(--accent); }
 /* Name + status are one lockup. Status is a dot and type — no framed chip, no underline. */
 .wa-diagram-name {
   fill:var(--accent-strong,var(--text));
@@ -133,7 +133,7 @@
 }
 .wa-gate-chip-text {
   fill:var(--accent-strong,var(--text));
-  font-size:14px;
+  font-size:12.5px;
   font-weight:560;
   letter-spacing:.01em;
   pointer-events:none;
@@ -262,7 +262,7 @@
 .wa-state-note { margin:0 0 4px; color:var(--text-secondary); font-size:12px; line-height:1.65; }
 .wa-state-badge { display:inline-block; padding:2px 9px; font-size:12px; border-radius:999px; color:var(--text-secondary); background:var(--bg-sunken); }
 .wa-state-badge[data-standard="true"] { color:var(--status-success,var(--text)); background:var(--status-success-soft,var(--bg-sunken)); }
-.wa-overview-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:12px 0 0; }
+.wa-overview-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:10px; margin:12px 0 0; }
 .wa-overview-stats > div { min-width:0; padding:12px 14px; border-radius:var(--radius,10px); background:var(--bg-sunken); }
 .wa-overview-stats dt { color:var(--text-secondary); font-size:12px; line-height:1.5; }
 .wa-overview-stats dd { font-size:28px; font-weight:600; line-height:1.25; margin:4px 0 0; font-variant-numeric:tabular-nums; }
@@ -274,8 +274,21 @@
 .wa-meter i { display:block; height:100%; background:var(--accent); border-radius:2px; transition:width .3s ease; }
 @media (prefers-reduced-motion:reduce) { .wa-meter i { transition:none; } }
 
-/* Four pillars (overview): card chrome + department pairToken (no split-capsule / channel-row). */
-.wa-pillars { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.wa-gap-rows { display:grid; gap:8px; }
+.wa-gaps-toggle-row { display:flex; justify-content:center; margin-top:10px; }
+.wa-gap-row { display:grid; grid-template-columns:4.5em minmax(0,1fr); gap:10px; align-items:start; }
+.wa-gap-department { padding-top:5px; color:var(--text-secondary); font-size:12px; }
+.wa-gap-list { display:flex; flex-wrap:wrap; gap:6px; }
+.wa-gap-chip { display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:2px 10px 2px 3px; border:1px dashed var(--border); border-radius:999px; background:transparent; color:var(--text-secondary); font-size:12px!important; cursor:pointer; }
+.wa-gap-chip b { display:grid; place-items:center; box-sizing:border-box; flex:none; aspect-ratio:1; width:24px; height:24px; min-width:24px; max-width:24px; padding:0; border-radius:50%; background:var(--bg-sunken); color:var(--text); font-size:11px; font-variant-numeric:tabular-nums; line-height:1; }
+.wa-gap-chip:hover { border-color:var(--accent); color:var(--text); }
+.wa-gap-none { margin:0; color:var(--status-success,var(--text-secondary)); font-size:13px; }
+
+/* Pillars (overview): card chrome + department pairToken (no split-capsule / channel-row).
+   Restored from the original four-pillar design; the six department pillars reuse it unchanged.
+   Desktop default is three per row (~190px cards at the results column width), so six cards fill two rows;
+   1051–1200px, ≤600px and ≤360px keep their own column counts below. */
+.wa-pillars { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .wa-pillar {
   display:flex; gap:12px; align-items:center; text-align:left; min-width:0; padding:12px 14px;
   border:1px solid var(--border-subtle,var(--border)); border-radius:var(--radius,10px);
@@ -327,15 +340,6 @@
   .wa-pillar:is(:hover, .is-hover, :focus-visible) { transform:none; }
 }
 
-.wa-gap-rows { display:grid; gap:8px; }
-.wa-gap-row { display:grid; grid-template-columns:4.5em minmax(0,1fr); gap:10px; align-items:start; }
-.wa-gap-department { padding-top:5px; color:var(--text-secondary); font-size:12px; }
-.wa-gap-list { display:flex; flex-wrap:wrap; gap:6px; }
-.wa-gap-chip { display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:2px 10px 2px 3px; border:1px dashed var(--border); border-radius:999px; background:transparent; color:var(--text-secondary); font-size:12px!important; cursor:pointer; }
-.wa-gap-chip b { display:grid; place-items:center; box-sizing:border-box; flex:none; aspect-ratio:1; width:24px; height:24px; min-width:24px; max-width:24px; padding:0; border-radius:50%; background:var(--bg-sunken); color:var(--text); font-size:11px; font-variant-numeric:tabular-nums; line-height:1; }
-.wa-gap-chip:hover { border-color:var(--accent); color:var(--text); }
-.wa-gap-none { margin:0; color:var(--status-success,var(--text-secondary)); font-size:13px; }
-
 /* Departments */
 .wa-departments .wa-panel-heading { margin-bottom:12px; }
 .wa-strip-legend { display:flex; flex-wrap:wrap; gap:4px 12px; color:var(--text-secondary); font-size:11.5px; }
@@ -360,6 +364,8 @@
   border:1px solid var(--border-subtle,var(--border)); border-radius:999px; background:var(--bg); cursor:pointer; color:var(--text);
   transition:border-color .18s ease, background .18s ease, box-shadow .2s ease, transform .18s ease, filter .18s ease;
 }
+/* Original role rule: only the six department primaries (core) paint a fixed token highlight.
+   26–44 carries `is-personnel` with no rule, exactly as in the pre-axis version. */
 .wa-pair-token.is-core { border-color:var(--accent); background:var(--accent-soft,var(--bg)); }
 .wa-pair-token:is(:hover, .is-hover, :focus-visible) {
   z-index:2; position:relative; border-color:var(--accent);
@@ -572,6 +578,7 @@
  .wa-gap-row { grid-template-columns:1fr; gap:4px; }
  .wa-gap-department { padding-top:0; }
  .wa-gap-chip { min-height:36px; }
+ .wa-gaps-toggle { min-height:44px; }
  .wa-department-head { grid-template-columns:minmax(0,1fr) auto; min-height:44px; }
  .wa-department-score { grid-column:1 / -1; grid-row:2; }
  .wa-department-toggle-text { grid-column:2; grid-row:1; }

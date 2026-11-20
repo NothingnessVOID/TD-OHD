@@ -4,8 +4,9 @@
  * Do not put natal chart prose or the four-foundation (1/7/13/33) summary here.
  */
 import { getLocale, registerMessages, t } from '../i18n.js';
-import { gateName } from '../vocabulary.js';
-import { OC16_DEPARTMENTS } from './oc16-catalog.js';
+import { channelName, gateName } from '../vocabulary.js';
+import { OC16_DEPARTMENTS, oc16Pair, oc16PairForGate } from './oc16-catalog.js';
+import { readOrgChannelBody, readOrgChannelName, readOrgGateBody } from './org-reading-content.js';
 
 const locales = ['zh-CN', 'zh-Hant', 'en'];
 
@@ -148,21 +149,13 @@ const channelIntros = {
   ]
 };
 
-const channelGateOrder = {
-  '45-21': [45, 21],
-  '51-25': [51, 25],
-  '2-14': [14, 2],
-  '59-6': [59, 6],
-  '27-50': [50, 27],
-  '3-60': [60, 3],
-  '26-44': [44, 26]
-};
-
 const uiMessages = {
   'Wa org role label': ['部门定位', '部門定位', 'Department role'],
-  'Wa org channel reading': ['组织通道解读', '組織通道解讀', 'Organization channel reading'],
-  'Wa org gate reading': ['组织闸门解读', '組織閘門解讀', 'Organization gate reading'],
-  'Wa org gate role': ['组织角色', '組織角色', 'Organization role']
+  'Wa org channel reading': ['商业解读', '商業解讀', 'Business reading'],
+  'Wa org gate reading': ['商业解读', '商業解讀', 'Business reading'],
+  'Wa org gate role': ['组织角色', '組織角色', 'Organization role'],
+  'Wa org reading pending': ['该通道的组织正文正在整理。', '該通道的組織正文正在整理。', 'The organization reading for this channel is being prepared.'],
+  'Wa org gate reading pending': ['该闸门的商业解读正在整理。', '該閘門的商業解讀正在整理。', 'The business reading for this gate is being prepared.']
 };
 
 for (const [i, locale] of locales.entries()) {
@@ -198,25 +191,63 @@ export function canonicalOrgChannelId(channelId) {
 }
 
 export function orgDepartmentIdForChannel(channelId) {
+  const pair = oc16Pair(channelId);
+  if (pair) return pair.departmentId;
   const pack = canonicalOrgChannelId(channelId);
   if (!pack) return null;
-  if (pack === '26-44') return 'management';
-  const department = OC16_DEPARTMENTS.find(row => row.pairs.some(pair => pair.channelId === channelId || canonicalOrgChannelId(pair.channelId) === pack));
+  const department = OC16_DEPARTMENTS.find(row => row.pairs.some(pair => canonicalOrgChannelId(pair.channelId) === pack));
   return department?.id ?? null;
+}
+
+/** Organization channel name: the textbook title from the organization content modules.
+ * The unified vocabulary is only a defensive fallback, and its "通道" suffix is dropped here so the
+ * organization page never reads "灵感通道". Other pages keep their own vocabulary untouched. */
+export function orgChannelName(channelId, locale = getLocale()) {
+  const pair = oc16Pair(channelId);
+  if (!pair || !locales.includes(locale)) return '';
+  const textbook = readOrgChannelName(pair.channelId, locale);
+  if (textbook) return textbook;
+  const ascending = pair.gates.join('-'), descending = [...pair.gates].reverse().join('-');
+  for (const candidate of [ascending, descending]) {
+    const name = channelName(candidate);
+    if (name && name !== candidate) return name.replace(/通道$/, '');
+  }
+  return pair.displayGates.join('–');
+}
+
+/** Integrated organization body (delivered separately); null means "use the fallbacks below". */
+export function orgChannelBody(channelId, locale = getLocale()) {
+  const pair = oc16Pair(channelId);
+  if (!pair || !locales.includes(locale)) return null;
+  const body = readOrgChannelBody(pair.channelId, locale);
+  return body ? { channelId: pair.channelId, departmentId: pair.departmentId, ...body } : null;
+}
+
+export function orgGateBody(gate, locale = getLocale()) {
+  const id = Number(gate);
+  if (!Number.isInteger(id) || !oc16PairForGate(id) || !locales.includes(locale)) return null;
+  const body = readOrgGateBody(id, locale);
+  return body ? { gate: id, ...body } : null;
+}
+
+/** Shared pair record for a legacy reading-package id; package ids may use either gate order. */
+function pairForPackage(pack) {
+  if (typeof pack !== 'string') return null;
+  return oc16Pair(pack) ?? oc16Pair(pack.split('-').reverse().join('-'));
 }
 
 export function readOrgChannelReading(channelId, locale = getLocale()) {
   const pack = canonicalOrgChannelId(channelId);
   if (!pack || !locales.includes(locale)) return null;
   const departmentId = orgDepartmentIdForChannel(pack === '26-44' ? '26-44' : channelId);
-  const gates = channelGateOrder[pack];
-  if (!gates) return null;
+  const pair = pairForPackage(pack);
+  if (!pair) return null;
   return {
     channelId: pack,
     departmentId,
     roleKey: departmentId ? `OC16 org role ${departmentId}` : null,
     introKey: `OC16 org channel intro ${pack}`,
-    gates
+    gates: [...pair.displayGates]
   };
 }
 
@@ -251,12 +282,16 @@ export function orgChannelCopy(channelId, locale = getLocale()) {
 }
 
 
-/** Display name on the organization page only — never used by natal/chart vocabulary. */
+/** Display name on the organization page only — never used by natal/chart vocabulary.
+ * Priority: existing organization role (the twelve department gates) → integrated (Penta) organization
+ * role → unified gate vocabulary. The organization's own roles stay authoritative, so Penta wording
+ * (2 协调 / 14 容量) never renames the department role shown in pillars, rows and sheet headings. */
 export function orgGateName(gate, locale = getLocale()) {
   const id = Number(gate);
-  if (Number.isInteger(id) && gateRoles[id] && locales.includes(locale)) {
-    return t(`OC16 org gate role ${id}`);
-  }
+  if (!Number.isInteger(id) || !locales.includes(locale)) return gateName(id);
+  if (gateRoles[id]) return t(`OC16 org gate role ${id}`);
+  const integrated = readOrgGateBody(id, locale);
+  if (integrated?.role) return integrated.role;
   return gateName(id);
 }
 

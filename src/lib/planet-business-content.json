@@ -1,0 +1,164 @@
+{
+  "zh-CN": {
+    "sun": {
+      "theme": "核心表达",
+      "body": "太阳是整张商业画像里最集中的表达位置：它是向外界输出的主要卖点，是个人 IP 最容易被辨认的标志，也是企业在产品线上最需要守住的那条主线。\n\n做定位时，这个位置上的主题通常就是对外反复强调、别人也最容易记住的那句话。"
+    },
+    "earth": {
+      "theme": "落地支撑",
+      "body": "地球与太阳相对，是维持商业模式与核心品牌不崩盘的底盘力量。\n\n太阳负责吸引客户，地球负责把理念变现、扎根于现实市场，撑住现金流和业务的稳定性。两者要成对看：一个负责发光，一个负责站稳。"
+    },
+    "northNode": {
+      "theme": "未来环境",
+      "body": "北交点描述职业生涯后半程需要去开拓的全新商业舞台。\n\n从南交点向北交点的转移，往往对应个人 IP 或企业定位的破局与维度升级：把前半程积累的资源带进新环境，重新组织成可用的东西。\n\n40 岁前后常被用来粗分职业前后半程的舞台；实际转移是渐进的，不会在某一天突然切换。"
+    },
+    "southNode": {
+      "theme": "过往环境",
+      "body": "南交点描述职业生涯前半程所处的商业生态与客户群体特征。\n\n这是积累原始资源的舒适区，也是个人起步时的初始舞台：环境熟悉、经验可以反复使用，但通常不是最后要停留的地方。"
+    },
+    "moon": {
+      "theme": "驱动力",
+      "body": "月亮是商业行为的底层发动机。\n\n在没有外部 KPI 考核时，仍然能让人持续投入精力的内在焦点，就在这个位置；它也是观察员工或合伙人自驱力来源的指标——知道对方真正被什么牵动，比单纯加压更能维持长期投入。"
+    },
+    "mercury": {
+      "theme": "商业沟通",
+      "body": "水星是公关口径、营销话术，以及向市场传递信息的特定方式。\n\n它决定目标受众能否听懂商业主张，并因此愿意买单。同一件产品，表达方式不同，市场接收到的信号就不同；顺着这个位置的主题说话，信息更容易被准确接住。"
+    },
+    "venus": {
+      "theme": "核心价值观",
+      "body": "金星对应建立商业信任的价值准则，也是合伙架构与客户管理中看重的底层文化。\n\n它提示合作双方重视什么、如何建立信任，以及价值观差异怎样反映在团队协作中。"
+    },
+    "mars": {
+      "theme": "竞争野心与摩擦",
+      "body": "火星是极具爆发力、也容易失控的职场冲劲。\n\n在红海市场里，它常是撕开缺口的那把尖刀；在日常管理中，它同样是最容易引发团队摩擦和公关争议的位置。\n\n用得好和用过头，差别通常在有没有为它留出明确的出口与边界。"
+    },
+    "jupiter": {
+      "theme": "扩张与律法",
+      "body": "木星对应扩张、律法与内部商业原则。\n\n它关注经营中如何顺应自身特质、调动资源并建立合作，以及如何让投入与回报形成合适的关系。"
+    },
+    "saturn": {
+      "theme": "约束与惩罚",
+      "body": "土星是职场短板与风险控制的红线。\n\n当做法偏离自身正确轨迹，或者长期过度消耗时，土星所在的领域会先给出反馈：进展受阻、成本上升，或者同一个课题反复回来要求补课。这种反复补课的状态，常被形容为“惩罚区”；把它当成需要提前设好边界的部分，比事后补救更省力。"
+    },
+    "uranus": {
+      "theme": "独特性",
+      "body": "天王星是颠覆行业常规的技术与模式创新力，代表不按理出牌的独特视角。\n\n对企业来说，它是寻找蓝海、形成产品差异化的切入点，提示如何从新的路径推进技术、产品与商业模式。"
+    },
+    "neptune": {
+      "theme": "隐藏事物",
+      "body": "海王星既指向缺乏数据支撑的市场第六感，也指向商业盲区。\n\n它可以是超前的战略灵感，也可能是规划里最容易起泡沫的部分：过度乐观、内部消耗，甚至对合作方判断失准。\n\n更稳妥的用法是让灵感留下，关键决策仍然回到数据和实际验证。"
+    },
+    "pluto": {
+      "theme": "蜕变与真相",
+      "body": "冥王星触及行业底层的真相与深度洗牌。\n\n它不处理表面的业务优化，而是把企业或个人推到必须重组的位置：经历一段阵痛，再以脱胎换骨的方式重新组织业务与商业模型。"
+    }
+  },
+  "zh-Hant": {
+    "sun": {
+      "theme": "核心表達",
+      "body": "太陽是整張商業畫像裡最集中的表達位置：它是向外界輸出的主要賣點，是個人 IP 最容易被辨認的標誌，也是企業在產品線上最需要守住的那條主線。\n\n做定位時，這個位置上的主題通常就是對外反覆強調、別人也最容易記住的那句話。"
+    },
+    "earth": {
+      "theme": "落地支撐",
+      "body": "地球與太陽相對，是維持商業模式與核心品牌不崩盤的底盤力量。\n\n太陽負責吸引客戶，地球負責把理念變現、扎根於現實市場，撐住現金流和業務的穩定性。兩者要成對看：一個負責發光，一個負責站穩。"
+    },
+    "northNode": {
+      "theme": "未來環境",
+      "body": "北交點描述職業生涯後半程需要去開拓的全新商業舞台。\n\n從南交點向北交點的轉移，往往對應個人 IP 或企業定位的破局與維度升級：把前半程累積的資源帶進新環境，重新組織成可用的東西。\n\n40 歲前後常被用來粗分職業前後半程的舞台；實際轉移是漸進的，不會在某一天突然切換。"
+    },
+    "southNode": {
+      "theme": "過往環境",
+      "body": "南交點描述職業生涯前半程所處的商業生態與客戶群體特徵。\n\n這是累積原始資源的舒適區，也是個人起步時的初始舞台：環境熟悉、經驗可以反覆使用，但通常不是最後要停留的地方。"
+    },
+    "moon": {
+      "theme": "驅動力",
+      "body": "月亮是商業行為的底層發動機。\n\n在沒有外部 KPI 考核時，仍然能讓人持續投入精力的內在焦點，就在這個位置；它也是觀察員工或合夥人自驅力來源的指標——知道對方真正被什麼牽動，比單純加壓更能維持長期投入。"
+    },
+    "mercury": {
+      "theme": "商業溝通",
+      "body": "水星是公關口徑、行銷話術，以及向市場傳遞資訊的特定方式。\n\n它決定目標受眾能否聽懂商業主張，並因此願意買單。同一件產品，表達方式不同，市場接收到的訊號就不同；順著這個位置的主題說話，資訊更容易被準確接住。"
+    },
+    "venus": {
+      "theme": "核心價值觀",
+      "body": "金星對應建立商業信任的價值準則，也是合夥架構與客戶管理中看重的底層文化。\n\n它提示合作雙方重視什麼、如何建立信任，以及價值觀差異怎樣反映在團隊協作中。"
+    },
+    "mars": {
+      "theme": "競爭野心與摩擦",
+      "body": "火星是極具爆發力、也容易失控的職場衝勁。\n\n在紅海市場裡，它常是撕開缺口的那把尖刀；在日常管理中，它同樣是最容易引發團隊摩擦和公關爭議的位置。\n\n用得好和用過頭，差別通常在有沒有為它留出明確的出口與邊界。"
+    },
+    "jupiter": {
+      "theme": "擴張與律法",
+      "body": "木星對應擴張、律法與內部商業原則。\n\n它關注經營中如何順應自身特質、調動資源並建立合作，以及如何讓投入與回報形成合適的關係。"
+    },
+    "saturn": {
+      "theme": "約束與懲罰",
+      "body": "土星是職場短板與風險控制的紅線。\n\n當做法偏離自身正確軌跡，或者長期過度消耗時，土星所在的領域會先給出回饋：進展受阻、成本上升，或者同一個課題反覆回來要求補課。這種反覆補課的狀態，常被形容為「懲罰區」；把它當成需要提前設好邊界的部分，比事後補救更省力。"
+    },
+    "uranus": {
+      "theme": "獨特性",
+      "body": "天王星是顛覆行業常規的技術與模式創新力，代表不按理出牌的獨特視角。\n\n對企業來說，它是尋找藍海、形成產品差異化的切入點，提示如何從新的路徑推進技術、產品與商業模式。"
+    },
+    "neptune": {
+      "theme": "隱藏事物",
+      "body": "海王星既指向缺乏數據支撐的市場第六感，也指向商業盲區。\n\n它可以是超前的戰略靈感，也可能是規劃裡最容易起泡沫的部分：過度樂觀、內部消耗，甚至對合作方判斷失準。\n\n更穩妥的用法是讓靈感留下，關鍵決策仍然回到數據和實際驗證。"
+    },
+    "pluto": {
+      "theme": "蛻變與真相",
+      "body": "冥王星觸及行業底層的真相與深度洗牌。\n\n它不處理表面的業務優化，而是把企業或個人推到必須重組的位置：經歷一段陣痛，再以脫胎換骨的方式重新組織業務與商業模型。"
+    }
+  },
+  "en": {
+    "sun": {
+      "theme": "Core Expression",
+      "body": "The Sun marks the most concentrated expression point in the whole business picture: the strongest selling point put out to the world, the most recognizable marker of a personal brand, and the main product line a company most needs to hold on to.\n\nWhen defining a position, the theme carried at this point is usually the line repeated outward most often, and the one others remember most easily."
+    },
+    "earth": {
+      "theme": "Grounding",
+      "body": "Opposite the Sun, the Earth is the base strength that keeps the business model and the core brand from collapsing.\n\nThe Sun attracts clients; the Earth turns the concept into revenue and roots it in a real market, holding cash flow and operational stability in place. The two are read as a pair: one shines, the other keeps the footing."
+    },
+    "northNode": {
+      "theme": "Future Direction",
+      "body": "The North Node describes the new business stage to be opened in the later half of a career.\n\nThe shift from the South Node to the North Node usually corresponds to a breakthrough in personal-brand or company positioning: resources accumulated earlier are carried into a new environment and reorganized into something usable there.\n\nRoughly age 40 is often used to divide the earlier and later stages of a career. The shift itself is gradual and does not happen on a single day."
+    },
+    "southNode": {
+      "theme": "Past Direction",
+      "body": "The South Node describes the business ecosystem and client base of the earlier half of a career.\n\nIt is the comfort zone where original resources accumulate and the opening stage a person starts from: a familiar environment with reusable experience, but usually not the place to stay in the end."
+    },
+    "moon": {
+      "theme": "Driving Force",
+      "body": "The Moon is the underlying engine of business behavior.\n\nThis is the inner focus that keeps a person investing energy even without an external KPI, and it is also an indicator for seeing where an employee's or partner's self-drive comes from. Knowing what actually moves someone sustains long-term effort better than pressure alone."
+    },
+    "mercury": {
+      "theme": "Business Communication",
+      "body": "Mercury is the public message, the marketing language, and the particular way information is carried to the market.\n\nIt determines whether the target audience can understand the business proposition and pay for it. The same product, expressed differently, sends a different signal; speaking with the theme at this point lets the message land more accurately."
+    },
+    "venus": {
+      "theme": "Core Values",
+      "body": "Venus corresponds to the value standards that build business trust, and to the underlying culture valued in partnership structures and client management.\n\nIt highlights what both sides of a partnership consider important, how trust is established, and how differences in values show up in team collaboration."
+    },
+    "mars": {
+      "theme": "Ambition & Friction",
+      "body": "Mars is the workplace thrust that is highly explosive and easily out of control.\n\nIn a crowded market it is often the blade that opens a gap; in day-to-day management it is also the point most likely to cause internal friction and public controversy.\n\nUsed well and used past the limit differ mainly in whether it has a clear outlet and boundary."
+    },
+    "jupiter": {
+      "theme": "Expansion & Law",
+      "body": "Jupiter corresponds to expansion, law, and internal commercial principles.\n\nIt looks at how operations can follow one's own qualities, mobilize resources, and build cooperation, and at how investment and return can form an appropriate relationship."
+    },
+    "saturn": {
+      "theme": "Rules & Penalty",
+      "body": "Saturn is the workplace weak spot and the red line of risk control.\n\nWhen practice drifts from a person's correct trajectory, or consumption stays excessive, this area gives feedback first: progress stalls, costs rise, or the same lesson returns for another round. That recurring lesson work is often described as a penalty zone; treating it as something that needs boundaries set in advance costs less than repairing it afterwards."
+    },
+    "uranus": {
+      "theme": "Uniqueness",
+      "body": "Uranus is the capacity to overturn industry convention in technology and business models, and the distinctive angle of not playing by the usual rules.\n\nFor a company it is the entry point for finding blue ocean and forming product differentiation, indicating how technology, products, and business models can be advanced along a new path."
+    },
+    "neptune": {
+      "theme": "What's Hidden",
+      "body": "Neptune points both to market intuition unsupported by data and to business blind spots.\n\nIt can be an advanced strategic inspiration, and it can also be the part of a plan most prone to froth: over-optimism, internal drain, or misjudging a partner.\n\nA steadier use is to keep the inspiration while bringing key decisions back to data and verification."
+    },
+    "pluto": {
+      "theme": "Transformation & Truth",
+      "body": "Pluto reaches the hard truth and deep reshuffling at the base of an industry.\n\nIt does not deal in surface business optimization. It pushes a company or a person to a point where reorganization is unavoidable: a period of strain, then a rebuilt business and commercial model."
+    }
+  }
+}

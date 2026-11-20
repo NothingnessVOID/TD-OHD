@@ -7,6 +7,8 @@ import {WA_READING_PARAGRAPHS,presentWaReading,readWaReadingExcerpt} from '../sr
 import {createWaDetailRenderer,renderWaReading} from '../src/views/wa-detail-content.js';
 import {OC16_DEPARTMENTS} from '../src/lib/wa/oc16-catalog.js';
 import {setLocale,t} from '../src/lib/i18n.js';
+import {orgDepartmentIdForChannel,orgChannelName,orgGateName} from '../src/lib/wa/org-role-readings.js';
+import {channelName} from '../src/lib/vocabulary.js';
 import {renderProse} from '../src/lib/knowledge/detail-renderer.js';
 const forbidden=/覆盖|覆蓋|门对|門對|不代表正式|仅供参考|僅供參考|尚未证实|尚未證實|仅实验性|僅實驗性|\bcoverage\b|\bpairs?\b|for reference only|not officially/i;
 
@@ -30,24 +32,32 @@ test('all 42 Wa readings use explicit authored excerpts, keep source identity, a
   }
  }
 });
-test('supporting channels and gates use organization role readings, never personal chart prose',()=>{
+test('organization channels and gates keep one reading surface with explicit catalog identity',()=>{
  const view=createWaDetailRenderer({getResult:()=>null});
  for(const locale of ['en','zh-CN','zh-Hant']){
   setLocale(locale,{persist:false});
   for(const department of OC16_DEPARTMENTS){
-   const core=department.pairs[0];
+   // The department entry is the explicit primary channel, never a positional first row.
+   const core=department.pairs.find(pair=>pair.channelId===department.primaryChannelId);
+   assert.ok(core,`${department.id} primary`);
+   // Department entry delegates to the same pair sheet and lists no other channel of the department.
+   assert.equal(view.renderDepartment(department.id),view.renderPair(core.channelId));
    for(const pair of department.pairs){
     const html=view.renderPair(pair.channelId);
-    assert.ok(html.includes(`data-wa-content-id="${pair.role==='core'?core.channelId:pair.channelId}"`) || html.includes(`data-wa-content-id="${core.channelId}"`));
-    // Core pair ≡ department sheet: reading-for is the department id. Support keeps jump reading-for=channelId.
-    if(pair.role==='core') assert.ok(html.includes(`data-wa-reading-for="${department.id}"`));
-    else assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
-    const escRole = t(`OC16 org role ${department.id}`).replaceAll('&','&amp;');
-    if(pair.role==='core'){
-      assert.ok(html.includes('data-wa-org-reading="channel"'));
-      assert.ok(html.includes(escRole) || html.includes(t(`OC16 org role ${department.id}`)));
-    } else {
-      assert.ok(html.includes(t('Wa UI department reading')) || html.includes('data-wa-org-reading="channel"'));
+    assert.ok(html.includes(`data-wa-content-id="${pair.channelId}"`));
+    assert.ok(html.includes(`data-wa-org-reading="channel" data-wa-org-body="integrated" data-wa-channel="${pair.channelId}"`));
+    assert.doesNotMatch(html,/纯净官方版|通俗应用版|原典|教材标注|资料对照/);
+    // Every channel, core included, is its own sheet: reading-for is the channel id, never the department id.
+    assert.ok(html.includes(`data-wa-reading-for="${pair.channelId}"`));
+    assert.doesNotMatch(html,new RegExp(`data-wa-reading-for="${department.id}"`));
+    assert.ok(html.includes('data-wa-org-body="integrated"'));
+    // One reading only, and no other channel of this department becomes a row or reading on this sheet;
+    // the only allowed pair reference is the explicit jump to the department primary channel.
+    assert.equal((html.match(/data-wa-org-reading="channel"/g)||[]).length,1);
+    for(const other of department.pairs.filter(row=>row.channelId!==pair.channelId)){
+      assert.equal(html.includes(`data-wa-reading-for="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
+      assert.equal(html.includes(`data-pair-row="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
+      if(other.channelId!==core.channelId) assert.equal(html.includes(`data-wa-pair="${other.channelId}"`),false,`${pair.channelId}->${other.channelId}`);
     }
     assert.doesNotMatch(html,/data-shared-channel-reading|data-shared-gate=|data-shared-lens/);
     assert.doesNotMatch(html.replace(/<[^>]*>/g,''),forbidden);
@@ -56,15 +66,41 @@ test('supporting channels and gates use organization role readings, never person
     for(const gate of pair.gates){
       const gateHtml=view.renderGate(gate);
       assert.ok(gateHtml.includes(`data-wa-reading-for="gate:${gate}"`));
-      assert.ok(gateHtml.includes(`data-wa-content-id="${pair.channelId}"`) || gateHtml.includes(`data-wa-content-id="${core.channelId}"`));
+      assert.ok(gateHtml.includes(`data-wa-content-id="${pair.channelId}"`));
       assert.ok(gateHtml.includes('data-wa-org-reading="gate"'));
-      const gateRole = t(`OC16 org gate role ${gate}`).replaceAll('&','&amp;');
-      assert.ok(gateHtml.includes(gateRole) || gateHtml.includes(t(`OC16 org gate role ${gate}`)));
+      const gateRole = orgGateName(gate).replaceAll('&','&amp;');
+      assert.ok(gateHtml.includes(gateRole));
       assert.doesNotMatch(gateHtml,/data-shared-gate=|data-shared-lens/);
       assert.doesNotMatch(gateHtml,/四大基石|1、7、13、33/);
     }
    }
   }
+ }
+});
+test('organization page reads the textbook channel titles and highlights only the nine axis channels',()=>{
+ const pairs=OC16_DEPARTMENTS.flatMap(department=>department.pairs);
+ const axis=pairs.filter(pair=>pair.axisTier);
+ // Fixed highlight is the nine organizing-axis channels; the other 23 rows carry no fixed highlight.
+ assert.deepEqual(axis.map(pair=>pair.channelId).sort(),['1-8','13-33','2-14','29-46','3-60','42-53','5-15','7-31','9-52']);
+ for(const locale of ['en','zh-CN','zh-Hant']){
+  setLocale(locale,{persist:false});
+  for(const pair of pairs){
+   const name=orgChannelName(pair.channelId);
+   assert.ok(name&&name!==pair.channelId,`${pair.channelId}/${locale}`);
+   // Organization titles are short textbook names, never the shared vocabulary's "通道" suffix.
+   assert.doesNotMatch(name,/通道$/);
+  }
+ }
+ // The shared Human Design vocabulary used by the other pages is untouched.
+ setLocale('zh-CN',{persist:false});
+ assert.equal(channelName([1,8]),'灵感通道');
+ for(const [id,name] of [['1-8','灵感'],['13-33','记录'],['42-53','成熟'],['2-14','钥匙保管者'],['7-31','领导力'],['21-45','金钱线'],['37-40','社区/契约']]){
+  assert.equal(orgChannelName(id),name,id);
+ }
+});
+test('historical channel endpoint aliases keep their department after the catalog expands',()=>{
+ for(const [id,departmentId] of [['21-45','management'],['45-21','management'],['25-51','competition'],['51-25','competition'],['6-59','interaction'],['59-6','interaction'],['14-2','direction']]){
+  assert.equal(orgDepartmentIdForChannel(id),departmentId,id);
  }
 });
 test('unsupported locale, identity and unreviewed paragraph/wording drift fail closed without mutating author data',()=>{

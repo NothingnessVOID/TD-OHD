@@ -1779,7 +1779,10 @@ body.modal-open { overflow: hidden; }
 
 /* Shared birth/transit/timeline detail heading and optional timing column. */
 .tl-detail-header { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; gap: 14px; margin-bottom: 8px; }
-.tl-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr) 176px; }
+/* The timing column sizes to its own longest line instead of a fixed 176px: the
+   duration value is set larger than the dates, and a fixed track broke both the
+   "Duration" label and its value into two lines once the sheet narrowed. */
+.tl-detail-header.tl-detail-has-timing { grid-template-columns: minmax(0, 1fr) minmax(min-content, max-content); }
 .tl-detail-heading { min-width: 0; display: flex; flex-direction: column; }
 .tl-detail-header.tl-detail-has-timing .tl-detail-heading { padding-top: 42px; }
 .tl-detail-heading > .detail-name { margin-bottom: 8px; }
@@ -1812,10 +1815,10 @@ body.modal-open { overflow: hidden; }
 .tl-detail-timing::before { content: ''; position: absolute; top: 42px; bottom: 0; left: 0; border-left: 1px solid var(--border-subtle); }
 .tl-timing-source { display: flex; justify-content: space-between; gap: 6px; color: var(--text-secondary); margin-bottom: 3px; }
 .tl-timing-source > span { cursor: help; }
-.tl-timing-values { flex: 1; display: grid; align-content: space-between; gap: 3px; margin: 0; }
-.tl-timing-values dt { color: var(--text-secondary); }
+.tl-timing-values { flex: 1; display: grid; align-content: start; gap: 3px; margin: 0; }
+.tl-timing-values dt { color: var(--text-secondary); white-space: nowrap; }
 .tl-timing-values dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.tl-timing-duration { display: flex; align-items: baseline; gap: 5px; margin-bottom: 3px; }
+.tl-timing-duration { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 5px; margin-bottom: 3px; }
 .tl-timing-duration dd { font-size: 14px; font-weight: 500; }
 .tl-timing-full-range .tl-timing-duration { align-items: center; }
 .tl-timing-full-range .tl-timing-duration dd { display: inline-flex; align-items: center; height: 18px; font-size: 18px; line-height: 1; }
@@ -2027,7 +2030,8 @@ body.modal-open { overflow: hidden; }
   box-shadow: var(--lens-active-shadow);
 }
 .gate-lens-switch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.gate-lens-switch button { min-width: 0; min-height: 40px; line-height: 1.3; white-space: normal; overflow-wrap: break-word; }
+/* Shared 40px touch height and wrapping for the gate and two-category planet lens tracks. */
+.gate-lens-switch button, .planet-lens-switch button { min-width: 0; min-height: 40px; line-height: 1.3; white-space: normal; overflow-wrap: break-word; }
 @media (max-width: 400px) {
   .gate-lens-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

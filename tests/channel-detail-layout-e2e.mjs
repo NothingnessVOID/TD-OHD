@@ -41,11 +41,19 @@ try {
       const { top, bottom, left, right, width } = node.getBoundingClientRect();
       return { top, bottom, left, right, width };
     };
+    const lines = node => node
+      ? Math.round(node.getBoundingClientRect().height / (parseFloat(getComputedStyle(node).lineHeight) || 1)) : 0;
+    const duration = timing?.querySelector('.tl-timing-duration');
+    const bodyStyle = getComputedStyle(body);
     return {
       header: header && rect(header), heading: heading && rect(heading),
       timing: timing && rect(timing), description: description && rect(description),
       status: status && rect(status), label: label && rect(label),
       timingSource: timingSource && rect(timingSource),
+      headerPaddingRight: header && getComputedStyle(header).paddingRight,
+      bodyContentRight: body.getBoundingClientRect().right - parseFloat(bodyStyle.paddingRight),
+      durationLabelLines: lines(duration?.querySelector('dt')),
+      durationValueLines: lines(duration?.querySelector('dd')),
       descriptionText: description?.textContent.trim(),
       allDescriptionText: body.querySelector('.gate-detail-desc')?.textContent.trim(),
       descriptionCount: [...body.querySelectorAll('.gate-detail-desc')]
@@ -73,6 +81,15 @@ try {
   assert.ok(desktop.description.top >= desktop.status.bottom - 1 &&
     Math.abs(desktop.description.bottom - desktop.timing.bottom) <= 24,
   `channel summary fills the lower left header alongside timing: ${JSON.stringify(desktop)}`);
+  // The floating close control is cleared vertically by the timing header, so the
+  // timing column has to reach the sheet's content edge instead of stopping short
+  // of it and leaving a dead strip down the right side of the sheet.
+  assert.equal(desktop.headerPaddingRight, '0px',
+    `timing header does not reserve the control strip: ${JSON.stringify(desktop)}`);
+  assert.ok(Math.abs(desktop.bodyContentRight - desktop.timing.right) <= 1,
+    `timing column reaches the content edge: ${JSON.stringify(desktop)}`);
+  assert.equal(desktop.durationLabelLines, 1, `duration label stays on one line: ${JSON.stringify(desktop)}`);
+  assert.equal(desktop.durationValueLines, 1, `duration value stays on one line: ${JSON.stringify(desktop)}`);
 
   await page.setViewportSize({ width: 390, height: 844 });
   const mobile = await inspect();
@@ -85,6 +102,10 @@ try {
   assert.ok(mobile.card.left >= -1 && mobile.card.right <= mobile.viewport + 1 &&
     mobile.bodyOverflow <= 1,
   `phone detail fits without horizontal clipping: ${JSON.stringify(mobile)}`);
+  assert.ok(Math.abs(mobile.bodyContentRight - mobile.timing.right) <= 1,
+    `phone timing block spans the full content width: ${JSON.stringify(mobile)}`);
+  assert.equal(mobile.durationLabelLines, 1, `phone duration label stays on one line: ${JSON.stringify(mobile)}`);
+  assert.equal(mobile.durationValueLines, 1, `phone duration value stays on one line: ${JSON.stringify(mobile)}`);
 
   const assertSharedHeadingAlignment = async kind => {
     const desktopLayout = await inspect();
@@ -92,12 +113,18 @@ try {
       desktopLayout.heading.right < desktopLayout.timing.left &&
       Math.abs(desktopLayout.label.top - desktopLayout.timingSource.top) <= 3,
     `${kind} title and timing are aligned at desktop width: ${JSON.stringify(desktopLayout)}`);
+    assert.ok(Math.abs(desktopLayout.bodyContentRight - desktopLayout.timing.right) <= 1 &&
+      desktopLayout.durationLabelLines === 1 && desktopLayout.durationValueLines === 1,
+    `${kind} timing column fits its content at the sheet edge: ${JSON.stringify(desktopLayout)}`);
     await page.setViewportSize({ width: 390, height: 844 });
     const phoneLayout = await inspect();
     assert.ok(phoneLayout.heading.bottom <= phoneLayout.timing.top + 1 &&
       phoneLayout.card.left >= -1 && phoneLayout.card.right <= phoneLayout.viewport + 1 &&
       phoneLayout.bodyOverflow <= 1,
     `${kind} title and timing stack within the phone sheet: ${JSON.stringify(phoneLayout)}`);
+    assert.ok(Math.abs(phoneLayout.bodyContentRight - phoneLayout.timing.right) <= 1 &&
+      phoneLayout.durationLabelLines === 1 && phoneLayout.durationValueLines === 1,
+    `${kind} phone timing block fits its content at the sheet edge: ${JSON.stringify(phoneLayout)}`);
     await page.setViewportSize({ width: 873, height: 703 });
     await page.keyboard.press('Escape');
   };

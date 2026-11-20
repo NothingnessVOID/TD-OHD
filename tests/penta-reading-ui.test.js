@@ -15,7 +15,7 @@ test('all 30 Penta entries expose distinct reviewed summary/detail and safe mult
     setLocale(locale, { persist: false });
     const entries = listKnowledgeEntries({ includePenta: true }).filter(e => e.objectType === 'penta');
     assert.equal(entries.length, 30);
-    assert.equal(listKnowledgeEntries().length, 70);
+    assert.equal(listKnowledgeEntries().length, 74);
     for (const entry of entries) {
       const accepted = pentaReadingEntry(entry.objectId);
       assert.ok(accepted, entry.id);

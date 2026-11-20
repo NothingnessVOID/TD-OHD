@@ -12,15 +12,37 @@ const quarterGates = [
   [1, 43, 14, 34, 9, 5, 26, 11, 10, 58, 38, 54, 61, 60, 41, 19]
 ];
 const byGate = new Map(quarterGates.flatMap((gates, index) => gates.map(gate => [gate, index])));
+/** Stable internal identities; display names stay localized presentation. */
+export const QUARTER_IDS = Object.freeze(['initiation', 'civilization', 'duality', 'mutation']);
+const indexById = new Map(QUARTER_IDS.map((id, index) => [id, index]));
 const labels = {
   en: ['Initiation', 'Civilization', 'Duality', 'Mutation'],
   'zh-CN': ['启蒙', '文明', '二元性', '突变'],
   'zh-Hant': ['啟蒙', '文明', '二元性', '突變']
 };
 
-export function quarterForGate(gate, locale = 'en') {
+/** Stable quarter id for an activated gate; unknown or invalid gates have no quarter. */
+export function quarterIdForGate(gate) {
   const index = byGate.get(Number(gate));
+  return index === undefined ? null : QUARTER_IDS[index];
+}
+
+/** Localized display name for a stable quarter id; null for an unknown id. */
+export function quarterName(id, locale = 'en') {
+  const index = indexById.get(id);
   return index === undefined ? null : (labels[locale] || labels.en)[index];
+}
+
+/** The canonical 16 gates of one quarter, in wheel order. A copy: callers cannot mutate the source. */
+export function quarterGatesFor(id) {
+  const index = indexById.get(id);
+  return index === undefined ? null : [...quarterGates[index]];
+}
+
+/** Original display contract: localized quarter label for a gate, or null. */
+export function quarterForGate(gate, locale = 'en') {
+  const id = quarterIdForGate(gate);
+  return id === null ? null : quarterName(id, locale);
 }
 
 export const quarterGroups = quarterGates.map(gates => [...gates]);

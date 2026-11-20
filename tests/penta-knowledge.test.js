@@ -82,12 +82,12 @@ test('ordinary reference inventory and categories remain separate from Penta', (
   const catalog=referenceEntries();
   assert.equal(catalog.filter(e=>e.kind==='gate').length,64);
   assert.equal(catalog.filter(e=>e.kind==='channel').length,36);
-  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,94); // 64 public foundation records + 30 Penta records.
+  assert.equal(catalog.filter(e=>e.kind==='knowledge').length,98); // 68 public foundation records (including four quarters) + 30 Penta records.
   assert.equal(catalog.filter(e=>String(e.id).startsWith('hd.penta.')).length,30);
-  assert.equal(listKnowledgeEntries().length,70);
+  assert.equal(listKnowledgeEntries().length,74);
   assert.deepEqual(listKnowledgeEntries().map(e=>e.id),listKnowledgeEntries({includePenta:false}).map(e=>e.id));
   assert.ok(listKnowledgeEntries().every(e=>e.objectType!=='penta'));
-  assert.equal(listKnowledgeEntries({includePenta:true}).length,100);
+  assert.equal(listKnowledgeEntries({includePenta:true}).length,104);
   const view=readFileSync(new URL('../src/views/penta-matrix.js',import.meta.url),'utf8');
   assert.match(view,/const knowledgeBody = renderPentaReading/);
   assert.match(view,/qualifiedSummary\(`gate:\$\{gate\.gate\}`\)/);

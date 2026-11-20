@@ -118,3 +118,19 @@
 .knowledge-prose-list li + li { margin-top: 6px; }
 .knowledge-variable-links { margin-top: 22px; }
 .knowledge-variable-links .knowledge-jump-card { padding: 13px 16px; }
+
+/* Quarter article: purpose theme, three reading categories and the shared 16 gate chips.
+   Only existing Skin tokens; identity, gates and the personal basis never depend on the lens. */
+.knowledge-quarter-purpose { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 12px 0 14px; }
+.knowledge-quarter-purpose .knowledge-summary-label { margin: 0; }
+.knowledge-quarter-theme { font-weight: 600; line-height: 1.7; overflow-wrap: anywhere; }
+.knowledge-quarter-personal { margin: 0 0 12px; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.knowledge-quarter .quarter-lens-switch { margin-bottom: 14px; }
+.knowledge-quarter-gates .knowledge-chips { margin-bottom: 0; }
+.knowledge-quarter-gate { font: inherit; font-size: 12px; cursor: pointer; }
+.knowledge-quarter-gate:hover { border-color: var(--accent); background: var(--accent-soft); }
+.knowledge-quarter-gate:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.knowledge-quarter-gate.is-personal { border-color: var(--knowledge-color); background: var(--accent-soft); font-weight: 600; }
+/* Inline trigger in the Incarnation Cross panel. */
+.knowledge-quarter-link { padding: 0; border: 0; background: none; font: inherit; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.knowledge-quarter-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }

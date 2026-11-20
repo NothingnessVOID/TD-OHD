@@ -15,7 +15,7 @@ import { t, formatDisplay, countLabel, getLocale } from '../lib/i18n.js';
 import {
   typeName, strategy, notSelf, signature, authorityName, profileName,
   definitionName, centerName, gateName, channelName, circuitName,
-  planetName, lineName, variable, cognition, hexagramName
+  planetName, lineName, variable, cognition
 } from '../lib/vocabulary.js';
 
 
@@ -27,6 +27,8 @@ import { foundationSummary } from '../lib/knowledge/foundation-summary.js';
 import { getKnowledgeSummary } from '../lib/knowledge/registry.js';
 import { chartKnowledgeQuery } from '../lib/knowledge/access.js';
 import { openKnowledgeDetail } from '../lib/knowledge/detail-controller.js';
+import { quarterName } from '../lib/quarter.js';
+import { personalQuarterFacts } from '../lib/quarter-personal.js';
 import { variableDirection, variableArrows } from '../lib/variable-arrows.js';
 import { calculateLineFixings } from '../features/transit-timeline/line-fixing.js';
 import { renderBodygraph, PLANET_ORDER, PLANET_GLYPHS } from '../bodygraph.js';
@@ -35,7 +37,8 @@ import { openDetailDialog, closeDetailDialog, prepareDetailDialog, fitDetailShee
 import { decorateBodygraphDetail } from '../lib/bodygraph-detail-layout.js';
 import { esc, formatBirth } from '../lib/format.js';
 import { channelCircuit } from '../lib/circuit-topology.js';
-import { renderPlanetReading } from '../lib/planet-reference.js';
+import { renderPlanetReadingPerspectives, bindPlanetReadingSwitch, resolvePlanetLens } from '../lib/planet-reading-perspectives.js';
+import { planetActivationEntries, renderPlanetActivationSections } from '../lib/planet-activation-sections.js';
 import { renderSharedGateReading, renderSharedChannelReading, bindSharedObjectDetails } from '../lib/shared-object-details.js';
 import { PHONE_MAX_WIDTH, PHONE_MEDIA_QUERY } from '../lib/breakpoints.js';
 import { graphFitBudget, observeGraphFit } from '../lib/graph-fit.js';
@@ -46,6 +49,7 @@ let detailHistory = []; // stack of { kind, id } for modal back-navigation
 let currentDetail = null;
 let detailContext = null;
 let disposeSharedDetails = null;
+let disposePlanetReading = null;
 const detailGraph = () => detailContext?.api || bodygraphApi;
 
 const TYPE_COLORS = {
@@ -433,6 +437,8 @@ function renderLens(gateNum) {
 function resetDetail() {
   disposeSharedDetails?.();
   disposeSharedDetails = null;
+  disposePlanetReading?.();
+  disposePlanetReading = null;
   detailGraph()?.setPinned?.(null);
   detailHistory = [];
   currentDetail = null;
@@ -519,49 +525,64 @@ function detailNav() {
 }
 
 
-/** A planetary point is a separate detail from the gate it currently activates. */
-export function showPlanetDetail({ source, planet, activation } = {}, pushHistory = true) {
+/**
+ * A planetary point is a separate detail from the gate it activates. A natal point shows the
+ * same planet's Design and Personality activations side by side in one frame; only a real
+ * transit point keeps the single temporary activation of that moment.
+ */
+export function showPlanetDetail({ source, planet, activation, planetLens } = {}, pushHistory = true) {
   prepareDetailDialog(document.getElementById('gate-detail'));
   if (!current || !['design', 'personality', 'transit'].includes(source) || !planet) return;
-  const resolved = source === 'transit'
-    ? detailContext?.transitGates?.[planet]
-    : current.chart.gates[source]?.[planet];
-  activation = resolved || activation;
-  if (!activation?.gate || !activation?.line) return;
+  // Each side is read from its own table; a missing side is never copied from the other one.
+  const entries = planetActivationEntries({ source, planet, activation, chart: current.chart,
+    transitGates: detailContext?.transitGates });
+  if (!entries.length) return;
+  // Only a real transit frame is scoped to that moment; every other source lists the birth pair.
+  const activationScope = source === 'transit' ? 'transit' : 'birth';
+  // The clicked source stays the frame's compat identity (history, refresh, pin rules), not a filter.
+  const clicked = entries.find(entry => entry.source === source) || entries[0];
+  activation = clicked.activation;
   if (pushHistory && currentDetail) detailHistory.push(currentDetail);
-  currentDetail = { kind: 'planet', id: planet, source, planet, activation };
+  // The reading category belongs to this detail frame; a fresh open defaults to Human Design.
+  const lens = resolvePlanetLens(planetLens);
+  currentDetail = { kind: 'planet', id: planet, source, planet, activation, planetLens: lens, activationScope };
   const detail = document.getElementById('gate-detail');
   const prevH = !detail.classList.contains('hidden') && window.innerWidth <= PHONE_MAX_WIDTH
     ? detail.querySelector('.gate-detail-card')?.offsetHeight ?? null : null;
-  const sourceLabel = t(source === 'transit' ? 'Transit' : source === 'design' ? 'Design' : 'Personality');
+  // The heading names the reading type, never one side of a merged natal pair.
+  const heading = source === 'transit'
+    ? `${t('Transit')} · ${t('Planetary Activations')}`
+    : t('Planetary Activations');
   const pointName = planetName(planet);
-  const gateLine = formatDisplay('planetGateLine', activation.gate,
-    hexagramName(activation.gate), activation.line);
-  const substructure = ['color', 'tone', 'base'].every(key => Number.isFinite(activation[key]))
-    ? `<dl class="planet-detail-substructure">${t('Color {color} · Tone {tone} · Base {base}',
-        { color: '', tone: '', base: '' }).split('·').map((label, index) => {
-        const value = activation[['color', 'tone', 'base'][index]];
-        return `<div class="planet-detail-substructure-item"><dt>${esc(label.trim())}</dt><dd>${esc(value)}</dd></div>`;
-      }).join('')}</dl>` : '';
   detail.innerHTML = `<div class="gate-detail-card planet-detail-card"><div class="gate-detail-nav">${detailNav()}</div>
     <div class="gate-detail-body" data-detail-kind="planet" data-planet="${esc(planet)}" data-source="${esc(source)}">
-      <div class="detail-label">${esc(sourceLabel)} · ${esc(t('Planetary Activations'))}</div>
+      <div class="detail-label">${esc(heading)}</div>
       <div class="detail-name planet-detail-title"><span class="planet-detail-glyph" aria-hidden="true">${esc(PLANET_GLYPHS[planet] || '')}</span><span class="planet-detail-name">${esc(pointName)}</span></div>
-      ${renderPlanetReading(planet, getLocale())}
-      <section class="planet-activation"><div class="planet-activation-label">${esc(t('Current activation'))}</div>
-      <button type="button" class="transit-detail-link planet-detail-gate" data-planet-gate="${activation.gate}"
-        aria-label="${esc(gateLine)}">
-        <strong>${esc(gateLine)}</strong>
-        <span class="transit-detail-action">${esc(t('View gate details'))}<span aria-hidden="true"> ↗</span></span>
-      </button>${substructure}</section>
+      ${renderPlanetReadingPerspectives(planet, getLocale(), lens)}
+      ${renderPlanetActivationSections(entries)}
     </div></div>`;
   decorateBodygraphDetail(detail, currentDetail, current.chart, detailContext);
   openDetailDialog(detail, resetDetail);
   fitDetailSheetHeight(detail.querySelector('.gate-detail-card'), prevH);
-  detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  // A merged natal pair pins both real gates (deduped); a transit frame pins its single gate.
+  if (source === 'transit') detailGraph()?.setPinned?.({ kind: 'gate', id: activation.gate });
+  else detailGraph()?.setPinned?.({ kind: 'gates', gates: [...new Set(entries.map(entry => entry.activation.gate))] });
+  disposePlanetReading?.();
+  disposePlanetReading = bindPlanetReadingSwitch(detail, { onLensChange: next => {
+    if (currentDetail?.kind === 'planet') currentDetail.planetLens = next;
+  } });
   detail.querySelector('.gate-detail-back')?.addEventListener('click', goBack);
-  detail.querySelector('[data-planet-gate]')?.addEventListener('click', () => showGateDetail(activation.gate, true,
-    source === 'transit' ? null : { side: source, planet, line: activation.line }));
+  // Every row jumps to its own source-tagged gate record, even when both gates are the same number.
+  detail.querySelectorAll('[data-planet-gate]').forEach(button => {
+    button.addEventListener('click', () => {
+      const gate = Number(button.dataset.planetGate);
+      const rowSource = button.dataset.planetSource;
+      const row = entries.find(entry => entry.source === rowSource && entry.activation.gate === gate);
+      if (!row) return;
+      showGateDetail(gate, true,
+        rowSource === 'transit' ? null : { side: rowSource, planet, line: row.activation.line });
+    });
+  });
   detail.querySelector('.gate-detail-close')?.focus({ preventScroll: true });
 }
 
@@ -974,11 +995,13 @@ function renderCrossPanel(container) {
     </div>
   ` : '';
 
-  const quarter = GATE_DESCRIPTIONS[chart.gates.personality.sun?.gate]?.quarter;
+  // Canonical quarter identity, then an explicit personal context for the quarter sheet.
+  const quarter = personalQuarterFacts({ chart, timeUnknown: current?.birth?.timeUnknown, birthTimeConfidence: current?.birth?.birthTimeConfidence });
+  const quarterLabel = quarter.status === 'ready' ? quarterName(quarter.id, getLocale()) : null;
   container.innerHTML = `
     <div class="panel-title">${t('Incarnation Cross')}</div>
     <div class="panel-heading">${esc(crossName(cross))}</div>
-    <p>${esc(contentText(cross.angleName || ''))}${quarter ? ` · ${t('Quarter of {quarter}', { quarter: esc(contentText(quarter)) })}` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
+    <p>${esc(contentText(cross.angleName || ''))}${quarterLabel ? ` · <button type="button" class="knowledge-trigger knowledge-quarter-link" data-quarter-detail="${esc(quarter.id)}">${esc(t('Quarter of {quarter}', { quarter: quarterLabel }))}</button>` : ''}${cross.theme ? formatDisplay('separator', 'theme') + esc(contentText(cross.theme)) : ''}</p>
     <div style="margin-top:12px">
       <div class="foundation-grid">
         ${cross.gates.map((gate, i) => `
@@ -994,6 +1017,11 @@ function renderCrossPanel(container) {
     ${geneKeysHtml}
   `;
   container.querySelector('[data-cross-basics]').addEventListener('click', () => openKnowledgeDetail({objectType:'cross',objectId:'introduction'}));
+  container.querySelector('[data-quarter-detail]')?.addEventListener('click', () => {
+    if (quarter.status !== 'ready') return;
+    openKnowledgeDetail({ objectType: 'quarter', objectId: quarter.id },
+      { quarter: { gate: quarter.gate, line: quarter.line, estimated: quarter.estimated } });
+  });
   container.querySelectorAll('.foundation-clickable').forEach(item => {
     item.addEventListener('click', () => showGateDetail(parseInt(item.dataset.gate)));
     wireRowHover(item, parseInt(item.dataset.gate));
@@ -1019,6 +1047,8 @@ export function clearCurrentChart() {
   detailContext = null;
   disposeSharedDetails?.();
   disposeSharedDetails = null;
+  disposePlanetReading?.();
+  disposePlanetReading = null;
 }
 
 export function getCurrentChart() {
